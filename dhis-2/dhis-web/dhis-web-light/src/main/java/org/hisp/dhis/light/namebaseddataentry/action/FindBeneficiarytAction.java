@@ -32,9 +32,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,9 +45,9 @@ public class FindBeneficiarytAction implements Action {
 	// Dependencies
 	// -------------------------------------------------------------------------
 
-	private PatientService patientService;
+	private TrackedEntityInstanceService patientService;
 
-	public void setPatientService(PatientService patientService) {
+	public void setPatientService(TrackedEntityInstanceService patientService) {
 		this.patientService = patientService;
 	}
 
@@ -55,34 +55,34 @@ public class FindBeneficiarytAction implements Action {
 	// Input & Output
 	// -------------------------------------------------------------------------
 
-	private Collection<Patient> patients;
+	private Collection<TrackedEntityInstance> patients;
 
-	public Collection<Patient> getPatients() {
+	public Collection<TrackedEntityInstance> getPatients() {
 		return patients;
 	}
 
-	public void setPatients(Collection<Patient> patients) {
+	public void setPatients(Collection<TrackedEntityInstance> patients) {
 		this.patients = patients;
 	}
 
-	private Set<PatientAttributeValue> pavSet;
+	private Set<TrackedEntityAttributeValue> pavSet;
 
-	public Set<PatientAttributeValue> getPavSet() {
+	public Set<TrackedEntityAttributeValue> getPavSet() {
 		return pavSet;
 	}
 
-	public void setPavSet(Set<PatientAttributeValue> pavSet) {
+	public void setPavSet(Set<TrackedEntityAttributeValue> pavSet) {
 		this.pavSet = pavSet;
 	}
 
-	private Set<PatientAttributeValue> patientAttributes;
+	private Set<TrackedEntityAttributeValue> patientAttributes;
 
-	public Set<PatientAttributeValue> getPatientAttributes() {
+	public Set<TrackedEntityAttributeValue> getPatientAttributes() {
 		return patientAttributes;
 	}
 
 	public void setPatientAttributes(
-			Set<PatientAttributeValue> patientAttributes) {
+			Set<TrackedEntityAttributeValue> patientAttributes) {
 		this.patientAttributes = patientAttributes;
 	}
 
@@ -151,17 +151,17 @@ public class FindBeneficiarytAction implements Action {
 	@Override
 	public String execute() throws Exception {
 
-		patients = patientService.searchPatientsForMobile(keyword,
+		patients = patientService.searchTrackedEntityInstancesForMobile( keyword,
 				organisationUnitId, patientAttributeId);
 
-		pavSet = new HashSet<PatientAttributeValue>();
+		pavSet = new HashSet<TrackedEntityAttributeValue>();
 
-		for (Patient p : patients) {
+		for (TrackedEntityInstance p : patients) {
 			pavSet.addAll(p.getAttributeValues());
 		}
 
 		if (patients.size() == 1) {
-			Patient patient = patients.iterator().next();
+			TrackedEntityInstance patient = patients.iterator().next();
 			patientId = patient.getId();
 
 			return REDIRECT;

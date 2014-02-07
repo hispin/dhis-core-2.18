@@ -27,12 +27,12 @@
 							<select id='property' name='property' style='width:16em' onChange="showDivValue();">
 								<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 								#set($attribute = '')
-								#foreach($programPatientAttribute in $program.programPatientAttributes)
+								#foreach($programAttribute in $program.programAttributes)
 									#set($opt="")
-									#foreach($option in $programPatientAttribute.patientAttribute.attributeOptions)
+									#foreach($option in $programAttribute.attribute.attributeOptions)
 										#set($opt=$opt + ';' + $option.name )
 									#end 
-								<option value="$programPatientAttribute.patientAttribute.uid" opt="$opt" #if($validationCriteria.property==$patientAttribute.uid) #set($attribute = $programPatientAttribute.patientAttribute) selected #end>$programPatientAttribute.patientAttribute.displayName</option>
+								<option value="$programAttribute.attribute.uid" opt="$opt" #if($validationCriteria.property==$attribute.uid) #set($attribute = $programAttribute.attribute) selected #end>$programAttribute.attribute.displayName</option>
 								#end
 							</select>
 						</td>

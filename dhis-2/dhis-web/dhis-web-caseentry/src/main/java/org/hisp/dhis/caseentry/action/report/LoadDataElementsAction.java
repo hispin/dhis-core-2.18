@@ -31,13 +31,13 @@ package org.hisp.dhis.caseentry.action.report;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageSectionService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 
 import com.opensymphony.xwork2.Action;
 
@@ -86,11 +86,11 @@ public class LoadDataElementsAction
     }
 
 
-    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
+    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
 
-    public List<PatientAttribute> getPatientAttributes()
+    public List<TrackedEntityAttribute> getAttributes()
     {
-        return patientAttributes;
+        return attributes;
     }
 
     private List<ProgramStageDataElement> psDataElements = new ArrayList<ProgramStageDataElement>();
@@ -125,7 +125,7 @@ public class LoadDataElementsAction
 
         if ( program != null && program.isRegistration() )
         {
-            patientAttributes = program.getAttributes();
+            attributes = program.getEntityAttributes();
         }
 
         return SUCCESS;

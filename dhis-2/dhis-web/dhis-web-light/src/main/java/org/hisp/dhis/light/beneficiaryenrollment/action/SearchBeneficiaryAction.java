@@ -31,8 +31,8 @@ package org.hisp.dhis.light.beneficiaryenrollment.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,14 +43,14 @@ public class SearchBeneficiaryAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public PatientService getPatientService()
+    public TrackedEntityInstanceService getPatientService()
     {
         return patientService;
     }
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -71,14 +71,14 @@ public class SearchBeneficiaryAction
         this.keyword = keyword;
     }
 
-    public List<Patient> patientList;
+    public List<TrackedEntityInstance> patientList;
 
-    public List<Patient> getPatientList()
+    public List<TrackedEntityInstance> getPatientList()
     {
         return patientList;
     }
 
-    public void setPatientList( List<Patient> patientList )
+    public void setPatientList( List<TrackedEntityInstance> patientList )
     {
         this.patientList = patientList;
     }
@@ -92,7 +92,7 @@ public class SearchBeneficiaryAction
         {
             keyword = tokens[0] + "  " + tokens[1];
         }
-        patientList = new ArrayList<Patient>(patientService.getPatientsForMobile( keyword, 0 ) );
+        patientList = new ArrayList<TrackedEntityInstance>(patientService.getTrackedEntityInstancesForMobile( keyword, 0 ) );
         return SUCCESS;
     }
 

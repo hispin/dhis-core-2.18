@@ -1,7 +1,7 @@
 <div id="tabs">
 	<ul>
 		<li><a href="#tab-1">$i18n.getString("dataelements")</a></li>
-		<li><a href="#tab-2">$i18n.getString("patient_attributes")</a></li>
+		<li><a href="#tab-2">$i18n.getString("tracked_entity_attributes")</a></li>
 		<li><a href="#tab-3">$i18n.getString("program")</a></li>
 	</ul>	
 	
@@ -69,7 +69,7 @@
 	<div id="tab-2">
 		<table>
 			<tr>
-				<td><label>$i18n.getString( "patient_attributes" )</label></td>
+				<td><label>$i18n.getString( "tracked_entity_attributes" )</label></td>
 				<td>
 					<label>$i18n.getString( "available_values" )</label>
 					<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button"  onClick="insertMultiValues('caSuggestedValues');" >
@@ -78,11 +78,11 @@
 			<tr>
 				<td>
 					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
-						#foreach($patientAttribute in $patientAttributes)
-							#if($patientAttribute.valueType=='age')
-								<option suggested="" title="$patientAttribute.displayName" value="[CA:$patientAttribute.id.age]">$patientAttribute.displayName</option>
+						#foreach($attribute in $attributes)
+							#if($attribute.valueType=='age')
+								<option suggested="" title="$attribute.displayName" value="[CA:$attribute.id.age]">$attribute.displayName</option>
 							#else
-								<option suggested="" title="$patientAttribute.displayName" value="[CA:$patientAttribute.id]">$patientAttribute.displayName</option>
+								<option suggested="" title="$attribute.displayName" value="[CA:$attribute.id]">$attribute.displayName</option>
 							#end
 						#end
 					</select>

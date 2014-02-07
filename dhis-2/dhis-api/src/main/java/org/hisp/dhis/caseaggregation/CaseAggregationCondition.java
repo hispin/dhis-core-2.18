@@ -64,7 +64,7 @@ public class CaseAggregationCondition
 
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
 
-    public static String OBJECT_PATIENT_ATTRIBUTE = "CA";
+    public static String OBJECT_TRACKED_ENTITY_ATTRIBUTE = "CA";
 
     public static String OBJECT_PROGRAM_PROPERTY = "PP";
 
@@ -74,7 +74,7 @@ public class CaseAggregationCondition
 
     public static String OBJECT_PROGRAM_STAGE_PROPERTY = "PSP";
 
-    public static String OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY = "PC";
+    public static String OBJECT_TRACKED_ENTITY_PROGRAM_STAGE_PROPERTY = "PC";
 
     public static String OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE = "PSIC";
 
@@ -91,8 +91,8 @@ public class CaseAggregationCondition
     public static String AUTO_STORED_BY = "DHIS-SYSTEM";
 
     public static final String regExp = "\\[(" + OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE + "|" + OBJECT_PROGRAM + "|"
-        + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PROGRAM_STAGE + "|" + OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY
-        + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PROGRAM_PROPERTY + ")"
+        + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PROGRAM_STAGE + "|" + OBJECT_TRACKED_ENTITY_PROGRAM_STAGE_PROPERTY
+        + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_TRACKED_ENTITY_ATTRIBUTE + "|" + OBJECT_PROGRAM_PROPERTY + ")"
         + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+[" + SEPARATOR_ID + "[a-zA-Z0-9]*]*)" + "\\]";
 
     public static final String dataelementRegExp = MINUS_OPERATOR + "{1}\\s*\\(\\s*(\\["

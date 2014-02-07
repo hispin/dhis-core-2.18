@@ -45,7 +45,7 @@ function loadDataEntry( programStageInstanceId )
 			jQuery("#viewRecordsDiv :input" ).width("260");
 			jQuery("#viewRecordsDiv" ).find('img').removeAttr("onclick");
 			showById("reportTitle");
-			hideById("patientInforTB");
+			hideById("entityInstanceInforTB");
 			jQuery(".ui-combobox" ).hide();
 			hideById('inputCriteriaDiv');
 		})

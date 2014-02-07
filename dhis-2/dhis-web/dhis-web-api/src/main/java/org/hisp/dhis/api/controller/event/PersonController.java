@@ -28,6 +28,13 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Conjunction;
@@ -46,9 +53,9 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,12 +68,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -135,9 +136,9 @@ public class PersonController
     @SuppressWarnings( "unchecked" )
     private Persons personsByFilter( List<String> attributeFilters, String orgUnitUid )
     {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( Patient.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( TrackedEntityInstance.class );
         criteria.createAlias( "attributeValues", "attributeValue" );
-        criteria.createAlias( "attributeValue.patientAttribute", "attribute" );
+        criteria.createAlias( "attributeValue.attribute", "attribute" );
 
         Disjunction or = Restrictions.or();
         criteria.add( or );
@@ -169,9 +170,9 @@ public class PersonController
                     "Valid syntax is attribute=ATTRIBUTE_UID:OPERATOR:VALUE." );
             }
 
-            PatientAttribute patientAttribute = manager.get( PatientAttribute.class, split[0] );
+            TrackedEntityAttribute attribute = manager.get( TrackedEntityAttribute.class, split[0] );
 
-            if ( patientAttribute == null )
+            if ( attribute == null )
             {
                 throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "PersonAttribute with UID " + split[0] + " does not exist." );
             }

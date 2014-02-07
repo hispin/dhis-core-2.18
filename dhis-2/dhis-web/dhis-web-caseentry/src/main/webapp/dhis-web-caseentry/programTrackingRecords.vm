@@ -11,7 +11,7 @@
 	</tr>
 </table>
 
-#set($noPatient=0)
+#set($noEntityInstance=0)
 #if( $programStageInstances && $programStageInstances.size()>0 )
 
 <table class='listTable gridTable'>
@@ -23,9 +23,9 @@
 		<tr>
 			<th>$i18n.getString('risk')</th>
 			
-			#foreach( $programAttribute in $program.programPatientAttributes )
+			#foreach( $programAttribute in $program.attributes )
 				#if($programAttribute.displayedInList=='true')
-					<th id="patientAttributeName">$encoder.htmlEncode($programAttribute.patientAttribute.displayName)</th>
+					<th id="attributeName">$encoder.htmlEncode($programAttribute.attribute.displayName)</th>
 				#end
 			#end
 			<th>$i18n.getString( "events" )</th>
@@ -33,17 +33,17 @@
 		</tr>
 	</thead>
 	<tbody id="list">
-	#set($patientId='')
+	#set($entityInstanceId='')
 	#set($count=1)
 	#set($class='listRow')
 	#set($alterclass='listAlternateRow')
 	#foreach( $programStageInstance in $programStageInstances )
-		#set($patient = $programStageInstance.programInstance.patient)
+		#set($entityInstance = $programStageInstance.programInstance.entityInstance)
 		<tr>
-			#if( $patientId != $patient.id )
-				#set($noPatient=$noPatient + 1)
-			<td name="infor_$patient.id" class='$class'>
-				#set( $comment = $!programStageInstance.programInstance.patientComment.commentText )
+			#if( $entityInstanceId != $entityInstance.id )
+				#set($noEntityInstance=$noEntityInstance + 1)
+			<td name="infor_$entityInstance.id" class='$class'>
+				#set( $comment = $!programStageInstance.programInstance.comment.commentText )
 				#if( $$!programStageInstance.programInstance.followup == 'true') 
 				<img src='images/risk_large.png' title='$!comment'>
 				#else
@@ -51,13 +51,14 @@
 				#end
 			</td>
 			
-			#foreach( $programAttribute in $program.programPatientAttributes )
+			#foreach( $programAttribute in $program.attributes )
 				#if($programAttribute.displayedInList=='true')
-					<td name='infor_$patient.id' class='$class'><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
-						#foreach( $attributeValue in $patient.attributeValues)
-							#if($!attributeValue.patientAttribute.id==$programAttribute.patientAttribute.id)
+					#set($value='')
+					<td name='infor_$entityInstance.id' class='$class'><a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">
+						#foreach( $attributeValue in $entityInstance.attributeValues)
+							#if($!attributeValue.attribute.id==$programAttribute.attribute.id)
 								#set($value=$attributeValue.value)
-								#if( $programAttribute.patientAttribute.valueType == 'bool')
+								#if( $programAttribute.attribute.valueType == 'bool')
 									#set($value=$i18n.getString($attributeValue.value))
 								#end
 							#end
@@ -79,7 +80,7 @@
 			#else
 				#set($rowspan=$rowspan+1)
 				<script>
-					jQuery("[name=infor_" + "$patient.id]").attr('rowspan',$rowspan)
+					jQuery("[name=infor_" + "$entityInstance.id]").attr('rowspan',$rowspan)
 				</script>
 			#end
 			
@@ -94,18 +95,18 @@
 				</a>
 			</td>
 			
-			#if( $patientId != $patient.id ) 
-			<td class='$alterclass' name='opt_$patient.id'>
-				<a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )" title="$i18n.getString( 'patient_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "patient_dashboard" )'></a>
+			#if( $entityInstanceId != $entityInstance.id ) 
+			<td class='$alterclass' name='opt_$entityInstance.id'>
+				<a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.id' )" title="$i18n.getString( 'dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "dashboard" )'></a>
 				<a href="javascript:programTrackingReport( $programStageInstance.programInstance.id )" title='$i18n.getString( "program_report" )'><img src="../images/information.png" alt='$i18n.getString( "program_report" )'></a>
 			</td>
 			#else
 				<script>
-					jQuery("[name=opt_" + "$patient.id]").attr('rowspan',$rowspan)
+					jQuery("[name=opt_" + "$entityInstance.id]").attr('rowspan',$rowspan)
 				</script>
 			#end
 			
-			#set( $patientId = $patient.id )
+			#set( $entityInstanceId = $entityInstance.id )
 		</tr>
 	#end
 	</tbody>
@@ -120,9 +121,9 @@
 #end
 
 <script>
-	var i18n_patient = '$encoder.jsEscape( $i18n.getString( "patient" ) , "'")';
+	var i18n_tracked_entity_instance = '$encoder.jsEscape( $i18n.getString( "tracked_entity_instance" ) , "'")';
 	var i18n_with = '$encoder.jsEscape( $i18n.getString( "with" ) , "'")';
 	var i18n_events = '$encoder.jsEscape( $i18n.getString( "status_events" ) , "'")';
-	var totalHeader = '$!noPatient' + " " + i18n_patient + " " + i18n_with + " " + jQuery('#statusEvent option:selected').text() + " " + i18n_events
+	var totalHeader = '$!noEntityInstance' + " " + i18n_tracked_entity_instance + " " + i18n_with + " " + jQuery('#statusEvent option:selected').text() + " " + i18n_events
 	setInnerHTML('totalTd', totalHeader);
 </script>

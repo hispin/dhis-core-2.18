@@ -28,8 +28,8 @@ package org.hisp.dhis.caseentry.action.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.patientreport.PatientTabularReport;
-import org.hisp.dhis.patientreport.PatientTabularReportService;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,9 +45,9 @@ public class DeleteTabularReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientTabularReportService tabularReportService;
+    private TrackedEntityTabularReportService tabularReportService;
 
-    public void setTabularReportService( PatientTabularReportService tabularReportService )
+    public void setTabularReportService( TrackedEntityTabularReportService tabularReportService )
     {
         this.tabularReportService = tabularReportService;
     }
@@ -71,9 +71,9 @@ public class DeleteTabularReportAction
     public String execute()
         throws Exception
     {
-        PatientTabularReport tabularReport = tabularReportService.getPatientTabularReportByUid( id );
-        
-        tabularReportService.deletePatientTabularReport( tabularReport );
+        TrackedEntityTabularReport tabularReport = tabularReportService.getTrackedEntityTabularReportByUid( id );
+
+        tabularReportService.deleteTrackedEntityTabularReport( tabularReport );
 
         return SUCCESS;
     }

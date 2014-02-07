@@ -33,10 +33,10 @@ import java.util.HashSet;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -51,11 +51,11 @@ public class DataRecordingSelectAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
-    public void setPatientService( PatientService patientService )
+    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
     {
-        this.patientService = patientService;
+        this.entityInstanceService = entityInstanceService;
     }
 
     private ProgramService programService;
@@ -76,18 +76,18 @@ public class DataRecordingSelectAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
+    private Integer entityInstanceId;
 
-    public void setPatientId( Integer patientId )
+    public void setEntityInstanceId( Integer entityInstanceId )
     {
-        this.patientId = patientId;
+        this.entityInstanceId = entityInstanceId;
     }
 
-    private Patient patient;
+    private TrackedEntityInstance entityInstance;
 
-    public Patient getPatient()
+    public TrackedEntityInstance getEntityInstance()
     {
-        return patient;
+        return entityInstance;
     }
 
     private Collection<Program> programs = new HashSet<Program>();
@@ -106,10 +106,10 @@ public class DataRecordingSelectAction
     {
         OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
 
-        patient = patientService.getPatient( patientId );
+        entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
 
         // ---------------------------------------------------------------------
-        // Get programs which patient enrolls
+        // Get programs which entity-instance enrolls
         // ---------------------------------------------------------------------
 
         programs = programService.getProgramsByCurrentUser( orgunit );

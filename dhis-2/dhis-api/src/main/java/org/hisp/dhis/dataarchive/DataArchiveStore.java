@@ -50,21 +50,21 @@ public interface DataArchiveStore
     void deleteOldestOverlappingData();
 
     // -------------------------------------------------------------------------
-    // Archive for patient data value
+    // Archive for tracked entity data value
     // -------------------------------------------------------------------------
 
-    void archivePatientData( Date startDate, Date endDate );
+    void archiveTrackedEntityData( Date startDate, Date endDate );
 
-    void unArchivePatientData( Date startDate, Date endDate );
+    void unArchiveTrackedEntityData( Date startDate, Date endDate );
     
-    int getNumberOfOverlappingPatientValues();
+    int getNumberOfOverlappingTrackedEntityValues();
 
-    int getNumberOfArchivedPatientValues();
+    int getNumberOfArchivedTrackedEntityValues();
 
-    void deleteRegularOverlappingPatientData();
+    void deleteRegularOverlappingTrackedEntityData();
 
-    void deleteArchivedOverlappingPatientData();
+    void deleteArchivedOverlappingTrackedEntityData();
 
-    void deleteOldestOverlappingPatientData();
+    void deleteOldestOverlappingTrackedEntityData();
     
 }

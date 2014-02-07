@@ -46,16 +46,16 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.patient.PatientReminderService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,11 +85,11 @@ public class DefaultProgramStageInstanceService
         this.programInstanceService = programInstanceService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private SmsSender smsSender;
@@ -106,11 +106,11 @@ public class DefaultProgramStageInstanceService
         this.currentUserService = currentUserService;
     }
 
-    private PatientReminderService patientReminderService;
+    private TrackedEntityInstanceReminderService reminderService;
 
-    public void setPatientReminderService( PatientReminderService patientReminderService )
+    public void setReminderService( TrackedEntityInstanceReminderService reminderService )
     {
-        this.patientReminderService = patientReminderService;
+        this.reminderService = reminderService;
     }
 
     private MessageService messageService;
@@ -190,9 +190,9 @@ public class DefaultProgramStageInstanceService
     }
 
     @Override
-    public List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed )
+    public List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, Boolean completed )
     {
-        return programStageInstanceStore.get( patient, completed );
+        return programStageInstanceStore.get( entityInstance, completed );
     }
 
     @Override
@@ -230,10 +230,10 @@ public class DefaultProgramStageInstanceService
             // Values
             // -----------------------------------------------------------------
 
-            Collection<PatientDataValue> patientDataValues = patientDataValueService
-                .getPatientDataValues( programStageInstance );
+            Collection<TrackedEntityDataValue> entityDataValues = dataValueService
+                .getTrackedEntityDataValues( programStageInstance );
 
-            if ( executionDate == null || patientDataValues == null || patientDataValues.size() == 0 )
+            if ( executionDate == null || entityDataValues == null || entityDataValues.size() == 0 )
             {
                 grid.addRow();
                 grid.addValue( "[" + i18n.getString( "none" ) + "]" );
@@ -241,20 +241,20 @@ public class DefaultProgramStageInstanceService
             }
             else
             {
-                for ( PatientDataValue patientDataValue : patientDataValues )
+                for ( TrackedEntityDataValue entityDataValue : entityDataValues )
                 {
-                    DataElement dataElement = patientDataValue.getDataElement();
+                    DataElement dataElement = entityDataValue.getDataElement();
 
                     grid.addRow();
                     grid.addValue( dataElement.getName() );
 
                     if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
                     {
-                        grid.addValue( i18n.getString( patientDataValue.getValue() ) );
+                        grid.addValue( i18n.getString( entityDataValue.getValue() ) );
                     }
                     else
                     {
-                        grid.addValue( patientDataValue.getValue() );
+                        grid.addValue( entityDataValue.getValue() );
                     }
                 }
             }
@@ -500,18 +500,19 @@ public class DefaultProgramStageInstanceService
     public Collection<OutboundSms> sendMessages( ProgramStageInstance programStageInstance, int status,
         I18nFormat format )
     {
-        Patient patient = programStageInstance.getProgramInstance().getPatient();
+        TrackedEntityInstance entityInstance = programStageInstance.getProgramInstance().getEntityInstance();
         Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
 
-        Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
-        for ( PatientReminder rm : reminders )
+        Collection<TrackedEntityInstanceReminder> reminders = programStageInstance.getProgramStage()
+            .getReminders();
+        for ( TrackedEntityInstanceReminder rm : reminders )
         {
             if ( rm != null
                 && rm.getWhenToSend() != null
                 && rm.getWhenToSend() == status
-                && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
+                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
             {
-                OutboundSms outboundSms = sendEventMessage( rm, programStageInstance, patient, format );
+                OutboundSms outboundSms = sendEventMessage( rm, programStageInstance, entityInstance, format );
                 if ( outboundSms != null )
                 {
                     outboundSmsList.add( outboundSms );
@@ -528,17 +529,19 @@ public class DefaultProgramStageInstanceService
     {
         Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
 
-        Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
-        for ( PatientReminder rm : reminders )
+        Collection<TrackedEntityInstanceReminder> reminders = programStageInstance.getProgramStage()
+            .getReminders();
+        for ( TrackedEntityInstanceReminder rm : reminders )
         {
             if ( rm != null
                 && rm.getWhenToSend() != null
                 && rm.getWhenToSend() == status
-                && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
+                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm
+                    .getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
             {
                 int id = messageService.sendMessage( programStageInstance.getProgramStage().getDisplayName(),
-                    patientReminderService.getMessageFromTemplate( rm, programStageInstance, format ), null,
-                    patientReminderService.getUsers( rm, programStageInstance.getProgramInstance().getPatient() ),
+                    reminderService.getMessageFromTemplate( rm, programStageInstance, format ), null,
+                    reminderService.getUsers( rm, programStageInstance.getProgramInstance().getEntityInstance() ),
                     null, false, true );
                 messageConversations.add( messageService.getMessageConversation( id ) );
             }
@@ -571,7 +574,8 @@ public class DefaultProgramStageInstanceService
             outboundSms = new ArrayList<OutboundSms>();
         }
 
-        outboundSms.addAll( sendMessages( programStageInstance, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
+        outboundSms.addAll( sendMessages( programStageInstance,
+            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
 
         // ---------------------------------------------------------------------
         // Send DHIS message when to completed the event
@@ -585,7 +589,7 @@ public class DefaultProgramStageInstanceService
         }
 
         messageConversations.addAll( sendMessageConversations( programStageInstance,
-            PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
+            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
 
         // ---------------------------------------------------------------------
         // Update the event
@@ -616,8 +620,8 @@ public class DefaultProgramStageInstanceService
      * registration.
      */
     @Override
-    public ProgramStageInstance createProgramStageInstance( Patient patient, Program program, Date executionDate,
-        OrganisationUnit organisationUnit )
+    public ProgramStageInstance createProgramStageInstance( TrackedEntityInstance instance, Program program,
+        Date executionDate, OrganisationUnit organisationUnit )
     {
         ProgramStage programStage = null;
 
@@ -637,8 +641,7 @@ public class DefaultProgramStageInstanceService
             programInstance.setDateOfIncident( executionDate );
             programInstance.setProgram( program );
             programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
-
-            programInstance.setPatient( patient );
+            programInstance.setEntityInstance( instance );
 
             programInstanceService.addProgramInstance( programInstance );
         }
@@ -695,15 +698,15 @@ public class DefaultProgramStageInstanceService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private OutboundSms sendEventMessage( PatientReminder patientReminder, ProgramStageInstance programStageInstance,
-        Patient patient, I18nFormat format )
+    private OutboundSms sendEventMessage( TrackedEntityInstanceReminder reminder,
+        ProgramStageInstance programStageInstance, TrackedEntityInstance entityInstance, I18nFormat format )
     {
-        Set<String> phoneNumbers = patientReminderService.getPhonenumbers( patientReminder, patient );
+        Set<String> phoneNumbers = reminderService.getPhonenumbers( reminder, entityInstance );
         OutboundSms outboundSms = null;
 
         if ( phoneNumbers.size() > 0 )
         {
-            String msg = patientReminderService.getMessageFromTemplate( patientReminder, programStageInstance, format );
+            String msg = reminderService.getMessageFromTemplate( reminder, programStageInstance, format );
             try
             {
                 outboundSms = new OutboundSms();

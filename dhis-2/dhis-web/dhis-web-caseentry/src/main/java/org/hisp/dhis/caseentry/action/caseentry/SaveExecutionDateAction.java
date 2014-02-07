@@ -29,18 +29,19 @@ package org.hisp.dhis.caseentry.action.caseentry;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 import java.util.Date;
 
@@ -71,11 +72,11 @@ public class SaveExecutionDateAction
         this.programService = programService;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
-    public void setPatientService( PatientService patientService )
+    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
     {
-        this.patientService = patientService;
+        this.entityInstanceService = entityInstanceService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -110,11 +111,11 @@ public class SaveExecutionDateAction
         this.organisationUnitId = organisationUnitId;
     }
 
-    private Integer patientId;
+    private Integer entityInstanceId;
 
-    public void setPatientId( Integer patientId )
+    public void setEntityInstanceId( Integer entityInstanceId )
     {
-        this.patientId = patientId;
+        this.entityInstanceId = entityInstanceId;
     }
 
     private String executionDate;
@@ -164,9 +165,9 @@ public class SaveExecutionDateAction
             if ( programStageInstance == null )
             {
                 Program program = (programId == null) ? null : programService.getProgram( programId );
-                Patient patient = (patientId == null) ? null : patientService.getPatient( patientId );
+                TrackedEntityInstance entityInstance = (entityInstanceId == null) ? null : entityInstanceService.getTrackedEntityInstance( entityInstanceId );
 
-                programStageInstance = programStageInstanceService.createProgramStageInstance( patient, program, dateValue, organisationUnit );
+                programStageInstance = programStageInstanceService.createProgramStageInstance( entityInstance, program, dateValue, organisationUnit );
             }
             else
             {

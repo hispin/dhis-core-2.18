@@ -42,11 +42,11 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -62,7 +62,7 @@ public class ProgramIndicatorServiceTest
     private ProgramIndicatorService programIndicatorService;
 
     @Autowired
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -77,7 +77,7 @@ public class ProgramIndicatorServiceTest
     private ProgramInstanceService programInstanceService;
 
     @Autowired
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
     private Date incidenDate;
 
@@ -119,8 +119,8 @@ public class ProgramIndicatorServiceTest
         programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( programB );
 
-        Patient patient = createPatient( 'A', organisationUnit );
-        patientService.savePatient( patient );
+        TrackedEntityInstance entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
+        entityInstanceService.saveTrackedEntityInstance( entityInstance );
 
         Calendar calIncident = Calendar.getInstance();
         PeriodType.clearTimeOfDay( calIncident );
@@ -131,7 +131,7 @@ public class ProgramIndicatorServiceTest
         PeriodType.clearTimeOfDay( calEnrollment );
         enrollmentDate = calEnrollment.getTime();
 
-        programInstance = programInstanceService.enrollPatient( patient, programA, enrollmentDate, incidenDate,
+        programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, programA, enrollmentDate, incidenDate,
             organisationUnit, null );
 
         indicatorDate = new ProgramIndicator( "IndicatorA", "IndicatorDesA", ProgramIndicator.VALUE_TYPE_INT, "( "

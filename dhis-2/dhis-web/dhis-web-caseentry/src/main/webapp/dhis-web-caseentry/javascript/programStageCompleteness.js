@@ -8,7 +8,7 @@ function orgunitSelected( orgUnits, orgUnitNames )
 {
 	showById('selectDiv');
 	hideById('showDataBtn');
-	hideById("listPatientDiv");
+	hideById("listEntityInstanceDiv");
 	setFieldValue('orgunitId', orgUnits[0]);
 }
 

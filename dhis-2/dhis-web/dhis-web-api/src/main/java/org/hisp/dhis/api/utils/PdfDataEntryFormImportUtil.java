@@ -41,8 +41,6 @@ import org.hisp.dhis.dxf2.pdfform.PdfDataEntryFormUtil;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -50,6 +48,8 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -81,7 +81,7 @@ public class PdfDataEntryFormImportUtil
     private ProgramStageInstanceService programStageInstanceService;
 
     @Autowired
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
     // -------------------------------------------------------------------------
     // METHODS
@@ -207,7 +207,7 @@ public class PdfDataEntryFormImportUtil
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
+        TrackedEntityDataValue dataValue = dataValueService.getTrackedEntityDataValue( programStageInstance,
             dataElement );
 
         if ( value != null && value.trim().length() == 0 )
@@ -229,31 +229,31 @@ public class PdfDataEntryFormImportUtil
         // providedElsewhere;
         String storedBy = currentUserService.getCurrentUsername();
 
-        if ( patientDataValue == null && value != null )
+        if ( dataValue == null && value != null )
         {
-            // LOG.debug( "Adding PatientDataValue, value added" );
+            // LOG.debug( "Adding TrackedEntityDataValue, value added" );
 
-            patientDataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
-            patientDataValue.setStoredBy( storedBy );
-            // patientDataValue.setProvidedElsewhere( providedElsewhere );
+            dataValue = new TrackedEntityDataValue( programStageInstance, dataElement, new Date(), value );
+            dataValue.setStoredBy( storedBy );
+            // dataValue.setProvidedElsewhere( providedElsewhere );
 
-            patientDataValueService.savePatientDataValue( patientDataValue );
+            dataValueService.saveTrackedEntityDataValue( dataValue );
         }
 
-        if ( patientDataValue != null && value == null )
+        if ( dataValue != null && value == null )
         {
-            patientDataValueService.deletePatientDataValue( patientDataValue );
+            dataValueService.deleteTrackedEntityDataValue( dataValue );
         }
-        else if ( patientDataValue != null )
+        else if ( dataValue != null )
         {
-            // LOG.debug( "Updating PatientDataValue, value added/changed" );
+            // LOG.debug( "Updating TrackedEntityDataValue, value added/changed" );
 
-            patientDataValue.setValue( value );
-            patientDataValue.setTimestamp( new Date() );
-            // patientDataValue.setProvidedElsewhere( providedElsewhere );
-            patientDataValue.setStoredBy( storedBy );
+            dataValue.setValue( value );
+            dataValue.setTimestamp( new Date() );
+            // dataValue.setProvidedElsewhere( providedElsewhere );
+            dataValue.setStoredBy( storedBy );
 
-            patientDataValueService.updatePatientDataValue( patientDataValue );
+            dataValueService.updateTrackedEntityDataValue( dataValue );
         }
 
     }

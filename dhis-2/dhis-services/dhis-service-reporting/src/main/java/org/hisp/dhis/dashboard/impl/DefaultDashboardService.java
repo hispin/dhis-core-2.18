@@ -32,7 +32,7 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_CHART;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_MAP;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_MESSAGES;
-import static org.hisp.dhis.dashboard.DashboardItem.TYPE_PATIENT_TABULAR_REPORTS;
+import static org.hisp.dhis.dashboard.DashboardItem.F_TRACKED_ENTITY_TABULAR_REPORTS;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORTS;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORT_TABLE;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORT_TABLES;
@@ -53,9 +53,9 @@ import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
-import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,7 +110,7 @@ public class DefaultDashboardService
         result.setReportTables( objectManager.getBetweenByName( ReportTable.class, query, 0, getMax( TYPE_REPORT_TABLE, maxTypes ) ) );
         result.setReports( objectManager.getBetweenByName( Report.class, query, 0, getMax( TYPE_REPORTS, maxTypes ) ) );
         result.setResources( objectManager.getBetweenByName( Document.class, query, 0, getMax( TYPE_RESOURCES, maxTypes ) ) );
-        result.setPatientTabularReports( objectManager.getBetweenByName( PatientTabularReport.class, query, 0, getMax( TYPE_PATIENT_TABULAR_REPORTS, maxTypes ) ) );
+        result.setTrackedEntityTabularReports( objectManager.getBetweenByName( TrackedEntityTabularReport.class, query, 0, getMax( F_TRACKED_ENTITY_TABULAR_REPORTS, maxTypes ) ) );
 
         return result;
     }
@@ -171,9 +171,9 @@ public class DefaultDashboardService
             {
                 item.getResources().add( objectManager.get( Document.class, contentUid ) );
             }
-            else if ( TYPE_PATIENT_TABULAR_REPORTS.equals( type ) )
+            else if ( F_TRACKED_ENTITY_TABULAR_REPORTS.equals( type ) )
             {
-                item.getPatientTabularReports().add( objectManager.get( PatientTabularReport.class, contentUid ) );
+                item.getTrackedEntityTabularReports().add( objectManager.get( TrackedEntityTabularReport.class, contentUid ) );
             }
 
             if ( availableItem == null )

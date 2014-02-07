@@ -40,7 +40,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.patient.PatientReminder;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -85,7 +85,7 @@ public class ProgramStage
 
     private String reportDateDescription;
 
-    private Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
+    private Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
 
     private Boolean autoGenerateEvent = true;
 
@@ -170,14 +170,14 @@ public class ProgramStage
         this.remindCompleted = remindCompleted;
     }
 
-    public Set<PatientReminder> getPatientReminders()
+    public Set<TrackedEntityInstanceReminder> getReminders()
     {
-        return patientReminders;
+        return reminders;
     }
 
-    public void setPatientReminders( Set<PatientReminder> patientReminders )
+    public void setReminders( Set<TrackedEntityInstanceReminder> reminders )
     {
-        this.patientReminders = patientReminders;
+        this.reminders = reminders;
     }
 
     public DataEntryForm getDataEntryForm()

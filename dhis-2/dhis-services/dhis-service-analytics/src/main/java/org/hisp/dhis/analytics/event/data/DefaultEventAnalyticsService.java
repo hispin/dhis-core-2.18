@@ -66,8 +66,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -75,6 +73,8 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Timer;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -114,7 +114,7 @@ public class DefaultEventAnalyticsService
     private DataElementService dataElementService;
 
     @Autowired
-    private PatientAttributeService attributeService;
+    private TrackedEntityAttributeService attributeService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -506,7 +506,7 @@ public class DefaultEventAnalyticsService
             return new QueryItem( de, operator, filter, de.isNumericType() );
         }
 
-        PatientAttribute at = attributeService.getPatientAttribute( item );
+        TrackedEntityAttribute at = attributeService.getTrackedEntityAttribute( item );
 
         if ( at != null && program.getAttributes().contains( at ) )
         {

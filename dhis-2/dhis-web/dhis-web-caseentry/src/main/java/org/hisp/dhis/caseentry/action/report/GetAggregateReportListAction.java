@@ -31,8 +31,8 @@ package org.hisp.dhis.caseentry.action.report;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.patientreport.PatientAggregateReport;
-import org.hisp.dhis.patientreport.PatientAggregateReportService;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -50,9 +50,9 @@ public class GetAggregateReportListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAggregateReportService aggregateReportService;
+    private TrackedEntityAggregateReportService aggregateReportService;
 
-    public void setAggregateReportService( PatientAggregateReportService aggregateReportService )
+    public void setAggregateReportService( TrackedEntityAggregateReportService aggregateReportService )
     {
         this.aggregateReportService = aggregateReportService;
     }
@@ -68,9 +68,9 @@ public class GetAggregateReportListAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<PatientAggregateReport> reports = new HashSet<PatientAggregateReport>();
+    private Collection<TrackedEntityAggregateReport> reports = new HashSet<TrackedEntityAggregateReport>();
 
-    public Collection<PatientAggregateReport> getReports()
+    public Collection<TrackedEntityAggregateReport> getReports()
     {
         return reports;
     }
@@ -125,7 +125,7 @@ public class GetAggregateReportListAction
     {
         User user = currentUserService.getCurrentUser();
 
-        total = aggregateReportService.countPatientAggregateReportList( user, query );
+        total = aggregateReportService.countTrackedEntityAggregateReportList( user, query );
 
         pageSize = (pageSize == null) ? 10 : pageSize;
         int startPos = (currentPage == null || currentPage <= 0) ? 0 : (currentPage - 1) * pageSize;
@@ -133,8 +133,8 @@ public class GetAggregateReportListAction
 
         pageCount = (total % pageSize == 0) ? (total / pageSize) : (total / pageSize + 1);
 
-        reports = aggregateReportService.getPatientAggregateReports( currentUserService.getCurrentUser(), query,
-            startPos, pageSize );
+        reports = aggregateReportService.getTrackedEntityAggregateReports( currentUserService.getCurrentUser(),
+            query, startPos, pageSize );
 
         return SUCCESS;
     }

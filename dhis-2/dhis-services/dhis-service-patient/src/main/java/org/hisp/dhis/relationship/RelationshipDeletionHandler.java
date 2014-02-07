@@ -30,8 +30,8 @@ package org.hisp.dhis.relationship;
 
 import java.util.Collection;
 
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Chau Thu Tran
@@ -63,9 +63,10 @@ public class RelationshipDeletionHandler
     }
 
     @Override
-    public void deletePatient( Patient patient )
+    public void deleteTrackedEntityInstance( TrackedEntityInstance entityInstance )
     {
-        Collection<Relationship> relationships = relationshipSevice.getRelationshipsForPatient( patient );
+        Collection<Relationship> relationships = relationshipSevice
+            .getRelationshipsForTrackedEntityInstance( entityInstance );
 
         if ( relationships != null )
         {
@@ -81,7 +82,7 @@ public class RelationshipDeletionHandler
     {
         Collection<Relationship> relationships = relationshipSevice
             .getRelationshipsByRelationshipType( relationshipType );
-        
+
         for ( Relationship relationship : relationships )
         {
             relationshipSevice.deleteRelationship( relationship );

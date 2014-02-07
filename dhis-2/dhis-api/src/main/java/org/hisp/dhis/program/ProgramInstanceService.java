@@ -33,8 +33,8 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 import java.util.Collection;
 import java.util.Date;
@@ -172,37 +172,37 @@ public interface ProgramInstanceService
     Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, Integer status );
 
     /**
-     * Retrieve program instances on a patient by a status
+     * Retrieve program instances on a TrackedEntityInstance by a status
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * @param status Status of program-instance, include STATUS_ACTIVE,
      *        STATUS_COMPLETED and STATUS_CANCELLED
      * 
      * @return ProgramInstance list
      */
-    Collection<ProgramInstance> getProgramInstances( Patient patient, Integer status );
+    Collection<ProgramInstance> getProgramInstances( TrackedEntityInstance entityInstance, Integer status );
 
     /**
-     * Retrieve program instances on a patient by a program
+     * Retrieve program instances on a TrackedEntityInstance by a program
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * @param program Program
      * 
      * @return ProgramInstance list
      */
-    Collection<ProgramInstance> getProgramInstances( Patient patient, Program program );
+    Collection<ProgramInstance> getProgramInstances( TrackedEntityInstance entityInstance, Program program );
 
     /**
-     * Retrieve program instances on a patient with a status by a program
+     * Retrieve program instances on a TrackedEntityInstance with a status by a program
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * @param program Program
      * @param status Status of program-instance, include STATUS_ACTIVE,
      *        STATUS_COMPLETED and STATUS_CANCELLED
      * 
      * @return ProgramInstance list
      */
-    Collection<ProgramInstance> getProgramInstances( Patient patient, Program program, Integer status );
+    Collection<ProgramInstance> getProgramInstances( TrackedEntityInstance entityInstance, Program program, Integer status );
 
     /**
      * Retrieve program instances with active status on an orgunit by a program
@@ -262,16 +262,16 @@ public interface ProgramInstanceService
     int countProgramInstances( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
 
     /**
-     * Retrieve history of a patient
+     * Retrieve history of a TrackedEntityInstance
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * @param i18n I18n object
      * @param format I18nFormat object
      * 
      * @return Grid list in which each grid is the program information details
-     *         of the patient
+     *         of the TrackedEntityInstance
      */
-    List<Grid> getProgramInstanceReport( Patient patient, I18n i18n, I18nFormat format );
+    List<Grid> getProgramInstanceReport( TrackedEntityInstance entityInstance, I18n i18n, I18nFormat format );
 
     /**
      * Export a program information details report
@@ -318,7 +318,7 @@ public interface ProgramInstanceService
 
   
     /**
-     * Retrieve scheduled list of patients registered
+     * Retrieve scheduled list of entityInstances registered
      * 
      * @return A SchedulingProgramObject list
      */
@@ -350,9 +350,9 @@ public interface ProgramInstanceService
         I18nFormat format );
 
     /**
-     * Enroll a patient into a program
+     * Enroll a TrackedEntityInstance into a program
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * @param program Program
      * @param enrollmentDate The date of enrollment
      * @param dateOfIncident The date of incident
@@ -361,7 +361,7 @@ public interface ProgramInstanceService
      * 
      * @return ProgramInsance
      */
-    ProgramInstance enrollPatient( Patient patient, Program program, Date enrollmentDate, Date dateOfIncident,
+    ProgramInstance enrollTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program, Date enrollmentDate, Date dateOfIncident,
         OrganisationUnit orgunit, I18nFormat format );
 
     /**

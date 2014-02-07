@@ -32,12 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.patientreport.PatientTabularReport;
-import org.hisp.dhis.patientreport.PatientTabularReportService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -54,9 +54,9 @@ public class SaveTabularReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientTabularReportService tabularReportService;
+    private TrackedEntityTabularReportService tabularReportService;
 
-    public void setTabularReportService( PatientTabularReportService tabularReportService )
+    public void setTabularReportService( TrackedEntityTabularReportService tabularReportService )
     {
         this.tabularReportService = tabularReportService;
     }
@@ -164,7 +164,7 @@ public class SaveTabularReportAction
         Program program = programService.getProgram( programId );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        PatientTabularReport tabularReport = new PatientTabularReport( name );
+        TrackedEntityTabularReport tabularReport = new TrackedEntityTabularReport( name );
         tabularReport.setStartDate( format.parseDate( startDate ) );
         tabularReport.setEndDate( format.parseDate( endDate ) );
         tabularReport.setOuMode( ouMode );

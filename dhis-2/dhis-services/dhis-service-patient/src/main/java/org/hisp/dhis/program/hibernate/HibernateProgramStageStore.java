@@ -43,7 +43,7 @@ public class HibernateProgramStageStore
     implements ProgramStageStore
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Implemented methods
     // -------------------------------------------------------------------------
 
     public ProgramStage getByNameAndProgram( String name, Program program )

@@ -35,8 +35,8 @@ import java.util.Collection;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -55,20 +55,20 @@ public class RelationshipStoreTest
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private RelationshipTypeService relationshipTypeService;
 
     private RelationshipType relationshipType;
 
-    private Patient patientA;
+    private TrackedEntityInstance entityInstanceA;
 
-    private Patient patientB;
+    private TrackedEntityInstance entityInstanceB;
 
-    private Patient patientC;
+    private TrackedEntityInstance entityInstanceC;
 
-    private Patient patientD;
+    private TrackedEntityInstance entityInstanceD;
 
     private Relationship relationshipA;
 
@@ -82,59 +82,59 @@ public class RelationshipStoreTest
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
-        patientA = createPatient( 'A', organisationUnit );
-        patientService.savePatient( patientA );
+        entityInstanceA = createTrackedEntityInstance( 'A', organisationUnit );
+        entityInstanceService.saveTrackedEntityInstance( entityInstanceA );
 
-        patientB = createPatient( 'B', organisationUnit );
-        patientService.savePatient( patientB );
+        entityInstanceB = createTrackedEntityInstance( 'B', organisationUnit );
+        entityInstanceService.saveTrackedEntityInstance( entityInstanceB );
 
-        patientC = createPatient( 'C', organisationUnit );
-        patientService.savePatient( patientC );
+        entityInstanceC = createTrackedEntityInstance( 'C', organisationUnit );
+        entityInstanceService.saveTrackedEntityInstance( entityInstanceC );
 
-        patientD = createPatient( 'D', organisationUnit );
-        patientService.savePatient( patientD );
+        entityInstanceD = createTrackedEntityInstance( 'D', organisationUnit );
+        entityInstanceService.saveTrackedEntityInstance( entityInstanceD );
 
         relationshipType = createRelationshipType( 'A' );
         relationshipTypeService.saveRelationshipType( relationshipType );
 
-        relationshipA = new Relationship( patientA, relationshipType, patientB );
-        relationshipB = new Relationship( patientC, relationshipType, patientD );
-        relationshipC = new Relationship( patientA, relationshipType, patientC );
+        relationshipA = new Relationship( entityInstanceA, relationshipType, entityInstanceB );
+        relationshipB = new Relationship( entityInstanceC, relationshipType, entityInstanceD );
+        relationshipC = new Relationship( entityInstanceA, relationshipType, entityInstanceC );
     }
 
     @Test
-    public void testGetRelationshipByTypePatient()
+    public void testGetRelationshipByTypeEntityInstance()
     {
         relationshipStore.save( relationshipA );
         relationshipStore.save( relationshipB );
 
-        Relationship relationship = relationshipStore.get( patientA, patientB, relationshipType );
+        Relationship relationship = relationshipStore.get( entityInstanceA, entityInstanceB, relationshipType );
         assertEquals( relationshipA, relationship );
 
-        relationship = relationshipStore.get( patientC, patientD, relationshipType );
+        relationship = relationshipStore.get( entityInstanceC, entityInstanceD, relationshipType );
         assertEquals( relationshipB, relationship );
     }
 
     @Test
-    public void testGetRelationshipByTwoPatient()
+    public void testGetRelationshipByTwoEntityInstance()
     {
         relationshipStore.save( relationshipA );
         relationshipStore.save( relationshipB );
 
-        Relationship relationship = relationshipStore.get( patientA, patientB );
+        Relationship relationship = relationshipStore.get( entityInstanceA, entityInstanceB );
         assertEquals( relationshipA, relationship );
 
-        relationship = relationshipStore.get( patientC, patientD );
+        relationship = relationshipStore.get( entityInstanceC, entityInstanceD );
         assertEquals( relationshipB, relationship );
     }
 
     @Test
-    public void testGetRelationshipsForPatient()
+    public void testGetRelationshipsForEntityInstance()
     {
         relationshipStore.save( relationshipA );
         relationshipStore.save( relationshipC );
 
-        Collection<Relationship> relationships = relationshipStore.getForPatient( patientA );
+        Collection<Relationship> relationships = relationshipStore.getForTrackedEntityInstance( entityInstanceA );
         assertTrue( equals( relationships, relationshipA, relationshipC ) );
     }
 
@@ -144,7 +144,7 @@ public class RelationshipStoreTest
         relationshipStore.save( relationshipA );
         relationshipStore.save( relationshipC );
 
-        Collection<Relationship> relationships = relationshipStore.get( patientA, relationshipType );
+        Collection<Relationship> relationships = relationshipStore.get( entityInstanceA, relationshipType );
         assertTrue( equals( relationships, relationshipA, relationshipC ) );
     }
 

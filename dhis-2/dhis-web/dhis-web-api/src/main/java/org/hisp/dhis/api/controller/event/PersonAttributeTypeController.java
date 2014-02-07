@@ -35,10 +35,10 @@ import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,27 +49,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping( value = PersonAttributeTypeController.RESOURCE_PATH )
 public class PersonAttributeTypeController
-    extends AbstractCrudController<PatientAttribute>
+    extends AbstractCrudController<TrackedEntityAttribute>
 {
     public static final String RESOURCE_PATH = "/personAttributeTypes";
 
     @Autowired
-    private PatientAttributeService patientAttributeService;
+    private TrackedEntityAttributeService attributeService;
 
     @Autowired
     private ProgramService programService;
 
     @Override
-    protected List<PatientAttribute> getEntityList( WebMetaData metaData, WebOptions options )
+    protected List<TrackedEntityAttribute> getEntityList( WebMetaData metaData, WebOptions options )
     {
-        List<PatientAttribute> entityList = new ArrayList<PatientAttribute>();
+        List<TrackedEntityAttribute> entityList = new ArrayList<TrackedEntityAttribute>();
 
         boolean withoutPrograms = options.getOptions().containsKey( "withoutPrograms" )
             && Boolean.parseBoolean( options.getOptions().get( "withoutPrograms" ) );
 
         if ( withoutPrograms )
         {
-            entityList = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesWithoutProgram() );
+            entityList = new ArrayList<TrackedEntityAttribute>(
+                attributeService.getTrackedEntityAttributesWithoutProgram() );
         }
 
         else if ( options.getOptions().containsKey( "program" ) )
@@ -79,7 +80,7 @@ public class PersonAttributeTypeController
 
             if ( program != null )
             {
-                entityList = new ArrayList<PatientAttribute>( program.getAttributes() );
+                entityList = new ArrayList<TrackedEntityAttribute>( program.getEntityAttributes() );
             }
         }
 
@@ -90,12 +91,12 @@ public class PersonAttributeTypeController
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<PatientAttribute>( manager.getBetween( getEntityClass(), pager.getOffset(),
-                pager.getPageSize() ) );
+            entityList = new ArrayList<TrackedEntityAttribute>( manager.getBetween( getEntityClass(),
+                pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            entityList = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
+            entityList = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
         }
 
         return entityList;

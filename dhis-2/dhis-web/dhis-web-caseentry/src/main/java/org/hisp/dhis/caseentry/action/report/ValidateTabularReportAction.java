@@ -29,8 +29,8 @@ package org.hisp.dhis.caseentry.action.report;
  */
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.patientreport.PatientTabularReport;
-import org.hisp.dhis.patientreport.PatientTabularReportService;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,9 +46,9 @@ public class ValidateTabularReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientTabularReportService tabularReportService;
+    private TrackedEntityTabularReportService tabularReportService;
 
-    public void setTabularReportService( PatientTabularReportService tabularReportService )
+    public void setTabularReportService( TrackedEntityTabularReportService tabularReportService )
     {
         this.tabularReportService = tabularReportService;
     }
@@ -94,7 +94,7 @@ public class ValidateTabularReportAction
     {
         name = name.trim();
 
-        PatientTabularReport match = tabularReportService.getPatientTabularReport( name );
+        TrackedEntityTabularReport match = tabularReportService.getTrackedEntityTabularReport( name );
 
         if ( match != null && (id == null || match.getId() != id.intValue()) )
         {

@@ -40,17 +40,17 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 public class GetDataRecordsAction
-    extends ActionPagingSupport<Patient>
+    extends ActionPagingSupport<TrackedEntityInstance>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -63,11 +63,11 @@ public class GetDataRecordsAction
         this.selectionManager = selectionManager;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
-    public void setPatientService( PatientService patientService )
+    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
     {
-        this.patientService = patientService;
+        this.entityInstanceService = entityInstanceService;
     }
 
     private ProgramService programService;
@@ -116,18 +116,18 @@ public class GetDataRecordsAction
         return total;
     }
 
-    private Map<Patient, ProgramInstance> programInstanceMap = new HashMap<Patient, ProgramInstance>();
+    private Map<TrackedEntityInstance, ProgramInstance> programInstanceMap = new HashMap<TrackedEntityInstance, ProgramInstance>();
 
-    public Map<Patient, ProgramInstance> getProgramInstanceMap()
+    public Map<TrackedEntityInstance, ProgramInstance> getProgramInstanceMap()
     {
         return programInstanceMap;
     }
 
-    private Collection<Patient> patients;
+    private Collection<TrackedEntityInstance> entityInstances;
 
-    public Collection<Patient> getPatients()
+    public Collection<TrackedEntityInstance> getEntityInstances()
     {
-        return patients;
+        return entityInstances;
     }
 
     private List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
@@ -137,10 +137,9 @@ public class GetDataRecordsAction
         return programStageInstances;
     }
 
+    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
 
-    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-
-    public List<PatientAttribute> getAttributes()
+    public List<TrackedEntityAttribute> getAttributes()
     {
         return attributes;
     }
@@ -201,11 +200,11 @@ public class GetDataRecordsAction
         {
             if ( type == null )
             {
-                total = patientService.countSearchPatients( searchTexts, orgunits, followup,
+                total = entityInstanceService.countSearchTrackedEntityInstances( searchTexts, orgunits, followup,
                     ProgramInstance.STATUS_ACTIVE );
                 this.paging = createPaging( total );
 
-                List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunits,
+                List<Integer> stageInstanceIds = entityInstanceService.getProgramStageInstances( searchTexts, orgunits,
                     followup, ProgramInstance.STATUS_ACTIVE, paging.getStartPos(), paging.getPageSize() );
 
                 for ( Integer stageInstanceId : stageInstanceIds )
@@ -217,12 +216,12 @@ public class GetDataRecordsAction
             }
             else if ( trackingReport != null && trackingReport )
             {
-                grid = patientService.getTrackingEventsReport( program, searchTexts, orgunits, followup,
+                grid = entityInstanceService.getTrackingEventsReport( program, searchTexts, orgunits, followup,
                     ProgramInstance.STATUS_ACTIVE, i18n );
             }
             else
             {
-                grid = patientService.getScheduledEventsReport( searchTexts, orgunits, followup,
+                grid = entityInstanceService.getScheduledEventsReport( searchTexts, orgunits, followup,
                     ProgramInstance.STATUS_ACTIVE, null, null, i18n );
             }
         }

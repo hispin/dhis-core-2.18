@@ -32,11 +32,11 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,9 +47,9 @@ public class GetProgramEnrollmentFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -89,14 +89,14 @@ public class GetProgramEnrollmentFormAction
         this.patientId = patientId;
     }
 
-    private Patient patient;
+    private TrackedEntityInstance patient;
 
-    public Patient getPatient()
+    public TrackedEntityInstance getPatient()
     {
         return patient;
     }
 
-    public void setPatient( Patient patient )
+    public void setPatient( TrackedEntityInstance patient )
     {
         this.patient = patient;
     }
@@ -125,14 +125,14 @@ public class GetProgramEnrollmentFormAction
         this.now = now;
     }
 
-    private Collection<PatientAttribute> patientAttributes;
+    private Collection<TrackedEntityAttribute> patientAttributes;
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public Collection<TrackedEntityAttribute> getPatientAttributes()
     {
         return patientAttributes;
     }
 
-    public void setPatientAttributes( Collection<PatientAttribute> patientAttributes )
+    public void setPatientAttributes( Collection<TrackedEntityAttribute> patientAttributes )
     {
         this.patientAttributes = patientAttributes;
     }
@@ -143,7 +143,7 @@ public class GetProgramEnrollmentFormAction
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( patientId );
+        patient = patientService.getTrackedEntityInstance( patientId );
         program = programService.getProgram( programId );
 
         if ( this.program.isSingleEvent() )
@@ -151,7 +151,7 @@ public class GetProgramEnrollmentFormAction
             return REDIRECT;
         }
 
-        patientAttributes = program.getAttributes();
+        patientAttributes = program.getEntityAttributes();
         now = new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date() );
 
         return SUCCESS;

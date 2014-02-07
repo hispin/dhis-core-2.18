@@ -2,14 +2,7 @@
 	<tr>
 		<td colspan='2'><label class="bold">$i18n.getString( "demographics" )</label></td>
 	</tr>
-	
-	#if($partner.name)
-	<tr>
-		<td>$i18n.getString( "full_name" )</td>
-		<td>: $!encoder.htmlEncode($partner.name)</td>
-	</tr>
-	#end
-	
+		
 	#if( $partner.attributeValues > 0)
 		<tr><td>&nbsp;</td></tr>
 		<tr>
@@ -17,7 +10,7 @@
 		</tr>
 		#foreach( $attributeValue in $partner.attributeValues )
 		<tr>
-			<td>$attributeValue.patientAttribute.displayName</td>
+			<td>$attributeValue.attribute.displayName</td>
 			<td>: $attributeValue.value</td>
 		</tr>
 		#end
@@ -40,7 +33,7 @@
 				<input type="button" value="$i18n.getString('is_not_representative')" onclick="javascript:removeRepresentative( getFieldValue('id'), $partner.id );" style='width:150px;' >
 			#else
 				<input type="button" value="$i18n.getString('save')" title="$i18n.getString('set_as_representative')" onclick="javascript:saveRepresentative( getFieldValue('id'), $partner.id, false )" style='width:150px;' >
-				<input type="button" value="$i18n.getString('save_all')" title="$i18n.getString('set_as_representative_and_copy_attributes_for_the_person')" onclick="javascript:saveRepresentative( getFieldValue('id'), $partner.id, true )" style='width:150px;' >
+				<input type="button" value="$i18n.getString('save_all')" title="$i18n.getString('set_as_representative_and_copy_attributes_for_the_tracked_entity_instance')" onclick="javascript:saveRepresentative( getFieldValue('id'), $partner.id, true )" style='width:150px;' >
 			#end
 		</td> 
 	</tr>                      

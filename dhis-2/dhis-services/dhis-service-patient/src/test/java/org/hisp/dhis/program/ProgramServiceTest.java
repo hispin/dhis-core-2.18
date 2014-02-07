@@ -183,10 +183,10 @@ public class ProgramServiceTest
         ValidationCriteria validationCriteria = createValidationCriteria( 'A', "gender", 0, "F" );
         validationCriteriaService.saveValidationCriteria( validationCriteria );
 
-        programA.getPatientValidationCriteria().add( validationCriteria );
+        programA.getValidationCriteria().add( validationCriteria );
         programService.updateProgram( programA );
 
-        programB.getPatientValidationCriteria().add( validationCriteria );
+        programB.getValidationCriteria().add( validationCriteria );
         programService.updateProgram( programB );
 
         Collection<Program> programs = programService.getPrograms( validationCriteria );

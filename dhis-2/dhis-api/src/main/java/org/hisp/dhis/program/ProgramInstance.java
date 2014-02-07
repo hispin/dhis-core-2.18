@@ -39,9 +39,9 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -78,10 +78,10 @@ public class ProgramInstance
 
     private Integer status = STATUS_ACTIVE;
 
-    private Patient patient;
+    private TrackedEntityInstance entityInstance;
 
     private Program program;
-    
+
     private Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
 
     private List<OutboundSms> outboundSms = new ArrayList<OutboundSms>();
@@ -90,7 +90,7 @@ public class ProgramInstance
 
     private Boolean followup = false;
 
-    private Set<PatientComment> patientComments = new HashSet<PatientComment>();
+    private TrackedEntityComment comment;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -100,12 +100,12 @@ public class ProgramInstance
     {
     }
 
-    
-    public ProgramInstance( Date enrollmentDate, Date dateOfIncident, Patient patient, Program program )
+    public ProgramInstance( Date enrollmentDate, Date dateOfIncident, TrackedEntityInstance entityInstance,
+        Program program )
     {
         this.enrollmentDate = enrollmentDate;
         this.dateOfIncident = dateOfIncident;
-        this.patient = patient;
+        this.entityInstance = entityInstance;
         this.program = program;
     }
 
@@ -115,20 +115,20 @@ public class ProgramInstance
 
     /**
      * Updated the bi-directional associations between this program instance and
-     * the given patient and program.
+     * the given entity instance and program.
      * 
-     * @param patient the patient to enroll.
-     * @param program the program to enroll the patient to.
+     * @param entityInstance the entity instance to enroll.
+     * @param program the program to enroll the entity instance to.
      */
-    public void enrollPatient( Patient patient, Program program )
+    public void enrollTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program )
     {
-        setPatient( patient );
-        patient.getProgramInstances().add( this );
-        
+        setEntityInstance( entityInstance );
+        entityInstance.getProgramInstances().add( this );
+
         setProgram( program );
         program.getProgramInstances().add( this );
     }
-    
+
     public ProgramStageInstance getProgramStageInstanceByStage( int stage )
     {
         int count = 1;
@@ -150,8 +150,9 @@ public class ProgramInstance
     {
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
-            if ( programStageInstance.getProgramStage().getOpenAfterEnrollment() && !programStageInstance.isCompleted()
-                && ( programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS ) )
+            if ( programStageInstance.getProgramStage().getOpenAfterEnrollment()
+                && !programStageInstance.isCompleted()
+                && (programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS) )
             {
                 return programStageInstance;
             }
@@ -160,7 +161,7 @@ public class ProgramInstance
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
             if ( !programStageInstance.isCompleted()
-                &&  ( programStageInstance.getStatus() != null &&  programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS ) )
+                && (programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS) )
             {
                 return programStageInstance;
             }
@@ -168,7 +169,7 @@ public class ProgramInstance
 
         return null;
     }
-        
+
     // -------------------------------------------------------------------------
     // equals and hashCode
     // -------------------------------------------------------------------------
@@ -181,7 +182,7 @@ public class ProgramInstance
 
         result = prime * result + ((dateOfIncident == null) ? 0 : dateOfIncident.hashCode());
         result = prime * result + ((enrollmentDate == null) ? 0 : enrollmentDate.hashCode());
-        result = prime * result + ((patient == null) ? 0 : patient.hashCode());
+        result = prime * result + ((entityInstance == null) ? 0 : entityInstance.hashCode());
         result = prime * result + ((program == null) ? 0 : program.hashCode());
 
         return result;
@@ -231,14 +232,14 @@ public class ProgramInstance
             return false;
         }
 
-        if ( patient == null )
+        if ( entityInstance == null )
         {
-            if ( other.patient != null )
+            if ( other.entityInstance != null )
             {
                 return false;
             }
         }
-        else if ( !patient.equals( other.patient ) )
+        else if ( !entityInstance.equals( other.entityInstance ) )
         {
             return false;
         }
@@ -324,14 +325,18 @@ public class ProgramInstance
         this.status = status;
     }
 
-    public Patient getPatient()
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public TrackedEntityInstance getEntityInstance()
     {
-        return patient;
+        return entityInstance;
     }
 
-    public void setPatient( Patient patient )
+    public void setEntityInstance( TrackedEntityInstance entityInstance )
     {
-        this.patient = patient;
+        this.entityInstance = entityInstance;
     }
 
     @JsonProperty
@@ -384,16 +389,6 @@ public class ProgramInstance
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Set<PatientComment> getPatientComments()
-    {
-        return patientComments;
-    }
-
-    public void setPatientComments( Set<PatientComment> patientComments )
-    {
-        this.patientComments = patientComments;
-    }
-
     public List<MessageConversation> getMessageConversations()
     {
         return messageConversations;
@@ -402,5 +397,16 @@ public class ProgramInstance
     public void setMessageConversations( List<MessageConversation> messageConversations )
     {
         this.messageConversations = messageConversations;
-    }		
+    }
+
+    public TrackedEntityComment getComment()
+    {
+        return comment;
+    }
+
+    public void setComment( TrackedEntityComment comment )
+    {
+        this.comment = comment;
+    }
+
 }

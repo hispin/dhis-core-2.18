@@ -78,7 +78,7 @@ function getLeftPrgramStageDataElements() {
   var programStageId = programStage.options[ programStage.selectedIndex ].value;
   if( programStageId == '' ) return;
 
-  jQuery.getJSON("getPatientDataElements.action", {
+  jQuery.getJSON("getTrackedEntityDataElements.action", {
     programStageId: programStageId
   }, function( json ) {
     jQuery('#dataElementId').append('<option value="[PS:'+programStageId+'.DUE_DATE]">' + i18n_due_date + '</option>');
@@ -97,7 +97,7 @@ function getRightPrgramStageDataElements() {
   var programStageId = programStage.options[ programStage.selectedIndex ].value;
   if( programStageId == '' ) return;
 
-  jQuery.getJSON("getPatientDataElements.action", {
+  jQuery.getJSON("getTrackedEntityDataElements.action", {
     programStageId: programStageId
   }, function( json ) {
     jQuery('#dataElementId').append('<option value="DUE_DATE">' + i18n_due_date + '</option>');

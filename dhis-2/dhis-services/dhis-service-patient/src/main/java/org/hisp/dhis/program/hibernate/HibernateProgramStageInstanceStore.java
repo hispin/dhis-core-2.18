@@ -46,8 +46,6 @@ import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -62,6 +60,8 @@ import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
@@ -72,7 +72,7 @@ public class HibernateProgramStageInstanceStore
     implements ProgramStageInstanceStore
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private ProgramInstanceService programInstanceService;
@@ -131,11 +131,11 @@ public class HibernateProgramStageInstanceStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> get( Patient patient, Boolean completed )
+    public List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, Boolean completed )
     {
-        String hql = "from ProgramStageInstance where programInstance.patient = :patient and completed = :completed";
+        String hql = "from ProgramStageInstance where programInstance.entityInstance = :entityInstance and completed = :completed";
 
-        return getQuery( hql ).setEntity( "patient", patient ).setBoolean( "completed", completed ).list();
+        return getQuery( hql ).setEntity( "entityInstance", entityInstance ).setBoolean( "completed", completed ).list();
     }
 
     @Override
@@ -143,7 +143,7 @@ public class HibernateProgramStageInstanceStore
     {
         String sql = "delete from programstageinstance where programstageid=" + programStage.getId()
             + " and organisationunitid=" + organisationUnit.getId() + " and programstageinstanceid not in "
-            + "(select pdv.programstageinstanceid from patientdatavalue pdv )";
+            + "(select pdv.programstageinstanceid from trackedentitydatavalue pdv )";
         jdbcTemplate.execute( sql );
     }
 
@@ -173,7 +173,7 @@ public class HibernateProgramStageInstanceStore
     @Override
     public Collection<SchedulingProgramObject> getSendMesssageEvents()
     {
-        String sql = " ( " + sendMessageToPatientSql() + " ) ";
+        String sql = " ( " + sendMessageToTrackedEntityInstanceSql() + " ) ";
 
         sql += " UNION ( " + sendMessageToHealthWorkerSql() + " ) ";
 
@@ -205,11 +205,11 @@ public class HibernateProgramStageInstanceStore
                 // remove
                 // timestamp
 
-                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
-                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
-                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
-                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
-                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
+                message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
             }
 
             SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
@@ -265,8 +265,8 @@ public class HibernateProgramStageInstanceStore
 
         Criteria criteria = getCriteria();
         criteria.createAlias( "programInstance", "programInstance" );
-        criteria.createAlias( "programInstance.patient", "patient" );
-        criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+        criteria.createAlias( "programInstance.entityInstance", "entityInstance" );
+        criteria.createAlias( "entityInstance.organisationUnit", "regOrgunit" );
         criteria.add( Restrictions.eq( "programStage", programStage ) );
         criteria.add( Restrictions.isNull( "programInstance.endDate" ) );
         criteria.add( Restrictions.isNull( "executionDate" ) );
@@ -376,8 +376,8 @@ public class HibernateProgramStageInstanceStore
             }
             else
             {
-                criteria.createAlias( "programInstance.patient", "patient" );
-                criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+                criteria.createAlias( "programInstance.entityInstance", "entityInstance" );
+                criteria.createAlias( "entityInstance.organisationUnit", "regOrgunit" );
                 criteria.add( Restrictions.or( Restrictions.and( Restrictions.isNull( "executionDate" ),
                     Restrictions.between( "dueDate", startDate, endDate ),
                     Restrictions.in( "regOrgunit.id", orgunitIds ) ), Restrictions.and(
@@ -399,8 +399,8 @@ public class HibernateProgramStageInstanceStore
 
         if ( completed == null )
         {
-            criteria.createAlias( "programInstance.patient", "patient" );
-            criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+            criteria.createAlias( "programInstance.entityInstance", "entityInstance" );
+            criteria.createAlias( "entityInstance.organisationUnit", "regOrgunit" );
             criteria.add( Restrictions.or( Restrictions.and( Restrictions.eq( "completed", true ),
                 Restrictions.between( "executionDate", startDate, endDate ),
                 Restrictions.in( "organisationUnit.id", orgunitIds ) ), Restrictions.and(
@@ -424,8 +424,8 @@ public class HibernateProgramStageInstanceStore
             }
             else
             {
-                criteria.createAlias( "programInstance.patient", "patient" );
-                criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+                criteria.createAlias( "programInstance.entityInstance", "entityInstance" );
+                criteria.createAlias( "entityInstance.organisationUnit", "regOrgunit" );
                 criteria.add( Restrictions.and( Restrictions.eq( "completed", false ),
                     Restrictions.isNotNull( "executionDate" ),
                     Restrictions.between( "executionDate", startDate, endDate ),
@@ -442,8 +442,8 @@ public class HibernateProgramStageInstanceStore
         Criteria criteria = getCriteria( Restrictions.eq( "programStage", programStage ),
             Restrictions.isNull( "programInstance.endDate" ) );
         criteria.createAlias( "programInstance", "programInstance" );
-        criteria.createAlias( "programInstance.patient", "patient" );
-        criteria.createAlias( "patient.organisationUnit", "regOrgunit" );
+        criteria.createAlias( "programInstance.entityInstance", "entityInstance" );
+        criteria.createAlias( "entityInstance.organisationUnit", "regOrgunit" );
         criteria.add( Restrictions.in( "regOrgunit.id", orgunitIds ) );
 
         switch ( status )
@@ -482,7 +482,7 @@ public class HibernateProgramStageInstanceStore
         Criteria criteria = getCriteria();
         criteria.createAlias( "programInstance", "programInstance" );
         criteria.createAlias( "programStage", "programStage" );
-        criteria.createAlias( "programInstance.patient", "patient" );
+        criteria.createAlias( "programInstance.entityInstance", "entityInstance" );
         criteria.add( Restrictions.eq( "programInstance.program", program ) );
         criteria.add( Restrictions.eq( "programInstance.status", status ) );
         criteria.add( Restrictions.in( "organisationUnit.id", orgunitIds ) );
@@ -535,7 +535,7 @@ public class HibernateProgramStageInstanceStore
         }
 
         grid.addHeader( new GridHeader( "Complete", true, true ) );
-        grid.addHeader( new GridHeader( "PatientId", true, true ) );
+        grid.addHeader( new GridHeader( "TrackedEntityInstanceId", true, true ) );
 
         // ---------------------------------------------------------------------
         // Get SQL and build grid
@@ -565,12 +565,12 @@ public class HibernateProgramStageInstanceStore
     // Supportive methods
     // ---------------------------------------------------------------------
 
-    private String sendMessageToPatientSql()
+    private String sendMessageToTrackedEntityInstanceSql()
     {
         return "select psi.programstageinstanceid, pav.value as phonenumber, prm.templatemessage, org.name as orgunitName "
             + ",pg.name as programName, ps.name as programStageName, psi.duedate,(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
-            + "from patient p INNER JOIN programinstance pi "
-            + "     ON p.patientid=pi.patientid "
+            + "from trackedentityinstance p INNER JOIN programinstance pi "
+            + "     ON p.trackedentityinstanceid=pi.trackedentityinstanceid "
             + " INNER JOIN programstageinstance psi  "
             + "     ON psi.programinstanceid=pi.programinstanceid "
             + " INNER JOIN program pg  "
@@ -579,19 +579,19 @@ public class HibernateProgramStageInstanceStore
             + "     ON ps.programstageid=psi.programstageid "
             + " INNER JOIN organisationunit org  "
             + "     ON org.organisationunitid = p.organisationunitid "
-            + " INNER JOIN patientreminder prm  "
+            + " INNER JOIN trackedentityinstancereminder prm  "
             + "     ON prm.programstageid = ps.programstageid "
-            + " INNER JOIN patientattributevalue pav "
-            + "     ON pav.patientid=p.patientid "
-            + " INNER JOIN patientattribute pa "
-            + "     ON pa.patientattributeid=pav.patientattributeid "
+            + " INNER JOIN trackedentityattributevalue pav "
+            + "     ON pav.trackedentityinstanceid=p.trackedentityinstanceid "
+            + " INNER JOIN trackedentityattribute pa "
+            + "     ON pa.trackedentityattributeid=pav.trackedentityattributeid "
             + "WHERE pi.status="
             + ProgramInstance.STATUS_ACTIVE
             + "     and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "     and pg.type=1 and prm.daysallowedsendmessage is not null  "
             + "     and psi.executiondate is null and pa.valuetype='phoneNumber' "
             + "     and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
-            + "     and prm.whentosend is null and prm.sendto = " + PatientReminder.SEND_TO_PATIENT;
+            + "     and prm.whentosend is null and prm.sendto = " + TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE;
     }
 
     private String sendMessageToHealthWorkerSql()
@@ -599,8 +599,8 @@ public class HibernateProgramStageInstanceStore
         return "SELECT psi.programstageinstanceid, uif.phonenumber, prm.templatemessage, org.name as orgunitName, "
             + "pg.name as programName, ps.name as programStageName, psi.duedate, "
             + "         (DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
-            + " FROM patient p INNER JOIN programinstance pi "
-            + "          ON p.patientid=pi.patientid "
+            + " FROM trackedentityinstance p INNER JOIN programinstance pi "
+            + "          ON p.trackedentityinstanceid=pi.trackedentityinstanceid "
             + "           INNER JOIN programstageinstance psi  "
             + "                ON psi.programinstanceid=pi.programinstanceid "
             + "             INNER JOIN program pg  "
@@ -609,12 +609,12 @@ public class HibernateProgramStageInstanceStore
             + "               ON ps.programstageid=psi.programstageid "
             + "           INNER JOIN organisationunit org  "
             + "               ON org.organisationunitid = p.organisationunitid "
-            + "           INNER JOIN patientreminder prm  "
+            + "           INNER JOIN trackedentityinstancereminder prm  "
             + "               ON prm.programstageid = ps.programstageid "
-            + "           INNER JOIN patientattributevalue pav "
-            + "               ON pav.patientid=p.patientid "
-            + "           INNER JOIN patientattribute pa "
-            + "               ON pa.patientattributeid=pav.patientattributeid "
+            + "           INNER JOIN trackedentityattributevalue pav "
+            + "               ON pav.trackedentityinstanceid=p.trackedentityinstanceid "
+            + "           INNER JOIN trackedentityattribute pa "
+            + "               ON pa.trackedentityattributeid=pav.trackedentityattributeid "
             + "           INNER JOIN userinfo uif "
             + "               ON pav.value=concat(uif.userinfoid ,'') "
             + " WHERE pi.status="
@@ -624,7 +624,7 @@ public class HibernateProgramStageInstanceStore
             + "               and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "               and psi.executiondate is null "
             + "               and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
-            + "               and prm.whentosend is null and prm.sendto = " + PatientReminder.SEND_TO_ATTRIBUTE_TYPE_USERS;
+            + "               and prm.whentosend is null and prm.sendto = " + TrackedEntityInstanceReminder.SEND_TO_ATTRIBUTE_TYPE_USERS;
     }
 
     private String sendMessageToOrgunitRegisteredSql()
@@ -632,8 +632,8 @@ public class HibernateProgramStageInstanceStore
         return "select psi.programstageinstanceid, ou.phonenumber, prm.templatemessage, org.name as orgunitName, "
             + "pg.name as programName, ps.name as programStageName, psi.duedate,"
             + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
-            + "            from patient p INNER JOIN programinstance pi "
-            + "               ON p.patientid=pi.patientid "
+            + "            from trackedentityinstance p INNER JOIN programinstance pi "
+            + "               ON p.trackedentityinstanceid=pi.trackedentityinstanceid "
             + "           INNER JOIN programstageinstance psi "
             + "               ON psi.programinstanceid=pi.programinstanceid "
             + "           INNER JOIN program pg "
@@ -642,7 +642,7 @@ public class HibernateProgramStageInstanceStore
             + "               ON ps.programstageid=psi.programstageid "
             + "           INNER JOIN organisationunit org "
             + "               ON org.organisationunitid = p.organisationunitid "
-            + "           INNER JOIN patientreminder prm "
+            + "           INNER JOIN trackedentityinstancereminder prm "
             + "               ON prm.programstageid = ps.programstageid "
             + "           INNER JOIN organisationunit ou "
             + "               ON ou.organisationunitid=p.organisationunitid "
@@ -654,7 +654,7 @@ public class HibernateProgramStageInstanceStore
             + "               and psi.executiondate is null "
             + "               and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
             + "               and prm.whentosend is null and prm.sendto = "
-            + +PatientReminder.SEND_TO_ORGUGNIT_REGISTERED;
+            + +TrackedEntityInstanceReminder.SEND_TO_ORGUGNIT_REGISTERED;
     }
 
     private String sendMessageToUsersSql()
@@ -662,15 +662,15 @@ public class HibernateProgramStageInstanceStore
         return "select psi.programstageinstanceid, uif.phonenumber,prm.templatemessage, org.name as orgunitName ,"
             + " pg.name as programName, ps.name as programStageName, psi.duedate, "
             + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
-            + "  from patient p INNER JOIN programinstance pi "
-            + "       ON p.patientid=pi.patientid "
+            + "  from trackedentityinstance p INNER JOIN programinstance pi "
+            + "       ON p.trackedentityinstanceid=pi.trackedentityinstanceid "
             + "   INNER JOIN programstageinstance psi "
             + "       ON psi.programinstanceid=pi.programinstanceid "
             + "   INNER JOIN program pg "
             + "       ON pg.programid=pi.programid "
             + "   INNER JOIN programstage ps "
             + "       ON ps.programstageid=psi.programstageid "
-            + "   INNER JOIN patientreminder prm "
+            + "   INNER JOIN trackedentityinstancereminder prm "
             + "       ON prm.programstageid = ps.programstageid "
             + "   INNER JOIN organisationunit org "
             + "       ON org.organisationunitid = p.organisationunitid "
@@ -686,7 +686,7 @@ public class HibernateProgramStageInstanceStore
             + "       and psi.executiondate is null "
             + "       and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
             + "       and prm.whentosend is null and prm.sendto = "
-            + PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED;
+            + TrackedEntityInstanceReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED;
     }
 
     private String sendMessageToUserGroupsSql()
@@ -694,15 +694,15 @@ public class HibernateProgramStageInstanceStore
         return "select psi.programstageinstanceid, uif.phonenumber,prm.templatemessage, org.name as orgunitName ,"
             + " pg.name as programName, ps.name as programStageName, psi.duedate, "
             + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
-            + "  from patient p INNER JOIN programinstance pi "
-            + "       ON p.patientid=pi.patientid "
+            + "  from trackedentityinstance p INNER JOIN programinstance pi "
+            + "       ON p.trackedentityinstanceid=pi.trackedentityinstanceid "
             + "   INNER JOIN programstageinstance psi "
             + "       ON psi.programinstanceid=pi.programinstanceid "
             + "   INNER JOIN program pg "
             + "       ON pg.programid=pi.programid "
             + "   INNER JOIN programstage ps "
             + "       ON ps.programstageid=psi.programstageid "
-            + "   INNER JOIN patientreminder prm "
+            + "   INNER JOIN trackedentityinstancereminder prm "
             + "       ON prm.programstageid = ps.programstageid "
             + "   INNER JOIN organisationunit org "
             + "       ON org.organisationunitid = p.organisationunitid "
@@ -717,7 +717,7 @@ public class HibernateProgramStageInstanceStore
             + "       and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "       and psi.executiondate is not null "
             + "       and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
-            + "       and prm.whentosend is null " + "       and prm.sendto = " + PatientReminder.SEND_TO_USER_GROUP;
+            + "       and prm.whentosend is null " + "       and prm.sendto = " + TrackedEntityInstanceReminder.SEND_TO_USER_GROUP;
     }
 
     private String getTabularReportSql( boolean count, ProgramStage programStage, List<TabularEventColumn> columns,
@@ -739,7 +739,7 @@ public class HibernateProgramStageInstanceStore
                 {
                     sql += "(select cast( value as "
                         + statementBuilder.getDoubleColumnType()
-                        + " ) from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
+                        + " ) from trackedentitydatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
                         + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
                     deKeys.add( deKey );
                 }
@@ -756,7 +756,7 @@ public class HibernateProgramStageInstanceStore
                 String deKey = "element_" + column.getIdentifier();
                 if ( !deKeys.contains( deKey ) )
                 {
-                    sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
+                    sql += "(select value from trackedentitydatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
                         + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
                     deKeys.add( deKey );
                 }
@@ -782,7 +782,7 @@ public class HibernateProgramStageInstanceStore
 
         sql += "from programstageinstance psi ";
         sql += "left join programinstance pi on (psi.programinstanceid=pi.programinstanceid) ";
-        sql += "left join patient p on (pi.patientid=p.patientid) ";
+        sql += "left join trackedentityinstance p on (pi.trackedentityinstanceid=p.trackedentityinstanceid) ";
         sql += "join organisationunit ou on (ou.organisationunitid=psi.organisationunitid) ";
 
         sql += "where psi.programstageid=" + programStage.getId() + " ";

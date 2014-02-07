@@ -64,7 +64,7 @@
 			</tr>
 		</table>
 		<p>
-			<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'generate' )" onclick="setFieldValue('export', false);">
+			<input type="submit" class='large-button' id='listEntityInstanceBtn' value="$i18n.getString( 'generate' )" onclick="setFieldValue('export', false);">
 			<input type="submit" class='large-button' value="$i18n.getString( 'export_xls' )" onclick="setFieldValue('export', true);setFieldValue('facilityLB',$('input[name=facilityLB]:checked').val());">
 		</p>
 	

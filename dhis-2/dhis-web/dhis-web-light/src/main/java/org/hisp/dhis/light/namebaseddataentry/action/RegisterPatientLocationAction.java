@@ -29,9 +29,10 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 public class RegisterPatientLocationAction
     implements Action
@@ -40,9 +41,9 @@ public class RegisterPatientLocationAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -86,9 +87,9 @@ public class RegisterPatientLocationAction
     public String execute()
         throws Exception
     {
-        Patient patient = patientService.getPatient( patientId );
+        TrackedEntityInstance patient = patientService.getTrackedEntityInstance( patientId );
         patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
-        patientService.savePatient( patient );
+        patientService.saveTrackedEntityInstance( patient );
 
         return SUCCESS;
     }

@@ -32,10 +32,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -65,11 +65,11 @@ public class GetProgramStageInstanceAction
         this.currentUserService = currentUserService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     // -------------------------------------------------------------------------
@@ -111,9 +111,9 @@ public class GetProgramStageInstanceAction
         return currentUsername;
     }
 
-    private Map<String, PatientDataValue> dataValueMap = new HashMap<String, PatientDataValue>();
+    private Map<String, TrackedEntityDataValue> dataValueMap = new HashMap<String, TrackedEntityDataValue>();
 
-    public Map<String, PatientDataValue> getDataValueMap()
+    public Map<String, TrackedEntityDataValue> getDataValueMap()
     {
         return dataValueMap;
     }
@@ -161,14 +161,14 @@ public class GetProgramStageInstanceAction
 
     private void populateDataValueMap()
     {
-        Collection<PatientDataValue> patientDataValues = patientDataValueService
-            .getPatientDataValues( programStageInstance );
+        Collection<TrackedEntityDataValue> dataValues = dataValueService
+            .getTrackedEntityDataValues( programStageInstance );
 
-        dataValueMap = new HashMap<String, PatientDataValue>( patientDataValues.size() );
+        dataValueMap = new HashMap<String, TrackedEntityDataValue>( dataValues.size() );
 
-        for ( PatientDataValue patientDataValue : patientDataValues )
+        for ( TrackedEntityDataValue dataValue : dataValues )
         {
-            dataValueMap.put( patientDataValue.getDataElement().getUid(), patientDataValue );
+            dataValueMap.put( dataValue.getDataElement().getUid(), dataValue );
         }
     }
 }

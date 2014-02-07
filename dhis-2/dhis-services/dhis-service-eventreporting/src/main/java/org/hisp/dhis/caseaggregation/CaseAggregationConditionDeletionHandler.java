@@ -32,9 +32,9 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 
 /**
  * @author Chau Thu Tran
@@ -127,17 +127,17 @@ public class CaseAggregationConditionDeletionHandler
     }
     
     @Override
-    public String allowDeletePatientAttribute( PatientAttribute patientAttribute )
+    public String allowDeleteTrackedEntityAttribute( TrackedEntityAttribute attribute )
     {
         Collection<CaseAggregationCondition> conditions = aggregationConditionService
             .getAllCaseAggregationCondition();
 
         for ( CaseAggregationCondition condition : conditions )
         {
-            Collection<PatientAttribute> patientAttributes = aggregationConditionService.getPatientAttributesInCondition( condition
+            Collection<TrackedEntityAttribute> attributes = aggregationConditionService.getTrackedEntityAttributesInCondition( condition
                 .getAggregationExpression() );
 
-            if ( patientAttributes != null && patientAttributes.contains( patientAttribute ) )
+            if ( attributes != null && attributes.contains( attribute ) )
             {
                 return condition.getName();
             }

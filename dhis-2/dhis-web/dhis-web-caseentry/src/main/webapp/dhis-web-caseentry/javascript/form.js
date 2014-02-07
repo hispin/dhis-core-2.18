@@ -12,7 +12,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	enable('searchObjectId');
 	jQuery('#searchText').removeAttr('readonly');
 	enable('searchBtn');	
-	enable('listPatientBtn');
+	enable('listEntityInstanceBtn');
 }
 //------------------------------------------------------------------------------
 // Load data entry form
@@ -47,6 +47,7 @@ function loadDataEntry( programStageInstanceId )
 			{
 				disableCompletedButton(true);
 			}
+			showById('entryForm');
 			hideLoader();
 			hideById('contentDiv'); 
 		} );
@@ -69,18 +70,18 @@ function showSearchForm()
 }
 
 //--------------------------------------------------------------------------------------------
-// Show all patients in select orgunit
+// Show all entityInstances in select orgunit
 //--------------------------------------------------------------------------------------------
 
 isAjax = true;
-function listAllPatient()
+function listAllTrackedEntityInstance()
 {
 	hideById('advanced-search');
 	showLoader();
-	jQuery('#contentDiv').load( 'listAllPatients.action',{
+	jQuery('#contentDiv').load( 'listAllTrackedEntityInstances.action',{
 			listAll:false,
-			programId:	getFieldValue("programIdAddPatient"),
-			searchTexts: "prg_" + getFieldValue("programIdAddPatient"),
+			programId:	getFieldValue("programIdAddEntityInstance"),
+			searchTexts: "prg_" + getFieldValue("programIdAddEntityInstance"),
 			searchByUserOrgunits: false,
 			searchBySelectedOrgunit:true
 		},
@@ -89,17 +90,17 @@ function listAllPatient()
 			hideById('dataRecordingSelectDiv');
 			hideById('dataEntryFormDiv');
 			showById('searchDiv');
-			setInnerHTML('searchInforTD', i18n_list_all_patients );
+			setInnerHTML('searchInforTD', i18n_list_all_tracked_entity_instances );
 			setFieldValue('listAll', true);
 			hideLoader();
 		});
 }
 
 //-----------------------------------------------------------------------------
-// Search Patient
+// Search EntityInstance
 //-----------------------------------------------------------------------------
 
-function searchPatientsOnKeyUp( event )
+function searchEntityInstancesOnKeyUp( event )
 {
 	var key = getKeyCode( event );
 	
@@ -120,14 +121,14 @@ function getKeyCode(e)
 // Show selected data-recording
 //--------------------------------------------------------------------------------------------
 
-function showSelectedDataRecoding( patientId, programId )
+function showSelectedDataRecoding( entityInstanceId, programId )
 {
 	showLoader();
 	hideById('searchDiv');
 	hideById('dataEntryFormDiv');
 	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
 		{
-			patientId: patientId
+			entityInstanceId: entityInstanceId
 		},
 		function()
 		{
@@ -136,22 +137,22 @@ function showSelectedDataRecoding( patientId, programId )
 			hideById('contentDiv');
 			hideById('contentDiv');
 			hideById('mainLinkLbl');
-			setInnerHTML('singleProgramName',jQuery('#programIdAddPatient option:selected').text());
-			loadProgramStages( patientId, programId )
+			setInnerHTML('singleProgramName',jQuery('#programIdAddEntityInstance option:selected').text());
+			loadProgramStages( entityInstanceId, programId );
 		});
 }
 
 function advancedSearch( params )
 {
 	$.ajax({
-		url: 'searchPatient.action',
+		url: 'searchTrackedEntityInstance.action',
 		type:"POST",
 		data: params,
 		success: function( html ){
 				statusSearching = 1;
 				setInnerHTML( 'contentDiv', html );
 				showById('contentDiv');
-				setInnerHTML('searchInforTD', i18n_search_patients );
+				setInnerHTML('searchInforTD', i18n_search_tracked_entity_instances );
 				setFieldValue('listAll',false);
 				jQuery( "#loaderDiv" ).hide();
 			}
@@ -162,18 +163,18 @@ function advancedSearch( params )
 // Load program-stages by the selected program
 //--------------------------------------------------------------------------------------------
 
-function loadProgramStages( patientId, programId )
+function loadProgramStages( entityInstanceId, programId )
 {
 	jQuery.getJSON( "loadProgramStageInstances.action",
 		{
-			patientId:patientId,
+			entityInstanceId:entityInstanceId,
 			programId: programId
 		},  
 		function( json ) 
 		{   
 			if( json.programStageInstances == 0)
 			{
-				createProgramInstance( patientId, programId );
+				createProgramInstance( entityInstanceId, programId );
 			}
 			else
 			{
@@ -183,11 +184,11 @@ function loadProgramStages( patientId, programId )
 		});
 }
 
-function createProgramInstance( patientId, programId )
+function createProgramInstance( entityInstanceId, programId )
 {
 	jQuery.postJSON( "saveProgramEnrollment.action",
 		{
-			patientId: patientId,
+			entityInstanceId: entityInstanceId,
 			programId: programId,
 			dateOfIncident: getCurrentDate(),
 			enrollmentDate: getCurrentDate()

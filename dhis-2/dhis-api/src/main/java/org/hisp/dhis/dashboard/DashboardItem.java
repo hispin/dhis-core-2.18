@@ -39,9 +39,9 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
-import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
 import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -70,7 +70,7 @@ public class DashboardItem
     public static final String TYPE_REPORT_TABLES = "reportTables";
     public static final String TYPE_REPORTS = "reports";
     public static final String TYPE_RESOURCES = "resources";
-    public static final String TYPE_PATIENT_TABULAR_REPORTS = "patientTabularReports";
+    public static final String F_TRACKED_ENTITY_TABULAR_REPORTS = "trackedEntityTabularReport";
     public static final String TYPE_MESSAGES = "messages";
 
     private Chart chart;
@@ -87,7 +87,7 @@ public class DashboardItem
 
     private List<Document> resources = new ArrayList<Document>();
 
-    private List<PatientTabularReport> patientTabularReports = new ArrayList<PatientTabularReport>();
+    private List<TrackedEntityTabularReport> trackedEntityTabularReports = new ArrayList<TrackedEntityTabularReport>();
 
     private Boolean messages;
     
@@ -141,9 +141,9 @@ public class DashboardItem
         {
             return TYPE_RESOURCES;
         }
-        else if ( !patientTabularReports.isEmpty() )
+        else if ( !trackedEntityTabularReports.isEmpty() )
         {
-            return TYPE_PATIENT_TABULAR_REPORTS;
+            return F_TRACKED_ENTITY_TABULAR_REPORTS;
         }
         else if ( messages != null )
         {
@@ -197,9 +197,9 @@ public class DashboardItem
         {
             return resources;
         }
-        else if ( !patientTabularReports.isEmpty() )
+        else if ( !trackedEntityTabularReports.isEmpty() )
         {
-            return patientTabularReports;
+            return trackedEntityTabularReports;
         }
         
         return null;
@@ -217,7 +217,7 @@ public class DashboardItem
         count += reportTables.size();
         count += reports.size();
         count += resources.size();
-        count += patientTabularReports.size();
+        count += trackedEntityTabularReports.size();
         count += messages != null ? 1 : 0;
         return count;
     }
@@ -249,7 +249,7 @@ public class DashboardItem
         }
         else
         {
-            return removeContent( uid, patientTabularReports );
+            return removeContent( uid, trackedEntityTabularReports );
         }
     }
 
@@ -375,19 +375,19 @@ public class DashboardItem
         this.resources = resources;
     }
 
-    @JsonProperty( value = "patientTabularReports" )
+    @JsonProperty( value = "tabularReports" )
     @JsonView( { DetailedView.class } )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JacksonXmlElementWrapper( localName = "patientTabularReports", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "patientTabularReport", namespace = DxfNamespaces.DXF_2_0 )
-    public List<PatientTabularReport> getPatientTabularReports()
+    @JacksonXmlElementWrapper( localName = "trackedEntityTabularReports", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "trackedEntityTabularReports", namespace = DxfNamespaces.DXF_2_0 )
+    public List<TrackedEntityTabularReport> getTrackedEntityTabularReports()
     {
-        return patientTabularReports;
+        return trackedEntityTabularReports;
     }
 
-    public void setPatientTabularReports( List<PatientTabularReport> patientTabularReports )
+    public void setTrackedEntityTabularReports( List<TrackedEntityTabularReport> trackedEntityTabularReports )
     {
-        this.patientTabularReports = patientTabularReports;
+        this.trackedEntityTabularReports = trackedEntityTabularReports;
     }
 
     @JsonProperty
@@ -423,7 +423,7 @@ public class DashboardItem
             reportTables = item.getReportTables() == null ? reportTables : item.getReportTables();
             reports = item.getReports() == null ? reports : item.getReports();
             resources = item.getResources() == null ? resources : item.getResources();
-            patientTabularReports = item.getPatientTabularReports() == null ? patientTabularReports : item.getPatientTabularReports();
+            trackedEntityTabularReports = item.getTrackedEntityTabularReports() == null ? trackedEntityTabularReports : item.getTrackedEntityTabularReports();
             messages = item.getMessages() == null ? messages : item.getMessages();
         }
     }

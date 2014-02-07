@@ -7,13 +7,13 @@
   }#if( $velocityCount < $size ),#end
   #end
   ],
-  "patientAttributes":[
-	#set( $size = $!{patientAttributes.size()} )
-	#foreach( $patientAttribute in $!{patientAttributes} )
+  "attributes":[
+	#set( $size = $!{attributes.size()} )
+	#foreach( $attribute in $!{attributes} )
 	{
-		"id": "[CA:${patientAttribute.id}]",
-		"name": "$!encoder.jsonEncode( ${patientAttribute.name} )",
-		"suggested":"$patientAttribute.attributeOptions"
+		"id": "[CA:${attribute.id}]",
+		"name": "$!encoder.jsonEncode( ${attribute.name} )",
+		"suggested":"$attribute.attributeOptions"
 	}#if( $velocityCount < $size ),#end
 	#end
   ]

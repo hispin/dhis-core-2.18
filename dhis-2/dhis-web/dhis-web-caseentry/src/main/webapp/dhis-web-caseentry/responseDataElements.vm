@@ -4,8 +4,8 @@
 #end
 
 { "items": [
-	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) && $program!='' )
-		#foreach( $attr in $patientAttributes )
+	#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) && $program!='' )
+		#foreach( $attr in $attributes )
 		{
 			"id": "$attr.uid",
 			"name": "$encoder.xmlEncode(${attr.displayName} )",

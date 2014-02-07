@@ -10,14 +10,14 @@
       <generator class="native" />
     </id>
 
-    <many-to-one name="patientA" class="org.hisp.dhis.patient.Patient" column="patientaid" not-null="true"
-      foreign-key="fk_relationship_patientida" />
+    <many-to-one name="entityInstanceA" class="org.hisp.dhis.trackedentity.TrackedEntityInstance" column="trackedentityinstanceaid" not-null="true"
+      foreign-key="fk_relationship_trackedentityinstanceida" />
 
     <many-to-one name="relationshipType" class="org.hisp.dhis.relationship.RelationshipType" column="relationshiptypeid"
       not-null="true" foreign-key="fk_relationship_relationshiptypeid" />
 
-    <many-to-one name="patientB" class="org.hisp.dhis.patient.Patient" column="patientbid" not-null="true"
-      foreign-key="fk_relationship_patientidb" />
+    <many-to-one name="entityInstanceB" class="org.hisp.dhis.trackedentity.TrackedEntityInstance" column="trackedentityinstancebid" not-null="true"
+      foreign-key="fk_relationship_trackedentityinstanceidb" />
 
   </class>
 </hibernate-mapping>

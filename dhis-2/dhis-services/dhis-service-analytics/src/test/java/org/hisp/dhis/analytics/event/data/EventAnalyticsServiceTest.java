@@ -34,11 +34,11 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -58,13 +58,13 @@ public class EventAnalyticsServiceTest
     private DataElementService dataElementService;
 
     @Autowired
-    private PatientAttributeService attributeService;
+    private TrackedEntityAttributeService attributeService;
 
     private Program prA;
     private DataElement deA;
     private DataElement deB;
-    private PatientAttribute atA;
-    private PatientAttribute atB;
+    private TrackedEntityAttribute atA;
+    private TrackedEntityAttribute atB;
 
     @Override
     public void setUpTest()

@@ -94,11 +94,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -109,6 +104,11 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -1040,37 +1040,37 @@ public abstract class DhisConvenienceTest
         return programStage;
     }
 
-    public static Patient createPatient( char uniqueChar, OrganisationUnit organisationUnit )
+    public static TrackedEntityInstance createTrackedEntityInstance( char uniqueChar, OrganisationUnit organisationUnit )
     {
-        Patient patient = new Patient();
-        patient.setAutoFields();
-        patient.setOrganisationUnit( organisationUnit );
+        TrackedEntityInstance entityInstance = new TrackedEntityInstance();
+        entityInstance.setAutoFields();
+        entityInstance.setOrganisationUnit( organisationUnit );
 
-        return patient;
+        return entityInstance;
     }
 
-    public static Patient createPatient( char uniqueChar, OrganisationUnit organisationUnit,
-        PatientAttribute patientAttribute )
+    public static TrackedEntityInstance createTrackedEntityInstance( char uniqueChar, OrganisationUnit organisationUnit,
+        TrackedEntityAttribute attribute )
     {
-        Patient patient = new Patient();
-        patient.setAutoFields();
-        patient.setOrganisationUnit( organisationUnit );
+        TrackedEntityInstance entityInstance = new TrackedEntityInstance();
+        entityInstance.setAutoFields();
+        entityInstance.setOrganisationUnit( organisationUnit );
 
-        PatientAttributeValue attributeValue = new PatientAttributeValue();
-        attributeValue.setPatientAttribute( patientAttribute );
-        attributeValue.setPatient( patient );
+        TrackedEntityAttributeValue attributeValue = new TrackedEntityAttributeValue();
+        attributeValue.setAttribute( attribute );
+        attributeValue.setEntityInstance( entityInstance );
         attributeValue.setValue(  "Attribute" + uniqueChar );
-        patient.getAttributeValues().add( attributeValue );
+        entityInstance.getAttributeValues().add( attributeValue );
 
-        return patient;
+        return entityInstance;
     }
 
-    public static PatientAttributeValue createPatientAttributeValue( char uniqueChar, Patient patient,
-        PatientAttribute patientAttribute )
+    public static TrackedEntityAttributeValue createTrackedEntityAttributeValue( char uniqueChar, TrackedEntityInstance entityInstance,
+        TrackedEntityAttribute attribute )
     {
-        PatientAttributeValue attributeValue = new PatientAttributeValue();
-        attributeValue.setPatient( patient );
-        attributeValue.setPatientAttribute( patientAttribute );
+        TrackedEntityAttributeValue attributeValue = new TrackedEntityAttributeValue();
+        attributeValue.setEntityInstance( entityInstance );
+        attributeValue.setAttribute( attribute );
         attributeValue.setValue( "Attribute" + uniqueChar );
 
         return attributeValue;
@@ -1078,62 +1078,62 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @return PatientAttribute
+     * @return TrackedEntityAttribute
      */
-    public static PatientAttribute createPatientAttribute( char uniqueChar )
+    public static TrackedEntityAttribute createTrackedEntityAttribute( char uniqueChar )
     {
-        PatientAttribute patientAttribute = new PatientAttribute();
+        TrackedEntityAttribute attribute = new TrackedEntityAttribute();
 
-        patientAttribute.setName( "Attribute" + uniqueChar );
-        patientAttribute.setDescription( "Attribute" + uniqueChar );
-        patientAttribute.setValueType( PatientAttribute.TYPE_STRING );
+        attribute.setName( "Attribute" + uniqueChar );
+        attribute.setDescription( "Attribute" + uniqueChar );
+        attribute.setValueType( TrackedEntityAttribute.TYPE_STRING );
 
-        return patientAttribute;
+        return attribute;
     }
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @return PatientAttribute
+     * @return TrackedEntityAttribute
      */
-    public static PatientAttribute createPatientAttribute( char uniqueChar, String type )
+    public static TrackedEntityAttribute createTrackedEntityAttribute( char uniqueChar, String type )
     {
-        PatientAttribute patientAttribute = new PatientAttribute();
+        TrackedEntityAttribute attribute = new TrackedEntityAttribute();
 
-        patientAttribute.setName( "Attribute" + uniqueChar );
-        patientAttribute.setDescription( "Attribute" + uniqueChar );
-        patientAttribute.setValueType( type );
+        attribute.setName( "Attribute" + uniqueChar );
+        attribute.setDescription( "Attribute" + uniqueChar );
+        attribute.setValueType( type );
 
-        return patientAttribute;
+        return attribute;
     }
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @return PatientAttributeOption
+     * @return TrackedEntityAttributeOption
      */
-    public static PatientAttributeOption createPatientAttributeOption( char uniqueChar,
-        PatientAttribute patientAttribute )
+    public static TrackedEntityAttributeOption createTrackedEntityAttributeOption( char uniqueChar,
+        TrackedEntityAttribute attribute )
     {
-        PatientAttributeOption patientAttributeOption = new PatientAttributeOption();
+        TrackedEntityAttributeOption attributeOption = new TrackedEntityAttributeOption();
 
-        patientAttributeOption.setName( "AttributeOption" + uniqueChar );
-        patientAttributeOption.setPatientAttribute( patientAttribute );
+        attributeOption.setName( "AttributeOption" + uniqueChar );
+        attributeOption.setAttribute( attribute );
 
-        return patientAttributeOption;
+        return attributeOption;
     }
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @return PatientAttributeGroup
+     * @return TrackedEntityAttributeGroup
      */
-    public static PatientAttributeGroup createPatientAttributeGroup( char uniqueChar, List<PatientAttribute> attributes )
+    public static TrackedEntityAttributeGroup createTrackedEntityAttributeGroup( char uniqueChar, List<TrackedEntityAttribute> attributes )
     {
-        PatientAttributeGroup patientAttributeGroup = new PatientAttributeGroup();
+        TrackedEntityAttributeGroup attributeGroup = new TrackedEntityAttributeGroup();
 
-        patientAttributeGroup.setName( "PatientAttributeGroup" + uniqueChar );
-        patientAttributeGroup.setDescription( "PatientAttributeGroup" + uniqueChar );
-        patientAttributeGroup.setAttributes( attributes );
+        attributeGroup.setName( "TrackedEntityAttributeGroup" + uniqueChar );
+        attributeGroup.setDescription( "TrackedEntityAttributeGroup" + uniqueChar );
+        attributeGroup.setAttributes( attributes );
 
-        return patientAttributeGroup;
+        return attributeGroup;
     }
 
     /**

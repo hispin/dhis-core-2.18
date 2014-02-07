@@ -78,8 +78,8 @@ function showProgramStageDetails( context )
 		setInnerHTML( 'descriptionField', json.programStage.description );
 		setInnerHTML( 'scheduledDaysFromStartField', json.programStage.minDaysFromStart ); 
 		
-		var relatedPatient = (json.programStage.relatedPatient=='true') ? i18n_yes : i18n_no;
-		setInnerHTML( 'relatedPatientField', relatedPatient );  
+		var relatedTrackedEntity = (json.programStage.relatedTrackedEntity=='true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'relatedTrackedEntityField', relatedPatient );  
 		
 		var irregular = (json.programStage.irregular=='true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'irregularField', irregular );  
@@ -121,13 +121,13 @@ function showProgramStageDetails( context )
 		setInnerHTML( 'reportDateToUseField', json.programStage.reportDateToUse );   	
 		
 		var templateMessage = "";
-		for(var i in json.programStage.patientReminders){
+		for(var i in json.programStage.reminders){
 			var index = eval(i) + 1;
 			templateMessage += "<p class='bold'>" + i18n_template_reminder_message + " " + index + "</p>";
 			templateMessage += "<p class='bold'>" + i18n_send_message + ":</p>" ;
-			templateMessage	+= "<p>" + json.programStage.patientReminders[i].daysAllowedSendMessage + "</p>";
+			templateMessage	+= "<p>" + json.programStage.reminders[i].daysAllowedSendMessage + "</p>";
 			templateMessage	+= "<p class='bold'>" + i18n_message + ":</p>";
-			templateMessage	+= "<p>" + json.programStage.patientReminders[i].templateMessage + "</p>";
+			templateMessage	+= "<p>" + json.programStage.reminders[i].templateMessage + "</p>";
 		}
 		setInnerHTML('templateMessageField', templateMessage);
 		
@@ -350,7 +350,7 @@ function generateTemplateMessageForm()
 				+ 	'<td><label>' + i18n_recipients + '</label></td>'
 				+ 	'<td>'
 				+ 		'<select id="sendTo' + rowId + '" name="sendTo' + rowId + '" class="sendTo" onchange="onchangeUserGroup('+ rowId +')">'
-				+ 			'<option value="1">' + i18n_patient_sms_only + '</option>'
+				+ 			'<option value="1">' + i18n_tracked_entity_sms_only + '</option>'
 				+ 			'<option value="3">' + i18n_orgunit_phone_number_sms_only + '</option>'
 				+ 			'<option value="2">' + i18n_attribute_users + '</option>'
 				+ 			'<option value="4">' + i18n_all_users_at_orgunit + '</option>'

@@ -33,10 +33,10 @@ import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,11 +61,11 @@ public class MultiDataEntrySelectAction
         this.programService = programService;
     }
 
-    private PatientAttributeService patientAttributeService;
+    private TrackedEntityAttributeService attributeService;
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public void setAttributeService( TrackedEntityAttributeService attributeService )
     {
-        this.patientAttributeService = patientAttributeService;
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -98,11 +98,11 @@ public class MultiDataEntrySelectAction
         return programs;
     }
 
-    private Collection<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
+    private Collection<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public Collection<TrackedEntityAttribute> getAttributes()
     {
-        return patientAttributes;
+        return attributes;
     }
 
     // -------------------------------------------------------------------------
@@ -112,7 +112,7 @@ public class MultiDataEntrySelectAction
     public String execute()
         throws Exception
     {
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
+        attributes = attributeService.getAllTrackedEntityAttributes();
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 

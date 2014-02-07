@@ -1,11 +1,11 @@
-#if( $auth.hasAccess( "dhis-web-caseentry", "patient" ) 
+#if( $auth.hasAccess( "dhis-web-caseentry", "trackedEntityInstance" ) 
 	|| $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) 
 	|| $auth.hasAccess( "dhis-web-caseentry", "smsReminderSelect" ) )
-<h2>$i18n.getString( "patient" )&nbsp;</h2>
+<h2>$i18n.getString( "tracked_entity_instance" )&nbsp;</h2>
 #end
 <ul>
-	#if( $auth.hasAccess( "dhis-web-caseentry", "patient" ) )
-		<li><a href="patient.action">$i18n.getString( "find_and_add_person" )</a></li>
+	#if( $auth.hasAccess( "dhis-web-caseentry", "trackedEntityInstance" ) )
+		<li><a href="trackedEntityInstance.action">$i18n.getString( "find_and_add_tracked_entity_instance" )</a></li>
 	#end
     #if( $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) )
 		<li><a href="activityPlanSelect.action">$i18n.getString( "activity_plan" )</a></li>     
@@ -51,8 +51,8 @@
 </ul>
 
 #if( $auth.hasAccess( "dhis-web-caseentry", "caseAggregationForm" ) )	
-<h2>$i18n.getString( "person_aggregation" )&nbsp;</h2>
+<h2>$i18n.getString( "tracked_entity_instance_aggregation" )&nbsp;</h2>
 <ul>
-    <li><a href="caseAggregationForm.action">$i18n.getString( "manual_person_aggregation" )</a></li>     
+    <li><a href="caseAggregationForm.action">$i18n.getString( "manual_tracked_entity_instance_aggregation" )</a></li>     
 </ul>
 #end

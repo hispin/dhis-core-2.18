@@ -31,8 +31,8 @@ package org.hisp.dhis.program;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,7 +82,7 @@ public class ProgramStageInstance
 
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
 
-    private PatientComment patientComment;
+    private TrackedEntityComment comment;
 
     private Integer status = ACTIVE_STATUS;
 
@@ -312,14 +312,14 @@ public class ProgramStageInstance
         this.latitude = latitude;
     }
 
-    public PatientComment getPatientComment()
+    public TrackedEntityComment getComment()
     {
-        return patientComment;
+        return comment;
     }
 
-    public void setPatientComment( PatientComment patientComment )
+    public void setComment( TrackedEntityComment comment )
     {
-        this.patientComment = patientComment;
+        this.comment = comment;
     }
 
     public Integer getEventStatus()

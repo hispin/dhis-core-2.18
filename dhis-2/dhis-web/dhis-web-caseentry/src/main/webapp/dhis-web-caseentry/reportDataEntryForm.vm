@@ -1,6 +1,6 @@
 <div id='reportTitle' name='reportTitle' style="display:none;">
 	#set($id = '')
-	#foreach( $attributeValue in $patient.attributeValues)
+	#foreach( $attributeValue in $entityInstance.attributeValues)
 		#set($id=$id + $attributeValue.value + ";")
 	#end 
 				
@@ -8,12 +8,12 @@
 	<hr/>
 </div>
 
-<div id='patientInforTB' name="patientInforTB" style="display:none;">
-	#if( $patient )
+<div id='entityInstanceInforTB' name="entityInstanceInforTB" style="display:none;">
+	#if( $entityInstance )
 		<table>
 			<tr>            
 				<td class='coordinates1'>
-					<span class='bold' id="patientName">$i18n.getString( "full_name" ): </span>
+					<span class='bold' id="entityInstanceName">$i18n.getString( "attributes" ): </span>
 				</td>
 				<td class='coordinates2'>$id</td>
 				<td class='bold coordinates1'>$i18n.getString('program'):</td>
@@ -56,7 +56,7 @@
 </form>
 
 <script type="text/javascript">
-	jQuery('#patientForm').ready(	function(){
+	jQuery('#entityInstanceForm').ready(	function(){
 		enable('validationBtn');
 		#if($programStageInstance.completed=='true') 
 			disable('completeBtn');
@@ -65,7 +65,7 @@
 			enable('completeBtn');
 			disable('uncompleteBtn');
 		#end
-		setInnerHTML("patientNameLbl", "&raquo; " + "!$encoder.jsEncode( $id)");
+		setInnerHTML("entityInstanceNameLbl", "&raquo; " + "!$encoder.jsEncode( $id)");
 	});
 	
 	var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
@@ -79,7 +79,7 @@
 							+ dateFormat.replace('yy', 'yyyy') + " '" ; 
     var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';
     var i18n_saving_value_failed_error_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_error_code" ) , "'")';
-    var i18n_searching_patient_failed = '$encoder.jsEscape( $i18n.getString( "searching_patient_failed" ) , "'")';
+    var i18n_searching_tracked_entity_instance_failed = '$encoder.jsEscape( $i18n.getString( "searching_tracked_entity_instance_failed" ) , "'")';
     var i18n_complete_confirm_message = '$encoder.jsEscape( $i18n.getString( "complete_confirm_message" ) , "'")';
 	var i18n_quit_confirm_message = '$encoder.jsEscape( $i18n.getString( "quit_confirm_message" ) , "'")';
     var i18n_error_required_field = '$encoder.jsEscape( $i18n.getString( "error_required_field" ) , "'")';

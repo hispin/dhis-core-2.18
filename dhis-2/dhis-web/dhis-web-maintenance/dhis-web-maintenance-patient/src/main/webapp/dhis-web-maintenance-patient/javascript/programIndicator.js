@@ -38,12 +38,12 @@ function removeProgramIndicator( context ) {
   removeItem(context.id, context.name, i18n_confirm_delete, 'removeProgramIndicator.action');
 }
 
-function getPatientDataElements() {
+function getTrackedEmtityDataElements() {
   clearListById('dataElements');
   clearListById('deSumId');
   var programStageId = getFieldValue('programStageId');
 
-  jQuery.getJSON('getPatientDataElements.action',
+  jQuery.getJSON('getTrackedEmtityDataElements.action',
     {
       programId: getFieldValue('programId'),
       programStageId: programStageId

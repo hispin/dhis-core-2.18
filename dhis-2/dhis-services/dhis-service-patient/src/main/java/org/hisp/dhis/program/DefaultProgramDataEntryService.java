@@ -39,8 +39,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 
 /**
  * @author Chau Thu Tran
@@ -61,11 +61,11 @@ public class DefaultProgramDataEntryService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private DataElementService dataElementService;
@@ -101,10 +101,11 @@ public class DefaultProgramDataEntryService
     // -------------------------------------------------------------------------
 
     @Override
-    public String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, I18n i18n,
-        ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit )
+    public String prepareDataEntryFormForEntry( String htmlCode, Collection<TrackedEntityDataValue> dataValues,
+        I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
+        OrganisationUnit organisationUnit )
     {
-        Map<String, Collection<PatientDataValue>> mapDataValue = new HashMap<String, Collection<PatientDataValue>>();
+        Map<String, Collection<TrackedEntityDataValue>> mapDataValue = new HashMap<String, Collection<TrackedEntityDataValue>>();
 
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
@@ -194,32 +195,32 @@ public class DefaultProgramDataEntryService
                 // Find existing value of data element in data set
                 // -------------------------------------------------------------
 
-                PatientDataValue patientDataValue = null;
+                TrackedEntityDataValue entityInstanceDataValue = null;
 
                 String dataElementValue = EMPTY;
 
                 if ( !programStageUid.equals( programStage.getUid() ) )
                 {
-                    Collection<PatientDataValue> patientDataValues = mapDataValue.get( programStageUid );
+                    Collection<TrackedEntityDataValue> entityInstanceDataValues = mapDataValue.get( programStageUid );
 
-                    if ( patientDataValues == null && programStageInstance != null )
+                    if ( entityInstanceDataValues == null && programStageInstance != null )
                     {
                         ProgramStage otherProgramStage = programStageService.getProgramStage( programStageUid );
                         ProgramStageInstance otherProgramStageInstance = programStageInstanceService
                             .getProgramStageInstance( programStageInstance.getProgramInstance(), otherProgramStage );
-                        patientDataValues = patientDataValueService.getPatientDataValues( otherProgramStageInstance );
-                        mapDataValue.put( programStageUid, patientDataValues );
+                        entityInstanceDataValues = dataValueService.getTrackedEntityDataValues( otherProgramStageInstance );
+                        mapDataValue.put( programStageUid, entityInstanceDataValues );
                     }
 
-                    patientDataValue = getValue( patientDataValues, dataElementUid );
+                    entityInstanceDataValue = getValue( entityInstanceDataValues, dataElementUid );
 
-                    dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
+                    dataElementValue = entityInstanceDataValue != null ? entityInstanceDataValue.getValue() : dataElementValue;
                 }
                 else
                 {
-                    patientDataValue = getValue( dataValues, dataElementUid );
+                    entityInstanceDataValue = getValue( dataValues, dataElementUid );
 
-                    dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
+                    dataElementValue = entityInstanceDataValue != null ? entityInstanceDataValue.getValue() : dataElementValue;
                 }
 
                 // -------------------------------------------------------------
@@ -229,9 +230,8 @@ public class DefaultProgramDataEntryService
 
                 if ( inputHTML.contains( "title=\"\"" ) )
                 {
-                    inputHTML = inputHTML.replace( "title=\"\"",
-                        "title=\"[ " + dataElement.getUid() + " - " + dataElement.getName() + " - " + dataElementType
-                            + " ]\" " );
+                    inputHTML = inputHTML.replace( "title=\"\"", "title=\"[ " + dataElement.getUid() + " - "
+                        + dataElement.getName() + " - " + dataElementType + " ]\" " );
                 }
                 else
                 {
@@ -249,7 +249,7 @@ public class DefaultProgramDataEntryService
                     && programStage.getProgram().getDataEntryMethod() )
                 {
                     String idField = programStageUid + "-" + dataElementUid + "-val";
-                    inputHTML = populateCustomDataEntryForOptionSet( dataElement, idField, patientDataValue, i18n );
+                    inputHTML = populateCustomDataEntryForOptionSet( dataElement, idField, entityInstanceDataValue, i18n );
                 }
                 else if ( DataElement.VALUE_TYPE_INT.equals( dataElement.getType() )
                     || DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() )
@@ -291,7 +291,7 @@ public class DefaultProgramDataEntryService
                     if ( allowProvidedElsewhere )
                     {
                         // Add ProvidedByOtherFacility checkbox
-                        inputHTML = addProvidedElsewherCheckbox( inputHTML, patientDataValue, programStage );
+                        inputHTML = addProvidedElsewherCheckbox( inputHTML, entityInstanceDataValue, programStage );
                     }
                 }
 
@@ -412,7 +412,7 @@ public class DefaultProgramDataEntryService
                 // Find existing value of data element in data set
                 // -------------------------------------------------------------
 
-                PatientDataValue patientDataValue = null;
+                TrackedEntityDataValue entityInstanceDataValue = null;
 
                 String dataElementValue = EMPTY;
 
@@ -478,7 +478,7 @@ public class DefaultProgramDataEntryService
                     if ( allowProvidedElsewhere )
                     {
                         // Add ProvidedByOtherFacility checkbox
-                        inputHTML = addProvidedElsewherCheckbox( inputHTML, patientDataValue, programStage );
+                        inputHTML = addProvidedElsewherCheckbox( inputHTML, entityInstanceDataValue, programStage );
                     }
                 }
 
@@ -566,7 +566,7 @@ public class DefaultProgramDataEntryService
     // -------------------------------------------------------------------------
 
     private String populateCustomDataEntryForOptionSet( DataElement dataElement, String id,
-        PatientDataValue patientDataValue, I18n i18n )
+        TrackedEntityDataValue entityInstanceDataValue, I18n i18n )
     {
         String inputHTML = "";
         if ( dataElement != null )
@@ -581,7 +581,7 @@ public class DefaultProgramDataEntryService
             inputHTML += "<td>";
             inputHTML += metaData;
 
-            if ( patientDataValue == null )
+            if ( entityInstanceDataValue == null )
             {
                 inputHTML += " checked ";
             }
@@ -601,7 +601,7 @@ public class DefaultProgramDataEntryService
                 }
 
                 inputHTML += "<td>" + metaData;
-                if ( patientDataValue != null && patientDataValue.getValue().equals( optionValue ) )
+                if ( entityInstanceDataValue != null && entityInstanceDataValue.getValue().equals( optionValue ) )
                 {
                     inputHTML += " checked ";
                 }
@@ -646,7 +646,7 @@ public class DefaultProgramDataEntryService
     }
 
     private String populateCustomDataEntryForBoolean( DataElement dataElement, String inputHTML,
-        String patientDataValue, I18n i18n )
+        String entityInstanceDataValue, I18n i18n )
     {
         final String jsCodeForBoolean = " name=\"entryselect\" tabIndex=\"$TABINDEX\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME' }\" onchange=\"saveOpt( '$DATAELEMENTID' )\" ";
 
@@ -661,14 +661,14 @@ public class DefaultProgramDataEntryService
         // -------------------------------------------------------------
         // Insert value of data element in output code
         // -------------------------------------------------------------
-        if ( patientDataValue != null )
+        if ( entityInstanceDataValue != null )
         {
-            if ( patientDataValue.equalsIgnoreCase( "true" ) )
+            if ( entityInstanceDataValue.equalsIgnoreCase( "true" ) )
             {
                 inputHTML = inputHTML.replace( "<option value=\"true\">", "<option value=\"" + i18n.getString( "true" )
                     + "\" selected>" );
             }
-            else if ( patientDataValue.equalsIgnoreCase( "false" ) )
+            else if ( entityInstanceDataValue.equalsIgnoreCase( "false" ) )
             {
                 inputHTML = inputHTML.replace( "<option value=\"false\">",
                     "<option value=\"" + i18n.getString( "false" ) + "\" selected>" );
@@ -775,7 +775,7 @@ public class DefaultProgramDataEntryService
         return inputHTML;
     }
 
-    private String addProvidedElsewherCheckbox( String appendCode, PatientDataValue patientDataValue,
+    private String addProvidedElsewherCheckbox( String appendCode, TrackedEntityDataValue entityInstanceDataValue,
         ProgramStage programStage )
     {
         String id = "$PROGRAMSTAGEID-$DATAELEMENTID-facility";
@@ -784,7 +784,7 @@ public class DefaultProgramDataEntryService
             + "\" class=\"provided-elsewhere\"><input name=\"providedByAnotherFacility\" title=\"is provided by another Facility ?\"  id=\""
             + id + "\"  type=\"checkbox\" ";
 
-        if ( patientDataValue != null && patientDataValue.getProvidedElsewhere() )
+        if ( entityInstanceDataValue != null && entityInstanceDataValue.getProvidedElsewhere() )
         {
             appendCode += " checked=\"checked\" ";
         }
@@ -796,17 +796,17 @@ public class DefaultProgramDataEntryService
     }
 
     /**
-     * Returns the value of the PatientDataValue in the Collection of DataValues
+     * Returns the value of the data value in the Collection of DataValues
      * with the given data element identifier.
      */
-    private PatientDataValue getValue( Collection<PatientDataValue> dataValues, String dataElementUid )
+    private TrackedEntityDataValue getValue( Collection<TrackedEntityDataValue> dataValues, String dataElementUid )
     {
         if ( dataValues == null )
         {
             return null;
         }
 
-        for ( PatientDataValue dataValue : dataValues )
+        for ( TrackedEntityDataValue dataValue : dataValues )
         {
             if ( dataValue.getDataElement().getUid().equals( dataElementUid ) )
             {

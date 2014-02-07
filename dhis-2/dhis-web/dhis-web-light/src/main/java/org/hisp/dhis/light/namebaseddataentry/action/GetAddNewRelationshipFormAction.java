@@ -28,10 +28,11 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+
 import com.opensymphony.xwork2.Action;
 
 public class GetAddNewRelationshipFormAction
@@ -47,9 +48,9 @@ public class GetAddNewRelationshipFormAction
         this.relationshipTypeService = relationshipTypeService;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -94,26 +95,26 @@ public class GetAddNewRelationshipFormAction
         this.relationshipTypeId = relationshipTypeId;
     }
 
-    private Patient relatedPatient;
+    private TrackedEntityInstance relatedPatient;
 
-    public Patient getRelatedPatient()
+    public TrackedEntityInstance getRelatedPatient()
     {
         return relatedPatient;
     }
 
-    public void setRelatedPatient( Patient relatedPatient )
+    public void setRelatedPatient( TrackedEntityInstance relatedPatient )
     {
         this.relatedPatient = relatedPatient;
     }
 
-    private Patient originalPatient;
+    private TrackedEntityInstance originalPatient;
 
-    public Patient getOriginalPatient()
+    public TrackedEntityInstance getOriginalPatient()
     {
         return originalPatient;
     }
 
-    public void setOriginalPatient( Patient originalPatient )
+    public void setOriginalPatient( TrackedEntityInstance originalPatient )
     {
         this.originalPatient = originalPatient;
     }
@@ -134,8 +135,8 @@ public class GetAddNewRelationshipFormAction
     public String execute()
         throws Exception
     {
-        originalPatient = patientService.getPatient( originalPatientId );
-        relatedPatient = patientService.getPatient( relatedPatientId );
+        originalPatient = patientService.getTrackedEntityInstance( originalPatientId );
+        relatedPatient = patientService.getTrackedEntityInstance( relatedPatientId );
         relationshipType = relationshipTypeService.getRelationshipType( relationshipTypeId );
 
         return SUCCESS;

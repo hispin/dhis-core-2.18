@@ -35,8 +35,8 @@ import java.util.Collection;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -55,11 +55,11 @@ public interface PersonService
 
     Persons getPersons( OrganisationUnit organisationUnit, Program program );
 
-    Persons getPersons( Collection<Patient> patients );
+    Persons getPersons( Collection<TrackedEntityInstance> entityInstances );
 
     Person getPerson( String uid );
 
-    Person getPerson( Patient patient );
+    Person getPerson( TrackedEntityInstance entityInstance );
 
     // -------------------------------------------------------------------------
     // CREATE

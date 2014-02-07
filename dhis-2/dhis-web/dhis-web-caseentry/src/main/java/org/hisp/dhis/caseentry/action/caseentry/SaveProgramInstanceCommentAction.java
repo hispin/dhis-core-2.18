@@ -30,9 +30,9 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.Date;
 
-import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -91,9 +91,9 @@ public class SaveProgramInstanceCommentAction
 
         if ( comment != null )
         {
-            PatientComment patientComment = new PatientComment( comment, currentUserService.getCurrentUsername(),
+            TrackedEntityComment entityComment = new TrackedEntityComment( comment, currentUserService.getCurrentUsername(),
                 new Date() );
-            programInstance.getPatientComments().add(patientComment);
+            programInstance.setComment(entityComment);
             programInstanceService.updateProgramInstance( programInstance );
         }      
 

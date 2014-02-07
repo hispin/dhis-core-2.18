@@ -52,7 +52,7 @@ function removeAttributeOption( rowId )
 }	
 
 //------------------------------------------------------------------------------
-// Search patients by selected attribute
+// Search entityInstances by selected attribute
 //------------------------------------------------------------------------------
 
 function searchObjectOnChange( this_ )
@@ -88,10 +88,10 @@ function getTrueFalseBox()
 }
 
 //-----------------------------------------------------------------------------
-// Search Patient
+// Search TrackedEntityInstance
 //-----------------------------------------------------------------------------
 
-function searchPatientsOnKeyUp( event ) {
+function searchTrackedEntityInstancesOnKeyUp( event ) {
     var key = getKeyCode(event);
 
     if( key == 13 )// Enter
@@ -110,7 +110,7 @@ function getKeyCode( e ) {
 
 function validateAdvancedSearch()
 {
-	hideById( 'listPatientDiv' );
+	hideById( 'listEntityInstanceDiv' );
 	var flag = true;
 
 	if( getFieldValue('startDueDate')=='' && getFieldValue('endDueDate')=='' ){
@@ -130,7 +130,7 @@ function validateAdvancedSearch()
 	}
 	
 	if(flag){
-		contentDiv = 'listPatientDiv';
+		contentDiv = 'listEntityInstanceDiv';
 		jQuery( "#loaderDiv" ).show();
 		advancedSearch( getSearchParams() );
 	}
@@ -142,16 +142,16 @@ function getSearchParams() {
     var params = "";
     var programId = "";
 
-    if( getFieldValue('programIdAddPatient') != '' ) {
-        params += "&programId=" + getFieldValue('programIdAddPatient');
-        params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
+    if( getFieldValue('programIdAddEntityInstance') != '' ) {
+        params += "&programId=" + getFieldValue('programIdAddEntityInstance');
+        params += "&searchTexts=prg_" + getFieldValue('programIdAddEntityInstance');
 		params += '&statusEnrollment=' + getFieldValue('statusEnrollment');
     }
 
-    var programStageId = $('#programStageAddPatient').val();
+    var programStageId = $('#programStageAddEntityInstance').val();
 
     if( getFieldValue('searchByProgramStage') == "true" ) {
-        var statusEvent = $('#programStageAddPatientTR [id=statusEvent]').val();
+        var statusEvent = $('#programStageAddEntityInstanceTR [id=statusEvent]').val();
         var startDueDate = getFieldValue('startDueDate');
         var orgunitid = getFieldValue('orgunitId');
 
@@ -162,7 +162,7 @@ function getSearchParams() {
 
         var endDueDate = getFieldValue('endDueDate');
 
-        params += '&searchTexts=stat_' + getFieldValue('programIdAddPatient')
+        params += '&searchTexts=stat_' + getFieldValue('programIdAddEntityInstance')
             + '_' + startDueDate + '_' + endDueDate
             + "_" + orgunitid
             + '_' + followup + '_' + statusEvent;
@@ -231,12 +231,12 @@ function isDeathOnChange() {
 // Get Params form Div
 // ----------------------------------------------------------------
 
-function getParamsForDiv( patientDiv)
+function getParamsForDiv( entityInstanceDiv)
 {
 	var params = '';
 	var dateOperator = '';
 
-    $("#" + patientDiv + " :input").each(function() {
+    $("#" + entityInstanceDiv + " :input").each(function() {
         var elementId = $(this).attr('id');
 
         if( $(this).attr('type') == 'checkbox' )
@@ -268,18 +268,18 @@ function getParamsForDiv( patientDiv)
 }
 
 // -----------------------------------------------------------------------------
-// View patient details
+// View entityInstance details
 // -----------------------------------------------------------------------------
 
-function showPatientDetails( patientId )
+function showTrackedEntityInstanceDetails( entityInstanceId )
 {
-    $('#detailsInfo').load("getPatientDetails.action", 
+    $('#detailsInfo').load("getTrackedEntityInstanceDetails.action", 
 		{
-			id:patientId
+			id:entityInstanceId
 		}
 		, function( ){
 		}).dialog({
-			title: i18n_patient_details,
+			title: i18n_tracked_entity_instance_details,
             maximize: true,
             closable: true,
             modal: false,
@@ -289,13 +289,13 @@ function showPatientDetails( patientId )
         });
 }
 
-function showPatientHistory( patientId )
+function showTrackedEntityInstanceHistory( entityInstanceId )
 {
-    $('#detailsInfo').load("getPatientHistory.action", {
-        patientId: patientId
+    $('#detailsInfo').load("getTrackedEntityInstanceHistory.action", {
+        entityInstanceId: entityInstanceId
     } ,function() {
     }).dialog({
-        title: i18n_patient_details_and_history,
+        title: i18n_tracked_entity_instance_details_and_history,
         maximize: true,
         closable: true,
         modal: false,
@@ -305,9 +305,9 @@ function showPatientHistory( patientId )
     });
 }
 
-function exportPatientHistory( patientId, type )
+function exportTrackedEntityInstanceHistory( entityInstanceId, type )
 {
-    window.location.href = "getPatientHistory.action?patientId=" + patientId + "&type=" + type;
+    window.location.href = "getTrackedEntityInstanceHistory.action?entityInstanceId=" + entityInstanceId + "&type=" + type;
 }
 
 function setEventColorStatus( programStageInstanceId, status )
@@ -355,12 +355,12 @@ function setEventColorStatus( programStageInstanceId, status )
 }
 
 function enableBtn(){
-	var programIdAddPatient = getFieldValue('programIdAddPatient');
+	var programIdAddEntityInstance = getFieldValue('programIdAddEntityInstance');
     if( registration == undefined || !registration ) {
-		if( programIdAddPatient!='' ) {
+		if( programIdAddEntityInstance!='' ) {
             enable('statusEvent');
-			enable('listPatientBtn');
-			enable('addPatientBtn');
+			enable('listEntityInstanceBtn');
+			enable('addEntityInstanceBtn');
 			enable('advancedSearchBtn');
 			enable('scheduledVisitDays');
             $('#advanced-search :input').each( function( idx, item ){
@@ -368,8 +368,8 @@ function enableBtn(){
 			});
 		} else {
             disable('statusEvent');
-			disable('listPatientBtn');
-			disable('addPatientBtn');
+			disable('listEntityInstanceBtn');
+			disable('addEntityInstanceBtn');
 			disable('advancedSearchBtn');
 			disable('scheduledVisitDays');
             $('#advanced-search :input').each( function( idx, item ){
@@ -377,7 +377,7 @@ function enableBtn(){
 			});
 		}
 	}
-	else if(programIdAddPatient!=''){
+	else if(programIdAddEntityInstance!=''){
 		showById('enrollmentSelectTR');
 	}
 	else{
@@ -385,7 +385,7 @@ function enableBtn(){
 	}
 	
 	 $.postJSON( "getAttributesByProgram.action", {
-			id:programIdAddPatient
+			id:programIdAddEntityInstance
 		}, function( json )  {
 			
 			removeAttributeOption('advSearchBox0');			
@@ -396,9 +396,11 @@ function enableBtn(){
 			});
 			
 			clearListById('searchObjectId');
-			jQuery('#searchObjectId').append('<option value="pi_enrollmentDate">' + i18n_enrollment_date + '</option>');
+			if(getFieldValue('programIdAddEntityInstance')!=''){
+				jQuery('#searchObjectId').append('<option value="pi_enrollmentDate">' + i18n_enrollment_date + '</option>');
+			}
 			for ( var i in json.attributes ) {
-				jQuery('#searchObjectId').append('<option value="'+json.attributes[i].id+'">'+json.attributes[i].name+'</option>');
+				jQuery('#searchObjectId').append('<option value="attr_'+json.attributes[i].id+'">'+json.attributes[i].name+'</option>');
 			}
 			addAttributeOption();
 		});
@@ -406,12 +408,12 @@ function enableBtn(){
 
 function enableRadioButton( programId )
 {
-	var prorgamStageId = $('#programStageAddPatient').val();
+	var prorgamStageId = $('#programStageAddEntityInstance').val();
 	if( prorgamStageId== ''){
-        $('#programStageAddPatientTR [name=statusEvent]').attr("disabled", true);
+        $('#programStageAddEntityInstanceTR [name=statusEvent]').attr("disabled", true);
 	}
 	else{
-        $('#programStageAddPatientTR [name=statusEvent]').removeAttr("disabled");
+        $('#programStageAddEntityInstanceTR [name=statusEvent]').removeAttr("disabled");
 	}
 }
 
@@ -740,7 +742,7 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 function resize(){
 	var width = 400;
 	var w = $(window).width(); 
-	if($(".patient-object").length > 1 ){
+	if($(".entity-instance-object").length > 1 ){
 		width += 150;
 	}
 	if($(".show-new-event").length > 0 ){
@@ -873,7 +875,7 @@ function removeEvent( programStageInstanceId, isEvent )
 					if(isEvent)
 					{
 						showById('searchDiv');
-						showById('listPatientDiv');
+						showById('listEntityInstanceDiv');
 					}
 					
 					var id = 'ps_' + programStageInstanceId;
@@ -911,21 +913,21 @@ function removeEvent( programStageInstanceId, isEvent )
 }
 
 // -----------------------------------------------------------------------------
-// Show relationship with new patient
+// Show relationship with new entity-instance
 // -----------------------------------------------------------------------------
 
-function showRelationshipList( patientId )
+function showRelationshipList( entityInstanceId )
 {
 	hideById('addRelationshipDiv');
-	hideById('patientDashboard');
+	hideById('entityInstanceDashboard');
 	hideById('selectDiv');
 	hideById('searchDiv');
-	hideById('listPatientDiv');
+	hideById('listEntityInstanceDiv');
 	hideById('entryForm');
 
     $('#loaderDiv').show();
     $('#listRelationshipDiv').load('showRelationshipList.action', {
-        id:patientId
+        id:entityInstanceId
     }, function() {
         showById('listRelationshipDiv');
         $('#loaderDiv').hide();
@@ -933,37 +935,37 @@ function showRelationshipList( patientId )
 }
 
 // -----------------------------------------------------------------------------
-// Update Patient
+// Update EntityInstance
 // -----------------------------------------------------------------------------
 
-function showUpdatePatientForm( patientId )
+function showUpdateTrackedEntityInstanceForm( entityInstanceId )
 {
-	hideById('listPatientDiv');
-	setInnerHTML('editPatientDiv', '');
+	hideById('listEntityInstanceDiv');
+	setInnerHTML('editEntityInstanceDiv', '');
 	hideById('selectDiv');
 	hideById('searchDiv');
-	hideById('migrationPatientDiv');
-	hideById('patientDashboard');
+	hideById('migrationEntityInstanceDiv');
+	hideById('entityInstanceDashboard');
 
     $('#loaderDiv').show();
-    $('#editPatientDiv').load('showUpdatePatientForm.action', {
-        id:patientId,
-        programId: getFieldValue('programIdAddPatient')
+    $('#editEntityInstanceDiv').load('showUpdateTrackedEntityInstanceForm.action', {
+        id:entityInstanceId,
+        programId: getFieldValue('programIdAddEntityInstance')
     }, function()
     {
         $('#loaderDiv').hide();
-        showById('editPatientDiv');
+        showById('editEntityInstanceDiv');
     });
 }
 
-function addEventForPatientForm( divname )
+function addEventForEntityInstanceForm( divname )
 {
     $("#" + divname + " [id=checkDuplicateBtn]").click(function() {
 		checkDuplicate( divname );
 	});
 }
 
-function showRepresentativeInfo( patientId)
+function showRepresentativeInfo( entityInstanceId)
 {
     $('#representativeInfo' ).dialog({
         title: i18n_representative_info,
@@ -1019,10 +1021,10 @@ function toggleUnderAge(this_)
 // Enrollment program
 // ----------------------------------------------------------------
 
-function showProgramEnrollmentForm( patientId )
+function showProgramEnrollmentForm( entityInstanceId )
 {
     $('#enrollmentDiv').load('showProgramEnrollmentForm.action', {
-        id:patientId
+        id:entityInstanceId
     }).dialog({
         title: i18n_enroll_program,
         maximize: true,
@@ -1071,7 +1073,7 @@ function programOnchange( programId )
 		
 		var program = $('#programEnrollmentSelectDiv [id=programId] option:selected');
 
-        $('#identifierAndAttributeDiv').load("getPatientIdentifierAndAttribute.action", {
+        $('#identifierAndAttributeDiv').load("getAttribute.action", {
 			id:program.val()
 		}, function(){
             $("#dateOfIncidentField").datepicker("destroy");
@@ -1089,10 +1091,10 @@ function programOnchange( programId )
 	}
 }
 
-function saveSingleEnrollment(patientId, programId)
+function saveSingleEnrollment(entityInstanceId, programId)
 {
     $.postJSON( "saveProgramEnrollment.action", {
-        patientId: patientId,
+        entityInstanceId: entityInstanceId,
         programId: programId,
         dateOfIncident: getCurrentDate(),
         enrollmentDate: getCurrentDate()
@@ -1118,7 +1120,7 @@ function saveSingleEnrollment(patientId, programId)
 
         $('#activeTB' ).append(activedRow);
         $('#enrollmentDiv').dialog("close");
-        validateIdentifier( patientId, programId,'identifierAndAttributeDiv' );
+        validateIdentifier( entityInstanceId, programId,'identifierAndAttributeDiv' );
         loadActiveProgramStageRecords( programInstanceId );
         showSuccessMessage(i18n_enrol_success);
     });
@@ -1134,7 +1136,7 @@ function validateProgramEnrollment()
 
 	$.ajax({
 		type: "GET",
-		url: 'validatePatientProgramEnrollment.action',
+		url: 'validateProgramEnrollment.action',
 		data: getParamsForDiv('programEnrollmentSelectDiv'),
 		success: function(json) {
 			var type = json.response;
@@ -1156,14 +1158,14 @@ function validateProgramEnrollment()
 
 function saveEnrollment()
 {
-	var patientId = $('#enrollmentDiv [id=patientId]').val();
+	var entityInstanceId = $('#enrollmentDiv [id=entityInstanceId]').val();
 	var programId = $('#enrollmentDiv [id=programId] option:selected').val();
 	var programName = $('#enrollmentDiv [id=programId] option:selected').text();
 	var dateOfIncident = $('#enrollmentDiv [id=dateOfIncidentField]').val();
 	var enrollmentDate = $('#enrollmentDiv [id=enrollmentDateField]').val();
 
     $.postJSON( "saveProgramEnrollment.action", {
-        patientId: patientId,
+        entityInstanceId: entityInstanceId,
         programId: programId,
         dateOfIncident: dateOfIncident,
         enrollmentDate: enrollmentDate
@@ -1206,7 +1208,7 @@ function saveEnrollment()
 
         $('#activeTB' ).prepend(activedRow);
         $('#enrollmentDiv').dialog("close");
-        saveIdentifierAndAttribute( patientId, programId,'identifierAndAttributeDiv' );
+        saveIdentifierAndAttribute( entityInstanceId, programId,'identifierAndAttributeDiv' );
         loadActiveProgramStageRecords( programInstanceId );
         showSuccessMessage(i18n_enrol_success);
     });
@@ -1326,15 +1328,15 @@ function removeProgramInstance( programInstanceId )
 // Identifiers && Attributes for selected program
 // ----------------------------------------------------------------
 
-function validateIdentifier(  patientId, programId, paramsDiv)
+function validateIdentifier(  entityInstanceId, programId, paramsDiv)
 {
 	var params  = getParamsForDiv(paramsDiv);
-    params += "&patientId=" + patientId;
+    params += "&entityInstanceId=" + entityInstanceId;
     params +="&programId=" + programId;
 
 	$.ajax({
 		type: "POST",
-		url: 'validatePatientIdentifier.action',
+		url: 'validateTrackedEntityAttributeValue.action',
 		data: params,
 		success: function(json) {
             if( json.response == 'success' ) {
@@ -1351,7 +1353,7 @@ function saveIdentifierAndAttribute(params)
 {
 	$.ajax({
 			type: "POST",
-			url: 'savePatientIdentifierAndAttribute.action',
+			url: 'saveAttribute.action',
 			data: params,
 			success: function(json) {
                 $("[id=tab-2] :input").each(function(){
@@ -1369,16 +1371,16 @@ function saveIdentifierAndAttribute(params)
 // Show selected data-recording
 // ----------------------------------------------------------------
 
-function showSelectedDataRecoding( patientId )
+function showSelectedDataRecoding( entityInstanceId )
 {
 	showLoader();
 	hideById('searchDiv');
 	hideById('dataEntryFormDiv');
-	hideById('migrationPatientDiv');
+	hideById('migrationEntityInstanceDiv');
 	hideById('dataRecordingSelectDiv');
 	
     $('#dataRecordingSelectDiv').load( 'selectDataRecording.action', {
-        patientId: patientId
+        entityInstanceId: entityInstanceId
     },
     function() {
         $('#dataRecordingSelectDiv [id=backBtnFromEntry]').hide();
@@ -1394,30 +1396,30 @@ function showSelectedDataRecoding( patientId )
 }
 
 // ----------------------------------------------------------------
-// Patient Location
+// EntityInstance Location
 // ----------------------------------------------------------------
 
-function getPatientLocation( patientId )
+function getTrackedEntityInstanceLocation( entityInstanceId )
 {
-	hideById('listPatientDiv');
+	hideById('listEntityInstanceDiv');
 	hideById('selectDiv');
 	hideById('searchDiv');
-	setInnerHTML('patientDashboard','');
+	setInnerHTML('entityInstanceDashboard','');
 				
     $('#loaderDiv').show();
 	
-    $('#migrationPatientDiv').load("getPatientLocation.action", {
-        patientId: patientId
+    $('#migrationEntityInstanceDiv').load("getTrackedEntityInstanceLocation.action", {
+        entityInstanceId: entityInstanceId
     }, function() {
-        showById( 'migrationPatientDiv' );
+        showById( 'migrationEntityInstanceDiv' );
         $( "#loaderDiv" ).hide();
     });
 }
 
-function registerPatientLocation( patientId )
+function registerTrackedEntityInstanceLocation( entityInstanceId )
 {
-	$.getJSON( 'registerPatientLocation.action',{ patientId:patientId }, function( json ) {
-        showPatientDashboardForm(patientId);
+	$.getJSON( 'registerTrackedEntityInstanceLocation.action',{ entityInstanceId:entityInstanceId }, function( json ) {      
+		showTrackedEntityInstanceDashboardForm(entityInstanceId);
         showSuccessMessage( i18n_save_success );
     } );
 }
@@ -1436,35 +1438,35 @@ function getVisitSchedule( programInstanceId )
 // Dash board
 // ----------------------------------------------------------------
 
-function showPatientDashboardForm( patientId )
+function showTrackedEntityInstanceDashboardForm( entityInstanceId )
 {
 	hideById('selectDiv');
 	hideById('searchDiv');
-	hideById('listPatientDiv');
-	hideById('editPatientDiv');
+	hideById('listEntityInstanceDiv');
+	hideById('editEntityInstanceDiv');
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
-	hideById('migrationPatientDiv');
+	hideById('migrationEntityInstanceDiv');
 	hideById('smsManagementDiv');
 	hideById('dataEntryFormDiv');
 	
 	setInnerHTML('listEventDiv','');
 				
     $('#loaderDiv').show();
-    $('#patientDashboard').load('patientDashboard.action', {
-        patientId:patientId
+    $('#entityInstanceDashboard').load('trackedEntityInstanceDashboard.action', {
+        entityInstanceId:entityInstanceId
     }, function()
     {
         setInnerHTML('mainFormLink', i18n_main_form_link);
         $('#activeTB tr:first').click();
-        showById('patientDashboard');
+        showById('entityInstanceDashboard');
         $('#loaderDiv').hide();
     });
 }
 
 function activeProgramInstanceDiv( programInstanceId )
 {
-    $("#patientDashboard .selected").each(function(){
+    $("#entityInstanceDashboard .selected").each(function(){
         $(this).removeClass();
 	});
 	
@@ -1497,16 +1499,16 @@ function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInst
         var program = $( '#tr1_' + programInstanceId );
         var relationshipText=program.attr('relationshipText');
         var relatedProgramId=program.attr('relatedProgram');
-        var patientId = getFieldValue('patientId');
+        var entityInstanceId = getFieldValue('entityInstanceId');
         var selectedProgram = program.attr('programId');
 
         if( relationshipText != "")
         {
-            setInnerHTML('patientRelatedStageSpan',"&#8226; <a href='javascript:showAddPatientForm( " + patientId + "," + relatedProgramId + "," + selectedProgram + " , false );' id='relatedPatient_$!programStageInstance.id' >" + relationshipText + "</a><br>&nbsp;");
+            setInnerHTML('entityInstanceRelatedStageSpan',"&#8226; <a href='javascript:showAddTrackedEntityInstanceForm( " + entityInstanceId + "," + relatedProgramId + "," + selectedProgram + " , false );' id='relatedEntityInstance_$!programStageInstance.id' >" + relationshipText + "</a><br>&nbsp;");
         }
         else
         {
-            setInnerHTML('patientRelatedStageSpan','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;');
+            setInnerHTML('entityInstanceRelatedStageSpan','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;');
         }
 
         if(type=='2'){
@@ -1557,13 +1559,13 @@ function loadProgramStageRecords( programStageInstanceId, completed )
     });
 }
 
-function updateEnrollment( patientId, programId, programInstanceId, programName )
+function updateEnrollment( entityInstanceId, programId, programInstanceId, programName )
 {
 	var dateOfIncident = $('#tab-3 [id=dateOfIncident]').val();
 	var enrollmentDate = $('#tab-3 [id=enrollmentDate]').val();
 	
     $.postJSON( "saveProgramEnrollment.action", {
-        patientId: getFieldValue('patientId'),
+        entityInstanceId: getFieldValue('entityInstanceId'),
         programId: programId,
         dateOfIncident: dateOfIncident,
         enrollmentDate: enrollmentDate
@@ -1607,7 +1609,7 @@ function viewPersonProgram ( displayedDiv, hidedDiv )
 // Comment && Message
 // --------------------------------------------------------------------
 
-function sendSmsOnePatientForm()
+function sendSmsOneTrackedEntityInstanceForm()
 {
     $('#smsDiv').dialog( {
         title:i18n_send_message,
@@ -1620,7 +1622,7 @@ function sendSmsOnePatientForm()
     });
 }
 
-function sendSmsOnePatient( field, id )
+function sendSmsOneTrackedEntityInstance( field, id )
 {
 	if(field.value==""){
 		field.style.backgroundColor = ERROR_COLOR;
@@ -1703,7 +1705,7 @@ function addComment( field, programStageInstanceId )
 		return;
 	}
 	
-    $.postUTF8( 'savePatientComment.action', {
+    $.postUTF8( 'saveTrackedEntityInstanceComment.action', {
         programStageInstanceId: programStageInstanceId,
         commentText: commentText
     }, function ( json ) {
@@ -1745,7 +1747,7 @@ function removeComment( programStageInstanceId, commentId )
     if ( result )
     {
 		setHeaderWaitMessage( i18n_deleting );
-        $.postUTF8( 'removePatientComment.action', {
+        $.postUTF8( 'removeTrackedEntityInstanceComment.action', {
 			programStageInstanceId: programStageInstanceId,
 			id: commentId
 		}, function ( json ) {
@@ -1818,12 +1820,12 @@ function commentDivToggle(isHide)
 	}
 }
 
-function backPreviousPage( patientId )
+function backPreviousPage( entityInstanceId )
 {
     if( isDashboard ) {
-        showPatientDashboardForm(patientId)
+        showTrackedEntityInstanceDashboardForm(entityInstanceId)
     } else {
-        loadPatientList();
+        loadTrackedEntityInstanceList();
     }
 }
 
@@ -1995,37 +1997,37 @@ function saveComment( programInstanceId )
 
 function searchByIdsOnclick()
 {
-	if( getFieldValue("searchPatientByIds")=='')
+	if( getFieldValue("searchTrackedEntityInstanceByIds")=='')
 	{
-		hideById('listPatientDiv');
+		hideById('listEntityInstanceDiv');
 		return;
 	}
 	
-	var params = "searchTexts=iden_" + getFieldValue("searchPatientByIds").toLowerCase() + "_" + getFieldValue("orgunitId");
+	var params = "searchTexts=iden_" + getFieldValue("searchEntityInstanceByIds").toLowerCase() + "_" + getFieldValue("orgunitId");
 	params += "&listAll=false";
 	params += "&facilityLB=";
 
-    if( getFieldValue('programIdAddPatient') != "" ) {
-        params += "&programId=" + getFieldValue('programIdAddPatient');
-        params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
+    if( getFieldValue('programIdAddEntityInstance') != "" ) {
+        params += "&programId=" + getFieldValue('programIdAddEntityInstance');
+        params += "&searchTexts=prg_" + getFieldValue('programIdAddEntityInstance');
     }
 
-    hideById( 'listPatientDiv');
+    hideById( 'listEntityInstanceDiv');
 
 	$( "#loaderDiv" ).show();
 
 	$.ajax({
-		url: 'searchRegistrationPatient.action',
+		url: 'searchTrackedEntityInstance.action',
 		type:"POST",
 		data: params,
 		success: function( html ){
 			setTableStyles();
 			statusSearching = 1;
-			setInnerHTML( 'listPatientDiv', html );
-			showById('listPatientDiv');
+			setInnerHTML( 'listEntityInstanceDiv', html );
+			showById('listEntityInstanceDiv');
 			setFieldValue('listAll',false);
 			
-			var value = getFieldValue('searchPatientByIds');
+			var value = getFieldValue('searchEntityInstanceByIds');
 			var searchObject = $("[name=searchObjectId]")[1];
 
 			if(searchObject.value=='iden'){

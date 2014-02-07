@@ -8,7 +8,7 @@
 
 <div id='caseAggregationDiv'>
 
-	<h1> $i18n.getString( "manual_person_aggregation_form" ) #openHelp('run_case_aggregation')</h1>
+	<h1> $i18n.getString( "manual_tracked_entity_instance_aggregation_form" ) #openHelp('run_case_aggregation')</h1>
 	
 	<form id="caseAggregationForm" name="caseAggregationForm" action="caseAggregationResult.action" method="post">
 		<input type='hidden' id='autoSave' name='autoSave' value='false' />

@@ -33,21 +33,23 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hisp.dhis.api.mobile.model.Activity;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageSectionService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.UserService;
+
 import com.opensymphony.xwork2.Action;
 
 public class GetProgramStageFormAction
@@ -76,16 +78,16 @@ public class GetProgramStageFormAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService patientDataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setPatientDataValueService( TrackedEntityDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -234,14 +236,14 @@ public class GetProgramStageFormAction
         return prevDataValues;
     }
 
-    private Patient patient;
+    private TrackedEntityInstance patient;
 
-    public Patient getPatient()
+    public TrackedEntityInstance getPatient()
     {
         return patient;
     }
 
-    public void setPatient( Patient patient )
+    public void setPatient( TrackedEntityInstance patient )
     {
         this.patient = patient;
     }
@@ -304,7 +306,7 @@ public class GetProgramStageFormAction
     {
         prevDataValues.clear();
         programStage = util.getProgramStage( programId, programStageId );
-        patient = patientService.getPatient( patientId );
+        patient = patientService.getTrackedEntityInstance( patientId );
 
         if ( programStageSectionId != null && programStageSectionId != 0 )
         {
@@ -318,9 +320,9 @@ public class GetProgramStageFormAction
 
         program = programStageInstanceService.getProgramStageInstance( programStageInstanceId ).getProgramInstance()
             .getProgram();
-        Collection<PatientDataValue> patientDataValues = patientDataValueService
-            .getPatientDataValues( programStageInstanceService.getProgramStageInstance( programStageInstanceId ) );
-        for ( PatientDataValue patientDataValue : patientDataValues )
+        Collection<TrackedEntityDataValue> patientDataValues = patientDataValueService
+            .getTrackedEntityDataValues( programStageInstanceService.getProgramStageInstance( programStageInstanceId ) );
+        for ( TrackedEntityDataValue patientDataValue : patientDataValues )
         {
             prevDataValues.put( "DE" + patientDataValue.getDataElement().getId(), patientDataValue.getValue() );
             if ( patientDataValue.getProvidedElsewhere() != null )

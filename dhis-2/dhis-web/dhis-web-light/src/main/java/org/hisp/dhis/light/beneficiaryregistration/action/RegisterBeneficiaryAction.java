@@ -30,11 +30,11 @@ package org.hisp.dhis.light.beneficiaryregistration.action;
 
 import java.util.Collection;
 
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,9 +45,9 @@ public class RegisterBeneficiaryAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAttributeService patientAttributeService;
+    private TrackedEntityAttributeService patientAttributeService;
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public void setPatientAttributeService( TrackedEntityAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
@@ -92,14 +92,14 @@ public class RegisterBeneficiaryAction
         this.orgUnitId = orgUnitId;
     }
 
-    private Collection<PatientAttribute> patientAttributes;
+    private Collection<TrackedEntityAttribute> patientAttributes;
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public Collection<TrackedEntityAttribute> getPatientAttributes()
     {
         return patientAttributes;
     }
 
-    public void setPatientAttributes( Collection<PatientAttribute> patientAttributes )
+    public void setPatientAttributes( Collection<TrackedEntityAttribute> patientAttributes )
     {
         this.patientAttributes = patientAttributes;
     }
@@ -150,7 +150,7 @@ public class RegisterBeneficiaryAction
     public String execute()
         throws Exception
     {
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
+        patientAttributes = patientAttributeService.getAllTrackedEntityAttributes();
         phoneNumberAreaCode = (String) systemSettingManager
             .getSystemSetting( SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE );
         if ( phoneNumberAreaCode == null )

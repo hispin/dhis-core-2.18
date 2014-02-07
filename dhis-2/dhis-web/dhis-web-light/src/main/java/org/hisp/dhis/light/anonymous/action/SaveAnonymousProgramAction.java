@@ -42,8 +42,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -53,6 +51,8 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.util.ContextUtils;
 
@@ -92,9 +92,9 @@ public class SaveAnonymousProgramAction
         this.programInstanceService = programInstanceService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService patientDataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setPatientDataValueService( TrackedEntityDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
     }
@@ -337,7 +337,7 @@ public class SaveAnonymousProgramAction
         {
             DataElement dataElement = programStageDataElement.getDataElement();
 
-            PatientDataValue patientDataValue = new PatientDataValue();
+            TrackedEntityDataValue patientDataValue = new TrackedEntityDataValue();
 
             patientDataValue.setDataElement( dataElement );
 
@@ -355,7 +355,7 @@ public class SaveAnonymousProgramAction
 
                 patientDataValue.setTimestamp( new Date() );
 
-                patientDataValueService.savePatientDataValue( patientDataValue );
+                patientDataValueService.saveTrackedEntityDataValue( patientDataValue );
             }
            
         }

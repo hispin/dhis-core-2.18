@@ -35,8 +35,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -60,9 +60,9 @@ public class GetPatientLocationFormAction
         this.currentUserService = currentUserService;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -95,14 +95,14 @@ public class GetPatientLocationFormAction
         this.patientId = patientId;
     }
 
-    private Patient patient;
+    private TrackedEntityInstance patient;
 
-    public Patient getPatient()
+    public TrackedEntityInstance getPatient()
     {
         return patient;
     }
 
-    public void setPatient( Patient patient )
+    public void setPatient( TrackedEntityInstance patient )
     {
         this.patient = patient;
     }
@@ -115,7 +115,7 @@ public class GetPatientLocationFormAction
             .getOrganisationUnits();
         organisationUnits = new HashSet<OrganisationUnit>();
 
-        patient = patientService.getPatient( patientId );
+        patient = patientService.getTrackedEntityInstance( patientId );
 
         for ( OrganisationUnit organisationUnit : basicOrganisationUnits )
         {

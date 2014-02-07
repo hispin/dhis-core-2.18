@@ -34,10 +34,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.api.mobile.PatientMobileSettingService;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientMobileSetting;
+import org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityMobileSetting;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,26 +48,26 @@ public class ShowMobileSettingFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAttributeService patientAttributeService;
+    private TrackedEntityAttributeService patientAttributeService;
 
-    public PatientAttributeService getPatientAttributeService()
+    public TrackedEntityAttributeService getTrackedEntityAttributeService()
     {
         return patientAttributeService;
     }
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public void setTrackedEntityAttributeService( TrackedEntityAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
 
-    private PatientMobileSettingService patientMobileSettingService;
+    private TrackedEntityMobileSettingService patientMobileSettingService;
 
-    public PatientMobileSettingService getPatientMobileSettingService()
+    public TrackedEntityMobileSettingService getTrackedEntityMobileSettingService()
     {
         return patientMobileSettingService;
     }
 
-    public void setPatientMobileSettingService( PatientMobileSettingService patientMobileSettingService )
+    public void setTrackedEntityMobileSettingService( TrackedEntityMobileSettingService patientMobileSettingService )
     {
         this.patientMobileSettingService = patientMobileSettingService;
     }
@@ -76,50 +76,50 @@ public class ShowMobileSettingFormAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private List<PatientAttribute> patientAtts;
+    private List<TrackedEntityAttribute> patientAtts;
 
-    public List<PatientAttribute> getPatientAtts()
+    public List<TrackedEntityAttribute> getPatientAtts()
     {
         return patientAtts;
     }
 
-    public void setPatientAtts( List<PatientAttribute> patientAtts )
+    public void setPatientAtts( List<TrackedEntityAttribute> patientAtts )
     {
         this.patientAtts = patientAtts;
     }
 
-    private Collection<PatientAttribute> attributes;
+    private Collection<TrackedEntityAttribute> attributes;
 
-    public Collection<PatientAttribute> getAttributes()
+    public Collection<TrackedEntityAttribute> getAttributes()
     {
         return attributes;
     }
 
-    public void setAttributes( Collection<PatientAttribute> attributes )
+    public void setAttributes( Collection<TrackedEntityAttribute> attributes )
     {
         this.attributes = attributes;
     }
     
-    private List<PatientAttribute> allAttributes;
+    private List<TrackedEntityAttribute> allAttributes;
     
-    public List<PatientAttribute> getAllAttributes()
+    public List<TrackedEntityAttribute> getAllAttributes()
     {
         return allAttributes;
     }
 
-    public void setAllAttributes( List<PatientAttribute> allAttributes )
+    public void setAllAttributes( List<TrackedEntityAttribute> allAttributes )
     {
         this.allAttributes = allAttributes;
     }
 
-    private PatientMobileSetting setting;
+    private TrackedEntityMobileSetting setting;
 
-    public PatientMobileSetting getSetting()
+    public TrackedEntityMobileSetting getSetting()
     {
         return setting;
     }
 
-    public void setSetting( PatientMobileSetting setting )
+    public void setSetting( TrackedEntityMobileSetting setting )
     {
         this.setting = setting;
     }
@@ -132,23 +132,23 @@ public class ShowMobileSettingFormAction
     public String execute()
         throws Exception
     {
-        attributes = patientAttributeService.getAllPatientAttributes();
-        allAttributes = new ArrayList<PatientAttribute>(attributes);
+        attributes = patientAttributeService.getAllTrackedEntityAttributes();
+        allAttributes = new ArrayList<TrackedEntityAttribute>(attributes);
 
-        Collection<PatientMobileSetting> paSettings = new HashSet<PatientMobileSetting>( patientMobileSettingService
+        Collection<TrackedEntityMobileSetting> paSettings = new HashSet<TrackedEntityMobileSetting>( patientMobileSettingService
             .getCurrentSetting() );
 
         if ( !paSettings.isEmpty() )
         {
-            Iterator<PatientMobileSetting> settingsIt = paSettings.iterator();
+            Iterator<TrackedEntityMobileSetting> settingsIt = paSettings.iterator();
 
             if ( settingsIt.hasNext() )
             {
                 setting = settingsIt.next();
 
-                patientAtts = setting.getPatientAttributes();
+                patientAtts = setting.getAttributes();
 
-                for ( PatientAttribute attribute : patientAtts )
+                for ( TrackedEntityAttribute attribute : patientAtts )
                 {
                     if ( attributes.contains( attribute ) )
                     {
@@ -158,7 +158,7 @@ public class ShowMobileSettingFormAction
             }
             else
             {
-                patientAtts = new ArrayList<PatientAttribute>();
+                patientAtts = new ArrayList<TrackedEntityAttribute>();
             }
         }
 

@@ -45,10 +45,10 @@
 
 		<property name="reportDateDescription" />
 
-		<set name="patientReminders" order-by="daysAllowedSendMessage"
+		<set name="Reminders" order-by="daysAllowedSendMessage"
 			cascade="all">
 			<key column="programStageid" />
-			<one-to-many class="org.hisp.dhis.patient.PatientReminder" />
+			<one-to-many class="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder" />
 		</set>
 
 		<property name="autoGenerateEvent" />

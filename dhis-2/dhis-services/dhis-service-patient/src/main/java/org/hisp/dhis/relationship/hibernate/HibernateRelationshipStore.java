@@ -32,10 +32,10 @@ import java.util.Collection;
 
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipStore;
 import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Abyot Asalefew
@@ -46,10 +46,10 @@ public class HibernateRelationshipStore
     implements RelationshipStore
 {
     @SuppressWarnings( "unchecked" )
-    public Collection<Relationship> getForPatient( Patient patient )
+    public Collection<Relationship> getForTrackedEntityInstance( TrackedEntityInstance instance )
     {
-        return getCriteria( Restrictions.disjunction().add( Restrictions.eq( "patientA", patient ) ).add(
-            Restrictions.eq( "patientB", patient ) ) ).list();
+        return getCriteria( Restrictions.disjunction().add( Restrictions.eq( "entityInstanceA", instance ) ).add(
+            Restrictions.eq( "entityInstanceB", instance ) ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -59,22 +59,22 @@ public class HibernateRelationshipStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Relationship> get( Patient patientA, RelationshipType relationshipType )
+    public Collection<Relationship> get( TrackedEntityInstance entityInstanceA, RelationshipType relationshipType )
     {
-        return getCriteria( Restrictions.eq( "patientA", patientA ),
+        return getCriteria( Restrictions.eq( "entityInstanceA", entityInstanceA ),
             Restrictions.eq( "relationshipType", relationshipType ) ).list();
     }
 
-    public Relationship get( Patient patientA, Patient patientB, RelationshipType relationshipType )
+    public Relationship get( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB, RelationshipType relationshipType )
     {
-        return (Relationship) getCriteria( Restrictions.eq( "patientA", patientA ),
-            Restrictions.eq( "patientB", patientB ), Restrictions.eq( "relationshipType", relationshipType ) )
+        return (Relationship) getCriteria( Restrictions.eq( "entityInstanceA", entityInstanceA ),
+            Restrictions.eq( "entityInstanceB", entityInstanceB ), Restrictions.eq( "relationshipType", relationshipType ) )
             .uniqueResult();
     }
     
-    public Relationship get( Patient patientA, Patient patientB )
+    public Relationship get( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB )
     {
-        return (Relationship) getCriteria( Restrictions.eq( "patientA", patientA ),
-            Restrictions.eq( "patientB", patientB ) ).uniqueResult();
+        return (Relationship) getCriteria( Restrictions.eq( "entityInstanceA", entityInstanceA ),
+            Restrictions.eq( "entityInstanceB", entityInstanceB ) ).uniqueResult();
     }
 }

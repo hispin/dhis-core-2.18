@@ -40,9 +40,9 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.nfunk.jep.JEP;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,11 +80,11 @@ public class DefaultProgramIndicatorService
         this.dataElementService = dataElementService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
@@ -240,7 +240,8 @@ public class DefaultProgramIndicatorService
                 dataelementName = dataElement.getDisplayName();
             }
 
-            matcher.appendReplacement( description, "[" + ProgramIndicator.OBJECT_PROGRAM_STAGE_DATAELEMENT + ProgramIndicator.SEPARATOR_OBJECT + programStageName + ProgramIndicator.SEPARATOR_ID
+            matcher.appendReplacement( description, "[" + ProgramIndicator.OBJECT_PROGRAM_STAGE_DATAELEMENT
+                + ProgramIndicator.SEPARATOR_OBJECT + programStageName + ProgramIndicator.SEPARATOR_ID
                 + dataelementName + "]" );
         }
 
@@ -287,8 +288,8 @@ public class DefaultProgramIndicatorService
             Integer dataElementId = Integer.parseInt( infor[1] );
             dataElement = dataElementService.getDataElement( dataElementId );
 
-            PatientDataValue dataValue = patientDataValueService
-                .getPatientDataValue( programStageInstance, dataElement );
+            TrackedEntityDataValue dataValue = dataValueService.getTrackedEntityDataValue( programStageInstance,
+                dataElement );
 
             if ( dataValue == null )
             {

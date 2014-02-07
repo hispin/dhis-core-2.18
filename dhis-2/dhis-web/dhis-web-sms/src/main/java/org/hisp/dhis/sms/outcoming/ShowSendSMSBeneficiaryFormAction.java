@@ -33,11 +33,11 @@ import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -60,7 +60,7 @@ public class ShowSendSMSBeneficiaryFormAction
     private OrganisationUnitSelectionManager selectionManager;
 
     @Autowired
-    private PatientAttributeService patientAttributeService;
+    private TrackedEntityAttributeService patientAttributeService;
 
     @Autowired
     private ProgramService programService;
@@ -69,9 +69,9 @@ public class ShowSendSMSBeneficiaryFormAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Collection<PatientAttribute> patientAttributes;
+    private Collection<TrackedEntityAttribute> patientAttributes;
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public Collection<TrackedEntityAttribute> getPatientAttributes()
     {
         return patientAttributes;
     }
@@ -109,7 +109,7 @@ public class ShowSendSMSBeneficiaryFormAction
     public String execute()
         throws Exception
     {
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
+        patientAttributes = patientAttributeService.getAllTrackedEntityAttributes();
 
         programs = programService.getProgramsByCurrentUser();
 

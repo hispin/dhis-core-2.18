@@ -72,44 +72,51 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientStore">
-		<property name="clazz" value="org.hisp.dhis.patient.Patient" />
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityInstanceStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityInstanceStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityInstance" />
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientAttributeStore"
-		class="org.hisp.dhis.patient.hibernate.HibernatePatientAttributeStore">
-		<property name="clazz" value="org.hisp.dhis.patient.PatientAttribute" />
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityAttributeStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityAttribute" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patientattributevalue.PatientAttributeValueStore"
-		class="org.hisp.dhis.patientattributevalue.hibernate.HibernatePatientAttributeValueStore">
+	<bean
+		id="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueStore"
+		class="org.hisp.dhis.trackedentityattributevalue.hibernate.HibernateTrackedEntityAttributeValueStore">
 		<property name="clazz"
-			value="org.hisp.dhis.patientattributevalue.PatientAttributeValue" />
+			value="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue" />
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientAttributeOptionStore"
-		class="org.hisp.dhis.patient.hibernate.HibernatePatientAttributeOptionStore">
-		<property name="clazz" value="org.hisp.dhis.patient.PatientAttributeOption" />
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patientdatavalue.PatientDataValueStore"
-		class="org.hisp.dhis.patientdatavalue.hibernate.HibernatePatientDataValueStore">
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityAttributeOptionStore">
 		<property name="clazz"
-			value="org.hisp.dhis.patientdatavalue.PatientDataValue" />
+			value="org.hisp.dhis.trackedentity.TrackedEntityAttributeOption" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientAttributeGroupStore"
+	<bean
+		id="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueStore"
+		class="org.hisp.dhis.trackedentitydatavalue.hibernate.HibernateTrackedEntityDataValueStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupStore"
 		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
-		<property name="clazz" value="org.hisp.dhis.patient.PatientAttributeGroup" />
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
@@ -118,9 +125,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientAuditStore"
-		class="org.hisp.dhis.patient.hibernate.HibernatePatientAuditStore">
-		<property name="clazz" value="org.hisp.dhis.patient.PatientAudit" />
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAuditStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityAuditStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityAudit" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
@@ -131,8 +139,8 @@
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
@@ -147,8 +155,8 @@
 		<property name="programIndicatorStore" ref="org.hisp.dhis.program.ProgramIndicatorStore" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
@@ -170,24 +178,26 @@
 		<property name="programStageInstanceStore"
 			ref="org.hisp.dhis.program.ProgramStageInstanceStore" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="patientReminderService" ref="org.hisp.dhis.patient.PatientReminderService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramInstanceService" class="org.hisp.dhis.program.DefaultProgramInstanceService">
 		<property name="programInstanceStore" ref="org.hisp.dhis.program.ProgramInstanceStore" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="patientReminderService" ref="org.hisp.dhis.patient.PatientReminderService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
@@ -215,50 +225,55 @@
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="expressionService"
 			ref="org.hisp.dhis.program.ProgramExpressionService" />
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientService" class="org.hisp.dhis.patient.DefaultPatientService">
-		<property name="patientStore" ref="org.hisp.dhis.patient.PatientStore" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityInstanceService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityInstanceService">
+		<property name="entityInstanceStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceStore" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientAttributeService" class="org.hisp.dhis.patient.DefaultPatientAttributeService">
-		<property name="patientAttributeStore" ref="org.hisp.dhis.patient.PatientAttributeStore" />
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityAttributeService">
+		<property name="attributeStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeStore" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"
-		class="org.hisp.dhis.patientattributevalue.DefaultPatientAttributeValueService">
-		<property name="patientAttributeValueStore"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueStore" />
+		id="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService"
+		class="org.hisp.dhis.trackedentityattributevalue.DefaultTrackedEntityAttributeValueService">
+		<property name="attributeValueStore"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientAttributeOptionService"
-		class="org.hisp.dhis.patient.DefaultPatientAttributeOptionService">
-		<property name="patientAttributeOptionStore"
-			ref="org.hisp.dhis.patient.PatientAttributeOptionStore" />
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityAttributeOptionService">
+		<property name="attributeOptionStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patientdatavalue.PatientDataValueService"
-		class="org.hisp.dhis.patientdatavalue.DefaultPatientDataValueService">
-		<property name="patientDataValueStore"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueStore" />
+	<bean
+		id="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService"
+		class="org.hisp.dhis.trackedentitydatavalue.DefaultTrackedEntityDataValueService">
+		<property name="dataValueStore"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientAttributeGroupService"
-		class="org.hisp.dhis.patient.DefaultPatientAttributeGroupService">
-		<property name="patientAttributeGroupStore"
-			ref="org.hisp.dhis.patient.PatientAttributeGroupStore" />
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityAttributeGroupService">
+		<property name="attributeGroupStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 
@@ -268,27 +283,31 @@
 			ref="org.hisp.dhis.program.ProgramStageDataElementStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientAuditService" class="org.hisp.dhis.patient.DefaultPatientAuditService">
-		<property name="patientAuditStore" ref="org.hisp.dhis.patient.PatientAuditStore" />
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAuditService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityAuditService">
+		<property name="auditStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAuditStore" />
 	</bean>
 
-	<!-- PatientComment -->
+	<!-- TrackedEntityComment -->
 
-	<bean id="org.hisp.dhis.patientcomment.PatientCommentService"
-		class="org.hisp.dhis.patientcomment.DefaultPatientCommentService">
-		<property name="patientCommentStore"
-			ref="org.hisp.dhis.patientcomment.PatientCommentStore" />
+	<bean id="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService"
+		class="org.hisp.dhis.trackedentitycomment.DefaultTrackedEntityCommentService">
+		<property name="commentStore"
+			ref="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patientcomment.PatientCommentStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
-		<property name="clazz" value="org.hisp.dhis.patientcomment.PatientComment" />
+	<bean id="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentStore"
+		class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentitycomment.TrackedEntityComment" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 	<!-- Scheduling -->
 
-	<bean id="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager"
-		class="org.hisp.dhis.patient.scheduling.DefaultProgramSchedulingManager"
+	<bean id="org.hisp.dhis.trackedentity.scheduling.ProgramSchedulingManager"
+		class="org.hisp.dhis.trackedentity.scheduling.DefaultProgramSchedulingManager"
 		init-method="scheduleTasks">
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 		<property name="scheduler" ref="scheduler" />
@@ -301,7 +320,7 @@
 	</bean>
 
 	<bean id="abstractScheduledMessageTask"
-		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask">
+		class="org.hisp.dhis.trackedentity.scheduling.SendScheduledMessageTask">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="outboundSmsService"
@@ -313,53 +332,57 @@
 	</bean>
 
 	<bean id="sendMessageScheduled"
-		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask"
+		class="org.hisp.dhis.trackedentity.scheduling.SendScheduledMessageTask"
 		parent="abstractScheduledMessageTask">
 		<property name="sendingMessage" value="true" />
 	</bean>
 
 	<bean id="scheduleMessage"
-		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask"
+		class="org.hisp.dhis.trackedentity.scheduling.SendScheduledMessageTask"
 		parent="abstractScheduledMessageTask">
 		<property name="sendingMessage" value="false" />
 	</bean>
 
-	<!-- PatientRegistrationForm -->
+	<!-- TrackedEntityForm -->
 
-	<bean id="org.hisp.dhis.patient.PatientRegistrationFormService"
-		class="org.hisp.dhis.patient.DefaultPatientRegistrationFormService">
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityFormService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityFormService">
 		<property name="formStore"
-			ref="org.hisp.dhis.patient.PatientRegistrationFormStore" />
+			ref="org.hisp.dhis.trackedentity.TrackedEntityFormStore" />
 		<property name="attributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="attributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientRegistrationFormStore"
-		class="org.hisp.dhis.patient.hibernate.HibernatePatientRegistrationFormStore">
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityFormStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityFormStore">
 		<property name="clazz"
-			value="org.hisp.dhis.patient.PatientRegistrationForm" />
+			value="org.hisp.dhis.trackedentity.TrackedEntityForm" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<!-- Patient Reminder -->
+	<!-- TrackedEntityInstanceReminder -->
 
-	<bean id="org.hisp.dhis.patient.PatientReminderService" class="org.hisp.dhis.patient.DefaultPatientReminderService">
-		<property name="patientReminderStore" ref="org.hisp.dhis.patient.PatientReminderStore" />
+	<bean
+		id="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityInstanceReminderService">
+		<property name="reminderStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientReminderStore"
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderStore"
 		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
-		<property name="clazz" value="org.hisp.dhis.patient.PatientReminder" />
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 	<!-- Startup -->
 
-	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror">
+	<bean id="org.hisp.dhis.trackedentity.startup.TableAlteror" class="org.hisp.dhis.trackedentity.startup.TableAlteror">
 		<property name="statementManager" ref="statementManager" />
-		<property name="name" value="PatientTableAlteror" />
+		<property name="name" value="TrackedEntityTableAlteror" />
 		<property name="runlevel" value="4" />
 		<property name="skipInTests" value="true" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
@@ -376,89 +399,94 @@
 		<property name="arguments">
 			<list>
 				<list>
-					<ref local="org.hisp.dhis.patient.startup.TableAlteror" />
+					<ref local="org.hisp.dhis.trackedentity.startup.TableAlteror" />
 				</list>
 			</list>
 		</property>
 	</bean>
 
-    <!-- DeletionHandlers -->
+	<!-- DeletionHandlers -->
 
-    <bean id="org.hisp.dhis.program.ProgramInstanceDeletionHandler"
-        class="org.hisp.dhis.program.ProgramInstanceDeletionHandler">
-        <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-        <property name="patientDataValueService"
-            ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-        <property name="patientCommentService"
-            ref="org.hisp.dhis.patientcomment.PatientCommentService" />
-        <property name="programStageInstanceService"
-            ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-    </bean>
+	<bean id="org.hisp.dhis.program.ProgramInstanceDeletionHandler"
+		class="org.hisp.dhis.program.ProgramInstanceDeletionHandler">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="commentService"
+			ref="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.relationship.RelationshipDeletionHandler"
-        class="org.hisp.dhis.relationship.RelationshipDeletionHandler">
-        <property name="relationshipSevice"
-            ref="org.hisp.dhis.relationship.RelationshipService" />
-    </bean>
+	<bean id="org.hisp.dhis.relationship.RelationshipDeletionHandler"
+		class="org.hisp.dhis.relationship.RelationshipDeletionHandler">
+		<property name="relationshipSevice"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler"
-        class="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler">
-        <property name="patientAttributeValueService"
-            ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-    </bean>
+	<bean
+		id="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler"
+		class="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler">
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.program.ProgramDeletionHandler" class="org.hisp.dhis.program.ProgramDeletionHandler">
-        <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-    </bean>
+	<bean id="org.hisp.dhis.program.ProgramDeletionHandler" class="org.hisp.dhis.program.ProgramDeletionHandler">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.patient.PatientDeletionHandler" class="org.hisp.dhis.patient.PatientDeletionHandler">
-        <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-    </bean>
+	<bean
+		id="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler"
+		class="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler">
+		<property name="instanceService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"
-        class="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler">
-        <property name="programStageDEService"
-            ref="org.hisp.dhis.program.ProgramStageDataElementService" />
-    </bean>
-    
-    <bean id="org.hisp.dhis.program.ProgramStageDeletionHandler"
-        class="org.hisp.dhis.program.ProgramStageDeletionHandler">
-        <property name="programStageService"
-            ref="org.hisp.dhis.program.ProgramStageService" />
-    </bean>
+	<bean id="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"
+		class="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler">
+		<property name="programStageDEService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler"
-        class="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler">
-        <property name="jdbcTemplate" ref="jdbcTemplate" />
-    </bean>
+	<bean id="org.hisp.dhis.program.ProgramStageDeletionHandler"
+		class="org.hisp.dhis.program.ProgramStageDeletionHandler">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.program.ProgramValidationDeletionHandler"
-        class="org.hisp.dhis.program.ProgramValidationDeletionHandler">
-        <property name="programValidationService"
-            ref="org.hisp.dhis.program.ProgramValidationService" />
-    </bean>
+	<bean
+		id="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler"
+		class="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
 
-    <bean id="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler"
-        class="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler">
-        <property name="dataEntryFormService"
-            ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
-        <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-    </bean>
+	<bean id="org.hisp.dhis.program.ProgramValidationDeletionHandler"
+		class="org.hisp.dhis.program.ProgramValidationDeletionHandler">
+		<property name="programValidationService"
+			ref="org.hisp.dhis.program.ProgramValidationService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler"
-        class="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler">
-        <property name="jdbcTemplate" ref="jdbcTemplate" />
-    </bean>
+	<bean id="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler"
+		class="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler">
+		<property name="dataEntryFormService"
+			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.program.ProgramStageSectionDeletionHandler"
-        class="org.hisp.dhis.program.ProgramStageSectionDeletionHandler">
-    </bean>
+	<bean id="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler"
+		class="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
 
-    <bean id="org.hisp.dhis.patient.PatientAuditDeletionHandler"
-        class="org.hisp.dhis.patient.PatientAuditDeletionHandler">
-        <property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
-    </bean>
-    
+	<bean id="org.hisp.dhis.program.ProgramStageSectionDeletionHandler"
+		class="org.hisp.dhis.program.ProgramStageSectionDeletionHandler">
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler"
+		class="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler">
+		<property name="auditService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAuditService" />
+	</bean>
+
 	<!-- DeletionManager -->
 
 	<bean
@@ -468,13 +496,17 @@
 		<property name="arguments">
 			<list>
 				<list>
-					<ref local="org.hisp.dhis.patient.PatientDeletionHandler" />
-					<ref local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
-					<ref local="org.hisp.dhis.patient.PatientAuditDeletionHandler" />
-					<ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
-                    <ref local="org.hisp.dhis.program.ProgramStageDeletionHandler" />
+					<ref local="org.hisp.dhis.program.ProgramStageDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler" />
@@ -493,13 +525,13 @@
 		<aop:aspect ref="deletionInterceptor">
 
 			<aop:before
-				pointcut="execution( * org.hisp.dhis.patient.PatientService.delete*(..) )"
+				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityInstanceService.delete*(..) )"
 				method="intercept" />
 			<aop:before
-				pointcut="execution( * org.hisp.dhis.patientattributevalue.PatientAttributeValueService.delete*(..) )"
+				pointcut="execution( * org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService.delete*(..) )"
 				method="intercept" />
 			<aop:before
-				pointcut="execution( * org.hisp.dhis.patient.PatientAttributeService.delete*(..) )"
+				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityAttributeService.delete*(..) )"
 				method="intercept" />
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.relationship.RelationshipService.delete*(..) )"
@@ -508,7 +540,7 @@
 				pointcut="execution( * org.hisp.dhis.relationship.RelationshipTypeService.delete*(..) )"
 				method="intercept" />
 			<aop:before
-				pointcut="execution( * org.hisp.dhis.patient.PatientAuditService.delete*(..) )"
+				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityAuditService.delete*(..) )"
 				method="intercept" />
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.program.ProgramService.delete*(..) )"
@@ -532,7 +564,7 @@
 				pointcut="execution( * org.hisp.dhis.program.ProgramValidationService.delete*(..) )"
 				method="intercept" />
 			<aop:before
-				pointcut="execution( * org.hisp.dhis.patientdatavalue.PatientDataValueService.delete*(..) )"
+				pointcut="execution( * org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService.delete*(..) )"
 				method="intercept" />
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.validation.ValidationCriteriaService.delete*(..) )"

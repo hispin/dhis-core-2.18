@@ -52,7 +52,7 @@
 	<tr>
 		<td><label for="operator">$i18n.getString( "operator" )</label></td>
 		<td>
-			<input type="radio" id="operator" name="operator" value="COUNT" checked onchange='operatorOnchange(this.value)'> $i18n.getString('number_of_patients')<br>
+			<input type="radio" id="operator" name="operator" value="COUNT" checked onchange='operatorOnchange(this.value)'> $i18n.getString('number_of_tracked_entity_instances')<br>
 			<input type="radio" id="operator" name="operator" value="times" onchange='operatorOnchange(this.value)'> $i18n.getString('number_of_visits')<br>
 			<input type="radio" id="operator" name="operator" value="sum" onchange='operatorOnchange(this.value)'> $i18n.getString('sum_dataelement_value')<br>
 			<input type="radio" id="operator" name="operator" value="avg" onchange='operatorOnchange(this.value)'> $i18n.getString('avg_dataelement_value')<br>
@@ -80,7 +80,7 @@
 			<label for="programStage">$i18n.getString( "program_stage" )</label>
 		</td>
 		<td>
-			<select id="programStageId" name="programStageId" onChange="getPatientDataElements();"></select>
+			<select id="programStageId" name="programStageId" onChange="getTrackedEmtityDataElements();"></select>
 		</td>
 	</tr>
 	

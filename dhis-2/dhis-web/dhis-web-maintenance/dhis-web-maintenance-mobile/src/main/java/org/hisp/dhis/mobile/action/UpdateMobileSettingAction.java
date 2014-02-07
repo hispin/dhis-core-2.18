@@ -33,10 +33,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import org.hisp.dhis.api.mobile.PatientMobileSettingService;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientMobileSetting;
+import org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityMobileSetting;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,26 +47,26 @@ public class UpdateMobileSettingAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAttributeService patientAttributeService;
+    private TrackedEntityAttributeService patientAttributeService;
 
-    public PatientAttributeService getPatientAttributeService()
+    public TrackedEntityAttributeService getTrackedEntityAttributeService()
     {
         return patientAttributeService;
     }
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public void setTrackedEntityAttributeService( TrackedEntityAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
 
-    private PatientMobileSettingService patientMobileSettingService;
+    private TrackedEntityMobileSettingService patientMobileSettingService;
 
-    public PatientMobileSettingService getPatientMobileSettingService()
+    public TrackedEntityMobileSettingService getTrackedEntityMobileSettingService()
     {
         return patientMobileSettingService;
     }
 
-    public void setPatientMobileSettingService( PatientMobileSettingService patientMobileSettingService )
+    public void setTrackedEntityMobileSettingService( TrackedEntityMobileSettingService patientMobileSettingService )
     {
         this.patientMobileSettingService = patientMobileSettingService;
     }
@@ -105,55 +105,55 @@ public class UpdateMobileSettingAction
 
         if ( selectedList.size() > 0 )
         {
-            PatientMobileSetting setting;
+            TrackedEntityMobileSetting setting;
             if ( patientMobileSettingService.getCurrentSetting().size() > 0 )
             {
                 setting = patientMobileSettingService.getCurrentSetting().iterator().next();
-                List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-                setting.setPatientAttributes( attributes );
+                List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+                setting.setAttributes( attributes );
                 fillValues( attributes );
-                patientMobileSettingService.updatePatientMobileSetting( setting );
+                patientMobileSettingService.updateTrackedEntityMobileSetting( setting );
             }
             else
             {
-                setting = new PatientMobileSetting();
-                List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-                setting.setPatientAttributes( attributes );
+                setting = new TrackedEntityMobileSetting();
+                List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+                setting.setAttributes( attributes );
                 fillValues( attributes );
-                patientMobileSettingService.savePatientMobileSetting( setting );
+                patientMobileSettingService.saveTrackedEntityMobileSetting( setting );
             }
         }
         else
         {
-            PatientMobileSetting setting;
+            TrackedEntityMobileSetting setting;
             if ( patientMobileSettingService.getCurrentSetting().size() > 0 )
             {
                 setting = patientMobileSettingService.getCurrentSetting().iterator().next();
-                List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-                setting.setPatientAttributes( attributes );
+                List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+                setting.setAttributes( attributes );
                 fillValues( attributes );
-                patientMobileSettingService.updatePatientMobileSetting( setting );
+                patientMobileSettingService.updateTrackedEntityMobileSetting( setting );
             }
             else
             {
-                setting = new PatientMobileSetting();
-                List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-                setting.setPatientAttributes( attributes );
+                setting = new TrackedEntityMobileSetting();
+                List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+                setting.setAttributes( attributes );
                 fillValues( attributes );
-                patientMobileSettingService.savePatientMobileSetting( setting );
+                patientMobileSettingService.saveTrackedEntityMobileSetting( setting );
             }
         }
 
-        Collection<PatientAttribute> allPatientAttributes = patientAttributeService.getAllPatientAttributes();
+        Collection<TrackedEntityAttribute> allTrackedEntityAttributes = patientAttributeService.getAllTrackedEntityAttributes();
 
-        for ( PatientAttribute patientAttribute : allPatientAttributes )
+        for ( TrackedEntityAttribute patientAttribute : allTrackedEntityAttributes )
         {
             patientAttribute.setGroupBy( false );
             if ( patientAttribute.getId() == groupingAttributeId )
             {
                 patientAttribute.setGroupBy( true );
             }
-            patientAttributeService.updatePatientAttribute( patientAttribute );
+            patientAttributeService.updateTrackedEntityAttribute( patientAttribute );
         }
 
         return SUCCESS;
@@ -163,11 +163,11 @@ public class UpdateMobileSettingAction
     // Supporting methods
     // -------------------------------------------------------------------------
 
-    private void fillValues( List<PatientAttribute> attributes )
+    private void fillValues( List<TrackedEntityAttribute> attributes )
     {
         for ( String id : selectedList )
         {
-            attributes.add( patientAttributeService.getPatientAttribute( Integer.parseInt( id ) ) );
+            attributes.add( patientAttributeService.getTrackedEntityAttribute( Integer.parseInt( id ) ) );
         }
     }
 }

@@ -33,14 +33,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -54,11 +54,11 @@ public class LoadProgramStageInstancesAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
-    public void setPatientService( PatientService patientService )
+    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
     {
-        this.patientService = patientService;
+        this.entityInstanceService = entityInstanceService;
     }
 
     private ProgramService programService;
@@ -86,11 +86,11 @@ public class LoadProgramStageInstancesAction
     // Input && Output
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
+    private Integer entityInstanceId;
 
-    public void setPatientId( Integer patientId )
+    public void setEntityInstanceId( Integer entityInstanceId )
     {
-        this.patientId = patientId;
+        this.entityInstanceId = entityInstanceId;
     }
 
     private Integer programId;
@@ -135,7 +135,7 @@ public class LoadProgramStageInstancesAction
     public String execute()
         throws Exception
     {
-        Patient patient = patientService.getPatient( patientId );
+        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
 
         program = programService.getProgram( programId );
 
@@ -143,12 +143,12 @@ public class LoadProgramStageInstancesAction
 
         if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
-            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( patient,
+            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
                 program, ProgramInstance.STATUS_ACTIVE ) );
         }
         else if ( program.getType() == Program.SINGLE_EVENT_WITH_REGISTRATION )
         {
-            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( patient,
+            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
                 program ) );
         }
         else

@@ -49,11 +49,11 @@ import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,10 +76,10 @@ public class RegistrationSingleEventServiceTest
     @Autowired
     private EnrollmentService enrollmentService;
 
-    private Patient maleA;
-    private Patient maleB;
-    private Patient femaleA;
-    private Patient femaleB;
+    private TrackedEntityInstance maleA;
+    private TrackedEntityInstance maleB;
+    private TrackedEntityInstance femaleA;
+    private TrackedEntityInstance femaleB;
 
     private Person personMaleA;
 
@@ -100,10 +100,10 @@ public class RegistrationSingleEventServiceTest
         identifiableObjectManager.save( organisationUnitA );
         identifiableObjectManager.save( organisationUnitB );
 
-        maleA = createPatient( 'A',  organisationUnitA );
-        maleB = createPatient( 'B',  organisationUnitB );
-        femaleA = createPatient( 'C',  organisationUnitA );
-        femaleB = createPatient( 'D', organisationUnitB );
+        maleA = createTrackedEntityInstance( 'A',  organisationUnitA );
+        maleB = createTrackedEntityInstance( 'B',  organisationUnitB );
+        femaleA = createTrackedEntityInstance( 'C',  organisationUnitA );
+        femaleB = createTrackedEntityInstance( 'D', organisationUnitB );
 
         identifiableObjectManager.save( maleA );
         identifiableObjectManager.save( maleB );

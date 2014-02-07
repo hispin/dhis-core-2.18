@@ -6,12 +6,11 @@
     "executionDate": "$!format.formatDate( $programStageInstance.executionDate )",
     "status": "$!programStageInstance.getEventStatus()",
     "completed": "$!programStageInstance.completed",
-    "patientComment": "$!programStageInstance.patientComment.commentText",
+    "comment": "$!programStageInstance.comment.commentText",
     #if($programStageInstance.programStage.captureCoordinates)
     "latitude": "$!latitude",
     "longitude": "$!longitude",
     #end
-    "comment": "$!encoder.jsonEncode( $programStageInstance.patientComment.commentText )",
     "dataValues": {
     #set( $size = $dataValueMap.keySet().size() )
     #foreach( $key in $dataValueMap.keySet() )

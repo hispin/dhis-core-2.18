@@ -44,7 +44,7 @@ public class HibernateProgramStageSectionStore
     implements ProgramStageSectionStore
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Implemented methods
     // -------------------------------------------------------------------------
 
     @Override

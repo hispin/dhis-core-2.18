@@ -138,7 +138,7 @@ public class DefaultProgramService
 
         for ( Program program : getAllPrograms() )
         {
-            if ( program.getPatientValidationCriteria().contains( validationCriteria ) )
+            if ( program.getValidationCriteria().contains( validationCriteria ) )
             {
                 programs.add( program );
             }

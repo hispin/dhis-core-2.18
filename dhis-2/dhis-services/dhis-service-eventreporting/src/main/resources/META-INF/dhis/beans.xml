@@ -16,17 +16,17 @@
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patientreport.PatientAggregateReportStore"
-		class="org.hisp.dhis.patientreport.hibernate.HibernatePatientAggregateReportStore">
+	<bean id="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportStore"
+		class="org.hisp.dhis.trackedentityreport.hibernate.HibernateTrackedEntityAggregateReportStore">
 		<property name="clazz"
-			value="org.hisp.dhis.patientreport.PatientAggregateReport" />
+			value="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReport" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patientreport.PatientTabularReportStore"
-		class="org.hisp.dhis.patientreport.hibernate.HibernatePatientTabularReportStore">
+	<bean id="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportStore"
+		class="org.hisp.dhis.trackedentityreport.hibernate.HibernateTrackedEntityTabularReportStore">
 		<property name="clazz"
-			value="org.hisp.dhis.patientreport.PatientTabularReport" />
+			value="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
@@ -39,21 +39,22 @@
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patientreport.PatientAggregateReportService"
-		class="org.hisp.dhis.patientreport.DefaultPatientAggregateReportService">
-		<property name="patientAggregateReportStore"
-			ref="org.hisp.dhis.patientreport.PatientAggregateReportStore" />
+	<bean id="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService"
+		class="org.hisp.dhis.trackedentityreport.DefaultTrackedEntityAggregateReportService">
+		<property name="aggregateReportStore"
+			ref="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patientreport.PatientTabularReportService"
-		class="org.hisp.dhis.patientreport.DefaultPatientTabularReportService">
+	<bean id="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService"
+		class="org.hisp.dhis.trackedentityreport.DefaultTrackedEntityTabularReportService">
 		<property name="tabularReportStore"
-			ref="org.hisp.dhis.patientreport.PatientTabularReportStore" />
+			ref="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportStore" />
 	</bean>
 
 	<!-- Scheduling -->

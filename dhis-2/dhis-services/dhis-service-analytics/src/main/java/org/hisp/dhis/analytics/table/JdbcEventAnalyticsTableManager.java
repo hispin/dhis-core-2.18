@@ -41,13 +41,14 @@ import java.util.concurrent.Future;
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MathUtils;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,7 +97,7 @@ public class JdbcEventAnalyticsTableManager
 
     public boolean validState()
     {
-        return jdbcTemplate.queryForRowSet( "select dataelementid from patientdatavalue limit 1" ).next();
+        return jdbcTemplate.queryForRowSet( "select dataelementid from trackedentitydatavalue limit 1" ).next();
     }
 
     public String getTableName()
@@ -164,7 +165,7 @@ public class JdbcEventAnalyticsTableManager
                 + "left join programinstance pi on psi.programinstanceid=pi.programinstanceid "
                 + "left join programstage ps on psi.programstageid=ps.programstageid "
                 + "left join program pr on pi.programid=pr.programid "
-                + "left join patient pa on pi.patientid=pa.patientid "
+                + "left join trackedentityinstance pa on pi.trackedentityinstanceid=pa.trackedentityinstanceid "
                 + "left join organisationunit ou on psi.organisationunitid=ou.organisationunitid "
                 + "left join _orgunitstructure ous on psi.organisationunitid=ous.organisationunitid "
                 + "left join _dateperiodstructure dps on psi.executiondate=dps.dateperiod "
@@ -214,7 +215,7 @@ public class JdbcEventAnalyticsTableManager
             String dataClause = dataElement.isNumericType() ? numericClause : "";
             String select = dataElement.isNumericType() ? doubleSelect : "value";
 
-            String sql = "(select " + select + " from patientdatavalue where programstageinstanceid="
+            String sql = "(select " + select + " from trackedentitydatavalue where programstageinstanceid="
                 + "psi.programstageinstanceid and dataelementid=" + dataElement.getId() + dataClause + ") as "
                 + quote( dataElement.getUid() );
 
@@ -222,14 +223,15 @@ public class JdbcEventAnalyticsTableManager
             columns.add( col );
         }
 
-        for ( PatientAttribute attribute : table.getProgram().getAttributes() )
+        for ( ProgramTrackedEntityAttribute programAttribute : table.getProgram().getAttributes() )
         {
+            TrackedEntityAttribute attribute = programAttribute.getAttribute();
             String dataType = attribute.isNumericType() ? dbl : text;
             String dataClause = attribute.isNumericType() ? numericClause : "";
             String select = attribute.isNumericType() ? doubleSelect : "value";
 
-            String sql = "(select " + select + " from patientattributevalue where patientid=pi.patientid and "
-                + "patientattributeid=" + attribute.getId() + dataClause + ") as " + quote( attribute.getUid() );
+            String sql = "(select " + select + " from trackedentityattributevalue where trackedentityinstanceid=pi.trackedentityinstanceid and "
+                + "attributeid=" + attribute.getId() + dataClause + ") as " + quote( attribute.getUid() );
 
             String[] col = { quote( attribute.getUid() ), dataType, sql };
             columns.add( col );

@@ -1,16 +1,16 @@
-<h2>$i18n.getString( "patients" )</h2>
+<h2>$i18n.getString( "tracked_entity" )</h2>
 <ul>
-	<li><a href="patientAttribute.action">$i18n.getString( "patient_attribute" )</a></li>
-	<li><a href="patientAttributeVisitSchedule.action">$i18n.getString( "patient_attribute_visit_schedule" )</a></li>
-	<li><a href="patientAttributeGroup.action">$i18n.getString( "patient_attribute_group" )</a></li>
+	<li><a href="attribute.action">$i18n.getString( "tracked_entity_attribute" )</a></li>
+	<li><a href="attributeVisitSchedule.action">$i18n.getString( "tracked_entity_attribute_visit_schedule" )</a></li>
+	<li><a href="attributeGroup.action">$i18n.getString( "tracked_entity_attribute_group" )</a></li>
 	<li><a href="relationshipType.action">$i18n.getString( "relationship_type" )</a></li>
-	<li><a href="patientRegistrationForm.action">$i18n.getString( "patient_registration_form" )</a></li>
+	<li><a href="trackedEntityForm.action">$i18n.getString( "tracked_entity_form" )</a></li>
 </ul>
 
 <h2>$i18n.getString( "programs" )</h2>
 <ul>
 	<li><a href="program.action">$i18n.getString( "program" )</a></li>
-	<li><a href="caseAggregation.action">$i18n.getString( "patient_aggregation_query_builder" )</a></li>
+	<li><a href="caseAggregation.action">$i18n.getString( "tracked_entity_aggregation_query_builder" )</a></li>
 </ul>
 
 #if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) || $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )

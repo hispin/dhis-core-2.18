@@ -40,9 +40,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramIndicatorService;
@@ -54,6 +51,9 @@ import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 import org.hisp.dhis.program.comparator.ProgramStageSectionSortOrderComparator;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,11 +75,11 @@ public class LoadDataEntryAction
         this.programDataEntryService = programDataEntryService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private ProgramStageService programStageService;
@@ -128,7 +128,7 @@ public class LoadDataEntryAction
 
     private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
 
-    private Map<Integer, PatientDataValue> patientDataValueMap;
+    private Map<Integer, TrackedEntityDataValue> entityInstanceDataValueMap;
 
     private OrganisationUnit organisationUnit;
 
@@ -208,9 +208,9 @@ public class LoadDataEntryAction
         return programStageDataElements;
     }
 
-    public Map<Integer, PatientDataValue> getPatientDataValueMap()
+    public Map<Integer, TrackedEntityDataValue> getEntityInstanceDataValueMap()
     {
-        return patientDataValueMap;
+        return entityInstanceDataValueMap;
     }
 
     private String visitor;
@@ -220,11 +220,11 @@ public class LoadDataEntryAction
         return visitor;
     }
 
-    private Patient patient;
+    private TrackedEntityInstance entityInstance;
 
-    public Patient getPatient()
+    public TrackedEntityInstance getEntityInstance()
     {
-        return patient;
+        return entityInstance;
     }
 
     public Map<String, Double> getCalAttributeValueMap()
@@ -289,7 +289,6 @@ public class LoadDataEntryAction
         // ---------------------------------------------------------------------
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
-
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         DataEntryForm dataEntryForm = programStage.getDataEntryForm();
@@ -324,14 +323,14 @@ public class LoadDataEntryAction
 
             if ( program.isRegistration() )
             {
-                patient = programStageInstance.getProgramInstance().getPatient();
+                entityInstance = programStageInstance.getProgramInstance().getEntityInstance();
             }
 
             // ---------------------------------------------------------------------
             // Get data values
             // ---------------------------------------------------------------------
 
-            Collection<PatientDataValue> patientDataValues = getPatientDataValues();
+            Collection<TrackedEntityDataValue> entityInstanceDataValues = getEntityInstanceDataValues();
 
             // ---------------------------------------------------------------------
             // Get data-entry-form
@@ -340,7 +339,7 @@ public class LoadDataEntryAction
             if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_CUSTOM ) )
             {
                 customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry(
-                    dataEntryForm.getHtmlCode(), patientDataValues, i18n, programStage, programStageInstance,
+                    dataEntryForm.getHtmlCode(), entityInstanceDataValues, i18n, programStage, programStageInstance,
                     organisationUnit );
             }
 
@@ -355,19 +354,19 @@ public class LoadDataEntryAction
         return SUCCESS;
     }
 
-    private Collection<PatientDataValue> getPatientDataValues()
+    private Collection<TrackedEntityDataValue> getEntityInstanceDataValues()
     {
-        Collection<PatientDataValue> patientDataValues = patientDataValueService
-            .getPatientDataValues( programStageInstance );
+        Collection<TrackedEntityDataValue> entityInstanceDataValues = dataValueService
+            .getTrackedEntityDataValues( programStageInstance );
 
-        patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
+        entityInstanceDataValueMap = new HashMap<Integer, TrackedEntityDataValue>( entityInstanceDataValues.size() );
 
-        for ( PatientDataValue patientDataValue : patientDataValues )
+        for ( TrackedEntityDataValue entityInstanceDataValue : entityInstanceDataValues )
         {
-            int key = patientDataValue.getDataElement().getId();
-            patientDataValueMap.put( key, patientDataValue );
+            int key = entityInstanceDataValue.getDataElement().getId();
+            entityInstanceDataValueMap.put( key, entityInstanceDataValue );
         }
 
-        return patientDataValues;
+        return entityInstanceDataValues;
     }
 }

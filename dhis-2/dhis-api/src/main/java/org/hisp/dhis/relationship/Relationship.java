@@ -30,7 +30,7 @@ package org.hisp.dhis.relationship;
 
 import java.io.Serializable;
 
-import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Abyot Asalefew
@@ -46,12 +46,11 @@ public class Relationship
 
     private int id;
 
-    private Patient patientA;
+    private TrackedEntityInstance entityInstanceA;
 
     private RelationshipType relationshipType;
 
-    private Patient patientB;    
-    
+    private TrackedEntityInstance entityInstanceB;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -61,11 +60,12 @@ public class Relationship
     {
     }
 
-    public Relationship( Patient patientA, RelationshipType relationshipType, Patient patientB )
+    public Relationship( TrackedEntityInstance entityInstanceA, RelationshipType relationshipType,
+        TrackedEntityInstance entityInstanceB )
     {
-        this.patientA = patientA;
+        this.entityInstanceA = entityInstanceA;
         this.relationshipType = relationshipType;
-        this.patientB = patientB;
+        this.entityInstanceB = entityInstanceB;
     }
 
     // -------------------------------------------------------------------------
@@ -92,8 +92,8 @@ public class Relationship
 
         final Relationship other = (Relationship) object;
 
-        return patientA.equals( other.getPatientA() ) && relationshipType.equals( other.getRelationshipType() )
-            && patientB.equals( other.getPatientB() );
+        return entityInstanceA.equals( other.getEntityInstanceA() ) && relationshipType.equals( other.getRelationshipType() )
+            && entityInstanceB.equals( other.getEntityInstanceB() );
     }
 
     @Override
@@ -102,8 +102,8 @@ public class Relationship
         final int prime = 31;
         int result = 1;
 
-        result = result * prime + patientA.hashCode();
-        result = result * prime + patientB.hashCode();
+        result = result * prime + entityInstanceA.hashCode();
+        result = result * prime + entityInstanceB.hashCode();
         result = result * prime + relationshipType.hashCode();
 
         return result;
@@ -130,22 +130,6 @@ public class Relationship
     }
 
     /**
-     * @return the patientA
-     */
-    public Patient getPatientA()
-    {
-        return patientA;
-    }
-
-    /**
-     * @param patientA the patientA to set
-     */
-    public void setPatientA( Patient patientA )
-    {
-        this.patientA = patientA;
-    }
-
-    /**
      * @return the relationshipType
      */
     public RelationshipType getRelationshipType()
@@ -161,20 +145,24 @@ public class Relationship
         this.relationshipType = relationshipType;
     }
 
-    /**
-     * @return the patientB
-     */
-    public Patient getPatientB()
+    public TrackedEntityInstance getEntityInstanceA()
     {
-        return patientB;
+        return entityInstanceA;
     }
 
-    /**
-     * @param patientB the patientB to set
-     */
-    public void setPatientB( Patient patientB )
+    public void setEntityInstanceA( TrackedEntityInstance entityInstanceA )
     {
-        this.patientB = patientB;
+        this.entityInstanceA = entityInstanceA;
+    }
+
+    public TrackedEntityInstance getEntityInstanceB()
+    {
+        return entityInstanceB;
+    }
+
+    public void setEntityInstanceB( TrackedEntityInstance entityInstanceB )
+    {
+        this.entityInstanceB = entityInstanceB;
     }
 
 }

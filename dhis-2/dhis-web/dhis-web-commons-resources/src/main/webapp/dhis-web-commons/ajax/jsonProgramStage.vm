@@ -13,12 +13,12 @@
 	"generatedByEnrollmentDate": "$!programStage.generatedByEnrollmentDate",
 	"openAfterEnrollment": "$!programStage.openAfterEnrollment",
 	"reportDateToUse": "$!programStage.reportDateToUse",
-	"patientReminders":[
-	#foreach($patientReminder in $programStage.patientReminders)
+	"reminders":[
+	#foreach($reminder in $programStage.reminders)
 	  {
-		"daysAllowedSendMessage": "$!patientReminder.daysAllowedSendMessage",
-		"templateMessage": "$!encoder.jsonEncode( ${patientReminder.templateMessage} )"
-	  }#if( $velocityCount < $programStage.patientReminders.size() ),#end
+		"daysAllowedSendMessage": "$!reminder.daysAllowedSendMessage",
+		"templateMessage": "$!encoder.jsonEncode( ${reminder.templateMessage} )"
+	  }#if( $velocityCount < $programStage.reminders.size() ),#end
 	#end 
 	],
 	"irregular": "$!programStage.irregular",

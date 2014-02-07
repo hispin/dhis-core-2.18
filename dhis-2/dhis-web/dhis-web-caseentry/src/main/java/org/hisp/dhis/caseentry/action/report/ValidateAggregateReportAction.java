@@ -29,8 +29,8 @@ package org.hisp.dhis.caseentry.action.report;
  */
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.patientreport.PatientAggregateReport;
-import org.hisp.dhis.patientreport.PatientAggregateReportService;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,9 +46,9 @@ public class ValidateAggregateReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAggregateReportService aggregateReportService;
+    private TrackedEntityAggregateReportService aggregateReportService;
 
-    public void setAggregateReportService( PatientAggregateReportService aggregateReportService )
+    public void setAggregateReportService( TrackedEntityAggregateReportService aggregateReportService )
     {
         this.aggregateReportService = aggregateReportService;
     }
@@ -94,7 +94,7 @@ public class ValidateAggregateReportAction
     {
         name = name.trim();
 
-        PatientAggregateReport match = aggregateReportService.getPatientAggregateReport( name );
+        TrackedEntityAggregateReport match = aggregateReportService.getTrackedEntityAggregateReport( name );
 
         if ( match != null && (id == null || match.getId() != id.intValue()) )
         {

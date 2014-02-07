@@ -35,10 +35,10 @@ import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +64,10 @@ public class PersonServiceTest
     @Autowired
     private IdentifiableObjectManager manager;
 
-    private Patient maleA;
-    private Patient maleB;
-    private Patient femaleA;
-    private Patient femaleB;
+    private TrackedEntityInstance maleA;
+    private TrackedEntityInstance maleB;
+    private TrackedEntityInstance femaleA;
+    private TrackedEntityInstance femaleB;
 
     private OrganisationUnit organisationUnitA;
     private OrganisationUnit organisationUnitB;
@@ -82,10 +82,10 @@ public class PersonServiceTest
 
         organisationUnitB.setParent( organisationUnitA );
 
-        maleA = createPatient( 'A', organisationUnitA );
-        maleB = createPatient( 'B', organisationUnitB );
-        femaleA = createPatient( 'C', organisationUnitA );
-        femaleB = createPatient( 'D', organisationUnitB );
+        maleA = createTrackedEntityInstance(  'A', organisationUnitA );
+        maleB = createTrackedEntityInstance( 'B', organisationUnitB );
+        femaleA = createTrackedEntityInstance( 'C', organisationUnitA );
+        femaleB = createTrackedEntityInstance( 'D', organisationUnitB );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         manager.save( organisationUnitA );
@@ -96,8 +96,8 @@ public class PersonServiceTest
         manager.save( femaleB );
         manager.save( programA );
 
-        programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, null );
-        programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, null );
+        programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA, null );
+        programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA, null );
     }
 
     @Override
@@ -122,7 +122,7 @@ public class PersonServiceTest
     @Test
     public void getPersonByPatients()
     {
-        List<Patient> patients = Arrays.asList( maleA, femaleB );
+        List<TrackedEntityInstance> patients = Arrays.asList( maleA, femaleB );
         assertEquals( 2, personService.getPersons( patients ).getPersons().size() );
     }
 

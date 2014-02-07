@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 
 /**
  * An Expression is the expression of e.g. a validation rule of a program. It
@@ -100,13 +100,13 @@ public interface ProgramExpressionService
      * @param programExpression {@link ProgramExpression}
      * @param programStageInstance The {@link ProgramStageInstance} associate
      *        with this expression
-     * @param patientDataValueMap patientDataValue<The id of {@link DataElement}
-     *        , {@link PatientDataValue} >
+     * @param trackedEntityDataValueMap TrackedEntityDataValue<The id of {@link DataElement}
+     *        , {@link TrackedEntityDataValue} >
      * 
      * @return The expression value
      */
     String getProgramExpressionValue( ProgramExpression programExpression, ProgramStageInstance programStageInstance,
-        Map<String, String> patientDataValueMap );
+        Map<String, String> trackedEntityDataValueMap );
 
     /**
      * Get the description of a program expression

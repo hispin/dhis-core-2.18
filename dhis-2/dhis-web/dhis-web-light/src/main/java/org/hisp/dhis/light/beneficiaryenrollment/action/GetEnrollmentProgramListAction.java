@@ -31,11 +31,11 @@ package org.hisp.dhis.light.beneficiaryenrollment.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,14 +46,14 @@ public class GetEnrollmentProgramListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public PatientService getPatientService()
+    public TrackedEntityInstanceService getPatientService()
     {
         return patientService;
     }
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -123,14 +123,14 @@ public class GetEnrollmentProgramListAction
         this.enrolledProgramList = enrolledProgramList;
     }
 
-    private Patient patient;
+    private TrackedEntityInstance patient;
 
-    public Patient getPatient()
+    public TrackedEntityInstance getPatient()
     {
         return patient;
     }
 
-    public void setPatient( Patient patient )
+    public void setPatient( TrackedEntityInstance patient )
     {
         this.patient = patient;
     }
@@ -152,7 +152,7 @@ public class GetEnrollmentProgramListAction
         throws Exception
     {
 
-        patient = patientService.getPatient(  patientId  );
+        patient = patientService.getTrackedEntityInstance( patientId  );
         for ( Program program :  programService.getPrograms( patient.getOrganisationUnit() ) )
 
         {

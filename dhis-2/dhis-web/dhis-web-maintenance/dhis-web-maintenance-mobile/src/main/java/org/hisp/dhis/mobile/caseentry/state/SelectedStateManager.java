@@ -29,9 +29,9 @@ package org.hisp.dhis.mobile.caseentry.state;
  */
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Abyot Asalefew
@@ -41,12 +41,12 @@ public interface SelectedStateManager
     OrganisationUnit getSelectedOrganisationUnit();
 
     // -------------------------------------------------------------------------
-    // Patient
+    // TrackedEntityInstance
     // -------------------------------------------------------------------------
 
-    void setSelectedPatient( Patient patient );
+    void setSelectedPatient( TrackedEntityInstance patient );
 
-    Patient getSelectedPatient();
+    TrackedEntityInstance getSelectedPatient();
 
     void clearSelectedPatient();
 

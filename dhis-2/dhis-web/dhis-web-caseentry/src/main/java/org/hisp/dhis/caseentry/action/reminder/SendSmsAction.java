@@ -33,8 +33,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.patient.PatientReminderService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -42,6 +40,8 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -79,11 +79,11 @@ public class SendSmsAction
         this.currentUserService = currentUserService;
     }
 
-    private PatientReminderService patientReminderService;
+    private TrackedEntityInstanceReminderService reminderService;
 
-    public void setPatientReminderService( PatientReminderService patientReminderService )
+    public void setReminderService( TrackedEntityInstanceReminderService reminderService )
     {
-        this.patientReminderService = patientReminderService;
+        this.reminderService = reminderService;
     }
 
     private ProgramInstanceService programInstanceService;
@@ -168,12 +168,12 @@ public class SendSmsAction
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 
-        PatientReminder patientReminder = new PatientReminder();
-        patientReminder.setTemplateMessage( msg );
-        patientReminder.setSendTo( sendTo );
+        TrackedEntityInstanceReminder reminder = new TrackedEntityInstanceReminder();
+        reminder.setTemplateMessage( msg );
+        reminder.setSendTo( sendTo );
 
-        Set<String> phoneNumbers = patientReminderService.getPhonenumbers( patientReminder, programStageInstance
-            .getProgramInstance().getPatient() );
+        Set<String> phoneNumbers = reminderService.getPhonenumbers( reminder, programStageInstance
+            .getProgramInstance().getEntityInstance() );
 
         try
         {
@@ -208,11 +208,11 @@ public class SendSmsAction
         ProgramInstance programInstance = programInstanceService
             .getProgramInstance( programInstanceId );
 
-        PatientReminder patientReminder = new PatientReminder();
-        patientReminder.setTemplateMessage( msg );
-        patientReminder.setSendTo( sendTo );
+        TrackedEntityInstanceReminder reminder = new TrackedEntityInstanceReminder();
+        reminder.setTemplateMessage( msg );
+        reminder.setSendTo( sendTo );
 
-        Set<String> phoneNumbers = patientReminderService.getPhonenumbers( patientReminder, programInstance.getPatient() );
+        Set<String> phoneNumbers = reminderService.getPhonenumbers( reminder, programInstance.getEntityInstance() );
 
         try
         {

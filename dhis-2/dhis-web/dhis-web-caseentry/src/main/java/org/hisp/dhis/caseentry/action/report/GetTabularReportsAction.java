@@ -31,8 +31,8 @@ package org.hisp.dhis.caseentry.action.report;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.patientreport.PatientTabularReport;
-import org.hisp.dhis.patientreport.PatientTabularReportService;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -50,9 +50,9 @@ public class GetTabularReportsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientTabularReportService tabularReportService;
+    private TrackedEntityTabularReportService tabularReportService;
 
-    public void setTabularReportService( PatientTabularReportService tabularReportService )
+    public void setTabularReportService( TrackedEntityTabularReportService tabularReportService )
     {
         this.tabularReportService = tabularReportService;
     }
@@ -68,9 +68,9 @@ public class GetTabularReportsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<PatientTabularReport> reports = new HashSet<PatientTabularReport>();
+    private Collection<TrackedEntityTabularReport> reports = new HashSet<TrackedEntityTabularReport>();
 
-    public Collection<PatientTabularReport> getReports()
+    public Collection<TrackedEntityTabularReport> getReports()
     {
         return reports;
     }
@@ -124,15 +124,15 @@ public class GetTabularReportsAction
         throws Exception
     {
         User user = currentUserService.getCurrentUser();
-        
-        total = tabularReportService.countPatientTabularReportList( user, query );
-        
+
+        total = tabularReportService.countTrackedEntityTabularReportList( user, query );
+
         int startPos = currentPage <= 0 ? 0 : (currentPage - 1) * pageSize;
         startPos = (startPos > total) ? total : startPos;
 
         pageCount = (total % pageSize == 0) ? (total / pageSize) : (total / pageSize + 1);
 
-        reports = tabularReportService.getPatientTabularReports( user, query, startPos, pageSize );
+        reports = tabularReportService.getTrackedEntityTabularReports( user, query, startPos, pageSize );
 
         return SUCCESS;
     }

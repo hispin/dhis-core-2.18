@@ -38,22 +38,22 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version CaseAggregationCondititionService.java Nov 17, 2010 10:56:29 AM
+ * @version CaseAggregationConditionService.java Nov 17, 2010 10:56:29 AM
  */
 public interface CaseAggregationConditionService
 {
     /**
      * Adds an {@link CaseAggregationCondition}
      * 
-     * @param patientAttributeGroup The to CaseAggregationCondition add.
+     * @param TrackedEntityAttributeGroup The to CaseAggregationCondition add.
      * 
      * @return A generated unique id of the added
      *         {@link CaseAggregationCondition}.
@@ -63,14 +63,14 @@ public interface CaseAggregationConditionService
     /**
      * Updates a {@link CaseAggregationCondition}.
      * 
-     * @param patientAttributeGroup the CaseAggregationCondition to update.
+     * @param TrackedEntityAttributeGroup the CaseAggregationCondition to update.
      */
     void updateCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
     /**
      * Deletes a {@link CaseAggregationCondition}.
      * 
-     * @param patientAttributeGroup the CaseAggregationCondition to delete.
+     * @param TrackedEntityAttributeGroup the CaseAggregationCondition to delete.
      */
     void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
@@ -153,14 +153,14 @@ public interface CaseAggregationConditionService
     Collection<Program> getProgramsInCondition( String aggregationExpression );
 
     /**
-     * Retrieve a collection of {@link PatientAttribute} by a
+     * Retrieve a collection of {@link TrackedEntityAttribute} by a
      * {@link CaseAggregationCondition} formula
      * 
      * @param aggregationExpression Aggregate Expression
      * 
-     * @return A collection of PatientAttribute
+     * @return A collection of TrackedEntityAttribute
      */
-    Collection<PatientAttribute> getPatientAttributesInCondition( String aggregationExpression );
+    Collection<TrackedEntityAttribute> getTrackedEntityAttributesInCondition( String aggregationExpression );
 
     /**
      * Retrieve the description of a {@link CaseAggregationCondition} expression
@@ -233,7 +233,7 @@ public interface CaseAggregationConditionService
      * @param optionComboId The {@link DataElementCategoryOptionCombo} which is
      *        used for saving a datavalue
      * @param optionComboName The name ofDataElementCategoryOptionCombo
-     * @param deSumId The id of the patient data element
+     * @param deSumId The id of the data element
      * @param orgunitIds The ids of orgunits where data are retrieved to
      *        calculate value
      * @param period The period for retrieving data
@@ -259,11 +259,11 @@ public interface CaseAggregationConditionService
     String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period );
 
     /**
-     * Get list of {@link Patient} ids from SQL
+     * Get list of {@link TrackedEntityInstance} ids from SQL
      * 
      * @param sql SQL statement
      * 
-     * @return List of patient ids
+     * @return List of TrackedEntityInstance ids
      */
     List<Integer> executeSQL( String sql );
 }

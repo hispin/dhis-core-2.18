@@ -37,10 +37,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -49,6 +45,10 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -74,18 +74,18 @@ public class SaveValuesAction
         this.programService = programService;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
-    public void setPatientService( PatientService patientService )
+    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
     {
-        this.patientService = patientService;
+        this.entityInstanceService = entityInstanceService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
@@ -128,11 +128,11 @@ public class SaveValuesAction
         this.programId = programId;
     }
 
-    private Integer patientId;
+    private Integer entityInstanceId;
 
-    public void setPatientId( Integer patientId )
+    public void setEntityInstanceId( Integer entityInstanceId )
     {
-        this.patientId = patientId;
+        this.entityInstanceId = entityInstanceId;
     }
 
     private int statusCode;
@@ -151,7 +151,7 @@ public class SaveValuesAction
     {
         Program program = programService.getProgram( programId );
         ProgramStage programStage = program.getProgramStages().iterator().next();
-        Patient patient = patientService.getPatient( patientId );
+        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
 
         // ---------------------------------------------------------------------
         // Add a new program-instance
@@ -163,7 +163,7 @@ public class SaveValuesAction
         programInstance.setDateOfIncident( currentDate );
         programInstance.setProgram( program );
         programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
-        programInstance.setPatient( patient );
+        programInstance.setEntityInstance( entityInstance );
 
         programInstanceService.addProgramInstance( programInstance );
 
@@ -199,13 +199,13 @@ public class SaveValuesAction
                     + "_facility";
                 boolean providedElsewhere = (request.getParameter( providedElsewhereId ) == null) ? false : true;
 
-                PatientDataValue patientDataValue = new PatientDataValue( programStageInstance,
+                TrackedEntityDataValue entityInstanceDataValue = new TrackedEntityDataValue( programStageInstance,
                     psDataElement.getDataElement(), new Date(), value.trim() );
-                patientDataValue.setStoredBy( storedBy );
-                patientDataValue.setProvidedElsewhere( providedElsewhere );
-                patientDataValueService.savePatientDataValue( patientDataValue );
+                entityInstanceDataValue.setStoredBy( storedBy );
+                entityInstanceDataValue.setProvidedElsewhere( providedElsewhere );
+                dataValueService.saveTrackedEntityDataValue( entityInstanceDataValue );
 
-                LOG.debug( "Adding PatientDataValue, value added" );
+                LOG.debug( "Adding TrackedEntityDataValue, value added" );
             }
         }
 

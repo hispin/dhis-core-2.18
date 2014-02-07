@@ -29,11 +29,12 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 public class AddNewRalationshipAction
     implements Action
@@ -58,9 +59,9 @@ public class AddNewRalationshipAction
         this.relationshipTypeService = relationshipTypeService;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -122,20 +123,20 @@ public class AddNewRalationshipAction
         throws Exception
     {
         Relationship newRelationship = new Relationship();
-        Patient patientA = patientService.getPatient( originalPatientId );
-        Patient patientB = patientService.getPatient( relatedPatientId );
+        TrackedEntityInstance patientA = patientService.getTrackedEntityInstance( originalPatientId );
+        TrackedEntityInstance patientB = patientService.getTrackedEntityInstance( relatedPatientId );
 
         newRelationship.setRelationshipType( relationshipTypeService.getRelationshipType( relationshipTypeId ) );
 
         if ( relationship.equals( "A" ) )
         {
-            newRelationship.setPatientA( patientA );
-            newRelationship.setPatientB( patientB );
+            newRelationship.setEntityInstanceA( patientA );
+            newRelationship.setEntityInstanceB( patientB );
         }
         else
         {
-            newRelationship.setPatientA( patientB );
-            newRelationship.setPatientB( patientA );
+            newRelationship.setEntityInstanceA( patientB );
+            newRelationship.setEntityInstanceB( patientA );
         }
 
         relationshipService.saveRelationship( newRelationship );

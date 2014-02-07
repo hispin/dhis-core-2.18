@@ -43,6 +43,10 @@ public class HibernateProgramIndicatorStore
     extends HibernateIdentifiableObjectStore<ProgramIndicator>
     implements ProgramIndicatorStore
 {
+    // -------------------------------------------------------------------------
+    // Implemented methods
+    // -------------------------------------------------------------------------
+
     @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramIndicator> getByProgram( Program program )

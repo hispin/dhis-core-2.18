@@ -68,14 +68,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserGroup;
@@ -187,9 +187,9 @@ public class MetaData
 
     private List<MetaDataFilter> metaDataFilters = new ArrayList<MetaDataFilter>();
 
-    private List<PatientAttribute> personAttributeTypes = new ArrayList<PatientAttribute>();
+    private List<TrackedEntityAttribute> personAttributeTypes = new ArrayList<TrackedEntityAttribute>();
 
-    private List<PatientAttributeGroup> personAttributeGroups = new ArrayList<PatientAttributeGroup>();
+    private List<TrackedEntityAttributeGroup> personAttributeGroups = new ArrayList<TrackedEntityAttributeGroup>();
 
     public MetaData()
     {
@@ -782,12 +782,12 @@ public class MetaData
     @JsonProperty
     @JacksonXmlElementWrapper(localName = "personAttributeTypes", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty(localName = "personAttributeType", namespace = DxfNamespaces.DXF_2_0)
-    public List<PatientAttribute> getPersonAttributeTypes()
+    public List<TrackedEntityAttribute> getPersonAttributeTypes()
     {
         return personAttributeTypes;
     }
 
-    public void setPersonAttributeTypes( List<PatientAttribute> personAttributeTypes )
+    public void setPersonAttributeTypes( List<TrackedEntityAttribute> personAttributeTypes )
     {
         this.personAttributeTypes = personAttributeTypes;
     }
@@ -795,12 +795,12 @@ public class MetaData
     @JsonProperty
     @JacksonXmlElementWrapper(localName = "personAttributeGroups", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty(localName = "personAttributeGroup", namespace = DxfNamespaces.DXF_2_0)
-    public List<PatientAttributeGroup> getPersonAttributeGroups()
+    public List<TrackedEntityAttributeGroup> getPersonAttributeGroups()
     {
         return personAttributeGroups;
     }
 
-    public void setPersonAttributeGroups( List<PatientAttributeGroup> personAttributeGroups )
+    public void setPersonAttributeGroups( List<TrackedEntityAttributeGroup> personAttributeGroups )
     {
         this.personAttributeGroups = personAttributeGroups;
     }

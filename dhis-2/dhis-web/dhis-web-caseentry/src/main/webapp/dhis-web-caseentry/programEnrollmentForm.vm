@@ -2,8 +2,8 @@
 #if( $programInstance || $hasDataEntry=='true' )
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programInstance.id' />
 <input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='0'>
-<input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id' />
-<input type='hidden' id='patientUid' name='patientUid' value='$programInstance.patient.uid' />
+<input type='hidden' id='entityInstanceId' name='entityInstanceId' value='$programInstance.entityInstance.id' />
+<input type='hidden' id='entityInstanceUid' name='entityInstanceUid' value='$programInstance.entityInstance.uid' />
 <input type='hidden' id='hasDataEntry' name='hasDataEntry' value='$hasDataEntry' />
 <input type='hidden' name='editDataEntryForm' id='editDataEntryForm' value='$auth.hasAccess( "dhis-web-caseentry", "editDataEntryForm" )'>
 
@@ -12,7 +12,10 @@
 		#if( $hasDataEntry == 'true' )
 			<li><a href="#tab-1">$i18n.getString("data_entry_screen")</a></li>
 		#end
-		
+		#if($auth.hasAccess( "dhis-web-caseentry", "accessAttributes" )  &&
+		($attributes && $attributes.size() > 0) )
+			<li><a href="#tab-2">$i18n.getString("attributes")</a></li>
+		#end
 		#if( $programInstance.program.type=='1' )
 			<li><a href="#tab-3">$i18n.getString("reschedule_and_set_status")</a></li>
 			<li><a href="#tab-4">$i18n.getString("comments_and_sms_message")</a></li>
@@ -47,17 +50,17 @@
 		</div>
 	#end
 	
-	#if($auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" )  &&
-		($patientAttributes && $patientAttributes.size() > 0) )
+	#if($auth.hasAccess( "dhis-web-caseentry", "accessAttributes" )  &&
+		($attributes && $attributes.size() > 0) )
 		<!-- Identifiers and Attributes TAB -->
 		<div id="tab-2">
-			<form id='patientPropertyForm' name='patientPropertyForm' method="POST">
+			<form id='propertyForm' name='propertyForm' method="POST">
 				<table>
-					#set( $mark = false )
+					#set( $mark = false ) 
 					<!-- ATTRIBUTES IN GROUPS -->
-					#foreach($attribute in $patientAttributes )
+					#foreach($attribute in $attributes )
 						#set( $attributeValue = '')
-						#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
+						#set( $attributeValue = $!attributeValueMap.get( $attribute.id ) )
 						<tr name='attributesFields'>
 							#set($mandatory = $attribute.mandatory )
 							<td class='text-column'><label>$attribute.displayName #if($mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
@@ -120,9 +123,9 @@
 #end
 
 <script type="text/javascript">
-	jQuery("#patientPropertyForm").ready( function(){
-		validation( 'patientPropertyForm', function(form){
-			validateIdentifier( $programInstance.patient.id, $programInstance.program.id, 'patientPropertyForm' );
+	jQuery("#propertyForm").ready( function(){
+		validation( 'propertyForm', function(form){
+			validateIdentifier( $programInstance.entityInstance.id, $programInstance.program.id, 'propertyForm' );
 		});	
 		
 		validation( 'coordinatesForm', function(form){
@@ -130,18 +133,11 @@
 		});
 		
 		var disableButtons = true;
-		#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientIdentifier" ) )
+		#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditAttributes" ) )
 			disableButtons = false;
 		#else
-			jQuery('#patientForm [name=idenFields] input').attr('disabled',true);
-			jQuery('#patientForm [name=idenFields] select').attr('disabled',true);
-		#end
-
-		#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientAttributes" ) )
-			disableButtons = false;
-		#else
-			jQuery('#patientForm [name=attributesFields] input').attr('disabled',true);
-			jQuery('#patientForm [name=attributesFields] select').attr('disabled',true);
+			jQuery('#entityInstanceForm [name=attributesFields] input').attr('disabled',true);
+			jQuery('#entityInstanceForm [name=attributesFields] select').attr('disabled',true);
 		#end
 		
 		if(disableButtons){
