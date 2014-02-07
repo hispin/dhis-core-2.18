@@ -31,9 +31,11 @@ package org.hisp.dhis.api.mobile.model.LWUITmodel;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.api.mobile.model.Model;
+import org.hisp.dhis.api.mobile.model.PatientAttribute;
 
 /**
  * @author Nguyen Kim Lai
@@ -41,23 +43,24 @@ import org.hisp.dhis.api.mobile.model.Model;
 public class Program
     extends Model
 {
+    // Work as Program and ProgramInstance
     private String clientVersion;
-    
+
     private int version;
-    
-    private Integer status;
 
-    public Integer getStatus()
-    {
-        return status;
-    }
+    // multiple event with registration: 1
+    // single event with registration: 2
+    // single event without registration: 3
 
-    public void setStatus( Integer status )
-    {
-        this.status = status;
-    }
+    private Integer type;
 
-    private List<ProgramStage> programStages;
+    private String dateOfEnrollmentDescription = "Date of Enrollment";
+
+    private String dateOfIncidentDescription = "Date of Incident";
+
+    private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+
+    private List<PatientAttribute> programAttributes = new ArrayList<PatientAttribute>();
 
     public List<ProgramStage> getProgramStages()
     {
@@ -78,7 +81,7 @@ public class Program
     {
         this.version = version;
     }
-    
+
     public String getClientVersion()
     {
         return clientVersion;
@@ -89,33 +92,106 @@ public class Program
         this.clientVersion = clientVersion;
     }
 
+    public Integer getType()
+    {
+        return type;
+    }
+
+    public void setType( Integer type )
+    {
+        this.type = type;
+    }
+
+    public String getDateOfEnrollmentDescription()
+    {
+        return dateOfEnrollmentDescription;
+    }
+
+    public void setDateOfEnrollmentDescription( String dateOfEnrollmentDescription )
+    {
+        this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
+    }
+
+    public String getDateOfIncidentDescription()
+    {
+        return dateOfIncidentDescription;
+    }
+
+    public void setDateOfIncidentDescription( String dateOfIncidentDescription )
+    {
+        this.dateOfIncidentDescription = dateOfIncidentDescription;
+    }
+
+    public List<PatientAttribute> getProgramAttributes()
+    {
+        return programAttributes;
+    }
+
+    public void setProgramAttributes( List<PatientAttribute> programAttributes )
+    {
+        this.programAttributes = programAttributes;
+    }
 
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
         super.serialize( dout );
-        dout.writeInt( getStatus() );
         dout.writeInt( getVersion() );
-        if( programStages == null )
+        dout.writeInt( this.getType() );
+        dout.writeUTF( getDateOfEnrollmentDescription() );
+        dout.writeUTF( getDateOfIncidentDescription() );
+
+        // Write program stage
+        dout.writeInt( programStages.size() );
+        for ( int i = 0; i < programStages.size(); i++ )
         {
-            dout.writeInt( 0 );
+            ProgramStage ps = programStages.get( i );
+            ps.serialize( dout );
         }
-        else
+
+        // Write program attribute
+        dout.writeInt( programAttributes.size() );
+        for ( int i = 0; i < programAttributes.size(); i++ )
         {
-            dout.writeInt( programStages.size() );
-            for ( int i = 0; i < programStages.size(); i++ )
-            {
-                ProgramStage ps = programStages.get( i );
-                ps.serialize( dout );
-            }
+            PatientAttribute pa = programAttributes.get( i );
+            pa.serialize( dout );
         }
+
     }
 
     @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        // FIXME: Get implementation from client
+        super.deSerialize( dataInputStream );
+        this.setVersion( dataInputStream.readInt() );
+        this.setType( dataInputStream.readInt() );
+        this.setDateOfEnrollmentDescription( dataInputStream.readUTF() );
+        this.setDateOfIncidentDescription( dataInputStream.readUTF() );
+
+        // Read program stage
+        int programStageNumber = dataInputStream.readInt();
+        if ( programStageNumber > 0 )
+        {
+            for ( int i = 0; i < programStageNumber; i++ )
+            {
+                ProgramStage programStage = new ProgramStage();
+                programStage.deSerialize( dataInputStream );
+                programStages.add( programStage );
+            }
+        }
+
+        // Read program attribute
+        int programAttSize = dataInputStream.readInt();
+        if ( programAttSize > 0 )
+        {
+            for ( int i = 0; i < programAttSize; i++ )
+            {
+                PatientAttribute pa = new PatientAttribute();
+                pa.deSerialize( dataInputStream );
+                programAttributes.add( pa );
+            }
+        }
     }
 }

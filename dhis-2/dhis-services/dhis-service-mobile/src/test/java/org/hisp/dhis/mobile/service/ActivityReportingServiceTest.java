@@ -67,24 +67,14 @@ public class ActivityReportingServiceTest
 
         patientA = activityReportingService.findPatient( patientAId );
         assertEquals( patientAId, patientA.getId() );
-        assertEquals( "FirstnameA", patientA.getName() );
 
         patientB = activityReportingService.findPatient( patientBId );
         assertEquals( patientBId, patientB.getId() );
-        assertEquals( "FirstnameB", patientB.getName() );
     }
 
     private Patient createLWUITPatient( char uniqueCharacter )
     {
         Patient patient = new Patient();
-        patient.setAge( 1 );
-        patient.setBirthDate( "25-09-1990" );
-        patient.setName( "Firstname" + uniqueCharacter );
-        patient.setGender( "male" );
-        patient.setOrganisationUnitName( "OrgUnitName" );
-        patient.setPhoneNumber( "095678943" );
-        patient.setRegistrationDate( new Date() );
-        patient.setIncidentDate( "Incident Date" );
         patient.setAttributes( new ArrayList<PatientAttribute>() );
         return patient;
     }

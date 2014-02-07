@@ -54,13 +54,13 @@ public interface ActivityReportingService
     public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue, Integer programStageSectionId )
         throws NotAllowedException;
 
-    public Patient findPatient( String name, int orgUnitId )
+    public String findPatient( String name, int orgUnitId )
         throws NotAllowedException;
 
     public Patient findPatient( int patientId )
         throws NotAllowedException;
 
-    public Patient findPatientInAdvanced( String keyword, int orgUnitId, int programId )
+    public String findPatientInAdvanced( String keyword, int orgUnitId, int programId )
         throws NotAllowedException;
 
     public String saveProgramStage( ProgramStage programStage, int patientId, int orgUnitId )
