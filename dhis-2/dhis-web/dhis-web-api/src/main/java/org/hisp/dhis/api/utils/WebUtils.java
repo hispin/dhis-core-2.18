@@ -30,6 +30,7 @@ package org.hisp.dhis.api.utils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.controller.WebMetaData;
@@ -195,13 +196,13 @@ public class WebUtils
         }
 
         Map<String, Method> classMap = ReflectionUtils.getJacksonClassMap( entityList.get( 0 ).getClass() );
-        String[] split = fields.split( "," );
+        List<String> parsedFields = parseFieldExpression( fields );
 
         for ( T object : entityList )
         {
             Map<String, Object> objMap = Maps.newLinkedHashMap();
 
-            for ( String field : split )
+            for ( String field : parsedFields )
             {
                 if ( classMap.containsKey( field ) )
                 {
@@ -276,5 +277,61 @@ public class WebUtils
         idProps.put( "lastUpdated", identifiableObject.getLastUpdated() );
 
         return idProps;
+    }
+
+    private static List<String> parseFieldExpression( String fields )
+    {
+        List<String> splitFields = Lists.newArrayList();
+
+        StringBuilder builder = new StringBuilder();
+        ArrayList<String> prefixList = Lists.newArrayList();
+
+        for ( String c : fields.split( "" ) )
+        {
+            if ( c.equals( "," ) )
+            {
+                splitFields.add( joinedWithPrefix( builder, prefixList ) );
+                builder = new StringBuilder();
+                continue;
+            }
+
+            if ( c.equals( "[" ) )
+            {
+                prefixList.add( builder.toString() );
+                builder = new StringBuilder();
+                continue;
+            }
+
+            if ( c.equals( "]" ) )
+            {
+                if ( !builder.toString().isEmpty() )
+                {
+                    splitFields.add( joinedWithPrefix( builder, prefixList ) );
+                }
+
+                prefixList.remove( prefixList.size() - 1 );
+                builder = new StringBuilder();
+                continue;
+            }
+
+            if ( StringUtils.isAlpha( c ) )
+            {
+                builder.append( c );
+            }
+        }
+
+        if ( !builder.toString().isEmpty() )
+        {
+            splitFields.add( joinedWithPrefix( builder, prefixList ) );
+        }
+
+        return splitFields;
+    }
+
+    private static String joinedWithPrefix( StringBuilder builder, List<String> prefixList )
+    {
+        String output = StringUtils.join( prefixList, "." );
+        output = output.isEmpty() ? builder.toString() : (output + "." + builder.toString());
+        return output;
     }
 }
