@@ -49,8 +49,10 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityForm;
 import org.hisp.dhis.trackedentity.TrackedEntityFormService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeGroupSortOrderComparator;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -65,6 +67,9 @@ public class ShowAddTrackedEntityInstanceFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
+    private TrackedEntityInstanceService entityInstanceService;
+    
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
@@ -133,28 +138,23 @@ public class ShowAddTrackedEntityInstanceFormAction
         this.programId = programId;
     }
 
-    private Integer entityInstancesId;
+    private Integer entityInstanceId;
 
-    public void setEntityInstanceId( Integer entityInstancesId )
+    public void setEntityInstanceId( Integer entityInstanceId )
     {
-        this.entityInstancesId = entityInstancesId;
+        this.entityInstanceId = entityInstanceId;
     }
 
     public Integer getEntityInstanceId()
     {
-        return entityInstancesId;
+        return entityInstanceId;
     }
 
-    private String entityInstancesUid;
-
-    public void setEntityInstanceUid( String entityInstancesUid )
-    {
-        this.entityInstancesUid = entityInstancesUid;
-    }
+    private String entityInstanceUid;
 
     public String getEntityInstanceUid()
     {
-        return entityInstancesUid;
+        return entityInstanceUid;
     }
 
     private Integer relatedProgramId;
@@ -261,6 +261,11 @@ public class ShowAddTrackedEntityInstanceFormAction
 
     public String execute()
     {
+        if( entityInstanceId!=null)
+        {
+            entityInstanceUid = entityInstanceService.getTrackedEntityInstance( entityInstanceId ).getUid();
+        }
+        
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
 

@@ -348,10 +348,16 @@ function showAddTrackedEntityInstanceForm( entityInstanceId, programId, relatedP
 		}, function()
 		{
 			showById('editEntityInstanceDiv');
-			showById('entityInstanceMamagementLink');
 			if(related){
+				jQuery('[name=addRelationShipLink]').show();
+				hideById('entityInstanceMamagementLink');
 				setFieldValue('relationshipId',entityInstanceId);
 			}
+			else{
+				jQuery('[name=addRelationShipLink]').hide();
+				showById('entityInstanceMamagementLink');
+			}
+			
 			jQuery('#loaderDiv').hide();
 		});
 	

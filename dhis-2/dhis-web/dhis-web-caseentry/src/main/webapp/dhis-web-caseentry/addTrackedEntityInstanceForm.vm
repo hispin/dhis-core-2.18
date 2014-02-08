@@ -32,6 +32,16 @@
 	&#8226; $i18n.getString( "add_new_tracked_entity_instance" )
 </h3>
 
+<h5 name='addRelationShipLink'>
+	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'tracked_entity_instance_management' )</a>
+	&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$entityInstanceUid');">$i18n.getString( 'dashboard' )</a>
+	&#8226; <a href="javascript:setFieldValue( 'isShowTrackedEntityInstanceList', 'false' ); showRelationshipList('$entityInstance.id')">$i18n.getString( "relationship_management" )
+</h5>
+<h3 name='addRelationShipLink'>	
+	&raquo; <a href="javascript:showAddRelationship('$entityInstanceId')" >$i18n.getString( 'seach_available_tracked_entity_instance' )</a>
+	&#8226; $i18n.getString( "add_new_tracked_entity_instance" )
+</h3>
+
 <form id="entityInstanceForm" name="entityInstanceForm" method="post" class="inputForm">
 <table>
 	#if($relatedProgram)
