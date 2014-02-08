@@ -77,7 +77,7 @@
 			<td><a href="javascript:loadDataEntryDialog( $programStageInstance.id );">$programStageInstance.programStage.displayName</a></td>
 			
 			<td>
-				<a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )" title="$i18n.getString( 'tracked_entity_instance_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "tracked_entity_instance_dashboard" )'></a>
+				<a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )" title="$i18n.getString( 'dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "dashboard" )'></a>
 				<a href="javascript:loadDataEntryDialog( $programStageInstance.id );" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
 				<a href="javascript:showTrackedEntityInstanceHistory('$entityInstance.id')" title='$i18n.getString( "tracked_entity_instance_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "tracked_entity_instance_details_and_history" )'></a>
 			</td>

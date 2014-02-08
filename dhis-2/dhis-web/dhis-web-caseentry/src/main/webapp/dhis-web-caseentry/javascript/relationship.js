@@ -13,7 +13,9 @@ function showAddRelationship( entityInstanceId )
 			entityInstanceId:entityInstanceId
 		}, function()
 		{
+			jQuery('[name=addRelationShipLink]').hide();
 			showById('addRelationshipDiv');
+			hideById('entityInstanceForm');
 			jQuery('#loaderDiv').hide();
 		});
 }

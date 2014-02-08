@@ -12,7 +12,7 @@
 
 <h5>
 	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'tracked_entity_instance_management' )</a>
-	&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$!entityInstance.uid');">$i18n.getString( 'tracked_entity_instance_dashboard' )</a>
+	&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$!entityInstance.uid');">$i18n.getString( 'dashboard' )</a>
 	&#8226; <a href="javascript:showRelationshipList( '$entityInstance.id' )">$i18n.getString( "relationship_management" )</a>
 	
 </h5>

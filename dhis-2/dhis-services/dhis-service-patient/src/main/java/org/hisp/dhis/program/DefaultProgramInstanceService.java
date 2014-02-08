@@ -263,10 +263,6 @@ public class DefaultProgramInstanceService
 
         Grid attrGrid = new ListGrid();
 
-        attrGrid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
-        attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
-        attrGrid.addHeader( new GridHeader( "", true, false ) );
-
         // ---------------------------------------------------------------------
         // Add dynamic attribues
         // ---------------------------------------------------------------------
