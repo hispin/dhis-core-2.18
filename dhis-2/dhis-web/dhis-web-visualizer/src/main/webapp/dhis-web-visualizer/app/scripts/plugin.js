@@ -209,6 +209,7 @@ Ext.onReady(function() {
 					{id: 'BiMonthly', name: DV.i18n.bimonthly},
 					{id: 'Quarterly', name: DV.i18n.quarterly},
 					{id: 'SixMonthly', name: DV.i18n.sixmonthly},
+                    {id: 'SixMonthlyApril', name: DV.i18n.sixmonthly_april},
 					{id: 'Yearly', name: DV.i18n.yearly},
 					{id: 'FinancialOct', name: DV.i18n.financial_oct},
 					{id: 'FinancialJuly', name: DV.i18n.financial_july},
