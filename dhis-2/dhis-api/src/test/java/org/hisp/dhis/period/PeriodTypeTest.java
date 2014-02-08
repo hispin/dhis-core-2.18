@@ -39,7 +39,7 @@ public class PeriodTypeTest
     public void testGetByIndex()
     {
         assertNull( PeriodType.getByIndex( -1 ) );
-        assertEquals( new YearlyPeriodType(), PeriodType.getByIndex( 7 ) );
+        assertEquals( new YearlyPeriodType(), PeriodType.getByIndex( 8 ) );
         assertNull( PeriodType.getByIndex( 999 ) );    
     }
 
@@ -52,6 +52,12 @@ public class PeriodTypeTest
         assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011W32").getName(),"Weekly");
         assertEquals( PeriodType.getPeriodTypeFromIsoString( "20110101").getName(),"Daily");
         assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011Q3").getName(),"Quarterly");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "201101B").getName(),"BiMonthly");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011S1").getName(),"SixMonthly");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011AprilS1").getName(),"SixMonthlyApril");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011April").getName(),"FinancialApril");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011July").getName(),"FinancialJuly");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011Oct").getName(),"FinancialOct");
 
         assertNull(PeriodType.getPeriodTypeFromIsoString( "201"));
         assertNull(PeriodType.getPeriodTypeFromIsoString( "20111"));

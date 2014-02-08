@@ -34,29 +34,30 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * PeriodType for six-monthly Periods. A valid six-monthly Period has startDate
- * set to either January 1st or July 1st, and endDate set to the last day of the
+ * PeriodType for six-monthly Periods aligned to a financial year starting in
+ * April or October. A valid April six-monthly Period has startDate set to
+ * either April 1st or October 1st, and endDate set to the last day of the
  * fifth month after the startDate.
- * 
+ *
  * @author Torgeir Lorange Ostby
- * @version $Id: SixMonthlyPeriodType.java 2971 2007-03-03 18:54:56Z torgeilo $
+ * @author Jim Grace
  */
-public class SixMonthlyPeriodType
-    extends SixMonthlyAbstractPeriodType
+
+public class SixMonthlyAprilPeriodType
+        extends SixMonthlyAbstractPeriodType
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 5709134010793412705L;
+    private static final long serialVersionUID = -2770872821413382644L;
 
-    private static final String ISO_FORMAT = "yyyySn";
+    private static final String ISO_FORMAT = "yyyyAprilSn";
 
-    private static final int BASE_MONTH = Calendar.JANUARY;
+    private static final int BASE_MONTH = Calendar.APRIL;
+
+    private static final String BASE_MONTH_NAME = "April";
 
     /**
      * The name of the SixMonthlyPeriodType, which is "SixMonthly".
      */
-    public static final String NAME = "SixMonthly";
+    public static final String NAME = "SixMonthlyApril";
 
     // -------------------------------------------------------------------------
     // PeriodType functionality
@@ -85,15 +86,15 @@ public class SixMonthlyPeriodType
         int year = cal.get( Calendar.YEAR );
         int month = cal.get( Calendar.MONTH );
 
-        return year + Semester.getByMonth( month ).name();
+        return year + BASE_MONTH_NAME + Semester.getByMonth( month ).name();
     }
 
     @Override
     public Period createPeriod( String isoDate )
     {
         int year = Integer.parseInt( isoDate.substring( 0, 4 ) );
-        int month = Semester.valueOf( isoDate.substring( 4, 6 ) ).getMonth();
-        
+        int month = Semester.valueOf( isoDate.substring( 9, 11 ) ).getMonth();
+
         Calendar cal = createCalendarInstance();
         cal.set( year, month, 1 );
         return createPeriod( cal );
@@ -110,7 +111,7 @@ public class SixMonthlyPeriodType
 
     public enum Semester
     {
-        S1( Calendar.JANUARY ), S2( Calendar.JULY );
+        S1( Calendar.APRIL ), S2( Calendar.OCTOBER );
 
         private final int month;
 
@@ -128,12 +129,12 @@ public class SixMonthlyPeriodType
         {
             switch ( month )
             {
-            case Calendar.JANUARY:
-                return S1;
-            case Calendar.JULY:
-                return S2;
-            default:
-                throw new IllegalArgumentException( "Not a valid six-monthly starting month" );
+                case Calendar.APRIL:
+                    return S1;
+                case Calendar.OCTOBER:
+                    return S2;
+                default:
+                    throw new IllegalArgumentException( "Not a valid six-monthly starting month" );
             }
         }
     }

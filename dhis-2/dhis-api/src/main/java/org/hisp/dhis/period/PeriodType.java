@@ -66,6 +66,7 @@ public abstract class PeriodType
             add( new BiMonthlyPeriodType() );
             add( new QuarterlyPeriodType() );
             add( new SixMonthlyPeriodType() );
+            add( new SixMonthlyAprilPeriodType() );
             add( new YearlyPeriodType() );
             add( new FinancialAprilPeriodType() );
             add( new FinancialJulyPeriodType() );
@@ -301,6 +302,10 @@ public abstract class PeriodType
         if ( isoPeriod.matches( "\\b\\d{4}S\\d\\b" ) )
         {
             return new SixMonthlyPeriodType();
+        }
+        if ( isoPeriod.matches( "\\b\\d{4}AprilS\\d\\b" ) )
+        {
+            return new SixMonthlyAprilPeriodType();
         }
         if ( isoPeriod.matches( "\\b\\d{6}B\\b" ) )
         {

@@ -36,6 +36,7 @@ function PeriodType()
     periodTypes['BiMonthly'] = new BiMonthlyPeriodType( format_yyyymmdd, monthNames, filterFuturePeriods );
     periodTypes['Quarterly'] = new QuarterlyPeriodType( format_yyyymmdd, monthNames, filterFuturePeriods );
     periodTypes['SixMonthly'] = new SixMonthlyPeriodType( monthNames, filterFuturePeriods );
+    periodTypes['SixMonthlyApril'] = new SixMonthlyAprilPeriodType( monthNames, filterFuturePeriods );
     periodTypes['Yearly'] = new YearlyPeriodType( format_yyyymmdd, filterFuturePeriods );
     periodTypes['FinancialOct'] = new FinancialOctoberPeriodType( format_yyyymmdd, monthNames, filterFuturePeriods );
     periodTypes['FinancialJuly'] = new FinancialJulyPeriodType( format_yyyymmdd, monthNames, filterFuturePeriods );
@@ -245,10 +246,10 @@ function SixMonthlyPeriodType( monthNames, fnFilter )
     this.generatePeriods = function( config )
     {
         var periods = [],
-			offset = parseInt(config.offset),
-			isFilter = config.filterFuturePeriods,
-			isReverse = config.reversePeriods,
-			year = new Date().getFullYear() + offset;
+            offset = parseInt(config.offset),
+            isFilter = config.filterFuturePeriods,
+            isReverse = config.reversePeriods,
+            year = new Date().getFullYear() + offset;
 
         var period = {};
         period['startDate'] = year + '-01-01';
@@ -256,7 +257,7 @@ function SixMonthlyPeriodType( monthNames, fnFilter )
         period['name'] = monthNames[0] + ' - ' + monthNames[5] + ' ' + year;
         //period['id'] = 'SixMonthly_' + period['startDate'];
         period['iso'] = year + 'S1';
-		period['id'] = period['iso'];
+        period['id'] = period['iso'];
         periods.push(period);
 
         period = {};
@@ -265,7 +266,42 @@ function SixMonthlyPeriodType( monthNames, fnFilter )
         period['name'] = monthNames[6] + ' - ' + monthNames[11] + ' ' + year;
         //period['id'] = 'SixMonthly_' + period['startDate'];
         period['iso'] = year + 'S2';
-		period['id'] = period['iso'];
+        period['id'] = period['iso'];
+        periods.push(period);
+
+        periods = isFilter ? fnFilter( periods ) : periods;
+        periods = isReverse ? periods.reverse() : periods;
+
+        return periods;
+    };
+}
+
+function SixMonthlyAprilPeriodType( monthNames, fnFilter )
+{
+    this.generatePeriods = function( config )
+    {
+        var periods = [],
+            offset = parseInt(config.offset),
+            isFilter = config.filterFuturePeriods,
+            isReverse = config.reversePeriods,
+            year = new Date().getFullYear() + offset;
+
+        var period = {};
+        period['startDate'] = year + '-04-01';
+        period['endDate'] = year + '-09-30';
+        period['name'] = monthNames[3] + ' - ' + monthNames[8] + ' ' + year;
+        //period['id'] = 'SixMonthlyApril_' + period['startDate'];
+        period['iso'] = year + 'AprilS1';
+        period['id'] = period['iso'];
+        periods.push(period);
+
+        period = {};
+        period['startDate'] = year + '-10-01';
+        period['endDate'] = ( year + 1 ) + '-03-31';
+        period['name'] = monthNames[9] + ' ' + year + ' - ' + monthNames[2] + ' ' + ( year + 1 );
+        //period['id'] = 'SixMonthlyApril_' + period['startDate'];
+        period['iso'] = year + 'AprilS2';
+        period['id'] = period['iso'];
         periods.push(period);
 
         periods = isFilter ? fnFilter( periods ) : periods;

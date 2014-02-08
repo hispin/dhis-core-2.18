@@ -27,6 +27,7 @@
 <input type="checkbox" id="biMonthly" class="dataMart" name="periodTypes" value="BiMonthly"> <label for="biMonthly">$i18n.getString( "BiMonthly" )</label>&nbsp;
 <input type="checkbox" id="quarterly" class="dataMart" name="periodTypes" value="Quarterly" checked="checked"> <label for="quarterly">$i18n.getString( "Quarterly" )</label><br>
 <input type="checkbox" id="sixMonthly" class="dataMart" name="periodTypes" value="SixMonthly" checked="checked"> <label for="sixMonthly">$i18n.getString( "SixMonthly" )</label>&nbsp;
+<input type="checkbox" id="sixMonthlyApril" class="dataMart" name="periodTypes" value="SixMonthlyApril" checked="checked"> <label for="sixMonthlyApril">$i18n.getString( "SixMonthlyApril" )</label>&nbsp;
 <input type="checkbox" id="yearly" class="dataMart" name="periodTypes" value="Yearly" checked="checked"> <label for="yearly">$i18n.getString( "Yearly" )</label>&nbsp;
 <input type="checkbox" id="financialYearly" class="dataMart" name="periodTypes" value="FinancialJuly"> <label for="financialYearly">$i18n.getString( "financial_yearly" )</label>
 </div>

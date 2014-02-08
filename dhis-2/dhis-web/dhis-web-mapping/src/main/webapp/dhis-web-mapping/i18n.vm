@@ -419,6 +419,7 @@ allow_external_access: '$encoder.jsEscape($i18n.getString( 'allow_external_acces
 "bimonthly": "$encoder.jsEscape($i18n.getString( 'bimonthly' ) , "'")",
 "quarterly": "$encoder.jsEscape($i18n.getString( 'quarterly' ) , "'")",
 "sixmonthly": "$encoder.jsEscape($i18n.getString( 'sixmonthly' ) , "'")",
+"sixmonthly_april": "$encoder.jsEscape($i18n.getString( 'sixmonthly_april' ) , "'")",
 "yearly": "$encoder.jsEscape($i18n.getString( 'yearly' ) , "'")",
 "financial_oct": "$encoder.jsEscape($i18n.getString( 'financial_oct' ) , "'")",
 "financial_july": "$encoder.jsEscape($i18n.getString( 'financial_july' ) , "'")",
