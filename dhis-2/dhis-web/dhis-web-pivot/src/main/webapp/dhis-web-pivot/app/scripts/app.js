@@ -1140,7 +1140,7 @@ Ext.onReady( function() {
 
 									if (favorite) {
 										favorite.name = record.data.name;
-console.log(favorite);
+
 										if (confirm(message)) {
 											Ext.Ajax.request({
 												url: ns.core.init.contextPath + '/api/reportTables/' + record.data.id,
@@ -2295,6 +2295,8 @@ console.log(favorite);
 					},
 					disableCaching: false,
 					failure: function(r) {
+						ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
+
 						web.mask.hide(ns.app.centerRegion);
 
 						if (Ext.Array.contains([413, 414], parseInt(r.status))) {
@@ -2308,6 +2310,7 @@ console.log(favorite);
 						var response = api.response.Response(Ext.decode(r.responseText));
 
 						if (!response) {
+							ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
 							web.mask.hide(ns.app.centerRegion);
 							return;
 						}
