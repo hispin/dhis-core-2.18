@@ -37,7 +37,6 @@ import java.util.List;
 
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramInstance;
 
 /**
  * @author Nguyen Kim Lai
@@ -238,27 +237,6 @@ public class Patient
                 this.relationships.add( relationship );
             }
         }
-    }
-
-    @Override
-    public boolean equals( Object otherObject )
-    {
-        if ( this == otherObject )
-        {
-            return true;
-        }
-
-        if ( otherObject == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != otherObject.getClass() )
-        {
-            return false;
-        }
-
-        return true;
     }
 
     @Override

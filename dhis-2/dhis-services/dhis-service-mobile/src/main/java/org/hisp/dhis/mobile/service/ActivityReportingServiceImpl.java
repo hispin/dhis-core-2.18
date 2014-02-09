@@ -56,7 +56,6 @@ import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.Task;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.dataelement.DataElement;
@@ -1062,29 +1061,6 @@ public class ActivityReportingServiceImpl
         if ( currentSetting != null && !currentSetting.isEmpty() )
             setting = currentSetting.iterator().next();
         return setting;
-    }
-
-    private List<Program> generateEnrollmentProgramList( TrackedEntityInstance patient )
-    {
-        List<Program> programs = new ArrayList<Program>();
-
-        for ( Program program : programService.getPrograms( patient.getOrganisationUnit() ) )
-        {
-            if ( (program.isSingleEvent() && program.isRegistration()) || !program.isSingleEvent() )
-            {
-                // wrong here
-                if ( programInstanceService.getProgramInstances( patient, program ).size() == 0 )
-                {
-                    programs.add( program );
-                }
-                else
-                {
-                    // TODO handle
-                }
-            }
-        }
-
-        return programs;
     }
 
     private boolean isNumber( String value )

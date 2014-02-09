@@ -28,6 +28,12 @@ package org.hisp.dhis.mobile.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.api.mobile.IProgramService;
 import org.hisp.dhis.api.mobile.model.DataElement;
 import org.hisp.dhis.api.mobile.model.Model;
@@ -35,22 +41,12 @@ import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 public class DefaultProgramService
     implements IProgramService
@@ -287,27 +283,6 @@ public class DefaultProgramService
         }
 
         return pr;
-    }
-
-    private org.hisp.dhis.api.mobile.model.PatientAttribute getPatientAttributeForMobile( TrackedEntityAttribute pa )
-    {
-        TrackedEntityAttributeService patientAttributeService;
-        List<String> optionList = new ArrayList<String>();
-        if ( pa.getAttributeOptions() != null )
-        {
-            for ( TrackedEntityAttributeOption pao : pa.getAttributeOptions() )
-            {
-                optionList.add( pao.getName() );
-            }
-        }
-        org.hisp.dhis.api.mobile.model.PatientAttribute mobileAttribute = new org.hisp.dhis.api.mobile.model.PatientAttribute();
-        mobileAttribute.setName( pa.getName() );
-        mobileAttribute.setMandatory( pa.isMandatory() );
-        mobileAttribute.setType( pa.getValueType() );
-        mobileAttribute.setValue( "" );
-        mobileAttribute.setPredefinedValues( optionList );
-        mobileAttribute.setDisplayedInList( false );
-        return mobileAttribute;
     }
 
     private org.hisp.dhis.api.mobile.model.PatientAttribute getPatientAttributeForMobile( ProgramTrackedEntityAttribute ppa )

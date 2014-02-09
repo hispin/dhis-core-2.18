@@ -37,8 +37,6 @@ import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import sun.rmi.server.Activation;
-
 import com.opensymphony.xwork2.Action;
 
 public class GetActivityListAction
