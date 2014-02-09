@@ -631,7 +631,7 @@ Ext.onReady( function() {
 		(function() {
 			layer = gis.layer.event;
 			layer.menu = GIS.app.LayerMenu(layer, 'gis-toolbar-btn-menu-first');
-			layer.widget = LayerWidgetEvent(layer);
+			layer.widget = GIS.app.LayerWidgetEvent(layer);
 			layer.window = GIS.app.WidgetWindow(layer, gis.conf.layout.widget.window_width + 150, 1);
 			layer.window.widget = layer.widget;
 			GIS.core.createSelectHandlers(gis, layer);
