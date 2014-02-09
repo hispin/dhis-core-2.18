@@ -68,6 +68,11 @@ public class WebOptions
         return stringAsInt( options.get( "page" ), 1 );
     }
 
+    public String getViewClass()
+    {
+        return stringAsString( options.get( "viewClass" ), null );
+    }
+    
     public String getViewClass( String defaultValue )
     {
         return stringAsString( options.get( "viewClass" ), defaultValue );

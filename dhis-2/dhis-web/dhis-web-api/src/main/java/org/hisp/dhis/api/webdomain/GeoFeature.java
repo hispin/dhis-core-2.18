@@ -28,6 +28,9 @@ package org.hisp.dhis.api.webdomain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -88,6 +91,11 @@ public class GeoFeature
      */
     private String co;
 
+    /**
+     * Dimensions and dimension items.
+     */
+    private Map<String, String> dimensions = new HashMap<String, String>();
+    
     public GeoFeature()
     {
     }
@@ -204,5 +212,16 @@ public class GeoFeature
     public void setCo( String co )
     {
         this.co = co;
+    }
+
+    @JsonProperty
+    public Map<String, String> getDimensions()
+    {
+        return dimensions;
+    }
+
+    public void setDimensions( Map<String, String> dimensions )
+    {
+        this.dimensions = dimensions;
     }
 }
