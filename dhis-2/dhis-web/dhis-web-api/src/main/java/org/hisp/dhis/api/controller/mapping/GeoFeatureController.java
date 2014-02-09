@@ -32,6 +32,8 @@ import static org.hisp.dhis.util.ContextUtils.clearIfNotModified;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -117,6 +119,20 @@ public class GeoFeatureController
             features.add( feature );
         }
         
+        Collections.sort( features, GeoFeatureTypeComparator.INSTANCE );
+        
         JacksonUtils.toJson( response.getOutputStream(), features );
+    }
+    
+    static class GeoFeatureTypeComparator
+        implements Comparator<GeoFeature>
+    {
+        public static final GeoFeatureTypeComparator INSTANCE = new GeoFeatureTypeComparator();
+        
+        @Override
+        public int compare( GeoFeature o1, GeoFeature o2 )
+        {
+            return Integer.valueOf( o1.getTy() ).compareTo( Integer.valueOf( o2.getTy() ) );
+        }        
     }
 }

@@ -118,7 +118,7 @@ Ext.onReady( function() {
 					{id: 'BiMonthly', name: NS.i18n.bimonthly},
 					{id: 'Quarterly', name: NS.i18n.quarterly},
 					{id: 'SixMonthly', name: NS.i18n.sixmonthly},
-                    {id: 'SixMonthlyApril', name: NS.i18n.sixmonthly_april},
+					{id: 'SixMonthlyApril', name: NS.i18n.sixmonthly_april},
 					{id: 'Yearly', name: NS.i18n.yearly},
 					{id: 'FinancialOct', name: NS.i18n.financial_oct},
 					{id: 'FinancialJuly', name: NS.i18n.financial_july},
