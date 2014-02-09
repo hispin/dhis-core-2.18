@@ -228,13 +228,13 @@ public class TableAlteror
 
         executeSql( "update systemsetting set \"name\"='trackedEntityExcelTemplateFileName' where \"name\"='patientExcelTemplateFileName'" );
         executeSql( "update systemsetting set \"name\"='autoSavetTrackedEntityForm' where \"name\"='autoSavePatientRegistration'" );
-        
 
         executeSql( "UPDATE trackedentityattribute SET uniquefield=false WHERE uniquefield is null" );
 
         executeSql( "INSERT INTO trackedentityattribute "
             + "( trackedentityattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule, uniquefield, orgunitScope, programScope )"
-            + " select " + statementBuilder.getAutoIncrementValue()
+            + " select "
+            + statementBuilder.getAutoIncrementValue()
             + ", uid, lastUpdated, name,  description, type, mandatory, false, false, true, orgunitScope, programScope from patientidentifiertype" );
 
         executeSql( "INSERT INTO trackedentityattributevalue (trackedentityinstanceid, trackedentityattributeid, value ) "
@@ -245,6 +245,7 @@ public class TableAlteror
         executeSql( "DROP TABLE program_identifiertypes" );
         executeSql( "DROP TABLE patientidentifier" );
         executeSql( "DROP TABLE patientidentifiertype" );
+        executeSql( "ALTER TABLE trackedentityattribute RENAME CONSTRAINT fk_patientidentifiertype_periodtypeid TO trackedentityattribute_periodtypeid" );
     }
 
     // -------------------------------------------------------------------------
@@ -427,7 +428,6 @@ public class TableAlteror
             holder.close();
         }
     }
-
 
     private int executeSql( String sql )
     {

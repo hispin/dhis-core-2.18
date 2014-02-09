@@ -12,13 +12,12 @@ Alter table patientattribute rename to trackedentityattribute;
 ALTER TABLE trackedentityattribute RENAME COLUMN patientattributeid TO trackedentityattributeid;
 ALTER TABLE trackedentityattribute RENAME COLUMN patientattributegroupid TO trackedentityattributegroupid;
 ALTER TABLE trackedentityattribute RENAME CONSTRAINT patientattribute_pkey TO trackedentityattribute_pkey;
-ALTER TABLE trackedentityattribute RENAME CONSTRAINT fk_patientidentifiertype_periodtypeid TO trackedentityattribute_periodtypeid;
 ALTER TABLE trackedentityattribute RENAME CONSTRAINT patientattribute_code_key TO trackedentityattribute_code_key;
 ALTER TABLE trackedentityattribute RENAME CONSTRAINT patientattribute_name_key TO trackedentityattribute_name_key;
 
 
 Alter table patientattributegroup rename to trackedentityattributegroup;
-ALTER TABLE trackedentityattributegroup RENAME COLUMN patientattributeoptionid TO trackedentityattributegroupid;
+ALTER TABLE trackedentityattributegroup RENAME COLUMN patientattributegroupid TO trackedentityattributegroupid;
 ALTER TABLE trackedentityattributegroup RENAME CONSTRAINT patientattributegroup_pkey TO trackedentityattributegroup_pkey;
 ALTER TABLE trackedentityattributegroup RENAME CONSTRAINT patientattributegroup_code_key TO trackedentityattributegroup_code_key;
 ALTER TABLE trackedentityattributegroup RENAME CONSTRAINT patientattributegroup_name_key TO trackedentityattributegroup_name_key;
@@ -98,7 +97,7 @@ ALTER TABLE trackedentityaggregatereportusergroupaccesses RENAME COLUMN patienta
 ALTER TABLE trackedentityaggregatereportusergroupaccesses RENAME CONSTRAINT patientaggregatereportusergroupaccesses_pkey TO trackedentityaggregatereportusergroupaccesses_pkey;
 
 
-ALTER TABLE patienttabularreport RENAME TO trackedentitytabularreport
+ALTER TABLE patienttabularreport RENAME TO trackedentitytabularreport;
 ALTER TABLE trackedentitytabularreport RENAME COLUMN patienttabularreportid TO trackedentitytabularreportid;
 ALTER TABLE trackedentitytabularreport RENAME CONSTRAINT patienttabularreport_pkey TO trackedentitytabularreport_pkey;
 ALTER TABLE trackedentitytabularreport RENAME CONSTRAINT fk_patientaggregatereport_programstage TO fk_tabularreport_programstage;
@@ -151,6 +150,19 @@ ALTER TABLE program_attributes RENAME COLUMN patientattributeid TO trackedentity
 ALTER TABLE programinstance RENAME COLUMN patientcommentid TO trackedentitycommentid;
 ALTER TABLE programinstance RENAME COLUMN patientid TO trackedentityinstanceid;
 
+
 ALTER TABLE programstage_dataelements RENAME COLUMN patienttabularreportid TO trackedentitytabularreportid;
 
+
+ALTER TABLE programstageinstance RENAME COLUMN patientcommentid TO trackedentitycommentid;
+ALTER TABLE trackedentityattribute RENAME COLUMN patientmobilesettingid TO trackedentitymobilesettingid;
+ALTER TABLE trackedentityattribute RENAME COLUMN sort_order_patientattributename TO sort_order_trackedentityattributename;
+
+
+ALTER TABLE patientaggregatereportmembers RENAME COLUMN patientaggregatereportid TO trackedentityaggregatereportid;
+ALTER TABLE trackedentityaudit RENAME COLUMN patientid TO trackedentityinstanceid;
+ALTER TABLE patienttabularreportmembers RENAME COLUMN patienttabularreportid TO trackedentitytabularreportid;
+ALTER TABLE programstageinstance_patients RENAME COLUMN patientid TO trackedentityinstanceid;
+ALTER TABLE programinstance RENAME COLUMN patientid TO trackedentityinstanceid;
+ALTER TABLE programinstance RENAME COLUMN patientcommentid TO trackedentitycommentid;
 
