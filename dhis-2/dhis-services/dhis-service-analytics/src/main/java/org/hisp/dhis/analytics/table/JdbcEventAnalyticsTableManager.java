@@ -205,7 +205,7 @@ public class JdbcEventAnalyticsTableManager
         for ( PeriodType periodType : periodTypes )
         {
             String column = quote( periodType.getName().toLowerCase() );
-            String[] col = { column, "character varying(10)", "dps." + column };
+            String[] col = { column, "character varying(15)", "dps." + column };
             columns.add( col );
         }
 
