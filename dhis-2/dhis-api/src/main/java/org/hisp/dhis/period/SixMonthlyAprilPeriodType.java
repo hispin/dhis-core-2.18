@@ -28,10 +28,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * PeriodType for six-monthly Periods aligned to a financial year starting in
@@ -44,7 +41,7 @@ import java.util.List;
  */
 
 public class SixMonthlyAprilPeriodType
-        extends SixMonthlyAbstractPeriodType
+    extends SixMonthlyAbstractPeriodType
 {
     private static final long serialVersionUID = -2770872821413382644L;
 
