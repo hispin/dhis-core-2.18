@@ -6,13 +6,13 @@
 
 	<include file="dhis-web-commons.xml" />
 
-	<package name="dhis-web-maintenance-patient" extends="dhis-web-commons"
-		namespace="/dhis-web-maintenance-patient">
+	<package name="dhis-web-maintenance-program" extends="dhis-web-commons"
+		namespace="/dhis-web-maintenance-program">
 
 		<action name="index" class="org.hisp.dhis.trackedentity.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/index.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/index.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 		</action>
 
 		<!-- RelationshipType -->
@@ -20,8 +20,8 @@
 		<action name="relationshipType"
 			class="org.hisp.dhis.trackedentity.action.relationship.GetRelationshipTypeListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/relationshipType.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/relationshipType.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
 		</action>
 
@@ -50,7 +50,7 @@
 
 		<action name="showAddRelationshipTypeForm" class="org.hisp.dhis.trackedentity.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addRelationshipTypeForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/addRelationshipTypeForm.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_RELATIONSHIPTYPE_ADD</param>
@@ -59,7 +59,7 @@
 		<action name="showUpdateRelationshipTypeForm"
 			class="org.hisp.dhis.trackedentity.action.relationship.GetRelationshipTypeAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateRelationshipTypeForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/updateRelationshipTypeForm.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
@@ -92,8 +92,8 @@
 			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/attribute.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+				/dhis-web-maintenance-program/attribute.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/attribute.js</param>
 		</action>
 
@@ -143,7 +143,7 @@
 			class="org.hisp.dhis.trackedentity.action.program.GetUnAnonymousProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/addAttributeForm.vm</param>
+				/dhis-web-maintenance-program/addAttributeForm.vm</param>
 			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
@@ -153,7 +153,7 @@
 			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowUpdateAttributeAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/updateAttibuteForm.vm</param>
+				/dhis-web-maintenance-program/updateAttibuteForm.vm</param>
 			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
@@ -195,8 +195,8 @@
 			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeVisitScheduleFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/attributeVisitSchedule.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+				/dhis-web-maintenance-program/attributeVisitSchedule.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
@@ -212,8 +212,8 @@
 			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeInListNoProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/attributeInListNoProgram.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+				/dhis-web-maintenance-program/attributeInListNoProgram.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
@@ -230,8 +230,8 @@
 		<action name="program"
 			class="org.hisp.dhis.trackedentity.action.program.GetProgramListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programList.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/programList.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/program.js</param>
 		</action>
 
@@ -264,7 +264,7 @@
 		<action name="showAddProgramForm"
 			class="org.hisp.dhis.trackedentity.action.program.ShowAddProgramFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addProgramForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/addProgramForm.vm</param>
 			<param name="javascripts">javascript/program.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
@@ -273,7 +273,7 @@
 		<action name="showUpdateProgramForm"
 			class="org.hisp.dhis.trackedentity.action.program.ShowUpdateProgramFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateProgramForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/updateProgramForm.vm</param>
 			<param name="javascripts">javascript/program.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
@@ -303,7 +303,7 @@
 		<action name="showProgramUserroleForm"
 			class="org.hisp.dhis.trackedentity.action.program.ShowProgramUserroleFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programUserrole.vm</param>
+			<param name="page">/dhis-web-maintenance-program/programUserrole.vm</param>
 			<param name="javascripts">javascript/program.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
@@ -319,7 +319,7 @@
 		<action name="defineProgramAssociationsForm"
 			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programAssociations.vm</param>
+			<param name="page">/dhis-web-maintenance-program/programAssociations.vm</param>
 			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
@@ -335,7 +335,7 @@
 		<action name="programStage"
 			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programStage.vm</param>
+			<param name="page">/dhis-web-maintenance-program/programStage.vm</param>
 			<param name="javascripts">javascript/programStage.js</param>
 		</action>
 
@@ -354,7 +354,7 @@
 			</result>
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/addProgramStageForm.vm</param>
+				/dhis-web-maintenance-program/addProgramStageForm.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStage.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
@@ -390,7 +390,7 @@
 			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/updateProgramStageForm.vm</param>
+				/dhis-web-maintenance-program/updateProgramStageForm.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStage.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
@@ -418,7 +418,7 @@
 		<action name="programStageList"
 			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction">
 			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programStageList.vm</param>
+			<param name="page">/dhis-web-maintenance-program/programStageList.vm</param>
 			<param name="javascripts">javascript/programStage.js</param>
 		</action>
 
@@ -428,7 +428,7 @@
 			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageSectionListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/programStageSection.vm</param>
+				/dhis-web-maintenance-program/programStageSection.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_MANAGEMENT</param>
@@ -438,7 +438,7 @@
 			class="org.hisp.dhis.trackedentity.action.programstage.ShowAddProgramStageSectionAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/addProgramStageSectionForm.vm</param>
+				/dhis-web-maintenance-program/addProgramStageSectionForm.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_ADD</param>
@@ -455,7 +455,7 @@
 			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageSectionAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/updateProgramStageSectionForm.vm</param>
+				/dhis-web-maintenance-program/updateProgramStageSectionForm.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_ADD</param>
@@ -490,7 +490,7 @@
 			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/programStageSectionSortOder.vm</param>
+				/dhis-web-maintenance-program/programStageSectionSortOder.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_MANAGEMENT</param>
@@ -517,7 +517,7 @@
 		<action name="viewDataEntryForm"
 			class="org.hisp.dhis.trackedentity.action.dataentryform.ViewDataEntryFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/viewDataEntryForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/viewDataEntryForm.vm</param>
 			<param name="javascripts">
 				../dhis-web-commons/ckeditor/ckeditor.js,
 				../dhis-web-commons/ckeditor/adapters/jquery.js,
@@ -560,14 +560,14 @@
 		<action name="getSelectedDataElements"
 			class="org.hisp.dhis.trackedentity.action.dataentryform.GetSelectedDataElementsAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSelDataElementList.vm
+				/dhis-web-maintenance-program/responseSelDataElementList.vm
 			</result>
 		</action>
 
 		<action name="showDataEntryForm"
 			class="org.hisp.dhis.trackedentity.action.dataentryform.ShowDataEntryFormAction">
 			<result name="success" type="velocity">
-				/dhis-web-maintenance-patient/dataEntryFormCode.vm
+				/dhis-web-maintenance-program/dataEntryFormCode.vm
 			</result>
 		</action>
 
@@ -583,8 +583,8 @@
 		<action name="trackedEntityForm"
 			class="org.hisp.dhis.trackedentity.action.dataentryform.GetTrackedEntityFormListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/trackedEntityForm.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/trackedEntityForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/trackedEntityForm.js</param>
 			<param name="requiredAuthorities">F_ADD_PATIENT_REGISTRATION_FORM</param>
 		</action>
@@ -592,7 +592,7 @@
 		<action name="viewTrackedEntityForm"
 			class="org.hisp.dhis.trackedentity.action.dataentryform.ViewTrackedEntityFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/viewTrackedEntityForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/viewTrackedEntityForm.vm</param>
 			<param name="javascripts">
 				../dhis-web-commons/ckeditor/ckeditor.js,
 				../dhis-web-commons/ckeditor/adapters/jquery.js,
@@ -630,7 +630,7 @@
 		<action name="showTrackedEntityForm"
 			class="org.hisp.dhis.trackedentity.action.dataentryform.ShowTrackedEntityFormAction">
 			<result name="success" type="velocity">
-				/dhis-web-maintenance-patient/dataEntryFormCode.vm
+				/dhis-web-maintenance-program/dataEntryFormCode.vm
 			</result>
 		</action>
 
@@ -646,8 +646,8 @@
 		<action name="attributeGroup"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.GetAttributeGroupListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/attributeGroup.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/attributeGroup.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/attributeGroup.js</param>
 		</action>
 
@@ -676,7 +676,7 @@
 
 		<action name="showAddAttributeGroupForm" class="org.hisp.dhis.trackedentity.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addAttributeGroupForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/addAttributeGroupForm.vm</param>
 			<param name="javascripts">javascript/attributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
@@ -685,7 +685,7 @@
 		<action name="showUpdateAttributeGroupForm"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.GetAttributeGroupAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateAttibuteGroupForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/updateAttibuteGroupForm.vm</param>
 			<param name="javascripts">javascript/attributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
@@ -715,7 +715,7 @@
 		<action name="showSortAttributeGroup"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.GetAttributeGroupListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/sortAttributeGroupForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/sortAttributeGroupForm.vm</param>
 			<param name="javascripts">javascript/attributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
@@ -732,8 +732,8 @@
 		<action name="caseAggregation"
 			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetAllCaseAggregationConditionAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/caseAggregation.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/caseAggregation.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/caseaggregation.js</param>
 			<param name="stylesheets">style/basic.css</param>
 		</action>
@@ -741,7 +741,7 @@
 		<action name="showAddCaseAggregationForm"
 			class="org.hisp.dhis.trackedentity.action.caseaggregation.ShowAddCaseAggregationConditionFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addCaseAggregation.vm</param>
+			<param name="page">/dhis-web-maintenance-program/addCaseAggregation.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/caseaggregation.js</param>
 			<param name="stylesheets">style/basic.css</param>
 		</action>
@@ -749,7 +749,7 @@
 		<action name="showUpdateCaseAggregationForm"
 			class="org.hisp.dhis.trackedentity.action.caseaggregation.ShowUpdateCaseAggregationConditionFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateCaseAggregation.vm</param>
+			<param name="page">/dhis-web-maintenance-program/updateCaseAggregation.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/caseaggregation.js</param>
 			<param name="stylesheets">style/basic.css</param>
 		</action>
@@ -776,28 +776,28 @@
 		<action name="getDataElementsByDataset"
 			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetDataElementsByDataSetAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/responseAggerateDataElement.vm
+				/dhis-web-maintenance-program/responseAggerateDataElement.vm
 			</result>
 		</action>
 
 		<action name="getParamsByProgram"
 			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetParamsByProgramAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/jsonParamsByProgram.vm
+				/dhis-web-maintenance-program/jsonParamsByProgram.vm
 			</result>
 		</action>
 
 		<action name="getTrackedEntityDataElements"
 			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetTrackedEntityDataElementsAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/jsonTrackedEntityDataElements.vm
+				/dhis-web-maintenance-program/jsonTrackedEntityDataElements.vm
 			</result>
 		</action>
 
 		<action name="getAggPSDataElements"
 			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetAggPSDataElementsAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseAggDataElement.vm
+				/dhis-web-maintenance-program/responseAggDataElement.vm
 			</result>
 		</action>
 
@@ -812,7 +812,7 @@
 		<action name="getCaseAggregationDescription"
 			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetAggConditionDescriptionAction">
 			<result name="success" type="velocity">
-				/dhis-web-maintenance-patient/responseCaseAggDescription.vm
+				/dhis-web-maintenance-program/responseCaseAggDescription.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
@@ -842,7 +842,7 @@
 		<action name="getCaseAggConditionByDataset"
 			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetAllCaseAggregationConditionAction">
 			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/caseAggregationList.vm</param>
+			<param name="page">/dhis-web-maintenance-program/caseAggregationList.vm</param>
 		</action>
 
 		<action name="getProgramStages"
@@ -858,15 +858,15 @@
 		<action name="validationCriteria"
 			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/validationCriteria.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/validationCriteria.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
 		</action>
 
 		<action name="showAddValidationCriteriaForm"
 			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addValidationCriteria.vm</param>
+			<param name="page">/dhis-web-maintenance-program/addValidationCriteria.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
 			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
 		</action>
@@ -881,7 +881,7 @@
 		<action name="showUpdateValidationCriteriaForm"
 			class="org.hisp.dhis.trackedentity.action.validation.GetValidationCriteriaAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateValidationCriteria.vm</param>
+			<param name="page">/dhis-web-maintenance-program/updateValidationCriteria.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
 			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
 		</action>
@@ -923,7 +923,7 @@
 		<action name="programValidation"
 			class="org.hisp.dhis.trackedentity.action.validation.GetProgramValidationListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programValidationList.vm</param>
+			<param name="page">/dhis-web-maintenance-program/programValidationList.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
@@ -931,7 +931,7 @@
 		<action name="showAddSingleProgramValidationForm"
 			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addSingleProgramValidationForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/addSingleProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
@@ -948,7 +948,7 @@
 		<action name="showUpdateMultiProgramValidationForm"
 			class="org.hisp.dhis.trackedentity.action.validation.GetProgramValidationAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateMultiProgramValidationForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/updateMultiProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
@@ -957,7 +957,7 @@
 		<action name="showUpdateSingleProgramValidationForm"
 			class="org.hisp.dhis.trackedentity.action.validation.GetProgramValidationAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateSingleProgramValidationForm.vm</param>
+			<param name="page">/dhis-web-maintenance-program/updateSingleProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
@@ -990,7 +990,7 @@
 		<action name="getProgramExpressionDescription"
 			class="org.hisp.dhis.trackedentity.action.validation.GetProgramExpressionDescriptionAction">
 			<result name="success" type="velocity">
-				/dhis-web-maintenance-patient/responseCaseAggDescription.vm
+				/dhis-web-maintenance-program/responseCaseAggDescription.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
@@ -1000,8 +1000,8 @@
 		<action name="viewScheduleTasks"
 			class="org.hisp.dhis.trackedentity.action.schedule.GetScheduleParamsAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/scheduleSendMessage.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/scheduleSendMessage.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/scheduling.js</param>
 			<param name="schedule">true</param>
 			<param name="requiredAuthorities">F_SCHEDULING_SEND_MESSAGE</param>
@@ -1010,7 +1010,7 @@
 		<action name="scheduleTasks"
 			class="org.hisp.dhis.trackedentity.action.schedule.ScheduleSendMessageTasksAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/jsonResponseScheduleTasks.vm
+				/dhis-web-maintenance-program/jsonResponseScheduleTasks.vm
 			</result>
 			<param name="requiredAuthorities">F_SCHEDULING_SEND_MESSAGE</param>
 		</action>
@@ -1018,8 +1018,8 @@
 		<action name="viewScheduledCaseAggCondTasks"
 			class="org.hisp.dhis.trackedentity.action.schedule.GetScheduleAggQueryBuilderParamsAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/viewScheduledCaseAggTasks.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/viewScheduledCaseAggTasks.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/scheduling.js</param>
 			<param name="requiredAuthorities">F_SCHEDULING_CASE_AGGREGATE_QUERY_BUILDER</param>
 		</action>
@@ -1027,7 +1027,7 @@
 		<action name="scheduleCaseAggTasks"
 			class="org.hisp.dhis.trackedentity.action.schedule.ScheduleCaseAggregateConditionAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/jsonResponseScheduleTasks.vm
+				/dhis-web-maintenance-program/jsonResponseScheduleTasks.vm
 			</result>
 			<param name="requiredAuthorities">F_SCHEDULING_CASE_AGGREGATE_QUERY_BUILDER</param>
 		</action>
@@ -1037,8 +1037,8 @@
 		<action name="programIndicator"
 			class="org.hisp.dhis.trackedentity.action.programtindicator.GetProgramIndicatorListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programIndicator.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/programIndicator.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/programIndicator.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_INDICATOR_MANAGEMENT</param>
 		</action>
@@ -1054,7 +1054,7 @@
 		<action name="showAddProgramIndicator"
 			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addProgramIndicator.vm</param>
+			<param name="page">/dhis-web-maintenance-program/addProgramIndicator.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programIndicator.js</param>
 			<param name="requiredAuthorities">F_ADD_PROGRAM_INDICATOR</param>
 		</action>
@@ -1069,7 +1069,7 @@
 		<action name="showUpdateProgramIndicator"
 			class="org.hisp.dhis.trackedentity.action.programtindicator.GetProgramIndicatorAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateProgramIndicator.vm</param>
+			<param name="page">/dhis-web-maintenance-program/updateProgramIndicator.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programIndicator.js</param>
 			<param name="requiredAuthorities">F_ADD_PROGRAM_INDICATOR</param>
 		</action>
@@ -1112,8 +1112,8 @@
 		<action name="programReminder"
 			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programReminder.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="page">/dhis-web-maintenance-program/programReminder.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/programReminder.js</param>
 			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
@@ -1121,7 +1121,7 @@
 		<action name="showAddProgramReminder"
 			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ShowAddProgramReminderAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addProgramReminder.vm</param>
+			<param name="page">/dhis-web-maintenance-program/addProgramReminder.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programReminder.js</param>
 			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
@@ -1136,7 +1136,7 @@
 		<action name="showUpdateProgramReminder"
 			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.GetInstanceReminderAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateProgramReminder.vm</param>
+			<param name="page">/dhis-web-maintenance-program/updateProgramReminder.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programReminder.js</param>
 			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>

@@ -43,7 +43,7 @@
           data-can-update="$security.canUpdate( $program )"
           data-can-manage-template-message="#if($program.type!=3)true#{else}false#end"
           data-can-delete="$security.canDelete( $program )"
-          data-can-manage-form="#if( $auth.hasAccess( "dhis-web-maintenance-patient", "programIndicator" ) && $program.type !='3' )true#{else}false#end">
+          data-can-manage-form="#if( $auth.hasAccess( "dhis-web-maintenance-program", "programIndicator" ) && $program.type !='3' )true#{else}false#end">
           <td>$encoder.htmlEncode( $!program.displayName )</td>
       </tr>
       #end
