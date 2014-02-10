@@ -13,13 +13,13 @@
 	<li><a href="caseAggregation.action">$i18n.getString( "aggregation_query_builder" )</a></li>
 </ul>
 
-#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) || $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
+#if( $auth.hasAccess( "dhis-web-maintenance-program", "viewScheduleTasks" ) || $auth.hasAccess( "dhis-web-maintenance-program", "viewScheduledCaseAggCondTasks" ) )
 <h2>$i18n.getString( "scheduling" )</h2>
 <ul>
-	#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
+	#if( $auth.hasAccess( "dhis-web-maintenance-program", "viewScheduleTasks" ) )
 		<li><a href="viewScheduleTasks.action">$i18n.getString( "schedule_automated_message_reminder" )</a></li>
 	#end
-	#if($auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
+	#if($auth.hasAccess( "dhis-web-maintenance-program", "viewScheduledCaseAggCondTasks" ) )
 		<li><a href="viewScheduledCaseAggCondTasks.action">$i18n.getString( "schedule_automated_aggregation" )</a></li>
 	#end
 </ul>

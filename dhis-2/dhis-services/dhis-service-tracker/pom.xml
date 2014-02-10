@@ -9,7 +9,7 @@
     <version>2.15-SNAPSHOT</version>
   </parent>
 
-  <artifactId>dhis-service-patient</artifactId>
+  <artifactId>dhis-service-tracker</artifactId>
   <packaging>jar</packaging>
   <name>DHIS Patient API Implementations</name>
 

@@ -101,7 +101,7 @@
     </tbody>
 </table>
 
-#parse( "/dhis-web-maintenance-patient/caseAggregationForm.vm" )
+#parse( "/dhis-web-maintenance-program/caseAggregationForm.vm" )
 
 <p>
 	<input type="submit" value="$i18n.getString( 'update' )" >

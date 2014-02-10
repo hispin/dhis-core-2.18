@@ -53,7 +53,7 @@ $(function() {
 				</tr>
 			</thead>
 			<tbody id="list">
-				#parse( "/dhis-web-maintenance-patient/caseAggregationList.vm" )
+				#parse( "/dhis-web-maintenance-program/caseAggregationList.vm" )
 			</tbody>
       </table>
     </td>

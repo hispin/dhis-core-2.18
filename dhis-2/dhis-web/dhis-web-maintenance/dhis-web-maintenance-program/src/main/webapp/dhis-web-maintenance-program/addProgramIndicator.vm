@@ -79,7 +79,7 @@ jQuery( document ).ready( function()
 </table>
 <br>
 
-#parse( "/dhis-web-maintenance-patient/programIndicatorForm.vm" )
+#parse( "/dhis-web-maintenance-program/programIndicatorForm.vm" )
 
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:163px;" >

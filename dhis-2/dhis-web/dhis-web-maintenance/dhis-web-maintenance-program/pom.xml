@@ -9,12 +9,12 @@
     <version>2.15-SNAPSHOT</version>
   </parent>
   
-  <artifactId>dhis-web-maintenance-patient</artifactId>
+  <artifactId>dhis-web-maintenance-program</artifactId>
   <packaging>war</packaging>
   <name>DHIS Patient Management</name>
   
   <build>
-    <finalName>dhis-web-maintenance-patient</finalName>
+    <finalName>dhis-web-maintenance-program</finalName>
   </build>
   
   <dependencies>

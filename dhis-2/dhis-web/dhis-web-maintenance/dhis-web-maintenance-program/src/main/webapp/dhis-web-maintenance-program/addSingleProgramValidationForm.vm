@@ -59,7 +59,7 @@
 	</tr>
 </table>
 
-#parse( "/dhis-web-maintenance-patient/expressionBuilderForm.vm" )
+#parse( "/dhis-web-maintenance-program/expressionBuilderForm.vm" )
 
 <script>
 	hideById( "expression-container" );

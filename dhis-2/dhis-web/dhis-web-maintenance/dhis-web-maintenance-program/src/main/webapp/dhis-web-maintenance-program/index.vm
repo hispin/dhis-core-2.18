@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "dhis-web-maintenance-patient" )</h3>
+<h3>$i18n.getString( "dhis-web-maintenance-program" )</h3>
 
 <ul class="introList">
     #introListImgItem( "attribute.action" "attribute" "patient" )
@@ -9,10 +9,10 @@
     #introListImgItem( "program.action" "program" "program" )
     #introListImgItem( "caseAggregation.action" "aggregation_query_builder" "caseaggregationmapping" )
 	
-	#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
+	#if( $auth.hasAccess( "dhis-web-maintenance-program", "viewScheduleTasks" ) )
 		#introListImgItem( "viewScheduleTasks.action" "schedule_automated_message_reminder" "scheduling" )
 	#end
-	#if($auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
+	#if($auth.hasAccess( "dhis-web-maintenance-program", "viewScheduledCaseAggCondTasks" ) )
 		#introListImgItem( "viewScheduledCaseAggCondTasks.action" "schedule_automated_aggregation" "scheduling" )
 	#end
 	
