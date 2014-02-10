@@ -250,9 +250,9 @@ public class WebUtils
 
     private static String joinedWithPrefix( StringBuilder builder, List<String> prefixList )
     {
-        String output = StringUtils.join( prefixList, "." );
-        output = output.isEmpty() ? builder.toString() : (output + "." + builder.toString());
-        return output;
+        String prefixes = StringUtils.join( prefixList, "." );
+        prefixes = prefixes.isEmpty() ? builder.toString() : (prefixes + "." + builder.toString());
+        return prefixes;
     }
 
     public static <T extends IdentifiableObject> List<Object> filterFields( List<T> objects, String fields )
@@ -277,6 +277,11 @@ public class WebUtils
     @SuppressWarnings( "unchecked" )
     private static Map<String, Object> buildObjectOutput( Object object, Map<String, Map> fieldMap )
     {
+        if ( object == null )
+        {
+            return null;
+        }
+
         Map<String, Object> output = Maps.newHashMap();
         Map<String, ReflectionUtils.MethodDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
 
@@ -289,24 +294,51 @@ public class WebUtils
 
             Map value = fieldMap.get( key );
             ReflectionUtils.MethodDescriptor descriptor = classMap.get( key );
+            Object returned = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
+
+            if ( returned == null )
+            {
+                continue;
+            }
 
             if ( value.isEmpty() )
             {
                 if ( !descriptor.isCollection() && !descriptor.isIdentifiableObject() )
                 {
-                    Object returned = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
                     output.put( key, returned );
                 }
-                else if ( descriptor.isIdentifiableObject() && !descriptor.isCollection() )
+                else if ( descriptor.isIdentifiableObject() )
                 {
-                    Object returned = getIdentifiableObjectProperties( object );
-                    output.put( key, returned );
+                    if ( descriptor.isCollection() )
+                    {
+                        List<Map<String, Object>> properties = getIdentifiableObjectCollectionProperties( returned );
+                        output.put( key, properties );
+                    }
+                    else
+                    {
+                        Map<String, Object> properties = getIdentifiableObjectProperties( returned );
+                        output.put( key, properties );
+                    }
                 }
-                else if ( descriptor.isCollection() && descriptor.isIdentifiableObject() )
+            }
+            else
+            {
+                if ( descriptor.isCollection() )
                 {
-                    Object returned = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
-                    returned = getIdentifiableObjectCollectionProperties( returned );
-                    output.put( key, returned );
+                    Collection<IdentifiableObject> objects = (Collection<IdentifiableObject>) returned;
+                    ArrayList<Object> arrayList = Lists.newArrayList();
+                    output.put( key, arrayList );
+
+                    for ( IdentifiableObject identifiableObject : objects )
+                    {
+                        Map<String, Object> properties = buildObjectOutput( identifiableObject, value );
+                        arrayList.add( properties );
+                    }
+                }
+                else
+                {
+                    Map<String, Object> properties = buildObjectOutput( returned, value );
+                    output.put( key, properties );
                 }
             }
         }
@@ -314,16 +346,16 @@ public class WebUtils
         return output;
     }
 
-    private static Object getIdentifiableObjectCollectionProperties( Object object )
+    private static List<Map<String, Object>> getIdentifiableObjectCollectionProperties( Object object )
     {
         List<String> fields = Lists.newArrayList( "id", "name", "code", "created", "lastUpdated" );
         return getIdentifiableObjectCollectionProperties( object, fields );
     }
 
     @SuppressWarnings( "unchecked" )
-    private static Object getIdentifiableObjectCollectionProperties( Object object, List<String> fields )
+    private static List<Map<String, Object>> getIdentifiableObjectCollectionProperties( Object object, List<String> fields )
     {
-        List<Map<String, Object>> idPropertiesList = Lists.newArrayList();
+        List<Map<String, Object>> output = Lists.newArrayList();
         Collection<IdentifiableObject> identifiableObjects;
 
         try
@@ -333,16 +365,16 @@ public class WebUtils
         catch ( ClassCastException ex )
         {
             ex.printStackTrace();
-            return idPropertiesList;
+            return output;
         }
 
         for ( IdentifiableObject identifiableObject : identifiableObjects )
         {
             Map<String, Object> properties = getIdentifiableObjectProperties( identifiableObject, fields );
-            idPropertiesList.add( properties );
+            output.add( properties );
         }
 
-        return idPropertiesList;
+        return output;
     }
 
     private static Map<String, Object> getIdentifiableObjectProperties( Object object )
