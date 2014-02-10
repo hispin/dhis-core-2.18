@@ -585,6 +585,15 @@ public class ReflectionUtils
         {
             this.objects = objects;
         }
+
+        @Override public String toString()
+        {
+            return "MethodDescriptor{" +
+                "method=" + method +
+                ", collection=" + collection +
+                ", identifiableObject=" + identifiableObject +
+                '}';
+        }
     }
 
     public static Map<String, MethodDescriptor> getJacksonClassMap( Class<?> clazz )
@@ -669,7 +678,7 @@ public class ReflectionUtils
 
                             if ( deep )
                             {
-                                Map<String, MethodDescriptor> classMap = getJacksonClassMap( klass, level );
+                                Map<String, MethodDescriptor> classMap = getJacksonClassMap( returnType, level );
                                 descriptor.setObjects( classMap );
                             }
                         }
