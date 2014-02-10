@@ -38,6 +38,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
@@ -85,7 +86,7 @@ public class ShowUpdateProgramFormAction
     {
         this.relationshipTypeService = relationshipTypeService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -183,9 +184,12 @@ public class ShowUpdateProgramFormAction
         throws Exception
     {
         program = programService.getProgram( id );
-        
+
         availableAttributes = attributeService.getAllTrackedEntityAttributes();
-        availableAttributes.removeAll( program.getAttributes() );
+        for ( ProgramTrackedEntityAttribute programAttribue : program.getAttributes() )
+        {
+            availableAttributes.remove( programAttribue.getAttribute() );
+        }
 
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );

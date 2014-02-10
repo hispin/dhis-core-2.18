@@ -10,7 +10,7 @@
 <h2>$i18n.getString( "programs" )</h2>
 <ul>
 	<li><a href="program.action">$i18n.getString( "program" )</a></li>
-	<li><a href="caseAggregation.action">$i18n.getString( "tracked_entity_aggregation_query_builder" )</a></li>
+	<li><a href="caseAggregation.action">$i18n.getString( "aggregation_query_builder" )</a></li>
 </ul>
 
 #if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) || $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )

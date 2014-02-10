@@ -177,16 +177,14 @@ public class SaveAttributeAction
 
         if ( attributes != null && attributes.size() > 0 )
         {
-            // entityInstance.getAttributes().clear();
-
             for ( TrackedEntityAttribute attribute : attributes )
             {
                 value = request.getParameter( AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE + attribute.getId() );
-
+                
+                attributeValue = attributeValueService.getTrackedEntityAttributeValue( entityInstance, attribute );
+                
                 if ( StringUtils.isNotBlank( value ) )
                 {
-                    attributeValue = attributeValueService.getTrackedEntityAttributeValue( entityInstance, attribute );
-
                     if ( attributeValue == null )
                     {
                         attributeValue = new TrackedEntityAttributeValue();
@@ -196,7 +194,8 @@ public class SaveAttributeAction
 
                         if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
                         {
-                            value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
+                            value = format
+                                .formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
                         }
 
                         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
@@ -217,8 +216,8 @@ public class SaveAttributeAction
                     {
                         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
-                            TrackedEntityAttributeOption option = attributeOptionService.get( NumberUtils.toInt(
-                                value, 0 ) );
+                            TrackedEntityAttributeOption option = attributeOptionService.get( NumberUtils.toInt( value,
+                                0 ) );
                             if ( option != null )
                             {
                                 attributeValue.setAttributeOption( option );
@@ -235,6 +234,7 @@ public class SaveAttributeAction
                 }
                 else if ( attributeValue != null )
                 {
+                    entityInstance.getAttributeValues().remove( attributeValue );
                     attributeValueService.deleteTrackedEntityAttributeValue( attributeValue );
                 }
             }
