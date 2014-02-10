@@ -28,6 +28,7 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.google.common.collect.Maps;
@@ -524,22 +525,90 @@ public class ReflectionUtils
         return fieldName;
     }
 
-    private static Map<Class<?>, Map<String, Method>> classMapCache = Maps.newHashMap();
+    private static Map<Class<?>, Map<String, MethodDescriptor>> classMapCache = Maps.newHashMap();
 
-    public static Map<String, Method> getJacksonClassMap( Class<?> clazz )
+    public static class MethodDescriptor
     {
-        return getJacksonClassMap( clazz, true );
+        private Method method;
+
+        private boolean collection;
+
+        private boolean identifiableObject;
+
+        private Map<String, MethodDescriptor> objects;
+
+        private MethodDescriptor( Method method )
+        {
+            this.method = method;
+        }
+
+        @JsonIgnore
+        public Method getMethod()
+        {
+            return method;
+        }
+
+        public void setMethod( Method method )
+        {
+            this.method = method;
+        }
+
+        @JsonProperty
+        public boolean isCollection()
+        {
+            return collection;
+        }
+
+        public void setCollection( boolean collection )
+        {
+            this.collection = collection;
+        }
+
+        @JsonProperty
+        public boolean isIdentifiableObject()
+        {
+            return identifiableObject;
+        }
+
+        public void setIdentifiableObject( boolean identifiableObject )
+        {
+            this.identifiableObject = identifiableObject;
+        }
+
+        @JsonProperty
+        public Map<String, MethodDescriptor> getObjects()
+        {
+            return objects;
+        }
+
+        public void setObjects( Map<String, MethodDescriptor> objects )
+        {
+            this.objects = objects;
+        }
     }
 
-    public static Map<String, Method> getJacksonClassMap( Class<?> clazz, boolean deep )
+    public static Map<String, MethodDescriptor> getJacksonClassMap( Class<?> clazz )
     {
+        return getJacksonClassMap( clazz, 2 );
+    }
+
+    public static Map<String, MethodDescriptor> getJacksonClassMap( Class<?> clazz, int level )
+    {
+        // this short-circuits the level stuff for now, need to fix this properly
         if ( classMapCache.containsKey( clazz ) )
         {
             return classMapCache.get( clazz );
         }
 
-        Map<String, Method> output = Maps.newLinkedHashMap();
+        boolean deep = false;
+        level--;
 
+        if ( level > 0 )
+        {
+            deep = true;
+        }
+
+        Map<String, MethodDescriptor> output = Maps.newLinkedHashMap();
         List<Method> allMethods = getAllMethods( clazz );
 
         for ( Method method : allMethods )
@@ -547,6 +616,7 @@ public class ReflectionUtils
             if ( method.isAnnotationPresent( JsonProperty.class ) )
             {
                 JsonProperty jsonProperty = method.getAnnotation( JsonProperty.class );
+                MethodDescriptor descriptor = new MethodDescriptor( method );
 
                 String name = jsonProperty.value();
 
@@ -567,25 +637,23 @@ public class ReflectionUtils
                     }
 
                     name = StringUtils.uncapitalize( name );
-                    output.put( name, method );
                 }
-                else
-                {
-                    output.put( name, method );
-                }
+
+                output.put( name, descriptor );
 
                 Class<?> returnType = method.getReturnType();
 
-                if ( deep && IdentifiableObject.class.isAssignableFrom( returnType ) )
+                if ( IdentifiableObject.class.isAssignableFrom( returnType ) )
                 {
-                    Map<String, Method> classMap = getJacksonClassMap( returnType, false );
+                    descriptor.setIdentifiableObject( true );
 
-                    for ( String key : classMap.keySet() )
+                    if ( deep )
                     {
-                        output.put( name + "." + key, classMap.get( key ) );
+                        Map<String, MethodDescriptor> classMap = getJacksonClassMap( returnType, level );
+                        descriptor.setObjects( classMap );
                     }
                 }
-                else if ( deep && Collection.class.isAssignableFrom( returnType ) )
+                else if ( Collection.class.isAssignableFrom( returnType ) )
                 {
                     Type type = method.getGenericReturnType();
 
@@ -596,11 +664,13 @@ public class ReflectionUtils
 
                         if ( IdentifiableObject.class.isAssignableFrom( klass ) )
                         {
-                            Map<String, Method> classMap = getJacksonClassMap( klass, false );
+                            descriptor.setCollection( true );
+                            descriptor.setIdentifiableObject( true );
 
-                            for ( String key : classMap.keySet() )
+                            if ( deep )
                             {
-                                output.put( name + "." + key, classMap.get( key ) );
+                                Map<String, MethodDescriptor> classMap = getJacksonClassMap( klass, level );
+                                descriptor.setObjects( classMap );
                             }
                         }
                     }
