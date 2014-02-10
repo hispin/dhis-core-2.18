@@ -5,7 +5,10 @@
 <struts>
   <include file="dhis-web-commons.xml" />
 
-  <package name="dhis-web-api-fred" extends="dhis-web-commons" namespace="/api-fred">
+  <package name="dhis-web-ohie" extends="dhis-web-commons" namespace="/ohie">
+  </package>
+
+  <package name="dhis-web-api-fred" extends="dhis-web-commons" namespace="/ohie/fred">
 
     <action name="" class="org.hisp.dhis.commons.action.NoAction">
       <param name="requiredAuthorities">F_FRED_CREATE, F_FRED_UPDATE, F_FRED_DELETE</param>

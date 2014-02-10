@@ -8,12 +8,12 @@
     <version>2.15-SNAPSHOT</version>
   </parent>
 
-  <artifactId>dhis-web-api-fred</artifactId>
+  <artifactId>dhis-web-ohie</artifactId>
   <packaging>war</packaging>
-  <name>DHIS 2 Web-API FRED Implementation</name>
+  <name>DHIS 2 OHIE Implementations</name>
 
   <build>
-    <finalName>dhis-web-api-fred</finalName>
+    <finalName>dhis-web-ohie</finalName>
   </build>
 
   <dependencies>
