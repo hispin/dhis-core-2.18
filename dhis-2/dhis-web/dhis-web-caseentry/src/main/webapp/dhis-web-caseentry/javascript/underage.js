@@ -101,17 +101,6 @@ function showPersons( divContainer, xmlElement )
 	$( entityInstances ).each( function( i, entityInstance )
     {
 		sEntityInstance += "<hr style='margin:5px 0px;'><table>";
-		sEntityInstance += "<tr><td class='bold'>" + i18n_tracked_entity_instance_system_id + "</td><td>" + $( entityInstance ).find('systemIdentifier').text() + "</td></tr>" ;
-		
-		var identifiers =  $( entityInstance ).find('identifier');
-		$( identifiers ).each( function( i, identifier )
-		{
-			sEntityInstance +="<tr class='identifierRow" + $(identifier).find('id').text() + "' id='iden" + $(identifier).find('id' ).text() + "'>"
-				+"<td class='bold'>" + $(identifier).find('name').text() + "</td>"
-				+"<td class='value'>" + $(identifier).find('value').text() + "</td>	"	
-				+"</tr>";
-		});
-		
 		var attributes = $( entityInstance ).find('attribute');
 		$( attributes ).each( function( i, attribute )
 		{
@@ -120,10 +109,8 @@ function showPersons( divContainer, xmlElement )
 					+ "<td>" + $(attribute).find('value').text() + "</td>	"	
 					+ "</tr>";
 		});
-		
 		sEntityInstance += "<tr><td colspan='2'><input type='button' id='" + $(entityInstance).find('id' ).first().text() +"' value='" + i18n_choose_this_tracked_entity_instance + "' onclick='choosePerson(this)'/></td></tr>";
 		sEntityInstance += "</table>";
-		
 		container.append(i18n_duplicate_warning + "<br>" + sEntityInstance);
 	 } );
 }

@@ -76,13 +76,6 @@ public class GetTrackedEntityInstanceLocationAction
         return entityInstanceId;
     }
 
-    private String systemIdentifier;
-
-    public String getSystemIdentifier()
-    {
-        return systemIdentifier;
-    }
-
     private TrackedEntityInstance entityInstance;
 
     public TrackedEntityInstance getEntityInstance()
