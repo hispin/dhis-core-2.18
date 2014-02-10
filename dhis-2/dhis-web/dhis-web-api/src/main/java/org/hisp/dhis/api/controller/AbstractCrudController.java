@@ -85,12 +85,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/filtered", method = RequestMethod.GET )
-    public void getJacksonClassMap( @RequestParam( required = false ) String fields,
+    public void getJacksonClassMap(
+        @RequestParam( required = false ) String include,
         @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
-        if ( fields == null )
+        if ( include == null )
         {
-            JacksonUtils.toJson( response.getOutputStream(), ReflectionUtils.getJacksonClassMap( getEntityClass() ).keySet() );
+            JacksonUtils.toJson( response.getOutputStream(), ReflectionUtils.getJacksonClassMap( getEntityClass() ) );
             return;
         }
 
@@ -103,7 +104,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
 
-        List<Object> objects = WebUtils.filterFields( entityList, fields );
+        // List<Object> objects = WebUtils.filterFields( entityList, include );
         Map<String, Object> output = Maps.newLinkedHashMap();
 
         if ( options.hasPaging() )
@@ -111,7 +112,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             output.put( "pager", metaData.getPager() );
         }
 
-        output.put( "objects", objects );
+        output.put( "objects", WebUtils.parseFieldExpression( include ) );
 
         JacksonUtils.toJson( response.getOutputStream(), output );
     }
