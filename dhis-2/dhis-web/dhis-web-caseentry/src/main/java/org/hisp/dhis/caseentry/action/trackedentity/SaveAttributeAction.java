@@ -171,8 +171,7 @@ public class SaveAttributeAction
         String value = null;
 
         Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
-        entityInstance.getAttributeValues().clear();
-
+        
         TrackedEntityAttributeValue attributeValue = null;
 
         if ( attributes != null && attributes.size() > 0 )
@@ -180,7 +179,8 @@ public class SaveAttributeAction
             for ( TrackedEntityAttribute attribute : attributes )
             {
                 value = request.getParameter( AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE + attribute.getId() );
-                
+ System.out.println("\n\n\n ====== \n value : " + value );
+ System.out.println("\n params : " + AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE + attribute.getId() );
                 attributeValue = attributeValueService.getTrackedEntityAttributeValue( entityInstance, attribute );
                 
                 if ( StringUtils.isNotBlank( value ) )
@@ -197,13 +197,18 @@ public class SaveAttributeAction
                             value = format
                                 .formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
                         }
+ System.out.println("\n\n attribute.getValueType() : " + attribute.getValueType() );
 
                         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
                             TrackedEntityAttributeOption option = attributeOptionService
                                 .get( Integer.parseInt( value ) );
+
+                            System.out.println("\n\n option : " + option );
+                            
                             if ( option != null )
-                            {
+                            {  System.out.println("\n\n option : " + option );
+                            
                                 attributeValue.setAttributeOption( option );
                                 attributeValue.setValue( option.getName() );
                             }
