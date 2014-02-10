@@ -62,14 +62,14 @@
 			<param name="page">/dhis-web-maintenance-program/updateRelationshipTypeForm.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="updateRelationshipType"
 			class="org.hisp.dhis.trackedentity.action.relationship.UpdateRelationshipTypeAction">
 			<result name="success" type="redirect">relationshipType.action
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="validateRelationshipType"
@@ -129,14 +129,14 @@
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_DELETE</param>
 		</action>
 
 		<action name="addAttribute"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.AddAttributeAction">
 			<result name="success" type="redirect">attribute.action
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="showAddAttributeForm"
@@ -146,7 +146,7 @@
 				/dhis-web-maintenance-program/addAttributeForm.vm</param>
 			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="showUpdateAttributeForm"
@@ -156,14 +156,14 @@
 				/dhis-web-maintenance-program/updateAttibuteForm.vm</param>
 			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="updateAttribute"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.UpdateAttributeAction">
 			<result name="success" type="redirect">attribute.action
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="validateAttribute"
@@ -188,7 +188,7 @@
 			<result name="input" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseInput.vm
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_DELETE</param>
 		</action>
 
 		<action name="attributeVisitSchedule"
@@ -199,13 +199,13 @@
 			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="saveAttributeVisitSchedule"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.SaveAttributeVisitScheduleAction">
 			<result name="success" type="redirect">index.action</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 		
 		<action name="attributeInListNoProgram"
@@ -216,13 +216,13 @@
 			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="saveAttributeInListNoProgram"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.SaveAttributeInListNoProgramAction">
 			<result name="success" type="redirect">index.action</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 		
 		<!-- Program -->
@@ -586,7 +586,7 @@
 			<param name="page">/dhis-web-maintenance-program/trackedEntityForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/trackedEntityForm.js</param>
-			<param name="requiredAuthorities">F_ADD_PATIENT_REGISTRATION_FORM</param>
+			<param name="requiredAuthorities">F_ADD_TRACKED_ENTITY_FORM</param>
 		</action>
 
 		<action name="viewTrackedEntityForm"
@@ -664,14 +664,14 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_DELETE</param>
 		</action>
 
 		<action name="addAttributeGroup"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.AddAttributeGroupAction">
 			<result name="success" type="redirect">attributeGroup.action
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="showAddAttributeGroupForm" class="org.hisp.dhis.trackedentity.action.NoAction">
@@ -679,7 +679,7 @@
 			<param name="page">/dhis-web-maintenance-program/addAttributeGroupForm.vm</param>
 			<param name="javascripts">javascript/attributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="showUpdateAttributeGroupForm"
@@ -688,14 +688,14 @@
 			<param name="page">/dhis-web-maintenance-program/updateAttibuteGroupForm.vm</param>
 			<param name="javascripts">javascript/attributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="updateAttributeGroup"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.UpdateAttributeGroupAction">
 			<result name="success" type="redirect">attributeGroup.action
 			</result>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="validateAttributeGroup"
@@ -718,7 +718,7 @@
 			<param name="page">/dhis-web-maintenance-program/sortAttributeGroupForm.vm</param>
 			<param name="javascripts">javascript/attributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="saveAttributeGroupSortOrder"
@@ -1115,7 +1115,7 @@
 			<param name="page">/dhis-web-maintenance-program/programReminder.vm</param>
 			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
 			<param name="javascripts">javascript/programReminder.js</param>
-			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="showAddProgramReminder"
@@ -1123,14 +1123,14 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-program/addProgramReminder.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programReminder.js</param>
-			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="addProgramReminder"
 			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.AddProgramReminderAction">
 			<result name="success" type="redirect">programReminder.action?id=${programId}
 			</result>
-			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="showUpdateProgramReminder"
@@ -1138,14 +1138,14 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-program/updateProgramReminder.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programReminder.js</param>
-			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="updateProgramReminder"
 			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.UpdateProgramReminderAction">
 			<result name="success" type="redirect">programReminder.action?id=${programId}
 			</result>
-			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="removeProgramReminder"
@@ -1153,7 +1153,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="getReminder"
@@ -1164,7 +1164,7 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="validateProgramPatientReminder"
+		<action name="validateProgramReminder"
 			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ValidateProgramReminderAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
