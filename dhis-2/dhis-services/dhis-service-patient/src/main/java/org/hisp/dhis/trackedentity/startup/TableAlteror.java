@@ -38,7 +38,6 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -184,8 +183,6 @@ public class TableAlteror
         executeSql( "update program set remindCompleted=false where remindCompleted is null" );
         executeSql( "UPDATE programinstance SET followup=false where followup is null" );
 
-        updateUid();
-
         updateUidInDataEntryFrom();
 
         updateProgramInstanceStatus();
@@ -267,47 +264,6 @@ public class TableAlteror
 
         executeSql( "DROP TABLE program_attributes." );
         log.info( "Dropped program_attributes table." );
-    }
-
-    private void updateUid()
-    {
-        updateUidColumn( "trackedentityattribute" );
-        updateUidColumn( "trackedentityattributegroup" );
-        updateUidColumn( "program" );
-        updateUidColumn( "trackedentityattribute" );
-        updateUidColumn( "programstage" );
-        updateUidColumn( "programstagesection" );
-        updateUidColumn( "programvalidation" );
-        updateUidColumn( "caseaggregatecondition" );
-    }
-
-    private void updateUidColumn( String tableName )
-    {
-        StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement.executeQuery( "SELECT " + tableName + "id FROM " + tableName
-                + " where uid is null" );
-
-            while ( resultSet.next() )
-            {
-                String uid = CodeGenerator.generateCode();
-
-                executeSql( "UPDATE " + tableName + " SET uid='" + uid + "'  WHERE " + tableName + "id="
-                    + resultSet.getInt( 1 ) );
-            }
-        }
-        catch ( Exception ex )
-        {
-            log.debug( ex );
-        }
-        finally
-        {
-            holder.close();
-        }
     }
 
     private void updateUidInDataEntryFrom()
