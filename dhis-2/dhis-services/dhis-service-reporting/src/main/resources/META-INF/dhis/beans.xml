@@ -203,6 +203,42 @@
     <property name="last6To12Months" value="true" />
   </bean>
 
+  <bean id="org.hisp.dhis.common.ReportingIdentityPopulator" class="org.hisp.dhis.common.IdentityPopulator">
+    <property name="name" value="ReportingIdentityPopulator" />
+    <property name="runlevel" value="3" />
+    <property name="skipInTests" value="true" />
+    <property name="tables">
+      <list>
+        <value>reporttable</value>
+        <value>chart</value>
+        <value>map</value>
+        <value>mapview</value>
+        <value>maplegend</value>
+        <value>maplegendset</value>
+        <value>report</value>
+        <value>messageconversation</value>
+        <value>message</value>
+        <value>document</value>
+        <value>dashboard</value>
+        <value>dashboarditem</value>
+        <value>interpretation</value>
+        <value>interpretationcomment</value>
+      </list>
+    </property>
+  </bean>
+    
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
+    <property name="targetMethod" value="addStartupRoutines" />
+    <property name="arguments">
+      <list>
+        <list>
+          <ref local="org.hisp.dhis.common.ReportingIdentityPopulator" />
+        </list>
+      </list>
+    </property>
+  </bean>
+  
   <!-- DeletionHandler -->
 
   <bean id="org.hisp.dhis.report.ReportDeletionHandler" class="org.hisp.dhis.report.ReportDeletionHandler">

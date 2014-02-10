@@ -878,6 +878,38 @@
     <property name="name" value="IdentityPopulator" />
     <property name="runlevel" value="3" />
     <property name="skipInTests" value="true" />
+    <property name="tables">
+      <list>
+        <value>constant</value>
+        <value>concept</value>
+        <value>attribute</value>
+        <value>indicatortype</value>
+        <value>indicator</value>
+        <value>indicatorgroup</value>
+        <value>indicatorgroupset</value>
+        <value>datadictionary</value>
+        <value>validationrule</value>
+        <value>validationrulegroup</value>
+        <value>dataset</value>
+        <value>section</value>
+        <value>orgunitlevel</value>
+        <value>organisationunit</value>
+        <value>orgunitgroup</value>
+        <value>orgunitgroupset</value>
+        <value>dataelement</value>
+        <value>dataelementgroup</value>
+        <value>dataelementgroupset</value>
+        <value>sqlview</value>
+        <value>dataelementcategory</value>
+        <value>dataelementcategoryoption</value>
+        <value>categorycombo</value>
+        <value>categoryoptioncombo</value>
+        <value>userinfo</value>
+        <value>usergroup</value>
+        <value>userrole</value>
+        <value>optionset</value>
+      </list>
+    </property>
   </bean>
 
   <bean id="org.hisp.dhis.startup.TableCreator" class="org.hisp.dhis.startup.TableCreator">

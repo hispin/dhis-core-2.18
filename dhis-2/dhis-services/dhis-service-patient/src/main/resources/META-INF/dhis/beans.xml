@@ -391,8 +391,26 @@
 			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 	</bean>
 
-	<bean
-		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <bean id="org.hisp.dhis.common.TrackerIdentityPopulator" class="org.hisp.dhis.common.IdentityPopulator">
+        <property name="name" value="TrackerIdentityPopulator" />
+        <property name="runlevel" value="3" />
+        <property name="skipInTests" value="true" />
+        <property name="tables">
+            <list>
+                <value>trackedentityattribute</value>
+                <value>trackedentityattributegroup</value>
+                <value>program</value>
+                <value>programstage</value>
+                <value>programinstance</value>
+                <value>programstageinstance</value>
+                <value>relationshiptype</value>
+                <value>programstagesection</value>
+                <value>programvalidation</value>
+            </list>
+        </property>
+    </bean>
+    
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject"
 			ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
 		<property name="targetMethod" value="addStartupRoutines" />
@@ -400,6 +418,7 @@
 			<list>
 				<list>
 					<ref local="org.hisp.dhis.trackedentity.startup.TableAlteror" />
+					<ref local="org.hisp.dhis.common.TrackerIdentityPopulator" />
 				</list>
 			</list>
 		</property>

@@ -36,6 +36,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,18 +49,16 @@ public class IdentityPopulator
 {
     private static final Log log = LogFactory.getLog( IdentityPopulator.class );
 
-    private static final String[] tables = { "chart", "constant", "concept", "attribute", "indicatortype", "indicatorgroupset", "indicator",
-        "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule", "dataset", "orgunitlevel", "document",
-        "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup", "sqlview",
-        "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "map", "mapview",
-        "reporttable", "report", "messageconversation", "message", "userinfo", "usergroup", "userrole", "maplegend",
-        "maplegendset", "maplayer", "section", "optionset", "program", "programinstance", "programstage", "programstageinstance",
-        "trackedentityinstance", "relationshiptype"
-    };
-
     private static final Map<String, String> TABLE_ID_MAP = DimensionalObjectUtils.asMap(
         "dataelementcategoryoption", "categoryoptionid",
         "dataelementcategory", "categoryid" );
+
+    private List<String> tables = new ArrayList<String>();
+    
+    public void setTables( List<String> tables )
+    {
+        this.tables = tables;
+    }
 
     // -------------------------------------------------------------------------
     // Dependencies
