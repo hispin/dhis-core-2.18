@@ -767,9 +767,6 @@ public class ActivityReportingServiceImpl
         List<TrackedEntityAttributeValue> atts = new ArrayList<TrackedEntityAttributeValue>(
             patient.getAttributeValues() );
 
-        Set<TrackedEntityAttribute> displayAttributes = new HashSet<TrackedEntityAttribute>(
-            attributeService.getTrackedEntityAttributesDisplayedInList( true ) );
-
         for ( TrackedEntityAttributeValue value : atts )
         {
             if ( value != null )
@@ -777,10 +774,7 @@ public class ActivityReportingServiceImpl
                 org.hisp.dhis.api.mobile.model.PatientAttribute patientAttribute = new org.hisp.dhis.api.mobile.model.PatientAttribute(
                     value.getAttribute().getName(), value.getValue(), value.getAttribute().getValueType(), false,
                     new ArrayList<String>() );
-                // if ( displayAttributes.contains( value.getAttribute() ) )
-                // {
-                // patientAttribute.setDisplayedInList( true );
-                // }
+                
                 patientAtts.add( patientAttribute );
             }
         }

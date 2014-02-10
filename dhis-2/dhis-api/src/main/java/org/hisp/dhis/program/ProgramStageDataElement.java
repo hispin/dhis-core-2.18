@@ -62,7 +62,7 @@ public class ProgramStageDataElement
      */
     private DataElement dataElement;
 
-    /*
+    /**
      * True if this dataElement is mandatory in the dataEntryForm for this
      * programStage
      */
