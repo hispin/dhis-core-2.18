@@ -304,7 +304,7 @@ function removeTrackedEntityInstance( entityInstanceId )
 {
 	var entityInstance = new TrackedEntityInstance();
 	entityInstance.entityInstanceId = entityInstanceId;
-	entityInstance.remove( i18n_confirm_delete_entityInstance );
+	entityInstance.remove( i18n_confirm_delete_tracked_entity_instance );
 }
 
 // -----------------------------------------------------------------------------
