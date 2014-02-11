@@ -28,12 +28,6 @@ package org.hisp.dhis.dxf2.events.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -43,13 +37,19 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -413,7 +413,12 @@ public abstract class AbstractPersonService
 
     private void removeAttributeValues( TrackedEntityInstance entityInstance )
     {
-        attributeValueService.deleteTrackedEntityAttributeValue( entityInstance );
+        for ( TrackedEntityAttributeValue trackedEntityAttributeValue : entityInstance.getAttributeValues() )
+        {
+            attributeValueService.deleteTrackedEntityAttributeValue( trackedEntityAttributeValue );
+        }
+
+        // attributeValueService.deleteTrackedEntityAttributeValue( entityInstance );
         entityInstanceService.updateTrackedEntityInstance( entityInstance );
     }
 }
