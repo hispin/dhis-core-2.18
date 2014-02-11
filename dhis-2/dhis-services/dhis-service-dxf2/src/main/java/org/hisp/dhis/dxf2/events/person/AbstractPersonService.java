@@ -418,7 +418,6 @@ public abstract class AbstractPersonService
             attributeValueService.deleteTrackedEntityAttributeValue( trackedEntityAttributeValue );
         }
 
-        // attributeValueService.deleteTrackedEntityAttributeValue( entityInstance );
         entityInstanceService.updateTrackedEntityInstance( entityInstance );
     }
 }
