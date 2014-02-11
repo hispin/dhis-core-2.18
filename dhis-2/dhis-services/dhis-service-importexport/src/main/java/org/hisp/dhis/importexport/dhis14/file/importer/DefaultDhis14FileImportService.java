@@ -51,6 +51,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
+import org.hisp.dhis.importexport.ImportDataDailyPeriodService;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportException;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -59,9 +60,11 @@ import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.analysis.DefaultImportAnalyser;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.dhis14.file.query.QueryManager;
+import org.hisp.dhis.importexport.dhis14.file.rowhandler.CaculatedDataElementRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataElementGroupMemberRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataElementGroupRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataElementRowHandler;
+import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataSetDailyCaptureRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataSetMemberRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataSetOrganisationUnitAssociationRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataSetRowHandler;
@@ -77,8 +80,11 @@ import org.hisp.dhis.importexport.dhis14.file.rowhandler.OrganisationUnitGroupRo
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.OrganisationUnitRelationshipRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.OrganisationUnitRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.PeriodRowHandler;
+import org.hisp.dhis.importexport.dhis14.file.rowhandler.RoutineDataDailyCapturePeriodRowHandler;
+import org.hisp.dhis.importexport.dhis14.file.rowhandler.RoutineDataDailyCaptureRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.RoutineDataValueRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.SemiPermanentDataValueRowHandler;
+import org.hisp.dhis.importexport.dhis14.file.rowhandler.ValidationRuleRowHandler;
 import org.hisp.dhis.importexport.dhis14.util.Dhis14PeriodUtil;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
@@ -104,6 +110,7 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ValidationRuleBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -111,18 +118,21 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.ValidationRuleService;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultDhis14FileImportService.java 6425 2008-11-22 00:08:57Z larshelg $
+ * @version $Id: DefaultDhis14FileImportService.java 6425 2008-11-22 00:08:57Z
+ *          larshelg $
  */
 public class DefaultDhis14FileImportService
     implements ImportService
 {
     private final Log log = LogFactory.getLog( DefaultDhis14FileImportService.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -140,28 +150,28 @@ public class DefaultDhis14FileImportService
     {
         this.objectMappingGenerator = objectMappingGenerator;
     }
-    
+
     private BatchHandlerFactory batchHandlerFactory;
 
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
     {
         this.batchHandlerFactory = batchHandlerFactory;
     }
-    
+
     private ImportObjectService importObjectService;
 
     public void setImportObjectService( ImportObjectService importObjectService )
     {
         this.importObjectService = importObjectService;
     }
-    
+
     private ExpressionService expressionService;
 
     public void setExpressionService( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -170,7 +180,7 @@ public class DefaultDhis14FileImportService
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
@@ -182,40 +192,54 @@ public class DefaultDhis14FileImportService
     {
         this.periodService = periodService;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
+
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
+    }
+
+    private ImportDataDailyPeriodService importDataDailyPeriodService;
+
+    public void setImportDataDailyPeriodService( ImportDataDailyPeriodService importDataDailyPeriodService )
+    {
+        this.importDataDailyPeriodService = importDataDailyPeriodService;
+    }
+
+    private ValidationRuleService validationRuleService;
+
+    public void setValidationRuleService( ValidationRuleService validationRuleService )
+    {
+        this.validationRuleService = validationRuleService;
     }
 
     private HibernateCacheManager cacheManager;
@@ -226,7 +250,7 @@ public class DefaultDhis14FileImportService
     }
 
     private ImportAnalyser importAnalyser;
-    
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -235,13 +259,14 @@ public class DefaultDhis14FileImportService
     {
         super();
     }
-    
+
     // -------------------------------------------------------------------------
     // ImportService implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public void importData( ImportParams params, InputStream inputStream ) throws ImportException
+    public void importData( ImportParams params, InputStream inputStream )
+        throws ImportException
     {
         importData( params, inputStream, null );
     }
@@ -264,6 +289,8 @@ public class DefaultDhis14FileImportService
             importObjectService.deleteImportObjects();
         }
 
+        // importCalculatedDataElement( params, state );
+
         importDataElements( params, state );
         importIndicatorTypes( params, state );
         importIndicators( params, state );
@@ -273,6 +300,7 @@ public class DefaultDhis14FileImportService
         importIndicatorGroupMembers( params, state );
 
         importDataSets( params, state );
+        importDataSetsDailyCapture( params, state );
         importDataSetMembers( params, state );
 
         importOrganisationUnits( params, state );
@@ -284,9 +312,13 @@ public class DefaultDhis14FileImportService
 
         importDataSetOrganisationUnitAssociations( params, state );
 
+        // importValidationRule( params, state );
+
         if ( params.isDataValues() && !params.isAnalysis() )
         {
             importPeriods( params, state );
+            importRoutineDataDailyCapturePeriods( params, state );
+            importRoutineDataDailyCapture( params, state );
             importRoutineDataValues( params, state );
 
             importOnChangePeriods( params, state );
@@ -310,146 +342,161 @@ public class DefaultDhis14FileImportService
     // -------------------------------------------------------------------------
 
     private void importDataElements( ImportParams params, ProcessState state )
-    {        
+    {
         state.setMessage( "importing_data_elements" );
-        
-        BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class ).init();
-        
-        DataElementCategoryCombo categoryCombo = categoryService.
-            getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-        
-        RowHandler rowHandler = new DataElementRowHandler( batchHandler,
-            importObjectService,
-            dataElementService, 
-            params,
-            categoryCombo,
-            importAnalyser );
+
+        BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class )
+            .init();
+
+        DataElementCategoryCombo categoryCombo = categoryService
+            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+
+        RowHandler rowHandler = new DataElementRowHandler( batchHandler, importObjectService, dataElementService,
+            params, categoryCombo, importAnalyser );
 
         queryManager.queryWithRowhandler( "getDataElements", rowHandler );
 
         batchHandler.flush();
-        
+
         log.info( "Imported DataElements" );
     }
-    
+
     private void importIndicatorTypes( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_indicator_types" );
-        
-        BatchHandler<IndicatorType> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new IndicatorTypeRowHandler( batchHandler,
-            importObjectService,
-            indicatorService,
+
+        BatchHandler<IndicatorType> batchHandler = batchHandlerFactory.createBatchHandler(
+            IndicatorTypeBatchHandler.class ).init();
+
+        RowHandler rowHandler = new IndicatorTypeRowHandler( batchHandler, importObjectService, indicatorService,
             params );
-        
+
         queryManager.queryWithRowhandler( "getIndicatorTypes", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported IndicatorTypes" );
     }
-    
+
     private void importIndicators( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_indicators" );
-        
-        BatchHandler<Indicator> indicatorBatchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class ).init();
-        BatchHandler<DataElement> dataElementBatchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class ).init();
-        BatchHandler<IndicatorType> indicatorTypeBatchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new IndicatorRowHandler( indicatorBatchHandler,
-            importObjectService,
-            indicatorService,
-            objectMappingGenerator.getIndicatorTypeMapping( params.skipMapping() ), 
+
+        BatchHandler<Indicator> indicatorBatchHandler = batchHandlerFactory.createBatchHandler(
+            IndicatorBatchHandler.class ).init();
+        BatchHandler<DataElement> dataElementBatchHandler = batchHandlerFactory.createBatchHandler(
+            DataElementBatchHandler.class ).init();
+        BatchHandler<IndicatorType> indicatorTypeBatchHandler = batchHandlerFactory.createBatchHandler(
+            IndicatorTypeBatchHandler.class ).init();
+
+        RowHandler rowHandler = new IndicatorRowHandler( indicatorBatchHandler, importObjectService, indicatorService,
+            objectMappingGenerator.getIndicatorTypeMapping( params.skipMapping() ),
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-            categoryService.getDefaultDataElementCategoryOptionCombo(),
-            params,
-            importAnalyser );
-        
+            categoryService.getDefaultDataElementCategoryOptionCombo(), params, importAnalyser );
+
         queryManager.queryWithRowhandler( "getIndicators", rowHandler );
-        
+
         indicatorBatchHandler.flush();
         dataElementBatchHandler.flush();
         indicatorTypeBatchHandler.flush();
-        
+
         log.info( "Imported Indicators" );
     }
-    
+
+    private void importCalculatedDataElement( ImportParams params, ProcessState state )
+    {
+        state.setMessage( "importing_calculatedDataElements" );
+
+        BatchHandler<Indicator> indicatorBatchHandler = batchHandlerFactory.createBatchHandler(
+            IndicatorBatchHandler.class ).init();
+        BatchHandler<DataElement> dataElementBatchHandler = batchHandlerFactory.createBatchHandler(
+            DataElementBatchHandler.class ).init();
+        BatchHandler<IndicatorType> indicatorTypeBatchHandler = batchHandlerFactory.createBatchHandler(
+            IndicatorTypeBatchHandler.class ).init();
+
+        RowHandler rowHandler = new CaculatedDataElementRowHandler( indicatorBatchHandler, importObjectService, indicatorService, 
+            objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
+            categoryService.getDefaultDataElementCategoryOptionCombo(), params, importAnalyser );
+
+        queryManager.queryWithRowhandler( "getCalculatedDataElements", rowHandler );
+
+        indicatorBatchHandler.flush();
+        dataElementBatchHandler.flush();
+        indicatorTypeBatchHandler.flush();
+
+        log.info( "Imported Calculated Data Elements" );
+    }
+
     private void importDataElementGroups( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_data_element_groups" );
-        
-        BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new DataElementGroupRowHandler( batchHandler,
-            importObjectService,
-            dataElementService, 
+
+        BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory.createBatchHandler(
+            DataElementGroupBatchHandler.class ).init();
+
+        RowHandler rowHandler = new DataElementGroupRowHandler( batchHandler, importObjectService, dataElementService,
             params );
-        
+
         queryManager.queryWithRowhandler( "getDataElementGroups", rowHandler );
-        
-        batchHandler.flush();        
-        
+
+        batchHandler.flush();
+
         log.info( "Imported DataElementGroups" );
     }
-    
+
     private void importIndicatorGroups( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_indicator_groups" );
-        
-        BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new IndicatorGroupRowHandler( batchHandler,
-            importObjectService,
-            indicatorService, 
+
+        BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler(
+            IndicatorGroupBatchHandler.class ).init();
+
+        RowHandler rowHandler = new IndicatorGroupRowHandler( batchHandler, importObjectService, indicatorService,
             params );
-        
+
         queryManager.queryWithRowhandler( "getIndicatorGroups", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported IndicatorGroups" );
     }
-    
+
     private void importDataElementGroupMembers( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_data_element_group_members" );
-        
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupMemberBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new DataElementGroupMemberRowHandler( batchHandler,
-            importObjectService,
+
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler(
+            DataElementGroupMemberBatchHandler.class ).init();
+
+        RowHandler rowHandler = new DataElementGroupMemberRowHandler( batchHandler, importObjectService,
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-            objectMappingGenerator.getDataElementGroupMapping( params.skipMapping() ),
-            params );
-        
+            objectMappingGenerator.getDataElementGroupMapping( params.skipMapping() ), params );
+
         queryManager.queryWithRowhandler( "getDataElementGroupMembers", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported DataElementGroup members" );
     }
 
     private void importIndicatorGroupMembers( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_indicator_group_members" );
-        
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupMemberBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new IndicatorGroupMemberRowHandler( batchHandler,
-            importObjectService,
+
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler(
+            IndicatorGroupMemberBatchHandler.class ).init();
+
+        RowHandler rowHandler = new IndicatorGroupMemberRowHandler( batchHandler, importObjectService,
             objectMappingGenerator.getIndicatorMapping( params.skipMapping() ),
-            objectMappingGenerator.getIndicatorGroupMapping( params.skipMapping() ),
-            params );
-        
+            objectMappingGenerator.getIndicatorGroupMapping( params.skipMapping() ), params );
+
         queryManager.queryWithRowhandler( "getIndicatorGroupMembers", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported IndicatorGroup members" );
     }
-    
+
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------
@@ -457,39 +504,50 @@ public class DefaultDhis14FileImportService
     private void importDataSets( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_data_sets" );
-        
+
         BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new DataSetRowHandler( batchHandler,
-            importObjectService,
-            dataSetService,
-            objectMappingGenerator.getPeriodTypeMapping(),
-            params,
-            importAnalyser );
-        
+
+        RowHandler rowHandler = new DataSetRowHandler( batchHandler, importObjectService, dataSetService,
+            objectMappingGenerator.getPeriodTypeMapping(), params, importAnalyser );
+
         queryManager.queryWithRowhandler( "getDataSets", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported DataSets" );
     }
     
+    private void importDataSetsDailyCapture( ImportParams params, ProcessState state )
+    {
+        state.setMessage( "importing_data_sets_daily_capture" );
+
+        BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class ).init();
+
+        RowHandler rowHandler = new DataSetDailyCaptureRowHandler( batchHandler, importObjectService, dataSetService,
+            objectMappingGenerator.getPeriodTypeMapping(), params, importAnalyser );
+
+        queryManager.queryWithRowhandler( "getDataSetsDailyCapture", rowHandler );
+
+        batchHandler.flush();
+
+        log.info( "Imported DataSets Daily Capture" );
+    }
+
     private void importDataSetMembers( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_data_set_members" );
-        
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetMemberBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new DataSetMemberRowHandler( batchHandler,
-            importObjectService,
-            objectMappingGenerator.getDataElementMapping( params.skipMapping() ), 
-            objectMappingGenerator.getDataSetMapping( params.skipMapping() ),
-            params );
-        
+
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler(
+            DataSetMemberBatchHandler.class ).init();
+
+        RowHandler rowHandler = new DataSetMemberRowHandler( batchHandler, importObjectService,
+            objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
+            objectMappingGenerator.getDataSetMapping( params.skipMapping() ), params );
+
         queryManager.queryWithRowhandler( "getDataSetMembers", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported DataSet members" );
     }
 
@@ -500,115 +558,107 @@ public class DefaultDhis14FileImportService
     private void importOrganisationUnits( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_organisation_units" );
-        
-        BatchHandler<OrganisationUnit> organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new OrganisationUnitRowHandler( organisationUnitBatchHandler, 
-            importObjectService,
-            organisationUnitService,
-            params,
-            importAnalyser );
-        
+
+        BatchHandler<OrganisationUnit> organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler(
+            OrganisationUnitBatchHandler.class ).init();
+
+        RowHandler rowHandler = new OrganisationUnitRowHandler( organisationUnitBatchHandler, importObjectService,
+            organisationUnitService, params, importAnalyser );
+
         queryManager.queryWithRowhandler( "getOrganisationUnits", rowHandler );
-        
+
         organisationUnitBatchHandler.flush();
-        
-        log.info( "Imported OrganisationUnits" );       
+
+        log.info( "Imported OrganisationUnits" );
     }
-    
+
     private void importOrganisationUnitGroups( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_organisation_unit_groups" );
-        
-        BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new OrganisationUnitGroupRowHandler( batchHandler,
-            importObjectService,
-            organisationUnitGroupService,
-            params );
-        
+
+        BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory.createBatchHandler(
+            OrganisationUnitGroupBatchHandler.class ).init();
+
+        RowHandler rowHandler = new OrganisationUnitGroupRowHandler( batchHandler, importObjectService,
+            organisationUnitGroupService, params );
+
         queryManager.queryWithRowhandler( "getOrganisationUnitGroups", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported OrganisationUnitGroups" );
     }
-    
+
     private void importOrganisationUnitGroupMembers( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_organisation_unit_group_members" );
-        
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new OrganisationUnitGroupMemberRowHandler( batchHandler,
-            importObjectService,
+
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler(
+            OrganisationUnitGroupMemberBatchHandler.class ).init();
+
+        RowHandler rowHandler = new OrganisationUnitGroupMemberRowHandler( batchHandler, importObjectService,
             objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
-            objectMappingGenerator.getOrganisationUnitGroupMapping( params.skipMapping() ),
-            params );
-        
+            objectMappingGenerator.getOrganisationUnitGroupMapping( params.skipMapping() ), params );
+
         queryManager.queryWithRowhandler( "getOrganisationUnitGroupMembers", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported OrganisationUnitGroup members" );
     }
-    
+
     private void importGroupSets( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_organisation_unit_group_sets" );
-        
-        BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new GroupSetRowHandler( batchHandler, 
-            importObjectService,
-            organisationUnitGroupService,
-            params );
-        
+
+        BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory.createBatchHandler(
+            GroupSetBatchHandler.class ).init();
+
+        RowHandler rowHandler = new GroupSetRowHandler( batchHandler, importObjectService,
+            organisationUnitGroupService, params );
+
         queryManager.queryWithRowhandler( "getOrganisationUnitGroupSets", rowHandler );
-        
+
         batchHandler.flush();
-        
-        log.info( "Imported OrganisationUnitGroupSets" );  
+
+        log.info( "Imported OrganisationUnitGroupSets" );
     }
-    
+
     private void importGroupSetMembers( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_organisation_unit_group_set_members" );
-        
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetMemberBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new GroupSetMemberRowHandler( batchHandler,
-            importObjectService,
+
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler(
+            GroupSetMemberBatchHandler.class ).init();
+
+        RowHandler rowHandler = new GroupSetMemberRowHandler( batchHandler, importObjectService,
             objectMappingGenerator.getOrganisationUnitGroupMapping( params.skipMapping() ),
-            objectMappingGenerator.getOrganisationUnitGroupSetMapping( params.skipMapping() ),
-            params );
-        
+            objectMappingGenerator.getOrganisationUnitGroupSetMapping( params.skipMapping() ), params );
+
         queryManager.queryWithRowhandler( "getOrganisationUnitGroupSetMembers", rowHandler );
-        
+
         batchHandler.flush();
-                
+
         log.info( "Imported OrganisationUnitGroupSet members" );
     }
 
     private void importOrganisationUnitRelationships( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_organisation_unit_relationships" );
-        
-        BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new OrganisationUnitRelationshipRowHandler( batchHandler,
-            importObjectService,
-            organisationUnitService,
-            objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
-            params );
-        
+
+        BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler(
+            OrganisationUnitBatchHandler.class ).init();
+
+        RowHandler rowHandler = new OrganisationUnitRelationshipRowHandler( batchHandler, importObjectService,
+            organisationUnitService, objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ), params );
+
         queryManager.queryWithRowhandler( "getOrganisationUnitRelationships", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported OrganisationUnitRelationships" );
     }
-    
+
     // -------------------------------------------------------------------------
     // DataSet - OrganisationUnit Associations
     // -------------------------------------------------------------------------
@@ -616,19 +666,18 @@ public class DefaultDhis14FileImportService
     private void importDataSetOrganisationUnitAssociations( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_data_set_organisation_unit_associations" );
-        
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetSourceAssociationBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new DataSetOrganisationUnitAssociationRowHandler( batchHandler,
-            importObjectService,
-            objectMappingGenerator.getDataSetMapping( params.skipMapping() ), 
-            objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
-            params );
-        
+
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler(
+            DataSetSourceAssociationBatchHandler.class ).init();
+
+        RowHandler rowHandler = new DataSetOrganisationUnitAssociationRowHandler( batchHandler, importObjectService,
+            objectMappingGenerator.getDataSetMapping( params.skipMapping() ),
+            objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ), params );
+
         queryManager.queryWithRowhandler( "getDataSetOrganisationUnitAssociations", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported DataSet OrganisationUnit Associations" );
     }
 
@@ -637,25 +686,41 @@ public class DefaultDhis14FileImportService
     // -------------------------------------------------------------------------
 
     private void importPeriods( ImportParams params, ProcessState state )
-    {   
+    {
         state.setMessage( "importing_periods" );
-        
+
         BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new PeriodRowHandler( batchHandler, 
-            importObjectService,
-            periodService,
-            objectMappingGenerator.getPeriodTypeMapping(),
-            params,
-            getPeriodWithDataIdentifiers() );
-        
+
+        RowHandler rowHandler = new PeriodRowHandler( batchHandler, importObjectService, periodService,
+            objectMappingGenerator.getPeriodTypeMapping(), params, getPeriodWithDataIdentifiers() );
+
         queryManager.queryWithRowhandler( "getPeriods", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported Periods" );
     }
-    
+
+    // -------------------------------------------------------------------------
+    // RoutineDailyDataPeriods
+    // -------------------------------------------------------------------------
+
+    private void importRoutineDataDailyCapturePeriods( ImportParams params, ProcessState state )
+    {
+        state.setMessage( "importing_routine_data_daily_capture_periods" );
+
+        BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class ).init();
+
+        RowHandler rowHandler = new RoutineDataDailyCapturePeriodRowHandler( batchHandler, importObjectService,
+            periodService, objectMappingGenerator.getPeriodTypeMapping(), params, getPeriodWithDataIdentifiers() );
+
+        queryManager.queryWithRowhandler( "getRoutineDataDailyPeriodCapture", rowHandler );
+
+        batchHandler.flush();
+
+        log.info( "Imported Routine Data Daily Capture Periods" );
+    }
+
     // -------------------------------------------------------------------------
     // RoutineDataValue
     // -------------------------------------------------------------------------
@@ -665,33 +730,61 @@ public class DefaultDhis14FileImportService
         state.setMessage( "importing_routine_data_values" );
 
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
-        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class ).init();        
-        BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class ).init();
-                
-        RowHandler rowHandler = new RoutineDataValueRowHandler( batchHandler,
-            importDataValueBatchHandler,
-            dataValueService,
-            objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
+
+        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class )
+            .init();
+        BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler(
+            ImportDataValueBatchHandler.class ).init();
+
+        RowHandler rowHandler = new RoutineDataValueRowHandler( batchHandler, importDataValueBatchHandler,
+            dataValueService, objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
-            objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
-            categoryOptionCombo,
-            params );
-        
+            objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ), categoryOptionCombo, params );
+
         if ( params.getLastUpdated() == null )
         {
             queryManager.queryWithRowhandler( "getRoutineDataValues", rowHandler );
         }
         else
-        {            
+        {
             queryManager.queryWithRowhandler( "getRoutineDataValuesLastUpdated", rowHandler, params.getLastUpdated() );
         }
-        
+
         batchHandler.flush();
-        
+
         importDataValueBatchHandler.flush();
-        
+
         log.info( "Imported RoutineDataValues" );
+    }
+
+    // -------------------------------------------------------------------------
+    // RoutineDailyData
+    // -------------------------------------------------------------------------
+
+    private void importRoutineDataDailyCapture( ImportParams params, ProcessState state )
+    {
+        state.setMessage( "importing_routine_data_daily_capture" );
+
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+
+        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class )
+            .init();
+        BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler(
+            ImportDataValueBatchHandler.class ).init();
+
+        RowHandler rowHandler = new RoutineDataDailyCaptureRowHandler( batchHandler, importDataValueBatchHandler,
+            dataValueService, importDataDailyPeriodService, objectMappingGenerator.getDataElementMapping( params
+                .skipMapping() ), objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
+            objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
+            objectMappingGenerator.getPeriodTypeMapping(), categoryOptionCombo, params );
+
+        queryManager.queryWithRowhandler( "getRoutineDataDailyCapture", rowHandler );
+
+        batchHandler.flush();
+
+        importDataValueBatchHandler.flush();
+
+        log.info( "Imported RoutineDailyDataValues" );
     }
 
     // -------------------------------------------------------------------------
@@ -701,19 +794,16 @@ public class DefaultDhis14FileImportService
     private void importOnChangePeriods( ImportParams params, ProcessState state )
     {
         state.setMessage( "importing_on_change_periods" );
-        
+
         BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new OnChangePeriodRowHandler( batchHandler,
-            importObjectService,
-            periodService,
-            objectMappingGenerator.getPeriodTypeMapping(),
-            params );
-        
+
+        RowHandler rowHandler = new OnChangePeriodRowHandler( batchHandler, importObjectService, periodService,
+            objectMappingGenerator.getPeriodTypeMapping(), params );
+
         queryManager.queryWithRowhandler( "getOnChangePeriods", rowHandler );
-        
+
         batchHandler.flush();
-        
+
         log.info( "Imported OnChangePeriods" );
     }
 
@@ -726,33 +816,53 @@ public class DefaultDhis14FileImportService
         state.setMessage( "importing_semi_permanent_data_values" );
 
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
-        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class ).init();
-        BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class ).init();
-        
-        RowHandler rowHandler = new SemiPermanentDataValueRowHandler( batchHandler,
-            importDataValueBatchHandler,
-            dataValueService,
-            objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
+
+        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class )
+            .init();
+        BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler(
+            ImportDataValueBatchHandler.class ).init();
+
+        RowHandler rowHandler = new SemiPermanentDataValueRowHandler( batchHandler, importDataValueBatchHandler,
+            dataValueService, objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodObjectMapping( params.skipMapping() ),
-            objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
-            categoryOptionCombo,
-            params );
-        
+            objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ), categoryOptionCombo, params );
+
         if ( params.getLastUpdated() == null )
         {
             queryManager.queryWithRowhandler( "getSemiPermanentDataValues", rowHandler );
         }
         else
         {
-            queryManager.queryWithRowhandler( "getSemiPermanentDataValuesLastUpdated", rowHandler, params.getLastUpdated() );
+            queryManager.queryWithRowhandler( "getSemiPermanentDataValuesLastUpdated", rowHandler,
+                params.getLastUpdated() );
         }
-        
+
         batchHandler.flush();
-        
+
         importDataValueBatchHandler.flush();
-        
+
         log.info( "Imported SemiPermanentDataValues" );
+    }
+
+    // -------------------------------------------------------------------------
+    // ValidationRule
+    // -------------------------------------------------------------------------
+
+    private void importValidationRule( ImportParams params, ProcessState state )
+    {
+        state.setMessage( "importing_validation_rule" );
+
+        BatchHandler<ValidationRule> batchHandler = batchHandlerFactory.createBatchHandler(
+            ValidationRuleBatchHandler.class ).init();
+
+        RowHandler rowHandler = new ValidationRuleRowHandler( batchHandler, importObjectService, validationRuleService,
+            params );
+
+        queryManager.queryWithRowhandler( "getValidationRules", rowHandler );
+
+        batchHandler.flush();
+
+        log.info( "Imported ValidationRule" );
     }
 
     // -------------------------------------------------------------------------
@@ -760,24 +870,24 @@ public class DefaultDhis14FileImportService
     // -------------------------------------------------------------------------
 
     /**
-     * Returns a list of distinct period identifiers from the RoutineDataValue table,
-     * ie. periods which have registered data. Could be used to avoid importing 
-     * periods without data.
+     * Returns a list of distinct period identifiers from the RoutineDataValue
+     * table, ie. periods which have registered data. Could be used to avoid
+     * importing periods without data.
      */
     private Set<Integer> getPeriodWithDataIdentifiers()
     {
         Set<Integer> identifiers = new HashSet<Integer>();
 
         List<?> list = queryManager.queryForList( "getDistinctPeriodIdentifiers", null );
-        
+
         for ( Object id : list )
         {
             identifiers.add( (Integer) id );
         }
-        
+
         return identifiers;
     }
-        
+
     /**
      * Verifies that the import file is valid by checking for routine and semi
      * permanent data values out of range.
@@ -787,38 +897,38 @@ public class DefaultDhis14FileImportService
         if ( params.isDataValues() )
         {
             Integer count = (Integer) queryManager.queryForObject( "getRoutineDataValuesOutOfRange", null );
-            
+
             if ( count != null && count > 0 )
             {
                 state.setMessage( "routine_data_contains_values_out_of_range" );
-                log.error( "Table RoutineData contains values larger than 2^31 which is out of range"  );
-                
+                log.error( "Table RoutineData contains values larger than 2^31 which is out of range" );
+
                 return false;
             }
-            
+
             count = (Integer) queryManager.queryForObject( "getRoutineDataArchiveValuesOutOfRange", null );
-            
+
             if ( count != null && count > 0 )
             {
                 state.setMessage( "routine_data_archive_contains_values_out_of_range" );
-                log.error( "Table RoutineDataArchive contains values larger than 2^31 which is out of range"  );
-                
+                log.error( "Table RoutineDataArchive contains values larger than 2^31 which is out of range" );
+
                 return false;
             }
-            
+
             count = (Integer) queryManager.queryForObject( "getSemiPermanentDataValuesOutOfRange", null );
-            
+
             if ( count != null && count > 0 )
             {
                 state.setMessage( "semi_permanent_data_contains_values_out_of_range" );
-                log.error( "Table SemiPermanentData contains values larger than 2^31 which is out of range"  );
-                
+                log.error( "Table SemiPermanentData contains values larger than 2^31 which is out of range" );
+
                 return false;
             }
         }
-        
+
         log.info( "Verified import file" );
-        
+
         return true;
     }
 }

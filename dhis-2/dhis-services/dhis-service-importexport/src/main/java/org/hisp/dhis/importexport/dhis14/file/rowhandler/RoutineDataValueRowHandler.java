@@ -47,38 +47,37 @@ import com.ibatis.sqlmap.client.event.RowHandler;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: RoutineDataValueRowHandler.java 5946 2008-10-16 15:46:43Z larshelg $
+ * @version $Id: RoutineDataValueRowHandler.java 5946 2008-10-16 15:46:43Z
+ *          larshelg $
  */
 public class RoutineDataValueRowHandler
-    extends DataValueImporter implements RowHandler
+    extends DataValueImporter
+    implements RowHandler
 {
     private Map<Object, Integer> dataElementMapping;
-    
+
     private Map<Object, Integer> periodMapping;
-    
+
     private Map<Object, Integer> organisationUnitMapping;
-    
+
     private DataElementCategoryOptionCombo categoryOptionCombo;
-    
+
     private DataElement element;
-    
+
     private Period period;
-    
+
     private OrganisationUnit source;
-    
+
     private DataValue value;
-    
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
     public RoutineDataValueRowHandler( BatchHandler<DataValue> batchHandler,
-        BatchHandler<ImportDataValue> importDataValueBatchHandler,
-        DataValueService dataValueService,
-        Map<Object, Integer> dataElementMapping,
-        Map<Object, Integer> periodMapping, 
-        Map<Object, Integer> organisationUnitMapping,
-        DataElementCategoryOptionCombo categoryOptionCombo,
+        BatchHandler<ImportDataValue> importDataValueBatchHandler, DataValueService dataValueService,
+        Map<Object, Integer> dataElementMapping, Map<Object, Integer> periodMapping,
+        Map<Object, Integer> organisationUnitMapping, DataElementCategoryOptionCombo categoryOptionCombo,
         ImportParams params )
     {
         this.batchHandler = batchHandler;
@@ -89,13 +88,13 @@ public class RoutineDataValueRowHandler
         this.organisationUnitMapping = organisationUnitMapping;
         this.categoryOptionCombo = categoryOptionCombo;
         this.params = params;
-        
+
         this.element = new DataElement();
         this.period = new Period();
         this.source = new OrganisationUnit();
         this.value = new DataValue();
     }
-    
+
     // -------------------------------------------------------------------------
     // RowHandler implementation
     // -------------------------------------------------------------------------
@@ -103,33 +102,34 @@ public class RoutineDataValueRowHandler
     public void handleRow( Object object )
     {
         final Dhis14RoutineDataValue dhis14Value = (Dhis14RoutineDataValue) object;
-        
+
         final Integer dataElementId = dataElementMapping.get( dhis14Value.getDataElementId() );
         final Integer periodId = periodMapping.get( dhis14Value.getPeriodId() );
         final Integer organisationUnitId = organisationUnitMapping.get( dhis14Value.getOrganisationUnitId() );
-        
+
         if ( dataElementId == null )
         {
             log.warn( "Data element does not exist for identifier: " + dhis14Value.getDataElementId() );
             return;
-        }        
+        }
         if ( periodId == null )
         {
             log.warn( "Period does not exist for identifier: " + dhis14Value.getPeriodId() );
             return;
-        }        
+        }
         if ( organisationUnitId == null )
         {
             log.warn( "Organisation unit does not exist for identifier: " + dhis14Value.getOrganisationUnitId() );
             return;
         }
-        
+
         element.setId( dataElementMapping.get( dhis14Value.getDataElementId() ) );
         period.setId( periodMapping.get( dhis14Value.getPeriodId() ) );
         source.setId( organisationUnitMapping.get( dhis14Value.getOrganisationUnitId() ) );
-        
+
         value.setDataElement( element );
         value.setCategoryOptionCombo( categoryOptionCombo );
+        value.setAttributeOptionCombo( categoryOptionCombo );
         value.setPeriod( period );
         value.setSource( source );
         value.setStoredBy( dhis14Value.getStoredBy() );
@@ -142,9 +142,10 @@ public class RoutineDataValueRowHandler
         else if ( dhis14Value.getYesNo() != null )
         {
             value.setValue( Dhis14TypeHandler.convertYesNoFromDhis14( dhis14Value.getYesNo() ) );
-        }   
-        
-        if ( value.getDataElement() != null && value.getPeriod() != null && value.getSource() != null && value.getValue() != null )
+        }
+
+        if ( value.getDataElement() != null && value.getPeriod() != null && value.getSource() != null
+            && value.getValue() != null )
         {
             importObject( value, params );
         }

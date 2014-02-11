@@ -46,30 +46,77 @@ import java.util.Map;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanFromDhis14;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanToDhis14;
 
-
 /**
  * @author Lars Helge Overland
- * @version $Id: OrganisationUnitConverter.java 6455 2008-11-24 08:59:37Z larshelg $
+ * @version $Id: OrganisationUnitConverter.java 6455 2008-11-24 08:59:37Z
+ *          larshelg $
  */
 public class OrganisationUnitConverter
-    extends OrganisationUnitImporter implements XMLConverter
+    extends OrganisationUnitImporter
+    implements XMLConverter
 {
     public static final String ELEMENT_NAME = "OrgUnit";
-    
+
     private static final String FIELD_ID = "OrgUnitID";
+
+    private static final String FIELD_UID = "UID";
+
     private static final String FIELD_CODE = "OrgUnitCode";
+
     private static final String FIELD_LEVEL = "OrgUnitLevel";
+
     private static final String FIELD_NAME = "OrgUnitName";
+
     private static final String FIELD_SHORT_NAME = "OrgUnitShort";
+
     private static final String FIELD_VALID_FROM = "ValidFrom";
+
     private static final String FIELD_VALID_TO = "ValidTo";
+
     private static final String FIELD_ACTIVE = "Active";
+
     private static final String FIELD_COMMENT = "Comment";
+
+    private static final String FIELD_LATITUDE = "Latitude";
+
+    private static final String FIELD_LONGITUDE = "Longitude";
+
     private static final String FIELD_SELECTED = "Selected";
+
     private static final String FIELD_LAST_USER = "LastUserID";
+
     private static final String FIELD_LAST_UPDATED = "LastUpdated";
 
+    private static final String FIELD_ORGUNITNAMEOLD = "OrgUnitNameOld";
+
+    private static final String FIELD_ORGUNITSHORTOLD = "OrgUnitShortOld";
+
+    private static final String FIELD_ORGUNITGUIDALT1 = "OrgUnitGUIDAlt1";
+
+    private static final String FIELD_ORGUNITCODEALT1 = "OrgUnitCodeAlt1";
+
+    private static final String FIELD_ORGUNITNAMEALT1 = "OrgUnitNameAlt1";
+
+    private static final String FIELD_ORGUNITSHORTALT1 = "OrgUnitShortAlt1";
+
+    private static final String FIELD_ORGUNITGUIDALT2 = "OrgUnitGUIDAlt2";
+
+    private static final String FIELD_ORGUNITCODEALT2 = "OrgUnitCodeAlt2";
+
+    private static final String FIELD_ORGUNITNAMEALT2 = "OrgUnitNameAlt2";
+
+    private static final String FIELD_ORGUNITSHORTALT2 = "OrgUnitShortAlt2";
+
+    private static final String FIELD_ORGUNITGUIDALT3 = "OrgUnitGUIDAlt3";
+
+    private static final String FIELD_ORGUNITCODEALT3 = "OrgUnitCodeAlt3";
+
+    private static final String FIELD_ORGUNITNAMEALT3 = "OrgUnitNameAlt3";
+
+    private static final String FIELD_ORGUNITSHORTALT3 = "OrgUnitShortAlt3";
+
     private static final int VALID_FROM = 34335;
+
     private static final int VALID_TO = 2958465;
 
     // -------------------------------------------------------------------------
@@ -80,7 +127,7 @@ public class OrganisationUnitConverter
      * Constructor for write operations.
      */
     public OrganisationUnitConverter( OrganisationUnitService organisationUnitService )
-    {   
+    {
         this.organisationUnitService = organisationUnitService;
     }
 
@@ -90,23 +137,23 @@ public class OrganisationUnitConverter
      * @param organisationUnitService the organisationUnitService to use.
      * @param importObjectService the importObjectService to use.
      */
-    public OrganisationUnitConverter( ImportObjectService importObjectService, 
-        OrganisationUnitService organisationUnitService,
-        ImportAnalyser importAnalyser )
+    public OrganisationUnitConverter( ImportObjectService importObjectService,
+        OrganisationUnitService organisationUnitService, ImportAnalyser importAnalyser )
     {
         this.importObjectService = importObjectService;
         this.organisationUnitService = organisationUnitService;
         this.importAnalyser = importAnalyser;
     }
-    
+
     // -------------------------------------------------------------------------
     // XMLConverter implementation
     // -------------------------------------------------------------------------
-    
+
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
-        
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params
+            .getOrganisationUnits() );
+
         if ( units != null && units.size() > 0 )
         {
             for ( OrganisationUnit unit : units )
@@ -114,8 +161,9 @@ public class OrganisationUnitConverter
                 int level = unit.getOrganisationUnitLevel();
 
                 writer.openElement( ELEMENT_NAME );
-                
+
                 writer.writeElement( FIELD_ID, String.valueOf( unit.getId() ) );
+                writer.writeElement( FIELD_UID, unit.getUid() );
                 writer.writeElement( FIELD_CODE, unit.getCode() );
                 writer.writeElement( FIELD_LEVEL, String.valueOf( level ) );
                 writer.writeElement( FIELD_NAME, unit.getName() );
@@ -123,30 +171,46 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
                 writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
                 writer.writeElement( FIELD_ACTIVE, convertBooleanToDhis14( unit.isActive() ) );
-                writer.writeElement (FIELD_COMMENT, unit.getComment() );
+                writer.writeElement( FIELD_COMMENT, unit.getComment() );
+                writer.writeElement( FIELD_LATITUDE, String.valueOf( 0 ) );
+                writer.writeElement( FIELD_LONGITUDE, String.valueOf( 0 ) );
                 writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
                 writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
                 writer.writeElement( FIELD_LAST_UPDATED, Dhis14DateUtil.getDateString( unit.getLastUpdated() ) );
-                
+                writer.writeElement( FIELD_ORGUNITNAMEOLD, "" );
+                writer.writeElement( FIELD_ORGUNITSHORTOLD, "" );
+                writer.writeElement( FIELD_ORGUNITGUIDALT1, "" );
+                writer.writeElement( FIELD_ORGUNITCODEALT1, "" );
+                writer.writeElement( FIELD_ORGUNITNAMEALT1, "" );
+                writer.writeElement( FIELD_ORGUNITSHORTALT1, "" );
+                writer.writeElement( FIELD_ORGUNITGUIDALT2, "" );
+                writer.writeElement( FIELD_ORGUNITCODEALT2, "" );
+                writer.writeElement( FIELD_ORGUNITNAMEALT2, "" );
+                writer.writeElement( FIELD_ORGUNITSHORTALT2, "" );
+                writer.writeElement( FIELD_ORGUNITGUIDALT3, "" );
+                writer.writeElement( FIELD_ORGUNITCODEALT3, "" );
+                writer.writeElement( FIELD_ORGUNITNAMEALT3, "" );
+                writer.writeElement( FIELD_ORGUNITSHORTALT3, "" );
+
                 writer.closeElement();
             }
         }
     }
-    
+
     public void read( XMLReader reader, ImportParams params )
     {
         OrganisationUnit unit = new OrganisationUnit();
-        
+
         Map<String, String> values = reader.readElements( ELEMENT_NAME );
-        
+
         unit.setId( Integer.valueOf( values.get( FIELD_ID ) ) );
         unit.setName( values.get( FIELD_NAME ) );
         unit.setShortName( values.get( FIELD_SHORT_NAME ) );
-        unit.setOpeningDate(   Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_VALID_FROM ) ) ) );
+        unit.setOpeningDate( Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_VALID_FROM ) ) ) );
         unit.setClosedDate( Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_VALID_TO ) ) ) );
-        unit.setActive( convertBooleanFromDhis14(values.get( FIELD_ACTIVE ) ) ) ;
+        unit.setActive( convertBooleanFromDhis14( values.get( FIELD_ACTIVE ) ) );
         unit.setComment( values.get( FIELD_COMMENT ) );
         unit.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
-        importObject( unit, params );        
+        importObject( unit, params );
     }
 }

@@ -47,7 +47,7 @@ public class Dhis14TypeHandler
     private static final String DHIS14_FALSE = "0";
     
     private static final String DHIS14_AGGREGATION_OPERATOR_SUM = "Sum";
-    private static final String DHIS14_AGGREGATION_OPERATOR_AVERAGE = "Average";
+    private static final String DHIS14_AGGREGATION_OPERATOR_AVERAGE = "Avg";
     private static final String DHIS14_AGGREGATION_OPERATOR_COUNT = "Count";
     
     private static final String DHIS14_TYPE_INT = "3";

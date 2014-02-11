@@ -41,9 +41,15 @@
     <sqlMap resource="sqlmap/period.sqlmap.xml"/>
     <sqlMap resource="sqlmap/onChangePeriod.sqlmap.xml"/>
     <sqlMap resource="sqlmap/dataSet.sqlmap.xml"/>
+    <sqlMap resource="sqlmap/dataSetDailyCapture.sqlmap.xml"/>
     <sqlMap resource="sqlmap/dataSetMember.sqlmap.xml"/>
     <sqlMap resource="sqlmap/dataSetOrganisationUnitAssociation.sqlmap.xml"/>
     <sqlMap resource="sqlmap/routineDataValue.sqlmap.xml"/>
     <sqlMap resource="sqlmap/semiPermanentDataValue.sqlmap.xml"/>
+    <!-- <sqlMap resource="sqlmap/calculatedDataElement.sqlmap.xml"/> -->
+	<sqlMap resource="sqlmap/routineDataDailyCapture.sqlmap.xml"/>
+	<sqlMap resource="sqlmap/routineDataDailyCapturePeriod.sqlmap.xml"/>
+	<!-- <sqlMap resource="sqlmap/validationrule.sqlmap.xml"/> -->
+    
 
 </sqlMapConfig>

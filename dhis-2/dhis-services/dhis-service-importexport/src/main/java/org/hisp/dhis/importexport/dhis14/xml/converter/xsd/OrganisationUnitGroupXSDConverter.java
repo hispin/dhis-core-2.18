@@ -35,7 +35,8 @@ import org.hisp.dhis.importexport.ImportParams;
 
 /**
  * @author Jason P. Pickering
- * @version $Id: OrganisationUnitXSDConverter.java 6455 2011-02-17 09:04:37Z jasonp $
+ * @version $Id: OrganisationUnitXSDConverter.java 6455 2011-02-17 09:04:37Z
+ *          jasonp $
  */
 public class OrganisationUnitGroupXSDConverter
     extends AbstractXSDConverter
@@ -45,12 +46,35 @@ public class OrganisationUnitGroupXSDConverter
         // Not implemented
     }
 
-        public void write( XMLWriter writer, ExportParams params )
+    public void write( XMLWriter writer, ExportParams params )
     {
-      // Not implemented
-     }
+        writer.openElement( "xsd:element", "name", "OrgUnitGroup" );
 
-            public void read( XMLReader reader, ImportParams params )
+        writeAnnotation( writer );
+
+        writer.openElement( "xsd:complexType" );
+
+        writer.openElement( "xsd:sequence" );
+
+        writeInteger( writer, "OrgUnitGroupID", 1, true );
+
+        writeText( writer, "OrgUnitGroupName", 1, true, 230 );
+
+        writeMemo( writer, "OrgUnitGroupDescription", 0, false, 536870910 );
+
+        writeText( writer, "UID", 1, true, 11 );
+
+        writeInteger( writer, "LastUserID", 1, true );
+        writeDateTime( writer, "LastUpdated", 1, true );
+
+        writer.closeElement();
+
+        writer.closeElement();
+
+        writer.closeElement();
+    }
+
+    public void read( XMLReader reader, ImportParams params )
     {
         // Not implemented
     }

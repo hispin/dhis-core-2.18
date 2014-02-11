@@ -89,6 +89,8 @@ public class PeriodTypeXSDConverter
         
         writeText( writer, "BasePeriodPart", 0, false, 8 );
         
+        writeText( writer, "UID", 1, true, 11 );
+        
         writer.closeElement();
         
         writer.closeElement();

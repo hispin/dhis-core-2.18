@@ -28,7 +28,12 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import org.amplecode.staxwax.reader.XMLReader;
@@ -40,26 +45,45 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.dhis14.util.Dhis14DateUtil;
 import org.hisp.dhis.importexport.dhis14.util.Dhis14ObjectMappingUtil;
 import org.hisp.dhis.importexport.importer.PeriodImporter;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class PeriodConverter
-    extends PeriodImporter implements XMLConverter
+    extends PeriodImporter
+    implements XMLConverter
 {
     public static final String ELEMENT_NAME = "DataPeriod";
-    
+
     private static final String FIELD_ID = "DataPeriodID";
+
+    private static final String FIELD_DATA_PERIODNAMEENG = "DataPeriodNameEng";
+
+    private static final String FIELD_DATA_PERIODNAME = "DataPeriodName";
+
     private static final String FIELD_PERIOD_TYPE = "DataPeriodTypeID";
+
     private static final String FIELD_START_DATE = "ValidFrom";
+
     private static final String FIELD_END_DATE = "ValidTo";
 
+    private static final String FIELD_SELECTED = "Selected";
+
+    private static final String FIELD_DATAPERIODNAMEALT1 = "DataPeriodNameAlt1";
+
+    private static final String FIELD_DATAPERIODNAMEALT2 = "DataPeriodNameAlt2";
+
+    private static final String FIELD_DATAPERIODNAMEALT3 = "DataPeriodNameAlt3";
+
     private Map<String, Integer> periodTypeMapping;
-        
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -68,10 +92,10 @@ public class PeriodConverter
      * Constructor for write operations.
      */
     public PeriodConverter( PeriodService periodService )
-    {   
+    {
         this.periodService = periodService;
     }
-    
+
     /**
      * Constructor for read operations.
      * 
@@ -79,54 +103,124 @@ public class PeriodConverter
      * @param periodService the periodService to use.
      * @param periodTypeMapping the periodTypeMapping to use.
      */
-    public PeriodConverter( ImportObjectService importObjectService,
-        PeriodService periodService,
+    public PeriodConverter( ImportObjectService importObjectService, PeriodService periodService,
         Map<String, Integer> periodTypeMapping )
     {
         this.importObjectService = importObjectService;
         this.periodService = periodService;
         this.periodTypeMapping = periodTypeMapping;
     }
-    
+
     // -------------------------------------------------------------------------
     // XMLConverter implementation
     // -------------------------------------------------------------------------
-    
+
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
-        
+
         if ( periods != null && periods.size() > 0 )
         {
             for ( Period period : periods )
             {
-                writer.openElement( ELEMENT_NAME );
-                
-                writer.writeElement( FIELD_ID, String.valueOf( period.getId() ) );
-                writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( period.getPeriodType().getId() ) );
-                
-                //TODO
-                
-                writer.closeElement();
+                if ( period.getPeriodType().getName().equals( MonthlyPeriodType.NAME ) )
+                {
+
+                    writer.openElement( ELEMENT_NAME );
+
+                    writer.writeElement( FIELD_ID, String.valueOf( period.getId() ) );
+
+                    String startDate = period.getStartDateString();
+                    String endDate = period.getEndDateString();
+
+                    String dataPeriodNameEng = null;
+                    String dataPeriodName = null;
+                    String validFrom = null;
+                    String validTo = null;
+
+                    Calendar msAccessCalendarDate = getCalendarDate( "1899-12-29" );
+
+                    Calendar startCalendarDate = getCalendarDate( startDate );
+                    Calendar endCalendarDate = getCalendarDate( endDate );
+
+                    dataPeriodNameEng = getDateName( startDate );
+                    dataPeriodName = getDateName( startDate );
+
+                    validFrom = Days.daysBetween( new DateTime( msAccessCalendarDate ),
+                        new DateTime( startCalendarDate ) ).getDays()
+                        + "";
+                    validTo = Days.daysBetween( new DateTime( msAccessCalendarDate ), new DateTime( endCalendarDate ) )
+                        .getDays() + "";
+
+                    writer.writeElement( FIELD_DATA_PERIODNAMEENG, dataPeriodNameEng );
+                    writer.writeElement( FIELD_DATA_PERIODNAME, dataPeriodName );
+                    writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( 1 ) );
+                    writer.writeElement( FIELD_START_DATE, validFrom );
+                    writer.writeElement( FIELD_END_DATE, validTo );
+                    writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
+                    writer.writeElement( FIELD_DATAPERIODNAMEALT1, "" );
+                    writer.writeElement( FIELD_DATAPERIODNAMEALT2, "" );
+                    writer.writeElement( FIELD_DATAPERIODNAMEALT3, "" );
+
+                    writer.closeElement();
+
+                }
             }
         }
     }
-    
+
     public void read( XMLReader reader, ImportParams params )
     {
         Period period = new Period();
-                
+
         Map<String, String> values = reader.readElements( ELEMENT_NAME );
-        
+
         Integer periodTypeId = Integer.parseInt( values.get( FIELD_PERIOD_TYPE ) );
         PeriodType periodType = Dhis14ObjectMappingUtil.getPeriodTypeMap().get( periodTypeId );
         period.setPeriodType( periodType );
-        
+
         period.setId( Integer.valueOf( values.get( FIELD_ID ) ) );
         period.getPeriodType().setId( periodTypeMapping.get( periodType.getName() ) );
         period.setStartDate( Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_START_DATE ) ) ) );
         period.setEndDate( Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_END_DATE ) ) ) );
-        
+
         importObject( period, params );
     }
+
+    public Calendar getCalendarDate( String date )
+    {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd" );
+        try
+        {
+            cal.setTime( sdf.parse( date ) );
+        }
+        catch ( ParseException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return cal;
+    }
+
+    public String getDateName( String date )
+    {
+        DateFormat dateFormat = new SimpleDateFormat( "MMM-yy" );
+        Date predefined;
+        String name = "";
+        try
+        {
+            predefined = new SimpleDateFormat( "yyyy-MM-dd" ).parse( date );
+            name = dateFormat.format( predefined );
+        }
+        catch ( ParseException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return name;
+    }
+
 }

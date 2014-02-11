@@ -49,6 +49,8 @@ public class OrganisationUnitGroupConverter
     
     private static final String FIELD_ID = "OrgUnitGroupID";
     private static final String FIELD_NAME = "OrgUnitGroupName";
+    private static final String FIELD_ORGUNITGROUPDESCRIPTION = "OrgUnitGroupDescription";
+    private static final String FIELD_UID = "UID";
     private static final String FIELD_LAST_USER = "LastUserID";
     private static final String FIELD_LAST_UPDATED = "LastUpdated";
 
@@ -82,6 +84,8 @@ public class OrganisationUnitGroupConverter
                 
                 writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
                 writer.writeElement( FIELD_NAME, group.getName() );
+                writer.writeElement( FIELD_ORGUNITGROUPDESCRIPTION, group.getDescription() );
+                writer.writeElement( FIELD_UID, group.getUid() );
                 writer.writeElement( FIELD_LAST_USER, "");
                 writer.writeElement( FIELD_LAST_UPDATED, "");
                 

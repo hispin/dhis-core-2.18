@@ -128,12 +128,26 @@
 
   <!-- Export -->
 
-  <bean id="org.hisp.dhis.importexport.action.exp.MetaDataExportAction"
+    <bean id="org.hisp.dhis.importexport.action.exp.MetaDataExportAction"
     class="org.hisp.dhis.importexport.action.exp.MetaDataExportAction"
     scope="prototype">
     <property name="serviceProvider" ref="exportServiceProvider" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <!-- New services -->
+    <!-- <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" /> -->
   </bean>
+  
+  <bean id="org.hisp.dhis.importexport.action.exp.DataExportAction"
+    class="org.hisp.dhis.importexport.action.exp.DataExportAction"
+    scope="prototype">
+    <property name="serviceProvider" ref="exportServiceProvider" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <!-- New services -->
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+
 
   <bean id="org.hisp.dhis.importexport.action.exp.DetailedMetaDataExportAction"
     class="org.hisp.dhis.importexport.action.exp.DetailedMetaDataExportAction"

@@ -52,6 +52,7 @@ public class DataValueRowMapper
         
         dataValue.setDataElement( new DataElement() );
         dataValue.setCategoryOptionCombo( new DataElementCategoryOptionCombo() );
+        dataValue.setAttributeOptionCombo( new DataElementCategoryOptionCombo() );
         dataValue.setSource( new OrganisationUnit() );
         dataValue.setPeriod( new Period() );
         

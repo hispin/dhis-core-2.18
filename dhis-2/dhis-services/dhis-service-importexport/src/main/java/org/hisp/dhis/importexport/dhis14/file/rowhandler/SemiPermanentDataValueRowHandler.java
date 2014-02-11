@@ -47,36 +47,35 @@ import com.ibatis.sqlmap.client.event.RowHandler;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: SemiPermanentDataValueRowHandler.java 5946 2008-10-16 15:46:43Z larshelg $
+ * @version $Id: SemiPermanentDataValueRowHandler.java 5946 2008-10-16 15:46:43Z
+ *          larshelg $
  */
 public class SemiPermanentDataValueRowHandler
-    extends DataValueImporter implements RowHandler
+    extends DataValueImporter
+    implements RowHandler
 {
     private Map<Object, Integer> dataElementMapping;
-    
+
     private Map<Period, Integer> periodMapping;
-    
+
     private Map<Object, Integer> organisationUnitMapping;
 
     private DataElementCategoryOptionCombo categoryOptionCombo;
-    
+
     private DataElement element;
 
     private OrganisationUnit source;
-    
-    private DataValue value;   
-    
+
+    private DataValue value;
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
     public SemiPermanentDataValueRowHandler( BatchHandler<DataValue> batchHandler,
-        BatchHandler<ImportDataValue> importDataValueBatchHandler,
-        DataValueService dataValueService,
-        Map<Object, Integer> dataElementMapping,
-        Map<Period, Integer> periodMapping, 
-        Map<Object, Integer> organisationUnitMapping,
-        DataElementCategoryOptionCombo categoryOptionCombo,
+        BatchHandler<ImportDataValue> importDataValueBatchHandler, DataValueService dataValueService,
+        Map<Object, Integer> dataElementMapping, Map<Period, Integer> periodMapping,
+        Map<Object, Integer> organisationUnitMapping, DataElementCategoryOptionCombo categoryOptionCombo,
         ImportParams params )
     {
         this.batchHandler = batchHandler;
@@ -87,7 +86,7 @@ public class SemiPermanentDataValueRowHandler
         this.organisationUnitMapping = organisationUnitMapping;
         this.categoryOptionCombo = categoryOptionCombo;
         this.params = params;
-        
+
         this.element = new DataElement();
         this.source = new OrganisationUnit();
         this.value = new DataValue();
@@ -114,17 +113,17 @@ public class SemiPermanentDataValueRowHandler
             log.warn( "Organisation unit does not exist for identifier: " + dhis14Value.getOrganisationUnitId() );
             return;
         }
-        
+
         final Period period = new Period();
-        
+
         period.setPeriodType( dhis14Value.getPeriodType() );
         period.setStartDate( dhis14Value.getStartDate() );
         period.setEndDate( dhis14Value.getEndDate() );
-        
+
         element.setId( dataElementId );
-        source.setId( organisationUnitId );        
+        source.setId( organisationUnitId );
         period.setId( periodMapping.get( period ) );
-        
+
         value.setDataElement( element );
         value.setCategoryOptionCombo( categoryOptionCombo );
         value.setPeriod( period );
@@ -137,9 +136,10 @@ public class SemiPermanentDataValueRowHandler
         else if ( dhis14Value.getYesNo() != null )
         {
             value.setValue( Dhis14TypeHandler.convertYesNoFromDhis14( dhis14Value.getYesNo() ) );
-        }   
-        
-        if ( value.getDataElement() != null && value.getPeriod() != null && value.getSource() != null && value.getValue() != null )
+        }
+
+        if ( value.getDataElement() != null && value.getPeriod() != null && value.getSource() != null
+            && value.getValue() != null )
         {
             importObject( value, params );
         }

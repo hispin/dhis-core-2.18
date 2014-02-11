@@ -22,7 +22,7 @@
 	<!-- Statement -->
 		
 	<select id="getDataSets" resultMap="dataSetResultMap">
-		SELECT * FROM DataSet
+		SELECT * FROM DataSet WHERE UseDailyCaptureForm = 0
 	</select>
 	
 </sqlMap>

@@ -40,6 +40,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
+import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanToDhis14;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: OrganisationUnitGroupMemberConverter.java 6455 2008-11-24 08:59:37Z larshelg $
@@ -51,6 +53,7 @@ public class OrganisationUnitGroupMemberConverter
     
     private static final String FIELD_GROUP_ID = "OrgUnitGroupID";
     private static final String FIELD_UNIT_ID = "OrgUnitID";
+    private static final String FIELD_ACTIVE = "Active";
     private static final String FIELD_LAST_USER = "LastUserID";
     private static final String FIELD_LAST_UPDATED = "LastUpdatedID";
     
@@ -96,6 +99,7 @@ public class OrganisationUnitGroupMemberConverter
                             
                             writer.writeElement( FIELD_GROUP_ID, String.valueOf( group.getId() ) );
                             writer.writeElement( FIELD_UNIT_ID, String.valueOf( unit.getId() ) );
+                            writer.writeElement( FIELD_ACTIVE, convertBooleanToDhis14( unit.isActive() ) );
                             writer.writeElement( FIELD_LAST_USER, "");
                             writer.writeElement( FIELD_LAST_UPDATED, "");
                             

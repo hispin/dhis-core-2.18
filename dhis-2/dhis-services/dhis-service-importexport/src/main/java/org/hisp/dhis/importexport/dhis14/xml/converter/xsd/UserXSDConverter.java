@@ -67,6 +67,8 @@ public class UserXSDConverter
         
         writeInteger( writer, "UserID", 1, false );
         
+        writeText( writer, "UID", 1, true, 11 );
+        
         writeText( writer, "UserName", 1, true, 25 );
         
         writeText( writer, "Surname", 0, false, 230 );
@@ -74,6 +76,8 @@ public class UserXSDConverter
         writeText( writer, "Firstname", 0, false, 230 );        
         
         writeInteger( writer, "InfoRoleID", 1, true );
+        
+        writeText( writer, "UserRoleUserDefined", 0, false, 100 );
         
         writeText( writer, "TelephoneNumber", 0, false, 15 );
 
@@ -85,7 +89,13 @@ public class UserXSDConverter
 
         writeUrl( writer, "UserURL", 0, 536870910 );
         
+        writeInteger( writer, "Active", 1, true );
+        
         writeInteger( writer, "Selected", 1, true );
+        
+        writeDateTime( writer, "FirstRegistered", 1, true );
+        
+        writeDateTime( writer, "LastLogOnDate", 1, true );
         
         writeDateTime( writer, "LastUpdated", 1, true );
 

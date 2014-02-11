@@ -124,6 +124,10 @@ public class ExportParams
 
     private I18nFormat format;
 
+    private boolean dataValue;
+
+    private boolean dataValueDaily;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -523,4 +527,25 @@ public class ExportParams
     {
         this.validationRuleObjects = validationRuleObjects;
     }
+
+    public boolean isDataValue()
+    {
+        return dataValue;
+    }
+
+    public void setDataValue( boolean dataValue )
+    {
+        this.dataValue = dataValue;
+    }
+
+    public boolean isDataValueDaily()
+    {
+        return dataValueDaily;
+    }
+
+    public void setDataValueDaily( boolean dataValueDaily )
+    {
+        this.dataValueDaily = dataValueDaily;
+    }
+
 }

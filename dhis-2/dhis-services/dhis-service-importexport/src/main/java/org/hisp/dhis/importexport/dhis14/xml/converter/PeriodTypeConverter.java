@@ -60,6 +60,7 @@ public class PeriodTypeConverter
     private static final String FIELD_FIRST_WEEK_OF_YEAR = "FirstWeekOfYearID";
     private static final String FIELD_SUPPORTED = "Supported";
     private static final String FIELD_BASE_PART = "BasePeriodPart";
+    private static final String FIELD_UID = "UID";
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -96,6 +97,7 @@ public class PeriodTypeConverter
         writer.writeElement( FIELD_FIRST_WEEK_OF_YEAR, String.valueOf( 0 ) );
         writer.writeElement( FIELD_SUPPORTED, String.valueOf( 1 ) );
         writer.writeElement( FIELD_BASE_PART, "MMM" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -117,6 +119,7 @@ public class PeriodTypeConverter
         writer.writeElement( FIELD_FIRST_WEEK_OF_YEAR, String.valueOf( 0 ) );
         writer.writeElement( FIELD_SUPPORTED, String.valueOf( 1 ) );
         writer.writeElement( FIELD_BASE_PART, "\"Q\"Q" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -138,6 +141,7 @@ public class PeriodTypeConverter
         writer.writeElement( FIELD_FIRST_WEEK_OF_YEAR, String.valueOf( 1 ) );
         writer.writeElement( FIELD_SUPPORTED, String.valueOf( 1 ) );
         writer.writeElement( FIELD_BASE_PART, "yyyy" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -158,6 +162,8 @@ public class PeriodTypeConverter
         writer.writeElement( FIELD_FIRST_DAY_OF_WEEK, String.valueOf( 1 ) );
         writer.writeElement( FIELD_FIRST_WEEK_OF_YEAR, String.valueOf( 0 ) );
         writer.writeElement( FIELD_SUPPORTED, String.valueOf( 0 ) );
+        writer.writeElement( FIELD_BASE_PART, "" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
         
@@ -179,6 +185,7 @@ public class PeriodTypeConverter
         writer.writeElement( FIELD_FIRST_WEEK_OF_YEAR, String.valueOf( 0 ) );
         writer.writeElement( FIELD_SUPPORTED, String.valueOf( 1 ) );
         writer.writeElement( FIELD_BASE_PART, "\"w\"W" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -198,6 +205,8 @@ public class PeriodTypeConverter
         writer.writeElement( FIELD_FIRST_DAY_OF_WEEK, String.valueOf( 1 ) );
         writer.writeElement( FIELD_FIRST_WEEK_OF_YEAR, String.valueOf( 0 ) );
         writer.writeElement( FIELD_SUPPORTED, String.valueOf( 0 ) );
+        writer.writeElement( FIELD_BASE_PART, "" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -216,6 +225,8 @@ public class PeriodTypeConverter
         writer.writeElement( FIELD_FIRST_DAY_OF_WEEK, String.valueOf( 1 ) );
         writer.writeElement( FIELD_FIRST_WEEK_OF_YEAR, String.valueOf( 0 ) );
         writer.writeElement( FIELD_SUPPORTED, String.valueOf( 0 ) );
+        writer.writeElement( FIELD_BASE_PART, "" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
     }

@@ -77,7 +77,7 @@ public class IndicatorXSDConverter
             
             writeText( writer, "IndicatorShort", 1, true, 25 );
             
-            writeText( writer, "IndicatorDOS", 1, true, 8 );
+            writeText( writer, "IndicatorDOS", 1, true, 230 );
             
             writeLongInteger( writer, "ValidFrom", 1, true );
     
