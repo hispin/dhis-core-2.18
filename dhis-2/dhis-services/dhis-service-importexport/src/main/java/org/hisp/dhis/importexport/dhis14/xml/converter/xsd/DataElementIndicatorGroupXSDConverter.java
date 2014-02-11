@@ -71,6 +71,8 @@ public class DataElementIndicatorGroupXSDConverter
         
         writeMemo( writer, "DataElementAndIndicatorGroupDescription", 0, false, 536870910 );
         
+        writeText( writer, "UID", 1, true, 11 );
+        
         writeInteger( writer, "LastUserID", 1, true );
         
         writeDateTime( writer, "LastUpdated", 1, true );

@@ -47,6 +47,7 @@ public class DataTypeConverter
     private static final String FIELD_NAME = "DataTypeName";
     private static final String FIELD_DISPLAY = "DataTypeDisplay";
     private static final String FIELD_ML = "DataType_ML";
+    private static final String FIELD_UID = "UID";
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -75,6 +76,7 @@ public class DataTypeConverter
         writer.writeElement( FIELD_NAME, "Date" );
         writer.writeElement( FIELD_DISPLAY, "Date" );
         writer.writeElement( FIELD_ML, "1175" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -88,6 +90,7 @@ public class DataTypeConverter
         writer.writeElement( FIELD_NAME, "Memo" );
         writer.writeElement( FIELD_DISPLAY, "Memo" );
         writer.writeElement( FIELD_ML, "4316" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -101,6 +104,7 @@ public class DataTypeConverter
         writer.writeElement( FIELD_NAME, "Number" );
         writer.writeElement( FIELD_DISPLAY, "Number" );
         writer.writeElement( FIELD_ML, "1174" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -114,6 +118,7 @@ public class DataTypeConverter
         writer.writeElement( FIELD_NAME, "String" );
         writer.writeElement( FIELD_DISPLAY, "Text" );
         writer.writeElement( FIELD_ML, "1173" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -127,6 +132,7 @@ public class DataTypeConverter
         writer.writeElement( FIELD_NAME, "YesNo" );
         writer.writeElement( FIELD_DISPLAY, "Yes/No" );
         writer.writeElement( FIELD_ML, "3077" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
 
@@ -140,6 +146,7 @@ public class DataTypeConverter
         writer.writeElement( FIELD_NAME, "Object" );
         writer.writeElement( FIELD_DISPLAY, "OLE Object" );
         writer.writeElement( FIELD_ML, "4317" );
+        writer.writeElement( FIELD_UID, "" );
         
         writer.closeElement();
     }

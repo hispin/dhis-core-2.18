@@ -73,6 +73,8 @@ public class DataTypeXSDConverter
         
         writeLongInteger( writer, "DataType_ML", 0, false );
         
+        writeText( writer, "UID", 1, true, 11 );
+        
         writer.closeElement();
         
         writer.closeElement();

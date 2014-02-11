@@ -51,6 +51,8 @@ public class DataElementIndicatorGroupConverter
     
     private static final String FIELD_ID = "DataElementAndIndicatorGroupID";
     private static final String FIELD_NAME = "DataElementAndIndicatorGroupName";
+    private static final String FIELD_DESCRIPTION = "DataElementAndIndicatorGroupDescription";
+    private static final String FIELD_UID = "UID";
     private static final String FIELD_LAST_USER = "LastUserID";
     private static final String FIELD_LAST_UPDATED = "LastUpdated";
 
@@ -88,6 +90,8 @@ public class DataElementIndicatorGroupConverter
                 
                 writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
                 writer.writeElement( FIELD_NAME, group.getName() );
+                writer.writeElement( FIELD_DESCRIPTION, group.getDescription() );
+                writer.writeElement( FIELD_UID, group.getUid() );
                 writer.writeElement( FIELD_LAST_USER, "1" );
                 writer.writeElement( FIELD_LAST_UPDATED, "" );
                 
@@ -105,6 +109,8 @@ public class DataElementIndicatorGroupConverter
                 
                 writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
                 writer.writeElement( FIELD_NAME, group.getName() );
+                writer.writeElement( FIELD_DESCRIPTION, group.getDisplayName() );
+                writer.writeElement( FIELD_UID, group.getUid() );
                 writer.writeElement( FIELD_LAST_USER, "1" );
                 writer.writeElement( FIELD_LAST_UPDATED, "" );
                 

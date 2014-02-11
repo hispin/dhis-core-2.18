@@ -57,8 +57,8 @@ public class DataElementXSDConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        if ( params.getDataElements() != null && params.getDataElements().size() > 0 )
-        {
+        //if ( params.getDataElements() != null && params.getDataElements().size() > 0 )
+        //{
             writer.openElement( "xsd:element", "name", "DataElement" );
             
             writeAnnotation( writer );
@@ -69,6 +69,9 @@ public class DataElementXSDConverter
             
             writeInteger( writer, "DataElementID", 1, true );
             
+            //added
+            writeText( writer, "UID", 0, false, 11 );
+            
             writeInteger( writer, "SortOrder", 1, true );
             
             writeText( writer, "DataElementCode", 0, false, 15 );
@@ -77,7 +80,7 @@ public class DataElementXSDConverter
     
             writeText( writer, "DataElementShort", 1, true, 25 );
     
-            writeText( writer, "DataElementDOS", 1, true, 8 );
+            writeText( writer, "DataElementDOS", 1, true, 230 );
     
             writeText( writer, "DataElementPrompt", 1, true, 230 );
     
@@ -93,7 +96,13 @@ public class DataElementXSDConverter
             
             writeMemo( writer, "DataElementDescription", 0, false, 536870910 );
             
+            writeMemo( writer, "DataElementDescriptionExtended", 0, false, 536870910 );
+            
             writeMemo( writer, "Comment", 0, false, 536870910 );
+            
+            writeMemo( writer, "DataElementInclusions", 0, false, 536870910 );
+            
+            writeMemo( writer, "DataElementExclusions", 0, false, 536870910 );
             
             writeInteger( writer, "Calculated", 1, true );
             
@@ -107,11 +116,23 @@ public class DataElementXSDConverter
             
             writeText( writer, "AggregateOperator", 1, true, 6 );
             
+            writeInteger( writer, "CalculateOnlyAtLevel", 0, true );
+            writeInteger( writer, "EditingPeriod", 0, true );
+            writeInteger( writer, "ZeroValueHandling", 0, true );
+            writeText( writer, "PasswordEncrypted", 0, true, 100 );
+            writeInteger( writer, "AuthorityID", 0, true );
+            writeText( writer, "CollectedBy", 0, true, 230 );
+            writeText( writer, "CollectionPoint", 0, true, 230 );
+            writeText( writer, "CollectionTool", 0, true, 230 );
+            writeInteger( writer, "IncludeExcelOverview", 0, true );
+            
             writeInteger( writer, "Selected", 1, true );
             
             writeInteger( writer, "LastUserID", 1, true );
             
             writeDateTime( writer, "LastUpdated", 1, true );
+            
+            
             
             writeText( writer, "DataElementNameAlt1", 0, false, 230 );
     
@@ -130,7 +151,7 @@ public class DataElementXSDConverter
             writer.closeElement();
             
             writer.closeElement();
-        }
+        //}
     }    
 
     public void read( XMLReader reader, ImportParams params )

@@ -46,7 +46,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 public class IndicatorGroupMemberConverter
     implements XMLConverter
 {
-    public static final String ELEMENT_NAME = "DataElementGroupMember";
+    public static final String ELEMENT_NAME = "IndicatorGroupMember";
     
     private static final String FIELD_GROUP_ID = "DataElementAndIndicatorGroupID";
     private static final String FIELD_INDICATOR_ID = "IndicatorID"; 

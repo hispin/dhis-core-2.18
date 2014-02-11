@@ -35,16 +35,20 @@ package org.hisp.dhis.system.util;
 public class CsvUtils
 {
     public static final String SEPARATOR = ",";
+
     public static final byte[] SEPARATOR_B = SEPARATOR.getBytes();
+
     public static final byte[] NEWLINE = "\n".getBytes();
 
-    public static final String CSV_EXTENSION = ".csv";    
-    private static final String ENCLOSURE = "\"";      
+    public static final String CSV_EXTENSION = ".csv";
+
+    private static final String ENCLOSURE = "\"";
+
     private static final String EMPTY = "";
-    
+
     /**
-     * Encodes the given value to a CSV acceptable value. Returns the empty string
-     * if argument is null.
+     * Encodes the given value to a CSV acceptable value. Returns the empty
+     * string if argument is null.
      * 
      * @param value the value.
      * @return the CSV encoded value.
@@ -55,8 +59,8 @@ public class CsvUtils
     }
 
     /**
-     * Encodes the given value to a CSV acceptable value. Returns the empty string
-     * if argument is null.
+     * Encodes the given value to a CSV acceptable value. Returns the empty
+     * string if argument is null.
      * 
      * @param value the value.
      * @return the CSV encoded value.
@@ -68,17 +72,18 @@ public class CsvUtils
             value = EMPTY;
         }
         else
-        {            
+        {
+            value = value.replaceAll( "[\n\r]", "" );
             value = value.replaceAll( ENCLOSURE, ENCLOSURE + ENCLOSURE );
             value = ENCLOSURE + value + ENCLOSURE;
         }
-                    
+
         return value;
     }
 
     /**
-     * Encodes the given value to a CSV acceptable value. Returns the empty string
-     * if argument is null.
+     * Encodes the given value to a CSV acceptable value. Returns the empty
+     * string if argument is null.
      * 
      * @param value the value.
      * @return the CSV encoded value.
@@ -87,7 +92,7 @@ public class CsvUtils
     {
         return value != null ? csvEncode( String.valueOf( value ) ) : EMPTY;
     }
-    
+
     /**
      * Appends a separator to the value and returns the value as a byte array.
      * 
@@ -98,7 +103,7 @@ public class CsvUtils
     {
         return getCsvEndValue( value + SEPARATOR );
     }
-    
+
     /**
      * Appends a separator to the value and returns the value as a byte array.
      * 
@@ -107,21 +112,26 @@ public class CsvUtils
      */
     public static byte[] getCsvValue( String value )
     {
+        if ( value == null )
+        {
+            value = EMPTY;
+        }
+
         return getCsvEndValue( value + SEPARATOR );
     }
-    
+
     public static byte[] getCsvEndValue( int value )
     {
         return getCsvEndValue( String.valueOf( value ) );
     }
-    
+
     public static byte[] getCsvEndValue( String value )
     {
         if ( value == null )
         {
             return EMPTY.getBytes();
         }
-        
-        return ( value ).getBytes();
+
+        return (value).getBytes();
     }
 }

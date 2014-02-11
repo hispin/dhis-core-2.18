@@ -1,4 +1,5 @@
 package org.hisp.dhis.importexport.dhis14.xml.converter.xsd;
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -27,8 +28,6 @@ package org.hisp.dhis.importexport.dhis14.xml.converter.xsd;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
@@ -36,14 +35,13 @@ import org.hisp.dhis.importexport.ImportParams;
 
 /**
  * @author Jason P. Pickering
- * @version $Id: OrganisationUnitXSDConverter.java 6455 2011-02-17 09:04:37Z jasonp $
-  */
-
+ * @version $Id: OrganisationUnitXSDConverter.java 6455 2011-02-17 09:04:37Z
+ *          jasonp $
+ */
 
 public class OrganisationUnitHierarchyXSDConverter
-extends AbstractXSDConverter
+    extends AbstractXSDConverter
 {
-
 
     public OrganisationUnitHierarchyXSDConverter()
     {
@@ -55,36 +53,35 @@ extends AbstractXSDConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        if ( params.getOrganisationUnits() != null && params.getOrganisationUnits().size() > 0 )
-        {
-            writer.openElement( "xsd:element", "name", "OrgHierarchy" );
 
-            writeAnnotation( writer );
+        writer.openElement( "xsd:element", "name", "OrgHierarchy" );
 
-            writer.openElement( "xsd:complexType" );
+        writeAnnotation( writer );
 
-            writer.openElement( "xsd:sequence" );
+        writer.openElement( "xsd:complexType" );
 
-            writeLongInteger( writer, "OrgHierarchyID", 1, true );
+        writer.openElement( "xsd:sequence" );
 
-            writeInteger( writer, "OrgUnitLevel", 0, false );
+        writeLongInteger( writer, "OrgHierarchyID", 1, true );
 
-            writeInteger( writer, "OrgUnitStructureID", 1, true );
+        writeInteger( writer, "OrgUnitLevel", 0, false );
 
-            writeInteger( writer, "OrgUnitChildID", 1, true );
+        writeInteger( writer, "OrgUnitStructureID", 1, true );
 
-            writeInteger( writer, "OrgUnitParentID", 1, true );
+        writeInteger( writer, "OrgUnitChildID", 1, true );
 
-            writeInteger( writer, "LastUserID", 1, true );
+        writeInteger( writer, "OrgUnitParentID", 1, true );
 
-            writeDateTime( writer, "LastUpdated", 1, true );
+        writeInteger( writer, "LastUserID", 1, true );
 
-            writer.closeElement();
+        writeDateTime( writer, "LastUpdated", 1, true );
 
-            writer.closeElement();
+        writer.closeElement();
 
-            writer.closeElement();
-        }
+        writer.closeElement();
+
+        writer.closeElement();
+
     }
 
     public void read( XMLReader reader, ImportParams params )

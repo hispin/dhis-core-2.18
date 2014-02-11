@@ -191,6 +191,16 @@ public class Period
     {
         return getMediumDateString( startDate );
     }
+    
+    /**
+     * Returns end date formatted as string.
+     *
+     * @return end date formatted as string.
+     */
+    public String getEndDateString()
+    {
+        return getMediumDateString( endDate );
+    }
 
     /**
      * Formats a Date to the format YYYY-MM-DD.

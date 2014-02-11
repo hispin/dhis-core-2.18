@@ -31,7 +31,6 @@ package org.hisp.dhis.importexport.importer;
 import static org.hisp.dhis.importexport.ImportObjectStatus.MATCH;
 import static org.hisp.dhis.importexport.ImportObjectStatus.NEW;
 import static org.hisp.dhis.importexport.ImportObjectStatus.UPDATE;
-import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
 
 import org.amplecode.quick.BatchHandler;
 import org.apache.commons.logging.Log;

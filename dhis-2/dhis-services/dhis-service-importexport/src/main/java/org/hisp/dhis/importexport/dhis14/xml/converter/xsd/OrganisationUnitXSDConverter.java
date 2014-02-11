@@ -1,4 +1,5 @@
 package org.hisp.dhis.importexport.dhis14.xml.converter.xsd;
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -27,8 +28,6 @@ package org.hisp.dhis.importexport.dhis14.xml.converter.xsd;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
@@ -39,69 +38,87 @@ import org.hisp.dhis.importexport.ImportParams;
  */
 
 public class OrganisationUnitXSDConverter
-extends AbstractXSDConverter
+    extends AbstractXSDConverter
 {
     public OrganisationUnitXSDConverter()
     {
     }
-      public void write( XMLWriter writer, ExportParams params )
+
+    public void write( XMLWriter writer, ExportParams params )
     {
-        if ( params.getOrganisationUnits() != null && params.getOrganisationUnits().size() > 0 )
-        {
-            writer.openElement( "xsd:element", "name", "OrgUnit" );
 
-            writeAnnotation( writer );
+        writer.openElement( "xsd:element", "name", "OrgUnit" );
 
-            writer.openElement( "xsd:complexType" );
+        writeAnnotation( writer );
 
-            writer.openElement( "xsd:sequence" );
+        writer.openElement( "xsd:complexType" );
 
-            writeInteger( writer, "OrgUnitID", 1, true );
+        writer.openElement( "xsd:sequence" );
 
-            writeText( writer, "OrgUnitCode", 0, false, 15 );
+        writeInteger( writer, "OrgUnitID", 1, true );
 
-            writeInteger( writer, "OrgUnitLevel", 1, true );
+        writeText( writer, "UID", 0, false, 11 );
 
-            writeText( writer, "OrgUnitName", 1, true, 230 );
+        writeText( writer, "OrgUnitCode", 0, false, 15 );
 
-            writeText( writer, "OrgUnitShort", 1, true, 25 );
+        writeInteger( writer, "OrgUnitLevel", 1, true );
 
-            writeLongInteger( writer, "ValidFrom", 1, true );
+        writeText( writer, "OrgUnitName", 1, true, 230 );
 
-            writeLongInteger( writer, "ValidTo", 1, true );
+        writeText( writer, "OrgUnitShort", 1, true, 25 );
 
-            writeInteger ( writer, "Active", 1, true);
+        writeLongInteger( writer, "ValidFrom", 1, true );
 
-            writeMemo( writer, "Comment", 0, false, 536870910 );
+        writeLongInteger( writer, "ValidTo", 1, true );
 
-            writeInteger( writer, "Selected", 1, true );
+        writeInteger( writer, "Active", 1, true );
 
-            writeInteger( writer, "LastUserID", 1, true );
+        writeMemo( writer, "Comment", 0, false, 536870910 );
 
-            writeDateTime( writer, "LastUpdated", 1, true );
+        writeDouble( writer, "Latitude", 1, true );
 
-            writeText( writer, "OrgUnitNameOld", 0, false, 230 );
+        writeDouble( writer, "Longitude", 1, true );
 
-            writeText( writer, "OrgUnitShortOld", 0, false, 25 );
+        writeInteger( writer, "Selected", 1, true );
 
-            writeText( writer, "OrgUnitNameAlt1", 0, false, 230 );
+        writeInteger( writer, "LastUserID", 1, true );
 
-            writeText( writer, "OrgUnitShortAlt1", 0, false, 25 );
+        writeDateTime( writer, "LastUpdated", 1, true );
 
-            writeText( writer, "OrgUnitNameAlt2", 0, false, 230 );
+        writeText( writer, "OrgUnitNameOld", 0, false, 230 );
 
-            writeText( writer, "OrgUnitShortAlt2", 0, false, 25 );
+        writeText( writer, "OrgUnitShortOld", 0, false, 25 );
 
-            writeText( writer, "OrgUnitNameAlt3", 0, false, 230 );
+        writeText( writer, "OrgUnitGUIDAlt1", 0, false, 50 );
 
-            writeText( writer, "OrgUnitShortAlt3", 0, false, 25 );
+        writeText( writer, "OrgUnitCodeAlt1", 0, false, 18 );
 
-            writer.closeElement();
+        writeText( writer, "OrgUnitNameAlt1", 0, false, 230 );
 
-            writer.closeElement();
+        writeText( writer, "OrgUnitShortAlt1", 0, false, 25 );
 
-            writer.closeElement();
-        }
+        writeText( writer, "OrgUnitGUIDAlt2", 0, false, 50 );
+
+        writeText( writer, "OrgUnitCodeAlt2", 0, false, 18 );
+
+        writeText( writer, "OrgUnitNameAlt2", 0, false, 230 );
+
+        writeText( writer, "OrgUnitShortAlt2", 0, false, 25 );
+
+        writeText( writer, "OrgUnitGUIDAlt3", 0, false, 50 );
+
+        writeText( writer, "OrgUnitCodeAlt3", 0, false, 18 );
+
+        writeText( writer, "OrgUnitNameAlt3", 0, false, 230 );
+
+        writeText( writer, "OrgUnitShortAlt3", 0, false, 25 );
+
+        writer.closeElement();
+
+        writer.closeElement();
+
+        writer.closeElement();
+
     }
 
     public void read( XMLReader reader, ImportParams params )

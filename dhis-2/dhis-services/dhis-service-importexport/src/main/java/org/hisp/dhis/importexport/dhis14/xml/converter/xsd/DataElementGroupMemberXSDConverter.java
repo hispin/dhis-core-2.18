@@ -69,6 +69,8 @@ public class DataElementGroupMemberXSDConverter
         
         writeInteger( writer, "DataElementID", 1, true );
         
+        writeInteger( writer, "Active", 1, true );
+        
         writer.closeElement();
         
         writer.closeElement();

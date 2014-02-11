@@ -24,6 +24,15 @@
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
+  
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- ImportDataDailyPeriodStore                                    -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <bean id="org.hisp.dhis.importexport.ImportDataDailyPeriodStore" class="org.hisp.dhis.importexport.hibernate.HibernateImportDataDailyPeriodStore">
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
+  </bean>
+  
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- ImportObjectStore                                             -->
@@ -40,6 +49,15 @@
   <bean id="org.hisp.dhis.importexport.ImportDataValueService" class="org.hisp.dhis.importexport.service.DefaultImportDataValueService">
     <property name="importDataValueStore" ref="org.hisp.dhis.importexport.ImportDataValueStore" />
   </bean>
+  
+  	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- ImportDataDailPeriodService                                   -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <bean id="org.hisp.dhis.importexport.ImportDataDailyPeriodService" class="org.hisp.dhis.importexport.service.DefaultImportDataDailyPeriodService">
+    <property name="importDataDailyPeriodStore" ref="org.hisp.dhis.importexport.ImportDataDailyPeriodStore" />
+  </bean>
+  
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- ImportObjectManager                                           -->
@@ -144,6 +162,8 @@
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="importDataDailyPeriodService" ref="org.hisp.dhis.importexport.ImportDataDailyPeriodService" />
+    <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
     <property name="cacheManager" ref="cacheManager" />
   </bean>
 
@@ -248,6 +268,7 @@
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
   </bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
