@@ -255,16 +255,43 @@ public class WebUtils
         return prefixes;
     }
 
-    public static <T extends IdentifiableObject> List<Object> filterFields( List<T> objects, String fields )
+    public static <T extends IdentifiableObject> List<Object> filterFields( List<T> objects, String include, String exclude )
     {
         List<Object> output = Lists.newArrayList();
 
-        if ( objects.isEmpty() || fields == null )
+        if ( objects.isEmpty() )
         {
             return output;
         }
 
-        Map<String, Map> fieldMap = parseFieldExpression( fields );
+        Map<String, Map> fieldMap = Maps.newHashMap();
+
+        if ( include == null && exclude == null )
+        {
+            Map<String, ReflectionUtils.MethodDescriptor> classMap = ReflectionUtils.getJacksonClassMap( objects.get( 0 ).getClass() );
+
+            for ( String key : classMap.keySet() )
+            {
+                fieldMap.put( key, Maps.newHashMap() );
+            }
+        }
+        else if ( include == null )
+        {
+            Map<String, ReflectionUtils.MethodDescriptor> classMap = ReflectionUtils.getJacksonClassMap( objects.get( 0 ).getClass() );
+            Map<String, Map> excludeMap = parseFieldExpression( exclude );
+
+            for ( String key : classMap.keySet() )
+            {
+                if ( !excludeMap.containsKey( key ) )
+                {
+                    fieldMap.put( key, Maps.newHashMap() );
+                }
+            }
+        }
+        else
+        {
+            fieldMap = parseFieldExpression( include );
+        }
 
         for ( Object object : objects )
         {
