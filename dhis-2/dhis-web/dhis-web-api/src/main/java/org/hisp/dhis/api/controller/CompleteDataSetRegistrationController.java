@@ -171,7 +171,7 @@ public class CompleteDataSetRegistrationController
         @RequestParam String ou,
         @RequestParam( required = false ) String cc, 
         @RequestParam( required = false ) String cp, 
-        @RequestParam( required = false, defaultValue="false" ) boolean multiOu, HttpServletResponse response )
+        @RequestParam( required = false ) boolean multiOu, HttpServletResponse response )
     {
         DataSet dataSet = dataSetService.getDataSet( ds );
         
@@ -245,7 +245,7 @@ public class CompleteDataSetRegistrationController
         @RequestParam String ou,
         @RequestParam( required = false ) String cc, 
         @RequestParam( required = false ) String cp, 
-        @RequestParam( required = false, defaultValue="false" ) boolean multiOu, HttpServletResponse response )
+        @RequestParam( required = false ) boolean multiOu, HttpServletResponse response )
     {
         DataSet dataSet = dataSetService.getDataSet( ds );
         
