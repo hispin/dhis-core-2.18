@@ -270,7 +270,7 @@ public abstract class AbstractPersonService
 
         importSummary.setStatus( ImportStatus.SUCCESS );
         importSummary.setReference( entityInstance.getUid() );
-        importSummary.getImportCount().incrementImported();
+        importSummary.getImportCount().incrementUpdated();
 
         return importSummary;
     }
