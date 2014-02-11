@@ -37,6 +37,10 @@
       <param name="requiredAuthorities">F_DATAVALUE_ADD</param>
     </action>
 
+    <action name="deleteValue" class="org.hisp.dhis.commons.action.NoAction">
+      <param name="requiredAuthorities">F_DATAVALUE_DELETE</param>
+    </action>
+
     <action name="saveMinMaxLimits" class="org.hisp.dhis.de.action.SaveMinMaxLimitsAction">
       <result name="success" type="velocity-json">/dhis-web-dataentry/status.vm</result>
       <param name="onExceptionReturn">plainTextError</param>

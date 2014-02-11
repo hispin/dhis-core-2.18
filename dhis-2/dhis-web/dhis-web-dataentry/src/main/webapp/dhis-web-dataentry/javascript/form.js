@@ -344,6 +344,7 @@ function uploadLocalData()
             url: '../api/dataValues',
             data: value,
             dataType: 'json',
+            type: 'post',
             success: function( data, textStatus, xhr )
             {
             	dhis2.de.storageManager.clearDataValueJSON( value );
