@@ -234,4 +234,99 @@ public class DataValueController
             dataValueService.updateDataValue( dataValue );
         }
     }
+    
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_DELETE')" )
+    @RequestMapping( method = RequestMethod.DELETE, produces = "text/plain" )
+    public void deleteDataValue( 
+        @RequestParam String de, 
+        @RequestParam( required = false ) String co, 
+        @RequestParam( required = false ) String cc, 
+        @RequestParam( required = false ) String cp, 
+        @RequestParam String pe, 
+        @RequestParam String ou, HttpServletResponse response )
+    {
+        // ---------------------------------------------------------------------
+        // Input validation
+        // ---------------------------------------------------------------------
+        
+        DataElement dataElement = dataElementService.getDataElement( de );
+
+        if ( dataElement == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal data element identifier: " + de );
+            return;
+        }
+
+        DataElementCategoryOptionCombo categoryOptionCombo = null;
+
+        if ( co != null )
+        {
+            categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( co );
+        }
+        else
+        {
+            categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        }
+
+        if ( categoryOptionCombo == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal category option combo identifier: " + co );
+            return;
+        }
+
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+        
+        if ( attributeOptionCombo == null )
+        {
+            return;
+        }
+        
+        Period period = PeriodType.getPeriodFromIsoString( pe );
+
+        if ( period == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal period identifier: " + pe );
+            return;
+        }
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+
+        if ( organisationUnit == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
+            return;
+        }
+        
+        boolean isInHierarchy = organisationUnitService.isInUserHierarchy( organisationUnit );
+        
+        if ( !isInHierarchy )
+        {
+            ContextUtils.conflictResponse( response, "Organisation unit is not in the hierarchy of the current user: " + ou );
+            return;
+        }
+
+        // ---------------------------------------------------------------------
+        // Locking validation
+        // ---------------------------------------------------------------------
+
+        if ( dataSetService.isLocked( dataElement, period, organisationUnit, null ) )
+        {
+            ContextUtils.conflictResponse( response, "Data set is locked" );
+            return;
+        }
+
+        // ---------------------------------------------------------------------
+        // Delete data value
+        // ---------------------------------------------------------------------
+
+        DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, categoryOptionCombo, attributeOptionCombo );
+
+        if ( dataValue == null )
+        {
+            ContextUtils.conflictResponse( response, "Data value cannot be deleted because it does not exist" );
+            return;
+        }
+        
+        dataValueService.deleteDataValue( dataValue );
+    }
 }

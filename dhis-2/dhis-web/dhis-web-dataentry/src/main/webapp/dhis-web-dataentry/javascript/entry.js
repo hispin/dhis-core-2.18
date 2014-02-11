@@ -309,11 +309,12 @@ function ValueSaver( de, pe, co, value, fieldId, resultColor )
             url: '../api/dataValues',
             data: dataValue,
             dataType: 'json',
+            type: 'post',
             success: handleSuccess,
             error: handleError
         } );
     };
-
+    
     function handleSuccess()
     {
     	dhis2.de.storageManager.clearDataValueJSON( dataValue );
