@@ -5053,7 +5053,7 @@ Ext.onReady(function() {
                                                         items: [
                                                             {
                                                                 xtype: 'checkbox',
-                                                                id: 'userOrgunit',
+                                                                id: 'userOrgunitChildren',
                                                                 columnWidth: 0.5,
                                                                 boxLabel: TR.i18n.user_orgunit,
                                                                 labelWidth: TR.conf.layout.form_label_width,
@@ -5069,19 +5069,19 @@ Ext.onReady(function() {
                                                             },
                                                             {
                                                                 xtype: 'checkbox',
-                                                                id: 'userOrgunitChildren',
+                                                                id: 'userOrgunit',
                                                                 columnWidth: 0.5,
                                                                 boxLabel: TR.i18n.user_orgunit_children,
                                                                 labelWidth: TR.conf.layout.form_label_width,
                                                                 handler: function(chb, checked) {
                                                                     TR.cmp.params.organisationunit.treepanel.xable(checked, TR.cmp.aggregateFavorite.userorganisationunit.getValue());
-                                                                },
+																	TR.state.orgunitIds = [];
+																},
                                                                 listeners: {
                                                                     added: function() {
                                                                         TR.cmp.aggregateFavorite.userorganisationunitchildren = this;
                                                                     },
                                                                     handler: function(chb, checked) {
-                                                                        TR.cmp.params.organisationunit.toolbar.xable(checked, TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue());
                                                                         TR.cmp.params.organisationunit.treepanel.xable(checked, TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue());
                                                                         TR.state.orgunitIds = [];
                                                                     },
