@@ -516,7 +516,7 @@
 				,javascript/relationshipTrackedEntityInstance.js
 			</param>
 			<param name="stylesheets">style/style.css</param>
-			<param name="requiredAuthorities">F_TRACKED_ENTITY_MANAGEMENT</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_MANAGEMENT</param>
 		</action>
 
 		<action name="searchRegistrationTrackedEntityInstance"
