@@ -60,8 +60,7 @@ public class CreateCategoryOptionGroupSetTableStatement
     public String getStatement()
     {
         String statement = "CREATE TABLE " + TABLE_NAME + " ( " +
-            "categoryoptionid " + NUMERIC_COLUMN_TYPE + SEPARATOR +
-            "categoryoptionname " + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
+            "categoryoptioncomboid " + NUMERIC_COLUMN_TYPE + SEPARATOR;
         
         for ( CategoryOptionGroupSet groupSet : groupSets )
         {
@@ -69,7 +68,7 @@ public class CreateCategoryOptionGroupSetTableStatement
             statement += quote + groupSet.getUid() + quote + SPACE + "CHARACTER(11)" + SEPARATOR;
         }
         
-        statement += "PRIMARY KEY ( categoryoptionid ) )";
+        statement += "PRIMARY KEY ( categoryoptioncomboid ) )";
                 
         log.info( "Create category option group set table SQL: " + statement );
         

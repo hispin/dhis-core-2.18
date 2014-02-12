@@ -30,7 +30,9 @@ package org.hisp.dhis.dataelement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.annotation.Scanned;
@@ -66,11 +68,15 @@ public class CategoryOptionGroupSet
     // Logic
     // -------------------------------------------------------------------------
 
-    public CategoryOptionGroup getGroup( DataElementCategoryOption categoryOption )
+    //TODO link group set to category to avoid conflicting grouping of category option combos
+    
+    public CategoryOptionGroup getGroup( DataElementCategoryOptionCombo optionCombo )
     {
+        Set<DataElementCategoryOption> categoryOptions = optionCombo.getCategoryOptions();
+        
         for ( CategoryOptionGroup group : members )
         {
-            if ( group.getMembers().contains( categoryOption ) )
+            if ( !CollectionUtils.intersection( group.getMembers(), categoryOptions ).isEmpty() )
             {
                 return group;
             }
