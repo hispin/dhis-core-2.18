@@ -579,4 +579,6 @@ public interface DataElementCategoryService
     Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetweenByName( int first, int max, String name );
 
     Collection<CategoryOptionGroupSet> getAllCategoryOptionGroupSets();
+    
+    Collection<CategoryOptionGroupSet> getDataDimensionCategoryOptionGroupSets();
 }

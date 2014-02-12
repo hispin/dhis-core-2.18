@@ -42,7 +42,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericDimensionalObjectStore;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
@@ -90,16 +90,16 @@ public class DefaultDataElementCategoryService
         this.categoryOptionComboStore = categoryOptionComboStore;
     }
 
-    private GenericIdentifiableObjectStore<CategoryOptionGroup> categoryOptionGroupStore;
+    private GenericNameableObjectStore<CategoryOptionGroup> categoryOptionGroupStore;
 
-    public void setCategoryOptionGroupStore( GenericIdentifiableObjectStore<CategoryOptionGroup> categoryOptionGroupStore )
+    public void setCategoryOptionGroupStore( GenericNameableObjectStore<CategoryOptionGroup> categoryOptionGroupStore )
     {
         this.categoryOptionGroupStore = categoryOptionGroupStore;
     }
 
-    private GenericIdentifiableObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore;
+    private GenericNameableObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore;
 
-    public void setCategoryOptionGroupSetStore( GenericIdentifiableObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore )
+    public void setCategoryOptionGroupSetStore( GenericNameableObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore )
     {
         this.categoryOptionGroupSetStore = categoryOptionGroupSetStore;
     }
@@ -844,5 +844,10 @@ public class DefaultDataElementCategoryService
     public Collection<CategoryOptionGroupSet> getAllCategoryOptionGroupSets()
     {
         return categoryOptionGroupSetStore.getAll();
-    }    
+    }
+    
+    public Collection<CategoryOptionGroupSet> getDataDimensionCategoryOptionGroupSets()
+    {
+        return categoryOptionGroupSetStore.getByDataDimension( true );
+    }
 }

@@ -609,6 +609,16 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public List<T> getByDataDimension( boolean dataDimension )
+    {
+        Query query = getQuery( "from " + clazz.getName() + " c where c.dataDimension = :dataDimension" );
+        query.setBoolean( "dataDimension", dataDimension );
+
+        return query.list();
+    }
+    
+    @Override
     public List<T> getByUid( Collection<String> uids )
     {
         List<T> list = new ArrayList<T>();
