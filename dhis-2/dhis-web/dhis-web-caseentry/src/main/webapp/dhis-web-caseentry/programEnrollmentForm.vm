@@ -125,7 +125,7 @@
 <script type="text/javascript">
 	jQuery("#propertyForm").ready( function(){
 		validation( 'propertyForm', function(form){
-			validateIdentifier( $programInstance.entityInstance.id, $programInstance.program.id, 'propertyForm' );
+			saveIdentifierAndAttribute( $programInstance.entityInstance.id, $programInstance.program.id, 'propertyForm' );
 		});	
 		
 		validation( 'coordinatesForm', function(form){
