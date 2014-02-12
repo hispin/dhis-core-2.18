@@ -29,7 +29,6 @@ package org.hisp.dhis.dd.action.category;
  */
 
 import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
@@ -52,13 +51,6 @@ public class AddDataElementCategoryOptionAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -75,13 +67,6 @@ public class AddDataElementCategoryOptionAction
     public void setCode( String code )
     {
         this.code = code;
-    }
-
-    private Integer conceptId;
-
-    public void setConceptId( Integer conceptId )
-    {
-        this.conceptId = conceptId;
     }
 
     // -------------------------------------------------------------------------
@@ -105,7 +90,6 @@ public class AddDataElementCategoryOptionAction
         
         dataElementCategoryOption = new DataElementCategoryOption( name );
         dataElementCategoryOption.setCode( code );
-        dataElementCategoryOption.setConcept( conceptService.getConcept( conceptId ) );
         
         dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
 

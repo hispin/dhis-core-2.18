@@ -46,18 +46,6 @@
       <td><input type="checkbox" id="dataDimension" name="dataDimension" value="true" /></td>
     </tr>
     <tr>
-      <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-      <td colspan="3">
-		<div style="inline">
-			<select id="conceptId" name="conceptId">				
-				#foreach( $concept in $concepts )
-				<option value="$concept.id">$concept.name</option>
-				#end
-			</select>
-		</div>
-	  </td>
-    </tr>
-    <tr>
       <td><label>$i18n.getString( "dimension_type" )</td>
       <td>
         <select id="dimensionType" name="dimensionType">

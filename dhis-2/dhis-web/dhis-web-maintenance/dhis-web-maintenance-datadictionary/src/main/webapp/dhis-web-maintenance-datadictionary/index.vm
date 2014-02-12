@@ -9,7 +9,6 @@
     #introListImgItem( "category.action" "data_element_category" "category" )
     #introListImgItem( "categoryCombo.action" "data_element_category_combo" "category" )
     #introListImgItem( "dataDictionary.action" "data_dictionary" "datadictionary" )
-	#introListImgItem( "concept.action" "concept" "dataelement" )
     #introListImgItem( "indicator.action" "indicator" "indicator" )
     #introListImgItem( "indicatorType.action" "indicator_type" "indicator" )
     #introListImgItem( "indicatorGroup.action" "indicator_group" "indicator" )

@@ -379,7 +379,7 @@ public class DXFConverter
                     DataElementCategoryBatchHandler.class ).init();
 
                 XMLConverter converter = new DataElementCategoryConverter( batchHandler, importObjectService,
-                    categoryService, conceptService );
+                    categoryService );
 
                 converterInvoker.invokeRead( converter, reader, params );
 

@@ -28,14 +28,14 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.concept.ConceptService;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Selamawit
@@ -55,13 +55,6 @@ public class AddDataElementCategoryAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -78,13 +71,6 @@ public class AddDataElementCategoryAction
     public void setDataDimension( boolean dataDimension )
     {
         this.dataDimension = dataDimension;
-    }
-
-    private Integer conceptId;
-
-    public void setConceptId( Integer conceptId )
-    {
-        this.conceptId = conceptId;
     }
 
     private String dimensionType;
@@ -110,7 +96,6 @@ public class AddDataElementCategoryAction
         DataElementCategory dataElementCategory = new DataElementCategory();
         dataElementCategory.setName( name );
         dataElementCategory.setDataDimension( dataDimension );
-        dataElementCategory.setConcept( conceptService.getConcept( conceptId ) );
         dataElementCategory.setDimensionType( dimensionType );
 
         List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>();

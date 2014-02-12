@@ -28,11 +28,9 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.concept.ConceptService;
-import org.hisp.dhis.system.deletion.DeletionHandler;
-
 import java.util.Set;
+
+import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
  * @author Dang Duy Hieu
@@ -51,13 +49,6 @@ public class DataElementCategoryDeletionHandler
         this.categoryService = categoryService;
     }
 
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -66,45 +57,6 @@ public class DataElementCategoryDeletionHandler
     public String getClassName()
     {
         return DataElementCategory.class.getSimpleName();
-    }
-
-    @Override
-    public String allowDeleteConcept( Concept concept )
-    {
-        for ( DataElementCategory category : categoryService.getAllDataElementCategories() )
-        {
-            Concept categoryConcept = category.getConcept();
-
-            if ( categoryConcept != null )
-            {
-                if ( categoryConcept.equals( concept ) )
-                {
-                    return category.getName();
-                }
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public void deleteConcept( Concept concept )
-    {
-        Concept conceptDefault = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
-
-        for ( DataElementCategory category : categoryService.getAllDataElementCategories() )
-        {
-            Concept categoryConcept = category.getConcept();
-
-            if ( categoryConcept != null )
-            {
-                if ( categoryConcept.equals( concept ) )
-                {
-                    category.setConcept( conceptDefault );
-                    categoryService.updateDataElementCategory( category );
-                }
-            }
-        }
     }
 
     @Override

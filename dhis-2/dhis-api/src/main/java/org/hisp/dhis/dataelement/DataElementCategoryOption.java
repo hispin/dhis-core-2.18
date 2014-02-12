@@ -28,6 +28,15 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.common.view.DetailedView;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -35,17 +44,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseNameableObject;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.annotation.Scanned;
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.concept.Concept;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -62,8 +60,6 @@ public class DataElementCategoryOption
     public static final String DEFAULT_NAME = "default";
 
     private Set<DataElementCategory> categories = new HashSet<DataElementCategory>();
-
-    private Concept concept;
 
     @Scanned
     private Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
@@ -146,20 +142,6 @@ public class DataElementCategoryOption
 
     @JsonProperty
     @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
-    public Concept getConcept()
-    {
-        return concept;
-    }
-
-    public void setConcept( Concept concept )
-    {
-        this.concept = concept;
-    }
-
-    @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
     @JsonView({ DetailedView.class })
     @JacksonXmlElementWrapper(localName = "categoryOptionCombos", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty(localName = "categoryOptionCombo", namespace = DxfNamespaces.DXF_2_0)
@@ -171,18 +153,5 @@ public class DataElementCategoryOption
     public void setCategoryOptionCombos( Set<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;
-    }
-
-    @Override
-    public void mergeWith( IdentifiableObject other )
-    {
-        super.mergeWith( other );
-
-        if ( other.getClass().isInstance( this ) )
-        {
-            DataElementCategoryOption dataElementCategoryOption = (DataElementCategoryOption) other;
-
-            concept = dataElementCategoryOption.getConcept() == null ? concept : dataElementCategoryOption.getConcept();
-        }
     }
 }

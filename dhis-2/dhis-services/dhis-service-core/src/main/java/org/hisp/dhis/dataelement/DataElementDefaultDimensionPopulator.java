@@ -109,8 +109,6 @@ public class DataElementDefaultDimensionPopulator
             log.info( "Added default category" );
         }
 
-        defaultCategory.setConcept( defaultConcept );
-
         categoryService.updateDataElementCategory( defaultCategory );
 
         String defaultName = DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;

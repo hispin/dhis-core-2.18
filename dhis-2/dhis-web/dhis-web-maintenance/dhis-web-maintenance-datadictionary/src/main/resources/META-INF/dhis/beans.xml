@@ -398,7 +398,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryAction" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryAction"
@@ -414,30 +413,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryAction" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
-
-  <!--
-  <bean id="org.hisp.dhis.dd.action.category.ShowCategoryEditorAction" class="org.hisp.dhis.dd.action.category.ShowCategoryEditorAction"
-    scope="prototype">
-    <property name="categoryService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    </property>
-    <property name="conceptService">
-      <ref bean="org.hisp.dhis.concept.ConceptService" />
-    </property>
-  </bean>-->
 
   <!-- CategoryOption -->
 
@@ -449,13 +435,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction"
@@ -466,7 +450,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
  <bean id="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
   
   <!-- CategoryCombo -->
@@ -511,38 +494,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction"
     scope="prototype">
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-  </bean>
-
-  <!-- Concept -->
-
-  <bean id="org.hisp.dhis.dd.action.concept.AddConceptAction" class="org.hisp.dhis.dd.action.concept.AddConceptAction"
-    scope="prototype">
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.concept.UpdateConceptAction" class="org.hisp.dhis.dd.action.concept.UpdateConceptAction"
-    scope="prototype">
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.concept.RemoveConceptAction" class="org.hisp.dhis.dd.action.concept.RemoveConceptAction"
-    scope="prototype">
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.concept.GetConceptAction" class="org.hisp.dhis.dd.action.concept.GetConceptAction"
-    scope="prototype">
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.concept.GetConceptListAction" class="org.hisp.dhis.dd.action.concept.GetConceptListAction"
-    scope="prototype">
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dd.action.concept.ValidateAddUpdateConceptAction" class="org.hisp.dhis.dd.action.concept.ValidateAddUpdateConceptAction"
-    scope="prototype">
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
   <!-- Other -->
