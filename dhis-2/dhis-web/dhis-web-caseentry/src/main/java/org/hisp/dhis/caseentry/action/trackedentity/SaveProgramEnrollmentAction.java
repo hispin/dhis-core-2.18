@@ -152,7 +152,6 @@ public class SaveProgramEnrollmentAction
     public String execute()
         throws Exception
     {
-
         TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
 
         Program program = programService.getProgram( programId );
