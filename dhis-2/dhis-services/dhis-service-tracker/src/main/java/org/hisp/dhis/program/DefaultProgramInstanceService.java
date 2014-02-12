@@ -55,12 +55,14 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -136,6 +138,9 @@ public class DefaultProgramInstanceService
     {
         this.programStageInstanceService = programStageInstanceService;
     }
+
+    @Autowired
+    private TrackedEntityInstanceService entityInstanceService;
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -573,6 +578,10 @@ public class DefaultProgramInstanceService
             TrackedEntityInstanceReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
 
         updateProgramInstance( programInstance );
+
+
+        entityInstance.getProgramInstances().add( programInstance );
+        entityInstanceService.updateTrackedEntityInstance( entityInstance );
 
         return programInstance;
     }
