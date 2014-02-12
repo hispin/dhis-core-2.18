@@ -90,7 +90,6 @@ public class DataElementCategoryBatchHandler
         statementBuilder.setColumn( "uid" );
         statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
-        statementBuilder.setColumn( "conceptid" );
     }
     
     protected void setValues( DataElementCategory category )
@@ -98,6 +97,5 @@ public class DataElementCategoryBatchHandler
         statementBuilder.setValue( category.getUid() );
         statementBuilder.setValue( category.getCode() );
         statementBuilder.setValue( category.getName() );
-        statementBuilder.setValue( category.getConcept().getId() );
     }
 }

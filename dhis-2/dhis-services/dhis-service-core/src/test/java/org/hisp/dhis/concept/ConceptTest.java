@@ -93,20 +93,5 @@ public abstract class ConceptTest
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );
         categoryOptions.add( categoryOptionC );
-
-        // ---------------------------------------------------------------------
-        // Setup Category
-        // ---------------------------------------------------------------------
-
-        defaultCategory = categoryService.getDataElementCategoryByName( DataElementCategory.DEFAULT_NAME );
-        
-        categoryA = new DataElementCategory( "CategoryA", defaultConcept, categoryOptions );
-        categoryB = new DataElementCategory( "CategoryB", defaultConcept, categoryOptions );
-        categoryC = new DataElementCategory( "CategoryC", defaultConcept, categoryOptions );
-
-        categoryService.addDataElementCategory( categoryA );
-        categoryService.addDataElementCategory( categoryB );
-        categoryService.addDataElementCategory( categoryC );
-
     }
 }

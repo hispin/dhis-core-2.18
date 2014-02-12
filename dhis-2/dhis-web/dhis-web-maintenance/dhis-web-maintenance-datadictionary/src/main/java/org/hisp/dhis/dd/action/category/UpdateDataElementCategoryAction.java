@@ -28,14 +28,14 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.concept.ConceptService;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew
@@ -53,13 +53,6 @@ public class UpdateDataElementCategoryAction
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
-    }
-
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
     }
 
     // -------------------------------------------------------------------------
@@ -87,13 +80,6 @@ public class UpdateDataElementCategoryAction
         this.dataDimension = dataDimension;
     }
 
-    private Integer conceptId;
-
-    public void setConceptId( Integer conceptId )
-    {
-        this.conceptId = conceptId;
-    }
-
     private List<String> selectedList = new ArrayList<String>();
 
     public void setSelectedList( List<String> selectedList )
@@ -110,7 +96,6 @@ public class UpdateDataElementCategoryAction
         DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
         dataElementCategory.setName( name );
         dataElementCategory.setDataDimension( dataDimension );
-        dataElementCategory.setConcept( conceptService.getConcept( conceptId ) );
 
         List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>();
 

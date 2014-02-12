@@ -49,20 +49,7 @@
     <tr>
       <td><label for="dataDimension">$i18n.getString( "use_as_data_dimension" )</label></td>
       <td><input type="checkbox" id="dataDimension" name="dataDimension" value="true"#if( $dataElementCategory.dataDimension ) checked="checked"#end/></td>
-    </tr>     
-    <tr>
-      <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-	  <td>
-		<div style="inline">
-			#set ( $conceptId = $!dataElementCategory.concept.id )
-			<select id="conceptId" name="conceptId">				
-				#foreach( $concept in $concepts )
-				<option value="$concept.id" #if ( $concept.id == $conceptId ) selected #end>$concept.name</option>
-				#end
-			</select>
-		</div>
-	  </td>
-    </tr>  
+    </tr>
     <tr>
       <td><label>$i18n.getString( "dimension_type" )</td>
       <td>

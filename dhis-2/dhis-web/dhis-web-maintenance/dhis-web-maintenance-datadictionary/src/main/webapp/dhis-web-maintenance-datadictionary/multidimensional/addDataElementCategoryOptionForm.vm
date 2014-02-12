@@ -27,19 +27,7 @@
 	<tr>
 	  <td><label>$i18n.getString( "code" )</td>
 	  <td colspan="3"><input type="text" id="code" name="code"/></td>
-    </tr>	
-    <tr>
-      <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-      <td colspan="3">
-		<div style="inline">
-			<select id="conceptId" name="conceptId" style="width:305px" >				
-				#foreach( $concept in $concepts )
-				<option value="$concept.id">$concept.name</option>
-				#end
-			</select>
-		</div>
-	  </td>
-    </tr>   
+    </tr>
 	<tr>
 	  <td></td>
 	  <td colspan="3">

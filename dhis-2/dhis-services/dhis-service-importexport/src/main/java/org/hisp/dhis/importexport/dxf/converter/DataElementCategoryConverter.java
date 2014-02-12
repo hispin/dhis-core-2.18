@@ -28,16 +28,12 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_12;
-
 import java.util.Collection;
 import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -45,7 +41,6 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryImporter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 
 /**
  * @author Lars Helge Overland
@@ -62,11 +57,6 @@ public class DataElementCategoryConverter
     private static final String FIELD_UID = "uid";
     private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
-    private static final String FIELD_CONCEPT_ID = "conceptid";
-    
-    private static final String BLANK = "";
-
-    private ConceptService conceptService;
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -89,13 +79,11 @@ public class DataElementCategoryConverter
      * @param conceptService the ConceptService to use.
      */
     public DataElementCategoryConverter( BatchHandler<DataElementCategory> batchHandler,
-        ImportObjectService importObjectService, DataElementCategoryService categoryService,
-        ConceptService conceptService )
+        ImportObjectService importObjectService, DataElementCategoryService categoryService )
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
         this.categoryService = categoryService;
-        this.conceptService = conceptService;
     }
 
     // -------------------------------------------------------------------------
@@ -118,8 +106,6 @@ public class DataElementCategoryConverter
                 writer.writeElement( FIELD_UID, category.getUid() );
                 writer.writeElement( FIELD_CODE, category.getCode() );
                 writer.writeElement( FIELD_NAME, category.getName() );
-                writer.writeElement( FIELD_CONCEPT_ID, String.valueOf( category.getConcept() == null ? BLANK : category
-                    .getConcept().getId() ) );
 
                 writer.closeElement();
             }
@@ -130,10 +116,6 @@ public class DataElementCategoryConverter
 
     public void read( XMLReader reader, ImportParams params )
     {
-        Map<Object, String> conceptMap = NameMappingUtil.getConceptMap();
-
-        Concept defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
-
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
@@ -148,19 +130,6 @@ public class DataElementCategoryConverter
             }
 
             category.setName( values.get( FIELD_NAME ) );
-
-            if ( params.minorVersionGreaterOrEqual( MINOR_VERSION_12 ) && values.get( FIELD_CONCEPT_ID ) != null )
-            {
-                log.debug( "reading category dxf version >1.2" );
-                int conceptid = Integer.parseInt( values.get( FIELD_CONCEPT_ID ) );
-                String conceptName = conceptMap.get( conceptid );
-                category.setConcept( conceptService.getConceptByName( conceptName ) );
-            }
-            else
-            {
-                log.debug( "reading category dxf version 1.0" );
-                category.setConcept( defaultConcept );
-            }
 
             importObject( category, params );
         }

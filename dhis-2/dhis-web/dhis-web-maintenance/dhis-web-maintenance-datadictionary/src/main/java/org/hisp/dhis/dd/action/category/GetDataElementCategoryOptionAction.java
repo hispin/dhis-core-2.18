@@ -58,13 +58,6 @@ public class GetDataElementCategoryOptionAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
-    }
-
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -98,11 +91,6 @@ public class GetDataElementCategoryOptionAction
     {
         dataElementCategoryOption = dataElementCategoryService.getDataElementCategoryOption( id );
 
-        concepts = new ArrayList<Concept>( conceptService.getAllConcepts() );
-
-        Collections.sort( concepts, IdentifiableObjectNameComparator.INSTANCE );
-        
         return SUCCESS;
     }
-
 }

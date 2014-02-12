@@ -1098,7 +1098,6 @@
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler"
     class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler"

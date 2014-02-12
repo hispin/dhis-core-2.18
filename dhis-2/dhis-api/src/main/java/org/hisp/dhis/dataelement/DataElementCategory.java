@@ -40,9 +40,7 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.concept.Concept;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -68,8 +66,6 @@ public class DataElementCategory
     private static final long serialVersionUID = 6797241235048185629L;
 
     public static final String DEFAULT_NAME = "default";
-
-    private Concept concept;
     
     private String dimensionType;
 
@@ -94,13 +90,6 @@ public class DataElementCategory
     public DataElementCategory( String name, List<DataElementCategoryOption> categoryOptions )
     {
         this.name = name;
-        this.categoryOptions = categoryOptions;
-    }
-
-    public DataElementCategory( String name, Concept concept, List<DataElementCategoryOption> categoryOptions )
-    {
-        this.name = name;
-        this.concept = concept;
         this.categoryOptions = categoryOptions;
     }
 
@@ -191,21 +180,6 @@ public class DataElementCategory
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    @JsonInclude( JsonInclude.Include.NON_NULL )
-    public Concept getConcept()
-    {
-        return concept;
-    }
-
-    public void setConcept( Concept concept )
-    {
-        this.concept = concept;
-    }
-
-    @JsonProperty
     @JsonView({ DetailedView.class, ExportView.class })
     @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getDimensionType()
@@ -254,8 +228,6 @@ public class DataElementCategory
         if ( other.getClass().isInstance( this ) )
         {
             DataElementCategory dataElementCategory = (DataElementCategory) other;
-
-            concept = dataElementCategory.getConcept() == null ? concept : dataElementCategory.getConcept();
 
             removeAllCategoryOptions();
 
