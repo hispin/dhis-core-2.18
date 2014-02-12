@@ -708,7 +708,7 @@
 		</action>
 
 		<action name="getAttribute"
-			class="org.hisp.dhis.caseentry.action.trackedentity.GetProgramAction">
+			class="org.hisp.dhis.caseentry.action.trackedentity.GetAttributesByProgramAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/attributeFormDiv.vm</param>
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_ADD</param>

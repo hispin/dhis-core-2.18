@@ -30,13 +30,18 @@ package org.hisp.dhis.caseentry.action.trackedentity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -59,6 +64,9 @@ public class GetAttributesByProgramAction
     @Autowired
     private TrackedEntityAttributeService attributeService;
 
+    @Autowired
+    private TrackedEntityInstanceService entityInstanceService;
+
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
@@ -70,11 +78,25 @@ public class GetAttributesByProgramAction
         this.id = id;
     }
 
-    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+    private Integer entityInstanceId;
+
+    public void setEntityInstanceId( Integer entityInstanceId )
+    {
+        this.entityInstanceId = entityInstanceId;
+    }
+
+    private List<TrackedEntityAttribute> attributes;
 
     public List<TrackedEntityAttribute> getAttributes()
     {
         return attributes;
+    }
+
+    private Map<Integer, String> attributeValueMaps = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getAttributeValueMaps()
+    {
+        return attributeValueMaps;
     }
 
     // -------------------------------------------------------------------------
@@ -101,6 +123,16 @@ public class GetAttributesByProgramAction
         }
 
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
+
+        if ( entityInstanceId != null )
+        {
+            TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
+
+            for ( TrackedEntityAttributeValue attributeValue : entityInstance.getAttributeValues() )
+            {
+                attributeValueMaps.put( attributeValue.getAttribute().getId(), attributeValue.getValue() );
+            }
+        }
 
         return SUCCESS;
     }

@@ -1,3 +1,4 @@
+<input type='hidden' id='entityInstanceId' name='entityInstanceId' value='$entityInstance.id'>
 <table style='margin-top:-25px;'>
 	<tr>
 		<td colspan='3'>

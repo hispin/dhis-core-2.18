@@ -385,7 +385,8 @@ function enableBtn(){
 	}
 	
 	 $.postJSON( "getAttributesByProgram.action", {
-			id:programIdAddEntityInstance
+			id:programIdAddEntityInstance,
+			entityInstanceId: getFieldValue('entityInstanceId')
 		}, function( json )  {
 			
 			removeAttributeOption('advSearchBox0');			
@@ -1074,7 +1075,8 @@ function programOnchange( programId )
 		var program = $('#programEnrollmentSelectDiv [id=programId] option:selected');
 
         $('#identifierAndAttributeDiv').load("getAttribute.action", {
-			id:program.val()
+			id:program.val(),
+			entityInstanceId: getFieldValue('entityInstanceId')
 		}, function(){
             $("#dateOfIncidentField").datepicker("destroy");
             $("#enrollmentDateField").datepicker("destroy");
@@ -1328,27 +1330,6 @@ function removeProgramInstance( programInstanceId )
 // Identifiers && Attributes for selected program
 // ----------------------------------------------------------------
 
-function validateIdentifier( entityInstanceId, programId, paramsDiv )
-{
-	var params  = getParamsForDiv(paramsDiv);
-    params += "&entityInstanceId=" + entityInstanceId;
-    params +="&programId=" + programId;
-
-	$.ajax({
-		type: "POST",
-		url: 'validateTrackedEntityAttributeValue.action',
-		data: params,
-		success: function(json) {
-            if( json.response == 'success' ) {
-                saveIdentifierAndAttribute( entityInstanceId, programId, paramsDiv );
-            }
-            else {
-                showErrorMessage(json.message);
-            }
-        }
-    });
-}
-
 function saveIdentifierAndAttribute( entityInstanceId, programId, paramsDiv )
 {
 	var params  = getParamsForDiv(paramsDiv);
@@ -1365,7 +1346,15 @@ function saveIdentifierAndAttribute( entityInstanceId, programId, paramsDiv )
 					var id = 'dashboard_' + input.attr('id');
 					setInnerHTML(id, input.val());
 				});
-
+				$('#identifierAndAttributeDiv :input').each(function(){
+					var input = $(this);
+					var id = 'dashboard_' + input.attr('id');
+					setInnerHTML(id, input.val());
+					
+					var input = $(this);
+					var id = input.attr('id');
+					jQuery("#tab-2 [id=" + id + "]").val(input.val());
+				});
 				showSuccessMessage( i18n_save_success );
 			}
 		});
