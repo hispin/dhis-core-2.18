@@ -63,6 +63,23 @@ public class CategoryOptionGroupSet
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public CategoryOptionGroup getGroup( DataElementCategoryOption categoryOption )
+    {
+        for ( CategoryOptionGroup group : members )
+        {
+            if ( group.getMembers().contains( categoryOption ) )
+            {
+                return group;
+            }
+        }
+
+        return null;
+    }
+
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 

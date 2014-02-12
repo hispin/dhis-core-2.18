@@ -30,6 +30,7 @@ package org.hisp.dhis.resourcetable;
 
 import java.util.List;
 
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
@@ -67,6 +68,13 @@ public interface ResourceTableStore
      * Creates a table.
      */
     void createDataElementCategoryOptionComboName();
+    
+    /**
+     * Creates a table.
+     * 
+     * @param groupSets the group sets.
+     */
+    void createCategoryOptionGroupSetStructure( List<CategoryOptionGroupSet> groupSets );
     
     /**
      * Creates table.
