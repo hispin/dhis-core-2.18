@@ -252,11 +252,8 @@ public class DefaultEventAnalyticsService
 
         if ( params.isHierarchyMeta() )
         {
-            metaData
-                .put(
-                    OU_HIERARCHY_KEY,
-                    getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ),
-                        OrganisationUnit.class ) ) );
+            metaData.put( OU_HIERARCHY_KEY, getParentGraphMap( asTypedList( 
+                params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
         }
 
         if ( params.isPaging() )
