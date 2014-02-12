@@ -42,7 +42,6 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class DataElementCategoryServiceTest
     extends DhisSpringTest
@@ -82,7 +81,7 @@ public class DataElementCategoryServiceTest
     }
 
     // -------------------------------------------------------------------------
-    // Tests
+    // Category
     // -------------------------------------------------------------------------
 
     @Test
@@ -150,5 +149,73 @@ public class DataElementCategoryServiceTest
         assertTrue( categories.contains( categoryA ) );
         assertTrue( categories.contains( categoryB ) );
         assertTrue( categories.contains( categoryC ) );        
+    }
+
+    // -------------------------------------------------------------------------
+    // CategoryOptionGroup
+    // -------------------------------------------------------------------------
+
+    @Test
+    public void testAddGetCategoryGroup()
+    {
+        CategoryOptionGroup groupA = new CategoryOptionGroup( "A" );
+        CategoryOptionGroup groupB = new CategoryOptionGroup( "B" );
+        CategoryOptionGroup groupC = new CategoryOptionGroup( "C" );
+        
+        groupA.getMembers().add( categoryOptionA );
+        groupA.getMembers().add( categoryOptionB );
+        groupB.getMembers().add( categoryOptionC );
+        
+        int idA = categoryService.saveCategoryOptionGroup( groupA );
+        int idB = categoryService.saveCategoryOptionGroup( groupB );
+        int idC = categoryService.saveCategoryOptionGroup( groupC );
+        
+        assertEquals( groupA, categoryService.getCategoryOptionGroup( idA ) );
+        assertEquals( groupB, categoryService.getCategoryOptionGroup( idB ) );
+        assertEquals( groupC, categoryService.getCategoryOptionGroup( idC ) );
+
+        assertEquals( 2, categoryService.getCategoryOptionGroup( idA ).getMembers().size() );
+        assertEquals( 1, categoryService.getCategoryOptionGroup( idB ).getMembers().size() );
+        assertEquals( 0, categoryService.getCategoryOptionGroup( idC ).getMembers().size() );
+    }
+    
+    // -------------------------------------------------------------------------
+    // CategoryOptionGroupSet
+    // -------------------------------------------------------------------------
+
+    @Test
+    public void testAddGetCategoryGroupSet()
+    {
+        CategoryOptionGroup groupA = new CategoryOptionGroup( "A" );
+        CategoryOptionGroup groupB = new CategoryOptionGroup( "B" );
+        CategoryOptionGroup groupC = new CategoryOptionGroup( "C" );
+        
+        groupA.getMembers().add( categoryOptionA );
+        groupA.getMembers().add( categoryOptionB );
+        groupB.getMembers().add( categoryOptionC );
+        
+        categoryService.saveCategoryOptionGroup( groupA );
+        categoryService.saveCategoryOptionGroup( groupB );
+        categoryService.saveCategoryOptionGroup( groupC );
+        
+        CategoryOptionGroupSet groupSetA = new CategoryOptionGroupSet( "A" );
+        CategoryOptionGroupSet groupSetB = new CategoryOptionGroupSet( "B" );
+        CategoryOptionGroupSet groupSetC = new CategoryOptionGroupSet( "C" );
+        
+        groupSetA.getMembers().add( groupA );
+        groupSetA.getMembers().add( groupB );
+        groupSetB.getMembers().add( groupC );
+        
+        int idA = categoryService.saveCategoryOptionGroupSet( groupSetA );
+        int idB = categoryService.saveCategoryOptionGroupSet( groupSetB );
+        int idC = categoryService.saveCategoryOptionGroupSet( groupSetC );
+        
+        assertEquals( groupSetA, categoryService.getCategoryOptionGroupSet( idA ) );
+        assertEquals( groupSetB, categoryService.getCategoryOptionGroupSet( idB ) );
+        assertEquals( groupSetC, categoryService.getCategoryOptionGroupSet( idC ) );
+
+        assertEquals( 2, categoryService.getCategoryOptionGroupSet( idA ).getMembers().size() );
+        assertEquals( 1, categoryService.getCategoryOptionGroupSet( idB ).getMembers().size() );
+        assertEquals( 0, categoryService.getCategoryOptionGroupSet( idC ).getMembers().size() );
     }
 }

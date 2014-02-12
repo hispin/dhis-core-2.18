@@ -62,7 +62,6 @@
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
-    <!--@author Ovidiu Rosu <rosu.ovi@gmail.com>-->
   <bean id="org.hisp.dhis.filter.MetaDataFilterStore" class="org.hisp.dhis.metadatafilter.hibernate.HibernateMetaDataFilterStore">
     <property name="clazz" value="org.hisp.dhis.filter.MetaDataFilter" />
     <property name="sessionFactory" ref="sessionFactory" />
@@ -167,6 +166,18 @@
   <bean id="org.hisp.dhis.dataelement.CategoryOptionComboStore"
     class="org.hisp.dhis.dataelement.hibernate.HibernateCategoryOptionComboStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" />
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+    <property name="clazz" value="org.hisp.dhis.dataelement.CategoryOptionGroup" />
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupSetStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+    <property name="clazz" value="org.hisp.dhis.dataelement.CategoryOptionGroupSet" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
   </bean>
@@ -466,17 +477,13 @@
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
   
-  <!-- <bean id="hibernateEntityInterceptorWiring" class="org.hisp.dhis.hibernate.HibernateEventListenerWiring" /> -->
-
-  <!-- Scheduled task for data monitoring -->
-  
-  <bean id="monitoringLastDayTask" class="org.hisp.dhis.validation.scheduling.MonitoringTask" />
-
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryService" class="org.hisp.dhis.dataelement.DefaultDataElementCategoryService">
     <property name="categoryStore" ref="org.hisp.dhis.dataelement.CategoryStore" />
     <property name="categoryOptionStore" ref="org.hisp.dhis.dataelement.CategoryOptionStore" />
     <property name="categoryComboStore" ref="org.hisp.dhis.dataelement.CategoryComboStore" />
     <property name="categoryOptionComboStore" ref="org.hisp.dhis.dataelement.CategoryOptionComboStore" />
+    <property name="categoryOptionGroupStore" ref="org.hisp.dhis.dataelement.CategoryOptionGroupStore" />
+    <property name="categoryOptionGroupSetStore" ref="org.hisp.dhis.dataelement.CategoryOptionGroupSetStore" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
@@ -850,6 +857,14 @@
   <bean id="org.hisp.dhis.i18n.118nLocaleService" class="org.hisp.dhis.i18n.DefaultI18nLocaleService">
     <property name="localeStore" ref="org.hisp.dhis.i18n.I18nLocaleStore" />
   </bean>
+
+  <!-- 
+  <bean id="hibernateEntityInterceptorWiring" class="org.hisp.dhis.hibernate.HibernateEventListenerWiring" /> 
+  -->
+
+  <!-- Scheduled task for data monitoring -->
+  
+  <bean id="monitoringLastDayTask" class="org.hisp.dhis.validation.scheduling.MonitoringTask" />
 
   <!-- Startup routine definitions -->
 
