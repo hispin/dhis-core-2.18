@@ -539,4 +539,40 @@ public interface DataElementCategoryService
     Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetween( int first, int max );
 
     Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetweenByName( String name, int first, int max );
+
+    // -------------------------------------------------------------------------
+    // CategoryOptionGroup
+    // -------------------------------------------------------------------------
+
+    int saveCategoryOptionGroup( CategoryOptionGroup group );
+    
+    void updateCategoryOptionGroup( CategoryOptionGroup group );
+    
+    CategoryOptionGroup getCategoryOptionGroup( int id );
+    
+    CategoryOptionGroup getCategoryOptionGroup( String uid );
+    
+    void deleteCategoryOptionGroup( CategoryOptionGroup group );
+    
+    Collection<CategoryOptionGroup> getCategoryOptionGroupsBetween( int first, int max );
+    
+    Collection<CategoryOptionGroup> getCategoryOptionGroupsBetweenByName( int first, int max, String name );
+    
+    // -------------------------------------------------------------------------
+    // CategoryOptionGroup
+    // -------------------------------------------------------------------------
+
+    int saveCategoryOptionGroupSet( CategoryOptionGroupSet group );
+    
+    void updateCategoryOptionGroupSet( CategoryOptionGroupSet group );
+    
+    CategoryOptionGroupSet getCategoryOptionGroupSet( int id );
+    
+    CategoryOptionGroupSet getCategoryOptionGroupSet( String uid );
+    
+    void deleteCategoryOptionGroupSet( CategoryOptionGroupSet group );
+    
+    Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetween( int first, int max );
+    
+    Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetweenByName( int first, int max, String name );
 }

@@ -42,6 +42,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericDimensionalObjectStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
@@ -87,6 +88,20 @@ public class DefaultDataElementCategoryService
     public void setCategoryOptionComboStore( CategoryOptionComboStore categoryOptionComboStore )
     {
         this.categoryOptionComboStore = categoryOptionComboStore;
+    }
+
+    private GenericIdentifiableObjectStore<CategoryOptionGroup> categoryOptionGroupStore;
+
+    public void setCategoryOptionGroupStore( GenericIdentifiableObjectStore<CategoryOptionGroup> categoryOptionGroupStore )
+    {
+        this.categoryOptionGroupStore = categoryOptionGroupStore;
+    }
+
+    private GenericIdentifiableObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore;
+
+    public void setCategoryOptionGroupSetStore( GenericIdentifiableObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore )
+    {
+        this.categoryOptionGroupSetStore = categoryOptionGroupSetStore;
     }
 
     private DataElementService dataElementService;
@@ -741,5 +756,83 @@ public class DefaultDataElementCategoryService
     public int getDataElementCategoryOptionComboCountByName( String name )
     {
         return categoryOptionComboStore.getCountLikeName( name );
+    }
+
+    // -------------------------------------------------------------------------
+    // CategoryOptionGroup
+    // -------------------------------------------------------------------------
+
+    public int saveCategoryOptionGroup( CategoryOptionGroup group )
+    {
+        return categoryOptionGroupStore.save( group );
+    }
+    
+    public void updateCategoryOptionGroup( CategoryOptionGroup group )
+    {
+        categoryOptionGroupStore.update( group );
+    }
+    
+    public CategoryOptionGroup getCategoryOptionGroup( int id )
+    {
+        return categoryOptionGroupStore.get( id );
+    }
+    
+    public CategoryOptionGroup getCategoryOptionGroup( String uid )
+    {
+        return categoryOptionGroupStore.getByUid( uid );
+    }
+    
+    public void deleteCategoryOptionGroup( CategoryOptionGroup group )
+    {
+        categoryOptionGroupStore.delete( group );
+    }
+    
+    public Collection<CategoryOptionGroup> getCategoryOptionGroupsBetween( int first, int max )
+    {
+        return categoryOptionGroupStore.getAllOrderedName( first, max );
+    }
+
+    public Collection<CategoryOptionGroup> getCategoryOptionGroupsBetweenByName( int first, int max, String name )
+    {
+        return categoryOptionGroupStore.getAllLikeNameOrderedName( name, first, max );
+    }
+    
+    // -------------------------------------------------------------------------
+    // CategoryOptionGroupSet
+    // -------------------------------------------------------------------------
+
+    public int saveCategoryOptionGroupSet( CategoryOptionGroupSet group )
+    {
+        return categoryOptionGroupSetStore.save( group );
+    }
+    
+    public void updateCategoryOptionGroupSet( CategoryOptionGroupSet group )
+    {
+        categoryOptionGroupSetStore.update( group );
+    }
+    
+    public CategoryOptionGroupSet getCategoryOptionGroupSet( int id )
+    {
+        return categoryOptionGroupSetStore.get( id );
+    }
+    
+    public CategoryOptionGroupSet getCategoryOptionGroupSet( String uid )
+    {
+        return categoryOptionGroupSetStore.getByUid( uid );
+    }
+    
+    public void deleteCategoryOptionGroupSet( CategoryOptionGroupSet group )
+    {
+        categoryOptionGroupSetStore.delete( group );
+    }
+    
+    public Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetween( int first, int max )
+    {
+        return categoryOptionGroupSetStore.getAllOrderedName( first, max );
+    }
+
+    public Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetweenByName( int first, int max, String name )
+    {
+        return categoryOptionGroupSetStore.getAllLikeNameOrderedName( name, first, max );
     }
 }
