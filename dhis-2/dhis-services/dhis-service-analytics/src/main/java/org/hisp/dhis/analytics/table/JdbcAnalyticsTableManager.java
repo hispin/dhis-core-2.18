@@ -40,6 +40,7 @@ import java.util.concurrent.Future;
 
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
@@ -165,6 +166,7 @@ public class JdbcAnalyticsTableManager
             "from datavalue dv " +
             "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
+            "left join _categoryoptiongroupsetstructure cogs on dv.categoryoptioncomboid=cogs.categoryoptioncomboid " +
             "left join _categorystructure dcs on dv.categoryoptioncomboid=dcs.categoryoptioncomboid " +
             "left join _categorystructure acs on dv.attributeoptioncomboid=acs.categoryoptioncomboid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
@@ -194,6 +196,9 @@ public class JdbcAnalyticsTableManager
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
             organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();
 
+        Collection<CategoryOptionGroupSet> categoryOptionGroupSets =
+            categoryService.getDataDimensionCategoryOptionGroupSets();
+        
         Collection<DataElementCategory> disaggregationCategories =
             categoryService.getDisaggregationDataDimensionCategories();
         
@@ -212,6 +217,12 @@ public class JdbcAnalyticsTableManager
         for ( OrganisationUnitGroupSet groupSet : orgUnitGroupSets )
         {
             String[] col = { quote( groupSet.getUid() ), "character(11)", "ougs." + quote( groupSet.getUid() ) };
+            columns.add( col );
+        }
+
+        for ( CategoryOptionGroupSet groupSet : categoryOptionGroupSets )
+        {
+            String[] col = { quote( groupSet.getUid() ), "character(11)", "cogs." + quote( groupSet.getUid() ) };
             columns.add( col );
         }
         

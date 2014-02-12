@@ -59,6 +59,7 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryDimension;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -129,6 +130,9 @@ public abstract class BaseAnalyticalObject
 
     @Scanned
     protected List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+    
+    @Scanned
+    protected List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<CategoryOptionGroup>();
 
     protected boolean userOrganisationUnit;
 
@@ -314,6 +318,8 @@ public abstract class BaseAnalyticalObject
         }
         else // Group set
         {
+            // Data element group set
+            
             ListMap<String, NameableObject> deGroupMap = new ListMap<String, NameableObject>();
             
             for ( DataElementGroup group : dataElementGroups )
@@ -331,6 +337,8 @@ public abstract class BaseAnalyticalObject
                 type = DimensionType.DATAELEMENT_GROUPSET;
             }
 
+            // Organisation unit group set
+            
             ListMap<String, NameableObject> ouGroupMap = new ListMap<String, NameableObject>();
             
             for ( OrganisationUnitGroup group : organisationUnitGroups )
@@ -346,6 +354,25 @@ public abstract class BaseAnalyticalObject
                 items.addAll( ouGroupMap.get( dimension ) );
                 
                 type = DimensionType.ORGANISATIONUNIT_GROUPSET;
+            }
+
+            // Category option group set
+            
+            ListMap<String, NameableObject> coGroupMap = new ListMap<String, NameableObject>();
+            
+            for ( CategoryOptionGroup group : categoryOptionGroups )
+            {
+                if ( group.getGroupSet() != null )
+                {
+                    coGroupMap.putValue( group.getGroupSet().getUid(), group );
+                }
+            }
+            
+            if ( coGroupMap.containsKey( dimension ) )
+            {
+                items.addAll( coGroupMap.get( dimension ) );
+                
+                type = DimensionType.CATEGORYOPTION_GROUPSET;
             }
         }
         
@@ -470,6 +497,8 @@ public abstract class BaseAnalyticalObject
         }
         else // Group set
         {
+            // Data element group set
+            
             ListMap<String, BaseNameableObject> deGroupMap = new ListMap<String, BaseNameableObject>();
             
             for ( DataElementGroup group : dataElementGroups )
@@ -485,6 +514,8 @@ public abstract class BaseAnalyticalObject
                 objects.add( new BaseDimensionalObject( dimension, DimensionType.DATAELEMENT_GROUPSET, deGroupMap.get( dimension ) ) );
             }
             
+            // Organisation unit group set
+            
             ListMap<String, BaseNameableObject> ouGroupMap = new ListMap<String, BaseNameableObject>();
             
             for ( OrganisationUnitGroup group : organisationUnitGroups )
@@ -498,6 +529,23 @@ public abstract class BaseAnalyticalObject
             if ( ouGroupMap.containsKey( dimension ) )
             {
                 objects.add( new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT_GROUPSET, ouGroupMap.get( dimension ) ) );
+            }
+            
+            // Category option group set
+            
+            ListMap<String, BaseNameableObject> coGroupMap = new ListMap<String, BaseNameableObject>();
+            
+            for ( CategoryOptionGroup group : categoryOptionGroups )
+            {
+                if ( group.getGroupSet() != null )
+                {
+                    coGroupMap.putValue( group.getGroupSet().getUid(), group );
+                }
+            }
+            
+            if ( coGroupMap.containsKey( dimension ) )
+            {
+                objects.add( new BaseDimensionalObject( dimension, DimensionType.CATEGORYOPTION_GROUPSET, coGroupMap.get( dimension ) ) );
             }
         }
         
@@ -622,6 +670,7 @@ public abstract class BaseAnalyticalObject
         categoryDimensions.clear();
         dataElementGroups.clear();
         organisationUnitGroups.clear();
+        categoryOptionGroups.clear();
         userOrganisationUnit = false;
         userOrganisationUnitChildren = false;
         userOrganisationUnitGrandChildren = false;
@@ -651,6 +700,7 @@ public abstract class BaseAnalyticalObject
             categoryDimensions.addAll( object.getCategoryDimensions() );
             dataElementGroups.addAll( object.getDataElementGroups() );
             organisationUnitGroups.addAll( object.getOrganisationUnitGroups() );
+            categoryOptionGroups.addAll( object.getCategoryOptionGroups() );
             userOrganisationUnit = object.isUserOrganisationUnit();
             userOrganisationUnitChildren = object.isUserOrganisationUnitChildren();
             userOrganisationUnitGrandChildren = object.isUserOrganisationUnitGrandChildren();
@@ -804,6 +854,17 @@ public abstract class BaseAnalyticalObject
     public void setOrganisationUnitGroups( List<OrganisationUnitGroup> organisationUnitGroups )
     {
         this.organisationUnitGroups = organisationUnitGroups;
+    }
+
+    //TODO json annotations
+    public List<CategoryOptionGroup> getCategoryOptionGroups()
+    {
+        return categoryOptionGroups;
+    }
+
+    public void setCategoryOptionGroups( List<CategoryOptionGroup> categoryOptionGroups )
+    {
+        this.categoryOptionGroups = categoryOptionGroups;
     }
 
     @JsonProperty
