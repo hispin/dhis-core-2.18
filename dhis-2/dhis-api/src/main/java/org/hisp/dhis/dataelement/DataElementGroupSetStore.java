@@ -30,13 +30,10 @@ package org.hisp.dhis.dataelement;
 
 import org.hisp.dhis.common.GenericNameableObjectStore;
 
-import java.util.Collection;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public interface DataElementGroupSetStore
     extends GenericNameableObjectStore<DataElementGroupSet>
 {
-    Collection<DataElementGroupSet> getByDataDimension( boolean dataDimension );
 }

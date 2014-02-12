@@ -30,13 +30,10 @@ package org.hisp.dhis.organisationunit;
 
 import org.hisp.dhis.common.GenericNameableObjectStore;
 
-import java.util.Collection;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public interface OrganisationUnitGroupSetStore
     extends GenericNameableObjectStore<OrganisationUnitGroupSet>
 {
-    Collection<OrganisationUnitGroupSet> getByDataDimension( boolean dataDimension );
 }

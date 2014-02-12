@@ -618,7 +618,7 @@ public class DefaultDataElementService
     @Override
     public Collection<DataElementGroupSet> getDataDimensionDataElementGroupSets()
     {
-        return i18n( i18nService, dataElementGroupSetStore.getByDataDimension(true) );
+        return i18n( i18nService, dataElementGroupSetStore.getByDataDimension( true ) );
     }
 
     public Collection<DataElementGroupSet> getDataElementGroupSets( final Collection<Integer> identifiers )

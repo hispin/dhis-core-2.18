@@ -70,4 +70,13 @@ public interface GenericNameableObjectStore<T>
      * @return a List of objects.
      */
     List<T> getAllEqShortNameIgnoreCase( String shortName );
+    
+    /**
+     * Retrieves a List of dimensional objects. TODO move to new 
+     * GenericDimensionObjectStore.
+     * 
+     * @param dataDimension indicates whether to fetch objects defined as dimensional.
+     * @return a List of objects.
+     */
+    List<T> getByDataDimension( boolean dataDimension );
 }
