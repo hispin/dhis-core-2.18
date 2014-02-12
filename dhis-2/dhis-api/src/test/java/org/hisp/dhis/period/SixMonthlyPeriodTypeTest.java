@@ -30,10 +30,8 @@ package org.hisp.dhis.period;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Calendar;
 import java.util.List;
 
-import org.hisp.dhis.period.Cal;
 import org.junit.Before;
 import org.junit.Test;
 

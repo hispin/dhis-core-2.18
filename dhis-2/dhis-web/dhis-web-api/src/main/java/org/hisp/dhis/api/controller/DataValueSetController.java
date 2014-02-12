@@ -136,7 +136,7 @@ public class DataValueSetController
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = CONTENT_TYPE_CSV)
-    public void getDataValuesCsv( 
+    public void getDataValueSetCsv( 
         @RequestParam Set<String> dataSet, 
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
