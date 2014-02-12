@@ -1328,7 +1328,7 @@ function removeProgramInstance( programInstanceId )
 // Identifiers && Attributes for selected program
 // ----------------------------------------------------------------
 
-function validateIdentifier(  entityInstanceId, programId, paramsDiv)
+function validateIdentifier( entityInstanceId, programId, paramsDiv )
 {
 	var params  = getParamsForDiv(paramsDiv);
     params += "&entityInstanceId=" + entityInstanceId;
@@ -1340,7 +1340,7 @@ function validateIdentifier(  entityInstanceId, programId, paramsDiv)
 		data: params,
 		success: function(json) {
             if( json.response == 'success' ) {
-                saveIdentifierAndAttribute(params);
+                saveIdentifierAndAttribute( entityInstanceId, programId, paramsDiv );
             }
             else {
                 showErrorMessage(json.message);
@@ -1349,8 +1349,12 @@ function validateIdentifier(  entityInstanceId, programId, paramsDiv)
     });
 }
 
-function saveIdentifierAndAttribute(params)
+function saveIdentifierAndAttribute( entityInstanceId, programId, paramsDiv )
 {
+	var params  = getParamsForDiv(paramsDiv);
+    params += "&entityInstanceId=" + entityInstanceId;
+    params +="&programId=" + programId;
+
 	$.ajax({
 			type: "POST",
 			url: 'saveAttribute.action',
