@@ -127,6 +127,14 @@
         foreign-key="fk_chart_orgunitgroups_orgunitgroupid" />
     </list>
     
+    <list name="categoryOptionGroups" table="chart_categoryoptiongroups">
+      <cache usage="read-write" />
+      <key column="chartid" foreign-key="fk_chart_categoryoptiongroups_chartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="categoryoptiongroupid" class="org.hisp.dhis.dataelement.CategoryOptionGroup"
+        foreign-key="fk_chart_categoryoptiongroups_categoryoptiongroupid" />
+    </list>
+    
     <list name="organisationUnitLevels" table="chart_orgunitlevels">
       <cache usage="read-write" />
       <key column="chartid" foreign-key="fk_chart_orgunitlevels_chartid" />
