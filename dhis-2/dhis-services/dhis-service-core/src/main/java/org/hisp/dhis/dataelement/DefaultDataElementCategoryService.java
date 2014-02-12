@@ -797,6 +797,11 @@ public class DefaultDataElementCategoryService
         return categoryOptionGroupStore.getAllLikeNameOrderedName( name, first, max );
     }
     
+    public Collection<CategoryOptionGroup> getAllCategoryOptionGroups()
+    {
+        return categoryOptionGroupStore.getAll();
+    }
+    
     // -------------------------------------------------------------------------
     // CategoryOptionGroupSet
     // -------------------------------------------------------------------------
@@ -835,4 +840,9 @@ public class DefaultDataElementCategoryService
     {
         return categoryOptionGroupSetStore.getAllLikeNameOrderedName( name, first, max );
     }
+
+    public Collection<CategoryOptionGroupSet> getAllCategoryOptionGroupSets()
+    {
+        return categoryOptionGroupSetStore.getAll();
+    }    
 }

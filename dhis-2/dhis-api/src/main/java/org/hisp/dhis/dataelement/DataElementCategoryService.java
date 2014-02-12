@@ -558,6 +558,8 @@ public interface DataElementCategoryService
     
     Collection<CategoryOptionGroup> getCategoryOptionGroupsBetweenByName( int first, int max, String name );
     
+    Collection<CategoryOptionGroup> getAllCategoryOptionGroups();
+    
     // -------------------------------------------------------------------------
     // CategoryOptionGroup
     // -------------------------------------------------------------------------
@@ -575,4 +577,6 @@ public interface DataElementCategoryService
     Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetween( int first, int max );
     
     Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetweenByName( int first, int max, String name );
+
+    Collection<CategoryOptionGroupSet> getAllCategoryOptionGroupSets();
 }
