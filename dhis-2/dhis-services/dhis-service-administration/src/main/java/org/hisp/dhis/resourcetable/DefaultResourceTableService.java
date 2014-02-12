@@ -238,13 +238,12 @@ public class DefaultResourceTableService
         // Create table
         // ---------------------------------------------------------------------
 
-        List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>( categoryService.getAllDataElementCategoryOptions() );
-        
-        Collections.sort( categoryOptions, IdentifiableObjectNameComparator.INSTANCE );
-        
         List<CategoryOptionGroupSet> groupSets = new ArrayList<CategoryOptionGroupSet>();
         
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
+
+        List<DataElementCategoryOptionCombo> categoryOptionCombos = 
+            new ArrayList<DataElementCategoryOptionCombo>( categoryService.getAllDataElementCategoryOptionCombos() );
         
         resourceTableStore.createCategoryOptionGroupSetStructure( groupSets );
 
@@ -254,16 +253,15 @@ public class DefaultResourceTableService
 
         List<Object[]> batchArgs = new ArrayList<Object[]>();
         
-        for ( DataElementCategoryOption categoryOption : categoryOptions )
+        for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
         {
             List<Object> values = new ArrayList<Object>();
 
-            values.add( categoryOption.getId() );
-            values.add( categoryOption.getName() );
+            values.add( categoryOptionCombo.getId() );
             
             for ( CategoryOptionGroupSet groupSet : groupSets )
             {
-                CategoryOptionGroup group = groupSet.getGroup( categoryOption );
+                CategoryOptionGroup group = groupSet.getGroup( categoryOptionCombo );
                 
                 values.add( group != null ? group.getName() : null );
                 values.add( group != null ? group.getUid() : null );
@@ -272,7 +270,7 @@ public class DefaultResourceTableService
             batchArgs.add( values.toArray() );
         }
         
-        resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateCategoryOptionGroupSetTableStatement.TABLE_NAME, batchArgs );
+        resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 1, CreateCategoryOptionGroupSetTableStatement.TABLE_NAME, batchArgs );
         
         log.info( "Category option group set table generated" );
     }
