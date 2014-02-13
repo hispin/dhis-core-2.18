@@ -28,10 +28,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,22 +40,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
+
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( "/systemSettings" )
+@RequestMapping("/systemSettings")
 public class SystemSettingController
 {
     @Autowired
     private SystemSettingManager systemSettingManager;
 
-    @RequestMapping( value = "/{key}", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_TEXT, ContextUtils.CONTENT_TYPE_HTML } )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_SYSTEM_SETTING')" )
+    @RequestMapping(value = "/{key}", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_TEXT, ContextUtils.CONTENT_TYPE_HTML })
+    @PreAuthorize("hasRole('ALL') or hasRole('F_SYSTEM_SETTING')")
     public void setSystemSetting(
         @PathVariable String key,
         @RequestParam(required = false) String value,
-        @RequestBody(required=false) String valuePayload, HttpServletResponse response )
+        @RequestBody(required = false) String valuePayload, HttpServletResponse response )
     {
         if ( key == null )
         {
@@ -79,17 +78,17 @@ public class SystemSettingController
         ContextUtils.okResponse( response, "System setting " + key + " set as value '" + value + "'." );
     }
 
-    @RequestMapping( value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String getSystemSetting( @PathVariable( "key" ) String key )
+    @RequestMapping(value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT)
+    public @ResponseBody String getSystemSetting( @PathVariable("key") String key )
     {
         Serializable setting = systemSettingManager.getSystemSetting( key );
-        
+
         return setting != null ? String.valueOf( setting ) : null;
     }
 
-    @RequestMapping( value = "/{key}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_SYSTEM_SETTING')" )
-    public void removeSystemSetting( @PathVariable( "key" ) String key )
+    @RequestMapping(value = "/{key}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasRole('ALL') or hasRole('F_SYSTEM_SETTING')")
+    public void removeSystemSetting( @PathVariable("key") String key )
     {
         systemSettingManager.deleteSystemSetting( key );
     }

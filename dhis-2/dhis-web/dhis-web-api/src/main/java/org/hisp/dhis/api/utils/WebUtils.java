@@ -268,7 +268,7 @@ public class WebUtils
 
         if ( include == null && exclude == null )
         {
-            Map<String, ReflectionUtils.MethodDescriptor> classMap = ReflectionUtils.getJacksonClassMap( objects.get( 0 ).getClass() );
+            Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( objects.get( 0 ).getClass() );
 
             for ( String key : classMap.keySet() )
             {
@@ -277,7 +277,7 @@ public class WebUtils
         }
         else if ( include == null )
         {
-            Map<String, ReflectionUtils.MethodDescriptor> classMap = ReflectionUtils.getJacksonClassMap( objects.get( 0 ).getClass() );
+            Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( objects.get( 0 ).getClass() );
             Map<String, Map> excludeMap = parseFieldExpression( exclude );
 
             for ( String key : classMap.keySet() )
@@ -310,7 +310,7 @@ public class WebUtils
         }
 
         Map<String, Object> output = Maps.newHashMap();
-        Map<String, ReflectionUtils.MethodDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
+        Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
 
         for ( String key : fieldMap.keySet() )
         {
@@ -320,7 +320,7 @@ public class WebUtils
             }
 
             Map value = fieldMap.get( key );
-            ReflectionUtils.MethodDescriptor descriptor = classMap.get( key );
+            ReflectionUtils.PropertyDescriptor descriptor = classMap.get( key );
             Object returned = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
 
             if ( returned == null )
@@ -413,11 +413,11 @@ public class WebUtils
     private static Map<String, Object> getIdentifiableObjectProperties( Object object, List<String> fields )
     {
         Map<String, Object> idProps = Maps.newLinkedHashMap();
-        Map<String, ReflectionUtils.MethodDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
+        Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
 
         for ( String field : fields )
         {
-            ReflectionUtils.MethodDescriptor descriptor = classMap.get( field );
+            ReflectionUtils.PropertyDescriptor descriptor = classMap.get( field );
 
             if ( descriptor == null )
             {

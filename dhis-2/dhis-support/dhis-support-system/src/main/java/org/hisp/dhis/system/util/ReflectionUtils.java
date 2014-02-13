@@ -28,11 +28,12 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.google.common.collect.Maps;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Description;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.system.util.functional.Predicate;
 import org.springframework.util.StringUtils;
@@ -525,24 +526,101 @@ public class ReflectionUtils
         return fieldName;
     }
 
-    private static Map<Class<?>, Map<String, MethodDescriptor>> classMapCache = Maps.newHashMap();
+    private static Map<Class<?>, Map<String, PropertyDescriptor>> classMapCache = Maps.newHashMap();
 
-    public static class MethodDescriptor
+    public static class PropertyDescriptor
     {
+        private String name;
+
+        private String description;
+
+        private String xmlName;
+
+        private boolean xmlAttribute;
+
+        private String xmlCollectionName;
+
+        private Class<?> clazz;
+
         private Method method;
 
         private boolean collection;
 
         private boolean identifiableObject;
 
-        private Map<String, MethodDescriptor> objects;
+        private Map<String, PropertyDescriptor> objects;
 
-        private MethodDescriptor( Method method )
+        private PropertyDescriptor( Method method )
         {
             this.method = method;
         }
 
-        @JsonIgnore
+        @JsonProperty
+        public String getName()
+        {
+            return name;
+        }
+
+        public void setName( String name )
+        {
+            this.name = name;
+        }
+
+        @JsonProperty
+        public String getDescription()
+        {
+            return description;
+        }
+
+        public void setDescription( String description )
+        {
+            this.description = description;
+        }
+
+        @JsonProperty
+        public String getXmlName()
+        {
+            return xmlName;
+        }
+
+        public void setXmlName( String xmlName )
+        {
+            this.xmlName = xmlName;
+        }
+
+        @JsonProperty
+        public boolean isXmlAttribute()
+        {
+            return xmlAttribute;
+        }
+
+        public void setXmlAttribute( boolean xmlAttribute )
+        {
+            this.xmlAttribute = xmlAttribute;
+        }
+
+        @JsonProperty
+        public String getXmlCollectionName()
+        {
+            return xmlCollectionName;
+        }
+
+        public void setXmlCollectionName( String xmlCollectionName )
+        {
+            this.xmlCollectionName = xmlCollectionName;
+        }
+
+        @JsonProperty
+        public Class<?> getClazz()
+        {
+            return clazz;
+        }
+
+        public void setClazz( Class<?> clazz )
+        {
+            this.clazz = clazz;
+        }
+
         public Method getMethod()
         {
             return method;
@@ -576,32 +654,23 @@ public class ReflectionUtils
         }
 
         @JsonProperty
-        public Map<String, MethodDescriptor> getObjects()
+        public Map<String, PropertyDescriptor> getObjects()
         {
             return objects;
         }
 
-        public void setObjects( Map<String, MethodDescriptor> objects )
+        public void setObjects( Map<String, PropertyDescriptor> objects )
         {
             this.objects = objects;
         }
-
-        @Override public String toString()
-        {
-            return "MethodDescriptor{" +
-                "method=" + method +
-                ", collection=" + collection +
-                ", identifiableObject=" + identifiableObject +
-                '}';
-        }
     }
 
-    public static Map<String, MethodDescriptor> getJacksonClassMap( Class<?> clazz )
+    public static Map<String, PropertyDescriptor> getJacksonClassMap( Class<?> clazz )
     {
         return getJacksonClassMap( clazz, 2 );
     }
 
-    public static Map<String, MethodDescriptor> getJacksonClassMap( Class<?> clazz, int level )
+    public static Map<String, PropertyDescriptor> getJacksonClassMap( Class<?> clazz, int level )
     {
         // this short-circuits the level stuff for now, need to fix this properly
         if ( classMapCache.containsKey( clazz ) )
@@ -617,7 +686,7 @@ public class ReflectionUtils
             deep = true;
         }
 
-        Map<String, MethodDescriptor> output = Maps.newLinkedHashMap();
+        Map<String, PropertyDescriptor> output = Maps.newLinkedHashMap();
         List<Method> allMethods = getAllMethods( clazz );
 
         for ( Method method : allMethods )
@@ -625,7 +694,7 @@ public class ReflectionUtils
             if ( method.isAnnotationPresent( JsonProperty.class ) )
             {
                 JsonProperty jsonProperty = method.getAnnotation( JsonProperty.class );
-                MethodDescriptor descriptor = new MethodDescriptor( method );
+                PropertyDescriptor descriptor = new PropertyDescriptor( method );
 
                 String name = jsonProperty.value();
 
@@ -648,9 +717,30 @@ public class ReflectionUtils
                     name = StringUtils.uncapitalize( name );
                 }
 
+                if ( method.isAnnotationPresent( Description.class ) )
+                {
+                    Description description = method.getAnnotation( Description.class );
+                    descriptor.setDescription( description.value() );
+                }
+
+                if ( method.isAnnotationPresent( JacksonXmlProperty.class ) )
+                {
+                    JacksonXmlProperty jacksonXmlProperty = method.getAnnotation( JacksonXmlProperty.class );
+                    descriptor.setXmlName( jacksonXmlProperty.localName() );
+                    descriptor.setXmlAttribute( jacksonXmlProperty.isAttribute() );
+                }
+
+                if ( method.isAnnotationPresent( JacksonXmlElementWrapper.class ) )
+                {
+                    JacksonXmlElementWrapper jacksonXmlElementWrapper = method.getAnnotation( JacksonXmlElementWrapper.class );
+                    descriptor.setXmlCollectionName( jacksonXmlElementWrapper.localName() );
+                }
+
+                descriptor.setName( name );
                 output.put( name, descriptor );
 
                 Class<?> returnType = method.getReturnType();
+                descriptor.setClazz( returnType );
 
                 if ( IdentifiableObject.class.isAssignableFrom( returnType ) )
                 {
@@ -658,7 +748,7 @@ public class ReflectionUtils
 
                     if ( deep )
                     {
-                        Map<String, MethodDescriptor> classMap = getJacksonClassMap( returnType, level );
+                        Map<String, PropertyDescriptor> classMap = getJacksonClassMap( returnType, level );
                         descriptor.setObjects( classMap );
                     }
                 }
@@ -678,7 +768,7 @@ public class ReflectionUtils
 
                             if ( deep )
                             {
-                                Map<String, MethodDescriptor> classMap = getJacksonClassMap( returnType, level );
+                                Map<String, PropertyDescriptor> classMap = getJacksonClassMap( returnType, level );
                                 descriptor.setObjects( classMap );
                             }
                         }
