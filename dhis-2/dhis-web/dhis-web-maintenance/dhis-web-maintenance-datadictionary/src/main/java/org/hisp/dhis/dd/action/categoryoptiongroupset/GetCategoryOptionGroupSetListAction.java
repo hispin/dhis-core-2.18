@@ -25,73 +25,56 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dd.action.categoryoptiongroup;
+package org.hisp.dhis.dd.action.categoryoptiongroupset;
 
-import java.util.HashSet;
-import java.util.Set;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSetService;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $ UpdateCategoryOptionGroupAction.java Feb 12, 2014 11:25:01 PM $
+ * @version $ GetCategoryOptionGroupSetListAction.java Feb 12, 2014 11:27:01 PM $
  */
-public class UpdateCategoryOptionGroupAction
-    implements Action
+public class GetCategoryOptionGroupSetListAction
+    extends ActionPagingSupport<CategoryOptionGroupSet>
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
-
-    @Autowired
-    private DataElementCategoryService dataElementCategoryService;
+    private CategoryOptionGroupSetService categoryOptionGroupSetService;
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private int id;
+    private String key;
 
-    public void setId( int id )
+    public String getKey()
     {
-        this.id = id;
+        return key;
     }
 
-    private String name;
-
-    public void setName( String name )
+    public void setKey( String key )
     {
-        this.name = name;
+        this.key = key;
     }
 
-    private String shortName;
+    private List<CategoryOptionGroupSet> categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>();
 
-    public void setShortName( String shortName )
+    public List<CategoryOptionGroupSet> getCategoryOptionGroupSets()
     {
-        this.shortName = shortName;
-    }
-
-    private String code;
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-
-    private Set<String> groupMembers = new HashSet<String>();
-
-    public void setGroupMembers( Set<String> groupMembers )
-    {
-        this.groupMembers = groupMembers;
+        return categoryOptionGroupSets;
     }
 
     // -------------------------------------------------------------------------
@@ -102,19 +85,23 @@ public class UpdateCategoryOptionGroupAction
     public String execute()
         throws Exception
     {
-        CategoryOptionGroup categoryOptionGroup = categoryOptionGroupService.getCategoryOptionGroup( id );
-        categoryOptionGroup.setName( name );
-        categoryOptionGroup.setShortName( shortName );
-        categoryOptionGroup.setCode( code );
-        categoryOptionGroup.getMembers().clear();
-
-        for ( String id : groupMembers )
+        if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            categoryOptionGroup.addCategoryOption( dataElementCategoryService.getDataElementCategoryOption( Integer
-                .parseInt( id ) ) );
+            this.paging = createPaging( categoryOptionGroupSetService.getCategoryOptionGroupSetCountByName( key ) );
+
+            categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>(
+                categoryOptionGroupSetService.getCategoryOptionGroupSetsBetweenByName( key, paging.getStartPos(),
+                    paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( categoryOptionGroupSetService.getCategoryOptionGroupSetCount() );
+
+            categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>( categoryOptionGroupSetService.getCategoryOptionGroupSetsBetween(
+                paging.getStartPos(), paging.getPageSize() ) );
         }
 
-        categoryOptionGroupService.updateCategoryOptionGroup( categoryOptionGroup );
+        Collections.sort( categoryOptionGroupSets, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

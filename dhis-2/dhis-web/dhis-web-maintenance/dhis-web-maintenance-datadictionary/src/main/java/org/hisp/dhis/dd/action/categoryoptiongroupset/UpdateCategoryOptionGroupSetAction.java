@@ -25,14 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dd.action.categoryoptiongroup;
+package org.hisp.dhis.dd.action.categoryoptiongroupset;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupService;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -40,9 +40,9 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $ UpdateCategoryOptionGroupAction.java Feb 12, 2014 11:25:01 PM $
+ * @version $ UpdateCategoryOptionGroupSetAction.java Feb 12, 2014 11:25:01 PM $
  */
-public class UpdateCategoryOptionGroupAction
+public class UpdateCategoryOptionGroupSetAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -50,10 +50,10 @@ public class UpdateCategoryOptionGroupAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private CategoryOptionGroupSetService categoryOptionGroupSetService;
 
     @Autowired
-    private DataElementCategoryService dataElementCategoryService;
+    private CategoryOptionGroupService categoryOptionGroupService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -73,23 +73,23 @@ public class UpdateCategoryOptionGroupAction
         this.name = name;
     }
 
-    private String shortName;
+    private String description;
 
-    public void setShortName( String shortName )
+    public void setDescription( String description )
     {
-        this.shortName = shortName;
+        this.description = description;
     }
 
-    private String code;
+    private Boolean dataDimension;
 
-    public void setCode( String code )
+    public void setDataDimension( Boolean dataDimension )
     {
-        this.code = code;
+        this.dataDimension = dataDimension;
     }
 
-    private Set<String> groupMembers = new HashSet<String>();
+    private List<String> groupMembers = new ArrayList<String>();
 
-    public void setGroupMembers( Set<String> groupMembers )
+    public void setGroupMembers( List<String> groupMembers )
     {
         this.groupMembers = groupMembers;
     }
@@ -102,21 +102,19 @@ public class UpdateCategoryOptionGroupAction
     public String execute()
         throws Exception
     {
-        CategoryOptionGroup categoryOptionGroup = categoryOptionGroupService.getCategoryOptionGroup( id );
-        categoryOptionGroup.setName( name );
-        categoryOptionGroup.setShortName( shortName );
-        categoryOptionGroup.setCode( code );
-        categoryOptionGroup.getMembers().clear();
+        CategoryOptionGroupSet categoryOptionGroupSet = categoryOptionGroupSetService.getCategoryOptionGroupSet( id );
+        categoryOptionGroupSet.setName( name );
+        categoryOptionGroupSet.setDescription( description );
+        categoryOptionGroupSet.setDataDimension( dataDimension );
 
         for ( String id : groupMembers )
         {
-            categoryOptionGroup.addCategoryOption( dataElementCategoryService.getDataElementCategoryOption( Integer
+            categoryOptionGroupSet.addCategoryOptionGroup( categoryOptionGroupService.getCategoryOptionGroup( Integer
                 .parseInt( id ) ) );
         }
 
-        categoryOptionGroupService.updateCategoryOptionGroup( categoryOptionGroup );
+        categoryOptionGroupSetService.updateCategoryOptionGroupSet( categoryOptionGroupSet );
 
         return SUCCESS;
     }
-
 }

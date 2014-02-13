@@ -42,6 +42,7 @@ import com.opensymphony.xwork2.Action;
 public class ValidateCategoryOptionGroupAction
     implements Action
 {
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -116,7 +117,7 @@ public class ValidateCategoryOptionGroupAction
             }
 
         }
-        
+
         if ( shortName != null )
         {
             CategoryOptionGroup match = categoryOptionGroupService.getCategoryOptionGroupByShortName( shortName );
