@@ -548,8 +548,6 @@ public class ReflectionUtils
 
         private boolean identifiableObject;
 
-        private Map<String, PropertyDescriptor> objects;
-
         private PropertyDescriptor( Method method )
         {
             this.method = method;
@@ -652,38 +650,14 @@ public class ReflectionUtils
         {
             this.identifiableObject = identifiableObject;
         }
-
-        @JsonProperty
-        public Map<String, PropertyDescriptor> getObjects()
-        {
-            return objects;
-        }
-
-        public void setObjects( Map<String, PropertyDescriptor> objects )
-        {
-            this.objects = objects;
-        }
     }
 
     public static Map<String, PropertyDescriptor> getJacksonClassMap( Class<?> clazz )
-    {
-        return getJacksonClassMap( clazz, 2 );
-    }
-
-    public static Map<String, PropertyDescriptor> getJacksonClassMap( Class<?> clazz, int level )
     {
         // this short-circuits the level stuff for now, need to fix this properly
         if ( classMapCache.containsKey( clazz ) )
         {
             return classMapCache.get( clazz );
-        }
-
-        boolean deep = false;
-        level--;
-
-        if ( level > 0 )
-        {
-            deep = true;
         }
 
         Map<String, PropertyDescriptor> output = Maps.newLinkedHashMap();
@@ -726,7 +700,16 @@ public class ReflectionUtils
                 if ( method.isAnnotationPresent( JacksonXmlProperty.class ) )
                 {
                     JacksonXmlProperty jacksonXmlProperty = method.getAnnotation( JacksonXmlProperty.class );
-                    descriptor.setXmlName( jacksonXmlProperty.localName() );
+
+                    if ( jacksonXmlProperty.localName().isEmpty() )
+                    {
+                        descriptor.setXmlName( name );
+                    }
+                    else
+                    {
+                        descriptor.setXmlName( jacksonXmlProperty.localName() );
+                    }
+
                     descriptor.setXmlAttribute( jacksonXmlProperty.isAttribute() );
                 }
 
@@ -745,12 +728,6 @@ public class ReflectionUtils
                 if ( IdentifiableObject.class.isAssignableFrom( returnType ) )
                 {
                     descriptor.setIdentifiableObject( true );
-
-                    if ( deep )
-                    {
-                        Map<String, PropertyDescriptor> classMap = getJacksonClassMap( returnType, level );
-                        descriptor.setObjects( classMap );
-                    }
                 }
                 else if ( Collection.class.isAssignableFrom( returnType ) )
                 {
@@ -765,12 +742,6 @@ public class ReflectionUtils
                         {
                             descriptor.setCollection( true );
                             descriptor.setIdentifiableObject( true );
-
-                            if ( deep )
-                            {
-                                Map<String, PropertyDescriptor> classMap = getJacksonClassMap( returnType, level );
-                                descriptor.setObjects( classMap );
-                            }
                         }
                     }
                 }
