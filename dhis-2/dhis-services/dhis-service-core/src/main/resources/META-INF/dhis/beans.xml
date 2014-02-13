@@ -627,16 +627,6 @@
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
   
-  <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupService" class="org.hisp.dhis.dataelement.DefaultCategoryOptionGroupService">
-    <property name="categoryOptionGroupStore" ref="org.hisp.dhis.dataelement.CategoryOptionGroupStore" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
-  </bean>
-  
-   <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupSetService" class="org.hisp.dhis.dataelement.DefaultCategoryOptionGroupSetService">
-    <property name="categoryOptionGroupSetStore" ref="org.hisp.dhis.dataelement.CategoryOptionGroupSetStore" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
-  </bean>
-  
   <bean id="org.hisp.dhis.mapping.MappingService" class="org.hisp.dhis.mapping.DefaultMappingService">
     <property name="mapStore" ref="org.hisp.dhis.mapping.MapStore" />
     <property name="mapViewStore" ref="org.hisp.dhis.mapping.MapViewStore" />
@@ -1149,6 +1139,9 @@
 
   <bean id="org.hisp.dhis.sms.SMSCodesDeletionHandler" class="org.hisp.dhis.sms.SMSCodesDeletionHandler" />
 
+  <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler" class="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler">
+  </bean>
+  
   <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -1184,6 +1177,7 @@
           <ref local="org.hisp.dhis.user.UserSettingDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
+          <ref local="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler" />
           <ref local="org.hisp.dhis.configuration.ConfigurationDeletionHandler" />
           <ref local="org.hisp.dhis.message.MessageConversationDeletionHandler" />
           <ref local="org.hisp.dhis.translation.TranslationDeletionHandler" />

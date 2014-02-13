@@ -33,7 +33,7 @@ import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -47,7 +47,7 @@ public class GetCategoryOptionGroupsAction
     implements Action
 {
     @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private DataElementCategoryService dataElementCategoryService;
 
     // -------------------------------------------------------------------------
     // Output
@@ -67,7 +67,7 @@ public class GetCategoryOptionGroupsAction
     public String execute()
     {
         categoryOptionGroups = new ArrayList<CategoryOptionGroup>(
-            categoryOptionGroupService.getAllCategoryOptionGroups() );
+            dataElementCategoryService.getAllCategoryOptionGroups() );
 
         Collections.sort( categoryOptionGroups, IdentifiableObjectNameComparator.INSTANCE );
 

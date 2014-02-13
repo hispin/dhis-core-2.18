@@ -36,7 +36,7 @@ import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,7 +53,7 @@ public class GetCategoryOptionGroupListAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private DataElementCategoryService dataElementCategoryService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -88,20 +88,20 @@ public class GetCategoryOptionGroupListAction
     {
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            this.paging = createPaging( categoryOptionGroupService.getCategoryOptionGroupCountByName( key ) );
-           
-            Collection<CategoryOptionGroup> groups = categoryOptionGroupService.getCategoryOptionGroupsBetweenByName(
-                key, paging.getStartPos(), paging.getPageSize() );
-            
+            this.paging = createPaging( dataElementCategoryService.getCategoryOptionGroupCountByName( key ) );
+
+            Collection<CategoryOptionGroup> groups = dataElementCategoryService.getCategoryOptionGroupsBetweenByName(
+                paging.getStartPos(), paging.getPageSize(), key );
+
             categoryOptionGroups.addAll( groups );
         }
         else
         {
-            this.paging = createPaging( categoryOptionGroupService.getCategoryOptionGroupCount() );
-            
-            Collection<CategoryOptionGroup> groups = categoryOptionGroupService.getCategoryOptionGroupsBetween(
+            this.paging = createPaging( dataElementCategoryService.getCategoryOptionGroupCount() );
+
+            Collection<CategoryOptionGroup> groups = dataElementCategoryService.getCategoryOptionGroupsBetween(
                 paging.getStartPos(), paging.getPageSize() );
-            
+
             categoryOptionGroups.addAll( groups );
         }
 

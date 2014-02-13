@@ -692,7 +692,7 @@
 	<action name="getCategoryOptionGroup"
 		class="org.hisp.dhis.dd.action.categoryoptiongroup.GetCategoryOptionGroupAction">
 		<result name="success" type="velocity-json">
-			/dhis-web-commons/ajax/jsonCategoryOptionGroupSet.vm
+			/dhis-web-commons/ajax/jsonCategoryOptionGroup.vm
 		</result>
 		<param name="onExceptionReturn">plainTextError</param>
 	</action>
@@ -715,7 +715,7 @@
 	<action name="showAddCategoryOptionGroupForm" class="org.hisp.dhis.dd.action.categoryoptiongroup.ShowAddCategoryOptionGroupAction">
 		<result name="success" type="velocity">/main.vm</result>
 		<param name="page">/dhis-web-maintenance-datadictionary/addCategoryOptionGroupForm.vm</param>
-		<param name="javascripts">javascript/categoryOptionGroupSet.js</param>
+		<param name="javascripts">javascript/categoryOptionGroup.js</param>
 		<param name="stylesheets">style/basic.css</param>
 		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_ADD</param>
 	</action>
@@ -724,7 +724,7 @@
 		class="org.hisp.dhis.dd.action.categoryoptiongroup.ShowUpdateCategoryOptionGroupAction">
 		<result name="success" type="velocity">/main.vm</result>
 		<param name="page">/dhis-web-maintenance-datadictionary/updateCategoryOptionGroupForm.vm</param>
-		<param name="javascripts">javascript/categoryOptionGroupSet.js</param>
+		<param name="javascripts">javascript/categoryOptionGroup.js</param>
 		<param name="stylesheets">style/basic.css</param>
 		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_ADD</param>
 	</action>
@@ -750,7 +750,7 @@
 		<param name="onExceptionReturn">plainTextError</param>
 	</action>
 	
-	 <!-- CategoryOptionGroupSet -->
+	<!-- CategoryOptionGroupSet -->
     
     <action name="categoryOptionGroupSet"
 		class="org.hisp.dhis.dd.action.categoryoptiongroupset.GetCategoryOptionGroupSetListAction">

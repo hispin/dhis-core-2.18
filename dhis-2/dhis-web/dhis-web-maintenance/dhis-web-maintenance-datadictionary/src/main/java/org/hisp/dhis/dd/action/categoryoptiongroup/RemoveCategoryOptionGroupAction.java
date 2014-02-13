@@ -27,8 +27,10 @@
 
 package org.hisp.dhis.dd.action.categoryoptiongroup;
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.i18n.I18n;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -46,7 +48,18 @@ public class RemoveCategoryOptionGroupAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private DataElementCategoryService dataElementCategoryService;
+
+    // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -60,6 +73,17 @@ public class RemoveCategoryOptionGroupAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
@@ -67,9 +91,23 @@ public class RemoveCategoryOptionGroupAction
     public String execute()
         throws Exception
     {
-        CategoryOptionGroup categoryOptionGroup = categoryOptionGroupService.getCategoryOptionGroup( id );
+        try
+        {
+            CategoryOptionGroup categoryOptionGroup = dataElementCategoryService.getCategoryOptionGroup( id );
 
-        categoryOptionGroupService.deleteCategoryOptionGroup( categoryOptionGroup );
+            dataElementCategoryService.deleteCategoryOptionGroup( categoryOptionGroup );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
+
+                return ERROR;
+            }
+        }
+
+        message = i18n.getString( "item_deleted_successfully" );
 
         return SUCCESS;
     }

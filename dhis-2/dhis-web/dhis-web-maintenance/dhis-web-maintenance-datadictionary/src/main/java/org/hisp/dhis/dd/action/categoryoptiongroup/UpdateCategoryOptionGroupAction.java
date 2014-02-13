@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,9 +47,6 @@ public class UpdateCategoryOptionGroupAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
 
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
@@ -102,7 +98,7 @@ public class UpdateCategoryOptionGroupAction
     public String execute()
         throws Exception
     {
-        CategoryOptionGroup categoryOptionGroup = categoryOptionGroupService.getCategoryOptionGroup( id );
+        CategoryOptionGroup categoryOptionGroup = dataElementCategoryService.getCategoryOptionGroup( id );
         categoryOptionGroup.setName( name );
         categoryOptionGroup.setShortName( shortName );
         categoryOptionGroup.setCode( code );
@@ -114,7 +110,7 @@ public class UpdateCategoryOptionGroupAction
                 .parseInt( id ) ) );
         }
 
-        categoryOptionGroupService.updateCategoryOptionGroup( categoryOptionGroup );
+        dataElementCategoryService.updateCategoryOptionGroup( categoryOptionGroup );
 
         return SUCCESS;
     }

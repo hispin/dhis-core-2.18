@@ -48,7 +48,7 @@ public interface DataElementCategoryService
 
     /**
      * Adds a DataElementCategory.
-     *
+     * 
      * @param dataElementCategory the DataElementCategory to add.
      * @return a generated unique id of the added Category.
      */
@@ -56,24 +56,25 @@ public interface DataElementCategoryService
 
     /**
      * Updates a DataElementCategory.
-     *
+     * 
      * @param dataElementCategory the DataElementCategory to update.
      */
     void updateDataElementCategory( DataElementCategory dataElementCategory );
 
     /**
-     * Deletes a DataElementCategory. The DataElementCategory is also removed from any
-     * DataElementCategoryCombos if it is a member of. It is not possible to delete a
-     * DataElementCategory with options.
-     *
+     * Deletes a DataElementCategory. The DataElementCategory is also removed
+     * from any DataElementCategoryCombos if it is a member of. It is not
+     * possible to delete a DataElementCategory with options.
+     * 
      * @param dataElementCategory the DataElementCategory to delete.
-     * @throws HierarchyViolationException if the DataElementCategory has children.
+     * @throws HierarchyViolationException if the DataElementCategory has
+     *         children.
      */
     void deleteDataElementCategory( DataElementCategory dataElementCategory );
 
     /**
      * Returns a DataElementCategory.
-     *
+     * 
      * @param id the id of the DataElementCategory to return.
      * @return the DataElementCategory with the given id, or null if no match.
      */
@@ -81,7 +82,7 @@ public interface DataElementCategoryService
 
     /**
      * Returns a DataElementCategory.
-     *
+     * 
      * @param uid the uid of the DataElementCategory to return.
      * @return the DataElementCategory with the given uid, or null if no match.
      */
@@ -89,15 +90,16 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves the DataElementCategories with the given identifiers.
-     *
-     * @param identifiers the identifiers of the DataElementCategories to retrieve.
+     * 
+     * @param identifiers the identifiers of the DataElementCategories to
+     *        retrieve.
      * @return a collection of DataElementCategories.
      */
     Collection<DataElementCategory> getDataElementCategories( Collection<Integer> identifiers );
 
     /**
      * Retrieves the DataElementCategories with the given uids.
-     *
+     * 
      * @param uids the uids of the DataElementCategories to retrieve.
      * @return a collection of DataElementCategories.
      */
@@ -105,7 +107,7 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves the DataElementCategory with the given name.
-     *
+     * 
      * @param name the name of the DataElementCategory to retrieve.
      * @return the DataElementCategory.
      */
@@ -113,21 +115,21 @@ public interface DataElementCategoryService
 
     /**
      * Returns DataElementCategories which are considered data dimensions.
-     *
+     * 
      * @return DataElementCategories which are considered data dimensions.
      */
     Collection<DataElementCategory> getDataDimensionDataElementCategories();
 
     /**
      * Returns all DataElementCategories.
-     *
+     * 
      * @return a collection of all DataElementCategories.
      */
     Collection<DataElementCategory> getAllDataElementCategories();
 
     /**
      * Retrieves all DataElementCategories of dimension type disaggregation.
-     *
+     * 
      * @return a collection of DataElementCategoryCombos.
      */
     Collection<DataElementCategory> getDisaggregationCategories();
@@ -135,22 +137,22 @@ public interface DataElementCategoryService
     /**
      * Retrieves all DataElementCategories of dimension type disaggregation and
      * data dimensional.
-     *
+     * 
      * @return a collection of DataElementCategoryCombos.
      */
     Collection<DataElementCategory> getDisaggregationDataDimensionCategories();
 
     /**
      * Retrieves all DataElementCategories of dimension type attribute.
-     *
+     * 
      * @return a collection of DataElementCategoryCombos.
      */
     Collection<DataElementCategory> getAttributeCategories();
 
     /**
-     * Retrieves all DataElementCategories of dimension type attribute and
-     * data dimensional.
-     *
+     * Retrieves all DataElementCategories of dimension type attribute and data
+     * dimensional.
+     * 
      * @return a collection of DataElementCategoryCombos.
      */
     Collection<DataElementCategory> getAttributeDataDimensionCategories();
@@ -161,7 +163,7 @@ public interface DataElementCategoryService
 
     /**
      * Adds a DataElementCategoryOption.
-     *
+     * 
      * @param dataElementCategoryOption the DataElementCategoryOption to add.
      * @return a generated unique id of the added DataElementCategoryOption.
      */
@@ -169,45 +171,48 @@ public interface DataElementCategoryService
 
     /**
      * Updates a DataElementCategoryOption.
-     *
+     * 
      * @param dataElementCategoryOption the DataElementCategoryOption to update.
      */
     void updateDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption );
 
     /**
      * Deletes a DataElementCategoryOption.
-     *
+     * 
      * @param dataElementCategoryOption
      */
     void deleteDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption );
 
     /**
      * Returns a DataElementCategoryOption.
-     *
+     * 
      * @param id the id of the DataElementCategoryOption to return.
-     * @return the DataElementCategoryOption with the given id, or null if no match.
+     * @return the DataElementCategoryOption with the given id, or null if no
+     *         match.
      */
     DataElementCategoryOption getDataElementCategoryOption( int id );
 
     /**
      * Returns a DataElementCategoryOption.
-     *
+     * 
      * @param uid the id of the DataElementCategoryOption to return.
-     * @return the DataElementCategoryOption with the given uid, or null if no match.
+     * @return the DataElementCategoryOption with the given uid, or null if no
+     *         match.
      */
     DataElementCategoryOption getDataElementCategoryOption( String uid );
 
     /**
      * Retrieves the DataElementCategoryOptions with the given identifiers.
-     *
-     * @param identifiers the identifiers of the DataElementCategoryOption to retrieve.
+     * 
+     * @param identifiers the identifiers of the DataElementCategoryOption to
+     *        retrieve.
      * @return a Collection of DataElementCategoryOptions.
      */
     Collection<DataElementCategoryOption> getDataElementCategoryOptions( Collection<Integer> identifiers );
 
     /**
      * Retrieves the DataElementCategoryOptions with the given uids.
-     *
+     * 
      * @param uids the uids of the DataElementCategoryOption to retrieve.
      * @return a Collection of DataElementCategoryOptions.
      */
@@ -215,7 +220,7 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves the DataElementCategoryOption with the given name.
-     *
+     * 
      * @param name the name.
      * @return the DataElementCategoryOption with the given name.
      */
@@ -223,7 +228,7 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves the DataElementCategoryOption with the given code.
-     *
+     * 
      * @param code the code.
      * @return the DataElementCategoryOption with the given code.
      */
@@ -231,18 +236,18 @@ public interface DataElementCategoryService
 
     /**
      * Returns all DataElementCategoryOptions.
-     *
-     * @return a collection of all DataElementCategoryOptions, or an empty collection if there
-     * are no DataElementCategoryOptions.
+     * 
+     * @return a collection of all DataElementCategoryOptions, or an empty
+     *         collection if there are no DataElementCategoryOptions.
      */
     Collection<DataElementCategoryOption> getAllDataElementCategoryOptions();
 
     /**
      * Returns all DataElementCategoryOptions for a given concept
-     *
+     * 
      * @param concept the Concept
-     * @return a collection of all DataElementCategoryOptions, or an empty collection if there
-     * are no DataElementCategoryOptions.
+     * @return a collection of all DataElementCategoryOptions, or an empty
+     *         collection if there are no DataElementCategoryOptions.
      */
     Collection<DataElementCategoryOption> getDataElementCategoryOptionsByConcept( Concept concept );
 
@@ -252,7 +257,7 @@ public interface DataElementCategoryService
 
     /**
      * Adds a DataElementCategoryCombo.
-     *
+     * 
      * @param dataElementCategoryCombo the DataElementCategoryCombo to add.
      * @return the generated identifier.
      */
@@ -260,21 +265,21 @@ public interface DataElementCategoryService
 
     /**
      * Updates a DataElementCategoryCombo.
-     *
+     * 
      * @param dataElementCategoryCombo the DataElementCategoryCombo to update.
      */
     void updateDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo );
 
     /**
      * Deletes a DataElementCategoryCombo.
-     *
+     * 
      * @param dataElementCategoryCombo the DataElementCategoryCombo to delete.
      */
     void deleteDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo );
 
     /**
      * Retrieves a DataElementCategoryCombo with the given identifier.
-     *
+     * 
      * @param id the identifier of the DataElementCategoryCombo to retrieve.
      * @return the DataElementCategoryCombo.
      */
@@ -282,7 +287,7 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves a DataElementCategoryCombo with the given uid.
-     *
+     * 
      * @param uid the identifier of the DataElementCategoryCombo to retrieve.
      * @return the DataElementCategoryCombo.
      */
@@ -290,7 +295,7 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves the DataElementCategoryCombo with the given identifiers.
-     *
+     * 
      * @param identifiers the identifiers.
      * @return a collection of DataElementCategoryCombos.
      */
@@ -298,12 +303,12 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves the DataElementCategoryCombo with the given name.
-     *
+     * 
      * @param name the name of the DataElementCategoryCombo to retrieve.
      * @return the DataElementCategoryCombo.
      */
     DataElementCategoryCombo getDataElementCategoryComboByName( String name );
-    
+
     /**
      * Returns the default category combo.
      */
@@ -311,21 +316,21 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves all DataElementCategoryCombos.
-     *
+     * 
      * @return a collection of DataElementCategoryCombos.
      */
     Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos();
 
     /**
      * Retrieves all DataElementCategoryCombos of dimension type disaggregation.
-     *
+     * 
      * @return a collection of DataElementCategoryCombos.
      */
     Collection<DataElementCategoryCombo> getDisaggregationCategoryCombos();
 
     /**
      * Retrieves all DataElementCategoryCombos of dimension type attribute.
-     *
+     * 
      * @return a collection of DataElementCategoryCombos.
      */
     Collection<DataElementCategoryCombo> getAttributeCategoryCombos();
@@ -336,32 +341,32 @@ public interface DataElementCategoryService
 
     /**
      * Adds a DataElementCategoryOptionCombo.
-     *
+     * 
      * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo
-     *                                       to add.
+     *        to add.
      * @return the generated identifier.
      */
     int addDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
 
     /**
      * Updates a DataElementCategoryOptionCombo.
-     *
+     * 
      * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo
-     *                                       to update.
+     *        to update.
      */
     void updateDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
 
     /**
      * Deletes a DataElementCategoryOptionCombo.
-     *
+     * 
      * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo
-     *                                       to delete.
+     *        to delete.
      */
     void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
 
     /**
      * Retrieves the DataElementCategoryOptionCombo with the given identifier.
-     *
+     * 
      * @param id the identifier of the DataElementCategoryOptionCombo.
      * @return the DataElementCategoryOptionCombo.
      */
@@ -369,7 +374,7 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves the DataElementCategoryOptionCombo with the given uid.
-     *
+     * 
      * @param uid the uid of the DataElementCategoryOptionCombo.
      * @return the DataElementCategoryOptionCombo.
      */
@@ -377,8 +382,9 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves the DataElementCategoryOptionCombos with the given identifiers.
-     *
-     * @param identifiers the identifiers of the DataElementCategoryOptionCombos.
+     * 
+     * @param identifiers the identifiers of the
+     *        DataElementCategoryOptionCombos.
      * @return a Collection of DataElementCategoryOptionCombos.
      */
     Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( Collection<Integer> identifiers );
@@ -386,28 +392,30 @@ public interface DataElementCategoryService
     Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombosByUid( Collection<String> uids );
 
     /**
-     * Retrieves the DataElementCategoryOptionCombo with the given Collection
-     * of DataElementCategoryOptions.
-     *
+     * Retrieves the DataElementCategoryOptionCombo with the given Collection of
+     * DataElementCategoryOptions.
+     * 
      * @param categoryOptions
      * @return
      */
-    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( Collection<DataElementCategoryOption> categoryOptions );
+    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo(
+        Collection<DataElementCategoryOption> categoryOptions );
 
     /**
      * Retrieves a DataElementCategoryOptionCombo.
-     *
+     * 
      * @param categoryOptionCombo the DataElementCategoryOptionCombo to
-     *                            retrieve.
+     *        retrieve.
      * @return a DataElementCategoryOptionCombo.
      */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo );
 
-    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryCombo categoryCombo, Set<DataElementCategoryOption> categoryOptions );
+    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryCombo categoryCombo,
+        Set<DataElementCategoryOption> categoryOptions );
 
     /**
      * Retrieves all DataElementCategoryOptionCombos.
-     *
+     * 
      * @return a Collection of DataElementCategoryOptionCombos.
      */
     Collection<DataElementCategoryOptionCombo> getAllDataElementCategoryOptionCombos();
@@ -421,7 +429,7 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves the default DataElementCategoryOptionCombo.
-     *
+     * 
      * @return the DataElementCategoryOptionCombo.
      */
     DataElementCategoryOptionCombo getDefaultDataElementCategoryOptionCombo();
@@ -429,7 +437,7 @@ public interface DataElementCategoryService
     /**
      * Generates and persists DataElementCategoryOptionCombos for the given
      * DataElementCategoryCombo.
-     *
+     * 
      * @param categoryCombo the DataElementCategoryCombo.
      */
     void generateOptionCombos( DataElementCategoryCombo categoryCombo );
@@ -437,7 +445,7 @@ public interface DataElementCategoryService
     /**
      * Invokes updateOptionCombos( DataElementCategoryCombo ) for all category
      * combos which the given category is a part of.
-     *
+     * 
      * @param category the DataElementCategory.
      */
     void updateOptionCombos( DataElementCategory category );
@@ -446,7 +454,7 @@ public interface DataElementCategoryService
      * Generates the complete set of category option combos for the given
      * category combo and compares it to the set of persisted category option
      * combos. Those which are not matched are persisted.
-     *
+     * 
      * @param categoryCombo the DataElementCategoryCombo.
      */
     void updateOptionCombos( DataElementCategoryCombo categoryCombo );
@@ -458,8 +466,9 @@ public interface DataElementCategoryService
     void updateAllOptionCombos();
 
     /**
-     * Populates all transient properties on each Operand in the given collection.
-     *
+     * Populates all transient properties on each Operand in the given
+     * collection.
+     * 
      * @param operands the collection of Operands.
      * @return a collection of Operands.
      */
@@ -467,7 +476,7 @@ public interface DataElementCategoryService
 
     /**
      * Gets the Operands for the given Collection of DataElements.
-     *
+     * 
      * @param dataElements the Collection of DataElements.
      * @return the Operands for the given Collection of DataElements.
      */
@@ -475,24 +484,26 @@ public interface DataElementCategoryService
 
     /**
      * Gets the Operands for the given Collection of DataElements.
-     *
-     * @param dataElements  the Collection of DataElements.
-     * @param includeTotals whether to include DataElement totals in the Collection of Operands.
+     * 
+     * @param dataElements the Collection of DataElements.
+     * @param includeTotals whether to include DataElement totals in the
+     *        Collection of Operands.
      * @return the Operands for the given Collection of DataElements.
      */
     Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements, boolean includeTotals );
 
     /**
      * Gets the Operands for the DataElements with names like the given name.
-     *
+     * 
      * @param name the name.
      * @return the Operands for the DataElements with names like the given name.
      */
     Collection<DataElementOperand> getOperandsLikeName( String name );
 
     /**
-     * Gets the Operands for the given Collection of DataElements. Operands will contain DataElement and CategoryOptionCombo object
-     *
+     * Gets the Operands for the given Collection of DataElements. Operands will
+     * contain DataElement and CategoryOptionCombo object
+     * 
      * @param dataElements the Collection of DataElements.
      * @return the Operands for the given Collection of DataElements.
      */
@@ -504,9 +515,10 @@ public interface DataElementCategoryService
 
     /**
      * Returns all DataElementCategories for a given concept
-     *
+     * 
      * @param concept the Concept
-     * @return a collection of all DataElementCategories, or an empty collection.
+     * @return a collection of all DataElementCategories, or an empty
+     *         collection.
      */
     Collection<DataElementCategory> getDataElementCategoriesByConcept( Concept concept );
 
@@ -545,40 +557,56 @@ public interface DataElementCategoryService
     // -------------------------------------------------------------------------
 
     int saveCategoryOptionGroup( CategoryOptionGroup group );
-    
+
     void updateCategoryOptionGroup( CategoryOptionGroup group );
-    
+
     CategoryOptionGroup getCategoryOptionGroup( int id );
-    
+
     CategoryOptionGroup getCategoryOptionGroup( String uid );
-    
+
     void deleteCategoryOptionGroup( CategoryOptionGroup group );
-    
+
     Collection<CategoryOptionGroup> getCategoryOptionGroupsBetween( int first, int max );
-    
+
     Collection<CategoryOptionGroup> getCategoryOptionGroupsBetweenByName( int first, int max, String name );
-    
+
     Collection<CategoryOptionGroup> getAllCategoryOptionGroups();
-    
+
+    CategoryOptionGroup getCategoryOptionGroupByName( String name );
+
+    CategoryOptionGroup getCategoryOptionGroupByCode( String code );
+
+    CategoryOptionGroup getCategoryOptionGroupByShortName( String shortName );
+
+    int getCategoryOptionGroupCount();
+
+    int getCategoryOptionGroupCountByName( String name );
+
     // -------------------------------------------------------------------------
-    // CategoryOptionGroup
+    // CategoryOptionGroupSet
     // -------------------------------------------------------------------------
 
     int saveCategoryOptionGroupSet( CategoryOptionGroupSet group );
-    
+
     void updateCategoryOptionGroupSet( CategoryOptionGroupSet group );
-    
+
     CategoryOptionGroupSet getCategoryOptionGroupSet( int id );
-    
+
     CategoryOptionGroupSet getCategoryOptionGroupSet( String uid );
-    
+
     void deleteCategoryOptionGroupSet( CategoryOptionGroupSet group );
-    
+
     Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetween( int first, int max );
-    
+
     Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetweenByName( int first, int max, String name );
 
     Collection<CategoryOptionGroupSet> getAllCategoryOptionGroupSets();
-    
+
     Collection<CategoryOptionGroupSet> getDataDimensionCategoryOptionGroupSets();
+
+    CategoryOptionGroupSet getCategoryOptionGroupSetByName( String name );
+
+    int getCategoryOptionGroupSetCount();
+
+    int getCategoryOptionGroupSetCountByName( String name );
 }

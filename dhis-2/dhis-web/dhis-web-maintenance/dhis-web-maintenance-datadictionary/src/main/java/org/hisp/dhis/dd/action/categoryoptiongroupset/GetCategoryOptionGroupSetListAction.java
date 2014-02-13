@@ -35,14 +35,15 @@ import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
-import org.hisp.dhis.dataelement.CategoryOptionGroupSetService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $ GetCategoryOptionGroupSetListAction.java Feb 12, 2014 11:27:01 PM $
+ * @version $ GetCategoryOptionGroupSetListAction.java Feb 12, 2014 11:27:01 PM
+ *          $
  */
 public class GetCategoryOptionGroupSetListAction
     extends ActionPagingSupport<CategoryOptionGroupSet>
@@ -52,7 +53,7 @@ public class GetCategoryOptionGroupSetListAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupSetService categoryOptionGroupSetService;
+    private DataElementCategoryService dataElementCategoryService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -87,18 +88,19 @@ public class GetCategoryOptionGroupSetListAction
     {
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            this.paging = createPaging( categoryOptionGroupSetService.getCategoryOptionGroupSetCountByName( key ) );
+            this.paging = createPaging( dataElementCategoryService.getCategoryOptionGroupSetCountByName( key ) );
 
             categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>(
-                categoryOptionGroupSetService.getCategoryOptionGroupSetsBetweenByName( key, paging.getStartPos(),
-                    paging.getPageSize() ) );
+                dataElementCategoryService.getCategoryOptionGroupSetsBetweenByName( paging.getStartPos(),
+                    paging.getPageSize(), key ) );
         }
         else
         {
-            this.paging = createPaging( categoryOptionGroupSetService.getCategoryOptionGroupSetCount() );
+            this.paging = createPaging( dataElementCategoryService.getCategoryOptionGroupSetCount() );
 
-            categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>( categoryOptionGroupSetService.getCategoryOptionGroupSetsBetween(
-                paging.getStartPos(), paging.getPageSize() ) );
+            categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>(
+                dataElementCategoryService.getCategoryOptionGroupSetsBetween( paging.getStartPos(),
+                    paging.getPageSize() ) );
         }
 
         Collections.sort( categoryOptionGroupSets, IdentifiableObjectNameComparator.INSTANCE );

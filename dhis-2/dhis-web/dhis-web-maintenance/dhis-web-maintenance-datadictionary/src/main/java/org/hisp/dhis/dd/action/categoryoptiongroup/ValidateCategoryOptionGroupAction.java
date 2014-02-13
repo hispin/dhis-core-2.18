@@ -28,7 +28,7 @@
 package org.hisp.dhis.dd.action.categoryoptiongroup;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,13 +42,12 @@ import com.opensymphony.xwork2.Action;
 public class ValidateCategoryOptionGroupAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private DataElementCategoryService dataElementCategoryService;
 
     private I18n i18n;
 
@@ -107,7 +106,7 @@ public class ValidateCategoryOptionGroupAction
         if ( name != null )
         {
 
-            CategoryOptionGroup match = categoryOptionGroupService.getCategoryOptionGroupByName( name );
+            CategoryOptionGroup match = dataElementCategoryService.getCategoryOptionGroupByName( name );
 
             if ( match != null && (id == null || match.getId() != id.intValue()) )
             {
@@ -120,7 +119,7 @@ public class ValidateCategoryOptionGroupAction
 
         if ( shortName != null )
         {
-            CategoryOptionGroup match = categoryOptionGroupService.getCategoryOptionGroupByShortName( shortName );
+            CategoryOptionGroup match = dataElementCategoryService.getCategoryOptionGroupByShortName( shortName );
 
             if ( match != null && (id == null || match.getId() != id) )
             {
@@ -132,7 +131,7 @@ public class ValidateCategoryOptionGroupAction
 
         if ( code != null && !code.trim().isEmpty() )
         {
-            CategoryOptionGroup match = categoryOptionGroupService.getCategoryOptionGroupByCode( code );
+            CategoryOptionGroup match = dataElementCategoryService.getCategoryOptionGroupByCode( code );
 
             if ( match != null && (id == null || match.getId() != id) )
             {

@@ -31,9 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
-import org.hisp.dhis.dataelement.CategoryOptionGroupSetService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -50,12 +49,9 @@ public class ShowUpdateCategoryOptionGroupSetAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-   
-    @Autowired
-    private CategoryOptionGroupSetService categoryOptionGroupSetService;
 
     @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private DataElementCategoryService dataElementCategoryService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -93,17 +89,16 @@ public class ShowUpdateCategoryOptionGroupSetAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-
     @Override
     public String execute()
         throws Exception
     {
-        categoryOptionGroupSet = categoryOptionGroupSetService.getCategoryOptionGroupSet( id );
+        categoryOptionGroupSet = dataElementCategoryService.getCategoryOptionGroupSet( id );
 
         groupMembers = new ArrayList<CategoryOptionGroup>( categoryOptionGroupSet.getMembers() );
 
         categoryOptionGroups = new ArrayList<CategoryOptionGroup>(
-            categoryOptionGroupService.getAllCategoryOptionGroups());
+            dataElementCategoryService.getAllCategoryOptionGroups() );
 
         return SUCCESS;
     }
