@@ -231,7 +231,7 @@ public class JdbcEventAnalyticsTableManager
             String select = attribute.isNumericType() ? doubleSelect : "value";
 
             String sql = "(select " + select + " from trackedentityattributevalue where trackedentityinstanceid=pi.trackedentityinstanceid and "
-                + "attributeid=" + attribute.getId() + dataClause + ") as " + quote( attribute.getUid() );
+                + "trackedentityattributeid=" + attribute.getId() + dataClause + ") as " + quote( attribute.getUid() );
 
             String[] col = { quote( attribute.getUid() ), dataType, sql };
             columns.add( col );
