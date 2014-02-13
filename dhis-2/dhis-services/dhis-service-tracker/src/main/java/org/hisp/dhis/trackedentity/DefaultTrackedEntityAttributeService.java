@@ -151,4 +151,24 @@ public class DefaultTrackedEntityAttributeService
         return attributeStore.getDisplayedInList( displayInListNoProgram );
     }
 
+    public Collection<TrackedEntityAttribute> getTrackedEntityAttributesBetweenByName( String name, int min, int max )
+    {
+        return attributeStore.getAllLikeNameOrderedName( name, min, max );
+    }
+
+    public int getTrackedEntityAttributeCount()
+    {
+        return attributeStore.getCount();
+    }
+
+    public Collection<TrackedEntityAttribute> getTrackedEntityAttributesBetween( int min, int max )
+    {
+        return attributeStore.getAllOrderedName( min, max );
+    }
+
+    public int getTrackedEntityAttributeCountByName( String name )
+    {
+        return attributeStore.getCountEqNameNoAcl( name );
+    }
+
 }

@@ -1,0 +1,110 @@
+<script type="text/javascript">
+	jQuery(function() {
+        validation( 'updateCategoryOptionGroupForm', function( form )
+        {
+            form.submit();
+        },function(){
+			selectAllById('groupMembers');
+			if(jQuery("#groupMembers option").length > 0 ){
+				setFieldValue('hasOptions', 'true');
+			}
+		});
+
+        checkValueIsExist( "name", "validateCategoryOptionGroup.action", {
+            id : getFieldValue( 'id' )
+        } );
+		
+		checkValueIsExist( "shortName", "validateCategoryOptionGroup.action", {
+            id : getFieldValue( 'id' )
+        } );
+		
+		checkValueIsExist( "code", "validateCategoryOptionGroup.action", {
+            id : getFieldValue( 'id' )
+        } );
+
+		jQuery("#availableCategoryOptionsList").dhisAjaxSelect({
+			source: "../dhis-web-commons-ajax-json/getDataElementCategoryOptions.action",
+			iterator: "dataElementCategoryOptions",
+			connectedTo: 'groupMembers',
+			handler: function(item) {
+				var option = jQuery("<option data-id='" + item.groups + "' />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			}
+		});
+	});
+</script>
+
+<h3>$i18n.getString( "edit_category_option_group" )</h3>
+
+<form id="updateCategoryOptionGroupForm" action="updateCategoryOptionGroup.action" method="post" class="inputForm">
+
+<div>
+	<input type="hidden" id="id" name="id" value="$categoryOptionGroup.id"/>
+</div>
+
+<table>
+	<tr>
+		<th colspan="2">$i18n.getString( "details" )</th>
+	</tr>
+
+	<tr>
+		<td style="width: 120px;"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" class="{validate:{required:true}}" value="$encoder.htmlEncode( $!categoryOptionGroup.name )">
+		</td>
+	</tr>
+	<tr>
+		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="shortName" name="shortName" value="$!encoder.htmlEncode( $categoryOptionGroup.shortName )"></td>
+	</tr>
+	<tr>
+		<td><label for="code">$i18n.getString( "code" )</label></td>
+		<td><input type="text" id="code" name="code" class="{validate:{required:true}}" value="$!encoder.htmlEncode( $categoryOptionGroup.code )"></td>
+	</tr>
+</table>
+
+<table>
+    <colgroup>
+      <col style="width: 500px;"/>
+      <col/>
+      <col style="width: 500px;"/>
+    </colgroup>
+
+	<tr>
+		<th>$i18n.getString( "available_category_options" )</th>
+		<th></th>
+		<th>$i18n.getString( "group_members" )
+			<input type='hidden' id='hasOptions' name='hasOptions' class="{validate:{required:true}}">
+		</th>
+	</tr>
+
+	<tr>
+		<td>
+			<select id="availableCategoryOptionsList" name="availableCategoryOptionsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
+		</td>
+
+        <td style="text-align:center">          
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableCategoryOptionsList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'groupMembers' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableCategoryOptionsList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'groupMembers' );"/>
+        </td>
+
+		<td>
+			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
+				#foreach( $categoryOption in $groupMembers )
+					<option value="$categoryOption.id">$encoder.htmlEncode( $categoryOption.displayName )</option>
+				#end
+			</select>
+		</td>
+	</tr>
+</table>
+
+<p>
+	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="dhis2.commons.redirectCurrentPage( 'categoryOptionGroup.action' )" style="width:10em"/>
+</p>
+
+</form>

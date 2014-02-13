@@ -43,7 +43,8 @@ public interface TrackedEntityAttributeService
      * 
      * @param attribute The to TrackedEntityAttribute add.
      * 
-     * @return A generated unique id of the added {@link TrackedEntityAttribute}.
+     * @return A generated unique id of the added {@link TrackedEntityAttribute}
+     *         .
      */
     int saveTrackedEntityAttribute( TrackedEntityAttribute attribute );
 
@@ -74,7 +75,8 @@ public interface TrackedEntityAttributeService
      * Returns the {@link TrackedEntityAttribute} with the given UID.
      * 
      * @param uid the UID.
-     * @return the TrackedEntityAttribute with the given UID, or null if no match.
+     * @return the TrackedEntityAttribute with the given UID, or null if no
+     *         match.
      */
     TrackedEntityAttribute getTrackedEntityAttribute( String uid );
 
@@ -83,15 +85,16 @@ public interface TrackedEntityAttributeService
      * 
      * @param name the name of the TrackedEntityAttribute to return.
      * 
-     * @return the TrackedEntityAttribute with the given name, or null if no match.
+     * @return the TrackedEntityAttribute with the given name, or null if no
+     *         match.
      */
     TrackedEntityAttribute getTrackedEntityAttributeByName( String name );
 
     /**
      * Returns all {@link TrackedEntityAttribute}
      * 
-     * @return a collection of all TrackedEntityAttribute, or an empty collection if
-     *         there are no TrackedEntityAttributes.
+     * @return a collection of all TrackedEntityAttribute, or an empty
+     *         collection if there are no TrackedEntityAttributes.
      */
     Collection<TrackedEntityAttribute> getAllTrackedEntityAttributes();
 
@@ -139,7 +142,8 @@ public interface TrackedEntityAttributeService
      * 
      * @return List of attributes
      */
-    Collection<TrackedEntityAttribute> getTrackedEntityAttributesByDisplayOnVisitSchedule( boolean displayOnVisitSchedule );
+    Collection<TrackedEntityAttribute> getTrackedEntityAttributesByDisplayOnVisitSchedule(
+        boolean displayOnVisitSchedule );
 
     /**
      * Get attributes which are displayed in visit schedule
@@ -159,4 +163,40 @@ public interface TrackedEntityAttributeService
      */
     Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayedInList( boolean displayInListNoProgram );
 
+    /**
+     * Returns {@link TrackedEntityAttribute} list with paging
+     * 
+     * @param name Keyword for searching by name
+     * @param min
+     * @param max
+     * @return a collection of all TrackedEntityAttribute, or an empty
+     *         collection if there are no TrackedEntityAttributes.
+     */
+    Collection<TrackedEntityAttribute> getTrackedEntityAttributesBetweenByName( String name, int min, int max );
+
+    /**
+     * Returns The number of all TrackedEntityAttribute available
+     * 
+     */
+    int getTrackedEntityAttributeCount();
+
+    /**
+     * Returns {@link TrackedEntityAttribute} list with paging
+     * 
+     * @param min
+     * @param max
+     * @return a collection of all TrackedEntityAttribute, or an empty
+     *         collection if there are no TrackedEntityAttributes.
+     */
+    Collection<TrackedEntityAttribute> getTrackedEntityAttributesBetween( int min, int max );
+
+    /**
+     * Returns The number of TrackedEntityAttributes with the key searched
+     * 
+     * @param name Keyword for searching by name
+     * 
+     * @return A number
+     * 
+     */
+    int getTrackedEntityAttributeCountByName( String name );
 }

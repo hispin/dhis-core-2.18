@@ -38,15 +38,15 @@ import org.hisp.dhis.common.annotation.Scanned;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
-* @author Lars Helge Overland
-*/
-@JacksonXmlRootElement(localName = "categoryOptionGroup", namespace = DxfNamespaces.DXF_2_0)
+ * @author Lars Helge Overland
+ */
+@JacksonXmlRootElement( localName = "categoryOptionGroup", namespace = DxfNamespaces.DXF_2_0 )
 public class CategoryOptionGroup
     extends BaseNameableObject
 {
     @Scanned
     private Set<DataElementCategoryOption> members = new HashSet<DataElementCategoryOption>();
-    
+
     private CategoryOptionGroupSet groupSet;
 
     // -------------------------------------------------------------------------
@@ -85,4 +85,19 @@ public class CategoryOptionGroup
     {
         this.groupSet = groupSet;
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addCategoryOption( DataElementCategoryOption categoryOption )
+    {
+        members.add( categoryOption );
+    }
+
+    public void removeCategoryOption( DataElementCategoryOption categoryOption )
+    {
+        members.remove( categoryOption );
+    }
+
 }

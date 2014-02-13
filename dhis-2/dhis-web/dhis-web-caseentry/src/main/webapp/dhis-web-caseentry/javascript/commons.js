@@ -388,7 +388,6 @@ function enableBtn(){
 			id:programIdAddEntityInstance,
 			entityInstanceId: getFieldValue('entityInstanceId')
 		}, function( json )  {
-			
 			removeAttributeOption('advSearchBox0');			
 			var attributeList = jQuery( '#searchObjectId');	
 				

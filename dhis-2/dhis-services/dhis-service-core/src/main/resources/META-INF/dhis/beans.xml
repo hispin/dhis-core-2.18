@@ -626,6 +626,11 @@
     <property name="optionStore" ref="org.hisp.dhis.option.OptionStore" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
+  
+  <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupService" class="org.hisp.dhis.dataelement.DefaultCategoryOptionGroupService">
+    <property name="categoryOptionGroupStore" ref="org.hisp.dhis.dataelement.CategoryOptionGroupStore" />
+    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+  </bean>
 
   <bean id="org.hisp.dhis.mapping.MappingService" class="org.hisp.dhis.mapping.DefaultMappingService">
     <property name="mapStore" ref="org.hisp.dhis.mapping.MapStore" />
