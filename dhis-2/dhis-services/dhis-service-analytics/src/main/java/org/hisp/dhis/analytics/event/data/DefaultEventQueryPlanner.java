@@ -58,8 +58,6 @@ public class DefaultEventQueryPlanner
 {
     private static final Log log = LogFactory.getLog( DefaultEventQueryPlanner.class );
     
-    private static final String TABLE_PREFIX = "analytics_event";
-    
     @Autowired
     private QueryPlanner queryPlanner;
     
@@ -109,11 +107,11 @@ public class DefaultEventQueryPlanner
         }
     }
     
-    public List<EventQueryParams> planQuery( EventQueryParams params )
+    public List<EventQueryParams> planQuery( EventQueryParams params, List<String> validPartitions )
     {
         List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
         
-        List<EventQueryParams> groupedByPartition = groupByPartition( params );
+        List<EventQueryParams> groupedByPartition = groupByPartition( params, validPartitions );
         
         for ( EventQueryParams byPartition : groupedByPartition )
         {
@@ -128,7 +126,7 @@ public class DefaultEventQueryPlanner
         return queries;
     }
     
-    private List<EventQueryParams> groupByPartition( EventQueryParams params )
+    private List<EventQueryParams> groupByPartition( EventQueryParams params, List<String> validPartitions )
     {
         List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
         
@@ -145,8 +143,12 @@ public class DefaultEventQueryPlanner
                 queryPeriod.setEndDate( params.getEndDate() );
                 
                 EventQueryParams query = params.instance();
-                query.setPartitions( PartitionUtils.getPartitions( queryPeriod, TABLE_PREFIX, tableSuffix ) );
-                queries.add( query );
+                query.setPartitions( PartitionUtils.getPartitions( queryPeriod, TABLE_PREFIX, tableSuffix, validPartitions ) );
+                
+                if ( query.getPartitions().hasAny() )
+                {
+                    queries.add( query );
+                }
             }
             else // Event query - split in one query per partition/year
             {

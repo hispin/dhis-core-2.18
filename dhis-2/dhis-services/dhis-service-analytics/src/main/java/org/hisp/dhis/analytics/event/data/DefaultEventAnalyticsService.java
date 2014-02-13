@@ -139,6 +139,8 @@ public class DefaultEventAnalyticsService
     public Grid getAggregatedEventData( EventQueryParams params )
     {
         queryPlanner.validate( params );
+        
+        List<String> validPartitions = analyticsManager.getAnalyticsTables( params.getProgram() );
 
         Grid grid = new ListGrid();
 
@@ -162,7 +164,7 @@ public class DefaultEventAnalyticsService
         // Data
         // ---------------------------------------------------------------------
 
-        List<EventQueryParams> queries = queryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params, validPartitions );
 
         for ( EventQueryParams query : queries )
         {
@@ -222,7 +224,7 @@ public class DefaultEventAnalyticsService
 
         Timer t = new Timer().start();
 
-        List<EventQueryParams> queries = queryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params, null );
 
         t.getSplitTime( "Planned query, got: " + queries.size() );
 
@@ -402,8 +404,7 @@ public class DefaultEventAnalyticsService
         {
             items.add( getItem( program, dimension, null, null ) );
         }
-        else
-        // Filter
+        else // Filter
         {
             String[] split = dimension.split( DIMENSION_NAME_SEP );
 

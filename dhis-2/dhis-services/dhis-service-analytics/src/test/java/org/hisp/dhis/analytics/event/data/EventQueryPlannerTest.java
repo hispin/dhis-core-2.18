@@ -77,7 +77,7 @@ public class EventQueryPlannerTest
         params.setEndDate( new Cal( 2012, 3, 20 ).time() );
         params.setOrganisationUnits( Arrays.asList( ouA ) );
         
-        List<EventQueryParams> queries = queryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params, null );
         
         assertEquals( 3, queries.size() );
         
@@ -102,7 +102,7 @@ public class EventQueryPlannerTest
         params.setEndDate( new Cal( 2010, 9, 20 ).time() );
         params.setOrganisationUnits( Arrays.asList( ouA ) );
         
-        List<EventQueryParams> queries = queryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params, null );
 
         assertEquals( 1, queries.size() );
         
@@ -121,7 +121,7 @@ public class EventQueryPlannerTest
         params.setEndDate( new Cal( 2012, 3, 20 ).time() );
         params.setOrganisationUnits( Arrays.asList( ouA, ouB ) );
         
-        List<EventQueryParams> queries = queryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params, null );
         
         assertEquals( 6, queries.size() );
     }

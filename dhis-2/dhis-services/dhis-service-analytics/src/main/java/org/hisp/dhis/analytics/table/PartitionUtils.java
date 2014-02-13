@@ -69,7 +69,7 @@ public class PartitionUtils
 
     //TODO optimize by including required filter periods only
     
-    public static Partitions getPartitions( Period period, String tablePrefix, String tableSuffix )
+    public static Partitions getPartitions( Period period, String tablePrefix, String tableSuffix, List<String> validPartitions )
     {
         tablePrefix = StringUtils.trimToEmpty( tablePrefix );
         tableSuffix = StringUtils.trimToEmpty( tableSuffix );
@@ -81,11 +81,12 @@ public class PartitionUtils
         
         while ( startYear <= endYear )
         {
-            partitions.add( tablePrefix + SEP + startYear + tableSuffix );
+            String name = tablePrefix + SEP + startYear + tableSuffix;            
+            partitions.add( name.toLowerCase() );
             startYear++;
         }
 
-        return partitions;
+        return partitions.prunePartitions( validPartitions );
     }
     
     public static Partitions getPartitions( List<NameableObject> periods, String tablePrefix, String tableSuffix )
@@ -94,7 +95,7 @@ public class PartitionUtils
         
         for ( NameableObject period : periods )
         {
-            partitions.addAll( getPartitions( (Period) period, tablePrefix, tableSuffix ).getPartitions() );
+            partitions.addAll( getPartitions( (Period) period, tablePrefix, tableSuffix, null ).getPartitions() );
         }
         
         return new Partitions( new ArrayList<String>( partitions ) );
@@ -106,7 +107,7 @@ public class PartitionUtils
         
         for ( NameableObject period : periods )
         {
-            map.putValue( getPartitions( (Period) period, tablePrefix, tableSuffix ), period );
+            map.putValue( getPartitions( (Period) period, tablePrefix, tableSuffix, null ), period );
         }
         
         return map;
