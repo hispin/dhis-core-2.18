@@ -49,9 +49,9 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping( value = "", method = RequestMethod.GET )
-public class TypeController
+public class SchemaController
 {
-    @RequestMapping( value = { "/types", "/types.json" }, method = RequestMethod.GET )
+    @RequestMapping( value = { "/schemas", "/schemas.json" }, method = RequestMethod.GET )
     public void getTypesJson( OutputStream outputStream ) throws IOException
     {
         Map<String, Map<String, ReflectionUtils.PropertyDescriptor>> output = Maps.newHashMap();
@@ -65,7 +65,7 @@ public class TypeController
         JacksonUtils.toJson( outputStream, output );
     }
 
-    @RequestMapping( value = { "/types/{type}", "/types/{type}.json" }, method = RequestMethod.GET )
+    @RequestMapping( value = { "/schemas/{type}", "/schemas/{type}.json" }, method = RequestMethod.GET )
     public void getTypeJson( @PathVariable String type, OutputStream outputStream ) throws IOException
     {
         for ( Class<? extends IdentifiableObject> key : ExchangeClasses.getAllExportMap().keySet() )
