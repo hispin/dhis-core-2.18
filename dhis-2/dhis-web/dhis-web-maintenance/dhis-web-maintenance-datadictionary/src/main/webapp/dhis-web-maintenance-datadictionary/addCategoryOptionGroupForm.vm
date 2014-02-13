@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	jQuery(function() {
-        validation2('addCategoryOptionGroupForm', function ( form ) {
+        validation('addCategoryOptionGroupForm', function ( form ) {
             form.submit();
         },function(){
 			selectAllById('groupMembers');
@@ -86,7 +86,7 @@
 
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="dhis2.commons.redirectCurrentPage( 'dataElementGroup.action' )" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="dhis2.commons.redirectCurrentPage( 'categoryOptionGroup.action' )" style="width:10em"/>
 </p>
 
 </form>

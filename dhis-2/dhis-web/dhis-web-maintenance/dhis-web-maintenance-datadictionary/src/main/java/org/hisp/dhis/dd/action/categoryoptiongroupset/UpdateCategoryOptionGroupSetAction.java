@@ -107,6 +107,7 @@ public class UpdateCategoryOptionGroupSetAction
         categoryOptionGroupSet.setDescription( description );
         categoryOptionGroupSet.setDataDimension( dataDimension );
 
+        categoryOptionGroupSet.getMembers().clear();
         for ( String id : groupMembers )
         {
             categoryOptionGroupSet.addCategoryOptionGroup( categoryOptionGroupService.getCategoryOptionGroup( Integer
