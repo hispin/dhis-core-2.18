@@ -36,10 +36,13 @@ import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.removeLast;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventQueryParams;
+import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -47,6 +50,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.system.util.Timer;
@@ -286,6 +290,16 @@ public class JdbcEventAnalyticsManager
         t.getTime( "Analytics event count SQL: " + sql );
         
         return count;
+    }
+    
+    public List<String> getAnalyticsTables( Program program )
+    {
+        final String sql = 
+            "select table_name from information_schema.tables " +
+            "where table_name like '" + EventQueryPlanner.TABLE_PREFIX + "_%_" + program.getUid().toLowerCase() + "' " +
+            "and table_type = 'BASE TABLE'";
+        
+        return jdbcTemplate.queryForList( sql, String.class );
     }
     
     // -------------------------------------------------------------------------

@@ -60,21 +60,58 @@ public class Partitions
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Adds a partition.
+     */
     public Partitions add( String partition )
     {
         partitions.add( partition );
         return this;
     }
-        
+    
+    /**
+     * Indicates whether this instance contains multiple partitions.
+     */
     public boolean isMultiple()
     {
         return partitions != null && partitions.size() > 1;
     }
     
+    /**
+     * Indicates whether this instance has any partitions.
+     */
+    public boolean hasAny()
+    {
+        return partitions != null && !partitions.isEmpty();
+    }
+    
+    /**
+     * Returns the first partition of this instance.
+     */
     public String getSinglePartition()
     {
         return partitions.get( 0 );
     }
+    
+    /**
+     * Prunes this instance so that it retains only the partitions included in 
+     * the given list. No operation takes place if the given live is null.
+     * 
+     * @param validPartitions list of valid partitions to retain.
+     */
+    public Partitions prunePartitions( List<String> validPartitions )
+    {
+        if ( validPartitions != null )
+        {
+            partitions.retainAll( validPartitions );
+        }
+        
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // toString, hashCode, equals
+    // -------------------------------------------------------------------------
 
     @Override
     public String toString()
