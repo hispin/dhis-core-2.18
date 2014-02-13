@@ -40,15 +40,15 @@ import org.hisp.dhis.common.annotation.Scanned;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
-* @author Lars Helge Overland
-*/
-@JacksonXmlRootElement(localName = "categoryOptionGroupSet", namespace = DxfNamespaces.DXF_2_0)
+ * @author Lars Helge Overland
+ */
+@JacksonXmlRootElement( localName = "categoryOptionGroupSet", namespace = DxfNamespaces.DXF_2_0 )
 public class CategoryOptionGroupSet
     extends BaseDimensionalObject
 {
     @Scanned
     private List<CategoryOptionGroup> members = new ArrayList<CategoryOptionGroup>();
-    
+
     private boolean dataDimension = true;
 
     // -------------------------------------------------------------------------
@@ -68,12 +68,13 @@ public class CategoryOptionGroupSet
     // Logic
     // -------------------------------------------------------------------------
 
-    //TODO link group set to category to avoid conflicting grouping of category option combos
-    
+    // TODO link group set to category to avoid conflicting grouping of category
+    // option combos
+
     public CategoryOptionGroup getGroup( DataElementCategoryOptionCombo optionCombo )
     {
         Set<DataElementCategoryOption> categoryOptions = optionCombo.getCategoryOptions();
-        
+
         for ( CategoryOptionGroup group : members )
         {
             if ( !CollectionUtils.intersection( group.getMembers(), categoryOptions ).isEmpty() )
@@ -107,5 +108,19 @@ public class CategoryOptionGroupSet
     public void setDataDimension( boolean dataDimension )
     {
         this.dataDimension = dataDimension;
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
+    {
+        members.add( categoryOptionGroup );
+    }
+
+    public void removeCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
+    {
+        members.remove( categoryOptionGroup );
     }
 }

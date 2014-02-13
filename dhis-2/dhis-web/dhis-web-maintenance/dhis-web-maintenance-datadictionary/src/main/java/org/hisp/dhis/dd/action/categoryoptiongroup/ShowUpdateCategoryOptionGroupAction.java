@@ -93,11 +93,6 @@ public class ShowUpdateCategoryOptionGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
-    }
-
     @Override
     public String execute()
         throws Exception

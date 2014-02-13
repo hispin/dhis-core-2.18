@@ -25,14 +25,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dd.action.categoryoptiongroup;
+package org.hisp.dhis.dd.action.categoryoptiongroupset;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupService;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -40,23 +41,24 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $ UpdateCategoryOptionGroupAction.java Feb 12, 2014 11:25:01 PM $
+ * @version $ ShowUpdateCategoryOptionGroupSetAction.java Feb 12, 2014 11:20:01
+ *          PM $
  */
-public class UpdateCategoryOptionGroupAction
+public class ShowUpdateCategoryOptionGroupSetAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+   
+    @Autowired
+    private CategoryOptionGroupSetService categoryOptionGroupSetService;
 
     @Autowired
     private CategoryOptionGroupService categoryOptionGroupService;
 
-    @Autowired
-    private DataElementCategoryService dataElementCategoryService;
-
     // -------------------------------------------------------------------------
-    // Input
+    // Input && Output
     // -------------------------------------------------------------------------
 
     private int id;
@@ -66,55 +68,42 @@ public class UpdateCategoryOptionGroupAction
         this.id = id;
     }
 
-    private String name;
+    private CategoryOptionGroupSet categoryOptionGroupSet;
 
-    public void setName( String name )
+    public CategoryOptionGroupSet getCategoryOptionGroupSet()
     {
-        this.name = name;
+        return categoryOptionGroupSet;
     }
 
-    private String shortName;
+    private List<CategoryOptionGroup> categoryOptionGroups;
 
-    public void setShortName( String shortName )
+    public List<CategoryOptionGroup> getCategoryOptions()
     {
-        this.shortName = shortName;
+        return categoryOptionGroups;
     }
 
-    private String code;
+    private List<CategoryOptionGroup> groupMembers;
 
-    public void setCode( String code )
+    public List<CategoryOptionGroup> getGroupMembers()
     {
-        this.code = code;
-    }
-
-    private Set<String> groupMembers = new HashSet<String>();
-
-    public void setGroupMembers( Set<String> groupMembers )
-    {
-        this.groupMembers = groupMembers;
+        return groupMembers;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+
     @Override
     public String execute()
         throws Exception
     {
-        CategoryOptionGroup categoryOptionGroup = categoryOptionGroupService.getCategoryOptionGroup( id );
-        categoryOptionGroup.setName( name );
-        categoryOptionGroup.setShortName( shortName );
-        categoryOptionGroup.setCode( code );
-        categoryOptionGroup.getMembers().clear();
+        categoryOptionGroupSet = categoryOptionGroupSetService.getCategoryOptionGroupSet( id );
 
-        for ( String id : groupMembers )
-        {
-            categoryOptionGroup.addCategoryOption( dataElementCategoryService.getDataElementCategoryOption( Integer
-                .parseInt( id ) ) );
-        }
+        groupMembers = new ArrayList<CategoryOptionGroup>( categoryOptionGroupSet.getMembers() );
 
-        categoryOptionGroupService.updateCategoryOptionGroup( categoryOptionGroup );
+        categoryOptionGroups = new ArrayList<CategoryOptionGroup>(
+            categoryOptionGroupService.getAllCategoryOptionGroups());
 
         return SUCCESS;
     }

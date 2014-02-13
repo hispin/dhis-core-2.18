@@ -66,17 +66,13 @@ public class ShowAddCategoryOptionGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
-    }
-
     @Override
     public String execute()
         throws Exception
     {
-        categoryOptions = new ArrayList<DataElementCategoryOption>( dataElementCategoryService.getAllDataElementCategoryOptions() );
-        
+        categoryOptions = new ArrayList<DataElementCategoryOption>(
+            dataElementCategoryService.getAllDataElementCategoryOptions() );
+
         return SUCCESS;
     }
 

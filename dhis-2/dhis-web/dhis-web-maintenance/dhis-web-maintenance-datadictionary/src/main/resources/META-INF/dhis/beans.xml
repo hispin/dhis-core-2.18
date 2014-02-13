@@ -534,4 +534,38 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
   </bean>
   
+   <!-- CategoryOptionGroupSet  -->
+  
+  <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.AddCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.AddCategoryOptionGroupSetAction"
+    scope="prototype">
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.GetCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.GetCategoryOptionGroupSetAction"
+    scope="prototype">
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.GetCategoryOptionGroupSetListAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.GetCategoryOptionGroupSetListAction"
+    scope="prototype">
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.RemoveCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.RemoveCategoryOptionGroupSetAction"
+    scope="prototype">
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowAddCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowAddCategoryOptionGroupSetAction"
+    scope="prototype">
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowUpdateCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowUpdateCategoryOptionGroupSetAction"
+    scope="prototype">
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.UpdateCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.UpdateCategoryOptionGroupSetAction"
+    scope="prototype">
+  </bean>
+  
+  <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.ValidateCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.ValidateCategoryOptionGroupSetAction"
+    scope="prototype">
+  </bean>
+  
 </beans>
