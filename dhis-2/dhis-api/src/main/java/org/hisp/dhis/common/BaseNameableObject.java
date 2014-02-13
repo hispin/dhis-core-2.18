@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.annotation.Description;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.ShortNameView;
@@ -39,7 +40,7 @@ import org.hisp.dhis.common.view.ShortNameView;
 /**
  * @author Bob Jolliffe
  */
-@JacksonXmlRootElement(localName = "nameableObject", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "nameableObject", namespace = DxfNamespaces.DXF_2_0 )
 public class BaseNameableObject
     extends BaseIdentifiableObject
     implements NameableObject
@@ -83,7 +84,7 @@ public class BaseNameableObject
         this.code = code;
         this.name = name;
     }
-    
+
     public BaseNameableObject( int id, String uid, String name, String shortName,
         String code, String description )
     {
@@ -117,12 +118,12 @@ public class BaseNameableObject
         {
             return false;
         }
-        
+
         if ( !getClass().isAssignableFrom( o.getClass() ) )
         {
             return false;
         }
-        
+
         if ( !super.equals( o ) )
         {
             return false;
@@ -134,7 +135,7 @@ public class BaseNameableObject
         {
             return false;
         }
-        
+
         if ( getDescription() != null ? !getDescription().equals( other.getDescription() ) : other.getDescription() != null )
         {
             return false;
@@ -144,8 +145,9 @@ public class BaseNameableObject
     }
 
     @JsonProperty
-    @JsonView({ ShortNameView.class, DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(isAttribute = true)
+    @JsonView( { ShortNameView.class, DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( isAttribute = true )
+    @Description( "An short name representing this Object. Optional but unique." )
     public String getShortName()
     {
         return shortName;
@@ -157,8 +159,9 @@ public class BaseNameableObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @Description( "Description of this Object." )
     public String getDescription()
     {
         return description;
@@ -188,7 +191,7 @@ public class BaseNameableObject
     {
         this.displayDescription = displayDescription;
     }
-    
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
