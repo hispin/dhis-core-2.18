@@ -1,20 +1,17 @@
-package org.hisp.dhis.trackedentity.action.trackedentityattribute;
-
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
- * Neither the name of the HISP project nor the names of its contributors may
- * be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -28,6 +25,8 @@ package org.hisp.dhis.trackedentity.action.trackedentityattribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.dd.action.categoryoptiongroup;
+
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
@@ -35,38 +34,29 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupService;
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version $ GetCategoryOptionGroupListAction.java Feb 12, 2014 11:27:01 PM $
  */
-public class GetAttributeListAction
-    extends ActionPagingSupport<TrackedEntityAttribute>
+public class GetCategoryOptionGroupListAction
+    extends ActionPagingSupport<CategoryOptionGroup>
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private TrackedEntityAttributeService attributeService;
-
-    public void setAttributeService( TrackedEntityAttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
+    @Autowired
+    private CategoryOptionGroupService categoryOptionGroupService;
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input
     // -------------------------------------------------------------------------
-
-    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
-
-    public List<TrackedEntityAttribute> getAttributes()
-    {
-        return attributes;
-    }
 
     private String key;
 
@@ -80,31 +70,40 @@ public class GetAttributeListAction
         this.key = key;
     }
 
+    private List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<CategoryOptionGroup>();;
+
+    public List<CategoryOptionGroup> getCategoryOptionGroups()
+    {
+        return categoryOptionGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            this.paging = createPaging( attributeService.getTrackedEntityAttributeCountByName( key ) );
+            this.paging = createPaging( categoryOptionGroupService.getCategoryOptionGroupCountByName( key ) );
 
-            attributes = new ArrayList<TrackedEntityAttribute>(
-                attributeService.getTrackedEntityAttributesBetweenByName( key, paging.getStartPos(),
+            categoryOptionGroups = new ArrayList<CategoryOptionGroup>(
+                categoryOptionGroupService.getCategoryOptionGroupsBetweenByName( key, paging.getStartPos(),
                     paging.getPageSize() ) );
         }
         else
         {
-            this.paging = createPaging( attributeService.getTrackedEntityAttributeCount() );
+            this.paging = createPaging( categoryOptionGroupService.getCategoryOptionGroupCount() );
 
-            attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesBetween(
+            categoryOptionGroups = new ArrayList<CategoryOptionGroup>( categoryOptionGroupService.getCategoryOptionGroupsBetween(
                 paging.getStartPos(), paging.getPageSize() ) );
         }
 
-        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( categoryOptionGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
+
 }

@@ -1,0 +1,9 @@
+{ "categoryOptionGroup": 
+  {
+    "id": $!{categoryOptionGroup.id},
+    "name": "$!encoder.jsonEncode( ${categoryOptionGroup.displayName} )",
+	"shortName": "$!encoder.jsonEncode( ${categoryOptionGroup.displayShortName} )",
+	"code": "$!encoder.jsonEncode( ${categoryOptionGroup.code} )",
+    "memberCount": "$categoryOptionGroup.members.size()"
+  } 
+}
