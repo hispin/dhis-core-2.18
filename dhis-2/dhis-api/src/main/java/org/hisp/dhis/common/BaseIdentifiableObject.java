@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.Validate;
+import org.hisp.dhis.common.annotation.Description;
 import org.hisp.dhis.common.view.SharingBasicView;
 import org.hisp.dhis.common.view.SharingDetailedView;
 import org.hisp.dhis.common.view.SharingExportView;
@@ -180,6 +181,7 @@ public class BaseIdentifiableObject
 
     @JsonProperty( value = "id" )
     @JacksonXmlProperty( localName = "id", isAttribute = true )
+    @Description( "The Unique Identifier for this Object." )
     public String getUid()
     {
         return uid;
@@ -192,6 +194,7 @@ public class BaseIdentifiableObject
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
+    @Description( "The unique code for this Object." )
     public String getCode()
     {
         return code;
@@ -204,6 +207,7 @@ public class BaseIdentifiableObject
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
+    @Description( "The name of this Object. Required and unique." )
     public String getName()
     {
         return name;
@@ -228,6 +232,7 @@ public class BaseIdentifiableObject
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
+    @Description( "The date this object was created." )
     public Date getCreated()
     {
         return created;
@@ -240,6 +245,7 @@ public class BaseIdentifiableObject
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
+    @Description( "The date this object was last updated." )
     public Date getLastUpdated()
     {
         return lastUpdated;
