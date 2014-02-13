@@ -726,14 +726,14 @@
 		<param name="page">/dhis-web-maintenance-datadictionary/updateCategoryOptionGroupForm.vm</param>
 		<param name="javascripts">javascript/categoryOptionGroup.js</param>
 		<param name="stylesheets">style/basic.css</param>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_ADD</param>
+		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_UPDATE</param>
 	</action>
 
 	<action name="updateCategoryOptionGroup"
 		class="org.hisp.dhis.dd.action.categoryoptiongroup.UpdateCategoryOptionGroupAction">
 		<result name="success" type="redirect">categoryOptionGroup.action
 		</result>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_ADD</param>
+		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_UPDATE</param>
 	</action>
 
 	<action name="validateCategoryOptionGroup"
@@ -797,14 +797,14 @@
 		<param name="page">/dhis-web-maintenance-datadictionary/updateCategoryOptionGroupSetForm.vm</param>
 		<param name="javascripts">javascript/categoryOptionGroupSet.js</param>
 		<param name="stylesheets">style/basic.css</param>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_ADD</param>
+		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_UPDATE</param>
 	</action>
 
 	<action name="updateCategoryOptionGroupSet"
 		class="org.hisp.dhis.dd.action.categoryoptiongroupset.UpdateCategoryOptionGroupSetAction">
 		<result name="success" type="redirect">categoryOptionGroupSet.action
 		</result>
-		<param name="requiredAuthorities">F_CATEGORY_ATTRIBUTE_GROUP_ADD</param>
+		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_UPDATE</param>
 	</action>
 
 	<action name="validateCategoryOptionGroupSet"
