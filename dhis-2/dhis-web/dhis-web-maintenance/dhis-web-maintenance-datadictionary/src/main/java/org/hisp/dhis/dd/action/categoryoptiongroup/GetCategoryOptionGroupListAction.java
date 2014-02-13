@@ -30,6 +30,7 @@ package org.hisp.dhis.dd.action.categoryoptiongroup;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -88,17 +89,20 @@ public class GetCategoryOptionGroupListAction
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( categoryOptionGroupService.getCategoryOptionGroupCountByName( key ) );
-
-            categoryOptionGroups = new ArrayList<CategoryOptionGroup>(
-                categoryOptionGroupService.getCategoryOptionGroupsBetweenByName( key, paging.getStartPos(),
-                    paging.getPageSize() ) );
+           
+            Collection<CategoryOptionGroup> groups = categoryOptionGroupService.getCategoryOptionGroupsBetweenByName(
+                key, paging.getStartPos(), paging.getPageSize() );
+            
+            categoryOptionGroups.addAll( groups );
         }
         else
         {
             this.paging = createPaging( categoryOptionGroupService.getCategoryOptionGroupCount() );
-
-            categoryOptionGroups = new ArrayList<CategoryOptionGroup>( categoryOptionGroupService.getCategoryOptionGroupsBetween(
-                paging.getStartPos(), paging.getPageSize() ) );
+            
+            Collection<CategoryOptionGroup> groups = categoryOptionGroupService.getCategoryOptionGroupsBetween(
+                paging.getStartPos(), paging.getPageSize() );
+            
+            categoryOptionGroups.addAll( groups );
         }
 
         Collections.sort( categoryOptionGroups, IdentifiableObjectNameComparator.INSTANCE );

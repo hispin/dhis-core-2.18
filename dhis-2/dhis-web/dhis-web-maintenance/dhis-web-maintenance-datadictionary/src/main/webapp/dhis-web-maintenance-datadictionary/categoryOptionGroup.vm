@@ -1,15 +1,14 @@
-
 <script type="text/javascript">
 	jQuery(document).ready(function(){
 		tableSorter( 'categoryOptionGroupList' );	
 	});
 
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_catergory_option_group" ) , "'")';
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_category_option_group" ) , "'")';
 	var i18n_adding_catergory_option_group_failed = '$encoder.jsEscape( $i18n.getString( "adding_catergory_option_group_failed" ) , "'")';
 	var	i18n_saving_catergory_option_group_failed = '$encoder.jsEscape( $i18n.getString( "saving_catergory_option_group_failed" ) , "'")';
 </script>
 
-<h3>$i18n.getString( "catergory_option_group_management" )</h3>
+<h3>$i18n.getString( "category_option_group_management" )</h3>
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">

@@ -57,11 +57,11 @@
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" value="$!encoder.htmlEncode( $categoryOptionGroup.shortName )"></td>
+		<td><input type="text" id="shortName" name="shortName" class="{validate:{required:true}}"  value="$!encoder.htmlEncode( $categoryOptionGroup.shortName )"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" class="{validate:{required:true}}" value="$!encoder.htmlEncode( $categoryOptionGroup.code )"></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $categoryOptionGroup.code )"></td>
 	</tr>
 </table>
 
