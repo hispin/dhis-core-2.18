@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="eventCapture">
+    <head>
+        <title>Event Capture</title>
+
+        <meta name="description" content="DHIS 2">
+        <meta name="keywords" content="DHIS 2">        
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">              
+
+        <script type="text/javascript" src="lib/jquery/js/jquery-1.8.3.js"></script>
+        <script type="text/javascript" src="lib/jquery/js/jquery-ui-1.9.2.custom.js"></script>
+        <link rel="stylesheet" type="text/css" href="lib/jquery/css/ui-lightness/jquery-ui-1.9.2.custom.css"> 
+
+        <!--<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">-->
+
+        <script type="text/javascript" src="lib/angular/angular.js"></script>
+        <script type="text/javascript" src="lib/angular/angular-resource.js"></script>
+        <script type="text/javascript" src="lib/angular/angular-route.js"></script>
+        <script type="text/javascript" src="lib/angular/angular-cookies.js"></script>
+        <script type="text/javascript" src="lib/angular/angular-animate.js"></script>        
+        <script type="text/javascript" src="lib/angular/ui-bootstrap-tpls-0.10.0.js"></script>
+
+        <script type="text/javascript" src="lib/moment/moment-with-langs.min.js"></script>       
+
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/underscore.min.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/commons.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/commons.ajax.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/lists.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/periodType.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/date.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/json2.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/validationRules.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.array.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.select.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.availability.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.trigger.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.sharing.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.validation.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.ls.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
+        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
+
+        <!--<script type="text/javascript" src="../../dhis-web-commons/ouwt/ouwt.js"></script>-->
+        <script type="text/javascript" src="scripts/contextMenu.js"></script>
+        <script type="text/javascript" src="scripts/angularLocalStorage.js"></script>
+        <script type="text/javascript" src="scripts/angular-translate.min.js"></script>
+        <script type="text/javascript" src="scripts/angular-translate-loader-static-files.min.js"></script>
+        <script type="text/javascript" src="scripts/angular-translate-loader-url.min.js"></script>
+
+        <script type="text/javascript" src="scripts/app.js"></script>
+        <script type="text/javascript" src="scripts/services.js"></script>
+        <script type="text/javascript" src="scripts/directives.js"></script>
+        <script type="text/javascript" src="scripts/controllers.js"></script>
+        <script type="text/javascript" src="scripts/filters.js"></script>
+
+        <link type="text/css" rel="stylesheet" href="../../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>        
+        <link type="text/css" rel="stylesheet" media="screen,print" href="../../dhis-web-commons/css/light_blue/light_blue.css"/>
+        <link type="text/css" rel="stylesheet" media="screen,print" href="../../dhis-web-commons/css/widgets.css"/>
+
+        <link type="text/css" rel="stylesheet" href="styles/style.css">
+
+    </head>
+
+    <body>
+        <div id="header" ng-controller="HeaderController">
+            <div class="container-heading">
+                <img ng-click="home()" id="headerBanner" src="../../dhis-web-commons/css/light_blue/logo_banner.png" style="cursor:pointer" title="{{'dhis2_home'| translate}}">                    
+            </div>
+        </div>
+        <div ng-controller="MainController"> 
+            <div id="leftBar">    
+                <div class="org-unit-tree" ng-include="'views/orgUnitTree.html'"></div>
+            </div>
+            <div class="page" id="mainPage">
+                <h1>{{'event_capture'| translate}}<a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a></h1>
+
+                <div id="selectDiv">
+                    <table>
+                        <tr>
+                            <td><label>{{'registering_unit'| translate}}</label></td>
+                            <td><input type="text" id="orgUnitName" name="orgUnitName" value="{{selectedOrgUnit.name| translate}}" disabled></td>
+                        </tr>
+                        <tr>
+                            <td><label>{{'program'| translate}}<em title="{{'required'| translate}}" class="required">*</em></label></td>
+                            <td>
+                                <select id="programId" name="programId" ng-model="pr" ng-options="program as program.label for program in programs | orderBy: 'label'" ng-change="loadEvents(pr)">
+                                    <option value="">{{'please_select'| translate}}</option>
+                                </select>      
+                            </td>
+                            <td style='padding-left: 20px;'>
+                                <button ng-show="selectedProgramStage" ng-click="registerEvent()" class="button">{{'register_new_event'| translate}}</button>  
+                            </td>
+                        </tr>                       
+                    </table>
+                </div>
+
+
+                <div id="listDiv" ng-show="selectedProgramStage && !eventRegistration">
+                    <h2>
+                        {{'registered_events'| translate}}                                                 
+                    </h2>               
+
+                    <div ng-switch="dhis2Events.length">
+                        <div ng-switch-when="undefined">
+                            <p>
+                                {{'empty_search_result'| translate}}
+                            </p>
+                        </div>
+                        <div ng-switch-default>
+                            <div ng-include="'views/eventList.html'"></div>                        
+                        </div>
+                    </div>                    
+
+                </div>  
+
+                <!--<span class='pull-left'>
+                    <button type="button" ng-click="registerEvent()" class="button">{{'register_new_event'| translate}}</button>
+                </span>-->
+                <div class="container-1-4" ng-show="eventRegistration">
+                    <!--<div ng-include="'views/eventRegistration.html'"></div>-->
+                </div>
+            </div>           
+        </div>
+    </body>
+</html>

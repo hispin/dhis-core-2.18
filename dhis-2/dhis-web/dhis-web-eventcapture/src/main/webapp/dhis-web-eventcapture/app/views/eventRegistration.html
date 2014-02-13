@@ -1,0 +1,46 @@
+<form role="form" ng-show="eventRegistration">    
+    <div class="form-group" ng-repeat="newEventDataValue in newDhis2Event.dataValues">
+        <label>{{newEventDataValue.name}}</label>
+        <div ng-switch="newEventDataValue.dataElement.type">
+            <div ng-switch-when="int">
+                <input type="number" class="form-control" ng-model="newEventDataValue.value"/>
+            </div>
+            <div ng-switch-when="string">
+                <select class="form-control" ng-model='newEventDataValue.value' ng-options='option for option in newEventDataValue.dataElement.optionSet.options'>
+                    <option value="">{{'please_select'| translate}}</option>
+                </select>
+            </div>
+            <div ng-switch-when="bool">
+                <select class="form-control" ng-model='newEventDataValue.value'>
+                    <option value="">{{'please_select'| translate}}</option>                        
+                    <option value="0">{{'no'| translate}}</option>
+                    <option value="1">{{'yes'| translate}}</option>
+                </select>
+            </div>
+            <div ng-switch-when="date">
+                <input type="text" placeholder="yyyy-mm-dd" class="form-control" ng-date ng-model="newEventDataValue.value"/>
+            </div>
+        </div>
+    </div>                                            
+    <span>
+        <button ng-click="saveEvent(newDhis2Event)" class="button">{{'add' | translate}}</button>
+        <button ng-click="cancelAdding(newDhis2Event)" class="button">{{'cancel' | translate}}</button>      
+    </span>
+</form>
+<!--<form role="form">
+    <div class="form-group">
+        <label>{{'registering_unit'| translate}}</label>
+        <input type="text" class="form-control" value="{{selectedOrgUnit.name| translate}}" disabled>
+    </div>
+    <div class="form-group">
+        <label>{{'program'| translate}}</label>
+        <span class="inline">
+
+            <select class="form-control" ng-model="pr" ng-options="program as program.label for program in programs | orderBy: 'label'" ng-change="loadEvents(pr)">
+                <option value="">{{'please_select'| translate}}</option>
+            </select>
+
+            <button ng-show="selectedProgramStage" ng-click="registerEvent()" class="button">{{'register_new_event'| translate}}</button>
+        </span>
+    </div>                       
+</form>-->
