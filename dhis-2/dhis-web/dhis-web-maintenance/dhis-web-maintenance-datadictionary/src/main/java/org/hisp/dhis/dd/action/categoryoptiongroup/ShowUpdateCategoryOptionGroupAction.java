@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +49,6 @@ public class ShowUpdateCategoryOptionGroupAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
 
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
@@ -97,7 +93,7 @@ public class ShowUpdateCategoryOptionGroupAction
     public String execute()
         throws Exception
     {
-        categoryOptionGroup = categoryOptionGroupService.getCategoryOptionGroup( id );
+        categoryOptionGroup = dataElementCategoryService.getCategoryOptionGroup( id );
 
         groupMembers = new ArrayList<DataElementCategoryOption>( categoryOptionGroup.getMembers() );
 

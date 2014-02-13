@@ -30,9 +30,8 @@ package org.hisp.dhis.dd.action.categoryoptiongroupset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
-import org.hisp.dhis.dataelement.CategoryOptionGroupSetService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -50,10 +49,7 @@ public class AddCategoryOptionGroupSetAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupSetService categoryOptionGroupSetService;
-
-    @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private DataElementCategoryService dataElementCategoryService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -101,11 +97,11 @@ public class AddCategoryOptionGroupSetAction
 
         for ( String id : groupMembers )
         {
-            categoryOptionGroupSet.addCategoryOptionGroup( categoryOptionGroupService.getCategoryOptionGroup( Integer
+            categoryOptionGroupSet.addCategoryOptionGroup( dataElementCategoryService.getCategoryOptionGroup( Integer
                 .parseInt( id ) ) );
         }
 
-        categoryOptionGroupSetService.addCategoryOptionGroupSet( categoryOptionGroupSet );
+        dataElementCategoryService.saveCategoryOptionGroupSet( categoryOptionGroupSet );
 
         return SUCCESS;
     }

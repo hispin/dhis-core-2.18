@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -50,7 +50,7 @@ public class ShowAddCategoryOptionGroupSetAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private DataElementCategoryService dataElementCategoryService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -72,7 +72,7 @@ public class ShowAddCategoryOptionGroupSetAction
         throws Exception
     {
         categoryOptionGroups = new ArrayList<CategoryOptionGroup>(
-            categoryOptionGroupService.getAllCategoryOptionGroups() );
+            dataElementCategoryService.getAllCategoryOptionGroups() );
 
         return SUCCESS;
     }

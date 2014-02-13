@@ -28,7 +28,7 @@
 package org.hisp.dhis.dd.action.categoryoptiongroup;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -46,7 +46,7 @@ public class GetCategoryOptionGroupAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private DataElementCategoryService dataElementCategoryService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -74,8 +74,8 @@ public class GetCategoryOptionGroupAction
     public String execute()
         throws Exception
     {
-        categoryOptionGroup = categoryOptionGroupService.getCategoryOptionGroup( id );
-        
+        categoryOptionGroup = dataElementCategoryService.getCategoryOptionGroup( id );
+
         return SUCCESS;
     }
 

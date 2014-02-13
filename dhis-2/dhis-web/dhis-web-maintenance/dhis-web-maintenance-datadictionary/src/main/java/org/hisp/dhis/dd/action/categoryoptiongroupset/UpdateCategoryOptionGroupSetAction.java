@@ -30,9 +30,8 @@ package org.hisp.dhis.dd.action.categoryoptiongroupset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.CategoryOptionGroupService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
-import org.hisp.dhis.dataelement.CategoryOptionGroupSetService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -50,10 +49,7 @@ public class UpdateCategoryOptionGroupSetAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupSetService categoryOptionGroupSetService;
-
-    @Autowired
-    private CategoryOptionGroupService categoryOptionGroupService;
+    private DataElementCategoryService dataElementCategoryService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -102,7 +98,7 @@ public class UpdateCategoryOptionGroupSetAction
     public String execute()
         throws Exception
     {
-        CategoryOptionGroupSet categoryOptionGroupSet = categoryOptionGroupSetService.getCategoryOptionGroupSet( id );
+        CategoryOptionGroupSet categoryOptionGroupSet = dataElementCategoryService.getCategoryOptionGroupSet( id );
         categoryOptionGroupSet.setName( name );
         categoryOptionGroupSet.setDescription( description );
         categoryOptionGroupSet.setDataDimension( dataDimension );
@@ -110,11 +106,11 @@ public class UpdateCategoryOptionGroupSetAction
         categoryOptionGroupSet.getMembers().clear();
         for ( String id : groupMembers )
         {
-            categoryOptionGroupSet.addCategoryOptionGroup( categoryOptionGroupService.getCategoryOptionGroup( Integer
+            categoryOptionGroupSet.addCategoryOptionGroup( dataElementCategoryService.getCategoryOptionGroup( Integer
                 .parseInt( id ) ) );
         }
 
-        categoryOptionGroupSetService.updateCategoryOptionGroupSet( categoryOptionGroupSet );
+        dataElementCategoryService.updateCategoryOptionGroupSet( categoryOptionGroupSet );
 
         return SUCCESS;
     }

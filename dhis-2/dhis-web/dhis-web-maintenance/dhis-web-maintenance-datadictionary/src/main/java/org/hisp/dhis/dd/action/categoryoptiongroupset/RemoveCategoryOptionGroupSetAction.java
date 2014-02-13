@@ -28,7 +28,7 @@
 package org.hisp.dhis.dd.action.categoryoptiongroupset;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
-import org.hisp.dhis.dataelement.CategoryOptionGroupSetService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -44,9 +44,9 @@ public class RemoveCategoryOptionGroupSetAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    
     @Autowired
-    private CategoryOptionGroupSetService categoryOptionGroupSetService;
+    private DataElementCategoryService dataElementCategoryService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -67,9 +67,9 @@ public class RemoveCategoryOptionGroupSetAction
     public String execute()
         throws Exception
     {
-        CategoryOptionGroupSet categoryOptionGroupSet = categoryOptionGroupSetService.getCategoryOptionGroupSet( id );
+        CategoryOptionGroupSet categoryOptionGroupSet = dataElementCategoryService.getCategoryOptionGroupSet( id );
 
-        categoryOptionGroupSetService.deleteCategoryOptionGroupSet( categoryOptionGroupSet );
+        dataElementCategoryService.deleteCategoryOptionGroupSet( categoryOptionGroupSet );
 
         return SUCCESS;
     }
