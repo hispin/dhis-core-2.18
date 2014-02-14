@@ -39,11 +39,10 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 
@@ -62,9 +61,7 @@ public class AddRepresentativeAction
 
     private OrganisationUnitSelectionManager selectionManager;
 
-    private TrackedEntityAttributeService AttributeService;
-
-    private TrackedEntityAttributeOptionService attributeOptionService;
+    private TrackedEntityAttributeService attributeService;
 
     private I18nFormat format;
 
@@ -103,7 +100,7 @@ public class AddRepresentativeAction
 
         HttpServletRequest request = ServletActionContext.getRequest();
 
-        Collection<TrackedEntityAttribute> attributes = AttributeService.getAllTrackedEntityAttributes();
+        Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
 
         Set<TrackedEntityAttributeValue> entityInstanceAttributeValues = new HashSet<TrackedEntityAttributeValue>();
 
@@ -127,7 +124,7 @@ public class AddRepresentativeAction
                     }
                     else if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                     {
-                        TrackedEntityAttributeOption option = attributeOptionService.get( Integer.parseInt( value ) );
+                        TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( Integer.parseInt( value ) );
                         if ( option != null )
                         {
                             attributeValue.setAttributeOption( option );
@@ -154,9 +151,9 @@ public class AddRepresentativeAction
         this.entityInstanceService = entityInstanceService;
     }
 
-    public void setAttributeService( TrackedEntityAttributeService AttributeService )
+    public void setAttributeService( TrackedEntityAttributeService attributeService )
     {
-        this.AttributeService = AttributeService;
+        this.attributeService = attributeService;
     }
 
     public void setFormat( I18nFormat format )
@@ -167,11 +164,6 @@ public class AddRepresentativeAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
-    }
-
-    public void setAttributeOptionService( TrackedEntityAttributeOptionService attributeOptionService )
-    {
-        this.attributeOptionService = attributeOptionService;
     }
 
     public Integer getRelationshipTypeId()

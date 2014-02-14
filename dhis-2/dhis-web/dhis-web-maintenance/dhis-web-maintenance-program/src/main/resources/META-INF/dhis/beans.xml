@@ -77,8 +77,6 @@
 		scope="prototype">
 		<property name="attributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-		<property name="attributeOptionService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
 	</bean>
 
 	<bean
@@ -95,8 +93,6 @@
 		scope="prototype">
 		<property name="attributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-		<property name="attributeOptionService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
 		<property name="attributeValueService"
 			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
 	</bean>
@@ -129,8 +125,8 @@
 		id="org.hisp.dhis.trackedentity.action.trackedentityattribute.RemoveAttributeOptionAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentityattribute.RemoveAttributeOptionAction"
 		scope="prototype">
-		<property name="attributeOptionService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="attributeValueService"
 			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
 	</bean>

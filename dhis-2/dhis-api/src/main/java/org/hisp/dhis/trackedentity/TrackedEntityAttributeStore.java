@@ -97,4 +97,29 @@ public interface TrackedEntityAttributeStore
      */
     Collection<TrackedEntityAttribute> getDisplayedInList( boolean displayInListNoProgram );
 
+    // -------------------------------------------------------------------------
+    // TrackedEntityAttributeOption
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns a {@link TrackedEntityAttributeOption} with a given name.
+     * 
+     * @param attribute {@link TrackedEntityAttribute}
+     * 
+     * @param name the name of the TrackedEntityAttributeOption to return.
+     * 
+     * @return the TrackedEntityAttributeOption with the given name, or null if
+     * no match.
+     */
+    TrackedEntityAttributeOption get( TrackedEntityAttribute attribute, String name );
+
+    /**
+     * Get all {@link TrackedEntityAttributeOption} of a
+     * {@link TrackedEntityAttribute}
+     * 
+     * @param attribute {@link TrackedEntityAttribute}
+     * 
+     * @return {@link TrackedEntityAttributeOption}
+     */
+    Collection<TrackedEntityAttributeOption> get( TrackedEntityAttribute attribute );
 }

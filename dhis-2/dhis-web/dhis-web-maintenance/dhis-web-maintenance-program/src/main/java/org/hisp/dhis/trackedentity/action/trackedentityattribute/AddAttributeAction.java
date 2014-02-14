@@ -35,7 +35,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,13 +56,6 @@ public class AddAttributeAction
     public void setAttributeService( TrackedEntityAttributeService attributeService )
     {
         this.attributeService = attributeService;
-    }
-
-    private TrackedEntityAttributeOptionService attributeOptionService;
-
-    public void setAttributeOptionService( TrackedEntityAttributeOptionService attributeOptionService )
-    {
-        this.attributeOptionService = attributeOptionService;
     }
 
     @Autowired
@@ -215,7 +207,7 @@ public class AddAttributeAction
                 opt.setName( optionName );
                 opt.setAttribute( attribute );
                 attribute.addAttributeOptions( opt );
-                attributeOptionService.addTrackedEntityAttributeOption( opt );
+                attributeService.addTrackedEntityAttributeOption( opt );
             }
         }
 

@@ -46,7 +46,6 @@ import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
@@ -96,18 +95,6 @@ public class SaveBeneficiaryAction
     public void setPatientAttributeService( TrackedEntityAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
-    }
-
-    private TrackedEntityAttributeOptionService patientAttributeOptionService;
-
-    public TrackedEntityAttributeOptionService getPatientAttributeOptionService()
-    {
-        return patientAttributeOptionService;
-    }
-
-    public void setPatientAttributeOptionService( TrackedEntityAttributeOptionService patientAttributeOptionService )
-    {
-        this.patientAttributeOptionService = patientAttributeOptionService;
     }
 
     private ProgramService programService;
@@ -354,8 +341,8 @@ public class SaveBeneficiaryAction
 
                     if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttribute.getValueType() ) )
                     {
-                        TrackedEntityAttributeOption option = patientAttributeOptionService
-                            .get( NumberUtils.toInt( value, 0 ) );
+                        TrackedEntityAttributeOption option = patientAttributeService
+                            .getTrackedEntityAttributeOption( NumberUtils.toInt( value, 0 ) );
 
                         if ( option != null )
                         {
