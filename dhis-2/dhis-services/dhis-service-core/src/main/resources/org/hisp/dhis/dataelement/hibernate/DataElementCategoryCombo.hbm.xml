@@ -36,5 +36,16 @@
     
     <property name="skipTotal" column="skiptotal" />
     
+    <!-- Access properties -->
+    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_categorycombo_userid" />
+
+    <property name="publicAccess" length="8" />
+
+    <set name="userGroupAccesses" table="categorycombousergroupaccesses">
+      <cache usage="read-write" />
+      <key column="categorycomboid" />
+      <many-to-many class="org.hisp.dhis.user.UserGroupAccess" column="usergroupaccessid" unique="true" />
+    </set>
+
   </class>
 </hibernate-mapping>

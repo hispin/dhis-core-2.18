@@ -19,6 +19,17 @@
 
     <property name="dimensionType" column="dimensiontype" />
 
+    <!-- Access properties -->
+    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_dataelementcategory_userid" />
+
+    <property name="publicAccess" length="8" />
+
+    <set name="userGroupAccesses" table="dataelementcategoryusergroupaccesses">
+      <cache usage="read-write" />
+      <key column="categoryid" />
+      <many-to-many class="org.hisp.dhis.user.UserGroupAccess" column="usergroupaccessid" unique="true" />
+    </set>
+
     <list name="categoryOptions" table="categories_categoryoptions">
       <cache usage="read-write" />
       <key column="categoryid" foreign-key="fk_categories_categoryoptions_categoryid" />
