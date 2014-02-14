@@ -533,12 +533,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryForm.vm</param>
       <param name="javascripts">javascript/category.js</param>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_PUBLIC_ADD, F_CATEGORY_PRIVATE_ADD</param>
     </action>
 
     <action name="addDataElementCategory" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction">
       <result name="success" type="redirect">category.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_PUBLIC_ADD, F_CATEGORY_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDataElementCategory" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryAction">
@@ -560,21 +560,21 @@
 
     <action name="updateDataElementCategory" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryAction">
       <result name="success" type="redirect">category.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_PUBLIC_ADD, F_CATEGORY_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateDataElementCategoryForm" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryForm.vm</param>
       <param name="javascripts">javascript/category.js</param>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_PUBLIC_ADD, F_CATEGORY_PRIVATE_ADD</param>
     </action>
 
     <action name="removeDataElementCategory" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
+      <param name="requiredAuthorities">F_CATEGORY_DELETE</param>
     </action>
 
     <!-- CategoryOption -->
@@ -583,36 +583,36 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryOption.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_OPTION_PUBLIC_ADD, F_CATEGORY_OPTION_PRIVATE_ADD</param>
     </action>
 
     <action name="showAddDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryOptionForm.vm</param>
       <param name="javascripts">javascript/categoryOption.js</param>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_OPTION_PUBLIC_ADD, F_CATEGORY_OPTION_PRIVATE_ADD</param>
     </action>
 
     <action name="addDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction">
       <result name="success" type="redirect">categoryOption.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_OPTION_PUBLIC_ADD, F_CATEGORY_OPTION_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryOptionForm.vm</param>
       <param name="javascripts">javascript/category.js</param>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_OPTION_PUBLIC_ADD, F_CATEGORY_OPTION_PRIVATE_ADD</param>
     </action>
 
     <action name="updateDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction">
       <result name="success" type="redirect">categoryOption.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_OPTION_PUBLIC_ADD, F_CATEGORY_OPTION_PRIVATE_ADD</param>
     </action>
 
     <action name="removeDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_DELETE</param>
     </action>
 
     <action name="getDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">
@@ -626,12 +626,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryComboForm.vm</param>
       <param name="javascripts">javascript/categoryCombo.js</param>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_COMBO_PUBLIC_ADD, F_CATEGORY_COMBO_PRIVATE_ADD</param>
     </action>
 
     <action name="addDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.AddDataElementCategoryComboAction">
       <result name="success" type="redirect">categoryCombo.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_COMBO_PUBLIC_ADD, F_CATEGORY_COMBO_PRIVATE_ADD</param>
     </action>
 
     <action name="validateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.ValidateDataElementCategoryComboAction">
@@ -654,21 +654,21 @@
 
     <action name="updateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.UpdateDataElementCategoryComboAction">
       <result name="success" type="redirect">categoryCombo.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_COMBO_PUBLIC_ADD, F_CATEGORY_COMBO_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateDataElementCategoryComboForm" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryComboForm.vm</param>
       <param name="javascripts">javascript/categoryCombo.js</param>
-      <param name="anyAuthorities">F_DATAELEMENT_PUBLIC_ADD, F_DATAELEMENT_PRIVATE_ADD</param>
+      <param name="anyAuthorities">F_CATEGORY_COMBO_PUBLIC_ADD, F_CATEGORY_COMBO_PRIVATE_ADD</param>
     </action>
 
     <action name="removeDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
+      <param name="requiredAuthorities">F_CATEGORY_COMBO_DELETE</param>
     </action>
 
     <!-- Validate CategoryOption -->
@@ -678,148 +678,149 @@
       <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <!-- CategoryOptionGroup -->
-    
+
     <action name="categoryOptionGroup"
-		class="org.hisp.dhis.dd.action.categoryoptiongroup.GetCategoryOptionGroupListAction">
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-maintenance-datadictionary/categoryOptionGroup.vm</param>
-		<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-		<param name="javascripts">javascript/categoryOptionGroup.js</param>
-	</action>
+      class="org.hisp.dhis.dd.action.categoryoptiongroup.GetCategoryOptionGroupListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/categoryOptionGroup.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+      <param name="javascripts">javascript/categoryOptionGroup.js</param>
+    </action>
 
-	<action name="getCategoryOptionGroup"
-		class="org.hisp.dhis.dd.action.categoryoptiongroup.GetCategoryOptionGroupAction">
-		<result name="success" type="velocity-json">
-			/dhis-web-commons/ajax/jsonCategoryOptionGroup.vm
-		</result>
-		<param name="onExceptionReturn">plainTextError</param>
-	</action>
+    <action name="getCategoryOptionGroup"
+      class="org.hisp.dhis.dd.action.categoryoptiongroup.GetCategoryOptionGroupAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonCategoryOptionGroup.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
 
-	<action name="removeCategoryOptionGroup"
-		class="org.hisp.dhis.dd.action.categoryoptiongroup.RemoveCategoryOptionGroupAction">
-		<result name="success" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseSuccess.vm
-		</result>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_DELETE</param>
-	</action>
+    <action name="removeCategoryOptionGroup"
+      class="org.hisp.dhis.dd.action.categoryoptiongroup.RemoveCategoryOptionGroupAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_DELETE</param>
+    </action>
 
-	<action name="addCategoryOptionGroup"
-		class="org.hisp.dhis.dd.action.categoryoptiongroup.AddCategoryOptionGroupAction">
-		<result name="success" type="redirect">categoryOptionGroup.action
-		</result>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_ADD</param>
-	</action>
+    <action name="addCategoryOptionGroup"
+      class="org.hisp.dhis.dd.action.categoryoptiongroup.AddCategoryOptionGroupAction">
+      <result name="success" type="redirect">categoryOptionGroup.action
+      </result>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_ADD</param>
+    </action>
 
-	<action name="showAddCategoryOptionGroupForm" class="org.hisp.dhis.dd.action.categoryoptiongroup.ShowAddCategoryOptionGroupAction">
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-maintenance-datadictionary/addCategoryOptionGroupForm.vm</param>
-		<param name="javascripts">javascript/categoryOptionGroup.js</param>
-		<param name="stylesheets">style/basic.css</param>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_ADD</param>
-	</action>
+    <action name="showAddCategoryOptionGroupForm" class="org.hisp.dhis.dd.action.categoryoptiongroup.ShowAddCategoryOptionGroupAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/addCategoryOptionGroupForm.vm</param>
+      <param name="javascripts">javascript/categoryOptionGroup.js</param>
+      <param name="stylesheets">style/basic.css</param>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_ADD</param>
+    </action>
 
-	<action name="showUpdateCategoryOptionGroupForm"
-		class="org.hisp.dhis.dd.action.categoryoptiongroup.ShowUpdateCategoryOptionGroupAction">
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-maintenance-datadictionary/updateCategoryOptionGroupForm.vm</param>
-		<param name="javascripts">javascript/categoryOptionGroup.js</param>
-		<param name="stylesheets">style/basic.css</param>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_UPDATE</param>
-	</action>
+    <action name="showUpdateCategoryOptionGroupForm"
+      class="org.hisp.dhis.dd.action.categoryoptiongroup.ShowUpdateCategoryOptionGroupAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/updateCategoryOptionGroupForm.vm</param>
+      <param name="javascripts">javascript/categoryOptionGroup.js</param>
+      <param name="stylesheets">style/basic.css</param>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_UPDATE</param>
+    </action>
 
-	<action name="updateCategoryOptionGroup"
-		class="org.hisp.dhis.dd.action.categoryoptiongroup.UpdateCategoryOptionGroupAction">
-		<result name="success" type="redirect">categoryOptionGroup.action
-		</result>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_UPDATE</param>
-	</action>
+    <action name="updateCategoryOptionGroup"
+      class="org.hisp.dhis.dd.action.categoryoptiongroup.UpdateCategoryOptionGroupAction">
+      <result name="success" type="redirect">categoryOptionGroup.action
+      </result>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_UPDATE</param>
+    </action>
 
-	<action name="validateCategoryOptionGroup"
-		class="org.hisp.dhis.dd.action.categoryoptiongroup.ValidateCategoryOptionGroupAction">
-		<result name="success" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseSuccess.vm
-		</result>
-		<result name="error" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseError.vm
-		</result>
-		<result name="input" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseInput.vm
-		</result>
-		<param name="onExceptionReturn">plainTextError</param>
-	</action>
-	
-	<!-- CategoryOptionGroupSet -->
-    
+    <action name="validateCategoryOptionGroup"
+      class="org.hisp.dhis.dd.action.categoryoptiongroup.ValidateCategoryOptionGroupAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
+      <result name="input" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseInput.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <!-- CategoryOptionGroupSet -->
+
     <action name="categoryOptionGroupSet"
-		class="org.hisp.dhis.dd.action.categoryoptiongroupset.GetCategoryOptionGroupSetListAction">
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-maintenance-datadictionary/categoryOptionGroupSet.vm</param>
-		<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-		<param name="javascripts">javascript/categoryOptionGroupSet.js</param>
-	</action>
+      class="org.hisp.dhis.dd.action.categoryoptiongroupset.GetCategoryOptionGroupSetListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/categoryOptionGroupSet.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+      <param name="javascripts">javascript/categoryOptionGroupSet.js</param>
+    </action>
 
-	<action name="getCategoryOptionGroupSet"
-		class="org.hisp.dhis.dd.action.categoryoptiongroupset.GetCategoryOptionGroupSetAction">
-		<result name="success" type="velocity-json">
-			/dhis-web-commons/ajax/jsonCategoryOptionGroupSet.vm
-		</result>
-		<param name="onExceptionReturn">plainTextError</param>
-	</action>
+    <action name="getCategoryOptionGroupSet"
+      class="org.hisp.dhis.dd.action.categoryoptiongroupset.GetCategoryOptionGroupSetAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonCategoryOptionGroupSet.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
 
-	<action name="removeCategoryOptionGroupSet"
-		class="org.hisp.dhis.dd.action.categoryoptiongroupset.RemoveCategoryOptionGroupSetAction">
-		<result name="success" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseSuccess.vm
-		</result>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_DELETE</param>
-	</action>
+    <action name="removeCategoryOptionGroupSet"
+      class="org.hisp.dhis.dd.action.categoryoptiongroupset.RemoveCategoryOptionGroupSetAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_DELETE</param>
+    </action>
 
-	<action name="addCategoryOptionGroupSet"
-		class="org.hisp.dhis.dd.action.categoryoptiongroupset.AddCategoryOptionGroupSetAction">
-		<result name="success" type="redirect">categoryOptionGroupSet.action
-		</result>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_ADD</param>
-	</action>
+    <action name="addCategoryOptionGroupSet"
+      class="org.hisp.dhis.dd.action.categoryoptiongroupset.AddCategoryOptionGroupSetAction">
+      <result name="success" type="redirect">categoryOptionGroupSet.action
+      </result>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_ADD</param>
+    </action>
 
-	<action name="showAddCategoryOptionGroupSetForm" class="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowAddCategoryOptionGroupSetAction">
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-maintenance-datadictionary/addCategoryOptionGroupSetForm.vm</param>
-		<param name="javascripts">javascript/categoryOptionGroupSet.js</param>
-		<param name="stylesheets">style/basic.css</param>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_ADD</param>
-	</action>
+    <action name="showAddCategoryOptionGroupSetForm"
+      class="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowAddCategoryOptionGroupSetAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/addCategoryOptionGroupSetForm.vm</param>
+      <param name="javascripts">javascript/categoryOptionGroupSet.js</param>
+      <param name="stylesheets">style/basic.css</param>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_ADD</param>
+    </action>
 
-	<action name="showUpdateCategoryOptionGroupSetForm"
-		class="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowUpdateCategoryOptionGroupSetAction">
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-maintenance-datadictionary/updateCategoryOptionGroupSetForm.vm</param>
-		<param name="javascripts">javascript/categoryOptionGroupSet.js</param>
-		<param name="stylesheets">style/basic.css</param>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_UPDATE</param>
-	</action>
+    <action name="showUpdateCategoryOptionGroupSetForm"
+      class="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowUpdateCategoryOptionGroupSetAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/updateCategoryOptionGroupSetForm.vm</param>
+      <param name="javascripts">javascript/categoryOptionGroupSet.js</param>
+      <param name="stylesheets">style/basic.css</param>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_UPDATE</param>
+    </action>
 
-	<action name="updateCategoryOptionGroupSet"
-		class="org.hisp.dhis.dd.action.categoryoptiongroupset.UpdateCategoryOptionGroupSetAction">
-		<result name="success" type="redirect">categoryOptionGroupSet.action
-		</result>
-		<param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_UPDATE</param>
-	</action>
+    <action name="updateCategoryOptionGroupSet"
+      class="org.hisp.dhis.dd.action.categoryoptiongroupset.UpdateCategoryOptionGroupSetAction">
+      <result name="success" type="redirect">categoryOptionGroupSet.action
+      </result>
+      <param name="requiredAuthorities">F_CATEGORY_OPTION_GROUP_SET_UPDATE</param>
+    </action>
 
-	<action name="validateCategoryOptionGroupSet"
-		class="org.hisp.dhis.dd.action.categoryoptiongroupset.ValidateCategoryOptionGroupSetAction">
-		<result name="success" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseSuccess.vm
-		</result>
-		<result name="error" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseError.vm
-		</result>
-		<result name="input" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseInput.vm
-		</result>
-		<param name="onExceptionReturn">plainTextError</param>
-	</action>
+    <action name="validateCategoryOptionGroupSet"
+      class="org.hisp.dhis.dd.action.categoryoptiongroupset.ValidateCategoryOptionGroupSetAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
+      <result name="input" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseInput.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
 
   </package>
 
