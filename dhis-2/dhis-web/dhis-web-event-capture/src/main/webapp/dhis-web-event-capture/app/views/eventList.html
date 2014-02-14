@@ -16,10 +16,10 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th class="max-column-width" ng-click="sortEventGrid(eventTableHeader)" ng-repeat="eventTableHeader in eventTableHeaders">
-                                {{eventTableHeader.name}}
-                                <i ng-show="sortHeader == eventTableHeader.id && !reverse" class="fa fa-sort-desc"></i>
-                                <i ng-show="sortHeader == eventTableHeader.id && reverse" class="fa fa-sort-asc"></i>
+                            <th class="max-column-width" ng-click="sortEventGrid(eventGridHeader)" ng-repeat="eventGridHeader in eventGridHeaders">
+                                {{eventGridHeader.name}}
+                                <i ng-show="sortHeader == eventGridHeader.id && !reverse" class="fa fa-sort-desc"></i>
+                                <i ng-show="sortHeader == eventGridHeader.id && reverse" class="fa fa-sort-asc"></i>
                             </th>
                             <th>{{'operations'| translate}}</th>            
                         </tr>
@@ -27,11 +27,30 @@
                     <tbody id="list">
                         <tr id="tr{{dhis2Event.event}}" ng-repeat="dhis2Event in dhis2Events| paginate:rowsPerPage| orderBy:sortHeader:reverse" ng-click="showContextMenu(dhis2Event)">
                             <td>{{($index + 1) + (paginator.getPage() * paginator.rowsPerPage)}}</td>                                                        
-                            <td class="max-column-width" ng-hide="eventUnderEditing == dhis2Event" ng-repeat="eventTableHeader in eventTableHeaders">
-                                {{dhis2Event[eventTableHeader.id]}}                                              
+                            <td class="max-column-width" ng-hide="eventUnderEditing == dhis2Event" ng-repeat="eventGridHeader in eventGridHeaders">
+                                {{dhis2Event[eventGridHeader.id]}}                                              
                             </td>
-                            <td class="max-column-width" ng-show="eventUnderEditing == dhis2Event" ng-repeat="eventDataValue in dhis2Event.dataValues">
-                                <input type="text" style="width:90%;" ng-model="eventDataValue.value" value="eventDataValue.value"/>                                              
+                            <td class="max-column-width" ng-show="eventUnderEditing == dhis2Event" ng-repeat="eventGridHeader in eventGridHeaders">
+                                <div ng-switch="programStageDataElements[eventGridHeader.id].type">
+                                    <div ng-switch-when="int">
+                                        <input type="number" style="width:90%;" ng-model="eventUnderEditing[eventGridHeader.id]" value="eventUnderEditing[eventGridHeader.id]"/>
+                                    </div>
+                                    <div ng-switch-when="string">
+                                        <select style="width:90%;" ng-model="eventUnderEditing[eventGridHeader.id]" value="eventUnderEditing[eventGridHeader.id]" ng-options='option for option in programStageDataElements[eventGridHeader.id].optionSet.options | limitTo:20'>
+                                            <option value="">{{'please_select'| translate}}</option>
+                                        </select>
+                                    </div>
+                                    <div ng-switch-when="bool">
+                                        <select style="width:90%;" ng-model="eventUnderEditing[eventGridHeader.id]" value="eventUnderEditing[eventGridHeader.id]">
+                                            <option value="">{{'please_select'| translate}}</option>                        
+                                            <option value="0">{{'no'| translate}}</option>
+                                            <option value="1">{{'yes'| translate}}</option>
+                                        </select>
+                                    </div>
+                                    <div ng-switch-when="date">
+                                        <input type="text" style="width:90%;" placeholder="yyyy-mm-dd" ng-date ng-model="eventUnderEditing[eventGridHeader.id]" value="eventUnderEditing[eventGridHeader.id]">
+                                    </div>
+                                </div>
                             </td>
                             <td>
                                 <span ng-hide="eventUnderEditing == dhis2Event">

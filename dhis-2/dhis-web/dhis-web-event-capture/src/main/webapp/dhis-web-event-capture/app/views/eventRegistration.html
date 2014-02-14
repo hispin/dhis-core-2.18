@@ -6,7 +6,7 @@
                 <input type="number" class="form-control" ng-model="newEventDataValue.value"/>
             </div>
             <div ng-switch-when="string">
-                <select class="form-control" ng-model='newEventDataValue.value' ng-options='option for option in newEventDataValue.dataElement.optionSet.options'>
+                <select class="form-control" ng-model='newEventDataValue.value' ng-options='option for option in newEventDataValue.dataElement.optionSet.options | limitTo:20'>
                     <option value="">{{'please_select'| translate}}</option>
                 </select>
             </div>
