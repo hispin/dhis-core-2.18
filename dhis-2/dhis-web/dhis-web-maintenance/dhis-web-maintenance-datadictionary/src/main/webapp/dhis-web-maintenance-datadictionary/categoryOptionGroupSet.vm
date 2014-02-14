@@ -1,4 +1,6 @@
 
+#sharingDialog()
+
 <script type="text/javascript">
 	jQuery(document).ready(function(){
 		tableSorter( 'categoryOptionGroupSetList' );	
@@ -11,6 +13,7 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
+    <li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
     <li><a data-target-fn="showUpdateCategoryOptionGroupSetForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
     <li><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>
     <li><a data-target-fn="removeCategoryOptionGroupSet"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
@@ -36,7 +39,7 @@
 				</thead>
 				<tbody id="list">
 				#foreach( $categoryOptionGroupSet in $categoryOptionGroupSets )
-				<tr id="tr${categoryOptionGroupSet.id}" data-id="$!categoryOptionGroupSet.id" data-uid="$!categoryOptionGroupSet.uid" data-type="CategoryOptionGroup" data-name="$encoder.htmlEncode( $!categoryOptionGroupSet.displayName )"
+				<tr id="tr${categoryOptionGroupSet.id}" data-id="$!categoryOptionGroupSet.id" data-uid="$!categoryOptionGroupSet.uid" data-type="CategoryOptionGroupSet" data-name="$encoder.htmlEncode( $!categoryOptionGroupSet.displayName )"
             data-can-manage="$security.canManage( $categoryOptionGroupSet )"
             data-can-update="$security.canUpdate( $categoryOptionGroupSet )"
             data-can-delete="$security.canDelete( $categoryOptionGroupSet )">

@@ -1,3 +1,6 @@
+
+#sharingDialog()
+
 <script type="text/javascript">
 	jQuery(document).ready(function(){	
 		tableSorter( 'categoryComboList' );	
@@ -10,6 +13,7 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
+    <li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
     <li><a data-target-fn="showUpdateDataElementCategoryComboForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
     <li><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>
     <li><a data-target-fn="removeDataElementCategoryCombo"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
@@ -36,7 +40,7 @@
       <tbody id="list">
         #foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
         #if( $dataElementCategoryCombo.id != $defaultCombo.id )
-        <tr id="tr${dataElementCategoryCombo.id}" data-id="$!dataElementCategoryCombo.id" data-uid="$!dataElementCategoryCombo.uid" data-type="DataElementCategoryCombo" data-name="$encoder.htmlEncode( $!dataElementCategoryCombo.displayName )"
+        <tr id="tr${dataElementCategoryCombo.id}" data-id="$!dataElementCategoryCombo.id" data-uid="$!dataElementCategoryCombo.uid" data-type="CategoryCombo" data-name="$encoder.htmlEncode( $!dataElementCategoryCombo.displayName )"
             data-can-manage="$security.canManage( $dataElementCategoryCombo )"
             data-can-update="$security.canUpdate( $dataElementCategoryCombo )"
             data-can-delete="$security.canDelete( $dataElementCategoryCombo )">
