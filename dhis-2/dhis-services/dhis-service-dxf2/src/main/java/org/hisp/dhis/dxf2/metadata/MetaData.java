@@ -28,10 +28,10 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.DimensionalObject;
@@ -40,6 +40,8 @@ import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.datadictionary.DataDictionary;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -82,10 +84,9 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -122,6 +123,10 @@ public class MetaData
     private List<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
 
     private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+
+    private List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<CategoryOptionGroup>();
+
+    private List<CategoryOptionGroupSet> categoryOptionGroupSets = new ArrayList<CategoryOptionGroupSet>();
 
     private List<DataElementOperand> dataElementOperands = new ArrayList<DataElementOperand>();
 
@@ -400,6 +405,32 @@ public class MetaData
     public void setCategoryOptionCombos( List<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper(localName = "categoryOptionGroups", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "categoryOptionGroup", namespace = DxfNamespaces.DXF_2_0)
+    public List<CategoryOptionGroup> getCategoryOptionGroups()
+    {
+        return categoryOptionGroups;
+    }
+
+    public void setCategoryOptionGroups( List<CategoryOptionGroup> categoryOptionGroups )
+    {
+        this.categoryOptionGroups = categoryOptionGroups;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper(localName = "categoryOptionGroupSets", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "categoryOptionGroupSet", namespace = DxfNamespaces.DXF_2_0)
+    public List<CategoryOptionGroupSet> getCategoryOptionGroupSets()
+    {
+        return categoryOptionGroupSets;
+    }
+
+    public void setCategoryOptionGroupSets( List<CategoryOptionGroupSet> categoryOptionGroupSets )
+    {
+        this.categoryOptionGroupSets = categoryOptionGroupSets;
     }
 
     @JsonProperty

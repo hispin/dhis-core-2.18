@@ -28,16 +28,24 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.BaseDimensionalObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.common.BaseDimensionalObject;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.annotation.Scanned;
-
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Lars Helge Overland
@@ -90,6 +98,11 @@ public class CategoryOptionGroupSet
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty( value = "categoryOptionGroups" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "categoryOptionGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "categoryOptionGroup", namespace = DxfNamespaces.DXF_2_0 )
     public List<CategoryOptionGroup> getMembers()
     {
         return members;
@@ -100,6 +113,9 @@ public class CategoryOptionGroupSet
         this.members = members;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isDataDimension()
     {
         return dataDimension;
@@ -122,5 +138,24 @@ public class CategoryOptionGroupSet
     public void removeCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
     {
         members.remove( categoryOptionGroup );
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            CategoryOptionGroupSet categoryOptionGroupSet = (CategoryOptionGroupSet) other;
+            dataDimension = categoryOptionGroupSet.isDataDimension();
+
+            members.clear();
+
+            for ( CategoryOptionGroup categoryOptionGroup : categoryOptionGroupSet.getMembers() )
+            {
+                addCategoryOptionGroup( categoryOptionGroup );
+            }
+        }
     }
 }

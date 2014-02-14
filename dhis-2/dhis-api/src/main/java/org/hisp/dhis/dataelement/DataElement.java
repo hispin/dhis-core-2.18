@@ -28,13 +28,12 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataset.DataSet.NO_EXPIRY;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
@@ -48,12 +47,12 @@ import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.hisp.dhis.dataset.DataSet.NO_EXPIRY;
 
 /**
  * A DataElement is a definition (meta-information about) of the entities that
@@ -67,10 +66,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * <p/>
  * DataElement acts as a DimensionSet in the dynamic dimensional model, and as a
  * DimensionOption in the static DataElement dimension.
- * 
+ *
  * @author Kristian Nordal
  */
-@JacksonXmlRootElement( localName = "dataElement", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "dataElement", namespace = DxfNamespaces.DXF_2_0 )
 public class DataElement
     extends BaseNameableObject
 {
@@ -83,7 +82,7 @@ public class DataElement
 
     public static final String VALUE_TYPE_STRING = "string";
     public static final String VALUE_TYPE_INT = "int";
-    public static final String VALUE_TYPE_NUMBER = "number";    
+    public static final String VALUE_TYPE_NUMBER = "number";
     public static final String VALUE_TYPE_USER_NAME = "username";
     public static final String VALUE_TYPE_BOOL = "bool";
     public static final String VALUE_TYPE_TRUE_ONLY = "trueOnly";
@@ -107,12 +106,12 @@ public class DataElement
      * The name to appear in forms.
      */
     private String formName;
-    
+
     /**
      * The i18n variant of the display name. Should not be persisted.
      */
     protected transient String displayFormName;
-    
+
     /**
      * If this DataElement is active or not (enabled or disabled).
      */
@@ -191,17 +190,17 @@ public class DataElement
      * The option set for data values linked to this data element.
      */
     private OptionSet optionSet;
-    
+
     /**
      * The option set for comments linked to this data element.
      */
     private OptionSet commentOptionSet;
-    
+
     /**
      * The legend set for this data element.
      */
     private MapLegendSet legendSet;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -266,14 +265,14 @@ public class DataElement
     {
         return VALUE_TYPE_INT.equals( type );
     }
-    
+
     /**
      * Returns the value type. If value type is int and the number type exists,
      * the number type is returned, otherwise the type is returned.
      */
     public String getDetailedNumberType()
     {
-        return ( type != null && type.equals( VALUE_TYPE_INT ) && numberType != null) ? numberType : type;
+        return (type != null && type.equals( VALUE_TYPE_INT ) && numberType != null) ? numberType : type;
     }
 
     /**
@@ -283,10 +282,11 @@ public class DataElement
      */
     public String getDetailedTextType()
     {
-        return ( type != null && type.equals( VALUE_TYPE_STRING ) && textType != null) ? textType : type;
+        return (type != null && type.equals( VALUE_TYPE_STRING ) && textType != null) ? textType : type;
     }
-    
-    /** Returns whether aggregation should be skipped for this data element, based
+
+    /**
+     * Returns whether aggregation should be skipped for this data element, based
      * on the setting of the data set which this data element is a members of,
      * if any.
      */
@@ -294,7 +294,7 @@ public class DataElement
     {
         return dataSets != null && dataSets.size() > 0 && dataSets.iterator().next().isSkipAggregation();
     }
-   
+
     /**
      * Returns the PeriodType of the DataElement, based on the PeriodType of the
      * DataSet which the DataElement is registered for.
@@ -386,10 +386,10 @@ public class DataElement
     {
         return formName != null && !formName.isEmpty() ? getDisplayFormName() : getDisplayName();
     }
-    
+
     public String getDisplayFormName()
     {
-        return ( displayFormName != null && !displayFormName.trim().isEmpty() ) ? displayFormName : formName;
+        return (displayFormName != null && !displayFormName.trim().isEmpty()) ? displayFormName : formName;
     }
 
     public void setDisplayFormName( String displayFormName )
@@ -415,29 +415,29 @@ public class DataElement
 
         return expiryDays == Integer.MAX_VALUE ? NO_EXPIRY : expiryDays;
     }
-    
+
     public boolean hasDescription()
     {
         return description != null && !description.trim().isEmpty();
     }
-    
+
     public boolean hasUrl()
     {
         return url != null && !url.trim().isEmpty();
     }
-    
+
     public boolean hasOptionSet()
     {
         return optionSet != null;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getFormName()
     {
         return formName;
@@ -450,7 +450,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isActive()
     {
         return active;
@@ -463,7 +463,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDomainType()
     {
         return domainType;
@@ -476,7 +476,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getTextType()
     {
         return textType;
@@ -489,7 +489,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getType()
     {
         return type;
@@ -502,7 +502,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getAggregationOperator()
     {
         return aggregationOperator;
@@ -516,7 +516,7 @@ public class DataElement
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -539,7 +539,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getUrl()
     {
         return url;
@@ -553,8 +553,8 @@ public class DataElement
     @JsonProperty( value = "dataElementGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
-    @JacksonXmlElementWrapper( localName = "dataElementGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "dataElementGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "dataElementGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataElementGroup", namespace = DxfNamespaces.DXF_2_0 )
     public Set<DataElementGroup> getGroups()
     {
         return groups;
@@ -568,8 +568,8 @@ public class DataElement
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
-    @JacksonXmlElementWrapper( localName = "dataSets", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "dataSet", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "dataSets", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataSet", namespace = DxfNamespaces.DXF_2_0 )
     public Set<DataSet> getDataSets()
     {
         return dataSets;
@@ -582,7 +582,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public List<Integer> getAggregationLevels()
     {
         return aggregationLevels;
@@ -595,7 +595,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isZeroIsSignificant()
     {
         return zeroIsSignificant;
@@ -608,7 +608,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getNumberType()
     {
         return numberType;
@@ -621,8 +621,8 @@ public class DataElement
 
     @JsonProperty( value = "attributeValues" )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "attributeValues", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "attributeValues", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0 )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -635,7 +635,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public OptionSet getOptionSet()
     {
         return optionSet;
@@ -648,7 +648,7 @@ public class DataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public OptionSet getCommentOptionSet()
     {
         return commentOptionSet;
@@ -661,14 +661,14 @@ public class DataElement
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public MapLegendSet getLegendSet() 
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public MapLegendSet getLegendSet()
     {
-	return legendSet;
+        return legendSet;
     }
 
-    public void setLegendSet( MapLegendSet legendSet ) 
+    public void setLegendSet( MapLegendSet legendSet )
     {
         this.legendSet = legendSet;
     }
