@@ -28,23 +28,34 @@
 
 <table>
 
-    <tr #if( $accountAction != "invited" ) style="display:none" #end>
+#if( $accountAction == "invited" )
+    <tr>
         <td style="width:140px"><label for="code">$i18n.getString( "code_from_email" )</label></td>
         <td>
             <input type="text" id="inviteCode" name="inviteCode" autocomplete="off">
-            <input type="hidden" id="inviteUsername" name="inviteUsername" #if( $accountAction == "invited" ) value="$username" #end>
-            <input type="hidden" id="inviteToken" name="inviteToken" #if( $accountAction == "invited" ) value="$token" #end>
+            <input type="hidden" id="inviteUsername" name="inviteUsername" value="$username">
+            <input type="hidden" id="inviteToken" name="inviteToken" value="$token">
         </td>
     </tr>
+#end
 
     <tr>
         <td style="width:140px"><label id="label_firstName" for="firstName">$i18n.getString( "name" )</label></td>
-        <td><input type="text" id="firstName" name="firstName" autocomplete="off" style="width:11.7em; margin-right:7px;" placeholder="First">
-            <input type="text" id="surname" name="surname" autocomplete="off" style="width:11.7em" placeholder="Last"></td>
+        <td>
+            <input type="text" id="firstName" name="firstName" autocomplete="off" style="width:11.7em; margin-right:7px;" placeholder="First">
+            <input type="text" id="surname" name="surname" autocomplete="off" style="width:11.7em" placeholder="Last">
+        </td>
     </tr>
     <tr>
         <td><label id="label_username" for="username">$i18n.getString( "user_name" )</label></td>
-        <td><input type="text" id="username" name="username" autocomplete="off"></td>
+        <td>
+            <input type="text" id="username" name="username" autocomplete="off" #if( $usernameChoice == "false" ) style="display:none" value="nonExistingUserName_RpuECtIlVoRKTpYmEkYrAHmPtX4m1U" #end>
+
+#if( $usernameChoice == "false" )
+            <input type="text" id="assignedUsername" name="assignedUsername" disabled="disabled" value="$username">
+#end
+
+        </td>
     </tr>
     <tr>
         <td><label id="label_password" for="password">$i18n.getString( "password" )</label></td>

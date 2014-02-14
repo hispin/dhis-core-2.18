@@ -83,8 +83,10 @@ public class SecurityServiceTest
     @Test
     public void testRestoreRecoverPassword()
     {
-        String[] result = securityService.initRestore( credentials, RestoreType.RECOVER_PASSWORD );
-        
+        String[] result = securityService.initRestore( credentials, RestoreOptions.RECOVER_PASSWORD_OPTION );
+
+        assertEquals( 2, result.length );
+
         String token = result[0];
         String code = result[1];
 
@@ -93,6 +95,12 @@ public class SecurityServiceTest
         assertNotNull( credentials.getRestoreToken() );
         assertNotNull( credentials.getRestoreCode() );
         assertNotNull( credentials.getRestoreExpiry() );
+
+        RestoreOptions restoreOptions = securityService.getRestoreOptions( token );
+
+        assertEquals( RestoreOptions.RECOVER_PASSWORD_OPTION, restoreOptions );
+        assertEquals( RestoreType.RECOVER_PASSWORD, restoreOptions.getRestoreType() );
+        assertEquals( false, restoreOptions.isUsernameChoice() );
 
         //
         // verifyToken()
@@ -144,7 +152,10 @@ public class SecurityServiceTest
     @Test
     public void testRestoreInvite()
     {
-        String[] result = securityService.initRestore( credentials, RestoreType.INVITE );
+        String[] result = securityService.initRestore( credentials, RestoreOptions.INVITE_WITH_DEFINED_USERNAME );
+
+        assertEquals( 2, result.length );
+
         String token = result[0];
         String code = result[1];
 
@@ -153,6 +164,12 @@ public class SecurityServiceTest
         assertNotNull( credentials.getRestoreToken() );
         assertNotNull( credentials.getRestoreCode() );
         assertNotNull( credentials.getRestoreExpiry() );
+
+        RestoreOptions restoreOptions = securityService.getRestoreOptions( token );
+
+        assertEquals( RestoreOptions.INVITE_WITH_DEFINED_USERNAME, restoreOptions );
+        assertEquals( RestoreType.INVITE, restoreOptions.getRestoreType() );
+        assertEquals( false, restoreOptions.isUsernameChoice() );
 
         //
         // verifyToken()
@@ -199,5 +216,21 @@ public class SecurityServiceTest
         String hashedPassword = passwordManager.encodePassword( credentials.getUsername(), password );
 
         assertEquals( hashedPassword, credentials.getPassword() );
+    }
+
+    @Test
+    public void testRestoreInviteWithUsernameChoice()
+    {
+        String[] result = securityService.initRestore( credentials, RestoreOptions.INVITE_WITH_USERNAME_CHOICE );
+
+        assertEquals( 2, result.length );
+
+        String token = result[0];
+
+        RestoreOptions restoreOptions = securityService.getRestoreOptions( token );
+
+        assertEquals( RestoreOptions.INVITE_WITH_USERNAME_CHOICE, restoreOptions );
+        assertEquals( RestoreType.INVITE, restoreOptions.getRestoreType() );
+        assertEquals( true, restoreOptions.isUsernameChoice() );
     }
 }

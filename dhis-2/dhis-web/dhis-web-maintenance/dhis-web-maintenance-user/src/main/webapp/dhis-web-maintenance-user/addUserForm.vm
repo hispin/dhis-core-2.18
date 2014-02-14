@@ -63,12 +63,22 @@
 		<th colspan="4">$i18n.getString( "details" )</th>
 	</tr>
 
-	<tr class="account">
+    <tr class="invite" style="display:none">
+        <td><label for="inviteEmail">$i18n.getString( "email" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td colspan="3"><input type="text" id="inviteEmail" name="inviteEmail" value="validEmail@domain.com"></td>
+    </tr>
+
+    <tr class="invite" style="display:none">
+        <td><label for="inviteUsername">$i18n.getString( "username" )</label></td>
+        <td colspan="3"><input type="text" id="inviteUsername" name="inviteUsername"></td>
+    </tr>
+
+    <tr class="account">
 		<td><label for="username">$i18n.getString( "username" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="text" id="username" name="username" autocomplete="off"></td>
 	</tr>
 
-	<tr class="account">
+    <tr class="account">
 		<td><label for="rawPassword">$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="password" id="rawPassword" name="rawPassword" autocomplete="off"></td>			
 	</tr>
@@ -90,12 +100,7 @@
 
 	<tr class="account">
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td colspan="3"><input type="text" id="email" name="email" ></td>
-	</tr>
-
-	<tr class="invite" style="display:none">
-		<td><label for="inviteEmail">$i18n.getString( "email" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="3"><input type="text" id="inviteEmail" name="inviteEmail" value="validEmail@domain.com" ></td>
+		<td colspan="3"><input type="text" id="email" name="email"></td>
 	</tr>
 
     <tr class="account">

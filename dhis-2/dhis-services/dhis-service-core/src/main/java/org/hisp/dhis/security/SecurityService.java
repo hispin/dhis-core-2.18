@@ -55,11 +55,11 @@ public interface SecurityService
      *
      * @param credentials the credentials for the user to send restore message.
      * @param rootPath the root path of the request.
-     * @param restoreType type of restore operation (e.g. pw recovery, invite).
+     * @param restoreOptions restore options, including type of restore.
      * @return false if any of the arguments are null or if the user credentials
      *         identified by the user name does not exist, true otherwise.
      */
-    boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreType restoreType );
+    boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions );
 
     /**
      * Populates the restoreToken and restoreCode property of the given
@@ -68,11 +68,19 @@ public interface SecurityService
      * on the restore type. Changes are persisted.
      *
      * @param credentials the user credentials.
-     * @param restoreType type of restore operation (e.g. pw recovery, invite).
+     * @param restoreOptions restore options, including type of restore.
      * @return an array where index 0 is the clear-text token and index 1 the
      *         clear-text code.
      */
-    String[] initRestore( UserCredentials credentials, RestoreType restoreType );
+    String[] initRestore( UserCredentials credentials, RestoreOptions restoreOptions );
+
+    /**
+     * Gets the restore options by parsing them from a restore token string.
+     *
+     * @param token the restore token.
+     * @return the restore options.
+     */
+    RestoreOptions getRestoreOptions( String token );
 
     /**
      * Tests whether the given token and code are valid for the given user name.

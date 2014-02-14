@@ -85,7 +85,8 @@ function changeAccountAction()
 {
     if( $('#accountAction').val() == 'create' )
     {
-        $('#username').val( saved["username"] );
+        $('#username').val( $('#inviteUsername').val() );
+        $('#inviteUsername').val( 'nonExistingUserName_RpuECtIlVoRKTpYmEkYrAHmPtX4m1U' );
         $('#rawPassword').val( saved["rawPassword"] );
         $('#retypePassword').val( saved["retypePassword"] );
         $('#surname').val( saved["surname"] );
@@ -102,13 +103,13 @@ function changeAccountAction()
         $('.account').hide();
         $('.invite').show();
 
-        saved["username"] = $('#username').val();
         saved["rawPassword"] = $('#rawPassword').val();
         saved["retypePassword"] = $('#retypePassword').val();
         saved["surname"] = $('#surname').val();
         saved["firstName"] = $('#firstName').val();
         saved["phoneNumber"] = $('#phoneNumber').val();
 
+        $('#inviteUsername').val( $('#username').val() );
         $('#username').val( 'nonExistingUserName_RpuECtIlVoRKTpYmEkYrAHmPtX4m1U' );
         $('#rawPassword').val( 'validPassword_123' );
         $('#retypePassword').val( 'validPassword_123' );
