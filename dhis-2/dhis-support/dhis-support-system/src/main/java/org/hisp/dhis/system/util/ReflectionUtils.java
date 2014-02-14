@@ -654,7 +654,6 @@ public class ReflectionUtils
 
     public static Map<String, PropertyDescriptor> getJacksonClassMap( Class<?> clazz )
     {
-        // this short-circuits the level stuff for now, need to fix this properly
         if ( classMapCache.containsKey( clazz ) )
         {
             return classMapCache.get( clazz );
