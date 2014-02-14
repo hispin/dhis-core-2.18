@@ -42,6 +42,8 @@ import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.datadictionary.DataDictionary;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -121,6 +123,8 @@ final public class ExchangeClasses
         allExportClasses.put( OrganisationUnitGroupSet.class, "organisationUnitGroupSets" );
 
         allExportClasses.put( DataElementCategoryOption.class, "categoryOptions" );
+        allExportClasses.put( CategoryOptionGroup.class, "categoryOptionGroups" );
+        allExportClasses.put( CategoryOptionGroupSet.class, "categoryOptionGroupSets" );
         allExportClasses.put( DataElementCategory.class, "categories" );
         allExportClasses.put( DataElementCategoryCombo.class, "categoryCombos" );
         allExportClasses.put( DataElementCategoryOptionCombo.class, "categoryOptionCombos" );
@@ -197,6 +201,10 @@ final public class ExchangeClasses
         // special class which is created on demand in association with other objects
         exportClasses.remove( DataElementOperand.class );
         importClasses.remove( DataElementOperand.class );
+        exportClasses.remove( CategoryOptionGroup.class );
+        importClasses.remove( CategoryOptionGroup.class );
+        exportClasses.remove( CategoryOptionGroupSet.class );
+        importClasses.remove( CategoryOptionGroupSet.class );
 
         allExportClasses.put( MetaDataFilter.class, "metaDataFilters" );
         exportClasses.remove( MetaDataFilter.class );
