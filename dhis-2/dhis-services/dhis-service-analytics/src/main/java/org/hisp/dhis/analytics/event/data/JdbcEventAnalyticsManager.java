@@ -299,6 +299,8 @@ public class JdbcEventAnalyticsManager
             "where table_name like '" + EventQueryPlanner.TABLE_PREFIX + "_%_" + program.getUid().toLowerCase() + "' " +
             "and table_type = 'BASE TABLE'";
         
+        log.info( "Information schema SQL: " + sql );
+        
         return jdbcTemplate.queryForList( sql, String.class );
     }
     
