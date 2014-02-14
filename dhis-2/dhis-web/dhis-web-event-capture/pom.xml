@@ -9,12 +9,12 @@
     <version>2.15-SNAPSHOT</version>
   </parent>
 
-  <artifactId>dhis-web-eventcapture</artifactId>
+  <artifactId>dhis-web-event-capture</artifactId>
   <packaging>war</packaging>
   <name>DHIS Web Event Capture</name>
 
   <build>
-    <finalName>dhis-web-eventcapture</finalName>
+    <finalName>dhis-web-event-capture</finalName>
   </build>
 
   <dependencies>

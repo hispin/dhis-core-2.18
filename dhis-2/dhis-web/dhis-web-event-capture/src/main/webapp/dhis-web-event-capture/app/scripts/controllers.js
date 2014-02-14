@@ -30,7 +30,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.programStageDataElements = [];
     $scope.dhis2Events = [];
     $scope.eventRegistration = false;
-    $scope.eventTableHeaders = [];
+    $scope.eventGridHeaders = [];
     $scope.newDhis2Event = {dataValues: []};
     
     $scope.sortHeader = '';
@@ -116,12 +116,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                        });                       
                    });
                    
-                   //generate table headers from events                   
+                   //generate grid headers from events                   
                    angular.forEach($scope.dhis2Events[0].dataValues, function(dataValue){      
                        var dataElement = $scope.programStageDataElements[dataValue.dataElement];
                        var name = dataElement.formName || dataElement.name;
                        $scope.newDhis2Event.dataValues.push({dataElement: dataElement, value: '', name: name});                       
-                       $scope.eventTableHeaders.push({name: name, id: dataElement.id});
+                       $scope.eventGridHeaders.push({name: name, id: dataElement.id});
                    });           
                });
             });            
@@ -154,6 +154,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.editEvent = function(dhis2Event){        
         $scope.editingEvent = !$scope.editingEvent;                
         $scope.eventUnderEditing = dhis2Event; 
+        
+        if(dhis2Event.dataValues.length !== $scope.selectedProgramStage.programStageDataElements.length){
+            angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
+                if(!$scope.eventUnderEditing.hasOwnProperty(prStDe.dataElement.id)){
+                    $scope.eventUnderEditing[prStDe.dataElement.id] = '';
+                }
+            });
+        }
     };    
     
     $scope.updateEvent = function(dhis2Event){
@@ -178,7 +186,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };   
     
     $scope.showContextMenu = function(dhis2Event){
-        console.log('I need to display context menu for....', dhis2Event);
+        //console.log('I need to display context menu for....', dhis2Event);
     }
      
 })

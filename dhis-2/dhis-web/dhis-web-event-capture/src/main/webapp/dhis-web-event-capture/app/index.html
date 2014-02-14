@@ -49,7 +49,7 @@
         <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
 
         <!--<script type="text/javascript" src="../../dhis-web-commons/ouwt/ouwt.js"></script>-->
-        <script type="text/javascript" src="scripts/contextMenu.js"></script>
+        
         <script type="text/javascript" src="scripts/angularLocalStorage.js"></script>
         <script type="text/javascript" src="scripts/angular-translate.min.js"></script>
         <script type="text/javascript" src="scripts/angular-translate-loader-static-files.min.js"></script>
@@ -78,6 +78,7 @@
         <div ng-controller="MainController"> 
             <div id="leftBar">    
                 <div class="org-unit-tree" ng-include="'views/orgUnitTree.html'"></div>
+                
             </div>
             <div class="page" id="mainPage">
                 <h1>{{'event_capture'| translate}}<a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a></h1>
@@ -120,12 +121,8 @@
                     </div>                    
 
                 </div>  
-
-                <!--<span class='pull-left'>
-                    <button type="button" ng-click="registerEvent()" class="button">{{'register_new_event'| translate}}</button>
-                </span>-->
                 <div class="container-1-4" ng-show="eventRegistration">
-                    <!--<div ng-include="'views/eventRegistration.html'"></div>-->
+                    <div ng-include="'views/eventRegistration.html'"></div>
                 </div>
             </div>           
         </div>
