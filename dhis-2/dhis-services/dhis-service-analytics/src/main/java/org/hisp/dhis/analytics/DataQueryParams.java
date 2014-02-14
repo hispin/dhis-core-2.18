@@ -115,7 +115,7 @@ public class DataQueryParams
     /**
      * Indicates if the meta data part of the query response should be omitted.
      */
-    private boolean skipMeta;
+    protected boolean skipMeta;
 
     /**
      * Indicates that full precision should be provided for values.
