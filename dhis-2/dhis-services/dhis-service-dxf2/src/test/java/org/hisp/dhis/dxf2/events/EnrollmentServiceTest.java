@@ -235,10 +235,13 @@ public class EnrollmentServiceTest
         enrollment.setDateOfIncident( new Date() );
         enrollment.setDateOfEnrollment( new Date() );
 
+        List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+        assertEquals( 0, enrollments.size() );
+        
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+        enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
 
         assertEquals( 1, enrollments.size() );
         enrollment = enrollments.get( 0 );
