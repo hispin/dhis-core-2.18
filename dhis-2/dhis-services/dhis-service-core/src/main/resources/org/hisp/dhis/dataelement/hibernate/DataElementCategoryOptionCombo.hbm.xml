@@ -27,9 +27,21 @@
         foreign-key="fk_categoryoptioncombo_categoryoptionid" />
     </set>
 
+    <!-- Access properties -->
+    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_categoryoptioncombo_userid" />
+
+    <property name="publicAccess" length="8" />
+
+    <set name="userGroupAccesses" table="categoryoptioncombousergroupaccesses">
+      <cache usage="read-write" />
+      <key column="categoryoptioncomboid" />
+      <many-to-many class="org.hisp.dhis.user.UserGroupAccess" column="usergroupaccessid" unique="true" />
+    </set>
+
     <join table="categorycombos_optioncombos">
       <key column="categoryoptioncomboid" />
       <many-to-one name="categoryCombo" column="categorycomboid" />
     </join>
+
   </class>
 </hibernate-mapping>
