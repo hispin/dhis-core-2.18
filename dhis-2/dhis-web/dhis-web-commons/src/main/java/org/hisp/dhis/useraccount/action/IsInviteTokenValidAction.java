@@ -28,6 +28,7 @@ package org.hisp.dhis.useraccount.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.RestoreType;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -98,6 +99,13 @@ public class IsInviteTokenValidAction
         return accountAction;
     }
 
+    private String usernameChoice;
+
+    public String getUsernameChoice()
+    {
+        return usernameChoice;
+    }
+
     private String email;
 
     public String getEmail()
@@ -124,6 +132,13 @@ public class IsInviteTokenValidAction
         }
 
         email = userCredentials.getUser().getEmail();
+
+        RestoreOptions restoreOptions = securityService.getRestoreOptions( token );
+
+        if ( restoreOptions != null )
+        {
+            usernameChoice = Boolean.toString( restoreOptions.isUsernameChoice() );
+        }
 
         boolean verified = securityService.verifyToken( userCredentials, token, RestoreType.INVITE );
 

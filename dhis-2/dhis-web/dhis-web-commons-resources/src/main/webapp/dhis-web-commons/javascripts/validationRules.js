@@ -4,6 +4,9 @@ var validationRules = {
             "required" : true,
             "rangelength" : [ 2, 140 ]
         },
+        "inviteUsername" : {
+            "rangelength" : [ 2, 140 ]
+        },
         "firstName" : {
             "required" : true,
             "rangelength" : [ 2, 140 ]

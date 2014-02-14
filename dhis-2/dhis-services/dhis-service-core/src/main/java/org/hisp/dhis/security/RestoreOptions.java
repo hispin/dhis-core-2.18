@@ -27,84 +27,82 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
-
 /**
- * Type of user account restore operation.
+ * Options for user account restore operation. These options are represented
+ * in the user account restore email as a prefix to the restore token.
+ * This token is hashed, and the hash is stored in the database. This means
+ * that the options cannot be hacked to change them, because then the token
+ * would no longer match the saved hash in the database.
  *
  * @author Jim Grace
  */
 
-public enum RestoreType
+public enum RestoreOptions
 {
-    RECOVER_PASSWORD( Calendar.HOUR_OF_DAY, 1, "restore_message", "User account restore confirmation", "restore.action" ),
-    INVITE( Calendar.MONTH, 3, "invite_message", "Create DHIS 2 user account invitation", "invite.action" );
+    RECOVER_PASSWORD_OPTION ( "R", RestoreType.RECOVER_PASSWORD, false ),
+    INVITE_WITH_USERNAME_CHOICE ( "IC", RestoreType.INVITE, true ),
+    INVITE_WITH_DEFINED_USERNAME ( "ID", RestoreType.INVITE, false );
 
     /**
-     * Type of Calendar interval before the restore expires.
+     * Prefix to be used on restore token, to represent this set of options.
      */
-    private final int expiryIntervalType;
+    private final String tokenPrefix;
 
     /**
-     * Count of Calendar intervals before the restore expires.
+     * The type of restore operation to perform (i.e. password recovery
+     * or invite to create account.)
      */
-    private final int expiryIntervalCount;
+    private final RestoreType restoreType;
 
     /**
-     * Name of the email template for this restore action type.
+     * Defines whether the user can choose a username at the time of restore.
      */
-    private final String emailTemplate;
-
-    /**
-     * Subject line of the email for this restore action type.
-     */
-    private final String emailSubject;
-
-    /**
-     * Return web action to put in the email message.
-     */
-    private final String action;
+    private final boolean usernameChoice;
 
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
-    RestoreType( int expiryIntervalType, int expiryIntervalCount,
-                 String emailTemplate, String emailSubject, String action )
+    RestoreOptions( String tokenPrefix, RestoreType restoreType, boolean usernameChoice )
     {
-        this.expiryIntervalType = expiryIntervalType;
-        this.expiryIntervalCount = expiryIntervalCount;
-        this.emailTemplate = emailTemplate;
-        this.emailSubject = emailSubject;
-        this.action = action;
+        this.tokenPrefix = tokenPrefix;
+        this.restoreType = restoreType;
+        this.usernameChoice = usernameChoice;
+    }
+
+    // -------------------------------------------------------------------------
+    // Get Restore Options from a token string
+    // -------------------------------------------------------------------------
+
+    static public RestoreOptions getRestoreOptions( String token )
+    {
+        for (RestoreOptions ro : RestoreOptions.values())
+        {
+            if ( token.startsWith( ro.getTokenPrefix() ) )
+            {
+                return ro;
+            }
+        }
+
+        return null;
     }
 
     // -------------------------------------------------------------------------
     // Getters
     // -------------------------------------------------------------------------
 
-    public int getExpiryIntervalType()
+    public String getTokenPrefix()
     {
-        return expiryIntervalType;
+        return tokenPrefix;
     }
 
-    public int getExpiryIntervalCount()
+    public RestoreType getRestoreType()
     {
-        return expiryIntervalCount;
+        return restoreType;
     }
 
-    public String getEmailTemplate()
+    public boolean isUsernameChoice()
     {
-        return emailTemplate;
-    }
-
-    public String getEmailSubject()
-    {
-        return emailSubject;
-    }
-
-    public String getAction()
-    {
-        return action;
+        return usernameChoice;
     }
 }

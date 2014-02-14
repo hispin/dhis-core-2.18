@@ -36,6 +36,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.security.PasswordManager;
+import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.RestoreType;
 import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -132,7 +133,7 @@ public class AccountController
             return "User does not exist: " + username;
         }
         
-        boolean recover = securityService.sendRestoreMessage( credentials, rootPath, RestoreType.RECOVER_PASSWORD );
+        boolean recover = securityService.sendRestoreMessage( credentials, rootPath, RestoreOptions.RECOVER_PASSWORD_OPTION );
 
         if ( !recover )
         {
@@ -204,9 +205,9 @@ public class AccountController
         @RequestParam String email,
         @RequestParam String phoneNumber,
         @RequestParam String employer,
-        @RequestParam String inviteUsername,
-        @RequestParam String inviteToken,
-        @RequestParam String inviteCode,
+        @RequestParam( required = false ) String inviteUsername,
+        @RequestParam( required = false ) String inviteToken,
+        @RequestParam( required = false ) String inviteCode,
         @RequestParam( value = "recaptcha_challenge_field", required = false ) String recapChallenge,
         @RequestParam( value = "recaptcha_response_field", required = false ) String recapResponse,
         HttpServletRequest request,
@@ -214,7 +215,11 @@ public class AccountController
     {
         UserCredentials credentials = null;
 
-        boolean invitedByEmail = !inviteUsername.isEmpty();
+        boolean invitedByEmail = ( inviteUsername != null && !inviteUsername.isEmpty() );
+
+        log.info( "AccountController: inviteUsername = " + inviteUsername );
+
+        boolean canChooseUsername = true;
 
         if ( invitedByEmail )
         {
@@ -239,6 +244,10 @@ public class AccountController
                 response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
                 return "Invitation code not valid";
             }
+
+            RestoreOptions restoreOptions = securityService.getRestoreOptions( inviteToken );
+
+            canChooseUsername = restoreOptions.isUsernameChoice();
         }
         else
         {
@@ -277,7 +286,7 @@ public class AccountController
 
         UserCredentials usernameAlreadyTakenCredentials = userService.getUserCredentialsByUsername( username );
 
-        if ( usernameAlreadyTakenCredentials != null )
+        if ( canChooseUsername && usernameAlreadyTakenCredentials != null )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "User name is already taken";
@@ -387,7 +396,15 @@ public class AccountController
             user.setPhoneNumber( phoneNumber );
             user.setEmployer( employer );
 
-            credentials.setUsername( username );
+            if ( canChooseUsername )
+            {
+                credentials.setUsername( username );
+            }
+            else
+            {
+                username = credentials.getUsername();
+            }
+
             credentials.setPassword( passwordManager.encodePassword( username, password ) );
 
             userService.updateUser( user );

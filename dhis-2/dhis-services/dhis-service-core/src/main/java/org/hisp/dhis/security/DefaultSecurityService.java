@@ -114,23 +114,30 @@ public class DefaultSecurityService
             return false;
         }
 
-        String username = "invitedUser_" + CodeGenerator.generateCode( INVITED_USERNAME_UNIQUE_LENGTH );
+        if ( credentials.getUsername().isEmpty() )
+        {
+            String username = "user_invitation_" + CodeGenerator.generateCode( INVITED_USERNAME_UNIQUE_LENGTH );
+
+            credentials.setUsername( username );
+        }
+
         String rawPassword = CodeGenerator.generateCode( INVITED_USER_PASSWORD_LENGTH );
 
         credentials.getUser().setSurname( "(TBD)" );
         credentials.getUser().setFirstName( "(TBD)" );
-        credentials.setUsername( username );
-        credentials.setPassword( passwordManager.encodePassword( username, rawPassword ) );
+        credentials.setPassword( passwordManager.encodePassword( credentials.getUsername(), rawPassword ) );
 
         return true;
     }
 
-    public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreType restoreType )
+    public boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreOptions restoreOptions )
     {
         if ( credentials == null || rootPath == null )
         {
             return false;
         }
+
+        RestoreType restoreType = restoreOptions.getRestoreType();
 
         if ( credentials.getUser() == null || credentials.getUser().getEmail() == null )
         {
@@ -156,7 +163,7 @@ public class DefaultSecurityService
             return false;
         }
 
-        String[] result = initRestore( credentials, restoreType );
+        String[] result = initRestore( credentials, restoreOptions );
 
         Set<User> users = new HashSet<User>();
         users.add( credentials.getUser() );
@@ -177,13 +184,15 @@ public class DefaultSecurityService
         return true;
     }
 
-    public String[] initRestore( UserCredentials credentials, RestoreType restoreType )
+    public String[] initRestore( UserCredentials credentials, RestoreOptions restoreOptions )
     {
-        String token = restoreType.getTokenPrefix() + CodeGenerator.generateCode( RESTORE_TOKEN_LENGTH );
+        String token = restoreOptions.getTokenPrefix() + CodeGenerator.generateCode( RESTORE_TOKEN_LENGTH );
         String code = CodeGenerator.generateCode( RESTORE_CODE_LENGTH );
 
         String hashedToken = passwordManager.encodePassword( credentials.getUsername(), token );
         String hashedCode = passwordManager.encodePassword( credentials.getUsername(), code );
+
+        RestoreType restoreType = restoreOptions.getRestoreType();
 
         Date expiry = new Cal().now().add( restoreType.getExpiryIntervalType(), restoreType.getExpiryIntervalCount() ).time();
 
@@ -195,6 +204,11 @@ public class DefaultSecurityService
 
         String[] result = { token, code };
         return result;
+    }
+
+    public RestoreOptions getRestoreOptions( String token )
+    {
+        return RestoreOptions.getRestoreOptions( token );
     }
 
     public boolean restore( UserCredentials credentials, String token, String code, String newPassword, RestoreType restoreType )
@@ -239,20 +253,28 @@ public class DefaultSecurityService
 
     public boolean verifyToken( UserCredentials credentials, String token, RestoreType restoreType )
     {
-        if ( credentials == null || token == null )
+        if ( credentials == null || token == null || restoreType == null )
         {
             return false;
         }
 
-        if ( !token.startsWith( restoreType.getTokenPrefix() ) )
+        RestoreOptions restoreOptions = RestoreOptions.getRestoreOptions( token );
+
+        if ( restoreOptions == null )
         {
-            log.info( "Wrong prefix for restore type " + restoreType.name() + " on token: " + token );
+            log.info( "Can't parse restore options for " + restoreType.name() + " from token " + token + " for user " + credentials );
+            return false;
+        }
+
+        if ( restoreType != restoreOptions.getRestoreType() )
+        {
+            log.info( "Wrong prefix for restore type " + restoreType.name() + " on token " + token + " for user " + credentials );
             return false;
         }
 
         if ( credentials.getRestoreToken() == null )
         {
-            log.info( "Could not verify token as user has no token: " + credentials );
+            log.info( "Could not verify token for " + restoreType.name() + " as user has no token: " + credentials );
             return false;
         }
 
