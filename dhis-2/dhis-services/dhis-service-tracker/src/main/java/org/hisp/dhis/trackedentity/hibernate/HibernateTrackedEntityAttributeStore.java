@@ -31,6 +31,7 @@ package org.hisp.dhis.trackedentity.hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeStore;
 
 import java.util.Collection;
@@ -54,22 +55,22 @@ public class HibernateTrackedEntityAttributeStore
     }
 
     @Override
-     @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityAttribute> getByMandatory( boolean mandatory )
     {
         return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
     }
 
     @Override
-     @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityAttribute> getOptionalAttributesWithoutGroup()
     {
-        return getCriteria( Restrictions.isNull( "attributeGroup" ) )
-            .add( Restrictions.eq( "mandatory", false ) ).list();
+        return getCriteria( Restrictions.isNull( "attributeGroup" ) ).add( Restrictions.eq( "mandatory", false ) )
+            .list();
     }
 
     @Override
-     public TrackedEntityAttribute getByGroupBy()
+    public TrackedEntityAttribute getByGroupBy()
     {
         return (TrackedEntityAttribute) getCriteria( Restrictions.eq( "groupBy", true ) ).uniqueResult();
     }
@@ -89,10 +90,26 @@ public class HibernateTrackedEntityAttributeStore
     }
 
     @Override
-     @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityAttribute> getDisplayedInList( boolean displayInListNoProgram )
     {
         return getCriteria( Restrictions.eq( "displayInListNoProgram", displayInListNoProgram ) ).list();
+    }
+
+    // -------------------------------------------------------------------------
+    // TrackedEntityAttributeOption
+    // -------------------------------------------------------------------------
+
+    public TrackedEntityAttributeOption get( TrackedEntityAttribute attribute, String name )
+    {
+        return (TrackedEntityAttributeOption) getCriteria( Restrictions.eq( "name", name ),
+            Restrictions.eq( "attribute", attribute ) ).uniqueResult();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<TrackedEntityAttributeOption> get( TrackedEntityAttribute attribute )
+    {
+        return getCriteria( Restrictions.eq( "attribute", attribute ) ).list();
     }
 
 }

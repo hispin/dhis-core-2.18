@@ -446,8 +446,6 @@
 		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="attributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-		<property name="attributeOptionService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 		<property name="relationshipTypeService"
@@ -471,8 +469,6 @@
 		<property name="attributeService">
 			<ref bean="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		</property>
-		<property name="attributeOptionService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
@@ -518,7 +514,7 @@
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="AttributeService"
+		<property name="attributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 	</bean>
 
@@ -621,8 +617,6 @@
 		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="attributeValueService"
 			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
-		<property name="attributeOptionService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="attributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />

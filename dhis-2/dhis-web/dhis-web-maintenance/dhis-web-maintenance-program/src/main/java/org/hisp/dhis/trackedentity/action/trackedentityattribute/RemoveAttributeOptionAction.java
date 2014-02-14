@@ -30,7 +30,7 @@ package org.hisp.dhis.trackedentity.action.trackedentityattribute;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 
 import com.opensymphony.xwork2.Action;
@@ -45,9 +45,19 @@ public class RemoveAttributeOptionAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private TrackedEntityAttributeOptionService attributeOptionService;
+    private TrackedEntityAttributeService attributeService;
+
+    public void setAttributeService( TrackedEntityAttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
 
     private TrackedEntityAttributeValueService attributeValueService;
+
+    public void setAttributeValueService( TrackedEntityAttributeValueService attributeValueService )
+    {
+        this.attributeValueService = attributeValueService;
+    }
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -55,33 +65,19 @@ public class RemoveAttributeOptionAction
 
     private int id;
 
-    private String message;
-
-    private I18n i18n;
-
-    // -------------------------------------------------------------------------
-    // Getter && Setter
-    // -------------------------------------------------------------------------
-
-    public void setAttributeOptionService( TrackedEntityAttributeOptionService attributeOptionService )
-    {
-        this.attributeOptionService = attributeOptionService;
-    }
-
-    public void setAttributeValueService( TrackedEntityAttributeValueService attributeValueService )
-    {
-        this.attributeValueService = attributeValueService;
-    }
-
     public void setId( int id )
     {
         this.id = id;
     }
 
+    private String message;
+
     public String getMessage()
     {
         return message;
     }
+
+    private I18n i18n;
 
     public void setI18n( I18n i18n )
     {
@@ -95,7 +91,7 @@ public class RemoveAttributeOptionAction
     public String execute()
         throws Exception
     {
-        TrackedEntityAttributeOption attributeOption = attributeOptionService.get( id );
+        TrackedEntityAttributeOption attributeOption = attributeService.getTrackedEntityAttributeOption( id );
 
         if ( attributeOption != null )
         {
@@ -107,7 +103,7 @@ public class RemoveAttributeOptionAction
             }
             else
             {
-                attributeOptionService.deleteTrackedEntityAttributeOption( attributeOption );
+                attributeService.deleteTrackedEntityAttributeOption( attributeOption );
                 message = i18n.getString( "success_delete_tracked_entity_attribute_option" );
                 return SUCCESS;
             }

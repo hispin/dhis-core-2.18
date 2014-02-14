@@ -38,11 +38,10 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
@@ -66,8 +65,6 @@ public class SaveAttributeAction
     private TrackedEntityAttributeValueService attributeValueService;
 
     private TrackedEntityAttributeService attributeService;
-
-    private TrackedEntityAttributeOptionService attributeOptionService;
 
     private ProgramService programService;
 
@@ -101,12 +98,7 @@ public class SaveAttributeAction
     {
         this.attributeValueService = attributeValueService;
     }
-
-    public void setAttributeOptionService( TrackedEntityAttributeOptionService attributeOptionService )
-    {
-        this.attributeOptionService = attributeOptionService;
-    }
-
+    
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
@@ -198,8 +190,8 @@ public class SaveAttributeAction
 						
                         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
-                            TrackedEntityAttributeOption option = attributeOptionService
-                                .get( Integer.parseInt( value ) );
+                            TrackedEntityAttributeOption option = attributeService
+                                .getTrackedEntityAttributeOption( Integer.parseInt( value ) );
               
                             if ( option != null )
                             {  
@@ -215,7 +207,7 @@ public class SaveAttributeAction
                     {
                         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
-                            TrackedEntityAttributeOption option = attributeOptionService.get( NumberUtils.toInt( value,
+                            TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( NumberUtils.toInt( value,
                                 0 ) );
                             if ( option != null )
                             {

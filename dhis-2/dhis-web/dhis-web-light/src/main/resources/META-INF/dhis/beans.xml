@@ -357,8 +357,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-		<property name="patientAttributeOptionService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
@@ -413,8 +411,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="formUtils" ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
-		<property name="patientAttributeOptionService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 	</bean>

@@ -43,11 +43,10 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 
@@ -69,8 +68,6 @@ public class AddTrackedEntityInstanceAction
     private TrackedEntityInstanceService entityInstanceService;
 
     private TrackedEntityAttributeService attributeService;
-
-    private TrackedEntityAttributeOptionService attributeOptionService;
 
     private RelationshipTypeService relationshipTypeService;
 
@@ -140,7 +137,7 @@ public class AddTrackedEntityInstanceAction
                     }
                     else if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                     {
-                        TrackedEntityAttributeOption option = attributeOptionService.get( Integer.parseInt( value ) );
+                        TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( Integer.parseInt( value ) );
                         if ( option != null )
                         {
                             attributeValue.setAttributeOption( option );
@@ -239,11 +236,6 @@ public class AddTrackedEntityInstanceAction
     public void setAttributeService( TrackedEntityAttributeService attributeService )
     {
         this.attributeService = attributeService;
-    }
-
-    public void setAttributeOptionService( TrackedEntityAttributeOptionService attributeOptionService )
-    {
-        this.attributeOptionService = attributeOptionService;
     }
 
     public void setRepresentativeId( Integer representativeId )
