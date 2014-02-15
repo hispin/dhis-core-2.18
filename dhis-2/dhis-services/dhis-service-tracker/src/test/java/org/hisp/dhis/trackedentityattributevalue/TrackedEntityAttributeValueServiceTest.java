@@ -41,7 +41,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
@@ -68,9 +67,6 @@ public class TrackedEntityAttributeValueServiceTest
 
     @Autowired
     private TrackedEntityAttributeService attributeService;
-
-    @Autowired
-    private TrackedEntityAttributeOptionService attributeOptionService;
 
     private TrackedEntityAttribute attributeA;
 
@@ -131,8 +127,8 @@ public class TrackedEntityAttributeValueServiceTest
         attributeOpionA = createTrackedEntityAttributeOption( 'A', attributeC );
         attributeOpionB = createTrackedEntityAttributeOption( 'B', attributeC );
 
-        attributeOptionService.addTrackedEntityAttributeOption( attributeOpionA );
-        attributeOptionService.addTrackedEntityAttributeOption( attributeOpionB );
+        attributeService.addTrackedEntityAttributeOption( attributeOpionA );
+        attributeService.addTrackedEntityAttributeOption( attributeOpionB );
 
         attributeValueA = new TrackedEntityAttributeValue( attributeA, entityInstanceA, "A" );
         attributeValueB = new TrackedEntityAttributeValue( attributeB, entityInstanceA, "B" );
