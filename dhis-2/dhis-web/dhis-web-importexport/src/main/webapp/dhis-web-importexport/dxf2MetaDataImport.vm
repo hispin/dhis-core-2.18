@@ -1,8 +1,8 @@
 
-<h3>$i18n.getString( "metadata_import" )</h3>
+<h3>$!i18n.getString( $importFormat ) $i18n.getString( "metadata_import" )</h3>
 
 <div id="inputCriteria" class="inputCriteria" style="width: 380px">
-<form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importMetaData.action">
+<form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importMetaData.action?importFormat=$!{importFormat}">
 <table>
 <col width="140">
 <col>

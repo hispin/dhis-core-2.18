@@ -215,7 +215,6 @@
       <param name="requiredAuthorities">F_EXPORT_DATA</param>
     </action>
     
-    		<!-- New -->
     <action name="displayDataExportForm" class="org.hisp.dhis.importexport.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/exportDataForm.vm</param>
@@ -224,7 +223,6 @@
       <param name="requiredAuthorities">F_EXPORT_DATA</param>
     </action>
     
-
     <action name="displayDetailedMetaDataExportForm"
       class="org.hisp.dhis.importexport.action.exp.GetDetailedExportOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -244,7 +242,6 @@
       </result>
     </action>
 
-    	<!-- New -->
     <action name="exportData" class="org.hisp.dhis.importexport.action.exp.DataExportAction">
       <result name="success" type="stream">
         <param name="contentType">application/zip</param>
@@ -322,7 +319,7 @@
     </action>
 
     <action name="importMetaData" class="org.hisp.dhis.importexport.action.dxf2.MetaDataImportAction">
-      <result name="success" type="redirect">dxf2MetaDataImport.action</result>
+      <result name="success" type="redirect">dxf2MetaDataImport.action?importFormat=${importFormat}</result>
       <interceptor-ref name="fileUploadStack" />
     </action>
 
