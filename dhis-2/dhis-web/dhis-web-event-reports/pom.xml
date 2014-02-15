@@ -11,7 +11,7 @@
 
   <artifactId>dhis-web-event-reports</artifactId>
   <packaging>war</packaging>
-  <name>DHIS Event</name>
+  <name>DHIS Web Event Reports</name>
 
   <build>
     <finalName>dhis-web-event-reports</finalName>

@@ -11,7 +11,7 @@
 
   <artifactId>dhis-service-tracker</artifactId>
   <packaging>jar</packaging>
-  <name>DHIS Patient API Implementations</name>
+  <name>DHIS Tracker API Implementations</name>
 
   <dependencies>
 
