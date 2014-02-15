@@ -32,6 +32,7 @@ import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.importexport.action.util.ImportMetaDataCsvTask;
 import org.hisp.dhis.importexport.action.util.ImportMetaDataTask;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
@@ -93,6 +94,18 @@ public class MetaDataImportAction
         this.strategy = ImportStrategy.valueOf( strategy );
     }
 
+    private String importFormat;
+
+    public String getImportFormat()
+    {
+        return importFormat;
+    }
+
+    public void setImportFormat( String importFormat )
+    {
+        this.importFormat = importFormat;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -115,8 +128,17 @@ public class MetaDataImportAction
         importOptions.setStrategy( strategy.toString() );
         importOptions.setDryRun( dryRun );
 
-        scheduler.executeTask( new ImportMetaDataTask( ( user != null ? user.getUid() : null ), importService, importOptions, in, taskId ) );
-
+        String userId = user != null ? user.getUid() : null;
+        
+        if ( "csv".equals( importFormat ) )
+        {
+            scheduler.executeTask( new ImportMetaDataCsvTask( userId, importService, importOptions, in, taskId ) );
+        }
+        else
+        {
+            scheduler.executeTask( new ImportMetaDataTask( userId, importService, importOptions, in, taskId ) );
+        }
+        
         return SUCCESS;
     }
 }

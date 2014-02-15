@@ -28,21 +28,22 @@ package org.hisp.dhis.importexport.action.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.dxf2.utils.CsvObjectUtils;
 import org.hisp.dhis.scheduling.TaskId;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ImportMetaDataTask
+public class ImportMetaDataCsvTask
     implements Runnable
 {
     private static final Log log = LogFactory.getLog( ImportMetaDataTask.class );
@@ -57,7 +58,7 @@ public class ImportMetaDataTask
 
     private String userUid;
 
-    public ImportMetaDataTask( String userUid, ImportService importService, ImportOptions importOptions, InputStream inputStream,
+    public ImportMetaDataCsvTask( String userUid, ImportService importService, ImportOptions importOptions, InputStream inputStream,
         TaskId taskId )
     {
         this.importService = importService;
@@ -71,23 +72,15 @@ public class ImportMetaDataTask
     public void run()
     {
         MetaData metaData = null;
-
+        
         try
         {
-            // TODO sniff if its xml or json, but this works for now
-            metaData = JacksonUtils.fromXml( inputStream, MetaData.class );
+            metaData = CsvObjectUtils.fromCsv( inputStream, DataElement.class );
         }
-        catch ( IOException ignored )
+        catch ( IOException ex )
         {
-            try
-            {
-                metaData = JacksonUtils.fromJson( inputStream, MetaData.class );
-            }
-            catch ( IOException ex )
-            {
-                log.error( "(IOException) Unable to parse meta-data while reading input stream", ex );
-                return;
-            }
+            log.error( "Unable to read meta-data while reading input stream", ex );
+            return;
         }
 
         importService.importMetaData( userUid, metaData, importOptions, taskId );
