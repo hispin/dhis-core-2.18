@@ -30,14 +30,12 @@ package org.hisp.dhis.trackedentity;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 @Transactional
 public class DefaultTrackedEntityAttributeService
@@ -54,9 +52,9 @@ public class DefaultTrackedEntityAttributeService
         this.attributeStore = attributeStore;
     }
 
-    private GenericNameableObjectStore<TrackedEntityAttributeOption> attributeOptionStore;
+    private TrackedEntityAttributeOptionStore attributeOptionStore;
 
-    public void setAttributeOptionStore( GenericNameableObjectStore<TrackedEntityAttributeOption> attributeOptionStore )
+    public void setAttributeOptionStore( TrackedEntityAttributeOptionStore attributeOptionStore )
     {
         this.attributeOptionStore = attributeOptionStore;
     }
@@ -197,7 +195,7 @@ public class DefaultTrackedEntityAttributeService
 
     public TrackedEntityAttributeOption getTrackedEntityAttributeOption( TrackedEntityAttribute attribute, String name )
     {
-        return attributeStore.get( attribute, name );
+        return attributeOptionStore.get( attribute, name );
     }
 
     public TrackedEntityAttributeOption getTrackedEntityAttributeOption( int id )
@@ -207,6 +205,6 @@ public class DefaultTrackedEntityAttributeService
 
     public Collection<TrackedEntityAttributeOption> getTrackedEntityAttributeOption( TrackedEntityAttribute attribute )
     {
-        return attributeStore.get( attribute );
+        return attributeOptionStore.get( attribute );
     }
 }
