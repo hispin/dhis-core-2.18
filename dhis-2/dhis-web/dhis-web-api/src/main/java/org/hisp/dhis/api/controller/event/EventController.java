@@ -115,7 +115,7 @@ public class EventController
         @RequestParam( value = "program", required = false ) String programUid,
         @RequestParam( value = "programStage", required = false ) String programStageUid,
         @RequestParam( value = "person", required = false ) String personUid,
-        @RequestParam( value = "orgUnit" ) String orgUnitUid,
+        @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
         @RequestParam( value = "includeChildren", required = false, defaultValue = "false" ) boolean includeChildren,
         @RequestParam( value = "includeDescendants", required = false, defaultValue = "false" ) boolean includeDescendants,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
@@ -150,6 +150,16 @@ public class EventController
             catch ( NumberFormatException ignored )
             {
             }
+        }
+
+        if ( rootOrganisationUnit == null && person != null )
+        {
+            Events events = eventService.getEvents( Arrays.asList( program ), Arrays.asList( programStage ), null, person, startDate, endDate );
+
+            model.addAttribute( "model", events );
+            model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+
+            return "events";
         }
 
         if ( rootOrganisationUnit == null )
