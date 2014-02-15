@@ -27,29 +27,19 @@
 
 package org.hisp.dhis.trackedentity;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionStore;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.Assert.*;
+
 /**
  * @author Chau Thu Tran
- * 
  * @version $ TrackedEntityAttributeOptionStoreTest.java Nov 5, 2013 4:43:12 PM $
  */
 public class TrackedEntityAttributeOptionStoreTest
     extends DhisSpringTest
 {
-    @Autowired
-    private TrackedEntityAttributeOptionStore attributeOptionStore;
-
     @Autowired
     private TrackedEntityAttributeService attributeService;
 
@@ -80,22 +70,22 @@ public class TrackedEntityAttributeOptionStoreTest
     @Test
     public void testGetTrackedEntityAttributeGroupByName()
     {
-        int idA = attributeOptionStore.save( attributeOptionA );
+        int idA = attributeService.addTrackedEntityAttributeOption( attributeOptionA );
 
-        assertNotNull( attributeOptionStore.get( idA ) );
+        assertNotNull( attributeService.getTrackedEntityAttributeOption( idA ) );
 
-        assertEquals( attributeOptionA, attributeOptionStore.get( attributeA, "AttributeOptionA" ) );
+        assertEquals( attributeOptionA, attributeService.getTrackedEntityAttributeOption( attributeA, "AttributeOptionA" ) );
     }
 
     @Test
     public void testGetTrackedEntityAttributeOptionByAttribute()
     {
-        attributeOptionStore.save( attributeOptionA );
-        attributeOptionStore.save( attributeOptionB );
-        attributeOptionStore.save( attributeOptionC );
+        attributeService.addTrackedEntityAttributeOption( attributeOptionA );
+        attributeService.addTrackedEntityAttributeOption( attributeOptionB );
+        attributeService.addTrackedEntityAttributeOption( attributeOptionC );
 
-        assertTrue( equals( attributeOptionStore.get( attributeA ), attributeOptionA, attributeOptionB ) );
-        assertTrue( equals( attributeOptionStore.get( attributeB ), attributeOptionC ) );
+        assertTrue( equals( attributeService.getTrackedEntityAttributeOption( attributeA ), attributeOptionA, attributeOptionB ) );
+        assertTrue( equals( attributeService.getTrackedEntityAttributeOption( attributeB ), attributeOptionC ) );
     }
 
 }
