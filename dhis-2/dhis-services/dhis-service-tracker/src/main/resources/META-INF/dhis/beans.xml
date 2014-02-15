@@ -395,6 +395,7 @@
 			<list>
 				<value>trackedentityattribute</value>
 				<value>trackedentityattributegroup</value>
+                <value>trackedentityattributevalue</value>
 				<value>program</value>
 				<value>programstage</value>
 				<value>programinstance</value>
@@ -512,15 +513,11 @@
 		<property name="arguments">
 			<list>
 				<list>
-					<ref
-						local="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler" />
+					<ref local="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler" />
+					<ref local="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler" />
+					<ref local="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler" />
+					<ref local="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />

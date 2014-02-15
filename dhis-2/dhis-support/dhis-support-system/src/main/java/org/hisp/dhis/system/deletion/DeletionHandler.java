@@ -84,6 +84,7 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAudit;
 import org.hisp.dhis.trackedentity.TrackedEntityForm;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
@@ -534,6 +535,15 @@ public abstract class DeletionHandler
     }
 
     public void deleteTrackedEntityAttributeGroup( TrackedEntityAttributeGroup attributeGroup )
+    {
+    }
+    
+    public String allowDeleteTrackedEntityAttributeOption( TrackedEntityAttributeOption attributeOption )
+    {
+        return null;
+    }
+    
+    public void deleteTrackedEntityAttributeOption( TrackedEntityAttributeOption attributeOption )
     {
     }
 
