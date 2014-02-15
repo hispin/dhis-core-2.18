@@ -28,13 +28,12 @@ package org.hisp.dhis.trackedentity.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeStore;
-
-import java.util.Collection;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -95,21 +94,4 @@ public class HibernateTrackedEntityAttributeStore
     {
         return getCriteria( Restrictions.eq( "displayInListNoProgram", displayInListNoProgram ) ).list();
     }
-
-    // -------------------------------------------------------------------------
-    // TrackedEntityAttributeOption
-    // -------------------------------------------------------------------------
-
-    public TrackedEntityAttributeOption get( TrackedEntityAttribute attribute, String name )
-    {
-        return (TrackedEntityAttributeOption) getCriteria( Restrictions.eq( "name", name ),
-            Restrictions.eq( "attribute", attribute ) ).uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<TrackedEntityAttributeOption> get( TrackedEntityAttribute attribute )
-    {
-        return getCriteria( Restrictions.eq( "attribute", attribute ) ).list();
-    }
-
 }
