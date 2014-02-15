@@ -395,7 +395,7 @@
 			<list>
 				<value>trackedentityattribute</value>
 				<value>trackedentityattributegroup</value>
-                <value>trackedentityattributevalue</value>
+                <value>trackedentityattributeoption</value>
 				<value>program</value>
 				<value>programstage</value>
 				<value>programinstance</value>
