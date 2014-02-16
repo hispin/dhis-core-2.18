@@ -41,6 +41,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.util.ContextUtils;
@@ -140,13 +141,17 @@ public class GetDataSetsAction
         {
             Set<DataSet> accessibleDataSets = new HashSet<DataSet>();
 
-            for ( UserAuthorityGroup u : userService.getUserCredentials( currentUserService.getCurrentUser() )
-                .getUserAuthorityGroups() )
+            User user = currentUserService.getCurrentUser();
+            
+            if ( user != null )
             {
-                accessibleDataSets.addAll( u.getDataSets() );
-            }
-
-            dataSets.retainAll( accessibleDataSets );
+                for ( UserAuthorityGroup u : userService.getUserCredentials( user ).getUserAuthorityGroups() )
+                {
+                    accessibleDataSets.addAll( u.getDataSets() );
+                }
+                
+                dataSets.retainAll( accessibleDataSets );
+            }            
         }
 
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
