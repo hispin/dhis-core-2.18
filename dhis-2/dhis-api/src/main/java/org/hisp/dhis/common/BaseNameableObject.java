@@ -28,14 +28,14 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.common.view.ShortNameView;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.annotation.Description;
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.common.view.ShortNameView;
 
 /**
  * @author Bob Jolliffe
@@ -147,7 +147,6 @@ public class BaseNameableObject
     @JsonProperty
     @JsonView( { ShortNameView.class, DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
-    @Description( "An short name representing this Object. Optional but unique." )
     public String getShortName()
     {
         return shortName;
@@ -161,7 +160,6 @@ public class BaseNameableObject
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    @Description( "Description of this Object." )
     public String getDescription()
     {
         return description;

@@ -58,7 +58,7 @@ public class CsvObjectUtils
         while ( reader.readRecord() )
         {
             String[] values = reader.getValues();
-            
+
             if ( values == null || values.length == 0 )
             {
                 continue;
@@ -92,7 +92,7 @@ public class CsvObjectUtils
     {
         if ( values == null || index < 0 || index >= values.length )
         {
-            return null;
+            return defaultValue;
         }
         
         String value = values[index];
