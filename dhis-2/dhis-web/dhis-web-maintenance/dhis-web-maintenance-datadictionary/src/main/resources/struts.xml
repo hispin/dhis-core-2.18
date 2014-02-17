@@ -716,7 +716,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addCategoryOptionGroupForm.vm</param>
       <param name="javascripts">javascript/categoryOptionGroup.js</param>
-      <param name="stylesheets">style/basic.css</param>
       <param name="anyAuthorities">F_CATEGORY_OPTION_GROUP_PUBLIC_ADD, F_CATEGORY_OPTION_GROUP_PRIVATE_ADD</param>
     </action>
 
@@ -725,7 +724,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateCategoryOptionGroupForm.vm</param>
       <param name="javascripts">javascript/categoryOptionGroup.js</param>
-      <param name="stylesheets">style/basic.css</param>
       <param name="anyAuthorities">F_CATEGORY_OPTION_GROUP_PUBLIC_ADD, F_CATEGORY_OPTION_GROUP_PRIVATE_ADD</param>
     </action>
 
@@ -783,7 +781,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addCategoryOptionGroupSetForm.vm</param>
       <param name="javascripts">javascript/categoryOptionGroupSet.js</param>
-      <param name="stylesheets">style/basic.css</param>
       <param name="anyAuthorities">F_CATEGORY_OPTION_GROUP_SET_PUBLIC_ADD, F_CATEGORY_OPTION_GROUP_SET_PRIVATE_ADD</param>
     </action>
 
@@ -792,7 +789,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateCategoryOptionGroupSetForm.vm</param>
       <param name="javascripts">javascript/categoryOptionGroupSet.js</param>
-      <param name="stylesheets">style/basic.css</param>
       <param name="anyAuthorities">F_CATEGORY_OPTION_GROUP_SET_PUBLIC_ADD, F_CATEGORY_OPTION_GROUP_SET_PRIVATE_ADD</param>
     </action>
 
