@@ -62,11 +62,11 @@ public class TranslationServiceTest
     private String className1 = OrganisationUnit.class.getName();
     private String className2 = DataElement.class.getName();
 
-    private Translation translation1a = null;
-    private Translation translation1b = null;
-    private Translation translation2a = null;
-    private Translation translation2b = null;
-    private Translation translation2c = null;
+    private Translation translation1a;
+    private Translation translation1b;
+    private Translation translation2a;
+    private Translation translation2b;
+    private Translation translation2c;
 
     // -------------------------------------------------------------------------
     // Set up/tear down

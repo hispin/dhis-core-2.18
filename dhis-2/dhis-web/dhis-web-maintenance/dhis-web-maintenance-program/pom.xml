@@ -11,7 +11,7 @@
   
   <artifactId>dhis-web-maintenance-program</artifactId>
   <packaging>war</packaging>
-  <name>DHIS Patient Management</name>
+  <name>DHIS Program and Attribute Management</name>
   
   <build>
     <finalName>dhis-web-maintenance-program</finalName>
