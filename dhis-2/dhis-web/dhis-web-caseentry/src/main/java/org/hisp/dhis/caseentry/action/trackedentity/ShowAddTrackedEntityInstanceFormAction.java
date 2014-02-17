@@ -43,6 +43,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
@@ -50,6 +51,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityForm;
 import org.hisp.dhis.trackedentity.TrackedEntityFormService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeGroupSortOrderComparator;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,14 +71,13 @@ public class ShowAddTrackedEntityInstanceFormAction
 
     @Autowired
     private TrackedEntityInstanceService entityInstanceService;
-    
+
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
     }
-
 
     private ProgramService programService;
 
@@ -112,6 +113,9 @@ public class ShowAddTrackedEntityInstanceFormAction
     {
         this.relationshipTypeService = relationshipTypeService;
     }
+
+    @Autowired
+    private TrackedEntityService trackedEntityService;
 
     private I18n i18n;
 
@@ -255,17 +259,26 @@ public class ShowAddTrackedEntityInstanceFormAction
         return relationshipTypes;
     }
 
+    private List<TrackedEntity> trackedEntities;
+
+    public List<TrackedEntity> getTrackedEntities()
+    {
+        return trackedEntities;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        if( entityInstanceId!=null)
+        if ( entityInstanceId != null )
         {
             entityInstanceUid = entityInstanceService.getTrackedEntityInstance( entityInstanceId ).getUid();
         }
-        
+
+        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
 
@@ -275,9 +288,9 @@ public class ShowAddTrackedEntityInstanceFormAction
 
             if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
             {
-                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd(
-                    trackedEntityForm.getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(),
-                    healthWorkers, null, null, i18n, format );
+                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
+                    .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, null, null, i18n,
+                    format );
             }
         }
         else
@@ -287,9 +300,9 @@ public class ShowAddTrackedEntityInstanceFormAction
 
             if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
             {
-                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd(
-                    trackedEntityForm.getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(),
-                    healthWorkers, null, null, i18n, format );
+                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
+                    .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, null, null, i18n,
+                    format );
             }
         }
 
@@ -303,7 +316,7 @@ public class ShowAddTrackedEntityInstanceFormAction
             {
                 attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
                 Collection<Program> programs = programService.getAllPrograms();
-                
+
                 for ( Program p : programs )
                 {
                     attributes.removeAll( p.getAttributes() );

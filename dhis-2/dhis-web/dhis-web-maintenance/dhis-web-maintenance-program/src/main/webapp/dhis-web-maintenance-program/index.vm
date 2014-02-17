@@ -2,9 +2,15 @@
 
 <ul class="introList">
     #introListImgItem( "attribute.action" "attribute" "patient" )
+<<<<<<< TREE
+    #introListImgItem( "attributeVisitSchedule.action" "tracked_entity_attribute_visit_schedule" "patient" )
+    #introListImgItem( "attributeGroup.action" "tracked_entity_attribute_group" "patient" )
+=======
     #introListImgItem( "attributeVisitSchedule.action" "attribute_visit_schedule" "patient" )
     #introListImgItem( "attributeGroup.action" "attribute_group" "patient" )
+>>>>>>> MERGE-SOURCE
     #introListImgItem( "relationshipType.action" "relationship_type" "patient" )
+    #introListImgItem( "trackedEntity.action" "tracked_entity" "patient" )
     #introListImgItem( "trackedEntityForm.action" "tracked_entity_form" "pivottable" )
     #introListImgItem( "program.action" "program" "program" )
     #introListImgItem( "caseAggregation.action" "aggregation_query_builder" "caseaggregationmapping" )

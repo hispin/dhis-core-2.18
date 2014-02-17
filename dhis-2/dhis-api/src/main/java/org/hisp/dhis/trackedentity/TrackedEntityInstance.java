@@ -42,6 +42,7 @@ import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -58,7 +59,7 @@ public class TrackedEntityInstance
     private static final long serialVersionUID = 884114994005945275L;
 
     public static String SEARCH_SAPERATE = "_";
-    
+
     public static String PREFIX_TRACKED_ENTITY_ATTRIBUTE = "attr";
 
     public static String PREFIX_PROGRAM = "prg";
@@ -76,6 +77,8 @@ public class TrackedEntityInstance
     private OrganisationUnit organisationUnit;
 
     private TrackedEntityInstance representative;
+
+    private TrackedEntity trackedEntity;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -152,5 +155,18 @@ public class TrackedEntityInstance
         attributeValues.remove( attributeValue );
         attributeValue.setEntityInstance( null );
     }
+    
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )
+    public TrackedEntity getTrackedEntity()
+    {
+        return trackedEntity;
+    }
 
+    public void setTrackedEntity( TrackedEntity trackedEntity )
+    {
+        this.trackedEntity = trackedEntity;
+    }
 }

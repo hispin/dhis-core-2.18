@@ -31,6 +31,7 @@ package org.hisp.dhis.program;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -193,4 +194,9 @@ public class DefaultProgramService
         return programs;
     }
 
+    @Override
+    public Collection<Program> getProgramsByTrackedEntity( TrackedEntity trackedEntity )
+    {
+        return i18n( i18nService, programStore.getByTrackedEntity( trackedEntity ) );
+    }
 }

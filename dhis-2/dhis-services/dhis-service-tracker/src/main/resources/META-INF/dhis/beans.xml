@@ -131,7 +131,13 @@
 			value="org.hisp.dhis.trackedentity.TrackedEntityAudit" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
+	
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityStore" 
+		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+		<property name="clazz" value="org.hisp.dhis.trackedentity.TrackedEntity" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!-- Service definitions -->
 
 	<bean id="org.hisp.dhis.program.ProgramDataEntryService" class="org.hisp.dhis.program.DefaultProgramDataEntryService">
@@ -283,6 +289,12 @@
 		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityAuditService">
 		<property name="auditStore"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAuditStore" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityService">
+		<property name="trackedEntityStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityStore" />
 	</bean>
 
 	<!-- TrackedEntityComment -->

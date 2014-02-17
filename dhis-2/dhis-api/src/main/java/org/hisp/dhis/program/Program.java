@@ -43,6 +43,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
@@ -140,6 +141,8 @@ public class Program
     private Program relatedProgram;
 
     private Boolean dataEntryMethod = false;
+
+    private TrackedEntity trackedEntity;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -606,4 +609,19 @@ public class Program
     {
         this.attributes = attributes;
     }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )
+    public TrackedEntity getTrackedEntity()
+    {
+        return trackedEntity;
+    }
+
+    public void setTrackedEntity( TrackedEntity trackedEntity )
+    {
+        this.trackedEntity = trackedEntity;
+    }
+
 }

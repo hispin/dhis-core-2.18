@@ -1174,5 +1174,72 @@
 			</result>
 		</action>
 		
+		<!-- TrackedEntity -->
+	
+		<action name="trackedEntity"
+			class="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-program/trackedEntity.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
+			<param name="javascripts">javascript/trackedEntity.js</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_MANAGEMENT</param>
+		</action>
+
+		<action name="showAddTrackedEntityForm"
+			class="org.hisp.dhis.trackedentity.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-program/addTrackedEntity.vm</param>
+			<param name="javascripts">javascript/trackedEntity.js</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ADD</param>
+		</action>
+
+		<action name="addTrackedEntity"
+			class="org.hisp.dhis.trackedentity.action.trackedentity.AddTrackedEntityAction">
+			<result name="success" type="redirect">trackedEntity.action
+			</result>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ADD</param>
+		</action>
+
+		<action name="showUpdateTrackedEntityForm"
+			class="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-program/updateTrackedEntity.vm</param>
+			<param name="javascripts">javascript/trackedEntity.js</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_UPDATE</param>
+		</action>
+
+		<action name="updateTrackedEntity"
+			class="org.hisp.dhis.trackedentity.action.trackedentity.UpdateTrackedEntityAction">
+			<result name="success" type="redirect">trackedEntity.action
+			</result>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_UPDATE</param>
+		</action>
+
+		<action name="removeTrackedEntity"
+			class="org.hisp.dhis.trackedentity.action.trackedentity.RemoveTrackedEntityAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_DELETE</param>
+		</action>
+
+		<action name="getTrackedEntity"
+			class="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonTrackedEntity.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="validateTrackedEntity"
+			class="org.hisp.dhis.trackedentity.action.trackedentity.ValidateTrackedEntityAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
+		</action>
+		
 	</package>
 </struts>

@@ -2,24 +2,21 @@
 	<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
 </tr>
 
-#if($trackedEntityForm.fixedAttributes.contains( 'healthWorker' ))
+#if($program)
+	<input type='hidden' id='trackedEntityId' name='trackedEntityId' value='$program.trackedEntity.id'>
+#else
 	<tr>
-		<td class='text-column'><label for="healthWorker">$i18n.getString( "health_worker" )</label></td>
+		<td class='text-column'><label>$i18n.getString('tracked_entity')<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 		<td class="input-column">
-			<select id="healthWorker" name="healthWorker">
-				<option value="">[$i18n.getString("please_select")]</option>
-				#foreach( $healthWorker in $healthWorkers)
-					<option value="$healthWorker.id" #if($entityInstance.associate.id == $healthWorker.id) selected #end>$healthWorker.name</option>
+			<select type='hidden' id='trackedEntityId' name='trackedEntityId' value='$program.trackedEntity.id'>
+				<option value=''>[$i18n.getString('please_select')]</option>
+				#foreach($trackedEntity in $trackedEntities)
+				<option value='$trackedEntity.id' #if($entityInstance.trackedEntity>$trackedEntity.displayName</option>
 				#end
 			</select>
-		</td>
+		</td>	
 	</tr>
 #end
-
-<tr>
-	<td></td>
-	<td><input type="button" class='button' id='checkDuplicateBtn' name='checkDuplicateBtn' value="$i18n.getString('check_duplicate')" /></td>
-</tr>
 
 <!-- ATTRIBUTES IN GROUPS -->
 

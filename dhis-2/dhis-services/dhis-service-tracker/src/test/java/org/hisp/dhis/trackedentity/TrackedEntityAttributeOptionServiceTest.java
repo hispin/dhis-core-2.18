@@ -27,14 +27,18 @@
 
 package org.hisp.dhis.trackedentity;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Chau Thu Tran
+ * 
  * @version $ TrackedEntityAttributeOptionServiceTest.java Nov 5, 2013 4:25:29 PM $
  */
 public class TrackedEntityAttributeOptionServiceTest
@@ -73,7 +77,7 @@ public class TrackedEntityAttributeOptionServiceTest
         int idA = attributeService.addTrackedEntityAttributeOption( attributeOptionA );
         int idB = attributeService.addTrackedEntityAttributeOption( attributeOptionB );
 
-        assertNotNull( attributeService.getTrackedEntityAttributeOption( (idA) ) );
+        assertNotNull( attributeService.getTrackedEntityAttributeOption( idA ) );
         assertNotNull( attributeService.getTrackedEntityAttributeOption( idB ) );
     }
 

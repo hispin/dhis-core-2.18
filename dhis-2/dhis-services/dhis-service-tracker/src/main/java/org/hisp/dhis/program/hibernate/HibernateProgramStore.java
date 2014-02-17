@@ -28,6 +28,10 @@ package org.hisp.dhis.program.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -35,13 +39,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStore;
 import org.hisp.dhis.system.util.CollectionUtils;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Chau Thu Tran
@@ -72,14 +73,14 @@ public class HibernateProgramStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Program> getByType( int type )
     {
         return getCriteria( Restrictions.eq( "type", type ) ).list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Program> get( int type, OrganisationUnit organisationUnit )
     {
@@ -112,7 +113,7 @@ public class HibernateProgramStore
         {
             programs = getAll();
         }
-        
+
         return programs;
     }
 
@@ -138,12 +139,12 @@ public class HibernateProgramStore
         {
             programs = getByType( type );
         }
-        
+
         return programs;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
     {
         Criteria criteria = getCriteria();
@@ -157,4 +158,12 @@ public class HibernateProgramStore
 
         return criteria.list();
     }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<Program> getByTrackedEntity( TrackedEntity trackedEntity )
+    {
+        return getCriteria( Restrictions.eq( "trackedEntity", trackedEntity ) ).list();
+    }
+
 }

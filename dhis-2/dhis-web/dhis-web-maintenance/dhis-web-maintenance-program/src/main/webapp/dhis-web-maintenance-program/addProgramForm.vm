@@ -88,6 +88,19 @@
 			</td>
 			<td></td>
 		</tr>
+		
+		<tr>
+			<td><label for="dataEntryMethod">$i18n.getString( "tracked_entity" ) </label></td>
+			<td>
+				<select id='trackedEntityId' name='trackedEntityId' style="width: 335px;">
+					<option value=''>[$i18n.getString('please_select')]</option>
+					#foreach($trackedEntity in $trackedEntities)
+					<option value='$trackedEntity.id'>$trackedEntity.displayName</option>
+					#end
+				</select>
+			</td>
+			<td></td>
+		</tr>
 
 		<tr name='nonAnonymous'>
 			<th colspan="2" style="width: 590px;">$i18n.getString( "enrollment_details" )</th>
@@ -158,7 +171,7 @@
 		</tr>
 
 		<tr name='nonAnonymous'>
-			<td><label for="relationshipFromA">$i18n.getString("who_is_the_new_relative_to_the_existing_person")</a></td>
+			<td><label for="relationshipFromA">$i18n.getString("who_is_the_new_relative_to_the_existing_tracked_entity_instance")</a></td>
 			<td>
 				<select type='text' id='relationshipFromA' name='relationshipFromA'></select>
 			</td>

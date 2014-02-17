@@ -28,5 +28,9 @@
     <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
       foreign-key="fk_trackedentityinstance_organisationunitid" not-null="true" />
 	
+	<many-to-one name="trackedEntity"
+			class="org.hisp.dhis.trackedentity.TrackedEntity" column="trackedentityid"
+			foreign-key="fk_trackedentityinstance_trackedentityid" />
+	
   </class>
 </hibernate-mapping>
