@@ -37,6 +37,7 @@ import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -740,7 +741,16 @@ public abstract class DeletionHandler
     {
     }
 
-    public String allowCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
+    public String allowDeleteCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
+    {
+        return null;
+    }
+    
+    public void deleteCategoryOptionGroupSet( CategoryOptionGroupSet categoryOptionGroupSet )
+    {
+    }
+    
+    public String allowDeleteCategoryOptionGroupSet( CategoryOptionGroupSet categoryOptionGroupSet )
     {
         return null;
     }
