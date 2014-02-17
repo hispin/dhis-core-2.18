@@ -202,7 +202,7 @@ final public class ExchangeClasses
         exportClasses.remove( DataElementOperand.class );
         importClasses.remove( DataElementOperand.class );
         exportClasses.remove( CategoryOptionGroup.class );
-        importClasses.remove( CategoryOptionGroup.class );
+        //importClasses.remove( CategoryOptionGroup.class );
         exportClasses.remove( CategoryOptionGroupSet.class );
         importClasses.remove( CategoryOptionGroupSet.class );
 
