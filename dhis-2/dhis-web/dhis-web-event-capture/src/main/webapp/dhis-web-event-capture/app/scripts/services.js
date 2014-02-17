@@ -559,13 +559,9 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
         
         getByStage: function(orgUnit, programStage){
             var promise = $http.get(dhis2Url + '/api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&paging=false').then(function(response){
-                var dhis2Events = response.data.eventList;
+                //var dhis2Events = response.data.eventList;                
                 
-                /*angular.forEach(dhis2Events, function(dhis2Event){
-                    console.log('datavalue length:  ', dhis2Event.dataValues.length);
-                });*/
-                
-                return dhis2Events;             
+                return response.data.eventList;             
             });            
             return promise;
         },
@@ -930,6 +926,18 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
     };
 
 }])
+
+.service('ContextMenuSelectedItem', function(){
+    this.selectedItem = '';
+    
+    this.setSelectedItem = function(selectedItem){  
+        this.selectedItem = selectedItem;        
+    };
+    
+    this.getSelectedItem = function(){
+        return this.selectedItem;
+    };
+})
 
 /* Pagination service */
 .service('Paginator', function () {

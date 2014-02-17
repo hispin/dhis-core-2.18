@@ -1,44 +1,44 @@
-<div id="contextMenu" class="contextMenu">
+<div id="contextMenu" class="contextMenu" style="width: 180px;">
     <ul id="contextMenuItems" class="contextMenuItems">
-        <li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
-        <li data-enabled="canUpdate"><a data-target-fn="showUpdateDataElementForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
-        <li data-enabled="canUpdate"><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>
-        <li data-enabled="canDelete"><a data-target-fn="removeDataElement"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
-        <li><a data-target-fn="showDataElementDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
+        <li><a href ng-click="editEventInGrid()"><i class="fa fa-edit"></i>&nbsp;&nbsp;{{'edit_in_grid'| translate}}</a></li>
+        <li><a href ng-click="editEventInFull()"><i class="fa fa-edit"></i>&nbsp;&nbsp;{{'full_edit'| translate}}</a></li>
+        <li><a href ng-click="removeEvent()"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;{{'remove'| translate}}</a></li>
+        <li><a href ng-click="showEventDetails()"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;{{'show_details'| translate}}</a></li>        
     </ul>
 </div>
+
 
 <table class="mainPageTable">
     <tr>
         <td style="vertical-align:top">
             <div id="content">
-                <table class="listTable dhis2-table-striped dhis2-table-hover" id="dhis2EventList">
+                <table class="listTable dhis2-table-striped dhis2-table-hover">                    
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th class="max-column-width" ng-click="sortEventGrid(eventGridHeader)" ng-repeat="eventGridHeader in eventGridHeaders">
                                 {{eventGridHeader.name}}
                                 <i ng-show="sortHeader == eventGridHeader.id && !reverse" class="fa fa-sort-desc"></i>
                                 <i ng-show="sortHeader == eventGridHeader.id && reverse" class="fa fa-sort-asc"></i>
                             </th>
-                            <th>{{'operations'| translate}}</th>            
+                            <th>
+                                <a href ng-click="editGridHeader()" title="{{'show_hide_columns'| translate}}"><i class="fa fa-cog"></i></a>
+                            </th>         
                         </tr>
                     </thead>
                     <tbody id="list">
-                        <tr id="tr{{dhis2Event.event}}" ng-repeat="dhis2Event in dhis2Events| paginate:rowsPerPage| orderBy:sortHeader:reverse" ng-click="showContextMenu(dhis2Event)">
-                            <td>{{($index + 1) + (paginator.getPage() * paginator.rowsPerPage)}}</td>                                                        
-                            <td class="max-column-width" ng-hide="eventUnderEditing == dhis2Event" ng-repeat="eventGridHeader in eventGridHeaders">
+                        <tr id={{dhis2Event.event}} data-id={{dhis2Event.event}} data-uid={{dhis2Event.event}} ng-repeat="dhis2Event in dhis2Events| paginate:rowsPerPage| orderBy:sortHeader:reverse" ng-click="showContextMenu(dhis2Event)">
+                            <td dhis-context-menu selected-item={{dhis2Event}} class="max-column-width" ng-hide="eventUnderEditing.event == dhis2Event.event" ng-repeat="eventGridHeader in eventGridHeaders">
                                 {{dhis2Event[eventGridHeader.id]}}                                              
                             </td>
-                            <td class="max-column-width" ng-show="eventUnderEditing == dhis2Event" ng-repeat="eventGridHeader in eventGridHeaders">
+                            <td class="max-column-width" ng-show="eventUnderEditing.event == dhis2Event.event" ng-repeat="eventGridHeader in eventGridHeaders">
                                 <div ng-switch="programStageDataElements[eventGridHeader.id].type">
                                     <div ng-switch-when="int">
                                         <input type="number" style="width:90%;" ng-model="eventUnderEditing[eventGridHeader.id]" value="eventUnderEditing[eventGridHeader.id]"/>
                                     </div>
-                                    <div ng-switch-when="string">
-                                        <select style="width:90%;" ng-model="eventUnderEditing[eventGridHeader.id]" value="eventUnderEditing[eventGridHeader.id]" ng-options='option for option in programStageDataElements[eventGridHeader.id].optionSet.options | limitTo:20'>
-                                            <option value="">{{'please_select'| translate}}</option>
-                                        </select>
+                                    <div ng-switch-when="string">                                        
+                                        <div class="container-fluid">
+                                            <input type="text" style="width:90%;" ng-model="eventUnderEditing[eventGridHeader.id]" value="eventUnderEditing[eventGridHeader.id]" typeahead="option for option in programStageDataElements[eventGridHeader.id].optionSet.options | filter:$viewValue | limitTo:20" >                                            
+                                        </div>                                        
                                     </div>
                                     <div ng-switch-when="bool">
                                         <select style="width:90%;" ng-model="eventUnderEditing[eventGridHeader.id]" value="eventUnderEditing[eventGridHeader.id]">
@@ -53,12 +53,12 @@
                                 </div>
                             </td>
                             <td>
-                                <span ng-hide="eventUnderEditing == dhis2Event">
-                                    <a href ng-click="editEvent(dhis2Event)" title="{{'edit'| translate}}"><span class='anchor-color'><i class="fa fa-pencil-square-o fa-2x"></i></span></a>
-                                    <a href ng-click="deleteEvent(dhis2Event)" title="{{'delete'| translate}}"><span class='red'><i class="fa fa-trash-o fa-2x"></i></span></a>       
-                                </span>
-                                <span ng-show="eventUnderEditing == dhis2Event">
-                                    <a href ng-click="updateEvent(dhis2Event)" title="{{'update'| translate}}"><span class='anchor-color'><i class="fa fa-floppy-o fa-2x"></i></span></a>
+                                <!--<span ng-hide="eventUnderEditing == dhis2Event">
+                                <a href ng-click="editEvent(dhis2Event)" title="{{'edit'| translate}}"><span class='anchor-color'><i class="fa fa-pencil-square-o fa-2x"></i></span></a>
+                                <a href ng-click="deleteEvent(dhis2Event)" title="{{'delete'| translate}}"><span class='red'><i class="fa fa-trash-o fa-2x"></i></span></a>       
+                                </span>-->
+                                <span ng-show="eventUnderEditing.event == dhis2Event.event">
+                                    <a href ng-click="updateEvent(dhis2Event)" title="{{'update'| translate}}"><span class='black'><i class="fa fa-floppy-o fa-2x"></i></span></a>
                                     <a href ng-click="cancelEditing(dhis2Event)" title="{{'cancel'| translate}}"><span class='red'><i class="fa fa-undo fa-2x"></i></span></a>       
                                 </span>
                             </td>
