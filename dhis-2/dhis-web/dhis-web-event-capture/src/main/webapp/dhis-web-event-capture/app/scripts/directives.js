@@ -51,4 +51,56 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
         },
         templateUrl: 'views/pagination.html'        
     };
-});
+})
+
+.directive('dhisContextMenu', ['ContextMenuSelectedItem', function(ContextMenuSelectedItem) {
+        
+    return {        
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            var contextMenu = $("#contextMenu");                   
+            
+            element.click(function (e) {
+                var selectedItem = $.parseJSON(attrs.selectedItem);
+                ContextMenuSelectedItem.setSelectedItem(selectedItem);
+                
+                var menuHeight = contextMenu.height();
+                var menuWidth = contextMenu.width();
+                var winHeight = $(window).height();
+                var winWidth = $(window).width();
+
+                var pageX = e.pageX;
+                var pageY = e.pageY;
+
+                contextMenu.show();
+
+                if( (menuWidth + pageX) > winWidth ) {
+                  pageX -= menuWidth;
+                }
+
+                if( (menuHeight + pageY) > winHeight ) {
+                  pageY -= menuHeight;
+
+                  if( pageY < 0 ) {
+                      pageY = e.pageY;
+                  }
+                }
+                
+                contextMenu.css({
+                    left: pageX,
+                    top: pageY
+                });
+
+                return false;
+            });
+            
+            contextMenu.on("click", "a", function () {                    
+                contextMenu.hide();
+            });
+
+            $(document).click(function () {                                        
+                contextMenu.hide();
+            });
+        }     
+    };
+}]);

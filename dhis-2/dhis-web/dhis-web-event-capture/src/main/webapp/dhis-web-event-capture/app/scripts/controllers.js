@@ -12,6 +12,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 ProgramStageFactory,
                 DHIS2EventFactory,
                 Paginator,
+                ContextMenuSelectedItem,
+                ModalService,
                 orderByFilter,
                 $translate) {   
     
@@ -35,6 +37,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     $scope.sortHeader = '';
     $scope.reverse = false;
+    $scope.gridFilter = '';
            
     //Get orgunits for the logged in user
     OrgUnitFactory.getMine().then(function(orgUnits) {
@@ -107,7 +110,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                        dhis2Event.dataValues = orderByFilter(dhis2Event.dataValues, '-dataElement');
                        angular.forEach(dhis2Event.dataValues, function(dataValue){
 
-                           //now copy actual event value
+                           //converting int value to integer for proper sorting.
                            var dataElement = $scope.programStageDataElements[dataValue.dataElement];
                            if(dataElement.type == 'int'){
                                dataValue.value = parseInt(dataValue.value);
@@ -116,13 +119,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                        });                       
                    });
                    
-                   //generate grid headers from events                   
-                   angular.forEach($scope.dhis2Events[0].dataValues, function(dataValue){      
-                       var dataElement = $scope.programStageDataElements[dataValue.dataElement];
+                   //generate grid headers using program stage data elements
+                   //also, create a template for new event.
+                   for(var dataElement in $scope.programStageDataElements){
+                       var dataElement = $scope.programStageDataElements[dataElement];
                        var name = dataElement.formName || dataElement.name;
                        $scope.newDhis2Event.dataValues.push({dataElement: dataElement, value: '', name: name});                       
-                       $scope.eventGridHeaders.push({name: name, id: dataElement.id});
-                   });           
+                       $scope.eventGridHeaders.push({name: name, id: dataElement.id, filter: ''});
+                   }                   
                });
             });            
         });
@@ -174,7 +178,32 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.eventUnderEditing = '';
     };   
     
-    $scope.deleteEvent = function(dhis2Event){
+    $scope.editEventInGrid = function(){
+        $scope.eventUnderEditing = ContextMenuSelectedItem.getSelectedItem();
+        console.log('The event is:  ', ContextMenuSelectedItem.getSelectedItem().event);
+    };
+    
+    $scope.editEventInFull = function(){
+        console.log('The event is:  ', ContextMenuSelectedItem.getSelectedItem().event);
+    };
+    
+    $scope.removeEvent = function(){
+        var dhis2Event = ContextMenuSelectedItem.getSelectedItem();
+        
+        var modalOptions = {
+            closeButtonText: 'cancel',
+            actionButtonText: 'remove',
+            headerText: 'remove',
+            bodyText: 'are_you_sure_to_remove'
+        };
+
+        ModalService.showModal({}, modalOptions).then(function(result){
+            console.log('The event to be deleted is:  ', dhis2Event);
+        });        
+    };
+    
+    $scope.showEventDetails = function(){
+        console.log('The event is:  ', ContextMenuSelectedItem.getSelectedItem().event);
     };
     
     $scope.getHelpContent = function(){
@@ -182,13 +211,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };
     
     $scope.generateReport = function(){
-      console.log('I need to generate the report....');  
-    };   
-    
-    $scope.showContextMenu = function(dhis2Event){
-        //console.log('I need to display context menu for....', dhis2Event);
-    }
-     
+        console.log('I need to generate the report....');  
+    };     
 })
 
 //Controller for the main page
