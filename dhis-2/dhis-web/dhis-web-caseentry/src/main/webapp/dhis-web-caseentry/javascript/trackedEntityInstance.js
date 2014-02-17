@@ -151,6 +151,9 @@ function TrackedEntityInstance()
 	this.add = function( programId, related, params, isContinue)
 	{
 		if( !this.validate(programId) ) return;
+		if(programId!=''){
+			params += '&programId=' + programId;
+		}
 		
 		$.ajax({
 		  type: "POST",
