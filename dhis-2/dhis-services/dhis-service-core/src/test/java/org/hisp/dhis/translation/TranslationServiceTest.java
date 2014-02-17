@@ -62,11 +62,11 @@ public class TranslationServiceTest
     private String className1 = OrganisationUnit.class.getName();
     private String className2 = DataElement.class.getName();
 
-    private Translation translation1a = new Translation( className1, id1, locale1, "name", "cheers" );
-    private Translation translation1b = new Translation( className1, id1, locale1, "shortName", "goodbye" );
-    private Translation translation2a = new Translation( className1, id1, locale2, "name", "hello" );
-    private Translation translation2b = new Translation( className2, id1, locale2, "name", "hey" );
-    private Translation translation2c = new Translation( className2, id2, locale3, "name", "bonjour" );
+    private Translation translation1a = null;
+    private Translation translation1b = null;
+    private Translation translation2a = null;
+    private Translation translation2b = null;
+    private Translation translation2c = null;
 
     // -------------------------------------------------------------------------
     // Set up/tear down
@@ -76,6 +76,12 @@ public class TranslationServiceTest
     public void setUpTest()
     {
         translationService = (TranslationService) getBean( TranslationService.ID );
+        
+        translation1a = new Translation( className1, id1, locale1, "name", "cheers" );
+        translation1b = new Translation( className1, id1, locale1, "shortName", "goodbye" );
+        translation2a = new Translation( className1, id1, locale2, "name", "hello" );
+        translation2b = new Translation( className2, id1, locale2, "name", "hey" );
+        translation2c = new Translation( className2, id2, locale3, "name", "bonjour" );
     }
     
     // -------------------------------------------------------------------------
