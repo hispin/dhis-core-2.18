@@ -41,9 +41,12 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -97,6 +100,9 @@ public class AddProgramAction
         this.relationshipTypeService = relationshipTypeService;
     }
 
+    @Autowired 
+    private TrackedEntityService trackedEntityService;
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -227,6 +233,13 @@ public class AddProgramAction
         this.dataEntryMethod = dataEntryMethod;
     }
 
+    private Integer trackedEntityId;
+
+    public void setTrackedEntityId( Integer trackedEntityId )
+    {
+        this.trackedEntityId = trackedEntityId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -280,6 +293,11 @@ public class AddProgramAction
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
+        if( trackedEntityId!=null)
+        {
+            TrackedEntity trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
+            program.setTrackedEntity( trackedEntity );
+        }
         programService.addProgram( program );
 
         int index = 0;

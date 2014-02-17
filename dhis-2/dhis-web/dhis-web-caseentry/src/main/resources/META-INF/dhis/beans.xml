@@ -469,8 +469,6 @@
 		<property name="attributeService">
 			<ref bean="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		</property>
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.trackedentity.ShowAddTrackedEntityInstanceFormAction"

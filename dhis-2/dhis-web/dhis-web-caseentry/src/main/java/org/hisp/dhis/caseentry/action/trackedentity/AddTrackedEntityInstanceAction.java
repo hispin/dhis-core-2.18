@@ -39,16 +39,21 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,6 +80,12 @@ public class AddTrackedEntityInstanceAction
 
     private OrganisationUnitSelectionManager selectionManager;
 
+    @Autowired
+    private TrackedEntityService trackedEntityService;
+
+    @Autowired
+    private ProgramService programService;
+
     private I18nFormat format;
 
     // -------------------------------------------------------------------------
@@ -89,6 +100,10 @@ public class AddTrackedEntityInstanceAction
 
     private boolean relationshipFromA;
 
+    private Integer trackedEntityId;
+
+    private Integer programId;
+
     private String message;
 
     // -------------------------------------------------------------------------
@@ -98,13 +113,20 @@ public class AddTrackedEntityInstanceAction
     public String execute()
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
         TrackedEntityInstance entityInstance = new TrackedEntityInstance();
-
-        // ---------------------------------------------------------------------
-        // Set location
-        // ---------------------------------------------------------------------
-
+        TrackedEntity trackedEntity = null;
+        
+        if ( programId != null )
+        {
+            Program program = programService.getProgram( programId );
+            trackedEntity = program.getTrackedEntity();   
+        }
+        else
+        {
+            trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
+        }
+        
+        entityInstance.setTrackedEntity( trackedEntity );
         entityInstance.setOrganisationUnit( organisationUnit );
 
         // ---------------------------------------------------------------------
@@ -137,7 +159,8 @@ public class AddTrackedEntityInstanceAction
                     }
                     else if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                     {
-                        TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( Integer.parseInt( value ) );
+                        TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( Integer
+                            .parseInt( value ) );
                         if ( option != null )
                         {
                             attributeValue.setAttributeOption( option );
@@ -149,8 +172,8 @@ public class AddTrackedEntityInstanceAction
             }
         }
 
-        int entityInstanceId = entityInstanceService.createTrackedEntityInstance( entityInstance, representativeId, relationshipTypeId,
-            attributeValues );
+        int entityInstanceId = entityInstanceService.createTrackedEntityInstance( entityInstance, representativeId,
+            relationshipTypeId, attributeValues );
 
         // -------------------------------------------------------------------------
         // Create relationship
@@ -216,6 +239,11 @@ public class AddTrackedEntityInstanceAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+
+    public void setTrackedEntityId( Integer trackedEntityId )
+    {
+        this.trackedEntityId = trackedEntityId;
     }
 
     public String getMessage()

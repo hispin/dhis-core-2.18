@@ -4,6 +4,7 @@
 	<li><a href="attributeVisitSchedule.action">$i18n.getString( "tracked_entity_attribute_visit_schedule" )</a></li>
 	<li><a href="attributeGroup.action">$i18n.getString( "tracked_entity_attribute_group" )</a></li>
 	<li><a href="relationshipType.action">$i18n.getString( "relationship_type" )</a></li>
+	<li><a href="trackedEntity.action">$i18n.getString( "tracked_entity" )</a></li>
 	<li><a href="trackedEntityForm.action">$i18n.getString( "tracked_entity_form" )</a></li>
 </ul>
 

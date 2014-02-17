@@ -30,6 +30,7 @@ package org.hisp.dhis.program;
 
 import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 
 import java.util.Collection;
 
@@ -95,4 +96,12 @@ public interface ProgramStore
      * @return Program list
      */
     Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit );
+
+    /**
+     * Get {@link Program} by TrackedEntity
+     * 
+     * @param trackedEntity {@link TrackedEntity}
+     */
+    Collection<Program> getByTrackedEntity( TrackedEntity trackedEntity );
+    
 }

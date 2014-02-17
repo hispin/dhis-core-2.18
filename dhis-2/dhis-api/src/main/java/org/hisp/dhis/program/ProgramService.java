@@ -31,6 +31,7 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.validation.ValidationCriteria;
 
 /**
@@ -178,4 +179,12 @@ public interface ProgramService
      * @param organisationUnit {@link OrganisationUnit}
      */
     Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit );
+    
+    /**
+     * Get {@link Program} by TrackedEntity
+     * 
+     * @param trackedEntity {@link TrackedEntity}
+     */
+    Collection<Program> getProgramsByTrackedEntity( TrackedEntity trackedEntity );
+    
 }

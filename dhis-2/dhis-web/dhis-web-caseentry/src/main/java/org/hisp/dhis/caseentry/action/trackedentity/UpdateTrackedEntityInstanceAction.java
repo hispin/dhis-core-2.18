@@ -38,15 +38,18 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -67,7 +70,11 @@ public class UpdateTrackedEntityInstanceAction
 
     private TrackedEntityAttributeValueService attributeValueService;
 
-    private OrganisationUnitSelectionManager selectionManager;
+    @Autowired
+    private TrackedEntityService trackedEntityService;
+
+    @Autowired
+    private ProgramService programService;
 
     private I18nFormat format;
 
@@ -80,6 +87,10 @@ public class UpdateTrackedEntityInstanceAction
     private Integer representativeId;
 
     private Integer relationshipTypeId;
+
+    private Integer trackedEntityId;
+
+    private Integer programId;
 
     // -------------------------------------------------------------------------
     // Output
@@ -94,15 +105,19 @@ public class UpdateTrackedEntityInstanceAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( id );
+        TrackedEntity trackedEntity = null;
 
-        entityInstance = entityInstanceService.getTrackedEntityInstance( id );
-
-        // ---------------------------------------------------------------------
-        // Set location
-        // ---------------------------------------------------------------------
-
-        entityInstance.setOrganisationUnit( organisationUnit );
+        if ( programId != null )
+        {
+            Program program = programService.getProgram( programId );
+            trackedEntity = program.getTrackedEntity();
+        }
+        else
+        {
+            trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
+        }
+        entityInstance.setTrackedEntity( trackedEntity );
 
         // ---------------------------------------------------------------------
         // Save Tracked Entity Instance Attributes
@@ -124,7 +139,8 @@ public class UpdateTrackedEntityInstanceAction
 
             for ( TrackedEntityAttribute attribute : attributes )
             {
-                String value = request.getParameter( AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE + attribute.getId() );
+                String value = request.getParameter( AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE
+                    + attribute.getId() );
 
                 if ( StringUtils.isNotBlank( value ) )
                 {
@@ -143,8 +159,8 @@ public class UpdateTrackedEntityInstanceAction
                         attributeValue.setValue( value.trim() );
                         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
-                            TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( Integer
-                                .parseInt( value ) );
+                            TrackedEntityAttributeOption option = attributeService
+                                .getTrackedEntityAttributeOption( Integer.parseInt( value ) );
                             if ( option != null )
                             {
                                 attributeValue.setAttributeOption( option );
@@ -157,8 +173,8 @@ public class UpdateTrackedEntityInstanceAction
                     {
                         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
-                            TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( NumberUtils.toInt(
-                                value, 0 ) );
+                            TrackedEntityAttributeOption option = attributeService
+                                .getTrackedEntityAttributeOption( NumberUtils.toInt( value, 0 ) );
                             if ( option != null )
                             {
                                 attributeValue.setAttributeOption( option );
@@ -177,8 +193,8 @@ public class UpdateTrackedEntityInstanceAction
             }
         }
 
-        entityInstanceService.updateTrackedEntityInstance( entityInstance, representativeId, relationshipTypeId, valuesForSave, valuesForUpdate,
-            valuesForDelete );
+        entityInstanceService.updateTrackedEntityInstance( entityInstance, representativeId, relationshipTypeId,
+            valuesForSave, valuesForUpdate, valuesForDelete );
 
         return SUCCESS;
     }
@@ -190,6 +206,11 @@ public class UpdateTrackedEntityInstanceAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
+    }
+
+    public void setTrackedEntityService( TrackedEntityService trackedEntityService )
+    {
+        this.trackedEntityService = trackedEntityService;
     }
 
     public void setentityInstanceService( TrackedEntityInstanceService entityInstanceService )
@@ -205,11 +226,6 @@ public class UpdateTrackedEntityInstanceAction
     public void setattributeValueService( TrackedEntityAttributeValueService attributeValueService )
     {
         this.attributeValueService = attributeValueService;
-    }
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
     }
 
     public void setId( Integer id )

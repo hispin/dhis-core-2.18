@@ -1129,4 +1129,43 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
+	
+	<!-- TrackedEntity -->
+	
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentity.AddTrackedEntityAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentity.AddTrackedEntityAction"
+		scope="prototype">
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityAction"
+		scope="prototype">
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityListAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityListAction"
+		scope="prototype">
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentity.RemoveTrackedEntityAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentity.RemoveTrackedEntityAction"
+		scope="prototype">
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentity.UpdateTrackedEntityAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentity.UpdateTrackedEntityAction"
+		scope="prototype">
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentity.ValidateTrackedEntityAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentity.ValidateTrackedEntityAction"
+		scope="prototype">
+	</bean>
+	
 </beans>

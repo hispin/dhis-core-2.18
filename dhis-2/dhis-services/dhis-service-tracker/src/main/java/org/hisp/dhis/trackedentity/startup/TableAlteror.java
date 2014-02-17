@@ -38,6 +38,7 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -274,6 +275,8 @@ public class TableAlteror
         executeSql( "update userroleauthorities set authority='F_TRACKED_ENTITY_ATTRIBUTEVALUE_DELETE' where authority='F_PATIENTATTRIBUTEVALUE_DELETE'" );
         executeSql( "update userroleauthorities set authority='F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT' where authority='F_PATIENT_REMINDER_MANAGEMENT'" );
 
+        createPersonTrackedEntity();
+
     }
 
     // -------------------------------------------------------------------------
@@ -413,6 +416,24 @@ public class TableAlteror
         finally
         {
             holder.close();
+        }
+    }
+
+    private void createPersonTrackedEntity()
+    {
+        int exist = jdbcTemplate.queryForInt( "SELECT count(*) FROM trackedentity where name='Person'" );
+        if ( exist == 0 )
+        {
+            String id = statementBuilder.getAutoIncrementValue();
+            
+            jdbcTemplate.execute( "INSERT INTO trackedentity(trackedentityid,uid, name, description) values(" + id
+                + ",'" + CodeGenerator.generateCode() + "','Person','Person')" );
+            
+            jdbcTemplate.execute( "UPDATE program SET trackedentityid="
+                + "  (SELECT trackedentityid FROM trackedentity where name='Person') where trackedentityid is null" );
+            
+            jdbcTemplate.execute( "UPDATE trackedentityinstance SET trackedentityid="
+                + "  (SELECT trackedentityid FROM trackedentity where name='Person') where trackedentityid is null" );
         }
     }
 

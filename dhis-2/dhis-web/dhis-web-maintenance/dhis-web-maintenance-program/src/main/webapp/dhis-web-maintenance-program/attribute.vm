@@ -32,7 +32,7 @@
 			</thead>
 			<tbody id="list">
           #foreach( $attribute in $attributes )
-            <tr id="tr${attribute.id}" data-id="$!attribute.id" data-uid="$!attribute.uid" data-type="attribute" data-name="$encoder.htmlEncode( $!attribute.displayName )"
+            <tr id="tr${attribute.id}" data-id="$!attribute.id" data-uid="$!attribute.uid" data-type="TrackedEntityAttribute" data-name="$encoder.htmlEncode( $!attribute.displayName )"
                 data-can-manage="$security.canManage( $attribute )"
                 data-can-update="$security.canUpdate( $attribute )"
                 data-can-delete="$security.canDelete( $attribute )">

@@ -86,6 +86,19 @@
 		</tr>
 		
 		<tr>
+			<td><label for="dataEntryMethod">$i18n.getString( "tracked_entity" ) </label></td>
+			<td>
+				<select id='trackedEntityId' name='trackedEntityId' style="width: 335px;">
+					<option value=''>[$i18n.getString('please_select')]</option>
+					#foreach($trackedEntity in $trackedEntities)
+					<option value='$trackedEntity.id' #if($trackedEntity.id==$program.trackedEntity.id) selected #end >$trackedEntity.displayName</option>
+					#end
+				</select>
+			</td>
+			<td></td>
+		</tr>
+		
+		<tr>
 			<td><label for="version">$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input type="text" id="version" name="version" style="width: 330px;" value="$program.version" class="{validate:{required:true,integer:true}}"></td>
 			<td></td>
@@ -160,7 +173,7 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label for="relationshipFromA">$i18n.getString("who_is_the_new_relative_to_the_existing_person")</label></td>
+			<td><label for="relationshipFromA">$i18n.getString("who_is_the_new_relative_to_the_existing_tracked_entity_instance")</label></td>
 			<td>
 				<select id='relationshipFromA' name='relationshipFromA'>
 					#if($!program.relationshipType)

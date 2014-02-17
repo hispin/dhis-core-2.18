@@ -44,6 +44,7 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
@@ -52,9 +53,11 @@ import org.hisp.dhis.trackedentity.TrackedEntityForm;
 import org.hisp.dhis.trackedentity.TrackedEntityFormService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeGroupSortOrderComparator;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -80,6 +83,9 @@ public class GetTrackedEntityInstanceAction
     private TrackedEntityAttributeGroupService attributeGroupService;
 
     private TrackedEntityAttributeService attributeService;
+
+    @Autowired
+    private TrackedEntityService trackedEntityService;
 
     private I18n i18n;
 
@@ -160,6 +166,13 @@ public class GetTrackedEntityInstanceAction
         return trackedEntityForm;
     }
 
+    private List<TrackedEntity> trackedEntities;
+
+    public List<TrackedEntity> getTrackedEntities()
+    {
+        return trackedEntities;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -168,6 +181,7 @@ public class GetTrackedEntityInstanceAction
         throws Exception
     {
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
+        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
         entityInstance = entityInstanceService.getTrackedEntityInstance( id );
 
         healthWorkers = entityInstance.getOrganisationUnit().getUsers();
@@ -179,9 +193,9 @@ public class GetTrackedEntityInstanceAction
 
             if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
             {
-                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd(
-                    trackedEntityForm.getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(),
-                    healthWorkers, null, null, i18n, format );
+                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
+                    .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, null, null, i18n,
+                    format );
             }
         }
         else
@@ -191,9 +205,9 @@ public class GetTrackedEntityInstanceAction
 
             if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
             {
-                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd(
-                    trackedEntityForm.getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(),
-                    healthWorkers, null, null, i18n, format );
+                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
+                    .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, null, null, i18n,
+                    format );
             }
         }
 
@@ -211,7 +225,7 @@ public class GetTrackedEntityInstanceAction
                 Collection<Program> programs = programService.getAllPrograms();
                 for ( Program p : programs )
                 {
-                    for ( TrackedEntityAttribute attribute : p.getEntityAttributes())
+                    for ( TrackedEntityAttribute attribute : p.getEntityAttributes() )
                     {
                         if ( !attribute.getDisplayInListNoProgram() )
                         {
@@ -272,7 +286,6 @@ public class GetTrackedEntityInstanceAction
     // Getter / Setter
     // -----------------------------------------------------------------------------
 
-  
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
@@ -298,12 +311,10 @@ public class GetTrackedEntityInstanceAction
         return attributeGroupsMap;
     }
 
-
     public Relationship getRelationship()
     {
         return relationship;
     }
-
 
     public void setId( int id )
     {

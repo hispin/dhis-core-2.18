@@ -41,10 +41,13 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -86,6 +89,9 @@ public class ShowUpdateProgramFormAction
     {
         this.relationshipTypeService = relationshipTypeService;
     }
+
+    @Autowired
+    private TrackedEntityService trackedEntityService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -176,6 +182,13 @@ public class ShowUpdateProgramFormAction
         return programs;
     }
 
+    private List<TrackedEntity> trackedEntities;
+
+    public List<TrackedEntity> getTrackedEntities()
+    {
+        return trackedEntities;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -200,6 +213,9 @@ public class ShowUpdateProgramFormAction
 
         relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
         Collections.sort( relationshipTypes, IdentifiableObjectNameComparator.INSTANCE );
+
+        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+        Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
