@@ -628,6 +628,9 @@ public class TableAlteror
         executeSql( "UPDATE dataelementgroupset SET userid=NULL WHERE userid IS NOT NULL" );
         executeSql( "UPDATE dataelementgroupset SET publicaccess=NULL WHERE userid IS NOT NULL" );
 
+        executeSql( "ALTER TABLE dataelementcategory DROP COLUMN conceptid" );
+        executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN conceptid" );
+        
         // upgrade system charts/maps to public read-only sharing
         executeSql( "UPDATE chart SET publicaccess='r-------' WHERE user IS NULL AND publicaccess IS NULL;" );
         executeSql( "UPDATE map SET publicaccess='r-------' WHERE user IS NULL AND publicaccess IS NULL;" );

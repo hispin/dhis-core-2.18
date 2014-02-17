@@ -10,6 +10,16 @@
 	<td>$i18n.getString( "file" )</td>
 	<td><input type="file" id="upload" name="upload" style="margin-left:0px"></td>
 </tr>
+#if ( "csv" == $importFormat )
+<tr>
+	<td>$i18n.getString( "object_type" )</td>
+	<td><select id="classKey" name="classKey" style="width:190px">
+		<option value="dataelement">$i18n.getString( "data_element" )</option>
+        <option value="categoryoption">$i18n.getString( "category_option" )</option>
+        <option value="categoryoptiongroup">$i18n.getString( "category_option_group" )</option>
+    </select></td>
+</tr>
+#end
 <tr>
 	<td>$i18n.getString( "dry_run" )</td>
 	<td><select id="dryRun" name="dryRun" style="width:190px">
