@@ -101,6 +101,9 @@ public class TranslationServiceTest
     @Test
     public void delete()
     {
+        Translation translation1a = new Translation( className1, id1, locale1, "name", "habari" );
+        Translation translation1b = new Translation( className1, id1, locale1, "shortName", "kesho" );
+        
         translationService.addTranslation( translation1a );
         translationService.addTranslation( translation1b );
         
