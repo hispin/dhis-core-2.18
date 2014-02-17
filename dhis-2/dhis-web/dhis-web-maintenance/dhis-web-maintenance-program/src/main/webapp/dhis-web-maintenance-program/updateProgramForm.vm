@@ -63,7 +63,7 @@
 		</tr>
 
 		<tr>
-			<td><label for="type">$i18n.getString( "type" ) </label></td>
+			<td><label for="type">$i18n.getString( "type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
 				<select style="width: 336px;" id="type" name="type" onchange='programOnChange();' class="{validate:{required:true}}">
 					<option value='1' #if( $program.type=='1' ) selected #end>$i18n.getString('multiple_events_with_registration')</option>
@@ -86,9 +86,9 @@
 		</tr>
 		
 		<tr>
-			<td><label for="dataEntryMethod">$i18n.getString( "tracked_entity" ) </label></td>
+			<td><label for="dataEntryMethod">$i18n.getString( "tracked_entity" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
-				<select id='trackedEntityId' name='trackedEntityId' style="width: 335px;">
+				<select id='trackedEntityId' name='trackedEntityId' style="width: 335px;" class="{validate:{required:true}}">
 					<option value=''>[$i18n.getString('please_select')]</option>
 					#foreach($trackedEntity in $trackedEntities)
 					<option value='$trackedEntity.id' #if($trackedEntity.id==$program.trackedEntity.id) selected #end >$trackedEntity.displayName</option>

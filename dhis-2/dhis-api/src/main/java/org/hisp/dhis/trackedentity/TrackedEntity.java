@@ -50,7 +50,7 @@ public class TrackedEntity
     public TrackedEntity()
     {
     }
-
+    
     public TrackedEntity( String name, String description )
     {
         this.name = name;

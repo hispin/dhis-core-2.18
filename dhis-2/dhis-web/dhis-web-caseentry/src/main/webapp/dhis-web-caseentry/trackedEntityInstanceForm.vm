@@ -1,8 +1,25 @@
 
+#if($program)
+	<input type='hidden' id='trackedEntityId' name='trackedEntityId' value='$program.trackedEntity.id'>
+#else
+	<tr>
+		<th colspan="2" class="heading-column">$i18n.getString( "demographics" ) </th>
+	</tr>
+	<tr>
+		<td class='text-column'><label>$i18n.getString('tracked_entity')<em title="$i18n.getString( 'required' )" class="required">*</em> </label></td>
+		<td class="input-column">
+			<select type='hidden' id='trackedEntityId' name='trackedEntityId' value='$program.trackedEntity.id'>
+				<option value=''>[$i18n.getString('please_select')]</option>
+				#foreach($trackedEntity in $trackedEntities)
+				<option value='$trackedEntity.id' #if($entityInstance.trackedEntity.id==$trackedEntity.id) selected #end >$trackedEntity.displayName</option>
+				#end
+			</select>
+		</td>	
+	</tr>
+#end
+
 #if($!customRegistrationForm)
 	$customRegistrationForm
-#elseif($!trackedEntityForm)
-	#parse( "/dhis-web-caseentry/defaultTrackedEntityInstanceForm.vm" )
 #else
 	## Macro for generating the jQuery validation rules 
 	#macro( validate $type $require )
@@ -12,25 +29,7 @@
 		{validate:{required:true}}
 	  #end
 	#end
-	<tr>
-		<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
-	</tr>
-	#if($program)
-		<input type='hidden' id='trackedEntityId' name='trackedEntityId' value='$program.trackedEntity.id'>
-	#else
-		<tr>
-			<td class='text-column'><label>$i18n.getString('tracked_entity')<em title="$i18n.getString( 'required' )" class="required">*</em> </label></td>
-			<td class="input-column">
-				<select type='hidden' id='trackedEntityId' name='trackedEntityId' value='$program.trackedEntity.id'>
-					<option value=''>[$i18n.getString('please_select')]</option>
-					#foreach($trackedEntity in $trackedEntities)
-					<option value='$trackedEntity.id' #if($entityInstance.trackedEntity.id==$trackedEntity.id) selected #end >$trackedEntity.displayName</option>
-					#end
-				</select>
-			</td>	
-		</tr>
-	#end
-
+	
 #foreach ($attributeGroup in $attributeGroups )
 	 #set($attributesByGroup = $!attributesMap.get($attributeGroup.displayName))
 	 #if( $attributesByGroup && $attributesByGroup.size() > 0 )
