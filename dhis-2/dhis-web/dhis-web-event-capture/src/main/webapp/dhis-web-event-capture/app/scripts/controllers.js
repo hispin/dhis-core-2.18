@@ -32,6 +32,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.programStageDataElements = [];
     $scope.dhis2Events = [];
     $scope.eventRegistration = false;
+    $scope.editGridHeaders = false;
     $scope.eventGridHeaders = [];
     $scope.newDhis2Event = {dataValues: []};
     
@@ -125,7 +126,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                        var dataElement = $scope.programStageDataElements[dataElement];
                        var name = dataElement.formName || dataElement.name;
                        $scope.newDhis2Event.dataValues.push({dataElement: dataElement, value: '', name: name});                       
-                       $scope.eventGridHeaders.push({name: name, id: dataElement.id, filter: ''});
+                       $scope.eventGridHeaders.push({name: name, id: dataElement.id, filter: '', hide: false});
                    }                   
                });
             });            
@@ -145,6 +146,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         
         $scope.sortHeader = gridHeader.id;
         $scope.reverse = false;    
+    };
+    
+    $scope.showHideColumns = function(showAllColumns){
+        if(showAllColumns){
+            angular.forEach($scope.eventGridHeaders, function(gridHeader){
+                gridHeader.hide = false;
+            });
+        }
+        else{
+            $scope.editGridHeaders = !$scope.editGridHeaders;
+        }        
     };
     
     $scope.registerEvent = function(){
