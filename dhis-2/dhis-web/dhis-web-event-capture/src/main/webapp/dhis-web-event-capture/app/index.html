@@ -11,8 +11,8 @@
         <script type="text/javascript" src="lib/jquery/js/jquery-ui-1.9.2.custom.js"></script>
         <link rel="stylesheet" type="text/css" href="lib/jquery/css/ui-lightness/jquery-ui-1.9.2.custom.css"> 
 
-        <!--<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap-theme.min.css">
+        <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+        <!--<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap-theme.min.css">
         <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">-->
 
         <script type="text/javascript" src="lib/angular/angular.js"></script>
@@ -48,7 +48,9 @@
         <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
         <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
 
-        <!--<script type="text/javascript" src="../../dhis-web-commons/ouwt/ouwt.js"></script>-->
+        <!--<script type="text/javascript" src="../../dhis-web-commons/ouwt/ouwt.js"></script>
+        <script type="text/javascript" src="scripts/ouwt.js"></script>
+        <script type="text/javascript" src="scripts/ouSelection.js"></script>-->
         <script type="text/javascript" src="scripts/angularLocalStorage.js"></script>
         <script type="text/javascript" src="scripts/angular-translate.min.js"></script>
         <script type="text/javascript" src="scripts/angular-translate-loader-static-files.min.js"></script>
@@ -75,9 +77,8 @@
             </div>
         </div>
         <div ng-controller="MainController"> 
-            <div id="leftBar">    
-                <div class="org-unit-tree" ng-include="'views/orgUnitTree.html'"></div>
-                
+            <div id="leftBar">
+                <div ng-include="'views/orgUnitTree.html'"></div>
             </div>
             <div class="page" id="mainPage">
                 <h1>{{'event_capture'| translate}}<a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a></h1>
@@ -96,14 +97,13 @@
                                 </select>      
                             </td>
                             <td style='padding-left: 20px;'>
-                                <button ng-show="selectedProgramStage" ng-click="registerEvent()" class="button">{{'register_new_event'| translate}}</button>  
+                                <button ng-show="selectedProgramStage" ng-click="showEventRegistration()" class="button" ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">{{'register_new_event'| translate}}</button>  
                             </td>
                         </tr>                       
                     </table>
                 </div>
 
-
-                <div id="listDiv" ng-show="selectedProgramStage && !eventRegistration">
+                <div id="listDiv" ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">
                     <h2>
                         {{'registered_events'| translate}}                                                 
                     </h2>               
@@ -120,8 +120,17 @@
                     </div>                    
 
                 </div>  
-                <div class="container-1-4" ng-show="eventRegistration">
+                <div ng-show="eventRegistration">
+                    <h2>
+                        {{'new_event_registration'| translate}}                                                 
+                    </h2>   
                     <div ng-include="'views/eventRegistration.html'"></div>
+                </div>
+                <div ng-show="editingEventInFull">
+                    <h2>
+                        {{'update_event'| translate}}                                                 
+                    </h2>   
+                    <div ng-include="'views/eventUpdate.html'"></div>
                 </div>
             </div>           
         </div>

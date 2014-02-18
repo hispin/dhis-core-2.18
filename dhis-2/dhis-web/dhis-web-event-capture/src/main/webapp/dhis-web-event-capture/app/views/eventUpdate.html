@@ -1,4 +1,4 @@
-<div ng-show="eventRegistration" style="width:50%;">
+<div ng-show="editingEventInFull" style="width:50%;">
     <table class="dhis2-list-table-striped">                    
         <thead>                        
             <tr>
@@ -11,38 +11,38 @@
             </tr>                        
         </thead>
         <tbody id="list">
-            <tr ng-repeat="eventDataValue in currentEvent.dataValues">                
+            <tr ng-repeat="eventGridColumn in eventGridColumns">
                 <td class="max-column-width">
-                    {{eventDataValue.name}}                                              
+                    {{eventGridColumn.name}}                                              
                 </td>
                 <td class="max-column-width">
-                    <div ng-switch="eventDataValue.dataElement.type">
+                    <div ng-switch="programStageDataElements[eventGridColumn.id].type">
                         <div ng-switch-when="int">
-                            <input type="number" style="width:98%;" ng-model="eventDataValue.value"/>
+                            <input type="number" style="width:98%;" ng-model="currentEvent[eventGridColumn.id]"/>
                         </div>
                         <div ng-switch-when="string">                                        
-                            <div ng-switch="eventDataValue.dataElement.optionSet.options.length > 20">
+                            <div ng-switch="programStageDataElements[eventGridColumn.id].optionSet.options.length > 20">
                                 <div ng-switch-when="true">
                                     <div class="container-fluid">
-                                        <input type="text" style="width:98%;" ng-model="eventDataValue.value" typeahead="option for option in eventDataValue.dataElement.optionSet.options | filter:$viewValue | limitTo:20" >                                            
+                                        <input type="text" style="width:98%;" ng-model="currentEvent[eventGridColumn.id]" typeahead="option for option in programStageDataElements[eventGridColumn.id].optionSet.options | filter:$viewValue | limitTo:20" >                                            
                                     </div>
                                 </div>
                                 <div ng-switch-default>
-                                    <select style="width:98%;" ng-model="eventDataValue.value" ng-options='option for option in eventDataValue.dataElement.optionSet.options'>
+                                    <select style="width:98%;" ng-model="currentEvent[eventGridColumn.id]" ng-options='option for option in programStageDataElements[eventGridColumn.id].optionSet.options'>
                                         <option value="">{{'please_select'| translate}}</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div ng-switch-when="bool">
-                            <select style="width:98%;" ng-model="eventDataValue.value">
+                            <select style="width:98%;" ng-model="currentEvent[eventGridColumn.id]">
                                 <option value="">{{'please_select'| translate}}</option>                        
                                 <option value="0">{{'no'| translate}}</option>
                                 <option value="1">{{'yes'| translate}}</option>
                             </select>
                         </div>
                         <div ng-switch-when="date">
-                            <input type="text" style="width:98%;" placeholder="yyyy-mm-dd" ng-date ng-model="eventDataValue.value">
+                            <input type="text" style="width:98%;" placeholder="yyyy-mm-dd" ng-date ng-model="currentEvent[eventGridColumn.id]">
                         </div>
                     </div>
                 </td>
@@ -50,7 +50,7 @@
         </tbody>        
     </table>
     
-    <button ng-show="selectedProgramStage" ng-click="addEvent()" class="button">{{'save'| translate}}</button>
+    <button ng-show="selectedProgramStage" ng-click="updateEvent()" class="button">{{'update'| translate}}</button>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <button ng-show="selectedProgramStage" ng-click="showEventList(null)" class="button">{{'back'| translate}}</button>  
+    <button ng-show="selectedProgramStage" ng-click="showEventList()" class="button">{{'back'| translate}}</button>  
 </div>
