@@ -105,7 +105,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                $scope.selectedProgramStage = data;
                
                angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
-                   $scope.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement; 
+                   $scope.programStageDataElements[prStDe.dataElement.id] = prStDe; 
                });
                
                //Load events for the selected program stage and orgunit
@@ -121,7 +121,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                            angular.forEach($scope.dhis2Events[i].dataValues, function(dataValue){
                                
                                //converting int value to integer for proper sorting.
-                               var dataElement = $scope.programStageDataElements[dataValue.dataElement];
+                               var dataElement = $scope.programStageDataElements[dataValue.dataElement].dataElement;
                                if(angular.isObject(dataElement)){                               
                                    if(dataElement.type == 'int'){
                                        dataValue.value = parseInt(dataValue.value);
@@ -140,9 +140,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                    //generate grid headers using program stage data elements
                    //also, create a template for new event.
                    for(var dataElement in $scope.programStageDataElements){
-                       var dataElement = $scope.programStageDataElements[dataElement];
+                       var dataElement = $scope.programStageDataElements[dataElement].dataElement;
                        var name = dataElement.formName || dataElement.name;
-                       $scope.newDhis2Event.dataValues.push({dataElement: dataElement, value: '', name: name});                       
+                       $scope.newDhis2Event.dataValues.push({id: dataElement.id, value: '', name: name});                       
                        $scope.eventGridColumns.push({name: name, id: dataElement.id, filter: '', hide: false});
                    }                   
                });
@@ -181,24 +181,29 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.editingEventInFull = false;
         $scope.editingEventInGrid = false;
         
+        $scope.outerForm.$valid = true;
+        
         $scope.currentEvent = '';
     };
     
     $scope.showEventRegistration = function(){
         $scope.eventRegistration = !$scope.eventRegistration;  
         $scope.currentEvent = $scope.newDhis2Event;
+        $scope.outerForm.$valid = true;
     };    
     
     $scope.showEditEventInGrid = function(){
         $scope.currentEvent = ContextMenuSelectedItem.getSelectedItem();  
         $scope.currentEventOrginialValue = angular.copy($scope.currentEvent);
         $scope.editingEventInGrid = !$scope.editingEventInGrid;                
+        $scope.outerForm.$valid = true;
     };
     
     $scope.showEditEventInFull = function(){      
         $scope.currentEvent = ContextMenuSelectedItem.getSelectedItem();        
         $scope.editingEventInFull = !$scope.editingEventInFull;   
         $scope.eventRegistration = false;
+        $scope.outerForm.$valid = true;
         
         if($scope.currentEvent.dataValues.length !== $scope.selectedProgramStage.programStageDataElements.length){
             angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
@@ -214,11 +219,28 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.editingEventInFull = false;
         $scope.editingEventInGrid = false;
         
+        $scope.outerForm.submitted = true;
+        
+        if($scope.outerForm.$invalid ){
+            console.log('the form is invalid');
+            return false;
+        }
+        
         console.log('the event to be added is:  ', $scope.currentEvent);
         $scope.currentEvent = '';
     };       
     
     $scope.updateEvent = function(){
+        
+        console.log('the form is:  ', $scope.outerForm);
+        //validate form        
+        $scope.outerForm.submitted = true;
+        
+        if($scope.outerForm.$invalid ){
+            console.log('the form is invalid');
+            return false;
+        }
+        
         $scope.eventRegistration = false;
         $scope.editingEventInFull = false;
         $scope.editingEventInGrid = false;                
