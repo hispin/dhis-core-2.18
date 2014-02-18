@@ -133,6 +133,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE section DROP COLUMN label" );
         executeSql( "ALTER TABLE section DROP COLUMN title" );
         executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );
+        executeSql( "ALTER TABLE organisationunit DROP COLUMN geocode" );
         executeSql( "ALTER TABLE indicator DROP COLUMN extendeddataelementid" );
         executeSql( "ALTER TABLE indicator DROP COLUMN numeratoraggregationtype" );
         executeSql( "ALTER TABLE indicator DROP COLUMN denominatoraggregationtype" );

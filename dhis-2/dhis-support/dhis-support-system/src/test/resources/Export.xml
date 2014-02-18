@@ -419,7 +419,6 @@
             <closedDate>1970-01-01</closedDate>
             <active>true</active>
             <comment>CommentA</comment>
-            <geoCode>GeoCode</geoCode>
         </organisationUnit>
         <organisationUnit>
             <id>66</id>
@@ -431,7 +430,6 @@
             <closedDate>1970-01-01</closedDate>
             <active>true</active>
             <comment>CommentB</comment>
-            <geoCode>GeoCode</geoCode>
         </organisationUnit>
         <organisationUnit>
             <id>67</id>
@@ -443,7 +441,6 @@
             <closedDate>1970-01-01</closedDate>
             <active>true</active>
             <comment>CommentC</comment>
-            <geoCode>GeoCode</geoCode>
         </organisationUnit>
     </organisationUnits>
     <organisationUnitRelationships>

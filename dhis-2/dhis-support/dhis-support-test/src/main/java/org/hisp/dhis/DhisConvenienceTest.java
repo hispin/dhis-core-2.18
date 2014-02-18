@@ -648,7 +648,6 @@ public abstract class DhisConvenienceTest
         unit.setClosedDate( date );
         unit.setActive( true );
         unit.setComment( "Comment" + uniqueCharacter );
-        unit.setGeoCode( "GeoCode" );
 
         return unit;
     }
