@@ -144,7 +144,7 @@ public class JdbcOrgUnitTargetTableManager
             columns.add( col );
         }
 
-        String[] ds = { "oug", "character(11) not null", "oug.uid" };
+        String[] ds = { quote( "oug" ), "character(11) not null", "oug.uid" };
         
         columns.add( ds );
         

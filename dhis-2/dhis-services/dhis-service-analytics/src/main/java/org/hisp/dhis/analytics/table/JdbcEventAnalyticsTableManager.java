@@ -237,14 +237,14 @@ public class JdbcEventAnalyticsTableManager
             columns.add( col );
         }
 
-        String[] psi = { "psi", "character(11) not null", "psi.uid" };
-        String[] ps = { "ps", "character(11) not null", "ps.uid" };
-        String[] ed = { "executiondate", "timestamp", "psi.executiondate" };
-        String[] longitude = { "longitude", dbl, "psi.longitude" };
-        String[] latitude = { "latitude", dbl, "psi.latitude" };
-        String[] ou = { "ou", "character(11) not null", "ou.uid" };
-        String[] oun = { "ouname", "character varying(230) not null", "ou.name" };
-        String[] ouc = { "oucode", "character varying(50)", "ou.code" };
+        String[] psi = { quote( "psi" ), "character(11) not null", "psi.uid" };
+        String[] ps = { quote( "ps" ), "character(11) not null", "ps.uid" };
+        String[] ed = { quote( "executiondate" ), "timestamp", "psi.executiondate" };
+        String[] longitude = { quote( "longitude" ), dbl, "psi.longitude" };
+        String[] latitude = { quote( "latitude" ), dbl, "psi.latitude" };
+        String[] ou = { quote( "ou" ), "character(11) not null", "ou.uid" };
+        String[] oun = { quote( "ouname" ), "character varying(230) not null", "ou.name" };
+        String[] ouc = { quote( "oucode" ), "character varying(50)", "ou.code" };
 
         columns.addAll( Arrays.asList( psi, ps, ed, longitude, latitude, ou, oun, ouc ) );
 
