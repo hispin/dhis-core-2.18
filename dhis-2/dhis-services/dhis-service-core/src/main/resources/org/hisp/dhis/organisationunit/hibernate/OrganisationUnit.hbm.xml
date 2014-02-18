@@ -40,8 +40,6 @@
 
     <property name="comment" type="text" />
 
-    <property name="geoCode" />
-
     <property name="featureType" />
 
     <property name="coordinates" type="text" />

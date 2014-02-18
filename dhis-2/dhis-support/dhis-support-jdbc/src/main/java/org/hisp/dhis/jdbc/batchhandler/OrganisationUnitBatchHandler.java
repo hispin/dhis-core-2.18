@@ -101,7 +101,6 @@ public class OrganisationUnitBatchHandler
         statementBuilder.setColumn( "closeddate" );
         statementBuilder.setColumn( "active" );
         statementBuilder.setColumn( "comment" );
-        statementBuilder.setColumn( "geocode" );
         statementBuilder.setColumn( "featuretype" );
         statementBuilder.setColumn( "coordinates" );
     }
@@ -118,7 +117,6 @@ public class OrganisationUnitBatchHandler
         statementBuilder.setValue( unit.getClosedDate() );
         statementBuilder.setValue( unit.isActive() );
         statementBuilder.setValue( unit.getComment() );
-        statementBuilder.setValue( unit.getGeoCode() );
         statementBuilder.setValue( unit.getFeatureType() );
         statementBuilder.setValue( unit.getCoordinates() );
     }

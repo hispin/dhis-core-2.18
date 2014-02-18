@@ -170,7 +170,7 @@ public class CsvObjectUtils
                 object.setUuid( getSafe( values, 5, null ) );
                 object.setOpeningDate( getMediumDate( getSafe( values, 6, "1970-01-01" ) ) );
                 object.setClosedDate( getMediumDate( getSafe( values, 7, "1970-01-01" ) ) );
-                object.setActive( true );
+                object.setActive( true);
                 object.setComment( getSafe( values, 8, null ) );
                 object.setFeatureType( getSafe( values, 9, null ) );
                 object.setCoordinates( getSafe( values, 10, null ) );

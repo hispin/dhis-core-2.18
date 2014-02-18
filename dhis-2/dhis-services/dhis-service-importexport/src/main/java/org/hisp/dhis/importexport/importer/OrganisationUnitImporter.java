@@ -83,7 +83,6 @@ public class OrganisationUnitImporter
         match.setClosedDate( object.getClosedDate() );
         match.setActive( object.isActive() );
         match.setComment( defaultIfEmpty( object.getComment(), match.getComment() ) );
-        match.setGeoCode( defaultIfEmpty( object.getGeoCode(), match.getGeoCode() ) );
         match.setFeatureType( defaultIfEmpty( object.getFeatureType(), match.getFeatureType() ) );
         match.setCoordinates( defaultIfEmpty( object.getCoordinates(), match.getCoordinates() ) );
         match.setLastUpdated( object.getLastUpdated() );
@@ -133,10 +132,6 @@ public class OrganisationUnitImporter
             return false;
         }
         if ( !isSimiliar( object.getComment(), existing.getComment() ) || (isNotNull( object.getComment(), existing.getComment() ) && !object.getComment().equals( existing.getComment() )) )
-        {
-            return false;
-        }
-        if ( !isSimiliar( object.getGeoCode(), existing.getGeoCode() ) || (isNotNull( object.getGeoCode(), existing.getGeoCode() ) && !object.getGeoCode().equals( existing.getGeoCode() )) )
         {
             return false;
         }

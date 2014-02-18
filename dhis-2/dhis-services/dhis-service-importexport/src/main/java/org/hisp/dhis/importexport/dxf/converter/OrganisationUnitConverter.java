@@ -67,7 +67,6 @@ public class OrganisationUnitConverter
     private static final String FIELD_CLOSED_DATE = "closedDate";
     private static final String FIELD_ACTIVE = "active";
     private static final String FIELD_COMMENT = "comment";
-    private static final String FIELD_GEO_CODE = "geoCode";
     private static final String FIELD_COORDINATES_TUPLE = "coordinatesTuple";
     private static final String FIELD_COORDINATES = "coord";
     private static final String FIELD_FEATURE = "feature";
@@ -129,7 +128,6 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_CLOSED_DATE, DateUtils.getMediumDateString( unit.getClosedDate() ) );
                 writer.writeElement( FIELD_ACTIVE, String.valueOf( unit.isActive() ) );
                 writer.writeElement( FIELD_COMMENT, unit.getComment() );
-                writer.writeElement( FIELD_GEO_CODE, unit.getGeoCode() );
 
                 writer.openElement( FIELD_FEATURE, ATTRIBUTE_TYPE, unit.getFeatureType() );
                 
@@ -200,10 +198,7 @@ public class OrganisationUnitConverter
             unit.setComment( reader.getElementValue() );
             
             if ( params.minorVersionGreaterOrEqual( MINOR_VERSION_11 ) )
-            {
-                reader.moveToStartElement( FIELD_GEO_CODE );
-                unit.setGeoCode( reader.getElementValue() );
-                
+            {                
                 reader.moveToStartElement( FIELD_FEATURE );
                 unit.setFeatureType( reader.getAttributeValue( ATTRIBUTE_TYPE ) );
                 

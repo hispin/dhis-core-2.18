@@ -107,8 +107,6 @@ public class OrganisationUnit
 
     private String comment;
 
-    private String geoCode;
-
     private String featureType;
 
     private String coordinates;
@@ -817,19 +815,6 @@ public class OrganisationUnit
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getGeoCode()
-    {
-        return geoCode;
-    }
-
-    public void setGeoCode( String geoCode )
-    {
-        this.geoCode = geoCode;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getFeatureType()
     {
         return featureType;
@@ -1047,7 +1032,6 @@ public class OrganisationUnit
             closedDate = organisationUnit.getClosedDate() == null ? closedDate : organisationUnit.getClosedDate();
             active = organisationUnit.isActive();
             comment = organisationUnit.getComment() == null ? comment : organisationUnit.getComment();
-            geoCode = organisationUnit.getGeoCode() == null ? geoCode : organisationUnit.getGeoCode();
             featureType = organisationUnit.getFeatureType() == null ? featureType : organisationUnit.getFeatureType();
             coordinates = organisationUnit.getCoordinates() == null ? coordinates : organisationUnit.getCoordinates();
             url = organisationUnit.getUrl() == null ? url : organisationUnit.getUrl();
