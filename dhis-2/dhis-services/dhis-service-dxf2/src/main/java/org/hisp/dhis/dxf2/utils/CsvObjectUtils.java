@@ -41,8 +41,11 @@ import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import com.csvreader.CsvReader;
+
+import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
 
 /**
  * @author Lars Helge Overland
@@ -68,6 +71,10 @@ public class CsvObjectUtils
         else if ( CategoryOptionGroup.class.equals( clazz ) )
         {
             metaData.setCategoryOptionGroups( categoryOptionGroupsFromCsv( reader, input ) );
+        }
+        else if ( OrganisationUnit.class.equals( clazz ) )
+        {
+            metaData.setOrganisationUnits( organisationUnitsFromCsv( reader, input ) );
         }
         
         return metaData;
@@ -138,6 +145,41 @@ public class CsvObjectUtils
                 object.setUrl( getSafe( values, 11, null ) );
                 object.setZeroIsSignificant( Boolean.valueOf( getSafe( values, 12, "false" ) ) );
                 
+                list.add( object );
+            }
+        }
+        
+        return list;
+    }
+    
+    public static List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader, InputStream input )
+        throws IOException
+    {
+        List<OrganisationUnit> list = new ArrayList<OrganisationUnit>();
+        
+        while ( reader.readRecord() )
+        {
+            String[] values = reader.getValues();
+
+            if ( values != null && values.length > 0 )
+            {
+                OrganisationUnit object = new OrganisationUnit();
+                setIdentifiableObject( object, values );
+                object.setShortName( getSafe( values, 3, StringUtils.substring( object.getName(), 0, 50 ) ) );
+                object.setDescription( getSafe( values, 4, null ) );
+                object.setUuid( getSafe( values, 5, null ) );
+                object.setOpeningDate( getMediumDate( getSafe( values, 6, "1970-01-01" ) ) );
+                object.setClosedDate( getMediumDate( getSafe( values, 7, "1970-01-01" ) ) );
+                object.setActive( true );
+                object.setComment( getSafe( values, 8, null ) );
+                object.setFeatureType( getSafe( values, 9, null ) );
+                object.setCoordinates( getSafe( values, 10, null ) );
+                object.setUrl( getSafe( values, 11, null ) );
+                object.setContactPerson( getSafe( values, 12, null ) );
+                object.setAddress( getSafe( values, 13, null ) );
+                object.setEmail( getSafe( values, 14, null ) );
+                object.setPhoneNumber( getSafe( values, 15, null ) );
+
                 list.add( object );
             }
         }

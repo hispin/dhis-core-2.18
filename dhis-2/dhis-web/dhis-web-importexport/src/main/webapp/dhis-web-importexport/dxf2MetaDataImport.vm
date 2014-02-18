@@ -17,6 +17,7 @@
 		<option value="dataelement">$i18n.getString( "data_element" )</option>
         <option value="categoryoption">$i18n.getString( "category_option" )</option>
         <option value="categoryoptiongroup">$i18n.getString( "category_option_group" )</option>
+        <option value="organisationunit">$i18n.getString( "organisation_unit" )</option>
     </select></td>
 </tr>
 #end
