@@ -95,7 +95,7 @@ public abstract class AbstractJdbcTableManager
      * third column holds a table alias and name. Column names are quoted.
      * 
      * <ul>
-     * <li>0 = database column name</li>
+     * <li>0 = database column name (quoted)</li>
      * <li>1 = database column data type</li>
      * <li>2 = column alias and name</li>
      * </ul>

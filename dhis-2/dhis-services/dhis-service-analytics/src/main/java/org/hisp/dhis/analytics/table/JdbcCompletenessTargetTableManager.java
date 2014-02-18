@@ -154,7 +154,7 @@ public class JdbcCompletenessTargetTableManager
             columns.add( col );
         }
 
-        String[] ds = { "ds", "character(11) not null", "ds.uid" };
+        String[] ds = { quote( "ds" ), "character(11) not null", "ds.uid" };
         
         columns.add( ds );
         
