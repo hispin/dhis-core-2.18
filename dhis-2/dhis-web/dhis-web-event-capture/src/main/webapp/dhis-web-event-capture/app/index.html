@@ -109,29 +109,282 @@
                     </h2>               
 
                     <div ng-switch="dhis2Events.length">
+                        
                         <div ng-switch-when="undefined">
                             <p>
                                 {{'empty_search_result'| translate}}
                             </p>
                         </div>
+                        
                         <div ng-switch-default>
-                            <div ng-include="'views/eventList.html'"></div>                        
-                        </div>
-                    </div>                    
 
-                </div>  
+                            <!-- context menu for event grid -->
+                            <div id="contextMenu" class="contextMenu" style="width: 180px;">
+                                <ul id="contextMenuItems" class="contextMenuItems">
+                                    <li><a href ng-click="showEditEventInGrid()"><i class="fa fa-edit"></i>&nbsp;&nbsp;{{'edit_in_grid'| translate}}</a></li>
+                                    <li><a href ng-click="showEditEventInFull()"><i class="fa fa-edit"></i>&nbsp;&nbsp;{{'full_edit'| translate}}</a></li>
+                                    <li><a href ng-click="removeEvent()"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;{{'remove'| translate}}</a></li>
+                                    <li><a href ng-click="showEventDetails()"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;{{'show_details'| translate}}</a></li>        
+                                </ul>
+                            </div>
+                            <!-- context menu ends -->
+
+                            <!-- event grid begins -->
+                            <form name="outerForm" novalidate>
+                                <table class="mainPageTable">
+                                    <tr>
+                                        <td style="vertical-align:top">
+                                            <div id="content">
+
+                                                <!-- visible when editing grid columns - need to think better way to display this-->
+                                                <div ng-show="editGridColumns" class="container-1-4">
+                                                    <label>{{'show_hide_columns'| translate}}</label>
+                                                    <table>
+                                                        <tr ng-repeat="eventGridColumn in eventGridColumns">
+                                                            <td>
+                                                                {{eventGridColumn.name}}
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" ng-model="eventGridColumn.hide">{{'hide'| translate}}
+                                                            </td>
+                                                        </tr>                    
+                                                        <tr>
+                                                            <td>
+                                                                <button ng-click="showHideColumns(false)">{{'close'| translate}}</button>
+                                                            </td>
+                                                            <td>
+                                                                <button ng-click="showHideColumns(true)">{{'show_all'| translate}}</button>
+                                                            </td>                        
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                                <table class="listTable dhis2-table-striped dhis2-table-hover">                    
+                                                    <thead>                        
+                                                        <tr>
+                                                            <th ng-show="!eventGridColumn.hide" class="max-column-width" ng-click="sortEventGrid(eventGridColumn)" ng-repeat="eventGridColumn in eventGridColumns">
+                                                                {{eventGridColumn.name}}
+                                                                <i ng-show="sortHeader == eventGridColumn.id && !reverse" class="fa fa-sort-desc"></i>
+                                                                <i ng-show="sortHeader == eventGridColumn.id && reverse" class="fa fa-sort-asc"></i>
+                                                            </th>
+                                                            <th ng-hide="editGridColumns">
+                                                                <a href ng-click="showHideColumns(false)" title="{{'show_hide_columns'| translate}}"><i class="fa fa-cog"></i></a>
+                                                            </th>         
+                                                        </tr>                        
+                                                    </thead>
+                                                    <tbody id="list">
+                                                        <tr ng-repeat="dhis2Event in dhis2Events| paginate:rowsPerPage | orderBy:sortHeader:reverse" ng-click="showContextMenu(dhis2Event)">
+
+                                                            <!-- Visible when event is not under editing -->
+                                                            <td dhis-context-menu selected-item={{dhis2Event}} class="max-column-width" ng-hide="(currentEvent.event == dhis2Event.event) || eventGridColumn.hide" ng-repeat="eventGridColumn in eventGridColumns">
+                                                                {{dhis2Event[eventGridColumn.id]}}                                              
+                                                            </td>
+
+                                                            <!-- Visible when event is under editing - in grid -->
+                                                            <td class="max-column-width" ng-show="(currentEvent.event == dhis2Event.event) && !eventGridColumn.hide" ng-repeat="eventGridColumn in eventGridColumns">
+                                                                <ng-form name="innerFormGrid">
+                                                                    <div ng-switch="programStageDataElements[eventGridColumn.id].dataElement.type">
+                                                                        <div ng-switch-when="int">
+                                                                            <input type="number" ng-model="currentEvent[eventGridColumn.id]" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;"/>
+                                                                            <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                                        </div>
+                                                                        <div ng-switch-when="string">                                        
+                                                                            <div ng-switch="programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 20">
+                                                                                <div ng-switch-when="true">
+                                                                                    <div class="container-fluid">
+                                                                                        <input type="text" ng-model="currentEvent[eventGridColumn.id]" typeahead="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">                                            
+                                                                                        <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div ng-switch-default>
+                                                                                    <select ng-model="currentEvent[eventGridColumn.id]" ng-options="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">
+                                                                                        <option value="">{{'please_select'| translate}}</option>
+                                                                                    </select>
+                                                                                    <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-when="bool">
+                                                                            <select ng-model="currentEvent[eventGridColumn.id]" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">
+                                                                                <option value="">{{'please_select'| translate}}</option>                        
+                                                                                <option value="0">{{'no'| translate}}</option>
+                                                                                <option value="1">{{'yes'| translate}}</option>
+                                                                            </select>
+                                                                            <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                                        </div>
+                                                                        <div ng-switch-when="date">
+                                                                            <input type="text" placeholder="yyyy-mm-dd" ng-date ng-model="currentEvent[eventGridColumn.id]" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">
+                                                                            <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </ng-form>
+                                                            </td>                            
+                                                            <td>                                
+                                                                <span ng-show="currentEvent.event == dhis2Event.event">
+                                                                    <a href ng-click="updateEvent()" title="{{'update'| translate}}"><span class='black'><i class="fa fa-floppy-o fa-2x"></i></span></a>
+                                                                    <a href ng-click="showEventList()" title="{{'cancel'| translate}}"><span class='red'><i class="fa fa-undo fa-2x"></i></span></a>       
+                                                                </span>
+                                                            </td>                            
+                                                        </tr>
+                                                    </tbody>        
+                                                </table>
+                                                <p></p>
+                                                <paginator></paginator>    
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>    
+                            </form>
+                            <!-- event grid ends -->
+
+                        </div>
+                    </div>
+                </div>               
+                
+                <!-- event update in full begins-->
+                <div ng-show="editingEventInFull">
+                    <h2>
+                        {{'update_event'| translate}}                                                 
+                    </h2>                                           
+                    <div style="width:50%;">
+                        <form name="outerForm" novalidate>
+                            <table class="dhis2-list-table-striped">                    
+                                <thead>                        
+                                    <tr>
+                                        <th>
+                                            {{'data_element'| translate}}                    
+                                        </th>
+                                        <th>
+                                            {{'value'| translate}}                    
+                                        </th>         
+                                    </tr>                        
+                                </thead>
+                                <tbody id="list">
+                                    <tr ng-repeat="eventGridColumn in eventGridColumns">
+                                        <td class="max-column-width">
+                                            {{eventGridColumn.name}}                                              
+                                        </td>
+                                        <td class="max-column-width">
+                                            <ng-form name="innerFormUpdate">
+                                                <div ng-switch="programStageDataElements[eventGridColumn.id].dataElement.type">
+                                                    <div ng-switch-when="int">
+                                                        <input type="number" ng-model="currentEvent[eventGridColumn.id]" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;"/>
+                                                        <span ng-show="outerForm.submitted && innerFormUpdate.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                    </div>
+                                                    <div ng-switch-when="string">                                        
+                                                        <div ng-switch="programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 20">
+                                                            <div ng-switch-when="true">
+                                                                <div class="container-fluid">
+                                                                    <input type="text" ng-model="currentEvent[eventGridColumn.id]" typeahead="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">                                            
+                                                                    <span ng-show="outerForm.submitted && innerFormUpdate.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-switch-default>
+                                                                <select ng-model="currentEvent[eventGridColumn.id]" ng-options="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">
+                                                                    <option value="">{{'please_select'| translate}}</option>
+                                                                </select>
+                                                                <span ng-show="outerForm.submitted && innerFormUpdate.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-switch-when="bool">
+                                                        <select ng-model="currentEvent[eventGridColumn.id]" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">
+                                                            <option value="">{{'please_select'| translate}}</option>                        
+                                                            <option value="0">{{'no'| translate}}</option>
+                                                            <option value="1">{{'yes'| translate}}</option>
+                                                        </select>
+                                                        <span ng-show="outerForm.submitted && innerFormUpdate.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                    </div>
+                                                    <div ng-switch-when="date">
+                                                        <input type="text" placeholder="yyyy-mm-dd" ng-date ng-model="currentEvent[eventGridColumn.id]" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">
+                                                        <span ng-show="outerForm.submitted && innerFormUpdate.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                    </div>
+                                                </div>
+                                            </ng-form>
+                                        </td>
+                                    </tr>
+                                </tbody>        
+                            </table>
+                            <button ng-click="updateEvent()" class="button">{{'update'| translate}}</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button ng-click="showEventList()" class="button">{{'back'| translate}}</button>  
+                        </form>    
+                    </div>
+                </div>
+                <!-- event update ends -->
+                
+                <!-- event registration begins -->
                 <div ng-show="eventRegistration">
                     <h2>
                         {{'new_event_registration'| translate}}                                                 
                     </h2>   
-                    <div ng-include="'views/eventRegistration.html'"></div>
-                </div>
-                <div ng-show="editingEventInFull">
-                    <h2>
-                        {{'update_event'| translate}}                                                 
-                    </h2>   
-                    <div ng-include="'views/eventUpdate.html'"></div>
-                </div>
+                    <div style="width:50%;">
+                        <form name="outerForm" novalidate>
+                            <table class="dhis2-list-table-striped">                    
+                                <thead>                        
+                                    <tr>
+                                        <th>
+                                            {{'data_element' | translate}}                    
+                                        </th>
+                                        <th>
+                                            {{'value' | translate}}                    
+                                        </th>         
+                                    </tr>                        
+                                </thead>
+                                <tbody id="list">
+                                    <tr ng-repeat="eventGridColumn in eventGridColumns">
+                                        <td class="max-column-width">
+                                            {{eventGridColumn.name}}                                              
+                                        </td>
+                                        <td class="max-column-width">
+                                            <ng-form="innerFormAdd">
+                                                <div ng-switch="programStageDataElements[eventGridColumn.id].dataElement.type">
+                                                    <div ng-switch-when="int">
+                                                        <input type="number" ng-model="currentEvent[eventGridColumn.id]" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;"/>
+                                                        <span ng-show="outerForm.submitted && innerFormAdd.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                    </div>
+                                                    <div ng-switch-when="string">                                        
+                                                        <div ng-switch="programStageDataElements[eventGridColumn.id].dataElement.optionSet.options.length > 20">
+                                                            <div ng-switch-when="true">
+                                                                <div class="container-fluid">
+                                                                    <input type="text" ng-model="currentEvent[eventGridColumn.id]" typeahead="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">                                            
+                                                                    <span ng-show="outerForm.submitted && innerFormAdd.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-switch-default>
+                                                                <select ng-model="currentEvent[eventGridColumn.id]" ng-options="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">
+                                                                    <option value="">{{'please_select'| translate}}</option>
+                                                                </select>
+                                                                <span ng-show="outerForm.submitted && innerFormAdd.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-switch-when="bool">
+                                                        <select ng-model="currentEvent[eventGridColumn.id]" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">
+                                                            <option value="">{{'please_select'| translate}}</option>                        
+                                                            <option value="0">{{'no'| translate}}</option>
+                                                            <option value="1">{{'yes'| translate}}</option>
+                                                        </select>
+                                                        <span ng-show="outerForm.submitted && innerFormAdd.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                    </div>
+                                                    <div ng-switch-when="date">
+                                                        <input type="text" placeholder="yyyy-mm-dd" ng-date ng-model="currentEvent[eventGridColumn.id]" ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} name="foo" style="width:98%;">
+                                                        <span ng-show="outerForm.submitted && innerFormAdd.foo.$invalid" class="red">{{'required'| translate}}</span>
+                                                    </div>
+                                                </div>
+                                            </ng-form>
+                                        </td>
+                                    </tr>
+                                </tbody>        
+                            </table>
+
+                            <button ng-click="addEvent()" class="button">{{'save'| translate}}</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button ng-click="showEventList(null)" class="button">{{'back'| translate}}</button>
+                        </form>
+                    </div>
+                </div>                
+                <!-- event registration ends -->
             </div>           
         </div>
     </body>
