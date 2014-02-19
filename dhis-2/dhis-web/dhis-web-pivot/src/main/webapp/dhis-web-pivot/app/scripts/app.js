@@ -5744,9 +5744,9 @@ Ext.onReady( function() {
 
 								// root nodes
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits.json?level=1&paging=false&links=false&viewClass=detailed',
+									url: init.contextPath + '/api/organisationUnits/filtered.json?userDataViewFallback=true&include=id,name,children[id,name]',
 									success: function(r) {
-										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
+										init.rootNodes = Ext.decode(r.responseText).objects || [];
 										fn();
 									}
 								});
