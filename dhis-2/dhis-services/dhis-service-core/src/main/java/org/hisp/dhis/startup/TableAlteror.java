@@ -578,7 +578,6 @@ public class TableAlteror
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_ORGUNITGROUPSET_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_USERROLE_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_USERGROUP_UPDATE'" );
-        executeSql( "DELETE FROM userroleauthorities WHERE authority='F_USER_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_VALIDATIONRULE_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_VALIDATIONRULEGROUP_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_REPORT_UPDATE'" );
