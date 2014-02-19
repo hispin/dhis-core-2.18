@@ -116,6 +116,10 @@ public class OrganisationUnitController
         {
             entityList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
         }
+        if ( "true".equals( options.getOptions().get( "userDataViewOnly" ) ) )
+        {
+            entityList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getDataViewOrganisationUnits() );
+        }
         else if ( lastUpdated != null )
         {
             entityList = new ArrayList<OrganisationUnit>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
