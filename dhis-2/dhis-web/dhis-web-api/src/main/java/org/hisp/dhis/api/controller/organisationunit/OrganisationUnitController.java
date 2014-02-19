@@ -54,6 +54,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -116,9 +117,22 @@ public class OrganisationUnitController
         {
             entityList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
         }
-        if ( "true".equals( options.getOptions().get( "userDataViewOnly" ) ) )
+        else if ( "true".equals( options.getOptions().get( "userDataViewOnly" ) ) )
         {
             entityList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getDataViewOrganisationUnits() );
+        }
+        else if ( "true".equals( options.getOptions().get( "userDataViewFallback" ) ) )
+        {
+            User user = currentUserService.getCurrentUser();
+            
+            if ( user != null && user.hasDataViewOrganisationUnit() )
+            {
+                entityList = new ArrayList<OrganisationUnit>( user.getDataViewOrganisationUnits() );
+            }
+            else
+            {
+                entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
+            }
         }
         else if ( lastUpdated != null )
         {
