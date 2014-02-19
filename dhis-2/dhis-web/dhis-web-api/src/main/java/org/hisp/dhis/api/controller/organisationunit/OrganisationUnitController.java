@@ -273,7 +273,6 @@ public class OrganisationUnitController
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
     
-    
     @RequestMapping(value = "/withinRange", method = RequestMethod.GET, produces = { "*/*", "application/json" })
     public void getEntitiesWithinRange( @RequestParam Double longitude, @RequestParam Double latitude, 
         @RequestParam Double distance, @RequestParam(required = false) String orgUnitGroupSetId,

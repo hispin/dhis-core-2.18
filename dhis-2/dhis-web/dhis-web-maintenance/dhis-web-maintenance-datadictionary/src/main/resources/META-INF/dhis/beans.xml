@@ -518,10 +518,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
   </bean>
   
-  <bean id="org.hisp.dhis.dd.action.categoryoptiongroup.ShowAddCategoryOptionGroupAction" class="org.hisp.dhis.dd.action.categoryoptiongroup.ShowAddCategoryOptionGroupAction"
-    scope="prototype">
-  </bean>
-  
   <bean id="org.hisp.dhis.dd.action.categoryoptiongroup.ShowUpdateCategoryOptionGroupAction" class="org.hisp.dhis.dd.action.categoryoptiongroup.ShowUpdateCategoryOptionGroupAction"
     scope="prototype">
   </bean>
@@ -551,11 +547,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.RemoveCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.RemoveCategoryOptionGroupSetAction"
     scope="prototype">
   </bean>
-  
-  <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowAddCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowAddCategoryOptionGroupSetAction"
-    scope="prototype">
-  </bean>
-  
+    
   <bean id="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowUpdateCategoryOptionGroupSetAction" class="org.hisp.dhis.dd.action.categoryoptiongroupset.ShowUpdateCategoryOptionGroupSetAction"
     scope="prototype">
   </bean>
