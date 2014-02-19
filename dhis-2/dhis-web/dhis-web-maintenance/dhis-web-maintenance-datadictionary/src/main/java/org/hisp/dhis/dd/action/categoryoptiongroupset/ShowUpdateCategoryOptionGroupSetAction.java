@@ -39,9 +39,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ ShowUpdateCategoryOptionGroupSetAction.java Feb 12, 2014 11:20:01
- *          PM $
  */
 public class ShowUpdateCategoryOptionGroupSetAction
     implements Action
@@ -97,10 +94,6 @@ public class ShowUpdateCategoryOptionGroupSetAction
 
         groupMembers = new ArrayList<CategoryOptionGroup>( categoryOptionGroupSet.getMembers() );
 
-        categoryOptionGroups = new ArrayList<CategoryOptionGroup>(
-            dataElementCategoryService.getAllCategoryOptionGroups() );
-
         return SUCCESS;
     }
-
 }

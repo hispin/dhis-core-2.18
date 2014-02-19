@@ -97,9 +97,6 @@ public class ShowUpdateCategoryOptionGroupAction
 
         groupMembers = new ArrayList<DataElementCategoryOption>( categoryOptionGroup.getMembers() );
 
-        categoryOptions = new ArrayList<DataElementCategoryOption>(
-            dataElementCategoryService.getAllDataElementCategoryOptions() );
-
         return SUCCESS;
     }
 
