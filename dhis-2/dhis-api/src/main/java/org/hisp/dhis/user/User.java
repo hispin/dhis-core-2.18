@@ -196,6 +196,11 @@ public class User
     {
         return !CollectionUtils.isEmpty( organisationUnits );
     }
+    
+    public boolean hasDataViewOrganisationUnit()
+    {
+        return !CollectionUtils.isEmpty( dataViewOrganisationUnits );
+    }
 
     public String getOrganisationUnitsName()
     {
@@ -446,7 +451,7 @@ public class User
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "dataViewOrganisationUnits", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataViewOrganisationUnit", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnit> getDataViewOrganisationUnits()
     {
         return dataViewOrganisationUnits;
