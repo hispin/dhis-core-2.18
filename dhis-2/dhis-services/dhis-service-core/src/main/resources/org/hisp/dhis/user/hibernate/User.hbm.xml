@@ -63,6 +63,13 @@
         foreign-key="fk_userinfo_organisationunitid" />
     </set>
 
+    <set name="dataViewOrganisationUnits" table="userdatavieworgunits">
+      <cache usage="read-write" />
+      <key column="userinfoid" foreign-key="fk_userdatavieworgunits_userinfoid" />
+      <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
+        foreign-key="fk_userdatavieworgunits_organisationunitid" />
+    </set>
+
     <!-- Dynamic attribute values -->
 
     <set name="attributeValues" table="userattributevalues">
