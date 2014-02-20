@@ -309,6 +309,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };
     
     $scope.removeEvent = function(){
+        
         var dhis2Event = ContextMenuSelectedItem.getSelectedItem();
         
         var modalOptions = {
@@ -319,7 +320,20 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         };
 
         ModalService.showModal({}, modalOptions).then(function(result){
-            console.log('The event to be deleted is:  ', dhis2Event);
+            
+            DHIS2EventFactory.delete(dhis2Event).then(function(data){
+                
+                var continueLoop = true, index = -1;
+                for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
+                    if($scope.dhis2Events[i].event === dhis2Event.event ){
+                        $scope.dhis2Events[i] = dhis2Event;
+                        continueLoop = false;
+                        index = i;
+                    }
+                }
+                $scope.dhis2Events.splice(index,1);                
+                $scope.currentEvent = {};             
+            });
         });        
     };
     

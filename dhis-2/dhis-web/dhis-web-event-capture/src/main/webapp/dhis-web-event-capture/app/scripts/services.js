@@ -580,6 +580,13 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             });
             return promise;            
         },
+        
+        delete: function(dhis2Event){
+           var promise = $http.delete(dhis2Url + '/api/events/' + dhis2Event.event).then(function(response){
+                return response.data;
+            });
+            return promise;           
+        },
     
         update: function(dhis2Event){            
             var promise = $http.put(dhis2Url + '/api/events/' + dhis2Event.event, dhis2Event).then(function(response){
