@@ -80,7 +80,8 @@
 					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
 						#foreach($attribute in $attributes)
 							#if($attribute.valueType=='age')
-								<option suggested="" title="$attribute.displayName" value="[CA:$attribute.id.age]">$attribute.displayName</option>
+								#set($attId=$patientAttribute.id + ".age")
+								<option suggested="" title="$attribute.displayName" value="[CA:$attId]">$attribute.displayName</option>
 							#else
 								<option suggested="" title="$attribute.displayName" value="[CA:$attribute.id]">$attribute.displayName</option>
 							#end

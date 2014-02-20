@@ -98,7 +98,7 @@ public class SaveAttributeAction
     {
         this.attributeValueService = attributeValueService;
     }
-    
+
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
@@ -163,7 +163,7 @@ public class SaveAttributeAction
         String value = null;
 
         Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
-        
+
         TrackedEntityAttributeValue attributeValue = null;
 
         if ( attributes != null && attributes.size() > 0 )
@@ -172,9 +172,14 @@ public class SaveAttributeAction
             {
                 value = request.getParameter( AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE + attribute.getId() );
                 attributeValue = attributeValueService.getTrackedEntityAttributeValue( entityInstance, attribute );
-                
+
                 if ( StringUtils.isNotBlank( value ) )
                 {
+                    if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
+                    {
+                        value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
+                    }
+                    
                     if ( attributeValue == null )
                     {
                         attributeValue = new TrackedEntityAttributeValue();
@@ -182,19 +187,13 @@ public class SaveAttributeAction
                         attributeValue.setAttribute( attribute );
                         attributeValue.setValue( value.trim() );
 
-                        if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
-                        {
-                            value = format
-                                .formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
-                        }
-						
                         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
                             TrackedEntityAttributeOption option = attributeService
                                 .getTrackedEntityAttributeOption( Integer.parseInt( value ) );
-              
+
                             if ( option != null )
-                            {  
+                            {
                                 attributeValue.setAttributeOption( option );
                                 attributeValue.setValue( option.getName() );
                             }
@@ -207,8 +206,8 @@ public class SaveAttributeAction
                     {
                         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
-                            TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( NumberUtils.toInt( value,
-                                0 ) );
+                            TrackedEntityAttributeOption option = attributeService
+                                .getTrackedEntityAttributeOption( NumberUtils.toInt( value, 0 ) );
                             if ( option != null )
                             {
                                 attributeValue.setAttributeOption( option );

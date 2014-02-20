@@ -83,6 +83,7 @@ import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
@@ -751,6 +752,15 @@ public abstract class DeletionHandler
     }
     
     public String allowDeleteCategoryOptionGroupSet( CategoryOptionGroupSet categoryOptionGroupSet )
+    {
+        return null;
+    }
+    
+    public void deleteTrackedEntity( TrackedEntity trackedEntity )
+    {
+    }
+    
+    public String allowTrackedEntity( TrackedEntity trackedEntity )
     {
         return null;
     }
