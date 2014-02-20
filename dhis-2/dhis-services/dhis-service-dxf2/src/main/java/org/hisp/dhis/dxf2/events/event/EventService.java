@@ -112,7 +112,7 @@ public interface EventService
     // UPDATE
     // -------------------------------------------------------------------------
 
-    void updateEvent( Event event );
+    void updateEvent( Event event, boolean singleValue );
 
     // -------------------------------------------------------------------------
     // DELETE

@@ -228,7 +228,7 @@ public class NoRegistrationSingleEventServiceTest
 
         event = eventService.getEvent( importSummary.getReference() );
         event.getDataValues().get( 0 ).setValue( "254" );
-        eventService.updateEvent( event );
+        eventService.updateEvent( event, false );
 
         event = eventService.getEvent( importSummary.getReference() );
         assertEquals( "254", event.getDataValues().get( 0 ).getValue() );

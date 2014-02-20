@@ -434,7 +434,7 @@ public abstract class AbstractEventService
     // -------------------------------------------------------------------------
 
     @Override
-    public void updateEvent( Event event )
+    public void updateEvent( Event event, boolean singleValue )
     {
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
             .getEvent() );
@@ -518,13 +518,17 @@ public abstract class AbstractEventService
                     value.getProvidedElsewhere() );
             }
         }
-
-        for ( TrackedEntityDataValue value : dataValues )
+        
+        if( !singleValue )
         {
-            dataValueService.deleteTrackedEntityDataValue( value );
+            for ( TrackedEntityDataValue value : dataValues )
+            {
+                dataValueService.deleteTrackedEntityDataValue( value );
+            }   
         }
+        
     }
-
+    
     // -------------------------------------------------------------------------
     // DELETE
     // -------------------------------------------------------------------------
