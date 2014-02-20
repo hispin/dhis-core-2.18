@@ -692,6 +692,14 @@ div.paging a.active
     cursor: default;
 }
 
+.input-error {
+    background-color: #ff6600;
+}
+
+.input-success {
+    background-color: #b9ffb9;
+}
+
 .red {
     color: red;
 }
@@ -717,6 +725,15 @@ div.paging a.active
     margin-right: 5px;
     float: left;
 }
+
+.bordered-div
+{
+    border: 1px solid #c2c2c2;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+}
+
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
