@@ -73,6 +73,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -104,6 +106,9 @@ public class EventController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private DataElementService dataElementService;
 
     // -------------------------------------------------------------------------
     // READ
@@ -336,7 +341,7 @@ public class EventController
         Event updatedEvent = JacksonUtils.fromXml( request.getInputStream(), Event.class );
         updatedEvent.setEvent( uid );
 
-        eventService.updateEvent( updatedEvent );
+        eventService.updateEvent( updatedEvent, false );
         ContextUtils.okResponse( response, "Event updated: " + uid );
     }
 
@@ -355,8 +360,36 @@ public class EventController
         Event updatedEvent = JacksonUtils.fromJson( request.getInputStream(), Event.class );
         updatedEvent.setEvent( uid );
 
-        eventService.updateEvent( updatedEvent );
+        eventService.updateEvent( updatedEvent, false );
         ContextUtils.okResponse( response, "Event updated: " + uid );
+    }
+    
+    @RequestMapping( value = "/{uid}/{dataElementUid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    public void putJsonEventSingleValue( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, @PathVariable( "dataElementUid" ) String dataElementUid ) throws IOException
+    {
+        Event event = eventService.getEvent( uid );
+
+        if ( event == null )
+        {
+            ContextUtils.notFoundResponse( response, "Event not found for uid: " + uid );
+            return;
+        }
+        
+        DataElement dataElement = dataElementService.getDataElement( dataElementUid );
+        
+        if( dataElement == null )
+        {
+            ContextUtils.notFoundResponse( response, "DataElement not found for uid: " + dataElementUid );
+            return;
+        }
+
+        Event updatedEvent = JacksonUtils.fromJson( request.getInputStream(), Event.class );
+        updatedEvent.setEvent( uid );
+
+        eventService.updateEvent( updatedEvent, true );
+        ContextUtils.okResponse( response, "Event updated: " + uid );        
+        
     }
 
     // -------------------------------------------------------------------------
