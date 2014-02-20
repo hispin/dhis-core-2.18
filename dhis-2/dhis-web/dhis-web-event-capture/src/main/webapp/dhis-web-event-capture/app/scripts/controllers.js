@@ -45,8 +45,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     $scope.sortHeader = '';
     $scope.reverse = false;
-    $scope.gridFilter = '';
-    
+    $scope.filterText = {};   
    
     //Get orgunits for the logged in user
     OrgUnitFactory.getMine().then(function(orgUnits) {
@@ -184,6 +183,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         else{
             $scope.editGridColumns = !$scope.editGridColumns;
         }        
+    };
+    
+    $scope.searchInGrid = function(gridColumn){        
+        $scope.filteringGrid = gridColumn;    
     };
     
     $scope.showEventList = function(){

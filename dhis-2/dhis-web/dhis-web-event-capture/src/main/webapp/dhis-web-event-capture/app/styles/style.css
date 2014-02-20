@@ -772,6 +772,17 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     background-color: #ebf0f6;
 }
 
+.dhis2-table-striped-border tr th {
+    border: 1px solid #cad5e5;
+}
+
+.dhis2-table-striped-border tr td {
+    border: 1px solid #cad5e5;
+}
+
+.dhis2-table-striped-border > tbody > tr:nth-child(odd)> td, .dhis2-table-striped > tbody > tr:nth-child(odd)> th {
+    background-color: #ebf0f6
+}
 
 .dhis2-table-striped>thead>tr, 
 .dhis2-table-striped>tbody>tr, 
@@ -813,6 +824,14 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 #contextMenu {
     position: absolute;
     display:none;
+}
+
+.pull-right {
+    float: right !important
+}
+
+.bold {
+    font-weight: bold;
 }
 
 /*----------------------------------------------------------------------------*/
