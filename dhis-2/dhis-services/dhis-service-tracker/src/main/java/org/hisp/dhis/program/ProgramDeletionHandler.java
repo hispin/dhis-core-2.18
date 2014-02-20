@@ -32,6 +32,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
@@ -52,7 +53,7 @@ public class ProgramDeletionHandler
     {
         this.programService = programService;
     }
-    
+
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -101,5 +102,13 @@ public class ProgramDeletionHandler
                 programService.updateProgram( program );
             }
         }
+    }
+
+    @Override
+    public String allowTrackedEntity( TrackedEntity trackedEntity )
+    {
+        Collection<Program> programs = programService.getProgramsByTrackedEntity( trackedEntity );
+
+        return (programs!=null && programs.size() > 0) ? ERROR : null;
     }
 }

@@ -641,20 +641,26 @@ public class HibernateCaseAggregationConditionStore
      */
     private String getConditionForTrackedEntityAttribute( String attributeId, Collection<Integer> orgunitIds, boolean isExist )
     {
-        String sql = " EXISTS ( SELECT * FROM trackedentityattributevalue _pav " + " WHERE _pav.trackedentityinstanceid=pi.trackedentityinstanceid ";
+        String sql = "  SELECT * FROM trackedentityattributevalue _pav " + " WHERE _pav.trackedentityinstanceid=pi.trackedentityinstanceid ";
 
         if ( attributeId.split( SEPARATOR_ID ).length == 2 )
         {
-            sql += " AND _pav.trackedentityattributeid=" + attributeId.split( "\\." )[0]
-                + " AND DATE(now) - DATE( _pav.value ) ";
-        }
-        if ( isExist )
-        {
-            sql += " AND _pav.trackedentityattributeid=" + attributeId + " AND _pav.value ";
+            attributeId = attributeId.split( SEPARATOR_ID )[0];
+            sql += " AND _pav.trackedentityattributeid=" + attributeId
+                + " AND DATE(now()) - DATE( _pav.value ) ";
         }
         else
         {
-            sql = " NOT " + sql;
+            sql += " AND _pav.trackedentityattributeid=" + attributeId + " AND _pav.value ";
+        }
+        
+        if ( isExist )
+        {
+            sql = " EXISTS ( " + sql;
+        }
+        else
+        {
+            sql = " NOT ( " + sql;
         }
 
         return sql;

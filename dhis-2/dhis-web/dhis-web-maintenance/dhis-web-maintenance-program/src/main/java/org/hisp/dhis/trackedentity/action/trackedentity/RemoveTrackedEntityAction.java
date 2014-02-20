@@ -27,6 +27,8 @@
 
 package org.hisp.dhis.trackedentity.action.trackedentity;
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +61,22 @@ public class RemoveTrackedEntityAction
         this.id = id;
     }
 
-    private TrackedEntity trackedEntity;
+    private I18n i18n;
 
-    public TrackedEntity getTrackedEntity()
+    public void setI18n( I18n i18n )
     {
-        return trackedEntity;
+        this.i18n = i18n;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
     }
 
     // -------------------------------------------------------------------------
@@ -74,9 +87,21 @@ public class RemoveTrackedEntityAction
     public String execute()
         throws Exception
     {
-        TrackedEntity trackedEntity = trackedEntityService.getTrackedEntity( id );
-        
-        trackedEntityService.deleteTrackedEntity( trackedEntity );
+        try
+        {
+            TrackedEntity trackedEntity = trackedEntityService.getTrackedEntity( id );
+
+            trackedEntityService.deleteTrackedEntity( trackedEntity );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
+
+                return ERROR;
+            }
+        }
 
         return SUCCESS;
     }
