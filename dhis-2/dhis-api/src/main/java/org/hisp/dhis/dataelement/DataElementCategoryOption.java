@@ -64,6 +64,8 @@ public class DataElementCategoryOption
     @Scanned
     private Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
 
+    private Set<CategoryOptionGroup> groups = new HashSet<CategoryOptionGroup>();
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -153,5 +155,15 @@ public class DataElementCategoryOption
     public void setCategoryOptionCombos( Set<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;
+    }
+
+    public Set<CategoryOptionGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( Set<CategoryOptionGroup> groups )
+    {
+        this.groups = groups;
     }
 }

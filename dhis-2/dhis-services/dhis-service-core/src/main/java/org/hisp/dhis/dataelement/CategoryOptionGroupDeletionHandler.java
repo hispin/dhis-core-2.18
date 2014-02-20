@@ -1,17 +1,20 @@
+package org.hisp.dhis.dataelement;
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
- *   be used to endorse or promote products derived from this software without
- *   specific prior written permission.
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of the HISP project nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -25,15 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataelement;
-
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Chau Thu Tran
+ * @author Lars Helge Overland
  */
-public class CategoryOptionGroupSetDeletionHandler
+public class CategoryOptionGroupDeletionHandler
     extends DeletionHandler
 {
     // -------------------------------------------------------------------------
@@ -41,7 +42,7 @@ public class CategoryOptionGroupSetDeletionHandler
     // -------------------------------------------------------------------------
 
     @Autowired
-    private DataElementCategoryService dataElementCategoryService;
+    private DataElementCategoryService categoryService;
 
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
@@ -50,18 +51,16 @@ public class CategoryOptionGroupSetDeletionHandler
     @Override
     public String getClassName()
     {
-        return CategoryOptionGroupSet.class.getSimpleName();
+        return CategoryOptionGroup.class.getName();
     }
-
+    
     @Override
-    public void deleteCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
+    public void deleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
     {
-        CategoryOptionGroupSet groupSet = categoryOptionGroup.getGroupSet();
-        
-        if ( groupSet != null )
+        for ( CategoryOptionGroup group : categoryOption.getGroups() )
         {
-            groupSet.getMembers().remove( categoryOptionGroup );
-            dataElementCategoryService.updateCategoryOptionGroupSet( groupSet );
+            group.getMembers().remove( categoryOption );
+            categoryService.updateCategoryOptionGroup( group );
         }
     }
 }

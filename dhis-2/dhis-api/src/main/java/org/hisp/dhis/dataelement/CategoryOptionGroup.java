@@ -71,6 +71,22 @@ public class CategoryOptionGroup
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addCategoryOption( DataElementCategoryOption categoryOption )
+    {
+        members.add( categoryOption );
+        categoryOption.getGroups().add( this );
+    }
+
+    public void removeCategoryOption( DataElementCategoryOption categoryOption )
+    {
+        members.remove( categoryOption );
+        categoryOption.getGroups().remove( this );
+    }
+
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
@@ -101,20 +117,6 @@ public class CategoryOptionGroup
     public void setGroupSet( CategoryOptionGroupSet groupSet )
     {
         this.groupSet = groupSet;
-    }
-
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    public void addCategoryOption( DataElementCategoryOption categoryOption )
-    {
-        members.add( categoryOption );
-    }
-
-    public void removeCategoryOption( DataElementCategoryOption categoryOption )
-    {
-        members.remove( categoryOption );
     }
 
     @Override
