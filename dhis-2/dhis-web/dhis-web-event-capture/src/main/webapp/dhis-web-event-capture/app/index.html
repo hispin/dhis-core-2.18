@@ -171,17 +171,26 @@
                             <!-- event grid begins -->
                             <form name="outerForm" novalidate>                              
 
-                                <table class="listTable dhis2-table-striped dhis2-table-hover">                    
+                                <table class="listTable dhis2-table-striped-border dhis2-table-hover">                    
                                     <thead>                        
                                         <tr>
                                             <th ng-show="!eventGridColumn.hide" 
-                                                class="max-column-width" 
-                                                ng-click="sortEventGrid(eventGridColumn)" 
+                                                class="max-column-width"                                                
                                                 ng-repeat="eventGridColumn in eventGridColumns">
                                                 
-                                                {{eventGridColumn.name}}
-                                                <i ng-show="sortHeader == eventGridColumn.id && !reverse" class="fa fa-sort-desc"></i>
-                                                <i ng-show="sortHeader == eventGridColumn.id && reverse" class="fa fa-sort-asc"></i>
+                                                <span ng-hide="eventGridColumn == filteringGrid" class="bold" ng-click="sortEventGrid(eventGridColumn)">
+                                                    <i ng-show="sortHeader == eventGridColumn.id && !reverse" class="fa fa-sort-desc"></i>
+                                                    <i ng-show="sortHeader == eventGridColumn.id && reverse" class="fa fa-sort-asc"></i>
+                                                    {{eventGridColumn.name}}
+                                                </span>
+                                                
+                                                <span class="pull-right">
+                                                    <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span class='black'><i class="fa fa-search"></i></span></a>                                                    
+                                                </span>                                               
+                                                
+                                                <div ng-show="eventGridColumn == filteringGrid">
+                                                    <input type="text" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid()">
+                                                </div>                                                
                                                 
                                             </th>
                                             <th ng-hide="editGridColumns">
@@ -190,7 +199,7 @@
                                         </tr>                        
                                     </thead>
                                     <tbody id="list">
-                                        <tr ng-repeat="dhis2Event in dhis2Events| paginate:rowsPerPage | orderBy:sortHeader:reverse" 
+                                        <tr ng-repeat="dhis2Event in dhis2Events | paginate:rowsPerPage | orderBy:sortHeader:reverse | filter:filterText" 
                                             ng-click="showContextMenu(dhis2Event)">
 
                                             <!-- Visible when event is not under editing -->
@@ -278,8 +287,7 @@
                                             </td>                            
                                             <td>                                
                                                 <span ng-show="currentEvent.event == dhis2Event.event">
-                                                    <!--<a href ng-click="updateEvent()" title="{{'update'| translate}}"><span class='black'><i class="fa fa-floppy-o fa-2x"></i></span></a>-->
-                                                    <a href ng-click="showEventList()" title="{{'close_editing'| translate}}"><i class="fa fa-times-circle-o fa-2x"></i></a>       
+                                                    <a href ng-click="showEventList()" title="{{'close_editing'| translate}}"><span class='black'><i class="fa fa-times-circle-o fa-2x"></i></span></a>                                                    
                                                 </span>
                                             </td>                            
                                         </tr>
