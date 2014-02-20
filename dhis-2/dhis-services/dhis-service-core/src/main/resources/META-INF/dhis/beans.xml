@@ -1140,8 +1140,9 @@
 
   <bean id="org.hisp.dhis.sms.SMSCodesDeletionHandler" class="org.hisp.dhis.sms.SMSCodesDeletionHandler" />
 
-  <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler" class="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler">
-  </bean>
+  <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupDeletionHandler" class="org.hisp.dhis.dataelement.CategoryOptionGroupDeletionHandler"/>
+
+  <bean id="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler" class="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler"/>
   
   <!-- DeletionManager -->
 
@@ -1178,6 +1179,7 @@
           <ref local="org.hisp.dhis.user.UserSettingDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
+          <ref local="org.hisp.dhis.dataelement.CategoryOptionGroupDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.CategoryOptionGroupSetDeletionHandler" />
           <ref local="org.hisp.dhis.configuration.ConfigurationDeletionHandler" />
           <ref local="org.hisp.dhis.message.MessageConversationDeletionHandler" />

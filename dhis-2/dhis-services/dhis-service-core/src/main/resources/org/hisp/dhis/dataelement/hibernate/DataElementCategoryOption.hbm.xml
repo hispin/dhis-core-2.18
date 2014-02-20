@@ -30,6 +30,12 @@
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategory" column="categoryid" />
     </set>
 
+    <set name="groups" table="categoryoptiongroupmembers" inverse="true">
+      <cache usage="read-write" />
+      <key column="categoryoptionid" />
+      <many-to-many class="org.hisp.dhis.dataelement.CategoryOptionGroup" column="dataelementgroupid" />
+    </set>
+
     <!-- Access properties -->
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_dataelementcategoryoption_userid" />
 

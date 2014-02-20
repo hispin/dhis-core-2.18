@@ -95,7 +95,6 @@ public class SpringDataValueSetStore
         dataValueSet.setPeriod( period != null ? period.getIsoDate() : null );
         dataValueSet.setOrgUnit( orgUnit != null ? orgUnit.getUid() : null );
 
-
         while ( rowSet.next() )
         {
             DataValue dataValue = dataValueSet.getDataValueInstance();
