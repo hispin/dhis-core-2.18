@@ -97,8 +97,8 @@ public class AddCategoryOptionGroupSetAction
 
         for ( String id : groupMembers )
         {
-            categoryOptionGroupSet.addCategoryOptionGroup( dataElementCategoryService.getCategoryOptionGroup( Integer
-                .parseInt( id ) ) );
+            categoryOptionGroupSet.addCategoryOptionGroup( dataElementCategoryService.getCategoryOptionGroup( 
+                Integer.parseInt( id ) ) );
         }
 
         dataElementCategoryService.saveCategoryOptionGroupSet( categoryOptionGroupSet );
