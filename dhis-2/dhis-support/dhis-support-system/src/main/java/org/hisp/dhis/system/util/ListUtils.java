@@ -209,4 +209,24 @@ public class ListUtils
             }
         }
     }
+    
+    /**
+     * Returns the sub list of the given list avoiding exceptions, starting on 
+     * the given start index and returning at maximum the given max number of items. 
+     * 
+     * @param list the list.
+     * @param start the start index.
+     * @param max the max number of items to return.
+     */
+    public static <T> List<T> subList( List<T> list, int start, int max )
+    {
+        if ( list == null )
+        {
+            return null;
+        }
+        
+        int end = start + max;
+        
+        return list.subList( Math.max( 0, start ), Math.min( list.size(), end ) );
+    }
 }
