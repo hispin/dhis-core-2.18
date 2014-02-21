@@ -238,13 +238,13 @@ public class DefaultResourceTableService
         // Create table
         // ---------------------------------------------------------------------
 
-        List<CategoryOptionGroupSet> groupSets = new ArrayList<CategoryOptionGroupSet>();
-        
-        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
-
         List<DataElementCategoryOptionCombo> categoryOptionCombos = 
             new ArrayList<DataElementCategoryOptionCombo>( categoryService.getAllDataElementCategoryOptionCombos() );
         
+        List<CategoryOptionGroupSet> groupSets = new ArrayList<CategoryOptionGroupSet>( categoryService.getAllCategoryOptionGroupSets() );
+        
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
+
         resourceTableStore.createCategoryOptionGroupSetStructure( groupSets );
 
         // ---------------------------------------------------------------------
