@@ -18,6 +18,23 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     };   
 })
 
+.directive('selectedOrgUnit', function() {        
+
+    return {        
+        restrict: 'A',        
+        link: function(scope, element, attrs){
+            
+            selection.setListenerFunction( organisationUnitSelected );            
+            selection.responseReceived();
+            
+            function organisationUnitSelected( orgUnits, orgUnitNames ) {
+                scope.selectedOrgUnit = {id: orgUnits[0], name: orgUnitNames[0]};    
+                scope.$apply();                
+            }
+        }  
+    };
+})
+
 .directive('dhisContextMenu', function(ContextMenuSelectedItem) {
         
     return {        

@@ -7,7 +7,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 .controller('MainController',
         function($scope,
                 CurrentUserProfile,
-                OrgUnitFactory,
                 ProgramFactory,
                 ProgramStageFactory,
                 DHIS2EventFactory,
@@ -24,80 +23,60 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $translate.uses(profile.settings.keyUiLocale);
     });    
     
+    //Paging
     $scope.rowsPerPage = 50;
     $scope.currentPage = Paginator.getPage() + 1;
     
-    //selections
-    $scope.selectedOrgUnit = {name: 'please_select'};
-    $scope.selectedProgram = '';
-    $scope.selectedProgramStage = '';
-    $scope.programStageDataElements = [];
-    $scope.dhis2Events = [];
+    //Filtering
+    $scope.reverse = false;
+    $scope.filterText = {}; 
+    
+    //Editing
     $scope.eventRegistration = false;
     $scope.editGridColumns = false;
+    $scope.editingEventInFull = false;
+    $scope.editingEventInGrid = false;   
+    
+    $scope.programStageDataElements = [];
+    $scope.dhis2Events = [];    
+    
     $scope.eventGridColumns = [];
+    $scope.hiddenGridColumns = 0;
     $scope.newDhis2Event = {dataValues: []};
     $scope.currentEvent = {dataValues: []};
-    $scope.currentEventOrginialValue = '';
-    
-    $scope.editingEventInFull = false;
-    $scope.editingEventInGrid = false;
-    
-    $scope.sortHeader = '';
-    $scope.reverse = false;
-    $scope.filterText = {};   
-   
-    //Get orgunits for the logged in user
-    OrgUnitFactory.getMine().then(function(orgUnits) {
-        $scope.orgUnits = orgUnits;
+    $scope.currentEventOrginialValue = '';     
+  
+       
+    $scope.$watch('selectedOrgUnit', function(newObj, oldObj) {
         
-        //expand root orgunit (the expansion is only if we have one root)
-        if($scope.orgUnits.length === 1 ){
-            $scope.orgUnits[0].show = true;
-        }
+        if( angular.isObject($scope.selectedOrgUnit)){            
+            $scope.loadPrograms($scope.selectedOrgUnit);            
+        }        
     });
     
-    //controll expand/collapse of orgunit tree
-    $scope.expandCollapse = function(orgUnit) {
-
-        if( !angular.isUndefined( orgUnit.hasChildren ) ){
-            
-            //Get children for the selected orgUnit
-            OrgUnitFactory.get(orgUnit.id).then(function(data) {
-                orgUnit.show = !orgUnit.show;  
-                delete orgUnit.hasChildren;
-                orgUnit.children = data.children;                   
-            });           
-        }
-        else{
-            orgUnit.show = !orgUnit.show;   
-        }        
-    };
-    
     //load programs of type=3 for the selected orgunit
-    $scope.loadPrograms = function(orgUnit){            
+    $scope.loadPrograms = function(orgUnit){     
+        
         $scope.selectedOrgUnit = orgUnit;
         $scope.selectedProgram = null;
         $scope.selectedProgramStage = null;
+        $scope.eventGridColumns = [];
         $scope.dhis2Events = [];
         $scope.newDhis2Event = {dataValues: []};
         if (angular.isObject($scope.selectedOrgUnit)) {   
 
             $scope.programs = [];
-            ProgramFactory.getMine(3).then(function(data) {
-                angular.forEach(data.organisationUnits, function(ou) {
-                    if (ou.id === $scope.selectedOrgUnit.id) {
-                        angular.forEach(ou.programs, function(p) {
-                            $scope.programs.push(p);                                                   
-                        });                        
-                    }
-                });
+            
+            ProgramFactory.getEventProgramsByOrgUnit($scope.selectedOrgUnit.id,3).then(function(data) {
+                $scope.programs = data.programs;               
                 
-                if($scope.programs.length === 1){
-                    $scope.pr = $scope.programs[0];
-                    $scope.loadEvents($scope.pr);
-                }
-            });            
+                if( !angular.isUndefined($scope.programs)){                    
+                    if($scope.programs.length === 1){
+                        $scope.pr = $scope.programs[0];
+                        $scope.loadEvents($scope.pr);
+                    }                    
+                }                               
+            });
         }
     };    
     
@@ -165,24 +144,30 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };
     
     $scope.sortEventGrid = function(gridHeader){
+        
         if ($scope.sortHeader === gridHeader.id){
             $scope.reverse = !$scope.reverse;
             return;
-        }
-        
+        }        
         $scope.sortHeader = gridHeader.id;
         $scope.reverse = false;    
     };
     
-    $scope.showHideColumns = function(showAllColumns){
+    $scope.showHideColumns = function(gridColumn, showAllColumns){
         if(showAllColumns){
             angular.forEach($scope.eventGridColumns, function(gridHeader){
-                gridHeader.hide = false;
+                gridHeader.hide = false;                
             });
+            $scope.hiddenGridColumns = 0;
         }
-        else{
-            $scope.editGridColumns = !$scope.editGridColumns;
-        }        
+        if(!showAllColumns){            
+            if(gridColumn.hide){
+                $scope.hiddenGridColumns++;
+            }
+            else{
+                $scope.hiddenGridColumns--;
+            }
+        }      
     };
     
     $scope.searchInGrid = function(gridColumn){        
@@ -220,13 +205,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.editingEventInFull = !$scope.editingEventInFull;   
         $scope.eventRegistration = false;
         
-        if($scope.currentEvent.dataValues.length !== $scope.selectedProgramStage.programStageDataElements.length){
-            angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
-                if(!$scope.currentEvent.hasOwnProperty(prStDe.dataElement.id)){
-                    $scope.currentEvent[prStDe.dataElement.id] = '';
-                }
-            });
-        }
+        angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
+            if(!$scope.currentEvent.hasOwnProperty(prStDe.dataElement.id)){
+                $scope.currentEvent[prStDe.dataElement.id] = '';
+            }
+        });
     };
     
     $scope.addEvent = function(addingAnotherEvent){                
@@ -347,7 +330,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     $scope.generateReport = function(){
         console.log('I need to generate the report....');  
-    };     
+    };   
+    
 })
 
 //Controller for the main page
