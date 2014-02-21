@@ -117,7 +117,7 @@ public class User
      */
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
-    private List<String> apps = new ArrayList<String>(); //TODO not yet in use
+    private List<String> apps = new ArrayList<String>();
     
     // -------------------------------------------------------------------------
     // Logic
