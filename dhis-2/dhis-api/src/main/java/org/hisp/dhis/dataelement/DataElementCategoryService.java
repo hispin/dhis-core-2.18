@@ -32,6 +32,7 @@ import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -396,7 +397,6 @@ public interface DataElementCategoryService
      * DataElementCategoryOptions.
      * 
      * @param categoryOptions
-     * @return
      */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo(
         Collection<DataElementCategoryOption> categoryOptions );
@@ -410,6 +410,12 @@ public interface DataElementCategoryService
      */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo );
 
+    /**
+     * Retrieves a DataElementCategoryOptionCombo.
+     * 
+     * @param categoryCombo the DataElementCategoryOptionCombo.
+     * @param categoryOptions the set of DataElementCategoryOptions.
+     */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryCombo categoryCombo,
         Set<DataElementCategoryOption> categoryOptions );
 
@@ -563,6 +569,8 @@ public interface DataElementCategoryService
     CategoryOptionGroup getCategoryOptionGroup( int id );
 
     CategoryOptionGroup getCategoryOptionGroup( String uid );
+    
+    List<CategoryOptionGroup> getCategoryOptionGroupsByUid( Collection<String> uids );
 
     void deleteCategoryOptionGroup( CategoryOptionGroup group );
 
@@ -593,6 +601,8 @@ public interface DataElementCategoryService
     CategoryOptionGroupSet getCategoryOptionGroupSet( int id );
 
     CategoryOptionGroupSet getCategoryOptionGroupSet( String uid );
+    
+    List<CategoryOptionGroupSet> getCategoryOptionGroupSetsByUid( Collection<String> uids );
 
     void deleteCategoryOptionGroupSet( CategoryOptionGroupSet group );
 

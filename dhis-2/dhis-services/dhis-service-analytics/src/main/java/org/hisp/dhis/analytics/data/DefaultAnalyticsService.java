@@ -99,6 +99,7 @@ import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -960,6 +961,17 @@ public class DefaultAnalyticsService
             List<NameableObject> des = asList( dataElementService.getDataElementGroupsByUid( items ) );
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.DATAELEMENT_GROUPSET, null, degs.getDisplayName(), des );
+            
+            return Arrays.asList( object );
+        }
+        
+        CategoryOptionGroupSet cogs = categoryService.getCategoryOptionGroupSet( dimension );
+        
+        if ( cogs != null )
+        {
+            List<NameableObject> cogz = asList( categoryService.getCategoryOptionGroupsByUid( items ) );
+            
+            DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.CATEGORYOPTION_GROUPSET, null, cogs.getDisplayName(), cogz );
             
             return Arrays.asList( object );
         }
