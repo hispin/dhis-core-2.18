@@ -26,6 +26,10 @@
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" maxElementsInMemory="800" />
   
+  <cache name="org.hisp.dhis.dataelement.CategoryOptionGroup" maxElementsInMemory="1000" />
+  
+  <cache name="org.hisp.dhis.dataelement.CategoryOptionGroupSet" maxElementsInMemory="50" />  
+  
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryDimension" maxElementsInMemory="2000" />
 
   <cache name="org.hisp.dhis.dataelement.DataElementGroup" maxElementsInMemory="200" />
@@ -135,8 +139,16 @@
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.categoryOptionCombos" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.categories" maxElementsInMemory="300" />
+  
+  <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.groups" maxElementsInMemory="300" />
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo.categoryOptions" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.dataelement.CategoryOptionGroup.userGroupAccesses" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.dataelement.CategoryOptionGroup.members" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.dataelement.CategoryOptionGroupSet.userGroupAccesses" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryDimension.items" maxElementsInMemory="500" />
 
@@ -167,7 +179,7 @@
   <cache name="org.hisp.dhis.dataelement.DataElementGroupSet.members" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.dataelement.DataElementGroupSet.userGroupAccesses" maxElementsInMemory="500" />
-
+  
   <cache name="org.hisp.dhis.document.Document.userGroupAccesses" maxElementsInMemory="100" />
 
   <cache name="org.hisp.dhis.indicator.Indicator.groups" maxElementsInMemory="500" />

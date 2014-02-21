@@ -106,8 +106,8 @@ public class UpdateCategoryOptionGroupAction
 
         for ( String id : groupMembers )
         {
-            categoryOptionGroup.addCategoryOption( dataElementCategoryService.getDataElementCategoryOption( Integer
-                .parseInt( id ) ) );
+            categoryOptionGroup.addCategoryOption( dataElementCategoryService.getDataElementCategoryOption( 
+                Integer.parseInt( id ) ) );
         }
 
         dataElementCategoryService.updateCategoryOptionGroup( categoryOptionGroup );
