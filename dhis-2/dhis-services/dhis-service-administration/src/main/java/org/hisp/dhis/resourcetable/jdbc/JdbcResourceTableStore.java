@@ -323,7 +323,7 @@ public class JdbcResourceTableStore
 
         String quote = statementBuilder.getColumnQuote();
         
-        String sql = "CREATE TABLE " + TABLE_NAME_PERIOD_STRUCTURE + " (periodid INTEGER NOT NULL PRIMARY KEY, iso VARCHAR(10) NOT NULL, daysno INTEGER NOT NULL";
+        String sql = "CREATE TABLE " + TABLE_NAME_PERIOD_STRUCTURE + " (periodid INTEGER NOT NULL PRIMARY KEY, iso VARCHAR(15) NOT NULL, daysno INTEGER NOT NULL";
         
         for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
         {
