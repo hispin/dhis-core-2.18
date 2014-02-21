@@ -305,6 +305,8 @@
   <cache name="org.hisp.dhis.user.User.attributeValues" maxElementsInMemory="1000" />
 
   <cache name="org.hisp.dhis.user.User.groups" maxElementsInMemory="1000" />
+  
+  <cache name="org.hisp.dhis.user.User.apps" maxElementsInMemory="1000" />
 
   <cache name="org.hisp.dhis.user.UserGroup.attributeValues" maxElementsInMemory="200" />
 
