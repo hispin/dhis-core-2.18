@@ -48,9 +48,8 @@
         <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
         <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
 
-        <!--<script type="text/javascript" src="../../dhis-web-commons/ouwt/ouwt.js"></script>
-        <script type="text/javascript" src="scripts/ouwt.js"></script>
-        <script type="text/javascript" src="scripts/ouSelection.js"></script>-->
+        <!--<script type="text/javascript" src="../../dhis-web-commons/ouwt/ouwt.js"></script>-->
+        <script type="text/javascript" src="scripts/ouwt.js"></script>        
         <script type="text/javascript" src="scripts/angularLocalStorage.js"></script>
         <script type="text/javascript" src="scripts/angular-translate.min.js"></script>
         <script type="text/javascript" src="scripts/angular-translate-loader-static-files.min.js"></script>
@@ -85,12 +84,14 @@
                     {{'event_capture'| translate}}
                     <a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a>
                 </h1>
-
+                
+                <!-- selection -->
                 <div id="selectDiv">
                     <table>
                         <tr>
                             <td><label>{{'registering_unit'| translate}}</label></td>
-                            <td><input type="text" id="orgUnitName" name="orgUnitName" value="{{selectedOrgUnit.name| translate}}" disabled></td>
+                            <!--<td><input type="text" id="orgUnitName" name="orgUnitName" value="{{selectedOrgUnit.name| translate}}" disabled></td>-->
+                            <td><input type="text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" disabled=""></td>
                         </tr>
                         <tr>
                             <td><label>{{'program'| translate}}<em title="{{'required'| translate}}" class="required">*</em></label></td>
@@ -98,8 +99,9 @@
                                 <select id="programId" 
                                         name="programId" 
                                         ng-model="pr" 
-                                        ng-options="program as program.label for program in programs | orderBy: 'label'" 
-                                        ng-change="loadEvents(pr)">
+                                        ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                                        ng-change="loadEvents(pr)"
+                                        ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
                                     <option value="">{{'please_select'| translate}}</option>
                                 </select>      
                             </td>
@@ -115,34 +117,30 @@
                     </table>
                 </div>
 
-                <div id="listDiv" ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">
+                <!-- event grid begins -->
+                <div id="listDiv" ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">                    
                     
-                    <!-- visible when editing grid columns - need to think better way to display this-->
-                    <div class="bordered-div" ng-show="editGridColumns">
-                        <h3>{{'show_hide_columns'| translate}}</h3>
-                        <table class="listTable dhis2-table-striped" width='100%'>
-                            <tr>
-                                <th>
-                                    {{'column' | translate}}
-                                </th>
-                                <th ng-repeat="eventGridColumn in eventGridColumns">
-                                    {{eventGridColumn.name}}
-                                </th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    {{'hide' | translate}}
-                                </th>
-                                <th ng-repeat="eventGridColumn in eventGridColumns">
-                                    <input type="checkbox" ng-model="eventGridColumn.hide">
-                                </th>
-                            </tr>                            
-                        </table>
-                        <button ng-click="showHideColumns(false)">{{'close'| translate}}</button>
-                        &nbsp;&nbsp;&nbsp;
-                        <button ng-click="showHideColumns(true)">{{'show_all'| translate}}</button>
+                    <div class="right">
+                        <accordion>
+                            <accordion-group>
+                                <accordion-heading>
+                                    {{'show_hide_columns' | translate}}
+                                </accordion-heading>
+                                <table width='100%'>                                    
+                                    <tr ng-repeat="eventGridColumn in eventGridColumns">
+                                        <td>
+                                            {{eventGridColumn.name}}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" ng-model="eventGridColumn.hide" ng-change="showHideColumns(eventGridColumn,false)" ng-disabled="hiddenGridColumns + 1 == eventGridColumns.length && !eventGridColumn.hide">
+                                        </td>
+                                    </tr>                                    
+                                </table>
+                                <button ng-click="showHideColumns(null,true)">{{'show_all'| translate}}</button>
+                            </accordion-group>
+                        </accordion>
                     </div>
-                    
+                                        
                     <h2>
                         {{'registered_events'| translate}}                                                 
                     </h2>               
@@ -151,7 +149,7 @@
 
                         <div ng-switch-when="undefined">
                             <p>
-                                {{'empty_search_result'| translate}}
+                                {{'empty_event_list'| translate}}
                             </p>
                         </div>
 
@@ -160,15 +158,14 @@
                             <!-- context menu for event grid -->
                             <div id="contextMenu" class="contextMenu" style="width: 180px;">
                                 <ul id="contextMenuItems" class="contextMenuItems">
+                                    <li><a href ng-click="showEditEventInFull()"><i class="fa fa-edit"></i>&nbsp;&nbsp;{{'edit'| translate}}</a></li>
                                     <li><a href ng-click="showEditEventInGrid()"><i class="fa fa-edit"></i>&nbsp;&nbsp;{{'edit_in_grid'| translate}}</a></li>
-                                    <li><a href ng-click="showEditEventInFull()"><i class="fa fa-edit"></i>&nbsp;&nbsp;{{'full_edit'| translate}}</a></li>
-                                    <li><a href ng-click="removeEvent()"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;{{'remove'| translate}}</a></li>
-                                    <li><a href ng-click="showEventDetails()"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;{{'show_details'| translate}}</a></li>        
+                                    <li><a href ng-click="removeEvent()"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;{{'remove'| translate}}</a></li>                                       
                                 </ul>
                             </div>
                             <!-- context menu ends -->
 
-                            <!-- event grid begins -->
+                            <!-- grid begins -->
                             <form name="outerForm" novalidate>                              
 
                                 <table class="listTable dhis2-table-striped-border dhis2-table-hover">                    
@@ -184,18 +181,16 @@
                                                     {{eventGridColumn.name}}
                                                 </span>
                                                 
-                                                <span class="pull-right">
-                                                    <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span class='black'><i class="fa fa-search"></i></span></a>                                                    
-                                                </span>                                               
+                                                <span class='pull-right'>
+                                                    <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [filterText[eventGridColumn.id] == undefined || filterText[eventGridColumn.id] == '']"><i class="fa fa-search"></i></span></a>                                                    
+                                                </span>
                                                 
                                                 <div ng-show="eventGridColumn == filteringGrid">
                                                     <input type="text" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid()">
                                                 </div>                                                
                                                 
                                             </th>
-                                            <th ng-hide="editGridColumns">
-                                                <a href ng-click="showHideColumns(false)" title="{{'show_hide_columns'| translate}}"><i class="fa fa-cog"></i></a>
-                                            </th>         
+                                            <th></th>
                                         </tr>                        
                                     </thead>
                                     <tbody id="list">
@@ -283,22 +278,23 @@
                                                             <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
                                                         </div>
                                                     </div>
-                                                </ng-form>
-                                            </td>                            
-                                            <td>                                
+                                                </ng-form>                                                
+                                            </td>
+                                           <td>                                
                                                 <span ng-show="currentEvent.event == dhis2Event.event">
                                                     <a href ng-click="showEventList()" title="{{'close_editing'| translate}}"><span class='black'><i class="fa fa-times-circle-o fa-2x"></i></span></a>                                                    
                                                 </span>
-                                            </td>                            
+                                            </td>                           
                                         </tr>
                                     </tbody>        
                                 </table>
                                 <paginator></paginator>
                             </form>
-                            <!-- event grid ends -->
+                            <!-- grid ends -->
                         </div>
                     </div>
-                </div>               
+                </div> 
+                <!-- event grid ends -->
 
                 <!-- event update in full begins-->
                 <div ng-show="editingEventInFull">
@@ -493,7 +489,7 @@
                         </form>
                     </div>
                 </div>                
-                <!-- event registration ends -->
+                <!-- event registration ends -->                
             </div>           
         </div>
     </body>
