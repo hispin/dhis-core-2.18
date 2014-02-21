@@ -140,6 +140,8 @@ public class JdbcAnalyticsTableManager
         return null;
     }
     
+    // TODO join categoryoptiongroupsetstructure on both categoryoptioncomboid and attributeoptioncomboid
+    
     private void populateTable( AnalyticsTable table, String valueExpression, String valueType, String clause )
     {
         final String start = DateUtils.getMediumDateString( table.getPeriod().getStartDate() );
@@ -166,7 +168,7 @@ public class JdbcAnalyticsTableManager
             "from datavalue dv " +
             "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
-            "left join _categoryoptiongroupsetstructure cogs on dv.categoryoptioncomboid=cogs.categoryoptioncomboid " +
+            "left join _categoryoptiongroupsetstructure cogs on dv.attributeoptioncomboid=cogs.categoryoptioncomboid " +
             "left join _categorystructure dcs on dv.categoryoptioncomboid=dcs.categoryoptioncomboid " +
             "left join _categorystructure acs on dv.attributeoptioncomboid=acs.categoryoptioncomboid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
