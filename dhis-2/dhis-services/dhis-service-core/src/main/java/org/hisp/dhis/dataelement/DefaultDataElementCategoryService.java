@@ -793,6 +793,11 @@ public class DefaultDataElementCategoryService
         return categoryOptionGroupStore.getByUid( uid );
     }
 
+    public List<CategoryOptionGroup> getCategoryOptionGroupsByUid( Collection<String> uids )
+    {
+        return categoryOptionGroupStore.getByUid( uids );
+    }
+    
     public void deleteCategoryOptionGroup( CategoryOptionGroup group )
     {
         categoryOptionGroupStore.delete( group );
@@ -873,6 +878,11 @@ public class DefaultDataElementCategoryService
     public CategoryOptionGroupSet getCategoryOptionGroupSet( String uid )
     {
         return categoryOptionGroupSetStore.getByUid( uid );
+    }
+    
+    public List<CategoryOptionGroupSet> getCategoryOptionGroupSetsByUid( Collection<String> uids )
+    {
+        return categoryOptionGroupSetStore.getByUid( uids );
     }
 
     public void deleteCategoryOptionGroupSet( CategoryOptionGroupSet group )
