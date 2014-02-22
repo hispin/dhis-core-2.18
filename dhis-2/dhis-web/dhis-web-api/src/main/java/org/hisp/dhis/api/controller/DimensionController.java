@@ -28,9 +28,22 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.PagerUtils;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,6 +84,38 @@ public class DimensionController
         }
 
         return "dimension";
+    }
+    
+    @RequestMapping(value = "/{uid}/items", method = RequestMethod.GET)
+    public String getItems( @PathVariable String uid, @RequestParam Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );        
+        DimensionalObject dimension = dimensionService.getDimension( uid );
+        
+        if ( dimension == null )
+        {
+            ContextUtils.notFoundResponse( response, "Dimension does not exist: " + uid );
+            return null;
+        }
+        
+        WebMetaData metaData = new WebMetaData();        
+        List<NameableObject> items = new ArrayList<NameableObject>( dimension.getItems() );
+        Collections.sort( items, IdentifiableObjectNameComparator.INSTANCE );
+        
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), items.size(), options.getPageSize() );
+            metaData.setPager( pager );
+            items = PagerUtils.pageCollection( items, pager );
+        }
+        
+        metaData.setItems( items );
+
+        model.addAttribute( "model", metaData );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+
+        return "items";
     }
 
     @RequestMapping( method = RequestMethod.GET )
