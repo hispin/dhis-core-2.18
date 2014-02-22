@@ -95,12 +95,14 @@ public class DimensionController
         WebMetaData metaData = new WebMetaData();
         Collections.sort( items, IdentifiableObjectNameComparator.INSTANCE );
         
+        //TODO implement paging in clients
+        /*
         if ( options.hasPaging() )
         {
             Pager pager = new Pager( options.getPage(), items.size(), options.getPageSize() );
             metaData.setPager( pager );
             items = PagerUtils.pageCollection( items, pager );
-        }
+        }*/
         
         metaData.setItems( items );
 
