@@ -117,13 +117,8 @@
 {
   font-size: 12px;
   font-family: LiberationSansBold, sans-serif;
-  color: #4975b4;
+  color: #39547d;
   margin: 1px 5px;
-}
-
-.item h4
-{
-  margin: 0;
 }
 
 .item:hover
