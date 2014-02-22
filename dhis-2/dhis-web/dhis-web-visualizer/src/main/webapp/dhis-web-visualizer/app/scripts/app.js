@@ -4280,7 +4280,7 @@ Ext.onReady( function() {
 					fields: ['id', 'name'],
 					proxy: {
 						type: 'ajax',
-						url: ns.core.init.contextPath + '/api/dimensions/' + dimension.id + '.json',
+						url: ns.core.init.contextPath + '/api/dimensions/' + dimension.id + '/items.json',
 						reader: {
 							type: 'json',
 							root: 'items'
