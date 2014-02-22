@@ -397,8 +397,10 @@ public class HibernateGenericStore<T>
 
     protected boolean sharingEnabled()
     {
-        return forceAcl() || (SharingUtils.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
-            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), SharingUtils.SHARING_OVERRIDE_AUTHORITIES )));
+        boolean enabled = forceAcl() || ( SharingUtils.isSupported( clazz ) && !( currentUserService.getCurrentUser() == null ||
+            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), SharingUtils.SHARING_OVERRIDE_AUTHORITIES ) ) );
+        
+        return enabled;
     }
 
     protected boolean isReadAllowed( T object )
