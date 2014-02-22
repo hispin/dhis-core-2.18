@@ -36,6 +36,7 @@ import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.Dashboard;
@@ -147,6 +148,8 @@ public class MetaData
     private List<IndicatorGroupSet> indicatorGroupSets = new ArrayList<IndicatorGroupSet>();
 
     private List<IndicatorType> indicatorTypes = new ArrayList<IndicatorType>();
+    
+    private List<NameableObject> items = new ArrayList<NameableObject>();
 
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
@@ -496,6 +499,19 @@ public class MetaData
     public void setIndicatorTypes( List<IndicatorType> indicatorTypes )
     {
         this.indicatorTypes = indicatorTypes;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper(localName = "items", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "item", namespace = DxfNamespaces.DXF_2_0)
+    public List<NameableObject> getItems()
+    {
+        return items;
+    }
+
+    public void setItems( List<NameableObject> items )
+    {
+        this.items = items;
     }
 
     @JsonProperty
