@@ -28,7 +28,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionalObject;
@@ -71,7 +69,8 @@ public class DimensionController
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
     public String getDimension( @PathVariable("uid") String uid,
-        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, Model model )
+        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, 
+        Model model )
     {
         DimensionalObject dimension = dimensionService.getDimension( uid );
 
@@ -88,19 +87,12 @@ public class DimensionController
     
     @RequestMapping(value = "/{uid}/items", method = RequestMethod.GET)
     public String getItems( @PathVariable String uid, @RequestParam Map<String, String> parameters,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+        Model model, HttpServletRequest request, HttpServletResponse response )
     {
         WebOptions options = new WebOptions( parameters );        
-        DimensionalObject dimension = dimensionService.getDimension( uid );
-        
-        if ( dimension == null )
-        {
-            ContextUtils.notFoundResponse( response, "Dimension does not exist: " + uid );
-            return null;
-        }
-        
-        WebMetaData metaData = new WebMetaData();        
-        List<NameableObject> items = new ArrayList<NameableObject>( dimension.getItems() );
+        List<NameableObject> items = dimensionService.getCanReadDimensionItems( uid );
+                
+        WebMetaData metaData = new WebMetaData();
         Collections.sort( items, IdentifiableObjectNameComparator.INSTANCE );
         
         if ( options.hasPaging() )
@@ -120,7 +112,8 @@ public class DimensionController
 
     @RequestMapping( method = RequestMethod.GET )
     public String getDimensions(
-        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, Model model )
+        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, 
+        Model model )
     {
         WebMetaData metaData = new WebMetaData();
 

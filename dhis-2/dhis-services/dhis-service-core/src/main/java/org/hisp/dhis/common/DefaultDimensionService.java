@@ -29,6 +29,7 @@ package org.hisp.dhis.common;
  */
 
 import static org.hisp.dhis.common.DimensionType.CATEGORY;
+import static org.hisp.dhis.common.DimensionType.CATEGORYOPTION_GROUPSET;
 import static org.hisp.dhis.common.DimensionType.DATAELEMENT;
 import static org.hisp.dhis.common.DimensionType.DATAELEMENT_GROUPSET;
 import static org.hisp.dhis.common.DimensionType.DATAELEMENT_OPERAND;
@@ -36,7 +37,6 @@ import static org.hisp.dhis.common.DimensionType.DATASET;
 import static org.hisp.dhis.common.DimensionType.INDICATOR;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
-import static org.hisp.dhis.common.DimensionType.CATEGORYOPTION_GROUPSET;
 import static org.hisp.dhis.common.DimensionType.PERIOD;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
@@ -140,6 +140,30 @@ public class DefaultDimensionService
         }
         
         return null;
+    }
+    
+    public List<NameableObject> getCanReadDimensionItems( String uid )
+    {
+        DimensionalObject dimension = getDimension( uid );
+        
+        List<NameableObject> items = new ArrayList<NameableObject>();
+        
+        if ( dimension != null && dimension.getItems() != null )
+        {
+            User user = currentUserService.getCurrentUser();
+            
+            for ( NameableObject item : dimension.getItems() )
+            {
+                boolean canRead = SharingUtils.canRead( user, item );
+                
+                if ( canRead )
+                {
+                    items.add( item );
+                }
+            }
+        }
+        
+        return items;
     }
     
     public DimensionType getDimensionType( String uid )
