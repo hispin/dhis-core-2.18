@@ -37,6 +37,8 @@ public interface DimensionService
 {
     DimensionalObject getDimension( String uid );
     
+    List<NameableObject> getCanReadDimensionItems( String uid );
+    
     DimensionType getDimensionType( String uid );
     
     List<DimensionalObject> getAllDimensions();
