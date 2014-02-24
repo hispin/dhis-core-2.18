@@ -168,7 +168,7 @@ function TrackedEntityInstance()
 				var enrollmentDate = jQuery('#entityInstanceForm [id=enrollmentDate]').val();
 				
 				// Enroll entityInstance into the program
-				if( programId && enrollmentDate )
+				if( programId && enrollmentDate!=undefined )
 				{
 					jQuery.postJSON( "saveProgramEnrollment.action",
 					{

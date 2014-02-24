@@ -324,7 +324,6 @@ public class HibernateTrackedEntityInstanceStore
                 criteria.createAlias( "attributeValues", "attributeValue" );
                 criteria.createAlias( "organisationUnit", "orgunit" );
                 criteria.createAlias( "programInstances", "programInstance" );
-                criteria.createAlias( "programInstance.program", "program" );
 
                 Disjunction disjunction = Restrictions.disjunction();
 
