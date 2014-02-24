@@ -53,6 +53,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -86,6 +87,9 @@ public class AddTrackedEntityInstanceAction
     @Autowired
     private ProgramService programService;
 
+    @Autowired
+    private TrackedEntityAttributeValueService attributeValueService;
+
     private I18nFormat format;
 
     // -------------------------------------------------------------------------
@@ -115,23 +119,30 @@ public class AddTrackedEntityInstanceAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
         TrackedEntityInstance entityInstance = new TrackedEntityInstance();
         TrackedEntity trackedEntity = null;
-        
+
         if ( programId != null )
         {
             Program program = programService.getProgram( programId );
-            trackedEntity = program.getTrackedEntity();   
+            trackedEntity = program.getTrackedEntity();
         }
         else
         {
             trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
         }
-        
+
         entityInstance.setTrackedEntity( trackedEntity );
         entityInstance.setOrganisationUnit( organisationUnit );
 
         // ---------------------------------------------------------------------
         // Tracked Entity Attributes
         // ---------------------------------------------------------------------
+
+        TrackedEntityInstance relationship = null;
+
+        if ( relationshipId != null && relationshipTypeId != null )
+        {
+            relationship = entityInstanceService.getTrackedEntityInstance( relationshipId );
+        }
 
         HttpServletRequest request = ServletActionContext.getRequest();
 
@@ -169,6 +180,20 @@ public class AddTrackedEntityInstanceAction
                     }
                     attributeValues.add( attributeValue );
                 }
+                else if ( attribute.getInherit() && relationship != null )
+                {
+                    TrackedEntityAttributeValue av = attributeValueService.getTrackedEntityAttributeValue(
+                        relationship, attribute );
+                    if ( av != null )
+                    {
+                        attributeValue = new TrackedEntityAttributeValue();
+                        attributeValue.setEntityInstance( entityInstance );
+                        attributeValue.setAttribute( attribute );
+                        attributeValue.setValue( av.getValue() );
+                        
+                        attributeValues.add( attributeValue );
+                    }
+                }
             }
         }
 
@@ -179,9 +204,8 @@ public class AddTrackedEntityInstanceAction
         // Create relationship
         // -------------------------------------------------------------------------
 
-        if ( relationshipId != null && relationshipTypeId != null )
+        if ( relationship != null )
         {
-            TrackedEntityInstance relationship = entityInstanceService.getTrackedEntityInstance( relationshipId );
             if ( relationship != null )
             {
                 Relationship rel = new Relationship();
