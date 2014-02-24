@@ -178,4 +178,8 @@
 	if(disableButtons){
 		jQuery('#entityInstanceForm .button').attr('disabled',true);
 	}
+	
+	#if( $addRelationship=='true')
+		jQuery('[inherit="true"]').attr('disabled',true);
+	#end
 </script>

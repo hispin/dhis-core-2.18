@@ -44,6 +44,7 @@
 
 <form id="entityInstanceForm" name="entityInstanceForm" method="post" class="inputForm">
 <table>
+	#set($addRelationship='false')
 	#if($relatedProgram)
 		<input type='hidden' name="relationshipTypeId" id="relationshipTypeId" value="$relatedProgram.relationshipType.id">
 		<input type='hidden' name="relationshipFromA" id="relationshipFromA" value="$relatedProgram.relationshipFromA" >
@@ -64,6 +65,7 @@
 		<input type="hidden" id="representativeId" name="representativeId"/> 
 		<input type='hidden' name="relationshipId" id="relationshipId">
 		<input type="hidden" id="addRelationship" name="addRelationship" value="true">
+		#set($addRelationship='true')
 	</tr>
 	#else
 		<input type="hidden" id="representativeId" name="representativeId"/> 
