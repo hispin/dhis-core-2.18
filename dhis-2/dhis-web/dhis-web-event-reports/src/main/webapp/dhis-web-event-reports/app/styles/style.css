@@ -38,6 +38,15 @@
  * General
  *--------------------------------------------------------------------------*/
 
+body {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 body,
 .x-body,
 .x-btn-default-toolbar-small .x-btn-inner,
@@ -159,11 +168,16 @@ body.x-windows {
 }
 
 .ns-form-item-label-top {
-	padding-left: 2px;
+	padding-left: 4px;
 	float: none;
 	clear: none;
 	display: block;
 	margin-bottom: 2px !important;
+}
+
+.ns-container-default {
+    border: 0 none;
+    background: #fff;
 }
 
 /*----------------------------------------------------------------------------
@@ -703,6 +717,17 @@ table.pivot {
     opacity: 0.25;
 }
 
+.ns-button-combotrigger {
+    background-image: url('../images/trigger.gif');
+    background-position: 0 0;
+    width: 17px;
+}
+.ns-button-combotrigger-disabled,
+.ns-button-combotrigger-disabled * {
+    opacity: 0.8;
+    cursor: default !important;
+}
+
 
 /*----------------------------------------------------------------------------
  * Tooltip
@@ -883,6 +908,19 @@ table.pivot {
 	height: 22px;
 	line-height: 21px;
 }
+
+	/* Date links */
+.ns-label-date {
+    display: block;
+    font-size: 10px;
+    color: #333;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.ns-label-date:hover {
+    color: #666;
+}
+
 
 /*----------------------------------------------------------------------------
  * PT Textfield

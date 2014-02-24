@@ -150,5 +150,6 @@
 "aggregation_type",
 "count",
 "sum",
-"by_data_element"
+"by_data_element",
+"relative_periods"
 ]
