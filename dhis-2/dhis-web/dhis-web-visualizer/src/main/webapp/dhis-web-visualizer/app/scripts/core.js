@@ -1192,11 +1192,15 @@ Ext.onReady( function() {
 				return null;
 			};
 
-			service.layout.layout2plugin = function(layout) {
+			service.layout.layout2plugin = function(layout, el) {
 				var layout = Ext.clone(layout),
 					dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));
 
 				layout.url = init.contextPath;
+
+				if (el) {
+					layout.el = el;
+				}
 				
 				if (Ext.isString(layout.id)) {
 					return {id: layout.id};
