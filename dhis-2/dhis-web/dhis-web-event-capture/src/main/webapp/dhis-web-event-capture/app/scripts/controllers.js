@@ -12,7 +12,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 DHIS2EventFactory,
                 Paginator,
                 ContextMenuSelectedItem,
-                ModalService,
+                ModalService,                
                 DialogService,                
                 orderByFilter,
                 $filter,
@@ -47,10 +47,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.currentEventOrginialValue = '';     
   
        
-    $scope.$watch('selectedOrgUnit', function(newObj, oldObj) {
-        
-        if( angular.isObject($scope.selectedOrgUnit)){            
-            $scope.loadPrograms($scope.selectedOrgUnit);            
+    $scope.$watch('selectedOrgUnit', function(newObj, oldObj) {        
+
+        if( angular.isObject($scope.selectedOrgUnit)){                      
+            $scope.loadPrograms($scope.selectedOrgUnit);
         }        
     });
     
@@ -60,6 +60,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.selectedOrgUnit = orgUnit;
         $scope.selectedProgram = null;
         $scope.selectedProgramStage = null;
+        $scope.programStageDataElements = [];
         $scope.eventGridColumns = [];
         $scope.dhis2Events = [];
         $scope.newDhis2Event = {dataValues: []};
@@ -82,7 +83,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     //fetch contents of selected program from server - with full details
     $scope.loadEvents = function(program){
-
+        
         ProgramFactory.get(program.id).then(function(data){
             $scope.selectedProgram = data;
             
@@ -90,6 +91,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             ProgramStageFactory.get($scope.selectedProgram.programStages[0].id).then(function(data){
                $scope.selectedProgramStage = data;
                
+               $scope.programStageDataElements = [];               
                angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
                    $scope.programStageDataElements[prStDe.dataElement.id] = prStDe; 
                });
@@ -127,11 +129,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                    
                    //generate grid headers using program stage data elements
                    //also, create a template for new event.
+                   $scope.eventGridColumns = [];        
                    for(var dataElement in $scope.programStageDataElements){
                        var dataElement = $scope.programStageDataElements[dataElement].dataElement;
                        var name = dataElement.formName || dataElement.name;
                        $scope.newDhis2Event.dataValues.push({id: dataElement.id, value: '', name: name});                       
-                       $scope.eventGridColumns.push({name: name, id: dataElement.id, filter: '', hide: false});
+                       $scope.eventGridColumns.push({name: name, id: dataElement.id, type: dataElement.type, showFilter: false, hide: false});
+                       if(dataElement.type === 'date'){
+                            $scope.filterText[dataElement.id]= {start: '', end: ''};
+                       }                       
                    }                   
                });
             });            
@@ -170,8 +176,26 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         }      
     };
     
-    $scope.searchInGrid = function(gridColumn){        
-        $scope.filteringGrid = gridColumn;    
+    $scope.searchInGrid = function(gridColumn){           
+        
+        for(var i=0; i<$scope.eventGridColumns.length; i++){
+            
+            //toggle the selected grid column's filter bos and hide the rest
+            if($scope.eventGridColumns[i].id === gridColumn.id){
+                $scope.eventGridColumns[i].showFilter = !$scope.eventGridColumns[i].showFilter;
+            }            
+            else{
+                $scope.eventGridColumns[i].showFilter = false;
+            }
+        }
+    };
+    
+    $scope.removeStartFilterText = function(gridColumnId){
+        $scope.filterText[gridColumnId].start = '';
+    };
+    
+    $scope.removeEndFilterText = function(gridColumnId){
+        $scope.filterText[gridColumnId].end = '';
     };
     
     $scope.showEventList = function(){
@@ -217,7 +241,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         //check for form validity
         $scope.outerForm.submitted = true;        
         if( $scope.outerForm.$invalid ){
-            console.log('the form is invalid');
             return false;
         }
         
@@ -266,7 +289,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     }; 
    
     
-    $scope.updateEventDataValue = function(currentEvent, dataElement){       
+    $scope.updateEventDataValue = function(currentEvent, dataElement){
+        
+        //check for form validity
+        $scope.outerForm.submitted = true;        
+        if( $scope.outerForm.$invalid ){
+            console.log('the form is invalid');
+            return false;
+        }
        
         var newValue = currentEvent[dataElement];
         var oldValue = $scope.currentEventOrginialValue[dataElement];

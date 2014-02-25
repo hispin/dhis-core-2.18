@@ -22,8 +22,52 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
 
     return {        
         restrict: 'A',        
-        link: function(scope, element, attrs){
+        link: function(scope, element, attrs){            
             
+            //at startup, get selected orgunit from history - if any - and inform angular           
+            $(function() {                 
+                
+                var adapters = [];
+                var partial_adapters = [];
+
+                if( dhis2.ou.memoryOnly ) {
+                    adapters = [ dhis2.storage.InMemoryAdapter ];
+                    partial_adapters = [ dhis2.storage.InMemoryAdapter ];
+                } else {
+                    adapters = [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ];
+                    partial_adapters = [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ];
+                }
+
+                dhis2.ou.store = new dhis2.storage.Store({
+                    name: OU_STORE_NAME,
+                    objectStores: [
+                        {
+                            name: OU_KEY,
+                            adapters: adapters
+                        },
+                        {
+                            name: OU_PARTIAL_KEY,
+                            adapters: partial_adapters
+                        }
+                    ]
+                });
+
+                dhis2.ou.store.open().done( function() {
+                    selection.load();
+                    $( "#orgUnitTree" ).one( "ouwtLoaded", function() {
+                        var selected = selection.getSelected();
+                        selection.getOrganisationUnit(selected[0]).done(function(data){
+                            if( data[selected] !== 'undefined' ||  data[selected] !== null ){
+                                scope.selectedOrgUnit = {id: data[selected].id, name: data[selected].n};  
+                                scope.$apply();
+                            }                        
+                        });
+                    } );
+                    
+                });
+            });
+            
+            //listen to user selection - and inform angular         
             selection.setListenerFunction( organisationUnitSelected );            
             selection.responseReceived();
             
@@ -111,17 +155,15 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
 
                 if(rawDate != convertedDate){
                     scope.invalidDate = true;
-                    ctrl.$setViewValue(this.value);
-                    scope.$apply();                    
-                    ctrl.$setValidity('foo', false);
-                    //console.log('it is invalid');
+                    ctrl.$setViewValue(this.value);                                   
+                    ctrl.$setValidity('foo', false);                    
+                    scope.$apply();     
                 }
                 else{
                     scope.invalidDate = false;
-                    ctrl.$setViewValue(this.value);
-                    scope.$apply();                    
-                    ctrl.$setValidity('foo', true);
-                    //console.log('it is valid');
+                    ctrl.$setViewValue(this.value);                                   
+                    ctrl.$setValidity('foo', true);                    
+                    scope.$apply();     
                 }
             });    
         }      
