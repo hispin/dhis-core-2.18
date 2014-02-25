@@ -3,7 +3,7 @@
 /* App Module */
 
 var eventCapture = angular.module('eventCapture',
-		[ 'ui.bootstrap', 
+		 ['ui.bootstrap', 
 		  'ngRoute', 
 		  'ngCookies', 
 		  'eventCaptureDirectives', 
@@ -13,22 +13,35 @@ var eventCapture = angular.module('eventCapture',
 		  'angularLocalStorage', 
 		  'pascalprecht.translate'])
 
-.config(function($translateProvider) {
+.config(function($routeProvider, $httpProvider, $translateProvider) {    
     
-	$translateProvider.useStaticFilesLoader({
-		prefix: 'i18n/',
-		suffix: '.json'
-	});
-	
-	$translateProvider.preferredLanguage('en');	
-})
-
-.config(['$httpProvider',function ($httpProvider) {
+    /*$routeProvider.when('/', {
+        templateUrl : 'index.html',
+        resolve: {
+            dhis2Url: function(TrackerApp) {
+                return TrackerApp.getConfiguration().then(function(appConfiguration){
+                    //ConfigurationService.set(appConfiguration);
+                    return appConfiguration.activities.dhis.href;      
+                });
+            }
+        }
+            
+    }).otherwise({
+        redirectTo : '/'
+    });*/
+        
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
- }]) 
+    
+    $translateProvider.useStaticFilesLoader({
+        prefix: 'i18n/',
+        suffix: '.json'
+    });
+    $translateProvider.preferredLanguage('en');	
+})
 
 .run(function (TrackerApp, storage) {    
+    
     TrackerApp.getConfiguration().then(function(appConfiguration){     
         storage.set('CONFIG', appConfiguration);
     });

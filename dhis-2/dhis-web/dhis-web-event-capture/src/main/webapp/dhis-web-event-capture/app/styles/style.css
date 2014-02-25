@@ -706,6 +706,7 @@ div.paging a.active
 
 .right {
     float: right !important;
+    padding-bottom: 20px;
     margin-bottom: 20px;
 }
 .black {

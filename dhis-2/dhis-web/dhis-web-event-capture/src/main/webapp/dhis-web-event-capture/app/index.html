@@ -49,7 +49,7 @@
         <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
 
         <!--<script type="text/javascript" src="../../dhis-web-commons/ouwt/ouwt.js"></script>-->
-        <script type="text/javascript" src="scripts/ouwt.js"></script>        
+        <script type="text/javascript" src="scripts/ouwt.js"></script>  
         <script type="text/javascript" src="scripts/angularLocalStorage.js"></script>
         <script type="text/javascript" src="scripts/angular-translate.min.js"></script>
         <script type="text/javascript" src="scripts/angular-translate-loader-static-files.min.js"></script>
@@ -61,7 +61,8 @@
         <script type="text/javascript" src="scripts/controllers.js"></script>
         <script type="text/javascript" src="scripts/filters.js"></script>
 
-        <link type="text/css" rel="stylesheet" href="../../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>        
+        <!--<link type="text/css" rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css"/> -->
+        <link type="text/css" rel="stylesheet" href="../../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
         <link type="text/css" rel="stylesheet" media="screen,print" href="../../dhis-web-commons/css/light_blue/light_blue.css"/>
         <link type="text/css" rel="stylesheet" media="screen,print" href="../../dhis-web-commons/css/widgets.css"/>
 
@@ -90,7 +91,6 @@
                     <table>
                         <tr>
                             <td><label>{{'registering_unit'| translate}}</label></td>
-                            <!--<td><input type="text" id="orgUnitName" name="orgUnitName" value="{{selectedOrgUnit.name| translate}}" disabled></td>-->
                             <td><input type="text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" disabled=""></td>
                         </tr>
                         <tr>
@@ -136,7 +136,7 @@
                                         </td>
                                     </tr>                                    
                                 </table>
-                                <button ng-click="showHideColumns(null,true)">{{'show_all'| translate}}</button>
+                                <button ng-click="showHideColumns(null,true)" ng-disabled="hiddenGridColumns < 1">{{'show_all'| translate}}</button>
                             </accordion-group>
                         </accordion>
                     </div>
@@ -175,26 +175,45 @@
                                                 class="max-column-width"                                                
                                                 ng-repeat="eventGridColumn in eventGridColumns">
                                                 
-                                                <span ng-hide="eventGridColumn == filteringGrid" class="bold" ng-click="sortEventGrid(eventGridColumn)">
+                                                <span ng-hide="eventGridColumn.showFilter" class="bold" ng-click="sortEventGrid(eventGridColumn)">
                                                     <i ng-show="sortHeader == eventGridColumn.id && !reverse" class="fa fa-sort-desc"></i>
                                                     <i ng-show="sortHeader == eventGridColumn.id && reverse" class="fa fa-sort-asc"></i>
                                                     {{eventGridColumn.name}}
                                                 </span>
                                                 
+                                                <!-- Filter icon -->
                                                 <span class='pull-right'>
-                                                    <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [filterText[eventGridColumn.id] == undefined || filterText[eventGridColumn.id] == '']"><i class="fa fa-search"></i></span></a>                                                    
+                                                    <span ng-show="eventGridColumn.type !=='date'">
+                                                        <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [filterText[eventGridColumn.id] == undefined || filterText[eventGridColumn.id] == '']"><i class="fa fa-search"></i></span></a>
+                                                    </span>
+                                                    <span ng-show="eventGridColumn.type ==='date'">
+                                                        <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [(filterText[eventGridColumn.id].start == 'undefined' || filterText[eventGridColumn.id].start == '') && (filterText[eventGridColumn.id].end == 'undefined' || filterText[eventGridColumn.id].end == '')]"><i class="fa fa-search"></i></span></a>
+                                                    </span>
+                                                    
                                                 </span>
                                                 
-                                                <div ng-show="eventGridColumn == filteringGrid">
-                                                    <input type="text" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid()">
-                                                </div>                                                
-                                                
+                                                <!-- Filter input field -->
+                                                <div ng-show="eventGridColumn.showFilter">
+                                                    <span ng-show="eventGridColumn.type !=='date'">
+                                                        <input type="text" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid(eventGridColumn)">
+                                                    </span>                                                    
+                                                    <span ng-show="eventGridColumn.type ==='date'">
+                                                        <input placeholder="{{'start_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].start" data-ng-date readonly="readonly">
+                                                        <span ng-hide="filterText[eventGridColumn.id].start == 'undefined' || filterText[eventGridColumn.id].start == ''">
+                                                            <a href ng-click='removeStartFilterText(eventGridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
+                                                        </span>
+                                                        <input placeholder="{{'end_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].end" data-ng-date readonly="readonly">
+                                                        <span ng-hide="filterText[eventGridColumn.id].end == 'undefined' || filterText[eventGridColumn.id].end == ''">
+                                                            <a href ng-click='removeEndFilterText(eventGridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
+                                                        </span>
+                                                    </span>
+                                                </div>
                                             </th>
                                             <th></th>
                                         </tr>                        
                                     </thead>
                                     <tbody id="list">
-                                        <tr ng-repeat="dhis2Event in dhis2Events | paginate:rowsPerPage | orderBy:sortHeader:reverse | filter:filterText" 
+                                        <tr ng-repeat="dhis2Event in dhis2Events | paginate:rowsPerPage | orderBy:sortHeader:reverse | gridFilter:filterText:programStageDataElements" 
                                             ng-click="showContextMenu(dhis2Event)">
 
                                             <!-- Visible when event is not under editing -->
@@ -212,7 +231,7 @@
                                                 ng-show="(currentEvent.event == dhis2Event.event) && !eventGridColumn.hide" 
                                                 ng-repeat="eventGridColumn in eventGridColumns">
                                                 <ng-form name="innerFormGrid">
-                                                    <div ng-switch="programStageDataElements[eventGridColumn.id].dataElement.type">
+                                                    <div ng-switch="eventGridColumn.type">
                                                         <div ng-switch-when="int">
                                                             <input type="number" 
                                                                    input-validator
@@ -321,7 +340,7 @@
                                         </td>
                                         <td class="max-column-width">
                                             <ng-form name="innerFormUpdate">
-                                                <div ng-switch="programStageDataElements[eventGridColumn.id].dataElement.type">
+                                                <div ng-switch="eventGridColumn.type">
                                                     <div ng-switch-when="int">
                                                         <input type="number" 
                                                                ng-model="currentEvent[eventGridColumn.id]" 
@@ -419,7 +438,7 @@
                                         </td>
                                         <td class="max-column-width">
                                             <ng-form name="innerFormAdd">
-                                                <div ng-switch="programStageDataElements[eventGridColumn.id].dataElement.type">
+                                                <div ng-switch="eventGridColumn.type">
                                                     <div ng-switch-when="int">
                                                         <input type="number" 
                                                                ng-model="currentEvent[eventGridColumn.id]" 

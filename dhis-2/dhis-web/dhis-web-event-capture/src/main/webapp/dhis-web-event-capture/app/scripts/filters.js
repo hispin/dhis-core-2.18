@@ -4,24 +4,58 @@
 
 var eventCaptureFilters = angular.module('eventCaptureFilters', [])
 
-.filter('gridFilter', function(){
+.filter('gridFilter', function(){    
     
-    /* array is first argument, each addiitonal argument is prefixed by a ":" in filter markup*/
-    return function(dataArray, searchTerm){
+    return function(data, filterText, filterObjectTypes){
         
-        if(!dataArray ) return;
-        
-        /* when term is cleared, return full array*/        
-        if( !searchTerm){
-            return dataArray;
+        if(!data ){
+            return;
         }
-        else{
+        
+        if(!filterText){
+            return data;
+        }        
+        else{            
             
-            /* otherwise filter the array */
-            var term = searchTerm.toLowerCase();
-            return dataArray.filter(function( item){
-                return item.id.toLowerCase().indexOf(term) > -1 || item.name.toLowerCase().indexOf(term) > -1;    
-            });
+            var keys = [];
+            var filteredData = data;
+            
+            for(var key in filterText){
+                keys.push(key);
+                
+                for(var i=0; i<filteredData.length; i++){
+                    
+                    var val = filteredData[i][key];
+                    
+                    if( filterObjectTypes[key].dataElement.type === 'date'){
+                        
+                        if( filterText[key].start || filterText[key].end){
+                            var start = moment(filterText[key].start, 'YYYY-MM-DD');
+                            var end = moment(filterText[key].end, 'YYYY-MM-DD');  
+                            var date = moment(val, 'YYYY-MM-DD');                              
+                            
+                            if( ( Date.parse(date) > Date.parse(end) ) || (Date.parse(date) < Date.parse(start)) ){  
+                                filteredData.splice(i,1);
+                                i--;
+                            }                                                        
+                        }
+                        
+                    }
+                    else{
+                        if( filterObjectTypes[key].dataElement.type === 'int'){
+                            val = val.toString();
+                        }
+
+                        val = val.toLowerCase();
+                        if( val.indexOf(filterText[key].toLowerCase()) === -1 ){
+                            filteredData.splice(i,1);
+                            i--;
+                        }                        
+                    }
+                                        
+                }
+            }            
+            return filteredData;
         } 
     };    
 })

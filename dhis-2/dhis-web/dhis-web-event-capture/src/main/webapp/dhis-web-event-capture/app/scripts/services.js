@@ -72,7 +72,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 })
 
 /* factory for loading logged in user profiles from DHIS2 */
-.factory('CurrentUserProfile', function($http, storage, TrackerApp) { 
+.factory('CurrentUserProfile', function($http, storage) { 
     
     var dhis2Url = storage.get('CONFIG').activities.dhis.href;      
            
@@ -85,9 +85,9 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                    return profile;
                 });
             }
-            return promise;           
+            return promise;         
         }
-    };    
+    };  
 })
 
 /* Factory to enroll person in a program */
@@ -644,12 +644,20 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             
             return configurationPromise; 
         }
+    };
+})
+
+.factory('ConfigurationService', function(){
+    var configuration;
+    
+    return {
+        get: function(){
+            return configuration;
+        },
         
-        /*getConfiguration: function(){
-            return this.loadConfiguration().then(function(appConfiguration){
-                return appConfiguration;
-            });
-        }*/
+        set: function(configuration){
+            this.configuration = configuration;
+        }
     };
 })
 
