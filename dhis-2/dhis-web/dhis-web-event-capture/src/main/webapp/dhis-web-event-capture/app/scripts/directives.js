@@ -10,7 +10,6 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
         require: 'ngModel',
         link: function (scope, element, attrs, ctrl) {  
 
-            //console.log('the model is:  ', attrs.programStageDataElement);
             ctrl.$parsers.push(function (value) {
                 return parseFloat(value || '');
             });
