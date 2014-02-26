@@ -350,18 +350,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         });        
     };
     
-    $scope.showEventDetails = function(){
-        console.log('The event is:  ', ContextMenuSelectedItem.getSelectedItem().event);
-    };
-    
     $scope.getHelpContent = function(){
         console.log('I will get help content');
     };
-    
-    $scope.generateReport = function(){
-        console.log('I need to generate the report....');  
-    };   
-    
 })
 
 //Controller for the main page
