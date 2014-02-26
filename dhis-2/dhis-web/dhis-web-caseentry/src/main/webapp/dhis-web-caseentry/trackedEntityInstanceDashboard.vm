@@ -38,7 +38,7 @@
 					<td id='dashboard_attr$attributeValue.attribute.id'>
 						#if($attributeValue.attribute.valueType=='bool' 
 							|| $attributeValue.attribute.valueType=='trueOnly')
-							#if($attributeValue.value)
+							#if($attributeValue.value=='true')
 								$i18n.getString("yes")
 							#else
 								$i18n.getString("no")

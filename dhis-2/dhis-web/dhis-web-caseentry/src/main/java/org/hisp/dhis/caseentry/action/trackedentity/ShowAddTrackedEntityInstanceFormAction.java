@@ -31,6 +31,7 @@ package org.hisp.dhis.caseentry.action.trackedentity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +51,11 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityForm;
 import org.hisp.dhis.trackedentity.TrackedEntityFormService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeGroupSortOrderComparator;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -266,6 +269,13 @@ public class ShowAddTrackedEntityInstanceFormAction
         return trackedEntities;
     }
 
+    private Map<Integer, String> trackedEntityAttributeValueMap = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getTrackedEntityAttributeValueMap()
+    {
+        return trackedEntityAttributeValueMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -274,7 +284,32 @@ public class ShowAddTrackedEntityInstanceFormAction
     {
         if ( entityInstanceId != null )
         {
-            entityInstanceUid = entityInstanceService.getTrackedEntityInstance( entityInstanceId ).getUid();
+            TrackedEntityInstance relatedEntityInstance = entityInstanceService
+                .getTrackedEntityInstance( entityInstanceId );
+            entityInstanceUid = relatedEntityInstance.getUid();
+
+            // -------------------------------------------------------------------------
+            // Get trackedEntity-attribute values
+            // -------------------------------------------------------------------------
+
+            Collection<TrackedEntityAttributeValue> attributeValues = relatedEntityInstance.getAttributeValues();
+
+            for ( TrackedEntityAttributeValue attributeValue : attributeValues )
+            {
+                if ( attributeValue.getAttribute().getInherit() )
+                {
+                    String value = attributeValue.getValue();
+
+                    if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE )
+                        && value != null )
+                    {
+                        Date date = format.parseDate( value );
+                        value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
+                    }
+
+                    trackedEntityAttributeValueMap.put( attributeValue.getAttribute().getId(), value );
+                }
+            }
         }
 
         trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
@@ -326,6 +361,10 @@ public class ShowAddTrackedEntityInstanceFormAction
             {
                 attributes = program.getEntityAttributes();
             }
+
+            Collection<TrackedEntityAttribute> attributesInList = attributeService.getTrackedEntityAttributesDisplayedInList( true );
+            attributes.removeAll( attributesInList );
+            attributes.addAll( attributesInList );
 
             for ( TrackedEntityAttribute attribute : attributes )
             {
