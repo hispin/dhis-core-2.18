@@ -43,7 +43,7 @@
 	padding: 2px;
 }
 
-#identifiersSelector, #attributesSelector, #programSelector {
+#attributesSelector, #programSelector {
 	padding: 2px;
 }
 </style>
@@ -110,25 +110,8 @@
 </form>
 
 <div id='selectionDialog' class='hidden'>
-    <table id="identifierTypeTab">
-   		<tr>
-   			<td>
-   				<input type='text' id='identifierTypeFilter' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'identifiersSelector' )">
-   				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('identifierTypeFilter','');">
-   			</td>
-   		</tr>
-   		<tr>
-   			<td>
-   				<select id="identifiersSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'iden' )">
-   					#foreach( $identifierType in $identifierTypes )
-   						<option value="$identifierType.uid" mandatory='$identifierType.mandatory'>$encoder.htmlEncode($identifierType.displayName) #if($identifierType.mandatory=='true') * #end </option>
-   					#end
-   				</select>
-   			</td>
-   		</tr>
-   	</table>
-
-    <table id="attributeTab" class="hidden">
+  
+    <table id="attributeTab">
    		<tr>
    			<td>
    				<input type='text' id='attributeFilter' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'attributesSelector' )">
@@ -170,9 +153,7 @@
 	<table>
 		<tr>
 			<td>
-                <button type="button" class="ui-state-active2" id="identifierTypeButton" onclick="identifierTypeOnClick()">$i18n.getString( "identifier_types" )</button>
                 <button type="button" id="attributesButton" onclick="attributesOnClick()">$i18n.getString( "attributes" )</button>
-
 				#if($!program)
 					<button type="button" id="programAttrButton" onclick="programAttrOnClick()">$i18n.getString( "program" )</button>
 				#end

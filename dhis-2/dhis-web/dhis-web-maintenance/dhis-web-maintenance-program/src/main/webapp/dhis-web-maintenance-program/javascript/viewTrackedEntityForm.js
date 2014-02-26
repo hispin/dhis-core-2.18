@@ -61,29 +61,11 @@ function fixAttrOnClick()
 	});	
 	
 	$("#fixAttrButton").addClass("ui-state-active2");
-	$("#identifierTypeButton").removeClass("ui-state-active2");
 	$("#attributesButton").removeClass("ui-state-active2");
 	$("#programAttrButton").removeClass("ui-state-active2");
 	hideById('attributeTab');
-	hideById('identifierTypeTab');
 	hideById('programAttrTab');
 	showById('fixedAttrTab');
-}
-
-function identifierTypeOnClick()
-{
-	$("#insertButton").click(function() {
-		insertElement( 'iden' )
-	});
-	
-	$("#fixAttrButton").removeClass("ui-state-active2");
-	$("#identifierTypeButton").addClass("ui-state-active2");
-	$("#attributesButton").removeClass("ui-state-active2");
-	$("#programAttrButton").removeClass("ui-state-active2");
-	hideById('attributeTab');
-	hideById('fixedAttrTab');
-	hideById('programAttrTab');
-	showById('identifierTypeTab');
 }
 
 function attributesOnClick()
@@ -93,10 +75,8 @@ function attributesOnClick()
 	});	
 	
 	$("#fixAttrButton").removeClass("ui-state-active2");
-	$("#identifierTypeButton").removeClass("ui-state-active2");
 	$("#attributesButton").addClass("ui-state-active2");
 	$("#programAttrButton").removeClass("ui-state-active2");
-	hideById('identifierTypeTab');
 	hideById('fixedAttrTab');
 	hideById('programAttrTab');
 	showById('attributeTab');
@@ -109,11 +89,9 @@ function programAttrOnClick()
 	});	
 	
 	$("#fixAttrButton").removeClass("ui-state-active2");
-	$("#identifierTypeButton").removeClass("ui-state-active2");
 	$("#attributesButton").removeClass("ui-state-active2");
 	$("#programAttrButton").addClass("ui-state-active2");
 	hideById('attributeTab');
-	hideById('identifierTypeTab');
 	hideById('fixedAttrTab');
 	showById('programAttrTab');
 }
@@ -124,14 +102,7 @@ function getDefaultRequiredFields()
 	if( getFieldValue("disableRegistrationFields")!='true' )
 	{
 		requiredFields['fixedattributeid=fullName'] = i18n_full_name;
-			
-		jQuery('#identifiersSelector option').each(function() {
-			var item = jQuery(this);
-			if( item.attr('mandatory')=='true'){
-				requiredFields['identifierid=' + item.val()] = item.text();
-			}
-		});
-
+		
 		jQuery('#attributesSelector option').each(function() {
 			var item = jQuery(this);
 			if( item.attr('mandatory')=='true'){
@@ -156,10 +127,6 @@ function getDefaultRequiredFields()
 				if( inputKey!=undefined)
 				{
 					key = 'fixedattributeid=' + inputKey
-				}
-				else if( jQuery(item).attr('identifierid')!=undefined ){
-					inputKey = jQuery(item).attr('identifierid');
-					key = 'identifierid=' + inputKey
 				}
 				else if( jQuery(item).attr('attributeid')!=undefined ){
 					inputKey = jQuery(item).attr('attributeid');
@@ -312,10 +279,6 @@ function checkExisted( id )
 		{
 			key = 'fixedattributeid="' + inputKey + '"';
 		}
-		else if( jQuery(item).attr('identifierid')!=undefined ){
-			inputKey = jQuery(item).attr('identifierid');
-			key = 'identifierid="' + inputKey + '"';
-		}
 		else if( jQuery(item).attr('attributeid')!=undefined ){
 			inputKey = jQuery(item).attr('attributeid');
 			key = 'attributeid="' + inputKey + '"';
@@ -341,13 +304,6 @@ function insertElement( type )
 		var element = jQuery('#fixedAttrSelector option:selected');
 		if( element.length == 0 ) return;		
 		id = 'fixedattributeid="' + element.attr('value') + '"';
-		value = element.text();
-	}
-	else if( type == 'iden' ){
-		var element = jQuery('#identifiersSelector option:selected');
-		if( element.length == 0 ) return;
-		
-		id = 'identifierid="' + element.attr('value') + '"';
 		value = element.text();
 	}
 	else if( type == 'attr' ){

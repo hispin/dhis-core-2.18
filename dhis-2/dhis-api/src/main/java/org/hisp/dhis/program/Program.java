@@ -44,10 +44,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.trackedentity.TrackedEntity;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
-import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
@@ -210,45 +209,6 @@ public class Program
         }
 
         return null;
-    }
-
-    public ValidationCriteria isValid( TrackedEntityInstance entityInstance )
-    {
-        try
-        {
-            for ( ValidationCriteria criteria : validationCriteria )
-            {
-                String value = "";
-                for ( TrackedEntityAttributeValue attributeValue : entityInstance.getAttributeValues() )
-                {
-                    if ( attributeValue.getAttribute().getUid().equals( criteria.getProperty() ) )
-                    {
-                        value = attributeValue.getValue();
-                        break;
-                    }
-                }
-
-                if ( !value.isEmpty() )
-                {
-                    // Compare property value with compare value
-                    int i = value.compareTo( criteria.getValue() );
-
-                    // Return validation criteria if criteria is not met
-                    if ( i != criteria.getOperator() )
-                    {
-                        return criteria;
-                    }
-                }
-            }
-
-            // Return null if all criteria are met
-
-            return null;
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( ex );
-        }
     }
 
     // -------------------------------------------------------------------------

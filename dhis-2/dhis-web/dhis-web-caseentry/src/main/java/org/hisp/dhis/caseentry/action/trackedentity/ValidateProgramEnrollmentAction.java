@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.trackedentity;
  */
 
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
@@ -94,6 +95,13 @@ public class ValidateProgramEnrollmentAction
         this.i18n = i18n;
     }
 
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -105,11 +113,12 @@ public class ValidateProgramEnrollmentAction
 
         Program program = programService.getProgram( programId );
 
-        ValidationCriteria criteria = program.isValid( entityInstance );
+        ValidationCriteria criteria = entityInstanceService.validateEnrollment( entityInstance, program, format );
 
         if ( criteria != null )
         {
-            message = i18n.getString( "entityInstance_could_not_be_enrolled_due_to_following_enrollment_criteria" ) + ": ";
+            message = i18n.getString( "entityInstance_could_not_be_enrolled_due_to_following_enrollment_criteria" )
+                + ": ";
 
             message += (criteria.getDescription() != null && !criteria.getDescription().isEmpty()) ? criteria
                 .getDescription() : criteria.getDisplayName();

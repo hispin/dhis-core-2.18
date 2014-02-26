@@ -80,7 +80,6 @@ function showProgramDetails( context ) {
     setInnerHTML('dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription);
     setInnerHTML('programStageCountField', json.program.programStageCount);
     setInnerHTML('noAttributesField', json.program.noAttributes);
-    setInnerHTML('noIdentifierTypesField', json.program.noIdentifierTypes);
 
     showDetails();
   });
@@ -155,7 +154,7 @@ function programOnChange() {
 }
 
 // -----------------------------------------------------------------------------
-// select identifiers / attributes
+// select attributes
 // -----------------------------------------------------------------------------
 
 function selectProperties() {

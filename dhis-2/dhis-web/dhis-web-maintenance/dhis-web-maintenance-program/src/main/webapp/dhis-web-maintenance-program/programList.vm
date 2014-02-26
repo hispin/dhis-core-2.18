@@ -71,7 +71,6 @@
 				<p><label class="bold">$i18n.getString( "date_of_incident_description" ):</label><br><span id="dateOfIncidentDescriptionField"></span></p>                              
 				<p><label class="bold">$i18n.getString( "date_of_enrollment_description" ):</label><br><span id="dateOfEnrollmentDescriptionField"></span></p>                          
 				<p><label class="bold">$i18n.getString( "number_of_attributes" ):</label><br><span id="noAttributesField"></span></p>
-				<p><label class="bold">$i18n.getString( "number_of_identifier_types" ):</label><br><span id="noIdentifierTypesField"></span></p>
 			</div>
 
 		</td>

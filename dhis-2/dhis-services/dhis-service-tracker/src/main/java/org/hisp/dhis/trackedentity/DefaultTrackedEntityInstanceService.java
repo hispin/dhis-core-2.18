@@ -55,6 +55,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceStore;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
+import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -420,8 +421,8 @@ public class DefaultTrackedEntityInstanceService
     public Collection<String> getTrackedEntityInstancePhoneNumbers( List<String> searchKeys,
         Collection<OrganisationUnit> orgunits, Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
-        Collection<TrackedEntityInstance> entityInstances = entityInstanceStore.search( searchKeys, orgunits, followup, null,
-            statusEnrollment, min, max );
+        Collection<TrackedEntityInstance> entityInstances = entityInstanceStore.search( searchKeys, orgunits, followup,
+            null, statusEnrollment, min, max );
         Set<String> phoneNumbers = new HashSet<String>();
 
         for ( TrackedEntityInstance instance : entityInstances )
@@ -446,8 +447,8 @@ public class DefaultTrackedEntityInstanceService
     public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
-        return entityInstanceStore
-            .getProgramStageInstances( searchKeys, orgunits, followup, null, statusEnrollment, min, max );
+        return entityInstanceStore.getProgramStageInstances( searchKeys, orgunits, followup, null, statusEnrollment,
+            min, max );
     }
 
     @Override
@@ -538,7 +539,7 @@ public class DefaultTrackedEntityInstanceService
         {
             grid.addHeader( new GridHeader( attribute.getDisplayName(), false, true ) );
         }
-        
+
         grid.addHeader( new GridHeader( "programstageinstanceid", true, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "due_date" ), false, true ) );
@@ -549,9 +550,15 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public int validateTrackedEntityInstance( TrackedEntityInstance instance, Program program )
+    public int validateTrackedEntityInstance( TrackedEntityInstance instance, Program program, I18nFormat format )
     {
-        return entityInstanceStore.validate( instance, program );
+        return entityInstanceStore.validate( instance, program, format );
+    }
+
+    @Override
+    public ValidationCriteria validateEnrollment( TrackedEntityInstance instance, Program program, I18nFormat format )
+    {
+        return entityInstanceStore.validateEnrollment( instance, program, format );
     }
 
     @Override
