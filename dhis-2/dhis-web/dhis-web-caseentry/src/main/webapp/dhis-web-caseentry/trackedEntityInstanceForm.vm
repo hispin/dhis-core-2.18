@@ -1,6 +1,12 @@
 
+#if( $entityInstance )
+	#set($trackedEntityId=$entityInstance.trackedEntity.id)
+#elseif( $program )
+	#set($trackedEntityId=$program.trackedEntity.id)
+#end
+
 #if($program)
-	<input type='hidden' id='trackedEntityId' name='trackedEntityId' value='$program.trackedEntity.id'>
+	<input type='hidden' id='trackedEntityId' name='trackedEntityId' value='$trackedEntityId'>
 #else
 	<tr>
 		<th colspan="2" class="heading-column">$i18n.getString( "demographics" ) </th>
@@ -8,7 +14,7 @@
 	<tr>
 		<td class='text-column'><label>$i18n.getString('tracked_entity')<em title="$i18n.getString( 'required' )" class="required">*</em> </label></td>
 		<td class="input-column">
-			<select type='hidden' id='trackedEntityId' name='trackedEntityId' value='$program.trackedEntity.id'>
+			<select type='hidden' id='trackedEntityId' name='trackedEntityId' value='$trackedEntityId'>
 				<option value=''>[$i18n.getString('please_select')]</option>
 				#foreach($trackedEntity in $trackedEntities)
 				<option value='$trackedEntity.id' #if($entityInstance.trackedEntity.id==$trackedEntity.id) selected #end >$trackedEntity.displayName</option>

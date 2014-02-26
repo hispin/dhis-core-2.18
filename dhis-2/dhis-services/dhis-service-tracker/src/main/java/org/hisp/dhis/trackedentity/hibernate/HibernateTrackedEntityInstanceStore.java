@@ -53,6 +53,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -301,7 +302,7 @@ public class HibernateTrackedEntityInstanceStore
         return criteria.list();
     }
 
-    public int validate( TrackedEntityInstance instance, Program program )
+    public int validate( TrackedEntityInstance instance, Program program, I18nFormat format )
     {
         if ( instance.getAttributeValues() != null && instance.getAttributeValues().size() > 0 )
         {
@@ -381,7 +382,7 @@ public class HibernateTrackedEntityInstanceStore
 
         if ( program != null )
         {
-            ValidationCriteria validationCriteria = program.isValid( instance );
+            ValidationCriteria validationCriteria = validateEnrollment( instance, program, format );
 
             if ( validationCriteria != null )
             {
@@ -390,6 +391,51 @@ public class HibernateTrackedEntityInstanceStore
         }
 
         return TrackedEntityInstanceService.ERROR_NONE;
+    }
+
+    public ValidationCriteria validateEnrollment( TrackedEntityInstance instance, Program program, I18nFormat format )
+    {
+        try
+        {
+            for ( ValidationCriteria criteria : program.getValidationCriteria() )
+            {
+                String value = "";
+                for ( TrackedEntityAttributeValue attributeValue : instance.getAttributeValues() )
+                {
+                    if ( attributeValue.getAttribute().getUid().equals( criteria.getProperty() ) )
+                    {
+                        value = attributeValue.getValue();
+
+                        if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
+                        {
+                            value = TrackedEntityAttribute.getAgeFromDate( format.parseDate( value ) ) + "";
+                        }
+
+                        if ( !value.isEmpty() )
+                        {
+                            // Compare property value with compare value
+                            int i = value.compareTo( criteria.getValue() );
+
+                            // Return validation criteria if criteria is not met
+                            if ( i != criteria.getOperator() )
+                            {
+                                return criteria;
+                            }
+                        }
+
+                    }
+                }
+
+            }
+
+            // Return null if all criteria are met
+
+            return null;
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( ex );
+        }
     }
 
     // -------------------------------------------------------------------------

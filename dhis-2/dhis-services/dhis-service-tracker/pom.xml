@@ -25,7 +25,7 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-i18n</artifactId>
     </dependency>
-
+	
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

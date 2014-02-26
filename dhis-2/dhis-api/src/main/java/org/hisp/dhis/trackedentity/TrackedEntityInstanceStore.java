@@ -33,8 +33,10 @@ import java.util.List;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.validation.ValidationCriteria;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -222,17 +224,30 @@ public interface TrackedEntityInstanceStore
         Integer max );
 
     /**
-     * Validate instances attribute values and validation criteria by program
+     * Validate entity-instances attribute values and validation criteria by program
      * before registering / updating information
      * 
-     * @param instances TrackedEntityInstance object
+     * @param entityinstance TrackedEntityInstance object
      * @param program Program which person needs to enroll. If this parameter is
      *        null, the system check attribute values of the instances
+     * @param format I18nFormat
      * 
      * @return Error code 0 : Validation is OK 1 : The attribute value is
      *         duplicated 2 : Violate validation criteria of the program
      */
-    int validate( TrackedEntityInstance instances, Program program );
+    int validate( TrackedEntityInstance entityinstance, Program program, I18nFormat format );
+
+    /**
+     * Validate entity-instance enrollment
+     * 
+     * @param entityinstance TrackedEntityInstance object
+     * @param program Program which person needs to enroll. If this parameter is
+     *        null, the system check identifiers of the patient
+     * @param format I18nFormat
+     * 
+     * @return ValidationCriteria object which is violated
+     */
+    ValidationCriteria validateEnrollment(TrackedEntityInstance entityinstance, Program program, I18nFormat format );
 
     /**
      * Validate instances attribute values and validation criteria by program

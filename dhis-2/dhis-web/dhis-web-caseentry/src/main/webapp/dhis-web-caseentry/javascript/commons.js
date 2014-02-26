@@ -945,7 +945,7 @@ function showUpdateTrackedEntityInstanceForm( entityInstanceId )
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('migrationEntityInstanceDiv');
-	hideById('entityInstanceDashboard');
+	setInnerHTML('entityInstanceDashboard','');
 
     $('#loaderDiv').show();
     $('#editEntityInstanceDiv').load('showUpdateTrackedEntityInstanceForm.action', {

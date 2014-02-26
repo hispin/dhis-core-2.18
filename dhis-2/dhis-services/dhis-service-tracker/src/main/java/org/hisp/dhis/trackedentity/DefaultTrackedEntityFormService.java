@@ -196,6 +196,7 @@ public class DefaultTrackedEntityFormService
                     }
 
                     inputHtml = getAttributeField( inputHtml, attribute, value, i18n, index, hidden, style );
+
                 }
 
             }
@@ -320,7 +321,7 @@ public class DefaultTrackedEntityFormService
         else if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_COMBO ) )
         {
             inputHtml = inputHtml.replaceFirst( "input", "select" ) + ">";
-
+            inputHtml += "<option value=\"\" selected>" + i18n.getString( "no_value" ) + "</option>";
             for ( TrackedEntityAttributeOption option : attribute.getAttributeOptions() )
             {
                 inputHtml += "<option value=\"" + option.getId() + "\" ";
@@ -342,7 +343,8 @@ public class DefaultTrackedEntityFormService
         {
             inputHtml += " value=\"" + value + "\"" + TAG_CLOSE;
         }
-        return inputHtml;
+         
+       return inputHtml;
     }
 
     private Object getValueFromProgram( String property, ProgramInstance programInstance )
