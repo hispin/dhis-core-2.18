@@ -29,6 +29,7 @@ package org.hisp.dhis.trackedentity;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
@@ -141,12 +142,17 @@ public class DefaultTrackedEntityAttributeService
         Collection<TrackedEntityAttribute> result = attributeStore.getAll();
 
         Collection<Program> programs = programService.getAllPrograms();
-        for ( Program program : programs )
+        if ( result != null )
         {
-            result.removeAll( program.getAttributes() );
+            for ( Program program : programs )
+            {
+                result.removeAll( program.getAttributes() );
+            }
+
+            return result;
         }
 
-        return result;
+        return new HashSet<TrackedEntityAttribute>();
     }
 
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayedInList( boolean displayInListNoProgram )
