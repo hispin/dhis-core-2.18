@@ -257,7 +257,7 @@ public class ValidationAction
             }
         }
 
-        return dataValues.isEmpty() && validationResults.isEmpty() & commentViolations.isEmpty() ? SUCCESS : INPUT;
+        return dataValues.isEmpty() && validationResults.isEmpty() && commentViolations.isEmpty() ? SUCCESS : INPUT;
     }
 
     // -------------------------------------------------------------------------
