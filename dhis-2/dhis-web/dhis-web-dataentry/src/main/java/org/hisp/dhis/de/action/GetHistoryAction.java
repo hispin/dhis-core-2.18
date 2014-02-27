@@ -30,6 +30,8 @@ package org.hisp.dhis.de.action;
 
 import java.util.Collection;
 
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.api.utils.InputUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -47,6 +49,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -111,6 +114,9 @@ public class GetHistoryAction
         this.userService = userService;
     }
 
+    @Autowired
+    private InputUtils inputUtils;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -156,6 +162,20 @@ public class GetHistoryAction
     public void setOrganisationUnitId( String organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
+    }
+
+    private String cc;
+
+    public void setCc( String cc )
+    {
+        this.cc = cc;
+    }
+
+    private String cp;
+
+    public void setCp( String cp )
+    {
+        this.cp = cp;
     }
 
     // -------------------------------------------------------------------------
@@ -220,11 +240,11 @@ public class GetHistoryAction
     {
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
-        if ( optionCombo == null )
+        if ( categoryOptionCombo == null )
         {
-            optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+            categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         }
 
         if ( dataElement == null )
@@ -236,7 +256,9 @@ public class GetHistoryAction
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, optionCombo );
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( ServletActionContext.getResponse(), cc, cp );
+        
+        dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, categoryOptionCombo, attributeOptionCombo );
 
         if ( dataValue != null )
         {
@@ -244,7 +266,7 @@ public class GetHistoryAction
             storedBy = credentials != null ? credentials.getName() : dataValue.getStoredBy();
         }
 
-        dataElementHistory = historyRetriever.getHistory( dataElement, optionCombo, organisationUnit, period, HISTORY_LENGTH );
+        dataElementHistory = historyRetriever.getHistory( dataElement, categoryOptionCombo, organisationUnit, period, HISTORY_LENGTH );
 
         historyInvalid = dataElementHistory == null;
 
