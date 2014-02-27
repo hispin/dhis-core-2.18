@@ -36,19 +36,19 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
- * Holds information for each organisation unit that is needed during
- * a validation run (either interactive or an alert run).
+ * Holds information for each organisation unit that is needed during a
+ * validation run (either interactive or an alert run).
  * 
- * It is important that they should be copied from Hibernate lazy
- * collections before the multithreaded part of the run starts, otherwise
- * the threads may not be able to access these values.
+ * It is important that they should be copied from Hibernate lazy collections
+ * before the multithreaded part of the run starts, otherwise the threads may
+ * not be able to access these values.
  * 
  * @author Jim Grace
  */
 public class OrganisationUnitExtended
 {
     private OrganisationUnit source;
-    
+
     private boolean toBeValidated;
 
     private Collection<OrganisationUnit> children;
@@ -57,38 +57,39 @@ public class OrganisationUnitExtended
 
     public OrganisationUnitExtended( OrganisationUnit source, boolean toBeValidated )
     {
-    	this.source = source;
-    	this.toBeValidated = toBeValidated;
-    	children = new HashSet<OrganisationUnit>( source.getChildren() );
-    	level = source.getOrganisationUnitLevel();
+        this.source = source;
+        this.toBeValidated = toBeValidated;
+        children = new HashSet<OrganisationUnit>( source.getChildren() );
+        level = source.getOrganisationUnitLevel();
     }
-    
+
     public String toString()
     {
-        return new ToStringBuilder( this, ToStringStyle.SHORT_PREFIX_STYLE )
-            .append( "\n  name", source.getName() )
-            .append( "\n  children[", children.size() + "]" )
-            .append( "\n  level", level ).toString();
+        return new ToStringBuilder( this, ToStringStyle.SHORT_PREFIX_STYLE ).append( "\n  name", source.getName() )
+            .append( "\n  children[", children.size() + "]" ).append( "\n  level", level ).toString();
     }
 
     // -------------------------------------------------------------------------
     // Set and get methods
-    // -------------------------------------------------------------------------  
+    // -------------------------------------------------------------------------
 
-    public OrganisationUnit getSource() {
-		return source;
-	}
+    public OrganisationUnit getSource()
+    {
+        return source;
+    }
 
-    public boolean getToBeValidated() {
-		return toBeValidated;
-	}
+    public boolean getToBeValidated()
+    {
+        return toBeValidated;
+    }
 
-	public Collection<OrganisationUnit> getChildren() {
-		return children;
-	}
+    public Collection<OrganisationUnit> getChildren()
+    {
+        return children;
+    }
 
-	public int getLevel() {
-		return level;
-	}
+    public int getLevel()
+    {
+        return level;
+    }
 }
-
