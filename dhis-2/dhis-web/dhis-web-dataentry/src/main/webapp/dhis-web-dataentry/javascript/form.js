@@ -1843,12 +1843,23 @@ function viewHist( dataElementId, optionComboId )
 	    var optionComboName = getOptionComboName( optionComboId );
 	    var operandName = dataElementName + ' ' + optionComboName;
 	
-	    $( '#historyDiv' ).load( 'viewHistory.action', {
-	        dataElementId : dataElementId,
+	    var params = {
+    		dataElementId : dataElementId,
 	        optionComboId : optionComboId,
 	        periodId : periodId,
 	        organisationUnitId : getCurrentOrganisationUnit()
-	    }, 
+	    };
+
+	    var cc = dhis2.de.getCurrentCategoryCombo();
+	    var cp = dhis2.de.getCurrentCategoryOptionsQueryValue();
+	    
+	    if ( cc && cp )
+	    {
+	    	params.cc = cc;
+	    	params.cp = cp;
+	    }
+	    
+	    $( '#historyDiv' ).load( 'viewHistory.action', params, 
 	    function( response, status, xhr )
 	    {
 	        if ( status == 'error' )
