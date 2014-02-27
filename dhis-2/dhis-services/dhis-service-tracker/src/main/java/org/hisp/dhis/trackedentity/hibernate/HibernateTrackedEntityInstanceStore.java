@@ -413,13 +413,41 @@ public class HibernateTrackedEntityInstanceStore
 
                         if ( !value.isEmpty() )
                         {
-                            // Compare property value with compare value
-                            int i = value.compareTo( criteria.getValue() );
-
-                            // Return validation criteria if criteria is not met
-                            if ( i != criteria.getOperator() )
+                            String type = attributeValue.getAttribute().getValueType();
+                            // For integer type
+                            if ( type.equals( TrackedEntityAttribute.TYPE_AGE )
+                                || type.equals( TrackedEntityAttribute.TYPE_INT ) )
                             {
-                                return criteria;
+                                int value1 = Integer.parseInt( value );
+                                int value2 = Integer.parseInt( criteria.getValue() );
+
+                                if ( (criteria.getOperator() == ValidationCriteria.OPERATOR_LESS_THAN && value1 >= value2)
+                                    || (criteria.getOperator() == ValidationCriteria.OPERATOR_EQUAL_TO && value1 != value2)
+                                    || (criteria.getOperator() == ValidationCriteria.OPERATOR_GREATER_THAN && value1 <= value2) )
+                                {
+                                    return criteria;
+                                }
+                            }
+                            // For Date type
+                            else if ( type.equals( TrackedEntityAttribute.TYPE_DATE ) )
+                            {
+                                Date value1 = format.parseDate( value );
+                                Date value2 = format.parseDate( criteria.getValue() );
+                                int i = value1.compareTo( value2 );
+                                if ( i != criteria.getOperator() )
+                                {
+                                    return criteria;
+                                }
+                            }
+                            // For other types
+                            else
+                            {
+                                if ( criteria.getOperator() == ValidationCriteria.OPERATOR_EQUAL_TO
+                                    && !value.equals( criteria.getValue() ) )
+                                {
+                                    return criteria;
+                                }
+
                             }
                         }
 

@@ -43,6 +43,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
@@ -143,6 +144,21 @@ public class ValidateTrackedEntityInstanceAction
                     TrackedEntityAttributeValue attributeValue = new TrackedEntityAttributeValue();
                     attributeValue.setEntityInstance( entityInstance );
                     attributeValue.setAttribute( attribute );
+
+                    if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
+                    {
+                        value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
+                    }
+                    else if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                    {
+                        TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( Integer
+                            .parseInt( value ) );
+                        if ( option != null )
+                        {
+                            attributeValue.setValue( option.getName() );
+                        }
+                    }
+
                     attributeValue.setValue( value );
 
                     attributeValues.add( attributeValue );
