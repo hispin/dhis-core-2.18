@@ -36,10 +36,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -50,6 +53,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
@@ -192,6 +196,13 @@ public class GetMetaDataAction
     {
         return defaultCategoryCombo;
     }
+    
+    private ListMap<String, DataElementCategoryOption> categoryOptionMap = new ListMap<String, DataElementCategoryOption>();
+
+    public ListMap<String, DataElementCategoryOption> getCategoryOptionMap()
+    {
+        return categoryOptionMap;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -199,7 +210,9 @@ public class GetMetaDataAction
 
     public String execute()
     {
-        if ( currentUserService.getCurrentUser().getOrganisationUnits().isEmpty() )
+        User user = currentUserService.getCurrentUser();
+        
+        if ( user.getOrganisationUnits().isEmpty() )
         {
             emptyOrganisationUnits = true;
 
@@ -251,6 +264,17 @@ public class GetMetaDataAction
         
         categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryComboSet );
         categories = new ArrayList<DataElementCategory>( categorySet );
+        
+        for ( DataElementCategory category : categories )
+        {
+            for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
+            {
+                if ( SharingUtils.canRead( user, categoryOption ) )
+                {
+                    categoryOptionMap.putValue( category.getUid(), categoryOption );
+                }
+            }
+        }
         
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );
