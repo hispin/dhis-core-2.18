@@ -206,7 +206,7 @@ Ext.onReady( function() {
 						return;
 					}
 
-					config.id = config.id.replace('.', '-');
+					//config.id = config.id.replace('.', '-');
 
 					return config;
 				}();
@@ -1651,8 +1651,8 @@ Ext.onReady( function() {
 					for (var i = 0, id, splitId ; i < ids.length; i++) {
 						id = ids[i];
 
-						if (id.indexOf('-') !== -1) {
-							splitId = id.split('-');
+						if (id.indexOf('.') !== -1) {
+							splitId = id.split('.');
 							response.metaData.names[id] = response.metaData.names[splitId[0]] + ' ' + response.metaData.names[splitId[1]];
 						}
 					}
@@ -1682,8 +1682,11 @@ Ext.onReady( function() {
 						row = response.rows[i];
 						id = '';
 
-						for (var j = 0; j < idIndexOrder.length; j++) {
-							id += row[idIndexOrder[j]];
+						for (var j = 0, index; j < idIndexOrder.length; j++) {
+							index = idIndexOrder[j];
+
+							id += response.headers[index].name === co ? '.' : '';
+							id += row[index];
 						}
 
 						response.idValueMap[id] = row[valueHeaderIndex];
@@ -1768,7 +1771,7 @@ Ext.onReady( function() {
 
 					if (dimName === dx) {
 						for (var j = 0, index; j < items.length; j++) {
-							index = items[j].indexOf('-');
+							index = items[j].indexOf('.');
 
 							if (index > 0) {
 								addCategoryDimension = true;
@@ -1841,15 +1844,19 @@ Ext.onReady( function() {
 				dim.ids = [];
 
 				// relative id?
-				if ((Ext.isString(id) && id.toLowerCase() === 'total') || id === 0) {
-					id = 'total_';
+				if (Ext.isString(id)) {
+					id = id.toLowerCase() === 'total' ? 'total_' : id;
 				}
-				else if (Ext.isNumber(parseInt(id))) {
-					id = xColAxis.ids[parseInt(id) - 1];
-
-					if (!id) {
-						return xLayout;
+				else if (Ext.isNumber(id)) {
+					if (id === 0) {
+						id = 'total_';
 					}
+					else {
+						id = xColAxis.ids[parseInt(id) - 1];
+					}
+				}
+				else {
+					return xLayout;
 				}
 
 				// collect values
@@ -2069,7 +2076,8 @@ Ext.onReady( function() {
 
 							// sortable column headers. last dim only.
 							if (i === xColAxis.dims - 1 && doSortableColumnHeaders()) {
-								condoId = xColAxis.ids[j].split('-').join('');
+								//condoId = xColAxis.ids[j].split('-').join('');
+								condoId = xColAxis.ids[j];
 							}
 
 							dimHtml.push(getTdHtml(obj, condoId));
@@ -2163,7 +2171,8 @@ Ext.onReady( function() {
 							uuids = [];
 
 							// meta data uid
-							id = (xColAxis ? support.prototype.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? support.prototype.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
+							//id = (xColAxis ? support.prototype.str.replaceAll(xColAxis.ids[j], '-', '') : '') + (xRowAxis ? support.prototype.str.replaceAll(xRowAxis.ids[i], '-', '') : '');
+							id = (xColAxis ? xColAxis.ids[j] : '') + (xRowAxis ? xRowAxis.ids[i] : '');
 
 							// value html element id
 							uuid = Ext.data.IdGenerator.get('uuid').generate();

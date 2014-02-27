@@ -196,6 +196,20 @@ table.pivot {
 	-ms-user-select: all;
 	user-select: all;
 }
+table.comfortable td {
+	padding: 10px;
+}
+table.compact td {
+	padding: 3px;
+}
+
+table.large td {
+	font-size: 13px;
+}
+table.small td {
+	font-size: 10px;
+}
+
 .pivot td {
 	padding: 5px;
 	border: 1px solid #b2b2b2;
