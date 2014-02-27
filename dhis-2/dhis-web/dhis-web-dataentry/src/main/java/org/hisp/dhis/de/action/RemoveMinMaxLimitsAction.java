@@ -80,9 +80,9 @@ public class RemoveMinMaxLimitsAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer organisationUnitId;
+    private String organisationUnitId;
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
+    public void setOrganisationUnitId( String organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
