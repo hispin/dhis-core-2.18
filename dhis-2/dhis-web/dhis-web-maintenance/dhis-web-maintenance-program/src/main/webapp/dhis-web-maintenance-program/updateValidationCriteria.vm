@@ -32,7 +32,7 @@
 									#foreach($option in $programAttribute.attribute.attributeOptions)
 										#set($opt=$opt + ';' + $option.name )
 									#end 
-								<option value="$programAttribute.attribute.uid" opt="$opt" #if($validationCriteria.property==$attribute.uid) #set($attribute = $programAttribute.attribute) selected #end>$programAttribute.attribute.displayName</option>
+									<option value="$programPatientAttribute.patientAttribute.uid" opt="$opt" #if($validationCriteria.property==$programPatientAttribute.patientAttribute.uid) #set($attribute = $programPatientAttribute.patientAttribute) selected #end>$programPatientAttribute.patientAttribute.displayName</option>
 								#end
 							</select>
 						</td>
@@ -46,7 +46,7 @@
 						<td id='valueTD'>
 							#if($attribute.attributeOptions)
 								<select id='value' name='value' class="{validate:{required:true}}" style="width:200px;">
-									#foreach($option in $attribute.attributeOptions)
+									#foreach($option in $attribute.attributeOptions.size()>0)
 									<option value="$option.name" #if($validationCriteria.value==$option.name) selected #end>$option.name</option>
 									#end
 								</select>
