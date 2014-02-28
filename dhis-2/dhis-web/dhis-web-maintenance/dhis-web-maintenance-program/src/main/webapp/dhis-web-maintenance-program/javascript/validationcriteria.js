@@ -22,7 +22,7 @@ function removeCriteria( context ) {
 // -----------------------------------------------------------------------------
 
 function showValidationCriteriaDetails( context ) {
-  jQuery.getJSON('getValidationCriteria.action', { id: context.id }, function( json ) {
+  jQuery.getJSON('getValidationCriteria.action', { id: context.id, programId: getFieldValue('programId')  }, function( json ) {
     setInnerHTML('nameField', json.validationCriteria.name);
     setInnerHTML('descriptionField', json.validationCriteria.description);
 
