@@ -5269,7 +5269,7 @@ Ext.onReady( function() {
 						ns.core.web.chart.loadChart(id);
 					}
 					else if (Ext.isString(session) && NS.isSessionStorage && Ext.isObject(JSON.parse(sessionStorage.getItem('dhis2'))) && session in JSON.parse(sessionStorage.getItem('dhis2'))) {
-						layout = ns.core.api.layout.Layout(JSON.parse(sessionStorage.getItem('dhis2'))[session]);
+						layout = ns.core.api.layout.Layout(ns.core.service.layout.analytical2layout(JSON.parse(sessionStorage.getItem('dhis2'))[session]));
 
 						if (layout) {
 							ns.core.web.chart.getData(layout, true);
