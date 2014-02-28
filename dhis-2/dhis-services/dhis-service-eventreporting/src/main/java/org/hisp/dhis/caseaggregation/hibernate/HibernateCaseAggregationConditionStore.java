@@ -287,11 +287,11 @@ public class HibernateCaseAggregationConditionStore
             {
                 if ( operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
                 {
-                    sql += " count (distinct(pi.trackedentityinstanceid) ) as value ";
+                    sql += " count(distinct(pi.trackedentityinstanceid)) as value ";
                 }
                 else
                 {
-                    sql += " count (psi.programinstanceid ) as value ";
+                    sql += " count(psi.programinstanceid) as value ";
                 }
 
                 sql += "FROM ";
