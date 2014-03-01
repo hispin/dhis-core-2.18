@@ -63,6 +63,7 @@ import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -121,7 +122,7 @@ public class CurrentUserController
 
     @Autowired
     private UserSettingService userSettingService;
-    
+
     @Autowired
     private ContextUtils contextUtils;
 
@@ -138,6 +139,7 @@ public class CurrentUserController
             throw new NotAuthenticatedException();
         }
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJsonWithView( response.getOutputStream(), currentUser, DetailedView.class );
     }
 
@@ -155,6 +157,7 @@ public class CurrentUserController
         inbox.setMessageConversations( new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, MAX_OBJECTS ) ) );
         inbox.setInterpretations( new ArrayList<Interpretation>( interpretationService.getInterpretations( 0, MAX_OBJECTS ) ) );
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), inbox );
     }
 
@@ -172,6 +175,7 @@ public class CurrentUserController
         dashboard.setUnreadMessageConversation( messageService.getUnreadMessageConversationCount() );
         dashboard.setUnreadInterpretations( interpretationService.getNewInterpretationCount() );
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), dashboard );
     }
 
@@ -208,12 +212,13 @@ public class CurrentUserController
         userAccount.setEducation( currentUser.getEducation() );
         userAccount.setInterests( currentUser.getInterests() );
         userAccount.setLanguages( currentUser.getLanguages() );
-        
+
         userAccount.getSettings().put( KEY_UI_LOCALE, TextUtils.toString( userSettingService.getUserSetting( KEY_UI_LOCALE ) ) );
         userAccount.getSettings().put( KEY_DB_LOCALE, TextUtils.toString( userSettingService.getUserSetting( KEY_DB_LOCALE ) ) );
         userAccount.getSettings().put( KEY_MESSAGE_EMAIL_NOTIFICATION, TextUtils.toString( userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION ) ) );
         userAccount.getSettings().put( KEY_MESSAGE_SMS_NOTIFICATION, TextUtils.toString( userSettingService.getUserSetting( KEY_MESSAGE_SMS_NOTIFICATION ) ) );
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), userAccount );
     }
 
@@ -259,10 +264,11 @@ public class CurrentUserController
         User currentUser = currentUserService.getCurrentUser();
 
         boolean hasAuth = currentUser != null && currentUser.getUserCredentials().isAuthorized( auth );
-        
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), hasAuth );
     }
-    
+
     @RequestMapping( value = "/recipients", produces = { "application/json", "text/*" } )
     public void recipientsJson( HttpServletResponse response,
         @RequestParam( value = "filter" ) String filter ) throws IOException, NotAuthenticatedException, FilterTooShortException
@@ -287,6 +293,7 @@ public class CurrentUserController
         recipients.setUsers( new HashSet<User>( userService.getAllUsersBetweenByName( filter, 0, MAX_OBJECTS ) ) );
         recipients.setUserGroups( new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, MAX_OBJECTS ) ) );
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
 
@@ -335,6 +342,7 @@ public class CurrentUserController
 
         Class<?> viewClass = JacksonUtils.getViewClass( viewName );
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJsonWithView( response.getOutputStream(), userOrganisationUnits, viewClass );
     }
 
@@ -454,6 +462,7 @@ public class CurrentUserController
             forms.getForms().put( program.getUid(), FormUtils.fromProgram( program ) );
         }
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), forms );
     }
 
@@ -556,6 +565,7 @@ public class CurrentUserController
             forms.getOrganisationUnits().put( formOrganisationUnit.getId(), formOrganisationUnit );
         }
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), forms );
     }
 }
