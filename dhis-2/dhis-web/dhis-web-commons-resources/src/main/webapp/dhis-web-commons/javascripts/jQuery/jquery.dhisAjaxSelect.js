@@ -26,9 +26,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 
 // -----------------------------------------------
@@ -226,6 +225,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
             var filter_button_id = id + "_filter_button";
             var clear_button_id = id + "_clear_button";
             var filter_select_id = id + "_filter_select";
+            var select_search_table_id = id + "select_search_table";
 
             $select.wrap($.tmpl(templates.wrapper, {
                 "id" : wrapper_id
@@ -281,8 +281,8 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                 });
             }
 
-            $('#selectSearchTable').remove();
-            var $filter_table = $("<table id='selectSearchTable' />");
+            $('#' + select_search_table_id).remove();
+            var $filter_table = $("<table/>").attr('id', select_search_table_id);
 
             $filter_table.css({
                 "padding" : "1px",
