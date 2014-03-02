@@ -119,7 +119,7 @@
       <artifactId>commons-io</artifactId>
     </dependency>
     <dependency>
-      <groupId>jep</groupId>
+      <groupId>org.nfunk</groupId>
       <artifactId>jep</artifactId>
     </dependency>
     <dependency>
