@@ -2312,11 +2312,14 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/programs.json?links=false',
+				url: ns.core.init.contextPath + '/api/programs/filtered.json?include=id,name&paging=false',
 				reader: {
 					type: 'json',
-					root: 'programs'
-				}
+					root: 'objects'
+				},
+				pageParam: false,
+				startParam: false,
+				limitParam: false
 			},
 			sortInfo: {field: 'name', direction: 'ASC'},
 			isLoaded: false,
@@ -2502,6 +2505,7 @@ Ext.onReady( function() {
 					load(attributes, item);
 				}
 			};
+console.log("program.storage", program.storage);
 
 			// attributes
 			if (programId) {
