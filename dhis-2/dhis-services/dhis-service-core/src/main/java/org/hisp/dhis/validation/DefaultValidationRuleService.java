@@ -586,18 +586,15 @@ public class DefaultValidationRuleService
 
         for ( ValidationRule rule : getAllValidationRules() )
         {
-            if ( rule.getRuleType().equals( ValidationRule.RULE_TYPE_VALIDATION ) )
-            {
-                validationRuleOperands.clear();
-                validationRuleOperands.addAll( expressionService.getOperandsInExpression(
-                    rule.getLeftSide().getExpression() ) );
-                validationRuleOperands.addAll( expressionService.getOperandsInExpression(
-                    rule.getRightSide().getExpression() ) );
+            validationRuleOperands.clear();
+            validationRuleOperands.addAll( expressionService.getOperandsInExpression(
+                rule.getLeftSide().getExpression() ) );
+            validationRuleOperands.addAll( expressionService.getOperandsInExpression(
+                rule.getRightSide().getExpression() ) );
 
-                if ( operands.containsAll( validationRuleOperands ) )
-                {
-                    rulesForDataSet.add( rule );
-                }
+            if ( operands.containsAll( validationRuleOperands ) )
+            {
+                rulesForDataSet.add( rule );
             }
         }
 
