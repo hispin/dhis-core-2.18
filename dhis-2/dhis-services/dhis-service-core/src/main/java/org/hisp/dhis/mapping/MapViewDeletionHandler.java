@@ -62,7 +62,7 @@ public class MapViewDeletionHandler
     @Override
     protected String getClassName()
     {
-        return MapView.class.getName();
+        return MapView.class.getSimpleName();
     }
 
     @Override
