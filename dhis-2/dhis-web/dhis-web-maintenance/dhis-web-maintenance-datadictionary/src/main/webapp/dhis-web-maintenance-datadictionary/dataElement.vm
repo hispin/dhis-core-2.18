@@ -4,6 +4,11 @@
 <script type="text/javascript">
 	jQuery(document).ready(function(){	
 		tableSorter( 'dataElementList' );	
+
+      dhis2.contextmenu.makeContextMenu({
+        menuId: 'contextMenu',
+        menuItemActiveClass: 'contextMenuItemActive'
+      });
 	});
 
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element" ) , "'")';
