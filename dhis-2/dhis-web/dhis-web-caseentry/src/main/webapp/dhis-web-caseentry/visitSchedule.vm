@@ -76,8 +76,8 @@
 					
 					#set($allowRemove = 'false')
 				#end
-			#end
-	
+			#end 
+			
 		#if($allowRemove == 'true')
 			<input type="button" style='width:80px' id='removeProgram' value="$i18n.getString( 'remove' )" onclick='removeProgramInstance($programInstance.id)' />
 			<script>
@@ -181,6 +181,43 @@
 			<td>
 				<input type='button' class='normal-button' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" value="$i18n.getString('save')" >
 			</td>
+			<td>
+			#set($hasPhoneNumber=false)
+			#foreach($attrValue in $!programInstance.entityInstance.attributeValues)
+				#if($attrValue.attribute.valueType=='phoneNumber')
+					#set($hasPhoneNumber = true )
+				#end
+			#end
+
+			#if(!$hasPhoneNumber)
+				#foreach($attrValue in $!programInstance.entityInstance.attributeValues)
+					#if($attrValue.attribute.valueType=='users')
+						#set($hasPhoneNumber = true )
+					#end
+				#end
+			#end
+
+			#if($!programInstance.entityInstance.organisationUnit.phoneNumber)
+				#set($hasPhoneNumber = true )
+			#end
+
+			#if(!$hasPhoneNumber)
+				#foreach($user in $!programInstance.entityInstance.organisationUnit.users)
+					#if($user.phoneNumber)
+						#set($hasPhoneNumber = true )
+					#end
+				#end
+			#end
+
+			#if($hasPhoneNumber)
+			<img src="images/send_sms.png" class='img-button' title="$i18n.getString( 'send_message' )" onclick="setFieldValue('sendFromEvent','true');setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOneTrackedEntityInstanceForm();"/>
+			#end
+			
+			#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) )
+				<a href="javascript:removeEvent($programStageInstance.id, false)" link="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" id='del_$programStageInstance.id' name='del_$programStageInstance.id' alt='$i18n.getString( "remove" )' #if( $status==1 ) class='hidden' #end></a>
+			#end
+			</td>
+		</tr>
 		</tr>
 		#set( $mark = !$mark  )
 	#end
