@@ -16,7 +16,7 @@
 		<table width="100%">
 			<tr>
 				<td>
-					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+					<td>#filterDiv( "attribute" )</td>
 					<span style="margin-left:15px"><a href="attributeInListNoProgram.action">$i18n.getString( "manage_attributes_with_no_program" )</a></span>
 				</td>
 				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddAttributeForm.action'" style="width:70px"></td>				
@@ -41,7 +41,8 @@
           #end
       </tbody>
       </table>
-    </td>
+		#parse( "/dhis-web-commons/paging/paging.vm" )
+		</td>
 
 		<td id="detailsData">
       <div id="detailsArea">
