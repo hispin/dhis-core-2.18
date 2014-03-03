@@ -95,7 +95,7 @@ public class DefaultCaseAggregationConditionService
     private PeriodService periodService;
 
     private I18nService i18nService;
-    
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -210,21 +210,31 @@ public class DefaultCaseAggregationConditionService
                 int programId = Integer.parseInt( ids[0] );
                 Program program = programService.getProgram( programId );
 
-                String programStage = ids[1];
-                if ( !programStage.equals( IN_CONDITION_GET_ALL ) )
+                String programStageId = ids[1];
+                String programStageName = "";
+                if ( !programStageId.equals( IN_CONDITION_GET_ALL ) )
                 {
-                    programStage = programStageService.getProgramStage( Integer.parseInt( programStage ) ).getName();
+                    ProgramStage ps = programStageService.getProgramStage( Integer.parseInt( programStageId ) );
+                    if ( ps != null )
+                    {
+                        programStageName = ps.getName();
+                    }
                 }
+                else
+                {
+                    programStageName = programStageId;
+                }
+
                 int dataElementId = Integer.parseInt( ids[2] );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                if ( program == null || dataElement == null )
+                if ( program == null || dataElement == null || programStageName.isEmpty() )
                 {
                     return INVALID_CONDITION;
                 }
 
-                matcher.appendReplacement( description, "[" + program.getDisplayName() + SEPARATOR_ID + programStage
-                    + SEPARATOR_ID + dataElement.getName() + "]" );
+                matcher.appendReplacement( description, "[" + program.getDisplayName() + SEPARATOR_ID
+                    + programStageName + SEPARATOR_ID + dataElement.getName() + "]" );
             }
             else
             {
@@ -404,7 +414,7 @@ public class DefaultCaseAggregationConditionService
         Period period, I18nFormat format, I18n i18n )
     {
         periodService.reloadPeriod( period );
-        
+
         return aggregationConditionStore.getAggregateValue( caseAggregationCondition, orgunitIds, period, format, i18n );
     }
 
@@ -413,7 +423,7 @@ public class DefaultCaseAggregationConditionService
         Period period, I18nFormat format, I18n i18n )
     {
         periodService.reloadPeriod( period );
-        
+
         return aggregationConditionStore.getAggregateValueDetails( aggregationCondition, orgunit, period, format, i18n );
     }
 
@@ -421,7 +431,7 @@ public class DefaultCaseAggregationConditionService
         Collection<Integer> orgunitIds, Period period )
     {
         periodService.reloadPeriod( period );
-        
+
         Integer deSumId = (caseAggregationCondition.getDeSum() == null) ? null : caseAggregationCondition.getDeSum()
             .getId();
 
@@ -434,7 +444,7 @@ public class DefaultCaseAggregationConditionService
     public String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period )
     {
         periodService.reloadPeriod( period );
-        
+
         return aggregationConditionStore.parseExpressionDetailsToSql( caseExpression, operator, orgunitId, period );
     }
 
@@ -444,7 +454,7 @@ public class DefaultCaseAggregationConditionService
         Collection<Integer> orgunitIds, Period period )
     {
         periodService.reloadPeriod( period );
-        
+
         return aggregationConditionStore.parseExpressionToSql( isInsert, caseExpression, operator, aggregateDeId,
             aggregateDeName, optionComboId, optionComboName, deSumId, orgunitIds, period );
     }
