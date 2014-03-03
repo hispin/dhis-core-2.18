@@ -11,6 +11,18 @@ public interface LookupStore extends GenericNameableObjectStore<Lookup>
     // -------------------------------------------------------------------------
     // Lookup
     // -------------------------------------------------------------------------
+    
+    void addLookup( Lookup lookup );
 
+    void updateLookup( Lookup lookup );
+
+    void deleteLookup( Lookup lookup );
+
+    Lookup getLookup( int id );
+
+    Lookup getLookupByName( String name );
+    
     Collection<Lookup> getAllLookupsByType( String type );
+    
+    Collection<Lookup> getAllLookups();
 }

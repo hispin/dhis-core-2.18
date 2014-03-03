@@ -17,3 +17,7 @@
     <li><a href="aggregationQueryList.action">$i18n.getString( "aggregation_query_list" )</a></li>
     <li><a href="runAggregationQueryForm.action">$i18n.getString( "manual_aggregation" )</a></li>
 </ul>
+<h2>$i18n.getString( "Lookup" )</h2>
+<ul>
+	<li><a href="getAllLookups.action">$i18n.getString( "Lookup" )</a></li>
+</ul>

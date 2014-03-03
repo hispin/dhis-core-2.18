@@ -1,8 +1,11 @@
 package org.hisp.dhis.pbf.api;
 
+import java.io.Serializable;
+
 import org.hisp.dhis.common.BaseNameableObject;
 
-public class Lookup extends BaseNameableObject
+@SuppressWarnings("serial")
+public class Lookup extends BaseNameableObject implements Serializable
 {
     public static final String DS_PBF_TYPE = "DS_PBF_TYPE";    
     public static final String DS_QUALITY_TYPE = "DS_QUALITY_TYPE";
