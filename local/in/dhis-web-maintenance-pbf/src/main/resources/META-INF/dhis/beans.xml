@@ -301,4 +301,51 @@
         <property name="jdbcTemplate" ref="jdbcTemplate" />
     </bean>
 	
+	 <!-- Get All Lookups -->
+    
+	<bean id="org.hisp.dhis.pbf.lookup.action.GetAllLookupsAction"
+        class="org.hisp.dhis.pbf.lookup.action.GetAllLookupsAction"
+        scope="prototype">
+        <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />      
+    </bean>
+    
+    <!-- Add Lookup -->  
+    <bean id="org.hisp.dhis.pbf.lookup.action.AddLookupAction"
+        class="org.hisp.dhis.pbf.lookup.action.AddLookupAction"
+        scope="prototype">
+        <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />        
+    </bean>
+    
+    <!-- Delete Lookup -->
+    
+    <bean id="org.hisp.dhis.pbf.lookup.action.DelLookup" class="org.hisp.dhis.pbf.lookup.action.DelLookup" scope="prototype">
+    	<property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+    </bean>
+     
+    <!-- Edit Lookup --> 
+    
+	<bean id="org.hisp.dhis.pbf.lookup.action.EditLookupFormAction" class="org.hisp.dhis.pbf.lookup.action.EditLookupFormAction"
+	   scope="prototype">
+	   <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+	</bean>
+    
+    <!-- Update Lookup -->
+	<bean id="org.hisp.dhis.pbf.lookup.action.UpdateLookupAction" class="org.hisp.dhis.pbf.lookup.action.UpdateLookupAction"
+	    scope="prototype">
+	    <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+	</bean>
+	
+	<!-- Get Lookup(Show Details) -->	
+	
+	<bean id="org.hisp.dhis.pbf.lookup.action.GetLookupAction" class="org.hisp.dhis.pbf.lookup.action.GetLookupAction"
+	    scope="prototype">
+	    <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+	</bean>
+	
+	<!-- Validate Lookup -->
+	
+	<bean id="org.hisp.dhis.pbf.lookup.action.ValidateLookupAction" class="org.hisp.dhis.pbf.lookup.action.ValidateLookupAction"
+	    scope="prototype">
+	    <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+	</bean>
 </beans>

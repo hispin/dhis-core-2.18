@@ -1,6 +1,7 @@
 package org.hisp.dhis.pbf.api;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface LookupService
 {
@@ -9,8 +10,8 @@ public interface LookupService
     // -------------------------------------------------------------------------
     // Lookup
     // -------------------------------------------------------------------------
-
-    int addLookup( Lookup lookup );
+    
+    void addLookup( Lookup lookup );
 
     void updateLookup( Lookup lookup );
 
@@ -24,4 +25,5 @@ public interface LookupService
     
     Collection<Lookup> getAllLookups();
 
+    void searchLookupByName( List<Lookup> lookups, String key );
 }

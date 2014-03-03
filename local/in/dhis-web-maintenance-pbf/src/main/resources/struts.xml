@@ -208,6 +208,65 @@
         <param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
     </action>
 
+	<!-- Lookup -->
+    
+    <!-- Get All Lookups -->
+   <action name="getAllLookups" class="org.hisp.dhis.pbf.lookup.action.GetAllLookupsAction">
+   		<result name="success" type="velocity">/main.vm</result>
+   		<param name="page">/dhis-web-maintenance-pbf/getAllLookups.vm</param>
+   		<param name="javascripts">javascript/lookup.js</param>
+   		<param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
+   </action>
+   
+   <!-- Add Lookup -->
+   <action name="addLookupForm" class="org.hisp.dhis.pbf.lookup.action.AddLookupFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-pbf/addLookupForm.vm</param>
+      <param name="javascripts">javascript/lookup.js</param>
+      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
+    </action>
+    
+    <!-- Save Lookup -->
+    <action name="addLookup" class="org.hisp.dhis.pbf.lookup.action.AddLookupAction">
+      <result name="success" type="redirect">getAllLookups.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
+      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
+    </action>
+
+	<!-- Delete Lookup --> 
+    <action name="delLookup" class="org.hisp.dhis.pbf.lookup.action.DelLookup">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_DATASET_DELETE</param>
+    </action>
+    
+    <!-- Edit Lookup -->    
+    <action name="editLookupForm" class="org.hisp.dhis.pbf.lookup.action.EditLookupFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-pbf/editLookup.vm</param>
+      <param name="javascripts">javascript/lookup.js</param>
+      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
+    </action>
+    
+    <!-- Update Lookup -->    
+    <action name="updateLookup" class="org.hisp.dhis.pbf.lookup.action.UpdateLookupAction">
+      <result name="success" type="redirect">getAllLookups.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
+      <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
+    </action>
+    
+    <!-- Show Details -->   
+ 	<action name="getLookup" class="org.hisp.dhis.pbf.lookup.action.GetLookupAction">
+      <result name="success" type="velocity-json"> /dhis-web-maintenance-pbf/jsonLookup.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <!-- Validate Lookup -->
+    <action name="validateLookup" class="org.hisp.dhis.pbf.lookup.action.ValidateLookupAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
 	
 	</package>
 </struts>
