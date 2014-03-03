@@ -177,7 +177,7 @@ public class DefaultTrackedEntityAttributeService
 
     public int getTrackedEntityAttributeCountByName( String name )
     {
-        return attributeStore.getCountEqNameNoAcl( name );
+        return attributeStore.getCountLikeName( name );
     }
 
     // -------------------------------------------------------------------------
