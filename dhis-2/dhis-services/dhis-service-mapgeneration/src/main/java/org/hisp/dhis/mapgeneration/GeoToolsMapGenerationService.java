@@ -164,10 +164,12 @@ public class GeoToolsMapGenerationService
             
             LegendSet legendSet = new LegendSet( mapLayer ); //TODO
             
+            BufferedImage titleImage = MapUtils.renderTitle( map.getName(), width );
+            
             BufferedImage legendImage = legendSet.render( i18nManager.getI18nFormat() );
     
             // Combine the legend image and the map image into one image
-            return combineLegendAndMapImages( legendImage, mapImage );
+            return combineLegendAndMapImages( titleImage, legendImage, mapImage );
         }
     }
 
@@ -358,21 +360,23 @@ public class GeoToolsMapGenerationService
         return mapValues;
     }
     
-    private BufferedImage combineLegendAndMapImages( BufferedImage legendImage, BufferedImage mapImage )
+    private BufferedImage combineLegendAndMapImages( BufferedImage titleImage, BufferedImage legendImage, BufferedImage mapImage )
     {
+        Assert.isTrue( titleImage != null );
         Assert.isTrue( legendImage != null );
         Assert.isTrue( mapImage != null );
         Assert.isTrue( legendImage.getType() == mapImage.getType() );
 
         // Create a new image with dimension (legend.width + map.width,
         // max(legend.height, map.height))
-        BufferedImage finalImage = new BufferedImage( legendImage.getWidth() + mapImage.getWidth(), mapImage.getHeight(), mapImage.getType() );
+        BufferedImage finalImage = new BufferedImage( legendImage.getWidth() + mapImage.getWidth(), titleImage.getHeight() + mapImage.getHeight(), mapImage.getType() );
 
         // Draw the two images onto the final image with the legend to the left
         // and the map to the right
         Graphics g = finalImage.getGraphics();
-        g.drawImage( legendImage, 0, 0, null );
-        g.drawImage( mapImage, legendImage.getWidth(), 0, null );
+        g.drawImage( titleImage, 0, 0, null );
+        g.drawImage( legendImage, 0, MapUtils.TITLE_HEIGHT, null );
+        g.drawImage( mapImage, legendImage.getWidth(), MapUtils.TITLE_HEIGHT, null );
 
         return finalImage;
     }

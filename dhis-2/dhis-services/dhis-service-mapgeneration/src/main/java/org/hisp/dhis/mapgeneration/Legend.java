@@ -70,9 +70,8 @@ public class Legend
     public void draw( Graphics2D g, I18nFormat format )
     {
         g.setColor( Color.BLACK );
-        g.setFont( TITLE_FONT );
-        g.drawString( mapLayer.getName(), 0, 15 );
         g.setFont( PLAIN_FONT );
+        g.drawString( mapLayer.getName(), 0, 15 );
         g.drawString( format.formatPeriod( mapLayer.getPeriod() ) + "", 0, 35 );
 
         g.translate( 0, HEADER_HEIGHT );
@@ -83,7 +82,7 @@ public class Legend
             g.translate( 0, legendItem.getHeight() );
         }
     }
-
+    
     public int getHeight()
     {
         int height = 0;
