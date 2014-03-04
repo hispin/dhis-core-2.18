@@ -95,6 +95,11 @@ public class ShowAddRepresentativeAction
         this.relationshipTypeService = relationshipTypeService;
     }
 
+    public void setAttributeService( TrackedEntityAttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     public List<RelationshipType> getRelationshipTypes()
     {
         return relationshipTypes;
