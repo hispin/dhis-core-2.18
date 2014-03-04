@@ -366,8 +366,7 @@ public class GeoToolsMapGenerationService
 
         // Create a new image with dimension (legend.width + map.width,
         // max(legend.height, map.height))
-        BufferedImage finalImage = new BufferedImage( legendImage.getWidth() + mapImage.getWidth(), Math.max(
-            mapImage.getHeight(), mapImage.getHeight() ), mapImage.getType() );
+        BufferedImage finalImage = new BufferedImage( legendImage.getWidth() + mapImage.getWidth(), mapImage.getHeight(), mapImage.getType() );
 
         // Draw the two images onto the final image with the legend to the left
         // and the map to the right
