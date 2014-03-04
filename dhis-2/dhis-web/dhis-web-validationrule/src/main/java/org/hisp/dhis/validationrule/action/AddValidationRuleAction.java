@@ -91,6 +91,13 @@ public class AddValidationRuleAction
         this.description = description;
     }
 
+    private String instruction;
+    
+    public void setInstruction( String instruction )
+    {
+        this.instruction = instruction;
+    }
+
     private String importance;
 
     public void setImportance( String importance )
@@ -222,6 +229,7 @@ public class AddValidationRuleAction
         
         validationRule.setName( name );
         validationRule.setDescription( description );
+        validationRule.setInstruction( instruction );
         validationRule.setImportance( importance );
         validationRule.setRuleType( ruleType );
         validationRule.setType( ValidationRule.TYPE_ABSOLUTE );

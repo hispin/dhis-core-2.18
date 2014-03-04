@@ -32,7 +32,6 @@ import static org.hisp.dhis.system.util.ListUtils.getCollection;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -49,14 +48,12 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationResult;
-import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 import com.opensymphony.xwork2.Action;
@@ -79,13 +76,6 @@ public class ValidationAction
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
-    }
-
-    private ExpressionService expressionService;
-
-    public void setExpressionService( ExpressionService expressionService )
-    {
-        this.expressionService = expressionService;
     }
 
     private PeriodService periodService;
@@ -169,20 +159,6 @@ public class ValidationAction
     public Map<OrganisationUnit, List<ValidationResult>> getValidationResults()
     {
         return validationResults;
-    }
-
-    private Map<OrganisationUnit, Map<Integer, String>> leftSideFormulaMap = new HashMap<OrganisationUnit, Map<Integer, String>>();
-
-    public Map<OrganisationUnit, Map<Integer, String>> getLeftSideFormulaMap()
-    {
-        return leftSideFormulaMap;
-    }
-
-    private Map<OrganisationUnit, Map<Integer, String>> rightSideFormulaMap = new HashMap<OrganisationUnit, Map<Integer, String>>();
-
-    public Map<OrganisationUnit, Map<Integer, String>> getRightSideFormulaMap()
-    {
-        return rightSideFormulaMap;
     }
 
     private Map<OrganisationUnit, List<DeflatedDataValue>> dataValues = new TreeMap<OrganisationUnit, List<DeflatedDataValue>>();
@@ -283,26 +259,6 @@ public class ValidationAction
         List<ValidationResult> validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, organisationUnit ) );
 
         log.debug( "Number of validation violations: " + validationResults.size() );
-
-        if ( validationResults.size() > 0 )
-        {
-            Map<Integer, String> leftSideFormulas = new HashMap<Integer, String>( validationResults.size() );
-            Map<Integer, String> rightSideFormulas = new HashMap<Integer, String>( validationResults.size() );
-
-            for ( ValidationResult validationResult : validationResults )
-            {
-                ValidationRule rule = validationResult.getValidationRule();
-
-                leftSideFormulas.put( rule.getId(), expressionService.getExpressionDescription( rule
-                    .getLeftSide().getExpression() ) );
-
-                rightSideFormulas.put( rule.getId(), expressionService.getExpressionDescription( rule
-                    .getRightSide().getExpression() ) );
-            }
-
-            leftSideFormulaMap.put( organisationUnit, leftSideFormulas );
-            rightSideFormulaMap.put( organisationUnit, rightSideFormulas );
-        }
 
         return validationResults;
     }
