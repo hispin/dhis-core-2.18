@@ -59,6 +59,7 @@ public class MapUtils
     private static final int COLOR_RADIX = 16;
 
     public static final int DEFAULT_MAP_WIDTH = 500;
+    public static final int TITLE_HEIGHT = 22;
 
     /**
      * Linear interpolation of int.
@@ -178,7 +179,7 @@ public class MapUtils
         
         ReferencedEnvelope mapBounds = mapContent.getMaxBounds();
         double widthToHeightFactor = mapBounds.getSpan( 0 ) / mapBounds.getSpan( 1 );
-        int[] widthHeight = getWidthHeight( maxWidth, maxHeight, LegendSet.LEGEND_TOTAL_WIDTH, 0, widthToHeightFactor );
+        int[] widthHeight = getWidthHeight( maxWidth, maxHeight, LegendSet.LEGEND_TOTAL_WIDTH, TITLE_HEIGHT, widthToHeightFactor );
         
         //LegendSet.LEGEND_TOTAL_WIDTH;
         
@@ -197,7 +198,22 @@ public class MapUtils
         
         return image;
     }
-    
+
+    public static BufferedImage renderTitle( String title, int maxWidth )
+    {
+        int[] widthHeight = getWidthHeight( maxWidth, null, 0, 0, 1 );
+
+        BufferedImage image = new BufferedImage( widthHeight[0], TITLE_HEIGHT, BufferedImage.TYPE_INT_ARGB );
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        
+        g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+        g.setColor( Color.BLACK );
+        g.setFont( Legend.TITLE_FONT );
+        g.drawString( title, LegendSet.LEGEND_MARGIN_LEFT, 12 );
+        
+        return image;
+    }
+
     /**
      * Calcuates the width and height of an two-dimensional area. If width is not
      * null, the width will be used and the height will be calculated. If the height 
@@ -288,6 +304,5 @@ public class MapUtils
         g.drawString( str, 1, 12 );
 
         return image;
-    }
-  
+    }  
 }

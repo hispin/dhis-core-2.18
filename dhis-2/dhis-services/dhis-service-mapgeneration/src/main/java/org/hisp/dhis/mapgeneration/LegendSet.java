@@ -49,9 +49,9 @@ public class LegendSet
 
     private Color backgroundColor = null;
 
-    private static final int LEGEND_WIDTH = 132;
-    private static final int LEGEND_MARGIN_LEFT = 3;
-    private static final int LEGEND_MARGIN_BOTTOM = 20;
+    public static final int LEGEND_WIDTH = 132;
+    public static final int LEGEND_MARGIN_LEFT = 3;
+    public static final int LEGEND_MARGIN_BOTTOM = 20;
     
     public static final int LEGEND_TOTAL_WIDTH = LEGEND_WIDTH + LEGEND_MARGIN_LEFT;
 
@@ -89,9 +89,7 @@ public class LegendSet
         BufferedImage image = new BufferedImage( imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB );
         Graphics2D g = (Graphics2D) image.getGraphics();
 
-        // Turn anti-aliasing on
         g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-
         g.translate( LEGEND_MARGIN_LEFT, 0 );
 
         // Draw legends
