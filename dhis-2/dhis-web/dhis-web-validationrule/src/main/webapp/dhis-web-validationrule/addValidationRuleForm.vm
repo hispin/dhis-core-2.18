@@ -10,9 +10,13 @@
 		<td><input type="text" id="name" name="name"></td>
 	</tr>
 	<tr>
-		<td><label for="description">$i18n.getString( "description" ) ($i18n.getString( "visible_in_validation_alerts" ))</label></td>
+		<td><label for="description">$i18n.getString( "description" ) <span class="tipText">($i18n.getString( "visible_in_validation_alerts" ))</span></label></td>
 		<td><textarea name="description"></textarea></td>
 	</tr>
+    <tr>
+        <td><label for="instruction">$i18n.getString( "instruction" ) <span class="tipText">($i18n.getString( "visible_when_rule_is_violated" ))</span></label></td>
+        <td><textarea name="instruction"></textarea></td>
+    </tr>
 	<tr>
 		<td><label for="importance">$i18n.getString( "importance" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>

@@ -95,6 +95,13 @@ public class UpdateValidationRuleAction
     {
         this.description = description;
     }
+    
+    private String instruction;
+
+    public void setInstruction( String instruction )
+    {
+        this.instruction = instruction;
+    }
 
     private String importance;
 
@@ -211,6 +218,7 @@ public class UpdateValidationRuleAction
 
         validationRule.setName( name );
         validationRule.setDescription( description );
+        validationRule.setInstruction( instruction );
         validationRule.setImportance( importance );
         validationRule.setRuleType( ruleType );
         validationRule.setOperator( Operator.valueOf( operator ) );

@@ -77,6 +77,11 @@ public class ValidationRule
      * A description of the ValidationRule.
      */
     private String description;
+    
+    /**
+     * Instruction to display to user when validation rule is violated.
+     */
+    private String instruction;
 
     /**
      * The user-assigned importance of this rule (e.g. high, medium or low).
@@ -128,7 +133,7 @@ public class ValidationRule
      * to average (Monitoring-type rules only). Sequential periods are those
      * immediately preceding (or immediately following in previous years) the selected period.
      */
-    private Integer sequentialSampleCount; // Number of sequential right-side samples to average.
+    private Integer sequentialSampleCount;
 
     /**
      * The number of annual right-side periods from which to collect samples
@@ -136,7 +141,7 @@ public class ValidationRule
      * years. Samples collected from previous years can also include sequential
      * periods adjacent to the equivalent period in previous years.
      */
-    private Integer annualSampleCount; // Number of (previous) annual right-side samples to average.
+    private Integer annualSampleCount;
 
     /**
      * The number of high values sampled from previous periods that are discarded before averaging.
@@ -262,6 +267,27 @@ public class ValidationRule
         
         return false;
     }
+    
+    /**
+     * Returns the instruction if it is not null or empty, if not returns the
+     * left side description, operator and right side description if not null or
+     * empty, if not returns null.
+     */
+    public String getInstructionFallback()
+    {
+        if ( instruction != null && !instruction.isEmpty() )
+        {
+            return instruction;
+        }
+        else if ( leftSide != null && rightSide != null )
+        {
+            return leftSide.getDescription() + " " + operator.getMathematicalOperator() + " " + rightSide.getDescription();
+        }
+        else
+        {
+            return null;
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Set and get methods
@@ -278,6 +304,19 @@ public class ValidationRule
     public void setDescription( String description )
     {
         this.description = description;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getInstruction()
+    {
+        return instruction;
+    }
+
+    public void setInstruction( String instruction )
+    {
+        this.instruction = instruction;
     }
 
     @JsonProperty

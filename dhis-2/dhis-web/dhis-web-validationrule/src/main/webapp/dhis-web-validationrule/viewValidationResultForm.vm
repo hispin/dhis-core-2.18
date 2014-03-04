@@ -81,16 +81,15 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<!-- Note: &nbsp;&nbsp;&nbsp;&nbsp; in the headers below keeps the jquery.tablesorter icons from overlapping the labels. -->
+			<!-- Note: &nbsp; in the headers below keeps the jquery.tablesorter icons from overlapping the labels. -->
 			<th>$i18n.getString( "organisation_unit" )&nbsp;&nbsp;&nbsp;&nbsp;</th>
 			<th>$i18n.getString( "period" )&nbsp;&nbsp;&nbsp;&nbsp;</th>
 			<!-- Note: column-level sortInitialOrder only works in tablesorter 2.0.8 and later (an earlier version in use as of this writing.) --->
 			<th class="{sorter: 'importanceSorter', sortInitialOrder: 'desc'}">$i18n.getString( "importance" )&nbsp;&nbsp;&nbsp;&nbsp;</th>
-			<th class="{sorter: false}">$i18n.getString( "left_side_description" )</th>
+			<th class="{sorter: false}">$i18n.getString( "validation_rule" )</th>
 			<th class="{sorter: false}">$i18n.getString( "value" )</th>
 			<th class="{sorter: false}">$i18n.getString( "operator" )</th>
 			<th class="{sorter: false}">$i18n.getString( "value" )</th>
-			<th class="{sorter: false}">$i18n.getString( "right_side_description" )</th>
 			<th class="{sorter: false}">$i18n.getString( "details" )</th>
 		</tr>
 	</thead>
@@ -100,11 +99,10 @@
 		  <td>$encoder.htmlEncode( $!result.source.name )</td>
 		  <td>$!format.formatPeriod( $result.period )</td>
 		  <td>$encoder.htmlEncode( $i18n.getString( $!result.validationRule.importance ) )</td>
-		  <td>$encoder.htmlEncode( $!result.validationRule.leftSide.description )</td>
+		  <td>$encoder.htmlEncode( $!result.validationRule.getInstructionFallback() )</td>
 		  <td>$encoder.htmlEncode( $!result.leftsideValue )</td>
 		  <td style="text-align:center">$encoder.htmlEncode( $i18n.getString( $!result.validationRule.operator.mathematicalOperator ) )</td>
 		  <td>$encoder.htmlEncode( $!result.rightsideValue )</td>
-		  <td>$encoder.htmlEncode( $!result.validationRule.rightSide.description )</td>
 		  <td style="text-align:center">
 		    <a href="#" onclick="viewValidationResultDetails( $result.validationRule.id, $result.source.id, $result.period.id )" title="$i18n.getString( 'show_details' )">
 		      <img src="../images/information.png" alt="$i18n.getString( 'show_details' )">

@@ -11,10 +11,9 @@
     <table class="listTable" width="100%">
         <tr>
             <th>$i18n.getString( "validation_rule" )</th>                
-            <th>$i18n.getString( "expression" )</th>
-            <th style="width:65px">$i18n.getString( "left_side" )</th>
-            <th style="width:65px">$i18n.getString( "operator" )</th>
-            <th style="width:65px">$i18n.getString( "right_side" )</th>
+            <th style="width:80px">$i18n.getString( "left_side" )</th>
+            <th style="width:80px">$i18n.getString( "operator" )</th>
+            <th style="width:80px">$i18n.getString( "right_side" )</th>
         </tr>
         #set( $mark = false )   
         #foreach( $validationResult in $results )
@@ -22,8 +21,7 @@
             #set ( $leftFormula = $leftSideFormulaMap.get( $key ).get( $id ) )
             #set ( $rightFormula = $rightSideFormulaMap.get( $key ).get( $id ) )
             <tr>
-                <td style="height:32px"#alternate( $mark )>$encoder.htmlEncode( $validationResult.validationRule.getDescriptionNameFallback() )</td>
-                <td#alternate( $mark )>$!encoder.htmlEncode( $leftFormula ) $encoder.htmlEncode( $i18n.getString( $validationResult.validationRule.operator.mathematicalOperator ) ) $!encoder.htmlEncode( $rightFormula )</td>
+                <td style="height:32px"#alternate( $mark )>$!encoder.htmlEncode( $validationResult.validationRule.getInstructionFallback() )</td>
                 <td#alternate( $mark )>$validationResult.leftsideValue</td>
                 <td#alternate( $mark )>$encoder.htmlEncode( $i18n.getString( $validationResult.validationRule.operator.mathematicalOperator ) )</td>
                 <td#alternate( $mark )>$validationResult.rightsideValue</td>
@@ -49,17 +47,17 @@
     <table class="listTable" style="width:100%">
 	    <tr>
 	        <th>$i18n.getString( "data_element" )</th>
-	        <th style="text-align:center">$i18n.getString( "min" )</th>
-	        <th style="width: 100px; text-align:center">$i18n.getString( "value" )</th>
-	        <th style="text-align:center">$i18n.getString( "max" )</th>
+	        <th style="width:80px">$i18n.getString( "min" )</th>
+	        <th style="width:80px">$i18n.getString( "value" )</th>
+	        <th style="width:80px">$i18n.getString( "max" )</th>
 	    </tr>
 	    #set( $mark = false )	    
 	    #foreach( $value in $results )
 	    <tr>	    
 	        <td style="height:32px"#alternate( $mark )>$encoder.htmlEncode( $value.dataElementName ) $encoder.htmlEncode( $value.categoryOptionComboNameParsed )</td>	        
-	        <td style="text-align:center"#alternate( $mark )>$value.min</td>	        
-	        <td style="text-align:center;width:100px"#alternate( $mark )>$value.value</td>	        
-	        <td style="text-align:center"#alternate( $mark )>$value.max</td>
+	        <td #alternate( $mark )>$value.min</td>	        
+	        <td #alternate( $mark )>$value.value</td>	        
+	        <td #alternate( $mark )>$value.max</td>
 	    </tr>
         #if( $mark )
             #set( $mark = false )
