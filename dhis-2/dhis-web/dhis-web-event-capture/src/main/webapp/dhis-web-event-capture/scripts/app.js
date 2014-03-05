@@ -12,24 +12,18 @@ var eventCapture = angular.module('eventCapture',
 		  'eventCaptureFilters',
 		  'angularLocalStorage', 
 		  'pascalprecht.translate'])
+              
+.value('DHIS2URL', '../..')
 
 .config(function($routeProvider, $httpProvider, $translateProvider) {    
     
-    /*$routeProvider.when('/', {
-        templateUrl : 'index.html',
-        resolve: {
-            dhis2Url: function(TrackerApp) {
-                return TrackerApp.getConfiguration().then(function(appConfiguration){
-                    //ConfigurationService.set(appConfiguration);
-                    return appConfiguration.activities.dhis.href;      
-                });
-            }
-        }
-            
+    
+    $routeProvider.when('/',{
+        templateUrl:'index.html'
     }).otherwise({
         redirectTo : '/'
-    });*/
-        
+    });       
+            
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     
@@ -37,12 +31,7 @@ var eventCapture = angular.module('eventCapture',
         prefix: 'i18n/',
         suffix: '.json'
     });
-    $translateProvider.preferredLanguage('en');	
-})
-
-.run(function (TrackerApp, storage) {    
     
-    TrackerApp.getConfiguration().then(function(appConfiguration){     
-        storage.set('CONFIG', appConfiguration);
-    });
+    $translateProvider.preferredLanguage('en');	
+    
 });

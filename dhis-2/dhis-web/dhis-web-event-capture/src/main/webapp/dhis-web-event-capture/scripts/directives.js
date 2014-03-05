@@ -21,9 +21,9 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
 
     return {        
         restrict: 'A',        
-        link: function(scope, element, attrs){            
-            
-            //at startup, get selected orgunit from history - if any - and inform angular           
+        link: function(scope, element, attrs){  
+          
+            //when tree has loaded, get selected orgunit - if there is any - and inform angular           
             $(function() {                 
                 
                 var adapters = [];
@@ -54,10 +54,10 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
                 dhis2.ou.store.open().done( function() {
                     selection.load();
                     $( "#orgUnitTree" ).one( "ouwtLoaded", function() {
-                        var selected = selection.getSelected();
-                        selection.getOrganisationUnit(selected[0]).done(function(data){
-                            if( data[selected] !== 'undefined' ||  data[selected] !== null ){
-                                scope.selectedOrgUnit = {id: data[selected].id, name: data[selected].n};  
+                        var selected = selection.getSelected()[0];
+                        selection.getOrganisationUnit(selected).done(function(data){                            
+                            if( data ){
+                                scope.selectedOrgUnit = {id: selected, name: data[selected].n};                                  
                                 scope.$apply();
                             }                        
                         });
@@ -66,7 +66,7 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
                 });
             });
             
-            //listen to user selection - and inform angular         
+            //listen to user selection, and inform angular         
             selection.setListenerFunction( organisationUnitSelected );            
             selection.responseReceived();
             
