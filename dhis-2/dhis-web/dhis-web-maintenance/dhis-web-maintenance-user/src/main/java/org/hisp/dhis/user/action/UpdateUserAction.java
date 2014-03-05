@@ -131,6 +131,13 @@ public class UpdateUserAction
         this.email = email;
     }
 
+    private String openId;
+
+    public void setOpenId( String openId )
+    {
+        this.openId = openId;
+    }
+
     private String phoneNumber;
 
     public void setPhoneNumber( String phoneNumber )
@@ -204,6 +211,7 @@ public class UpdateUserAction
         user.updateOrganisationUnits( new HashSet<OrganisationUnit>( units ) );
 
         UserCredentials userCredentials = userService.getUserCredentials( user );
+        userCredentials.setOpenId( openId );
 
         Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
 

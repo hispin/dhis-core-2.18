@@ -170,6 +170,13 @@ public class AddUserAction
         this.email = email;
     }
 
+    private String openId;
+
+    public void setOpenId( String openId )
+    {
+        this.openId = openId;
+    }
+
     private String inviteEmail;
 
     public void setInviteEmail( String inviteEmail )
@@ -260,6 +267,7 @@ public class AddUserAction
         user.setUserCredentials( userCredentials );
 
         userCredentials.setUsername( username );
+        userCredentials.setOpenId( openId );
 
         if ( ACCOUNT_ACTION_INVITE.equals( accountAction ) )
         {

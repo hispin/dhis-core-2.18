@@ -123,6 +123,19 @@ public class HibernateUserCredentialsStore
         return (UserCredentials) query.uniqueResult();
     }
 
+    @Override
+    public UserCredentials getUserCredentialsByOpenID( String openId )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery( "from UserCredentials uc where uc.openId = :openId" );
+
+        query.setString( "openId", openId );
+        query.setCacheable( true );
+
+        return (UserCredentials) query.uniqueResult();
+    }
+
     @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getAllUserCredentials()
     {

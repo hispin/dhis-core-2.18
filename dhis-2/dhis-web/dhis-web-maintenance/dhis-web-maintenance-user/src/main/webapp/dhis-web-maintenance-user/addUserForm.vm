@@ -20,7 +20,8 @@
 	    } );
 	
 	    checkValueIsExist( "username", "validateUser.action" );
-	
+	    checkValueIsExist( "openId", "validateUser.action" );
+
 	    jQuery( "#cancel" ).click( function()
 	    {
             dhis2.commons.redirectCurrentPage( 'alluser.action' );
@@ -101,6 +102,11 @@
 	<tr class="account">
 		<td><label for="email">$i18n.getString( "email" )</label></td>
 		<td colspan="3"><input type="text" id="email" name="email"></td>
+	</tr>
+
+	<tr class="account">
+		<td><label for="email">$i18n.getString( "openid" )</label></td>
+		<td colspan="3"><input type="text" id="openId" name="openId"></td>
 	</tr>
 
     <tr class="account">

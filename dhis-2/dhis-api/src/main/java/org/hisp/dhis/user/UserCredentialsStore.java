@@ -182,4 +182,5 @@ public interface UserCredentialsStore
     
     Collection<String> getUsernames( String key, Integer max );
 
+    UserCredentials getUserCredentialsByOpenID( String openId );
 }

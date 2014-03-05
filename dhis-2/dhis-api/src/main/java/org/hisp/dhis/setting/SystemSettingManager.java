@@ -84,6 +84,8 @@ public interface SystemSettingManager
     final String KEY_GOOGLE_ANALYTICS_UA = "googleAnalyticsUA";
     final String KEY_CREDENTIALS_EXPIRES = "credentialsExpires";
     final String KEY_SELF_REGISTRATION_NO_RECAPTCHA = "keySelfRegistrationNoRecaptcha";
+    final String KEY_OPENID_PROVIDER = "keyOpenIdProvider";
+    final String KEY_OPENID_PROVIDER_LABEL = "keyOpenIdProviderLabel";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";

@@ -7,7 +7,9 @@ jQuery( document ).ready( function() {
             selfRegistrationNoRecaptcha: jQuery( '#selfRegistrationNoRecaptcha' ).is( ':checked' ),
             accountRecovery: jQuery( '#accountRecovery' ).is( ':checked' ),
             accountInvite: jQuery( '#accountInvite' ).is( ':checked' ),
-            credentialsExpires: jQuery( '#credentialsExpires' ).val()
+            credentialsExpires: jQuery( '#credentialsExpires' ).val(),
+            openIdProvider: jQuery( '#openIdProvider' ).val(),
+            openIdProviderLabel: jQuery( '#openIdProviderLabel' ).val()
         }, function( json ) {
             if ( json.response == "success" ) {
                 setHeaderDelayMessage( json.message );
@@ -69,6 +71,18 @@ jQuery( document ).ready( function() {
 	<option value="6" #if( $credentialsExpires == 6 )selected="selected"#end>6 $i18n.getString( "months" )</option>
 	<option value="12" #if( $credentialsExpires == 12 )selected="selected"#end>12 $i18n.getString( "months" )</option>
 </select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "openid_provider" )</div>
+
+<div class="setting">
+    <input type="text" id="openIdProvider" name="openIdProvider" value="$!keyOpenIdProvider">
+</div>
+
+<div class="settingLabel">$i18n.getString( "openid_provider_label" )</div>
+
+<div class="setting">
+    <input type="text" id="openIdProviderLabel" name="openIdLabel" value="$!keyOpenIdProviderLabel">
 </div>
 
 <div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>

@@ -52,6 +52,18 @@
                 </div>
                 #end
             </form>
+            #if( $keyOpenIdProvider )
+              <form id="openIdLoginForm" action="../../dhis-web-commons-security/openid.action" method="post">
+                  <input name="openid_identifier" type="hidden" value="$keyOpenIdProvider"/>
+                  <div id="submitDiv">
+                    #if( $keyOpenIdProviderLabel )
+                  	<input style="width: 269px;" id="submit" class="button" type="submit" value="$keyOpenIdProviderLabel">
+                    #else
+                    <input style="width: 269px;" id="submit" class="button" type="submit" value="Sign in with OpenID">
+                    #end
+                  </div>
+              </form>
+            #end
             #if( $failed == true )
             <div id="loginMessage">Wrong username or password</div>
             #end

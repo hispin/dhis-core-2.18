@@ -28,11 +28,10 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -62,7 +61,7 @@ public class ValidateUserAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public void setId( Integer id )
@@ -77,10 +76,17 @@ public class ValidateUserAction
         this.username = username;
     }
 
+    private String openId;
+
+    public void setOpenId( String openId )
+    {
+        this.openId = openId;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private String message;
 
     public String getMessage()
@@ -91,7 +97,7 @@ public class ValidateUserAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
@@ -102,6 +108,18 @@ public class ValidateUserAction
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "username_in_use" );
+
+                return ERROR;
+            }
+        }
+
+        if ( openId != null )
+        {
+            UserCredentials match = userService.getUserCredentialsByOpenID( openId );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "openid_in_use" );
 
                 return ERROR;
             }
