@@ -32,141 +32,166 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 
 import com.opensymphony.xwork2.Action;
 
-public class FindBeneficiarytAction implements Action {
-	private static final String REDIRECT = "redirect";
+public class FindBeneficiarytAction
+    implements Action
+{
+    private static final String REDIRECT = "redirect";
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private TrackedEntityInstanceService patientService;
+    private TrackedEntityInstanceService patientService;
 
-	public void setPatientService(TrackedEntityInstanceService patientService) {
-		this.patientService = patientService;
-	}
+    public void setPatientService( TrackedEntityInstanceService patientService )
+    {
+        this.patientService = patientService;
+    }
 
-	// -------------------------------------------------------------------------
-	// Input & Output
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
 
-	private Collection<TrackedEntityInstance> patients;
+    private Collection<TrackedEntityInstance> patients;
 
-	public Collection<TrackedEntityInstance> getPatients() {
-		return patients;
-	}
+    public Collection<TrackedEntityInstance> getPatients()
+    {
+        return patients;
+    }
 
-	public void setPatients(Collection<TrackedEntityInstance> patients) {
-		this.patients = patients;
-	}
+    public void setPatients( Collection<TrackedEntityInstance> patients )
+    {
+        this.patients = patients;
+    }
 
-	private Set<TrackedEntityAttributeValue> pavSet;
+    private Set<TrackedEntityAttributeValue> pavSet;
 
-	public Set<TrackedEntityAttributeValue> getPavSet() {
-		return pavSet;
-	}
+    public Set<TrackedEntityAttributeValue> getPavSet()
+    {
+        return pavSet;
+    }
 
-	public void setPavSet(Set<TrackedEntityAttributeValue> pavSet) {
-		this.pavSet = pavSet;
-	}
+    public void setPavSet( Set<TrackedEntityAttributeValue> pavSet )
+    {
+        this.pavSet = pavSet;
+    }
 
-	private Set<TrackedEntityAttributeValue> patientAttributes;
+    private Set<TrackedEntityAttributeValue> patientAttributes;
 
-	public Set<TrackedEntityAttributeValue> getPatientAttributes() {
-		return patientAttributes;
-	}
+    public Set<TrackedEntityAttributeValue> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
 
-	public void setPatientAttributes(
-			Set<TrackedEntityAttributeValue> patientAttributes) {
-		this.patientAttributes = patientAttributes;
-	}
+    public void setPatientAttributes( Set<TrackedEntityAttributeValue> patientAttributes )
+    {
+        this.patientAttributes = patientAttributes;
+    }
 
-	private String keyword;
+    private String keyword;
 
-	public String getKeyword() {
-		return keyword;
-	}
+    public String getKeyword()
+    {
+        return keyword;
+    }
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
+    public void setKeyword( String keyword )
+    {
+        this.keyword = keyword;
+    }
 
-	private Integer organisationUnitId;
+    private Integer organisationUnitId;
 
-	public Integer getOrganisationUnitId() {
-		return organisationUnitId;
-	}
+    public Integer getOrganisationUnitId()
+    {
+        return organisationUnitId;
+    }
 
-	public void setOrganisationUnitId(Integer organisationUnitId) {
-		this.organisationUnitId = organisationUnitId;
-	}
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
 
-	private Integer patientAttributeId;
+    private Integer patientAttributeId;
 
-	public Integer getPatientAttributeId() {
-		return patientAttributeId;
-	}
+    public Integer getPatientAttributeId()
+    {
+        return patientAttributeId;
+    }
 
-	public void setPatientAttributeId(Integer patientAttributeId) {
-		this.patientAttributeId = patientAttributeId;
-	}
+    public void setPatientAttributeId( Integer patientAttributeId )
+    {
+        this.patientAttributeId = patientAttributeId;
+    }
 
-	private Integer patientId;
+    private Integer patientId;
 
-	public Integer getPatientId() {
-		return patientId;
-	}
+    public Integer getPatientId()
+    {
+        return patientId;
+    }
 
-	public void setPatientId(Integer patientId) {
-		this.patientId = patientId;
-	}
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
 
-	// Use in search related patient
+    // Use in search related patient
 
-	private Integer originalPatientId;
+    private Integer originalPatientId;
 
-	public void setOriginalPatientId(Integer originalPatientId) {
-		this.originalPatientId = originalPatientId;
-	}
+    public void setOriginalPatientId( Integer originalPatientId )
+    {
+        this.originalPatientId = originalPatientId;
+    }
 
-	public Integer getOriginalPatientId() {
-		return originalPatientId;
-	}
+    public Integer getOriginalPatientId()
+    {
+        return originalPatientId;
+    }
 
-	private Integer relationshipTypeId;
+    private Integer relationshipTypeId;
 
-	public Integer getRelationshipTypeId() {
-		return relationshipTypeId;
-	}
+    public Integer getRelationshipTypeId()
+    {
+        return relationshipTypeId;
+    }
 
-	public void setRelationshipTypeId(Integer relationshipTypeId) {
-		this.relationshipTypeId = relationshipTypeId;
-	}
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
+    }
 
-	@Override
-	public String execute() throws Exception {
+    @Override
+    public String execute()
+        throws Exception
+    {
 
-		patients = patientService.searchTrackedEntityInstancesForMobile( keyword,
-				organisationUnitId, patientAttributeId);
+        patients = patientService.searchTrackedEntityInstancesForMobile( keyword, organisationUnitId,
+            patientAttributeId );
 
-		pavSet = new HashSet<TrackedEntityAttributeValue>();
+        pavSet = new HashSet<TrackedEntityAttributeValue>();
 
-		for (TrackedEntityInstance p : patients) {
-			pavSet.addAll(p.getAttributeValues());
-		}
+        for ( TrackedEntityInstance p : patients )
+        {
+            pavSet.addAll( p.getAttributeValues() );
+        }
 
-		if (patients.size() == 1) {
-			TrackedEntityInstance patient = patients.iterator().next();
-			patientId = patient.getId();
+        if ( patients.size() == 1 )
+        {
+            TrackedEntityInstance patient = patients.iterator().next();
+            patientId = patient.getId();
 
-			return REDIRECT;
-		}
-		return SUCCESS;
-	}
+            return REDIRECT;
+        }
+        return SUCCESS;
+    }
 
 }

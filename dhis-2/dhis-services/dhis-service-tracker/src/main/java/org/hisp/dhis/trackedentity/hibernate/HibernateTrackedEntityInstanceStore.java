@@ -857,9 +857,9 @@ public class HibernateTrackedEntityInstanceStore
     public Collection<TrackedEntityInstance> getByAttributeValue( String searchText, int attributeId, Integer min,
         Integer max )
     {
-
+        
         String hql = "FROM TrackedEntityAttributeValue pav WHERE lower (pav.value) LIKE lower ('%" + searchText
-            + "%') AND pav.attribute.id =:attributeId order by pav.instance";
+            + "%') AND pav.attribute.id =:attributeId order by pav.entityInstance";
 
         Query query = getQuery( hql );
 
