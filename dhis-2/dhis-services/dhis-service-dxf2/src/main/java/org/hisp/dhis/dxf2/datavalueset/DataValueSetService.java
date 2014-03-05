@@ -28,21 +28,25 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.scheduling.TaskId;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Date;
 import java.util.Set;
 
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.scheduling.TaskId;
-
 public interface DataValueSetService
 {
     void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out );
 
     void writeDataValueSet( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, OutputStream out );
+
+    void writeDataValueSetJson( String ds, String period, String ou, OutputStream outputStream );
+
+    void writeDataValueSetJson( Set<String> dataSet, Date startDate, Date endDate, Set<String> ous, OutputStream outputStream );
 
     void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer );
 

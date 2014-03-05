@@ -28,28 +28,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_CSV;
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_HTML;
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_TEXT;
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_XML;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.utils.ContextUtils;
@@ -73,13 +51,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.hisp.dhis.api.utils.ContextUtils.*;
+
 @Controller
-@RequestMapping(value = DataValueSetController.RESOURCE_PATH)
+@RequestMapping( value = DataValueSetController.RESOURCE_PATH )
 public class DataValueSetController
 {
     public static final String RESOURCE_PATH = "/dataValueSets";
     public static final String SDMXCROSS2DXF2_TRANSFORM = "/templates/cross2dxf2.xsl";
-    
+
     private static final Log log = LogFactory.getLog( DataValueSetController.class );
 
     @Autowired
@@ -92,7 +87,7 @@ public class DataValueSetController
     // Get
     // -------------------------------------------------------------------------
 
-    @RequestMapping(method = RequestMethod.GET, produces = {CONTENT_TYPE_HTML, CONTENT_TYPE_TEXT})
+    @RequestMapping( method = RequestMethod.GET, produces = { CONTENT_TYPE_HTML, CONTENT_TYPE_TEXT } )
     public String getDataValueSets( Model model ) throws Exception
     {
         DataValueSets dataValueSets = new DataValueSets();
@@ -103,51 +98,83 @@ public class DataValueSetController
         return "dataValueSets";
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = CONTENT_TYPE_XML)
-    public void getDataValueSetXml( 
-        @RequestParam Set<String> dataSet, 
-        @RequestParam(required=false) String period,
-        @RequestParam(required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-        @RequestParam(required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
-        @RequestParam Set<String> orgUnit, 
-        @RequestParam(required=false) boolean children, 
+    @RequestMapping( method = RequestMethod.GET, produces = CONTENT_TYPE_XML )
+    public void getDataValueSetXml(
+        @RequestParam Set<String> dataSet,
+        @RequestParam( required = false ) String period,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam Set<String> orgUnit,
+        @RequestParam( required = false ) boolean children,
         HttpServletResponse response ) throws IOException
     {
         response.setContentType( CONTENT_TYPE_XML );
 
         boolean isSingleDataValueSet = dataSet.size() == 1 && period != null && orgUnit.size() == 1;
-        
+
         if ( isSingleDataValueSet )
         {
             String ds = dataSet.iterator().next();
             String ou = orgUnit.iterator().next();
-            
+
             log.info( "Get XML data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
-            
+
             dataValueSetService.writeDataValueSet( ds, period, ou, response.getOutputStream() );
         }
         else
         {
             log.info( "Get XML bulk data value set for start date: " + startDate + ", end date: " + endDate );
-            
+
             Set<String> ous = getOrganisationUnits( orgUnit, children );
-            dataValueSetService.writeDataValueSet( dataSet, startDate, endDate, ous, response.getOutputStream() );            
-        }        
+            dataValueSetService.writeDataValueSet( dataSet, startDate, endDate, ous, response.getOutputStream() );
+        }
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = CONTENT_TYPE_CSV)
-    public void getDataValueSetCsv( 
-        @RequestParam Set<String> dataSet, 
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+    @RequestMapping( method = RequestMethod.GET, produces = CONTENT_TYPE_JSON )
+    public void getDataValueSetJson(
+        @RequestParam Set<String> dataSet,
+        @RequestParam( required = false ) String period,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Set<String> orgUnit,
-        @RequestParam(required=false) boolean children, 
+        @RequestParam( required = false ) boolean children,
+        HttpServletResponse response ) throws IOException
+    {
+        response.setContentType( CONTENT_TYPE_JSON );
+
+        boolean isSingleDataValueSet = dataSet.size() == 1 && period != null && orgUnit.size() == 1;
+
+        if ( isSingleDataValueSet )
+        {
+            String ds = dataSet.iterator().next();
+            String ou = orgUnit.iterator().next();
+
+            log.info( "Get JSON data value set for data set: " + ds + ", period: " + period + ", org unit: " + ou );
+
+            dataValueSetService.writeDataValueSetJson( ds, period, ou, response.getOutputStream() );
+        }
+        else
+        {
+            log.info( "Get JSON bulk data value set for start date: " + startDate + ", end date: " + endDate );
+
+            Set<String> ous = getOrganisationUnits( orgUnit, children );
+            dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, ous, response.getOutputStream() );
+        }
+    }
+
+    @RequestMapping( method = RequestMethod.GET, produces = CONTENT_TYPE_CSV )
+    public void getDataValueSetCsv(
+        @RequestParam Set<String> dataSet,
+        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam Set<String> orgUnit,
+        @RequestParam( required = false ) boolean children,
         HttpServletResponse response ) throws IOException
     {
         log.info( "Get CSV bulk data value set for start date: " + startDate + ", end date: " + endDate );
-        
+
         Set<String> ous = getOrganisationUnits( orgUnit, children );
-        
+
         response.setContentType( CONTENT_TYPE_CSV );
         dataValueSetService.writeDataValueSetCsv( dataSet, startDate, endDate, ous, response.getWriter() );
     }
@@ -155,7 +182,7 @@ public class DataValueSetController
     private Set<String> getOrganisationUnits( Set<String> orgUnits, boolean children )
     {
         Set<String> ous = new HashSet<String>();
-        
+
         if ( children )
         {
             for ( String ou : orgUnits )
@@ -163,18 +190,18 @@ public class DataValueSetController
                 ous.addAll( IdentifiableObjectUtils.getUids( organisationUnitService.getOrganisationUnitsWithChildren( ou ) ) );
             }
         }
-        
+
         ous.addAll( orgUnits );
-        
+
         return ous;
     }
-    
+
     // -------------------------------------------------------------------------
     // Post
     // -------------------------------------------------------------------------
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
-    @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void postDxf2DataValueSet( ImportOptions importOptions,
         HttpServletResponse response, InputStream in, Model model ) throws IOException
     {
@@ -186,8 +213,8 @@ public class DataValueSetController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void postJsonDataValueSet( ImportOptions importOptions,
         HttpServletResponse response, InputStream in, Model model ) throws IOException
     {
@@ -199,32 +226,32 @@ public class DataValueSetController
         JacksonUtils.toJson( response.getOutputStream(), summary );
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/sdmx+xml")
-    @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/sdmx+xml" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void postSDMXDataValueSet( ImportOptions importOptions,
-        HttpServletResponse response, InputStream in, Model model ) throws 
+        HttpServletResponse response, InputStream in, Model model ) throws
         IOException, TransformerConfigurationException, TransformerException
     {
         TransformerFactory tf = TransformerFactory.newInstance();
         tf.setURIResolver( new ClassPathUriResolver() );
-        
+
         Transformer transformer = tf.newTransformer( new StreamSource( new ClassPathResource( SDMXCROSS2DXF2_TRANSFORM ).getInputStream() ) );
 
         StringWriter dxf2 = new StringWriter();
         transformer.transform( new StreamSource( in ), new StreamResult( dxf2 ) );
-        
-        importOptions.setOrgUnitIdScheme( "CODE"); // Override id scheme
-        importOptions.setDataElementIdScheme( "CODE");
-        
-        dataValueSetService.saveDataValueSetJson( 
-            new ByteArrayInputStream(dxf2.toString().getBytes( "UTF-8") ), importOptions );
+
+        importOptions.setOrgUnitIdScheme( "CODE" ); // Override id scheme
+        importOptions.setDataElementIdScheme( "CODE" );
+
+        dataValueSetService.saveDataValueSetJson(
+            new ByteArrayInputStream( dxf2.toString().getBytes( "UTF-8" ) ), importOptions );
     }
 
     // -------------------------------------------------------------------------
     // Supportive
     // -------------------------------------------------------------------------
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler( IllegalArgumentException.class )
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );

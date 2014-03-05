@@ -28,16 +28,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
-
-import java.io.OutputStream;
-import java.io.Writer;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
-
+import com.csvreader.CsvWriter;
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -53,7 +44,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import com.csvreader.CsvWriter;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
+
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 public class SpringDataValueSetStore
     implements DataValueSetStore
@@ -75,6 +74,16 @@ public class SpringDataValueSetStore
         writeDataValueSet( dataSet, completeDate, period, orgUnit, dataElements, periods, orgUnits, dataValueSet );
 
         StreamUtils.closeOutputStream( out );
+    }
+
+    @Override
+    public void writeDataValueSetJson( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream outputStream )
+    {
+        DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
+
+        writeDataValueSet( dataSet, completeDate, period, orgUnit, dataElements, periods, orgUnits, dataValueSet );
+
+        StreamUtils.closeOutputStream( outputStream );
     }
 
     public void writeDataValueSetCsv( Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer )
