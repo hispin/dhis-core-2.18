@@ -9,7 +9,7 @@
     <package name="dhis-web-event-capture" extends="dhis-web-commons" namespace="/dhis-web-event-capture">
         
         <action name="index" class="org.hisp.dhis.commons.action.NoAction">
-            <result name="success" type="redirect">app/index.html</result>
+            <result name="success" type="redirect">index.html</result>
         </action>
         
     </package>

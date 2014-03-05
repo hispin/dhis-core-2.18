@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="eventCapture">
+<html manifest="event-capture.appcache" ng-app="eventCapture">
     <head>
         <title>Event Capture</title>
 
@@ -24,32 +24,33 @@
 
         <script type="text/javascript" src="lib/moment/moment-with-langs.min.js"></script>       
 
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/underscore.min.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/commons.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/commons.ajax.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/lists.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/periodType.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/date.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/json2.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/validationRules.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.array.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.select.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.availability.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.trigger.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.sharing.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.validation.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.ls.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
-        <script type="text/javascript" src="../../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/underscore.min.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/periodType.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/date.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/json2.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/validationRules.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.array.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.select.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.availability.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.trigger.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.sharing.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.validation.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.ls.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/ouwt/ouwt.js"></script>
 
-        <!--<script type="text/javascript" src="../../dhis-web-commons/ouwt/ouwt.js"></script>-->
-        <script type="text/javascript" src="scripts/ouwt.js"></script>  
+        <script type="text/javascript" src="scripts/event-capture.js"></script>
+
         <script type="text/javascript" src="scripts/angularLocalStorage.js"></script>
         <script type="text/javascript" src="scripts/angular-translate.min.js"></script>
         <script type="text/javascript" src="scripts/angular-translate-loader-static-files.min.js"></script>
@@ -61,10 +62,9 @@
         <script type="text/javascript" src="scripts/controllers.js"></script>
         <script type="text/javascript" src="scripts/filters.js"></script>
 
-        <!--<link type="text/css" rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css"/> -->
-        <link type="text/css" rel="stylesheet" href="../../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
-        <link type="text/css" rel="stylesheet" media="screen,print" href="../../dhis-web-commons/css/light_blue/light_blue.css"/>
-        <link type="text/css" rel="stylesheet" media="screen,print" href="../../dhis-web-commons/css/widgets.css"/>
+        <link type="text/css" rel="stylesheet" href="../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
+        <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/light_blue/light_blue.css"/>
+        <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/widgets.css"/>
 
         <link type="text/css" rel="stylesheet" href="styles/style.css">
 
@@ -73,21 +73,29 @@
     <body>
         <div id="header" ng-controller="HeaderController">
             <div class="container-heading">
-                <img ng-click="home()" id="headerBanner" src="../../dhis-web-commons/css/light_blue/logo_banner.png" style="cursor:pointer" title="{{'dhis2_home'| translate}}">                    
+                <img ng-click="home()" id="headerBanner" src="../dhis-web-commons/css/light_blue/logo_banner.png" style="cursor:pointer" title="{{'dhis2_home'| translate}}">                    
             </div>
+            <div id="headerMessage" class="bold"></div>
         </div>
+
         <div ng-controller="MainController"> 
-            <div id="leftBar">
-                <div ng-include="'views/orgUnitTree.html'"></div>
+            
+            <div id="leftBar">                
+                <div id="orgUnitTree">
+                    <ul>
+                    </ul>
+                </div>
+                <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
             </div>
+            
             <div class="page" id="mainPage">
                 <h1>
                     {{'event_capture'| translate}}
                     <a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a>
                 </h1>
                 
-                <!-- selection -->
-                <div id="selectDiv">
+                <!-- selection begins-->
+                <div>
                     <table>
                         <tr>
                             <td><label>{{'registering_unit'| translate}}</label></td>
@@ -116,10 +124,12 @@
                         </tr>                       
                     </table>
                 </div>
+                <!-- selection ends -->
 
                 <!-- event grid begins -->
                 <div id="listDiv" ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">                    
                     
+                    <!-- show/hide grid column begins -->
                     <div class="right">
                         <accordion>
                             <accordion-group>
@@ -140,6 +150,7 @@
                             </accordion-group>
                         </accordion>
                     </div>
+                    <!-- show/hide grid column ends -->
                                         
                     <h2>
                         {{'registered_events'| translate}}                                                 
@@ -508,8 +519,10 @@
                         </form>
                     </div>
                 </div>                
-                <!-- event registration ends -->                
+                <!-- event registration ends -->        
+                
             </div>           
         </div>
+
     </body>
 </html>

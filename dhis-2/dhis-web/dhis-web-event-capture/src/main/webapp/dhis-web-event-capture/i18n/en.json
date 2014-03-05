@@ -106,5 +106,7 @@
     "relationship": "Relationship",   
     "settings_error": "Settings - ERROR",
     "please_select_orgunit_or_program": "Please select OrgUnit/Program from settings page",
-    "please_select_orgunit_or_program_or_relationship": "Please select OrgUnit, Program and Relationship"    
+    "please_select_orgunit_or_program_or_relationship": "Please select OrgUnit, Program and Relationship",
+    "offline_notification": "You are offline, data will be stored locally",
+    "online_nofification": "You are online"
 }
