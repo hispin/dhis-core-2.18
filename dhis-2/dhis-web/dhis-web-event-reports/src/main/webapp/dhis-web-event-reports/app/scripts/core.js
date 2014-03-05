@@ -1598,27 +1598,28 @@ Ext.onReady( function() {
 				// query
 			service.response.query = {};
 
-			service.response.query.getExtendedResponse = function(response, ignoreKeys) {
+			service.response.query.getExtendedResponse = function(layout, response) {
 				var xResponse = Ext.clone(response),
+                    dimensionNames = Ext.Array.pluck(layout.columns, 'dimension'),
+                    dimensionHeaders = [],
 					headers = xResponse.headers,
-					dimensionHeaders = [],
 					nameHeaderMap = {};
 
 				for (var i = 0, header; i < headers.length; i++) {
 					header = headers[i];
-
 					header.index = i;
-
-					if (!Ext.Array.contains(ignoreKeys, header.name)) {
-						dimensionHeaders.push(header);
-					}
 
 					nameHeaderMap[header.name] = header;
 				}
 
+                for (var i = 0, name; i < dimensionNames.length; i++) {
+                    name = dimensionNames[i];
+
+                    dimensionHeaders.push(nameHeaderMap[name]);
+                }
+
 				xResponse.dimensionHeaders = dimensionHeaders;
 				xResponse.nameHeaderMap = nameHeaderMap;
-				xResponse.ignoreKeys = ignoreKeys;
 
 				return xResponse;
 			};
