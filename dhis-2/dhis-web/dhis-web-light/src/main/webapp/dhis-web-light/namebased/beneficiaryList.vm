@@ -3,7 +3,7 @@
 <p>
 <ul>
 #foreach( $pav in $pavSet )
-	#if($pav.getPatientAttribute().getDisplayInListNoProgram()== true)
+	#if($pav.getAttribute().getDisplayInListNoProgram()== true)
 <li><a href="showPatientProgramList.action?patientId=$pav.getPatient().getId()">$!encoder.htmlEncode( ${pav.value} )</a></li>
 #end	
 #end
