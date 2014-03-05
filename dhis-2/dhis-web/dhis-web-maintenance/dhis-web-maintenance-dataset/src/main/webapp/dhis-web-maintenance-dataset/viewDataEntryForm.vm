@@ -57,7 +57,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" value='$!dataEntryForm.name' style="width:30em"></td>
+        <td><input type="text" id="nameField" name="nameField" value='#if( $dataEntryForm.name )$!dataEntryForm.name#else$dataSet.displayName#end' style="width:30em"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
