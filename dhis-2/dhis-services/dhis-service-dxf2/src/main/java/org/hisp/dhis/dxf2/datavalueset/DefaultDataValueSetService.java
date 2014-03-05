@@ -28,23 +28,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
-import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
-import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
-import static org.hisp.dhis.system.util.ConversionUtils.wrap;
-import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.csvreader.CsvReader;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
@@ -82,7 +66,22 @@ import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.csvreader.CsvReader;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+import static org.hisp.dhis.system.util.ConversionUtils.wrap;
+import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
 /**
  * @author Lars Helge Overland
@@ -171,6 +170,50 @@ public class DefaultDataValueSetService
         }
 
         dataValueSetStore.writeDataValueSetXml( null, null, null, null, getDataElements( dataSets ), periods, getOrgUnits( orgUnits ), out );
+    }
+
+    @Override
+    public void writeDataValueSetJson( String dataSet, String period, String orgUnit, OutputStream outputStream )
+    {
+        DataSet dataSet_ = dataSetService.getDataSet( dataSet );
+        Period period_ = PeriodType.getPeriodFromIsoString( period );
+        OrganisationUnit orgUnit_ = organisationUnitService.getOrganisationUnit( orgUnit );
+
+        if ( dataSet_ == null )
+        {
+            throw new IllegalArgumentException( ERROR_INVALID_DATA_SET + dataSet );
+        }
+
+        if ( period_ == null )
+        {
+            throw new IllegalArgumentException( ERROR_INVALID_PERIOD + period );
+        }
+
+        if ( orgUnit_ == null )
+        {
+            throw new IllegalArgumentException( ERROR_INVALID_ORG_UNIT + orgUnit );
+        }
+
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet_, period_, orgUnit_ );
+
+        Date completeDate = registration != null ? registration.getDate() : null;
+
+        period_ = periodService.reloadPeriod( period_ );
+
+        dataValueSetStore.writeDataValueSetJson( dataSet_, completeDate, period_, orgUnit_, dataSet_.getDataElements(), wrap( period_ ), wrap( orgUnit_ ), outputStream );
+    }
+
+    @Override
+    public void writeDataValueSetJson( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, OutputStream outputStream )
+    {
+        Set<Period> periods = new HashSet<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
+
+        if ( periods.isEmpty() )
+        {
+            throw new IllegalArgumentException( "At least one period must be specified" );
+        }
+
+        dataValueSetStore.writeDataValueSetJson( null, null, null, null, getDataElements( dataSets ), periods, getOrgUnits( orgUnits ), outputStream );
     }
 
     public void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer )

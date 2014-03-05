@@ -42,7 +42,10 @@ public interface DataValueSetStore
 {
     public void writeDataValueSetXml( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, 
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out );
-    
+
     public void writeDataValueSetCsv( Set<DataElement> dataElements, 
         Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer );
+
+    public void writeDataValueSetJson( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit,
+        Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out );
 }
