@@ -75,7 +75,13 @@ public class DefaultUserDetailsService
 
         if ( credentials == null )
         {
-            throw new UsernameNotFoundException( "Username does not exist" );
+            // TODO: try with openid identifier if username not found, we might want to refactor this into a OpenIDUserDetailsService.
+            credentials = userService.getUserCredentialsByOpenID( username );
+
+            if ( credentials == null )
+            {
+                throw new UsernameNotFoundException( "Username does not exist" );
+            }
         }
 
         boolean credentialsExpired = userService.credentialsNonExpired( credentials );

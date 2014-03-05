@@ -29,6 +29,7 @@ package org.hisp.dhis.settings.action.system;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.apache.commons.lang3.StringUtils;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.i18n.I18n;
@@ -105,6 +106,20 @@ public class SetAccessSettingsAction
         this.credentialsExpires = credentialsExpires;
     }
 
+    private String openIdProvider;
+
+    public void setOpenIdProvider( String openIdProvider )
+    {
+        this.openIdProvider = openIdProvider;
+    }
+
+    private String openIdProviderLabel;
+
+    public void setOpenIdProviderLabel( String openIdProviderLabel )
+    {
+        this.openIdProviderLabel = openIdProviderLabel;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -150,6 +165,12 @@ public class SetAccessSettingsAction
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_RECOVERY, accountRecovery );
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_INVITE, accountInvite );
         systemSettingManager.saveSystemSetting( KEY_SELF_REGISTRATION_NO_RECAPTCHA, selfRegistrationNoRecaptcha );
+        systemSettingManager.saveSystemSetting( KEY_OPENID_PROVIDER, openIdProvider );
+
+        if ( !StringUtils.isEmpty( openIdProviderLabel ) )
+        {
+            systemSettingManager.saveSystemSetting( KEY_OPENID_PROVIDER_LABEL, openIdProviderLabel );
+        }
 
         if ( credentialsExpires != null )
         {

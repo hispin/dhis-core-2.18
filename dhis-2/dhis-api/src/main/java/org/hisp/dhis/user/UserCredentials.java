@@ -72,6 +72,11 @@ public class UserCredentials
     private String username;
 
     /**
+     * Unique OpenID.
+     */
+    private String openId;
+
+    /**
      * Required. Will be stored as a hash.
      */
     private String password;
@@ -436,6 +441,19 @@ public class UserCredentials
     public void setUsername( String username )
     {
         this.username = username;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getOpenId()
+    {
+        return openId;
+    }
+
+    public void setOpenId( String openId )
+    {
+        this.openId = openId;
     }
 
     @JsonProperty

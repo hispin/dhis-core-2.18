@@ -428,6 +428,12 @@ public class DefaultUserService
         return userCredentialsStore.getUserCredentialsByUsername( username );
     }
 
+    @Override
+    public UserCredentials getUserCredentialsByOpenID( String openId )
+    {
+        return userCredentialsStore.getUserCredentialsByOpenID( openId );
+    }
+
     public Collection<UserCredentials> getUsersBetween( int first, int max )
     {
         return userCredentialsStore.getUsersBetween( first, max );

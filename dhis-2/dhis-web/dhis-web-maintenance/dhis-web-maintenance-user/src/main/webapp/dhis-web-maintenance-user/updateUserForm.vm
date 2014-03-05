@@ -23,6 +23,8 @@
 	        'rules' : rules
 	    } );
 
+        checkValueIsExist( "openId", "validateUser.action", { id : $userCredentials.id } );
+
 	    jQuery( "#cancel" ).click( function()
 	    {
             dhis2.commons.redirectCurrentPage( 'alluser.action' );
@@ -89,6 +91,11 @@
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
 		<td colspan="3"><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $userCredentials.user.email )"></td>
+	</tr>
+
+	<tr>
+		<td><label for="openId">$i18n.getString( "openid" )</label></td>
+		<td colspan="3"><input type="text" id="openId" name="openId" value="$!encoder.htmlEncode( $userCredentials.openId )"></td>
 	</tr>
 
     <tr>
