@@ -478,13 +478,16 @@ public class WebUtils
             Object o = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
             Op op = filters.get( field );
 
-            if ( op.evaluate( o ) )
+            switch ( op.evaluate( o ) )
             {
-                return true;
+                case EXCLUDE:
+                {
+                    return false;
+                }
             }
         }
 
-        return false;
+        return true;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -525,6 +528,11 @@ public class WebUtils
         }
 
         return output;
+    }
+
+    private static enum OpStatus
+    {
+        INCLUDE, EXCLUDE, IGNORE
     }
 
     private static class OpFactory
@@ -617,17 +625,17 @@ public class WebUtils
             return null;
         }
 
-        public abstract boolean evaluate( Object right );
+        public abstract OpStatus evaluate( Object right );
     }
 
     public static class EqOp extends Op
     {
         @Override
-        public boolean evaluate( Object right )
+        public OpStatus evaluate( Object right )
         {
             if ( getLeft() == null || right == null )
             {
-                return false;
+                return OpStatus.IGNORE;
             }
 
             if ( right.getClass().isAssignableFrom( String.class ) )
@@ -635,35 +643,35 @@ public class WebUtils
                 String s1 = getLeft( String.class );
                 String s2 = (String) right;
 
-                return s1 != null && s1.equals( s2 );
+                return (s1 != null && s1.equals( s2 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
             else if ( right.getClass().isAssignableFrom( Boolean.class ) )
             {
                 Boolean s1 = getLeft( Boolean.class );
                 Boolean s2 = (Boolean) right;
 
-                return s1 != null && s2.equals( s1 );
+                return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
             else if ( right.getClass().isAssignableFrom( Integer.class ) )
             {
                 Integer s1 = getLeft( Integer.class );
                 Integer s2 = (Integer) right;
 
-                return s1 != null && s2.equals( s1 );
+                return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
 
-            return false;
+            return OpStatus.IGNORE;
         }
     }
 
     public static class LikeOp extends Op
     {
         @Override
-        public boolean evaluate( Object right )
+        public OpStatus evaluate( Object right )
         {
             if ( getLeft() == null || right == null )
             {
-                return false;
+                return OpStatus.IGNORE;
             }
 
             if ( right.getClass().isAssignableFrom( String.class ) )
@@ -671,10 +679,10 @@ public class WebUtils
                 String s1 = getLeft( String.class );
                 String s2 = (String) right;
 
-                return s1 != null && s2.toLowerCase().contains( s1.toLowerCase() );
+                return (s1 != null && s2.toLowerCase().contains( s1.toLowerCase() )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
 
-            return false;
+            return OpStatus.IGNORE;
         }
     }
 }
