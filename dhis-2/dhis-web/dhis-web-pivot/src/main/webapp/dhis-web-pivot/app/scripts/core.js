@@ -206,7 +206,7 @@ Ext.onReady( function() {
 						return;
 					}
 
-					//config.id = config.id.replace('.', '-');
+					config.id = config.id.replace('#', '.');
 
 					return config;
 				}();

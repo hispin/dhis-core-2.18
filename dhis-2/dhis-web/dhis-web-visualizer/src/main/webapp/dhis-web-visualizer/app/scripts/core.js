@@ -241,7 +241,7 @@ Ext.onReady( function() {
 						return;
 					}
 
-					config.id = config.id.replace('.', '-');
+					config.id = config.id.replace('.', '#');
 
 					return config;
 				}();
@@ -1400,8 +1400,8 @@ Ext.onReady( function() {
 					for (var i = 0, id, splitId ; i < ids.length; i++) {
 						id = ids[i];
 
-						if (id.indexOf('-') !== -1) {
-							splitId = id.split('-');
+						if (id.indexOf('#') !== -1) {
+							splitId = id.split('#');
 							response.metaData.names[id] = response.metaData.names[splitId[0]] + ' ' + response.metaData.names[splitId[1]];
 						}
 					}
@@ -1600,7 +1600,7 @@ Ext.onReady( function() {
 
                     if (dimName === dx) {
                         for (var j = 0, index; j < items.length; j++) {
-                            index = items[j].indexOf('-');
+                            index = items[j].indexOf('#');
 
                             if (index > 0) {
                                 addCategoryDimension = true;
@@ -1700,7 +1700,7 @@ Ext.onReady( function() {
 
                         obj[conf.finals.data.domain] = xResponse.metaData.names[category];
                         for (var j = 0, id; j < columnIds.length; j++) {
-                            id = support.prototype.str.replaceAll(columnIds[j], '-', '') + support.prototype.str.replaceAll(rowIds[i], '-', '');
+                            id = support.prototype.str.replaceAll(columnIds[j], '#', '') + support.prototype.str.replaceAll(rowIds[i], '#', '');
 
                             obj[columnIds[j]] = parseFloat(xResponse.idValueMap[id]) || 0;
                         }
@@ -2041,8 +2041,8 @@ Ext.onReady( function() {
                         numberOfItems = store.rangeFields.length;
 
                         for (var i = 0, name, ids; i < store.rangeFields.length; i++) {
-                            if (store.rangeFields[i].indexOf('-') !== -1) {
-                                ids = store.rangeFields[i].split('-');
+                            if (store.rangeFields[i].indexOf('#') !== -1) {
+                                ids = store.rangeFields[i].split('#');
                                 name = xResponse.metaData.names[ids[0]] + ' ' + xResponse.metaData.names[ids[1]];
                             }
                             else {

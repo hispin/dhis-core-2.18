@@ -997,8 +997,8 @@ Ext.onReady( function() {
 			style: 'margin-right:' + margin + 'px; margin-bottom:0px',
 			valueField: 'id',
 			displayField: 'name',
-			dragGroup: 'layoutDD',
-			dropGroup: 'layoutDD',
+			dragGroup: 'querylayoutDD',
+			dropGroup: 'querylayoutDD',
 			ddReorder: false,
 			store: dimensionStore,
 			tbar: {
@@ -1027,8 +1027,8 @@ Ext.onReady( function() {
 			style: 'margin-bottom: 0px',
 			valueField: 'id',
 			displayField: 'name',
-			dragGroup: 'layoutDD',
-			dropGroup: 'layoutDD',
+			dragGroup: 'querylayoutDD',
+			dropGroup: 'querylayoutDD',
 			store: colStore,
 			tbar: {
 				height: 25,
