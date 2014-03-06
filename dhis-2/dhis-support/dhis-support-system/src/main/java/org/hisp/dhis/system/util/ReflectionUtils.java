@@ -650,6 +650,21 @@ public class ReflectionUtils
         {
             this.identifiableObject = identifiableObject;
         }
+
+        @Override public String toString()
+        {
+            return "PropertyDescriptor{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", xmlName='" + xmlName + '\'' +
+                ", xmlAttribute=" + xmlAttribute +
+                ", xmlCollectionName='" + xmlCollectionName + '\'' +
+                ", clazz=" + clazz +
+                ", method=" + method +
+                ", collection=" + collection +
+                ", identifiableObject=" + identifiableObject +
+                '}';
+        }
     }
 
     public static Map<String, PropertyDescriptor> getJacksonClassMap( Class<?> clazz )
