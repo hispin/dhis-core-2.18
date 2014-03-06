@@ -88,16 +88,29 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     public void getJacksonClassMap(
         @RequestParam( required = false ) String include,
         @RequestParam( required = false ) String exclude,
+        @RequestParam( value = "filter", required = false ) List<String> filters,
         @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
+
+        // get full list if we are using filters
+        if ( filters != null && !filters.isEmpty() )
+        {
+            options.getOptions().put( "paging", "false" );
+        }
+
         List<T> entityList = getEntityList( metaData, options );
 
         handleLinksAndAccess( options, metaData, entityList, true );
 
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
+
+        if ( filters != null && !filters.isEmpty() )
+        {
+            entityList = WebUtils.filterObjects( entityList, filters );
+        }
 
         List<Object> objects = WebUtils.filterFields( entityList, include, exclude );
         Map<String, Object> output = Maps.newLinkedHashMap();
