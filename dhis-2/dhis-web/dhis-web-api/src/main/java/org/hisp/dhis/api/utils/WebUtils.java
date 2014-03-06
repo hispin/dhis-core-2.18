@@ -671,7 +671,7 @@ public class WebUtils
                 String s1 = getLeft( String.class );
                 String s2 = (String) right;
 
-                return s1 != null && s2.contains( s1 );
+                return s1 != null && s2.toLowerCase().contains( s1.toLowerCase() );
             }
 
             return false;
