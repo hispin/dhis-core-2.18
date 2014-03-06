@@ -93,6 +93,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     {
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
+        options.getOptions().put( "links", "false" );
 
         boolean hasPaging = false;
 
