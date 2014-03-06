@@ -94,10 +94,16 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
 
+        boolean hasPaging = false;
+
         // get full list if we are using filters
         if ( filters != null && !filters.isEmpty() )
         {
-            options.getOptions().put( "paging", "false" );
+            if ( options.hasPaging() )
+            {
+                hasPaging = true;
+                options.getOptions().put( "paging", "false" );
+            }
         }
 
         List<T> entityList = getEntityList( metaData, options );
@@ -110,12 +116,19 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( filters != null && !filters.isEmpty() )
         {
             entityList = WebUtils.filterObjects( entityList, filters );
+
+            if ( hasPaging )
+            {
+                Pager pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
+                metaData.setPager( pager );
+                entityList = PagerUtils.pageCollection( entityList, pager );
+            }
         }
 
         List<Object> objects = WebUtils.filterFields( entityList, include, exclude );
         Map<String, Object> output = Maps.newLinkedHashMap();
 
-        if ( options.hasPaging() )
+        if ( hasPaging )
         {
             output.put( "pager", metaData.getPager() );
         }
