@@ -2521,8 +2521,8 @@ Ext.onReady( function() {
 								for (var k = 0, item; k < view.columns[j].items.length; k++) {
 									item = view.columns[j].items[k];
 
-									if (item.id.indexOf('-') !== -1) {
-										item.id = item.id.replace('-', '.');
+									if (item.id.indexOf('#') !== -1) {
+										item.id = item.id.replace('#', '.');
 									}
 								}
 							}
@@ -6538,7 +6538,7 @@ Ext.onReady( function() {
 							scope: this,
 							callback: function() {
 								this.each(function(r) {
-                                    r.set('id', r.data.id.split('.').join('-'));
+                                    r.set('id', r.data.id.split('#').join('.'));
 								});
 
 								this.sortStore();
@@ -6814,7 +6814,7 @@ Ext.onReady( function() {
 			listeners: {
 				select: function() {
 					var id = this.getValue(),
-						index = id.indexOf('-');
+						index = id.indexOf('#');
 
 					if (index !== -1) {
 						id = id.substr(0, index);
