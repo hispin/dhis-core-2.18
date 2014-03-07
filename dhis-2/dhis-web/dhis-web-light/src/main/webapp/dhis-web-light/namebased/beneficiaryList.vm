@@ -4,7 +4,7 @@
 <ul>
 #foreach( $pav in $pavSet )
 	#if($pav.getAttribute().getDisplayInListNoProgram()== true)
-<li><a href="showPatientProgramList.action?patientId=$pav.getPatient().getId()">$!encoder.htmlEncode( ${pav.value} )</a></li>
+<li><a href="showPatientProgramList.action?patientId=$pav.getEntityInstance().getId()">$!encoder.htmlEncode( ${pav.value} )</a></li>
 #end	
 #end
 </ul>
