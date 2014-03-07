@@ -90,12 +90,6 @@ dhis2.db.tmpl = {
                "<a href='javascript:dhis2.db.viewReportDialog( \"../api/reportTables/${id}/data.html\", \"${name}\" )'>${i18n_view}</a>" +
                "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a></div>" +
                "<div id='pivot-${itemId}' onclick='dhis2.db.exploreReportTable( \"${id}\" )' title='${i18n_click}'></div>" +
-               "<script type='text/javascript'>dhis2.db.renderReportTable( '${id}', '${itemId}' );</script></div></li>",
-	
-	patientTabularReport: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
-               "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
-               "<a href='javascript:dhis2.db.viewImage( \"../api/reportTables/${id}/data.html\", \"${name}\" )'>${i18n_view}</a></div>" +
-               "<div id='pivot-${itemId}' onclick='dhis2.db.exploreReportTable( \"${id}\" )' title='${i18n_click}'></div>" +
                "<script type='text/javascript'>dhis2.db.renderReportTable( '${id}', '${itemId}' );</script></div></li>"
 };
 
@@ -423,10 +417,6 @@ dhis2.db.renderDashboard = function( id )
 				{
 					dhis2.db.renderLinkItem( $d, item.id, item.resources, "Resources", "../api/documents/", "/data" );
 				}
-				else if ( "patientTabularReports" == item.type )
-				{
-					dhis2.db.renderLinkItem( $d, item.id, item.patientTabularReports, "Person tabular reports", "../dhis-web-caseentry/app/index.html?type=patientTabularReport&id=", ""  );
-				}
 				else if ( "messages" == item.type )
 				{
 					dhis2.db.renderMessagesItem( $d, item.id );
@@ -739,17 +729,6 @@ dhis2.db.renderSearch = function( data, $h )
 			{
 				var o = data.resources[i];
 				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../api/documents/" + o.id, "img": "document_small", "name": o.name, "type": "resources", "id": o.id, "i18n_add": i18n_add } ) );
-			}
-		}
-		
-		if ( data.patientTabularReportCount > 0 )
-		{
-			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Tabular reports", "type": "tabularReports", "i18n_see_more_hits": i18n_see_more_hits, "i18n_see_fewer_hits": i18n_see_fewer_hits } ) );
-			
-			for ( var i in data.patientTabularReports )
-			{
-				var o = data.patientTabularReports[i];
-				$h.append( $.tmpl( dhis2.db.tmpl.hitItem, { "canManage": canManage, "link": "../dhis-web-caseentry/generateTabularReport.action?uid=" + o.id, "img": "document_small", "name": o.name, "type": "patientTabularReports", "id": o.id, "i18n_add": i18n_add } ) );
 			}
 		}
 	}

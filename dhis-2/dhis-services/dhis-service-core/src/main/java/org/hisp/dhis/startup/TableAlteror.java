@@ -120,6 +120,7 @@ public class TableAlteror
         executeSql( "DROP TABLE maplegendsetindicator" );
         executeSql( "DROP TABLE maplegendsetdataelement" );
         executeSql( "DROP TABLE loginfailure" );
+        executeSql( "DROP TABLE dashboarditem_trackedentitytabularreports" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
         executeSql( "ALTER TABLE reporttable DROP column paramleafparentorganisationunit" );
         executeSql( "ALTER TABLE reporttable DROP column dimension_type" );

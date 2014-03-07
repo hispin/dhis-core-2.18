@@ -142,6 +142,7 @@ public class DefaultTrackedEntityAttributeService
         Collection<TrackedEntityAttribute> result = attributeStore.getAll();
 
         Collection<Program> programs = programService.getAllPrograms();
+        
         if ( result != null )
         {
             for ( Program program : programs )
