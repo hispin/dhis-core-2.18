@@ -19,7 +19,8 @@ var eventCapture = angular.module('eventCapture',
     
     
     $routeProvider.when('/',{
-        templateUrl:'index.html'
+        templateUrl:'index.html',
+        controller: 'MainController'
     }).otherwise({
         redirectTo : '/'
     });       

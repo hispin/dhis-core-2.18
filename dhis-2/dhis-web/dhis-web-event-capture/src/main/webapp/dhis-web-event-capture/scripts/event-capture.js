@@ -7,39 +7,20 @@ dhis2.ec.emptyOrganisationUnits = false;
 // Instance of the StorageManager
 dhis2.ec.storageManager = new StorageManager();
 
-// Indicates whether current form is multi org unit
-dhis2.ec.multiOrganisationUnit = false;
-
-// "organisationUnits" object inherited from ouwt.js
-
-var COLOR_GREEN = '#b9ffb9';
-var COLOR_YELLOW = '#fffe8c';
-var COLOR_RED = '#ff8a8a';
-var COLOR_ORANGE = '#ff6600';
-var COLOR_WHITE = '#fff';
-var COLOR_GREY = '#ccc';
-
-var COLOR_BORDER_ACTIVE = '#73ad72';
-var COLOR_BORDER = '#aaa';
-
-var DEFAULT_TYPE = 'int';
-var DEFAULT_NAME = '[unknown]';
-
-var FORMTYPE_CUSTOM = 'custom';
-var FORMTYPE_SECTION = 'section';
-var FORMTYPE_MULTIORG_SECTION = 'multiorg_section';
-var FORMTYPE_DEFAULT = 'default';
-
-var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded";
-
-var MAX_DROPDOWN_DISPLAYED = 30;
-
 var DAO = DAO || {};
 
+var i18n_no_orgunits = 'No organisation unit attached to current user, no data entry possible';
 var i18n_offline_notification = 'You are offline, data will be stored locally';
 var i18n_online_notification = 'You are online';
+var i18n_need_to_sync_notification = 'There is data stored locally, please upload to server';
+var i18n_sync_now = 'Upload';
+var i18n_sync_success = 'Upload to server was successful';
+var i18n_sync_failed = 'Upload to server failed, please try again later';
+var i18n_uploading_data_notification = 'Uploading locally stored data to the server';
 
 var PROGRAMS_METADATA = 'PROGRAMS';
+
+var EVENT_VALUES = 'EVENTVALUES';
 
 DAO.store = new dhis2.storage.Store({
     name: 'dhis2',
@@ -138,10 +119,12 @@ $(document).ready(function()
         }
         else {
             setHeaderMessage(i18n_offline_notification);
+            selection.responseReceived(); //notify angular 
         }
     });
 
     dhis2.availability.startAvailabilityCheck();
+    
 });
 
 function ajax_login()
@@ -287,9 +270,64 @@ function getProgramStage( url )
     };
 }
 
+function uploadLocalData()
+{
+    if ( !dhis2.ec.storageManager.hasLocalData() )
+    {
+        return;
+    }
 
+    setHeaderWaitMessage( i18n_uploading_data_notification );
+    
+    var events = dhis2.ec.storageManager.getEventsAsArray();   
+    
+    _.each( _.values( events ), function( event ) {
+        
+        if( event.hasOwnProperty('src')){
+            if( event.src == 'local'){
+                delete event.event;
+            }
+            
+            delete event.src;
+        }        
+    });    
+    
+    events = {eventList: events};
+    
+    //jackson insists for valid json, where properties are bounded with ""    
+    events = JSON.stringify(events);  
+    
+    $.ajax( {
+        url: '../api/events.json',
+        type: 'POST',
+        data: events,
+        contentType: 'application/json',              
+        success: function()
+        {
+            dhis2.ec.storageManager.clear();
+            log( 'Successfully uploaded local events' );      
+            setHeaderDelayMessage( i18n_sync_success );
+            selection.responseReceived(); //notify angular 
+        },
+        error: function( xhr )
+        {
+            if ( 409 == xhr.status ) // Invalid event
+            {
+                // there is something wrong with the data - ignore for now.
 
-// TODO break if local storage is full
+                dhis2.ec.storageManager.clear();
+            }
+            else // Connection lost during upload
+            {
+                var message = i18n_sync_failed
+                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+
+                setHeaderMessage( message );
+                $( '#sync_button' ).bind( 'click', uploadLocalData );
+            }
+        }
+    } );
+}
 
 // -----------------------------------------------------------------------------
 // StorageManager
@@ -302,12 +340,6 @@ function getProgramStage( url )
 function StorageManager()
 {
     var MAX_SIZE = new Number(2600000);
-    var MAX_SIZE_FORMS = new Number(1600000);
-
-    var KEY_FORM_PREFIX = 'form-';
-    var KEY_FORM_VERSIONS = 'formversions';
-    var KEY_DATAVALUES = 'datavalues';
-    var KEY_COMPLETEDATASETS = 'completedatasets';
 
     /**
      * Returns the total number of characters currently in the local storage.
@@ -332,32 +364,6 @@ function StorageManager()
     };
 
     /**
-     * Returns the total numbers of characters in stored forms currently in the
-     * local storage.
-     *
-     * @return number of characters.
-     */
-    this.totalFormSize = function()
-    {
-        var totalSize = new Number();
-
-        for (var i = 0; i < localStorage.length; i++)
-        {
-            if (localStorage.key(i).substring(0, KEY_FORM_PREFIX.length) == KEY_FORM_PREFIX)
-            {
-                var value = localStorage.key(i);
-
-                if (value)
-                {
-                    totalSize += value.length;
-                }
-            }
-        }
-
-        return totalSize;
-    };
-
-    /**
      * Return the remaining capacity of the local storage in characters, ie. the
      * maximum size minus the current size.
      */
@@ -365,476 +371,176 @@ function StorageManager()
     {
         return MAX_SIZE - this.totalSize();
     };
-
+    
     /**
-     * Saves the content of a data entry form.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     * @param html the form HTML content.
-     * @return true if the form saved successfully, false otherwise.
+     * Clears stored events. 
      */
-    this.saveForm = function(dataSetId, html)
+    this.clear = function ()
     {
-        var id = KEY_FORM_PREFIX + dataSetId;
+        localStorage.removeItem(EVENT_VALUES);        
+    };    
+    
+    /**
+     * Saves an event
+     *
+     * @param event The event in json format.
+     */
+    this.saveEvent = function(event)
+    {
+        //var newEvent = event;
+        
+        if( !event.hasOwnProperty('src') )
+        {
+            if( !event.event){
+                event.event = this.generatePseudoUid();
+                event.src = 'local';
+            }
+            else{
+                event.src = 'remote';
+            }
+        }        
+
+        var events = {};
+
+        if (localStorage[EVENT_VALUES] != null)
+        {
+            events = JSON.parse(localStorage[EVENT_VALUES]);
+        }
+
+        events[event.event] = event;
 
         try
         {
-            localStorage[id] = html;
+            localStorage[EVENT_VALUES] = JSON.stringify(events);
 
-            log('Successfully stored form: ' + dataSetId);
-        }
-        catch (e)
-        {
-            log('Max local storage quota reached, ignored form: ' + dataSetId);
-            return false;
-        }
-
-        if (MAX_SIZE_FORMS < this.totalFormSize())
-        {
-            this.deleteForm(dataSetId);
-
-            log('Max local storage quota for forms reached, ignored form: ' + dataSetId);
-            return false;
-        }
-
-        return true;
-    };
-
-    /**
-     * Gets the content of a data entry form.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     * @return the content of a data entry form.
-     */
-    this.getForm = function(dataSetId)
-    {
-        var id = KEY_FORM_PREFIX + dataSetId;
-
-        return localStorage[id];
-    };
-
-    /**
-     * Removes a form.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     */
-    this.deleteForm = function(dataSetId)
-    {
-        var id = KEY_FORM_PREFIX + dataSetId;
-
-        localStorage.removeItem(id);
-    };
-
-    /**
-     * Returns an array of the identifiers of all forms.
-     *
-     * @return array with form identifiers.
-     */
-    this.getAllForms = function()
-    {
-        var formIds = [];
-
-        var formIndex = 0;
-
-        for (var i = 0; i < localStorage.length; i++)
-        {
-            var key = localStorage.key(i);
-
-            if (key.substring(0, KEY_FORM_PREFIX.length) == KEY_FORM_PREFIX)
-            {
-                var id = key.split('-')[1];
-
-                formIds[formIndex++] = id;
-            }
-        }
-
-        return formIds;
-    };
-
-    /**
-     * Indicates whether a form exists.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     * @return true if a form exists, false otherwise.
-     */
-    this.formExists = function(dataSetId)
-    {
-        var id = KEY_FORM_PREFIX + dataSetId;
-
-        return localStorage[id] != null;
-    };
-
-    /**
-     * Downloads the form for the data set with the given identifier from the
-     * remote server and saves the form locally. Potential existing forms with
-     * the same identifier will be overwritten. Updates the form version.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     * @param formVersion the version of the form of the remote data set.
-     */
-    this.downloadForm = function(dataSetId, formVersion)
-    {
-        $.ajax({
-            url: 'loadForm.action',
-            data:
-                    {
-                        dataSetId: dataSetId
-                    },
-            dataSetId: dataSetId,
-            formVersion: formVersion,
-            dataType: 'text',
-            success: function(data, textStatus, jqXHR)
-            {
-                dhis2.ec.storageManager.saveForm(this.dataSetId, data); //TODO
-                dhis2.ec.storageManager.saveFormVersion(this.dataSetId, this.formVersion);
-            }
-        });
-    };
-
-    /**
-     * Saves a version for a form.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     * @param formVersion the version of the form.
-     */
-    this.saveFormVersion = function(dataSetId, formVersion)
-    {
-        var formVersions = {};
-
-        if (localStorage[KEY_FORM_VERSIONS] != null)
-        {
-            formVersions = JSON.parse(localStorage[KEY_FORM_VERSIONS]);
-        }
-
-        formVersions[dataSetId] = formVersion;
-
-        try
-        {
-            localStorage[KEY_FORM_VERSIONS] = JSON.stringify(formVersions);
-
-            log('Successfully stored form version: ' + dataSetId);
-        }
-        catch (e)
-        {
-            log('Max local storage quota reached, ignored form version: ' + dataSetId);
-        }
-    };
-
-    /**
-     * Returns the version of the form of the data set with the given
-     * identifier.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     * @return the form version.
-     */
-    this.getFormVersion = function(dataSetId)
-    {
-        if (localStorage[KEY_FORM_VERSIONS] != null)
-        {
-            var formVersions = JSON.parse(localStorage[KEY_FORM_VERSIONS]);
-
-            return formVersions[dataSetId];
-        }
-
-        return null;
-    };
-
-    /**
-     * Deletes the form version of the data set with the given identifier.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     */
-    this.deleteFormVersion = function(dataSetId)
-    {
-        if (localStorage[KEY_FORM_VERSIONS] != null)
-        {
-            var formVersions = JSON.parse(localStorage[KEY_FORM_VERSIONS]);
-
-            if (formVersions[dataSetId] != null)
-            {
-                delete formVersions[dataSetId];
-                localStorage[KEY_FORM_VERSIONS] = JSON.stringify(formVersions);
-            }
-        }
-    };
-
-    this.getAllFormVersions = function()
-    {
-        return localStorage[KEY_FORM_VERSIONS] != null ? JSON.parse(localStorage[KEY_FORM_VERSIONS]) : null;
-    };
-
-    /**
-     * Saves a data value.
-     *
-     * @param dataValue The datavalue and identifiers in json format.
-     */
-    this.saveDataValue = function(dataValue)
-    {
-        var id = this.getDataValueIdentifier(dataValue.de,
-                dataValue.co, dataValue.pe, dataValue.ou);
-
-        var dataValues = {};
-
-        if (localStorage[KEY_DATAVALUES] != null)
-        {
-            dataValues = JSON.parse(localStorage[KEY_DATAVALUES]);
-        }
-
-        dataValues[id] = dataValue;
-
-        try
-        {
-            localStorage[KEY_DATAVALUES] = JSON.stringify(dataValues);
-
-            log('Successfully stored data value');
+            log('Successfully stored event');
         }
         catch (e)
         {
             log('Max local storage quota reached, not storing data value locally');
         }
     };
+    
+    /**
+     * Updates an event
+     *
+     * @param event The event in json format.
+     * @param dataElement The data element whose value is updated.
+     */
+    this.updateForSingleValue = function(event)
+    {
+        var e = this.getEvent(event.event);
+        
+        var dataElement = event.dataValues[0].dataElement;
+        var value = event.dataValues[0].value;
+                        
+        var updated = false;
+        
+        _.each( _.values( e.dataValues ), function ( dv ) {    
+            if(dv.dataElement == dataElement){
+                dv.value = value;
+                updated = true;
+            }            
+        });
+        
+        if(!updated){
+            e.dataValues.push({dataElement: dataElement, value: value});
+        }
+        
+        this.saveEvent(e);
+        
+    };
 
     /**
-     * Gets the value for the data value with the given arguments, or null if it
+     * Gets the value for the event with the given arguments, or null if it
      * does not exist.
      *
-     * @param de the data element identifier.
-     * @param co the category option combo identifier.
-     * @param pe the period identifier.
-     * @param ou the organisation unit identifier.
-     * @return the value for the data value with the given arguments, null if
-     *         non-existing.
+     * @param id the event identifier.
+     *
      */
-    this.getDataValue = function(de, co, pe, ou)
+    this.getEvent = function(id)
     {
-        var id = this.getDataValueIdentifier(de, co, pe, ou);
-
-        if (localStorage[KEY_DATAVALUES] != null)
+        if (localStorage[EVENT_VALUES] != null)
         {
-            var dataValues = JSON.parse(localStorage[KEY_DATAVALUES]);
+            var events = JSON.parse(localStorage[EVENT_VALUES]);
 
-            return dataValues[id];
+            return events[id];
         }
 
         return null;
     };
 
     /**
-     * Returns the data values for the given period and organisation unit 
-     * identifiers as an array.
-     * 
-     * @param json object with periodId and organisationUnitId properties.
+     * Removes the given event from localStorage.
+     *
+     * @param event and identifiers in json format.
      */
-    this.getDataValuesInForm = function(json)
+    this.clearEvent = function(event)
     {
-        var dataValues = this.getDataValuesAsArray();
-        var valuesInForm = new Array();
+        var events = this.getAllEvents();
 
-        for (var i = 0; i < dataValues.length; i++)
+        if (events != null && events[event.event] != null)
         {
-            var val = dataValues[i];
-
-            if (val.pe == json.periodId && val.ou == json.organisationUnitId)
-            {
-                valuesInForm.push(val);
+            delete events[event.event];
+            localStorage[EVENT_VALUES] = JSON.stringify(events);
+        }
+    };
+    
+    /**
+     * Returns events matching the arguments provided
+     * 
+     * @param orgUnit 
+     * @param programStage
+     * 
+     * @return a JSON associative array.
+     */
+    this.getEvents = function(orgUnit, programStage)
+    {
+        var events = this.getEventsAsArray();
+        var match = [];
+        for( var i=0; i<events.length; i++){
+            if(events[i].orgUnit == orgUnit && events[i].programStage == programStage ){
+                match.push(events[i]);
             }
         }
-
-        return valuesInForm;
-    }
-
-    /**
-     * Removes the given dataValue from localStorage.
-     *
-     * @param dataValue The datavalue and identifiers in json format.
-     */
-    this.clearDataValueJSON = function(dataValue)
-    {
-        this.clearDataValue(dataValue.de, dataValue.co, dataValue.pe,
-                dataValue.ou);
+        
+        return match;
     };
-
+    
     /**
-     * Removes the given dataValue from localStorage.
-     *
-     * @param de the data element identifier.
-     * @param co the category option combo identifier.
-     * @param pe the period identifier.
-     * @param ou the organisation unit identifier.
-     */
-    this.clearDataValue = function(de, co, pe, ou)
-    {
-        var id = this.getDataValueIdentifier(de, co, pe, ou);
-        var dataValues = this.getAllDataValues();
-
-        if (dataValues != null && dataValues[id] != null)
-        {
-            delete dataValues[id];
-            localStorage[KEY_DATAVALUES] = JSON.stringify(dataValues);
-        }
-    };
-
-    /**
-     * Returns a JSON associative array where the keys are on the form <data
-     * element id>-<category option combo id>-<period id>-<organisation unit
-     * id> and the data values are the values.
      *
      * @return a JSON associative array.
      */
-    this.getAllDataValues = function()
+    this.getAllEvents = function()
     {
-        return localStorage[KEY_DATAVALUES] != null ? JSON.parse(localStorage[KEY_DATAVALUES]) : null;
-    };
+        return localStorage[EVENT_VALUES] != null ? JSON.parse( localStorage[EVENT_VALUES] ) : null;
+    };    
 
     /**
-     * Returns all data value objects in an array. Returns an empty array if no
-     * data values exist. Items in array are guaranteed not to be undefined.
+     * Returns all event objects in an array. Returns an empty array if no
+     * event exist. Items in array are guaranteed not to be undefined.
      */
-    this.getDataValuesAsArray = function()
+    this.getEventsAsArray = function()
     {
         var values = new Array();
-        var dataValues = this.getAllDataValues();
+        var events = this.getAllEvents();
 
-        if (undefined === dataValues)
+        if (undefined == events)
         {
             return values;
         }
 
-        for (i in dataValues)
+        for (i in events)
         {
-            if (dataValues.hasOwnProperty(i) && undefined !== dataValues[i])
+            if (events.hasOwnProperty(i) && undefined !== events[i])
             {
-                values.push(dataValues[i]);
+                values.push(events[i]);
             }
         }
 
         return values;
-    }
-
-    /**
-     * Generates an identifier.
-     */
-    this.getDataValueIdentifier = function(de, co, pe, ou)
-    {
-        return de + '-' + co + '-' + pe + '-' + ou;
     };
-
-    /**
-     * Generates an identifier.
-     */
-    this.getCompleteDataSetId = function(json)
-    {
-        return json.ds + '-' + json.pe + '-' + json.ou;
-    };
-
-    /**
-     * Returns current state in data entry form as associative array.
-     *
-     * @return an associative array.
-     */
-    this.getCurrentCompleteDataSetParams = function()
-    {
-        var params = {
-            'ds': $('#selectedDataSetId').val(),
-            'pe': $('#selectedPeriodId').val(),
-            'ou': getCurrentOrganisationUnit(),
-            'multiOu': dhis2.ec.multiOrganisationUnit
-        };
-
-        return params;
-    };
-
-    /**
-     * Gets all complete data set registrations as JSON.
-     *
-     * @return all complete data set registrations as JSON.
-     */
-    this.getCompleteDataSets = function()
-    {
-        if (localStorage[KEY_COMPLETEDATASETS] != null)
-        {
-            return JSON.parse(localStorage[KEY_COMPLETEDATASETS]);
-        }
-
-        return null;
-    };
-
-    /**
-     * Saves a complete data set registration.
-     *
-     * @param json the complete data set registration as JSON.
-     */
-    this.saveCompleteDataSet = function(json)
-    {
-        var completeDataSets = this.getCompleteDataSets();
-        var completeDataSetId = this.getCompleteDataSetId(json);
-
-        if (completeDataSets != null)
-        {
-            completeDataSets[completeDataSetId] = json;
-        }
-        else
-        {
-            completeDataSets = {};
-            completeDataSets[completeDataSetId] = json;
-        }
-
-        try
-        {
-            localStorage[KEY_COMPLETEDATASETS] = JSON.stringify(completeDataSets);
-
-            log('Successfully stored complete registration');
-        }
-        catch (e)
-        {
-            log('Max local storage quota reached, not storing complete registration locally');
-        }
-    };
-
-    /**
-     * Indicates whether a complete data set registration exists for the given
-     * argument.
-     * 
-     * @param json object with periodId, dataSetId, organisationUnitId properties.
-     */
-    this.hasCompleteDataSet = function(json)
-    {
-        var id = this.getCompleteDataSetId(json);
-        var registrations = this.getCompleteDataSets();
-
-        if (null != registrations && undefined !== registrations && undefined !== registrations[id])
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Removes the given complete data set registration.
-     *
-     * @param json the complete data set registration as JSON.
-     */
-    this.clearCompleteDataSet = function(json)
-    {
-        var completeDataSets = this.getCompleteDataSets();
-        var completeDataSetId = this.getCompleteDataSetId(json);
-
-        if (completeDataSets != null)
-        {
-            delete completeDataSets[completeDataSetId];
-
-            if (completeDataSets.length > 0)
-            {
-                localStorage.removeItem(KEY_COMPLETEDATASETS);
-            }
-            else
-            {
-                localStorage[KEY_COMPLETEDATASETS] = JSON.stringify(completeDataSets);
-            }
-        }
-    };
-
+    
     /**
      * Indicates whether there exists data values or complete data set
      * registrations in the local storage.
@@ -843,29 +549,22 @@ function StorageManager()
      */
     this.hasLocalData = function()
     {
-        var dataValues = this.getAllDataValues();
-        var completeDataSets = this.getCompleteDataSets();
+        var events = this.getAllEvents();        
 
-        if (dataValues == null && completeDataSets == null)
+        if (events == null)
         {
             return false;
         }
-        else if (dataValues != null)
+        if (Object.keys(events).length < 1)
         {
-            if (Object.keys(dataValues).length < 1)
-            {
-                return false;
-            }
-        }
-        else if (completeDataSets != null)
-        {
-            if (Object.keys(completeDataSets).length < 1)
-            {
-                return false;
-            }
-        }
+            return false;
+        }    
 
         return true;
     };
+    
+    this.generatePseudoUid = function () 
+    {
+        return Math.random().toString(36).substr(2, 11);
+    };
 }
-

@@ -34,8 +34,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.editingEventInGrid = false;   
     
     $scope.programStageDataElements = [];
-    $scope.dhis2Events = [];    
-    
+                
+    $scope.dhis2Events = [];
     $scope.eventGridColumns = [];
     $scope.hiddenGridColumns = 0;
     $scope.newDhis2Event = {dataValues: []};
@@ -81,32 +81,49 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     if($scope.programs.length === 1){
                         $scope.selectedProgram = $scope.programs[0];
                         $scope.pr = $scope.selectedProgram;
+                        $scope.loadEvents($scope.pr);
                     }                    
                 }
             }
-            
-            $scope.loadEvents($scope.selectedProgram);
         }        
     };    
     
     //get events for the selected program (and org unit)
-    $scope.loadEvents = function(program){       
+    $scope.loadEvents = function(program){   
+        
+        //$scope.dhis2Events = [];
                
         if( program ){
             
             //because this is single event, take the first program stage
             $scope.selectedProgramStage = storage.get(program.programStages[0].id);
 
-            $scope.programStageDataElements = [];               
+            $scope.programStageDataElements = [];  
+            $scope.eventGridColumns = [];
+            $scope.hiddenGridColumns = 0;
+            $scope.newDhis2Event = {dataValues: []};
+            $scope.currentEvent = {dataValues: []};
 
             angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
                 $scope.programStageDataElements[prStDe.dataElement.id] = prStDe; 
-            });
+                
+                //generate grid headers using program stage data elements
+                //create a template for new event
+                //for date type dataelements, filtering is based on start and end dates
+                var dataElement = prStDe.dataElement;
+                var name = dataElement.formName || dataElement.name;
+                $scope.newDhis2Event.dataValues.push({id: dataElement.id, value: '', name: name});                       
+                $scope.eventGridColumns.push({name: name, id: dataElement.id, type: dataElement.type, showFilter: false, hide: false});
+
+                if(dataElement.type === 'date'){
+                     $scope.filterText[dataElement.id]= {start: '', end: ''};
+                }
+            });           
 
             //Load events for the selected program stage and orgunit
             DHIS2EventFactory.getByStage($scope.selectedOrgUnit.id, $scope.selectedProgramStage.id).then(function(data){
-                $scope.dhis2Events = data;
-
+                $scope.dhis2Events = data;                                
+                
                 //process event list for easier tabular sorting
                 //angular.forEach($scope.dhis2Events, function(dhis2Event){ 
                 if( angular.isObject( $scope.dhis2Events ) ) {
@@ -134,26 +151,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                             $scope.dhis2Events.splice(index,1);
                             i--;                           
                         }
-                    }
-
-                    //generate grid headers using program stage data elements
-                    //create a template for new event
-                    //for date type dataelements, filtering is based on start and end dates
-                    $scope.eventGridColumns = [];        
-                    for(var dataElement in $scope.programStageDataElements){
-                        var dataElement = $scope.programStageDataElements[dataElement].dataElement;
-                        var name = dataElement.formName || dataElement.name;
-                        $scope.newDhis2Event.dataValues.push({id: dataElement.id, value: '', name: name});                       
-                        $scope.eventGridColumns.push({name: name, id: dataElement.id, type: dataElement.type, showFilter: false, hide: false});
-
-                        if(dataElement.type === 'date'){
-                             $scope.filterText[dataElement.id]= {start: '', end: ''};
-                        }                       
-                    }                
-                }                               
+                    }                                  
+                }                                            
             });            
-        }    
-        
+        }        
     };
     
     $scope.jumpToPage = function(page){
@@ -267,12 +268,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         var newEvent = angular.copy($scope.currentEvent);
         
         //prepare the event to be created
-        var dhis2Event = {program: $scope.selectedProgram.id,
-            programStage: $scope.selectedProgramStage.id,
-            orgUnit: $scope.selectedOrgUnit.id,
-            status: 'ACTIVE',            
-            eventDate: $filter('date')(new Date(), 'yyyy-MM-dd'),
-            dataValues: dataValues
+        var dhis2Event = {
+                program: $scope.selectedProgram.id,
+                programStage: $scope.selectedProgramStage.id,
+                orgUnit: $scope.selectedOrgUnit.id,
+                status: 'ACTIVE',            
+                eventDate: $filter('date')(new Date(), 'yyyy-MM-dd'),
+                dataValues: dataValues
         };      
         
         //send the new event to server
@@ -288,7 +290,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             else {
                 
                 //add the new event to the grid                
-                newEvent.event = data.importSummaries[0].reference;
+                newEvent.event = data.importSummaries[0].reference;                
+                if( !$scope.dhis2Events ){
+                    $scope.dhis2Events = [];                   
+                }
                 $scope.dhis2Events.splice(0,0,newEvent);
                 
                 //decide whether to stay in the current screen or not.
@@ -318,7 +323,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             
             var dhis2Event = {event: currentEvent.event, dataValues: [{value: newValue, dataElement: dataElement}]};
             
-            DHIS2EventFactory.updateSingleValue(dhis2Event).then(function(data){
+            DHIS2EventFactory.updateForSingleValue(dhis2Event).then(function(data){
                 
                 var continueLoop = true;
                 for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){

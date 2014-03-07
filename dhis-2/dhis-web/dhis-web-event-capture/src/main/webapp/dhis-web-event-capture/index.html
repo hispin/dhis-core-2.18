@@ -78,7 +78,7 @@
             <div id="headerMessage" class="bold"></div>
         </div>
 
-        <div ng-controller="MainController"> 
+        <div ng-controller="MainController">
             
             <div id="leftBar">                
                 <div id="orgUnitTree">
@@ -130,7 +130,7 @@
                 <div id="listDiv" ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">                    
                     
                     <!-- show/hide grid column begins -->
-                    <div class="right">
+                    <div class="right" ng-show="dhis2Events.length">
                         <accordion>
                             <accordion-group>
                                 <accordion-heading>
@@ -163,6 +163,12 @@
                                 {{'empty_event_list'| translate}}
                             </p>
                         </div>
+                        
+                        <div ng-switch-when="0">
+                            <p>
+                                {{'empty_event_list'| translate}}
+                            </p>
+                        </div>
 
                         <div ng-switch-default>
 
@@ -186,24 +192,26 @@
                                                 class="max-column-width"                                                
                                                 ng-repeat="eventGridColumn in eventGridColumns">
                                                 
+                                                <!-- sort icon begins -->
                                                 <span ng-hide="eventGridColumn.showFilter" class="bold" ng-click="sortEventGrid(eventGridColumn)">
                                                     <i ng-show="sortHeader == eventGridColumn.id && !reverse" class="fa fa-sort-desc"></i>
                                                     <i ng-show="sortHeader == eventGridColumn.id && reverse" class="fa fa-sort-asc"></i>
                                                     {{eventGridColumn.name}}
                                                 </span>
+                                                <!-- sort icon ends -->
                                                 
-                                                <!-- Filter icon -->
+                                                <!-- filter icon begins -->
                                                 <span class='pull-right'>
                                                     <span ng-show="eventGridColumn.type !=='date'">
                                                         <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [filterText[eventGridColumn.id] == undefined || filterText[eventGridColumn.id] == '']"><i class="fa fa-search"></i></span></a>
                                                     </span>
                                                     <span ng-show="eventGridColumn.type ==='date'">
                                                         <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [(filterText[eventGridColumn.id].start == 'undefined' || filterText[eventGridColumn.id].start == '') && (filterText[eventGridColumn.id].end == 'undefined' || filterText[eventGridColumn.id].end == '')]"><i class="fa fa-search"></i></span></a>
-                                                    </span>
-                                                    
+                                                    </span>                                                    
                                                 </span>
+                                                <!-- filter icon ends -->
                                                 
-                                                <!-- Filter input field -->
+                                                <!-- filter input field begins -->
                                                 <div ng-show="eventGridColumn.showFilter">
                                                     <span ng-show="eventGridColumn.type !=='date'">
                                                         <input type="text" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid(eventGridColumn)">
@@ -219,6 +227,8 @@
                                                         </span>
                                                     </span>
                                                 </div>
+                                                <!-- filter input field ends -->
+                                                
                                             </th>
                                             <th></th>
                                         </tr>                        
@@ -308,7 +318,10 @@
                                                             <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
                                                         </div>
                                                     </div>
-                                                </ng-form>                                                
+                                                </ng-form>
+                                                <!--<span ng-show="(currentEvent.event == dhis2Event.event) && (($index +1 ) === eventGridColumns.length)">
+                                                    <a href ng-click="showEventList()" title="{{'close_editing'| translate}}"><span class='black'><i class="fa fa-times-circle-o fa-2x"></i></span></a>                                                    
+                                                </span>-->
                                             </td>
                                            <td>                                
                                                 <span ng-show="currentEvent.event == dhis2Event.event">
