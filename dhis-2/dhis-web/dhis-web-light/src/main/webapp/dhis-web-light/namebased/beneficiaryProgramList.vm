@@ -102,7 +102,7 @@
 		
 		#foreach($pav in $patientAttributeValues)
 			#if($pav.getValue())
-				<li><strong>$pav.getPatientAttribute().getName():</strong>  $pav.getValue()</li>
+				<li><strong>$pav.getAttribute().getName():</strong>  $pav.getValue()</li>
 			#end
 		#end
 					
