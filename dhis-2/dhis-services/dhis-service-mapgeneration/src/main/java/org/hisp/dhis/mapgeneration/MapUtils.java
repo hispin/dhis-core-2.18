@@ -59,7 +59,7 @@ public class MapUtils
     private static final int COLOR_RADIX = 16;
 
     public static final int DEFAULT_MAP_WIDTH = 500;
-    public static final int TITLE_HEIGHT = 22;
+    public static final int TITLE_HEIGHT = 20;
 
     /**
      * Linear interpolation of int.

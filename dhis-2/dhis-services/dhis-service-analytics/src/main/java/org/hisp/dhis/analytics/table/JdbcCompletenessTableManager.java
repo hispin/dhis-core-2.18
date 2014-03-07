@@ -160,7 +160,7 @@ public class JdbcCompletenessTableManager
             columns.add( col );
         }
         
-        for ( PeriodType periodType : PeriodType.getAvailablePeriodTypes().subList( 0, 7 ) )
+        for ( PeriodType periodType : PeriodType.getAvailablePeriodTypes() )
         {
             String column = quote( periodType.getName().toLowerCase() );
             String[] col = { column, "character varying(15)", "ps." + column };
