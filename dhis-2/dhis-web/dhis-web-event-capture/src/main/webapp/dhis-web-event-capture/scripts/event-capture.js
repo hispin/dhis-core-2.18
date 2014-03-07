@@ -122,7 +122,7 @@ $(document).ready(function()
             selection.responseReceived(); //notify angular 
         }
     });
-
+   
     dhis2.availability.startAvailabilityCheck();
     
 });
@@ -394,10 +394,7 @@ function StorageManager()
             if( !event.event){
                 event.event = this.generatePseudoUid();
                 event.src = 'local';
-            }
-            else{
-                event.src = 'remote';
-            }
+            }            
         }        
 
         var events = {};
@@ -413,7 +410,7 @@ function StorageManager()
         {
             localStorage[EVENT_VALUES] = JSON.stringify(events);
 
-            log('Successfully stored event');
+            log('Successfully stored event - locally');
         }
         catch (e)
         {
@@ -421,36 +418,6 @@ function StorageManager()
         }
     };
     
-    /**
-     * Updates an event
-     *
-     * @param event The event in json format.
-     * @param dataElement The data element whose value is updated.
-     */
-    this.updateForSingleValue = function(event)
-    {
-        var e = this.getEvent(event.event);
-        
-        var dataElement = event.dataValues[0].dataElement;
-        var value = event.dataValues[0].value;
-                        
-        var updated = false;
-        
-        _.each( _.values( e.dataValues ), function ( dv ) {    
-            if(dv.dataElement == dataElement){
-                dv.value = value;
-                updated = true;
-            }            
-        });
-        
-        if(!updated){
-            e.dataValues.push({dataElement: dataElement, value: value});
-        }
-        
-        this.saveEvent(e);
-        
-    };
-
     /**
      * Gets the value for the event with the given arguments, or null if it
      * does not exist.

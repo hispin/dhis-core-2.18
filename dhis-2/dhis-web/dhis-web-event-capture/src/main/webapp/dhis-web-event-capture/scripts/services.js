@@ -140,6 +140,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             dhis2.ec.storageManager.clearEvent(dhis2Event);
             var promise = $http.delete(DHIS2URL + '/api/events/' + dhis2Event.event).then(function(response){
                 return response.data;
+            }, function(){                
             });
             return promise;           
         },
@@ -153,12 +154,12 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             return promise;
         },
         
-        updateForSingleValue: function(dhis2Event){                
+        updateForSingleValue: function(singleValue, fullValue){                
             
-            dhis2.ec.storageManager.updateForSingleValue(dhis2Event);            
+            dhis2.ec.storageManager.saveEvent(fullValue);            
             
-            var promise = $http.put(DHIS2URL + '/api/events/' + dhis2Event.event + '/' + dhis2Event.dataValues[0].dataElement, dhis2Event ).then(function(response){
-                dhis2.ec.storageManager.clearEvent(dhis2Event);
+            var promise = $http.put(DHIS2URL + '/api/events/' + singleValue.event + '/' + singleValue.dataValues[0].dataElement, singleValue ).then(function(response){
+                dhis2.ec.storageManager.clearEvent(fullValue);
                 return response.data;
             }, function(){                
             });
@@ -269,6 +270,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 
     }])
 
+/* Context menu for grid*/
 .service('ContextMenuSelectedItem', function(){
     this.selectedItem = '';
     
@@ -281,6 +283,9 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
     };
 })
 
+/* Translation service - gets logged in user profile for the server, 
+ * and apply user's locale to translation
+ */
 .service('TranslationService', function($translate, storage){
     
     this.translate = function(){
