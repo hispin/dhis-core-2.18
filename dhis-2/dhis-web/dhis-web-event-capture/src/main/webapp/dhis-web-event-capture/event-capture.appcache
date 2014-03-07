@@ -19,6 +19,13 @@ lib/jquery/css/ui-lightness/jquery-ui-1.9.2.custom.css
 ../dhis-web-commons/fonts/LiberationSans-Bold-webfont.ttf
 ../dhis-web-commons/fonts/LiberationSans-Bold-webfont.svg
 
+../dhis-web-commons/font-awesome/fonts/fontawesome-webfont.eot
+../dhis-web-commons/font-awesome/fonts/fontawesome-webfont.svg
+../dhis-web-commons/font-awesome/fonts/fontawesome-webfont.ttf
+../dhis-web-commons/font-awesome/fonts/fontawesome-webfont.woff
+../dhis-web-commons/font-awesome/fonts/FontAwesome.otf
+
+
 styles/style.css
 
 lib/bootstrap/js/bootstrap.min.js
