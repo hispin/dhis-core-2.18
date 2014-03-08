@@ -131,7 +131,7 @@ public class WebUtils
         generateLinks( object, true );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static void generateLinks( Object object, boolean deep )
     {
         if ( object == null )
@@ -185,7 +185,7 @@ public class WebUtils
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static void putInMap( Map<String, Map> map, String path )
     {
         for ( String p : path.split( "\\." ) )
@@ -301,7 +301,7 @@ public class WebUtils
         return output;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static Map<String, Object> buildObjectOutput( Object object, Map<String, Map> fieldMap )
     {
         if ( object == null )
@@ -379,7 +379,7 @@ public class WebUtils
         return getIdentifiableObjectCollectionProperties( object, fields );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static List<Map<String, Object>> getIdentifiableObjectCollectionProperties( Object object, List<String> fields )
     {
         List<Map<String, Object>> output = Lists.newArrayList();
@@ -542,6 +542,7 @@ public class WebUtils
         static
         {
             register( "eq", EqOp.class );
+            register( "neq", NeqOp.class );
             register( "like", LikeOp.class );
         }
 
@@ -588,7 +589,7 @@ public class WebUtils
             this.left = left;
         }
 
-        public Object getLeft()
+        public String getLeft()
         {
             return left;
         }
@@ -621,6 +622,16 @@ public class WebUtils
                 {
                 }
             }
+            else if ( klass.isAssignableFrom( Float.class ) )
+            {
+                try
+                {
+                    return (T) Float.valueOf( left );
+                }
+                catch ( Exception ignored )
+                {
+                }
+            }
 
             return null;
         }
@@ -643,7 +654,7 @@ public class WebUtils
                 String s1 = getLeft( String.class );
                 String s2 = (String) right;
 
-                return (s1 != null && s1.equals( s2 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+                return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
             else if ( right.getClass().isAssignableFrom( Boolean.class ) )
             {
@@ -658,6 +669,29 @@ public class WebUtils
                 Integer s2 = (Integer) right;
 
                 return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+
+            return OpStatus.IGNORE;
+        }
+    }
+
+    public static class NeqOp extends Op
+    {
+        private Op op = OpFactory.create( "eq" );
+
+        @Override
+        public OpStatus evaluate( Object right )
+        {
+            op.setLeft( getLeft() );
+            OpStatus status = op.evaluate( right );
+
+            // switch status from EqOp
+            switch ( status )
+            {
+                case INCLUDE:
+                    return OpStatus.EXCLUDE;
+                case EXCLUDE:
+                    return OpStatus.INCLUDE;
             }
 
             return OpStatus.IGNORE;
