@@ -544,6 +544,10 @@ public class WebUtils
             register( "eq", EqOp.class );
             register( "neq", NeqOp.class );
             register( "like", LikeOp.class );
+            register( "gt", GtOp.class );
+            register( "gte", GteOp.class );
+            register( "lt", LtOp.class );
+            register( "lte", LteOp.class );
         }
 
         public static void register( String type, Class<? extends Op> opClass )
@@ -714,6 +718,94 @@ public class WebUtils
                 String s2 = (String) right;
 
                 return (s1 != null && s2.toLowerCase().contains( s1.toLowerCase() )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+
+            return OpStatus.IGNORE;
+        }
+    }
+
+    public static class GtOp extends Op
+    {
+        @Override
+        public OpStatus evaluate( Object right )
+        {
+            if ( getLeft() == null || right == null )
+            {
+                return OpStatus.IGNORE;
+            }
+
+            if ( right.getClass().isAssignableFrom( Integer.class ) )
+            {
+                Integer s1 = getLeft( Integer.class );
+                Integer s2 = (Integer) right;
+
+                return (s1 != null && s2 > s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+
+            return OpStatus.IGNORE;
+        }
+    }
+
+    public static class GteOp extends Op
+    {
+        @Override
+        public OpStatus evaluate( Object right )
+        {
+            if ( getLeft() == null || right == null )
+            {
+                return OpStatus.IGNORE;
+            }
+
+            if ( right.getClass().isAssignableFrom( Integer.class ) )
+            {
+                Integer s1 = getLeft( Integer.class );
+                Integer s2 = (Integer) right;
+
+                return (s1 != null && s2 >= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+
+            return OpStatus.IGNORE;
+        }
+    }
+
+    public static class LtOp extends Op
+    {
+        @Override
+        public OpStatus evaluate( Object right )
+        {
+            if ( getLeft() == null || right == null )
+            {
+                return OpStatus.IGNORE;
+            }
+
+            if ( right.getClass().isAssignableFrom( Integer.class ) )
+            {
+                Integer s1 = getLeft( Integer.class );
+                Integer s2 = (Integer) right;
+
+                return (s1 != null && s2 < s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+
+            return OpStatus.IGNORE;
+        }
+    }
+
+    public static class LteOp extends Op
+    {
+        @Override
+        public OpStatus evaluate( Object right )
+        {
+            if ( getLeft() == null || right == null )
+            {
+                return OpStatus.IGNORE;
+            }
+
+            if ( right.getClass().isAssignableFrom( Integer.class ) )
+            {
+                Integer s1 = getLeft( Integer.class );
+                Integer s2 = (Integer) right;
+
+                return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
 
             return OpStatus.IGNORE;
