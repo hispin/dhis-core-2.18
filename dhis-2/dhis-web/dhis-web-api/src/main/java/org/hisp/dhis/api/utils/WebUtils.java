@@ -674,6 +674,13 @@ public class WebUtils
 
                 return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
+            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            {
+                Float s1 = getLeft( Float.class );
+                Float s2 = (Float) right;
+
+                return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
 
             return OpStatus.IGNORE;
         }
@@ -741,6 +748,13 @@ public class WebUtils
 
                 return (s1 != null && s2 > s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
+            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            {
+                Float s1 = getLeft( Float.class );
+                Float s2 = (Float) right;
+
+                return (s1 != null && s2 > s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
 
             return OpStatus.IGNORE;
         }
@@ -760,6 +774,13 @@ public class WebUtils
             {
                 Integer s1 = getLeft( Integer.class );
                 Integer s2 = (Integer) right;
+
+                return (s1 != null && s2 >= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            {
+                Float s1 = getLeft( Float.class );
+                Float s2 = (Float) right;
 
                 return (s1 != null && s2 >= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
@@ -785,6 +806,13 @@ public class WebUtils
 
                 return (s1 != null && s2 < s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
+            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            {
+                Float s1 = getLeft( Float.class );
+                Float s2 = (Float) right;
+
+                return (s1 != null && s2 < s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
 
             return OpStatus.IGNORE;
         }
@@ -804,6 +832,13 @@ public class WebUtils
             {
                 Integer s1 = getLeft( Integer.class );
                 Integer s2 = (Integer) right;
+
+                return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            {
+                Float s1 = getLeft( Float.class );
+                Float s2 = (Float) right;
 
                 return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
