@@ -260,9 +260,9 @@
                                                                    ng-blur="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
                                                                    ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} 
                                                                    name="foo" 
-                                                                   style="width:98%;" 
-                                                                   ng-class="{'input-error': (outerForm.submitted && innerFormGrid.foo.$invalid), 'input-success': (outerForm.submitted && innerFormGrid.foo.$valid)}"
-                                                                   />
+                                                                   style="width:98%;"
+                                                                   ng-class="{true: 'input-error', false: 'input-success'} [outerForm.submitted]"/>
+                                                                   <!--ng-class="{'input-error': (outerForm.submitted && innerFormGrid.foo.$invalid), 'input-success': (outerForm.submitted && innerFormGrid.foo.$valid)}/>"-->                                                                   
                                                             <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
                                                         </div>
                                                         <div ng-switch-when="string">                                        
@@ -271,6 +271,7 @@
                                                                        ng-model="dhis2Event[eventGridColumn.id]" 
                                                                        ng-blur="updateEventDataValue(dhis2Event, eventGridColumn.id)" 
                                                                        typeahead="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                                                       typeahead-open-on-focus
                                                                        ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} 
                                                                        name="foo" 
                                                                        style="width:98%;"
@@ -365,6 +366,7 @@
                                                                    ng-model="currentEvent[eventGridColumn.id]" 
                                                                    ng-blur="updateEventDataValue(currentEvent, eventGridColumn.id)" 
                                                                    typeahead="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                                                   typeahead-open-on-focus
                                                                    ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} 
                                                                    name="foo" 
                                                                    style="width:98%;"/>                                            
@@ -464,6 +466,7 @@
                                                             <input type="text" 
                                                                    ng-model="currentEvent[eventGridColumn.id]" 
                                                                    typeahead="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                                                   typeahead-open-on-focus
                                                                    ng-required={{programStageDataElements[eventGridColumn.id].compulsory}} 
                                                                    name="foo" 
                                                                    style="width:98%;">                                            

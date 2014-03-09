@@ -183,6 +183,18 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     };
 })
 
+.directive('typeaheadOpenOnFocus', function () {
+  return {
+    require: ['typeahead', 'ngModel'],
+    link: function (scope, element, attr, ctrls) {        
+      element.bind('focus', function () {
+        ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
+        //scope.$apply();
+      });
+    }
+  };
+})
+
 .directive('paginator', function factory() {
     return {
         restrict: 'E',

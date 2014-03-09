@@ -316,16 +316,18 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
        
     $scope.updateEventDataValue = function(currentEvent, dataElement){
         
+        //get new and old values
+        var newValue = currentEvent[dataElement];
+        var oldValue = $scope.currentEventOrginialValue[dataElement];
+        
         //check for form validity
         $scope.outerForm.submitted = true;        
         if( $scope.outerForm.$invalid ){
             console.log('the form is invalid');
+            currentEvent[dataElement] = oldValue;
             return false;
-        }
-       
-        var newValue = currentEvent[dataElement];
-        var oldValue = $scope.currentEventOrginialValue[dataElement];
-        
+        }      
+                
         if( newValue !== oldValue ){                     
             
             var updatedSingleValueEvent = {event: currentEvent.event, dataValues: [{value: newValue, dataElement: dataElement}]};
