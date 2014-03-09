@@ -49,6 +49,8 @@ import java.util.Map;
 import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
 
 /**
+ * TODO too many inner classes, need to be split up
+ *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class WebUtils
@@ -442,7 +444,7 @@ public class WebUtils
             return Lists.newArrayList();
         }
 
-        Map<String, Op> parsed = parseFilters( filters );
+        Map<String, Filter> parsed = parseFilters( filters );
 
         List<T> list = Lists.newArrayList();
 
@@ -457,7 +459,7 @@ public class WebUtils
         return list;
     }
 
-    private static <T extends IdentifiableObject> boolean evaluateWithFilters( T object, Map<String, Op> filters )
+    private static <T extends IdentifiableObject> boolean evaluateWithFilters( T object, Map<String, Filter> filters )
     {
         Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
 
@@ -471,11 +473,28 @@ public class WebUtils
             ReflectionUtils.PropertyDescriptor descriptor = classMap.get( field );
 
             Object o = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
-            Op op = filters.get( field );
 
-            switch ( op.evaluate( o ) )
+            Filter filter = filters.get( field );
+
+            // filter through every operator treating multiple of same operator as OR
+            for ( String operator : filter.getFilters().keySet() )
             {
-                case EXCLUDE:
+                boolean include = false;
+
+                List<Op> ops = filter.getFilters().get( operator );
+
+                for ( Op op : ops )
+                {
+                    switch ( op.evaluate( o ) )
+                    {
+                        case INCLUDE:
+                        {
+                            include = true;
+                        }
+                    }
+                }
+
+                if ( !include )
                 {
                     return false;
                 }
@@ -486,9 +505,9 @@ public class WebUtils
     }
 
     @SuppressWarnings( "unchecked" )
-    private static Map<String, Op> parseFilters( List<String> filters )
+    private static Map<String, Filter> parseFilters( List<String> filters )
     {
-        Map<String, Op> output = Maps.newHashMap();
+        Map<String, Filter> parsed = Maps.newHashMap();
 
         for ( String filter : filters )
         {
@@ -499,30 +518,91 @@ public class WebUtils
                 continue;
             }
 
-            if ( OpFactory.canCreate( split[1] ) )
+            if ( split[0].contains( "." ) )
             {
-                Op op = OpFactory.create( split[1] );
 
-                if ( op.wantLeft() )
-                {
-                    if ( split.length < 3 )
-                    {
-                        System.err.println( "Op wanted left side, but none was giving. Skipping Op: " + split[1] );
-                        continue;
-                    }
-
-                    op.setLeft( split[2] );
-                }
-
-                output.put( split[0], op );
             }
             else
             {
-                System.err.println( "Skipping invalid op: " + split[1] );
+                if ( !parsed.containsKey( split[0] ) )
+                {
+                    parsed.put( split[0], new Filter() );
+                }
+
+                Filter f = parsed.get( split[0] );
+
+                if ( OpFactory.canCreate( split[1] ) )
+                {
+                    Op op = OpFactory.create( split[1] );
+
+                    if ( op.wantLeft() )
+                    {
+                        if ( split.length < 3 )
+                        {
+                            continue;
+                        }
+
+                        op.setLeft( split[2] );
+                    }
+
+                    f.addFilter( split[1], op );
+                }
             }
         }
 
-        return output;
+        System.err.println( "parsed: " + parsed );
+
+        return parsed;
+    }
+
+    private static class Filter
+    {
+        private List<Filter> children = Lists.newArrayList();
+
+        private Map<String, List<Op>> filters = Maps.newHashMap();
+
+        private Filter()
+        {
+        }
+
+        public List<Filter> getChildren()
+        {
+            return children;
+        }
+
+        public void setChildren( List<Filter> children )
+        {
+            this.children = children;
+        }
+
+        public void addFilter( String opStr, Op op )
+        {
+            if ( !filters.containsKey( opStr ) )
+            {
+                filters.put( opStr, Lists.<Op>newArrayList() );
+            }
+
+            filters.get( opStr ).add( op );
+        }
+
+        public Map<String, List<Op>> getFilters()
+        {
+            return filters;
+        }
+
+        public void setFilters( Map<String, List<Op>> filters )
+        {
+            this.filters = filters;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "Filter{" +
+                "children=" + children +
+                ", filters=" + filters +
+                '}';
+        }
     }
 
     private static enum OpStatus
