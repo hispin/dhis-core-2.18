@@ -444,7 +444,7 @@ public class WebUtils
             return Lists.newArrayList();
         }
 
-        Map<String, Filter> parsed = parseFilters( filters );
+        Filters parsed = parseFilters( filters );
 
         List<T> list = Lists.newArrayList();
 
@@ -459,11 +459,11 @@ public class WebUtils
         return list;
     }
 
-    private static <T extends IdentifiableObject> boolean evaluateWithFilters( T object, Map<String, Filter> filters )
+    private static <T extends IdentifiableObject> boolean evaluateWithFilters( T object, Filters filters )
     {
         Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
 
-        for ( String field : filters.keySet() )
+        for ( String field : filters.getFilters().keySet() )
         {
             if ( !classMap.containsKey( field ) )
             {
@@ -472,20 +472,20 @@ public class WebUtils
 
             ReflectionUtils.PropertyDescriptor descriptor = classMap.get( field );
 
-            Object o = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
+            Object value = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
 
-            Filter filter = filters.get( field );
+            FilterOps filterOps = (FilterOps) filters.getFilters().get( field );
 
             // filter through every operator treating multiple of same operator as OR
-            for ( String operator : filter.getFilters().keySet() )
+            for ( String operator : filterOps.getFilters().keySet() )
             {
                 boolean include = false;
 
-                List<Op> ops = filter.getFilters().get( operator );
+                List<Op> ops = filterOps.getFilters().get( operator );
 
                 for ( Op op : ops )
                 {
-                    switch ( op.evaluate( o ) )
+                    switch ( op.evaluate( value ) )
                     {
                         case INCLUDE:
                         {
@@ -505,9 +505,9 @@ public class WebUtils
     }
 
     @SuppressWarnings( "unchecked" )
-    private static Map<String, Filter> parseFilters( List<String> filters )
+    private static Filters parseFilters( List<String> filters )
     {
-        Map<String, Filter> parsed = Maps.newHashMap();
+        Filters parsed = new Filters();
 
         for ( String filter : filters )
         {
@@ -518,35 +518,13 @@ public class WebUtils
                 continue;
             }
 
-            if ( split[0].contains( "." ) )
+            if ( split.length >= 3 )
             {
-
+                parsed.addFilter( split[0], split[1], split[2] );
             }
             else
             {
-                if ( !parsed.containsKey( split[0] ) )
-                {
-                    parsed.put( split[0], new Filter() );
-                }
-
-                Filter f = parsed.get( split[0] );
-
-                if ( OpFactory.canCreate( split[1] ) )
-                {
-                    Op op = OpFactory.create( split[1] );
-
-                    if ( op.wantLeft() )
-                    {
-                        if ( split.length < 3 )
-                        {
-                            continue;
-                        }
-
-                        op.setLeft( split[2] );
-                    }
-
-                    f.addFilter( split[1], op );
-                }
+                parsed.addFilter( split[0], split[1], null );
             }
         }
 
@@ -555,24 +533,130 @@ public class WebUtils
         return parsed;
     }
 
-    private static class Filter
+    @SuppressWarnings( "unchecked" )
+    private static class Filters
     {
-        private List<Filter> children = Lists.newArrayList();
+        private Map<String, Object> filters = Maps.newHashMap();
 
+        private Filters()
+        {
+        }
+
+        public void addFilter( String path, String operator, String value )
+        {
+            FilterOps filterOps = createPath( path );
+
+            if ( filterOps == null )
+            {
+                return;
+            }
+
+            if ( OpFactory.canCreate( operator ) )
+            {
+                Op op = OpFactory.create( operator );
+
+                if ( op.wantLeft() )
+                {
+                    if ( value == null )
+                    {
+                        return;
+                    }
+
+                    op.setLeft( value );
+                }
+
+                filterOps.addFilter( operator, op );
+            }
+        }
+
+        private FilterOps createPath( String path )
+        {
+            if ( !path.contains( "." ) )
+            {
+                if ( !filters.containsKey( path ) )
+                {
+                    filters.put( path, new FilterOps() );
+                }
+
+                return (FilterOps) filters.get( path );
+            }
+
+            String[] split = path.split( "\\." );
+
+            Map<String, Object> c = filters;
+
+            for ( int i = 0; i < split.length; i++ )
+            {
+                boolean last = (i == (split.length - 1));
+
+                if ( c.containsKey( split[i] ) )
+                {
+                    if ( FilterOps.class.isInstance( c.get( split[i] ) ) )
+                    {
+                        if ( last )
+                        {
+                            return (FilterOps) c.get( split[i] );
+                        }
+                        else
+                        {
+                            FilterOps self = (FilterOps) c.get( split[i] );
+                            Map<String, Object> map = Maps.newHashMap();
+                            map.put( "__self__", self );
+
+                            c.put( split[i], map );
+                            c = map;
+                        }
+                    }
+                    else
+                    {
+                        c = (Map<String, Object>) c.get( split[i] );
+                    }
+                }
+                else
+                {
+                    if ( last )
+                    {
+                        FilterOps filterOps = new FilterOps();
+                        c.put( split[i], filterOps );
+                        return filterOps;
+                    }
+                    else
+                    {
+                        Map<String, Object> map = Maps.newHashMap();
+                        c.put( split[i], map );
+                        c = map;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public Map<String, Object> getFilters()
+        {
+            return filters;
+        }
+
+        public void setFilters( Map<String, Object> filters )
+        {
+            this.filters = filters;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "Filters{" +
+                "filters=" + filters +
+                '}';
+        }
+    }
+
+    private static class FilterOps
+    {
         private Map<String, List<Op>> filters = Maps.newHashMap();
 
-        private Filter()
+        private FilterOps()
         {
-        }
-
-        public List<Filter> getChildren()
-        {
-            return children;
-        }
-
-        public void setChildren( List<Filter> children )
-        {
-            this.children = children;
         }
 
         public void addFilter( String opStr, Op op )
@@ -598,10 +682,7 @@ public class WebUtils
         @Override
         public String toString()
         {
-            return "Filter{" +
-                "children=" + children +
-                ", filters=" + filters +
-                '}';
+            return filters.toString();
         }
     }
 
