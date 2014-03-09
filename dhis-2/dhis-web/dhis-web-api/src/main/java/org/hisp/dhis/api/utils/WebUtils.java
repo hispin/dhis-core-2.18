@@ -470,11 +470,6 @@ public class WebUtils
 
             ReflectionUtils.PropertyDescriptor descriptor = classMap.get( field );
 
-            if ( descriptor.isCollection() || descriptor.isIdentifiableObject() )
-            {
-                continue;
-            }
-
             Object o = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
             Op op = filters.get( field );
 
@@ -548,6 +543,9 @@ public class WebUtils
             register( "gte", GteOp.class );
             register( "lt", LtOp.class );
             register( "lte", LteOp.class );
+            register( "null", NullOp.class );
+            register( "empty", EmptyCollectionOp.class );
+            register( "size", SizeCollectionOp.class );
         }
 
         public static void register( String type, Class<? extends Op> opClass )
@@ -601,12 +599,12 @@ public class WebUtils
         @SuppressWarnings( "unchecked" )
         public <T> T getLeft( Class<?> klass )
         {
-            if ( left.getClass().isAssignableFrom( klass ) )
+            if ( klass.isInstance( left ) )
             {
                 return (T) left;
             }
 
-            if ( klass.isAssignableFrom( Boolean.class ) )
+            if ( Boolean.class.isAssignableFrom( klass ) )
             {
                 try
                 {
@@ -616,7 +614,7 @@ public class WebUtils
                 {
                 }
             }
-            else if ( klass.isAssignableFrom( Integer.class ) )
+            else if ( Integer.class.isAssignableFrom( klass ) )
             {
                 try
                 {
@@ -626,7 +624,7 @@ public class WebUtils
                 {
                 }
             }
-            else if ( klass.isAssignableFrom( Float.class ) )
+            else if ( Float.class.isAssignableFrom( klass ) )
             {
                 try
                 {
@@ -653,28 +651,28 @@ public class WebUtils
                 return OpStatus.IGNORE;
             }
 
-            if ( right.getClass().isAssignableFrom( String.class ) )
+            if ( String.class.isInstance( right ) )
             {
                 String s1 = getLeft( String.class );
                 String s2 = (String) right;
 
                 return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
-            else if ( right.getClass().isAssignableFrom( Boolean.class ) )
+            else if ( Boolean.class.isInstance( right ) )
             {
                 Boolean s1 = getLeft( Boolean.class );
                 Boolean s2 = (Boolean) right;
 
                 return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
-            else if ( right.getClass().isAssignableFrom( Integer.class ) )
+            else if ( Integer.class.isInstance( right ) )
             {
                 Integer s1 = getLeft( Integer.class );
                 Integer s2 = (Integer) right;
 
                 return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
-            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            else if ( Float.class.isInstance( right ) )
             {
                 Float s1 = getLeft( Float.class );
                 Float s2 = (Float) right;
@@ -719,7 +717,7 @@ public class WebUtils
                 return OpStatus.IGNORE;
             }
 
-            if ( right.getClass().isAssignableFrom( String.class ) )
+            if ( String.class.isInstance( right ) )
             {
                 String s1 = getLeft( String.class );
                 String s2 = (String) right;
@@ -741,14 +739,14 @@ public class WebUtils
                 return OpStatus.IGNORE;
             }
 
-            if ( right.getClass().isAssignableFrom( Integer.class ) )
+            if ( Integer.class.isInstance( right ) )
             {
                 Integer s1 = getLeft( Integer.class );
                 Integer s2 = (Integer) right;
 
                 return (s1 != null && s2 > s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
-            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            else if ( Float.class.isInstance( right ) )
             {
                 Float s1 = getLeft( Float.class );
                 Float s2 = (Float) right;
@@ -770,14 +768,14 @@ public class WebUtils
                 return OpStatus.IGNORE;
             }
 
-            if ( right.getClass().isAssignableFrom( Integer.class ) )
+            if ( Integer.class.isInstance( right ) )
             {
                 Integer s1 = getLeft( Integer.class );
                 Integer s2 = (Integer) right;
 
                 return (s1 != null && s2 >= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
-            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            else if ( Float.class.isInstance( right ) )
             {
                 Float s1 = getLeft( Float.class );
                 Float s2 = (Float) right;
@@ -799,14 +797,14 @@ public class WebUtils
                 return OpStatus.IGNORE;
             }
 
-            if ( right.getClass().isAssignableFrom( Integer.class ) )
+            if ( Integer.class.isInstance( right ) )
             {
                 Integer s1 = getLeft( Integer.class );
                 Integer s2 = (Integer) right;
 
                 return (s1 != null && s2 < s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
-            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            else if ( Float.class.isInstance( right ) )
             {
                 Float s1 = getLeft( Float.class );
                 Float s2 = (Float) right;
@@ -828,19 +826,108 @@ public class WebUtils
                 return OpStatus.IGNORE;
             }
 
-            if ( right.getClass().isAssignableFrom( Integer.class ) )
+            if ( Integer.class.isInstance( right ) )
             {
                 Integer s1 = getLeft( Integer.class );
                 Integer s2 = (Integer) right;
 
                 return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
-            else if ( right.getClass().isAssignableFrom( Float.class ) )
+            else if ( Float.class.isInstance( right ) )
             {
                 Float s1 = getLeft( Float.class );
                 Float s2 = (Float) right;
 
                 return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+
+            return OpStatus.IGNORE;
+        }
+    }
+
+    public static class NullOp extends Op
+    {
+        @Override
+        public boolean wantLeft()
+        {
+            return false;
+        }
+
+        @Override
+        public OpStatus evaluate( Object right )
+        {
+            if ( right == null )
+            {
+                return OpStatus.INCLUDE;
+            }
+
+            return OpStatus.IGNORE;
+        }
+    }
+
+    public static class EmptyCollectionOp extends Op
+    {
+        @Override
+        public boolean wantLeft()
+        {
+            return false;
+        }
+
+        @Override
+        public OpStatus evaluate( Object right )
+        {
+            if ( right == null )
+            {
+                // TODO: ignore or include here?
+                return OpStatus.IGNORE;
+            }
+
+            if ( Collection.class.isInstance( right ) )
+            {
+                Collection<?> c = (Collection<?>) right;
+
+                if ( c.isEmpty() )
+                {
+                    return OpStatus.INCLUDE;
+                }
+                else
+                {
+                    return OpStatus.EXCLUDE;
+                }
+            }
+
+            return OpStatus.IGNORE;
+        }
+    }
+
+    public static class SizeCollectionOp extends Op
+    {
+        @Override
+        public OpStatus evaluate( Object right )
+        {
+            if ( getLeft() == null || right == null )
+            {
+                return OpStatus.IGNORE;
+            }
+
+            if ( Collection.class.isInstance( right ) )
+            {
+                Collection<?> c = (Collection<?>) right;
+                Integer size = getLeft( Integer.class );
+
+                if ( size == null )
+                {
+                    return OpStatus.IGNORE;
+                }
+
+                if ( c.size() == size )
+                {
+                    return OpStatus.INCLUDE;
+                }
+                else
+                {
+                    return OpStatus.EXCLUDE;
+                }
             }
 
             return OpStatus.IGNORE;
