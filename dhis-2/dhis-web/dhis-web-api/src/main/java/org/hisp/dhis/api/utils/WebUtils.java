@@ -545,7 +545,6 @@ public class WebUtils
             register( "lte", LteOp.class );
             register( "null", NullOp.class );
             register( "empty", EmptyCollectionOp.class );
-            register( "size", SizeCollectionOp.class );
         }
 
         public static void register( String type, Class<? extends Op> opClass )
@@ -679,6 +678,20 @@ public class WebUtils
 
                 return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
+            else if ( Collection.class.isInstance( right ) )
+            {
+                Collection<?> collection = (Collection<?>) right;
+                Integer size = getLeft( Integer.class );
+
+                if ( size != null && collection.size() == size )
+                {
+                    return OpStatus.INCLUDE;
+                }
+                else
+                {
+                    return OpStatus.EXCLUDE;
+                }
+            }
 
             return OpStatus.IGNORE;
         }
@@ -753,6 +766,20 @@ public class WebUtils
 
                 return (s1 != null && s2 > s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
+            else if ( Collection.class.isInstance( right ) )
+            {
+                Collection<?> collection = (Collection<?>) right;
+                Integer size = getLeft( Integer.class );
+
+                if ( size != null && collection.size() > size )
+                {
+                    return OpStatus.INCLUDE;
+                }
+                else
+                {
+                    return OpStatus.EXCLUDE;
+                }
+            }
 
             return OpStatus.IGNORE;
         }
@@ -781,6 +808,20 @@ public class WebUtils
                 Float s2 = (Float) right;
 
                 return (s1 != null && s2 >= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+            else if ( Collection.class.isInstance( right ) )
+            {
+                Collection<?> collection = (Collection<?>) right;
+                Integer size = getLeft( Integer.class );
+
+                if ( size != null && collection.size() >= size )
+                {
+                    return OpStatus.INCLUDE;
+                }
+                else
+                {
+                    return OpStatus.EXCLUDE;
+                }
             }
 
             return OpStatus.IGNORE;
@@ -811,6 +852,20 @@ public class WebUtils
 
                 return (s1 != null && s2 < s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
             }
+            else if ( Collection.class.isInstance( right ) )
+            {
+                Collection<?> collection = (Collection<?>) right;
+                Integer size = getLeft( Integer.class );
+
+                if ( size != null && collection.size() < size )
+                {
+                    return OpStatus.INCLUDE;
+                }
+                else
+                {
+                    return OpStatus.EXCLUDE;
+                }
+            }
 
             return OpStatus.IGNORE;
         }
@@ -839,6 +894,20 @@ public class WebUtils
                 Float s2 = (Float) right;
 
                 return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            }
+            else if ( Collection.class.isInstance( right ) )
+            {
+                Collection<?> collection = (Collection<?>) right;
+                Integer size = getLeft( Integer.class );
+
+                if ( size != null && collection.size() <= size )
+                {
+                    return OpStatus.INCLUDE;
+                }
+                else
+                {
+                    return OpStatus.EXCLUDE;
+                }
             }
 
             return OpStatus.IGNORE;
@@ -887,40 +956,6 @@ public class WebUtils
                 Collection<?> c = (Collection<?>) right;
 
                 if ( c.isEmpty() )
-                {
-                    return OpStatus.INCLUDE;
-                }
-                else
-                {
-                    return OpStatus.EXCLUDE;
-                }
-            }
-
-            return OpStatus.IGNORE;
-        }
-    }
-
-    public static class SizeCollectionOp extends Op
-    {
-        @Override
-        public OpStatus evaluate( Object right )
-        {
-            if ( getLeft() == null || right == null )
-            {
-                return OpStatus.IGNORE;
-            }
-
-            if ( Collection.class.isInstance( right ) )
-            {
-                Collection<?> c = (Collection<?>) right;
-                Integer size = getLeft( Integer.class );
-
-                if ( size == null )
-                {
-                    return OpStatus.IGNORE;
-                }
-
-                if ( c.size() == size )
                 {
                     return OpStatus.INCLUDE;
                 }
