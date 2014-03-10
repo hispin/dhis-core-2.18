@@ -126,6 +126,11 @@ public class QueryItem
         return item.getUid();
     }
     
+    public String getTypeAsString()
+    {
+        return isNumeric() ? Double.class.getName() : String.class.getName();
+    }
+    
     @Override
     public String toString()
     {
