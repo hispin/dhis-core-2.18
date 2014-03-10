@@ -85,7 +85,7 @@ public class TrackedEntityInstanceReminder
     public static final int MESSAGE_TYPE_DHIS_MESSAGE = 2;
 
     public static final int MESSAGE_TYPE_BOTH = 3;
-
+    
     private Integer daysAllowedSendMessage;
 
     private String templateMessage;

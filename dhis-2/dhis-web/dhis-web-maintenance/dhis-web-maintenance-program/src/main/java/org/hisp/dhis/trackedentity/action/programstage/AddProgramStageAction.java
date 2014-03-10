@@ -360,6 +360,7 @@ public class AddProgramStageAction
             TrackedEntityInstanceReminder reminder = new TrackedEntityInstanceReminder( "", daysAllowedSendMessages.get( i ),
                 templateMessages.get( i ) );
             reminder.setDateToCompare( TrackedEntityInstanceReminder.DUE_DATE_TO_COMPARE );
+            reminder.setName(name + " " + i);
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
             reminder.setMessageType( messageType.get( i ) );

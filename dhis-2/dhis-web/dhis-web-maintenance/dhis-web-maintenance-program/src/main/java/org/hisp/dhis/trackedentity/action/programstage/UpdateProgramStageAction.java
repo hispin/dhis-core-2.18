@@ -298,7 +298,7 @@ public class UpdateProgramStageAction
     {
         this.reportDateToUse = reportDateToUse;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -349,11 +349,13 @@ public class UpdateProgramStageAction
         programStage.setCaptureCoordinates( captureCoordinates );
 
         // SMS Reminder
+        programStage.getReminders().clear();
         Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
         for ( int i = 0; i < this.daysAllowedSendMessages.size(); i++ )
         {
             TrackedEntityInstanceReminder reminder = new TrackedEntityInstanceReminder( "", daysAllowedSendMessages.get( i ),
                 templateMessages.get( i ) );
+            reminder.setName(name + " " + i);
             reminder.setDateToCompare( TrackedEntityInstanceReminder.DUE_DATE_TO_COMPARE );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
