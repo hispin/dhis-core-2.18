@@ -459,6 +459,7 @@ public class WebUtils
         return list;
     }
 
+    @SuppressWarnings( "unchecked" )
     private static <T extends IdentifiableObject> boolean evaluateWithFilters( T object, Filters filters )
     {
         Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
@@ -467,6 +468,7 @@ public class WebUtils
         {
             if ( !classMap.containsKey( field ) )
             {
+                System.err.println( "Skipping non-existent field: " + field );
                 continue;
             }
 
@@ -474,34 +476,87 @@ public class WebUtils
 
             Object value = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
 
-            FilterOps filterOps = (FilterOps) filters.getFilters().get( field );
+            Object filter = filters.getFilters().get( field );
 
-            // filter through every operator treating multiple of same operator as OR
-            for ( String operator : filterOps.getFilters().keySet() )
+            if ( FilterOps.class.isInstance( filter ) )
             {
-                boolean include = false;
-
-                List<Op> ops = filterOps.getFilters().get( operator );
-
-                for ( Op op : ops )
-                {
-                    switch ( op.evaluate( value ) )
-                    {
-                        case INCLUDE:
-                        {
-                            include = true;
-                        }
-                    }
-                }
-
-                if ( !include )
+                if ( evaluateFilterOps( value, (FilterOps) filter ) )
                 {
                     return false;
+                }
+            }
+            else
+            {
+                Map<String, Object> map = (Map<String, Object>) filters.getFilters().get( field );
+                Filters f = new Filters();
+                f.setFilters( map );
+
+                if ( map.containsKey( "__self__" ) )
+                {
+                    if ( evaluateFilterOps( value, (FilterOps) map.get( "__self__" ) ) )
+                    {
+                        return false;
+                    }
+
+                    map.remove( "__self__" );
+                }
+
+                if ( descriptor.isIdentifiableObject() && !descriptor.isCollection() )
+                {
+                    if ( !evaluateWithFilters( (IdentifiableObject) value, f ) )
+                    {
+                        return false;
+                    }
+                }
+                else if ( descriptor.isIdentifiableObject() && descriptor.isCollection() )
+                {
+                    Collection<?> idObjectCollection = (Collection<?>) value;
+
+                    if ( idObjectCollection.isEmpty() )
+                    {
+                        return false;
+                    }
+
+                    for ( Object idObject : idObjectCollection )
+                    {
+                        if ( !evaluateWithFilters( (IdentifiableObject) idObject, f ) )
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
         }
 
         return true;
+    }
+
+    private static boolean evaluateFilterOps( Object value, FilterOps filterOps )
+    {
+        // filter through every operator treating multiple of same operator as OR
+        for ( String operator : filterOps.getFilters().keySet() )
+        {
+            boolean include = false;
+
+            List<Op> ops = filterOps.getFilters().get( operator );
+
+            for ( Op op : ops )
+            {
+                switch ( op.evaluate( value ) )
+                {
+                    case INCLUDE:
+                    {
+                        include = true;
+                    }
+                }
+            }
+
+            if ( !include )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -527,8 +582,6 @@ public class WebUtils
                 parsed.addFilter( split[0], split[1], null );
             }
         }
-
-        System.err.println( "parsed: " + parsed );
 
         return parsed;
     }
