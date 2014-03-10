@@ -77,6 +77,13 @@ public class AppListAction
     {
         return appStoreUrl;
     }
+    
+    private boolean settingsValid;
+
+    public boolean isSettingsValid()
+    {
+        return settingsValid;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -91,6 +98,8 @@ public class AppListAction
         appBaseUrl = appManager.getAppBaseUrl();
 
         appStoreUrl = appManager.getAppStoreUrl();
+        
+        settingsValid = appManager.getAppFolderPath() != null && appBaseUrl != null;
         
         return SUCCESS;
     }

@@ -45,27 +45,6 @@ public interface AppManager
     final String DEFAULT_APP_STORE_URL = "http://appstore.dhis2.org";
 
     /**
-     * Gets the Base URL for accessing the apps
-     *
-     * @return the apps baseurl
-     */
-    String getAppBaseUrl();
-
-    /**
-     * Returns the full path to the folder where apps are extracted
-     *
-     * @return app folder path
-     */
-    String getAppFolderPath();
-
-    /**
-     * Returns the url of the app repository
-     *
-     * @return url of appstore
-     */
-    String getAppStoreUrl();
-
-    /**
      * Returns a list of all the installed apps at @see getAppFolderPath
      *
      * @return list of installed apps
@@ -102,6 +81,18 @@ public interface AppManager
     boolean deleteApp( String name );
 
     /**
+     * Reload list of apps.
+     */
+    void reloadApps();
+
+    /**
+     * Returns the full path to the folder where apps are extracted
+     *
+     * @return app folder path
+     */
+    String getAppFolderPath();
+
+    /**
      * Saves the folder in which apps will be expanded
      *
      * @param appFolderPath
@@ -109,11 +100,11 @@ public interface AppManager
     void setAppFolderPath( String appFolderPath );
 
     /**
-     * Saves the URL of the apps repository
+     * Gets the Base URL for accessing the apps
      *
-     * @param appStoreUrl
+     * @return the apps baseurl
      */
-    void setAppStoreUrl( String appStoreUrl );
+    String getAppBaseUrl();
 
     /**
      * Saves the base URL where apps are installed
@@ -123,7 +114,16 @@ public interface AppManager
     void setAppBaseUrl( String appBaseUrl );
 
     /**
-     * Reload list of apps.
+     * Returns the url of the app repository
+     *
+     * @return url of appstore
      */
-    void reloadApps();
+    String getAppStoreUrl();
+
+    /**
+     * Saves the URL of the apps repository
+     *
+     * @param appStoreUrl
+     */
+    void setAppStoreUrl( String appStoreUrl );
 }
