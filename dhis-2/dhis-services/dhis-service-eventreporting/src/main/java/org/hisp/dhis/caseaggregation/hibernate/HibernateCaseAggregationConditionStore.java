@@ -89,11 +89,15 @@ public class HibernateCaseAggregationConditionStore
     implements CaseAggregationConditionStore
 {
     private static final String IS_NULL = "is null";
+
     private static final String IN_CONDITION_GET_ALL = "*";
+
     private static final String IN_CONDITION_START_SIGN = "@";
+
     private static final String IN_CONDITION_END_SIGN = "#";
+
     private static final String IN_CONDITION_COUNT_X_TIMES = "COUNT";
-    
+
     public static final String STORED_BY_DHIS_SYSTEM = "DHIS-System";
 
     // -------------------------------------------------------------------------
@@ -260,12 +264,13 @@ public class HibernateCaseAggregationConditionStore
         Collection<Integer> orgunitIds, Period period )
     {
         String sql = "SELECT '" + aggregateDeId + "' as dataelementid, '" + optionComboId
-            + "' as categoryoptioncomboid, ou.organisationunitid as sourceid, '" + period.getId() + "' as periodid,'"
+            + "' as categoryoptioncomboid, '" + optionComboId
+            + "' as attributeoptioncomboid, ou.organisationunitid as sourceid, '" + period.getId() + "' as periodid,'"
             + CaseAggregationCondition.AUTO_STORED_BY + "' as comment, ";
 
         if ( isInsert )
         {
-            sql = "INSERT INTO datavalue (dataelementid, categoryoptioncomboid, sourceid, periodid, comment, value) "
+            sql = "INSERT INTO datavalue (dataelementid, categoryoptioncomboid, attributeoptioncomboid, sourceid, periodid, comment, value) "
                 + sql;
         }
         else
@@ -297,7 +302,7 @@ public class HibernateCaseAggregationConditionStore
                 sql += "FROM ";
                 boolean hasDataelement = hasDataelementCriteria( caseExpression );
                 boolean hasEntityInstance = hasEntityInstanceCriteria( caseExpression );
-                
+
                 if ( hasEntityInstance && hasDataelement )
                 {
                     sql += " programinstance as pi ";
@@ -350,7 +355,7 @@ public class HibernateCaseAggregationConditionStore
         }
 
         sql = sql.replaceAll( "COMBINE", "" );
-        
+
         return sql;
     }
 
@@ -635,25 +640,26 @@ public class HibernateCaseAggregationConditionStore
     }
 
     /**
-     * Return standard SQL of a dynamic tracked-entity-attribute expression. E.g [CA:1]
-     * OR [CA:1.age]
+     * Return standard SQL of a dynamic tracked-entity-attribute expression. E.g
+     * [CA:1] OR [CA:1.age]
      * 
      */
-    private String getConditionForTrackedEntityAttribute( String attributeId, Collection<Integer> orgunitIds, boolean isExist )
+    private String getConditionForTrackedEntityAttribute( String attributeId, Collection<Integer> orgunitIds,
+        boolean isExist )
     {
-        String sql = "  SELECT * FROM trackedentityattributevalue _pav " + " WHERE _pav.trackedentityinstanceid=pi.trackedentityinstanceid ";
+        String sql = "  SELECT * FROM trackedentityattributevalue _pav "
+            + " WHERE _pav.trackedentityinstanceid=pi.trackedentityinstanceid ";
 
         if ( attributeId.split( SEPARATOR_ID ).length == 2 )
         {
             attributeId = attributeId.split( SEPARATOR_ID )[0];
-            sql += " AND _pav.trackedentityattributeid=" + attributeId
-                + " AND DATE(now()) - DATE( _pav.value ) ";
+            sql += " AND _pav.trackedentityattributeid=" + attributeId + " AND DATE(now()) - DATE( _pav.value ) ";
         }
         else
         {
             sql += " AND _pav.trackedentityattributeid=" + attributeId + " AND _pav.value ";
         }
-        
+
         if ( isExist )
         {
             sql = " EXISTS ( " + sql;
@@ -671,8 +677,8 @@ public class HibernateCaseAggregationConditionStore
      * [PC:executionDate]
      * 
      */
-    private String getConditionForTrackedEntityProgramStageProperty( String propertyName, String operator, String startDate,
-        String endDate )
+    private String getConditionForTrackedEntityProgramStageProperty( String propertyName, String operator,
+        String startDate, String endDate )
     {
         String sql = " EXISTS ( SELECT _psi.programstageinstanceid from programstageinstance _psi "
             + "WHERE _psi.programstageinstanceid=psi.programstageinstanceid AND ( _psi.executionDate BETWEEN '"
@@ -714,9 +720,7 @@ public class HibernateCaseAggregationConditionStore
             + programId
             + " AND _p.organisationunitid in ("
             + TextUtils.getCommaDelimitedString( orgunitIds )
-            + ") AND _pi.enrollmentdate >= '"
-            + startDate
-            + "' AND _pi.enrollmentdate <= '" + endDate + "' ";
+            + ") AND _pi.enrollmentdate >= '" + startDate + "' AND _pi.enrollmentdate <= '" + endDate + "' ";
 
         return sql;
     }
@@ -851,8 +855,8 @@ public class HibernateCaseAggregationConditionStore
     }
 
     /**
-     * Return the Ids of organisation units which entity instances registered or events
-     * happened.
+     * Return the Ids of organisation units which entity instances registered or
+     * events happened.
      * 
      */
     private Collection<Integer> getServiceOrgunit()
