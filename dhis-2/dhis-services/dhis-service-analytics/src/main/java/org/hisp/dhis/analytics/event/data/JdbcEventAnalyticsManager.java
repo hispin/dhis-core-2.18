@@ -321,7 +321,7 @@ public class JdbcEventAnalyticsManager
             sql += statementBuilder.columnQuote( dimension.getDimensionName() ) + ",";
         }
         
-        for ( QueryItem queryItem : params.getItems() )
+        for ( QueryItem queryItem : params.getUniqueItems() )
         {
             IdentifiableObject item = queryItem.getItem();
             

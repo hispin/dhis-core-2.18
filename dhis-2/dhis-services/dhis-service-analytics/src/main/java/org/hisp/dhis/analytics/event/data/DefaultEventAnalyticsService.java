@@ -146,7 +146,7 @@ public class DefaultEventAnalyticsService
             grid.addHeader( new GridHeader( dimension.getDimension(), dimension.getDisplayName() ) );
         }
 
-        for ( QueryItem item : params.getItems() )
+        for ( QueryItem item : params.getUniqueItems() )
         {
             grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName(), item.getTypeAsString() ) );
         }
@@ -209,7 +209,7 @@ public class DefaultEventAnalyticsService
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT_CODE, "Organisation unit code" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT, "Organisation unit", String.class.getName(), true, false ) );
 
-        for ( QueryItem item : params.getItems() )
+        for ( QueryItem item : params.getUniqueItems() )
         {
             grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName(), item.getTypeAsString() ) );
         }
