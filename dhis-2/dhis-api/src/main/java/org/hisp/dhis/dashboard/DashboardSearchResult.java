@@ -38,7 +38,6 @@ import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
 import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -62,8 +61,6 @@ public class DashboardSearchResult
 
     private List<Document> resources = new ArrayList<Document>();
     
-    private List<TrackedEntityTabularReport> trackedEntityTabularReports = new ArrayList<TrackedEntityTabularReport>();
-
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -86,7 +83,6 @@ public class DashboardSearchResult
         results += reportTables.size();
         results += reports.size();
         results += resources.size();
-        results += trackedEntityTabularReports.size();
         return results;
     }
 
@@ -126,13 +122,6 @@ public class DashboardSearchResult
         return resources.size();
     }  
     
-    @JsonProperty
-    public int getTrackedEntityTabularReportCount()
-    {
-        return trackedEntityTabularReports.size();
-    }    
-
-
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -219,19 +208,5 @@ public class DashboardSearchResult
     public void setResources( List<Document> resources )
     {
         this.resources = resources;
-    }
-
-    @JsonProperty( value = "tabularReports" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JacksonXmlElementWrapper( localName = "tabularReports", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "tabularReports", namespace = DxfNamespaces.DXF_2_0)
-    public List<TrackedEntityTabularReport> getTrackedEntityTabularReports()
-    {
-        return trackedEntityTabularReports;
-    }
-
-    public void setTrackedEntityTabularReports( List<TrackedEntityTabularReport> trackedEntityTabularReports )
-    {
-        this.trackedEntityTabularReports = trackedEntityTabularReports;
     }
 }
