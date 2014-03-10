@@ -200,7 +200,7 @@ public class WebUtils
                 map.put( p, Maps.newHashMap() );
             }
 
-            map = (Map<String, Map>) map.get( p );
+            map = map.get( p );
         }
     }
 
@@ -562,7 +562,6 @@ public class WebUtils
         return false;
     }
 
-    @SuppressWarnings( "unchecked" )
     private static Filters parseFilters( List<String> filters )
     {
         Filters parsed = new Filters();

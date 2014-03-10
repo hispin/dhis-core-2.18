@@ -206,27 +206,24 @@ public class AddTrackedEntityInstanceAction
 
         if ( relationship != null )
         {
-            if ( relationship != null )
+            Relationship rel = new Relationship();
+            if ( relationshipFromA )
             {
-                Relationship rel = new Relationship();
-                if ( relationshipFromA )
+                rel.setEntityInstanceA( relationship );
+                rel.setEntityInstanceB( entityInstance );
+            }
+            else
+            {
+                rel.setEntityInstanceA( entityInstance );
+                rel.setEntityInstanceB( relationship );
+            }
+            if ( relationshipTypeId != null )
+            {
+                RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+                if ( relType != null )
                 {
-                    rel.setEntityInstanceA( relationship );
-                    rel.setEntityInstanceB( entityInstance );
-                }
-                else
-                {
-                    rel.setEntityInstanceA( entityInstance );
-                    rel.setEntityInstanceB( relationship );
-                }
-                if ( relationshipTypeId != null )
-                {
-                    RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
-                    if ( relType != null )
-                    {
-                        rel.setRelationshipType( relType );
-                        relationshipService.saveRelationship( rel );
-                    }
+                    rel.setRelationshipType( relType );
+                    relationshipService.saveRelationship( rel );
                 }
             }
         }

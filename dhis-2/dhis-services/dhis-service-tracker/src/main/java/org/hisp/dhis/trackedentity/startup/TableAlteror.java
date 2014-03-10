@@ -422,7 +422,7 @@ public class TableAlteror
 
     private void createPersonTrackedEntity()
     {
-        int exist = jdbcTemplate.queryForInt( "SELECT count(*) FROM trackedentity where name='Person'" );
+        int exist = jdbcTemplate.queryForObject( "SELECT count(*) FROM trackedentity where name='Person'", Integer.class );
         if ( exist == 0 )
         {
             String id = statementBuilder.getAutoIncrementValue();
