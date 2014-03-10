@@ -60,9 +60,34 @@ public class IntervalSet
     
     public enum DistributionStrategy
     {
-        STRATEGY_EQUAL_RANGE, STRATEGY_EQUAL_SIZE
+        STRATEGY_EQUAL_RANGE, STRATEGY_EQUAL_COUNT
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Populates object low and object high based on the given list of map objects.
+     */
+    public IntervalSet setLowHigh( List<InternalMapObject> mapObjects )
+    {
+        for ( InternalMapObject mapObject : mapObjects )
+        {
+            if ( objectLow == null || mapObject.getValue() < objectLow.getValue() )
+            {
+                setObjectLow( mapObject );
+            }
+            
+            if ( objectHigh == null || mapObject.getValue() > objectHigh.getValue() )
+            {
+                setObjectHigh( mapObject );
+            }
+        }
+        
+        return this;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
