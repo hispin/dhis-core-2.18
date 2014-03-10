@@ -973,6 +973,7 @@ Ext.onReady( function() {
 		colStore.add({id: 'eventdate', name: 'Event date'});
         colStore.add({id: 'longitude', name: 'Longitude'});
         colStore.add({id: 'latitude', name: 'Latitude'});
+        colStore.add({id: 'ouname', name: 'Organisation unit'});
 
 		getCmpHeight = function() {
 			var size = dimensionStore.totalCount,
@@ -1620,13 +1621,13 @@ Ext.onReady( function() {
                 delete favorite.id;
 
 				// Replace operand id characters
-				for (var i = 0; i < dimensions.length; i++) {
-					if (dimensions[i].dimension === ns.core.conf.finals.dimension.operand.objectName) {
-						for (var j = 0; j < dimensions[i].items.length; j++) {
-							dimensions[i].items[j].id = dimensions[i].items[j].id.replace('-', '.');
-						}
-					}
-				}
+				//for (var i = 0; i < dimensions.length; i++) {
+					//if (dimensions[i].dimension === ns.core.conf.finals.dimension.operand.objectName) {
+						//for (var j = 0; j < dimensions[i].items.length; j++) {
+							//dimensions[i].items[j].id = dimensions[i].items[j].id.replace('-', '.');
+						//}
+					//}
+				//}
 			}
 
 			return favorite;
