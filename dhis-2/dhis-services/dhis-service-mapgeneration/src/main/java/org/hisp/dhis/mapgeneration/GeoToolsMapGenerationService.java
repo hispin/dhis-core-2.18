@@ -43,7 +43,6 @@ import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nManager;
-import org.hisp.dhis.mapgeneration.IntervalSet.DistributionStrategy;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -66,7 +65,7 @@ import org.springframework.util.Assert;
  */
 public class GeoToolsMapGenerationService
     implements MapGenerationService
-{
+{    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -258,6 +257,7 @@ public class GeoToolsMapGenerationService
         InternalMapLayer mapLayer = new InternalMapLayer();
         mapLayer.setName( name );
         mapLayer.setPeriod( period );
+        mapLayer.setMethod( mapView.getMethod() );
         mapLayer.setRadiusLow( radiusLow );
         mapLayer.setRadiusHigh( radiusHigh );
         mapLayer.setColorLow( colorLow );
@@ -310,7 +310,7 @@ public class GeoToolsMapGenerationService
             }
             else
             {
-                mapLayer.setAutomaticIntervalSet( DistributionStrategy.STRATEGY_EQUAL_RANGE, mapLayer.getClasses() );
+                mapLayer.setAutomaticIntervalSet( mapLayer.getClasses() );
                 mapLayer.distributeAndUpdateMapObjectsInIntervalSet();
             }
             
