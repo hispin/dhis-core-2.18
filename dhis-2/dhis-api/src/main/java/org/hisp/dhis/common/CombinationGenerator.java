@@ -121,7 +121,9 @@ public class CombinationGenerator<T>
         {
             int index = indexes[i];
             
-            current.add( objects[i][index] );
+            T[] object = objects[i];
+            
+            current.add( object[index] );
         }
         
         return current;
