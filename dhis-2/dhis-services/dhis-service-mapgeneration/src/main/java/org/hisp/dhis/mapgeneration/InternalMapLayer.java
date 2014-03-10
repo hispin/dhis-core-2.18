@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.mapgeneration.IntervalSet.DistributionStrategy;
 import org.hisp.dhis.mapgeneration.comparator.IntervalLowValueAscComparator;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.springframework.util.Assert;
@@ -63,6 +63,8 @@ public class InternalMapLayer
 
     protected Period period;
 
+    protected Integer method;
+
     protected Integer radiusHigh;
 
     protected Integer radiusLow;
@@ -78,7 +80,7 @@ public class InternalMapLayer
     protected Color strokeColor;
 
     protected int strokeWidth;
-
+    
     protected IntervalSet intervalSet;
 
     protected List<InternalMapObject> mapObjects;
@@ -288,19 +290,19 @@ public class InternalMapLayer
      * @param length the number of intervals in the set
      * @return the created interval set that was applied to this map layer
      */
-    public void setAutomaticIntervalSet( DistributionStrategy strategy, int length )
+    public void setAutomaticIntervalSet( int length )
     {
-        if ( DistributionStrategy.STRATEGY_EQUAL_RANGE == strategy )
+        if ( MapView.METHOD_EQUAL_INTERVALS == method )
         {
             setEqualRangeIntervalSet( length );
         }
-        else if ( DistributionStrategy.STRATEGY_EQUAL_COUNT == strategy )
+        else if ( MapView.METHOD_EQUAL_COUNTS == method )
         {
-            throw new RuntimeException( "This distribution strategy is not implemented yet!" );
+            setEqualCountIntervalSet( length );
         }
         else
         {
-            throw new RuntimeException( "Unsupported distribution strategy: " + strategy );
+            throw new RuntimeException( "Unsupported distribution strategy: " + method );
         }
     }
 
@@ -323,18 +325,14 @@ public class InternalMapLayer
         // Set the color for each of the intervals according to highest/lowest values
         for ( int i = 0; i < length; i++ )
         {
-            // Determine the boundaries the interval covers
             double low = MapUtils.lerp( intervalSet.getObjectLow().getValue(), intervalSet.getObjectHigh().getValue(), ((i + 0d) / length) );
             double high = MapUtils.lerp( intervalSet.getObjectLow().getValue(), intervalSet.getObjectHigh().getValue(), ((i + 1d) / length) );
 
-            // Determine the color of the interval
             Color color = MapUtils.lerp( colorLow, colorHigh, (i + 0.5) / length );
 
-            // Create and setup a new interval
             Interval interval = new Interval( low, high );
             interval.setColor( color );
 
-            // Add it to the set
             intervalSet.getIntervals().add( interval );
         }
 
@@ -343,6 +341,58 @@ public class InternalMapLayer
         this.intervalSet = intervalSet;
     }
 
+    public void setEqualCountIntervalSet( int length )
+    {
+        Assert.isTrue( length > 0 );
+        Assert.isTrue( mapObjects != null );
+        Assert.isTrue( mapObjects.size() > 0 );
+
+        IntervalSet intervalSet = new IntervalSet().setLowHigh( mapObjects );
+
+        List<Double> values = getSortedMapObjectValues();
+        
+        int range = values.size() / length;
+        
+        for ( int i = 0; i < length; i++ )
+        {
+            int lowIndex = range * i;
+            int highIndex = lowIndex + range - 1;
+            
+            double low = values.get( lowIndex );
+            double high = values.get( highIndex );
+            
+            if ( length == i + 1 ) // At last position
+            {
+                high = values.get( values.size() - 1 );
+            }
+
+            Color color = MapUtils.lerp( colorLow, colorHigh, (i + 0.5) / length );
+
+            Interval interval = new Interval( low, high );
+            interval.setColor( color );
+            
+            intervalSet.getIntervals().add( interval );
+        }
+
+        Collections.sort( intervalSet.getIntervals(), IntervalLowValueAscComparator.INSTANCE );
+        
+        this.intervalSet = intervalSet;
+    }
+    
+    private List<Double> getSortedMapObjectValues()
+    {
+        List<Double> values = new ArrayList<Double>();
+        
+        for ( InternalMapObject object : mapObjects )
+        {
+            values.add( object.getValue() );
+        }
+        
+        Collections.sort( values );
+        
+        return values;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -370,6 +420,16 @@ public class InternalMapLayer
     public void setPeriod( Period period )
     {
         this.period = period;
+    }
+
+    public Integer getMethod()
+    {
+        return method;
+    }
+
+    public void setMethod( Integer method )
+    {
+        this.method = method;
     }
 
     public Integer getRadiusHigh()

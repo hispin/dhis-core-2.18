@@ -72,6 +72,9 @@ public class MapView
     public static final String LAYER_THEMATIC2 = "thematic2";
     public static final String LAYER_THEMATIC3 = "thematic3";
     public static final String LAYER_THEMATIC4 = "thematic4";
+    
+    public static final Integer METHOD_EQUAL_INTERVALS = 2;
+    public static final Integer METHOD_EQUAL_COUNTS = 3;
 
     public static final List<String> DATA_LAYERS = Arrays.asList( 
         LAYER_THEMATIC1, LAYER_THEMATIC2, LAYER_THEMATIC3, LAYER_THEMATIC4 );

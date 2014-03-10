@@ -58,11 +58,6 @@ public class IntervalSet
     {
     }
     
-    public enum DistributionStrategy
-    {
-        STRATEGY_EQUAL_RANGE, STRATEGY_EQUAL_COUNT
-    }
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
