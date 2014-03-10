@@ -89,7 +89,6 @@ public class DefaultEventAnalyticsService
     private static final String ITEM_EXECUTION_DATE = "eventdate";
     private static final String ITEM_LONGITUDE = "longitude";
     private static final String ITEM_LATITUDE = "latitude";
-    private static final String ITEM_ORG_UNIT = "ou";
     private static final String ITEM_ORG_UNIT_NAME = "ouname";
     private static final String ITEM_ORG_UNIT_CODE = "oucode";
     private static final String COL_NAME_EVENTDATE = "executiondate";
@@ -207,7 +206,11 @@ public class DefaultEventAnalyticsService
         grid.addHeader( new GridHeader( ITEM_LATITUDE, "Latitude" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT_NAME, "Organisation unit name" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT_CODE, "Organisation unit code" ) );
-        grid.addHeader( new GridHeader( ITEM_ORG_UNIT, "Organisation unit", String.class.getName(), true, false ) );
+
+        for ( DimensionalObject dimension : params.getDimensions() )
+        {
+            grid.addHeader( new GridHeader( dimension.getDimension(), dimension.getDisplayName() ) );
+        }
 
         for ( QueryItem item : params.getUniqueItems() )
         {
