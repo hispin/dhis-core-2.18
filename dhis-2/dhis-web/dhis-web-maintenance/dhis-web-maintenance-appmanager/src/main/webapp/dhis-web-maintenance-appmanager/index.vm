@@ -25,12 +25,16 @@
 <h3>$i18n.getString( "dhis-web-maintenance-appmanager" ) #*openHelp( "appManager" )*#</h3>
 
 <div>
+#if( ${settingsValid} == true )
 <div id="uploadArea">
     <form id="uploadPackageForm" enctype="multipart/form-data" method="post">
     <span style="margin-right: 30px">$i18n.getString( "appmanager_upload_app_package" ):</span><input type="file" id="upload" name="upload" accept="application/zip,.zip" />
     </form>
 </div>
 <div id="progressbar"></div>
+#else
+<div id="uploadArea">Please configure the <a href="appSettings.action">app settings</a> before installing apps</div>
+#end
 </div>
 
 #if( $!appStoreUrl )

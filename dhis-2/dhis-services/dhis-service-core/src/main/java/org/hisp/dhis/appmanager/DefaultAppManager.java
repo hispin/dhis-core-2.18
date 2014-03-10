@@ -77,18 +77,6 @@ public class DefaultAppManager
     // -------------------------------------------------------------------------
 
     @Override
-    public String getAppFolderPath()
-    {
-        return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_FOLDER_PATH ) );
-    }
-
-    @Override
-    public String getAppStoreUrl()
-    {
-        return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_STORE_URL, DEFAULT_APP_STORE_URL ) );
-    }
-
-    @Override
     public List<App> getApps()
     {
         String baseUrl = getAppBaseUrl();
@@ -185,6 +173,12 @@ public class DefaultAppManager
 
         return false;
     }
+    
+    @Override
+    public String getAppFolderPath()
+    {
+        return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_FOLDER_PATH ) );
+    }
 
     @Override
     public void setAppFolderPath( String appFolderPath )
@@ -209,12 +203,6 @@ public class DefaultAppManager
     }
 
     @Override
-    public void setAppStoreUrl( String appStoreUrl )
-    {
-        appSettingManager.saveSystemSetting( KEY_APP_STORE_URL, appStoreUrl );
-    }
-
-    @Override
     public String getAppBaseUrl()
     {
         return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_BASE_URL ) );
@@ -224,6 +212,18 @@ public class DefaultAppManager
     public void setAppBaseUrl( String appBaseUrl )
     {
         appSettingManager.saveSystemSetting( KEY_APP_BASE_URL, appBaseUrl );
+    }
+
+    @Override
+    public String getAppStoreUrl()
+    {
+        return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_STORE_URL, DEFAULT_APP_STORE_URL ) );
+    }
+    
+    @Override
+    public void setAppStoreUrl( String appStoreUrl )
+    {
+        appSettingManager.saveSystemSetting( KEY_APP_STORE_URL, appStoreUrl );
     }
 
     // -------------------------------------------------------------------------
