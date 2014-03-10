@@ -229,10 +229,7 @@ public class HibernateProgramInstanceStore
 
     public Collection<SchedulingProgramObject> getSendMesssageEvents( String dateToCompare )
     {
-
         String sql = " ( " + sendMessageToTrackedEntityInstanceSql( dateToCompare ) + " ) ";
-
-        sql += " UNION ( " + sendToHealthWorkerSql( dateToCompare ) + " ) ";
 
         sql += " UNION ( " + sendMessageToOrgunitRegisteredSql( dateToCompare ) + " ) ";
 
@@ -254,17 +251,9 @@ public class HibernateProgramInstanceStore
                 message = rs.getString( "templatemessage" );
                 String organisationunitName = rs.getString( "orgunitName" );
                 String programName = rs.getString( "programName" );
-                String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];// just
-                // get
-                // date,
-                // remove
-                // timestamp
+                String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];
                 String daysSinceIncidentDate = rs.getString( "days_since_incident_date" );
-                String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];// just
-                // get
-                // date,
-                // remove
-                // timestamp
+                String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];
                 String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
 
                 message = message.replace( TrackedEntityInstanceReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
@@ -307,37 +296,6 @@ public class HibernateProgramInstanceStore
             + "         and ( DATE(now()) - DATE(pi." + dateToCompare + ") ) = prm.daysallowedsendmessage "
             + "         and prm.whenToSend is null and prm.dateToCompare='" + dateToCompare + "' and prm.sendto = "
             + TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE;
-    }
-
-    private String sendToHealthWorkerSql( String dateToCompare )
-    {
-        return "SELECT pi.programinstanceid, uif.phonenumber, prm.templatemessage, org.name as orgunitName, "
-            + "   pg.name as programName, pi.dateofincident, pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
-            + "       (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
-            + "    FROM trackedentityinstance p INNER JOIN programinstance pi "
-            + "           ON p.trackedentityinstanceid=pi.trackedentityinstanceid "
-            + "INNER JOIN program pg "
-            + "           ON pg.programid=pi.programid "
-            + "INNER JOIN organisationunit org "
-            + "           ON org.organisationunitid = p.organisationunitid "
-            + "INNER JOIN trackedentityinstancereminder prm "
-            + "           ON prm.programid = pi.programid "
-            + "INNER JOIN trackedentityattributevalue pav "
-            + "ON pav.trackedentityinstanceid=p.trackedentityinstanceid "
-            + " INNER JOIN trackedentityattribute pa "
-            + " ON pa.trackedentityattributeid=pav.trackedentityattributeid "
-            + " INNER JOIN userinfo uif " 
-            + " ON pav.value=concat(uif.userinfoid ,'') "
-            + "    WHERE pi.status = " + ProgramInstance.STATUS_ACTIVE
-            + "      and pa.valueType='users' "
-            + "      and uif.phonenumber is not NULL and uif.phonenumber != '' "
-            + "      and prm.templatemessage is not NULL and prm.templatemessage != '' "
-            + "      and pg.type=1 and prm.daysallowedsendmessage is not null " 
-            + "      and ( DATE(now()) - DATE( pi."
-            + dateToCompare + " ) ) = prm.daysallowedsendmessage " 
-            + "      and prm.dateToCompare='" + dateToCompare
-            + "'     and prm.whenToSend is null and prm.sendto =  " 
-            + TrackedEntityInstanceReminder.SEND_TO_ATTRIBUTE_TYPE_USERS;
     }
 
     private String sendMessageToOrgunitRegisteredSql( String dateToCompare )
