@@ -28,6 +28,13 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.datadictionary.DataDictionary;
@@ -47,20 +54,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReport;
-import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -118,9 +116,7 @@ public final class SharingUtils
         addType( IndicatorGroupSet.class, "indicatorGroupSet", null, "F_INDICATORGROUPSET_PUBLIC_ADD", "F_INDICATORGROUPSET_PRIVATE_ADD" );
         addType( Program.class, "program", null, "F_PROGRAM_PUBLIC_ADD", "F_PROGRAM_PRIVATE_ADD" );
         addType( UserGroup.class, "userGroup", null, "F_USERGROUP_PUBLIC_ADD", null );
-        addType( TrackedEntityTabularReport.class, "trackedEntityTabularReport", null, "F_TRACKED_ENTITY_TABULAR_REPORT_PUBLIC_ADD", null );
-        addType( TrackedEntityAggregateReport.class, "trackedEntityAggregateReport", null, "F_TRACKED_ENTITY_TABULAR_REPORT_PUBLIC_ADD", null );
-
+        
         addType( org.hisp.dhis.mapping.Map.class, "map", "F_MAP_EXTERNAL", "F_MAP_PUBLIC_ADD", null );
         addType( Chart.class, "chart", "F_CHART_EXTERNAL", "F_CHART_PUBLIC_ADD", null );
         addType( ReportTable.class, "reportTable", "F_REPORTTABLE_EXTERNAL", "F_REPORTTABLE_PUBLIC_ADD", null );

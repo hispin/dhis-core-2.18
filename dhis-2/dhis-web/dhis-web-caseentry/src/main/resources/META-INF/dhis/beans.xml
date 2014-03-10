@@ -717,7 +717,6 @@
 		scope="prototype">
 	</bean>
 
-	<!-- Tabular report -->
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.SearchEventsAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.SearchEventsAction"
 		scope="prototype">
@@ -763,59 +762,6 @@
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
-		class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
-		scope="prototype">
-		<property name="tabularReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction"
-		class="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction"
-		scope="prototype">
-		<property name="tabularReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction"
-		class="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction"
-		scope="prototype">
-		<property name="tabularReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.GetTabularReportAction"
-		class="org.hisp.dhis.caseentry.action.report.GetTabularReportAction"
-		scope="prototype">
-		<property name="tabularReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.UpdateTabularReportNameAction"
-		class="org.hisp.dhis.caseentry.action.report.UpdateTabularReportNameAction"
-		scope="prototype">
-		<property name="tabularReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction"
-		class="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction"
-		scope="prototype">
-		<property name="tabularReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReportService" />
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction"
 		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction"
 		scope="prototype">
@@ -832,67 +778,12 @@
 
 	<!-- Aggregate Report -->
 
-	<bean id="org.hisp.dhis.caseentry.action.report.SaveAggregateReportAction"
-		class="org.hisp.dhis.caseentry.action.report.SaveAggregateReportAction"
-		scope="prototype">
-		<property name="aggregateReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.UpdateAggregateReportNameAction"
-		class="org.hisp.dhis.caseentry.action.report.UpdateAggregateReportNameAction"
-		scope="prototype">
-		<property name="aggregateReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.DeleteAggregateReportAction"
-		class="org.hisp.dhis.caseentry.action.report.DeleteAggregateReportAction"
-		scope="prototype">
-		<property name="aggregateReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GetAggregateReportListAction"
-		class="org.hisp.dhis.caseentry.action.report.GetAggregateReportListAction"
-		scope="prototype">
-		<property name="aggregateReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.GetAggregateReportAction"
-		class="org.hisp.dhis.caseentry.action.report.GetAggregateReportAction"
-		scope="prototype">
-		<property name="aggregateReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
 	<bean
 		id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsByGroupAction"
 		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsByGroupAction"
 		scope="prototype">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.ValidateAggregateReportAction"
-		class="org.hisp.dhis.caseentry.action.report.ValidateAggregateReportAction"
-		scope="prototype">
-		<property name="aggregateReportService"
-			ref="org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService" />
 	</bean>
 
 	<!-- Reminder -->
