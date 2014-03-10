@@ -8,8 +8,10 @@
 	#end
 <p>
 <ul>
-#foreach( $patient in $patients )
-	<li><a href="showAddNewRelationshipForm.action?originalPatientId=$originalPatientId&relatedPatientId=$patient.id&relationshipTypeId=$relationshipTypeId">$!encoder.htmlEncode( ${patient.name} )</a></li>
+#foreach( $pav in $pavSet )
+	#if($pav.getAttribute().getDisplayInListNoProgram()== true)
+<li><a href="showAddNewRelationshipForm.action?originalPatientId=$originalPatientId&relatedPatientId=$pav.getEntityInstance().getId()&relationshipTypeId=$relationshipTypeId">$!encoder.htmlEncode( ${pav.value} )</a></li>
+#end	
 #end
 </ul>
 </p>

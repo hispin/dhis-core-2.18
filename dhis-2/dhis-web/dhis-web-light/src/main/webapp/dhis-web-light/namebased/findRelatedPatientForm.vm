@@ -13,10 +13,12 @@
 <input type="hidden" name="originalPatientId" value="$originalPatientId"/>	
 <input type="hidden" name="relationshipTypeId" value="$relationshipTypeId"/>	
 	<p style="text-align: left;">
-		<label>$i18n.getString( "search_by_name_or_id" )</label>
-		#if( $validationMap.get( "keyword" ) )
-           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "fullName" ))</span>
-     	#end
+		<select name="patientAttributeId">
+			<option value="0">$i18n.getString( "select_attribute" )</option>
+			#foreach($patientAttribute in $patientAttributes)
+				<option value="$patientAttribute.getId()">$patientAttribute.getName()</option>
+			#end
+		</select>
 		<input type="text" name="keyword" value="$!previousValues.get("fullName")" />
 		<a href="registerBeneficiary.action?orgUnitId=$orgUnitId&originalPatientId=$originalPatientId&relationshipTypeId=$relationshipTypeId">$i18n.getString( "or_register_new_person" )</a>
 	</p>
