@@ -900,7 +900,6 @@ Ext.onReady( function() {
 			col,
 			colStore,
 
-			getData,
 			getStore,
 			getStoreKeys,
 			getCmpHeight,
@@ -916,18 +915,6 @@ Ext.onReady( function() {
 			defaultWidth = 160,
 			defaultHeight = 158,
 			maxHeight = (ns.app.viewport.getHeight() - 100) / 2;
-
-		//getData = function(all) {
-			//var data = [];
-
-			//if (all) {
-				//data.push({id: 'eventdate', name: 'Event date'});
-				//data.push({id: 'longitude', name: 'Longitude'});
-				//data.push({id: 'latitude', name: 'Latitude'});
-			//}
-
-			//return data;
-		//};
 
 		getStore = function(data) {
 			var config = {};
@@ -1012,6 +999,11 @@ Ext.onReady( function() {
 			},
 			listeners: {
 				afterrender: function(ms) {
+					ms.boundList.on('itemdblclick', function(view, record) {
+						ms.store.remove(record);
+						colStore.add(record);
+					});
+
 					ms.store.on('add', function() {
 						Ext.defer( function() {
 							ms.boundList.getSelectionModel().deselectAll();
