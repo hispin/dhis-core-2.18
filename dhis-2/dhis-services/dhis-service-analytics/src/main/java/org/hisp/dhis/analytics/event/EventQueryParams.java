@@ -38,6 +38,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -135,6 +136,26 @@ public class EventQueryParams
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns a list of query items with distinct items / identifiable objects.
+     */
+    public List<QueryItem> getUniqueItems()
+    {
+        Set<IdentifiableObject> existingObjects = new HashSet<IdentifiableObject>();        
+        List<QueryItem> uniqueItems = new ArrayList<QueryItem>();
+        
+        for ( QueryItem item : items )
+        {
+            if ( !existingObjects.contains( item.getItem() ) )
+            {
+                existingObjects.add( item.getItem() );
+                uniqueItems.add( item );
+            }
+        }
+        
+        return uniqueItems;
+    }
+    
     public boolean isOrganisationUnitMode( String mode )
     {
         return organisationUnitMode != null && organisationUnitMode.equalsIgnoreCase( mode );
