@@ -45,7 +45,7 @@
 
 		<property name="reportDateDescription" />
 
-		<set name="Reminders" order-by="daysAllowedSendMessage"
+		<set name="reminders" order-by="daysAllowedSendMessage"
 			cascade="all">
 			<key column="programStageid" />
 			<one-to-many class="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder" />
