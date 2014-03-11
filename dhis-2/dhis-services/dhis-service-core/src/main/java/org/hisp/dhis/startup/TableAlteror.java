@@ -121,6 +121,9 @@ public class TableAlteror
         executeSql( "DROP TABLE maplegendsetdataelement" );
         executeSql( "DROP TABLE loginfailure" );
         executeSql( "DROP TABLE dashboarditem_trackedentitytabularreports" );
+        executeSql( "DROP TABLE categoryoptioncombousergroupaccesses" );
+        executeSql( "ALTER TABLE categoryoptioncombo drop column userid" );
+        executeSql( "ALTER TABLE categoryoptioncombo drop column publicaccess" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
         executeSql( "ALTER TABLE reporttable DROP column paramleafparentorganisationunit" );
         executeSql( "ALTER TABLE reporttable DROP column dimension_type" );
