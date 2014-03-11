@@ -33,7 +33,7 @@
     <set name="groups" table="categoryoptiongroupmembers" inverse="true">
       <cache usage="read-write" />
       <key column="categoryoptionid" />
-      <many-to-many class="org.hisp.dhis.dataelement.CategoryOptionGroup" column="dataelementgroupid" />
+      <many-to-many class="org.hisp.dhis.dataelement.CategoryOptionGroup" column="categoryoptiongroupid" />
     </set>
 
     <!-- Access properties -->
