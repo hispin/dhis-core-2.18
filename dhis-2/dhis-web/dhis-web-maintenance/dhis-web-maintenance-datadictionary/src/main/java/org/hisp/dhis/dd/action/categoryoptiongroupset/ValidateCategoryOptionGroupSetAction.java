@@ -27,7 +27,7 @@
 
 package org.hisp.dhis.dd.action.categoryoptiongroupset;
 
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +90,7 @@ public class ValidateCategoryOptionGroupSetAction
     public String execute()
         throws Exception
     {
-        CategoryOptionGroup match = dataElementCategoryService.getCategoryOptionGroupByName( name );
+        CategoryOptionGroupSet match = dataElementCategoryService.getCategoryOptionGroupSetByName( name );
 
         if ( match != null && (id == null || match.getId() != id.intValue()) )
         {
