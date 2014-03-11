@@ -164,12 +164,14 @@ public class IndicatorGroupSet
 
     public void addIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        if ( !members.contains( indicatorGroup ) )
-        {
-            this.members.add( indicatorGroup );
-        }
-
+        members.add( indicatorGroup );
         indicatorGroup.setGroupSet( this );
+    }
+    
+    public void removeIndicatorGroup( IndicatorGroup indicatorGroup )
+    {
+        members.remove( indicatorGroup );
+        indicatorGroup.setGroupSet( null );
     }
 
     // -------------------------------------------------------------------------

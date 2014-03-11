@@ -150,11 +150,13 @@ public class CategoryOptionGroupSet
     public void addCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
     {
         members.add( categoryOptionGroup );
+        categoryOptionGroup.setGroupSet( this );
     }
 
     public void removeCategoryOptionGroup( CategoryOptionGroup categoryOptionGroup )
     {
         members.remove( categoryOptionGroup );
+        categoryOptionGroup.setGroupSet( null );
     }
 
     @Override
