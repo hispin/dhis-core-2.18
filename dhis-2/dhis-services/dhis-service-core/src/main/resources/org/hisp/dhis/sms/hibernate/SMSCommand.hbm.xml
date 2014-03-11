@@ -25,6 +25,9 @@
     <property name="codeSeparator" type="text" />
     <property name="defaultMessage" type="text" />
     <property name="receivedMessage" type="text" />
+    <property name="wrongFormatMessage" type="text" />
+    <property name="noUserMessage" type="text" />
+    <property name="moreThanOneOrgUnitMessage" type="text" />
     <property name="currentPeriodUsedForReporting" type="boolean" />
 
     <many-to-one name="dataset" class="org.hisp.dhis.dataset.DataSet" column="datasetid" foreign-key="fk_dataset_datasetid" />

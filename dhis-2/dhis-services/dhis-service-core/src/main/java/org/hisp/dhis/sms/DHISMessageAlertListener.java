@@ -117,7 +117,11 @@ public class DHISMessageAlertListener
 
             if ( users != null && users.size() > 1 )
             {
-                String messageMoreThanOneUser = "System only accepts sender's number assigned for one user, but found more than one user for this number: ";
+                String messageMoreThanOneUser = smsCommand.getMoreThanOneOrgUnitMessage();
+                if ( messageMoreThanOneUser.trim().equals( "" ) )
+                {
+                    messageMoreThanOneUser = SMSCommand.MORE_THAN_ONE_ORGUNIT_MESSAGE;
+                }
                 for ( Iterator<User> i = users.iterator(); i.hasNext(); )
                 {
                     User user = i.next();

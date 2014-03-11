@@ -36,6 +36,12 @@ import java.util.Set;
 
 public class SMSCommand
 {
+    public static final String WRONG_FORMAT_MESSAGE = "Wrong format for command";
+    
+    public static final String MORE_THAN_ONE_ORGUNIT_MESSAGE = "Found more than one org unit for this number. Please specify one organisation unit";
+    
+    public static final String NO_USER_MESSAGE = "No user associated with this phone number. Please contact your supervisor.";
+    
     private int id;
 
     private String name;
@@ -52,15 +58,23 @@ public class SMSCommand
 
     private String codeSeparator;
 
-    private String defaultMessage;
-
-    private String receivedMessage;
-
     private UserGroup userGroup;
 
     private Set<SMSSpecialCharacter> specialCharacters;
 
     private boolean currentPeriodUsedForReporting = false; // default is prev
+    
+    //Messages
+    
+    private String defaultMessage;
+
+    private String receivedMessage;
+    
+    private String wrongFormatMessage;
+    
+    private String noUserMessage;
+    
+    private String moreThanOneOrgUnitMessage;
 
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
         Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup, String receivedMessage, Set<SMSSpecialCharacter> specialCharacters )
@@ -296,4 +310,33 @@ public class SMSCommand
         this.specialCharacters = specialCharacters;
     }
 
+    public String getWrongFormatMessage()
+    {
+        return wrongFormatMessage;
+    }
+
+    public void setWrongFormatMessage( String wrongFormatMessage )
+    {
+        this.wrongFormatMessage = wrongFormatMessage;
+    }
+
+    public String getNoUserMessage()
+    {
+        return noUserMessage;
+    }
+
+    public void setNoUserMessage( String noUserMessage )
+    {
+        this.noUserMessage = noUserMessage;
+    }
+
+    public String getMoreThanOneOrgUnitMessage()
+    {
+        return moreThanOneOrgUnitMessage;
+    }
+
+    public void setMoreThanOneOrgUnitMessage( String moreThanOneOrgUnitMessage )
+    {
+        this.moreThanOneOrgUnitMessage = moreThanOneOrgUnitMessage;
+    }
 }

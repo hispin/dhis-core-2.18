@@ -88,6 +88,9 @@ public class DefaultProgramService
         {
             programs.add( getProgramLWUIT( program.getId() ) );
         }
+        
+        System.out.println("Program by unit size: " + programByUnit.size());
+        System.out.println("Program size: " + programs.size());
 
         return programs;
     }

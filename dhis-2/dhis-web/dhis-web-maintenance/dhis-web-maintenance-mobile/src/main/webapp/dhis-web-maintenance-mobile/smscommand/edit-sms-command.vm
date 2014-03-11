@@ -143,7 +143,26 @@
 			<td>
 				<input type="text"  #if($smsCommand.separator) value="$smsCommand.separator" #end name="separator" style="width:20em" class="validate" />
 			</td>
-		</tr> 
+		</tr>
+		
+		<tr>
+            <td style="width:130px">$i18n.getString( "no_codes_message" )</td>
+            <td><textarea cols="35" type="text" name="defaultMessage">#if($smsCommand.defaultMessage)$smsCommand.defaultMessage#end</textarea></td>
+        </tr>
+        <tr>
+            <td style="width:130px">$i18n.getString( "wrong_format_message" )</td>
+            <td><textarea cols="35" type="text" name="wrongFormatMessage">#if($smsCommand.wrongFormatMessage)$smsCommand.wrongFormatMessage#end</textarea></td>
+        </tr>
+        <tr>
+            <td style="width:130px">$i18n.getString( "no_user_message" )</td>
+            <td><textarea cols="35" type="text" name="noUserMessage">#if($smsCommand.noUserMessage)$smsCommand.noUserMessage#end</textarea></td>
+        </tr>
+        
+		<tr>
+            <td style="width:130px">$i18n.getString( "more_than_one_orgunit_message" )</td>
+            <td><textarea cols="35" type="text" name="moreThanOneOrgUnitMessage">#if($smsCommand.moreThanOneOrgUnitMessage)$smsCommand.moreThanOneOrgUnitMessage#end</textarea></td>
+        </tr>
+		 
 		#elseif( $smsCommand.parserType == 'ALERT_PARSER' || $smsCommand.parserType == 'UNREGISTERED_PARSER' )
 		<tr>
 			<td>$i18n.getString( "userGroup" )</td>
@@ -160,10 +179,6 @@
 			<td><textarea cols="35" type="text" name="receivedMessage">#if($smsCommand.receivedMessage)$smsCommand.receivedMessage#end</textarea></td>
 		</tr>
 		#end
-        <tr>
-            <td style="width:130px">$i18n.getString( "no_codes_message" )</td>
-            <td><textarea cols="35" type="text" name="defaultMessage">#if($smsCommand.defaultMessage)$smsCommand.defaultMessage#end</textarea></td>
-        </tr>
         
 	</table>
 	
