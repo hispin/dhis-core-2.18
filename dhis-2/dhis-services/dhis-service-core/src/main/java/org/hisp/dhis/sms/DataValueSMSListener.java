@@ -139,10 +139,17 @@ public class DataValueSMSListener
 
         if ( orgUnits == null || orgUnits.size() == 0 )
         {
-            throw new SMSParserException( "No user associated with this phone number. Please contact your supervisor." );
+            if ( StringUtils.isEmpty( smsCommand.getNoUserMessage() ) )
+            {
+                throw new SMSParserException( SMSCommand.NO_USER_MESSAGE );
+            }
+            else
+            {
+                throw new SMSParserException( smsCommand.getNoUserMessage() );
+            }
         }
 
-        OrganisationUnit orgUnit = this.selectOrganisationUnit( orgUnits, parsedMessage );
+        OrganisationUnit orgUnit = this.selectOrganisationUnit( orgUnits, parsedMessage, smsCommand );
         Period period = getPeriod( smsCommand, date );
 
         if ( dataSetService.isLocked( smsCommand.getDataset(), period, orgUnit, null, null ) )
@@ -157,7 +164,6 @@ public class DataValueSMSListener
         {
             if ( parsedMessage.containsKey( code.getCode().toUpperCase() ) )
             {
-                // potential bugs [noted by Lai]
                 valueStored = storeDataValue( senderPhoneNumber, orgUnit, parsedMessage, code, smsCommand, date,
                     smsCommand.getDataset() );
             }
@@ -176,7 +182,14 @@ public class DataValueSMSListener
         }
         else if ( !valueStored )
         {
-            throw new SMSParserException( "Wrong format for command '" + smsCommand.getName() + "'" );
+            if ( StringUtils.isEmpty( smsCommand.getWrongFormatMessage() ) )
+            {
+                throw new SMSParserException( SMSCommand.WRONG_FORMAT_MESSAGE );
+            }
+            else
+            {
+                throw new SMSParserException( smsCommand.getWrongFormatMessage() );
+            }
         }
 
         markCompleteDataSet( senderPhoneNumber, orgUnit, parsedMessage, smsCommand, date );
@@ -264,7 +277,7 @@ public class DataValueSMSListener
     }
 
     private OrganisationUnit selectOrganisationUnit( Collection<OrganisationUnit> orgUnits,
-        Map<String, String> parsedMessage )
+        Map<String, String> parsedMessage, SMSCommand smsCommand )
     {
         OrganisationUnit orgUnit = null;
 
@@ -283,7 +296,7 @@ public class DataValueSMSListener
 
         if ( orgUnit == null && orgUnits.size() > 1 )
         {
-            String messageListingOrgUnits = "Found more than one org unit for this number. Please specify one of the following:";
+            String messageListingOrgUnits = smsCommand.getMoreThanOneOrgUnitMessage();
             for ( Iterator<OrganisationUnit> i = orgUnits.iterator(); i.hasNext(); )
             {
                 OrganisationUnit o = i.next();
@@ -327,7 +340,7 @@ public class DataValueSMSListener
     {
         String upperCaseCode = code.getCode().toUpperCase();
 
-        String storedBy = getUser( sender ).getUsername();
+        String storedBy = getUser( sender, command ).getUsername();
 
         if ( StringUtils.isBlank( storedBy ) )
         {
@@ -409,7 +422,7 @@ public class DataValueSMSListener
         return true;
     }
 
-    private User getUser( String sender )
+    private User getUser( String sender, SMSCommand smsCommand )
     {
         OrganisationUnit orgunit = null;
         User user = null;
@@ -432,8 +445,14 @@ public class DataValueSMSListener
                 }
                 else
                 {
-                    throw new SMSParserException(
-                        "User is associated with more than one orgunit. Please contact your supervisor." );
+                    if ( StringUtils.isEmpty( smsCommand.getMoreThanOneOrgUnitMessage() ) )
+                    {
+                        throw new SMSParserException( SMSCommand.MORE_THAN_ONE_ORGUNIT_MESSAGE );
+                    }
+                    else
+                    {
+                        throw new SMSParserException( smsCommand.getMoreThanOneOrgUnitMessage() );
+                    }
                 }
             }
             user = u;
@@ -468,7 +487,7 @@ public class DataValueSMSListener
             }
         }
 
-        String storedBy = getUser( sender ).getUsername();
+        String storedBy = getUser( sender, command ).getUsername();
 
         if ( StringUtils.isBlank( storedBy ) )
         {

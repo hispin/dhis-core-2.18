@@ -125,10 +125,17 @@ public class J2MEDataValueSMSListener
 
         if ( orgUnits == null || orgUnits.size() == 0 )
         {
-            throw new SMSParserException( "No user associated with this phone number. Please contact your supervisor." );
+            if ( StringUtils.isEmpty( smsCommand.getNoUserMessage() ) )
+            {
+                throw new SMSParserException( SMSCommand.NO_USER_MESSAGE );
+            }
+            else
+            {
+                throw new SMSParserException( smsCommand.getNoUserMessage() );
+            }
         }
 
-        OrganisationUnit orgUnit = this.selectOrganisationUnit( orgUnits, parsedMessage );
+        OrganisationUnit orgUnit = this.selectOrganisationUnit( orgUnits, parsedMessage, smsCommand );
         Period period = this.getPeriod( token[0].trim(), smsCommand.getDataset().getPeriodType() );
         boolean valueStored = false;
 
@@ -188,7 +195,7 @@ public class J2MEDataValueSMSListener
     {
         String upperCaseCode = code.getCode().toUpperCase();
 
-        String storedBy = getUser( sender ).getUsername();
+        String storedBy = getUser( sender, command ).getUsername();
 
         if ( StringUtils.isBlank( storedBy ) )
         {
@@ -249,7 +256,7 @@ public class J2MEDataValueSMSListener
     }
 
     private OrganisationUnit selectOrganisationUnit( Collection<OrganisationUnit> orgUnits,
-        Map<String, String> parsedMessage )
+        Map<String, String> parsedMessage, SMSCommand smsCommand )
     {
         OrganisationUnit orgUnit = null;
 
@@ -268,7 +275,7 @@ public class J2MEDataValueSMSListener
 
         if ( orgUnit == null && orgUnits.size() > 1 )
         {
-            String messageListingOrgUnits = "Found more than one org unit for this number. Please specify one of the following:";
+            String messageListingOrgUnits = smsCommand.getMoreThanOneOrgUnitMessage();
             for ( Iterator<OrganisationUnit> i = orgUnits.iterator(); i.hasNext(); )
             {
                 OrganisationUnit o = i.next();
@@ -299,7 +306,7 @@ public class J2MEDataValueSMSListener
         return orgUnits;
     }
 
-    private User getUser( String sender )
+    private User getUser( String sender, SMSCommand smsCommand )
     {
         OrganisationUnit orgunit = null;
         User user = null;
@@ -319,8 +326,14 @@ public class J2MEDataValueSMSListener
             }
             else
             {
-                throw new SMSParserException(
-                    "User is associated with more than one orgunit. Please contact your supervisor." );
+                if ( StringUtils.isEmpty( smsCommand.getMoreThanOneOrgUnitMessage() ) )
+                {
+                    throw new SMSParserException( SMSCommand.MORE_THAN_ONE_ORGUNIT_MESSAGE );
+                }
+                else
+                {
+                    throw new SMSParserException( smsCommand.getMoreThanOneOrgUnitMessage() );
+                }
             }
             user = u;
         }

@@ -103,6 +103,12 @@ public class EditSMSCommandForm
     private String defaultMessage;
     
     private String receivedMessage;
+    
+    private String wrongFormatMessage;
+    
+    private String noUserMessage;
+    
+    private String moreThanOneOrgUnitMessage;
 
     private int selectedCommandID = -1;
 
@@ -163,8 +169,14 @@ public class EditSMSCommandForm
             smsCommandService.deleteSpecialCharacterSet( toRemoveCharacters );
             
             c.setCodes( codeSet );
+            
+            // message
             c.setDefaultMessage( defaultMessage );
             c.setReceivedMessage( receivedMessage );
+            c.setMoreThanOneOrgUnitMessage( moreThanOneOrgUnitMessage );
+            c.setNoUserMessage( noUserMessage );
+            c.setWrongFormatMessage( wrongFormatMessage );
+            
             if( userGroupID != null && userGroupID > -1 )
             {
                 c.setUserGroup( userGroupService.getUserGroup( userGroupID ) );
@@ -303,5 +315,34 @@ public class EditSMSCommandForm
     {
         this.specialCharactersInfo = specialCharactersInfo;
     }
-    
+
+    public String getWrongFormatMessage()
+    {
+        return wrongFormatMessage;
+    }
+
+    public void setWrongFormatMessage( String wrongFormatMessage )
+    {
+        this.wrongFormatMessage = wrongFormatMessage;
+    }
+
+    public String getNoUserMessage()
+    {
+        return noUserMessage;
+    }
+
+    public void setNoUserMessage( String noUserMessage )
+    {
+        this.noUserMessage = noUserMessage;
+    }
+
+    public String getMoreThanOneOrgUnitMessage()
+    {
+        return moreThanOneOrgUnitMessage;
+    }
+
+    public void setMoreThanOneOrgUnitMessage( String moreThanOneOrgUnitMessage )
+    {
+        this.moreThanOneOrgUnitMessage = moreThanOneOrgUnitMessage;
+    }
 }
