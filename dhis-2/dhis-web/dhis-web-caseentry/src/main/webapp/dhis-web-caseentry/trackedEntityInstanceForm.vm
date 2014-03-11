@@ -69,7 +69,7 @@
 															 #end
 													 </select>
 											 #elseif( $attribute.valueType == "phoneNumber" ) 
-													 <input type='text' value='$value' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true,required:$attribute.mandatory}}}"/>
+													 <input type='text' value='$value' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true,required:$attribute.mandatory}}"/>
 											 #elseif( $attribute.valueType == "trackerAssociate" ) 
 													 <input type="checkbox" value='true' id="attr$attribute.id" name="attr$attribute.id" 
 															 inherit="$!attribute.inherit" #if($value=='true') checked #end
