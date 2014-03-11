@@ -134,7 +134,11 @@
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryCombo.optionCombos" maxElementsInMemory="500" />
 
+  <cache name="org.hisp.dhis.dataelement.DataElementCategoryCombo.userGroupAccesses" maxElementsInMemory="500" />
+
   <cache name="org.hisp.dhis.dataelement.DataElementCategory.categoryOptions" maxElementsInMemory="300" />
+
+  <cache name="org.hisp.dhis.dataelement.DataElementCategory.userGroupAccesses" maxElementsInMemory="300" />
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.categoryOptionCombos" maxElementsInMemory="500" />
 
@@ -142,11 +146,15 @@
   
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.groups" maxElementsInMemory="300" />
 
+  <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.userGroupAccesses" maxElementsInMemory="300" />
+
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo.categoryOptions" maxElementsInMemory="500" />
   
   <cache name="org.hisp.dhis.dataelement.CategoryOptionGroup.userGroupAccesses" maxElementsInMemory="500" />
   
   <cache name="org.hisp.dhis.dataelement.CategoryOptionGroup.members" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.dataelement.CategoryOptionGroupSet.members" maxElementsInMemory="500" />
   
   <cache name="org.hisp.dhis.dataelement.CategoryOptionGroupSet.userGroupAccesses" maxElementsInMemory="500" />
 
@@ -242,6 +250,8 @@
 
   <cache name="org.hisp.dhis.reporttable.ReportTable.organisationUnitGroups" maxElementsInMemory="500" />
 
+  <cache name="org.hisp.dhis.reporttable.ReportTable.categoryOptionGroups" maxElementsInMemory="500" />
+
   <cache name="org.hisp.dhis.reporttable.ReportTable.itemOrganisationUnitGroups" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.reporttable.ReportTable.categoryDimensions" maxElementsInMemory="500" />
@@ -271,6 +281,8 @@
   <cache name="org.hisp.dhis.chart.Chart.dataElementGroups" maxElementsInMemory="500" />
   
   <cache name="org.hisp.dhis.chart.Chart.organisationUnitGroups" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.chart.Chart.categoryOptionGroups" maxElementsInMemory="500" />
   
   <cache name="org.hisp.dhis.chart.Chart.itemOrganisationUnitGroups" maxElementsInMemory="500" />
   
