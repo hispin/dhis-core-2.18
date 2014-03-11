@@ -30,6 +30,7 @@ package org.hisp.dhis.dd.action.categoryoptiongroupset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,11 +96,16 @@ public class AddCategoryOptionGroupSetAction
         categoryOptionGroupSet.setDescription( description );
         categoryOptionGroupSet.setDataDimension( dataDimension );
 
+        List<CategoryOptionGroup> members = new ArrayList<CategoryOptionGroup>();
+        
         for ( String id : groupMembers )
         {
-            categoryOptionGroupSet.addCategoryOptionGroup( dataElementCategoryService.getCategoryOptionGroup( 
-                Integer.parseInt( id ) ) );
+            CategoryOptionGroup group = dataElementCategoryService.getCategoryOptionGroup( Integer.parseInt( id ) );
+            
+            members.add( group );
         }
+        
+        categoryOptionGroupSet.setMembers( members );
 
         dataElementCategoryService.saveCategoryOptionGroupSet( categoryOptionGroupSet );
 
