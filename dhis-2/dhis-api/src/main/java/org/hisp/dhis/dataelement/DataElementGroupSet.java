@@ -115,12 +115,18 @@ public class DataElementGroupSet
         members.add( dataElementGroup );
         dataElementGroup.setGroupSet( this );
     }
+    
+    public void removeDataElementGroup( DataElementGroup dataElementGroup )
+    {
+        members.remove( dataElementGroup );
+        dataElementGroup.setGroupSet( null );
+    }
 
     public void removeAllDataElementGroups()
     {
         for ( DataElementGroup dataElementGroup : members )
         {
-            if ( dataElementGroup.getGroupSet() == this )
+            if ( dataElementGroup.getGroupSet().equals( this ) )
             {
                 dataElementGroup.setGroupSet( null );
             }
