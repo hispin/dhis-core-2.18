@@ -36,10 +36,10 @@ public class NeqOp extends Op
     private Op op = OpFactory.create( "eq" );
 
     @Override
-    public OpStatus evaluate( Object right )
+    public OpStatus evaluate( Object object )
     {
-        op.setLeft( getLeft() );
-        OpStatus status = op.evaluate( right );
+        op.setValue( getValue() );
+        OpStatus status = op.evaluate( object );
 
         // switch status from EqOp
         switch ( status )

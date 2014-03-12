@@ -35,7 +35,6 @@ import java.util.Map;
 /**
 * @author Morten Olav Hansen <mortenoh@gmail.com>
 */
-@SuppressWarnings( "unchecked" )
 public class Filters
 {
     private Map<String, Object> filters = Maps.newHashMap();
@@ -57,20 +56,21 @@ public class Filters
         {
             Op op = OpFactory.create( operator );
 
-            if ( op.wantLeft() )
+            if ( op.wantValue() )
             {
                 if ( value == null )
                 {
                     return;
                 }
 
-                op.setLeft( value );
+                op.setValue( value );
             }
 
             filterOps.addFilter( operator, op );
         }
     }
 
+    @SuppressWarnings( "unchecked" )
     private FilterOps createPath( String path )
     {
         if ( !path.contains( "." ) )
