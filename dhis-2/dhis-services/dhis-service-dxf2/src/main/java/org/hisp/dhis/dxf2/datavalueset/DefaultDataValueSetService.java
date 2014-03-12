@@ -32,6 +32,7 @@ import com.csvreader.CsvReader;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
@@ -439,7 +440,7 @@ public class DefaultDataValueSetService
             internalValue.setSource( orgUnit );
             internalValue.setCategoryOptionCombo( categoryOptionCombo );
             internalValue.setAttributeOptionCombo( fallbackCategoryOptionCombo ); // TODO
-            internalValue.setValue( dataValue.getValue() );
+            internalValue.setValue( StringUtils.trimToNull( dataValue.getValue() ) );
 
             if ( dataValue.getStoredBy() == null || dataValue.getStoredBy().trim().isEmpty() )
             {
@@ -451,7 +452,7 @@ public class DefaultDataValueSetService
             }
 
             internalValue.setTimestamp( getDefaultDate( dataValue.getLastUpdated() ) );
-            internalValue.setComment( dataValue.getComment() );
+            internalValue.setComment( StringUtils.trimToNull( dataValue.getComment() ) );
             internalValue.setFollowup( dataValue.getFollowup() );
 
             if ( !skipExistingCheck && batchHandler.objectExists( internalValue ) )
