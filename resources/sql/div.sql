@@ -163,6 +163,16 @@ from categoryoptioncombo cc
 join _categoryoptioncomboname cn
 on (cc.categoryoptioncomboid=cn.categoryoptioncomboid);
 
+-- Display data out of reasonable time range
+
+select *
+from datavalue dv
+where dv.periodid in (
+  select pe.periodid
+  from period pe
+  where pe.startdate < '1950-01-01'
+  or pe.enddate > '2050-01-01');
+
 -- (Write) Populate dashboards for all users (7666 is userinfoid for target dashboard, replace with preferred id)
 
 insert into usersetting (userinfoid, name, value)
