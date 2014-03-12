@@ -335,35 +335,32 @@ public class WebUtils
 
             if ( value.isEmpty() )
             {
-                if ( !descriptor.isCollection() && !descriptor.isIdentifiableObject() )
+                if ( !descriptor.isIdentifiableObject() )
                 {
                     output.put( key, returned );
                 }
-                else if ( descriptor.isIdentifiableObject() )
+                else if ( !descriptor.isCollection() )
                 {
-                    if ( descriptor.isCollection() )
-                    {
-                        List<Map<String, Object>> properties = getIdentifiableObjectCollectionProperties( returned );
-                        output.put( key, properties );
-                    }
-                    else
-                    {
-                        Map<String, Object> properties = getIdentifiableObjectProperties( returned );
-                        output.put( key, properties );
-                    }
+                    Map<String, Object> properties = getIdentifiableObjectProperties( returned );
+                    output.put( key, properties );
+                }
+                else if ( descriptor.isCollection() )
+                {
+                    List<Map<String, Object>> properties = getIdentifiableObjectCollectionProperties( returned );
+                    output.put( key, properties );
                 }
             }
             else
             {
                 if ( descriptor.isCollection() )
                 {
-                    Collection<IdentifiableObject> objects = (Collection<IdentifiableObject>) returned;
+                    Collection<?> objects = (Collection<?>) returned;
                     ArrayList<Object> arrayList = Lists.newArrayList();
                     output.put( key, arrayList );
 
-                    for ( IdentifiableObject identifiableObject : objects )
+                    for ( Object obj : objects )
                     {
-                        Map<String, Object> properties = buildObjectOutput( identifiableObject, value );
+                        Map<String, Object> properties = buildObjectOutput( obj, value );
                         arrayList.add( properties );
                     }
                 }
