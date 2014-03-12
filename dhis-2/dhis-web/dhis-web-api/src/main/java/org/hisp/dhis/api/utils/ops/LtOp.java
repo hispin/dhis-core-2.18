@@ -29,10 +29,11 @@ package org.hisp.dhis.api.utils.ops;
  */
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
-* @author Morten Olav Hansen <mortenoh@gmail.com>
-*/
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
 public class LtOp extends Op
 {
     @Override
@@ -70,6 +71,13 @@ public class LtOp extends Op
             {
                 return OpStatus.EXCLUDE;
             }
+        }
+        else if ( Date.class.isInstance( object ) )
+        {
+            Date s1 = getValue( Date.class );
+            Date s2 = (Date) object;
+
+            return (s1 != null && (s2.before( s1 ))) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
 
         return OpStatus.IGNORE;

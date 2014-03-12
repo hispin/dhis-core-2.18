@@ -28,6 +28,8 @@ package org.hisp.dhis.api.utils.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -36,6 +38,16 @@ import java.util.Date;
 public abstract class Op
 {
     private String value;
+
+    private static SimpleDateFormat[] simpleDateFormats = new SimpleDateFormat[]{
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH" ),
+        new SimpleDateFormat( "yyyyMMdd" ),
+        new SimpleDateFormat( "yyyyMM" ),
+        new SimpleDateFormat( "yyyy" )
+    };
 
     public boolean wantValue()
     {
@@ -92,6 +104,16 @@ public abstract class Op
         }
         else if ( Date.class.isAssignableFrom( klass ) )
         {
+            for ( SimpleDateFormat simpleDateFormat : simpleDateFormats )
+            {
+                try
+                {
+                    return (T) simpleDateFormat.parse( value );
+                }
+                catch ( ParseException ignored )
+                {
+                }
+            }
         }
 
         return null;
