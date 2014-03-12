@@ -404,7 +404,7 @@ public class ReflectionUtils
         return methods;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static <T> T invokeMethod( Object target, Method method, Object... args )
     {
         try
@@ -421,7 +421,7 @@ public class ReflectionUtils
         }
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static <T> T getFieldObject( Field field, T target )
     {
         return (T) invokeGetterMethod( field.getName(), target );
@@ -745,6 +745,8 @@ public class ReflectionUtils
                 }
                 else if ( Collection.class.isAssignableFrom( returnType ) )
                 {
+                    descriptor.setCollection( true );
+
                     Type type = method.getGenericReturnType();
 
                     if ( ParameterizedType.class.isInstance( type ) )
@@ -754,7 +756,6 @@ public class ReflectionUtils
 
                         if ( IdentifiableObject.class.isAssignableFrom( klass ) )
                         {
-                            descriptor.setCollection( true );
                             descriptor.setIdentifiableObject( true );
                         }
                     }
