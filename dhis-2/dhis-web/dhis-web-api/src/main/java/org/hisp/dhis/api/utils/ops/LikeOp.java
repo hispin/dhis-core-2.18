@@ -34,17 +34,17 @@ package org.hisp.dhis.api.utils.ops;
 public class LikeOp extends Op
 {
     @Override
-    public OpStatus evaluate( Object right )
+    public OpStatus evaluate( Object object )
     {
-        if ( getLeft() == null || right == null )
+        if ( getValue() == null || object == null )
         {
             return OpStatus.IGNORE;
         }
 
-        if ( String.class.isInstance( right ) )
+        if ( String.class.isInstance( object ) )
         {
-            String s1 = getLeft( String.class );
-            String s2 = (String) right;
+            String s1 = getValue( String.class );
+            String s2 = (String) object;
 
             return (s1 != null && s2.toLowerCase().contains( s1.toLowerCase() )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }

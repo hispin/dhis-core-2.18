@@ -28,24 +28,21 @@ package org.hisp.dhis.api.utils.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.ops.Op;
-import org.hisp.dhis.api.utils.ops.OpStatus;
-
 /**
 * @author Morten Olav Hansen <mortenoh@gmail.com>
 */
 public class NullOp extends Op
 {
     @Override
-    public boolean wantLeft()
+    public boolean wantValue()
     {
         return false;
     }
 
     @Override
-    public OpStatus evaluate( Object right )
+    public OpStatus evaluate( Object object )
     {
-        if ( right == null )
+        if ( object == null )
         {
             return OpStatus.INCLUDE;
         }

@@ -36,23 +36,23 @@ import java.util.Collection;
 public class EmptyCollectionOp extends Op
 {
     @Override
-    public boolean wantLeft()
+    public boolean wantValue()
     {
         return false;
     }
 
     @Override
-    public OpStatus evaluate( Object right )
+    public OpStatus evaluate( Object object )
     {
-        if ( right == null )
+        if ( object == null )
         {
             // TODO: ignore or include here?
             return OpStatus.IGNORE;
         }
 
-        if ( Collection.class.isInstance( right ) )
+        if ( Collection.class.isInstance( object ) )
         {
-            Collection<?> c = (Collection<?>) right;
+            Collection<?> c = (Collection<?>) object;
 
             if ( c.isEmpty() )
             {

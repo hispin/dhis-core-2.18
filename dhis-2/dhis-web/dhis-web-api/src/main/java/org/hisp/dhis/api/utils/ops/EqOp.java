@@ -36,45 +36,45 @@ import java.util.Collection;
 public class EqOp extends Op
 {
     @Override
-    public OpStatus evaluate( Object right )
+    public OpStatus evaluate( Object object )
     {
-        if ( getLeft() == null || right == null )
+        if ( getValue() == null || object == null )
         {
             return OpStatus.IGNORE;
         }
 
-        if ( String.class.isInstance( right ) )
+        if ( String.class.isInstance( object ) )
         {
-            String s1 = getLeft( String.class );
-            String s2 = (String) right;
+            String s1 = getValue( String.class );
+            String s2 = (String) object;
 
             return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
-        else if ( Boolean.class.isInstance( right ) )
+        else if ( Boolean.class.isInstance( object ) )
         {
-            Boolean s1 = getLeft( Boolean.class );
-            Boolean s2 = (Boolean) right;
+            Boolean s1 = getValue( Boolean.class );
+            Boolean s2 = (Boolean) object;
 
             return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
-        else if ( Integer.class.isInstance( right ) )
+        else if ( Integer.class.isInstance( object ) )
         {
-            Integer s1 = getLeft( Integer.class );
-            Integer s2 = (Integer) right;
+            Integer s1 = getValue( Integer.class );
+            Integer s2 = (Integer) object;
 
             return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
-        else if ( Float.class.isInstance( right ) )
+        else if ( Float.class.isInstance( object ) )
         {
-            Float s1 = getLeft( Float.class );
-            Float s2 = (Float) right;
+            Float s1 = getValue( Float.class );
+            Float s2 = (Float) object;
 
             return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
-        else if ( Collection.class.isInstance( right ) )
+        else if ( Collection.class.isInstance( object ) )
         {
-            Collection<?> collection = (Collection<?>) right;
-            Integer size = getLeft( Integer.class );
+            Collection<?> collection = (Collection<?>) object;
+            Integer size = getValue( Integer.class );
 
             if ( size != null && collection.size() == size )
             {
