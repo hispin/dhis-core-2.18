@@ -16,7 +16,7 @@
       d:categoryOptions|d:categoryOptionCombos|d:dataElements|d:indicators|
       d:organisationUnits|d:dataElementGroups|d:dataElementGroupSets|d:dataSets|
       d:documents|d:indicatorGroups|d:indicatorGroupSets|d:organisationUnitGroups|
-      d:organisationUnitGroupSets|d:indicatorTypes|d:attributeTypes|d:reports|d:constants|
+      d:organisationUnitGroupSets|d:indicatorTypes|d:attributes|d:reports|d:constants|
       d:sqlViews|d:validationRules|d:validationRuleGroups|d:users|d:userGroups|d:userAuthorityGroups|
       d:reportTables|d:mapLegends|d:mapLegendSets|d:mapLayers|d:optionSets|d:interpretations|
       d:sections|d:userRoles|d:organisationUnitLevels|d:programs|d:programStages|d:dimensions|d:dashboards">
