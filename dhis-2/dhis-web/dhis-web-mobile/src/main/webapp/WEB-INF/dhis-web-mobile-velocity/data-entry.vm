@@ -7,295 +7,302 @@
 <script type="text/javascript" src="$contextPath/dhis-web-commons/javascripts/periodType.js"></script>
 
 <script>
-    var Selected = {};
-    var periodTypeFactory = new PeriodType();
-    var periodType;
-    var periodOffset = 0;
-    var allowFuturePeriods = false;
+var Selected = {};
+var periodTypeFactory = new PeriodType();
+var periodType;
+var periodOffset = 0;
+var allowFuturePeriods = false;
 
-    function selectOrganisationUnit( e ) {
-        Selected.orgUnit = $(this).data('id');
-        Selected.orgUnitName = $(this).html();
+function selectOrganisationUnit( e ) {
+  Selected.orgUnit = $(this).data('id');
+  Selected.orgUnitName = $(this).html();
+}
+
+function selectDataSet( e ) {
+  Selected.dataSet = $(this).data('id');
+}
+
+function selectPeriod( e ) {
+  Selected.period = $(this).data('id');
+  Selected.periodName = $(this).html();
+}
+
+function loadOrganisationUnitsPage() {
+  $.mobile.loading('show');
+
+  var organisationUnits = fm.organisationUnits();
+  var tmpl = $('#organisation-units-template').html();
+
+  var ou = _.values(organisationUnits);
+  ou = _.sortBy(ou, function( n ) {
+    return n.level;
+  });
+
+  $('#organisation-units-page section[data-role="content"]').html(
+      _.template(tmpl, { 'organisationUnits': ou })
+  );
+
+  $('#organisation-unit-list').listview();
+  $('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
+
+  $.mobile.loading('hide');
+}
+
+function loadDataSetsPage() {
+  if( Selected.orgUnit === undefined ) {
+    $.mobile.changePage('#organisation-units-page');
+    return;
+  }
+
+  $.mobile.loading('show');
+
+  var organisationUnit = fm.organisationUnit(Selected.orgUnit);
+  var tmpl = $('#data-sets-template').html();
+
+  $('#data-sets-page section[data-role="content"]').html(
+      _.template(tmpl, { 'dataSets': organisationUnit.dataSets })
+  );
+
+  $('#data-set-list').listview();
+  $('#data-set-list li a').bind('click', selectDataSet);
+
+  $.mobile.loading('hide');
+}
+
+function refreshPeriods() {
+  var tmpl = $('#period-template').html();
+
+  var periods = periodTypeFactory.get(periodType).generatePeriods(periodOffset);
+
+  if( !allowFuturePeriods ) {
+    periods = periodTypeFactory.filterFuturePeriods(periods);
+    $('#next_year').button('disable');
+  }
+
+  periods = periodTypeFactory.reverse(periods);
+
+  $('#period-page section[data-role="content"]').html(
+      _.template(tmpl, { 'periods': periods })
+  );
+
+  $('#period-page').trigger('pagecreate');
+  $('#period-list').listview('refresh');
+
+  if( !allowFuturePeriods ) {
+    $('#next_year').button('disable');
+  }
+
+  $('#previous_year').bind('click', function() {
+    periodOffset--;
+    refreshPeriods();
+
+    if( periodOffset < 0 ) {
+      $('#next_year').button('enable');
+    } else {
+      $('#next_year').button('disable');
+    }
+  });
+
+  $('#next_year').bind('click', function() {
+    periodOffset++;
+    refreshPeriods();
+
+    if( !allowFuturePeriods && periodOffset == 0 ) {
+      $('#next_year').button('disable');
+    } else {
+      $('#next_year').button('enable');
+    }
+  });
+
+  $('#period-list li a').bind('click', selectPeriod);
+}
+
+function loadPeriodPage() {
+  if( Selected.dataSet === undefined ) {
+    if( Selected.orgUnit === undefined ) {
+      $.mobile.changePage('#organisation-units-page');
+    } else {
+      $.mobile.changePage('#data-sets-page');
     }
 
-    function selectDataSet( e ) {
-        Selected.dataSet = $(this).data('id');
-    }
+    return;
+  }
 
-    function selectPeriod( e ) {
-        Selected.period = $(this).data('id');
-        Selected.periodName = $(this).html();
-    }
+  $.mobile.loading('show');
 
-    function loadOrganisationUnitsPage() {
-        $.mobile.loading( 'show' );
+  var form = fm.form(Selected.dataSet);
+  periodType = form.options.periodType;
+  allowFuturePeriods = form.options.allowFuturePeriods;
+  refreshPeriods();
 
-        var organisationUnits = fm.organisationUnits();
-        var tmpl = $( '#organisation-units-template' ).html();
+  $.mobile.loading('hide');
+}
 
-        var ou = _.values( organisationUnits );
-        ou = _.sortBy( ou, function(n) { return n.level; } );
+function loadDataEntryPage() {
+  if( Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit === undefined ) {
+    $.mobile.changePage('#organisation-units-page');
+    return;
+  }
 
-        $('#organisation-units-page section[data-role="content"]').html(
-            _.template( tmpl, { 'organisationUnits': ou } )
-        );
+  if( Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit !== undefined ) {
+    $.mobile.changePage('#data-sets-page');
+    return;
+  }
 
-        $('#organisation-unit-list').listview();
-        $('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
+  if( Selected.period === undefined && Selected.dataSet !== undefined && Selected.orgUnit !== undefined ) {
+    $.mobile.changePage('#periods-page');
+    return;
+  }
 
-        $.mobile.loading( 'hide' );
-    }
+  $.mobile.loading('show');
 
-    function loadDataSetsPage() {
-        if( Selected.orgUnit === undefined ) {
-            $.mobile.changePage( '#organisation-units-page' );
-            return;
-        }
+  function renderFormTemplate( form, valueMap ) {
+    var tmpl = $('#data-entry-template').html();
 
-        $.mobile.loading( 'show' );
+    $('#data-entry-page section[data-role="content"]').html(
+        _.template(tmpl, {
+          'form': form,
+          'valueMap': valueMap,
+          periodName: Selected.periodName,
+          orgUnitName: Selected.orgUnitName
+        })
+    );
 
-        var organisationUnit = fm.organisationUnit( Selected.orgUnit );
-        var tmpl = $( '#data-sets-template' ).html();
+    $('#data-entry-page').trigger('pagecreate');
+    $('#data-entry-list').listview('refresh');
+    $('#send_button').bind('click', saveValuesNotCompleted);
+    $('#send_and_complete_button').bind('click', saveValuesCompleted);
+  }
 
-        $('#data-sets-page section[data-role="content"]').html(
-            _.template( tmpl, { 'dataSets': organisationUnit.dataSets } )
-        );
+  var dvs = {
+    dataSet: Selected.dataSet,
+    orgUnit: Selected.orgUnit,
+    period: Selected.period
+  };
 
-        $('#data-set-list').listview();
-        $('#data-set-list li a').bind( 'click', selectDataSet );
+  var storedValues = fm.getDataValueSetValues(dvs);
 
-        $.mobile.loading( 'hide' );
-    }
+  if( storedValues ) {
+    var valueMap = {};
 
-    function refreshPeriods() {
-        var tmpl = $('#period-template').html();
-
-        var periods = periodTypeFactory.get( periodType ).generatePeriods( periodOffset );
-
-        if( !allowFuturePeriods ) {
-            periods = periodTypeFactory.filterFuturePeriods( periods );
-            $('#next_year').button('disable');
-        }
-
-        periods = periodTypeFactory.reverse( periods );
-
-        $( '#period-page section[data-role="content"]' ).html(
-            _.template(tmpl, { 'periods' : periods })
-        );
-
-        $( '#period-page' ).trigger( 'pagecreate' );
-        $( '#period-list' ).listview( 'refresh' );
-
-        if( !allowFuturePeriods ) {
-            $('#next_year').button('disable');
-        }
-
-        $( '#previous_year' ).bind( 'click', function() {
-            periodOffset--;
-            refreshPeriods();
-
-            if( periodOffset < 0) {
-                $('#next_year').button('enable');
-            } else {
-                $('#next_year').button('disable');
-            }
-        });
-
-        $( '#next_year' ).bind( 'click', function() {
-            periodOffset++;
-            refreshPeriods();
-
-            if( !allowFuturePeriods && periodOffset == 0) {
-                $('#next_year').button('disable');
-            } else {
-                $('#next_year').button('enable');
-            }
-        });
-
-        $( '#period-list li a' ).bind( 'click', selectPeriod );
-    }
-
-    function loadPeriodPage() {
-        if( Selected.dataSet === undefined )
-        {
-            if( Selected.orgUnit === undefined ) {
-                $.mobile.changePage( '#organisation-units-page' );
-            } else {
-                $.mobile.changePage( '#data-sets-page' );
-            }
-
-            return;
-        }
-
-        $.mobile.loading( 'show' );
-
-        var form = fm.form( Selected.dataSet );
-        periodType = form.options.periodType;
-        allowFuturePeriods = form.options.allowFuturePeriods;
-        refreshPeriods();
-
-        $.mobile.loading( 'hide' );
-    }
-
-    function loadDataEntryPage() {
-        if( Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit === undefined )
-        {
-            $.mobile.changePage( '#organisation-units-page' );
-            return;
-        }
-
-        if( Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit !== undefined )
-        {
-            $.mobile.changePage( '#data-sets-page' );
-            return;
-        }
-
-        if( Selected.period === undefined && Selected.dataSet !== undefined && Selected.orgUnit !== undefined )
-        {
-            $.mobile.changePage( '#periods-page' );
-            return;
-        }
-
-        $.mobile.loading( 'show' );
-
-        function renderFormTemplate(form, valueMap) {
-            var tmpl = $( '#data-entry-template' ).html();
-
-            $( '#data-entry-page section[data-role="content"]' ).html(
-                _.template( tmpl, {
-                    'form': form,
-                    'valueMap': valueMap,
-                    periodName: Selected.periodName,
-                    orgUnitName: Selected.orgUnitName
-                })
-            );
-
-            $( '#data-entry-page' ).trigger( 'pagecreate' );
-            $( '#data-entry-list' ).listview( 'refresh' );
-            $( '#send_button' ).bind( 'click', saveValuesNotCompleted );
-            $( '#send_and_complete_button' ).bind( 'click', saveValuesCompleted );
-        }
-
-        var dvs = {
-            dataSet: Selected.dataSet,
-            orgUnit: Selected.orgUnit,
-            period: Selected.period
-        };
-
-        var storedValues = fm.getDataValueSetValues(dvs);
-
-        if( storedValues ) {
-            var valueMap = {};
-
-            _.each(storedValues.dataValues, function(val, idx) {
-                valueMap[val.dataElement + '-' + val.categoryOptionCombo] = val.value;
-            });
-
-            var form = fm.form(Selected.dataSet);
-            renderFormTemplate(form, valueMap);
-            $.mobile.loading( 'hide' );
-        } else {
-            $.ajax({
-                url: '$contextPath/api/dataSets/' + Selected.dataSet + '/form',
-                cache: false,
-                data: {
-                    ou: Selected.orgUnit,
-                    pe: Selected.period
-                },
-                dataType: 'json'
-            }).success(function(form) {
-                renderFormTemplate(form);
-            }).error(function() {
-                var form = fm.form(Selected.dataSet);
-                renderFormTemplate(form);
-            }).complete(function() {
-                $.mobile.loading( 'hide' );
-            });
-        }
-    }
-
-    function getCurrentDate() {
-        var d = new Date();
-        return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
-    }
-
-    function saveValuesCompleted() {
-        saveValues(true);
-    }
-
-    function saveValuesNotCompleted() {
-        saveValues(false);
-    }
-
-    function saveValues(completed) {
-        $.mobile.loading( 'show' );
-
-        var fields = $('#data-entry-form :input[name]');
-
-        var dataValueSet = {
-          dataSet: Selected.dataSet,
-          orgUnit: Selected.orgUnit,
-          period: Selected.period.toString()
-        };
-
-        if( completed ) {
-            dataValueSet.completeDate = getCurrentDate();
-        }
-
-        var dataValues = [];
-
-        _.each(fields, function(field) {
-            var field = $( field );
-
-            var val = '';
-
-            if ( field.attr( 'type' ) == 'checkbox' ) {
-                val = field.attr( 'checked' ) == 'checked' ? 'true' : 'false';
-            } else {
-                val = field.val();
-            }
-
-            var dataValue = {
-                dataElement: field.data( 'dataelement' ),
-                categoryOptionCombo: field.data( 'categoryoptioncombo' ),
-                value: val
-            };
-
-            dataValues.push( dataValue );
-        });
-
-        dataValueSet.dataValues = dataValues;
-
-        fm.saveDataValueSet( dataValueSet ).complete(function() {
-            $.mobile.loading( 'hide' );
-            location.href = 'index';
-        });
-    }
-
-    $(document).bind( 'pagechange', function (event, data) {
-        var pageId = data.toPage.attr('id');
-
-        if( fm.needMetaData() )
-        {
-            location.href = 'index';
-        }
-
-        var pageLoaders = {
-            'organisation-units-page': loadOrganisationUnitsPage,
-            'data-sets-page': loadDataSetsPage,
-            'period-page': loadPeriodPage,
-            'data-entry-page': loadDataEntryPage
-        };
-
-        if( pageLoaders[pageId] ) {
-            pageLoaders[pageId].call();
-        } else {
-            $.mobile.loading( 'show', {
-                html: '<h1>$i18n.getString("change_to_invalid_page")</h1>',
-                textVisible: true
-            });
-        }
+    _.each(storedValues.dataValues, function( val, idx ) {
+      valueMap[val.dataElement + '-' + val.categoryOptionCombo] = val.value;
     });
+
+    var form = fm.form(Selected.dataSet);
+    renderFormTemplate(form, valueMap);
+    $.mobile.loading('hide');
+  } else {
+    $.ajax({
+      url: '$contextPath/api/dataSets/' + Selected.dataSet + '/form',
+      cache: false,
+      data: {
+        ou: Selected.orgUnit,
+        pe: Selected.period
+      },
+      dataType: 'json'
+    }).success(function( form ) {
+      renderFormTemplate(form);
+    }).error(function() {
+      var form = fm.form(Selected.dataSet);
+      renderFormTemplate(form);
+    }).complete(function() {
+      $.mobile.loading('hide');
+    });
+  }
+}
+
+function getCurrentDate() {
+  var d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+}
+
+function saveValuesCompleted() {
+  saveValues(true);
+}
+
+function saveValuesNotCompleted() {
+  saveValues(false);
+}
+
+function saveValues( completed ) {
+  $('#send_button').button('disable');
+  $('#send_and_complete_button').button('disable');
+
+  $.mobile.loading('show');
+
+  var fields = $('#data-entry-form :input[name]');
+
+  var dataValueSet = {
+    dataSet: Selected.dataSet,
+    orgUnit: Selected.orgUnit,
+    period: Selected.period.toString()
+  };
+
+  if( completed ) {
+    dataValueSet.completeDate = getCurrentDate();
+  }
+
+  var dataValues = [];
+
+  _.each(fields, function( field ) {
+    var field = $(field);
+
+    var val = '';
+
+    if( field.attr('type') == 'checkbox' ) {
+      val = field.attr('checked') == 'checked' ? 'true' : 'false';
+    } else {
+      val = field.val();
+    }
+
+    var dataValue = {
+      dataElement: field.data('dataelement'),
+      categoryOptionCombo: field.data('categoryoptioncombo'),
+      value: val
+    };
+
+    dataValues.push(dataValue);
+  });
+
+  dataValueSet.dataValues = dataValues;
+
+  fm.saveDataValueSet(dataValueSet).complete(function() {
+    $.mobile.loading('hide');
+
+    if( completed ) {
+        alert('Data Set was completed.');
+    } else {
+      alert('Data Set was saved.');
+    }
+
+    location.href = 'index';
+  });
+}
+
+$(document).bind('pagechange', function( event, data ) {
+  var pageId = data.toPage.attr('id');
+
+  if( fm.needMetaData() ) {
+    location.href = 'index';
+  }
+
+  var pageLoaders = {
+    'organisation-units-page': loadOrganisationUnitsPage,
+    'data-sets-page': loadDataSetsPage,
+    'period-page': loadPeriodPage,
+    'data-entry-page': loadDataEntryPage
+  };
+
+  if( pageLoaders[pageId] ) {
+    pageLoaders[pageId].call();
+  } else {
+    $.mobile.loading('show', {
+      html: '<h1>$i18n.getString("change_to_invalid_page")</h1>',
+      textVisible: true
+    });
+  }
+});
 </script>
 
 <script id="organisation-units-template" type="text/template">
