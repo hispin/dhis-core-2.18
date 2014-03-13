@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.utils.ops;
+package org.hisp.dhis.dxf2.common.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -30,7 +30,6 @@ package org.hisp.dhis.api.utils.ops;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.hisp.dhis.api.utils.ops.Op;
 
 import java.util.List;
 import java.util.Map;

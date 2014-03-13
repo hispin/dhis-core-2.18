@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.utils.ops;
+package org.hisp.dhis.dxf2.common.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo

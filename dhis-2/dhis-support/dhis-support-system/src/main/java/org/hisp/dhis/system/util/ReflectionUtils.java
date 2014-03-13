@@ -651,7 +651,8 @@ public class ReflectionUtils
             this.identifiableObject = identifiableObject;
         }
 
-        @Override public String toString()
+        @Override
+        public String toString()
         {
             return "PropertyDescriptor{" +
                 "name='" + name + '\'' +

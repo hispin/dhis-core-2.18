@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.utils.ops;
+package org.hisp.dhis.dxf2.common.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -31,25 +31,7 @@ package org.hisp.dhis.api.utils.ops;
 /**
 * @author Morten Olav Hansen <mortenoh@gmail.com>
 */
-public class NeqOp extends Op
+public enum OpStatus
 {
-    private Op op = OpFactory.create( "eq" );
-
-    @Override
-    public OpStatus evaluate( Object object )
-    {
-        op.setValue( getValue() );
-        OpStatus status = op.evaluate( object );
-
-        // switch status from EqOp
-        switch ( status )
-        {
-            case INCLUDE:
-                return OpStatus.EXCLUDE;
-            case EXCLUDE:
-                return OpStatus.INCLUDE;
-        }
-
-        return OpStatus.IGNORE;
-    }
+    INCLUDE, EXCLUDE, IGNORE
 }

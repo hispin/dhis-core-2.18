@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.utils.ops;
+package org.hisp.dhis.dxf2.common.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,55 +28,28 @@ package org.hisp.dhis.api.utils.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Maps;
-
-import java.util.Map;
-
 /**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
- */
-public class OpFactory
+* @author Morten Olav Hansen <mortenoh@gmail.com>
+*/
+public class NeqOp extends Op
 {
-    protected static Map<String, Class<? extends Op>> register = Maps.newHashMap();
+    private Op op = OpFactory.create( "eq" );
 
-    static
+    @Override
+    public OpStatus evaluate( Object object )
     {
-        register( "eq", EqOp.class );
-        register( "neq", NeqOp.class );
-        register( "like", LikeOp.class );
-        register( "gt", GtOp.class );
-        register( "gte", GteOp.class );
-        register( "lt", LtOp.class );
-        register( "lte", LteOp.class );
-        register( "null", NullOp.class );
-        register( "empty", EmptyCollectionOp.class );
-    }
+        op.setValue( getValue() );
+        OpStatus status = op.evaluate( object );
 
-    public static void register( String type, Class<? extends Op> opClass )
-    {
-        register.put( type.toLowerCase(), opClass );
-    }
-
-    public static boolean canCreate( String type )
-    {
-        return register.containsKey( type.toLowerCase() );
-    }
-
-    public static Op create( String type )
-    {
-        Class<? extends Op> opClass = register.get( type.toLowerCase() );
-
-        try
+        // switch status from EqOp
+        switch ( status )
         {
-            return opClass.newInstance();
-        }
-        catch ( InstantiationException ignored )
-        {
-        }
-        catch ( IllegalAccessException ignored )
-        {
+            case INCLUDE:
+                return OpStatus.EXCLUDE;
+            case EXCLUDE:
+                return OpStatus.INCLUDE;
         }
 
-        return null;
+        return OpStatus.IGNORE;
     }
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.utils.ops;
+package org.hisp.dhis.dxf2.common.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -31,22 +31,20 @@ package org.hisp.dhis.api.utils.ops;
 /**
 * @author Morten Olav Hansen <mortenoh@gmail.com>
 */
-public class LikeOp extends Op
+public class NullOp extends Op
 {
+    @Override
+    public boolean wantValue()
+    {
+        return false;
+    }
+
     @Override
     public OpStatus evaluate( Object object )
     {
-        if ( getValue() == null || object == null )
+        if ( object == null )
         {
-            return OpStatus.IGNORE;
-        }
-
-        if ( String.class.isInstance( object ) )
-        {
-            String s1 = getValue( String.class );
-            String s2 = (String) object;
-
-            return (s1 != null && s2.toLowerCase().contains( s1.toLowerCase() )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            return OpStatus.INCLUDE;
         }
 
         return OpStatus.IGNORE;
