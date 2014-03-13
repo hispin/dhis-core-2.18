@@ -111,7 +111,7 @@ final public class ExchangeClasses
         allExportClasses.put( Constant.class, "constants" );
         allExportClasses.put( Document.class, "documents" );
         allExportClasses.put( OptionSet.class, "optionSets" );
-        allExportClasses.put( Attribute.class, "attributeTypes" );
+        allExportClasses.put( Attribute.class, "attributes" );
 
         allExportClasses.put( MapLegend.class, "mapLegends" );
         allExportClasses.put( MapLegendSet.class, "mapLegendSets" );
