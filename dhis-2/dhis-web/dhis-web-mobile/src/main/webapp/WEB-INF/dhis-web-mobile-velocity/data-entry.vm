@@ -271,7 +271,7 @@ function saveValues( completed ) {
     $.mobile.loading('hide');
 
     if( completed ) {
-        alert('Data Set was completed.');
+      alert('Data Set was completed.');
     } else {
       alert('Data Set was saved.');
     }
