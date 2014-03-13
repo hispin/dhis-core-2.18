@@ -89,7 +89,7 @@
 <input id="mapLegends" name="mapLegends" type="checkbox" value="true" style="display: none;" />
 
 <fieldset style="width: 80%; border: 1px solid #ccc; padding: 15px;">
-    <div style="width: 200px; float: left;"><input id="attributeTypes" name="attributeTypes" type="checkbox" value="true" /> <label for="attributeTypes"> Attribute Types</label></div>
+    <div style="width: 200px; float: left;"><input id="attributes" name="attributes" type="checkbox" value="true" /> <label for="attributes"> Attribute Types</label></div>
     <div style="width: 200px; float: left;"><input id="categories" name="categories" type="checkbox" value="true" /> <label for="categories">Categories</label></div>
     <div style="width: 200px; float: left;"><input id="charts" name="charts" type="checkbox" value="true" /> <label for="charts">Charts</label></div>
     <div style="width: 200px; float: left;"><input id="concepts" name="concepts" type="checkbox" value="true" /> <label for="concepts">Concepts</label></div>

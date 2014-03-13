@@ -101,7 +101,7 @@ public class MetaData
 
     private List<Schema> schemas = Lists.newArrayList();
 
-    private List<Attribute> attributeTypes = new ArrayList<Attribute>();
+    private List<Attribute> attributes = new ArrayList<Attribute>();
 
     private List<Document> documents = new ArrayList<Document>();
 
@@ -233,16 +233,16 @@ public class MetaData
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper(localName = "attributeTypes", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "attributeType", namespace = DxfNamespaces.DXF_2_0)
-    public List<Attribute> getAttributeTypes()
+    @JacksonXmlElementWrapper(localName = "attributes", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "attribute", namespace = DxfNamespaces.DXF_2_0)
+    public List<Attribute> getAttributes()
     {
-        return attributeTypes;
+        return attributes;
     }
 
-    public void setAttributeTypes( List<Attribute> attributeTypes )
+    public void setAttributes( List<Attribute> attributes )
     {
-        this.attributeTypes = attributeTypes;
+        this.attributes = attributes;
     }
 
     @JsonProperty
@@ -900,7 +900,7 @@ public class MetaData
     {
         return "MetaData{" +
             "created=" + created +
-            ", attributeTypes=" + attributeTypes +
+            ", attributes=" + attributes +
             ", documents=" + documents +
             ", constants=" + constants +
             ", concepts=" + concepts +
