@@ -133,9 +133,6 @@ public class GetUserListAction
         {
             this.paging = createPaging( userService.getUserCountByName( key ) );
 
-            //userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetweenByName( key, paging
-            //    .getStartPos(), paging.getPageSize() ) );
-
             userCredentialsList = new ArrayList<UserCredentials>( userService.searchUsersByName( key, paging.getStartPos(),
                 paging.getPageSize() ) );
 
