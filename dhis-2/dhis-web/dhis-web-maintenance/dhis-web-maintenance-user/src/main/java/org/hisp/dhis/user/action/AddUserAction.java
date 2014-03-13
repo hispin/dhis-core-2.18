@@ -55,6 +55,7 @@ import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -267,7 +268,11 @@ public class AddUserAction
         user.setUserCredentials( userCredentials );
 
         userCredentials.setUsername( username );
-        userCredentials.setOpenId( openId );
+
+        if ( !StringUtils.isEmpty( openId ) )
+        {
+            userCredentials.setOpenId( openId );
+        }
 
         if ( ACCOUNT_ACTION_INVITE.equals( accountAction ) )
         {

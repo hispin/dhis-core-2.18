@@ -36,9 +36,20 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.LocaleUtils;
-import org.hisp.dhis.user.*;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.UserSetting;
+import org.hisp.dhis.user.UserSettingService;
+import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -146,7 +157,7 @@ public class UpdateUserAction
     }
 
     private String localeUi;
-    
+
     public void setLocaleUi( String localeUi )
     {
         this.localeUi = localeUi;
@@ -211,7 +222,15 @@ public class UpdateUserAction
         user.updateOrganisationUnits( new HashSet<OrganisationUnit>( units ) );
 
         UserCredentials userCredentials = userService.getUserCredentials( user );
-        userCredentials.setOpenId( openId );
+
+        if ( !StringUtils.isEmpty( openId ) )
+        {
+            userCredentials.setOpenId( openId );
+        }
+        else
+        {
+            userCredentials.setOpenId( null );
+        }
 
         Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
 
@@ -257,7 +276,7 @@ public class UpdateUserAction
 
         userService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_UI_LOCALE, LocaleUtils.getLocale( localeUi ) ) );
         userService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_DB_LOCALE, LocaleUtils.getLocale( localeDb ) ) );
-        
+
         return SUCCESS;
     }
 }
