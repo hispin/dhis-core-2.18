@@ -165,7 +165,11 @@ public class SetAccessSettingsAction
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_RECOVERY, accountRecovery );
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_INVITE, accountInvite );
         systemSettingManager.saveSystemSetting( KEY_SELF_REGISTRATION_NO_RECAPTCHA, selfRegistrationNoRecaptcha );
-        systemSettingManager.saveSystemSetting( KEY_OPENID_PROVIDER, openIdProvider );
+
+        if ( !StringUtils.isEmpty( openIdProviderLabel ) )
+        {
+            systemSettingManager.saveSystemSetting( KEY_OPENID_PROVIDER, openIdProvider );
+        }
 
         if ( !StringUtils.isEmpty( openIdProviderLabel ) )
         {
