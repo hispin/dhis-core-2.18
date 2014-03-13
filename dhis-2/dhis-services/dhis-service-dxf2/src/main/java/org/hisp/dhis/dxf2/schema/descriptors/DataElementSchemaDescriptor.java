@@ -42,8 +42,6 @@ public class DataElementSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataElement.class, "dataElement", "dataElements", true, true, true );
-
-        return schema;
+        return new Schema( DataElement.class, "dataElement", "dataElements", true, true, true );
     }
 }

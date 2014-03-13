@@ -43,6 +43,11 @@ public class DefaultSchemaService implements SchemaService
 {
     private Map<Class<?>, Schema> classSchemaMap = Maps.newHashMap();
 
+    private Map<String, Schema> singularSchemaMap = Maps.newHashMap();
+
+    @Autowired
+    private PropertyScannerService propertyScannerService;
+
     @Autowired
     private List<SchemaDescriptor> descriptors = Lists.newArrayList();
 
@@ -52,7 +57,10 @@ public class DefaultSchemaService implements SchemaService
         for ( SchemaDescriptor descriptor : descriptors )
         {
             Schema schema = descriptor.getSchema();
+            schema.setProperties( propertyScannerService.getProperties( schema.getKlass() ) );
+
             classSchemaMap.put( schema.getKlass(), schema );
+            singularSchemaMap.put( schema.getSingular(), schema );
         }
     }
 
@@ -60,6 +68,12 @@ public class DefaultSchemaService implements SchemaService
     public Schema getSchema( Class<?> klass )
     {
         return classSchemaMap.get( klass );
+    }
+
+    @Override
+    public Schema getSchemaBySingularName( String name )
+    {
+        return singularSchemaMap.get( name );
     }
 
     @Override

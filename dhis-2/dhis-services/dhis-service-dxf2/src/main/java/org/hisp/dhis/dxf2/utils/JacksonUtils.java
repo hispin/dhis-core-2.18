@@ -47,6 +47,8 @@ import org.hisp.dhis.common.view.ShortNameView;
 import org.hisp.dhis.common.view.UuidView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

@@ -28,128 +28,62 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
-import com.google.common.collect.Maps;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
+import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.dxf2.schema.Schema;
+import org.hisp.dhis.dxf2.schema.SchemaService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.system.util.ReflectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "", method = RequestMethod.GET )
+@RequestMapping( value = "/schemas", method = RequestMethod.GET )
 public class SchemaController
 {
-    @RequestMapping( value = { "/schemas", "/schemas.json" }, method = RequestMethod.GET )
-    public void getTypesJson( HttpServletResponse response ) throws IOException
+    @Autowired
+    private SchemaService schemaService;
+
+    @RequestMapping( value = "", method = RequestMethod.GET, produces = { "*/*" } )
+    public void getSchemasJson( HttpServletResponse response ) throws IOException
     {
-        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        Map<String, Map<String, ReflectionUtils.PropertyDescriptor>> output = Maps.newHashMap();
+        List<Schema> schemas = schemaService.getSchemas();
+        MetaData metaData = new MetaData();
+        metaData.setSchemas( schemas );
 
-        for ( Class<? extends IdentifiableObject> key : ExchangeClasses.getAllExportMap().keySet() )
-        {
-            Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( key );
-            output.put( ExchangeClasses.getAllExportMap().get( key ), classMap );
-        }
-
-        JacksonUtils.toJson( response.getOutputStream(), output );
+        JacksonUtils.toJson( response.getOutputStream(), schemas );
     }
 
-    @RequestMapping( value = { "/schemas.xml" }, method = RequestMethod.GET )
-    public void getTypesXml( HttpServletResponse response ) throws IOException
+    @RequestMapping( value = "/{type}", method = RequestMethod.GET, produces = { "*/*" } )
+    public void getSchemaJson( @PathVariable String type, HttpServletResponse response ) throws IOException
     {
-        response.setContentType( MediaType.APPLICATION_XML_VALUE );
-        Map<String, Map<String, ReflectionUtils.PropertyDescriptor>> output = Maps.newHashMap();
-
-        for ( Class<? extends IdentifiableObject> key : ExchangeClasses.getAllExportMap().keySet() )
-        {
-            Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( key );
-            output.put( ExchangeClasses.getAllExportMap().get( key ), classMap );
-        }
-
-        try
-        {
-            ToXmlGenerator generator = (ToXmlGenerator) JacksonUtils.getXmlMapper().getJsonFactory().createJsonGenerator( response.getOutputStream() );
-            XMLStreamWriter staxWriter = generator.getStaxWriter();
-
-            staxWriter.writeStartElement( "", "schemas", DxfNamespaces.DXF_2_0 );
-
-            for ( String key : output.keySet() )
-            {
-                Map<String, ReflectionUtils.PropertyDescriptor> map = output.get( key );
-                writeClassMap( staxWriter, key, map );
-            }
-
-            staxWriter.writeEndElement();
-            staxWriter.close();
-        }
-        catch ( XMLStreamException ex )
-        {
-            ex.printStackTrace();
-        }
+        Schema schema = schemaService.getSchemaBySingularName( type );
+        JacksonUtils.toJson( response.getOutputStream(), schema );
     }
 
-    private void writeClassMap( XMLStreamWriter staxWriter, String type, Map<String, ReflectionUtils.PropertyDescriptor> classMap )
+    @RequestMapping( value = "", method = RequestMethod.GET, produces = { MediaType.APPLICATION_XML_VALUE } )
+    public void getSchemasXml( HttpServletResponse response ) throws IOException
     {
-        try
-        {
-            staxWriter.writeStartElement( "", "schema", DxfNamespaces.DXF_2_0 );
-            staxWriter.writeAttribute( "type", type );
+        List<Schema> schemas = schemaService.getSchemas();
+        MetaData metaData = new MetaData();
+        metaData.setSchemas( schemas );
 
-            for ( String field : classMap.keySet() )
-            {
-                staxWriter.writeStartElement( "", field, DxfNamespaces.DXF_2_0 );
-                ReflectionUtils.PropertyDescriptor descriptor = classMap.get( field );
-                writeDescriptor( staxWriter, descriptor );
-                staxWriter.writeEndElement();
-            }
-
-            staxWriter.writeEndElement();
-        }
-        catch ( XMLStreamException ignored )
-        {
-        }
+        JacksonUtils.toXml( response.getOutputStream(), metaData );
     }
 
-    private void writeDescriptor( XMLStreamWriter staxWriter, ReflectionUtils.PropertyDescriptor descriptor )
+    @RequestMapping( value = "/{type}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_XML_VALUE } )
+    public void getSchemaXml( @PathVariable String type, HttpServletResponse response ) throws IOException
     {
-        writeSimpleElement( staxWriter, "name", descriptor.getName() );
-        writeSimpleElement( staxWriter, "xmlName", descriptor.getXmlName() );
-        writeSimpleElement( staxWriter, "xmlAttribute", descriptor.isXmlAttribute() );
-        writeSimpleElement( staxWriter, "clazz", descriptor.getClazz() );
-        writeSimpleElement( staxWriter, "collection", descriptor.isCollection() );
-        writeSimpleElement( staxWriter, "identifiableObject", descriptor.isIdentifiableObject() );
-        writeSimpleElement( staxWriter, "description", descriptor.getDescription() );
-    }
-
-    private void writeSimpleElement( XMLStreamWriter staxWriter, String fieldName, Object text )
-    {
-        if ( text == null )
-        {
-            return;
-        }
-
-        try
-        {
-            staxWriter.writeStartElement( "", fieldName, DxfNamespaces.DXF_2_0 );
-            staxWriter.writeCharacters( text.toString() );
-            staxWriter.writeEndElement();
-        }
-        catch ( XMLStreamException ignored )
-        {
-        }
+        Schema schema = schemaService.getSchemaBySingularName( type );
+        JacksonUtils.toXml( response.getOutputStream(), schema );
     }
 }

@@ -33,11 +33,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface SchemaService
+public interface PropertyScannerService
 {
-    Schema getSchema( Class<?> klass );
-
-    Schema getSchemaBySingularName( String name );
-
-    List<Schema> getSchemas();
+    List<Property> getProperties( Class<?> klass );
 }
