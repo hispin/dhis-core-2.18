@@ -32,6 +32,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -162,15 +163,43 @@ public class HibernateUserCredentialsStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<UserCredentials> searchUsersByName( String key )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( UserCredentials.class );
+        criteria.createAlias( "user", "user" );
 
-        criteria.add( Restrictions.ilike( "username", "%" + key + "%" ) );
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add( Restrictions.ilike( "user.surname", "%" + key + "%" ) );
+        disjunction.add( Restrictions.ilike( "user.firstName", "%" + key + "%" ) );
+        disjunction.add( Restrictions.ilike( "username", "%" + key + "%" ) );
+
+        criteria.add( disjunction );
         criteria.addOrder( Order.asc( "username" ) );
+
+        return criteria.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<UserCredentials> searchUsersByName( String key, int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( UserCredentials.class );
+        criteria.createAlias( "user", "user" );
+
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add( Restrictions.ilike( "user.surname", "%" + key + "%" ) );
+        disjunction.add( Restrictions.ilike( "user.firstName", "%" + key + "%" ) );
+        disjunction.add( Restrictions.ilike( "username", "%" + key + "%" ) );
+
+        criteria.add( disjunction );
+        criteria.addOrder( Order.asc( "username" ) );
+
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
 
         return criteria.list();
     }
