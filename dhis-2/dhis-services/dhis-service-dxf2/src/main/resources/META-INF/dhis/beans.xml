@@ -8,6 +8,8 @@
 
   <bean id="org.hisp.dhis.dxf2.schema.SchemaService" class="org.hisp.dhis.dxf2.schema.DefaultSchemaService" />
 
+  <bean id="org.hisp.dhis.dxf2.schema.PropertyScannerService" class="org.hisp.dhis.dxf2.schema.DefaultPropertyScannerService" />
+
   <bean id="org.hisp.dhis.dxf2.metadata.ExportService" class="org.hisp.dhis.dxf2.metadata.DefaultExportService" scope="prototype" />
 
   <bean id="org.hisp.dhis.dxf2.metadata.ImportService" class="org.hisp.dhis.dxf2.metadata.DefaultImportService" scope="prototype" />

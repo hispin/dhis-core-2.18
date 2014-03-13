@@ -42,8 +42,6 @@ public class IndicatorSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Indicator.class, "indicator", "indicators", true, true, true );
-
-        return schema;
+        return new Schema( Indicator.class, "indicator", "indicators", true, true, true );
     }
 }

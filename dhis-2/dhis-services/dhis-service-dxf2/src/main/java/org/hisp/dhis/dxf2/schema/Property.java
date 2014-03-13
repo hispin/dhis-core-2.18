@@ -29,12 +29,16 @@ package org.hisp.dhis.dxf2.schema;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
 import java.lang.reflect.Method;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@JacksonXmlRootElement( localName = "property", namespace = DxfNamespaces.DXF_2_0 )
 public class Property
 {
     private String name;
@@ -47,7 +51,7 @@ public class Property
 
     private String xmlCollectionName;
 
-    private Class<?> clazz;
+    private Class<?> klass;
 
     private Method method;
 
@@ -55,12 +59,13 @@ public class Property
 
     private boolean identifiableObject;
 
-    private Property( Method method )
+    public Property( Method method )
     {
         this.method = method;
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getName()
     {
         return name;
@@ -72,6 +77,7 @@ public class Property
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -83,6 +89,7 @@ public class Property
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getXmlName()
     {
         return xmlName;
@@ -94,6 +101,7 @@ public class Property
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isXmlAttribute()
     {
         return xmlAttribute;
@@ -105,6 +113,7 @@ public class Property
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getXmlCollectionName()
     {
         return xmlCollectionName;
@@ -116,14 +125,15 @@ public class Property
     }
 
     @JsonProperty
-    public Class<?> getClazz()
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Class<?> getKlass()
     {
-        return clazz;
+        return klass;
     }
 
-    public void setClazz( Class<?> clazz )
+    public void setKlass( Class<?> klass )
     {
-        this.clazz = clazz;
+        this.klass = klass;
     }
 
     public Method getMethod()
@@ -137,6 +147,7 @@ public class Property
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isCollection()
     {
         return collection;
@@ -148,6 +159,7 @@ public class Property
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isIdentifiableObject()
     {
         return identifiableObject;
@@ -158,15 +170,16 @@ public class Property
         this.identifiableObject = identifiableObject;
     }
 
-    @Override public String toString()
+    @Override
+    public String toString()
     {
-        return "PropertyDescriptor{" +
+        return "Property{" +
             "name='" + name + '\'' +
             ", description='" + description + '\'' +
             ", xmlName='" + xmlName + '\'' +
             ", xmlAttribute=" + xmlAttribute +
             ", xmlCollectionName='" + xmlCollectionName + '\'' +
-            ", clazz=" + clazz +
+            ", klass=" + klass +
             ", method=" + method +
             ", collection=" + collection +
             ", identifiableObject=" + identifiableObject +

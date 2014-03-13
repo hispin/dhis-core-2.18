@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.collect.Lists;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.DimensionalObject;
@@ -54,6 +55,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.dxf2.schema.Schema;
 import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -96,6 +98,8 @@ import java.util.List;
 public class MetaData
 {
     private Date created;
+
+    private List<Schema> schemas = Lists.newArrayList();
 
     private List<Attribute> attributeTypes = new ArrayList<Attribute>();
 
@@ -148,7 +152,7 @@ public class MetaData
     private List<IndicatorGroupSet> indicatorGroupSets = new ArrayList<IndicatorGroupSet>();
 
     private List<IndicatorType> indicatorTypes = new ArrayList<IndicatorType>();
-    
+
     private List<NameableObject> items = new ArrayList<NameableObject>();
 
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
@@ -213,6 +217,19 @@ public class MetaData
     public void setCreated( Date created )
     {
         this.created = created;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "schemas", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "schema", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Schema> getSchemas()
+    {
+        return schemas;
+    }
+
+    public void setSchemas( List<Schema> schemas )
+    {
+        this.schemas = schemas;
     }
 
     @JsonProperty

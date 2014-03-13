@@ -72,7 +72,7 @@ public class Schema
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true, namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( isAttribute = true )
     public Class<?> getKlass()
     {
         return klass;
@@ -84,6 +84,7 @@ public class Schema
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getSingular()
     {
         return singular;
@@ -95,6 +96,7 @@ public class Schema
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getPlural()
     {
         return plural;
@@ -106,6 +108,7 @@ public class Schema
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isImportable()
     {
         return importable;
@@ -117,6 +120,7 @@ public class Schema
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isExportable()
     {
         return exportable;
@@ -128,6 +132,7 @@ public class Schema
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isDeletable()
     {
         return deletable;
@@ -149,5 +154,19 @@ public class Schema
     public void setProperties( List<Property> properties )
     {
         this.properties = properties;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Schema{" +
+            "klass=" + klass +
+            ", singular='" + singular + '\'' +
+            ", plural='" + plural + '\'' +
+            ", importable=" + importable +
+            ", exportable=" + exportable +
+            ", deletable=" + deletable +
+            ", properties=" + properties +
+            '}';
     }
 }
