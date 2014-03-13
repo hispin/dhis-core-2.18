@@ -57,7 +57,11 @@ public class DefaultSchemaService implements SchemaService
         for ( SchemaDescriptor descriptor : descriptors )
         {
             Schema schema = descriptor.getSchema();
-            schema.setProperties( propertyScannerService.getProperties( schema.getKlass() ) );
+
+            if ( schema.getProperties().isEmpty() )
+            {
+                schema.setProperties( propertyScannerService.getProperties( schema.getKlass() ) );
+            }
 
             classSchemaMap.put( schema.getKlass(), schema );
             singularSchemaMap.put( schema.getSingular(), schema );
