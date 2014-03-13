@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.common;
+package org.hisp.dhis.dxf2.schema;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
