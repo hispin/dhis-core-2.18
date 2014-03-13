@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.dxf2.schema.descriptors;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,17 +28,20 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.attribute.Attribute;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.hisp.dhis.dxf2.schema.Schema;
+import org.hisp.dhis.dxf2.schema.SchemaDescriptor;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller
-@RequestMapping( value = AttributeTypeController.RESOURCE_PATH )
-public class AttributeTypeController
-    extends AbstractCrudController<Attribute>
+@Component
+public class IndicatorGroupSetSchemaDescriptor implements SchemaDescriptor
 {
-    public static final String RESOURCE_PATH = "/attributeTypes";
+    @Override
+    public Schema getSchema()
+    {
+        return new Schema( IndicatorGroupSet.class, "indicatorGroupSet", "indicatorGroupSets", true, true, true );
+    }
 }
