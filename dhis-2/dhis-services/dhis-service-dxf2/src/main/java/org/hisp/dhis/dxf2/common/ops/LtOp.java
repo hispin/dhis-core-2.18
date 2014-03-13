@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.utils.ops;
+package org.hisp.dhis.dxf2.common.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -29,32 +29,41 @@ package org.hisp.dhis.api.utils.ops;
  */
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class EmptyCollectionOp extends Op
+public class LtOp extends Op
 {
-    @Override
-    public boolean wantValue()
-    {
-        return false;
-    }
-
     @Override
     public OpStatus evaluate( Object object )
     {
-        if ( object == null )
+        if ( getValue() == null || object == null )
         {
-            // TODO: ignore or include here?
             return OpStatus.IGNORE;
         }
 
-        if ( Collection.class.isInstance( object ) )
+        if ( Integer.class.isInstance( object ) )
         {
-            Collection<?> c = (Collection<?>) object;
+            Integer s1 = getValue( Integer.class );
+            Integer s2 = (Integer) object;
 
-            if ( c.isEmpty() )
+            return (s1 != null && s2 < s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+        }
+        else if ( Float.class.isInstance( object ) )
+        {
+            Float s1 = getValue( Float.class );
+            Float s2 = (Float) object;
+
+            return (s1 != null && s2 < s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+        }
+        else if ( Collection.class.isInstance( object ) )
+        {
+            Collection<?> collection = (Collection<?>) object;
+            Integer size = getValue( Integer.class );
+
+            if ( size != null && collection.size() < size )
             {
                 return OpStatus.INCLUDE;
             }
@@ -62,6 +71,13 @@ public class EmptyCollectionOp extends Op
             {
                 return OpStatus.EXCLUDE;
             }
+        }
+        else if ( Date.class.isInstance( object ) )
+        {
+            Date s1 = getValue( Date.class );
+            Date s2 = (Date) object;
+
+            return (s1 != null && (s2.before( s1 ))) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
 
         return OpStatus.IGNORE;

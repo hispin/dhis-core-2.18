@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.utils.ops;
+package org.hisp.dhis.dxf2.common.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,58 +28,55 @@ package org.hisp.dhis.api.utils.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class LteOp extends Op
+public class OpFactory
 {
-    @Override
-    public OpStatus evaluate( Object object )
+    protected static Map<String, Class<? extends Op>> register = Maps.newHashMap();
+
+    static
     {
-        if ( getValue() == null || object == null )
+        register( "eq", EqOp.class );
+        register( "neq", NeqOp.class );
+        register( "like", LikeOp.class );
+        register( "gt", GtOp.class );
+        register( "gte", GteOp.class );
+        register( "lt", LtOp.class );
+        register( "lte", LteOp.class );
+        register( "null", NullOp.class );
+        register( "empty", EmptyCollectionOp.class );
+    }
+
+    public static void register( String type, Class<? extends Op> opClass )
+    {
+        register.put( type.toLowerCase(), opClass );
+    }
+
+    public static boolean canCreate( String type )
+    {
+        return register.containsKey( type.toLowerCase() );
+    }
+
+    public static Op create( String type )
+    {
+        Class<? extends Op> opClass = register.get( type.toLowerCase() );
+
+        try
         {
-            return OpStatus.IGNORE;
+            return opClass.newInstance();
+        }
+        catch ( InstantiationException ignored )
+        {
+        }
+        catch ( IllegalAccessException ignored )
+        {
         }
 
-        if ( Integer.class.isInstance( object ) )
-        {
-            Integer s1 = getValue( Integer.class );
-            Integer s2 = (Integer) object;
-
-            return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
-        }
-        else if ( Float.class.isInstance( object ) )
-        {
-            Float s1 = getValue( Float.class );
-            Float s2 = (Float) object;
-
-            return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
-        }
-        else if ( Collection.class.isInstance( object ) )
-        {
-            Collection<?> collection = (Collection<?>) object;
-            Integer size = getValue( Integer.class );
-
-            if ( size != null && collection.size() <= size )
-            {
-                return OpStatus.INCLUDE;
-            }
-            else
-            {
-                return OpStatus.EXCLUDE;
-            }
-        }
-        else if ( Date.class.isInstance( object ) )
-        {
-            Date s1 = getValue( Date.class );
-            Date s2 = (Date) object;
-
-            return (s1 != null && (s2.before( s1 ) || s2.equals( s1 ))) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
-        }
-
-        return OpStatus.IGNORE;
+        return null;
     }
 }

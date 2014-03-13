@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.utils.ops;
+package org.hisp.dhis.dxf2.common.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,10 +28,12 @@ package org.hisp.dhis.api.utils.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 /**
-* @author Morten Olav Hansen <mortenoh@gmail.com>
-*/
-public class NullOp extends Op
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public class EmptyCollectionOp extends Op
 {
     @Override
     public boolean wantValue()
@@ -44,7 +46,22 @@ public class NullOp extends Op
     {
         if ( object == null )
         {
-            return OpStatus.INCLUDE;
+            // TODO: ignore or include here?
+            return OpStatus.IGNORE;
+        }
+
+        if ( Collection.class.isInstance( object ) )
+        {
+            Collection<?> c = (Collection<?>) object;
+
+            if ( c.isEmpty() )
+            {
+                return OpStatus.INCLUDE;
+            }
+            else
+            {
+                return OpStatus.EXCLUDE;
+            }
         }
 
         return OpStatus.IGNORE;
