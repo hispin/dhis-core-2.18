@@ -28,12 +28,6 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -42,6 +36,12 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.comparator.UsernameComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -133,8 +133,11 @@ public class GetUserListAction
         {
             this.paging = createPaging( userService.getUserCountByName( key ) );
 
-            userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetweenByName( key, paging
-                .getStartPos(), paging.getPageSize() ) );
+            //userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetweenByName( key, paging
+            //    .getStartPos(), paging.getPageSize() ) );
+
+            userCredentialsList = new ArrayList<UserCredentials>( userService.searchUsersByName( key, paging.getStartPos(),
+                paging.getPageSize() ) );
 
             Collections.sort( userCredentialsList, new UsernameComparator() );
         }
@@ -148,7 +151,7 @@ public class GetUserListAction
         else if ( Boolean.TRUE.equals( selfRegistered ) )
         {
             this.paging = createPaging( userService.getSelfRegisteredUserCredentialsCount() );
-            
+
             userCredentialsList = new ArrayList<UserCredentials>( userService.getSelfRegisteredUserCredentials( paging.
                 getStartPos(), paging.getPageSize() ) );
         }
