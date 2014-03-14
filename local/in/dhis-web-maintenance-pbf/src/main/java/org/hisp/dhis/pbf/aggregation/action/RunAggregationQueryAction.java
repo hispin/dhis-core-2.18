@@ -18,17 +18,13 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.pbf.api.Lookup;
 import org.hisp.dhis.pbf.impl.DefaultPBFAggregationService;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.YearlyPeriodType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,14 +48,14 @@ public class RunAggregationQueryAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-
+    /*
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-
+    */
     private CaseAggregationConditionService aggregationConditionService;
 
     public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
@@ -118,7 +114,16 @@ public class RunAggregationQueryAction
     {
         return importStatus;
     }
-
+    
+    private String selectedPeriodId;
+    
+    public void setSelectedPeriodId( String selectedPeriodId )
+    {
+        this.selectedPeriodId = selectedPeriodId;
+    }
+        
+    private Date aggregationPeriod;
+    
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -128,8 +133,17 @@ public class RunAggregationQueryAction
     {
         Map<String, Double> aggregationResultMap = new HashMap<String, Double>();
 
-        Set<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
+        //Set<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
 
+        Set<OrganisationUnit> tempOrgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
+        
+        Set<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>();
+        
+        for ( OrganisationUnit org : tempOrgUnitList )
+        {
+            orgUnitList.addAll( organisationUnitService.getOrganisationUnitWithChildren( org.getId() )  ) ;
+        }
+        
         //Set<OrganisationUnitGroup> orgUnitGroups = new HashSet<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
 
         /*List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) );
@@ -150,6 +164,22 @@ public class RunAggregationQueryAction
         List<Period> periods = new ArrayList<Period>();
         periods.add( period );
 */
+        
+        Period period = new Period();
+        
+        period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
+        
+        if( period != null )
+        {
+            aggregationPeriod = period.getStartDate();
+        }
+        
+        else
+        {
+            aggregationPeriod = new Date();
+        }
+        
+        //System.out.println( " Aggregation Period -- " + aggregationPeriod );
         
         Constant tariff_authority = constantService.getConstantByName( "TARIFF_SETTING_AUTHORITY" );
         int tariff_setting_authority = 0;
@@ -179,7 +209,9 @@ public class RunAggregationQueryAction
                 
                 List<Period> periods = new ArrayList<Period>();
                 
-                periods.add( getCurrentPeriod( dataSet.getPeriodType(), new Date() ) );                    
+                //periods.add( getCurrentPeriod( dataSet.getPeriodType(), new Date() ) );
+                
+                periods.add( getCurrentPeriod( dataSet.getPeriodType(), aggregationPeriod ) );
 
                 aggregationResultMap.putAll( defaultPBFAggregationService.calculateOverallQualityScore( periods, dataElement, orgUnits, dataSetId, tariff_setting_authority ) );
             }
@@ -195,7 +227,9 @@ public class RunAggregationQueryAction
                 
                 List<Period> periods = new ArrayList<Period>();
                 
-                periods.add( getCurrentPeriod( dataSet.getPeriodType(), new Date() ) );                    
+                //periods.add( getCurrentPeriod( dataSet.getPeriodType(), new Date() ) );
+                
+                periods.add( getCurrentPeriod( dataSet.getPeriodType(), aggregationPeriod ) );
 
                 aggregationResultMap.putAll( defaultPBFAggregationService.calculateOverallUnadjustedPBFAmount( periods, dataElement, orgUnits, dataSetId ) );
             }
@@ -253,6 +287,8 @@ public class RunAggregationQueryAction
         }
         
         period = periodService.reloadPeriod( period );
+        
+        //System.out.println( periodType.getName() + " -- " + period.getStartDateString() );
 
         return period;
     }

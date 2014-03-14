@@ -89,7 +89,7 @@ public class DefaultPBFAggregationService
                                         " dsm.datasetid = " + dataSetId +" " +
                                         " GROUP BY os.organisationunitid, qmv.organisationunitid, qmv.startdate, qmv.enddate";
 
-                System.out.println( query );
+                //System.out.println( query );
                 
                 SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
                 while ( rs.next() )
@@ -115,7 +115,7 @@ public class DefaultPBFAggregationService
                                     " dsm.datasetid = " + dataSetId +" " +
                                     " GROUP BY dv.sourceid, dv.periodid";
             
-            System.out.println( query );
+            //System.out.println( query );
             
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -158,18 +158,34 @@ public class DefaultPBFAggregationService
                             " WHERE " + 
                                 " periodid IN ( "+ Lookup.PERIODID_BY_COMMA +" ) AND "+
                                 " datasetid = "+ dataSetId + " AND " +
-                                " organisationunitid IN (" + Lookup.ORGUNITID_BY_COMMA + ") " +
+                                " organisationunitid IN ( " + Lookup.ORGUNITID_BY_COMMA + " ) " +
                              " GROUP BY organisationunitid, periodid ";        
-
-            Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
-            String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
-            query = query.replace( Lookup.ORGUNITID_BY_COMMA, orgUnitIdsByComma );
-
-            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers( Period.class, periods ) );
-            String periodsByComma = getCommaDelimitedString( periodIds );
-            query = query.replace( Lookup.PERIODID_BY_COMMA, periodsByComma );
             
-            //System.out.println( query );
+            //System.out.println( "Query Before Replace : --" +  orgUnits.size() + " -- "+  query  );
+            
+            if( periods != null && periods.size() > 0 )
+            {
+                Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers( Period.class, periods ) );
+                String periodsByComma = getCommaDelimitedString( periodIds );
+                query = query.replace( Lookup.PERIODID_BY_COMMA, periodsByComma );
+            }
+            else
+            {
+                query = query.replace( Lookup.PERIODID_BY_COMMA, "-1" );
+            }
+            
+            if( orgUnits != null && orgUnits.size() > 0 )
+            {
+                Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
+                String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+                query = query.replace( Lookup.ORGUNITID_BY_COMMA, orgUnitIdsByComma );
+            }
+            else
+            {
+                query = query.replace( Lookup.ORGUNITID_BY_COMMA, "-1" );
+            }
+            
+            //System.out.println( "Query After Replace : --" +  query );
             
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )

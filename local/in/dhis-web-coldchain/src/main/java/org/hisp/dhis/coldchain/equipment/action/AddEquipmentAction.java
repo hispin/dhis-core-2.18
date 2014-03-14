@@ -18,6 +18,7 @@ import org.hisp.dhis.coldchain.equipment.EquipmentTypeService;
 import org.hisp.dhis.coldchain.equipment.EquipmentType_Attribute;
 import org.hisp.dhis.coldchain.model.Model;
 import org.hisp.dhis.coldchain.model.ModelService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -41,6 +42,13 @@ public class AddEquipmentAction implements Action
     private EquipmentService equipmentService;
     
     private ModelService modelService;
+    
+    private I18nFormat format;
+    
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
     
     // -------------------------------------------------------------------------
     // Input/ Output
@@ -78,6 +86,14 @@ public class AddEquipmentAction implements Action
     {
         this.organisationUnit = organisationUnit;
     }
+    
+    private String registrationDate;
+    
+    public void setRegistrationDate( String registrationDate )
+    {
+        this.registrationDate = registrationDate;
+    }
+
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -105,6 +121,8 @@ public class AddEquipmentAction implements Action
         
         equipment.setEquipmentType( equipmentType );
         equipment.setOrganisationUnit( orgUnit );
+        
+        equipment.setRegistrationDate( format.parseDate( registrationDate ) );
         
         //equipment.setWorking( workingStatus );
         

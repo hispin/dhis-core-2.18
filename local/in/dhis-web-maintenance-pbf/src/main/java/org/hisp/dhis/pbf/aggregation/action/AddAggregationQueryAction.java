@@ -5,10 +5,7 @@ import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.pbf.api.Lookup;
-import org.hisp.dhis.pbf.api.LookupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -32,14 +29,15 @@ public class AddAggregationQueryAction
     {
         this.dataElementService = dataElementService;
     }
-
+    /*
     private LookupService lookupService;
 
     public void setLookupService( LookupService lookupService )
     {
         this.lookupService = lookupService;
     }
-
+    */
+    
    /* private CCEIAggregationService cceiAggregationService;
 
     public void setCceiAggregationService( CCEIAggregationService cceiAggregationService )
@@ -53,42 +51,43 @@ public class AddAggregationQueryAction
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
-
+    
+    /*
     private DataSetService dataSetService;
     
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
+    */
     
     // -------------------------------------------------------------------------
     // Input/ Output
     // -------------------------------------------------------------------------
-
+/*
     private String name;
-
-    private String aggType;
-
-    private Integer dataElementId;
-    
-    
-    private Integer pbfDataSetId;
 
     public void setName( String name )
     {
         this.name = name;
     }
-
+*/    
+    private String aggType;
+    
     public void setAggType( String aggType )
     {
         this.aggType = aggType;
     }
 
+    private Integer dataElementId;
+    
     public void setDataElementId( Integer dataElementId )
     {
         this.dataElementId = dataElementId;
     }
-
+    
+    private Integer pbfDataSetId;
+    
     public void setPbfDataSetId( Integer pbfDataSetId )
     {
         this.pbfDataSetId = pbfDataSetId;
@@ -113,6 +112,7 @@ public class AddAggregationQueryAction
         /**
          * TODO support for category option combo
          */
+        
         if( aggType.equals( Lookup.PBF_AGG_TYPE_OVERALL_QUALITY_SCORE ) || aggType.equals( Lookup.PBF_AGG_TYPE_OVERALL_UNADJUSTED_PBF_AMOUNT ) )
         {
             String query = ""+pbfDataSetId;            
