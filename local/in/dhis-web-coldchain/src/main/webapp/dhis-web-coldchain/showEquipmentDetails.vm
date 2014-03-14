@@ -11,6 +11,13 @@
         <!--<tr><td>&nbsp;</td><td>&nbsp;</td></tr>-->
         <!--<tr><th colspan="2" class="heading-column">$i18n.getString( "equipmentType_attribute_details" )</th></tr>-->
         #set( $mark = false )
+		
+		<tr #alternate($mark)>
+                <td class='text-column'><label>$i18n.getString( "registration_date" )</label></td>
+                <td class="text-column">$format.formatDate( $!equipment.getRegistrationDate() )</td>
+       </tr>
+		
+		#set( $mark = true )
         #foreach( $attribute in $equipmentTypeAttributes )
             #set( $attributeValue = "" )
             #set( $attributeValue = $!equipmentValueMap.get( $attribute.id ) )

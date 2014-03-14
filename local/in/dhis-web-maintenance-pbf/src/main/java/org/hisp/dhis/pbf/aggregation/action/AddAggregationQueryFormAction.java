@@ -1,11 +1,8 @@
 package org.hisp.dhis.pbf.aggregation.action;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.pbf.api.Lookup;

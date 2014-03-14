@@ -196,10 +196,11 @@
         <result name="success" type="redirect">aggregationQueryList.action</result>
     </action>
 
-    <action name="runAggregationQueryForm" class="org.hisp.dhis.pbf.action.NoAction">
+    <action name="runAggregationQueryForm" class="org.hisp.dhis.pbf.aggregation.action.RunAggregationQueryFormAction">
         <result name="success" type="velocity">/main.vm</result>
         <param name="page">/dhis-web-maintenance-pbf/runAggregationQueryForm.vm</param>
         <param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
+        <param name="javascripts">javascript/prevNextPeriods.js</param>
     </action>
 
     <action name="runAggregationQuery" class="org.hisp.dhis.pbf.aggregation.action.RunAggregationQueryAction">
@@ -207,6 +208,32 @@
         <param name="page">/dhis-web-maintenance-pbf/runAggregationQueryResult.vm</param>
         <param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
     </action>
+
+
+ 	<!-- Show Update  Aggregation Query Form -->
+    <action name="showUpdateAggregationForm" class="org.hisp.dhis.pbf.aggregation.action.ShowUpdateAggregationQueryFormAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-pbf/updateAggregationQueryForm.vm</param>
+        <param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
+        <param name="javascripts">javascript/aggregationEngine.js</param>
+    </action>
+ 
+ 
+ 	<!--  Update  Aggregation Query -->
+    <action name="updateAggregationQuery" class="org.hisp.dhis.pbf.aggregation.action.UpdateAggregationQueryAction">
+        <result name="success" type="redirect">aggregationQueryList.action</result>
+    </action>
+
+ 	<!--  Remove/Delete Aggregation -->
+	<action name="removeAggregation" class="org.hisp.dhis.pbf.aggregation.action.RemoveAggregationQueryAction">
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	</action>
+	
+    <!--  Get Details Aggregation -->
+	<action name="getAggregation" class="org.hisp.dhis.pbf.aggregation.action.GetAggregationQueryAction">
+		<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/jsonAggregationQuery.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>
 
 	<!-- Lookup -->
     

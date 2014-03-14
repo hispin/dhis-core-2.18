@@ -8,6 +8,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.CalendarPeriodType;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
@@ -70,6 +71,8 @@ public class LoadNextPrePeriodsAction implements Action
         return periods;
     }
 
+    private String periodType;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -79,8 +82,15 @@ public class LoadNextPrePeriodsAction implements Action
         
         DataSet dataset = dataSetService.getDataSet( dataSetId );
         
-        String periodType = dataset.getPeriodType().getName();
+        if( dataset != null )
+        {
+            periodType = dataset.getPeriodType().getName();
+        }
         
+        else
+        {
+            periodType = MonthlyPeriodType.NAME;
+        }
         
         //periodType = periodType != null && !periodType.isEmpty() ? periodType : MonthlyPeriodType.NAME;
 

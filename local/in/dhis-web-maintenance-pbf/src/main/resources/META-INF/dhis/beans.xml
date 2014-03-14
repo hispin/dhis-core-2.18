@@ -265,7 +265,7 @@
     <bean id="org.hisp.dhis.pbf.aggregation.action.AddAggregationQueryAction"
         class="org.hisp.dhis.pbf.aggregation.action.AddAggregationQueryAction"
         scope="prototype">
-        <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+        <!--<property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />-->
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
         <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
         <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
@@ -278,12 +278,18 @@
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     </bean>
 
+	<bean id="org.hisp.dhis.pbf.aggregation.action.RunAggregationQueryFormAction"
+        class="org.hisp.dhis.pbf.aggregation.action.RunAggregationQueryFormAction"
+        scope="prototype">
+    </bean>
+
+
     <bean id="org.hisp.dhis.pbf.aggregation.action.RunAggregationQueryAction"
         class="org.hisp.dhis.pbf.aggregation.action.RunAggregationQueryAction"
         scope="prototype">
         <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        <!--<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />-->
         <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -300,6 +306,47 @@
         <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />        
         <property name="jdbcTemplate" ref="jdbcTemplate" />
     </bean>
+	
+    <!-- Show Update  Aggregation Query Form -->
+    <bean id="org.hisp.dhis.pbf.aggregation.action.ShowUpdateAggregationQueryFormAction"
+        class="org.hisp.dhis.pbf.aggregation.action.ShowUpdateAggregationQueryFormAction"
+        scope="prototype">
+        <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+        <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    </bean>
+    
+    <!--  Update  Aggregation Query -->
+    <bean id="org.hisp.dhis.pbf.aggregation.action.UpdateAggregationQueryAction"
+        class="org.hisp.dhis.pbf.aggregation.action.UpdateAggregationQueryAction"
+        scope="prototype">
+        <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    </bean> 	
+	
+    <!--  Remove/Delete Aggregation -->
+	<bean id="org.hisp.dhis.pbf.aggregation.action.RemoveAggregationQueryAction"
+        class="org.hisp.dhis.pbf.aggregation.action.RemoveAggregationQueryAction"
+        scope="prototype">
+        <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+    </bean> 	
+	
+    <!--  Show/Get Aggregation Details -->
+	<bean id="org.hisp.dhis.pbf.aggregation.action.GetAggregationQueryAction"
+        class="org.hisp.dhis.pbf.aggregation.action.GetAggregationQueryAction"
+        scope="prototype">
+        <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+    </bean>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	 <!-- Get All Lookups -->
     
