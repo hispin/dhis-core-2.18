@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.common.ops;
+package org.hisp.dhis.dxf2.filter;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,55 +28,47 @@ package org.hisp.dhis.dxf2.common.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.hisp.dhis.dxf2.filter.ops.Op;
 
+import java.util.List;
 import java.util.Map;
 
 /**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
- */
-public class OpFactory
+* @author Morten Olav Hansen <mortenoh@gmail.com>
+*/
+public class FilterOps
 {
-    protected static Map<String, Class<? extends Op>> register = Maps.newHashMap();
+    private Map<String, List<Op>> filters = Maps.newHashMap();
 
-    static
+    FilterOps()
     {
-        register( "eq", EqOp.class );
-        register( "neq", NeqOp.class );
-        register( "like", LikeOp.class );
-        register( "gt", GtOp.class );
-        register( "gte", GteOp.class );
-        register( "lt", LtOp.class );
-        register( "lte", LteOp.class );
-        register( "null", NullOp.class );
-        register( "empty", EmptyCollectionOp.class );
     }
 
-    public static void register( String type, Class<? extends Op> opClass )
+    public void addFilter( String opStr, Op op )
     {
-        register.put( type.toLowerCase(), opClass );
+        if ( !filters.containsKey( opStr ) )
+        {
+            filters.put( opStr, Lists.<Op>newArrayList() );
+        }
+
+        filters.get( opStr ).add( op );
     }
 
-    public static boolean canCreate( String type )
+    public Map<String, List<Op>> getFilters()
     {
-        return register.containsKey( type.toLowerCase() );
+        return filters;
     }
 
-    public static Op create( String type )
+    public void setFilters( Map<String, List<Op>> filters )
     {
-        Class<? extends Op> opClass = register.get( type.toLowerCase() );
+        this.filters = filters;
+    }
 
-        try
-        {
-            return opClass.newInstance();
-        }
-        catch ( InstantiationException ignored )
-        {
-        }
-        catch ( IllegalAccessException ignored )
-        {
-        }
-
-        return null;
+    @Override
+    public String toString()
+    {
+        return filters.toString();
     }
 }

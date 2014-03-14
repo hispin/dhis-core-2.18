@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.common.ops;
+package org.hisp.dhis.dxf2.filter.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
