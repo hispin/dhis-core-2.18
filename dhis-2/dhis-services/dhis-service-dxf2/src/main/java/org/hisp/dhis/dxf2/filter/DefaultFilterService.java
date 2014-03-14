@@ -38,6 +38,7 @@ import org.hisp.dhis.dxf2.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -145,6 +146,7 @@ public class DefaultFilterService implements FilterService
 
             Map value = fieldMap.get( key );
             ReflectionUtils.PropertyDescriptor descriptor = classMap.get( key );
+
             Object returned = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
 
             if ( returned == null )

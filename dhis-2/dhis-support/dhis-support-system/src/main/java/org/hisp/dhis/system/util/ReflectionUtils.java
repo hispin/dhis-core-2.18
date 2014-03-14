@@ -404,9 +404,14 @@ public class ReflectionUtils
         return methods;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T invokeMethod( Object target, Method method, Object... args )
     {
+        if ( Modifier.isProtected( method.getModifiers() ) || Modifier.isPrivate( method.getModifiers() ) )
+        {
+            return null;
+        }
+
         try
         {
             return (T) method.invoke( target, args );
@@ -421,7 +426,7 @@ public class ReflectionUtils
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T getFieldObject( Field field, T target )
     {
         return (T) invokeGetterMethod( field.getName(), target );
