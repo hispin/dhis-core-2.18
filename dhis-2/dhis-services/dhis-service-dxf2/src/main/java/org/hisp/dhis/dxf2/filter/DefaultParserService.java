@@ -41,7 +41,7 @@ import java.util.Map;
 public class DefaultParserService implements ParserService
 {
     @Override
-    public Filters parserPropertyFilters( List<String> filters )
+    public Filters parsePropertyFilters( List<String> filters )
     {
         Filters parsed = new Filters();
 
@@ -68,7 +68,7 @@ public class DefaultParserService implements ParserService
     }
 
     @Override
-    public Map<String, Map> parseFieldExpression( String fields )
+    public Map<String, Map> parseObjectFilter( String fields )
     {
         List<String> prefixList = Lists.newArrayList();
         Map<String, Map> parsed = Maps.newHashMap();
