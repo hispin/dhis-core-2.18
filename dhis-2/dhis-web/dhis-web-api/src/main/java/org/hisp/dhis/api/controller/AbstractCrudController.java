@@ -99,7 +99,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         WebMetaData metaData = new WebMetaData();
         options.getOptions().put( "links", "false" );
 
-        boolean hasPaging = false;
+        boolean hasPaging = options.hasPaging();
 
         // get full list if we are using filters
         if ( filters != null && !filters.isEmpty() )
