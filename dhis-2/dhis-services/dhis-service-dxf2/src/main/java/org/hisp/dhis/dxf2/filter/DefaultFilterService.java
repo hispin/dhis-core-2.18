@@ -62,7 +62,7 @@ public class DefaultFilterService implements FilterService
             return Lists.newArrayList();
         }
 
-        Filters parsed = parserService.parserPropertyFilters( filters );
+        Filters parsed = parserService.parsePropertyFilters( filters );
 
         List<T> list = Lists.newArrayList();
 
@@ -102,7 +102,7 @@ public class DefaultFilterService implements FilterService
         {
             Schema schema = schemaService.getSchema( objects.get( 0 ).getClass() );
 
-            Map<String, Map> excludeMap = parserService.parseFieldExpression( exclude );
+            Map<String, Map> excludeMap = parserService.parseObjectFilter( exclude );
 
             for ( Property property : schema.getProperties() )
             {
@@ -114,7 +114,7 @@ public class DefaultFilterService implements FilterService
         }
         else
         {
-            fieldMap = parserService.parseFieldExpression( include );
+            fieldMap = parserService.parseObjectFilter( include );
         }
 
         for ( Object object : objects )

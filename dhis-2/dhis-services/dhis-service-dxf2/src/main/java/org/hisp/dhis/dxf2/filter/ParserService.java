@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public interface ParserService
 {
-    Filters parserPropertyFilters( List<String> filters );
+    Filters parsePropertyFilters( List<String> filters );
 
-    Map<String,Map> parseFieldExpression( String filter );
+    Map<String,Map> parseObjectFilter( String filter );
 }
