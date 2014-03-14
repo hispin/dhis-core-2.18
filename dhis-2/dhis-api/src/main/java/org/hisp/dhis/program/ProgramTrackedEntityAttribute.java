@@ -32,7 +32,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
@@ -85,7 +84,7 @@ public class ProgramTrackedEntityAttribute
         final int prime = 31;
         int result = 1;
 
-        result = result * prime + attribute.hashCode();
+        result = result * prime + (attribute != null ? attribute.hashCode() : 1);
         result = result * prime + sortOrder;
 
         return result;
@@ -106,7 +105,7 @@ public class ProgramTrackedEntityAttribute
 
         final ProgramTrackedEntityAttribute other = (ProgramTrackedEntityAttribute) object;
 
-        return attribute.equals( other.getAttribute() ) && sortOrder == other.getSortOrder();
+        return attribute != null && attribute.equals( other.getAttribute() ) && sortOrder == other.getSortOrder();
     }
 
     // -------------------------------------------------------------------------
