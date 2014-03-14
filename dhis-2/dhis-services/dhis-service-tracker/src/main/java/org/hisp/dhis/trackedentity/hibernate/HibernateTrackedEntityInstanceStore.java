@@ -187,10 +187,8 @@ public class HibernateTrackedEntityInstanceStore
     public int countGetTrackedEntityInstancesByOrgUnitProgram( OrganisationUnit organisationUnit, Program program )
     {
         String sql = "select count(p.trackedentityinstanceid) from trackedentityinstance p join programinstance pi on p.trackedentityinstanceid=pi.trackedentityinstanceid "
-            + "where p.organisationunitid="
-            + organisationUnit.getId()
-            + " and pi.programid="
-            + program.getId()
+            + "where p.organisationunitid=" + organisationUnit.getId()
+            + " and pi.programid=" + program.getId()
             + " and pi.status=" + ProgramInstance.STATUS_ACTIVE;
 
         return jdbcTemplate.queryForObject( sql, Integer.class );

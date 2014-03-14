@@ -177,6 +177,15 @@ public interface GenericIdentifiableObjectStore<T>
     List<T> getByUid( Collection<String> uids );
 
     /**
+     * Retrieves a list of objects referenced by the given List of uids. 
+     * Bypasses the ACL system.
+     *
+     * @param uids a List of uids.
+     * @return a list of objects.
+     */
+    List<T> getByUidNoAcl( Collection<String> uids );
+
+    /**
      * Returns all objects that are equal to or newer than given date.
      *
      * @param created Date to compare with.

@@ -639,6 +639,27 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
         return list;
     }
 
+    @Override
+    public List<T> getByUidNoAcl( Collection<String> uids )
+    {
+        List<T> list = new ArrayList<T>();
+
+        if ( uids != null )
+        {
+            for ( String uid : uids )
+            {
+                T object = getByUidNoAcl( uid );
+
+                if ( object != null )
+                {
+                    list.add( object );
+                }
+            }
+        }
+
+        return list;
+    }
+
     //----------------------------------------------------------------------------------------------------------------
     // No ACL (unfiltered methods)
     //----------------------------------------------------------------------------------------------------------------
