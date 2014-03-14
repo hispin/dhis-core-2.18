@@ -42,6 +42,7 @@ import java.util.Map;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -136,9 +137,9 @@ public class SetupTreeAction
         return userCredentials;
     }
 
-    private Collection<UserAuthorityGroup> userAuthorityGroups;
+    private List<UserAuthorityGroup> userAuthorityGroups;
 
-    public Collection<UserAuthorityGroup> getUserAuthorityGroups()
+    public List<UserAuthorityGroup> getUserAuthorityGroups()
     {
         return userAuthorityGroups;
     }
@@ -236,6 +237,8 @@ public class SetupTreeAction
             currentLocale = LocaleManager.DHIS_STANDARD_LOCALE;
         }
 
+        Collections.sort( userAuthorityGroups, IdentifiableObjectNameComparator.INSTANCE );
+        
         attributes = new ArrayList<Attribute>( attributeService.getUserAttributes() );
         Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 

@@ -241,7 +241,7 @@ public class GetMetaDataAction
 
         organisationUnitAssociationSetMap = organisationUnitSet.getOrganisationUnitAssociationSetMap();
 
-        dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByUid( organisationUnitSet.getDistinctDataSets() ) );
+        dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByUidNoAcl( organisationUnitSet.getDistinctDataSets() ) );
 
         Set<DataElementCategoryCombo> categoryComboSet = new HashSet<DataElementCategoryCombo>();
         Set<DataElementCategory> categorySet = new HashSet<DataElementCategory>();

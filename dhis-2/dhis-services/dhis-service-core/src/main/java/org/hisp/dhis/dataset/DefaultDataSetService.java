@@ -358,6 +358,11 @@ public class DefaultDataSetService
     {
         return dataSetStore.getByUid( uids );
     }
+    
+    public List<DataSet> getDataSetsByUidNoAcl( Collection<String> uids )
+    {
+        return dataSetStore.getByUidNoAcl( uids );
+    }
 
     public Collection<DataElement> getDataElements( DataSet dataSet )
     {

@@ -244,6 +244,14 @@ public interface DataSetService
     List<DataSet> getDataSetsByUid( Collection<String> uids );
 
     /**
+     * Returns a list of data sets with the given uids. Bypasses the ACL system.
+     *
+     * @param uids the collection of uids.
+     * @return a list of data sets.
+     */
+    List<DataSet> getDataSetsByUidNoAcl( Collection<String> uids );
+
+    /**
      * Returns a collection of data elements associated with the given
      * corresponding data set.
      *
