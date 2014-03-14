@@ -42,6 +42,6 @@ public class DashboardSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( Dashboard.class, "dashboard", "dashboards", true, true, true );
+        return new Schema( Dashboard.class, "dashboard", "dashboards", false, false, true );
     }
 }

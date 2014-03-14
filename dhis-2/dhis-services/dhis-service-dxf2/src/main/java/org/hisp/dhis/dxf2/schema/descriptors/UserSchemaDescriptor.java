@@ -42,6 +42,6 @@ public class UserSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( User.class, "user", "users", true, true, true );
+        return new Schema( User.class, "user", "users", true, true, false );
     }
 }

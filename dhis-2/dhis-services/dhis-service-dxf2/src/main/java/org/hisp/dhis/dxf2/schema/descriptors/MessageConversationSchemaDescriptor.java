@@ -42,6 +42,6 @@ public class MessageConversationSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( MessageConversation.class, "messageConversation", "messageConversations", true, true, true );
+        return new Schema( MessageConversation.class, "messageConversation", "messageConversations", false, false, true );
     }
 }

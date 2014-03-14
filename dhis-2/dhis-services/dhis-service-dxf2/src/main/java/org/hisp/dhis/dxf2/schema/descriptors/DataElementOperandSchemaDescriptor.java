@@ -42,6 +42,6 @@ public class DataElementOperandSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( DataElementOperand.class, "dataElementOperand", "dataElementOperands", true, true, true );
+        return new Schema( DataElementOperand.class, "dataElementOperand", "dataElementOperands", false, false, true );
     }
 }

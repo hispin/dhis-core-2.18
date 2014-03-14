@@ -42,6 +42,6 @@ public class CategoryOptionGroupSetSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( CategoryOptionGroupSet.class, "categoryOptionGroupSet", "categoryOptionGroupSets", true, true, true );
+        return new Schema( CategoryOptionGroupSet.class, "categoryOptionGroupSet", "categoryOptionGroupSets", false, false, true );
     }
 }

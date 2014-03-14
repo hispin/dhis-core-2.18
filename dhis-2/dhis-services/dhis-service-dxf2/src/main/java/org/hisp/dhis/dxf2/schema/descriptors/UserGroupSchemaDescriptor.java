@@ -42,6 +42,6 @@ public class UserGroupSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( UserGroup.class, "userGroup", "userGroups", true, true, true );
+        return new Schema( UserGroup.class, "userGroup", "userGroups", true, true, false );
     }
 }

@@ -42,6 +42,6 @@ public class ProgramStageSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( ProgramStage.class, "programStage", "programStages", true, true, true );
+        return new Schema( ProgramStage.class, "programStage", "programStages", false, false, true );
     }
 }

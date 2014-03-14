@@ -42,6 +42,6 @@ public class UserRoleSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( UserAuthorityGroup.class, "userRole", "userRoles", true, true, true );
+        return new Schema( UserAuthorityGroup.class, "userRole", "userRoles", true, true, false );
     }
 }

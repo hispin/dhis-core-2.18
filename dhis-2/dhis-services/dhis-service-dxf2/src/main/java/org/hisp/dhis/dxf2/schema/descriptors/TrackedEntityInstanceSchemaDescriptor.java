@@ -42,6 +42,6 @@ public class TrackedEntityInstanceSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( TrackedEntityInstance.class, "trackedEntityInstance", "trackedEntityInstances", true, true, true );
+        return new Schema( TrackedEntityInstance.class, "trackedEntityInstance", "trackedEntityInstances", false, false, true );
     }
 }

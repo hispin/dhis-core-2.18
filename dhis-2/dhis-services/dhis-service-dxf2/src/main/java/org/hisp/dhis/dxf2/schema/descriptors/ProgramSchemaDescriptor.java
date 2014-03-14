@@ -42,6 +42,6 @@ public class ProgramSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( Program.class, "program", "programs", true, true, true );
+        return new Schema( Program.class, "program", "programs", false, false, true );
     }
 }
