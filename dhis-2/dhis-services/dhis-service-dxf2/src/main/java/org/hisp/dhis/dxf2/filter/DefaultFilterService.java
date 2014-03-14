@@ -62,7 +62,7 @@ public class DefaultFilterService implements FilterService
             return Lists.newArrayList();
         }
 
-        Filters parsed = parserService.parsePropertyFilters( filters );
+        Filters parsed = parserService.parserObjectFilter( filters );
 
         List<T> list = Lists.newArrayList();
 
@@ -78,7 +78,7 @@ public class DefaultFilterService implements FilterService
     }
 
     @Override
-    public <T extends IdentifiableObject> List<Object> filterFields( List<T> objects, String include, String exclude )
+    public <T extends IdentifiableObject> List<Object> filterProperties( List<T> objects, String include, String exclude )
     {
         List<Object> output = Lists.newArrayList();
 
@@ -98,11 +98,15 @@ public class DefaultFilterService implements FilterService
                 fieldMap.put( property.getName(), Maps.newHashMap() );
             }
         }
-        else if ( include == null )
+        else if ( include != null )
+        {
+            fieldMap = parserService.parsePropertyFilter( include );
+        }
+        else
         {
             Schema schema = schemaService.getSchema( objects.get( 0 ).getClass() );
 
-            Map<String, Map> excludeMap = parserService.parseObjectFilter( exclude );
+            Map<String, Map> excludeMap = parserService.parsePropertyFilter( exclude );
 
             for ( Property property : schema.getProperties() )
             {
@@ -111,10 +115,6 @@ public class DefaultFilterService implements FilterService
                     fieldMap.put( property.getName(), Maps.newHashMap() );
                 }
             }
-        }
-        else
-        {
-            fieldMap = parserService.parseObjectFilter( include );
         }
 
         for ( Object object : objects )

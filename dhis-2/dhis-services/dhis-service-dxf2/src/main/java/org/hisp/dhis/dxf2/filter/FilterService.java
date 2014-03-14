@@ -39,5 +39,5 @@ public interface FilterService
 {
     <T extends IdentifiableObject> List<T> filterObjects( List<T> objects, List<String> filters );
 
-    <T extends IdentifiableObject> List<Object> filterFields( List<T> objects, String include, String exclude );
+    <T extends IdentifiableObject> List<Object> filterProperties( List<T> objects, String include, String exclude );
 }
