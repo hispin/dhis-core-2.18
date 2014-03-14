@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.common.ops;
+package org.hisp.dhis.dxf2.filter.ops;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,46 +28,25 @@ package org.hisp.dhis.dxf2.common.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import java.util.List;
-import java.util.Map;
-
 /**
 * @author Morten Olav Hansen <mortenoh@gmail.com>
 */
-public class FilterOps
+public class NullOp extends Op
 {
-    private Map<String, List<Op>> filters = Maps.newHashMap();
-
-    FilterOps()
+    @Override
+    public boolean wantValue()
     {
-    }
-
-    public void addFilter( String opStr, Op op )
-    {
-        if ( !filters.containsKey( opStr ) )
-        {
-            filters.put( opStr, Lists.<Op>newArrayList() );
-        }
-
-        filters.get( opStr ).add( op );
-    }
-
-    public Map<String, List<Op>> getFilters()
-    {
-        return filters;
-    }
-
-    public void setFilters( Map<String, List<Op>> filters )
-    {
-        this.filters = filters;
+        return false;
     }
 
     @Override
-    public String toString()
+    public OpStatus evaluate( Object object )
     {
-        return filters.toString();
+        if ( object == null )
+        {
+            return OpStatus.INCLUDE;
+        }
+
+        return OpStatus.IGNORE;
     }
 }

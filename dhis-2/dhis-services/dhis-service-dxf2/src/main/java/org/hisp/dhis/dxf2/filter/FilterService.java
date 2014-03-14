@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.common.ops;
+package org.hisp.dhis.dxf2.filter;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,58 +28,16 @@ package org.hisp.dhis.dxf2.common.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
+import org.hisp.dhis.common.IdentifiableObject;
+
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class LteOp extends Op
+public interface FilterService
 {
-    @Override
-    public OpStatus evaluate( Object object )
-    {
-        if ( getValue() == null || object == null )
-        {
-            return OpStatus.IGNORE;
-        }
+    <T extends IdentifiableObject> List<T> filterObjects( List<T> objects, List<String> filters );
 
-        if ( Integer.class.isInstance( object ) )
-        {
-            Integer s1 = getValue( Integer.class );
-            Integer s2 = (Integer) object;
-
-            return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
-        }
-        else if ( Float.class.isInstance( object ) )
-        {
-            Float s1 = getValue( Float.class );
-            Float s2 = (Float) object;
-
-            return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
-        }
-        else if ( Collection.class.isInstance( object ) )
-        {
-            Collection<?> collection = (Collection<?>) object;
-            Integer size = getValue( Integer.class );
-
-            if ( size != null && collection.size() <= size )
-            {
-                return OpStatus.INCLUDE;
-            }
-            else
-            {
-                return OpStatus.EXCLUDE;
-            }
-        }
-        else if ( Date.class.isInstance( object ) )
-        {
-            Date s1 = getValue( Date.class );
-            Date s2 = (Date) object;
-
-            return (s1 != null && (s2.before( s1 ) || s2.equals( s1 ))) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
-        }
-
-        return OpStatus.IGNORE;
-    }
+    <T extends IdentifiableObject> List<Object> filterFields( List<T> objects, String include, String exclude );
 }

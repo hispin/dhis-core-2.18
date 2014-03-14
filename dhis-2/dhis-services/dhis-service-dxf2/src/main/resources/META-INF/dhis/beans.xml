@@ -6,6 +6,10 @@
 
   <context:component-scan base-package="org.hisp.dhis.dxf2.schema.descriptors" />
 
+  <bean id="org.hisp.dhis.dxf2.filter.FilterService" class="org.hisp.dhis.dxf2.filter.DefaultFilterService" />
+
+  <bean id="org.hisp.dhis.dxf2.filter.ParserService" class="org.hisp.dhis.dxf2.filter.DefaultParserService" />
+
   <bean id="org.hisp.dhis.dxf2.schema.SchemaService" class="org.hisp.dhis.dxf2.schema.DefaultSchemaService" />
 
   <bean id="org.hisp.dhis.dxf2.schema.PropertyScannerService" class="org.hisp.dhis.dxf2.schema.DefaultPropertyScannerService" />

@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.common.ops;
+package org.hisp.dhis.dxf2.filter;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.common.ops;
  */
 
 import com.google.common.collect.Maps;
+import org.hisp.dhis.dxf2.filter.ops.Op;
 
 import java.util.Map;
 
