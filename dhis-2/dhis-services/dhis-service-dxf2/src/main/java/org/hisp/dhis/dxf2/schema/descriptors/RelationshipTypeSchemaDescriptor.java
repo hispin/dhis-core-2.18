@@ -42,6 +42,6 @@ public class RelationshipTypeSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( RelationshipType.class, "relationshipType", "relationshipTypes", true, true, true );
+        return new Schema( RelationshipType.class, "relationshipType", "relationshipTypes", false, false, true );
     }
 }

@@ -42,6 +42,6 @@ public class TrackedEntityAttributeGroupSchemaDescriptor implements SchemaDescri
     @Override
     public Schema getSchema()
     {
-        return new Schema( TrackedEntityAttributeGroup.class, "trackedEntityAttributeGroup", "trackedEntityAttributeGroups", true, true, true );
+        return new Schema( TrackedEntityAttributeGroup.class, "trackedEntityAttributeGroup", "trackedEntityAttributeGroups", false, false, true );
     }
 }
