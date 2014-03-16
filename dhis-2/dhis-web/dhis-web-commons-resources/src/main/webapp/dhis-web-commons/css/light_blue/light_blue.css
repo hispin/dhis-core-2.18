@@ -333,8 +333,9 @@ a.menuLink:hover
 
 #leftBarContents h2
 {
+  color: #333;
   font-size: 9pt;
-  margin: 16px 20px 2px 20px;
+  margin: 16px 20px 1px 20px;
   padding: 7px 0 7px 0;
   font-weight: normal;
   font-family: LiberationSansBold, arial;

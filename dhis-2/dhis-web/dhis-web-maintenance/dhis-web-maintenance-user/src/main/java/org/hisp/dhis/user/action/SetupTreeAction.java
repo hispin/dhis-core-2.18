@@ -32,7 +32,6 @@ import static org.hisp.dhis.user.UserSettingService.KEY_DB_LOCALE;
 import static org.hisp.dhis.user.UserSettingService.KEY_UI_LOCALE;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
