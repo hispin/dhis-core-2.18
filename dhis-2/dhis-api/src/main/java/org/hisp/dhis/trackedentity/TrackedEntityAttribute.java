@@ -59,27 +59,16 @@ public class TrackedEntityAttribute
     private static final long serialVersionUID = 3026922158464592390L;
 
     public static final String TYPE_DATE = "date";
-
     public static final String TYPE_STRING = "string";
-
     public static final String TYPE_INT = "number";
-
     public static final String VALUE_TYPE_LETTER = "letter";
-
     public static final String TYPE_BOOL = "bool";
-
     public static final String TYPE_TRUE_ONLY = "trueOnly";
-
     public static final String TYPE_COMBO = "combo";
-
     public static final String TYPE_PHONE_NUMBER = "phoneNumber";
-
     public static final String TYPE_TRACKER_ASSOCIATE = "trackerAssociate";
-
     public static final String TYPE_USERS = "users";
-
     public static final String TYPE_AGE = "age";
-
     public static final String VALUE_TYPE_LOCAL_ID = "localId";
 
     private String description;

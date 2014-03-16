@@ -597,5 +597,4 @@ public class DefaultTrackedEntityInstanceService
     {
         return entityInstanceStore.getByAttributeValue( searchText, attributeId, min, max );
     }
-
 }

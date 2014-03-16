@@ -28,28 +28,21 @@ package org.hisp.dhis.api.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.api.controller.WebMetaData;
-import org.hisp.dhis.dxf2.filter.FilterOps;
-import org.hisp.dhis.dxf2.filter.Filters;
-import org.hisp.dhis.dxf2.filter.ops.Op;
-import org.hisp.dhis.common.DimensionalObject;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.system.util.ReflectionUtils;
-import org.hisp.dhis.user.UserCredentials;
+import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.system.util.ReflectionUtils;
+import org.hisp.dhis.user.UserCredentials;
 
 /**
  * TODO too many inner classes, need to be split up

@@ -45,4 +45,12 @@ public class MapMap<T, U, V>
         this.put( key, map );
         return null;
     }
+    
+    public void putEntries( T key, Map<U, V> m )
+    {
+        Map<U, V> map = this.get( key );
+        map = map == null ? new HashMap<U, V>() : map;
+        map.putAll( m );
+        this.put( key, map );
+    }
 }
