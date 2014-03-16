@@ -53,21 +53,11 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class TrackedEntityInstance
     extends BaseIdentifiableObject
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 884114994005945275L;
-
     public static String SEARCH_SAPERATE = "_";
-
     public static String PREFIX_TRACKED_ENTITY_ATTRIBUTE = "attr";
-
     public static String PREFIX_PROGRAM = "prg";
-
     public static String PREFIX_PROGRAM_INSTANCE = "pi";
-
     public static String PREFIX_PROGRAM_EVENT_BY_STATUS = "stat";
-
     public static String PREFIX_PROGRAM_STAGE = "prgst";
 
     private Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
@@ -88,6 +78,22 @@ public class TrackedEntityInstance
     {
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addAttributeValue( TrackedEntityAttributeValue attributeValue )
+    {
+        attributeValues.add( attributeValue );
+        attributeValue.setEntityInstance( this );
+    }
+
+    public void removeAttributeValue( TrackedEntityAttributeValue attributeValue )
+    {
+        attributeValues.remove( attributeValue );
+        attributeValue.setEntityInstance( null );
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -140,22 +146,6 @@ public class TrackedEntityInstance
         this.representative = representative;
     }
 
-    // -------------------------------------------------------------------------
-    // Convenience method
-    // -------------------------------------------------------------------------
-
-    public void addAttributeValue( TrackedEntityAttributeValue attributeValue )
-    {
-        attributeValues.add( attributeValue );
-        attributeValue.setEntityInstance( this );
-    }
-
-    public void removeAttributeValue( TrackedEntityAttributeValue attributeValue )
-    {
-        attributeValues.remove( attributeValue );
-        attributeValue.setEntityInstance( null );
-    }
-    
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )

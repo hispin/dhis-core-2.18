@@ -28,19 +28,26 @@ package org.hisp.dhis.trackedentity.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_TRACKED_ENTITY_ATTRIBUTE;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM_EVENT_BY_STATUS;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM_INSTANCE;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM_STAGE;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_TRACKED_ENTITY_ATTRIBUTE;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.CREATED_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_UPDATED_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,6 +58,7 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -61,10 +69,14 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.grid.GridUtils;
+import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.MapMap;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.TextUtils;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceStore;
 import org.hisp.dhis.trackedentity.TrackedEntityQueryParams;
@@ -98,7 +110,76 @@ public class HibernateTrackedEntityInstanceStore
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
+    
+    @Override
+    public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
+    {
+        Grid grid = new ListGrid();
+        
+        grid.addHeader( new GridHeader( TRACKED_ENTITY_INSTANCE_ID, "Instance" ) );
+        grid.addHeader( new GridHeader( CREATED_ID, "Created" ) );
+        grid.addHeader( new GridHeader( LAST_UPDATED_ID, "Last updated" ) );
+        grid.addHeader( new GridHeader( TRACKED_ENTITY_ID, "Tracked entity" ) );
+        grid.addHeader( new GridHeader( ORG_UNIT_ID, "Org unit" ) );
+        
+        for ( QueryItem item : params.getItems() )
+        {
+            grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName() ) );
+        }
+        
+        Collection<Map<String, String>> entities = getEntities( params );
+        
+        for ( Map<String, String> entity : entities )
+        {
+            grid.addValue( entity.get( TRACKED_ENTITY_INSTANCE_ID ) );
+            grid.addValue( entity.get( CREATED_ID ) );
+            grid.addValue( entity.get( LAST_UPDATED_ID ) );
+            grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
+            grid.addValue( entity.get( ORG_UNIT_ID ) );
+        }
+        
+        return grid;
+    }
+    
+    private Collection<Map<String, String>> getEntities( TrackedEntityInstanceQueryParams params )
+    {
+        String sql = 
+            "select tei.uid, tei.created, tei.lastupdated, te.uid, ou.uid, tav.value, ta.uid " +
+            "from trackedentityinstance tei " +
+            "left join trackedentity te on tei.trackedentityid=te.trackedentityid " +
+            "left join organisationunit ou on tei.organisationunitid=ou.organisationunitid " +
+            "left join trackedentityattributevalue tav on tei.trackedentityinstanceid=tav.trackedentityinstanceid " +
+            "left join trackedentityattribute ta on tav.trackedentityattributeid=ta.trackedentityattributeid";
+        
+        MapMap<String, String, String> entityMap = new MapMap<String, String, String>();
 
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+        
+        while ( rowSet.next() )
+        {
+            String key = rowSet.getString( "tei.uid" );
+            String att = rowSet.getString( "ta.uid" );
+            String val = rowSet.getString( "tav.value" );
+            
+            Map<String, String> entity = entityMap.get( key );
+            
+            if ( entity == null )
+            {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put( TRACKED_ENTITY_INSTANCE_ID, key );
+                map.put( CREATED_ID, DateUtils.getLongDateString( rowSet.getDate( "teu.created" ) ) );
+                map.put( LAST_UPDATED_ID, DateUtils.getLongDateString( rowSet.getDate( "tei.lastupdated" ) ) );
+                map.put( TRACKED_ENTITY_ID, rowSet.getString( "te.uid" ) );
+                map.put( ORG_UNIT_ID, rowSet.getString( "ou.uid" ) );
+                entityMap.putEntries( key, map );
+            }
+            
+            entityMap.putEntry( key, att, val );            
+        }
+        
+        return entityMap.values();
+    }
+    
     @Override
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityInstance> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max )
