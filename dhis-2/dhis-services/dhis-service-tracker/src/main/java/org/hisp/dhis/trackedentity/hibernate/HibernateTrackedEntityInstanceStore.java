@@ -62,6 +62,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.jdbc.StatementBuilder;
@@ -141,7 +142,7 @@ public class HibernateTrackedEntityInstanceStore
             sql += col + ".value as " + col + ", ";
         }
         
-        sql = sql.substring( 0, sql.length() - 2 ); // Remove last comma
+        sql = sql.substring( 0, sql.length() - 2 ) + " "; // Remove last comma
 
         // ---------------------------------------------------------------------
         // From, join and restriction clause
@@ -165,21 +166,32 @@ public class HibernateTrackedEntityInstanceStore
             
             if ( item.hasFilter() )
             {
-                sql += "and " + col + ".value " + item.getSqlOperator() + " " + item.getSqlFilter( filter );
+                sql += "and " + col + ".value " + item.getSqlOperator() + " " + item.getSqlFilter( filter ) + " ";
             }
         }
         
-        if ( !params.isOrganisationUnitMode( DimensionalObject.OU_MODE_SELECTED ) )
+        if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_DESCENDANTS ) )
         {
-            sql += "left join _orgunitstructure ous using tei.organisationunitid=ous.organisationunitid ";
+            sql += "left join _orgunitstructure ous on tei.organisationunitid = ous.organisationunitid ";
         }
         
         if ( params.hasTrackedEntity() )
         {
             sql += hlp.whereAnd() + " tei.trackedentityid = " + params.getTrackedEntity().getId();
         }
-        
-        if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_SELECTED ) )
+
+        if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_DESCENDANTS ) )
+        {
+            SetMap<Integer, OrganisationUnit> levelOuMap = params.getLevelOrgUnitMap();
+            
+            for ( Integer level : levelOuMap.keySet() )
+            {
+                sql += hlp.whereAnd() + " ous.idlevel" + level + " in (" + getCommaDelimitedString( getIdentifiers( levelOuMap.get( level ) ) ) + ") or ";
+            }
+            
+            sql = sql.substring( 0, sql.length() - 3 ); // Reomove last or
+        }
+        else // SELECTED
         {
             sql += hlp.whereAnd() + " tei.organisationunitid in (" + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
         }

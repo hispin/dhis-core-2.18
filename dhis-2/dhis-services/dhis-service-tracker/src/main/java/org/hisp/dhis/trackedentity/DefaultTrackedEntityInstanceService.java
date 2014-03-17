@@ -194,6 +194,8 @@ public class DefaultTrackedEntityInstanceService
                 throw new IllegalQueryException( "Organisation unit does not exist: " + orgUnit );
             }
             
+            organisationUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
+            
             params.getOrganisationUnits().add( organisationUnit );
         }
         
