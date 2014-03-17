@@ -147,7 +147,7 @@ public class RegistrationSingleEventServiceTest
     public void testSaveWithoutEnrollmentShouldFail()
     {
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
-        ImportSummary importSummary = eventService.saveEvent( event );
+        ImportSummary importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
         assertThat( importSummary.getDescription(), CoreMatchers.containsString( "is not enrolled in program" ) );
     }
@@ -160,7 +160,7 @@ public class RegistrationSingleEventServiceTest
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
-        importSummary = eventService.saveEvent( event );
+        importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
     }
 
@@ -172,19 +172,19 @@ public class RegistrationSingleEventServiceTest
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
-        importSummary = eventService.saveEvent( event );
+        importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
-        importSummary = eventService.saveEvent( event );
+        importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
-        importSummary = eventService.saveEvent( event );
+        importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
@@ -198,7 +198,7 @@ public class RegistrationSingleEventServiceTest
 
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         event.setStatus( EventStatus.COMPLETED );
-        ImportSummary importSummary1 = eventService.saveEvent( event );
+        ImportSummary importSummary1 = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary1.getStatus() );
         enrollment = enrollmentService.getEnrollments( trackedEntityInstanceMaleA ).getEnrollments().get( 0 );
         enrollmentService.completeEnrollment( enrollment );
@@ -208,7 +208,7 @@ public class RegistrationSingleEventServiceTest
 
         event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         event.setStatus( EventStatus.COMPLETED );
-        ImportSummary importSummary2 = eventService.saveEvent( event );
+        ImportSummary importSummary2 = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary2.getStatus() );
         enrollment = enrollmentService.getEnrollments( trackedEntityInstanceMaleA ).getEnrollments().get( 0 );
         enrollmentService.completeEnrollment( enrollment );

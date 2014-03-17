@@ -84,29 +84,29 @@ public interface EventService
     // CREATE
     // -------------------------------------------------------------------------
 
-    ImportSummary saveEvent( Event event );
+    ImportSummary addEvent( Event event );
 
-    ImportSummary saveEvent( Event event, ImportOptions importOptions );
+    ImportSummary addEvent( Event event, ImportOptions importOptions );
 
-    ImportSummary saveEventXml( InputStream inputStream ) throws IOException;
+    ImportSummary addEventXml( InputStream inputStream ) throws IOException;
 
-    ImportSummary saveEventXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
+    ImportSummary addEventXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
 
-    ImportSummaries saveEventsXml( InputStream inputStream ) throws IOException;
+    ImportSummaries addEventsXml( InputStream inputStream ) throws IOException;
 
-    ImportSummaries saveEventsXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
+    ImportSummaries addEventsXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
 
-    ImportSummaries saveEventsXml( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException;
+    ImportSummaries addEventsXml( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException;
 
-    ImportSummary saveEventJson( InputStream inputStream ) throws IOException;
+    ImportSummary addEventJson( InputStream inputStream ) throws IOException;
 
-    ImportSummary saveEventJson( InputStream inputStream, ImportOptions importOptions ) throws IOException;
+    ImportSummary addEventJson( InputStream inputStream, ImportOptions importOptions ) throws IOException;
 
-    ImportSummaries saveEventsJson( InputStream inputStream ) throws IOException;
+    ImportSummaries addEventsJson( InputStream inputStream ) throws IOException;
 
-    ImportSummaries saveEventsJson( InputStream inputStream, ImportOptions importOptions ) throws IOException;
+    ImportSummaries addEventsJson( InputStream inputStream, ImportOptions importOptions ) throws IOException;
 
-    ImportSummaries saveEventsJson( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException;
+    ImportSummaries addEventsJson( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException;
 
     // -------------------------------------------------------------------------
     // UPDATE

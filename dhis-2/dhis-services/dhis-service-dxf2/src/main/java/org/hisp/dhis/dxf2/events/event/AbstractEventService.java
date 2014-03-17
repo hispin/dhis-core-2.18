@@ -124,14 +124,14 @@ public abstract class AbstractEventService
 
     @Override
     @Transactional
-    public ImportSummary saveEvent( Event event )
+    public ImportSummary addEvent( Event event )
     {
-        return saveEvent( event, null );
+        return addEvent( event, null );
     }
 
     @Override
     @Transactional
-    public ImportSummary saveEvent( Event event, ImportOptions importOptions )
+    public ImportSummary addEvent( Event event, ImportOptions importOptions )
     {
         Program program = programService.getProgram( event.getProgram() );
         ProgramInstance programInstance;
