@@ -43,6 +43,7 @@ import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
@@ -86,6 +87,13 @@ public class DefaultTrackedEntityInstanceService
     {
         this.attributeService = attributeService;
     }
+    
+    private TrackedEntityService trackedEntityService;
+
+    public void setTrackedEntityService( TrackedEntityService trackedEntityService )
+    {
+        this.trackedEntityService = trackedEntityService;
+    }
 
     private RelationshipService relationshipService;
 
@@ -107,27 +115,61 @@ public class DefaultTrackedEntityInstanceService
     {
         this.programService = programService;
     }
+    
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @Override
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
         return trackedEntityInstanceStore.getTrackedEntityInstances( params );
     }
     
+    @Override
     public TrackedEntityInstanceQueryParams getFromUrl( Set<String> items, String program, String trackedEntity, 
-        Set<String> organisationUnits, String ouMode, Integer page, Integer pageSize )
+        Set<String> ou, String ouMode, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
-        Program pr = programService.getProgram( program );
+        Program pr = program != null ? programService.getProgram( program ) : null;
 
-        if ( pr == null )
+        if ( program != null && pr == null )
         {
             throw new IllegalQueryException( "Program does not exist: " + program );
         }
+        
+        TrackedEntity te = trackedEntity != null ? trackedEntityService.getTrackedEntity( trackedEntity ) : null;
+        
+        if ( te == null )
+        {
+            throw new IllegalQueryException( "Program does not exist: " + program );
+        }
+        
+        Set<OrganisationUnit> ous = new HashSet<OrganisationUnit>();
+        
+        for ( String orgUnit : ou )
+        {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnit );
+            
+            if ( organisationUnit == null )
+            {
+                throw new IllegalQueryException( "Organisation unit does not exist: " + orgUnit );
+            }
+            
+            ous.add( organisationUnit );
+        }
+        
+        params.setOrganisationUnitMode( ouMode );
+        params.setPage( page );
+        params.setPageSize( pageSize );
         
         return params;
     }
