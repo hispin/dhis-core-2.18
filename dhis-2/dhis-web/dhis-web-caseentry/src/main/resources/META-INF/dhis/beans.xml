@@ -729,63 +729,6 @@
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
-		class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
-		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
-		scope="prototype">
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="programStageSectionService"
-			ref="org.hisp.dhis.program.ProgramStageSectionService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction"
-		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GetProgramStageSectionsAction"
-		class="org.hisp.dhis.caseentry.action.report.GetProgramStageSectionsAction"
-		scope="prototype">
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-	</bean>
-
-	<!-- Aggregate Report -->
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsByGroupAction"
-		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsByGroupAction"
-		scope="prototype">
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-
 	<!-- Reminder -->
 
 	<bean
