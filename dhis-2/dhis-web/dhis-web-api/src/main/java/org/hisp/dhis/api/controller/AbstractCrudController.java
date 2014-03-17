@@ -271,7 +271,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
-
     //--------------------------------------------------------------------------
     // PUT
     //--------------------------------------------------------------------------
@@ -319,6 +318,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
      * Override to process entities after it has been retrieved from
      * storage and before it is returned to the view. Entities is null-safe.
      */
+
     protected void postProcessEntities( List<T> entityList )
     {
 
