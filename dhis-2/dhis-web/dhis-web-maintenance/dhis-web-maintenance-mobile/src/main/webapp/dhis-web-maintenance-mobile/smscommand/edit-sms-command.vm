@@ -132,7 +132,16 @@
 			<td>$i18n.getString( "dataset" )</td>
 			<td>#if($smsCommand.dataset.name) $smsCommand.dataset.name #end</td>
 		</tr>
-		
+		<tr>
+		<td>$i18n.getString( "completeness_method" )</td>
+			<td>
+				<select>
+					<option>$i18n.getString( "receive_at_least_one_datavalue" )</option>
+					<option>$i18n.getString( "receive_all_compulsory_datavalue" )</option>
+					<option>$i18n.getString( "receive_all_datavalue" )</option>
+				</select>
+			</td>
+		</tr>
 		<tr>
 	       <td>Use current period for reporting</td>
 		   <td><input type="checkbox" name="currentPeriodUsedForReporting" #if($smsCommand.currentPeriodUsedForReporting) checked #end /></td>
