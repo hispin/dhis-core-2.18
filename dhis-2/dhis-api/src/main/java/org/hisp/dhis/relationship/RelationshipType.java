@@ -39,7 +39,6 @@ import org.hisp.dhis.common.view.ExportView;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 @JacksonXmlRootElement( localName = "relationshipType", namespace = DxfNamespaces.DXF_2_0 )
 public class RelationshipType

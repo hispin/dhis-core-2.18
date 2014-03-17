@@ -75,6 +75,15 @@ public interface TrackedEntityService
     TrackedEntity getTrackedEntity( int id );
 
     /**
+     * Returns a {@link TrackedEntity}.
+     *
+     * @param id the id of the TrackedEntity to return.
+     *
+     * @return the TrackedEntity with the given id
+     */
+    TrackedEntity getTrackedEntity( String uid );
+
+    /**
      * Returns a {@link TrackedEntity} with a given name.
      * 
      * @param name the name of the TrackedEntity to return.

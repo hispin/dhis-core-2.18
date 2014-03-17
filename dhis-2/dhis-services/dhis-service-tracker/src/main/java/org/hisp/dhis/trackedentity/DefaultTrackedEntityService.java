@@ -27,14 +27,13 @@
 
 package org.hisp.dhis.trackedentity;
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+
 /**
  * @author Chau Thu Tran
- * 
  * @version $ DefaultTrackedEntityService.java Feb 15, 2014 7:28:41 PM $
  */
 @Transactional
@@ -78,6 +77,12 @@ public class DefaultTrackedEntityService
     public TrackedEntity getTrackedEntity( int id )
     {
         return trackedEntityStore.get( id );
+    }
+
+    @Override
+    public TrackedEntity getTrackedEntity( String uid )
+    {
+        return trackedEntityStore.getByUid( uid );
     }
 
     @Override
