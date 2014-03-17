@@ -122,6 +122,10 @@ public class HibernateTrackedEntityInstanceStore
     public List<Map<String, String>> getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
         SqlHelper hlp = new SqlHelper();
+
+        // ---------------------------------------------------------------------
+        // Select clause
+        // ---------------------------------------------------------------------
         
         String sql = 
             "select tei.uid as " + TRACKED_ENTITY_INSTANCE_ID + ", " +
@@ -138,6 +142,10 @@ public class HibernateTrackedEntityInstanceStore
         }
         
         sql = sql.substring( 0, sql.length() - 2 ); // Remove last comma
+
+        // ---------------------------------------------------------------------
+        // From, join and restriction clause
+        // ---------------------------------------------------------------------
         
         sql +=        
             "from trackedentityinstance tei " +
@@ -175,9 +183,22 @@ public class HibernateTrackedEntityInstanceStore
         {
             sql += hlp.whereAnd() + " tei.organisationunitid in (" + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
         }
-            
+
+        // ---------------------------------------------------------------------
+        // Paging clause
+        // ---------------------------------------------------------------------
+
+        if ( params.isPaging() )
+        {
+            sql += "limit " + params.getPageSizeWithDefault() + " offset " + params.getOffset();
+        }
+
         log.info( "Tracked entity instance query SQL: " + sql );
-        
+
+        // ---------------------------------------------------------------------
+        // Query
+        // ---------------------------------------------------------------------
+
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
         
         List<Map<String, String>> list = new ArrayList<Map<String,String>>();
