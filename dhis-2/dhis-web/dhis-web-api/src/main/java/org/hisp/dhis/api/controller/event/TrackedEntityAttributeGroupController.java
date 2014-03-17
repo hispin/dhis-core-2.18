@@ -40,5 +40,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping( value = TrackedEntityAttributeGroupController.RESOURCE_PATH )
 public class TrackedEntityAttributeGroupController extends AbstractCrudController<TrackedEntityAttributeGroup>
 {
-    public static final String RESOURCE_PATH = "/trackedEntityAttributes";
+    public static final String RESOURCE_PATH = "/trackedEntityAttributeGroups";
 }
