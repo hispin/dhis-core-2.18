@@ -30,12 +30,12 @@ package org.hisp.dhis.api.controller.event;
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,15 +62,23 @@ public class TrackedEntityController extends AbstractCrudController<TrackedEntit
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @ResponseStatus( HttpStatus.CREATED )
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+        TrackedEntity trackedEntity = JacksonUtils.fromXml( input, TrackedEntity.class );
+        trackedEntityService.addTrackedEntity( trackedEntity );
+
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + trackedEntity.getUid() );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @ResponseStatus( HttpStatus.CREATED )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+        TrackedEntity trackedEntity = JacksonUtils.fromJson( input, TrackedEntity.class );
+        trackedEntityService.addTrackedEntity( trackedEntity );
+
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + trackedEntity.getUid() );
     }
 
     //--------------------------------------------------------------------------
@@ -81,14 +89,36 @@ public class TrackedEntityController extends AbstractCrudController<TrackedEntit
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+        TrackedEntity trackedEntity = trackedEntityService.getTrackedEntity( uid );
+
+        if ( trackedEntity == null )
+        {
+            ContextUtils.conflictResponse( response, "TrackedEntity does not exist: " + uid );
+            return;
+        }
+
+        TrackedEntity newTrackedEntity = JacksonUtils.fromXml( input, TrackedEntity.class );
+        trackedEntity.mergeWith( newTrackedEntity );
+
+        trackedEntityService.updateTrackedEntity( trackedEntity );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+        TrackedEntity trackedEntity = trackedEntityService.getTrackedEntity( uid );
+
+        if ( trackedEntity == null )
+        {
+            ContextUtils.conflictResponse( response, "TrackedEntity does not exist: " + uid );
+            return;
+        }
+
+        TrackedEntity newTrackedEntity = JacksonUtils.fromJson( input, TrackedEntity.class );
+        trackedEntity.mergeWith( newTrackedEntity );
+
+        trackedEntityService.updateTrackedEntity( trackedEntity );
     }
 
     //--------------------------------------------------------------------------
@@ -104,6 +134,7 @@ public class TrackedEntityController extends AbstractCrudController<TrackedEntit
         if ( trackedEntity == null )
         {
             ContextUtils.conflictResponse( response, "TrackedEntity does not exist: " + uid );
+            return;
         }
 
         trackedEntityService.deleteTrackedEntity( trackedEntity );
