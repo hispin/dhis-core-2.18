@@ -139,7 +139,7 @@ public class AddNewRalationshipAction
             newRelationship.setEntityInstanceB( patientA );
         }
 
-        relationshipService.saveRelationship( newRelationship );
+        relationshipService.addRelationship( newRelationship );
 
         return REDIRECT;
     }

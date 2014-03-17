@@ -76,7 +76,7 @@ public class DefaultRelationshipService
         return relationshipStore.getForTrackedEntityInstance( instance );
     }
 
-    public int saveRelationship( Relationship relationship )
+    public int addRelationship( Relationship relationship )
     {
         return relationshipStore.save( relationship );
     }

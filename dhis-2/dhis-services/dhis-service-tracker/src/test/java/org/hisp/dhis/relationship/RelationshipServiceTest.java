@@ -107,8 +107,8 @@ public class RelationshipServiceTest
     @Test
     public void testSaveRelationship()
     {
-        int idA = relationshipService.saveRelationship( relationshipA );
-        int idB = relationshipService.saveRelationship( relationshipB );
+        int idA = relationshipService.addRelationship( relationshipA );
+        int idB = relationshipService.addRelationship( relationshipB );
 
         assertNotNull( relationshipService.getRelationship( idA ) );
         assertNotNull( relationshipService.getRelationship( idB ) );
@@ -117,8 +117,8 @@ public class RelationshipServiceTest
     @Test
     public void testDeleteRelationship()
     {
-        int idA = relationshipService.saveRelationship( relationshipA );
-        int idB = relationshipService.saveRelationship( relationshipB );
+        int idA = relationshipService.addRelationship( relationshipA );
+        int idB = relationshipService.addRelationship( relationshipB );
 
         assertNotNull( relationshipService.getRelationship( idA ) );
         assertNotNull( relationshipService.getRelationship( idB ) );
@@ -137,7 +137,7 @@ public class RelationshipServiceTest
     @Test
     public void testUpdateRelationship()
     {
-        int idA = relationshipService.saveRelationship( relationshipA );
+        int idA = relationshipService.addRelationship( relationshipA );
 
         assertNotNull( relationshipService.getRelationship( idA ) );
 
@@ -150,8 +150,8 @@ public class RelationshipServiceTest
     @Test
     public void testGetRelationshipById()
     {
-        int idA = relationshipService.saveRelationship( relationshipA );
-        int idB = relationshipService.saveRelationship( relationshipB );
+        int idA = relationshipService.addRelationship( relationshipA );
+        int idB = relationshipService.addRelationship( relationshipB );
 
         assertEquals( relationshipA, relationshipService.getRelationship( idA ) );
         assertEquals( relationshipB, relationshipService.getRelationship( idB ) );
@@ -160,8 +160,8 @@ public class RelationshipServiceTest
     @Test
     public void testGetRelationshipByTypeEntityInstance()
     {
-        relationshipService.saveRelationship( relationshipA );
-        relationshipService.saveRelationship( relationshipB );
+        relationshipService.addRelationship( relationshipA );
+        relationshipService.addRelationship( relationshipB );
 
         Relationship relationship = relationshipService.getRelationship( entityInstanceA, entityInstanceB,
             relationshipType );
@@ -174,8 +174,8 @@ public class RelationshipServiceTest
     @Test
     public void testGetRelationshipByTwoEntityInstance()
     {
-        relationshipService.saveRelationship( relationshipA );
-        relationshipService.saveRelationship( relationshipB );
+        relationshipService.addRelationship( relationshipA );
+        relationshipService.addRelationship( relationshipB );
 
         Relationship relationship = relationshipService.getRelationship( entityInstanceA, entityInstanceB );
         assertEquals( relationshipA, relationship );
@@ -187,8 +187,8 @@ public class RelationshipServiceTest
     @Test
     public void testGetAllRelationships()
     {
-        relationshipService.saveRelationship( relationshipA );
-        relationshipService.saveRelationship( relationshipB );
+        relationshipService.addRelationship( relationshipA );
+        relationshipService.addRelationship( relationshipB );
 
         assertTrue( equals( relationshipService.getAllRelationships(), relationshipA, relationshipB ) );
     }
@@ -196,8 +196,8 @@ public class RelationshipServiceTest
     @Test
     public void testGetRelationshipsForEntityInstance()
     {
-        relationshipService.saveRelationship( relationshipA );
-        relationshipService.saveRelationship( relationshipC );
+        relationshipService.addRelationship( relationshipA );
+        relationshipService.addRelationship( relationshipC );
 
         Collection<Relationship> relationships = relationshipService
             .getRelationshipsForTrackedEntityInstance( entityInstanceA );
@@ -207,8 +207,8 @@ public class RelationshipServiceTest
     @Test
     public void testGetRelationships()
     {
-        relationshipService.saveRelationship( relationshipA );
-        relationshipService.saveRelationship( relationshipC );
+        relationshipService.addRelationship( relationshipA );
+        relationshipService.addRelationship( relationshipC );
 
         Collection<Relationship> relationships = relationshipService.getRelationships( entityInstanceA,
             relationshipType );
@@ -218,8 +218,8 @@ public class RelationshipServiceTest
     @Test
     public void testGetRelationshipsByRelationshipType()
     {
-        relationshipService.saveRelationship( relationshipA );
-        relationshipService.saveRelationship( relationshipC );
+        relationshipService.addRelationship( relationshipA );
+        relationshipService.addRelationship( relationshipC );
 
         Collection<Relationship> relationships = relationshipService
             .getRelationshipsByRelationshipType( relationshipType );
