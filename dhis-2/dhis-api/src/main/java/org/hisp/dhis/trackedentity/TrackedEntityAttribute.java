@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 import org.hisp.dhis.period.PeriodType;
@@ -402,5 +403,36 @@ public class TrackedEntityAttribute
         }
 
         return age;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            TrackedEntityAttribute trackedEntityAttribute = (TrackedEntityAttribute) other;
+
+            description = trackedEntityAttribute.getDescription();
+            valueType = trackedEntityAttribute.getValueType();
+            mandatory = trackedEntityAttribute.isMandatory();
+            inherit = trackedEntityAttribute.getInherit();
+            groupBy = trackedEntityAttribute.getGroupBy();
+            attributeGroup = trackedEntityAttribute.getAttributeGroup();
+
+            attributeOptions.clear();
+            attributeOptions.addAll( trackedEntityAttribute.getAttributeOptions() );
+
+            expression = trackedEntityAttribute.getExpression();
+            displayOnVisitSchedule = trackedEntityAttribute.getDisplayOnVisitSchedule();
+            sortOrderInVisitSchedule = trackedEntityAttribute.getSortOrderInVisitSchedule();
+            displayInListNoProgram = trackedEntityAttribute.getDisplayInListNoProgram();
+            sortOrderInListNoProgram = trackedEntityAttribute.getSortOrderInListNoProgram();
+            unique = trackedEntityAttribute.getUnique();
+            orgunitScope = trackedEntityAttribute.getOrgunitScope();
+            programScope = trackedEntityAttribute.getProgramScope();
+            periodType = trackedEntityAttribute.getPeriodType();
+        }
     }
 }

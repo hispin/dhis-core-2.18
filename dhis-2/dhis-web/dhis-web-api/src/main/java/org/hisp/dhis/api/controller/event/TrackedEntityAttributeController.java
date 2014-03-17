@@ -41,7 +41,6 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -144,14 +143,38 @@ public class TrackedEntityAttributeController
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+        TrackedEntityAttribute trackedEntityAttribute = trackedEntityAttributeService.getTrackedEntityAttribute( uid );
+
+        if ( trackedEntityAttribute == null )
+        {
+            ContextUtils.conflictResponse( response, "TrackedEntityAttribute does not exist: " + uid );
+            return;
+        }
+
+        TrackedEntityAttribute newTrackedEntityAttribute = JacksonUtils.fromXml( input, TrackedEntityAttribute.class );
+        newTrackedEntityAttribute.setUid( trackedEntityAttribute.getUid() );
+        trackedEntityAttribute.mergeWith( newTrackedEntityAttribute );
+
+        trackedEntityAttributeService.updateTrackedEntityAttribute( trackedEntityAttribute );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+        TrackedEntityAttribute trackedEntityAttribute = trackedEntityAttributeService.getTrackedEntityAttribute( uid );
+
+        if ( trackedEntityAttribute == null )
+        {
+            ContextUtils.conflictResponse( response, "TrackedEntityAttribute does not exist: " + uid );
+            return;
+        }
+
+        TrackedEntityAttribute newTrackedEntityAttribute = JacksonUtils.fromJson( input, TrackedEntityAttribute.class );
+        newTrackedEntityAttribute.setUid( trackedEntityAttribute.getUid() );
+        trackedEntityAttribute.mergeWith( newTrackedEntityAttribute );
+
+        trackedEntityAttributeService.updateTrackedEntityAttribute( trackedEntityAttribute );
     }
 
     //--------------------------------------------------------------------------
