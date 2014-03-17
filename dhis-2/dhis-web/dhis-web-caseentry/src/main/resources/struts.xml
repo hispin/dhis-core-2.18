@@ -246,13 +246,6 @@
 			</result>
 		</action>
 
-		<action name="getOrganisationUnitPaths"
-			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/jsonminOrganisationUnitPaths.vm
-			</result>
-		</action>
-
 		<action name="markForFollowup"
 			class="org.hisp.dhis.caseentry.action.caseentry.MarkForFollowupAction">
 			<result name="success" type="velocity-json">
@@ -834,68 +827,12 @@
 			<param name="requiredAuthorities">F_RELATIONSHIP_ADD, F_TRACKED_ENTITY_INSTANCE_ADD</param>
 		</action>
 
-		<!-- Tabular report -->
+		<!-- Search events -->
 
 		<action name="searchEvents"
 			class="org.hisp.dhis.caseentry.action.caseentry.SearchEventsAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageInstancesList.vm</param>
-		</action>
-
-		<action name="generateTabularReport" class="org.hisp.dhis.caseentry.action.NoAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-
-		<action name="getOrganisationUnitChildren"
-			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/jsonminOrganisationUnitChildren.vm
-			</result>
-		</action>
-
-		<action name="tabularInitialize"
-			class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/jsonTabularInitialize.vm
-			</result>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-
-		<action name="loadReportProgramStages"
-			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonProgramStages.vm
-			</result>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-
-		<action name="loadProgramStageSections"
-			class="org.hisp.dhis.caseentry.action.report.GetProgramStageSectionsAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonProgramStageSections.vm
-			</result>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-
-		<action name="loadDataElements"
-			class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/responseDataElements.vm
-			</result>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-
-		<action name="getTabularParams"
-			class="org.hisp.dhis.caseentry.action.report.GetTabularParamsAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/responseTabularParams.vm
-			</result>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-
-		<action name="getOrganisationUnitPathsByGroup"
-			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitsByGroupAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/jsonminOrganisationUnitPaths.vm
-			</result>
 		</action>
 
 		<!-- SMS Reminder -->

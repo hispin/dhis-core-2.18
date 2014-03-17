@@ -30,10 +30,6 @@
 		#introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
 	#end
 	
-	#if( $auth.hasAccess( "dhis-web-caseentry", "generateTabularReport" ) )
-		#introListImgItem( "app/index.html" "tabular_report" "summaryreport" )
-	#end
-	
 	#if( $auth.hasAccess( "dhis-web-caseentry", "statisticalProgramReportSelect" ) )
 		#introListImgItem( "statisticalProgramReportSelect.action" "statistical_program" "validationanalysis" )
 	#end
