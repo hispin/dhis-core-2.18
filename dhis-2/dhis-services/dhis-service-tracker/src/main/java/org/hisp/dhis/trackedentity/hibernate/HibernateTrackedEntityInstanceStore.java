@@ -38,10 +38,10 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_TRACKED_E
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.CREATED_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_UPDATED_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
-import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
-import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ATTRIBUTE_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ATTRIBUTE_VALUE_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,7 +63,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -75,7 +74,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.grid.GridUtils;
-import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MapMap;
 import org.hisp.dhis.system.util.SqlHelper;
@@ -125,42 +123,7 @@ public class HibernateTrackedEntityInstanceStore
     // -------------------------------------------------------------------------
     
     @Override
-    public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
-    {
-        Grid grid = new ListGrid();
-        
-        grid.addHeader( new GridHeader( TRACKED_ENTITY_INSTANCE_ID, "Instance" ) );
-        grid.addHeader( new GridHeader( CREATED_ID, "Created" ) );
-        grid.addHeader( new GridHeader( LAST_UPDATED_ID, "Last updated" ) );
-        grid.addHeader( new GridHeader( TRACKED_ENTITY_ID, "Tracked entity" ) );
-        grid.addHeader( new GridHeader( ORG_UNIT_ID, "Org unit" ) );
-        
-        for ( QueryItem item : params.getItems() )
-        {
-            grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName() ) );
-        }
-        
-        Collection<Map<String, String>> entities = getEntities( params );
-        
-        for ( Map<String, String> entity : entities )
-        {
-            grid.addRow();
-            grid.addValue( entity.get( TRACKED_ENTITY_INSTANCE_ID ) );
-            grid.addValue( entity.get( CREATED_ID ) );
-            grid.addValue( entity.get( LAST_UPDATED_ID ) );
-            grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
-            grid.addValue( entity.get( ORG_UNIT_ID ) );
-            
-            for ( QueryItem item : params.getItems() )
-            {
-                grid.addValue( entity.get( item.getItemId() ) );
-            }
-        }
-        
-        return grid;
-    }
-    
-    private Collection<Map<String, String>> getEntities( TrackedEntityInstanceQueryParams params )
+    public Collection<Map<String, String>> getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
         SqlHelper hlp = new SqlHelper();
         
