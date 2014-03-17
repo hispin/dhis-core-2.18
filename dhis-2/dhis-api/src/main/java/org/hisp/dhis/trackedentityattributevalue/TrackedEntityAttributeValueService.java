@@ -49,7 +49,7 @@ public interface TrackedEntityAttributeValueService
      * @param attributeValue The to TrackedEntityAttribute add.
      * 
      */
-    void saveTrackedEntityAttributeValue( TrackedEntityAttributeValue attributeValue );
+    void addTrackedEntityAttributeValue( TrackedEntityAttributeValue attributeValue );
 
     /**
      * Updates an {@link TrackedEntityAttribute}.

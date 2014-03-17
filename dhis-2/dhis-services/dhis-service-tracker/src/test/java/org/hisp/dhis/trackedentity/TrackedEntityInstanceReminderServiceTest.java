@@ -198,7 +198,7 @@ public class TrackedEntityInstanceReminderServiceTest
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstance, attribute );
         attributeValue.setValue( "123456789" );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
 
         entityInstance.getAttributeValues().add( attributeValue );
         entityInstanceService.updateTrackedEntityInstance( entityInstance );

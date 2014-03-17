@@ -269,14 +269,14 @@ public class TrackedEntityInstanceStoreTest
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA1,
             attribute );
         attributeValue.setValue( "123456789" );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
 
         entityInstanceA1.addAttributeValue( attributeValue );
         entityInstanceStore.update( entityInstanceA1 );
 
         attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceB1, attribute );
         attributeValue.setValue( "123456789" );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
 
         entityInstanceB1.addAttributeValue( attributeValue );
         entityInstanceStore.update( entityInstanceB1 );
@@ -298,7 +298,7 @@ public class TrackedEntityInstanceStoreTest
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
             entityInstanceAttribute );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
 
         programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit,
             null );

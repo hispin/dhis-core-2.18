@@ -181,7 +181,7 @@ public class ProgramStageInstanceServiceTest
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA, attribute );
         attributeValue.setValue( "123456789" );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
 
         entityInstanceA.getAttributeValues().add( attributeValue );
         entityInstanceService.updateTrackedEntityInstance( entityInstanceA );

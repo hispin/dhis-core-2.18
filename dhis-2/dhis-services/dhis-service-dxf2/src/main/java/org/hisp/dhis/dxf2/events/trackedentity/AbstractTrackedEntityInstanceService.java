@@ -360,7 +360,7 @@ public abstract class AbstractTrackedEntityInstanceService
                 attributeValue.setValue( attribute.getValue() );
                 attributeValue.setAttribute( entityAttribute );
 
-                attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+                attributeValueService.addTrackedEntityAttributeValue( attributeValue );
             }
         }
     }

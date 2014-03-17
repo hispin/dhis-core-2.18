@@ -263,7 +263,7 @@ public class DefaultTrackedEntityInstanceService
 
         for ( TrackedEntityAttributeValue pav : attributeValues )
         {
-            attributeValueService.saveTrackedEntityAttributeValue( pav );
+            attributeValueService.addTrackedEntityAttributeValue( pav );
             instance.getAttributeValues().add( pav );
         }
 
@@ -437,7 +437,7 @@ public class DefaultTrackedEntityInstanceService
 
         for ( TrackedEntityAttributeValue av : valuesForSave )
         {
-            attributeValueService.saveTrackedEntityAttributeValue( av );
+            attributeValueService.addTrackedEntityAttributeValue( av );
         }
 
         for ( TrackedEntityAttributeValue av : valuesForUpdate )
