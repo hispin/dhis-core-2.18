@@ -37,10 +37,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -216,7 +212,7 @@ public class TrackedEntityAttributeStoreTest
         attributeService.saveTrackedEntityAttribute( attributeB );
         attributeService.saveTrackedEntityAttribute( attributeC );
 
-        attributeGroupService.saveTrackedEntityAttributeGroup( attributeGroup );
+        attributeGroupService.addTrackedEntityAttributeGroup( attributeGroup );
 
         Collection<TrackedEntityAttribute> attributes = attributeService.getOptionalAttributesWithoutGroup();
         assertEquals( 1, attributes.size() );

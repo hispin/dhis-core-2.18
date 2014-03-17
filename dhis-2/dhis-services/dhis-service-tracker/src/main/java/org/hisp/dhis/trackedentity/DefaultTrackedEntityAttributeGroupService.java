@@ -28,18 +28,15 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.i18n.I18nService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
-import org.springframework.transaction.annotation.Transactional;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Chau Thu Tran
@@ -72,7 +69,7 @@ public class DefaultTrackedEntityAttributeGroupService
     // -------------------------------------------------------------------------
 
     @Override
-    public int saveTrackedEntityAttributeGroup( TrackedEntityAttributeGroup attributeGroup )
+    public int addTrackedEntityAttributeGroup( TrackedEntityAttributeGroup attributeGroup )
     {
         return attributeGroupStore.save( attributeGroup );
     }
@@ -90,9 +87,15 @@ public class DefaultTrackedEntityAttributeGroupService
     }
 
     @Override
-     public TrackedEntityAttributeGroup getTrackedEntityAttributeGroup( int id )
+    public TrackedEntityAttributeGroup getTrackedEntityAttributeGroup( int id )
     {
         return i18n( i18nService, attributeGroupStore.get( id ) );
+    }
+
+    @Override
+    public TrackedEntityAttributeGroup getTrackedEntityAttributeGroup( String uid )
+    {
+        return i18n( i18nService, attributeGroupStore.getByUid( uid ) );
     }
 
     @Override
@@ -108,7 +111,7 @@ public class DefaultTrackedEntityAttributeGroupService
     }
 
     @Override
-     public List<TrackedEntityAttribute> getTrackedEntityAttributes( TrackedEntityAttributeGroup attributeGroup )
+    public List<TrackedEntityAttribute> getTrackedEntityAttributes( TrackedEntityAttributeGroup attributeGroup )
     {
         return new ArrayList<TrackedEntityAttribute>( i18n( i18nService, attributeGroup.getAttributes() ) );
     }
