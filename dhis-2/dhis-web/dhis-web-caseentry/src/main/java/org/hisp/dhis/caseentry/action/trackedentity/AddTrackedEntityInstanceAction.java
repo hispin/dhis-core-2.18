@@ -223,7 +223,7 @@ public class AddTrackedEntityInstanceAction
                 if ( relType != null )
                 {
                     rel.setRelationshipType( relType );
-                    relationshipService.saveRelationship( rel );
+                    relationshipService.addRelationship( rel );
                 }
             }
         }

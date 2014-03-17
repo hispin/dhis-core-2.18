@@ -288,7 +288,7 @@ public class DefaultTrackedEntityInstanceService
                     if ( relType != null )
                     {
                         rel.setRelationshipType( relType );
-                        relationshipService.saveRelationship( rel );
+                        relationshipService.addRelationship( rel );
                     }
                 }
             }
@@ -468,7 +468,7 @@ public class DefaultTrackedEntityInstanceService
                     if ( relType != null )
                     {
                         rel.setRelationshipType( relType );
-                        relationshipService.saveRelationship( rel );
+                        relationshipService.addRelationship( rel );
                     }
                 }
             }

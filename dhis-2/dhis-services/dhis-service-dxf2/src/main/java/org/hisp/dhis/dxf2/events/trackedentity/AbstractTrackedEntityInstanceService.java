@@ -377,7 +377,7 @@ public abstract class AbstractTrackedEntityInstanceService
             entityRelationship.setEntityInstanceB( entityInstanceB );
             entityRelationship.setRelationshipType( relationshipType );
 
-            relationshipService.saveRelationship( entityRelationship );
+            relationshipService.addRelationship( entityRelationship );
         }
     }
 

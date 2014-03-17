@@ -48,7 +48,7 @@ public interface RelationshipService
      * 
      * @return A generated unique id of the added {@link Program}.
      */
-    int saveRelationship( Relationship relationship );
+    int addRelationship( Relationship relationship );
 
     /**
      * Returns a {@link Program}.

@@ -1124,7 +1124,7 @@ public class ActivityReportingServiceImpl
             relationship.setEntityInstanceA( patientB );
             relationship.setEntityInstanceB( patientA );
         }
-        relationshipService.saveRelationship( relationship );
+        relationshipService.addRelationship( relationship );
         // return getPatientModel( orgUnitId, patientA );
         return getPatientModel( patientA );
     }
