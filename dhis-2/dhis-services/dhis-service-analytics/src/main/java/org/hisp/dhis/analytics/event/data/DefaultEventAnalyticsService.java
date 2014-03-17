@@ -46,7 +46,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.analytics.AnalyticsService;
-import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
@@ -54,6 +53,7 @@ import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -324,11 +324,11 @@ public class DefaultEventAnalyticsService
         {
             for ( String dim : dimension )
             {
-                String dimensionId = DataQueryParams.getDimensionFromParam( dim );
+                String dimensionId = DimensionalObjectUtils.getDimensionFromParam( dim );
 
                 if ( ORGUNIT_DIM_ID.equals( dimensionId ) || PERIOD_DIM_ID.equals( dimensionId ) )
                 {
-                    List<String> items = DataQueryParams.getDimensionItemsFromParam( dim );
+                    List<String> items = DimensionalObjectUtils.getDimensionItemsFromParam( dim );
                     params.getDimensions().addAll( analyticsService.getDimension( dimensionId, items, date, format ) );
                 }
                 else
@@ -342,11 +342,11 @@ public class DefaultEventAnalyticsService
         {
             for ( String dim : filter )
             {
-                String dimensionId = DataQueryParams.getDimensionFromParam( dim );
+                String dimensionId = DimensionalObjectUtils.getDimensionFromParam( dim );
 
                 if ( ORGUNIT_DIM_ID.equals( dimensionId ) || PERIOD_DIM_ID.equals( dimensionId ) )
                 {
-                    List<String> items = DataQueryParams.getDimensionItemsFromParam( dim );
+                    List<String> items = DimensionalObjectUtils.getDimensionItemsFromParam( dim );
                     params.getFilters().addAll( analyticsService.getDimension( dimensionId, items, date, format ) );
                 }
                 else

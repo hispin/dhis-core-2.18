@@ -29,7 +29,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
-import static org.hisp.dhis.analytics.DataQueryParams.getDimensionsFromParam;
+import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensionsFromParam;
 
 import java.util.Map;
 import java.util.Set;
