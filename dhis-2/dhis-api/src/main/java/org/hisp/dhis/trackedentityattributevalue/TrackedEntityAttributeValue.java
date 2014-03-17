@@ -35,8 +35,9 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
+ * TODO index on attribute and instance
+ * 
  * @author Abyot Asalefew
- * @version $Id$
  */
 public class TrackedEntityAttributeValue
     implements Serializable

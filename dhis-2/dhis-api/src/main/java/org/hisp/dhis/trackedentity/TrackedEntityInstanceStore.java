@@ -50,7 +50,7 @@ public interface TrackedEntityInstanceStore
 
     final int MAX_RESULTS = 50000;
 
-    Collection<Map<String, String>> getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
+    List<Map<String, String>> getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
     
     /**
      * Search entityInstances who registered in a certain organisation unit

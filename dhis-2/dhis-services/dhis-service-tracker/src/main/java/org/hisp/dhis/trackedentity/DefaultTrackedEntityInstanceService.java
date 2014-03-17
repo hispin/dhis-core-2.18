@@ -152,7 +152,7 @@ public class DefaultTrackedEntityInstanceService
             grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName() ) );
         }
         
-        Collection<Map<String, String>> entities = trackedEntityInstanceStore.getTrackedEntityInstances( params );
+        List<Map<String, String>> entities = trackedEntityInstanceStore.getTrackedEntityInstances( params );
         
         for ( Map<String, String> entity : entities )
         {
