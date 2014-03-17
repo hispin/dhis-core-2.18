@@ -108,6 +108,14 @@ public class TrackedEntityAttributeGroupController extends AbstractCrudControlle
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        TrackedEntityAttributeGroup trackedEntityAttributeGroup = trackedEntityAttributeGroupService.getTrackedEntityAttributeGroup( uid );
+
+        if ( trackedEntityAttributeGroup == null )
+        {
+            ContextUtils.conflictResponse( response, "TrackedEntityAttributeGroup does not exist: " + uid );
+            return;
+        }
+
+        trackedEntityAttributeGroupService.deleteTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
     }
 }

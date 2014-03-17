@@ -162,6 +162,14 @@ public class TrackedEntityAttributeController
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        TrackedEntityAttribute trackedEntityAttribute = trackedEntityAttributeService.getTrackedEntityAttribute( uid );
+
+        if ( trackedEntityAttribute == null )
+        {
+            ContextUtils.conflictResponse( response, "TrackedEntityAttribute does not exist: " + uid );
+            return;
+        }
+
+        trackedEntityAttributeService.deleteTrackedEntityAttribute( trackedEntityAttribute );
     }
 }
