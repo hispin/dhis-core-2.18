@@ -53,8 +53,6 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
-import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
-import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -127,7 +125,7 @@ public class TrackedEntityDataValueServiceTest
         dataElementService.addDataElement( dataElementB );
 
         entityInstance = createTrackedEntityInstance(  'A', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstance );
+        entityInstanceService.addTrackedEntityInstance( entityInstance );
 
         Program program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( program );

@@ -40,10 +40,6 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
-import org.hisp.dhis.trackedentity.TrackedEntityAudit;
-import org.hisp.dhis.trackedentity.TrackedEntityAuditService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -85,10 +81,10 @@ public class TrackedEntityAuditServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
         entityInstanceA = createTrackedEntityInstance( 'A', organisationUnit );
-        entityInstanceAId = entityInstanceService.saveTrackedEntityInstance( entityInstanceA );
+        entityInstanceAId = entityInstanceService.addTrackedEntityInstance( entityInstanceA );
 
         entityInstanceB = createTrackedEntityInstance( 'B', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB );
 
         Calendar cal = Calendar.getInstance();
         PeriodType.clearTimeOfDay( cal );

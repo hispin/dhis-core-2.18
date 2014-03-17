@@ -170,10 +170,10 @@ public class ProgramStageInstanceServiceTest
         orgunitBId = organisationUnitService.addOrganisationUnit( organisationUnitB );
 
         entityInstanceA = createTrackedEntityInstance( 'A', organisationUnitA );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA );
 
         entityInstanceB = createTrackedEntityInstance( 'B', organisationUnitB );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB );
 
         TrackedEntityAttribute attribute = createTrackedEntityAttribute( 'A' );
         attribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );

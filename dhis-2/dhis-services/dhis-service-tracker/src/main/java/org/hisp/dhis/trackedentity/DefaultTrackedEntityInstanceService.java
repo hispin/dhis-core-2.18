@@ -181,7 +181,7 @@ public class DefaultTrackedEntityInstanceService
     }
     
     @Override
-    public int saveTrackedEntityInstance( TrackedEntityInstance instance )
+    public int addTrackedEntityInstance( TrackedEntityInstance instance )
     {
         return trackedEntityInstanceStore.save( instance );
     }
@@ -190,7 +190,7 @@ public class DefaultTrackedEntityInstanceService
     public int createTrackedEntityInstance( TrackedEntityInstance instance, Integer representativeId,
         Integer relationshipTypeId, Set<TrackedEntityAttributeValue> attributeValues )
     {
-        int id = saveTrackedEntityInstance( instance );
+        int id = addTrackedEntityInstance( instance );
 
         for ( TrackedEntityAttributeValue pav : attributeValues )
         {

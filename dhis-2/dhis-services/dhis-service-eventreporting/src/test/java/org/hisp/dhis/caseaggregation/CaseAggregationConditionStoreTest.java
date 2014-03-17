@@ -212,7 +212,7 @@ public class CaseAggregationConditionStoreTest
         // ---------------------------------------------------------------------
 
         TrackedEntityInstance entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstance );
+        entityInstanceService.addTrackedEntityInstance( entityInstance );
 
         // ---------------------------------------------------------------------
         // Attribue value

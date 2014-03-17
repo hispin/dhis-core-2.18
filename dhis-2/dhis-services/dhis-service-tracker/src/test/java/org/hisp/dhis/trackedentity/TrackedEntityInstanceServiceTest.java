@@ -134,8 +134,8 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testSaveTrackedEntityInstance()
     {
-        int idA = entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        int idB = entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
+        int idA = entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        int idB = entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
 
         assertNotNull( entityInstanceService.getTrackedEntityInstance( idA ) );
         assertNotNull( entityInstanceService.getTrackedEntityInstance( idB ) );
@@ -144,8 +144,8 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testDeleteTrackedEntityInstance()
     {
-        int idA = entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        int idB = entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
+        int idA = entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        int idB = entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
 
         assertNotNull( entityInstanceService.getTrackedEntityInstance( idA ) );
         assertNotNull( entityInstanceService.getTrackedEntityInstance( idB ) );
@@ -164,7 +164,7 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testUpdateTrackedEntityInstance()
     {
-        int idA = entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
+        int idA = entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
 
         assertNotNull( entityInstanceService.getTrackedEntityInstance( idA ) );
 
@@ -177,8 +177,8 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testGetTrackedEntityInstanceById()
     {
-        int idA = entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        int idB = entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
+        int idA = entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        int idB = entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
 
         assertEquals( entityInstanceA1, entityInstanceService.getTrackedEntityInstance( idA ) );
         assertEquals( entityInstanceB1, entityInstanceService.getTrackedEntityInstance( idB ) );
@@ -190,8 +190,8 @@ public class TrackedEntityInstanceServiceTest
         entityInstanceA1.setUid( "A1" );
         entityInstanceB1.setUid( "B1" );
 
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
 
         assertEquals( entityInstanceA1, entityInstanceService.getTrackedEntityInstance( "A1" ) );
         assertEquals( entityInstanceB1, entityInstanceService.getTrackedEntityInstance( "B1" ) );
@@ -200,8 +200,8 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testGetAllTrackedEntityInstances()
     {
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
 
         assertTrue( equals( entityInstanceService.getAllTrackedEntityInstances(), entityInstanceA1, entityInstanceB1 ) );
     }
@@ -209,9 +209,9 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testGetTrackedEntityInstancesByOu()
     {
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA3 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
 
         Collection<TrackedEntityInstance> entityInstances = entityInstanceService.getTrackedEntityInstances( organisationUnit, null, null );
         assertEquals( 2, entityInstances.size() );
@@ -224,9 +224,9 @@ public class TrackedEntityInstanceServiceTest
     {
         programService.addProgram( programA );
 
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA3 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
 
         programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit, null );
         programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit, null );
@@ -242,9 +242,9 @@ public class TrackedEntityInstanceServiceTest
     {
         programService.addProgram( programA );
 
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA3 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
 
         programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit, null );
         programInstanceService.enrollTrackedEntityInstance( entityInstanceA2, programA, date, date, organisationUnit, null );
@@ -259,10 +259,10 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testGetTrackedEntityInstancesByAttribute()
     {
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA3 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
             entityInstanceAttribute );
@@ -287,10 +287,10 @@ public class TrackedEntityInstanceServiceTest
         programService.addProgram( programA );
         programService.addProgram( programB );
 
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
 
         programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit, null );
         programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit, null );
@@ -313,13 +313,13 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testGetRepresentatives()
     {
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
 
         entityInstanceA1.setRepresentative( entityInstanceB1 );
         entityInstanceA2.setRepresentative( entityInstanceB1 );
 
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
 
         assertEquals( 2, entityInstanceService.getRepresentatives( entityInstanceB1 ).size() );
     }
@@ -327,7 +327,7 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testCreateTrackedEntityInstanceAndRelative()
     {
-        int idB = entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
+        int idB = entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
 
         RelationshipType relationshipType = createRelationshipType( 'A' );
         int relationshipTypeId = relationshipTypeService.addRelationshipType( relationshipType );
@@ -344,7 +344,7 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testUpdateTrackedEntityInstanceAndRelative()
     {
-        int idB = entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
+        int idB = entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
 
         RelationshipType relationshipType = createRelationshipType( 'A' );
         int relationshipTypeId = relationshipTypeService.addRelationshipType( relationshipType );
@@ -369,9 +369,9 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testCountGetTrackedEntityInstancesByOrgUnit()
     {
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA3 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
 
         assertEquals( 2, entityInstanceService.countGetTrackedEntityInstancesByOrgUnit( organisationUnit ) );
     }
@@ -382,10 +382,10 @@ public class TrackedEntityInstanceServiceTest
         programService.addProgram( programA );
         programService.addProgram( programB );
 
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
 
         programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit, null );
         programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit, null );
@@ -402,11 +402,11 @@ public class TrackedEntityInstanceServiceTest
         int idA = programService.addProgram( programA );
         programService.addProgram( programB );
 
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA3 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
             entityInstanceAttribute );
@@ -437,11 +437,11 @@ public class TrackedEntityInstanceServiceTest
         int idA = programService.addProgram( programA );
         programService.addProgram( programB );
 
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA3 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
             entityInstanceAttribute );
@@ -468,11 +468,11 @@ public class TrackedEntityInstanceServiceTest
         int idA = programService.addProgram( programA );
         programService.addProgram( programB );
 
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA3 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
 
         TrackedEntityAttribute phoneAttribute = createTrackedEntityAttribute( 'B' );
         phoneAttribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );
@@ -505,9 +505,9 @@ public class TrackedEntityInstanceServiceTest
     @Test
     public void testGetTrackedEntityInstancesByPhone()
     {
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA3 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
 
         TrackedEntityAttribute entityInstanceAttribute = createTrackedEntityAttribute( 'B' );
         entityInstanceAttribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );

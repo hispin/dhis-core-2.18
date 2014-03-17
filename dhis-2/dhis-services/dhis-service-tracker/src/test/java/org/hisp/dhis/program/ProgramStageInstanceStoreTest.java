@@ -143,10 +143,10 @@ public class ProgramStageInstanceStoreTest
         orgunitBId = organisationUnitService.addOrganisationUnit( organisationUnitB );
 
         entityInstanceA = createTrackedEntityInstance( 'A', organisationUnitA );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA );
 
         entityInstanceB = createTrackedEntityInstance( 'B', organisationUnitB );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB );
 
         /**
          * Program A
