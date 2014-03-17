@@ -63,8 +63,8 @@ public class TrackedEntityAttributeOptionServiceTest
         attributeA = createTrackedEntityAttribute( 'A' );
         attributeB = createTrackedEntityAttribute( 'B' );
 
-        attributeService.saveTrackedEntityAttribute( attributeA );
-        attributeService.saveTrackedEntityAttribute( attributeB );
+        attributeService.addTrackedEntityAttribute( attributeA );
+        attributeService.addTrackedEntityAttribute( attributeB );
 
         attributeOptionA = createTrackedEntityAttributeOption( 'A', attributeA );
         attributeOptionB = createTrackedEntityAttributeOption( 'B', attributeA );

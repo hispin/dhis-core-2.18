@@ -119,7 +119,7 @@ public class TrackedEntityInstanceServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitB );
 
         entityInstanceAttribute = createTrackedEntityAttribute( 'A' );
-        attributeId = attributeService.saveTrackedEntityAttribute( entityInstanceAttribute );
+        attributeId = attributeService.addTrackedEntityAttribute( entityInstanceAttribute );
 
         entityInstanceA1 = createTrackedEntityInstance( 'A', organisationUnit );
         entityInstanceA2 = createTrackedEntityInstance( 'A', organisationUnitB );
@@ -476,7 +476,7 @@ public class TrackedEntityInstanceServiceTest
 
         TrackedEntityAttribute phoneAttribute = createTrackedEntityAttribute( 'B' );
         phoneAttribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );
-        attributeService.saveTrackedEntityAttribute( phoneAttribute );
+        attributeService.addTrackedEntityAttribute( phoneAttribute );
 
         Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3, phoneAttribute );
@@ -511,7 +511,7 @@ public class TrackedEntityInstanceServiceTest
 
         TrackedEntityAttribute entityInstanceAttribute = createTrackedEntityAttribute( 'B' );
         entityInstanceAttribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );
-        attributeService.saveTrackedEntityAttribute( entityInstanceAttribute );
+        attributeService.addTrackedEntityAttribute( entityInstanceAttribute );
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA1,
             entityInstanceAttribute );

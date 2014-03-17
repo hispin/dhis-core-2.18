@@ -28,14 +28,12 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
@@ -51,6 +49,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -63,7 +64,7 @@ public class TrackedEntityAttributeController
     public static final String RESOURCE_PATH = "/trackedEntityAttributes";
 
     @Autowired
-    private TrackedEntityAttributeService attributeService;
+    private TrackedEntityAttributeService trackedEntityAttributeService;
 
     @Autowired
     private ProgramService programService;
@@ -79,7 +80,7 @@ public class TrackedEntityAttributeController
         if ( withoutPrograms )
         {
             entityList = new ArrayList<TrackedEntityAttribute>(
-                attributeService.getTrackedEntityAttributesWithoutProgram() );
+                trackedEntityAttributeService.getTrackedEntityAttributesWithoutProgram() );
         }
 
         else if ( options.getOptions().containsKey( "program" ) )
@@ -105,7 +106,7 @@ public class TrackedEntityAttributeController
         }
         else
         {
-            entityList = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+            entityList = new ArrayList<TrackedEntityAttribute>( trackedEntityAttributeService.getAllTrackedEntityAttributes() );
         }
 
         return entityList;
@@ -116,16 +117,25 @@ public class TrackedEntityAttributeController
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @ResponseStatus( HttpStatus.CREATED )
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+        TrackedEntityAttribute trackedEntityAttribute = JacksonUtils.fromXml( input, TrackedEntityAttribute.class );
+        trackedEntityAttributeService.addTrackedEntityAttribute( trackedEntityAttribute );
+
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + trackedEntityAttribute.getUid() );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @ResponseStatus( HttpStatus.CREATED )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+        TrackedEntityAttribute trackedEntityAttribute = JacksonUtils.fromJson( input, TrackedEntityAttribute.class );
+        trackedEntityAttributeService.addTrackedEntityAttribute( trackedEntityAttribute );
+
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + trackedEntityAttribute.getUid() );
     }
+
     //--------------------------------------------------------------------------
     // PUT
     //--------------------------------------------------------------------------

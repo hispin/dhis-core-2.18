@@ -46,7 +46,7 @@ public interface TrackedEntityAttributeService
      * @return A generated unique id of the added {@link TrackedEntityAttribute}
      *         .
      */
-    int saveTrackedEntityAttribute( TrackedEntityAttribute attribute );
+    int addTrackedEntityAttribute( TrackedEntityAttribute attribute );
 
     /**
      * Deletes a {@link TrackedEntityAttribute}.

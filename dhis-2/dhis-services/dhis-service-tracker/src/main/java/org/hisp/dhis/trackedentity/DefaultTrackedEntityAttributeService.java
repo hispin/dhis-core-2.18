@@ -86,7 +86,7 @@ public class DefaultTrackedEntityAttributeService
         return attributeStore.get( id );
     }
 
-    public int saveTrackedEntityAttribute( TrackedEntityAttribute attribute )
+    public int addTrackedEntityAttribute( TrackedEntityAttribute attribute )
     {
         return attributeStore.save( attribute );
     }

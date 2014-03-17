@@ -219,7 +219,7 @@ public class CaseAggregationConditionStoreTest
         // ---------------------------------------------------------------------
 
         attribute = createTrackedEntityAttribute( 'A' );
-        int attributeId = attributeService.saveTrackedEntityAttribute( attribute );
+        int attributeId = attributeService.addTrackedEntityAttribute( attribute );
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstance, attribute );
         Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
