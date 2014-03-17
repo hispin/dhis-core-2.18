@@ -29,9 +29,21 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -41,4 +53,92 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RelationshipTypeController extends AbstractCrudController<RelationshipType>
 {
     public static final String RESOURCE_PATH = "/relationshipTypes";
+
+    @Autowired
+    private RelationshipTypeService relationshipTypeService;
+
+    //--------------------------------------------------------------------------
+    // POST
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @ResponseStatus( HttpStatus.CREATED )
+    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        RelationshipType relationshipType = JacksonUtils.fromXml( input, RelationshipType.class );
+        relationshipTypeService.addRelationshipType( relationshipType );
+
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + relationshipType.getUid() );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @ResponseStatus( HttpStatus.CREATED )
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        RelationshipType relationshipType = JacksonUtils.fromJson( input, RelationshipType.class );
+        relationshipTypeService.addRelationshipType( relationshipType );
+
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + relationshipType.getUid() );
+    }
+
+    //--------------------------------------------------------------------------
+    // PUT
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        RelationshipType relationshipType = relationshipTypeService.getRelationshipType( uid );
+
+        if ( relationshipType == null )
+        {
+            ContextUtils.conflictResponse( response, "RelationshipType does not exist: " + uid );
+            return;
+        }
+
+        RelationshipType newRelationshipType = JacksonUtils.fromXml( input, RelationshipType.class );
+        newRelationshipType.setUid( relationshipType.getUid() );
+        relationshipType.mergeWith( newRelationshipType );
+
+        relationshipTypeService.updateRelationshipType( relationshipType );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        RelationshipType relationshipType = relationshipTypeService.getRelationshipType( uid );
+
+        if ( relationshipType == null )
+        {
+            ContextUtils.conflictResponse( response, "RelationshipType does not exist: " + uid );
+            return;
+        }
+
+        RelationshipType newRelationshipType = JacksonUtils.fromJson( input, RelationshipType.class );
+        newRelationshipType.setUid( relationshipType.getUid() );
+        relationshipType.mergeWith( newRelationshipType );
+
+        relationshipTypeService.updateRelationshipType( relationshipType );
+    }
+
+    //--------------------------------------------------------------------------
+    // DELETE
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    {
+        RelationshipType relationshipType = relationshipTypeService.getRelationshipType( uid );
+
+        if ( relationshipType == null )
+        {
+            ContextUtils.conflictResponse( response, "RelationshipType does not exist: " + uid );
+            return;
+        }
+
+        relationshipTypeService.deleteRelationshipType( relationshipType );
+    }
 }

@@ -28,12 +28,12 @@ package org.hisp.dhis.relationship;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import org.hisp.dhis.i18n.I18nService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
-import org.hisp.dhis.i18n.I18nService;
-import org.springframework.transaction.annotation.Transactional;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Abyot Asalefew
@@ -80,7 +80,13 @@ public class DefaultRelationshipTypeService
         return i18n( i18nService, relationshipTypeStore.get( id ) );
     }
 
-    public int saveRelationshipType( RelationshipType relationshipType )
+    @Override
+    public RelationshipType getRelationshipType( String uid )
+    {
+        return i18n( i18nService, relationshipTypeStore.getByUid( uid ) );
+    }
+
+    public int addRelationshipType( RelationshipType relationshipType )
     {
         return relationshipTypeStore.save( relationshipType );
     }

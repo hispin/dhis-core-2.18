@@ -45,7 +45,7 @@ public interface RelationshipTypeService
      * 
      * @return A generated unique id of the added {@link RelationshipType}.
      */
-    int saveRelationshipType( RelationshipType relationshipType );
+    int addRelationshipType( RelationshipType relationshipType );
 
     /**
      * Deletes a {@link RelationshipType}.
@@ -69,6 +69,15 @@ public interface RelationshipTypeService
      * @return the RelationshipType with the given id
      */
     RelationshipType getRelationshipType( int id );
+
+    /**
+     * Returns a {@link RelationshipType}.
+     *
+     * @param uid the uid of the RelationshipType to return.
+     *
+     * @return the RelationshipType with the given id
+     */
+    RelationshipType getRelationshipType( String uid );
 
     /**
      * Retrieve a relationship

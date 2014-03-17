@@ -90,7 +90,7 @@ public class AddRelationshipTypeAction
         relationshipType.setbIsToA( bIsToA );
         relationshipType.setName( name );
 
-        relationshipTypeService.saveRelationshipType( relationshipType );
+        relationshipTypeService.addRelationshipType( relationshipType );
 
         return SUCCESS;
     }

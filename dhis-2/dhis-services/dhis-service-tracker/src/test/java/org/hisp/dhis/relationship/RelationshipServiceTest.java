@@ -97,7 +97,7 @@ public class RelationshipServiceTest
         entityInstanceService.saveTrackedEntityInstance( entityInstanceD );
 
         relationshipType = createRelationshipType( 'A' );
-        relationshipTypeService.saveRelationshipType( relationshipType );
+        relationshipTypeService.addRelationshipType( relationshipType );
 
         relationshipA = new Relationship( entityInstanceA, relationshipType, entityInstanceB );
         relationshipB = new Relationship( entityInstanceC, relationshipType, entityInstanceD );

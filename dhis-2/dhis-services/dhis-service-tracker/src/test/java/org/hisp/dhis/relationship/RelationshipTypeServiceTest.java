@@ -61,8 +61,8 @@ public class RelationshipTypeServiceTest
     @Test
     public void testSaveRelationshipType()
     {
-        int idA = relationshipTypeService.saveRelationshipType( relationshipTypeA );
-        int idB = relationshipTypeService.saveRelationshipType( relationshipTypeB );
+        int idA = relationshipTypeService.addRelationshipType( relationshipTypeA );
+        int idB = relationshipTypeService.addRelationshipType( relationshipTypeB );
 
         assertNotNull( relationshipTypeService.getRelationshipType( idA ) );
         assertNotNull( relationshipTypeService.getRelationshipType( idB ) );
@@ -71,8 +71,8 @@ public class RelationshipTypeServiceTest
     @Test
     public void testDeleteRelationshipType()
     {
-        int idA = relationshipTypeService.saveRelationshipType( relationshipTypeA );
-        int idB = relationshipTypeService.saveRelationshipType( relationshipTypeB );
+        int idA = relationshipTypeService.addRelationshipType( relationshipTypeA );
+        int idB = relationshipTypeService.addRelationshipType( relationshipTypeB );
 
         assertNotNull( relationshipTypeService.getRelationshipType( idA ) );
         assertNotNull( relationshipTypeService.getRelationshipType( idB ) );
@@ -91,7 +91,7 @@ public class RelationshipTypeServiceTest
     @Test
     public void testUpdateRelationshipType()
     {
-        int idA = relationshipTypeService.saveRelationshipType( relationshipTypeA );
+        int idA = relationshipTypeService.addRelationshipType( relationshipTypeA );
 
         assertNotNull( relationshipTypeService.getRelationshipType( idA ) );
 
@@ -104,8 +104,8 @@ public class RelationshipTypeServiceTest
     @Test
     public void testGetRelationshipTypeById()
     {
-        int idA = relationshipTypeService.saveRelationshipType( relationshipTypeA );
-        int idB = relationshipTypeService.saveRelationshipType( relationshipTypeB );
+        int idA = relationshipTypeService.addRelationshipType( relationshipTypeA );
+        int idB = relationshipTypeService.addRelationshipType( relationshipTypeB );
 
         assertEquals( relationshipTypeA, relationshipTypeService.getRelationshipType( idA ) );
         assertEquals( relationshipTypeB, relationshipTypeService.getRelationshipType( idB ) );
@@ -114,15 +114,15 @@ public class RelationshipTypeServiceTest
     @Test
     public void testGetRelationshipTypeByDescription()
     {
-        relationshipTypeService.saveRelationshipType( relationshipTypeA );
+        relationshipTypeService.addRelationshipType( relationshipTypeA );
         assertEquals( relationshipTypeA, relationshipTypeService.getRelationshipType( "aIsToB", "bIsToA" ) );
     }
 
     @Test
     public void testGetAllRelationshipTypes()
     {
-        relationshipTypeService.saveRelationshipType( relationshipTypeA );
-        relationshipTypeService.saveRelationshipType( relationshipTypeB );
+        relationshipTypeService.addRelationshipType( relationshipTypeA );
+        relationshipTypeService.addRelationshipType( relationshipTypeB );
 
         assertTrue( equals( relationshipTypeService.getAllRelationshipTypes(), relationshipTypeA, relationshipTypeB ) );
     }

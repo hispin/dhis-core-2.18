@@ -98,6 +98,7 @@ public class TrackedEntityController extends AbstractCrudController<TrackedEntit
         }
 
         TrackedEntity newTrackedEntity = JacksonUtils.fromXml( input, TrackedEntity.class );
+        newTrackedEntity.setUid( trackedEntity.getUid() );
         trackedEntity.mergeWith( newTrackedEntity );
 
         trackedEntityService.updateTrackedEntity( trackedEntity );
@@ -116,6 +117,7 @@ public class TrackedEntityController extends AbstractCrudController<TrackedEntit
         }
 
         TrackedEntity newTrackedEntity = JacksonUtils.fromJson( input, TrackedEntity.class );
+        newTrackedEntity.setUid( trackedEntity.getUid() );
         trackedEntity.mergeWith( newTrackedEntity );
 
         trackedEntityService.updateTrackedEntity( trackedEntity );
