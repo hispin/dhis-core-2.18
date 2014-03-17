@@ -36,7 +36,6 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -90,14 +89,38 @@ public class TrackedEntityAttributeGroupController extends AbstractCrudControlle
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+        TrackedEntityAttributeGroup trackedEntityAttributeGroup = trackedEntityAttributeGroupService.getTrackedEntityAttributeGroup( uid );
+
+        if ( trackedEntityAttributeGroup == null )
+        {
+            ContextUtils.conflictResponse( response, "TrackedEntityAttributeGroup does not exist: " + uid );
+            return;
+        }
+
+        TrackedEntityAttributeGroup newTrackedEntityAttributeGroup = JacksonUtils.fromXml( input, TrackedEntityAttributeGroup.class );
+        newTrackedEntityAttributeGroup.setUid( trackedEntityAttributeGroup.getUid() );
+        trackedEntityAttributeGroup.mergeWith( newTrackedEntityAttributeGroup );
+
+        trackedEntityAttributeGroupService.updateTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+        TrackedEntityAttributeGroup trackedEntityAttributeGroup = trackedEntityAttributeGroupService.getTrackedEntityAttributeGroup( uid );
+
+        if ( trackedEntityAttributeGroup == null )
+        {
+            ContextUtils.conflictResponse( response, "TrackedEntityAttributeGroup does not exist: " + uid );
+            return;
+        }
+
+        TrackedEntityAttributeGroup newTrackedEntityAttributeGroup = JacksonUtils.fromJson( input, TrackedEntityAttributeGroup.class );
+        newTrackedEntityAttributeGroup.setUid( trackedEntityAttributeGroup.getUid() );
+        trackedEntityAttributeGroup.mergeWith( newTrackedEntityAttributeGroup );
+
+        trackedEntityAttributeGroupService.updateTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
     }
 
     //--------------------------------------------------------------------------
