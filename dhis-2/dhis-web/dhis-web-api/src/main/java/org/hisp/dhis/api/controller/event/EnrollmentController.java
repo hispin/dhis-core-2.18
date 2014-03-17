@@ -87,14 +87,14 @@ public class EnrollmentController
     public String getEnrollments(
         @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
         @RequestParam( value = "program", required = false ) String programUid,
-        @RequestParam( value = "person", required = false ) String personUid,
+        @RequestParam( value = "trackedEntityInstance", required = false ) String trackedEntityInstanceUid,
         @RequestParam( value = "status", required = false ) EnrollmentStatus status,
         @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
         Enrollments enrollments;
 
-        if ( orgUnitUid == null && programUid == null && personUid == null )
+        if ( orgUnitUid == null && programUid == null && trackedEntityInstanceUid == null )
         {
             enrollments = status != null ? enrollmentService.getEnrollments( status ) : enrollmentService.getEnrollments();
         }
@@ -105,10 +105,10 @@ public class EnrollmentController
 
             enrollments = enrollmentService.getEnrollments( program, organisationUnit );
         }
-        else if ( programUid != null && personUid != null )
+        else if ( programUid != null && trackedEntityInstanceUid != null )
         {
             Program program = getProgram( programUid );
-            TrackedEntityInstance trackedEntityInstance = getPerson( personUid );
+            TrackedEntityInstance trackedEntityInstance = getTrackedEntityInstance( trackedEntityInstanceUid );
 
             enrollments = status != null ? enrollmentService.getEnrollments( program, trackedEntityInstance, status )
                 : enrollmentService.getEnrollments( program, trackedEntityInstance );
@@ -126,7 +126,7 @@ public class EnrollmentController
         }
         else
         {
-            TrackedEntityInstance trackedEntityInstance = getPerson( personUid );
+            TrackedEntityInstance trackedEntityInstance = getTrackedEntityInstance( trackedEntityInstanceUid );
             enrollments = status != null ? enrollmentService.getEnrollments( trackedEntityInstance, status ) : enrollmentService.getEnrollments( trackedEntityInstance );
         }
 
@@ -271,13 +271,13 @@ public class EnrollmentController
         return enrollment;
     }
 
-    private TrackedEntityInstance getPerson( String id ) throws NotFoundException
+    private TrackedEntityInstance getTrackedEntityInstance( String id ) throws NotFoundException
     {
         TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getTrackedEntityInstance( id );
 
         if ( trackedEntityInstance == null )
         {
-            throw new NotFoundException( "Person", id );
+            throw new NotFoundException( "TrackedEntityInstance", id );
         }
 
         return trackedEntityInstance;
