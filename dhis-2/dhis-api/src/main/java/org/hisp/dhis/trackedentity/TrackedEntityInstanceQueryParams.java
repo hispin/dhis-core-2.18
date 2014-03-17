@@ -52,11 +52,11 @@ public class TrackedEntityInstanceQueryParams
     
     private List<QueryItem> items = new ArrayList<QueryItem>();
 
+    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+    
     private Program program;
     
     private TrackedEntity trackedEntity;
-    
-    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
     
     private String organisationUnitMode;
 
@@ -114,6 +114,16 @@ public class TrackedEntityInstanceQueryParams
         this.items = items;
     }
 
+    public String getOrganisationUnitMode()
+    {
+        return organisationUnitMode;
+    }
+
+    public void setOrganisationUnitMode( String organisationUnitMode )
+    {
+        this.organisationUnitMode = organisationUnitMode;
+    }
+
     public Program getProgram()
     {
         return program;
@@ -142,16 +152,6 @@ public class TrackedEntityInstanceQueryParams
     public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
     {
         this.organisationUnits = organisationUnits;
-    }
-
-    public String getOrganisationUnitMode()
-    {
-        return organisationUnitMode;
-    }
-
-    public void setOrganisationUnitMode( String organisationUnitMode )
-    {
-        this.organisationUnitMode = organisationUnitMode;
     }
 
     public Integer getPage()

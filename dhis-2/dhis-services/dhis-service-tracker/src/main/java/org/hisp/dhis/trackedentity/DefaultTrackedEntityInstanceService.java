@@ -144,8 +144,8 @@ public class DefaultTrackedEntityInstanceService
         grid.addHeader( new GridHeader( TRACKED_ENTITY_INSTANCE_ID, "Instance" ) );
         grid.addHeader( new GridHeader( CREATED_ID, "Created" ) );
         grid.addHeader( new GridHeader( LAST_UPDATED_ID, "Last updated" ) );
-        grid.addHeader( new GridHeader( TRACKED_ENTITY_ID, "Tracked entity" ) );
         grid.addHeader( new GridHeader( ORG_UNIT_ID, "Org unit" ) );
+        grid.addHeader( new GridHeader( TRACKED_ENTITY_ID, "Tracked entity" ) );
         
         for ( QueryItem item : params.getItems() )
         {
@@ -160,8 +160,8 @@ public class DefaultTrackedEntityInstanceService
             grid.addValue( entity.get( TRACKED_ENTITY_INSTANCE_ID ) );
             grid.addValue( entity.get( CREATED_ID ) );
             grid.addValue( entity.get( LAST_UPDATED_ID ) );
-            grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
             grid.addValue( entity.get( ORG_UNIT_ID ) );
+            grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
             
             for ( QueryItem item : params.getItems() )
             {
@@ -173,8 +173,8 @@ public class DefaultTrackedEntityInstanceService
     }
     
     @Override
-    public TrackedEntityInstanceQueryParams getFromUrl( Set<String> items, String program, String trackedEntity, 
-        Set<String> ou, String ouMode, Integer page, Integer pageSize )
+    public TrackedEntityInstanceQueryParams getFromUrl( Set<String> items, Set<String> ou, String ouMode, 
+        String program, String trackedEntity, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
@@ -183,6 +183,18 @@ public class DefaultTrackedEntityInstanceService
             QueryItem it = getQueryItem( item );
             
             params.getItems().add( it );
+        }
+
+        for ( String orgUnit : ou )
+        {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnit );
+            
+            if ( organisationUnit == null )
+            {
+                throw new IllegalQueryException( "Organisation unit does not exist: " + orgUnit );
+            }
+            
+            params.getOrganisationUnits().add( organisationUnit );
         }
         
         Program pr = program != null ? programService.getProgram( program ) : null;
@@ -197,18 +209,6 @@ public class DefaultTrackedEntityInstanceService
         if ( trackedEntity != null && te == null )
         {
             throw new IllegalQueryException( "Tracked entity does not exist: " + program );
-        }
-        
-        for ( String orgUnit : ou )
-        {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnit );
-            
-            if ( organisationUnit == null )
-            {
-                throw new IllegalQueryException( "Organisation unit does not exist: " + orgUnit );
-            }
-            
-            params.getOrganisationUnits().add( organisationUnit );
         }
         
         params.setOrganisationUnitMode( ouMode );
