@@ -177,7 +177,7 @@ public class HibernateTrackedEntityInstanceStore
         
         if ( params.hasTrackedEntity() )
         {
-            sql += hlp.whereAnd() + " tei.trackedentityid = " + params.getTrackedEntity().getId();
+            sql += hlp.whereAnd() + " tei.trackedentityid = " + params.getTrackedEntity().getId() + " ";
         }
 
         if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_DESCENDANTS ) )
@@ -194,6 +194,14 @@ public class HibernateTrackedEntityInstanceStore
         else // SELECTED
         {
             sql += hlp.whereAnd() + " tei.organisationunitid in (" + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
+        }
+        
+        if ( params.hasProgram() )
+        {
+            sql += 
+                hlp.whereAnd() + " exists ( select trackedentityinstanceid from programinstance pi " +
+                "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " +
+                "and pi.programid = " + params.getProgram().getId() + ") ";
         }
 
         // ---------------------------------------------------------------------

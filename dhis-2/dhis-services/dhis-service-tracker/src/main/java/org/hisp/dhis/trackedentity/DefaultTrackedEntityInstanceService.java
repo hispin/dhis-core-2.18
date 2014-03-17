@@ -213,6 +213,8 @@ public class DefaultTrackedEntityInstanceService
             throw new IllegalQueryException( "Tracked entity does not exist: " + program );
         }
         
+        params.setProgram( pr );
+        params.setTrackedEntity( te );
         params.setOrganisationUnitMode( ouMode );
         params.setPage( page );
         params.setPageSize( pageSize );
