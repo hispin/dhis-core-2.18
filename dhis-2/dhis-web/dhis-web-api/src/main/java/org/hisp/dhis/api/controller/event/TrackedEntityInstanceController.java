@@ -134,7 +134,7 @@ public class TrackedEntityInstanceController
     public void postTrackedEntityInstanceXml( HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummaries importSummaries = trackedEntityInstanceService.saveTrackedEntityInstanceXml( request.getInputStream() );
+        ImportSummaries importSummaries = trackedEntityInstanceService.addTrackedEntityInstanceXml( request.getInputStream() );
 
         if ( importSummaries.getImportSummaries().size() > 1 )
         {
@@ -160,7 +160,7 @@ public class TrackedEntityInstanceController
     public void postTrackedEntityInstanceJson( HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummaries importSummaries = trackedEntityInstanceService.saveTrackedEntityInstanceJson( request.getInputStream() );
+        ImportSummaries importSummaries = trackedEntityInstanceService.addTrackedEntityInstanceJson( request.getInputStream() );
 
         if ( importSummaries.getImportSummaries().size() > 1 )
         {
