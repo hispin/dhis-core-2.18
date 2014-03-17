@@ -1579,7 +1579,6 @@ Ext.onReady( function() {
 
 					response.idValueMap[id] = row[valueHeaderIndex];
 				}
-console.log("response.idValueMap", response.idValueMap);
 
 				return response;
 			};

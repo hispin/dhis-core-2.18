@@ -113,6 +113,8 @@
       column="orgunitgroupsetid" foreign-key="fk_mapview_orgunitgroupsetid" />
 
     <property name="areaRadius" />
+	  
+	<property name="hidden" />
 
   </class>
 </hibernate-mapping>

@@ -143,7 +143,7 @@ Ext.onReady( function() {
 		});
 		layers.openStreetMap.id = 'openStreetMap';
 
-		layers.event = GIS.core.VectorLayer(gis, 'event', GIS.i18n.event_layer, {opacity: 0.8});
+		layers.event = GIS.core.VectorLayer(gis, 'event', GIS.i18n.event_layer, {opacity: 1});
 		layers.event.core = new mapfish.GeoStat.Event(gis.olmap, {
 			layer: layers.event,
 			gis: gis
@@ -155,7 +155,7 @@ Ext.onReady( function() {
 			gis: gis
 		});
 
-		layers.boundary = GIS.core.VectorLayer(gis, 'boundary', GIS.i18n.boundary_layer, {opacity: 0.8});
+		layers.boundary = GIS.core.VectorLayer(gis, 'boundary', GIS.i18n.boundary_layer, {opacity: 1});
 		layers.boundary.core = new mapfish.GeoStat.Boundary(gis.olmap, {
 			layer: layers.boundary,
 			gis: gis
@@ -164,7 +164,7 @@ Ext.onReady( function() {
 		for (var i = 0, number; i < layerNumbers.length; i++) {
 			number = layerNumbers[i];
 
-			layers['thematic' + number] = GIS.core.VectorLayer(gis, 'thematic' + number, GIS.i18n.thematic_layer + ' ' + number, {opacity: 0.8});
+			layers['thematic' + number] = GIS.core.VectorLayer(gis, 'thematic' + number, GIS.i18n.thematic_layer + ' ' + number, {opacity: 1});
 			layers['thematic' + number].layerCategory = gis.conf.finals.layer.category_thematic,
 			layers['thematic' + number].core = new mapfish.GeoStat['Thematic' + number](gis.olmap, {
 				layer: layers['thematic' + number],
@@ -2305,6 +2305,18 @@ Ext.onReady( function() {
 				return layers;
 			};
 
+			util.map.getRenderedVectorLayers = function() {
+				var layers = [];
+
+				for (var i = 0, layer; i < gis.olmap.layers.length; i++) {
+					layer = gis.olmap.layers[i];
+					if (layer.layerType === conf.finals.layer.type_vector && layer.features.length) {
+						layers.push(layer);
+					}
+				}
+				return layers;
+			};
+
 			util.map.getExtendedBounds = function(layers) {
 				var bounds = null;
 				if (layers.length) {
@@ -2551,9 +2563,13 @@ Ext.onReady( function() {
 
 				// radiusHigh: integer (15)
 
-				// opacity: integer (0.8) - 0-1
+				// opacity: integer (1) - 0-1
 
 				// legendSet: object
+
+                // areaRadius: integer
+
+                // hidden: boolean (false)
 
 				getValidatedDimensionArray = function(dimensionArray) {
 					var dimensions = [];
@@ -2692,7 +2708,9 @@ Ext.onReady( function() {
 					layout.colorHigh = Ext.isString(config.colorHigh) && !Ext.isEmpty(config.colorHigh) ? config.colorHigh : '00ff00';
 					layout.radiusLow = Ext.isNumber(config.radiusLow) && !Ext.isEmpty(config.radiusLow) ? config.radiusLow : 5;
 					layout.radiusHigh = Ext.isNumber(config.radiusHigh) && !Ext.isEmpty(config.radiusHigh) ? config.radiusHigh : 15;
-					layout.opacity = Ext.isNumber(config.opacity) && !Ext.isEmpty(config.opacity) ? config.opacity : 0.8;
+					layout.opacity = Ext.isNumber(config.opacity) && !Ext.isEmpty(config.opacity) ? config.opacity : 1;
+					layout.areaRadius = config.areaRadius;
+                    layout.hidden = !!config.hidden;
 
 					layout.userOrganisationUnit = isOu;
 					layout.userOrganisationUnitChildren = isOuc;
@@ -2703,7 +2721,6 @@ Ext.onReady( function() {
 					layout.legendSet = config.legendSet;
 
 					layout.organisationUnitGroupSet = config.organisationUnitGroupSet;
-					layout.areaRadius = config.areaRadius;
 
 					return layout;
 				}();
