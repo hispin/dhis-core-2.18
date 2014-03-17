@@ -410,7 +410,7 @@ public class TrackedEntityInstanceServiceTest
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
             entityInstanceAttribute );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
         entityInstanceA3.getAttributeValues().add( attributeValue );
 
         programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit, null );
@@ -445,7 +445,7 @@ public class TrackedEntityInstanceServiceTest
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
             entityInstanceAttribute );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
 
         programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit, null );
         programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit, null );
@@ -481,7 +481,7 @@ public class TrackedEntityInstanceServiceTest
         Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3, phoneAttribute );
         attributeValue.setValue( "123456789" );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
 
         attributeValues.add( attributeValue );
         entityInstanceA3.addAttributeValue( attributeValue );
@@ -516,14 +516,14 @@ public class TrackedEntityInstanceServiceTest
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA1,
             entityInstanceAttribute );
         attributeValue.setValue( "123456789" );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
 
         entityInstanceA1.addAttributeValue( attributeValue );
         entityInstanceService.updateTrackedEntityInstance( entityInstanceA1 );
 
         attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA2, entityInstanceAttribute );
         attributeValue.setValue( "123456789" );
-        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
         entityInstanceA2.addAttributeValue( attributeValue );
         entityInstanceService.updateTrackedEntityInstance( entityInstanceA2 );
 

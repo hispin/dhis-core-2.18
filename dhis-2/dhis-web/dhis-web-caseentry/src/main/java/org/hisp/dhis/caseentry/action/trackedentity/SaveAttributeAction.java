@@ -199,7 +199,7 @@ public class SaveAttributeAction
                             }
                         }
 
-                        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
+                        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
                         entityInstance.getAttributeValues().add( attributeValue );
                     }
                     else

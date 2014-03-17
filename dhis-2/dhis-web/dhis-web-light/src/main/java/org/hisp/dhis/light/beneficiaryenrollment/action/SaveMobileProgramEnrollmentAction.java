@@ -410,7 +410,7 @@ public class SaveMobileProgramEnrollmentAction
     {
         for ( TrackedEntityAttributeValue patientAttributeValue : patientAttributeValues )
         {
-            patientAttributeValueService.saveTrackedEntityAttributeValue( patientAttributeValue );
+            patientAttributeValueService.addTrackedEntityAttributeValue( patientAttributeValue );
         }
 
     }
