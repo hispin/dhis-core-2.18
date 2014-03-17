@@ -1,0 +1,48 @@
+<accordion>
+    <accordion-group is-open="searchField.isOpen">
+        <accordion-heading>
+            {{searchField.label| translate}}
+            <span class="right">
+                <a href ng-click="closeSearch()" title="{{'close'| translate}}"><span class="black"><i class="fa fa-times"></i></span></a>
+            </span>
+        </accordion-heading>
+        <table>
+            <tr ng-repeat="attribute in attributes">
+                <td>
+                    {{attribute.name}}
+                </td>
+                <td>
+                    <div ng-switch="attribute.valueType">
+                        <div ng-switch-when="date">
+                            <input type="text" ng-date ng-model="attribute.value" />
+                        </div>
+                        <div ng-switch-when="trueOnly">
+                            <input type="checkbox" ng-model="attribute.value" />
+                        </div>
+                        <div ng-switch-when="bool">
+                            <select ng-model="attribute.value" />
+                            <option value="">{{'please_select'| translate}}</option>                        
+                            <option value="0">{{'no'| translate}}</option>
+                            <option value="1">{{'yes'| translate}}</option>
+                            </select>
+                        </div>
+                        <div ng-switch-when="combo">
+                            <input type="text" 
+                                   ng-model="attribute.value"                                                 
+                                   typeahead="option.name for option in attribute.personAttributeOptions | filter:$viewValue | limitTo:20" 
+                                   typeahead-open-on-focus 
+                                   />
+                        </div>
+                        <div ng-switch-when="number">
+                            <input type="number" ng-model="attribute.value" />
+                        </div>
+                        <div ng-switch-default>
+                            <input type="text" ng-model="attribute.value" />                                        
+                        </div>
+                    </div>                                                                
+                </td>
+            </tr>
+        </table>
+        <button ng-click="search()">{{'search'| translate}}</button>
+    </accordion-group>
+</accordion>                    
