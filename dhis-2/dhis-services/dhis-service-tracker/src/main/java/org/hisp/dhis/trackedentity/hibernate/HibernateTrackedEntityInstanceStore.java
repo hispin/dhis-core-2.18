@@ -28,8 +28,8 @@ package org.hisp.dhis.trackedentity.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM_EVENT_BY_STATUS;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM_INSTANCE;
@@ -40,6 +40,8 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ATTRIBUTE_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ATTRIBUTE_VALUE_ID;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -142,10 +144,17 @@ public class HibernateTrackedEntityInstanceStore
         
         for ( Map<String, String> entity : entities )
         {
+            grid.addRow();
             grid.addValue( entity.get( TRACKED_ENTITY_INSTANCE_ID ) );
+            grid.addValue( entity.get( CREATED_ID ) );
             grid.addValue( entity.get( LAST_UPDATED_ID ) );
             grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
             grid.addValue( entity.get( ORG_UNIT_ID ) );
+            
+            for ( QueryItem item : params.getItems() )
+            {
+                grid.addValue( entity.get( item.getItemId() ) );
+            }
         }
         
         return grid;
@@ -156,7 +165,13 @@ public class HibernateTrackedEntityInstanceStore
         SqlHelper hlp = new SqlHelper();
         
         String sql = 
-            "select tei.uid, tei.created, tei.lastupdated, te.uid, ou.uid, tav.value, ta.uid " +
+            "select tei.uid as " + TRACKED_ENTITY_INSTANCE_ID + ", " +
+            "tei.created as " + CREATED_ID + ", " +
+            "tei.lastupdated as " + LAST_UPDATED_ID + ", " +
+            "te.uid as " + TRACKED_ENTITY_ID + ", " +
+            "ou.uid as " + ORG_UNIT_ID + ", " +
+            "ta.uid as " + TRACKED_ENTITY_ATTRIBUTE_ID + ", " +
+            "tav.value as " + TRACKED_ENTITY_ATTRIBUTE_VALUE_ID + " " +
             "from trackedentityinstance tei " +
             "left join trackedentity te on tei.trackedentityid = te.trackedentityid " +
             "left join organisationunit ou on tei.organisationunitid = ou.organisationunitid " +
@@ -175,22 +190,16 @@ public class HibernateTrackedEntityInstanceStore
         
         if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_SELECTED ) )
         {
-            sql += hlp.whereAnd() + " tei.organisationunitid in (" + getQuotedCommaDelimitedString( getUids( params.getOrganisationUnits() ) ) + ") ";
+            sql += hlp.whereAnd() + " tei.organisationunitid in (" + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
         }
         
         for ( QueryItem item : params.getItems() )
-        {
-            String filter = statementBuilder.encode( item.getFilter(), false );
-            
-            String valClause = "tav.value " + item.getSqlOperator() + " " + item.getSqlFilter( filter );
-            
+        {   
             if ( item.hasFilter() )
             {
-                sql += hlp.whereAnd() + " (ta.uid = " + item.getItemId() + " and " + valClause + ") ";
-            }
-            else
-            {
-                sql += hlp.whereAnd() + " (" + valClause + ") ";
+                String filter = statementBuilder.encode( item.getFilter(), false );
+                
+                sql += hlp.whereAnd() + " (ta.uid = '" + item.getItemId() + "' and " + "tav.value " + item.getSqlOperator() + " " + item.getSqlFilter( filter ) + ") ";
             }
         }
         
@@ -202,9 +211,9 @@ public class HibernateTrackedEntityInstanceStore
         
         while ( rowSet.next() )
         {
-            String key = rowSet.getString( "tei.uid" );
-            String att = rowSet.getString( "ta.uid" );
-            String val = rowSet.getString( "tav.value" );
+            String key = rowSet.getString( TRACKED_ENTITY_INSTANCE_ID );
+            String att = rowSet.getString( TRACKED_ENTITY_ATTRIBUTE_ID );
+            String val = rowSet.getString( TRACKED_ENTITY_ATTRIBUTE_VALUE_ID );
             
             Map<String, String> entity = entityMap.get( key );
             
@@ -212,10 +221,10 @@ public class HibernateTrackedEntityInstanceStore
             {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put( TRACKED_ENTITY_INSTANCE_ID, key );
-                map.put( CREATED_ID, DateUtils.getLongDateString( rowSet.getDate( "teu.created" ) ) );
-                map.put( LAST_UPDATED_ID, DateUtils.getLongDateString( rowSet.getDate( "tei.lastupdated" ) ) );
-                map.put( TRACKED_ENTITY_ID, rowSet.getString( "te.uid" ) );
-                map.put( ORG_UNIT_ID, rowSet.getString( "ou.uid" ) );
+                map.put( CREATED_ID, DateUtils.getLongDateString( rowSet.getDate( CREATED_ID ) ) );
+                map.put( LAST_UPDATED_ID, DateUtils.getLongDateString( rowSet.getDate( LAST_UPDATED_ID ) ) );
+                map.put( TRACKED_ENTITY_ID, rowSet.getString( TRACKED_ENTITY_ID ) );
+                map.put( ORG_UNIT_ID, rowSet.getString( ORG_UNIT_ID ) );
                 entityMap.putEntries( key, map );
             }
             

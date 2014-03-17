@@ -41,6 +41,7 @@ import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IllegalQueryException;
+import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -123,7 +124,7 @@ public class DefaultTrackedEntityInstanceService
     {
         this.organisationUnitService = organisationUnitService;
     }
-
+        
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -140,8 +141,15 @@ public class DefaultTrackedEntityInstanceService
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
+        for ( String item : items )
+        {
+            QueryItem it = getQueryItem( item );
+            
+            params.getItems().add( it );
+        }
+        
         Program pr = program != null ? programService.getProgram( program ) : null;
-
+        
         if ( program != null && pr == null )
         {
             throw new IllegalQueryException( "Program does not exist: " + program );
@@ -149,12 +157,10 @@ public class DefaultTrackedEntityInstanceService
         
         TrackedEntity te = trackedEntity != null ? trackedEntityService.getTrackedEntity( trackedEntity ) : null;
         
-        if ( te == null )
+        if ( trackedEntity != null && te == null )
         {
-            throw new IllegalQueryException( "Program does not exist: " + program );
+            throw new IllegalQueryException( "Tracked entity does not exist: " + program );
         }
-        
-        Set<OrganisationUnit> ous = new HashSet<OrganisationUnit>();
         
         for ( String orgUnit : ou )
         {
@@ -165,12 +171,7 @@ public class DefaultTrackedEntityInstanceService
                 throw new IllegalQueryException( "Organisation unit does not exist: " + orgUnit );
             }
             
-            ous.add( organisationUnit );
-        }
-        
-        for ( String item : items )
-        {
-            String id = DimensionalObjectUtils.getDimensionFromParam( item );
+            params.getOrganisationUnits().add( organisationUnit );
         }
         
         params.setOrganisationUnitMode( ouMode );
@@ -178,6 +179,37 @@ public class DefaultTrackedEntityInstanceService
         params.setPageSize( pageSize );
         
         return params;
+    }
+
+    private QueryItem getQueryItem( String item )
+    {
+        if ( !item.contains( DimensionalObjectUtils.DIMENSION_NAME_SEP ) )
+        {
+            return getItem( item, null, null );
+        }
+        else // Filter
+        {
+            String[] split = item.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
+
+            if ( split == null || split.length != 3 )
+            {
+                throw new IllegalQueryException( "Item filter has invalid format: " + item );
+            }
+
+            return getItem( split[0], split[1], split[2] );
+        }
+    }
+
+    private QueryItem getItem( String item, String operator, String filter )
+    {
+        TrackedEntityAttribute at = attributeService.getTrackedEntityAttribute( item );
+
+        if ( at == null )
+        {
+            throw new IllegalQueryException( "Attribute does not exist: " + item );
+        }
+        
+        return new QueryItem( at, operator, filter, at.isNumericType() );
     }
     
     @Override
