@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 
@@ -77,19 +78,18 @@ public class TrackedEntityInstanceQueryParams
     // -------------------------------------------------------------------------
 
     /**
-     * Indicates whether this params has any items with filter.
+     * Returns a mapping between level and organisation units.
      */
-    public boolean hasItemsWithFilter()
-    {        
-        for ( QueryItem item : items )
+    public SetMap<Integer, OrganisationUnit> getLevelOrgUnitMap()
+    {
+        SetMap<Integer, OrganisationUnit> setMap = new SetMap<Integer, OrganisationUnit>();
+        
+        for ( OrganisationUnit ou : organisationUnits )
         {
-            if ( item.hasFilter() )
-            {
-                return true;
-            }
+            setMap.putValue( ou.getLevel(), ou );
         }
         
-        return false;
+        return setMap;
     }
     
     /**
@@ -113,7 +113,7 @@ public class TrackedEntityInstanceQueryParams
      */
     public boolean isOrganisationUnitMode( String mode )
     {
-        return organisationUnitMode != null && organisationUnitMode.equals( mode );
+        return organisationUnitMode != null && organisationUnitMode.equalsIgnoreCase( mode );
     }
 
     /**

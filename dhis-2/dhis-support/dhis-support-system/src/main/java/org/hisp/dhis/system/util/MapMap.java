@@ -42,8 +42,7 @@ public class MapMap<T, U, V>
         Map<U, V> map = this.get( key );
         map = map == null ? new HashMap<U, V>() : map;
         map.put( valueKey, value );
-        this.put( key, map );
-        return null;
+        return this.put( key, map );
     }
     
     public void putEntries( T key, Map<U, V> m )

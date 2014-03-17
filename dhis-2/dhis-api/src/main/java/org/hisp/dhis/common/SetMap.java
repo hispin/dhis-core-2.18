@@ -30,7 +30,6 @@ package org.hisp.dhis.common;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,12 +48,11 @@ public class SetMap<T, V>
         super( setMap );
     }    
 
-    public List<V> putValue( T key, V value )
+    public Set<V> putValue( T key, V value )
     {
         Set<V> set = this.get( key );
         set = set == null ? new HashSet<V>() : set;        
         set.add( value );
-        super.put( key, set );        
-        return null;
+        return super.put( key, set );
     }
 }
