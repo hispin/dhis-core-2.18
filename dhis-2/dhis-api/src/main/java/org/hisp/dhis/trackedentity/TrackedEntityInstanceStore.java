@@ -30,6 +30,7 @@ package org.hisp.dhis.trackedentity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
@@ -49,7 +50,7 @@ public interface TrackedEntityInstanceStore
 
     final int MAX_RESULTS = 50000;
 
-    Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
+    Collection<Map<String, String>> getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
     
     /**
      * Search entityInstances who registered in a certain organisation unit

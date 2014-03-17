@@ -28,12 +28,19 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.CREATED_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_UPDATED_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -132,7 +139,37 @@ public class DefaultTrackedEntityInstanceService
     @Override
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
-        return trackedEntityInstanceStore.getTrackedEntityInstances( params );
+        Grid grid = new ListGrid();
+        
+        grid.addHeader( new GridHeader( TRACKED_ENTITY_INSTANCE_ID, "Instance" ) );
+        grid.addHeader( new GridHeader( CREATED_ID, "Created" ) );
+        grid.addHeader( new GridHeader( LAST_UPDATED_ID, "Last updated" ) );
+        grid.addHeader( new GridHeader( TRACKED_ENTITY_ID, "Tracked entity" ) );
+        grid.addHeader( new GridHeader( ORG_UNIT_ID, "Org unit" ) );
+        
+        for ( QueryItem item : params.getItems() )
+        {
+            grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName() ) );
+        }
+        
+        Collection<Map<String, String>> entities = trackedEntityInstanceStore.getTrackedEntityInstances( params );
+        
+        for ( Map<String, String> entity : entities )
+        {
+            grid.addRow();
+            grid.addValue( entity.get( TRACKED_ENTITY_INSTANCE_ID ) );
+            grid.addValue( entity.get( CREATED_ID ) );
+            grid.addValue( entity.get( LAST_UPDATED_ID ) );
+            grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
+            grid.addValue( entity.get( ORG_UNIT_ID ) );
+            
+            for ( QueryItem item : params.getItems() )
+            {
+                grid.addValue( entity.get( item.getItemId() ) );
+            }
+        }
+        
+        return grid;
     }
     
     @Override
