@@ -73,7 +73,7 @@ public class ImportEventTask
         {
             try
             {
-                eventService.saveEventsJson( inputStream, taskId, importOptions );
+                eventService.addEventsJson( inputStream, taskId, importOptions );
             }
             catch ( IOException ignored )
             {
@@ -83,7 +83,7 @@ public class ImportEventTask
         {
             try
             {
-                eventService.saveEventsXml( inputStream, taskId, importOptions );
+                eventService.addEventsXml( inputStream, taskId, importOptions );
             }
             catch ( IOException ignored )
             {

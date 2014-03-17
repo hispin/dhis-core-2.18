@@ -239,7 +239,7 @@ public class EventController
 
         if ( !importOptions.isAsync() )
         {
-            ImportSummaries importSummaries = eventService.saveEventsXml( inputStream, importOptions );
+            ImportSummaries importSummaries = eventService.addEventsXml( inputStream, importOptions );
 
             for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
             {
@@ -284,7 +284,7 @@ public class EventController
 
         if ( !importOptions.isAsync() )
         {
-            ImportSummaries importSummaries = eventService.saveEventsJson( inputStream, importOptions );
+            ImportSummaries importSummaries = eventService.addEventsJson( inputStream, importOptions );
 
             for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
             {
