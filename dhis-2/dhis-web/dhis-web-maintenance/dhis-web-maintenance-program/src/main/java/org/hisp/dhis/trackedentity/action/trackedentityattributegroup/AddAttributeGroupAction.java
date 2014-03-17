@@ -113,7 +113,7 @@ public class AddAttributeGroupAction
         }
         attributeGroup.setAttributes( attributes );
 
-        attributeGroupService.saveTrackedEntityAttributeGroup( attributeGroup );
+        attributeGroupService.addTrackedEntityAttributeGroup( attributeGroup );
 
         return SUCCESS;
     }
