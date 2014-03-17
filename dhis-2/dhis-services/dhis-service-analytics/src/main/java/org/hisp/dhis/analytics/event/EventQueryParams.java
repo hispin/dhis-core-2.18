@@ -51,10 +51,6 @@ import org.hisp.dhis.program.ProgramStage;
 public class EventQueryParams
     extends DataQueryParams
 {
-    public static final String OU_MODE_SELECTED = "selected";
-    public static final String OU_MODE_CHILDREN = "children";
-    public static final String OU_MODE_DESCENDANTS = "descendants";
-    
     private Program program;
     
     private ProgramStage programStage;

@@ -29,9 +29,12 @@ package org.hisp.dhis.trackedentity;
  */
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 
 /**
@@ -51,7 +54,7 @@ public class TrackedEntityInstanceQueryParams
     
     private TrackedEntity trackedEntity;
     
-    private List<String> organisationUnits = new ArrayList<String>();
+    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
     
     private String organisationUnitMode;
 
@@ -74,6 +77,16 @@ public class TrackedEntityInstanceQueryParams
     public boolean hasProgram()
     {
         return program != null;
+    }
+    
+    public boolean hasTrackedEntity()
+    {
+        return trackedEntity != null;
+    }
+    
+    public boolean isOrganisationUnitMode( String mode )
+    {
+        return organisationUnitMode != null && organisationUnitMode.equals( mode );
     }
     
     // -------------------------------------------------------------------------
@@ -110,12 +123,12 @@ public class TrackedEntityInstanceQueryParams
         this.trackedEntity = trackedEntity;
     }
 
-    public List<String> getOrganisationUnits()
+    public Set<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
     }
 
-    public void setOrganisationUnits( List<String> organisationUnits )
+    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
     {
         this.organisationUnits = organisationUnits;
     }

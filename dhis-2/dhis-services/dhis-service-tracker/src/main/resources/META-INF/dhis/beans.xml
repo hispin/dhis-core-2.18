@@ -74,12 +74,11 @@
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityInstanceStore"
 		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityInstanceStore">
-		<property name="clazz"
-			value="org.hisp.dhis.trackedentity.TrackedEntityInstance" />
+		<property name="clazz" value="org.hisp.dhis.trackedentity.TrackedEntityInstance" />
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
+		<property name="statementBuilder" ref="statementBuilder" />
 	</bean>
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeStore"
@@ -237,7 +236,7 @@
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityInstanceService"
 		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityInstanceService">
-		<property name="entityInstanceStore"
+		<property name="trackedEntityInstanceStore"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceStore" />
 		<property name="attributeValueService"
 			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
@@ -247,6 +246,8 @@
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
+	    <property name="programService"
+	        ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeService"

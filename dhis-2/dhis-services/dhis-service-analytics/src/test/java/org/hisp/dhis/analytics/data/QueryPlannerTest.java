@@ -29,12 +29,14 @@ package org.hisp.dhis.analytics.data;
  */
 
 import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.NameableObjectUtils.getList;
-import static org.hisp.dhis.dataelement.DataElement.*;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -49,10 +51,10 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.DataQueryGroups;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.DimensionItem;
-import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;

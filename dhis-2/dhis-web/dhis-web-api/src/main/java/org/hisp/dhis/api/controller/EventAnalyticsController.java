@@ -35,13 +35,13 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.springframework.beans.factory.annotation.Autowired;
