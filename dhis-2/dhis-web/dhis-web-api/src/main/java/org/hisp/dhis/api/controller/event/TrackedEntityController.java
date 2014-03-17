@@ -28,6 +28,8 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping( value = TrackedEntityController.RESOURCE_PATH )
-public class TrackedEntityController
+public class TrackedEntityController extends AbstractCrudController<TrackedEntity>
 {
     public static final String RESOURCE_PATH = "/trackedEntities";
 }
