@@ -29,6 +29,8 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,16 +63,25 @@ public class TrackedEntityAttributeGroupController extends AbstractCrudControlle
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @ResponseStatus( HttpStatus.CREATED )
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+        TrackedEntityAttributeGroup trackedEntityAttributeGroup = JacksonUtils.fromXml( input, TrackedEntityAttributeGroup.class );
+        trackedEntityAttributeGroupService.addTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
+
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + trackedEntityAttributeGroup.getUid() );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @ResponseStatus( HttpStatus.CREATED )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+        TrackedEntityAttributeGroup trackedEntityAttributeGroup = JacksonUtils.fromJson( input, TrackedEntityAttributeGroup.class );
+        trackedEntityAttributeGroupService.addTrackedEntityAttributeGroup( trackedEntityAttributeGroup );
+
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + trackedEntityAttributeGroup.getUid() );
     }
+
     //--------------------------------------------------------------------------
     // PUT
     //--------------------------------------------------------------------------

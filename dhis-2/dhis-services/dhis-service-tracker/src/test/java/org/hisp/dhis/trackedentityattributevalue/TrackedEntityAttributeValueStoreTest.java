@@ -114,9 +114,9 @@ public class TrackedEntityAttributeValueStoreTest
         attributeB = createTrackedEntityAttribute( 'B' );
         attributeC = createTrackedEntityAttribute( 'C' );
 
-        attributeService.saveTrackedEntityAttribute( attributeA );
-        attributeService.saveTrackedEntityAttribute( attributeB );
-        attributeService.saveTrackedEntityAttribute( attributeC );
+        attributeService.addTrackedEntityAttribute( attributeA );
+        attributeService.addTrackedEntityAttribute( attributeB );
+        attributeService.addTrackedEntityAttribute( attributeC );
 
         attributeOpionA = createTrackedEntityAttributeOption( 'A', attributeC );
         attributeOpionB = createTrackedEntityAttributeOption( 'B', attributeC );

@@ -28,25 +28,24 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.ExportView;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Chau Thu Tran
  */
-@JacksonXmlRootElement(localName = "trackedEntityAttributeGroup", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "trackedEntityAttributeGroup", namespace = DxfNamespaces.DXF_2_0 )
 public class TrackedEntityAttributeGroup
     extends BaseIdentifiableObject
 {
@@ -86,11 +85,11 @@ public class TrackedEntityAttributeGroup
         this.description = description;
     }
 
-    @JsonProperty("personAttributes")
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "personAttributes", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty( "trackedEntityAttributes" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "trackedEntityAttributes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "trackedEntityAttribute", namespace = DxfNamespaces.DXF_2_0 )
     public List<TrackedEntityAttribute> getAttributes()
     {
         return attributes;

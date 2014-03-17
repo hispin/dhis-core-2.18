@@ -196,7 +196,7 @@ public class AddAttributeAction
             attribute.setProgramScope( programScope );
         }
 
-        attributeService.saveTrackedEntityAttribute( attribute );
+        attributeService.addTrackedEntityAttribute( attribute );
 
         if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
         {

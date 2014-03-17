@@ -28,23 +28,22 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
-import org.hisp.dhis.period.PeriodType;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
+import org.hisp.dhis.period.PeriodType;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -143,10 +142,10 @@ public class TrackedEntityAttribute
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @JsonProperty( "personAttributeOptions" )
+    @JsonProperty( "trackedEntityAttributeOptions" )
     @JsonView( { DetailedView.class } )
-    @JacksonXmlElementWrapper( localName = "personAttributeOptions", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "personAttributeOption", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlElementWrapper( localName = "trackedEntityAttributeOptions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "trackedEntityAttributeOption", namespace = DxfNamespaces.DXF_2_0 )
     public Set<TrackedEntityAttributeOption> getAttributeOptions()
     {
         return attributeOptions == null ? new HashSet<TrackedEntityAttributeOption>() : attributeOptions;
@@ -233,10 +232,10 @@ public class TrackedEntityAttribute
         this.valueType = valueType;
     }
 
-    @JsonProperty( "personAttributeGroup" )
+    @JsonProperty( "trackedEntityAttributeGroup" )
     @JsonView( { DetailedView.class } )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JacksonXmlProperty( localName = "personAttributeGroup", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "trackedEntityAttributeGroup", namespace = DxfNamespaces.DXF_2_0 )
     public TrackedEntityAttributeGroup getAttributeGroup()
     {
         return attributeGroup;

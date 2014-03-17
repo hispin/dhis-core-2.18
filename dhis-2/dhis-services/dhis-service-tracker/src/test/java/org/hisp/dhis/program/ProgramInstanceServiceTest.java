@@ -565,7 +565,7 @@ public class ProgramInstanceServiceTest
     {
         TrackedEntityAttribute attribute = createTrackedEntityAttribute( 'A' );
         attribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );
-        attributeService.saveTrackedEntityAttribute( attribute );
+        attributeService.addTrackedEntityAttribute( attribute );
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA, attribute );
         attributeValue.setValue( "123456789" );
