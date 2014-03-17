@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.events.person;
+package org.hisp.dhis.dxf2.events.trackedentity;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -36,33 +36,17 @@ import org.hisp.dhis.common.DxfNamespaces;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
-public class Attribute
+@JacksonXmlRootElement( localName = "relationship", namespace = DxfNamespaces.DXF_2_0 )
+public class Relationship
 {
     private String displayName;
 
-    private String attribute;
+    private String trackedEntityInstance;
 
     private String type;
 
-    private String code;
-
-    private String value;
-
-    public Attribute()
+    public Relationship()
     {
-    }
-
-    public Attribute( String value )
-    {
-        this.value = value;
-    }
-
-    public Attribute( String attribute, String type, String value )
-    {
-        this.attribute = attribute;
-        this.type = type;
-        this.value = value;
     }
 
     @JsonProperty
@@ -79,14 +63,14 @@ public class Attribute
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public String getAttribute()
+    public String getTrackedEntityInstance()
     {
-        return attribute;
+        return trackedEntityInstance;
     }
 
-    public void setAttribute( String attribute )
+    public void setTrackedEntityInstance( String trackedEntityInstance )
     {
-        this.attribute = attribute;
+        this.trackedEntityInstance = trackedEntityInstance;
     }
 
     @JsonProperty
@@ -101,50 +85,18 @@ public class Attribute
         this.type = type;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o )
-            return true;
-        if ( o == null || getClass() != o.getClass() )
-            return false;
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
 
-        Attribute attribute1 = (Attribute) o;
+        Relationship that = (Relationship) o;
 
-        if ( attribute != null ? !attribute.equals( attribute1.attribute ) : attribute1.attribute != null )
+        if ( displayName != null ? !displayName.equals( that.displayName ) : that.displayName != null ) return false;
+        if ( trackedEntityInstance != null ? !trackedEntityInstance.equals( that.trackedEntityInstance ) : that.trackedEntityInstance != null )
             return false;
-        if ( displayName != null ? !displayName.equals( attribute1.displayName ) : attribute1.displayName != null )
-            return false;
-        if ( type != null ? !type.equals( attribute1.type ) : attribute1.type != null )
-            return false;
-        if ( code != null ? !code.equals( attribute1.code ) : attribute1.code != null )
-            return false;
-        if ( value != null ? !value.equals( attribute1.value ) : attribute1.value != null )
-            return false;
+        if ( type != null ? !type.equals( that.type ) : that.type != null ) return false;
 
         return true;
     }
@@ -153,17 +105,18 @@ public class Attribute
     public int hashCode()
     {
         int result = displayName != null ? displayName.hashCode() : 0;
-        result = 31 * result + (attribute != null ? attribute.hashCode() : 0);
+        result = 31 * result + (trackedEntityInstance != null ? trackedEntityInstance.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (code != null ? code.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString()
     {
-        return "Attribute{" + "displayName='" + displayName + '\'' + ", attribute='" + attribute + '\'' + ", type='"
-            + type + '\'' + ", code='" + code + '\'' + ", value='" + value + '\'' + '}';
+        return "Relationship{" +
+            "displayName='" + displayName + '\'' +
+            ", trackedEntityInstance='" + trackedEntityInstance + '\'' +
+            ", type='" + type + '\'' +
+            '}';
     }
 }

@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.i18n.I18nManager;
@@ -230,7 +230,7 @@ public abstract class AbstractEnrollmentService
     public ImportSummary saveEnrollment( Enrollment enrollment )
     {
         org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getPerson() );
-        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( entityInstance );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getTrackedEntityInstance( entityInstance );
         Program program = getProgram( enrollment.getProgram() );
 
         Enrollments enrollments = getEnrollments( program, trackedEntityInstance, EnrollmentStatus.ACTIVE );

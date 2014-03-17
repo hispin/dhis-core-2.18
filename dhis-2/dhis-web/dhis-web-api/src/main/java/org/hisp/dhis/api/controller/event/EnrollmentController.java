@@ -36,8 +36,8 @@ import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentStatus;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollments;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -273,7 +273,7 @@ public class EnrollmentController
 
     private TrackedEntityInstance getPerson( String id ) throws NotFoundException
     {
-        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( id );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getTrackedEntityInstance( id );
 
         if ( trackedEntityInstance == null )
         {

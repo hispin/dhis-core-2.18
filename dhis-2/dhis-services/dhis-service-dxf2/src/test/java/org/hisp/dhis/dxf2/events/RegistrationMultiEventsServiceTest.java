@@ -42,8 +42,8 @@ import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -119,7 +119,7 @@ public class RegistrationMultiEventsServiceTest
         identifiableObjectManager.save( femaleA );
         identifiableObjectManager.save( femaleB );
 
-        trackedEntityInstanceMaleA = trackedEntityInstanceService.getPerson( maleA );
+        trackedEntityInstanceMaleA = trackedEntityInstanceService.getTrackedEntityInstance( maleA );
 
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
@@ -296,7 +296,7 @@ public class RegistrationMultiEventsServiceTest
         event.setProgram( program );
         event.setProgramStage( programStage );
         event.setOrgUnit( orgUnit );
-        event.setPerson( person );
+        event.setTrackedEntityInstance( person );
         event.setEventDate( "2013-01-01" );
 
         event.getDataValues().add( new DataValue( dataElement, "10" ) );

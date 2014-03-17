@@ -31,7 +31,7 @@ package org.hisp.dhis.dxf2.events.event;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
@@ -168,7 +168,7 @@ public class DefaultEventStore
     {
         List<Event> events = new ArrayList<Event>();
 
-        Integer personId = null;
+        Integer trackedEntityInstanceId = null;
 
         if ( trackedEntityInstance != null )
         {
@@ -176,12 +176,12 @@ public class DefaultEventStore
 
             if ( entityInstance != null )
             {
-                personId = entityInstance.getId();
+                trackedEntityInstanceId = entityInstance.getId();
             }
         }
 
         String sql = buildSql( getIdList( programs ), getIdList( programStages ), getIdList( organisationUnits ),
-            personId, startDate, endDate );
+            trackedEntityInstanceId, startDate, endDate );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -195,7 +195,7 @@ public class DefaultEventStore
                 event = new Event();
 
                 event.setEvent( rowSet.getString( "psi_uid" ) );
-                event.setPerson( rowSet.getString( "pa_uid" ) );
+                event.setTrackedEntityInstance( rowSet.getString( "pa_uid" ) );
                 event.setStatus( EventStatus.fromInt( rowSet.getInt( "psi_status" ) ) );
                 event.setProgram( rowSet.getString( "p_uid" ) );
                 event.setProgramStage( rowSet.getString( "ps_uid" ) );
@@ -249,7 +249,7 @@ public class DefaultEventStore
     }
 
     private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds,
-        Integer personId, Date startDate, Date endDate )
+        Integer trackedEntityInstanceId, Date startDate, Date endDate )
     {
         String sql = "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, "
             + "psi.executiondate as psi_executiondate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude,"
@@ -265,15 +265,15 @@ public class DefaultEventStore
 
         boolean startedWhere = false;
 
-        if ( personId != null )
+        if ( trackedEntityInstanceId != null )
         {
             if ( startedWhere )
             {
-                sql += " and pa.trackedentityinstanceid=" + personId;
+                sql += " and pa.trackedentityinstanceid=" + trackedEntityInstanceId;
             }
             else
             {
-                sql += " where pa.trackedentityinstanceid=" + personId;
+                sql += " where pa.trackedentityinstanceid=" + trackedEntityInstanceId;
                 startedWhere = true;
             }
         }

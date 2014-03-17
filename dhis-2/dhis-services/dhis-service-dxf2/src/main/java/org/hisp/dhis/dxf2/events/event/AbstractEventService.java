@@ -38,7 +38,7 @@ import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -164,17 +164,17 @@ public abstract class AbstractEventService
 
         if ( program.isRegistration() )
         {
-            if ( event.getPerson() == null )
+            if ( event.getTrackedEntityInstance() == null )
             {
                 return new ImportSummary( ImportStatus.ERROR,
-                    "No Event.person was provided for registration based program." );
+                    "No Event.trackedEntityInstance was provided for registration based program." );
             }
 
-            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( event.getPerson() );
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( event.getTrackedEntityInstance() );
 
             if ( entityInstance == null )
             {
-                return new ImportSummary( ImportStatus.ERROR, "Event.person does not point to a valid person." );
+                return new ImportSummary( ImportStatus.ERROR, "Event.trackedEntityInstance does not point to a valid trackedEntityInstance." );
             }
 
             List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
@@ -182,12 +182,12 @@ public abstract class AbstractEventService
 
             if ( programInstances.isEmpty() )
             {
-                return new ImportSummary( ImportStatus.ERROR, "Person " + entityInstance.getUid()
+                return new ImportSummary( ImportStatus.ERROR, "TrackedEntityInstance " + entityInstance.getUid()
                     + " is not enrolled in program " + program.getUid() );
             }
             else if ( programInstances.size() > 1 )
             {
-                return new ImportSummary( ImportStatus.ERROR, "Person " + entityInstance.getUid()
+                return new ImportSummary( ImportStatus.ERROR, "TrackedEntityInstance " + entityInstance.getUid()
                     + " have multiple active enrollments into program " + program.getUid()
                     + " please check and correct your database." );
             }
@@ -201,12 +201,12 @@ public abstract class AbstractEventService
 
                 if ( programStageInstances.isEmpty() )
                 {
-                    return new ImportSummary( ImportStatus.ERROR, "Person " + entityInstance.getUid()
+                    return new ImportSummary( ImportStatus.ERROR, "TrackedEntityInstance " + entityInstance.getUid()
                         + " is not enrolled in programStage " + programStage.getUid() );
                 }
                 else if ( programStageInstances.size() > 1 )
                 {
-                    return new ImportSummary( ImportStatus.ERROR, "Person " + entityInstance.getUid()
+                    return new ImportSummary( ImportStatus.ERROR, "TrackedEntityInstance " + entityInstance.getUid()
                         + " have multiple active enrollments into programStage " + programStage.getUid()
                         + " please check and correct your database for multiple active stages." );
                 }
@@ -561,7 +561,7 @@ public abstract class AbstractEventService
 
         if ( programStageInstance.getProgramInstance().getEntityInstance() != null )
         {
-            event.setPerson( programStageInstance.getProgramInstance().getEntityInstance().getUid() );
+            event.setTrackedEntityInstance( programStageInstance.getProgramInstance().getEntityInstance().getUid() );
         }
 
         event.setStatus( EventStatus.fromInt( programStageInstance.getStatus() ) );
@@ -573,7 +573,7 @@ public abstract class AbstractEventService
 
         if ( programStageInstance.getProgramInstance().getEntityInstance() != null )
         {
-            event.setPerson( programStageInstance.getProgramInstance().getEntityInstance().getUid() );
+            event.setTrackedEntityInstance( programStageInstance.getProgramInstance().getEntityInstance().getUid() );
         }
 
         if ( programStageInstance.getProgramStage().getCaptureCoordinates() )
