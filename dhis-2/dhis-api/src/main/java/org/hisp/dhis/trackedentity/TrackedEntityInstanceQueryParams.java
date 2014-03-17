@@ -77,6 +77,22 @@ public class TrackedEntityInstanceQueryParams
     // -------------------------------------------------------------------------
 
     /**
+     * Indicates whether this params has any items with filter.
+     */
+    public boolean hasItemsWithFilter()
+    {        
+        for ( QueryItem item : items )
+        {
+            if ( item.hasFilter() )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
      * Indicates whether this params specifies a program.
      */
     public boolean hasProgram()
@@ -98,6 +114,38 @@ public class TrackedEntityInstanceQueryParams
     public boolean isOrganisationUnitMode( String mode )
     {
         return organisationUnitMode != null && organisationUnitMode.equals( mode );
+    }
+
+    /**
+     * Indicates whether paging is enabled.
+     */
+    public boolean isPaging()
+    {
+        return page != null || pageSize != null;
+    }
+
+    /**
+     * Returns the page number, falls back to default value of 1 if not specified.
+     */
+    public int getPageWithDefault()
+    {
+        return page != null && page > 0 ? page : 1;
+    }
+    
+    /**
+     * Returns the page size, falls back to default value of 50 if not specified.
+     */
+    public int getPageSizeWithDefault()
+    {
+        return pageSize != null && pageSize >= 0 ? pageSize : 50;
+    }
+
+    /**
+     * Returns the offset based on the page number and page size.
+     */
+    public int getOffset()
+    {
+        return ( getPageWithDefault() - 1 ) * getPageSizeWithDefault();
     }
     
     // -------------------------------------------------------------------------
