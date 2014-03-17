@@ -42,8 +42,8 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentStatus;
-import org.hisp.dhis.dxf2.events.person.Person;
-import org.hisp.dhis.dxf2.events.person.PersonService;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -53,7 +53,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ public class EnrollmentServiceTest
     extends DhisSpringTest
 {
     @Autowired
-    private PersonService personService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
     private EnrollmentService enrollmentService;
@@ -76,10 +75,10 @@ public class EnrollmentServiceTest
     @Autowired
     private ProgramInstanceService programInstanceService;
 
-    private TrackedEntityInstance maleA;
-    private TrackedEntityInstance maleB;
-    private TrackedEntityInstance femaleA;
-    private TrackedEntityInstance femaleB;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance maleA;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance maleB;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance femaleA;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance femaleB;
 
     private OrganisationUnit organisationUnitA;
     private OrganisationUnit organisationUnitB;
@@ -147,8 +146,8 @@ public class EnrollmentServiceTest
         programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
         programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
 
-        Person male = personService.getPerson( maleA );
-        Person female = personService.getPerson( femaleA );
+        TrackedEntityInstance male = trackedEntityInstanceService.getPerson( maleA );
+        TrackedEntityInstance female = trackedEntityInstanceService.getPerson( femaleA );
 
         assertEquals( 1, enrollmentService.getEnrollments( male ).getEnrollments().size() );
         assertEquals( 1, enrollmentService.getEnrollments( female ).getEnrollments().size() );
@@ -336,11 +335,11 @@ public class EnrollmentServiceTest
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        Person person = personService.getPerson( maleA );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( maleA );
         // person.setName( "Changed Name" );
-        personService.updatePerson( person );
+        trackedEntityInstanceService.updatePerson( trackedEntityInstance );
 
-        List<Enrollment> enrollments = enrollmentService.getEnrollments( person ).getEnrollments();
+        List<Enrollment> enrollments = enrollmentService.getEnrollments( trackedEntityInstance ).getEnrollments();
 
         assertEquals( 1, enrollments.size() );
         assertEquals( maleA.getUid(), enrollments.get( 0 ).getPerson() );

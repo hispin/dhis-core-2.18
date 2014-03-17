@@ -38,8 +38,6 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
-import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,15 +52,15 @@ import java.util.Set;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractPersonService
-    implements PersonService
+public abstract class AbstractTrackedEntityInstanceService
+    implements TrackedEntityInstanceService
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     @Autowired
-    private TrackedEntityInstanceService entityInstanceService;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private TrackedEntityAttributeValueService attributeValueService;
@@ -78,67 +76,67 @@ public abstract class AbstractPersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public Persons getPersons()
+    public TrackedEntityInstances getPersons()
     {
-        List<TrackedEntityInstance> entityInstances = new ArrayList<TrackedEntityInstance>(
+        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>(
             entityInstanceService.getAllTrackedEntityInstances() );
         return getPersons( entityInstances );
     }
 
     @Override
-    public Persons getPersons( OrganisationUnit organisationUnit )
+    public TrackedEntityInstances getPersons( OrganisationUnit organisationUnit )
     {
-        List<TrackedEntityInstance> entityInstances = new ArrayList<TrackedEntityInstance>(
+        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>(
             entityInstanceService.getTrackedEntityInstances( organisationUnit, null, null ) );
         return getPersons( entityInstances );
     }
 
     @Override
-    public Persons getPersons( Program program )
+    public TrackedEntityInstances getPersons( Program program )
     {
-        List<TrackedEntityInstance> entityInstances = new ArrayList<TrackedEntityInstance>(
+        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>(
             entityInstanceService.getTrackedEntityInstances( program ) );
         return getPersons( entityInstances );
     }
 
     @Override
-    public Persons getPersons( OrganisationUnit organisationUnit, Program program )
+    public TrackedEntityInstances getPersons( OrganisationUnit organisationUnit, Program program )
     {
-        List<TrackedEntityInstance> entityInstances = new ArrayList<TrackedEntityInstance>(
+        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>(
             entityInstanceService.getTrackedEntityInstances( organisationUnit, program ) );
         return getPersons( entityInstances );
     }
 
     @Override
-    public Persons getPersons( Collection<TrackedEntityInstance> entityInstances )
+    public TrackedEntityInstances getPersons( Collection<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances )
     {
-        Persons persons = new Persons();
+        TrackedEntityInstances trackedEntityInstances = new TrackedEntityInstances();
 
-        for ( TrackedEntityInstance entityInstance : entityInstances )
+        for ( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance : entityInstances )
         {
-            persons.getPersons().add( getPerson( entityInstance ) );
+            trackedEntityInstances.getTrackedEntityInstances().add( getPerson( entityInstance ) );
         }
 
-        return persons;
+        return trackedEntityInstances;
     }
 
     @Override
-    public Person getPerson( String uid )
+    public TrackedEntityInstance getPerson( String uid )
     {
         return getPerson( entityInstanceService.getTrackedEntityInstance( uid ) );
     }
 
     @Override
-    public Person getPerson( TrackedEntityInstance entityInstance )
+    public TrackedEntityInstance getPerson( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance )
     {
         if ( entityInstance == null )
         {
             return null;
         }
 
-        Person person = new Person();
-        person.setPerson( entityInstance.getUid() );
-        person.setOrgUnit( entityInstance.getOrganisationUnit().getUid() );
+        TrackedEntityInstance trackedEntityInstance = new TrackedEntityInstance();
+        trackedEntityInstance.setTrackedEntityInstance( entityInstance.getUid() );
+        trackedEntityInstance.setOrgUnit( entityInstance.getOrganisationUnit().getUid() );
 
         Collection<Relationship> relationships = relationshipService
             .getRelationshipsForTrackedEntityInstance( entityInstance );
@@ -150,7 +148,7 @@ public abstract class AbstractPersonService
             relationship.setPerson( entityRelationship.getEntityInstanceA().getUid() );
             relationship.setType( entityRelationship.getRelationshipType().getUid() );
 
-            person.getRelationships().add( relationship );
+            trackedEntityInstance.getRelationships().add( relationship );
         }
 
         Collection<TrackedEntityAttributeValue> attributeValues = attributeValueService
@@ -166,19 +164,19 @@ public abstract class AbstractPersonService
             attribute.setCode( attributeValue.getAttribute().getCode() );
             attribute.setValue( attributeValue.getValue() );
 
-            person.getAttributes().add( attribute );
+            trackedEntityInstance.getAttributes().add( attribute );
         }
 
-        return person;
+        return trackedEntityInstance;
     }
 
-    public TrackedEntityInstance getTrackedEntityInstance( Person person )
+    public org.hisp.dhis.trackedentity.TrackedEntityInstance getTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance )
     {
-        Assert.hasText( person.getOrgUnit() );
+        Assert.hasText( trackedEntityInstance.getOrgUnit() );
 
-        TrackedEntityInstance entityInstance = new TrackedEntityInstance();
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = new org.hisp.dhis.trackedentity.TrackedEntityInstance();
 
-        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
+        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, trackedEntityInstance.getOrgUnit() );
         Assert.notNull( organisationUnit );
 
         entityInstance.setOrganisationUnit( organisationUnit );
@@ -191,13 +189,13 @@ public abstract class AbstractPersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public ImportSummary savePerson( Person person )
+    public ImportSummary savePerson( TrackedEntityInstance trackedEntityInstance )
     {
         ImportSummary importSummary = new ImportSummary();
         importSummary.setDataValueCount( null );
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        importConflicts.addAll( checkAttributes( person ) );
+        importConflicts.addAll( checkAttributes( trackedEntityInstance ) );
 
         importSummary.setConflicts( importConflicts );
 
@@ -208,10 +206,10 @@ public abstract class AbstractPersonService
             return importSummary;
         }
 
-        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( trackedEntityInstance );
         entityInstanceService.saveTrackedEntityInstance( entityInstance );
 
-        updateAttributeValues( person, entityInstance );
+        updateAttributeValues( trackedEntityInstance, entityInstance );
         entityInstanceService.updateTrackedEntityInstance( entityInstance );
 
         importSummary.setStatus( ImportStatus.SUCCESS );
@@ -226,28 +224,28 @@ public abstract class AbstractPersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public ImportSummary updatePerson( Person person )
+    public ImportSummary updatePerson( TrackedEntityInstance trackedEntityInstance )
     {
         ImportSummary importSummary = new ImportSummary();
         importSummary.setDataValueCount( null );
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        importConflicts.addAll( checkRelationships( person ) );
-        importConflicts.addAll( checkAttributes( person ) );
+        importConflicts.addAll( checkRelationships( trackedEntityInstance ) );
+        importConflicts.addAll( checkAttributes( trackedEntityInstance ) );
 
-        TrackedEntityInstance entityInstance = manager.get( TrackedEntityInstance.class, person.getPerson() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, trackedEntityInstance.getTrackedEntityInstance() );
 
         if ( entityInstance == null )
         {
-            importConflicts.add( new ImportConflict( "Person", "person " + person.getPerson()
+            importConflicts.add( new ImportConflict( "Person", "person " + trackedEntityInstance.getTrackedEntityInstance()
                 + " does not point to valid person" ) );
         }
 
-        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
+        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, trackedEntityInstance.getOrgUnit() );
 
         if ( organisationUnit == null )
         {
-            importConflicts.add( new ImportConflict( "OrganisationUnit", "orgUnit " + person.getOrgUnit()
+            importConflicts.add( new ImportConflict( "OrganisationUnit", "orgUnit " + trackedEntityInstance.getOrgUnit()
                 + " does not point to valid organisation unit" ) );
         }
 
@@ -264,8 +262,8 @@ public abstract class AbstractPersonService
         removeAttributeValues( entityInstance );
         entityInstanceService.updateTrackedEntityInstance( entityInstance );
 
-        updateRelationships( person, entityInstance );
-        updateAttributeValues( person, entityInstance );
+        updateRelationships( trackedEntityInstance, entityInstance );
+        updateAttributeValues( trackedEntityInstance, entityInstance );
         entityInstanceService.updateTrackedEntityInstance( entityInstance );
 
         importSummary.setStatus( ImportStatus.SUCCESS );
@@ -280,9 +278,9 @@ public abstract class AbstractPersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public void deletePerson( Person person )
+    public void deletePerson( TrackedEntityInstance trackedEntityInstance )
     {
-        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( person.getPerson() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
 
         if ( entityInstance != null )
         {
@@ -298,13 +296,13 @@ public abstract class AbstractPersonService
     // HELPERS
     // -------------------------------------------------------------------------
 
-    private List<ImportConflict> checkAttributes( Person person )
+    private List<ImportConflict> checkAttributes( TrackedEntityInstance trackedEntityInstance )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
         Collection<TrackedEntityAttribute> entityAttributes = manager.getAll( TrackedEntityAttribute.class );
         Set<String> cache = new HashSet<String>();
 
-        for ( Attribute attribute : person.getAttributes() )
+        for ( Attribute attribute : trackedEntityInstance.getAttributes() )
         {
             if ( attribute.getValue() != null )
             {
@@ -324,7 +322,7 @@ public abstract class AbstractPersonService
             }
         }
 
-        for ( Attribute attribute : person.getAttributes() )
+        for ( Attribute attribute : trackedEntityInstance.getAttributes() )
         {
             TrackedEntityAttribute entityAttribute = manager.get( TrackedEntityAttribute.class,
                 attribute.getAttribute() );
@@ -339,11 +337,11 @@ public abstract class AbstractPersonService
         return importConflicts;
     }
 
-    private List<ImportConflict> checkRelationships( Person person )
+    private List<ImportConflict> checkRelationships( TrackedEntityInstance trackedEntityInstance )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
-        for ( org.hisp.dhis.dxf2.events.person.Relationship relationship : person.getRelationships() )
+        for ( org.hisp.dhis.dxf2.events.person.Relationship relationship : trackedEntityInstance.getRelationships() )
         {
             RelationshipType relationshipType = manager.get( RelationshipType.class, relationship.getType() );
 
@@ -353,7 +351,7 @@ public abstract class AbstractPersonService
                     .add( new ImportConflict( "Relationship.type", "Invalid type " + relationship.getType() ) );
             }
 
-            TrackedEntityInstance entityInstance = manager.get( TrackedEntityInstance.class, relationship.getPerson() );
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getPerson() );
 
             if ( entityInstance == null )
             {
@@ -365,9 +363,9 @@ public abstract class AbstractPersonService
         return importConflicts;
     }
 
-    private void updateAttributeValues( Person person, TrackedEntityInstance entityInstance )
+    private void updateAttributeValues( TrackedEntityInstance trackedEntityInstance, org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance )
     {
-        for ( Attribute attribute : person.getAttributes() )
+        for ( Attribute attribute : trackedEntityInstance.getAttributes() )
         {
             TrackedEntityAttribute entityAttribute = manager.get( TrackedEntityAttribute.class,
                 attribute.getAttribute() );
@@ -384,11 +382,11 @@ public abstract class AbstractPersonService
         }
     }
 
-    private void updateRelationships( Person person, TrackedEntityInstance entityInstance )
+    private void updateRelationships( TrackedEntityInstance trackedEntityInstance, org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance )
     {
-        for ( org.hisp.dhis.dxf2.events.person.Relationship relationship : person.getRelationships() )
+        for ( org.hisp.dhis.dxf2.events.person.Relationship relationship : trackedEntityInstance.getRelationships() )
         {
-            TrackedEntityInstance entityInstanceB = manager.get( TrackedEntityInstance.class, relationship.getPerson() );
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceB = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getPerson() );
             RelationshipType relationshipType = manager.get( RelationshipType.class, relationship.getType() );
 
             Relationship entityRelationship = new Relationship();
@@ -400,7 +398,7 @@ public abstract class AbstractPersonService
         }
     }
 
-    private void removeRelationships( TrackedEntityInstance entityInstance )
+    private void removeRelationships( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance )
     {
         Collection<Relationship> relationships = relationshipService
             .getRelationshipsForTrackedEntityInstance( entityInstance );
@@ -411,7 +409,7 @@ public abstract class AbstractPersonService
         }
     }
 
-    private void removeAttributeValues( TrackedEntityInstance entityInstance )
+    private void removeAttributeValues( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance )
     {
         for ( TrackedEntityAttributeValue trackedEntityAttributeValue : entityInstance.getAttributeValues() )
         {

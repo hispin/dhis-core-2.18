@@ -30,15 +30,14 @@ package org.hisp.dhis.dxf2.events;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.events.person.Person;
-import org.hisp.dhis.dxf2.events.person.PersonService;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +51,11 @@ import static org.junit.Assert.*;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class PersonServiceTest
+public class TrackedEntityInstanceServiceTest
     extends DhisTest
 {
     @Autowired
-    private PersonService personService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
     private ProgramInstanceService programInstanceService;
@@ -64,10 +63,10 @@ public class PersonServiceTest
     @Autowired
     private IdentifiableObjectManager manager;
 
-    private TrackedEntityInstance maleA;
-    private TrackedEntityInstance maleB;
-    private TrackedEntityInstance femaleA;
-    private TrackedEntityInstance femaleB;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance maleA;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance maleB;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance femaleA;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance femaleB;
 
     private OrganisationUnit organisationUnitA;
     private OrganisationUnit organisationUnitB;
@@ -109,55 +108,55 @@ public class PersonServiceTest
     @Test
     public void testGetPersons()
     {
-        assertEquals( 4, personService.getPersons().getPersons().size() );
+        assertEquals( 4, trackedEntityInstanceService.getPersons().getTrackedEntityInstances().size() );
     }
 
     @Test
     public void testGetPersonByOrganisationUnit()
     {
-        assertEquals( 2, personService.getPersons( organisationUnitA ).getPersons().size() );
-        assertEquals( 2, personService.getPersons( organisationUnitB ).getPersons().size() );
+        assertEquals( 2, trackedEntityInstanceService.getPersons( organisationUnitA ).getTrackedEntityInstances().size() );
+        assertEquals( 2, trackedEntityInstanceService.getPersons( organisationUnitB ).getTrackedEntityInstances().size() );
     }
 
     @Test
     public void getPersonByPatients()
     {
-        List<TrackedEntityInstance> patients = Arrays.asList( maleA, femaleB );
-        assertEquals( 2, personService.getPersons( patients ).getPersons().size() );
+        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> patients = Arrays.asList( maleA, femaleB );
+        assertEquals( 2, trackedEntityInstanceService.getPersons( patients ).getTrackedEntityInstances().size() );
     }
 
     @Test
     public void getPersonByUid()
     {
-        assertEquals( maleA.getUid(), personService.getPerson( maleA.getUid() ).getPerson() );
-        assertEquals( femaleB.getUid(), personService.getPerson( femaleB.getUid() ).getPerson() );
-        assertNotEquals( femaleA.getUid(), personService.getPerson( femaleB.getUid() ).getPerson() );
-        assertNotEquals( maleA.getUid(), personService.getPerson( maleB.getUid() ).getPerson() );
+        assertEquals( maleA.getUid(), trackedEntityInstanceService.getPerson( maleA.getUid() ).getTrackedEntityInstance() );
+        assertEquals( femaleB.getUid(), trackedEntityInstanceService.getPerson( femaleB.getUid() ).getTrackedEntityInstance() );
+        assertNotEquals( femaleA.getUid(), trackedEntityInstanceService.getPerson( femaleB.getUid() ).getTrackedEntityInstance() );
+        assertNotEquals( maleA.getUid(), trackedEntityInstanceService.getPerson( maleB.getUid() ).getTrackedEntityInstance() );
     }
 
     @Test
     public void getPersonByPatient()
     {
-        assertEquals( maleA.getUid(), personService.getPerson( maleA ).getPerson() );
-        assertEquals( femaleB.getUid(), personService.getPerson( femaleB ).getPerson() );
-        assertNotEquals( femaleA.getUid(), personService.getPerson( femaleB ).getPerson() );
-        assertNotEquals( maleA.getUid(), personService.getPerson( maleB ).getPerson() );
+        assertEquals( maleA.getUid(), trackedEntityInstanceService.getPerson( maleA ).getTrackedEntityInstance() );
+        assertEquals( femaleB.getUid(), trackedEntityInstanceService.getPerson( femaleB ).getTrackedEntityInstance() );
+        assertNotEquals( femaleA.getUid(), trackedEntityInstanceService.getPerson( femaleB ).getTrackedEntityInstance() );
+        assertNotEquals( maleA.getUid(), trackedEntityInstanceService.getPerson( maleB ).getTrackedEntityInstance() );
     }
 
     @Test
     public void testGetPersonByProgram()
     {
-        assertEquals( 2, personService.getPersons( programA ).getPersons().size() );
+        assertEquals( 2, trackedEntityInstanceService.getPersons( programA ).getTrackedEntityInstances().size() );
     }
 
     @Test
     @Ignore
     public void testUpdatePerson()
     {
-        Person person = personService.getPerson( maleA.getUid() );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( maleA.getUid() );
         // person.setName( "UPDATED_NAME" );
 
-        ImportSummary importSummary = personService.updatePerson( person );
+        ImportSummary importSummary = trackedEntityInstanceService.updatePerson( trackedEntityInstance );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         // assertEquals( "UPDATED_NAME", personService.getPerson( maleA.getUid() ).getName() );
@@ -167,11 +166,11 @@ public class PersonServiceTest
     @Ignore
     public void testSavePerson()
     {
-        Person person = new Person();
+        TrackedEntityInstance trackedEntityInstance = new TrackedEntityInstance();
         // person.setName( "NAME" );
-        person.setOrgUnit( organisationUnitA.getUid() );
+        trackedEntityInstance.setOrgUnit( organisationUnitA.getUid() );
 
-        ImportSummary importSummary = personService.savePerson( person );
+        ImportSummary importSummary = trackedEntityInstanceService.savePerson( trackedEntityInstance );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         // assertEquals( "NAME", personService.getPerson( importSummary.getReference() ).getName() );
@@ -180,10 +179,10 @@ public class PersonServiceTest
     @Test
     public void testDeletePerson()
     {
-        Person person = personService.getPerson( maleA.getUid() );
-        personService.deletePerson( person );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( maleA.getUid() );
+        trackedEntityInstanceService.deletePerson( trackedEntityInstance );
 
-        assertNull( personService.getPerson( maleA.getUid() ) );
-        assertNotNull( personService.getPerson( maleB.getUid() ) );
+        assertNull( trackedEntityInstanceService.getPerson( maleA.getUid() ) );
+        assertNotNull( trackedEntityInstanceService.getPerson( maleB.getUid() ) );
     }
 }

@@ -36,8 +36,8 @@ import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
 import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.dxf2.events.event.ImportEventTask;
-import org.hisp.dhis.dxf2.events.person.Person;
-import org.hisp.dhis.dxf2.events.person.PersonService;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -102,7 +102,7 @@ public class EventController
     private EventService eventService;
 
     @Autowired
-    private PersonService personService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -119,7 +119,7 @@ public class EventController
     public String getEvents(
         @RequestParam( value = "program", required = false ) String programUid,
         @RequestParam( value = "programStage", required = false ) String programStageUid,
-        @RequestParam( value = "person", required = false ) String personUid,
+        @RequestParam( value = "trackedEntityInstance", required = false ) String trackedEntityInstanceUid,
         @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
         @RequestParam( value = "includeChildren", required = false, defaultValue = "false" ) boolean includeChildren,
         @RequestParam( value = "includeDescendants", required = false, defaultValue = "false" ) boolean includeDescendants,
@@ -132,15 +132,15 @@ public class EventController
         ProgramStage programStage = manager.get( ProgramStage.class, programStageUid );
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
         OrganisationUnit rootOrganisationUnit;
-        Person person = null;
+        TrackedEntityInstance trackedEntityInstance = null;
 
-        if ( personUid != null )
+        if ( trackedEntityInstanceUid != null )
         {
-            person = personService.getPerson( personUid );
+            trackedEntityInstance = trackedEntityInstanceService.getPerson( trackedEntityInstanceUid );
 
-            if ( person == null )
+            if ( trackedEntityInstance == null )
             {
-                throw new NotFoundException( "Person", personUid );
+                throw new NotFoundException( "TrackedEntityInstance", trackedEntityInstanceUid );
             }
         }
 
@@ -157,9 +157,9 @@ public class EventController
             }
         }
 
-        if ( rootOrganisationUnit == null && person != null )
+        if ( rootOrganisationUnit == null && trackedEntityInstance != null )
         {
-            Events events = eventService.getEvents( Arrays.asList( program ), Arrays.asList( programStage ), null, person, startDate, endDate );
+            Events events = eventService.getEvents( Arrays.asList( program ), Arrays.asList( programStage ), null, trackedEntityInstance, startDate, endDate );
 
             model.addAttribute( "model", events );
             model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
@@ -186,7 +186,7 @@ public class EventController
             organisationUnits.add( rootOrganisationUnit );
         }
 
-        Events events = eventService.getEvents( Arrays.asList( program ), Arrays.asList( programStage ), organisationUnits, person, startDate, endDate );
+        Events events = eventService.getEvents( Arrays.asList( program ), Arrays.asList( programStage ), organisationUnits, trackedEntityInstance, startDate, endDate );
 
         if ( options.hasLinks() )
         {

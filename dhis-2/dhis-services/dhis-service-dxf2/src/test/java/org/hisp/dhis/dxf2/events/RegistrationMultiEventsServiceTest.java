@@ -42,8 +42,8 @@ import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
-import org.hisp.dhis.dxf2.events.person.Person;
-import org.hisp.dhis.dxf2.events.person.PersonService;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -51,7 +51,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +65,7 @@ public class RegistrationMultiEventsServiceTest
     private EventService eventService;
 
     @Autowired
-    private PersonService personService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
     private ProgramStageDataElementService programStageDataElementService;
@@ -74,15 +73,15 @@ public class RegistrationMultiEventsServiceTest
     @Autowired
     private EnrollmentService enrollmentService;
 
-    private TrackedEntityInstance maleA;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance maleA;
 
-    private TrackedEntityInstance maleB;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance maleB;
 
-    private TrackedEntityInstance femaleA;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance femaleA;
 
-    private TrackedEntityInstance femaleB;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance femaleB;
 
-    private Person personMaleA;
+    private TrackedEntityInstance trackedEntityInstanceMaleA;
 
     private OrganisationUnit organisationUnitA;
 
@@ -120,7 +119,7 @@ public class RegistrationMultiEventsServiceTest
         identifiableObjectManager.save( femaleA );
         identifiableObjectManager.save( femaleB );
 
-        personMaleA = personService.getPerson( maleA );
+        trackedEntityInstanceMaleA = trackedEntityInstanceService.getPerson( maleA );
 
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
@@ -177,7 +176,7 @@ public class RegistrationMultiEventsServiceTest
     @Test
     public void testSaveWithoutProgramStageShouldFail()
     {
-        Event event = createEvent( programA.getUid(), null, organisationUnitA.getUid(), personMaleA.getPerson(),
+        Event event = createEvent( programA.getUid(), null, organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance(),
             dataElementA.getUid() );
         ImportSummary importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
@@ -189,7 +188,7 @@ public class RegistrationMultiEventsServiceTest
     public void testSaveWithoutEnrollmentShouldFail()
     {
         Event event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementA.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementA.getUid() );
         ImportSummary importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
         assertThat( importSummary.getDescription(), CoreMatchers.containsString( "is not enrolled in program" ) );
@@ -198,22 +197,22 @@ public class RegistrationMultiEventsServiceTest
     @Test
     public void testSaveSameEventMultipleTimesShouldOnlyGive1Event()
     {
-        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        Enrollment enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         Event event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementA.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementA.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementA.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementA.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementA.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementA.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
@@ -223,24 +222,24 @@ public class RegistrationMultiEventsServiceTest
     @Test
     public void testSaveRepeatableStageWithoutEventIdShouldCreateNewEvent()
     {
-        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        Enrollment enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         Event event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementA.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementA.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementB.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementB.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
@@ -250,24 +249,24 @@ public class RegistrationMultiEventsServiceTest
     @Test
     public void testSaveRepeatableStageWithEventIdShouldNotCreateAdditionalEvents()
     {
-        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        Enrollment enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         Event event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementA.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementA.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementB.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementB.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
         event.setEvent( importSummary.getReference() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
@@ -275,7 +274,7 @@ public class RegistrationMultiEventsServiceTest
         assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(),
-            personMaleA.getPerson(), dataElementA.getUid() );
+            trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementA.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 

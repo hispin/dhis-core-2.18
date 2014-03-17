@@ -37,8 +37,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = PersonAttributeGroupController.RESOURCE_PATH )
-public class PersonAttributeGroupController extends AbstractCrudController<TrackedEntityAttributeGroup>
+@RequestMapping( value = TrackedEntityAttributeGroupController.RESOURCE_PATH )
+public class TrackedEntityAttributeGroupController extends AbstractCrudController<TrackedEntityAttributeGroup>
 {
-    public static final String RESOURCE_PATH = "/personAttributeGroups";
+    public static final String RESOURCE_PATH = "/trackedEntityAttributes";
 }
