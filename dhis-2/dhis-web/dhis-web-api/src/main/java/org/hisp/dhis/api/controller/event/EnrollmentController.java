@@ -36,8 +36,8 @@ import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentStatus;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollments;
-import org.hisp.dhis.dxf2.events.person.Person;
-import org.hisp.dhis.dxf2.events.person.PersonService;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -74,7 +74,7 @@ public class EnrollmentController
     private EnrollmentService enrollmentService;
 
     @Autowired
-    private PersonService personService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
     private IdentifiableObjectManager manager;
@@ -108,10 +108,10 @@ public class EnrollmentController
         else if ( programUid != null && personUid != null )
         {
             Program program = getProgram( programUid );
-            Person person = getPerson( personUid );
+            TrackedEntityInstance trackedEntityInstance = getPerson( personUid );
 
-            enrollments = status != null ? enrollmentService.getEnrollments( program, person, status )
-                : enrollmentService.getEnrollments( program, person );
+            enrollments = status != null ? enrollmentService.getEnrollments( program, trackedEntityInstance, status )
+                : enrollmentService.getEnrollments( program, trackedEntityInstance );
         }
         else if ( orgUnitUid != null )
         {
@@ -126,8 +126,8 @@ public class EnrollmentController
         }
         else
         {
-            Person person = getPerson( personUid );
-            enrollments = status != null ? enrollmentService.getEnrollments( person, status ) : enrollmentService.getEnrollments( person );
+            TrackedEntityInstance trackedEntityInstance = getPerson( personUid );
+            enrollments = status != null ? enrollmentService.getEnrollments( trackedEntityInstance, status ) : enrollmentService.getEnrollments( trackedEntityInstance );
         }
 
         model.addAttribute( "model", enrollments );
@@ -271,16 +271,16 @@ public class EnrollmentController
         return enrollment;
     }
 
-    private Person getPerson( String id ) throws NotFoundException
+    private TrackedEntityInstance getPerson( String id ) throws NotFoundException
     {
-        Person person = personService.getPerson( id );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( id );
 
-        if ( person == null )
+        if ( trackedEntityInstance == null )
         {
             throw new NotFoundException( "Person", id );
         }
 
-        return person;
+        return trackedEntityInstance;
     }
 
     private OrganisationUnit getOrganisationUnit( String id ) throws NotFoundException

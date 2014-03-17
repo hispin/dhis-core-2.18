@@ -36,30 +36,29 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface PersonService
+public interface TrackedEntityInstanceService
 {
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
 
-    Persons getPersons();
+    TrackedEntityInstances getPersons();
 
-    Persons getPersons( OrganisationUnit organisationUnit );
+    TrackedEntityInstances getPersons( OrganisationUnit organisationUnit );
 
-    Persons getPersons( Program program );
+    TrackedEntityInstances getPersons( Program program );
 
-    Persons getPersons( OrganisationUnit organisationUnit, Program program );
+    TrackedEntityInstances getPersons( OrganisationUnit organisationUnit, Program program );
 
-    Persons getPersons( Collection<TrackedEntityInstance> entityInstances );
+    TrackedEntityInstances getPersons( Collection<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances );
 
-    Person getPerson( String uid );
+    TrackedEntityInstance getPerson( String uid );
 
-    Person getPerson( TrackedEntityInstance entityInstance );
+    TrackedEntityInstance getPerson( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance );
 
     // -------------------------------------------------------------------------
     // CREATE
@@ -71,7 +70,7 @@ public interface PersonService
     ImportSummaries savePersonJson( InputStream inputStream )
         throws IOException;
 
-    ImportSummary savePerson( Person person );
+    ImportSummary savePerson( TrackedEntityInstance trackedEntityInstance );
 
     // -------------------------------------------------------------------------
     // UPDATE
@@ -83,11 +82,11 @@ public interface PersonService
     ImportSummary updatePersonJson( String id, InputStream inputStream )
         throws IOException;
 
-    ImportSummary updatePerson( Person person );
+    ImportSummary updatePerson( TrackedEntityInstance trackedEntityInstance );
 
     // -------------------------------------------------------------------------
     // DELETE
     // -------------------------------------------------------------------------
 
-    void deletePerson( Person person );
+    void deletePerson( TrackedEntityInstance trackedEntityInstance );
 }

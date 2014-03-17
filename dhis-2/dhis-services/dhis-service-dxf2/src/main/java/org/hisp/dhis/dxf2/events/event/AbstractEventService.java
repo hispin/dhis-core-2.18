@@ -38,7 +38,7 @@ import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dxf2.events.person.Person;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -57,7 +57,6 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
 import org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService;
@@ -171,7 +170,7 @@ public abstract class AbstractEventService
                     "No Event.person was provided for registration based program." );
             }
 
-            TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( event.getPerson() );
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( event.getPerson() );
 
             if ( entityInstance == null )
             {
@@ -308,10 +307,10 @@ public abstract class AbstractEventService
     }
 
     @Override
-    public Events getEvents( Program program, OrganisationUnit organisationUnit, Person person, Date startDate,
+    public Events getEvents( Program program, OrganisationUnit organisationUnit, TrackedEntityInstance trackedEntityInstance, Date startDate,
         Date endDate )
     {
-        List<Event> eventList = eventStore.getAll( program, organisationUnit, person, startDate, endDate );
+        List<Event> eventList = eventStore.getAll( program, organisationUnit, trackedEntityInstance, startDate, endDate );
         Events events = new Events();
         events.setEvents( eventList );
 
@@ -339,10 +338,10 @@ public abstract class AbstractEventService
     }
 
     @Override
-    public Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, Person person,
+    public Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, TrackedEntityInstance trackedEntityInstance,
         Date startDate, Date endDate )
     {
-        List<Event> eventList = eventStore.getAll( programStage, organisationUnit, person, startDate, endDate );
+        List<Event> eventList = eventStore.getAll( programStage, organisationUnit, trackedEntityInstance, startDate, endDate );
         Events events = new Events();
         events.setEvents( eventList );
 
@@ -361,9 +360,9 @@ public abstract class AbstractEventService
 
     @Override
     public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
-        Person person )
+        TrackedEntityInstance trackedEntityInstance )
     {
-        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, person );
+        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, trackedEntityInstance );
         Events events = new Events();
         events.setEvents( eventList );
 
@@ -383,9 +382,9 @@ public abstract class AbstractEventService
 
     @Override
     public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
-        Person person, Date startDate, Date endDate )
+        TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
     {
-        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, person, startDate, endDate );
+        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, trackedEntityInstance, startDate, endDate );
         Events events = new Events();
         events.setEvents( eventList );
 
@@ -405,9 +404,9 @@ public abstract class AbstractEventService
 
     @Override
     public Events getEvents( List<Program> programs, List<ProgramStage> programStages,
-        List<OrganisationUnit> organisationUnits, Person person, Date startDate, Date endDate )
+        List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
     {
-        List<Event> eventList = eventStore.getAll( programs, programStages, organisationUnits, person, startDate,
+        List<Event> eventList = eventStore.getAll( programs, programStages, organisationUnits, trackedEntityInstance, startDate,
             endDate );
         Events events = new Events();
         events.setEvents( eventList );

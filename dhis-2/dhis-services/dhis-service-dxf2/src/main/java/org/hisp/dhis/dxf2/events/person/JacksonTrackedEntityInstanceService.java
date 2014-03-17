@@ -45,7 +45,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Transactional
-public class JacksonPersonService extends AbstractPersonService
+public class JacksonTrackedEntityInstanceService extends AbstractTrackedEntityInstanceService
 {
     // -------------------------------------------------------------------------
     // Implementation
@@ -101,19 +101,19 @@ public class JacksonPersonService extends AbstractPersonService
 
         try
         {
-            Persons persons = fromXml( input, Persons.class );
+            TrackedEntityInstances trackedEntityInstances = fromXml( input, TrackedEntityInstances.class );
 
-            for ( Person person : persons.getPersons() )
+            for ( TrackedEntityInstance trackedEntityInstance : trackedEntityInstances.getTrackedEntityInstances() )
             {
-                person.setPerson( null );
-                importSummaries.addImportSummary( savePerson( person ) );
+                trackedEntityInstance.setTrackedEntityInstance( null );
+                importSummaries.addImportSummary( savePerson( trackedEntityInstance ) );
             }
         }
         catch ( Exception ex )
         {
-            Person person = fromXml( input, Person.class );
-            person.setPerson( null );
-            importSummaries.addImportSummary( savePerson( person ) );
+            TrackedEntityInstance trackedEntityInstance = fromXml( input, TrackedEntityInstance.class );
+            trackedEntityInstance.setTrackedEntityInstance( null );
+            importSummaries.addImportSummary( savePerson( trackedEntityInstance ) );
         }
 
         return importSummaries;
@@ -127,19 +127,19 @@ public class JacksonPersonService extends AbstractPersonService
 
         try
         {
-            Persons persons = fromJson( input, Persons.class );
+            TrackedEntityInstances trackedEntityInstances = fromJson( input, TrackedEntityInstances.class );
 
-            for ( Person person : persons.getPersons() )
+            for ( TrackedEntityInstance trackedEntityInstance : trackedEntityInstances.getTrackedEntityInstances() )
             {
-                person.setPerson( null );
-                importSummaries.addImportSummary( savePerson( person ) );
+                trackedEntityInstance.setTrackedEntityInstance( null );
+                importSummaries.addImportSummary( savePerson( trackedEntityInstance ) );
             }
         }
         catch ( Exception ex )
         {
-            Person person = fromJson( input, Person.class );
-            person.setPerson( null );
-            importSummaries.addImportSummary( savePerson( person ) );
+            TrackedEntityInstance trackedEntityInstance = fromJson( input, TrackedEntityInstance.class );
+            trackedEntityInstance.setTrackedEntityInstance( null );
+            importSummaries.addImportSummary( savePerson( trackedEntityInstance ) );
         }
 
         return importSummaries;
@@ -152,18 +152,18 @@ public class JacksonPersonService extends AbstractPersonService
     @Override
     public ImportSummary updatePersonXml( String id, InputStream inputStream ) throws IOException
     {
-        Person person = fromXml( inputStream, Person.class );
-        person.setPerson( id );
+        TrackedEntityInstance trackedEntityInstance = fromXml( inputStream, TrackedEntityInstance.class );
+        trackedEntityInstance.setTrackedEntityInstance( id );
 
-        return updatePerson( person );
+        return updatePerson( trackedEntityInstance );
     }
 
     @Override
     public ImportSummary updatePersonJson( String id, InputStream inputStream ) throws IOException
     {
-        Person person = fromJson( inputStream, Person.class );
-        person.setPerson( id );
+        TrackedEntityInstance trackedEntityInstance = fromJson( inputStream, TrackedEntityInstance.class );
+        trackedEntityInstance.setTrackedEntityInstance( id );
 
-        return updatePerson( person );
+        return updatePerson( trackedEntityInstance );
     }
 }

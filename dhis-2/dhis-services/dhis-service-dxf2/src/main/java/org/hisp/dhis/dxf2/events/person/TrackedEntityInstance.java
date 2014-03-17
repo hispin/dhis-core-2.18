@@ -28,22 +28,23 @@ package org.hisp.dhis.dxf2.events.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.common.DxfNamespaces;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
-public class Person
+@JacksonXmlRootElement( localName = "trackedEntityInstance", namespace = DxfNamespaces.DXF_2_0 )
+public class TrackedEntityInstance
 {
-    private String person;
+    private String trackedEntity;
+
+    private String trackedEntityInstance;
 
     private String orgUnit;
 
@@ -53,20 +54,32 @@ public class Person
 
     private List<Attribute> attributes = new ArrayList<Attribute>();
 
-    public Person()
+    public TrackedEntityInstance()
     {
     }
 
     @JsonProperty( required = true )
     @JacksonXmlProperty( isAttribute = true )
-    public String getPerson()
+    public String getTrackedEntity()
     {
-        return person;
+        return trackedEntity;
     }
 
-    public void setPerson( String person )
+    public void setTrackedEntity( String trackedEntity )
     {
-        this.person = person;
+        this.trackedEntity = trackedEntity;
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
+    public String getTrackedEntityInstance()
+    {
+        return trackedEntityInstance;
+    }
+
+    public void setTrackedEntityInstance( String trackedEntityInstance )
+    {
+        this.trackedEntityInstance = trackedEntityInstance;
     }
 
     @JsonProperty( required = true )
@@ -120,21 +133,17 @@ public class Person
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o )
-            return true;
-        if ( o == null || getClass() != o.getClass() )
-            return false;
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
 
-        Person person1 = (Person) o;
-        if ( attributes != null ? !attributes.equals( person1.attributes ) : person1.attributes != null )
-            return false;
-        if ( identifiers != null ? !identifiers.equals( person1.identifiers ) : person1.identifiers != null )
-            return false;
-        if ( orgUnit != null ? !orgUnit.equals( person1.orgUnit ) : person1.orgUnit != null )
-            return false;
-        if ( person != null ? !person.equals( person1.person ) : person1.person != null )
-            return false;
-        if ( relationships != null ? !relationships.equals( person1.relationships ) : person1.relationships != null )
+        TrackedEntityInstance that = (TrackedEntityInstance) o;
+
+        if ( attributes != null ? !attributes.equals( that.attributes ) : that.attributes != null ) return false;
+        if ( identifiers != null ? !identifiers.equals( that.identifiers ) : that.identifiers != null ) return false;
+        if ( orgUnit != null ? !orgUnit.equals( that.orgUnit ) : that.orgUnit != null ) return false;
+        if ( relationships != null ? !relationships.equals( that.relationships ) : that.relationships != null ) return false;
+        if ( trackedEntity != null ? !trackedEntity.equals( that.trackedEntity ) : that.trackedEntity != null ) return false;
+        if ( trackedEntityInstance != null ? !trackedEntityInstance.equals( that.trackedEntityInstance ) : that.trackedEntityInstance != null )
             return false;
 
         return true;
@@ -143,7 +152,8 @@ public class Person
     @Override
     public int hashCode()
     {
-        int result = person != null ? person.hashCode() : 0;
+        int result = trackedEntity != null ? trackedEntity.hashCode() : 0;
+        result = 31 * result + (trackedEntityInstance != null ? trackedEntityInstance.hashCode() : 0);
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
         result = 31 * result + (relationships != null ? relationships.hashCode() : 0);
         result = 31 * result + (identifiers != null ? identifiers.hashCode() : 0);
@@ -154,8 +164,9 @@ public class Person
     @Override
     public String toString()
     {
-        return "Person{" +
-            "person='" + person + '\'' +
+        return "TrackedEntityInstance{" +
+            "trackedEntity='" + trackedEntity + '\'' +
+            ", trackedEntityInstance='" + trackedEntityInstance + '\'' +
             ", orgUnit='" + orgUnit + '\'' +
             ", relationships=" + relationships +
             ", identifiers=" + identifiers +

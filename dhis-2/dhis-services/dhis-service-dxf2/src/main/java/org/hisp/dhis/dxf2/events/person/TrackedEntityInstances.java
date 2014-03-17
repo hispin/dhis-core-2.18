@@ -40,33 +40,33 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "persons", namespace = DxfNamespaces.DXF_2_0 )
-public class Persons
+@JacksonXmlRootElement( localName = "trackedEntityInstances", namespace = DxfNamespaces.DXF_2_0 )
+public class TrackedEntityInstances
 {
-    private List<Person> persons = new ArrayList<Person>();
+    private List<TrackedEntityInstance> trackedEntityInstances = new ArrayList<TrackedEntityInstance>();
 
-    public Persons()
+    public TrackedEntityInstances()
     {
     }
 
-    @JsonProperty( "personList" )
-    @JacksonXmlElementWrapper( localName = "personList", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
-    public List<Person> getPersons()
+    @JsonProperty( "trackedEntityInstanceList" )
+    @JacksonXmlElementWrapper( localName = "trackedEntityInstanceList", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "trackedEntityInstance", namespace = DxfNamespaces.DXF_2_0 )
+    public List<TrackedEntityInstance> getTrackedEntityInstances()
     {
-        return persons;
+        return trackedEntityInstances;
     }
 
-    public void setPersons( List<Person> persons )
+    public void setTrackedEntityInstances( List<TrackedEntityInstance> trackedEntityInstances )
     {
-        this.persons = persons;
+        this.trackedEntityInstances = trackedEntityInstances;
     }
 
     @Override
     public String toString()
     {
-        return "Persons{" +
-            "persons=" + persons +
+        return "TrackedEntityInstances{" +
+            "trackedEntityInstances=" + trackedEntityInstances +
             '}';
     }
 }

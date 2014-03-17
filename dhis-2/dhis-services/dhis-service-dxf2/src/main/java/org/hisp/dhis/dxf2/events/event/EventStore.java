@@ -28,7 +28,7 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.events.person.Person;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
@@ -51,7 +51,7 @@ public interface EventStore
 
     List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit );
 
-    List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person );
+    List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, TrackedEntityInstance trackedEntityInstance );
 
     List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate );
 
@@ -60,13 +60,13 @@ public interface EventStore
     List<Event> getAll( Program program, List<ProgramStage> programStages, OrganisationUnit organisationUnit, Date startDate, Date endDate );
 
     List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits,
-        Person person, Date startDate, Date endDate );
+        TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate );
 
-    List<Event> getAll( Program program, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate );
+    List<Event> getAll( Program program, OrganisationUnit organisationUnit, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate );
 
-    List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate );
+    List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate );
 
-    List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate );
+    List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate );
 
     List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate );
 }

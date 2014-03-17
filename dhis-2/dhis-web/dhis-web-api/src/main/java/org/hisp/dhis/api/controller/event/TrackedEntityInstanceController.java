@@ -45,9 +45,9 @@ import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.events.person.Person;
-import org.hisp.dhis.dxf2.events.person.PersonService;
-import org.hisp.dhis.dxf2.events.person.Persons;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstances;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -55,7 +55,6 @@ import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -73,14 +72,14 @@ import org.springframework.web.client.HttpClientErrorException;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = PersonController.RESOURCE_PATH )
+@RequestMapping( value = TrackedEntityInstanceController.RESOURCE_PATH )
 @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_LIST')" )
-public class PersonController
+public class TrackedEntityInstanceController
 {
-    public static final String RESOURCE_PATH = "/persons";
+    public static final String RESOURCE_PATH = "/trackedEntityInstances";
 
     @Autowired
-    private PersonService personService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
     private IdentifiableObjectManager manager;
@@ -94,18 +93,18 @@ public class PersonController
 
     @RequestMapping( value = "", method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')" )
-    public String getPersons( @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
-        @RequestParam( value = "program", required = false ) String programUid,
-        @RequestParam( value = "attribute", required = false ) List<String> attributeFilters,
-        @RequestParam( required = false ) Map<String, String> parameters, Model model )
+    public String getTrackedEntityInstances( @RequestParam(value = "orgUnit", required = false) String orgUnitUid,
+        @RequestParam(value = "program", required = false) String programUid,
+        @RequestParam(value = "attribute", required = false) List<String> attributeFilters,
+        @RequestParam(required = false) Map<String, String> parameters, Model model )
         throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        Persons persons = new Persons();
+        TrackedEntityInstances trackedEntityInstances = new TrackedEntityInstances();
 
         if ( attributeFilters != null )
         {
-            persons = personsByFilter( attributeFilters, orgUnitUid );
+            trackedEntityInstances = personsByFilter( attributeFilters, orgUnitUid );
         }
         else if ( orgUnitUid != null )
         {
@@ -114,12 +113,12 @@ public class PersonController
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
                 Program program = getProgram( programUid );
 
-                persons = personService.getPersons( organisationUnit, program );
+                trackedEntityInstances = trackedEntityInstanceService.getPersons( organisationUnit, program );
             }
             else
             {
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-                persons = personService.getPersons( organisationUnit );
+                trackedEntityInstances = trackedEntityInstanceService.getPersons( organisationUnit );
             }
         }
         else
@@ -127,16 +126,16 @@ public class PersonController
             throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "Missing required orgUnit parameter." );
         }
 
-        model.addAttribute( "model", persons );
+        model.addAttribute( "model", trackedEntityInstances );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
 
         return "persons";
     }
 
     @SuppressWarnings( "unchecked" )
-    private Persons personsByFilter( List<String> attributeFilters, String orgUnitUid )
+    private TrackedEntityInstances personsByFilter( List<String> attributeFilters, String orgUnitUid )
     {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( TrackedEntityInstance.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( org.hisp.dhis.trackedentity.TrackedEntityInstance.class );
         criteria.createAlias( "attributeValues", "attributeValue" );
         criteria.createAlias( "attributeValue.attribute", "attribute" );
 
@@ -232,7 +231,7 @@ public class PersonController
 
         criteria.addOrder( Order.desc( "lastUpdated" ) );
 
-        return personService.getPersons( criteria.list() );
+        return trackedEntityInstanceService.getPersons( criteria.list() );
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
@@ -241,9 +240,9 @@ public class PersonController
         throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
-        Person person = getPerson( id );
+        TrackedEntityInstance trackedEntityInstance = getPerson( id );
 
-        model.addAttribute( "model", person );
+        model.addAttribute( "model", trackedEntityInstance );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
         return "person";
@@ -258,7 +257,7 @@ public class PersonController
     public void postPersonXml( HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummaries importSummaries = personService.savePersonXml( request.getInputStream() );
+        ImportSummaries importSummaries = trackedEntityInstanceService.savePersonXml( request.getInputStream() );
 
         if ( importSummaries.getImportSummaries().size() > 1 )
         {
@@ -284,7 +283,7 @@ public class PersonController
     public void postPersonJson( HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummaries importSummaries = personService.savePersonJson( request.getInputStream() );
+        ImportSummaries importSummaries = trackedEntityInstanceService.savePersonJson( request.getInputStream() );
 
         if ( importSummaries.getImportSummaries().size() > 1 )
         {
@@ -315,7 +314,7 @@ public class PersonController
     public void updatePersonXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummary importSummary = personService.updatePersonXml( id, request.getInputStream() );
+        ImportSummary importSummary = trackedEntityInstanceService.updatePersonXml( id, request.getInputStream() );
         JacksonUtils.toXml( response.getOutputStream(), importSummary );
     }
 
@@ -325,7 +324,7 @@ public class PersonController
     public void updatePersonJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummary importSummary = personService.updatePersonJson( id, request.getInputStream() );
+        ImportSummary importSummary = trackedEntityInstanceService.updatePersonJson( id, request.getInputStream() );
         JacksonUtils.toJson( response.getOutputStream(), importSummary );
     }
 
@@ -339,24 +338,24 @@ public class PersonController
     public void deletePerson( @PathVariable String id )
         throws NotFoundException
     {
-        Person person = getPerson( id );
-        personService.deletePerson( person );
+        TrackedEntityInstance trackedEntityInstance = getPerson( id );
+        trackedEntityInstanceService.deletePerson( trackedEntityInstance );
     }
 
     // -------------------------------------------------------------------------
     // HELPERS
     // -------------------------------------------------------------------------
 
-    private Person getPerson( String id )
+    private TrackedEntityInstance getPerson( String id )
         throws NotFoundException
     {
-        Person person = personService.getPerson( id );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( id );
 
-        if ( person == null )
+        if ( trackedEntityInstance == null )
         {
             throw new NotFoundException( "Person", id );
         }
-        return person;
+        return trackedEntityInstance;
     }
 
     private Program getProgram( String id )

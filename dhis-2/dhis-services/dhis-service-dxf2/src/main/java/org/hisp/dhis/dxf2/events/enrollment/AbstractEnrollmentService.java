@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.dxf2.events.person.Person;
-import org.hisp.dhis.dxf2.events.person.PersonService;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.i18n.I18nManager;
@@ -42,8 +42,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
-import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -60,10 +58,10 @@ public abstract class AbstractEnrollmentService
     private ProgramService programService;
 
     @Autowired
-    private PersonService personService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
-    private TrackedEntityInstanceService entityInstanceService;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private I18nManager i18nManager;
@@ -95,21 +93,21 @@ public abstract class AbstractEnrollmentService
     }
 
     @Override
-    public Enrollments getEnrollments( Person person )
+    public Enrollments getEnrollments( TrackedEntityInstance trackedEntityInstance )
     {
-        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person.getPerson() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
         return getEnrollments( entityInstance );
     }
 
     @Override
-    public Enrollments getEnrollments( Person person, EnrollmentStatus status )
+    public Enrollments getEnrollments( TrackedEntityInstance trackedEntityInstance, EnrollmentStatus status )
     {
-        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person.getPerson() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
         return getEnrollments( entityInstance, status );
     }
 
     @Override
-    public Enrollments getEnrollments( TrackedEntityInstance entityInstance )
+    public Enrollments getEnrollments( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance )
     {
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( entityInstance.getProgramInstances() );
 
@@ -117,7 +115,7 @@ public abstract class AbstractEnrollmentService
     }
 
     @Override
-    public Enrollments getEnrollments( TrackedEntityInstance entityInstance, EnrollmentStatus status )
+    public Enrollments getEnrollments( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance, EnrollmentStatus status )
     {
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
             programInstanceService.getProgramInstances( entityInstance, status.getValue() ) );
@@ -169,16 +167,16 @@ public abstract class AbstractEnrollmentService
     }
 
     @Override
-    public Enrollments getEnrollments( Program program, Person person )
+    public Enrollments getEnrollments( Program program, TrackedEntityInstance trackedEntityInstance )
     {
-        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person.getPerson() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
         return getEnrollments( programInstanceService.getProgramInstances( entityInstance, program ) );
     }
 
     @Override
-    public Enrollments getEnrollments( Program program, Person person, EnrollmentStatus status )
+    public Enrollments getEnrollments( Program program, TrackedEntityInstance trackedEntityInstance, EnrollmentStatus status )
     {
-        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person.getPerson() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
         return getEnrollments( programInstanceService.getProgramInstances( entityInstance, program, status.getValue() ) );
     }
 
@@ -231,15 +229,15 @@ public abstract class AbstractEnrollmentService
     @Override
     public ImportSummary saveEnrollment( Enrollment enrollment )
     {
-        TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getPerson() );
-        Person person = personService.getPerson( entityInstance );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getPerson() );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( entityInstance );
         Program program = getProgram( enrollment.getProgram() );
 
-        Enrollments enrollments = getEnrollments( program, person, EnrollmentStatus.ACTIVE );
+        Enrollments enrollments = getEnrollments( program, trackedEntityInstance, EnrollmentStatus.ACTIVE );
 
         if ( !enrollments.getEnrollments().isEmpty() )
         {
-            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "Person " + person.getPerson()
+            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "Person " + trackedEntityInstance.getTrackedEntityInstance()
                 + " already have an active enrollment in program " + program.getUid() );
             importSummary.getImportCount().incrementIgnored();
 
@@ -290,7 +288,7 @@ public abstract class AbstractEnrollmentService
             return importSummary;
         }
 
-        TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getPerson() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getPerson() );
         Program program = getProgram( enrollment.getProgram() );
 
         programInstance.setProgram( program );
@@ -372,9 +370,9 @@ public abstract class AbstractEnrollmentService
         return programs;
     }
 
-    private TrackedEntityInstance getTrackedEntityInstance( String person )
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance getTrackedEntityInstance( String person )
     {
-        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( person );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( person );
 
         if ( entityInstance == null )
         {

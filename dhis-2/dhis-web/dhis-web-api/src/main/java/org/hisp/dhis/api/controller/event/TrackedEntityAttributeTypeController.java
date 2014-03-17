@@ -47,11 +47,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = PersonAttributeTypeController.RESOURCE_PATH )
-public class PersonAttributeTypeController
+@RequestMapping( value = TrackedEntityAttributeTypeController.RESOURCE_PATH )
+public class TrackedEntityAttributeTypeController
     extends AbstractCrudController<TrackedEntityAttribute>
 {
-    public static final String RESOURCE_PATH = "/personAttributeTypes";
+    public static final String RESOURCE_PATH = "/trackedEntityAttributeTypes";
 
     @Autowired
     private TrackedEntityAttributeService attributeService;

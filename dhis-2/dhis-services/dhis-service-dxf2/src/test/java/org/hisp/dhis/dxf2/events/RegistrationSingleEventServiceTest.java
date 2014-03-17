@@ -44,8 +44,8 @@ import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
 import org.hisp.dhis.dxf2.events.event.EventStatus;
-import org.hisp.dhis.dxf2.events.person.Person;
-import org.hisp.dhis.dxf2.events.person.PersonService;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -53,7 +53,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,7 @@ public class RegistrationSingleEventServiceTest
     private EventService eventService;
 
     @Autowired
-    private PersonService personService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
     private ProgramStageDataElementService programStageDataElementService;
@@ -76,12 +75,12 @@ public class RegistrationSingleEventServiceTest
     @Autowired
     private EnrollmentService enrollmentService;
 
-    private TrackedEntityInstance maleA;
-    private TrackedEntityInstance maleB;
-    private TrackedEntityInstance femaleA;
-    private TrackedEntityInstance femaleB;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance maleA;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance maleB;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance femaleA;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance femaleB;
 
-    private Person personMaleA;
+    private TrackedEntityInstance trackedEntityInstanceMaleA;
 
     private OrganisationUnit organisationUnitA;
     private OrganisationUnit organisationUnitB;
@@ -110,7 +109,7 @@ public class RegistrationSingleEventServiceTest
         identifiableObjectManager.save( femaleA );
         identifiableObjectManager.save( femaleB );
 
-        personMaleA = personService.getPerson( maleA );
+        trackedEntityInstanceMaleA = trackedEntityInstanceService.getPerson( maleA );
 
         dataElementA = createDataElement( 'A' );
         dataElementA.setType( DataElement.VALUE_TYPE_INT );
@@ -147,7 +146,7 @@ public class RegistrationSingleEventServiceTest
     @Test
     public void testSaveWithoutEnrollmentShouldFail()
     {
-        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         ImportSummary importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
         assertThat( importSummary.getDescription(), CoreMatchers.containsString( "is not enrolled in program" ) );
@@ -156,11 +155,11 @@ public class RegistrationSingleEventServiceTest
     @Test
     public void testSaveWithEnrollmentShouldNotFail()
     {
-        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        Enrollment enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
     }
@@ -168,23 +167,23 @@ public class RegistrationSingleEventServiceTest
     @Test
     public void testSavingMultipleEventsShouldOnlyUpdate()
     {
-        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        Enrollment enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
-        event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
-        event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
@@ -194,24 +193,24 @@ public class RegistrationSingleEventServiceTest
     @Test
     public void testMultipleEnrollmentsWithEventShouldGiveDifferentUIDs()
     {
-        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        Enrollment enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         enrollmentService.saveEnrollment( enrollment );
 
-        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         event.setStatus( EventStatus.COMPLETED );
         ImportSummary importSummary1 = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary1.getStatus() );
-        enrollment = enrollmentService.getEnrollments( personMaleA ).getEnrollments().get( 0 );
+        enrollment = enrollmentService.getEnrollments( trackedEntityInstanceMaleA ).getEnrollments().get( 0 );
         enrollmentService.completeEnrollment( enrollment );
 
-        enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         enrollmentService.saveEnrollment( enrollment );
 
-        event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         event.setStatus( EventStatus.COMPLETED );
         ImportSummary importSummary2 = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary2.getStatus() );
-        enrollment = enrollmentService.getEnrollments( personMaleA ).getEnrollments().get( 0 );
+        enrollment = enrollmentService.getEnrollments( trackedEntityInstanceMaleA ).getEnrollments().get( 0 );
         enrollmentService.completeEnrollment( enrollment );
 
         assertNotEquals( importSummary1.getReference(), importSummary2.getReference() );

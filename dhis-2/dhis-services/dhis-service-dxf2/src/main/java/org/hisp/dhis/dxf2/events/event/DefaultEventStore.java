@@ -31,12 +31,11 @@ package org.hisp.dhis.dxf2.events.event;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.hisp.dhis.dxf2.events.person.Person;
+import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.system.util.TextUtils;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -81,11 +80,11 @@ public class DefaultEventStore
     }
 
     @Override
-    public List<Event> getAll( Program program, OrganisationUnit organisationUnit, Person person, Date startDate,
+    public List<Event> getAll( Program program, OrganisationUnit organisationUnit, TrackedEntityInstance trackedEntityInstance, Date startDate,
         Date endDate )
     {
         return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ),
-            person, startDate, endDate );
+            trackedEntityInstance, startDate, endDate );
     }
 
     @Override
@@ -104,11 +103,11 @@ public class DefaultEventStore
     }
 
     @Override
-    public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, Person person,
+    public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, TrackedEntityInstance trackedEntityInstance,
         Date startDate, Date endDate )
     {
         return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
-            person, startDate, endDate );
+            trackedEntityInstance, startDate, endDate );
     }
 
     @Override
@@ -120,10 +119,10 @@ public class DefaultEventStore
 
     @Override
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
-        Person person )
+        TrackedEntityInstance trackedEntityInstance )
     {
         return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
-            person, null, null );
+            trackedEntityInstance, null, null );
     }
 
     @Override
@@ -136,10 +135,10 @@ public class DefaultEventStore
 
     @Override
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
-        Person person, Date startDate, Date endDate )
+        TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
     {
         return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
-            person, startDate, endDate );
+            trackedEntityInstance, startDate, endDate );
     }
 
     @Override
@@ -165,15 +164,15 @@ public class DefaultEventStore
 
     @Override
     public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages,
-        List<OrganisationUnit> organisationUnits, Person person, Date startDate, Date endDate )
+        List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
     {
         List<Event> events = new ArrayList<Event>();
 
         Integer personId = null;
 
-        if ( person != null )
+        if ( trackedEntityInstance != null )
         {
-            TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( person.getPerson() );
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
 
             if ( entityInstance != null )
             {
