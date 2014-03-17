@@ -28,7 +28,6 @@ package org.hisp.dhis.reporting.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_NAME_SEP;
 import static org.hisp.dhis.dataset.DataSet.TYPE_CUSTOM;
 import static org.hisp.dhis.dataset.DataSet.TYPE_SECTION;
 
@@ -43,6 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
@@ -256,7 +256,7 @@ public class GenerateDataSetReportAction
         {
             for ( String dim : dimension )
             {
-                String[] dims = dim.split( DIMENSION_NAME_SEP );
+                String[] dims = dim.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
                 
                 if ( dims.length == 2 && dims[0] != null && dims[1] != null )
                 {
