@@ -28,12 +28,17 @@ package org.hisp.dhis.dxf2.events.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -42,12 +47,6 @@ import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -74,51 +73,6 @@ public abstract class AbstractTrackedEntityInstanceService
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
-
-    @Override
-    public TrackedEntityInstances getTrackedEntityInstances()
-    {
-        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>(
-            entityInstanceService.getAllTrackedEntityInstances() );
-        return getTrackedEntityInstances( entityInstances );
-    }
-
-    @Override
-    public TrackedEntityInstances getTrackedEntityInstances( OrganisationUnit organisationUnit )
-    {
-        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>(
-            entityInstanceService.getTrackedEntityInstances( organisationUnit, null, null ) );
-        return getTrackedEntityInstances( entityInstances );
-    }
-
-    @Override
-    public TrackedEntityInstances getTrackedEntityInstances( Program program )
-    {
-        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>(
-            entityInstanceService.getTrackedEntityInstances( program ) );
-        return getTrackedEntityInstances( entityInstances );
-    }
-
-    @Override
-    public TrackedEntityInstances getTrackedEntityInstances( OrganisationUnit organisationUnit, Program program )
-    {
-        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>(
-            entityInstanceService.getTrackedEntityInstances( organisationUnit, program ) );
-        return getTrackedEntityInstances( entityInstances );
-    }
-
-    @Override
-    public TrackedEntityInstances getTrackedEntityInstances( Collection<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances )
-    {
-        TrackedEntityInstances trackedEntityInstances = new TrackedEntityInstances();
-
-        for ( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance : entityInstances )
-        {
-            trackedEntityInstances.getTrackedEntityInstances().add( getTrackedEntityInstance( entityInstance ) );
-        }
-
-        return trackedEntityInstances;
-    }
 
     @Override
     public TrackedEntityInstance getTrackedEntityInstance( String uid )

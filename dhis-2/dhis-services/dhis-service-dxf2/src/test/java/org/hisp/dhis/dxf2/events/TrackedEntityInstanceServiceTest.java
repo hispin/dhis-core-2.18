@@ -28,6 +28,13 @@ package org.hisp.dhis.dxf2.events;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.util.HashSet;
+
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
@@ -41,12 +48,6 @@ import org.hisp.dhis.program.ProgramStage;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -106,26 +107,6 @@ public class TrackedEntityInstanceServiceTest
     }
 
     @Test
-    public void testGetPersons()
-    {
-        assertEquals( 4, trackedEntityInstanceService.getTrackedEntityInstances().getTrackedEntityInstances().size() );
-    }
-
-    @Test
-    public void testGetPersonByOrganisationUnit()
-    {
-        assertEquals( 2, trackedEntityInstanceService.getTrackedEntityInstances( organisationUnitA ).getTrackedEntityInstances().size() );
-        assertEquals( 2, trackedEntityInstanceService.getTrackedEntityInstances( organisationUnitB ).getTrackedEntityInstances().size() );
-    }
-
-    @Test
-    public void getPersonByPatients()
-    {
-        List<org.hisp.dhis.trackedentity.TrackedEntityInstance> patients = Arrays.asList( maleA, femaleB );
-        assertEquals( 2, trackedEntityInstanceService.getTrackedEntityInstances( patients ).getTrackedEntityInstances().size() );
-    }
-
-    @Test
     public void getPersonByUid()
     {
         assertEquals( maleA.getUid(), trackedEntityInstanceService.getTrackedEntityInstance( maleA.getUid() ).getTrackedEntityInstance() );
@@ -141,12 +122,6 @@ public class TrackedEntityInstanceServiceTest
         assertEquals( femaleB.getUid(), trackedEntityInstanceService.getTrackedEntityInstance( femaleB ).getTrackedEntityInstance() );
         assertNotEquals( femaleA.getUid(), trackedEntityInstanceService.getTrackedEntityInstance( femaleB ).getTrackedEntityInstance() );
         assertNotEquals( maleA.getUid(), trackedEntityInstanceService.getTrackedEntityInstance( maleB ).getTrackedEntityInstance() );
-    }
-
-    @Test
-    public void testGetPersonByProgram()
-    {
-        assertEquals( 2, trackedEntityInstanceService.getTrackedEntityInstances( programA ).getTrackedEntityInstances().size() );
     }
 
     @Test

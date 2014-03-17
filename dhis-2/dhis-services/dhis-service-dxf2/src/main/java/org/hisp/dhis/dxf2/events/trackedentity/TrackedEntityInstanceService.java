@@ -30,12 +30,9 @@ package org.hisp.dhis.dxf2.events.trackedentity;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.program.Program;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -45,16 +42,6 @@ public interface TrackedEntityInstanceService
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
-
-    TrackedEntityInstances getTrackedEntityInstances();
-
-    TrackedEntityInstances getTrackedEntityInstances( OrganisationUnit organisationUnit );
-
-    TrackedEntityInstances getTrackedEntityInstances( Program program );
-
-    TrackedEntityInstances getTrackedEntityInstances( OrganisationUnit organisationUnit, Program program );
-
-    TrackedEntityInstances getTrackedEntityInstances( Collection<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances );
 
     TrackedEntityInstance getTrackedEntityInstance( String uid );
 

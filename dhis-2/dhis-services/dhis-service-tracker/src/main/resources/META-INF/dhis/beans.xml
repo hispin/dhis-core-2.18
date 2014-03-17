@@ -242,12 +242,16 @@
 			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
 		<property name="attributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		<property name="trackedEntityService"
+		    ref="org.hisp.dhis.trackedentity.TrackedEntityService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	    <property name="programService"
 	        ref="org.hisp.dhis.program.ProgramService" />
+	    <property name="organisationUnitService"
+	        ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeService"
