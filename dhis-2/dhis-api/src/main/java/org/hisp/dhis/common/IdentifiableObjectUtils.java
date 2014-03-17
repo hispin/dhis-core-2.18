@@ -97,6 +97,27 @@ public class IdentifiableObjectUtils
     }
 
     /**
+     * Returns a list of internal identifiers for the given collection of IdentifiableObjects.
+     *
+     * @param objects the list of IdentifiableObjects.
+     * @return a list of uids.
+     */
+    public static <T extends IdentifiableObject> List<Integer> getIdentifiers( Collection<T> objects )
+    {
+        List<Integer> uids = new ArrayList<Integer>();
+
+        if ( objects != null )
+        {
+            for ( T object : objects )
+            {
+                uids.add( object.getId() );
+            }
+        }
+
+        return uids;
+    }
+
+    /**
      * Filters the given list of IdentifiableObjects based on the given key.
      *
      * @param identifiableObjects the list of IdentifiableObjects.

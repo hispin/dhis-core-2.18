@@ -92,7 +92,7 @@ public class TrackedEntityInstanceController
     
     @RequestMapping( method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
     public String queryTrackedEntityInstances( // JSON, JSONP
-        @RequestParam Set<String> items,
+        @RequestParam Set<String> item,
         @RequestParam(required=false) String program,
         @RequestParam(required=false) String trackedEntity,
         @RequestParam String ou,
@@ -103,7 +103,7 @@ public class TrackedEntityInstanceController
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( items, program, trackedEntity, orgUnits, ouMode, page, pageSize );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( item, program, trackedEntity, orgUnits, ouMode, page, pageSize );
         Grid grid = instanceService.getTrackedEntityInstances( params );
         
         model.addAttribute( "model", grid );

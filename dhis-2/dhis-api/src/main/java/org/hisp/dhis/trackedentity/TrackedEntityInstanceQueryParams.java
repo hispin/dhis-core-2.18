@@ -47,6 +47,8 @@ public class TrackedEntityInstanceQueryParams
     public static final String LAST_UPDATED_ID = "lastupdated";
     public static final String ORG_UNIT_ID = "ou";
     public static final String TRACKED_ENTITY_ID = "te";
+    public static final String TRACKED_ENTITY_ATTRIBUTE_ID = "teattribute";
+    public static final String TRACKED_ENTITY_ATTRIBUTE_VALUE_ID = "tevalue";
     
     private List<QueryItem> items = new ArrayList<QueryItem>();
 
@@ -74,16 +76,25 @@ public class TrackedEntityInstanceQueryParams
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Indicates whether this params specifies a program.
+     */
     public boolean hasProgram()
     {
         return program != null;
     }
     
+    /**
+     * Indicates whether this params specifies a tracked entity.
+     */
     public boolean hasTrackedEntity()
     {
         return trackedEntity != null;
     }
     
+    /**
+     * Indicates whethert this params is of the given organisation unit mode.
+     */
     public boolean isOrganisationUnitMode( String mode )
     {
         return organisationUnitMode != null && organisationUnitMode.equals( mode );
