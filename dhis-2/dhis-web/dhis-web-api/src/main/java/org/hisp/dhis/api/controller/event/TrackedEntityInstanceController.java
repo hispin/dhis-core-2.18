@@ -40,6 +40,7 @@ import org.hibernate.SessionFactory;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -50,6 +51,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -85,30 +87,75 @@ public class TrackedEntityInstanceController
 
     @Autowired
     private SessionFactory sessionFactory;
+    
+    @Autowired
+    private ContextUtils contextUtils;
 
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
     
-    @RequestMapping( method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
-    public String queryTrackedEntityInstances( // JSON, JSONP
+    @RequestMapping( method = RequestMethod.GET, produces = { ContextUtils.CONTENT_TYPE_JSON, ContextUtils.CONTENT_TYPE_JAVASCRIPT } )
+    public String queryTrackedEntityInstancesJson(
         @RequestParam Set<String> item,
-        @RequestParam(required=false) String program,
-        @RequestParam(required=false) String trackedEntity,
         @RequestParam String ou,
         @RequestParam(required=false, defaultValue=DimensionalObject.OU_MODE_SELECTED) String ouMode,
+        @RequestParam(required=false) String program,
+        @RequestParam(required=false) String trackedEntity,
         @RequestParam(required=false) Integer page,
         @RequestParam(required=false) Integer pageSize,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( item, program, trackedEntity, orgUnits, ouMode, page, pageSize );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( item, orgUnits, ouMode, program, trackedEntity, page, pageSize );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
         
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );
         return "grid";
+    }
+
+    @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_EXCEL )
+    public void queryTrackedEntityInstancesXls(
+        @RequestParam Set<String> item,
+        @RequestParam String ou,
+        @RequestParam(required=false, defaultValue=DimensionalObject.OU_MODE_SELECTED) String ouMode,
+        @RequestParam(required=false) String program,
+        @RequestParam(required=false) String trackedEntity,
+        @RequestParam(required=false) Integer page,
+        @RequestParam(required=false) Integer pageSize,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( item, orgUnits, ouMode, program, trackedEntity, page, pageSize );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.NO_CACHE );
+        Grid grid = instanceService.getTrackedEntityInstances( params );
+        GridUtils.toXls( grid, response.getOutputStream() );
+    }
+
+    @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_CSV )
+    public void queryTrackedEntityInstancesCsv(
+        @RequestParam Set<String> item,
+        @RequestParam String ou,
+        @RequestParam(required=false, defaultValue=DimensionalObject.OU_MODE_SELECTED) String ouMode,
+        @RequestParam(required=false) String program,
+        @RequestParam(required=false) String trackedEntity,
+        @RequestParam(required=false) Integer page,
+        @RequestParam(required=false) Integer pageSize,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( item, orgUnits, ouMode, program, trackedEntity, page, pageSize );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE );
+        Grid grid = instanceService.getTrackedEntityInstances( params );
+        GridUtils.toCsv( grid, response.getOutputStream() );
     }
     
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
