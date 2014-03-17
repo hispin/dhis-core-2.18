@@ -30,7 +30,6 @@ package org.hisp.dhis.analytics.event.data;
 
 import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
 import static org.hisp.dhis.analytics.AnalyticsService.OU_HIERARCHY_KEY;
-import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_NAME_SEP;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
@@ -401,13 +400,13 @@ public class DefaultEventAnalyticsService
     {
         List<QueryItem> items = new ArrayList<QueryItem>();
 
-        if ( !dimension.contains( DIMENSION_NAME_SEP ) )
+        if ( !dimension.contains( DimensionalObjectUtils.DIMENSION_NAME_SEP ) )
         {
             items.add( getItem( program, dimension, null, null ) );
         }
         else // Filter
         {
-            String[] split = dimension.split( DIMENSION_NAME_SEP );
+            String[] split = dimension.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
 
             if ( split == null || split.length != 3 )
             {

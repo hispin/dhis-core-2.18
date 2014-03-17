@@ -61,6 +61,7 @@ import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -90,10 +91,6 @@ public class DataQueryParams
     public static final String DISPLAY_NAME_PERIOD = "Period";
     public static final String DISPLAY_NAME_ORGUNIT = "Organisation unit";    
     
-    public static final String DIMENSION_NAME_SEP = ":";
-    public static final String OPTION_SEP = ";";
-    public static final String ITEM_SEP = "-";
-
     public static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATAELEMENT_OPERAND_ID, DATASET_DIM_ID );
     public static final List<String> FIXED_DIMS = Arrays.asList( DATA_X_DIM_ID, INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );
     
@@ -872,11 +869,11 @@ public class DataQueryParams
         
         Map<MeasureFilter, Double> map = new HashMap<MeasureFilter, Double>();
         
-        String[] criteria = param.split( OPTION_SEP );
+        String[] criteria = param.split( DimensionalObjectUtils.OPTION_SEP );
         
         for ( String c : criteria )
         {
-            String[] criterion = c.split( DIMENSION_NAME_SEP );
+            String[] criterion = c.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
             
             if ( criterion != null && criterion.length == 2 && MathUtils.isNumeric( criterion[1] ) )
             {
