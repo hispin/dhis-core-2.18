@@ -49,10 +49,6 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
-import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.hisp.dhis.validation.ValidationCriteriaService;
@@ -334,7 +330,7 @@ public class TrackedEntityInstanceServiceTest
         int idB = entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
 
         RelationshipType relationshipType = createRelationshipType( 'A' );
-        int relationshipTypeId = relationshipTypeService.saveRelationshipType( relationshipType );
+        int relationshipTypeId = relationshipTypeService.addRelationshipType( relationshipType );
 
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA1,
             entityInstanceAttribute );
@@ -351,7 +347,7 @@ public class TrackedEntityInstanceServiceTest
         int idB = entityInstanceService.saveTrackedEntityInstance( entityInstanceB1 );
 
         RelationshipType relationshipType = createRelationshipType( 'A' );
-        int relationshipTypeId = relationshipTypeService.saveRelationshipType( relationshipType );
+        int relationshipTypeId = relationshipTypeService.addRelationshipType( relationshipType );
 
         entityInstanceA3.setName( "B" );
         TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
