@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.events.person;
+package org.hisp.dhis.dxf2.events.trackedentity;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -46,47 +46,47 @@ public interface TrackedEntityInstanceService
     // READ
     // -------------------------------------------------------------------------
 
-    TrackedEntityInstances getPersons();
+    TrackedEntityInstances getTrackedEntityInstances();
 
-    TrackedEntityInstances getPersons( OrganisationUnit organisationUnit );
+    TrackedEntityInstances getTrackedEntityInstances( OrganisationUnit organisationUnit );
 
-    TrackedEntityInstances getPersons( Program program );
+    TrackedEntityInstances getTrackedEntityInstances( Program program );
 
-    TrackedEntityInstances getPersons( OrganisationUnit organisationUnit, Program program );
+    TrackedEntityInstances getTrackedEntityInstances( OrganisationUnit organisationUnit, Program program );
 
-    TrackedEntityInstances getPersons( Collection<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances );
+    TrackedEntityInstances getTrackedEntityInstances( Collection<org.hisp.dhis.trackedentity.TrackedEntityInstance> entityInstances );
 
-    TrackedEntityInstance getPerson( String uid );
+    TrackedEntityInstance getTrackedEntityInstance( String uid );
 
-    TrackedEntityInstance getPerson( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance );
+    TrackedEntityInstance getTrackedEntityInstance( org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance );
 
     // -------------------------------------------------------------------------
     // CREATE
     // -------------------------------------------------------------------------
 
-    ImportSummaries savePersonXml( InputStream inputStream )
+    ImportSummaries saveTrackedEntityInstanceXml( InputStream inputStream )
         throws IOException;
 
-    ImportSummaries savePersonJson( InputStream inputStream )
+    ImportSummaries saveTrackedEntityInstanceJson( InputStream inputStream )
         throws IOException;
 
-    ImportSummary savePerson( TrackedEntityInstance trackedEntityInstance );
+    ImportSummary saveTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance );
 
     // -------------------------------------------------------------------------
     // UPDATE
     // -------------------------------------------------------------------------
 
-    ImportSummary updatePersonXml( String id, InputStream inputStream )
+    ImportSummary updateTrackedEntityInstanceXml( String id, InputStream inputStream )
         throws IOException;
 
-    ImportSummary updatePersonJson( String id, InputStream inputStream )
+    ImportSummary updateTrackedEntityInstanceJson( String id, InputStream inputStream )
         throws IOException;
 
-    ImportSummary updatePerson( TrackedEntityInstance trackedEntityInstance );
+    ImportSummary updateTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance );
 
     // -------------------------------------------------------------------------
     // DELETE
     // -------------------------------------------------------------------------
 
-    void deletePerson( TrackedEntityInstance trackedEntityInstance );
+    void deleteTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance );
 }

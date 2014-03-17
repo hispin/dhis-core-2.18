@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.events.person;
+package org.hisp.dhis.dxf2.events.trackedentity;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo

@@ -45,9 +45,9 @@ import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstances;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstances;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -113,12 +113,12 @@ public class TrackedEntityInstanceController
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
                 Program program = getProgram( programUid );
 
-                trackedEntityInstances = trackedEntityInstanceService.getPersons( organisationUnit, program );
+                trackedEntityInstances = trackedEntityInstanceService.getTrackedEntityInstances( organisationUnit, program );
             }
             else
             {
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-                trackedEntityInstances = trackedEntityInstanceService.getPersons( organisationUnit );
+                trackedEntityInstances = trackedEntityInstanceService.getTrackedEntityInstances( organisationUnit );
             }
         }
         else
@@ -231,7 +231,7 @@ public class TrackedEntityInstanceController
 
         criteria.addOrder( Order.desc( "lastUpdated" ) );
 
-        return trackedEntityInstanceService.getPersons( criteria.list() );
+        return trackedEntityInstanceService.getTrackedEntityInstances( criteria.list() );
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
@@ -257,7 +257,7 @@ public class TrackedEntityInstanceController
     public void postPersonXml( HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummaries importSummaries = trackedEntityInstanceService.savePersonXml( request.getInputStream() );
+        ImportSummaries importSummaries = trackedEntityInstanceService.saveTrackedEntityInstanceXml( request.getInputStream() );
 
         if ( importSummaries.getImportSummaries().size() > 1 )
         {
@@ -283,7 +283,7 @@ public class TrackedEntityInstanceController
     public void postPersonJson( HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummaries importSummaries = trackedEntityInstanceService.savePersonJson( request.getInputStream() );
+        ImportSummaries importSummaries = trackedEntityInstanceService.saveTrackedEntityInstanceJson( request.getInputStream() );
 
         if ( importSummaries.getImportSummaries().size() > 1 )
         {
@@ -314,7 +314,7 @@ public class TrackedEntityInstanceController
     public void updatePersonXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummary importSummary = trackedEntityInstanceService.updatePersonXml( id, request.getInputStream() );
+        ImportSummary importSummary = trackedEntityInstanceService.updateTrackedEntityInstanceXml( id, request.getInputStream() );
         JacksonUtils.toXml( response.getOutputStream(), importSummary );
     }
 
@@ -324,7 +324,7 @@ public class TrackedEntityInstanceController
     public void updatePersonJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
-        ImportSummary importSummary = trackedEntityInstanceService.updatePersonJson( id, request.getInputStream() );
+        ImportSummary importSummary = trackedEntityInstanceService.updateTrackedEntityInstanceJson( id, request.getInputStream() );
         JacksonUtils.toJson( response.getOutputStream(), importSummary );
     }
 
@@ -339,7 +339,7 @@ public class TrackedEntityInstanceController
         throws NotFoundException
     {
         TrackedEntityInstance trackedEntityInstance = getPerson( id );
-        trackedEntityInstanceService.deletePerson( trackedEntityInstance );
+        trackedEntityInstanceService.deleteTrackedEntityInstance( trackedEntityInstance );
     }
 
     // -------------------------------------------------------------------------
@@ -349,7 +349,7 @@ public class TrackedEntityInstanceController
     private TrackedEntityInstance getPerson( String id )
         throws NotFoundException
     {
-        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( id );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getTrackedEntityInstance( id );
 
         if ( trackedEntityInstance == null )
         {

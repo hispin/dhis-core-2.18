@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.events.person;
+package org.hisp.dhis.dxf2.events.trackedentity;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -49,8 +49,6 @@ public class TrackedEntityInstance
     private String orgUnit;
 
     private List<Relationship> relationships = new ArrayList<Relationship>();
-
-    private List<Identifier> identifiers = new ArrayList<Identifier>();
 
     private List<Attribute> attributes = new ArrayList<Attribute>();
 
@@ -108,18 +106,6 @@ public class TrackedEntityInstance
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public List<Identifier> getIdentifiers()
-    {
-        return identifiers;
-    }
-
-    public void setIdentifiers( List<Identifier> identifiers )
-    {
-        this.identifiers = identifiers;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public List<Attribute> getAttributes()
     {
         return attributes;
@@ -139,7 +125,6 @@ public class TrackedEntityInstance
         TrackedEntityInstance that = (TrackedEntityInstance) o;
 
         if ( attributes != null ? !attributes.equals( that.attributes ) : that.attributes != null ) return false;
-        if ( identifiers != null ? !identifiers.equals( that.identifiers ) : that.identifiers != null ) return false;
         if ( orgUnit != null ? !orgUnit.equals( that.orgUnit ) : that.orgUnit != null ) return false;
         if ( relationships != null ? !relationships.equals( that.relationships ) : that.relationships != null ) return false;
         if ( trackedEntity != null ? !trackedEntity.equals( that.trackedEntity ) : that.trackedEntity != null ) return false;
@@ -156,7 +141,6 @@ public class TrackedEntityInstance
         result = 31 * result + (trackedEntityInstance != null ? trackedEntityInstance.hashCode() : 0);
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
         result = 31 * result + (relationships != null ? relationships.hashCode() : 0);
-        result = 31 * result + (identifiers != null ? identifiers.hashCode() : 0);
         result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
         return result;
     }
@@ -169,7 +153,6 @@ public class TrackedEntityInstance
             ", trackedEntityInstance='" + trackedEntityInstance + '\'' +
             ", orgUnit='" + orgUnit + '\'' +
             ", relationships=" + relationships +
-            ", identifiers=" + identifiers +
             ", attributes=" + attributes +
             '}';
     }

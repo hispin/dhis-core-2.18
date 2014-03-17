@@ -32,7 +32,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 
@@ -55,7 +54,7 @@ public class Event extends BaseLinkableObject
 
     private String orgUnit;
 
-    private String person;
+    private String trackedEntityInstance;
 
     private String eventDate;
 
@@ -64,7 +63,7 @@ public class Event extends BaseLinkableObject
     private Coordinate coordinate;
 
     private List<DataValue> dataValues = new ArrayList<DataValue>();
-    
+
     private List<Note> notes = new ArrayList<Note>();
 
     public Event()
@@ -133,15 +132,15 @@ public class Event extends BaseLinkableObject
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public String getPerson()
+    public String getTrackedEntityInstance()
     {
-        return person;
+        return trackedEntityInstance;
     }
 
-    public void setPerson( String person )
+    public void setTrackedEntityInstance( String trackedEntityInstance )
     {
-        this.person = person;
-    }   	
+        this.trackedEntityInstance = trackedEntityInstance;
+    }
 
     @JsonProperty( required = true )
     @JacksonXmlProperty( isAttribute = true )
@@ -218,7 +217,8 @@ public class Event extends BaseLinkableObject
         if ( event != null ? !event.equals( event1.event ) : event1.event != null ) return false;
         if ( eventDate != null ? !eventDate.equals( event1.eventDate ) : event1.eventDate != null ) return false;
         if ( orgUnit != null ? !orgUnit.equals( event1.orgUnit ) : event1.orgUnit != null ) return false;
-        if ( person != null ? !person.equals( event1.person ) : event1.person != null ) return false;
+        if ( trackedEntityInstance != null ? !trackedEntityInstance.equals( event1.trackedEntityInstance ) : event1.trackedEntityInstance != null )
+            return false;
         if ( program != null ? !program.equals( event1.program ) : event1.program != null ) return false;
         if ( programStage != null ? !programStage.equals( event1.programStage ) : event1.programStage != null ) return false;
         if ( status != event1.status ) return false;
@@ -235,7 +235,7 @@ public class Event extends BaseLinkableObject
         result = 31 * result + (program != null ? program.hashCode() : 0);
         result = 31 * result + (programStage != null ? programStage.hashCode() : 0);
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
-        result = 31 * result + (person != null ? person.hashCode() : 0);
+        result = 31 * result + (trackedEntityInstance != null ? trackedEntityInstance.hashCode() : 0);
         result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
         result = 31 * result + (storedBy != null ? storedBy.hashCode() : 0);
         result = 31 * result + (coordinate != null ? coordinate.hashCode() : 0);
@@ -252,7 +252,7 @@ public class Event extends BaseLinkableObject
             ", program='" + program + '\'' +
             ", programStage='" + programStage + '\'' +
             ", orgUnit='" + orgUnit + '\'' +
-            ", person='" + person + '\'' +
+            ", trackedEntityInstance='" + trackedEntityInstance + '\'' +
             ", eventDate='" + eventDate + '\'' +
             ", storedBy='" + storedBy + '\'' +
             ", coordinate=" + coordinate +

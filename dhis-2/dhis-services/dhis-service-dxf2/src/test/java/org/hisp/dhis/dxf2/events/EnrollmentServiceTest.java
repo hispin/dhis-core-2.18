@@ -42,8 +42,8 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentStatus;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstance;
-import org.hisp.dhis.dxf2.events.person.TrackedEntityInstanceService;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -146,8 +146,8 @@ public class EnrollmentServiceTest
         programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
         programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
 
-        TrackedEntityInstance male = trackedEntityInstanceService.getPerson( maleA );
-        TrackedEntityInstance female = trackedEntityInstanceService.getPerson( femaleA );
+        TrackedEntityInstance male = trackedEntityInstanceService.getTrackedEntityInstance( maleA );
+        TrackedEntityInstance female = trackedEntityInstanceService.getTrackedEntityInstance( femaleA );
 
         assertEquals( 1, enrollmentService.getEnrollments( male ).getEnrollments().size() );
         assertEquals( 1, enrollmentService.getEnrollments( female ).getEnrollments().size() );
@@ -335,9 +335,9 @@ public class EnrollmentServiceTest
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getPerson( maleA );
+        TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getTrackedEntityInstance( maleA );
         // person.setName( "Changed Name" );
-        trackedEntityInstanceService.updatePerson( trackedEntityInstance );
+        trackedEntityInstanceService.updateTrackedEntityInstance( trackedEntityInstance );
 
         List<Enrollment> enrollments = enrollmentService.getEnrollments( trackedEntityInstance ).getEnrollments();
 

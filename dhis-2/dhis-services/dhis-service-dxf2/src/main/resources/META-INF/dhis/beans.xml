@@ -30,7 +30,7 @@
 
   <bean id="org.hisp.dhis.dxf2.events.event.EventService" class="org.hisp.dhis.dxf2.events.event.JacksonEventService" />
 
-  <bean id="org.hisp.dhis.dxf2.events.person.PersonService" class="org.hisp.dhis.dxf2.events.person.JacksonTrackedEntityInstanceService" />
+  <bean id="org.hisp.dhis.dxf2.events.person.PersonService" class="org.hisp.dhis.dxf2.events.trackedentity.JacksonTrackedEntityInstanceService" />
 
   <bean id="org.hisp.dhis.dxf2.events.enrollment.EnrollmentService" class="org.hisp.dhis.dxf2.events.enrollment.JacksonEnrollmentService" />
 

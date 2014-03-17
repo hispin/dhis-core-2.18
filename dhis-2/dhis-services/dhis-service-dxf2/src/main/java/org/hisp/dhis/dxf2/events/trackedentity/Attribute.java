@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.events.person;
+package org.hisp.dhis.dxf2.events.trackedentity;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -36,17 +36,33 @@ import org.hisp.dhis.common.DxfNamespaces;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "relationship", namespace = DxfNamespaces.DXF_2_0 )
-public class Relationship
+@JacksonXmlRootElement( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
+public class Attribute
 {
     private String displayName;
 
-    private String person;
+    private String attribute;
 
     private String type;
 
-    public Relationship()
+    private String code;
+
+    private String value;
+
+    public Attribute()
     {
+    }
+
+    public Attribute( String value )
+    {
+        this.value = value;
+    }
+
+    public Attribute( String attribute, String type, String value )
+    {
+        this.attribute = attribute;
+        this.type = type;
+        this.value = value;
     }
 
     @JsonProperty
@@ -63,14 +79,14 @@ public class Relationship
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public String getPerson()
+    public String getAttribute()
     {
-        return person;
+        return attribute;
     }
 
-    public void setPerson( String person )
+    public void setAttribute( String attribute )
     {
-        this.person = person;
+        this.attribute = attribute;
     }
 
     @JsonProperty
@@ -85,17 +101,50 @@ public class Relationship
         this.type = type;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getCode()
+    {
+        return code;
+    }
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
+    }
+
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
+        if ( this == o )
+            return true;
+        if ( o == null || getClass() != o.getClass() )
+            return false;
 
-        Relationship that = (Relationship) o;
+        Attribute attribute1 = (Attribute) o;
 
-        if ( displayName != null ? !displayName.equals( that.displayName ) : that.displayName != null ) return false;
-        if ( person != null ? !person.equals( that.person ) : that.person != null ) return false;
-        if ( type != null ? !type.equals( that.type ) : that.type != null ) return false;
+        if ( attribute != null ? !attribute.equals( attribute1.attribute ) : attribute1.attribute != null )
+            return false;
+        if ( displayName != null ? !displayName.equals( attribute1.displayName ) : attribute1.displayName != null )
+            return false;
+        if ( type != null ? !type.equals( attribute1.type ) : attribute1.type != null )
+            return false;
+        if ( code != null ? !code.equals( attribute1.code ) : attribute1.code != null )
+            return false;
+        if ( value != null ? !value.equals( attribute1.value ) : attribute1.value != null )
+            return false;
 
         return true;
     }
@@ -104,18 +153,17 @@ public class Relationship
     public int hashCode()
     {
         int result = displayName != null ? displayName.hashCode() : 0;
-        result = 31 * result + (person != null ? person.hashCode() : 0);
+        result = 31 * result + (attribute != null ? attribute.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString()
     {
-        return "Relationship{" +
-            "displayName='" + displayName + '\'' +
-            ", person='" + person + '\'' +
-            ", type='" + type + '\'' +
-            '}';
+        return "Attribute{" + "displayName='" + displayName + '\'' + ", attribute='" + attribute + '\'' + ", type='"
+            + type + '\'' + ", code='" + code + '\'' + ", value='" + value + '\'' + '}';
     }
 }

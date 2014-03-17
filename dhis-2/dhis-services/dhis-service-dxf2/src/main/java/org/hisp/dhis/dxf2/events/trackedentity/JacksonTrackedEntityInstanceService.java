@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.events.person;
+package org.hisp.dhis.dxf2.events.trackedentity;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -94,7 +94,7 @@ public class JacksonTrackedEntityInstanceService extends AbstractTrackedEntityIn
     // -------------------------------------------------------------------------
 
     @Override
-    public ImportSummaries savePersonXml( InputStream inputStream ) throws IOException
+    public ImportSummaries saveTrackedEntityInstanceXml( InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
@@ -106,21 +106,21 @@ public class JacksonTrackedEntityInstanceService extends AbstractTrackedEntityIn
             for ( TrackedEntityInstance trackedEntityInstance : trackedEntityInstances.getTrackedEntityInstances() )
             {
                 trackedEntityInstance.setTrackedEntityInstance( null );
-                importSummaries.addImportSummary( savePerson( trackedEntityInstance ) );
+                importSummaries.addImportSummary( saveTrackedEntityInstance( trackedEntityInstance ) );
             }
         }
         catch ( Exception ex )
         {
             TrackedEntityInstance trackedEntityInstance = fromXml( input, TrackedEntityInstance.class );
             trackedEntityInstance.setTrackedEntityInstance( null );
-            importSummaries.addImportSummary( savePerson( trackedEntityInstance ) );
+            importSummaries.addImportSummary( saveTrackedEntityInstance( trackedEntityInstance ) );
         }
 
         return importSummaries;
     }
 
     @Override
-    public ImportSummaries savePersonJson( InputStream inputStream ) throws IOException
+    public ImportSummaries saveTrackedEntityInstanceJson( InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
@@ -132,14 +132,14 @@ public class JacksonTrackedEntityInstanceService extends AbstractTrackedEntityIn
             for ( TrackedEntityInstance trackedEntityInstance : trackedEntityInstances.getTrackedEntityInstances() )
             {
                 trackedEntityInstance.setTrackedEntityInstance( null );
-                importSummaries.addImportSummary( savePerson( trackedEntityInstance ) );
+                importSummaries.addImportSummary( saveTrackedEntityInstance( trackedEntityInstance ) );
             }
         }
         catch ( Exception ex )
         {
             TrackedEntityInstance trackedEntityInstance = fromJson( input, TrackedEntityInstance.class );
             trackedEntityInstance.setTrackedEntityInstance( null );
-            importSummaries.addImportSummary( savePerson( trackedEntityInstance ) );
+            importSummaries.addImportSummary( saveTrackedEntityInstance( trackedEntityInstance ) );
         }
 
         return importSummaries;
@@ -150,20 +150,20 @@ public class JacksonTrackedEntityInstanceService extends AbstractTrackedEntityIn
     // -------------------------------------------------------------------------
 
     @Override
-    public ImportSummary updatePersonXml( String id, InputStream inputStream ) throws IOException
+    public ImportSummary updateTrackedEntityInstanceXml( String id, InputStream inputStream ) throws IOException
     {
         TrackedEntityInstance trackedEntityInstance = fromXml( inputStream, TrackedEntityInstance.class );
         trackedEntityInstance.setTrackedEntityInstance( id );
 
-        return updatePerson( trackedEntityInstance );
+        return updateTrackedEntityInstance( trackedEntityInstance );
     }
 
     @Override
-    public ImportSummary updatePersonJson( String id, InputStream inputStream ) throws IOException
+    public ImportSummary updateTrackedEntityInstanceJson( String id, InputStream inputStream ) throws IOException
     {
         TrackedEntityInstance trackedEntityInstance = fromJson( inputStream, TrackedEntityInstance.class );
         trackedEntityInstance.setTrackedEntityInstance( id );
 
-        return updatePerson( trackedEntityInstance );
+        return updateTrackedEntityInstance( trackedEntityInstance );
     }
 }
