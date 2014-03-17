@@ -144,7 +144,7 @@ public class ProgramValidationServiceTest
         programStageDataElementService.addProgramStageDataElement( stageDataElementD );
 
         TrackedEntityInstance entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstance );
+        entityInstanceService.addTrackedEntityInstance( entityInstance );
 
         ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, new Date(),
             new Date(), organisationUnit, null );

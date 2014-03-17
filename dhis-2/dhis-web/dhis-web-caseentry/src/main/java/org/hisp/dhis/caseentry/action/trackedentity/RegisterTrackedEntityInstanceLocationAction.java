@@ -85,7 +85,7 @@ public class RegisterTrackedEntityInstanceLocationAction
 
         entityInstance.setOrganisationUnit( orgunit );
         
-        entityInstanceService.saveTrackedEntityInstance( entityInstance );
+        entityInstanceService.addTrackedEntityInstance( entityInstance );
 
         return SUCCESS;
     }

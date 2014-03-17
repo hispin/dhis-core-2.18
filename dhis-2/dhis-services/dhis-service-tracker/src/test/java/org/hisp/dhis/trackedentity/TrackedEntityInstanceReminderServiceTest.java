@@ -127,7 +127,7 @@ public class TrackedEntityInstanceReminderServiceTest
         userService.addUser( user );
 
         entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstance );
+        entityInstanceService.addTrackedEntityInstance( entityInstance );
 
         Program program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         reminderA = new TrackedEntityInstanceReminder( "A", 0, "Test program message template",

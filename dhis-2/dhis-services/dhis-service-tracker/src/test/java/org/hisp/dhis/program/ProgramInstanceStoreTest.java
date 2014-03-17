@@ -149,10 +149,10 @@ public class ProgramInstanceStoreTest
         programService.addProgram( programC );
 
         entityInstanceA = createTrackedEntityInstance( 'A', organisationUnitA );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA );
 
         TrackedEntityInstance entityInstanceB = createTrackedEntityInstance( 'B', organisationUnitB );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB );
 
         Calendar calIncident = Calendar.getInstance();
         PeriodType.clearTimeOfDay( calIncident );

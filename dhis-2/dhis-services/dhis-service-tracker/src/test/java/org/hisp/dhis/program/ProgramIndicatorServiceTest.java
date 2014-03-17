@@ -120,7 +120,7 @@ public class ProgramIndicatorServiceTest
         programService.addProgram( programB );
 
         TrackedEntityInstance entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstance );
+        entityInstanceService.addTrackedEntityInstance( entityInstance );
 
         Calendar calIncident = Calendar.getInstance();
         PeriodType.clearTimeOfDay( calIncident );

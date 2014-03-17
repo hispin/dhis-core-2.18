@@ -85,16 +85,16 @@ public class RelationshipServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
         entityInstanceA = createTrackedEntityInstance( 'A', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceA );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceA );
 
         entityInstanceB = createTrackedEntityInstance( 'B', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceB );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceB );
 
         entityInstanceC = createTrackedEntityInstance( 'C', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceC );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceC );
 
         entityInstanceD = createTrackedEntityInstance( 'D', organisationUnit );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceD );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceD );
 
         relationshipType = createRelationshipType( 'A' );
         relationshipTypeService.addRelationshipType( relationshipType );

@@ -65,7 +65,7 @@ public interface TrackedEntityInstanceService
      * 
      * @return A generated unique id of the added {@link TrackedEntityInstance}.
      */
-    int saveTrackedEntityInstance( TrackedEntityInstance entityInstance );
+    int addTrackedEntityInstance( TrackedEntityInstance entityInstance );
 
     /**
      * Deletes a {@link TrackedEntityInstance}.

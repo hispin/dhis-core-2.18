@@ -111,10 +111,10 @@ public class TrackedEntityAttributeValueServiceTest
         entityInstanceC = createTrackedEntityInstance( 'C', organisationUnit );
         entityInstanceD = createTrackedEntityInstance( 'D', organisationUnit );
 
-        entityInstanceAId = entityInstanceService.saveTrackedEntityInstance( entityInstanceA );
-        entityInstanceBId = entityInstanceService.saveTrackedEntityInstance( entityInstanceB );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceC );
-        entityInstanceService.saveTrackedEntityInstance( entityInstanceD );
+        entityInstanceAId = entityInstanceService.addTrackedEntityInstance( entityInstanceA );
+        entityInstanceBId = entityInstanceService.addTrackedEntityInstance( entityInstanceB );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceC );
+        entityInstanceService.addTrackedEntityInstance( entityInstanceD );
 
         attributeA = createTrackedEntityAttribute( 'A' );
         attributeB = createTrackedEntityAttribute( 'B' );

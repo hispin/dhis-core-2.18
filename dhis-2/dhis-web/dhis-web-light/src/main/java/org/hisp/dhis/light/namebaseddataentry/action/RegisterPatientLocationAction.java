@@ -89,7 +89,7 @@ public class RegisterPatientLocationAction
     {
         TrackedEntityInstance patient = patientService.getTrackedEntityInstance( patientId );
         patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
-        patientService.saveTrackedEntityInstance( patient );
+        patientService.addTrackedEntityInstance( patient );
 
         return SUCCESS;
     }
