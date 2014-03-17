@@ -47,7 +47,6 @@ import java.util.Set;
 
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
@@ -59,6 +58,7 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.QueryItem;
@@ -93,8 +93,8 @@ public class DefaultEventAnalyticsService
     private static final String ITEM_ORG_UNIT_CODE = "oucode";
     private static final String COL_NAME_EVENTDATE = "executiondate";
 
-    private static final List<String> SORTABLE_ITEMS = Arrays.asList( ITEM_EXECUTION_DATE, ITEM_ORG_UNIT_NAME,
-        ITEM_ORG_UNIT_CODE );
+    private static final List<String> SORTABLE_ITEMS = Arrays.asList( 
+        ITEM_EXECUTION_DATE, ITEM_ORG_UNIT_NAME, ITEM_ORG_UNIT_CODE );
 
     @Autowired
     private ProgramService programService;

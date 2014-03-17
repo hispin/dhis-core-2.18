@@ -30,6 +30,8 @@ package org.hisp.dhis.analytics;
 
 import java.util.List;
 
+import org.hisp.dhis.common.IllegalQueryException;
+
 /**
  * @author Lars Helge Overland
  */

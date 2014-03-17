@@ -50,11 +50,14 @@ public interface TrackedEntityInstanceService
     String ID = TrackedEntityInstanceService.class.getName();
 
     public static final int ERROR_NONE = 0;
-
     public static final int ERROR_DUPLICATE_IDENTIFIER = 1;
-
     public static final int ERROR_ENROLLMENT = 2;
 
+    Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
+    
+    TrackedEntityInstanceQueryParams getFromUrl( Set<String> items, String program, String trackedEntity, 
+        Set<String> organisationUnits, String ouMode, Integer page, Integer pageSize );
+    
     /**
      * Adds an {@link TrackedEntityInstance}
      * 

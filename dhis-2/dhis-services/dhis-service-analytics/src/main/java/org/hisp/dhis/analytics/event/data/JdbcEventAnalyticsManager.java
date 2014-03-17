@@ -363,11 +363,11 @@ public class JdbcEventAnalyticsManager
             sql += "where " + params.getPeriodType() + " in (" + getQuotedCommaDelimitedString( getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) ) + ") ";
         }
         
-        if ( params.isOrganisationUnitMode( EventQueryParams.OU_MODE_SELECTED ) )
+        if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_SELECTED ) )
         {
             sql += "and ou in (" + getQuotedCommaDelimitedString( getUids( params.getDimensionOrFilter( ORGUNIT_DIM_ID ) ) ) + ") ";
         }
-        else if ( params.isOrganisationUnitMode( EventQueryParams.OU_MODE_CHILDREN ) )
+        else if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_CHILDREN ) )
         {
             sql += "and ou in (" + getQuotedCommaDelimitedString( getUids( params.getOrganisationUnitChildren() ) ) + ") ";
         }

@@ -28,6 +28,8 @@ package org.hisp.dhis.trackedentity.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM_EVENT_BY_STATUS;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM_INSTANCE;
@@ -57,11 +59,13 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -106,6 +110,13 @@ public class HibernateTrackedEntityInstanceStore
     {
         this.organisationUnitService = organisationUnitService;
     }
+    
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -132,7 +143,6 @@ public class HibernateTrackedEntityInstanceStore
         for ( Map<String, String> entity : entities )
         {
             grid.addValue( entity.get( TRACKED_ENTITY_INSTANCE_ID ) );
-            grid.addValue( entity.get( CREATED_ID ) );
             grid.addValue( entity.get( LAST_UPDATED_ID ) );
             grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
             grid.addValue( entity.get( ORG_UNIT_ID ) );
@@ -143,16 +153,51 @@ public class HibernateTrackedEntityInstanceStore
     
     private Collection<Map<String, String>> getEntities( TrackedEntityInstanceQueryParams params )
     {
+        SqlHelper hlp = new SqlHelper();
+        
         String sql = 
             "select tei.uid, tei.created, tei.lastupdated, te.uid, ou.uid, tav.value, ta.uid " +
             "from trackedentityinstance tei " +
-            "left join trackedentity te on tei.trackedentityid=te.trackedentityid " +
-            "left join organisationunit ou on tei.organisationunitid=ou.organisationunitid " +
-            "left join trackedentityattributevalue tav on tei.trackedentityinstanceid=tav.trackedentityinstanceid " +
-            "left join trackedentityattribute ta on tav.trackedentityattributeid=ta.trackedentityattributeid";
+            "left join trackedentity te on tei.trackedentityid = te.trackedentityid " +
+            "left join organisationunit ou on tei.organisationunitid = ou.organisationunitid " +
+            "left join trackedentityattributevalue tav on tei.trackedentityinstanceid = tav.trackedentityinstanceid " +
+            "left join trackedentityattribute ta on tav.trackedentityattributeid = ta.trackedentityattributeid ";
+        
+        if ( !params.isOrganisationUnitMode( DimensionalObject.OU_MODE_SELECTED ) )
+        {
+            sql += "left join _orgunitstructure ous using tei.organisationunitid=ous.organisationunitid ";
+        }
+        
+        if ( params.hasTrackedEntity() )
+        {
+            sql += hlp.whereAnd() + " tei.trackedentityid = " + params.getTrackedEntity().getId();
+        }
+        
+        if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_SELECTED ) )
+        {
+            sql += hlp.whereAnd() + " tei.organisationunitid in (" + getQuotedCommaDelimitedString( getUids( params.getOrganisationUnits() ) ) + ") ";
+        }
+        
+        for ( QueryItem item : params.getItems() )
+        {
+            String filter = statementBuilder.encode( item.getFilter(), false );
+            
+            String valClause = "tav.value " + item.getSqlOperator() + " " + item.getSqlFilter( filter );
+            
+            if ( item.hasFilter() )
+            {
+                sql += hlp.whereAnd() + " (ta.uid = " + item.getItemId() + " and " + valClause + ") ";
+            }
+            else
+            {
+                sql += hlp.whereAnd() + " (" + valClause + ") ";
+            }
+        }
         
         MapMap<String, String, String> entityMap = new MapMap<String, String, String>();
 
+        log.info( "Tracked entity instance query SQL: " + sql );
+        
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
         
         while ( rowSet.next() )
