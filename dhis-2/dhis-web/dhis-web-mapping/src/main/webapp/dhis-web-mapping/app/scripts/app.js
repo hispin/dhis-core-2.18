@@ -176,7 +176,7 @@ Ext.onReady( function() {
 						}
 					}
 
-					if (layout.opacity === 0.8) {
+					if (layout.opacity === 1) {
 						delete layout.opacity;
 					}
 
@@ -692,7 +692,7 @@ Ext.onReady( function() {
 			text: null,
 			height: 22,
 			value: false,
-			opacity: 0.8,
+			opacity: 1,
 			getValue: function() {
 				return this.checkbox.getValue();
 			},
@@ -2493,7 +2493,7 @@ Ext.onReady( function() {
 				text: GIS.i18n.create,
 				handler: function() {
 					var name = nameTextfield.getValue(),
-						layers = gis.util.map.getVisibleVectorLayers(),
+						layers = gis.util.map.getRenderedVectorLayers(),
 						layer,
 						lonlat = gis.olmap.getCenter(),
 						views = [],
@@ -2512,8 +2512,10 @@ Ext.onReady( function() {
 
 					for (var i = 0; i < layers.length; i++) {
 						layer = layers[i];
-						//view = layer.widget.getView();
+
 						view = Ext.clone(layer.core.view);
+
+                        view.hidden = !layer.visibility;
 
 						// Operand
 						if (Ext.isArray(view.columns) && view.columns.length) {
@@ -2756,7 +2758,7 @@ Ext.onReady( function() {
 									message;
 
 								if (record.data.access.update) {
-									layers = gis.util.map.getVisibleVectorLayers();
+									layers = gis.util.map.getRenderedVectorLayers();
 									message = 'Overwrite favorite?\n\n' + record.data.name;
 
 									if (layers.length) {
@@ -2770,6 +2772,7 @@ Ext.onReady( function() {
 
 												// add
 												view.layer = layer.id;
+                                                view.hidden = !layer.visibility;
 
 												// remove
 												delete view.periodType;
@@ -4943,7 +4946,7 @@ Ext.onReady( function() {
 			setLayerGui = function() {
 
 				// Layer item
-				layer.item.setValue(true, view.opacity);
+				layer.item.setValue(!view.hidden, view.opacity);
 
 				// Layer menu
 				layer.menu.enableItems();
@@ -5058,7 +5061,7 @@ Ext.onReady( function() {
 
 		treePanel = Ext.create('Ext.tree.Panel', {
 			cls: 'gis-tree',
-			height: 300,
+			height: 200,
 			style: 'border-top: 1px solid #ddd; padding-top: 1px',
 			displayField: 'name',
 			width: gis.conf.layout.widget.item_width,
@@ -5606,7 +5609,7 @@ Ext.onReady( function() {
 			setLayerGui = function() {
 
 				// Layer item
-				layer.item.setValue(true, view.opacity);
+				layer.item.setValue(!view.hidden, view.opacity);
 
 				// Layer menu
 				layer.menu.enableItems();
@@ -5758,7 +5761,7 @@ Ext.onReady( function() {
 
 		treePanel = Ext.create('Ext.tree.Panel', {
 			cls: 'gis-tree',
-			height: 300,
+			height: 200,
 			style: 'border-top: 1px solid #ddd; padding-top: 1px',
 			displayField: 'name',
 			width: gis.conf.layout.widget.item_width,
@@ -6280,7 +6283,7 @@ Ext.onReady( function() {
 			setLayerGui = function() {
 
 				// Layer item
-				layer.item.setValue(true, view.opacity);
+				layer.item.setValue(!view.hidden, view.opacity);
 
 				// Layer menu
 				layer.menu.enableItems();
@@ -7040,7 +7043,7 @@ Ext.onReady( function() {
 			valueField: 'id',
 			displayField: 'name',
 			queryMode: 'local',
-			value: 2,
+			value: 3,
 			width: 135,
 			store: Ext.create('Ext.data.ArrayStore', {
 				fields: ['id', 'name'],
@@ -7081,7 +7084,7 @@ Ext.onReady( function() {
 
 		treePanel = Ext.create('Ext.tree.Panel', {
 			cls: 'gis-tree',
-			height: 300,
+			height: 200,
 			style: 'border-top: 1px solid #ddd; padding-top: 1px',
 			displayField: 'name',
 			width: gis.conf.layout.widget.item_width,
@@ -7736,7 +7739,7 @@ Ext.onReady( function() {
 			setLayerGui = function() {
 
 				// Layer item
-				layer.item.setValue(true, view.opacity);
+				layer.item.setValue(!view.hidden, view.opacity);
 
 				// Layer menu
 				layer.menu.enableItems();

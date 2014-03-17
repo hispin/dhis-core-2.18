@@ -100,6 +100,8 @@ public class MapView
     private OrganisationUnitGroupSet organisationUnitGroupSet;
 
     private Integer areaRadius;
+    
+    private Boolean hidden;
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -343,6 +345,19 @@ public class MapView
     }
 
     @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public Boolean getHidden()
+    {
+        return hidden;
+    }
+
+    public void setHidden( Boolean hidden )
+    {
+        this.hidden = hidden;
+    }
+
+    @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getParentGraph()
@@ -388,6 +403,7 @@ public class MapView
             opacity = mapView.getOpacity() == null ? opacity : mapView.getOpacity();
             organisationUnitGroupSet = mapView.getOrganisationUnitGroupSet() == null ? organisationUnitGroupSet : mapView.getOrganisationUnitGroupSet();
             areaRadius = mapView.getAreaRadius() == null ? areaRadius : mapView.getAreaRadius();
+            hidden = mapView.getHidden() == null ? hidden : mapView.getHidden();
         }
     }
 }

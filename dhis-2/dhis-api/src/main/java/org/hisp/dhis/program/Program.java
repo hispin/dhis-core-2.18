@@ -357,9 +357,9 @@ public class Program
         this.displayIncidentDate = displayIncidentDate;
     }
 
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    //@JsonProperty
+    //@JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    //@JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     private Object getValueFromTrackedEntityInstance( String property, TrackedEntityInstance entityInstance )
         throws Exception
     {

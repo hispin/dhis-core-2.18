@@ -2246,6 +2246,7 @@ Ext.onReady( function() {
                     // Axes
                     numericAxis.position = 'bottom';
                     categoryAxis.position = 'left';
+                    categoryAxis.label.rotate.degrees = 360;
                     axes = [numericAxis, categoryAxis];
 
                     // Series
