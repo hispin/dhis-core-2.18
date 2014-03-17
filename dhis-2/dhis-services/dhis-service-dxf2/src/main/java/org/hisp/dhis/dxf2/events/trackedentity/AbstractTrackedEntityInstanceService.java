@@ -143,7 +143,7 @@ public abstract class AbstractTrackedEntityInstanceService
     // -------------------------------------------------------------------------
 
     @Override
-    public ImportSummary saveTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance )
+    public ImportSummary addTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance )
     {
         ImportSummary importSummary = new ImportSummary();
         importSummary.setDataValueCount( null );

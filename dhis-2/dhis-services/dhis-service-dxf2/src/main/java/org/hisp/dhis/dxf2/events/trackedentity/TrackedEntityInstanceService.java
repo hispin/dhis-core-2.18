@@ -51,13 +51,13 @@ public interface TrackedEntityInstanceService
     // CREATE
     // -------------------------------------------------------------------------
 
-    ImportSummaries saveTrackedEntityInstanceXml( InputStream inputStream )
+    ImportSummaries addTrackedEntityInstanceXml( InputStream inputStream )
         throws IOException;
 
-    ImportSummaries saveTrackedEntityInstanceJson( InputStream inputStream )
+    ImportSummaries addTrackedEntityInstanceJson( InputStream inputStream )
         throws IOException;
 
-    ImportSummary saveTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance );
+    ImportSummary addTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance );
 
     // -------------------------------------------------------------------------
     // UPDATE
