@@ -37,8 +37,6 @@ import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_PERIOD;
 import static org.hisp.dhis.analytics.DataQueryParams.FIXED_DIMS;
-import static org.hisp.dhis.analytics.DataQueryParams.getDimensionFromParam;
-import static org.hisp.dhis.analytics.DataQueryParams.getDimensionItemsFromParam;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
@@ -91,6 +89,7 @@ import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -670,8 +669,8 @@ public class DefaultAnalyticsService
         {
             for ( String param : dimensionParams )
             {
-                String dimension = getDimensionFromParam( param );
-                List<String> options = getDimensionItemsFromParam( param );
+                String dimension = DimensionalObjectUtils.getDimensionFromParam( param );
+                List<String> options = DimensionalObjectUtils.getDimensionItemsFromParam( param );
                 
                 if ( dimension != null && options != null )
                 {
@@ -684,8 +683,8 @@ public class DefaultAnalyticsService
         {
             for ( String param : filterParams )
             {
-                String dimension = DataQueryParams.getDimensionFromParam( param );
-                List<String> options = DataQueryParams.getDimensionItemsFromParam( param );
+                String dimension = DimensionalObjectUtils.getDimensionFromParam( param );
+                List<String> options = DimensionalObjectUtils.getDimensionItemsFromParam( param );
                 
                 if ( dimension != null && options != null )
                 {
@@ -886,7 +885,7 @@ public class DefaultAnalyticsService
                 }
                 else if ( ou != null && ou.startsWith( KEY_LEVEL ) )
                 {
-                    int level = DataQueryParams.getLevelFromLevelParam( ou );
+                    int level = DimensionalObjectUtils.getLevelFromLevelParam( ou );
                     
                     if ( level > 0 )
                     {
@@ -895,7 +894,7 @@ public class DefaultAnalyticsService
                 }
                 else if ( ou != null && ou.startsWith( KEY_ORGUNIT_GROUP ) )
                 {
-                    String uid = DataQueryParams.getUidFromOrgUnitGroupParam( ou );
+                    String uid = DimensionalObjectUtils.getUidFromOrgUnitGroupParam( ou );
                     
                     OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
                     

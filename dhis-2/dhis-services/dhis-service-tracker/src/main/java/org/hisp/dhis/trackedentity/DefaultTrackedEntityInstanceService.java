@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IllegalQueryException;
@@ -167,6 +168,11 @@ public class DefaultTrackedEntityInstanceService
             ous.add( organisationUnit );
         }
         
+        for ( String item : items )
+        {
+            String id = DimensionalObjectUtils.getDimensionFromParam( item );
+        }
+        
         params.setOrganisationUnitMode( ouMode );
         params.setPage( page );
         params.setPageSize( pageSize );
@@ -261,9 +267,6 @@ public class DefaultTrackedEntityInstanceService
         Set<TrackedEntityInstance> entityInstances = new HashSet<TrackedEntityInstance>();
         entityInstances.addAll( getTrackedEntityInstancesByPhone( searchText, 0, Integer.MAX_VALUE ) );
 
-        // if an org-unit has been selected, filter out every instance that has
-        // a
-        // different org-unit
         if ( orgUnitId != 0 )
         {
             Set<TrackedEntityInstance> toRemoveList = new HashSet<TrackedEntityInstance>();

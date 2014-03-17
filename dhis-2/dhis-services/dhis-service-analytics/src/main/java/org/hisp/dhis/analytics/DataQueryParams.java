@@ -859,101 +859,6 @@ public class DataQueryParams
     // -------------------------------------------------------------------------
 
     /**
-     * Retrieves the dimension name from the given string. Returns the part of
-     * the string preceding the dimension name separator, or the whole string if
-     * the separator is not present.
-     */
-    public static String getDimensionFromParam( String param )
-    {
-        if ( param == null )
-        {
-            return null;
-        }
-        
-        return param.split( DIMENSION_NAME_SEP ).length > 0 ? param.split( DIMENSION_NAME_SEP )[0] : param;
-    }
-    
-    /**
-     * Retrieves the dimension options from the given string. Looks for the part
-     * succeeding the dimension name separator, if exists, splits the string part
-     * on the option separator and returns the resulting values. If the dimension
-     * name separator does not exist an empty list is returned, indicating that
-     * all dimension options should be used.
-     */
-    public static List<String> getDimensionItemsFromParam( String param )
-    {
-        if ( param == null )
-        {
-            return null;
-        }
-        
-        if ( param.split( DIMENSION_NAME_SEP ).length > 1 )
-        {
-            return new ArrayList<String>( Arrays.asList( param.split( DIMENSION_NAME_SEP )[1].split( OPTION_SEP ) ) );
-        }
-        
-        return new ArrayList<String>();
-    }
-    
-    // TODO move these to DimensionalObjectUtils or API, duplication of code
-    
-    /**
-     * Retrieves the level from a level parameter string, which is on the format
-     * LEVEL-<level>-<item> .
-     */
-    public static int getLevelFromLevelParam( String param )
-    {
-        if ( param == null )   
-        {
-            return 0;
-        }
-        
-        String[] split = param.split( ITEM_SEP );
-        
-        if ( split.length > 1 && MathUtils.isInteger( split[1] ) )
-        {
-            return Integer.parseInt( split[1] );
-        }
-        
-        return 0;
-    }
-    
-    /**
-     * Retrieves the uid from an org unit group parameter string, which is on
-     * the format OU_GROUP-<uid> .
-     */
-    public static String getUidFromOrgUnitGroupParam( String param )
-    {
-        if ( param == null )
-        {
-            return null;
-        }
-        
-        String[] split = param.split( ITEM_SEP );
-        
-        if ( split.length > 1 && split[1] != null )
-        {
-            return String.valueOf( split[1] );
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Splits the given string on the ; character and returns the items in a 
-     * list. Returns null if the given string is null.
-     */
-    public static List<String> getDimensionsFromParam( String param )
-    {
-        if ( param == null )
-        {
-            return null;
-        }
-        
-        return new ArrayList<String>( Arrays.asList( param.split( OPTION_SEP ) ) );
-    }
-    
-    /**
      * Retrieves the measure criteria from the given string. Criteria are separated
      * by the option separator, while the criterion filter and value are separated
      * with the dimension name separator.
@@ -982,28 +887,6 @@ public class DataQueryParams
         }
         
         return map;
-    }
-    
-    /**
-     * Indicates whether at least one of the given dimenions has at least one
-     * item.
-     */
-    public static boolean anyDimensionHasItems( Collection<DimensionalObject> dimensions )
-    {
-        if ( dimensions == null || dimensions.isEmpty() )
-        {
-            return false;
-        }
-        
-        for ( DimensionalObject dim : dimensions )
-        {
-            if ( dim.hasItems() )
-            {
-                return true;
-            }
-        }
-        
-        return false;
     }
     
     // -------------------------------------------------------------------------

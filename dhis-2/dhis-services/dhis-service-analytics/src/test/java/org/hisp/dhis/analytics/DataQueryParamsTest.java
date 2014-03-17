@@ -44,6 +44,7 @@ import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.ListUtils;
@@ -58,7 +59,7 @@ public class DataQueryParamsTest
     @Test
     public void testGetDimensionFromParam()
     {
-        assertEquals( DATAELEMENT_DIM_ID, DataQueryParams.getDimensionFromParam( "de:D348asd782j;kj78HnH6hgT;9ds9dS98s2" ) );
+        assertEquals( DATAELEMENT_DIM_ID, DimensionalObjectUtils.getDimensionFromParam( "de:D348asd782j;kj78HnH6hgT;9ds9dS98s2" ) );
     }
     
     @Test
@@ -66,15 +67,15 @@ public class DataQueryParamsTest
     {
         List<String> expected = new ArrayList<String>( Arrays.asList( "D348asd782j", "kj78HnH6hgT", "9ds9dS98s2" ) );
         
-        assertEquals( expected, DataQueryParams.getDimensionItemsFromParam( "de:D348asd782j;kj78HnH6hgT;9ds9dS98s2" ) );        
+        assertEquals( expected, DimensionalObjectUtils.getDimensionItemsFromParam( "de:D348asd782j;kj78HnH6hgT;9ds9dS98s2" ) );        
     }
     
     @Test
     public void testGetLevelFromLevelParam()
     {
-        assertEquals( 4, DataQueryParams.getLevelFromLevelParam( "LEVEL-4-dFsdfejdf2" ) );
-        assertEquals( 0, DataQueryParams.getLevelFromLevelParam( "LEVEL" ) );
-        assertEquals( 0, DataQueryParams.getLevelFromLevelParam( "LEVEL-gFd" ) );        
+        assertEquals( 4, DimensionalObjectUtils.getLevelFromLevelParam( "LEVEL-4-dFsdfejdf2" ) );
+        assertEquals( 0, DimensionalObjectUtils.getLevelFromLevelParam( "LEVEL" ) );
+        assertEquals( 0, DimensionalObjectUtils.getLevelFromLevelParam( "LEVEL-gFd" ) );        
     }
         
     @Test
