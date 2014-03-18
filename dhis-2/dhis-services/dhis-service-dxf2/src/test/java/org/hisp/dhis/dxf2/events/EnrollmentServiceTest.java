@@ -180,18 +180,18 @@ public class EnrollmentServiceTest
     public void testSaveEnrollment()
     {
         Enrollment enrollment = new Enrollment();
-        enrollment.setPerson( maleA.getUid() );
+        enrollment.setTrackedEntityInstance( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
         enrollment.setDateOfIncident( new Date() );
         enrollment.setDateOfEnrollment( new Date() );
 
-        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        ImportSummary importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
 
         assertEquals( 1, enrollments.size() );
-        assertEquals( maleA.getUid(), enrollments.get( 0 ).getPerson() );
+        assertEquals( maleA.getUid(), enrollments.get( 0 ).getTrackedEntityInstance() );
         assertEquals( programA.getUid(), enrollments.get( 0 ).getProgram() );
     }
 
@@ -199,12 +199,12 @@ public class EnrollmentServiceTest
     public void testUpdateEnrollment()
     {
         Enrollment enrollment = new Enrollment();
-        enrollment.setPerson( maleA.getUid() );
+        enrollment.setTrackedEntityInstance( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
         enrollment.setDateOfIncident( new Date() );
         enrollment.setDateOfEnrollment( new Date() );
 
-        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        ImportSummary importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
@@ -212,7 +212,7 @@ public class EnrollmentServiceTest
         assertEquals( 1, enrollments.size() );
         enrollment = enrollments.get( 0 );
 
-        assertEquals( maleA.getUid(), enrollment.getPerson() );
+        assertEquals( maleA.getUid(), enrollment.getTrackedEntityInstance() );
         assertEquals( programA.getUid(), enrollment.getProgram() );
 
         Date MARCH_20_81 = new Cal( 81, 2, 20 ).time();
@@ -229,7 +229,7 @@ public class EnrollmentServiceTest
     public void testUpdateCompleted()
     {
         Enrollment enrollment = new Enrollment();
-        enrollment.setPerson( maleA.getUid() );
+        enrollment.setTrackedEntityInstance( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
         enrollment.setDateOfIncident( new Date() );
         enrollment.setDateOfEnrollment( new Date() );
@@ -237,7 +237,7 @@ public class EnrollmentServiceTest
         List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
         assertEquals( 0, enrollments.size() );
         
-        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        ImportSummary importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
@@ -256,12 +256,12 @@ public class EnrollmentServiceTest
     public void testUpdateCancelled()
     {
         Enrollment enrollment = new Enrollment();
-        enrollment.setPerson( maleA.getUid() );
+        enrollment.setTrackedEntityInstance( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
         enrollment.setDateOfIncident( new Date() );
         enrollment.setDateOfEnrollment( new Date() );
 
-        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        ImportSummary importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
@@ -280,12 +280,12 @@ public class EnrollmentServiceTest
     public void testUpdateReEnrollmentShouldFail()
     {
         Enrollment enrollment = new Enrollment();
-        enrollment.setPerson( maleA.getUid() );
+        enrollment.setTrackedEntityInstance( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
         enrollment.setDateOfIncident( new Date() );
         enrollment.setDateOfEnrollment( new Date() );
 
-        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        ImportSummary importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
@@ -310,14 +310,14 @@ public class EnrollmentServiceTest
     public void testMultipleEnrollmentsShouldFail()
     {
         Enrollment enrollment = new Enrollment();
-        enrollment.setPerson( maleA.getUid() );
+        enrollment.setTrackedEntityInstance( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
         enrollment.setDateOfIncident( new Date() );
         enrollment.setDateOfEnrollment( new Date() );
 
-        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        ImportSummary importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
-        importSummary = enrollmentService.saveEnrollment( enrollment );
+        importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
         assertThat( importSummary.getDescription(), CoreMatchers.containsString( "already have an active enrollment in program" ) );
     }
@@ -327,12 +327,12 @@ public class EnrollmentServiceTest
     public void testUpdatePersonShouldKeepEnrollments()
     {
         Enrollment enrollment = new Enrollment();
-        enrollment.setPerson( maleA.getUid() );
+        enrollment.setTrackedEntityInstance( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
         enrollment.setDateOfIncident( new Date() );
         enrollment.setDateOfEnrollment( new Date() );
 
-        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        ImportSummary importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getTrackedEntityInstance( maleA );
@@ -342,7 +342,7 @@ public class EnrollmentServiceTest
         List<Enrollment> enrollments = enrollmentService.getEnrollments( trackedEntityInstance ).getEnrollments();
 
         assertEquals( 1, enrollments.size() );
-        assertEquals( maleA.getUid(), enrollments.get( 0 ).getPerson() );
+        assertEquals( maleA.getUid(), enrollments.get( 0 ).getTrackedEntityInstance() );
         assertEquals( programA.getUid(), enrollments.get( 0 ).getProgram() );
     }
 }
