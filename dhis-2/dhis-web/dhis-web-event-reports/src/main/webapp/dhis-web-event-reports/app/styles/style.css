@@ -55,7 +55,8 @@ body,
 .x-grid-cell-inner,
 .x-form-item-label,
 .x-window-header-text-default {
-	font: normal 11px arial,sans-serif,ubuntu,consolas;
+	font-size: 11px;
+    font-family: arial,sans-serif,ubuntu,consolas;
 }
 
 body.x-windows {
@@ -173,6 +174,8 @@ body.x-windows {
 	clear: none;
 	display: block;
 	margin-bottom: 2px !important;
+    font-weight: bold;
+    color: #333;
 }
 
 .ns-container-default {
