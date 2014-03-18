@@ -299,11 +299,11 @@ public abstract class AbstractTrackedEntityInstanceService
                 continue;
             }
 
-            List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>( trackedEntityAttributeValueService.getTrackedEntityInstance(
-                entityAttribute, attribute.getValue() ) );
-
             if ( entityAttribute.isUnique() )
             {
+                List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>( trackedEntityAttributeValueService.getTrackedEntityInstance(
+                    entityAttribute, attribute.getValue() ) );
+
                 importConflicts.addAll( checkScope( trackedEntityInstance, entityAttribute, instances ) );
             }
         }
@@ -314,7 +314,7 @@ public abstract class AbstractTrackedEntityInstanceService
     private List<ImportConflict> checkScope( TrackedEntityInstance trackedEntityInstance, TrackedEntityAttribute attribute, List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        org.hisp.dhis.trackedentity.TrackedEntityInstance instance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntity() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance instance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
 
         if ( instances.isEmpty() || (instances.size() == 1 && instances.contains( instance )) )
         {

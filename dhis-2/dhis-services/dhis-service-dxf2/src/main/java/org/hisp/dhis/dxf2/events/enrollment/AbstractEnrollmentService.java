@@ -255,7 +255,8 @@ public abstract class AbstractEnrollmentService
 
         if ( !enrollments.getEnrollments().isEmpty() )
         {
-            importSummary = new ImportSummary( ImportStatus.ERROR, "TrackedEntityInstance " + trackedEntityInstance.getTrackedEntityInstance()
+            importSummary.setStatus( ImportStatus.ERROR );
+            importSummary.setDescription( "TrackedEntityInstance " + trackedEntityInstance.getTrackedEntityInstance()
                 + " already have an active enrollment in program " + program.getUid() );
             importSummary.getImportCount().incrementIgnored();
 
@@ -281,8 +282,11 @@ public abstract class AbstractEnrollmentService
 
         if ( programInstance == null )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Could not enroll TrackedEntityInstance " + enrollment.getTrackedEntityInstance()
+            importSummary.setStatus( ImportStatus.ERROR );
+            importSummary.setDescription( "Could not enroll TrackedEntityInstance " + enrollment.getTrackedEntityInstance()
                 + " into program " + enrollment.getProgram() );
+
+            return importSummary;
         }
 
         updateAttributeValues( enrollment );
@@ -438,6 +442,8 @@ public abstract class AbstractEnrollmentService
             attributeValueMap.put( attribute.getAttribute(), attribute.getValue() );
         }
 
+        TrackedEntityInstance instance = trackedEntityInstanceService.getTrackedEntityInstance( enrollment.getTrackedEntityInstance() );
+
         for ( TrackedEntityAttribute trackedEntityAttribute : mandatoryMap.keySet() )
         {
             Boolean mandatory = mandatoryMap.get( trackedEntityAttribute );
@@ -449,6 +455,17 @@ public abstract class AbstractEnrollmentService
                 continue;
             }
 
+
+            if ( trackedEntityAttribute.isUnique() )
+            {
+                List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>( trackedEntityAttributeValueService.getTrackedEntityInstance(
+                    trackedEntityAttribute, attributeValueMap.get( trackedEntityAttribute.getUid() ) ) );
+
+                System.err.println( "instances: " + instances );
+
+                importConflicts.addAll( checkScope( enrollment, instance, trackedEntityAttribute, instances ) );
+            }
+
             attributeValueMap.remove( trackedEntityAttribute.getUid() );
         }
 
@@ -456,6 +473,82 @@ public abstract class AbstractEnrollmentService
         {
             importConflicts.add( new ImportConflict( "Attribute.attribute", "Only program attributes is allowed for enrollment " +
                 attributeValueMap ) );
+        }
+
+        return importConflicts;
+    }
+
+    private List<ImportConflict> checkScope( Enrollment enrollment, TrackedEntityInstance trackedEntityInstance, TrackedEntityAttribute attribute, List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances )
+    {
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        org.hisp.dhis.trackedentity.TrackedEntityInstance instance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
+
+        if ( instances.isEmpty() || (instances.size() == 1 && instances.contains( instance )) )
+        {
+            return importConflicts;
+        }
+
+        if ( attribute.getOrgunitScope() && attribute.getProgramScope() )
+        {
+            for ( org.hisp.dhis.trackedentity.TrackedEntityInstance tei : instances )
+            {
+                boolean orgUnitMatch = false;
+                boolean programMatch = false;
+
+                if ( trackedEntityInstance.getOrgUnit().equals( tei.getOrganisationUnit().getUid() ) )
+                {
+                    orgUnitMatch = true;
+                }
+
+                for ( ProgramInstance programInstance : tei.getProgramInstances() )
+                {
+                    if ( enrollment.getProgram().equals( programInstance.getProgram().getUid() ) )
+                    {
+                        programMatch = true;
+                        break;
+                    }
+                }
+
+                if ( orgUnitMatch && programMatch )
+                {
+                    importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
+                        attribute.getUid() + ", with scope orgUnit+program." ) );
+                    break;
+                }
+            }
+
+        }
+        else if ( attribute.getOrgunitScope() )
+        {
+            for ( org.hisp.dhis.trackedentity.TrackedEntityInstance tei : instances )
+            {
+                if ( trackedEntityInstance.getOrgUnit().equals( tei.getOrganisationUnit().getUid() ) )
+                {
+                    importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
+                        attribute.getUid() + ", with scope orgUnit." ) );
+                    break;
+                }
+            }
+        }
+        else if ( attribute.getProgramScope() )
+        {
+            for ( org.hisp.dhis.trackedentity.TrackedEntityInstance tei : instances )
+            {
+                for ( ProgramInstance programInstance : tei.getProgramInstances() )
+                {
+                    if ( enrollment.getProgram().equals( programInstance.getProgram().getUid() ) )
+                    {
+                        importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
+                            attribute.getUid() + ", with scope program." ) );
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
+                attribute.getUid() ) );
         }
 
         return importConflicts;
