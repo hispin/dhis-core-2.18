@@ -282,28 +282,6 @@ public abstract class AbstractTrackedEntityInstanceService
     private List<ImportConflict> checkAttributes( TrackedEntityInstance trackedEntityInstance )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        Collection<TrackedEntityAttribute> entityAttributes = manager.getAll( TrackedEntityAttribute.class );
-        Set<String> cache = new HashSet<String>();
-
-        for ( Attribute attribute : trackedEntityInstance.getAttributes() )
-        {
-            if ( attribute.getValue() != null )
-            {
-                cache.add( attribute.getAttribute() );
-            }
-        }
-
-        for ( TrackedEntityAttribute entityAttribute : entityAttributes )
-        {
-            if ( entityAttribute.isMandatory() )
-            {
-                if ( !cache.contains( entityAttribute.getUid() ) )
-                {
-                    importConflicts.add( new ImportConflict( "Attribute.type", "Missing required attribute type "
-                        + entityAttribute.getUid() ) );
-                }
-            }
-        }
 
         for ( Attribute attribute : trackedEntityInstance.getAttributes() )
         {
@@ -312,8 +290,8 @@ public abstract class AbstractTrackedEntityInstanceService
 
             if ( entityAttribute == null )
             {
-                importConflicts
-                    .add( new ImportConflict( "Attribute.type", "Invalid type " + attribute.getAttribute() ) );
+                importConflicts.add( new ImportConflict( "Attribute.type", "Invalid type "
+                    + attribute.getAttribute() ) );
             }
         }
 
@@ -330,8 +308,8 @@ public abstract class AbstractTrackedEntityInstanceService
 
             if ( relationshipType == null )
             {
-                importConflicts
-                    .add( new ImportConflict( "Relationship.type", "Invalid type " + relationship.getType() ) );
+                importConflicts.add( new ImportConflict( "Relationship.type", "Invalid type "
+                    + relationship.getType() ) );
             }
 
             org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstance() );
