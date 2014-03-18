@@ -282,7 +282,7 @@ public class DefaultProgramInstanceService
 
         for ( Program program : programs )
         {
-            List<TrackedEntityAttribute> atttributes = program.getEntityAttributes();
+            List<TrackedEntityAttribute> atttributes = program.getTrackedEntityAttributes();
             while ( iterAttribute.hasNext() )
             {
                 TrackedEntityAttributeValue attributeValue = iterAttribute.next();
@@ -360,7 +360,7 @@ public class DefaultProgramInstanceService
 
         TrackedEntityInstance instance = programInstance.getEntityInstance();
 
-        Collection<TrackedEntityAttribute> atttributes = programInstance.getProgram().getEntityAttributes();
+        Collection<TrackedEntityAttribute> atttributes = programInstance.getProgram().getTrackedEntityAttributes();
 
         for ( TrackedEntityAttribute attrtibute : atttributes )
         {

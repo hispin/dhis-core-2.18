@@ -104,7 +104,7 @@ public class ShowAddProgramReminderAction
 
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
-        attributes = program.getEntityAttributes();
+        attributes = program.getTrackedEntityAttributes();
 
         return SUCCESS;
     }

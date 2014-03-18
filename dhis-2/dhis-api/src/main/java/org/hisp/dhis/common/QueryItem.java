@@ -28,7 +28,10 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -130,7 +133,23 @@ public class QueryItem
     {
         return isNumeric() ? Double.class.getName() : String.class.getName();
     }
+
+    public static List<QueryItem> getQueryItems( Collection<? extends IdentifiableObject> objects )
+    {
+        List<QueryItem> queryItems = new ArrayList<QueryItem>();
+        
+        for ( IdentifiableObject object : objects )
+        {
+            queryItems.add( new QueryItem( object, null, null, false ) );
+        }
+        
+        return queryItems;
+    }
     
+    // -------------------------------------------------------------------------
+    // toString
+    // -------------------------------------------------------------------------
+
     @Override
     public String toString()
     {

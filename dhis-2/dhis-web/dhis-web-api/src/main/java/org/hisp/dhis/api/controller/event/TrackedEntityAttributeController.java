@@ -89,7 +89,7 @@ public class TrackedEntityAttributeController
 
             if ( program != null )
             {
-                entityList = new ArrayList<TrackedEntityAttribute>( program.getEntityAttributes() );
+                entityList = new ArrayList<TrackedEntityAttribute>( program.getTrackedEntityAttributes() );
             }
         }
 

@@ -94,6 +94,12 @@ public class TrackedEntityInstanceQueryParams
         return setMap;
     }
     
+    /**
+     * Indicates whether this is a logical OR query, meaning that a query string
+     * is specified and instances which matches this query on one or more attributes
+     * should be included in the response. The opposite is an item-specific query,
+     * where the instances which matches the specific attributes should be included.
+     */
     public boolean isOrQuery()
     {
         return hasQuery();
@@ -113,6 +119,14 @@ public class TrackedEntityInstanceQueryParams
     public boolean hasItems()
     {
         return items != null && !items.isEmpty();
+    }
+
+    /**
+     * Indicates whether this params specifies any organisation units.
+     */
+    public boolean hasOrganisationUnits()
+    {
+        return organisationUnits != null && !organisationUnits.isEmpty();
     }
     
     /**

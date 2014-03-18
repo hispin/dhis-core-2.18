@@ -1384,7 +1384,7 @@ public class ActivityReportingServiceImpl
         if ( programId != null && !programId.trim().equals( "" ) )
         {
             Program program = programService.getProgram( Integer.parseInt( programId ) );
-            patientAttributes = program.getEntityAttributes();
+            patientAttributes = program.getTrackedEntityAttributes();
         }
         else
         {

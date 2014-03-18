@@ -206,9 +206,9 @@ public class EventController
             }
         }
         
-        if( options.hasPaging() )
+        if ( options.hasPaging() )
         {      	
-        	Pager pager = new Pager( options.getPage(), eventList.size(), options.getPageSize() );
+            Pager pager = new Pager( options.getPage(), eventList.size(), options.getPageSize() );
             metaData.setPager( pager );
             eventList = PagerUtils.pageCollection( eventList, pager );        	
         }        
@@ -218,8 +218,7 @@ public class EventController
         model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
-        return "events";        
-
+        return "events";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )

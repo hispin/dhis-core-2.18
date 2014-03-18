@@ -359,7 +359,7 @@ public class ShowAddTrackedEntityInstanceFormAction
             }
             else
             {
-                attributes = program.getEntityAttributes();
+                attributes = program.getTrackedEntityAttributes();
             }
 
             Collection<TrackedEntityAttribute> attributesInList = attributeService.getTrackedEntityAttributesDisplayedInList( true );
