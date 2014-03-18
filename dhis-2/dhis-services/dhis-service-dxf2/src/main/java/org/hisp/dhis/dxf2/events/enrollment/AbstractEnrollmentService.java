@@ -213,7 +213,7 @@ public abstract class AbstractEnrollmentService
         Enrollment enrollment = new Enrollment();
 
         enrollment.setEnrollment( programInstance.getUid() );
-        enrollment.setPerson( programInstance.getEntityInstance().getUid() );
+        enrollment.setTrackedEntityInstance( programInstance.getEntityInstance().getUid() );
         enrollment.setProgram( programInstance.getProgram().getUid() );
         enrollment.setStatus( EnrollmentStatus.fromInt( programInstance.getStatus() ) );
         enrollment.setDateOfEnrollment( programInstance.getEnrollmentDate() );
@@ -227,9 +227,9 @@ public abstract class AbstractEnrollmentService
     // -------------------------------------------------------------------------
 
     @Override
-    public ImportSummary saveEnrollment( Enrollment enrollment )
+    public ImportSummary addEnrollment( Enrollment enrollment )
     {
-        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getPerson() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getTrackedEntityInstance() );
         TrackedEntityInstance trackedEntityInstance = trackedEntityInstanceService.getTrackedEntityInstance( entityInstance );
         Program program = getProgram( enrollment.getProgram() );
 
@@ -237,7 +237,7 @@ public abstract class AbstractEnrollmentService
 
         if ( !enrollments.getEnrollments().isEmpty() )
         {
-            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "Person " + trackedEntityInstance.getTrackedEntityInstance()
+            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "TrackedEntityInstance " + trackedEntityInstance.getTrackedEntityInstance()
                 + " already have an active enrollment in program " + program.getUid() );
             importSummary.getImportCount().incrementIgnored();
 
@@ -250,7 +250,7 @@ public abstract class AbstractEnrollmentService
 
         if ( programInstance == null )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Could not enroll person " + enrollment.getPerson()
+            return new ImportSummary( ImportStatus.ERROR, "Could not enroll TrackedEntityInstance " + enrollment.getTrackedEntityInstance()
                 + " into program " + enrollment.getProgram() );
         }
 
@@ -288,7 +288,7 @@ public abstract class AbstractEnrollmentService
             return importSummary;
         }
 
-        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getPerson() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getTrackedEntityInstance() );
         Program program = getProgram( enrollment.getProgram() );
 
         programInstance.setProgram( program );
@@ -370,13 +370,13 @@ public abstract class AbstractEnrollmentService
         return programs;
     }
 
-    private org.hisp.dhis.trackedentity.TrackedEntityInstance getTrackedEntityInstance( String person )
+    private org.hisp.dhis.trackedentity.TrackedEntityInstance getTrackedEntityInstance( String trackedEntityInstance )
     {
-        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( person );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance );
 
         if ( entityInstance == null )
         {
-            throw new IllegalArgumentException( "Person does not exist." );
+            throw new IllegalArgumentException( "TrackedEntityInstance does not exist." );
         }
 
         return entityInstance;

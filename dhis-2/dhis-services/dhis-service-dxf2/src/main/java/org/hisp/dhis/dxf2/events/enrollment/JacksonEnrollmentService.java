@@ -93,7 +93,7 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
     // -------------------------------------------------------------------------
 
     @Override
-    public ImportSummaries saveEnrollmentsJson( InputStream inputStream ) throws IOException
+    public ImportSummaries addEnrollmentsJson( InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
@@ -105,21 +105,21 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
             for ( Enrollment enrollment : enrollments.getEnrollments() )
             {
                 enrollment.setEnrollment( null );
-                importSummaries.addImportSummary( saveEnrollment( enrollment ) );
+                importSummaries.addImportSummary( addEnrollment( enrollment ) );
             }
         }
         catch ( Exception ex )
         {
             Enrollment enrollment = fromJson( input, Enrollment.class );
             enrollment.setEnrollment( null );
-            importSummaries.addImportSummary( saveEnrollment( enrollment ) );
+            importSummaries.addImportSummary( addEnrollment( enrollment ) );
         }
 
         return importSummaries;
     }
 
     @Override
-    public ImportSummaries saveEnrollmentsXml( InputStream inputStream ) throws IOException
+    public ImportSummaries addEnrollmentsXml( InputStream inputStream ) throws IOException
     {
         ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
@@ -131,14 +131,14 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
             for ( Enrollment enrollment : enrollments.getEnrollments() )
             {
                 enrollment.setEnrollment( null );
-                importSummaries.addImportSummary( saveEnrollment( enrollment ) );
+                importSummaries.addImportSummary( addEnrollment( enrollment ) );
             }
         }
         catch ( Exception ex )
         {
             Enrollment enrollment = fromXml( input, Enrollment.class );
             enrollment.setEnrollment( null );
-            importSummaries.addImportSummary( saveEnrollment( enrollment ) );
+            importSummaries.addImportSummary( addEnrollment( enrollment ) );
         }
 
         return importSummaries;

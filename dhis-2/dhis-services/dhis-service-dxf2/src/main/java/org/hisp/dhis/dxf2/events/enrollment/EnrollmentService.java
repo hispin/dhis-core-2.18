@@ -84,11 +84,11 @@ public interface EnrollmentService
     // CREATE
     // -------------------------------------------------------------------------
 
-    ImportSummary saveEnrollment( Enrollment enrollment );
+    ImportSummary addEnrollment( Enrollment enrollment );
 
-    ImportSummaries saveEnrollmentsJson( InputStream inputStream ) throws IOException;
+    ImportSummaries addEnrollmentsJson( InputStream inputStream ) throws IOException;
 
-    ImportSummaries saveEnrollmentsXml( InputStream inputStream ) throws IOException;
+    ImportSummaries addEnrollmentsXml( InputStream inputStream ) throws IOException;
 
     // -------------------------------------------------------------------------
     // UPDATE

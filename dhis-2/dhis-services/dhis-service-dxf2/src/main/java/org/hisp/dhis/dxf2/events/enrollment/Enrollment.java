@@ -46,7 +46,7 @@ public class Enrollment
 {
     private String enrollment;
 
-    private String person;
+    private String trackedEntityInstance;
 
     private String program;
 
@@ -64,14 +64,14 @@ public class Enrollment
 
     @JsonProperty( required = true )
     @JacksonXmlProperty( isAttribute = true )
-    public String getPerson()
+    public String getTrackedEntityInstance()
     {
-        return person;
+        return trackedEntityInstance;
     }
 
-    public void setPerson( String person )
+    public void setTrackedEntityInstance( String trackedEntityInstance )
     {
-        this.person = person;
+        this.trackedEntityInstance = trackedEntityInstance;
     }
 
     @JsonProperty( required = true )
@@ -158,7 +158,8 @@ public class Enrollment
         if ( dateOfEnrollment != null ? !dateOfEnrollment.equals( that.dateOfEnrollment ) : that.dateOfEnrollment != null ) return false;
         if ( dateOfIncident != null ? !dateOfIncident.equals( that.dateOfIncident ) : that.dateOfIncident != null ) return false;
         if ( enrollment != null ? !enrollment.equals( that.enrollment ) : that.enrollment != null ) return false;
-        if ( person != null ? !person.equals( that.person ) : that.person != null ) return false;
+        if ( trackedEntityInstance != null ? !trackedEntityInstance.equals( that.trackedEntityInstance ) : that.trackedEntityInstance != null )
+            return false;
         if ( program != null ? !program.equals( that.program ) : that.program != null ) return false;
         if ( status != that.status ) return false;
 
@@ -169,7 +170,7 @@ public class Enrollment
     public int hashCode()
     {
         int result = enrollment != null ? enrollment.hashCode() : 0;
-        result = 31 * result + (person != null ? person.hashCode() : 0);
+        result = 31 * result + (trackedEntityInstance != null ? trackedEntityInstance.hashCode() : 0);
         result = 31 * result + (program != null ? program.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (dateOfEnrollment != null ? dateOfEnrollment.hashCode() : 0);
@@ -183,7 +184,7 @@ public class Enrollment
     {
         return "Enrollment{" +
             "enrollment='" + enrollment + '\'' +
-            ", person='" + person + '\'' +
+            ", trackedEntityInstance='" + trackedEntityInstance + '\'' +
             ", program='" + program + '\'' +
             ", status=" + status +
             ", dateOfEnrollment=" + dateOfEnrollment +

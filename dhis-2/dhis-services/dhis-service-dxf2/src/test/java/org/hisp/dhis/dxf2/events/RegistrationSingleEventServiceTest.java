@@ -156,7 +156,7 @@ public class RegistrationSingleEventServiceTest
     public void testSaveWithEnrollmentShouldNotFail()
     {
         Enrollment enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
-        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        ImportSummary importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
@@ -168,7 +168,7 @@ public class RegistrationSingleEventServiceTest
     public void testSavingMultipleEventsShouldOnlyUpdate()
     {
         Enrollment enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
-        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        ImportSummary importSummary = enrollmentService.addEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
@@ -194,7 +194,7 @@ public class RegistrationSingleEventServiceTest
     public void testMultipleEnrollmentsWithEventShouldGiveDifferentUIDs()
     {
         Enrollment enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
-        enrollmentService.saveEnrollment( enrollment );
+        enrollmentService.addEnrollment( enrollment );
 
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         event.setStatus( EventStatus.COMPLETED );
@@ -204,7 +204,7 @@ public class RegistrationSingleEventServiceTest
         enrollmentService.completeEnrollment( enrollment );
 
         enrollment = createEnrollment( programA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
-        enrollmentService.saveEnrollment( enrollment );
+        enrollmentService.addEnrollment( enrollment );
 
         event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         event.setStatus( EventStatus.COMPLETED );
@@ -220,7 +220,7 @@ public class RegistrationSingleEventServiceTest
     {
         Enrollment enrollment = new Enrollment();
         enrollment.setProgram( program );
-        enrollment.setPerson( person );
+        enrollment.setTrackedEntityInstance( person );
 
         return enrollment;
     }
