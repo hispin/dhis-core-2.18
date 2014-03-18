@@ -302,8 +302,6 @@ public abstract class AbstractTrackedEntityInstanceService
             List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>( trackedEntityAttributeValueService.getTrackedEntityInstance(
                 entityAttribute, attribute.getValue() ) );
 
-            System.err.println( "instances: " + instances );
-
             if ( entityAttribute.isUnique() )
             {
                 importConflicts.addAll( checkScope( trackedEntityInstance, entityAttribute, instances ) );
