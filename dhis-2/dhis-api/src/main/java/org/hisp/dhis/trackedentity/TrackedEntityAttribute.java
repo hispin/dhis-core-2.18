@@ -330,7 +330,7 @@ public class TrackedEntityAttribute
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getOrgunitScope()
     {
-        return orgunitScope;
+        return orgunitScope != null ? orgunitScope : false;
     }
 
     public void setOrgunitScope( Boolean orgunitScope )
@@ -343,7 +343,7 @@ public class TrackedEntityAttribute
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getProgramScope()
     {
-        return programScope;
+        return programScope != null ? programScope : false;
     }
 
     public void setProgramScope( Boolean programScope )
