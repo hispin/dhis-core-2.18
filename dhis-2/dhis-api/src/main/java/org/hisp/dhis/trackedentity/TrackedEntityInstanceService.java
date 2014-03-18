@@ -55,7 +55,7 @@ public interface TrackedEntityInstanceService
 
     Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
     
-    TrackedEntityInstanceQueryParams getFromUrl( Set<String> items, Set<String> ou, String ouMode, 
+    TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> items, Set<String> ou, String ouMode, 
         String program, String trackedEntity, Integer page, Integer pageSize );
     
     /**

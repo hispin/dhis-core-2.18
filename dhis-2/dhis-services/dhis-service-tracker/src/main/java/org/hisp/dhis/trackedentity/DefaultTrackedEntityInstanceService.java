@@ -44,6 +44,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -72,6 +74,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultTrackedEntityInstanceService
     implements TrackedEntityInstanceService
 {
+    private static final Log log = LogFactory.getLog( DefaultTrackedEntityInstanceService.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -139,6 +143,8 @@ public class DefaultTrackedEntityInstanceService
     @Override
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
+        validate( params );
+        
         Grid grid = new ListGrid();
         
         grid.addHeader( new GridHeader( TRACKED_ENTITY_INSTANCE_ID, "Instance" ) );
@@ -172,8 +178,36 @@ public class DefaultTrackedEntityInstanceService
         return grid;
     }
     
+    public void validate( TrackedEntityInstanceQueryParams params )
+        throws IllegalQueryException
+    {
+        String violation = null;
+        
+        if ( params == null )
+        {
+            throw new IllegalQueryException( "Params cannot be null" );
+        }
+        
+        if ( params.hasQuery() && params.hasItems() )
+        {
+            violation = "Query and items cannot be specified simultaneously";
+        }
+        
+        if ( params.hasProgram() && params.hasTrackedEntity() )
+        {
+            violation = "Program and tracked entity cannot be specified simultaneously";
+        }
+
+        if ( violation != null )
+        {
+            log.warn( "Validation failed: " + violation );
+            
+            throw new IllegalQueryException( violation );
+        }
+    }
+    
     @Override
-    public TrackedEntityInstanceQueryParams getFromUrl( Set<String> items, Set<String> ou, String ouMode, 
+    public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> items, Set<String> ou, String ouMode, 
         String program, String trackedEntity, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
@@ -213,6 +247,7 @@ public class DefaultTrackedEntityInstanceService
             throw new IllegalQueryException( "Tracked entity does not exist: " + program );
         }
         
+        params.setQuery( query );
         params.setProgram( pr );
         params.setTrackedEntity( te );
         params.setOrganisationUnitMode( ouMode );

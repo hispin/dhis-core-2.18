@@ -97,7 +97,8 @@ public class TrackedEntityInstanceController
     
     @RequestMapping( method = RequestMethod.GET, produces = { ContextUtils.CONTENT_TYPE_JSON, ContextUtils.CONTENT_TYPE_JAVASCRIPT } )
     public String queryTrackedEntityInstancesJson(
-        @RequestParam Set<String> item,
+        @RequestParam(required=false) String query,
+        @RequestParam(required=false) Set<String> item,
         @RequestParam String ou,
         @RequestParam(required=false, defaultValue=DimensionalObject.OU_MODE_SELECTED) String ouMode,
         @RequestParam(required=false) String program,
@@ -108,7 +109,7 @@ public class TrackedEntityInstanceController
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( item, orgUnits, ouMode, program, trackedEntity, page, pageSize );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, item, orgUnits, ouMode, program, trackedEntity, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -120,7 +121,8 @@ public class TrackedEntityInstanceController
 
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_EXCEL )
     public void queryTrackedEntityInstancesXls(
-        @RequestParam Set<String> item,
+        @RequestParam(required=false) String query,
+        @RequestParam(required=false) Set<String> item,
         @RequestParam String ou,
         @RequestParam(required=false, defaultValue=DimensionalObject.OU_MODE_SELECTED) String ouMode,
         @RequestParam(required=false) String program,
@@ -131,7 +133,7 @@ public class TrackedEntityInstanceController
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( item, orgUnits, ouMode, program, trackedEntity, page, pageSize );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, item, orgUnits, ouMode, program, trackedEntity, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -140,7 +142,8 @@ public class TrackedEntityInstanceController
 
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_CSV )
     public void queryTrackedEntityInstancesCsv(
-        @RequestParam Set<String> item,
+        @RequestParam(required=false) String query,
+        @RequestParam(required=false) Set<String> item,
         @RequestParam String ou,
         @RequestParam(required=false, defaultValue=DimensionalObject.OU_MODE_SELECTED) String ouMode,
         @RequestParam(required=false) String program,
@@ -151,7 +154,7 @@ public class TrackedEntityInstanceController
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( item, orgUnits, ouMode, program, trackedEntity, page, pageSize );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, item, orgUnits, ouMode, program, trackedEntity, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );

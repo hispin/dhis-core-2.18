@@ -51,6 +51,8 @@ public class TrackedEntityInstanceQueryParams
     public static final String TRACKED_ENTITY_ATTRIBUTE_ID = "teattribute";
     public static final String TRACKED_ENTITY_ATTRIBUTE_VALUE_ID = "tevalue";
     
+    private String query;
+    
     private List<QueryItem> items = new ArrayList<QueryItem>();
 
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
@@ -90,6 +92,27 @@ public class TrackedEntityInstanceQueryParams
         }
         
         return setMap;
+    }
+    
+    public boolean isOrQuery()
+    {
+        return hasQuery();
+    }
+    
+    /**
+     * Indicates whether this params specifies a query.
+     */
+    public boolean hasQuery()
+    {
+        return query != null && !query.isEmpty();
+    }
+
+    /**
+     * Indicates whether this params specifies any query items.
+     */
+    public boolean hasItems()
+    {
+        return items != null && !items.isEmpty();
     }
     
     /**
@@ -151,6 +174,16 @@ public class TrackedEntityInstanceQueryParams
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+
+    public String getQuery()
+    {
+        return query;
+    }
+
+    public void setQuery( String query )
+    {
+        this.query = query;
+    }
 
     public List<QueryItem> getItems()
     {
