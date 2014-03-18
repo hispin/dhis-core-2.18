@@ -174,7 +174,6 @@ public abstract class AbstractTrackedEntityInstanceService
         updateAttributeValues( trackedEntityInstance, entityInstance );
         trackedEntityInstanceService.updateTrackedEntityInstance( entityInstance );
 
-        importSummary.setStatus( ImportStatus.SUCCESS );
         importSummary.setReference( entityInstance.getUid() );
         importSummary.getImportCount().incrementImported();
 
@@ -217,6 +216,7 @@ public abstract class AbstractTrackedEntityInstanceService
         {
             importSummary.setStatus( ImportStatus.ERROR );
             importSummary.getImportCount().incrementIgnored();
+
             return importSummary;
         }
 
@@ -290,7 +290,7 @@ public abstract class AbstractTrackedEntityInstanceService
 
             if ( entityAttribute == null )
             {
-                importConflicts.add( new ImportConflict( "Attribute.type", "Invalid type "
+                importConflicts.add( new ImportConflict( "Attribute.attribute", "Invalid attribute "
                     + attribute.getAttribute() ) );
             }
         }

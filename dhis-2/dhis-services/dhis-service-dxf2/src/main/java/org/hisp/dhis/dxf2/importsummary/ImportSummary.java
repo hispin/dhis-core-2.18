@@ -40,7 +40,7 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "importSummary", namespace = DxfNamespaces.DXF_2_0 )
 public class ImportSummary
 {
-    private ImportStatus status;
+    private ImportStatus status = ImportStatus.SUCCESS;
 
     private String description;
 
