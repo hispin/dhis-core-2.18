@@ -7,22 +7,20 @@
         <meta name="keywords" content="DHIS 2">        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">              
 
-        <script type="text/javascript" src="lib/jquery/js/jquery-1.8.3.js"></script>
-        <script type="text/javascript" src="lib/jquery/js/jquery-ui-1.9.2.custom.js"></script>
-        <link rel="stylesheet" type="text/css" href="lib/jquery/css/ui-lightness/jquery-ui-1.9.2.custom.css">       
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css">       
 
-        <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
-        <!--<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">-->       
-        
-        <script type="text/javascript" src="lib/angular/angular.js"></script>
-        <script type="text/javascript" src="lib/angular/angular-resource.js"></script>
-        <script type="text/javascript" src="lib/angular/angular-route.js"></script>
-        <script type="text/javascript" src="lib/angular/angular-cookies.js"></script>
-        <script type="text/javascript" src="lib/angular/angular-animate.js"></script>        
-        <script type="text/javascript" src="lib/angular/ui-bootstrap-tpls-0.10.0.js"></script>
-        
-        <script type="text/javascript" src="lib/moment/moment-with-langs.min.js"></script>       
+        <script type="text/javascript" src="../dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
+                
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular-resource.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular-route.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular-cookies.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular-animate.js"></script>        
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/ui-bootstrap-tpls-0.10.0.js"></script>
+
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/moment/moment-with-langs.min.js"></script>          
 
         <script type="text/javascript" src="../dhis-web-commons/javascripts/underscore.min.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
@@ -49,12 +47,12 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/ouwt/ouwt.js"></script>
         
-        <script type="text/javascript" src="scripts/event-capture.js"></script>        
-        <script type="text/javascript" src="scripts/angularLocalStorage.js"></script>
-        <script type="text/javascript" src="scripts/angular-translate.min.js"></script>
-        <script type="text/javascript" src="scripts/angular-translate-loader-static-files.min.js"></script>
-        <script type="text/javascript" src="scripts/angular-translate-loader-url.min.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angular-translate.min.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-static-files.min.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-url.min.js"></script>
 
+        <script type="text/javascript" src="scripts/event-capture.js"></script>
         <script type="text/javascript" src="scripts/app.js"></script>
         <script type="text/javascript" src="scripts/services.js"></script>
         <script type="text/javascript" src="scripts/directives.js"></script>
@@ -329,7 +327,7 @@
                     <h2>
                         {{'update_event'| translate}}                                                 
                     </h2>                                           
-                    <div style="width:50%;">
+                    <div class="bordered-div" style="width:50%;">
                         <form name="outerForm" novalidate>
                             <table class="dhis2-list-table-striped">                    
                                 <thead>                        
@@ -411,9 +409,9 @@
                 <!-- event registration begins -->
                 <div ng-show="eventRegistration">
                     <h2>
-                        {{'new_event_registration'| translate}}                                                 
+                        {{'new_event'| translate}}                                                 
                     </h2>   
-                    <div style="width:50%;">
+                    <div class="bordered-div" style="width:50%;">
                         <form name="outerForm" novalidate>
                             <table class="dhis2-list-table-striped">
                              <tbody id="list"> 
@@ -434,6 +432,7 @@
                                  </tr>                                     
                              </tbody>
                             </table>
+                            <hr>
                             <table class="dhis2-list-table-striped">                    
                                 <thead>                        
                                     <tr>
@@ -509,7 +508,7 @@
                         </form>
                     </div>
                 </div>                
-                <!-- event registration ends -->        
+                <!-- event registration ends -->                 
                 
             </div>           
         </div>

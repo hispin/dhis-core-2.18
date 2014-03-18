@@ -1,13 +1,9 @@
 CACHE MANIFEST
 
 CACHE:
-lib/jquery/js/jquery-1.8.3.js
-lib/jquery/js/jquery-ui-1.9.2.custom.js
-lib/jquery/css/ui-lightness/jquery-ui-1.9.2.custom.css
-
-../dhis-web-commons/css/light_blue/light_blue.css
-../dhis-web-commons/css/widgets.css
-
+../dhis-web-commons/javascripts/jQuery/jquery.min.js
+../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css
 
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.eot
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.woff
@@ -25,19 +21,25 @@ lib/jquery/css/ui-lightness/jquery-ui-1.9.2.custom.css
 ../dhis-web-commons/font-awesome/fonts/fontawesome-webfont.woff
 ../dhis-web-commons/font-awesome/fonts/FontAwesome.otf
 
-
+../dhis-web-commons/css/light_blue/light_blue.css
+../dhis-web-commons/css/widgets.css
 styles/style.css
 
-lib/bootstrap/js/bootstrap.min.js
+../dhis-web-commons/bootstrap/js/bootstrap.min.js
 
-lib/angular/angular.js
-lib/angular/angular-resource.js
-lib/angular/angular-route.js
-lib/angular/angular-cookies.js
-lib/angular/angular-animate.js        
-lib/angular/ui-bootstrap-tpls-0.10.0.js
+../dhis-web-commons/javascripts/angular/angular.js
+../dhis-web-commons/javascripts/angular/angular-resource.js
+../dhis-web-commons/javascripts/angular/angular-route.js
+../dhis-web-commons/javascripts/angular/angular-cookies.js
+../dhis-web-commons/javascripts/angular/angular-animate.js        
+../dhis-web-commons/javascripts/angular/ui-bootstrap-tpls-0.10.0.js
 
-lib/moment/moment-with-langs.min.js       
+../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js
+../dhis-web-commons/javascripts/angular/plugins/angular-translate.min.js
+../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-static-files.min.js
+../dhis-web-commons/javascripts/angular/plugins/angular-translate-loader-url.min.js
+
+../dhis-web-commons/javascripts/moment/moment-with-langs.min.js       
 
 ../dhis-web-commons/css/light_blue/logo_banner.png
 ../images/ajax-loader-bar.gif
@@ -72,17 +74,11 @@ lib/moment/moment-with-langs.min.js
 ../dhis-web-commons/ouwt/ouwt.js
 
 scripts/event-capture.js  
-scripts/angularLocalStorage.js
-scripts/angular-translate.min.js
-scripts/angular-translate-loader-static-files.min.js
-scripts/angular-translate-loader-url.min.js
-
 scripts/app.js
 scripts/services.js
 scripts/directives.js
 scripts/controllers.js
 scripts/filters.js
-
 
 views/pagination.html
 views/modal.html

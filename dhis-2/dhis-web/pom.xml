@@ -24,11 +24,11 @@
     <module>dhis-web-reporting</module>
     <module>dhis-web-mapping</module>
     <module>dhis-web-visualizer</module>
-    <module>dhis-web-pivot</module>
+    <module>dhis-web-pivot</module>    
+    <module>dhis-web-dashboard-integration</module>
     <module>dhis-web-event-capture</module>
     <module>dhis-web-event-reports</module>
     <module>dhis-web-tracker-capture</module>
-    <module>dhis-web-dashboard-integration</module>
     <module>dhis-web-caseentry</module>    
     <module>dhis-web-light</module>
     <module>dhis-web-mobile</module>

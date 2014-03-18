@@ -1,9 +1,9 @@
 CACHE MANIFEST
 
 CACHE:
-../dhis-web-commons/javascripts/jquery/js/jquery-1.8.3.js
-../dhis-web-commons/javascripts/jquery/js/jquery-ui-1.9.2.custom.js
-../dhis-web-commons/javascripts/jquery/css/ui-lightness/jquery-ui-1.9.2.custom.css
+../dhis-web-commons/javascripts/jQuery/jquery.min.js
+../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css
 
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.eot
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.woff
@@ -25,7 +25,7 @@ CACHE:
 ../dhis-web-commons/css/widgets.css
 styles/style.css
 
-../dhis-web-commons/javascripts/bootstrap/js/bootstrap.min.js
+../dhis-web-commons/bootstrap/js/bootstrap.min.js
 
 ../dhis-web-commons/javascripts/angular/angular.js
 ../dhis-web-commons/javascripts/angular/angular-resource.js
@@ -73,7 +73,7 @@ styles/style.css
 ../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js
 ../dhis-web-commons/ouwt/ouwt.js
 
-scripts/event-capture.js  
+scripts/tracker-capture.js  
 scripts/app.js
 scripts/services.js
 scripts/directives.js

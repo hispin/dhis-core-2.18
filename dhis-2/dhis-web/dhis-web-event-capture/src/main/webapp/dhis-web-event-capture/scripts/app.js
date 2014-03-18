@@ -15,15 +15,7 @@ var eventCapture = angular.module('eventCapture',
               
 .value('DHIS2URL', '../..')
 
-.config(function($routeProvider, $httpProvider, $translateProvider) {    
-    
-    
-    $routeProvider.when('/',{
-        templateUrl:'index.html',
-        controller: 'MainController'
-    }).otherwise({
-        redirectTo : '/'
-    });       
+.config(function($httpProvider, $translateProvider) {    
             
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
