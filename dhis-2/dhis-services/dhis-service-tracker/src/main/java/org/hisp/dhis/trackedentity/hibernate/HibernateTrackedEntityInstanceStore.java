@@ -455,7 +455,7 @@ public class HibernateTrackedEntityInstanceStore
             {
                 TrackedEntityAttribute attribute = attributeValue.getAttribute();
 
-                if ( attribute.getUnique() )
+                if ( attribute.isUnique() )
                 {
                     hasUnique = true;
                     break;
@@ -475,7 +475,7 @@ public class HibernateTrackedEntityInstanceStore
                 {
                     TrackedEntityAttribute attribute = attributeValue.getAttribute();
 
-                    if ( attribute.getUnique() )
+                    if ( attribute.isUnique() )
                     {
                         Conjunction conjunction = Restrictions.conjunction();
                         conjunction.add( Restrictions.eq( "attributeValue.value", attributeValue.getValue() ) );
