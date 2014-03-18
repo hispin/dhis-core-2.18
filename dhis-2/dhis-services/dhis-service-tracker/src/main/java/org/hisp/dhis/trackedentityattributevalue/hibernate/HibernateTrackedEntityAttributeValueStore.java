@@ -149,5 +149,4 @@ public class HibernateTrackedEntityAttributeValueStore
 
         return query.list();
     }
-
 }

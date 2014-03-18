@@ -317,7 +317,7 @@ public class TrackedEntityAttribute
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean isUnique()
     {
-        return unique;
+        return unique != null ? unique : false;
     }
 
     public void setUnique( Boolean unique )

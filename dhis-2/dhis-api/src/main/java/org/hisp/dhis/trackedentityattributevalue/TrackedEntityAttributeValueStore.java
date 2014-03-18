@@ -154,5 +154,4 @@ public interface TrackedEntityAttributeValueStore
      * @return TrackedEntityAttributeValue list
      */
     Collection<TrackedEntityAttributeValue> get( TrackedEntityInstance instance, Program program );
-
 }
