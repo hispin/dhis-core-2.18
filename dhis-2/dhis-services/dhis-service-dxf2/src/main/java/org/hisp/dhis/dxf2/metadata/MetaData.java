@@ -33,6 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.collect.Lists;
+
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.DimensionalObject;
@@ -55,6 +56,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.schema.Schema;
 import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.indicator.Indicator;
@@ -199,6 +201,8 @@ public class MetaData
     private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
 
     private List<MetaDataFilter> metaDataFilters = new ArrayList<MetaDataFilter>();
+    
+    private List<Event> events = new ArrayList<Event>();
 
     private List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
@@ -844,6 +848,19 @@ public class MetaData
     public void setRelationshipTypes( List<RelationshipType> relationshipTypes )
     {
         this.relationshipTypes = relationshipTypes;
+    }
+    
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "events", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Event> getEvents()
+    {
+        return events;
+    }
+
+    public void setEvents( List<Event> events )
+    {
+        this.events = events;
     }
 
     @JsonProperty

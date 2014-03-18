@@ -28,10 +28,13 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
 import org.hisp.dhis.dxf2.events.event.Events;
@@ -66,6 +69,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -73,6 +77,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 
@@ -127,7 +132,9 @@ public class EventController
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
     {
-        WebOptions options = new WebOptions( parameters );
+        WebOptions options = new WebOptions( parameters );        
+        WebMetaData metaData = new WebMetaData();
+        
         Program program = manager.get( Program.class, programUid );
         ProgramStage programStage = manager.get( ProgramStage.class, programStageUid );
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
@@ -164,8 +171,9 @@ public class EventController
             model.addAttribute( "model", events );
             model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
-            return "events";
-        }
+            return "events";            
+        }        
+        
 
         if ( rootOrganisationUnit == null )
         {
@@ -187,19 +195,31 @@ public class EventController
         }
 
         Events events = eventService.getEvents( Arrays.asList( program ), Arrays.asList( programStage ), organisationUnits, trackedEntityInstance, startDate, endDate );
+        
+        List<Event> eventList = new ArrayList<Event>( events.getEvents() );
 
         if ( options.hasLinks() )
         {
-            for ( Event event : events.getEvents() )
+            for ( Event event : eventList )
             {
                 event.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + event.getEvent() );
             }
         }
+        
+        if( options.hasPaging() )
+        {      	
+        	Pager pager = new Pager( options.getPage(), eventList.size(), options.getPageSize() );
+            metaData.setPager( pager );
+            eventList = PagerUtils.pageCollection( eventList, pager );        	
+        }        
+        
+        metaData.setEvents( eventList );
 
-        model.addAttribute( "model", events );
+        model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
-        return "events";
+        return "events";        
+
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
