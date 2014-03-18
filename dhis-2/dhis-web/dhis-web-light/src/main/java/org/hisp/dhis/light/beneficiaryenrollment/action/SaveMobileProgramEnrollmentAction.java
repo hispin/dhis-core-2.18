@@ -250,7 +250,7 @@ public class SaveMobileProgramEnrollmentAction
     {
         patient = patientService.getTrackedEntityInstance( patientId );
         program = programService.getProgram( programId );
-        patientAttributes = program.getEntityAttributes();
+        patientAttributes = program.getTrackedEntityAttributes();
 
         List<TrackedEntityAttributeValue> patientAttributeValues = new ArrayList<TrackedEntityAttributeValue>();
 

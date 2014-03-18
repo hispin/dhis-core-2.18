@@ -145,6 +145,12 @@ public class DefaultTrackedEntityInstanceService
     {
         validate( params );
         
+        if ( params.isOrQuery() )
+        {
+            params.getItems().clear();
+            params.getItems().addAll( getItemsForOrQuery( params ) );
+        }
+        
         Grid grid = new ListGrid();
         
         grid.addHeader( new GridHeader( TRACKED_ENTITY_INSTANCE_ID, "Instance" ) );
@@ -178,6 +184,23 @@ public class DefaultTrackedEntityInstanceService
         return grid;
     }
     
+    /**
+     * Returns the appropriate items for a OR query with no items specified. If 
+     * the params specifies a program, the program attributes will be returned. 
+     * If not, all attributes will be returned.
+     */
+    private List<QueryItem> getItemsForOrQuery( TrackedEntityInstanceQueryParams params )
+    {
+        if ( params.hasProgram() )
+        {
+            return QueryItem.getQueryItems( params.getProgram().getTrackedEntityAttributes() );
+        }
+        else
+        {
+            return QueryItem.getQueryItems( attributeService.getAllTrackedEntityAttributes() );
+        }
+    }
+    
     public void validate( TrackedEntityInstanceQueryParams params )
         throws IllegalQueryException
     {
@@ -190,7 +213,17 @@ public class DefaultTrackedEntityInstanceService
         
         if ( params.hasQuery() && params.hasItems() )
         {
-            violation = "Query and items cannot be specified simultaneously";
+            violation = "Query and item cannot be specified simultaneously";
+        }
+        
+        if ( !params.hasQuery() && !params.hasItems() )
+        {
+            violation = "At least one of query and item must be specified";
+        }
+
+        if ( !params.hasOrganisationUnits() )
+        {
+            violation = "At least one organisation unit must be specified";
         }
         
         if ( params.hasProgram() && params.hasTrackedEntity() )
@@ -212,25 +245,31 @@ public class DefaultTrackedEntityInstanceService
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
-        for ( String item : items )
+        if ( items != null )
         {
-            QueryItem it = getQueryItem( item );
-            
-            params.getItems().add( it );
+            for ( String item : items )
+            {
+                QueryItem it = getQueryItem( item );
+                
+                params.getItems().add( it );
+            }
         }
 
-        for ( String orgUnit : ou )
+        if ( ou != null )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnit );
-            
-            if ( organisationUnit == null )
+            for ( String orgUnit : ou )
             {
-                throw new IllegalQueryException( "Organisation unit does not exist: " + orgUnit );
+                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnit );
+                
+                if ( organisationUnit == null )
+                {
+                    throw new IllegalQueryException( "Organisation unit does not exist: " + orgUnit );
+                }
+                
+                organisationUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
+                
+                params.getOrganisationUnits().add( organisationUnit );
             }
-            
-            organisationUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
-            
-            params.getOrganisationUnits().add( organisationUnit );
         }
         
         Program pr = program != null ? programService.getProgram( program ) : null;
@@ -709,7 +748,7 @@ public class DefaultTrackedEntityInstanceService
         grid.addHeader( new GridHeader( i18n.getString( "gender" ), true, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, true ) );
 
-        Collection<TrackedEntityAttribute> attributes = program.getEntityAttributes();
+        Collection<TrackedEntityAttribute> attributes = program.getTrackedEntityAttributes();
 
         for ( TrackedEntityAttribute attribute : attributes )
         {

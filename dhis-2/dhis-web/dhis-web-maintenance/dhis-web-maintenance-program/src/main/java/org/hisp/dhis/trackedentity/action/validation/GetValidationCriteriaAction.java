@@ -121,7 +121,7 @@ public class GetValidationCriteriaAction
 
         program = programService.getProgram( programId );
 
-        attribute = program.getEntityAttributes();
+        attribute = program.getTrackedEntityAttributes();
 
         Collections.sort( attribute, IdentifiableObjectNameComparator.INSTANCE );
 

@@ -151,7 +151,7 @@ public class GetProgramEnrollmentFormAction
             return REDIRECT;
         }
 
-        patientAttributes = program.getEntityAttributes();
+        patientAttributes = program.getTrackedEntityAttributes();
         now = new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date() );
 
         return SUCCESS;

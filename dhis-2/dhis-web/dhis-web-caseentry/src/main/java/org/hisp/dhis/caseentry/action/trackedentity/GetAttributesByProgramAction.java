@@ -111,7 +111,7 @@ public class GetAttributesByProgramAction
         if ( id != null )
         {
             Program program = programService.getProgram( id );
-            attributes = program.getEntityAttributes();
+            attributes = program.getTrackedEntityAttributes();
         }
         else
         {

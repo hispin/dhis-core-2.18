@@ -134,7 +134,7 @@ public class GetInstanceReminderAction
 
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
-        attributes = new ArrayList<TrackedEntityAttribute>( program.getEntityAttributes() );
+        attributes = new ArrayList<TrackedEntityAttribute>( program.getTrackedEntityAttributes() );
 
         return SUCCESS;
     }

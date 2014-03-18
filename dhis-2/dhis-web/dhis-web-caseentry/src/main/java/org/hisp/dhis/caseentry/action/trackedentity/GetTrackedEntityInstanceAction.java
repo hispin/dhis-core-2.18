@@ -237,7 +237,7 @@ public class GetTrackedEntityInstanceAction
                 Collection<Program> programs = programService.getAllPrograms();
                 for ( Program p : programs )
                 {
-                    for ( TrackedEntityAttribute attribute : p.getEntityAttributes() )
+                    for ( TrackedEntityAttribute attribute : p.getTrackedEntityAttributes() )
                     {
                         if ( !attribute.getDisplayInListNoProgram() )
                         {
@@ -248,7 +248,7 @@ public class GetTrackedEntityInstanceAction
             }
             else
             {
-                attributes = program.getEntityAttributes();
+                attributes = program.getTrackedEntityAttributes();
             }
 
             for ( TrackedEntityAttribute attribute : attributes )

@@ -162,7 +162,7 @@ public class ViewTrackedEntityFormAction
         else
         {
             program = programService.getProgram( programId );
-            attributes = program.getEntityAttributes();
+            attributes = program.getTrackedEntityAttributes();
             registrationForm = formService.getTrackedEntityForm( program );
         }
 

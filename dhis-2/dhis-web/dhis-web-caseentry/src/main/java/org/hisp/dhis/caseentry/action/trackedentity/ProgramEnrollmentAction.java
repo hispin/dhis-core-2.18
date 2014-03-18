@@ -179,7 +179,7 @@ public class ProgramEnrollmentAction
         // Load attributes of the selected program
         // ---------------------------------------------------------------------
 
-        attributes = new ArrayList<TrackedEntityAttribute>( programInstance.getProgram().getEntityAttributes() );
+        attributes = new ArrayList<TrackedEntityAttribute>( programInstance.getProgram().getTrackedEntityAttributes() );
 
         if ( attributes != null )
         {

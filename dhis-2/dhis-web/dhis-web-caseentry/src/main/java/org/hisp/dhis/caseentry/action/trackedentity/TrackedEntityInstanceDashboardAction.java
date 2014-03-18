@@ -217,7 +217,7 @@ public class TrackedEntityInstanceDashboardAction
 
         for ( Program program : programs )
         {
-            Collection<TrackedEntityAttribute> atttributes = program.getEntityAttributes();
+            Collection<TrackedEntityAttribute> atttributes = program.getTrackedEntityAttributes();
             for ( TrackedEntityAttributeValue attributeValue : _attributeValues )
             {
                 if ( atttributes.contains( attributeValue.getAttribute() ) )

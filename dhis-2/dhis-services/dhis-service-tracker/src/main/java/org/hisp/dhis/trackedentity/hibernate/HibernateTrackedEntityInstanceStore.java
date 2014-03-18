@@ -157,14 +157,16 @@ public class HibernateTrackedEntityInstanceStore
         {
             String col = statementBuilder.columnQuote( item.getItemId() );
             
+            String joinClause = params.isOrQuery() ? "full outer join" : "inner join";
+            
             sql += 
-                "inner join trackedentityattributevalue as " + col + " " +
+                joinClause + " trackedentityattributevalue as " + col + " " +
                 "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid " +
                 "and " + col + ".trackedentityattributeid = " + item.getItem().getId() + " ";
             
             String filter = statementBuilder.encode( item.getFilter(), false );
             
-            if ( item.hasFilter() )
+            if ( !params.isOrQuery() && item.hasFilter() )
             {
                 sql += "and " + col + ".value " + item.getSqlOperator() + " " + item.getSqlFilter( filter ) + " ";
             }
@@ -202,6 +204,21 @@ public class HibernateTrackedEntityInstanceStore
                 hlp.whereAnd() + " exists ( select trackedentityinstanceid from programinstance pi " +
                 "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " +
                 "and pi.programid = " + params.getProgram().getId() + ") ";
+        }
+        
+        if ( params.isOrQuery() && params.hasItems() )
+        {
+            sql += hlp.whereAnd() + " (";
+            
+            for ( QueryItem item : params.getItems() )
+            {
+                String col = statementBuilder.columnQuote( item.getItemId() );
+                String query = statementBuilder.encode( params.getQuery(), false );
+                
+                sql += col + ".value = '" + query + "' or ";
+            }
+            
+            sql = sql.substring( 0, sql.length() - 3 ) + ") "; // Reomove last or
         }
 
         // ---------------------------------------------------------------------

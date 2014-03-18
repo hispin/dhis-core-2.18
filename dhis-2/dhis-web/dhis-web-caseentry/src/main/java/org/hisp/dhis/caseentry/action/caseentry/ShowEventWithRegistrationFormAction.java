@@ -173,7 +173,7 @@ public class ShowEventWithRegistrationFormAction
             programs.remove( program );
             for ( Program p : programs )
             {
-                attributesInProgram.addAll( p.getEntityAttributes() );
+                attributesInProgram.addAll( p.getTrackedEntityAttributes() );
             }
 
             attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
