@@ -145,27 +145,46 @@ public class DefaultTrackedEntityInstanceService
     {
         validate( params );
         
-        if ( params.isOrQuery() )
+        // ---------------------------------------------------------------------
+        // If params of type query and no attributes or filters defined, use
+        // attributes from program if exists, if not, use all attributes.
+        // ---------------------------------------------------------------------
+
+        if ( params.isOrQuery() && !params.hasAttributesOrFilters() )
         {
-            params.getItems().clear();
-            params.getItems().addAll( getItemsForOrQuery( params ) );
+            if ( params.hasProgram() )
+            {
+                params.getAttributes().addAll( QueryItem.getQueryItems( params.getProgram().getTrackedEntityAttributes() ) );
+            }
+            else
+            {
+                params.getAttributes().addAll( QueryItem.getQueryItems( attributeService.getAllTrackedEntityAttributes() ) );
+            }
         }
-        
+
         Grid grid = new ListGrid();
-        
+
+        // ---------------------------------------------------------------------
+        // Grid headers
+        // ---------------------------------------------------------------------
+
         grid.addHeader( new GridHeader( TRACKED_ENTITY_INSTANCE_ID, "Instance" ) );
         grid.addHeader( new GridHeader( CREATED_ID, "Created" ) );
         grid.addHeader( new GridHeader( LAST_UPDATED_ID, "Last updated" ) );
         grid.addHeader( new GridHeader( ORG_UNIT_ID, "Org unit" ) );
         grid.addHeader( new GridHeader( TRACKED_ENTITY_ID, "Tracked entity" ) );
         
-        for ( QueryItem item : params.getItems() )
+        for ( QueryItem item : params.getAttributes() )
         {
             grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName() ) );
         }
         
         List<Map<String, String>> entities = trackedEntityInstanceStore.getTrackedEntityInstances( params );
-        
+
+        // ---------------------------------------------------------------------
+        // Grid rows
+        // ---------------------------------------------------------------------
+
         for ( Map<String, String> entity : entities )
         {
             grid.addRow();
@@ -175,30 +194,13 @@ public class DefaultTrackedEntityInstanceService
             grid.addValue( entity.get( ORG_UNIT_ID ) );
             grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
             
-            for ( QueryItem item : params.getItems() )
+            for ( QueryItem item : params.getAttributes() )
             {
                 grid.addValue( entity.get( item.getItemId() ) );
             }
         }
         
         return grid;
-    }
-    
-    /**
-     * Returns the appropriate items for a OR query with no items specified. If 
-     * the params specifies a program, the program attributes will be returned. 
-     * If not, all attributes will be returned.
-     */
-    private List<QueryItem> getItemsForOrQuery( TrackedEntityInstanceQueryParams params )
-    {
-        if ( params.hasProgram() )
-        {
-            return QueryItem.getQueryItems( params.getProgram().getTrackedEntityAttributes() );
-        }
-        else
-        {
-            return QueryItem.getQueryItems( attributeService.getAllTrackedEntityAttributes() );
-        }
     }
     
     public void validate( TrackedEntityInstanceQueryParams params )
@@ -211,14 +213,9 @@ public class DefaultTrackedEntityInstanceService
             throw new IllegalQueryException( "Params cannot be null" );
         }
         
-        if ( params.hasQuery() && params.hasItems() )
+        if ( !params.hasQuery() && !params.hasAttributes() )
         {
-            violation = "Query and item cannot be specified simultaneously";
-        }
-        
-        if ( !params.hasQuery() && !params.hasItems() )
-        {
-            violation = "At least one of query and item must be specified";
+            violation = "At least one of query and attributes must be specified";
         }
 
         if ( !params.hasOrganisationUnits() )
@@ -240,18 +237,28 @@ public class DefaultTrackedEntityInstanceService
     }
     
     @Override
-    public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> items, Set<String> ou, String ouMode, 
+    public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, Set<String> ou, String ouMode, 
         String program, String trackedEntity, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
-        if ( items != null )
+        if ( attribute != null )
         {
-            for ( String item : items )
+            for ( String attr : attribute )
             {
-                QueryItem it = getQueryItem( item );
+                QueryItem it = getQueryItem( attr );
                 
-                params.getItems().add( it );
+                params.getAttributes().add( it );
+            }
+        }
+        
+        if ( filter != null )
+        {
+            for ( String filt : filter )
+            {
+                QueryItem it = getQueryItem( filt );
+                
+                params.getFilters().add( it );
             }
         }
 
