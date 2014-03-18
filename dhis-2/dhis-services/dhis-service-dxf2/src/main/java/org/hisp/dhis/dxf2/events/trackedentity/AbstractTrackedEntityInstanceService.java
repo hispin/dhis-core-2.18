@@ -46,9 +46,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -71,6 +69,12 @@ public abstract class AbstractTrackedEntityInstanceService
 
     @Autowired
     private TrackedEntityService trackedEntityService;
+
+    @Autowired
+    private TrackedEntityAttributeValueService trackedEntityAttributeValueService;
+
+    @Autowired
+    private org.hisp.dhis.trackedentity.TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private IdentifiableObjectManager manager;
@@ -292,7 +296,49 @@ public abstract class AbstractTrackedEntityInstanceService
             {
                 importConflicts.add( new ImportConflict( "Attribute.attribute", "Invalid attribute "
                     + attribute.getAttribute() ) );
+                continue;
             }
+
+            List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>( trackedEntityAttributeValueService.getTrackedEntityInstance(
+                entityAttribute, attribute.getValue() ) );
+
+            System.err.println( "instances: " + instances );
+
+            if ( entityAttribute.isUnique() )
+            {
+                importConflicts.addAll( checkScope( trackedEntityInstance, entityAttribute, instances ) );
+            }
+        }
+
+        return importConflicts;
+    }
+
+    private List<ImportConflict> checkScope( TrackedEntityInstance trackedEntityInstance, TrackedEntityAttribute attribute, List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances )
+    {
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        org.hisp.dhis.trackedentity.TrackedEntityInstance instance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntity() );
+
+        if ( instances.isEmpty() || (instances.size() == 1 && instances.contains( instance )) )
+        {
+            return importConflicts;
+        }
+
+        if ( attribute.getOrgunitScope() )
+        {
+            for ( org.hisp.dhis.trackedentity.TrackedEntityInstance tei : instances )
+            {
+                if ( trackedEntityInstance.getOrgUnit().equals( tei.getOrganisationUnit().getUid() ) )
+                {
+                    importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
+                        attribute.getUid() + ", with scope orgUnit." ) );
+                    break;
+                }
+            }
+        }
+        else
+        {
+            importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
+                attribute.getUid() ) );
         }
 
         return importConflicts;
