@@ -140,6 +140,10 @@ public class DefaultTrackedEntityInstanceService
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    //TODO queries with multiple words
+    //TODO case sensitivity
+    //TODO lower index on attribute value?
+    
     @Override
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
