@@ -216,7 +216,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.showEnrollment = function(){
         $scope.displayEnrollment = true;
     };
-
 })
 
 //Controller for the profile section
@@ -238,10 +237,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //listen for the selected items
     $scope.$on('selectedItems', function(event, args) {        
         $scope.selectedEntity = args.selectedEntity;                 
-    });
-    
+    });    
 })
-
 
 //Controller for the enrollment section
 .controller('EnrollmentController',
