@@ -13,7 +13,7 @@
 	{
 		"id": "[CA:${attribute.id}]",
 		"name": "$!encoder.jsonEncode( ${attribute.name} )",
-		"suggested":"$attribute.attributeOptions"
+		"suggested":"$!attribute.optionSet.options"
 	}#if( $velocityCount < $size ),#end
 	#end
   ]

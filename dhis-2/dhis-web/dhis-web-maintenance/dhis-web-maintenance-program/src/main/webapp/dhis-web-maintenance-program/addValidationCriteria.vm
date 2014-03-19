@@ -28,8 +28,8 @@
 						<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 						#foreach($programAttribute in $program.programAttributes)
 							#set($opt="")
-							#foreach($option in $programAttribute.attribute.attributeOptions)
-								#set($opt=$opt + ';' + $option.name )
+							#foreach($option in $programAttribute.attribute.optionSet.options)
+								#set($opt=$opt + ';' + $option )
 							#end 
 						<option value="$programAttribute.attribute.uid" opt="$opt">$programAttribute.attribute.displayName</option>
 						#end

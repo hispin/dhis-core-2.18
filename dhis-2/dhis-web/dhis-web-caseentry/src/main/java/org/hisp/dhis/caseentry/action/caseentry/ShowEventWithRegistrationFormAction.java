@@ -45,6 +45,7 @@ import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
@@ -162,8 +163,8 @@ public class ShowEventWithRegistrationFormAction
         if ( trackedEntityForm != null )
         {
             customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
-                .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, null, null,
-                i18n, format );
+                .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, null, null, i18n,
+                format );
         }
 
         if ( customRegistrationForm == null )
@@ -173,7 +174,10 @@ public class ShowEventWithRegistrationFormAction
             programs.remove( program );
             for ( Program p : programs )
             {
-                attributesInProgram.addAll( p.getTrackedEntityAttributes() );
+                for ( ProgramTrackedEntityAttribute programAttribute : p.getAttributes() )
+                {
+                    attributesInProgram.add( programAttribute.getAttribute() );
+                }
             }
 
             attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(

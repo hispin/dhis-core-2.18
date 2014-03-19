@@ -36,17 +36,15 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.StrutsStatics;
 import org.hisp.dhis.light.utils.ValueUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.MathUtils;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.util.ContextUtils;
@@ -302,13 +300,12 @@ public class SaveBeneficiaryAction
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
 
         // Add Attributes
-       Collection<TrackedEntityAttribute> patientAttributes = patientAttributeService.getAllTrackedEntityAttributes();
+        Collection<TrackedEntityAttribute> patientAttributes = patientAttributeService.getAllTrackedEntityAttributes();
 
         for ( Program program : programs )
         {
             patientAttributes.removeAll( program.getAttributes() );
         }
-
 
         for ( TrackedEntityAttribute patientAttribute : patientAttributes )
         {
@@ -338,17 +335,6 @@ public class SaveBeneficiaryAction
                 else
                 {
                     TrackedEntityAttributeValue patientAttributeValue = new TrackedEntityAttributeValue();
-
-                    if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttribute.getValueType() ) )
-                    {
-                        TrackedEntityAttributeOption option = patientAttributeService
-                            .getTrackedEntityAttributeOption( NumberUtils.toInt( value, 0 ) );
-
-                        if ( option != null )
-                        {
-                            patientAttributeValue.setAttributeOption( option );
-                        }
-                    }
 
                     patientAttributeValue.setEntityInstance( patient );
                     patientAttributeValue.setAttribute( patientAttribute );

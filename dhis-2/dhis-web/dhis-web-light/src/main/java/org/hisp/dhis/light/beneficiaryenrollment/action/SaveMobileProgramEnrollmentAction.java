@@ -37,7 +37,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.StrutsStatics;
 import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.light.utils.ValueUtils;
@@ -50,10 +49,9 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MathUtils;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
@@ -295,17 +293,6 @@ public class SaveMobileProgramEnrollmentAction
                     else
                     {
                         TrackedEntityAttributeValue patientAttributeValue = new TrackedEntityAttributeValue();
-
-                        if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttribute.getValueType() ) )
-                        {
-                            TrackedEntityAttributeOption option = patientAttributeService.getTrackedEntityAttributeOption( NumberUtils.toInt(
-                                value, 0 ) );
-
-                            if ( option != null )
-                            {
-                                patientAttributeValue.setAttributeOption( option );
-                            }
-                        }
 
                         patientAttributeValue.setEntityInstance( patient );
                         patientAttributeValue.setAttribute( patientAttribute );

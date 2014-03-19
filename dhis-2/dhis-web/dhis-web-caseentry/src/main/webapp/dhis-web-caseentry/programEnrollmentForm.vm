@@ -79,8 +79,8 @@
 								#elseif( $attribute.valueType == "combo" )
 									<select  id="attr$attribute.id" name="attr$attribute.id" class="{validate:{required:$mandatory}}" >
 										 <option value="">[$i18n.getString( "please_select" )]</option>
-										#foreach ($option in $attribute.attributeOptions )
-											<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
+										#foreach ($option in $attribute.optionSet.options )
+											<option value="$option" #if($attributeValue == $option) selected="selected" #end>$option</option>
 										#end
 									</select>
 								#else 

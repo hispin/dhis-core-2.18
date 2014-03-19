@@ -45,7 +45,6 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.springframework.beans.factory.annotation.Required;
 
 public class DefaultProgramService
@@ -88,9 +87,9 @@ public class DefaultProgramService
         {
             programs.add( getProgramLWUIT( program.getId() ) );
         }
-        
-        System.out.println("Program by unit size: " + programByUnit.size());
-        System.out.println("Program size: " + programs.size());
+
+        System.out.println( "Program by unit size: " + programByUnit.size() );
+        System.out.println( "Program size: " + programs.size() );
 
         return programs;
     }
@@ -288,23 +287,16 @@ public class DefaultProgramService
         return pr;
     }
 
-    private org.hisp.dhis.api.mobile.model.PatientAttribute getPatientAttributeForMobile( ProgramTrackedEntityAttribute ppa )
+    private org.hisp.dhis.api.mobile.model.PatientAttribute getPatientAttributeForMobile(
+        ProgramTrackedEntityAttribute ppa )
     {
         TrackedEntityAttribute pa = ppa.getAttribute();
-        List<String> optionList = new ArrayList<String>();
-        if ( pa.getAttributeOptions() != null )
-        {
-            for ( TrackedEntityAttributeOption pao : pa.getAttributeOptions() )
-            {
-                optionList.add( pao.getName() );
-            }
-        }
+
         org.hisp.dhis.api.mobile.model.PatientAttribute mobileAttribute = new org.hisp.dhis.api.mobile.model.PatientAttribute();
         mobileAttribute.setName( pa.getName() );
         mobileAttribute.setMandatory( pa.isMandatory() );
         mobileAttribute.setType( pa.getValueType() );
         mobileAttribute.setValue( "" );
-        mobileAttribute.setPredefinedValues( optionList );
         if ( ppa.getDisplayedInList() )
         {
             mobileAttribute.setDisplayedInList( true );

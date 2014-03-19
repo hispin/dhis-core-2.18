@@ -15,8 +15,5 @@
 
     <property name="value" />
 
-    <many-to-one name="attributeOption" class="org.hisp.dhis.trackedentity.TrackedEntityAttributeOption" column="trackedentityattributeoptionid"
-      foreign-key="fk_attributeValue_attributeoptionid" />
-
   </class>
 </hibernate-mapping>

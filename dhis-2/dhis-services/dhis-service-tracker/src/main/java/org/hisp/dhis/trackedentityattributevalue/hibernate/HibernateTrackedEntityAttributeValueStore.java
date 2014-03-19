@@ -35,9 +35,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueStore;
 
@@ -112,30 +111,12 @@ public class HibernateTrackedEntityAttributeValueStore
     }
 
     @Override
-    public int countByAttributeOption( TrackedEntityAttributeOption attributeOption )
-    {
-        Number rs = (Number) getCriteria( Restrictions.eq( "attributeOption", attributeOption ) ).setProjection(
-            Projections.rowCount() ).uniqueResult();
-        return rs != null ? rs.intValue() : 0;
-    }
-
-    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntityAttribute attribute, String value )
     {
         return getCriteria(
             Restrictions.and( Restrictions.eq( "attribute", attribute ), Restrictions.eq( "value", value ) ) )
             .setProjection( Projections.property( "entityInstance" ) ).list();
-    }
-
-    @Override
-    public void updateTrackedEntityAttributeValues( TrackedEntityAttributeOption attributeOption )
-    {
-        String hql = "UPDATE TrackedEntityAttributeValue SET value=:value where attributeOption=:attributeOption";
-        Query query = getQuery( hql );
-        query.setString( "value", attributeOption.getName() );
-        query.setEntity( "attributeOption", attributeOption );
-        query.executeUpdate();
     }
 
     @Override

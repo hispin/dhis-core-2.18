@@ -104,10 +104,9 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.sqlview.SqlView;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -1104,22 +1103,7 @@ public abstract class DhisConvenienceTest
 
         return attribute;
     }
-
-    /**
-     * @param uniqueCharacter A unique character to identify the object.
-     * @return TrackedEntityAttributeOption
-     */
-    public static TrackedEntityAttributeOption createTrackedEntityAttributeOption( char uniqueChar,
-        TrackedEntityAttribute attribute )
-    {
-        TrackedEntityAttributeOption attributeOption = new TrackedEntityAttributeOption();
-
-        attributeOption.setName( "AttributeOption" + uniqueChar );
-        attributeOption.setAttribute( attribute );
-
-        return attributeOption;
-    }
-
+    
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @return TrackedEntityAttributeGroup

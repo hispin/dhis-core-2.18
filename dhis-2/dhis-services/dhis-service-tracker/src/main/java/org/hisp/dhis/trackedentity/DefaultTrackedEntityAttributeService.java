@@ -53,13 +53,6 @@ public class DefaultTrackedEntityAttributeService
         this.attributeStore = attributeStore;
     }
 
-    private TrackedEntityAttributeOptionStore attributeOptionStore;
-
-    public void setAttributeOptionStore( TrackedEntityAttributeOptionStore attributeOptionStore )
-    {
-        this.attributeOptionStore = attributeOptionStore;
-    }
-
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
@@ -142,7 +135,7 @@ public class DefaultTrackedEntityAttributeService
         Collection<TrackedEntityAttribute> result = attributeStore.getAll();
 
         Collection<Program> programs = programService.getAllPrograms();
-        
+
         if ( result != null )
         {
             for ( Program program : programs )
@@ -181,37 +174,5 @@ public class DefaultTrackedEntityAttributeService
         return attributeStore.getCountLikeName( name );
     }
 
-    // -------------------------------------------------------------------------
-    // TrackedEntityAttributeOption
-    // -------------------------------------------------------------------------
-
-    public int addTrackedEntityAttributeOption( TrackedEntityAttributeOption option )
-    {
-        return attributeOptionStore.save( option );
-    }
-
-    public void deleteTrackedEntityAttributeOption( TrackedEntityAttributeOption option )
-    {
-        attributeOptionStore.delete( option );
-    }
-
-    public void updateTrackedEntityAttributeOption( TrackedEntityAttributeOption option )
-    {
-        attributeOptionStore.update( option );
-    }
-
-    public TrackedEntityAttributeOption getTrackedEntityAttributeOption( TrackedEntityAttribute attribute, String name )
-    {
-        return attributeOptionStore.get( attribute, name );
-    }
-
-    public TrackedEntityAttributeOption getTrackedEntityAttributeOption( int id )
-    {
-        return attributeOptionStore.get( id );
-    }
-
-    public Collection<TrackedEntityAttributeOption> getTrackedEntityAttributeOption( TrackedEntityAttribute attribute )
-    {
-        return attributeOptionStore.get( attribute );
-    }
+  
 }

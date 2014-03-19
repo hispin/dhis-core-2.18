@@ -31,8 +31,11 @@ package org.hisp.dhis.trackedentity.action.trackedentityattribute;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,15 +58,25 @@ public class ShowAddAttributeFormAction
         this.periodService = periodService;
     }
 
+    @Autowired
+    private OptionService optionService;
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<PeriodType> periodTypes = new ArrayList<PeriodType>();
+    private List<PeriodType> periodTypes;
 
     public List<PeriodType> getPeriodTypes()
     {
         return periodTypes;
+    }
+
+    private List<OptionSet> optionSets;
+
+    public List<OptionSet> getOptionSets()
+    {
+        return optionSets;
     }
 
     // -------------------------------------------------------------------------
@@ -75,7 +88,8 @@ public class ShowAddAttributeFormAction
         throws Exception
     {
         periodTypes = periodService.getAllPeriodTypes();
-
+        optionSets =  new ArrayList<OptionSet>(optionService.getAllOptionSets());
+        
         return SUCCESS;
     }
 

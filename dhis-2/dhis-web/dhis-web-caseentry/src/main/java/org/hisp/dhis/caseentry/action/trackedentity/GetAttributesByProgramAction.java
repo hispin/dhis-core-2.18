@@ -38,6 +38,7 @@ import java.util.Map;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
@@ -111,7 +112,10 @@ public class GetAttributesByProgramAction
         if ( id != null )
         {
             Program program = programService.getProgram( id );
-            attributes = program.getTrackedEntityAttributes();
+            for ( ProgramTrackedEntityAttribute programAttribute :  program.getAttributes() )
+            {
+                attributes.add(programAttribute.getAttribute() );
+            }
         }
         else
         {
