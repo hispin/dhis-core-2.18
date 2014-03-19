@@ -53,6 +53,8 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.trackedentity.TrackedEntity;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +65,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class EnrollmentServiceTest
     extends DhisSpringTest
 {
+    @Autowired
+    private TrackedEntityService trackedEntityService;
+
     @Autowired
     private TrackedEntityInstanceService trackedEntityInstanceService;
 
@@ -96,10 +101,18 @@ public class EnrollmentServiceTest
         manager.save( organisationUnitA );
         manager.save( organisationUnitB );
 
+        TrackedEntity trackedEntity = createTrackedEntity( 'A' );
+        trackedEntityService.addTrackedEntity( trackedEntity );
+
         maleA = createTrackedEntityInstance( 'A', organisationUnitA );
         maleB = createTrackedEntityInstance( 'B', organisationUnitB );
         femaleA = createTrackedEntityInstance( 'C', organisationUnitA );
         femaleB = createTrackedEntityInstance( 'D', organisationUnitB );
+
+        maleA.setTrackedEntity( trackedEntity );
+        maleB.setTrackedEntity( trackedEntity );
+        femaleA.setTrackedEntity( trackedEntity );
+        femaleB.setTrackedEntity( trackedEntity );
 
         manager.save( maleA );
         manager.save( maleB );

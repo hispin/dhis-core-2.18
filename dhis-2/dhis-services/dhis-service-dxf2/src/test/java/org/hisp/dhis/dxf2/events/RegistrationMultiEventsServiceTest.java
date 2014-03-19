@@ -34,6 +34,7 @@ import static org.junit.Assert.assertThat;
 import java.util.HashSet;
 
 import org.hamcrest.CoreMatchers;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
@@ -51,6 +52,8 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
+import org.hisp.dhis.trackedentity.TrackedEntity;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +62,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class RegistrationMultiEventsServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private TrackedEntityService trackedEntityService;
 
     @Autowired
     private TrackedEntityInstanceService trackedEntityInstanceService;
@@ -109,10 +115,18 @@ public class RegistrationMultiEventsServiceTest
         identifiableObjectManager.save( organisationUnitA );
         identifiableObjectManager.save( organisationUnitB );
 
+        TrackedEntity trackedEntity = createTrackedEntity( 'A' );
+        trackedEntityService.addTrackedEntity( trackedEntity );
+
         maleA = createTrackedEntityInstance( 'A', organisationUnitA );
         maleB = createTrackedEntityInstance( 'B', organisationUnitB );
         femaleA = createTrackedEntityInstance( 'C', organisationUnitA );
         femaleB = createTrackedEntityInstance( 'D', organisationUnitB );
+
+        maleA.setTrackedEntity( trackedEntity );
+        maleB.setTrackedEntity( trackedEntity );
+        femaleA.setTrackedEntity( trackedEntity );
+        femaleB.setTrackedEntity( trackedEntity );
 
         identifiableObjectManager.save( maleA );
         identifiableObjectManager.save( maleB );
@@ -167,7 +181,7 @@ public class RegistrationMultiEventsServiceTest
         createUserAndInjectSecurityContext( true );
     }
 
-    @Override
+    // @Override
     public boolean emptyDatabaseAfterTest()
     {
         return true;
