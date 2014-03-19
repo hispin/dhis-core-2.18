@@ -3838,7 +3838,8 @@ Ext.onReady( function() {
             // organisation unit
 		treePanel = Ext.create('Ext.tree.Panel', {
 			cls: 'ns-tree',
-			height: 433,
+			height: 436,
+			width: accBaseWidth,
             bodyStyle: 'border:0 none',
 			style: 'border-top: 1px solid #ddd; padding-top: 1px',
 			displayField: 'name',
@@ -4275,14 +4276,14 @@ Ext.onReady( function() {
         organisationUnit = Ext.create('Ext.panel.Panel', {
             title: '<div class="ns-panel-title-organisationunit">' + NS.i18n.organisation_units + '</div>',
             cls: 'ns-accordion-last',
-            bodyStyle: 'padding:2px',
+            bodyStyle: 'padding:1px',
             hideCollapseTool: true,
             items: [
                 {
                     layout: 'column',
                     width: accBaseWidth,
                     bodyStyle: 'border:0 none',
-                    style: 'padding-bottom:2px',
+                    style: 'padding-bottom:1px',
                     items: [
                         toolPanel,
                         organisationUnitPanel
@@ -6140,38 +6141,42 @@ Ext.onReady( function() {
 
 								// root nodes
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits.json?level=1&paging=false&links=false&viewClass=detailed',
+									url: init.contextPath + '/api/organisationUnits/filtered.json?userDataViewFallback=true&include=id,name,children[id,name]',
 									success: function(r) {
-										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
+										init.rootNodes = Ext.decode(r.responseText).objects || [];
 										fn();
 									}
 								});
 
 								// organisation unit levels
 								requests.push({
-									url: init.contextPath + '/api/organisationUnitLevels.json?paging=false&links=false',
+									url: init.contextPath + '/api/organisationUnitLevels/filtered.json?include=id,name,level&paging=false',
 									success: function(r) {
-										init.organisationUnitLevels = Ext.decode(r.responseText).organisationUnitLevels || [];
+										init.organisationUnitLevels = Ext.decode(r.responseText).objects || [];
 										fn();
 									}
 								});
 
 								// user orgunits and children
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits.json?userOnly=true&viewClass=detailed&links=false',
+									url: init.contextPath + '/api/organisationUnits/filtered.json?userOnly=true&include=id,name,children[id,name]&paging=false',
 									success: function(r) {
-										var organisationUnits = Ext.decode(r.responseText).organisationUnits || [];
+										var organisationUnits = Ext.decode(r.responseText).objects || [],
+											ou = [],
+											ouc = [];
 
 										if (organisationUnits.length) {
-											var ou = organisationUnits[0];
+											for (var i = 0, org; i < organisationUnits.length; i++) {
+												org = organisationUnits[i];
 
-											if (ou.id) {
-												init.user = {
-													ou: ou.id
-												};
+												ou.push(org.id);
+												ouc = Ext.Array.clean(ouc.concat(Ext.Array.pluck(org.children, 'id') || []));
+											}
 
-												init.user.ouc = ou.children ? Ext.Array.pluck(ou.children, 'id') : null;
-											};
+											init.user = {
+												ou: ou,
+												ouc: ouc
+											}
 										}
 										else {
 											alert('User is not assigned to any organisation units');
@@ -6182,13 +6187,13 @@ Ext.onReady( function() {
 								});
 
 								// legend sets
-								requests.push({
-									url: init.contextPath + '/api/mapLegendSets.json?viewClass=detailed&links=false&paging=false',
-									success: function(r) {
-										init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
-										fn();
-									}
-								});
+								//requests.push({
+									//url: init.contextPath + '/api/mapLegendSets.json?viewClass=detailed&links=false&paging=false',
+									//success: function(r) {
+										//init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
+										//fn();
+									//}
+								//});
 
 								// dimensions
 								requests.push({
