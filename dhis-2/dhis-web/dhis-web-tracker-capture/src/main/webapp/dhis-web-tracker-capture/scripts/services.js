@@ -116,7 +116,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             return promise;
         },
         getByOrgUnitAndProgram: function(orgUnitUid, programUid) {
-            promise = $http.get(  '../api/trackedEntityInstances.json?orgUnit=' + orgUnitUid + '&program=' + programUid ).then(function(response){
+            promise = $http.get(  '../api/trackedEntityInstances.json?ou=' + orgUnitUid + '&program=' + programUid ).then(function(response){
                 
                 var trackedEntityList = response.data.personList;
                 
@@ -127,7 +127,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             return promise;
         },
         getByOrgUnit: function(orgUnitUid) {
-            promise = $http.get(  '../api/trackedEntityInstances.json?orgUnit=' + orgUnitUid ).then(function(response){
+            promise = $http.get(  '../api/trackedEntityInstances.json?ou=' + orgUnitUid ).then(function(response){
                 
                 var trackedEntityList = response.data.personList;                
                 

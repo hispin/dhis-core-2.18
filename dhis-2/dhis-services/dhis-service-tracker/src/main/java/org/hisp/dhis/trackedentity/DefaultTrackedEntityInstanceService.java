@@ -140,10 +140,6 @@ public class DefaultTrackedEntityInstanceService
     // Implementation methods
     // -------------------------------------------------------------------------
 
-    //TODO queries with multiple words
-    //TODO case sensitivity
-    //TODO lower index on attribute value?
-    
     @Override
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
@@ -215,11 +211,6 @@ public class DefaultTrackedEntityInstanceService
         if ( params == null )
         {
             throw new IllegalQueryException( "Params cannot be null" );
-        }
-        
-        if ( !params.hasQuery() && !params.hasAttributes() )
-        {
-            violation = "At least one of query and attributes must be specified";
         }
 
         if ( !params.hasOrganisationUnits() )
