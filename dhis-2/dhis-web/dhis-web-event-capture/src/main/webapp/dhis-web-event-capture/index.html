@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html manifest="event-capture.appcache" ng-app="eventCapture">
+<!--<html manifest="event-capture.appcache" ng-app="eventCapture">-->
+<html ng-app="eventCapture">
     <head>
         <title>Event Capture</title>
 
@@ -44,7 +45,7 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
-        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
+        <!--<script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>-->
         <script type="text/javascript" src="../dhis-web-commons/ouwt/ouwt.js"></script>
         
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
@@ -231,7 +232,7 @@
                                         </tr>                        
                                     </thead>
                                     <tbody id="list">
-                                        <tr ng-repeat="dhis2Event in dhis2Events | paginate:rowsPerPage | orderBy:sortHeader:reverse | gridFilter:filterText:programStageDataElements" 
+                                        <tr ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:programStageDataElements" 
                                             ng-click="showContextMenu(dhis2Event)">
 
                                             <!-- Visible when event is not under editing -->
@@ -260,7 +261,7 @@
                                                                    name="foo" 
                                                                    style="width:98%;"
                                                                    ng-class="{true: 'input-error', false: 'input-success'} [outerForm.submitted]"/>
-                                                                   <!--ng-class="{'input-error': (outerForm.submitted && innerFormGrid.foo.$invalid), 'input-success': (outerForm.submitted && innerFormGrid.foo.$valid)}/>"-->                                                                   
+                                                                   
                                                             <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
                                                         </div>
                                                         <div ng-switch-when="string">                                        
@@ -301,10 +302,7 @@
                                                             <span ng-show="outerForm.submitted && innerFormGrid.foo.$invalid" class="red">{{'required'| translate}}</span>
                                                         </div>
                                                     </div>
-                                                </ng-form>
-                                                <!--<span ng-show="(currentEvent.event == dhis2Event.event) && (($index +1 ) === eventGridColumns.length)">
-                                                    <a href ng-click="showEventList()" title="{{'close_editing'| translate}}"><span class='black'><i class="fa fa-times-circle-o fa-2x"></i></span></a>                                                    
-                                                </span>-->
+                                                </ng-form>                                                
                                             </td>
                                            <td>                                
                                                 <span ng-show="currentEvent.event == dhis2Event.event">
@@ -314,7 +312,7 @@
                                         </tr>
                                     </tbody>        
                                 </table>
-                                <paginator></paginator>
+                                <serverside-paginator></serverside-paginator>
                             </form>
                             <!-- grid ends -->
                         </div>
@@ -507,8 +505,8 @@
                             <button ng-click="showEventList(null)" class="button">{{'close'| translate}}</button>
                         </form>
                     </div>
-                </div>                
-                <!-- event registration ends -->                 
+                </div>              
+                <!-- event registration ends -->              
                 
             </div>           
         </div>

@@ -195,13 +195,23 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
   };
 })
 
-.directive('paginator', function factory() {
+.directive('serversidePaginator', function factory() {
     return {
         restrict: 'E',
         controller: function ($scope, Paginator) {
             $scope.paginator = Paginator;
         },
-        templateUrl: 'views/pagination.html'
+        templateUrl: 'views/serverside-pagination.html'
+    };
+})
+
+.directive('clientsidePaginator', function factory() {
+    return {
+        restrict: 'E',
+        controller: function ($scope, Paginator) {
+            $scope.paginator = Paginator;
+        },
+        templateUrl: 'views/clientside-pagination.html'
     };
 });
 

@@ -68,7 +68,7 @@ var eventCaptureFilters = angular.module('eventCaptureFilters', [])
 
         if (rowsPerPage) {
             Paginator.rowsPerPage = rowsPerPage;
-        }
+        }       
         
         Paginator.itemCount = input.length;
 

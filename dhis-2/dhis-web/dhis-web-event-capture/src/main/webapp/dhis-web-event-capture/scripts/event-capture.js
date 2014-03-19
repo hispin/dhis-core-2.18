@@ -123,7 +123,7 @@ $(document).ready(function()
         }
     });
    
-    dhis2.availability.startAvailabilityCheck();
+    //dhis2.availability.startAvailabilityCheck();
     
 });
 
