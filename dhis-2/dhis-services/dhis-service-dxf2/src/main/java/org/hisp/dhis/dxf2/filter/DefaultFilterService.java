@@ -124,7 +124,7 @@ public class DefaultFilterService implements FilterService
         return output;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private Map<String, Object> buildObjectOutput( Object object, Map<String, Map> fieldMap )
     {
         if ( object == null )
@@ -200,7 +200,7 @@ public class DefaultFilterService implements FilterService
         return getIdentifiableObjectCollectionProperties( object, fields );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private List<Map<String, Object>> getIdentifiableObjectCollectionProperties( Object object, List<String> fields )
     {
         List<Map<String, Object>> output = Lists.newArrayList();
@@ -256,7 +256,7 @@ public class DefaultFilterService implements FilterService
         return idProps;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private <T extends IdentifiableObject> boolean evaluateWithFilters( T object, Filters filters )
     {
         Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
