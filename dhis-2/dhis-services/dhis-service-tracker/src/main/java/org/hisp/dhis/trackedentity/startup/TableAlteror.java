@@ -278,6 +278,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE program_attributes RENAME COLUMN programattributeid TO programtrackedentityattributeid" );
         createPersonTrackedEntity();
 
+        executeSql( "ALTER TABLE trackedentityattributevalue DROP COLUMN trackedentityattributeoptionid" );
+        executeSql( "DROP TABLE trackedentityattributeoption" );
     }
 
     // -------------------------------------------------------------------------
