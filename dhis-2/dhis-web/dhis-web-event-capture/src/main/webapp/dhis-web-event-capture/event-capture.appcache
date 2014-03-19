@@ -80,7 +80,7 @@ scripts/directives.js
 scripts/controllers.js
 scripts/filters.js
 
-views/pagination.html
+views/serverside-pagination.html
 views/modal.html
 views/dialog.html
 

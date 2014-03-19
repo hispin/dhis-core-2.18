@@ -26,7 +26,6 @@
     <module>dhis-web-visualizer</module>
     <module>dhis-web-pivot</module>    
     <module>dhis-web-dashboard-integration</module>
-    <module>dhis-web-event-capture</module>
     <module>dhis-web-event-reports</module>
     <module>dhis-web-tracker-capture</module>
     <module>dhis-web-caseentry</module>    

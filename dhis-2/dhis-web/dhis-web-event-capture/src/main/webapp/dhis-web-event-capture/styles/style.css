@@ -64,11 +64,11 @@ div.paging a.active
     cursor: default;
 }
 
-.input-error {
+.update-error {
     background-color: #ff6600;
 }
 
-.input-success {
+.update-success {
     background-color: #b9ffb9;
 }
 
