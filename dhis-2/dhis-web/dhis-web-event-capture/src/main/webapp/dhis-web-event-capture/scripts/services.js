@@ -88,25 +88,13 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 .factory('DHIS2EventFactory', function($http) {   
     
     return {
-        
-        getByPerson: function(person, orgUnit, program){   
-            var promise = $http.get('../api/events.json?' + 'person=' + person + '&orgUnit=' + orgUnit + '&program=' + program + '&paging=false').then(function(response){
-                return response.data.eventList;
-            });            
-            return promise;
-        },
-        
-        getByStage: function(orgUnit, programStage){
-            var promise = $http.get('../api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&paging=false')
-            //var promise = $http.get('../api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage )
-                    .then(function(response){
-                        
-                return response.data.eventList;             
-        
-            }, function(){
-                
-                return dhis2.ec.storageManager.getEvents(orgUnit, programStage);
-                
+        getByStage: function(orgUnit, programStage, pager){
+            var url = '../api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&pageSize=' + pager.pageSize + '&page=' + pager.page;            
+            
+            var promise = $http.get( url ).then(function(response){                        
+                return response.data;        
+            }, function(){                
+                return dhis2.ec.storageManager.getEvents(orgUnit, programStage);                
             });            
             
             return promise;
@@ -114,8 +102,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
         
         get: function(eventUid){            
             var promise = $http.get('../api/events/' + eventUid + '.json').then(function(response){               
-                return response.data;
-                
+                return response.data;                
             }, function(){
                 return dhis2.ec.storageManager.getEvent(eventUid);
             });            
@@ -295,13 +282,14 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 
 /* Pagination service */
 .service('Paginator', function () {
-    this.page = 0;
-    this.rowsPerPage = 50;
+    this.page = 1;
+    this.pageSize = 50;
     this.itemCount = 0;
-    this.limitPerPage = 5;
+    this.pageCount = 0;
+    this.toolBarDisplay = 5;
 
     this.setPage = function (page) {
-        if (page > this.pageCount()) {
+        if (page > this.getPageCount()) {
             return;
         }
 
@@ -312,59 +300,42 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
         return this.page;
     };
     
-    this.getRowsPerPage = function(){
-        return this.rowsPerPage;
+    this.setPageSize = function(pageSize){
+      this.pageSize = pageSize;
+    };
+    
+    this.getPageSize = function(){
+        return this.pageSize;
+    };
+    
+    this.setItemCount = function(itemCount){
+      this.itemCount = itemCount;
+    };
+    
+    this.getItemCount = function(){
+        return this.itemCount;
+    };
+    
+    this.setPageCount = function(pageCount){
+        this.pageCount = pageCount;
     };
 
-    this.nextPage = function () {
-        if (this.isLastPage()) {
-            return;
-        }
-
-        this.page++;
-    };
-
-    this.perviousPage = function () {
-        if (this.isFirstPage()) {
-            return;
-        }
-
-        this.page--;
-    };
-
-    this.firstPage = function () {
-        this.page = 0;
-    };
-
-    this.lastPage = function () {
-        this.page = this.pageCount() - 1;
-    };
-
-    this.isFirstPage = function () {
-        return this.page == 0;
-    };
-
-    this.isLastPage = function () {
-        return this.page == this.pageCount() - 1;
-    };
-
-    this.pageCount = function () {
-        var count = Math.ceil(parseInt(this.itemCount, 10) / parseInt(this.rowsPerPage, 10)); 
-        if (count === 1) { this.page = 0; } return count;
+    this.getPageCount = function () {
+        return this.pageCount;
     };
 
     this.lowerLimit = function() { 
-        var pageCountLimitPerPageDiff = this.pageCount() - this.limitPerPage;
+        var pageCountLimitPerPageDiff = this.getPageCount() - this.toolBarDisplay;
 
         if (pageCountLimitPerPageDiff < 0) { 
             return 0; 
         }
 
-        if (this.page > pageCountLimitPerPageDiff + 1) { 
+        if (this.getPage() > pageCountLimitPerPageDiff + 1) { 
             return pageCountLimitPerPageDiff; 
         } 
 
-        var low = this.page - (Math.ceil(this.limitPerPage/2) - 1); 
+        var low = this.getPage() - (Math.ceil(this.toolBarDisplay/2) - 1); 
 
         return Math.max(low, 0);
     };
