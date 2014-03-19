@@ -1115,10 +1115,14 @@ Ext.onReady( function() {
 									userOugc;
 
 								if (init.user && isUserOrgunit) {
-									userOu = [{
-										id: init.user.ou,
-										name: service.layout.getItemName(xLayout, response, init.user.ou, false)
-									}];
+									userOu = [];
+
+									for (var j = 0; j < init.user.ou.length; j++) {
+										userOu.push({
+											id: init.user.ou[j],
+											name: service.layout.getItemName(xLayout, response, init.user.ou[j], false)
+										});
+									}
 								}
 								if (init.user && init.user.ouc && isUserOrgunitChildren) {
 									userOuc = [];
