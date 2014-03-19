@@ -35,6 +35,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.HashSet;
 
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
@@ -45,6 +46,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.trackedentity.TrackedEntity;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +56,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class TrackedEntityInstanceServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
+    @Autowired
+    private TrackedEntityService trackedEntityService;
+
     @Autowired
     private TrackedEntityInstanceService trackedEntityInstanceService;
 
@@ -82,10 +88,18 @@ public class TrackedEntityInstanceServiceTest
 
         organisationUnitB.setParent( organisationUnitA );
 
+        TrackedEntity trackedEntity = createTrackedEntity( 'A' );
+        trackedEntityService.addTrackedEntity( trackedEntity );
+
         maleA = createTrackedEntityInstance(  'A', organisationUnitA );
         maleB = createTrackedEntityInstance( 'B', organisationUnitB );
         femaleA = createTrackedEntityInstance( 'C', organisationUnitA );
         femaleB = createTrackedEntityInstance( 'D', organisationUnitB );
+
+        maleA.setTrackedEntity( trackedEntity );
+        maleB.setTrackedEntity( trackedEntity );
+        femaleA.setTrackedEntity( trackedEntity );
+        femaleB.setTrackedEntity( trackedEntity );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         manager.save( organisationUnitA );
@@ -100,7 +114,7 @@ public class TrackedEntityInstanceServiceTest
         programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA, null );
     }
 
-    @Override
+    // @Override
     public boolean emptyDatabaseAfterTest()
     {
         return true;
