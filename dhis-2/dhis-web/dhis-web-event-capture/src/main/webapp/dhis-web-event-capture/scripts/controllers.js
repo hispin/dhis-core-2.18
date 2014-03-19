@@ -32,6 +32,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.editGridColumns = false;
     $scope.editingEventInFull = false;
     $scope.editingEventInGrid = false;   
+    $scope.currentGridColumnId = '';    
     
     $scope.programStageDataElements = [];
                 
@@ -92,7 +93,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     //get events for the selected program (and org unit)
     $scope.loadEvents = function(program, pager){   
         
-        //$scope.dhis2Events = [];
+        $scope.dhis2Events = [];
                
         if( program ){
             
@@ -114,7 +115,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 var dataElement = prStDe.dataElement;
                 var name = dataElement.formName || dataElement.name;
                 $scope.newDhis2Event.dataValues.push({id: dataElement.id, value: ''});                       
-                $scope.eventGridColumns.push({name: name, id: dataElement.id, type: dataElement.type, showFilter: false, hide: false});
+                $scope.eventGridColumns.push({name: name, id: dataElement.id, type: dataElement.type, compulsory: prStDe.compulsory, showFilter: false, hide: false});
 
                 if(dataElement.type === 'date'){
                      $scope.filterText[dataElement.id]= {start: '', end: ''};
@@ -337,6 +338,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
        
     $scope.updateEventDataValue = function(currentEvent, dataElement){
         
+        //get current column
+        $scope.currentGridColumnId = dataElement;
+        
         //get new and old values
         var newValue = currentEvent[dataElement];
         var oldValue = $scope.currentEventOrginialValue[dataElement];
@@ -344,9 +348,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         //check for form validity
         $scope.outerForm.submitted = true;        
         if( $scope.outerForm.$invalid ){
-            console.log('the form is invalid');
+            $scope.updateSuccess = false;
             currentEvent[dataElement] = oldValue;
-            return false;
+            return;
         }      
                 
         if( newValue !== oldValue ){                     
@@ -364,7 +368,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 }
                 
                 //update original value
-                $scope.currentEventOrginialValue = angular.copy(currentEvent);                
+                $scope.currentEventOrginialValue = angular.copy(currentEvent);      
+                
+                $scope.updateSuccess = true;
             });            
         }
     };

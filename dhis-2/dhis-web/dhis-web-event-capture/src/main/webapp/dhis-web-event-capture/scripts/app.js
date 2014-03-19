@@ -13,7 +13,7 @@ var eventCapture = angular.module('eventCapture',
 		  'angularLocalStorage', 
 		  'pascalprecht.translate'])
               
-.value('DHIS2URL', '../..')
+.value('DHIS2URL', '../')
 
 .config(function($httpProvider, $translateProvider) {    
             
