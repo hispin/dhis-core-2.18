@@ -140,6 +140,11 @@ public class DefaultTrackedEntityInstanceService
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    //TODO Bug: use full outer join when no filter
+    
+    //TODO queries with multiple words
+    //TODO lower index on attribute value?
+    
     @Override
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
@@ -150,15 +155,20 @@ public class DefaultTrackedEntityInstanceService
         // attributes from program if exists, if not, use all attributes.
         // ---------------------------------------------------------------------
 
-        if ( params.isOrQuery() && !params.hasAttributesOrFilters() )
+        if ( !params.hasAttributesOrFilters() )
         {
             if ( params.hasProgram() )
             {
                 params.getAttributes().addAll( QueryItem.getQueryItems( params.getProgram().getTrackedEntityAttributes() ) );
             }
-            else
+            else 
             {
-                params.getAttributes().addAll( QueryItem.getQueryItems( attributeService.getAllTrackedEntityAttributes() ) );
+                Collection<TrackedEntityAttribute> filters = attributeService.getAllTrackedEntityAttributes();
+                Collection<TrackedEntityAttribute> attributes = attributeService.getTrackedEntityAttributesDisplayedInList( true );
+                filters.removeAll( attributes );
+                
+                params.getAttributes().addAll( QueryItem.getQueryItems( attributes ) );
+                params.getFilters().addAll( QueryItem.getQueryItems( filters ) );
             }
         }
 
