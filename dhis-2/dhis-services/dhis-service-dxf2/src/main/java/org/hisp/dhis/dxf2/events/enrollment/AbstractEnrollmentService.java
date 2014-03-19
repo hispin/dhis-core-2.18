@@ -111,6 +111,7 @@ public abstract class AbstractEnrollmentService
     public Enrollments getEnrollments( TrackedEntityInstance trackedEntityInstance )
     {
         org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
+
         return getEnrollments( entityInstance );
     }
 
@@ -225,6 +226,11 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollment getEnrollment( ProgramInstance programInstance )
     {
+        if ( programInstance.getEntityInstance() == null )
+        {
+            return null;
+        }
+
         Enrollment enrollment = new Enrollment();
 
         enrollment.setEnrollment( programInstance.getUid() );
@@ -401,6 +407,7 @@ public abstract class AbstractEnrollmentService
     @Override
     public void completeEnrollment( Enrollment enrollment )
     {
+
         ProgramInstance programInstance = programInstanceService.getProgramInstance( enrollment.getEnrollment() );
         Assert.notNull( programInstance );
 
