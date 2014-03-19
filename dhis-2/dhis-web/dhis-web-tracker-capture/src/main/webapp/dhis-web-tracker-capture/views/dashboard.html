@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../dhis-web-commons/bootstrap/css/bootstrap.min.css">
 
 <div class="container-1-1">
 
@@ -35,95 +35,22 @@
                     </accordion-group>
                 </accordion>                
             </div>
-            <div class="col-sm-3 col-md-3">
-                <accordion>
-                    <accordion-group is-open="{{profile.isOpen}}">
-                        <accordion-heading>
-                            <span class="list-title"> {{selectedProgram.trackedEntity.name|| 'entity' | translate}} {{profile.title| translate}}</span>
-                        </accordion-heading>
-                        <div>
-                            <div class="list-element" ng-repeat="attribute in selectedEntity.attributes">
-                                {{attribute.displayName}}
-                                <div class="right">
-                                    <div ng-switch="attribute.type">
-                                        <div ng-switch-when="date">
-                                            <input type="text" ng-date ng-model="attribute.value" value="attribute.value | date:'yyyy-MM-dd"/>
-                                        </div>
-                                        <div ng-switch-when="trueOnly">
-                                            <input type="checkbox" ng-model="attribute.value" />
-                                        </div>
-                                        <div ng-switch-when="bool">
-                                            <select ng-model="attribute.value" />
-                                            <option value="">{{'please_select'| translate}}</option>                        
-                                            <option value="0">{{'no'| translate}}</option>
-                                            <option value="1">{{'yes'| translate}}</option>
-                                            </select>
-                                        </div>
-                                        <div ng-switch-when="combo">
-                                            <input type="text" 
-                                                   ng-model="attribute.value"                                                 
-                                                   typeahead="option.name for option in attributes[attribute.attribute].personAttributeOptions | filter:$viewValue | limitTo:20" 
-                                                   typeahead-open-on-focus 
-                                                   />
-                                        </div>
-                                        <div ng-switch-when="number">
-                                            <input type="number" ng-model="attribute.value" />
-                                        </div>
-                                        <div ng-switch-default>
-                                            <input type="text" ng-model="attribute.value" />                                        
-                                        </div>
-                                    </div>                                                                                                    
-                                </div>
-                            </div>
-                        </div>                        
-                    </accordion-group>
-                </accordion>                
+            <div class="col-sm-3 col-md-3" ng-controller="ProfileController">
+                <div ng-include="'views/profile.html'"></div>                
             </div>
-            <div class="col-sm-3 col-md-3">
-                <accordion>
-                    <accordion-group is-open="{{enrollment.isOpen}}">
-                        <accordion-heading>
-                            <span class="list-title">{{enrollment.title| translate}}</span>
-                        </accordion-heading>                        
-                        <div class="list-element-container">
-                            <div class="list-element"> 
-                                {{'program'| translate}}
-                                <span class="right">
-                                    <select ng-model="selectedProgram" 
-                                            ng-options="program as program.name for program in programs | orderBy: 'name'" 
-                                            ng-change="showEnrollment()">
-                                        <option value="">{{'please_select'| translate}}</option>
-                                    </select>
-                                </span>
-                            </div>                            
-                        </div>                        
-                    </accordion-group>
-                </accordion>                
+            <div class="col-sm-3 col-md-3" ng-controller="EnrollmentController">
+                <div ng-include="'views/enrollment.html'"></div>                
             </div>
-            <div class="col-sm-3 col-md-3">
-                <accordion>
-                    <accordion-group is-open="{{notes.isOpen}}">
-                        <accordion-heading>
-                            <span class="list-title">{{notes.title| translate}}</span>
-                        </accordion-heading>                        
-                        This is notes.
-                    </accordion-group>
-                </accordion>               
+            <div class="col-sm-3 col-md-3" ng-controller="NotesController">
+                  <div ng-include="'views/notes.html'"></div>             
             </div>
         </div>
     </div>
 
     <div class='separator'></div>
 
-    <div class="col-xs-12">
-        <accordion>
-            <accordion-group is-open="{{dataEntry.isOpen}}">
-                <accordion-heading>
-                    <span class="list-title">{{dataEntry.title| translate}}</span>
-                </accordion-heading>                        
-                This is data entry.
-            </accordion-group>
-        </accordion>
+    <div class="col-xs-12" ng-controller="DataEntryController">
+        <div ng-include="'views/dataentry.html'"></div>
     </div> 
 
 </div>

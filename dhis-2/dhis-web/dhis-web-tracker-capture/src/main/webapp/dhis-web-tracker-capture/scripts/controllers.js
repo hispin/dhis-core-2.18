@@ -95,16 +95,14 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
             //Load entities for the selected program and orgunit
             TrackedEntityService.getByOrgUnitAndProgram($scope.selectedOrgUnit.id, $scope.selectedProgram.id).then(function(data){
-                $scope.trackedEntityList = data;      
-                console.log('the entities are:  ', $scope.trackedEntityList);
+                $scope.trackedEntityList = data;                
             });            
         }
         else{
             
             //Load entities for the selected orgunit
             TrackedEntityService.getByOrgUnit($scope.selectedOrgUnit.id).then(function(data){
-                $scope.trackedEntityList = data;  
-                console.log('the entities are:  ', $scope.trackedEntityList);
+                $scope.trackedEntityList = data;                
             });
         }
     };
@@ -155,7 +153,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.showDashboard = function(currentEntity){       
         SelectedEntity.setSelectedEntity(currentEntity);
         storage.set('SELECTED_OU', $scope.selectedOrgUnit);        
-        $location.path('/dashboard').search({selectedEntityId: currentEntity.person, selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id : null});                                    
+        $location.path('/dashboard').search({selectedEntityId: currentEntity.id, selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id : null});                                    
     };   
     
     $scope.search = function(){       
@@ -169,28 +167,18 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
 //Controller for dashboard
 .controller('DashboardController',
-        function($scope,  
+        function($rootScope,
+                $scope,
                 $location,
                 storage,
-                EnrollmentService,
                 TrackedEntityService,                
                 TranslationService) {
 
     //do translation of the dashboard page
     TranslationService.translate();    
     
-    //dashboard contents
-    $scope.profile = {title: 'profile', isOpen: true};
-    $scope.enrollment = {title: 'enrollment', isOpen: true};
-    $scope.notes = {title: 'notes', isOpen: true};
-    $scope.dataEntry = {title: 'dataentry', isOpen: true};  
-    $scope.selected = {title: 'current_selections', isOpen: true, selections: []};        
-    
-    //attributes for profile    
-    $scope.attributes = {};    
-    angular.forEach(storage.get('ATTRIBUTES'), function(attribute){
-        $scope.attributes[attribute.id] = attribute;
-    });   
+    //dashboard item   
+    $scope.selected = {title: 'current_selections', isOpen: true, selections: []};
     
     //selections
     $scope.selectedEntityId = ($location.search()).selectedEntityId;
@@ -202,34 +190,19 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     if($scope.selectedProgramId){
         $scope.selectedProgram = storage.get($scope.selectedProgramId);        
-    }
-    
-    //programs for enrollment
-    $scope.programs = [];
-    var programs = storage.get('PROGRAMS');            
-    if( programs ){
-        for(var i=0; i<programs.length; i++){
-            var program = storage.get(programs[i].id);   
-            if($scope.selectedProgramId == programs[i].id){
-                $scope.selectedProgram = program;
-            }
-            if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id)){
-                $scope.programs.push(program);
-            }
-        }               
     }   
-    
+        
     if( $scope.selectedEntityId ){
         
         //Fetch the selected entity
         TrackedEntityService.get($scope.selectedEntityId).then(function(data){
-            $scope.selectedEntity = data;            
-            console.log('the entity is:  ', $scope.selectedEntity);
-        });
-        
-        EnrollmentService.get($scope.selectedEntityId).then(function(data){
-            console.log('enrollment:  ', data);
-        });
+            $scope.selectedEntity = data;    
+            
+            //broadcast for all the dashboard item
+            $rootScope.$broadcast('selectedItems', {selectedEntity: $scope.selectedEntity, 
+                                                    selectedProgramId: $scope.selectedProgramId, 
+                                                    selectedOrgUnitId: $scope.selectedOrgUnit.id});            
+        });       
     }
     
     $scope.selected.selections.push({title: 'registering_unit', value: $scope.selectedOrgUnit ? $scope.selectedOrgUnit.name : 'not_selected'});
@@ -246,16 +219,72 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
 })
 
+//Controller for the profile section
+.controller('ProfileController',
+        function($scope,                
+                storage,
+                TranslationService) {
+
+    TranslationService.translate();
+    
+    $scope.profile = {title: 'profile', isOpen: true};
+    
+    //attributes for profile    
+    $scope.attributes = {};    
+    angular.forEach(storage.get('ATTRIBUTES'), function(attribute){
+        $scope.attributes[attribute.id] = attribute;
+    }); 
+    
+    //listen for the selected items
+    $scope.$on('selectedItems', function(event, args) {        
+        $scope.selectedEntity = args.selectedEntity;                 
+    });
+    
+})
+
+
 //Controller for the enrollment section
 .controller('EnrollmentController',
         function($scope,                
                 storage,
+                EnrollmentService,
                 TranslationService) {
 
     TranslationService.translate();
     
-    $scope.attributes = storage.get('ATTRIBUTES');
+    $scope.enrollment = {title: 'enrollment', isOpen: true};
     
+    //listen for the selected items
+    $scope.$on('selectedItems', function(event, args) {        
+        $scope.selectedEntity = args.selectedEntity;
+        $scope.selectedProgramId = args.selectedProgramId;
+        $scope.selectedOrgUnitId = args.selectedOrgUnitId;
+        
+        //programs for enrollment
+        $scope.programs = [];
+        var programs = storage.get('PROGRAMS');            
+        if( programs ){
+            
+            for(var i=0; i<programs.length; i++){
+                
+                var program = storage.get(programs[i].id);
+                
+                if($scope.selectedProgramId == program.id){
+                    $scope.selectedProgram = program;
+                }
+                
+                if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnitId) && 
+                        program.trackedEntity.id == $scope.selectedEntity.trackedEntity){
+                    
+                    $scope.programs.push(program);
+                }
+            }
+        } 
+        
+        EnrollmentService.get($scope.selectedEntity.trackedEntityInstance).then(function(data){
+            console.log('enrollment:  ', data);
+        });
+    });        
 })
 
 //Controller for the notes section
@@ -266,17 +295,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
     TranslationService.translate();
     
-    $scope.attributes = storage.get('ATTRIBUTES');
-    
-})
-
-//Controller for the notes section
-.controller('NotesController',
-        function($scope,                
-                storage,
-                TranslationService) {
-
-    TranslationService.translate();
+    $scope.notes = {title: 'notes', isOpen: true};
     
     $scope.attributes = storage.get('ATTRIBUTES');
     
@@ -289,6 +308,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 TranslationService) {
 
     TranslationService.translate();
+    
+    $scope.dataEntry = {title: 'dataentry', isOpen: true};  
     
     $scope.attributes = storage.get('ATTRIBUTES');
     

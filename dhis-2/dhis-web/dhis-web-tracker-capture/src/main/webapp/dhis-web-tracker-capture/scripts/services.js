@@ -89,7 +89,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     
     return {        
         get: function( entity ){
-            var promise = $http.get(  '../api/enrollments?person=' + entity ).then(function(response){
+            var promise = $http.get(  '../api/enrollments?trackedEntityInstance=' + entity ).then(function(response){
                 return response.data;
             });
             return promise;
@@ -115,30 +115,30 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });            
             return promise;
         },
+        
         getByOrgUnitAndProgram: function(orgUnitUid, programUid) {
-            promise = $http.get(  '../api/trackedEntityInstances.json?ou=' + orgUnitUid + '&program=' + programUid ).then(function(response){
-                
-                var trackedEntityList = response.data.personList;
-                
-                trackedEntityList = entityFormatter(trackedEntityList, AttributesFactory.getForListing());                 
-                                
-                return trackedEntityList;
+            
+            var attributes = AttributesFactory.convertListingForToQuery();
+            var url = '../api/trackedEntityInstances.json?ou=' + orgUnitUid + '&program=' + programUid;
+            
+            promise = $http.get(  url + attributes ).then(function(response){
+               
+                return entityFormatter(response.data);
             });            
             return promise;
         },
         getByOrgUnit: function(orgUnitUid) {
-            promise = $http.get(  '../api/trackedEntityInstances.json?ou=' + orgUnitUid ).then(function(response){
-                
-                var trackedEntityList = response.data.personList;                
-                
-                trackedEntityList = entityFormatter(trackedEntityList, AttributesFactory.getForListing());
+            
+            var attributes = AttributesFactory.convertListingForToQuery();
+            var url =  '../api/trackedEntityInstances.json?ou=' + orgUnitUid;
+            
+            promise = $http.get( url + attributes ).then(function(response){
                                 
-                return trackedEntityList;
+                return entityFormatter(response.data);
             });            
             return promise;
         }
-    };    
-    
+    };
 })
 
 /* Factory for getting tracked entity attributes */
@@ -165,6 +165,14 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });           
 
             return attributes;
+        },
+        convertListingForToQuery: function(){
+            var param = '';
+            angular.forEach(this.getForListing(), function(attribute) {
+                param +=  '&' + 'attribute=' + attribute.id;
+            });
+            
+            return param;
         }
     };
 })
@@ -478,29 +486,35 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 */
 //This is is to have consistent display of entities and attributes
 //as every entity might not have value for every attribute.                
-function entityFormatter(entityList, attributesForListing){        
-
-   angular.forEach(entityList, function(trackedEntity){
-
-       //assume every entity has value for each attribute
-       //initially all are empty                                                 
-       angular.forEach(attributesForListing, function(attribute){
-
-           var loop = true;
-           var att = angular.copy(attribute);
-           att.value = '';
-
-           for(var i=0; i<trackedEntity.attributes.length && loop; i++){
-               if(trackedEntity.attributes[i].attribute == attribute.id){
-                   att.value = trackedEntity.attributes[i].value;
-                   loop = false;
-               }
-           }
-
-           trackedEntity[att.id] = att.value;
-
-       });
-   });
-
-   return entityList;
+function entityFormatter(grid){
+    
+    if(!grid || !grid.rows){
+        return;
+    }   
+   
+    //grid.headers[0-4] = Instance, Created, Last updated, Org unit, Tracked entity
+    //grid.headers[5..] = Attribute, Attribute,.... 
+    var attributes = [];
+    for(var i=5; i<grid.headers.length; i++){
+        attributes.push({id: grid.headers[i].name, name: grid.headers[i].column});
+    }
+    
+    var entityList = [];
+    
+    angular.forEach(grid.rows, function(row){
+        var entity = {};
+        
+        entity.id = row[0];
+        entity.orgUnit = row[3];
+        entity.type = row[4];        
+        
+        for(var i=5; i<row.length; i++){
+            entity[grid.headers[i].name] = row[i];            
+        }
+        
+        entityList.push(entity);        
+        
+    });
+    
+    return {headers: attributes, rows: entityList};
 }

@@ -1,0 +1,42 @@
+<accordion>
+    <accordion-group is-open="{{profile.isOpen}}">
+        <accordion-heading>
+            <span class="list-title"> {{selectedProgram.trackedEntity.name || 'entity' | translate}} {{profile.title| translate}}</span>
+        </accordion-heading>
+        <div>
+            <div class="list-element" ng-repeat="attribute in selectedEntity.attributes">
+                {{attribute.displayName}}
+                <div class="right">
+                    <div ng-switch="attribute.type">
+                        <div ng-switch-when="date">
+                            <input type="text" ng-date ng-model="attribute.value" value="attribute.value | date:'yyyy-MM-dd"/>
+                        </div>
+                        <div ng-switch-when="trueOnly">
+                            <input type="checkbox" ng-model="attribute.value" />
+                        </div>
+                        <div ng-switch-when="bool">
+                            <select ng-model="attribute.value" />
+                            <option value="">{{'please_select'| translate}}</option>                        
+                            <option value="0">{{'no'| translate}}</option>
+                            <option value="1">{{'yes'| translate}}</option>
+                            </select>
+                        </div>
+                        <div ng-switch-when="combo">
+                            <input type="text" 
+                                   ng-model="attribute.value"                                                 
+                                   typeahead="option.name for option in attributes[attribute.attribute].personAttributeOptions | filter:$viewValue | limitTo:20" 
+                                   typeahead-open-on-focus 
+                                   />
+                        </div>
+                        <div ng-switch-when="number">
+                            <input type="number" ng-model="attribute.value" />
+                        </div>
+                        <div ng-switch-default>
+                            <input type="text" ng-model="attribute.value" />                                        
+                        </div>
+                    </div>                                                                                                    
+                </div>
+            </div>
+        </div>                        
+    </accordion-group>
+</accordion>                

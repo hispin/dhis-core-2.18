@@ -1,0 +1,19 @@
+<accordion>
+    <accordion-group is-open="{{enrollment.isOpen}}">
+        <accordion-heading>
+            <span class="list-title">{{enrollment.title| translate}}</span>
+        </accordion-heading>                        
+        <div class="list-element-container">
+            <div class="list-element"> 
+                {{'program'| translate}}
+                <span class="right">
+                    <select ng-model="selectedProgram" 
+                            ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                            ng-change="showEnrollment()">
+                        <option value="">{{'please_select'| translate}}</option>
+                    </select>
+                </span>
+            </div>                            
+        </div>                        
+    </accordion-group>
+</accordion>                
