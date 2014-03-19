@@ -177,7 +177,7 @@ public class ProgramInstance
     public int hashCode()
     {
         final int prime = 31;
-        int result = 1;
+        int result = super.hashCode();
 
         result = prime * result + ((dateOfIncident == null) ? 0 : dateOfIncident.hashCode());
         result = prime * result + ((enrollmentDate == null) ? 0 : enrollmentDate.hashCode());
