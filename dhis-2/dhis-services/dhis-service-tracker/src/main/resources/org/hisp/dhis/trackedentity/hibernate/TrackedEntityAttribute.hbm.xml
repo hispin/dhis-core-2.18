@@ -26,10 +26,8 @@
     <many-to-one name="attributeGroup" column="trackedentityattributegroupid" class="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup"
       foreign-key="fk_attribute_group" />
 
-    <set name="attributeOptions">
-      <key column="trackedentityattributeid" />
-      <one-to-many class="org.hisp.dhis.trackedentity.TrackedEntityAttributeOption" />
-    </set>
+   <many-to-one name="optionSet" class="org.hisp.dhis.option.OptionSet" column="optionsetid"
+      foreign-key="fk_trackedentityattribute_optionsetid" />
 
     <property name="inherit" column="inherit" />
 

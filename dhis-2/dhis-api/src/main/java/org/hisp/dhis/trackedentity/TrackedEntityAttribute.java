@@ -28,23 +28,23 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.PeriodType;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Abyot Asalefew
@@ -59,16 +59,27 @@ public class TrackedEntityAttribute
     private static final long serialVersionUID = 3026922158464592390L;
 
     public static final String TYPE_DATE = "date";
+
     public static final String TYPE_STRING = "string";
+
     public static final String TYPE_INT = "number";
+
     public static final String VALUE_TYPE_LETTER = "letter";
+
     public static final String TYPE_BOOL = "bool";
+
     public static final String TYPE_TRUE_ONLY = "trueOnly";
+
     public static final String TYPE_COMBO = "combo";
+
     public static final String TYPE_PHONE_NUMBER = "phoneNumber";
+
     public static final String TYPE_TRACKER_ASSOCIATE = "trackerAssociate";
+
     public static final String TYPE_USERS = "users";
+
     public static final String TYPE_AGE = "age";
+
     public static final String VALUE_TYPE_LOCAL_ID = "localId";
 
     private String description;
@@ -83,7 +94,7 @@ public class TrackedEntityAttribute
 
     private TrackedEntityAttributeGroup attributeGroup;
 
-    private Set<TrackedEntityAttributeOption> attributeOptions = new HashSet<TrackedEntityAttributeOption>();
+    private OptionSet optionSet;
 
     private String expression;
 
@@ -142,30 +153,6 @@ public class TrackedEntityAttribute
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    @JsonProperty( "trackedEntityAttributeOptions" )
-    @JsonView( { DetailedView.class } )
-    @JacksonXmlElementWrapper( localName = "trackedEntityAttributeOptions", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "trackedEntityAttributeOption", namespace = DxfNamespaces.DXF_2_0 )
-    public Set<TrackedEntityAttributeOption> getAttributeOptions()
-    {
-        return attributeOptions == null ? new HashSet<TrackedEntityAttributeOption>() : attributeOptions;
-    }
-
-    public void setAttributeOptions( Set<TrackedEntityAttributeOption> attributeOptions )
-    {
-        this.attributeOptions = attributeOptions;
-    }
-
-    public void addAttributeOptions( TrackedEntityAttributeOption option )
-    {
-        if ( attributeOptions == null )
-        {
-            attributeOptions = new HashSet<TrackedEntityAttributeOption>();
-        }
-
-        attributeOptions.add( option );
-    }
 
     @JsonProperty
     @JsonView( { DetailedView.class } )
@@ -361,6 +348,19 @@ public class TrackedEntityAttribute
         this.periodType = periodType;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public OptionSet getOptionSet()
+    {
+        return optionSet;
+    }
+
+    public void setOptionSet( OptionSet optionSet )
+    {
+        this.optionSet = optionSet;
+    }
+
     // -------------------------------------------------------------------------
     // Static methods
     // -------------------------------------------------------------------------
@@ -420,9 +420,6 @@ public class TrackedEntityAttribute
             inherit = trackedEntityAttribute.getInherit();
             groupBy = trackedEntityAttribute.getGroupBy();
             attributeGroup = trackedEntityAttribute.getAttributeGroup();
-
-            attributeOptions.clear();
-            attributeOptions.addAll( trackedEntityAttribute.getAttributeOptions() );
 
             expression = trackedEntityAttribute.getExpression();
             displayOnVisitSchedule = trackedEntityAttribute.getDisplayOnVisitSchedule();

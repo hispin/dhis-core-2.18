@@ -31,7 +31,6 @@ package org.hisp.dhis.trackedentityattributevalue;
 import java.io.Serializable;
 
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
@@ -54,8 +53,6 @@ public class TrackedEntityAttributeValue
     private TrackedEntityInstance entityInstance;
 
     private String value;
-
-    private TrackedEntityAttributeOption attributeOption;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -90,7 +87,6 @@ public class TrackedEntityAttributeValue
         int result = 1;
         result = prime * result + ((entityInstance == null) ? 0 : entityInstance.hashCode());
         result = prime * result + ((attribute == null) ? 0 : attribute.hashCode());
-        result = prime * result + ((attributeOption == null) ? 0 : attributeOption.hashCode());
         result = prime * result + ((value == null) ? 0 : value.hashCode());
         return result;
     }
@@ -139,18 +135,6 @@ public class TrackedEntityAttributeValue
             return false;
         }
 
-        if ( attributeOption == null )
-        {
-            if ( other.attributeOption != null )
-            {
-                return false;
-            }
-        }
-        else if ( !attributeOption.equals( other.attributeOption ) )
-        {
-            return false;
-        }
-
         if ( value == null )
         {
             if ( other.value != null )
@@ -170,7 +154,7 @@ public class TrackedEntityAttributeValue
     public String toString()
     {
         return "[Tracked attribute=" + attribute + ", entityInstance=" + entityInstance + ", value='" + value + "'"
-            + ", attribute option=" + attributeOption + "]";
+            + "]";
     }
 
     // -------------------------------------------------------------------------
@@ -200,16 +184,6 @@ public class TrackedEntityAttributeValue
     public void setEntityInstance( TrackedEntityInstance entityInstance )
     {
         this.entityInstance = entityInstance;
-    }
-
-    public TrackedEntityAttributeOption getAttributeOption()
-    {
-        return attributeOption;
-    }
-
-    public void setAttributeOption( TrackedEntityAttributeOption attributeOption )
-    {
-        this.attributeOption = attributeOption;
     }
 
     public void setValue( String value )

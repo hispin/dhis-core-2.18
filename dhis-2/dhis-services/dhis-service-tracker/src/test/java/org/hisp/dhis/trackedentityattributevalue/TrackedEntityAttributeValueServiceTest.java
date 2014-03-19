@@ -41,7 +41,6 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
@@ -75,10 +74,6 @@ public class TrackedEntityAttributeValueServiceTest
 
     private TrackedEntityAttribute attributeC;
 
-    private TrackedEntityAttributeOption attributeOpionA;
-
-    private TrackedEntityAttributeOption attributeOpionB;
-
     private TrackedEntityInstance entityInstanceA;
 
     private TrackedEntityInstance entityInstanceB;
@@ -96,10 +91,6 @@ public class TrackedEntityAttributeValueServiceTest
     private TrackedEntityAttributeValue attributeValueB;
 
     private TrackedEntityAttributeValue attributeValueC;
-
-    private TrackedEntityAttributeValue attributeValueD;
-
-    private TrackedEntityAttributeValue attributeValueE;
 
     @Override
     public void setUpTest()
@@ -125,19 +116,9 @@ public class TrackedEntityAttributeValueServiceTest
         attributeService.addTrackedEntityAttribute( attributeB );
         attributeService.addTrackedEntityAttribute( attributeC );
 
-        attributeOpionA = createTrackedEntityAttributeOption( 'A', attributeC );
-        attributeOpionB = createTrackedEntityAttributeOption( 'B', attributeC );
-
-        attributeService.addTrackedEntityAttributeOption( attributeOpionA );
-        attributeService.addTrackedEntityAttributeOption( attributeOpionB );
-
         attributeValueA = new TrackedEntityAttributeValue( attributeA, entityInstanceA, "A" );
         attributeValueB = new TrackedEntityAttributeValue( attributeB, entityInstanceA, "B" );
         attributeValueC = new TrackedEntityAttributeValue( attributeA, entityInstanceB, "C" );
-        attributeValueD = new TrackedEntityAttributeValue( attributeC, entityInstanceC, "AttributeOptionA" );
-        attributeValueD.setAttributeOption( attributeOpionA );
-        attributeValueE = new TrackedEntityAttributeValue( attributeC, entityInstanceD, "AttributeOptionB" );
-        attributeValueE.setAttributeOption( attributeOpionB );
     }
 
     @Test
@@ -379,17 +360,6 @@ public class TrackedEntityAttributeValueServiceTest
         Collection<TrackedEntityInstance> entityInstances = attributeValueService.getTrackedEntityInstance( attributeA, "A" );
         assertEquals( 1, entityInstances.size() );
         assertTrue( entityInstances.contains( entityInstanceA ) );
-    }
-
-    @Test
-    public void testCountByEntityInstanceAttributeoption()
-    {
-        attributeValueService.addTrackedEntityAttributeValue( attributeValueA );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValueD );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValueE );
-
-        int count = attributeValueService.countByAttributeOption( attributeOpionA );
-        assertEquals( 1, count );
     }
 
 }

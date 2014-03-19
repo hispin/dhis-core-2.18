@@ -32,12 +32,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -72,6 +75,9 @@ public class ShowUpdateAttributeAction
         this.periodService = periodService;
     }
 
+    @Autowired
+    private OptionService optionService;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -97,11 +103,18 @@ public class ShowUpdateAttributeAction
         return programs;
     }
 
-    private List<PeriodType> periodTypes = new ArrayList<PeriodType>();
+    private List<PeriodType> periodTypes;
 
     public List<PeriodType> getPeriodTypes()
     {
         return periodTypes;
+    }
+
+    private List<OptionSet> optionSets;
+
+    public List<OptionSet> getOptionSets()
+    {
+        return optionSets;
     }
 
     // -------------------------------------------------------------------------
@@ -118,6 +131,8 @@ public class ShowUpdateAttributeAction
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
 
         periodTypes = periodService.getAllPeriodTypes();
+
+        optionSets = new ArrayList<OptionSet>( optionService.getAllOptionSets() );
 
         return SUCCESS;
     }

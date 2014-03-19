@@ -33,7 +33,6 @@ import java.util.Collection;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
@@ -70,8 +69,8 @@ public interface TrackedEntityAttributeValueStore
     int deleteByAttribute( TrackedEntityAttribute attribute );
 
     /**
-     * Retrieve a {@link TrackedEntityAttributeValue} on a {@link TrackedEntityInstance} and
-     * {@link TrackedEntityAttribute}
+     * Retrieve a {@link TrackedEntityAttributeValue} on a
+     * {@link TrackedEntityInstance} and {@link TrackedEntityAttribute}
      * 
      * @param attribute {@link TrackedEntityAttribute}
      * 
@@ -80,7 +79,8 @@ public interface TrackedEntityAttributeValueStore
     TrackedEntityAttributeValue get( TrackedEntityInstance instance, TrackedEntityAttribute attribute );
 
     /**
-     * Retrieve {@link TrackedEntityAttributeValue} of a {@link TrackedEntityInstance}
+     * Retrieve {@link TrackedEntityAttributeValue} of a
+     * {@link TrackedEntityInstance}
      * 
      * @param instance TrackedEntityInstance
      * 
@@ -89,7 +89,8 @@ public interface TrackedEntityAttributeValueStore
     Collection<TrackedEntityAttributeValue> get( TrackedEntityInstance instance );
 
     /**
-     * Retrieve {@link TrackedEntityAttributeValue} of a {@link TrackedEntityInstance}
+     * Retrieve {@link TrackedEntityAttributeValue} of a
+     * {@link TrackedEntityInstance}
      * 
      * @param instance TrackedEntityInstance
      * 
@@ -107,8 +108,8 @@ public interface TrackedEntityAttributeValueStore
     Collection<TrackedEntityAttributeValue> get( Collection<TrackedEntityInstance> instances );
 
     /**
-     * Search TrackedEntityAttributeValue objects by a TrackedEntityAttribute and a attribute
-     * value (performs partial search )
+     * Search TrackedEntityAttributeValue objects by a TrackedEntityAttribute
+     * and a attribute value (performs partial search )
      * 
      * @param attribute TrackedEntityAttribute
      * @param searchText A string for searching by attribute values
@@ -116,16 +117,6 @@ public interface TrackedEntityAttributeValueStore
      * @return TrackedEntityAttributeValue list
      */
     Collection<TrackedEntityAttributeValue> searchByValue( TrackedEntityAttribute attribute, String searchText );
-
-    /**
-     * Get the number of {@link TrackedEntityAttributeOption} in all
-     * {@link TrackedEntityAttribute}
-     * 
-     * @param attributeOption TrackedEntityAttributeOption
-     * 
-     * @return The number of TrackedEntityAttributeOptions
-     */
-    int countByAttributeOption( TrackedEntityAttributeOption attributeOption );
 
     /**
      * Retrieve instances who have the same value on an attribute
@@ -137,14 +128,6 @@ public interface TrackedEntityAttributeValueStore
      */
     Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntityAttribute attribute, String value );
 
-    /**
-     * Update attribute values which belong to the pre-defined attribute
-     * when a value pre-defined of this attribute is modified
-     * 
-     * @param attributeOption TrackedEntityAttributeOption
-     */
-    void updateTrackedEntityAttributeValues( TrackedEntityAttributeOption attributeOption );
-    
     /**
      * Retrieve attribute values of an instance by a program
      * 

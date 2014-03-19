@@ -84,7 +84,6 @@ import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
@@ -1420,16 +1419,7 @@ public class ActivityReportingServiceImpl
             patientAttribute.setName( name );
             patientAttribute.setType( pa.getValueType() );
             patientAttribute.setValue( "" );
-            List<String> optionList = new ArrayList<String>();
-            if ( pa.getAttributeOptions() != null )
-            {
-                for ( TrackedEntityAttributeOption option : pa.getAttributeOptions() )
-                {
-                    optionList.add( option.getName() );
-                }
-            }
-
-            patientAttribute.setPredefinedValues( optionList );
+           
             list.add( patientAttribute );
         }
         return list;

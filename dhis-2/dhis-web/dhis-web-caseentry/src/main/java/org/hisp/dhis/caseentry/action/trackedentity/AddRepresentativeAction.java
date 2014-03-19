@@ -40,7 +40,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
@@ -122,15 +121,7 @@ public class AddRepresentativeAction
                     {
                         value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
                     }
-                    else if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
-                    {
-                        TrackedEntityAttributeOption option = attributeService.getTrackedEntityAttributeOption( Integer.parseInt( value ) );
-                        if ( option != null )
-                        {
-                            attributeValue.setAttributeOption( option );
-                            attributeValue.setValue( option.getName() );
-                        }
-                    }
+                    
                     entityInstanceAttributeValues.add( attributeValue );
                 }
             }

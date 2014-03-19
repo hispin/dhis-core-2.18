@@ -28,13 +28,11 @@ package org.hisp.dhis.trackedentity.action.trackedentityattribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,6 +55,9 @@ public class AddAttributeAction
     {
         this.attributeService = attributeService;
     }
+
+    @Autowired
+    private OptionService optionService;
 
     @Autowired
     private PeriodService periodService;
@@ -99,14 +100,7 @@ public class AddAttributeAction
     {
         this.mandatory = mandatory;
     }
-
-    private List<String> attrOptions;
-
-    public void setAttrOptions( List<String> attrOptions )
-    {
-        this.attrOptions = attrOptions;
-    }
-
+    
     private Boolean inherit;
 
     public void setInherit( Boolean inherit )
@@ -126,6 +120,13 @@ public class AddAttributeAction
     public void setUnique( Boolean unique )
     {
         this.unique = unique;
+    }
+
+    private Integer optionSetId;
+
+    public void setOptionSetId( Integer optionSetId )
+    {
+        this.optionSetId = optionSetId;
     }
 
     // For Local ID type
@@ -161,7 +162,7 @@ public class AddAttributeAction
         TrackedEntityAttribute attribute = new TrackedEntityAttribute();
 
         attribute.setName( name );
-        attribute.setCode( StringUtils.isEmpty( code.trim() ) ? null : code  );
+        attribute.setCode( StringUtils.isEmpty( code.trim() ) ? null : code );
         attribute.setDescription( description );
         attribute.setValueType( valueType );
         attribute.setExpression( expression );
@@ -175,7 +176,7 @@ public class AddAttributeAction
 
         inherit = (inherit == null) ? false : true;
         attribute.setInherit( inherit );
-        
+
         if ( valueType.equals( TrackedEntityAttribute.VALUE_TYPE_LOCAL_ID ) )
         {
             orgunitScope = (orgunitScope == null) ? false : orgunitScope;
@@ -195,21 +196,12 @@ public class AddAttributeAction
             attribute.setOrgunitScope( orgunitScope );
             attribute.setProgramScope( programScope );
         }
+        else if ( valueType.equals( TrackedEntityAttribute.TYPE_COMBO ) )
+        {
+            attribute.setOptionSet( optionService.getOptionSet( optionSetId ) );
+        }
 
         attributeService.addTrackedEntityAttribute( attribute );
-
-        if ( TrackedEntityAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
-        {
-            TrackedEntityAttributeOption opt = null;
-            for ( String optionName : attrOptions )
-            {
-                opt = new TrackedEntityAttributeOption();
-                opt.setName( optionName );
-                opt.setAttribute( attribute );
-                attribute.addAttributeOptions( opt );
-                attributeService.addTrackedEntityAttributeOption( opt );
-            }
-        }
 
         return SUCCESS;
     }

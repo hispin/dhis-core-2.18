@@ -140,7 +140,7 @@
 		</action>
 
 		<action name="showAddAttributeForm"
-			class="org.hisp.dhis.trackedentity.action.program.GetUnAnonymousProgramAction">
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAddAttributeFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-program/addAttributeForm.vm</param>
@@ -175,20 +175,6 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="removeAttributeOption"
-			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.RemoveAttributeOptionAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<result name="error" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
-			<result name="input" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseInput.vm
-			</result>
-			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_DELETE</param>
 		</action>
 
 		<action name="attributeVisitSchedule"

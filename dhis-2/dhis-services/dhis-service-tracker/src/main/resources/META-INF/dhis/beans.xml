@@ -74,9 +74,11 @@
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityInstanceStore"
 		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityInstanceStore">
-		<property name="clazz" value="org.hisp.dhis.trackedentity.TrackedEntityInstance" />
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityInstance" />
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="statementBuilder" ref="statementBuilder" />
 	</bean>
@@ -95,13 +97,6 @@
 			value="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue" />
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
-	</bean>
-
-	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionStore"
-		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityAttributeOptionStore">
-		<property name="clazz"
-			value="org.hisp.dhis.trackedentity.TrackedEntityAttributeOption" />
-		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 	<bean
@@ -130,13 +125,13 @@
 			value="org.hisp.dhis.trackedentity.TrackedEntityAudit" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.trackedentity.TrackedEntityStore" 
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityStore"
 		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
 		<property name="clazz" value="org.hisp.dhis.trackedentity.TrackedEntity" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<!-- Service definitions -->
 
 	<bean id="org.hisp.dhis.program.ProgramDataEntryService" class="org.hisp.dhis.program.DefaultProgramDataEntryService">
@@ -243,23 +238,20 @@
 		<property name="attributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="trackedEntityService"
-		    ref="org.hisp.dhis.trackedentity.TrackedEntityService" />
+			ref="org.hisp.dhis.trackedentity.TrackedEntityService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
-	    <property name="programService"
-	        ref="org.hisp.dhis.program.ProgramService" />
-	    <property name="organisationUnitService"
-	        ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeService"
 		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityAttributeService">
 		<property name="attributeStore"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeStore" />
-		<property name="attributeOptionStore"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionStore" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
@@ -295,9 +287,8 @@
 		<property name="auditStore"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAuditStore" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.trackedentity.TrackedEntityService"
-		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityService">
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityService" class="org.hisp.dhis.trackedentity.DefaultTrackedEntityService">
 		<property name="trackedEntityStore"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityStore" />
 	</bean>
@@ -412,7 +403,6 @@
 			<list>
 				<value>trackedentityattribute</value>
 				<value>trackedentityattributegroup</value>
-                <value>trackedentityattributeoption</value>
 				<value>program</value>
 				<value>programstage</value>
 				<value>programinstance</value>
@@ -530,11 +520,15 @@
 		<property name="arguments">
 			<list>
 				<list>
-					<ref local="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler" />
-					<ref local="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
-					<ref local="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler" />
-					<ref local="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />

@@ -1,5 +1,4 @@
 <script type="text/javascript" src="javascript/addAttributeForm.js"></script>
-																		
 <h3>$i18n.getString( "create_new_tracked_entity_attribute" )</h3>
 <form id="addAttributeForm" action="addAttribute.action" method="post" class="inputForm">
 
@@ -54,7 +53,7 @@
     <tr>
         <td><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-            <select id="valueType" name="valueType" onchange="ATTRIBUTE_OPTION.selectValueType(this);">
+            <select id="valueType" name="valueType" onchange="typeOnChange();">
                 <option value="number" selected="selected">$i18n.getString( "number" )</option>
                 <option value="string">$i18n.getString( "text" )</option>
                 <option value="letter">$i18n.getString( "letter_only" )</option>
@@ -71,11 +70,14 @@
         </td>
         <td></td>
     </tr>  
-	<tr id="attributeComboRow"> 
-		<td><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><table id="attrOptionContainer"></table><a href="#" style="text-decoration: none;margin-top: 0.5em" onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a>
+	<tr id="optionSetRow"> 
+		<td><label>$i18n.getString( "option_set" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><select id="optionSetId" name="optionSetId" class="{validate:{required:true}}">
+				#foreach($optionSet in $optionSets)
+					<option value="$optionSet.id">$optionSet.name</option>
+				#end
+			</select>
 		</td>
-		<td><span id="attrMessage" name="attrMessage" style="color:red;"></span></td>
 	</tr>
 	
 	<tr name='localIdField' style='display:none;'>

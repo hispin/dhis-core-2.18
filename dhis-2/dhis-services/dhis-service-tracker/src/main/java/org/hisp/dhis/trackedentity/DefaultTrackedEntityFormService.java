@@ -322,14 +322,14 @@ public class DefaultTrackedEntityFormService
         {
             inputHtml = inputHtml.replaceFirst( "input", "select" ) + ">";
             inputHtml += "<option value=\"\" selected>" + i18n.getString( "no_value" ) + "</option>";
-            for ( TrackedEntityAttributeOption option : attribute.getAttributeOptions() )
+            for ( String option : attribute.getOptionSet().getOptions() )
             {
-                inputHtml += "<option value=\"" + option.getId() + "\" ";
-                if ( option.getName().equals( value ) )
+                inputHtml += "<option value=\"" + option + "\" ";
+                if ( option.equals( value ) )
                 {
                     inputHtml += " selected ";
                 }
-                inputHtml += ">" + option.getName() + "</option>";
+                inputHtml += ">" + option + "</option>";
             }
             inputHtml += "</select>";
         }

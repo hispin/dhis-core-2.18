@@ -64,8 +64,8 @@
 											 #elseif( $attribute.valueType == "combo" )  
 													 <select id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{required:$attribute.mandatory}}" >
 															 <option value="">[$i18n.getString( "please_select" )]</option>
-															 #foreach ($option in $attribute.attributeOptions )
-																	 <option value="$option.id" #if("$value"=="$option.name") selected #end>$option.name</option>
+															 #foreach ($option in $attribute.optionSet.options )
+																	 <option value="$option" #if("$value"=="$option") selected #end>$option</option>
 															 #end
 													 </select>
 											 #elseif( $attribute.valueType == "phoneNumber" ) 
@@ -113,8 +113,8 @@
 					#elseif( $attribute.valueType == "combo" )
 						<select  id="attr$attribute.id"  name="attr$attribute.id" inherit="$!attribute.inherit" class=' #validate( "default"  $attribute.mandatory )' >
 							 <option value="">[$i18n.getString( "please_select" )]</option>
-						#foreach ($option in $attribute.attributeOptions )
-							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
+						#foreach ($option in $attribute.optionSet.options )
+							<option value="$option" #if($attributeValue == $option) selected="selected" #end>$option</option>
 						#end
 						</select>
 					#elseif( $attribute.valueType == "users" )

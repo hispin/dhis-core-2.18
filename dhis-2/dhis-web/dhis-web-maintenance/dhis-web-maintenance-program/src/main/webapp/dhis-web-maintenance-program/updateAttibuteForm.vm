@@ -55,7 +55,7 @@
     <tr>
         <td>$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td>
-            <select id="valueType" name="valueType" onchange="ATTRIBUTE_OPTION.selectValueType(this);">
+            <select id="valueType" name="valueType" onchange="typeOnChange();">
                 <option value="number" #if( $attribute.valueType == 'number' ) selected="selected" #end>$i18n.getString( "number" )</option>
                 <option value="string" #if( $attribute.valueType == 'string' ) selected="selected" #end>$i18n.getString( "text" )</option>
                 <option value="letter" #if( $attribute.valueType == 'letter' ) selected="selected" #end>$i18n.getString( "letter_only" )</option>
@@ -72,18 +72,14 @@
         </td>
     </tr>
       
-	<tr id="attributeComboRow"> 
-		<td><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td >
-			<table id="attrOptionContainer">
-			 #foreach($option in $attribute.attributeOptions) 
-				<tr><td>
-					<input type='text' name='attrOption$option.id' value="$option.name" style="width:28em;"/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='$i18n.getString( "remove_option" )'  onClick='ATTRIBUTE_OPTION.remove(this,$option.id)'>[ - ]</a>
-				</td>
-				</tr>
-			 #end
-		</table><a href="#" style="text-decoration: none;margin-top: 0.5em"  onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a></td>
-		<td><span id="attrMessage"  name="attrMessage" style="color:red;"></span></td>
+	<tr id="optionSetRow" #if($attribute.optionSet) #else class="hidden" #end> 
+		<td><label>$i18n.getString( "option_set" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><select id="optionSetId" name="optionSetId" class="{validate:{required:true}}">
+				#foreach($optionSet in $optionSets)
+					<option value="$optionSet.id" #if($attribute.optionSet.id==$optionSet.id) selected #end>$optionSet.name</option>
+				#end
+			</select>
+		</td>
 	</tr>
 
 	<tr name='localIdField' #if($attribute.valueType!='localId' ) style='display:none;' #end >

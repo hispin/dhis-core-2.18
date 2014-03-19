@@ -43,6 +43,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
@@ -91,7 +92,7 @@ public class GetTrackedEntityInstanceAction
 
     @Autowired
     private ProgramInstanceService programInstanceService;
-    
+
     private I18n i18n;
 
     private I18nFormat format;
@@ -207,7 +208,7 @@ public class GetTrackedEntityInstanceAction
         {
             program = programService.getProgram( programId );
             trackedEntityForm = trackedEntityFormService.getTrackedEntityForm( program );
-           
+
             Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( entityInstance,
                 program, ProgramInstance.STATUS_ACTIVE );
             ProgramInstance programIntance = null;
@@ -237,18 +238,21 @@ public class GetTrackedEntityInstanceAction
                 Collection<Program> programs = programService.getAllPrograms();
                 for ( Program p : programs )
                 {
-                    for ( TrackedEntityAttribute attribute : p.getTrackedEntityAttributes() )
+                    for ( ProgramTrackedEntityAttribute programAttribute : p.getAttributes() )
                     {
-                        if ( !attribute.getDisplayInListNoProgram() )
+                        if ( !programAttribute.getDisplayedInList() )
                         {
-                            attributes.remove( attribute );
+                            attributes.remove( programAttribute.getAttribute() );
                         }
                     }
                 }
             }
             else
             {
-                attributes = program.getTrackedEntityAttributes();
+                for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
+                {
+                    attributes.add( programAttribute.getAttribute() );
+                }
             }
 
             for ( TrackedEntityAttribute attribute : attributes )

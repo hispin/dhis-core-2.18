@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -150,8 +149,8 @@ public class DefaultTrackedEntityAttributeValueService
             {
                 if ( attributeValueMap.containsKey( attributeValue.getEntityInstance().getId() ) )
                 {
-                    Collection<TrackedEntityAttributeValue> values = attributeValueMap.get( attributeValue.getEntityInstance()
-                        .getId() );
+                    Collection<TrackedEntityAttributeValue> values = attributeValueMap.get( attributeValue
+                        .getEntityInstance().getId() );
                     values.add( attributeValue );
                 }
                 else
@@ -211,21 +210,9 @@ public class DefaultTrackedEntityAttributeValueService
     }
 
     @Override
-    public int countByAttributeOption( TrackedEntityAttributeOption attributeOption )
-    {
-        return attributeValueStore.countByAttributeOption( attributeOption );
-    }
-
-    @Override
     public Collection<TrackedEntityInstance> getTrackedEntityInstance( TrackedEntityAttribute attribute, String value )
     {
         return attributeValueStore.getTrackedEntityInstances( attribute, value );
-    }
-
-    @Override
-    public void updateTrackedEntityAttributeValues( TrackedEntityAttributeOption attributeOption )
-    {
-        attributeValueStore.updateTrackedEntityAttributeValues( attributeOption );
     }
 
 }
