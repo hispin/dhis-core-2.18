@@ -51,6 +51,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -169,7 +170,9 @@ public class HibernateTrackedEntityInstanceStore
             
             if ( !params.isOrQuery() && item.hasFilter() )
             {
-                sql += "and " + col + ".value " + item.getSqlOperator() + " " + item.getSqlFilter( filter ) + " ";
+                String queryCol = item.isNumeric() ? ( col + ".value" ) : "lower(" + col + ".value)";
+                
+                sql += "and " + queryCol + item.getSqlOperator() + " " + StringUtils.lowerCase( item.getSqlFilter( filter ) ) + " ";
             }
         }
         
@@ -216,7 +219,7 @@ public class HibernateTrackedEntityInstanceStore
                 String col = statementBuilder.columnQuote( item.getItemId() );
                 String query = statementBuilder.encode( params.getQuery(), false );
                 
-                sql += col + ".value = '" + query + "' or ";
+                sql += "lower(" + col + ".value) = '" + StringUtils.lowerCase( query ) + "' or ";
             }
             
             sql = sql.substring( 0, sql.length() - 3 ) + ") "; // Remove last or
