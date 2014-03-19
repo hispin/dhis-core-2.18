@@ -38,7 +38,6 @@ import org.hisp.dhis.dxf2.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -125,7 +124,7 @@ public class DefaultFilterService implements FilterService
         return output;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private Map<String, Object> buildObjectOutput( Object object, Map<String, Map> fieldMap )
     {
         if ( object == null )
@@ -164,7 +163,7 @@ public class DefaultFilterService implements FilterService
                     Map<String, Object> properties = getIdentifiableObjectProperties( returned );
                     output.put( key, properties );
                 }
-                else if ( descriptor.isCollection() )
+                else
                 {
                     List<Map<String, Object>> properties = getIdentifiableObjectCollectionProperties( returned );
                     output.put( key, properties );
@@ -175,7 +174,7 @@ public class DefaultFilterService implements FilterService
                 if ( descriptor.isCollection() )
                 {
                     Collection<?> objects = (Collection<?>) returned;
-                    ArrayList<Object> arrayList = Lists.newArrayList();
+                    List<Object> arrayList = Lists.newArrayList();
                     output.put( key, arrayList );
 
                     for ( Object obj : objects )
@@ -201,7 +200,7 @@ public class DefaultFilterService implements FilterService
         return getIdentifiableObjectCollectionProperties( object, fields );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private List<Map<String, Object>> getIdentifiableObjectCollectionProperties( Object object, List<String> fields )
     {
         List<Map<String, Object>> output = Lists.newArrayList();
@@ -257,7 +256,7 @@ public class DefaultFilterService implements FilterService
         return idProps;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private <T extends IdentifiableObject> boolean evaluateWithFilters( T object, Filters filters )
     {
         Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
@@ -306,7 +305,7 @@ public class DefaultFilterService implements FilterService
                         return false;
                     }
                 }
-                else if ( descriptor.isIdentifiableObject() && descriptor.isCollection() )
+                else if ( descriptor.isIdentifiableObject() )
                 {
                     Collection<?> idObjectCollection = (Collection<?>) value;
 
@@ -315,12 +314,19 @@ public class DefaultFilterService implements FilterService
                         return false;
                     }
 
+                    boolean include = false;
+
                     for ( Object idObject : idObjectCollection )
                     {
-                        if ( !evaluateWithFilters( (IdentifiableObject) idObject, f ) )
+                        if ( evaluateWithFilters( (IdentifiableObject) idObject, f ) )
                         {
-                            return false;
+                            include = true;
                         }
+                    }
+
+                    if ( !include )
+                    {
+                        return false;
                     }
                 }
             }
@@ -354,6 +360,7 @@ public class DefaultFilterService implements FilterService
                 return true;
             }
         }
+
         return false;
     }
 }
