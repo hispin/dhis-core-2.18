@@ -131,6 +131,11 @@
 		<property name="clazz" value="org.hisp.dhis.trackedentity.TrackedEntity" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.program.ProgramTrackedEntityAttributeStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramTrackedEntityAttributeStore">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
 	<!-- Service definitions -->
 
@@ -292,6 +297,11 @@
 		<property name="trackedEntityStore"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityStore" />
 	</bean>
+	
+		<bean id="org.hisp.dhis.program.ProgramTrackedEntityAttributeService"
+		class="org.hisp.dhis.program.DefaultProgramTrackedEntityAttributeService">
+	</bean>
+	
 
 	<!-- TrackedEntityComment -->
 

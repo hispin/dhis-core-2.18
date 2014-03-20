@@ -35,6 +35,7 @@ import java.util.List;
 
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
@@ -109,6 +110,13 @@ public class ViewTrackedEntityFormAction
         return attributes;
     }
 
+    private Collection<ProgramTrackedEntityAttribute> programAttributes = new ArrayList<ProgramTrackedEntityAttribute>();
+
+    public Collection<ProgramTrackedEntityAttribute> getProgramAttributes()
+    {
+        return programAttributes;
+    }
+
     private TrackedEntityForm registrationForm;
 
     public TrackedEntityForm getRegistrationForm()
@@ -162,7 +170,7 @@ public class ViewTrackedEntityFormAction
         else
         {
             program = programService.getProgram( programId );
-            attributes = program.getTrackedEntityAttributes();
+            programAttributes = program.getAttributes();
             registrationForm = formService.getTrackedEntityForm( program );
         }
 

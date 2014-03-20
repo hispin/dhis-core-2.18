@@ -86,8 +86,6 @@ public class TrackedEntityAttribute
 
     private String valueType;
 
-    private boolean mandatory;
-
     private Boolean inherit = false;
 
     private Boolean groupBy = false;
@@ -125,13 +123,12 @@ public class TrackedEntityAttribute
         setAutoFields();
     }
 
-    public TrackedEntityAttribute( String name, String description, String valueType, boolean mandatory,
+    public TrackedEntityAttribute( String name, String description, String valueType, 
         Boolean inherit, Boolean displayOnVisitSchedule )
     {
         this.name = name;
         this.description = description;
         this.valueType = valueType;
-        this.mandatory = mandatory;
         this.inherit = inherit;
         this.displayOnVisitSchedule = displayOnVisitSchedule;
 
@@ -179,20 +176,7 @@ public class TrackedEntityAttribute
     {
         this.groupBy = groupBy;
     }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isMandatory()
-    {
-        return mandatory;
-    }
-
-    public void setMandatory( boolean mandatory )
-    {
-        this.mandatory = mandatory;
-    }
-
+    
     @JsonProperty
     @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -416,7 +400,6 @@ public class TrackedEntityAttribute
 
             description = trackedEntityAttribute.getDescription();
             valueType = trackedEntityAttribute.getValueType();
-            mandatory = trackedEntityAttribute.isMandatory();
             inherit = trackedEntityAttribute.getInherit();
             groupBy = trackedEntityAttribute.getGroupBy();
             attributeGroup = trackedEntityAttribute.getAttributeGroup();

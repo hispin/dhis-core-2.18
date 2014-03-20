@@ -161,9 +161,10 @@ function selectProperties() {
   var selectedList = jQuery("#selectedList");
   jQuery("#availablePropertyIds").children().each(function( i, item ) {
     if( item.selected ) {
-      html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectProperties( this )'><td onmousedown='select(event,this)'>" + item.text + "</td>";
+      html  = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectProperties( this )'><td onmousedown='select(event,this)'>" + item.text + "</td>";
       html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'";
-      html += "></td></tr>";
+      html += "></td>"
+	  html += "<td align='center'><input type='checkbox' name='mandatory'></tr>";
       selectedList.append(html);
       jQuery(item).remove();
     }
@@ -179,11 +180,9 @@ function selectAllProperties() {
   jQuery("#availablePropertyIds").children().each(function( i, item ) {
     html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onmousedown='select(this)'>" + item.text + "</td>";
     html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'";
-    if( item.value.match("^attr_") == "attr_" ) {
-      html += " style='display:none' ";
-    }
-    html += "'></td></tr>";
-    selectedList.append(html);
+    html += "><td align='center'><input type='checkbox' name='mandatory'></td></tr>";
+    
+	selectedList.append(html);
     jQuery(item).remove();
   });
 }

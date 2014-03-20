@@ -1399,8 +1399,7 @@ public class ActivityReportingServiceImpl
 
         for ( TrackedEntityAttribute patientAtt : getPatientAtts( null ) )
         {
-            list.add( new PatientAttribute( patientAtt.getName(), null, patientAtt.getValueType(), patientAtt
-                .isMandatory(), new ArrayList<String>() ) );
+            list.add( new PatientAttribute( patientAtt.getName(), null, patientAtt.getValueType(), false, new ArrayList<String>() ) );
         }
 
         return list;

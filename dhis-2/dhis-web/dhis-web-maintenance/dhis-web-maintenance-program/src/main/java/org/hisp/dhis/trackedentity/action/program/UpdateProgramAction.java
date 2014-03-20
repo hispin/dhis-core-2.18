@@ -166,6 +166,13 @@ public class UpdateProgramAction
         this.personDisplayNames = personDisplayNames;
     }
 
+    private List<Boolean> mandatory = new ArrayList<Boolean>();
+
+    public void setMandatory( List<Boolean> mandatory )
+    {
+        this.mandatory = mandatory;
+    }
+
     private Boolean generateBydEnrollmentDate;
 
     public void setGeneratedByEnrollmentDate( Boolean generateBydEnrollmentDate )
@@ -346,7 +353,7 @@ public class UpdateProgramAction
                 TrackedEntityAttribute attribute = attributeService.getTrackedEntityAttribute( Integer
                     .parseInt( ids[1] ) );
                 ProgramTrackedEntityAttribute programAttribute = new ProgramTrackedEntityAttribute( attribute,
-                    index + 1, personDisplayNames.get( index ) );
+                    index + 1, personDisplayNames.get( index ), mandatory.get( index ) );
                 program.getAttributes().add( programAttribute );
             }
 

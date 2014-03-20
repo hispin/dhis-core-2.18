@@ -37,9 +37,11 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramTrackedEntityAttributeService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -86,6 +88,9 @@ public class DefaultTrackedEntityFormService
         this.attributeValueService = attributeValueService;
     }
 
+    @Autowired
+    private ProgramTrackedEntityAttributeService programAttributeService;
+    
     // -------------------------------------------------------------------------
     // TrackedEntityForm implementation
     // -------------------------------------------------------------------------
@@ -195,7 +200,7 @@ public class DefaultTrackedEntityFormService
                         }
                     }
 
-                    inputHtml = getAttributeField( inputHtml, attribute, value, i18n, index, hidden, style );
+                    inputHtml = getAttributeField( inputHtml, attribute, program, value, i18n, index, hidden, style );
 
                 }
 
@@ -272,13 +277,20 @@ public class DefaultTrackedEntityFormService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String getAttributeField( String inputHtml, TrackedEntityAttribute attribute, String value, I18n i18n,
+    private String getAttributeField( String inputHtml, TrackedEntityAttribute attribute, Program program, String value, I18n i18n,
         int index, String hidden, String style )
     {
+        boolean madatory = false;
+        
+        if( program!= null)
+        {
+            madatory = programAttributeService.getProgramTrackedEntityAttribute( program, attribute ).getMandatory();
+        }
+        
         inputHtml = TAG_OPEN + "input id=\"attr" + attribute.getId() + "\" name=\"attr" + attribute.getId()
             + "\" tabindex=\"" + index + "\" style=\"" + style + "\"";
 
-        inputHtml += "\" class=\"" + hidden + " {validate:{required:" + attribute.isMandatory();
+        inputHtml += "\" class=\"" + hidden + " {validate:{required:" + madatory;
         if ( TrackedEntityAttribute.TYPE_INT.equals( attribute.getValueType() ) )
         {
             inputHtml += ",number:true";

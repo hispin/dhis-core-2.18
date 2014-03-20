@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
@@ -60,6 +61,8 @@ public class ProgramTrackedEntityAttribute
 
     private boolean displayedInList;
 
+    private Boolean mandatory;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -73,6 +76,15 @@ public class ProgramTrackedEntityAttribute
         this.attribute = attribute;
         this.sortOrder = sortOrder;
         this.displayedInList = displayedInList;
+    }
+
+    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, Integer sortOrder, boolean displayedInList,
+        Boolean mandatory )
+    {
+        this.attribute = attribute;
+        this.sortOrder = sortOrder;
+        this.displayedInList = displayedInList;
+        this.mandatory = mandatory;
     }
 
     // -------------------------------------------------------------------------
@@ -121,6 +133,19 @@ public class ProgramTrackedEntityAttribute
     public void setId( int id )
     {
         this.id = id;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getMandatory()
+    {
+        return mandatory;
+    }
+
+    public void setMandatory( Boolean mandatory )
+    {
+        this.mandatory = mandatory;
     }
 
     @JsonProperty

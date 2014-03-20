@@ -25,14 +25,6 @@
         <td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:2}}"/></td>
         <td></td>
     </tr>
-    
-	<tr>
-		<td><label for="mandatory">$i18n.getString( "mandatory" )</label></td>
-		<td>
-			<input type='checkbox' id="mandatory" name="mandatory" value='true'>
-		</td>		
-		<td></td>				
-	</tr>
 	
     <tr>
 		<td><label for="unique">$i18n.getString( "unique" )</label></td>
@@ -70,7 +62,7 @@
         </td>
         <td></td>
     </tr>  
-	<tr id="optionSetRow"> 
+	<tr id="optionSetRow" class="hidden"> 
 		<td><label>$i18n.getString( "option_set" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><select id="optionSetId" name="optionSetId" class="{validate:{required:true}}">
 				#foreach($optionSet in $optionSets)

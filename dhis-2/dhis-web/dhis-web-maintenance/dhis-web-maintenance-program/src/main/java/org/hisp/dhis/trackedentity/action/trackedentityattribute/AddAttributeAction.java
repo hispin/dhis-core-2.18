@@ -94,13 +94,6 @@ public class AddAttributeAction
         this.valueType = valueType;
     }
 
-    private Boolean mandatory;
-
-    public void setMandatory( Boolean mandatory )
-    {
-        this.mandatory = mandatory;
-    }
-    
     private Boolean inherit;
 
     public void setInherit( Boolean inherit )
@@ -167,10 +160,7 @@ public class AddAttributeAction
         attribute.setValueType( valueType );
         attribute.setExpression( expression );
         attribute.setDisplayOnVisitSchedule( false );
-
-        mandatory = (mandatory == null) ? false : true;
-        attribute.setMandatory( mandatory );
-
+        
         unique = (unique == null) ? false : true;
         attribute.setUnique( unique );
 

@@ -115,12 +115,6 @@ public class GetTrackedEntityInstanceAction
 
     private List<TrackedEntityAttributeGroup> attributeGroups;
 
-    private Map<Integer, String> identiferMap;
-
-    private String childContactName;
-
-    private String childContactType;
-
     private Relationship relationship;
 
     private Map<Integer, Collection<TrackedEntityAttribute>> attributeGroupsMap = new HashMap<Integer, Collection<TrackedEntityAttribute>>();
@@ -177,6 +171,13 @@ public class GetTrackedEntityInstanceAction
     public List<TrackedEntity> getTrackedEntities()
     {
         return trackedEntities;
+    }
+
+    private Map<Integer, Boolean> mandatoryMap = new HashMap<Integer, Boolean>();
+
+    public Map<Integer, Boolean> getMandatoryMap()
+    {
+        return mandatoryMap;
     }
 
     // -------------------------------------------------------------------------
@@ -246,12 +247,17 @@ public class GetTrackedEntityInstanceAction
                         }
                     }
                 }
+                
+
+                for( TrackedEntityAttribute attribute : attributes){
+                    mandatoryMap.put( attribute.getId(), false );
+                }
             }
             else
             {
-                for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
-                {
-                    attributes.add( programAttribute.getAttribute() );
+                attributes = program.getTrackedEntityAttributes();
+                for( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() ){
+                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.getMandatory() );
                 }
             }
 
@@ -360,21 +366,6 @@ public class GetTrackedEntityInstanceAction
     public List<TrackedEntityAttributeGroup> getAttributeGroups()
     {
         return attributeGroups;
-    }
-
-    public Map<Integer, String> getIdentiferMap()
-    {
-        return identiferMap;
-    }
-
-    public String getChildContactName()
-    {
-        return childContactName;
-    }
-
-    public String getChildContactType()
-    {
-        return childContactType;
     }
 
     public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
