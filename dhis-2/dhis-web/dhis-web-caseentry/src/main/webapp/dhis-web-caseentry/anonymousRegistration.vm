@@ -6,7 +6,8 @@
 </script>
 
 <h3>$i18n.getString( "anonymous_events_management" ) #openHelp('single_event_without_registration')</h3>
-<h4 id='programName' name='programName'></h4>
+<h3 id='orgunitNameInfor' name='orgunitNameInfor'></h3>
+<h4 id='programName' name='programName'>fasdfadfa</h4>
 
 <input type='hidden' id='orgunitId' name='orgunitId' value='$orgunit.id'>
 <input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='0'>

@@ -902,6 +902,7 @@ function showAddEventForm( isCreateEvent ) {
     showById( 'dataEntryInfor' );
     setFieldValue( 'programStageInstanceId', '0' );
     setInnerHTML( 'programName', $( '#programId option:selected' ).text() );
+	setInnerHTML( 'orgunitNameInfor', getFieldValue("orgunitName"));
 	if( isCreateEvent != undefined ){
 		addNewEvent();
 	}

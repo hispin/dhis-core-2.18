@@ -86,8 +86,8 @@ public class GetSingleEventProgramListAction
         if ( orgunit != null )
         {
             programs = programService.getProgramsByCurrentUser( orgunit );
-            programs.removeAll( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION, orgunit ) );
-            programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, orgunit ) );
+            programs.removeAll( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION) );
+            programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION) );
         }
 
         return SUCCESS;

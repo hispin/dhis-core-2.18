@@ -379,7 +379,7 @@
 		</action>
 
 		<action name="showEventWithRegistrationForm"
-			class="org.hisp.dhis.caseentry.action.caseentry.ShowEventWithRegistrationFormAction">
+			class="org.hisp.dhis.caseentry.action.trackedentity.ShowAddTrackedEntityInstanceFormAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/addSingleEventRegistration.vm</param>
 			<param name="stylesheets">style/style.css</param>

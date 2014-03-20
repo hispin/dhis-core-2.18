@@ -52,7 +52,8 @@ function showAddTrackedEntityInstanceForm()
 			programId: getFieldValue('programIdAddEntityInstance')
 		}, function()
 		{
-			setInnerHTML('singleProgramName',jQuery('#programIdAddEntityInstance option:selected').text());	unSave = true;
+			setInnerHTML('singleProgramName',jQuery('#programIdAddEntityInstance option:selected').text());	
+			unSave = true;
 			showById('singleProgramName');
 			showById('addNewDiv');
 			jQuery('#loaderDiv').hide();
