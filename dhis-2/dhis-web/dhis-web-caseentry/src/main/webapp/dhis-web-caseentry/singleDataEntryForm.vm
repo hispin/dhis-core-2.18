@@ -180,7 +180,7 @@
 
 <tbody id="entryForm">
 	<tr>
-		<th colspan='2'>$programStage.program.displayName</th>
+		<th colspan='2'>$!programStage.program.displayName</th>
 	</tr>
 	<!-- Identifiers/Attributes belong to the selected single program -->
 	#set($program = $programStage.program)

@@ -147,6 +147,8 @@ public class ShowEventWithRegistrationFormAction
 
     private Map<Integer, Collection<TrackedEntityAttribute>> attributeGroupsMap = new HashMap<Integer, Collection<TrackedEntityAttribute>>();
 
+    private Program program;
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -157,7 +159,7 @@ public class ShowEventWithRegistrationFormAction
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
 
-        Program program = programService.getProgram( programId );
+        program = programService.getProgram( programId );
         TrackedEntityForm trackedEntityForm = trackedEntityFormService.getTrackedEntityForm( program );
 
         if ( trackedEntityForm != null )
@@ -218,6 +220,11 @@ public class ShowEventWithRegistrationFormAction
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
+    
+    public Program getProgram()
+    {
+        return program;
+    }
 
     public Collection<User> getHealthWorkers()
     {
