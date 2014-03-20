@@ -1262,6 +1262,8 @@ function loadDataValues()
 
     getAndInsertDataValues();
     displayEntryFormCompleted();
+
+    $('document').trigger('dhis2.de.event.dataValuesLoaded');
 }
 
 function getAndInsertDataValues()
