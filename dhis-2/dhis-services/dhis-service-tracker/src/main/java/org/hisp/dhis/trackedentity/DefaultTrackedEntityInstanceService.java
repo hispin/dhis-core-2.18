@@ -139,8 +139,6 @@ public class DefaultTrackedEntityInstanceService
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-
-    //TODO Bug: use full outer join when no filter
     
     //TODO queries with multiple words
     //TODO lower index on attribute value?
