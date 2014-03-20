@@ -61,12 +61,6 @@ public class HibernateTrackedEntityAttributeStore
     }
 
     @Override
-    public TrackedEntityAttribute getByGroupBy()
-    {
-        return (TrackedEntityAttribute) getCriteria( Restrictions.eq( "groupBy", true ) ).uniqueResult();
-    }
-
-    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityAttribute> getWithoutGroup()
     {
@@ -82,8 +76,8 @@ public class HibernateTrackedEntityAttributeStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<TrackedEntityAttribute> getDisplayedInList( boolean displayInListNoProgram )
+    public Collection<TrackedEntityAttribute> getDisplayInList( boolean displayInList )
     {
-        return getCriteria( Restrictions.eq( "displayInListNoProgram", displayInListNoProgram ) ).list();
+        return getCriteria( Restrictions.eq( "displayInList", displayInList ) ).list();
     }
 }

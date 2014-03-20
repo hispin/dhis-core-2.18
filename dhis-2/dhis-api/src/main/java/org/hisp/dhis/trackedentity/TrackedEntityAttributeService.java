@@ -113,13 +113,6 @@ public interface TrackedEntityAttributeService
      * @return List of attributes
      */
     Collection<TrackedEntityAttribute> getOptionalAttributesWithoutGroup();
-    
-    /**
-     * Get attributes by groupBy option
-     * 
-     * @return TrackedEntityAttribute with groupby as true
-     */
-    TrackedEntityAttribute getTrackedEntityAttributeByGroupBy();
 
     /**
      * Get attributes without groups
@@ -154,7 +147,7 @@ public interface TrackedEntityAttributeService
      * 
      * @return List of attributes
      */
-    Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayedInList( boolean displayInListNoProgram );
+    Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayInList( boolean displayInListNoProgram );
 
     /**
      * Returns {@link TrackedEntityAttribute} list with paging
@@ -192,5 +185,5 @@ public interface TrackedEntityAttributeService
      * 
      */
     int getTrackedEntityAttributeCountByName( String name );
-    
+
 }

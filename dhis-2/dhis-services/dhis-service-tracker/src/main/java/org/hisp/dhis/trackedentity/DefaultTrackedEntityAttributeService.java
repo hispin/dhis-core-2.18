@@ -99,11 +99,6 @@ public class DefaultTrackedEntityAttributeService
         return attributeStore.getByName( name );
     }
 
-    public TrackedEntityAttribute getTrackedEntityAttributeByGroupBy()
-    {
-        return attributeStore.getByGroupBy();
-    }
-
     public Collection<TrackedEntityAttribute> getOptionalAttributesWithoutGroup()
     {
         return attributeStore.getOptionalAttributesWithoutGroup();
@@ -144,9 +139,9 @@ public class DefaultTrackedEntityAttributeService
         return new HashSet<TrackedEntityAttribute>();
     }
 
-    public Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayedInList( boolean displayInListNoProgram )
+    public Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayInList( boolean displayInList )
     {
-        return attributeStore.getDisplayedInList( displayInListNoProgram );
+        return attributeStore.getDisplayInList( displayInList );
     }
 
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesBetweenByName( String name, int min, int max )

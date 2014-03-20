@@ -148,11 +148,11 @@ public class UpdateMobileSettingAction
 
         for ( TrackedEntityAttribute patientAttribute : allTrackedEntityAttributes )
         {
-            patientAttribute.setGroupBy( false );
-            if ( patientAttribute.getId() == groupingAttributeId )
-            {
-                patientAttribute.setGroupBy( true );
-            }
+//            patientAttribute.setGroupBy( false );
+//            if ( patientAttribute.getId() == groupingAttributeId )
+//            {
+//                patientAttribute.setGroupBy( true );
+//            }
             patientAttributeService.updateTrackedEntityAttribute( patientAttribute );
         }
 

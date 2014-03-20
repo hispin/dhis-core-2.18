@@ -288,6 +288,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE trackedentityattribute DROP COLUMN mandatory" );
 
         executeSql( "update datavalue set storedby='aggregated_from_tracker' where storedby='DHIS-System'");
+        
+        executeSql( "ALTER TABLE trackedentityattribute DROP COLUMN groupBy" );
+        
     }
 
     // -------------------------------------------------------------------------

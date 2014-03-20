@@ -288,8 +288,6 @@ public class ActivityReportingServiceImpl
             }
         }
 
-        this.setGroupByAttribute( attService.getTrackedEntityAttributeByGroupBy() );
-
         if ( items.isEmpty() )
         {
             return null;
@@ -316,8 +314,6 @@ public class ActivityReportingServiceImpl
                 items.add( getActivity( programStageInstance, false ) );
             }
         }
-
-        this.setGroupByAttribute( attService.getTrackedEntityAttributeByGroupBy() );
 
         if ( items.isEmpty() )
         {
@@ -412,7 +408,7 @@ public class ActivityReportingServiceImpl
         }
 
         Collection<TrackedEntityAttribute> displayAttributes = attributeService
-            .getTrackedEntityAttributesDisplayedInList( true );
+            .getTrackedEntityAttributesDisplayInList( true );
         String resultSet = "";
 
         for ( TrackedEntityInstance patient : patients )
@@ -1549,7 +1545,7 @@ public class ActivityReportingServiceImpl
 
         String resultSet = "";
 
-        Collection<TrackedEntityAttribute> displayAttributes = attributeService.getTrackedEntityAttributesDisplayedInList( true );
+        Collection<TrackedEntityAttribute> displayAttributes = attributeService.getTrackedEntityAttributesDisplayInList( true );
         for ( TrackedEntityInstance patient : patients )
         {
             resultSet += patient.getId() + "/";

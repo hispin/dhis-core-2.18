@@ -59,7 +59,7 @@ public class ProgramTrackedEntityAttribute
 
     private Integer sortOrder;
 
-    private boolean displayedInList;
+    private boolean displayInList;
 
     private Boolean mandatory;
 
@@ -71,19 +71,19 @@ public class ProgramTrackedEntityAttribute
     {
     }
 
-    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, int sortOrder, boolean displayedInList )
+    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, int sortOrder, boolean displayInList )
     {
         this.attribute = attribute;
         this.sortOrder = sortOrder;
-        this.displayedInList = displayedInList;
+        this.displayInList = displayInList;
     }
 
-    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, Integer sortOrder, boolean displayedInList,
+    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, Integer sortOrder, boolean displayInList,
         Boolean mandatory )
     {
         this.attribute = attribute;
         this.sortOrder = sortOrder;
-        this.displayedInList = displayedInList;
+        this.displayInList = displayInList;
         this.mandatory = mandatory;
     }
 
@@ -138,11 +138,11 @@ public class ProgramTrackedEntityAttribute
     @JsonProperty
     @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean isMandatory()
+    public Boolean getMandatory()
     {
         return mandatory;
     }
-
+    
     public void setMandatory( Boolean mandatory )
     {
         this.mandatory = mandatory;
@@ -174,14 +174,16 @@ public class ProgramTrackedEntityAttribute
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlProperty( localName = "displayedInList", namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getDisplayedInList()
+    @JacksonXmlProperty( localName = "displayInList", namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isDisplayInList()
     {
-        return displayedInList;
+        return displayInList;
     }
 
-    public void setDisplayedInList( Boolean displayedInList )
+
+    public void setDisplayInList( boolean displayInList )
     {
-        this.displayedInList = displayedInList;
+        this.displayInList = displayInList;
     }
+
 }

@@ -352,7 +352,7 @@ public class ShowAddTrackedEntityInstanceFormAction
 
             if ( program == null )
             {
-                attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesDisplayedInList( true ) );
+                attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesDisplayInList( true ) );
                 Collection<Program> programs = programService.getAllPrograms();
 
                 for ( Program p : programs )
@@ -370,7 +370,7 @@ public class ShowAddTrackedEntityInstanceFormAction
                 attributes = program.getTrackedEntityAttributes();
                 for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
                 {
-                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
+                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.getMandatory() );
                 }
             }
 

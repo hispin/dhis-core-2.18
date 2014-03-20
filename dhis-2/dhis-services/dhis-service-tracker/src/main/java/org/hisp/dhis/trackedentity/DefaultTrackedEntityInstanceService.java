@@ -164,7 +164,7 @@ public class DefaultTrackedEntityInstanceService
             else 
             {
                 Collection<TrackedEntityAttribute> filters = attributeService.getAllTrackedEntityAttributes();
-                Collection<TrackedEntityAttribute> attributes = attributeService.getTrackedEntityAttributesDisplayedInList( true );
+                Collection<TrackedEntityAttribute> attributes = attributeService.getTrackedEntityAttributesDisplayInList( true );
                 filters.removeAll( attributes );
                 
                 params.getAttributes().addAll( QueryItem.getQueryItems( attributes ) );

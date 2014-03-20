@@ -19,8 +19,6 @@
 
     <property name="valueType" column="valuetype" not-null="true" />
 
-    <property name="groupBy" column="groupby" />
-
     <many-to-one name="attributeGroup" column="trackedentityattributegroupid" class="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup"
       foreign-key="fk_attribute_group" />
 

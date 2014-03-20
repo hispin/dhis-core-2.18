@@ -296,7 +296,7 @@ public class DefaultProgramService
         mobileAttribute.setName( pa.getName() );
         mobileAttribute.setType( pa.getValueType() );
         mobileAttribute.setValue( "" );
-        if ( ppa.getDisplayedInList() )
+        if ( ppa.isDisplayInList() )
         {
             mobileAttribute.setDisplayedInList( true );
         }
