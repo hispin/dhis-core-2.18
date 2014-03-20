@@ -98,7 +98,7 @@ public class HibernateCaseAggregationConditionStore
 
     private static final String IN_CONDITION_COUNT_X_TIMES = "COUNT";
 
-    public static final String STORED_BY_DHIS_SYSTEM = "DHIS-System";
+    public static final String STORED_BY_DHIS_SYSTEM = "aggregated_from_tracker";
 
     // -------------------------------------------------------------------------
     // Dependencies
