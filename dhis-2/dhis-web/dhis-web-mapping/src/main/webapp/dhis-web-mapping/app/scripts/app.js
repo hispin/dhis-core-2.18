@@ -176,7 +176,7 @@ Ext.onReady( function() {
 						}
 					}
 
-					if (layout.opacity === 1) {
+					if (layout.opacity === gis.conf.layout.layer.opacity) {
 						delete layout.opacity;
 					}
 
@@ -692,7 +692,7 @@ Ext.onReady( function() {
 			text: null,
 			height: 22,
 			value: false,
-			opacity: 1,
+			opacity: gis.conf.layout.layer.opacity,
 			getValue: function() {
 				return this.checkbox.getValue();
 			},
