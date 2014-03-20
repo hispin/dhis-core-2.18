@@ -274,11 +274,12 @@ public class SaveMobileProgramEnrollmentAction
 
                 if ( value != null )
                 {
-                    if ( patientAttribute.isMandatory() && value.trim().equals( "" ) )
+                  /*  if ( patientAttribute.isMandatory() && value.trim().equals( "" ) )
                     {
                         this.validationMap.put( key, "is_mandatory" );
                     }
-                    else if ( value.trim().length() > 0
+                    else */
+                    if ( value.trim().length() > 0
                         && patientAttribute.getValueType().equals( TrackedEntityAttribute.TYPE_INT )
                         && !MathUtils.isInteger( value ) )
                     {
