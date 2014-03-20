@@ -103,13 +103,6 @@ public class UpdateAttributeAction
         this.valueType = valueType;
     }
 
-    private Boolean mandatory;
-
-    public void setMandatory( Boolean mandatory )
-    {
-        this.mandatory = mandatory;
-    }
-
     private Boolean unique;
 
     public void setUnique( Boolean unique )
@@ -176,9 +169,6 @@ public class UpdateAttributeAction
         attribute.setValueType( valueType );
         attribute.setExpression( expression );
         attribute.setDisplayOnVisitSchedule( false );
-
-        mandatory = (mandatory == null) ? false : true;
-        attribute.setMandatory( mandatory );
 
         unique = (unique == null) ? false : true;
         attribute.setUnique( unique );

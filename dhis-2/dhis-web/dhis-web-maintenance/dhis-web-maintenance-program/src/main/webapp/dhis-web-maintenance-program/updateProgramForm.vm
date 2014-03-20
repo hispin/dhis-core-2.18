@@ -12,7 +12,9 @@
 			personDisplayNames.empty();
 			var compulsaryIdentifier = jQuery( "#compulsaryIdentifier" );
 			compulsaryIdentifier.empty();
-			
+			var mandatorySelector = jQuery( "#mandatory" );
+			mandatorySelector.empty();
+		
 			if( getFieldValue('type') != 3 ){
 				var isDisplayed = false;
 				jQuery("#selectedList").find("tr").each( function( i, item ){
@@ -23,6 +25,12 @@
 						isDisplayed = true
 					}
 					personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+					
+					// mandatory
+					var mandatory = jQuery( item ).find( "input[name='mandatory']:first");
+					checked = mandatory.attr('checked') ? true : false;
+					mandatorySelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+					
 				});
 				if( jQuery("#selectedList").find("tr").length > 0 && isDisplayed ){
 					compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
@@ -233,6 +241,7 @@
 			<th>$i18n.getString( "select_attributes" )
 				<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
 				<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
+				<select style='display:none;' multiple id="mandatory" name="mandatory" ></select>
 				<select id='compulsaryIdentifier' name="compulsaryIdentifier" multiple="multiple" class="hidden {validate:{required:true}}"></select>
 			</th>
 		  </tr>
@@ -263,6 +272,7 @@
 							<tr>
 								<th style="width:180px;">$i18n.getString( "name" )</th>
 								<th style="width:20px;">$i18n.getString( "displayed_in_list" )</th>
+								<th style="width:20px;">$i18n.getString( "mandatory" )</th>
                             </tr>
 						</thead>
 						<tbody id="selectedList" #if($program.type==3) style="display:none;" #end>
@@ -271,6 +281,7 @@
 								<tr ondblclick="unSelectProperties( this )" id="attr_$programAttribute.attribute.id">
 									<td onmousedown="select(event, this)">$encoder.htmlEncode( $attribute.name )</td>
 									<td align="center"><input type="checkbox" name="displayed" value="attr_$programAttribute.attribute.id" #if($programAttribute.displayedInList == true ) checked #end #if($program.type==3) disabled #end  /></td>
+									<td align="center"><input type="checkbox" name="mandatory" #if($programAttribute.mandatory == "true" ) checked #end #if($program.type==3) disabled #end  /></td>
 								</tr>
 							#end
 						</tbody>

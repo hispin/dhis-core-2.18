@@ -108,19 +108,12 @@ public interface TrackedEntityAttributeService
     Collection<TrackedEntityAttribute> getTrackedEntityAttributesByValueType( String valueType );
 
     /**
-     * Get mandatory attributes without groups
+     * Get attributes without groups
      * 
      * @return List of attributes
      */
     Collection<TrackedEntityAttribute> getOptionalAttributesWithoutGroup();
-
-    /**
-     * Get attributes by mandatory option
-     * 
-     * @param mandatory True/False value
-     */
-    Collection<TrackedEntityAttribute> getTrackedEntityAttributesByMandatory( boolean mandatory );
-
+    
     /**
      * Get attributes by groupBy option
      * 

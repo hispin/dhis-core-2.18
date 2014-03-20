@@ -55,17 +55,9 @@ public class HibernateTrackedEntityAttributeStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<TrackedEntityAttribute> getByMandatory( boolean mandatory )
-    {
-        return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityAttribute> getOptionalAttributesWithoutGroup()
     {
-        return getCriteria( Restrictions.isNull( "attributeGroup" ) ).add( Restrictions.eq( "mandatory", false ) )
-            .list();
+        return getCriteria( Restrictions.isNull( "attributeGroup" ) ).list();
     }
 
     @Override

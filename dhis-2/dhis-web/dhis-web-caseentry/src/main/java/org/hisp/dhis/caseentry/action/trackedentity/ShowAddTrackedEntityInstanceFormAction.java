@@ -42,6 +42,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.trackedentity.TrackedEntity;
@@ -178,13 +179,6 @@ public class ShowAddTrackedEntityInstanceFormAction
         return healthWorkers;
     }
 
-    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
-
-    public List<TrackedEntityAttribute> getAttributes()
-    {
-        return attributes;
-    }
-
     private Map<String, List<TrackedEntityAttribute>> attributesMap = new HashMap<String, List<TrackedEntityAttribute>>();
 
     public Map<String, List<TrackedEntityAttribute>> getAttributesMap()
@@ -276,6 +270,13 @@ public class ShowAddTrackedEntityInstanceFormAction
         return trackedEntityAttributeValueMap;
     }
 
+    private Map<Integer, Boolean> mandatoryMap = new HashMap<Integer, Boolean>();
+
+    public Map<Integer, Boolean> getMandatoryMap()
+    {
+        return mandatoryMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -341,6 +342,8 @@ public class ShowAddTrackedEntityInstanceFormAction
             }
         }
 
+        List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+
         if ( customRegistrationForm == null )
         {
             attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
@@ -349,22 +352,27 @@ public class ShowAddTrackedEntityInstanceFormAction
 
             if ( program == null )
             {
-                attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+                attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesDisplayedInList( true ) );
                 Collection<Program> programs = programService.getAllPrograms();
 
                 for ( Program p : programs )
                 {
                     attributes.removeAll( p.getAttributes() );
                 }
+                
+                for ( TrackedEntityAttribute attribute : attributes )
+                {
+                    mandatoryMap.put( attribute.getId(), false );
+                }
             }
             else
             {
                 attributes = program.getTrackedEntityAttributes();
+                for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
+                {
+                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.getMandatory() );
+                }
             }
-
-            Collection<TrackedEntityAttribute> attributesInList = attributeService.getTrackedEntityAttributesDisplayedInList( true );
-            attributes.removeAll( attributesInList );
-            attributes.addAll( attributesInList );
 
             for ( TrackedEntityAttribute attribute : attributes )
             {

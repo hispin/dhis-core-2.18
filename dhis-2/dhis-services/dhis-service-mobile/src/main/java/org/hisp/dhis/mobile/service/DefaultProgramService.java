@@ -294,7 +294,6 @@ public class DefaultProgramService
 
         org.hisp.dhis.api.mobile.model.PatientAttribute mobileAttribute = new org.hisp.dhis.api.mobile.model.PatientAttribute();
         mobileAttribute.setName( pa.getName() );
-        mobileAttribute.setMandatory( pa.isMandatory() );
         mobileAttribute.setType( pa.getValueType() );
         mobileAttribute.setValue( "" );
         if ( ppa.getDisplayedInList() )

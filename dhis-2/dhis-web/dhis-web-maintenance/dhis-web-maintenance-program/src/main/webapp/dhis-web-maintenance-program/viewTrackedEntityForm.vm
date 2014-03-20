@@ -122,7 +122,10 @@
    			<td>
    				<select id="attributesSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'attr' )">
    				#foreach( $attribute in $attributes )
-   					<option value="$attribute.uid" mandatory='$attribute.mandatory'>$encoder.htmlEncode($attribute.displayName) #if($attribute.mandatory=='true') * #end</option>
+   					<option value="$attribute.uid" mandatory='false'>$encoder.htmlEncode($attribute.displayName)</option>
+   				#end
+				#foreach( $programAttribute in $programAttributes )
+   					<option value="$programAttribute.attribute.uid" mandatory='programAttribute.mandatory'>$encoder.htmlEncode($programAttribute.attribute.displayName) #if($programAttribute.mandatory=='true') * #end</option>
    				#end
    				</select>
    			</td>

@@ -109,11 +109,6 @@ public class DefaultTrackedEntityAttributeService
         return attributeStore.getOptionalAttributesWithoutGroup();
     }
 
-    public Collection<TrackedEntityAttribute> getTrackedEntityAttributesByMandatory( boolean mandatory )
-    {
-        return attributeStore.getByMandatory( mandatory );
-    }
-
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesWithoutGroup()
     {
         return attributeStore.getWithoutGroup();

@@ -19,9 +19,7 @@ function showAttributeDetails( context ) {
 		function ( json ) {
 			setInnerHTML( 'nameField', json.attribute.name );	
 			setInnerHTML( 'descriptionField', json.attribute.description );
-			
-			var mandatory = ( json.attribute.mandatory == 'true') ? i18n_yes : i18n_no;
-			setInnerHTML( 'mandatoryField', mandatory );
+			setInnerHTML( 'optionSetField', json.attribute.optionSet );
 			
 			var unique = ( json.attribute.unique == 'true') ? i18n_yes : i18n_no;
 			setInnerHTML( 'uniqueField', unique );

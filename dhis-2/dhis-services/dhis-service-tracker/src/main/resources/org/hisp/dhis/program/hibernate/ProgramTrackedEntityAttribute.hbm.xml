@@ -4,18 +4,22 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.program.ProgramTrackedEntityAttribute" table="program_attributes">
+	<class name="org.hisp.dhis.program.ProgramTrackedEntityAttribute"
+		table="program_attributes">
 
-    <id name="id" column="programtrackedentityattributeid">
-        <generator class="native" />
-    </id>
-    
-    <many-to-one name="attribute" class="org.hisp.dhis.trackedentity.TrackedEntityAttribute" 
-        column="trackedentityattributeid" foreign-key="fk_program_attributeid" />
+		<id name="id" column="programtrackedentityattributeid">
+			<generator class="native" />
+		</id>
 
-    <property name="sortOrder" column="sort_order" />
-    
-	<property name="displayedInList" column="displayinlist" />
-	
-  </class>
+		<many-to-one name="attribute"
+			class="org.hisp.dhis.trackedentity.TrackedEntityAttribute" column="trackedentityattributeid"
+			foreign-key="fk_program_attributeid" />
+
+		<property name="sortOrder" column="sort_order" />
+
+		<property name="displayedInList" column="displayinlist" />
+
+		<property name="mandatory" column="mandatory" />
+
+	</class>
 </hibernate-mapping>

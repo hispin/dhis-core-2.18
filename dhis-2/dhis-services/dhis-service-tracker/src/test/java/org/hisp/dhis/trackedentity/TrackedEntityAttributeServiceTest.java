@@ -93,23 +93,6 @@ public class TrackedEntityAttributeServiceTest
     }
 
     @Test
-    public void testGetTrackedEntityAttributesByMandatory()
-    {
-        attributeA.setMandatory( true );
-        attributeB.setMandatory( true );
-        attributeC.setMandatory( false );
-
-        attributeStore.save( attributeA );
-        attributeStore.save( attributeB );
-        attributeStore.save( attributeC );
-
-        Collection<TrackedEntityAttribute> attributes = attributeStore.getByMandatory( true );
-        assertEquals( 2, attributes.size() );
-        assertTrue( attributes.contains( attributeA ) );
-        assertTrue( attributes.contains( attributeB ) );
-    }
-
-    @Test
     public void testGetTrackedEntityAttributeByGroupBy()
     {
         attributeA.setGroupBy( true );

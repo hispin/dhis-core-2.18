@@ -100,9 +100,9 @@ public class AddProgramAction
         this.relationshipTypeService = relationshipTypeService;
     }
 
-    @Autowired 
+    @Autowired
     private TrackedEntityService trackedEntityService;
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -161,6 +161,13 @@ public class AddProgramAction
     public void setPersonDisplayNames( List<Boolean> personDisplayNames )
     {
         this.personDisplayNames = personDisplayNames;
+    }
+
+    private List<Boolean> mandatory = new ArrayList<Boolean>();
+
+    public void setMandatory( List<Boolean> mandatory )
+    {
+        this.mandatory = mandatory;
     }
 
     private Boolean ignoreOverdueEvents;
@@ -293,7 +300,7 @@ public class AddProgramAction
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
-        if( trackedEntityId!=null)
+        if ( trackedEntityId != null )
         {
             TrackedEntity trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
             program.setTrackedEntity( trackedEntity );
@@ -311,7 +318,7 @@ public class AddProgramAction
                     .parseInt( ids[1] ) );
 
                 ProgramTrackedEntityAttribute programAttribute = new ProgramTrackedEntityAttribute( attribute,
-                    index + 1, personDisplayNames.get( index ) );
+                    index + 1, personDisplayNames.get( index ), mandatory.get( index ) );
 
                 program.getAttributes().add( programAttribute );
             }

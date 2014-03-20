@@ -280,6 +280,12 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE trackedentityattributevalue DROP COLUMN trackedentityattributeoptionid" );
         executeSql( "DROP TABLE trackedentityattributeoption" );
+
+        executeSql( "UPDATE program_attributes SET mandatory = trackedentityattribute.mandatory "
+            + "FROM program_attributes pa " + "INNER JOIN trackedentityattribute  "
+            + "ON pa.trackedentityattributeid=trackedentityattribute.trackedentityattributeid  "
+            + "where trackedentityattribute.mandatory is not null" );
+        executeSql( "ALTER TABLE trackedentityattribute DROP COLUMN mandatory" );
     }
 
     // -------------------------------------------------------------------------
@@ -424,17 +430,18 @@ public class TableAlteror
 
     private void createPersonTrackedEntity()
     {
-        int exist = jdbcTemplate.queryForObject( "SELECT count(*) FROM trackedentity where name='Person'", Integer.class );
+        int exist = jdbcTemplate.queryForObject( "SELECT count(*) FROM trackedentity where name='Person'",
+            Integer.class );
         if ( exist == 0 )
         {
             String id = statementBuilder.getAutoIncrementValue();
-            
+
             jdbcTemplate.execute( "INSERT INTO trackedentity(trackedentityid,uid, name, description) values(" + id
                 + ",'" + CodeGenerator.generateCode() + "','Person','Person')" );
-            
+
             jdbcTemplate.execute( "UPDATE program SET trackedentityid="
                 + "  (SELECT trackedentityid FROM trackedentity where name='Person') where trackedentityid is null" );
-            
+
             jdbcTemplate.execute( "UPDATE trackedentityinstance SET trackedentityid="
                 + "  (SELECT trackedentityid FROM trackedentity where name='Person') where trackedentityid is null" );
         }

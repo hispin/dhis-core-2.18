@@ -28,14 +28,6 @@
         <td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $attribute.description )" class="{validate:{required:true,minlength:2}}"></td>
       </tr>
       
-      <tr>
-		<td><label for="mandatory">$i18n.getString( "mandatory" )</label></td>
-		<td>
-			<input type='checkbox' id="mandatory" name="mandatory" value='true' #if( $attribute.mandatory ) checked #end>
-		</td>		
-		<td></td>				
-	</tr>
-	
     <tr>
 		<td><label for="unique">$i18n.getString( "unique" )</label></td>
 		<td>
