@@ -190,6 +190,11 @@ public class DefaultEventStore
 
         while ( rowSet.next() )
         {
+            if ( rowSet.getString( "psi_uid" ) == null || rowSet.getString( "ou_uid" ) == null )
+            {
+                continue;
+            }
+
             if ( !event.getEvent().equals( rowSet.getString( "psi_uid" ) ) )
             {
                 event = new Event();
@@ -234,6 +239,11 @@ public class DefaultEventStore
                 }
 
                 events.add( event );
+            }
+
+            if ( rowSet.getString( "pdv_value" ) == null || rowSet.getString( "de_uid" ) == null )
+            {
+                continue;
             }
 
             DataValue dataValue = new DataValue();
