@@ -4135,7 +4135,7 @@ Ext.onReady( function() {
 			cls: 'ns-combo',
 			multiSelect: true,
 			style: 'margin-bottom:0',
-			width: accBaseWidth - toolWidth - 2,
+			width: accBaseWidth - toolWidth - 1,
 			valueField: 'level',
 			displayField: 'name',
 			emptyText: NS.i18n.select_organisation_unit_levels,
@@ -4151,7 +4151,7 @@ Ext.onReady( function() {
 			cls: 'ns-combo',
 			multiSelect: true,
 			style: 'margin-bottom:0',
-			width: accBaseWidth - toolWidth - 2,
+			width: accBaseWidth - toolWidth - 1,
 			valueField: 'id',
 			displayField: 'name',
 			emptyText: NS.i18n.select_organisation_unit_groups,
@@ -4161,7 +4161,7 @@ Ext.onReady( function() {
 		});
 
         organisationUnitPanel = Ext.create('Ext.panel.Panel', {
-			width: accBaseWidth - toolWidth - 2,
+			width: accBaseWidth - toolWidth - 1,
             layout: 'column',
             bodyStyle: 'border:0 none',
             items: [
@@ -4269,7 +4269,7 @@ Ext.onReady( function() {
 		toolPanel = Ext.create('Ext.panel.Panel', {
 			width: toolWidth,
 			bodyStyle: 'border:0 none; text-align:right',
-			style: 'margin-right:2px',
+			style: 'margin-right:1px',
 			items: tool
 		});
 
@@ -4281,8 +4281,7 @@ Ext.onReady( function() {
             items: [
                 {
                     layout: 'column',
-                    width: accBaseWidth,
-                    bodyStyle: 'border:0 none',
+                    bodyStyle: 'border:0 none;',
                     style: 'padding-bottom:1px',
                     items: [
                         toolPanel,

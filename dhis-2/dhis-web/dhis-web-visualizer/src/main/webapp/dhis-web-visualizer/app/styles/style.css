@@ -84,12 +84,12 @@ body.x-windows {
 
 ::-webkit-scrollbar-track:vertical {
     background-color: #e1e1e1;
-    margin: 2px 0;
-    border-right: 2px solid white;
+    margin: 1px 0;
+    border-right: 1px solid white;
 }
 ::-webkit-scrollbar-thumb:vertical {
 	background-color: #bbb;
-    border-right: 2px solid white;
+    border-right: 1px solid white;
 }
 
 	/* User select */
@@ -823,7 +823,7 @@ body.x-windows {
 
 	/* accordion item body */
 .ns-accordion .x-accordion-body {
-	padding: 2px 2px 0px;
+	padding: 1px;
 	border-top: 1px solid #c5c5c5 !important;
 }
 

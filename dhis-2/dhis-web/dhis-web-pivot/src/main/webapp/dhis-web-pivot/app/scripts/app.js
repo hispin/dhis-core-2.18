@@ -4314,7 +4314,7 @@ Ext.onReady( function() {
 			cls: 'ns-combo',
 			multiSelect: true,
 			style: 'margin-bottom:0',
-			width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding - 38,
+			width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding - 37,
 			valueField: 'level',
 			displayField: 'name',
 			emptyText: NS.i18n.select_organisation_unit_levels,
@@ -4327,7 +4327,7 @@ Ext.onReady( function() {
 			cls: 'ns-combo',
 			multiSelect: true,
 			style: 'margin-bottom:0',
-			width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding - 38,
+			width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding - 37,
 			valueField: 'id',
 			displayField: 'name',
 			emptyText: NS.i18n.select_organisation_unit_groups,
@@ -4432,7 +4432,7 @@ Ext.onReady( function() {
 		toolPanel = Ext.create('Ext.panel.Panel', {
 			width: 36,
 			bodyStyle: 'border:0 none; text-align:right',
-			style: 'margin-right:2px',
+			style: 'margin-right:1px',
 			items: tool
 		});
 
@@ -4527,7 +4527,7 @@ Ext.onReady( function() {
                     items: [
                         toolPanel,
                         {
-                            width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding - 38,
+                            width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding - 37,
                             layout: 'column',
                             bodyStyle: 'border:0 none',
                             items: [
