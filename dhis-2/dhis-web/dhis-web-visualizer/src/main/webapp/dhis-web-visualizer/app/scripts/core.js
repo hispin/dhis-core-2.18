@@ -1093,10 +1093,14 @@ Ext.onReady( function() {
 								userOugc;
 
 							if (init.user && isUserOrgunit) {
-								userOu = [{
-									id: init.user.ou,
-									name: response.metaData.names[init.user.ou]
-								}];
+								userOu = [];
+
+								for (var j = 0; j < init.user.ou.length; j++) {
+									userOu.push({
+										id: init.user.ou[j],
+										name: response.metaData.names[init.user.ou[j]]
+									});
+								}
 							}
 							if (init.user && init.user.ouc && isUserOrgunitChildren) {
 								userOuc = [];
