@@ -159,7 +159,7 @@ public class HibernateTrackedEntityInstanceStore
         {
             String col = statementBuilder.columnQuote( item.getItemId() );
             
-            String joinClause = params.isOrQuery() ? "full outer join" : "inner join";
+            String joinClause = item.hasFilter() ? "inner join" : "full outer join"; //TODO left join?
             
             sql += 
                 joinClause + " trackedentityattributevalue as " + col + " " +
