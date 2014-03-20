@@ -257,7 +257,7 @@ public class GetTrackedEntityInstanceAction
             {
                 attributes = program.getTrackedEntityAttributes();
                 for( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() ){
-                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.getMandatory() );
+                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
                 }
             }
 

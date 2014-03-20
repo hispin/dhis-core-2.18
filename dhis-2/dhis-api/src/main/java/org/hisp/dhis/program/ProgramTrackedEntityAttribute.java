@@ -138,7 +138,7 @@ public class ProgramTrackedEntityAttribute
     @JsonProperty
     @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getMandatory()
+    public Boolean isMandatory()
     {
         return mandatory;
     }
