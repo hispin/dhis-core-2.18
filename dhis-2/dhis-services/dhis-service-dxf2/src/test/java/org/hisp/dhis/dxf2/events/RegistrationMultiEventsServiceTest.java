@@ -28,14 +28,9 @@ package org.hisp.dhis.dxf2.events;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
-import java.util.HashSet;
-
 import org.hamcrest.CoreMatchers;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
@@ -58,6 +53,11 @@ import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -78,6 +78,9 @@ public class RegistrationMultiEventsServiceTest
 
     @Autowired
     private EnrollmentService enrollmentService;
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     private org.hisp.dhis.trackedentity.TrackedEntityInstance maleA;
 
@@ -109,7 +112,7 @@ public class RegistrationMultiEventsServiceTest
     {
         identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
         userService = (UserService) getBean( UserService.ID );
-        
+
         organisationUnitA = createOrganisationUnit( 'A' );
         organisationUnitB = createOrganisationUnit( 'B' );
         identifiableObjectManager.save( organisationUnitA );
@@ -250,18 +253,15 @@ public class RegistrationMultiEventsServiceTest
         importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        // ERROR
-        // assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
-        assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        sessionFactory.getCurrentSession().flush();
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
             trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
         importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        // ERROR
-        // assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
-        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
     }
 
     @Test
@@ -281,9 +281,8 @@ public class RegistrationMultiEventsServiceTest
         importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        // ERROR
-        // assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
-        assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        sessionFactory.getCurrentSession().flush();
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
             trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
