@@ -431,7 +431,7 @@ public abstract class AbstractEnrollmentService
 
         for ( ProgramTrackedEntityAttribute programTrackedEntityAttribute : program.getAttributes() )
         {
-            mandatoryMap.put( programTrackedEntityAttribute.getAttribute(), programTrackedEntityAttribute.getMandatory() );
+            mandatoryMap.put( programTrackedEntityAttribute.getAttribute(), programTrackedEntityAttribute.isMandatory() );
         }
 
         for ( TrackedEntityAttributeValue value : trackedEntityInstance.getAttributeValues() )
