@@ -19,7 +19,7 @@
 
 		<property name="displayedInList" column="displayinlist" />
 
-		<property name="mandatory" column="mandatory" />
+		<property name="isMandatory" column="mandatory" />
 
 	</class>
 </hibernate-mapping>
