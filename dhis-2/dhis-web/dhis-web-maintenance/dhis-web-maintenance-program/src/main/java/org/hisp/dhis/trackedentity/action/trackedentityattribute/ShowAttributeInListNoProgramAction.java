@@ -84,11 +84,11 @@ public class ShowAttributeInListNoProgramAction
         throws Exception
     {
         availableAttributes = new ArrayList<TrackedEntityAttribute>(
-            attributeService.getTrackedEntityAttributesDisplayedInList( false ) );
+            attributeService.getTrackedEntityAttributesDisplayInList( false ) );
         Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         selectedAttributes = new ArrayList<TrackedEntityAttribute>(
-            attributeService.getTrackedEntityAttributesDisplayedInList( true ) );
+            attributeService.getTrackedEntityAttributesDisplayInList( true ) );
         Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;

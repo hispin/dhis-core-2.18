@@ -88,8 +88,6 @@ public class TrackedEntityAttribute
 
     private Boolean inherit = false;
 
-    private Boolean groupBy = false;
-
     private TrackedEntityAttributeGroup attributeGroup;
 
     private OptionSet optionSet;
@@ -162,19 +160,6 @@ public class TrackedEntityAttribute
     public void setInherit( Boolean inherit )
     {
         this.inherit = inherit;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getGroupBy()
-    {
-        return groupBy;
-    }
-
-    public void setGroupBy( Boolean groupBy )
-    {
-        this.groupBy = groupBy;
     }
     
     @JsonProperty
@@ -401,7 +386,6 @@ public class TrackedEntityAttribute
             description = trackedEntityAttribute.getDescription();
             valueType = trackedEntityAttribute.getValueType();
             inherit = trackedEntityAttribute.getInherit();
-            groupBy = trackedEntityAttribute.getGroupBy();
             attributeGroup = trackedEntityAttribute.getAttributeGroup();
 
             expression = trackedEntityAttribute.getExpression();

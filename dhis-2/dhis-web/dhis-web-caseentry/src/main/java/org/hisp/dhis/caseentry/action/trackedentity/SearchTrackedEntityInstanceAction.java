@@ -228,7 +228,7 @@ public class SearchTrackedEntityInstanceAction
         else
         {
             attributes = new ArrayList<TrackedEntityAttribute>(
-                attributeService.getTrackedEntityAttributesDisplayedInList( true ) );
+                attributeService.getTrackedEntityAttributesDisplayInList( true ) );
             Collections.sort( attributes, new TrackedEntityAttributeSortOrderInListNoProgramComparator() );
         }
 

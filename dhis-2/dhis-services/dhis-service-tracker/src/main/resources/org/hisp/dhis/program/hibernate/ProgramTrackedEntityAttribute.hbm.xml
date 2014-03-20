@@ -17,7 +17,7 @@
 
 		<property name="sortOrder" column="sort_order" />
 
-		<property name="displayedInList" column="displayinlist" />
+		<property name="displayInList" column="displayinlist" />
 
 		<property name="mandatory" column="mandatory" />
 

@@ -176,20 +176,6 @@ public class TrackedEntityAttributeStoreTest
     }
 
     @Test
-    public void testGetTrackedEntityAttributeByGroupBy()
-    {
-        attributeA.setGroupBy( true );
-        attributeB.setGroupBy( false );
-        attributeC.setGroupBy( false );
-
-        attributeService.addTrackedEntityAttribute( attributeA );
-        attributeService.addTrackedEntityAttribute( attributeB );
-        attributeService.addTrackedEntityAttribute( attributeC );
-
-        assertEquals( attributeA, attributeService.getTrackedEntityAttributeByGroupBy() );
-    }
-
-    @Test
     public void testGetTrackedEntityAttributesWithoutGroup()
     {
         attributeService.addTrackedEntityAttribute( attributeA );

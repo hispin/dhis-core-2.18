@@ -117,7 +117,7 @@ public class SelectAction
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         Collection<TrackedEntityAttribute> _attributes = attributeService.getTrackedEntityAttributesWithoutProgram();
-        _attributes.addAll( attributeService.getTrackedEntityAttributesDisplayedInList( true ));
+        _attributes.addAll( attributeService.getTrackedEntityAttributesDisplayInList( true ));
         
         attributes = new ArrayList<TrackedEntityAttribute>( _attributes );
 

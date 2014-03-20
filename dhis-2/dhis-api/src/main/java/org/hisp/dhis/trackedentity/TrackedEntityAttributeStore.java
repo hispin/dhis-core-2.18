@@ -55,20 +55,13 @@ public interface TrackedEntityAttributeStore
      * @return List of attributes
      */
     Collection<TrackedEntityAttribute> getOptionalAttributesWithoutGroup();
-    
+
     /**
      * Get {@link TrackedEntityAttribute} without any group
      * 
      * @return TrackedEntityAttribute without group.
      */
     Collection<TrackedEntityAttribute> getWithoutGroup();
-
-    /**
-     * Get attributes by groupBy option
-     * 
-     * @return TrackedEntityAttribute with groupby as true
-     */
-    TrackedEntityAttribute getByGroupBy();
 
     /**
      * Get attributes which are displayed in visit schedule
@@ -82,10 +75,10 @@ public interface TrackedEntityAttributeStore
     /**
      * Get attributes which are displayed in visit schedule
      * 
-     * @param displayInListNoProgram True/False value
+     * @param displayInList True/False value
      * 
      * @return List of attributes
      */
-    Collection<TrackedEntityAttribute> getDisplayedInList( boolean displayInListNoProgram );
+    Collection<TrackedEntityAttribute> getDisplayInList( boolean displayInList );
 
 }

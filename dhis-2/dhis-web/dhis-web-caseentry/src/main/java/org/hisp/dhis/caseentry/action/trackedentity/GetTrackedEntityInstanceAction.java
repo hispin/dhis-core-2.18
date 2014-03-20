@@ -241,7 +241,7 @@ public class GetTrackedEntityInstanceAction
                 {
                     for ( ProgramTrackedEntityAttribute programAttribute : p.getAttributes() )
                     {
-                        if ( !programAttribute.getDisplayedInList() )
+                        if ( !programAttribute.isDisplayInList() )
                         {
                             attributes.remove( programAttribute.getAttribute() );
                         }
@@ -257,7 +257,7 @@ public class GetTrackedEntityInstanceAction
             {
                 attributes = program.getTrackedEntityAttributes();
                 for( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() ){
-                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
+                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.getMandatory() );
                 }
             }
 

@@ -284,7 +284,7 @@ public class DefaultTrackedEntityFormService
         
         if( program!= null)
         {
-            madatory = programAttributeService.getProgramTrackedEntityAttribute( program, attribute ).isMandatory();
+            madatory = programAttributeService.getProgramTrackedEntityAttribute( program, attribute ).getMandatory();
         }
         
         inputHtml = TAG_OPEN + "input id=\"attr" + attribute.getId() + "\" name=\"attr" + attribute.getId()

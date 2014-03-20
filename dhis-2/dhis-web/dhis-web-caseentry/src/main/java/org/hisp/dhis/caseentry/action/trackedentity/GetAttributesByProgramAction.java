@@ -118,7 +118,7 @@ public class GetAttributesByProgramAction
             attributes = new ArrayList<TrackedEntityAttribute>(
                 attributeService.getTrackedEntityAttributesWithoutProgram() );
             Collection<TrackedEntityAttribute> attribuesInList = attributeService
-                .getTrackedEntityAttributesDisplayedInList( true );
+                .getTrackedEntityAttributesDisplayInList( true );
             attributes.removeAll( attribuesInList );
             attributes.addAll( attribuesInList );
         }
