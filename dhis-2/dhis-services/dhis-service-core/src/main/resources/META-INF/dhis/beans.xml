@@ -11,6 +11,8 @@
 
   <bean id="org.hisp.dhis.schema.PropertyScannerService" class="org.hisp.dhis.schema.DefaultPropertyScannerService" />
 
+  <bean id="org.hisp.dhis.sharing.SharingService" class="org.hisp.dhis.sharing.DefaultSharingService" />
+
   <!-- Store definitions -->
 
   <bean id="smsCommandService" class="org.hisp.dhis.smscommand.DefaultSMSCommandService">
