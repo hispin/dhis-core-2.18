@@ -161,6 +161,23 @@ public class Program
     // -------------------------------------------------------------------------
 
     /**
+     * Returns the ProgramTrackedEntityAttribute of this Program which contains
+     * the given TrackedEntityAttribute.
+     */
+    public ProgramTrackedEntityAttribute getAttribute( TrackedEntityAttribute attribute )
+    {
+        for ( ProgramTrackedEntityAttribute programAttribute : attributes )
+        {
+            if ( programAttribute != null && programAttribute.getAttribute().equals( attribute ) )
+            {
+                return programAttribute;
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
      * Returns all data elements which are part of the stages of this program.
      */
     public Set<DataElement> getAllDataElements()
