@@ -275,7 +275,7 @@ public class DefaultTrackedEntityFormService
     private String getAttributeField( String inputHtml, TrackedEntityAttribute attribute, Program program, String value, I18n i18n,
         int index, String hidden, String style )
     {
-        boolean mandatory = false; //TODO fix
+        boolean mandatory = program.getAttribute(attribute).isMandatory(); //TODO fix
                 
         inputHtml = TAG_OPEN + "input id=\"attr" + attribute.getId() + "\" name=\"attr" + attribute.getId()
             + "\" tabindex=\"" + index + "\" style=\"" + style + "\"";
