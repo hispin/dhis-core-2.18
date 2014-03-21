@@ -1050,7 +1050,7 @@ Ext.onReady( function() {
 			text: NS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables/query/' + value + '.json?viewClass=sharing&links=false' : null,
+					url = value ? ns.core.init.contextPath + '/api/reportTables/filtered.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -1062,7 +1062,7 @@ Ext.onReady( function() {
 			text: NS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables/query/' + value + '.json?viewClass=sharing&links=false' : null,
+					url = value ? ns.core.init.contextPath + '/api/reportTables/filtered.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page + 1;
@@ -2559,7 +2559,10 @@ Ext.onReady( function() {
 				reader: {
 					type: 'json',
 					root: 'objects'
-				}
+				},
+				pageParam: false,
+				startParam: false,
+				limitParam: false
 			},
 			listeners: {
 				load: function(s) {
@@ -2636,8 +2639,6 @@ Ext.onReady( function() {
                 Ext.Ajax.request({
                     url: ns.core.init.contextPath + '/api' + path,
                     params: {
-                        viewClass: 'basic',
-                        links: 'false',
                         page: store.nextPage,
                         pageSize: 50
                     },
