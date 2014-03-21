@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.dxf2.schema.Schema;
 import org.hisp.dhis.dxf2.schema.SchemaDescriptor;
@@ -42,6 +43,13 @@ public class DocumentSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( Document.class, "document", "documents", true, true, true );
+        Schema schema = new Schema( Document.class, "document", "documents", true, true, true );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_DOCUMENT_PUBLIC_ADD" ) );
+        schema.setPrivateAuthorities( Lists.newArrayList( "F_DOCUMENT_PRIVATE_ADD" ) );
+        schema.setExternalAuthorities( Lists.newArrayList( "F_DOCUMENT_EXTERNAL" ) );
+
+        return schema;
     }
 }

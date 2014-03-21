@@ -42,6 +42,10 @@ public class InterpretationSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( Interpretation.class, "interpretation", "interpretations", true, true, true );
+        Schema schema = new Schema( Interpretation.class, "interpretation", "interpretations", true, true, true );
+
+        schema.setShareable( true );
+
+        return schema;
     }
 }
