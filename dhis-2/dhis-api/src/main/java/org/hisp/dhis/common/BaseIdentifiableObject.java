@@ -40,6 +40,7 @@ import org.hisp.dhis.common.annotation.Description;
 import org.hisp.dhis.common.view.SharingBasicView;
 import org.hisp.dhis.common.view.SharingDetailedView;
 import org.hisp.dhis.common.view.SharingExportView;
+import org.hisp.dhis.sharing.Access;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroupAccess;
 
