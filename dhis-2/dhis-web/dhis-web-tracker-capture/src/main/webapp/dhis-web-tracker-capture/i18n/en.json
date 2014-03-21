@@ -28,6 +28,7 @@
     "remove": "Remove",
     "entity": "Entity",
     "add_new": "Add new",
+    "new_event": "New event",
     "close_search": "Close search",
     "search_attributes": "Search attributes",
     "search_for_dashboard": "Search for dashboard items",

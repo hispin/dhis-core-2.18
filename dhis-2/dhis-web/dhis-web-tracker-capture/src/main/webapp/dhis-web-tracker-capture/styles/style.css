@@ -417,6 +417,10 @@ div.event-flow-dashboard
 // program-stage-instances
 // -------------------------------------------------------------- */
 
+.arrow-container {
+    font-size: 25px;
+    width: 10px;
+}
 .stage-container
 {
     width:100%;
@@ -485,6 +489,18 @@ input.stage-object-selected[type="button"]
 input.stage-scheduled[type="button"]
 {
     border: 5px solid;
+}
+
+input.entity-instance-object[type="button"]
+{
+    width: 130px;
+    height: 60px;
+    border-color: #bbbbbb;
+    background-color: #ddd;
+    cursor: pointer;
+    border: 1px solid #aaa;
+    margin: 5px;
+    border-radius: 2px;
 }
 
 input.patient-object[type="button"]
@@ -1335,19 +1351,19 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 
 .panel-body {
-	padding: 15px
+    padding: 15px
 }
 .panel-body:before, .panel-body:after {
-	display: table;
-	content: " "
+    display: table;
+    content: " "
 }
 .panel-body:after {
-	clear: both
+    clear: both
 }
 .panel-body:before, .panel-body:after {
-	display: table;
-	content: " "
+    display: table;
+    content: " "
 }
 .panel-body:after {
-	clear: both
+    clear: both
 }

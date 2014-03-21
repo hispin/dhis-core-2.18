@@ -7,9 +7,9 @@
             <div class="list-element"> 
                 {{'program'| translate}}
                 <span class="right">
-                    <select ng-model="selectedProgram" 
+                    <select ng-model="selectedProgram"
                             ng-options="program as program.name for program in programs | orderBy: 'name'" 
-                            ng-change="showEnrollment()">
+                            ng-change="loadEvents(selectedProgram.id)">
                         <option value="">{{'please_select'| translate}}</option>
                     </select>
                 </span>
