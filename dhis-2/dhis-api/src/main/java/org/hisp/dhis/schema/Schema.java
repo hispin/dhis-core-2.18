@@ -34,6 +34,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
 
 import java.util.List;
 
@@ -44,6 +45,8 @@ import java.util.List;
 public class Schema
 {
     private Class<?> klass;
+
+    private boolean identifiableObject;
 
     private String singular;
 
@@ -65,15 +68,17 @@ public class Schema
 
     private List<Property> properties = Lists.newArrayList();
 
-    public Schema()
+    public Schema( Class<?> klass, String singular, String plural )
     {
+        this.klass = klass;
+        this.identifiableObject = IdentifiableObject.class.isAssignableFrom( klass );
+        this.singular = singular;
+        this.plural = plural;
     }
 
     public Schema( Class<?> klass, String singular, String plural, boolean importable, boolean exportable, boolean deletable )
     {
-        this.klass = klass;
-        this.singular = singular;
-        this.plural = plural;
+        this( klass, singular, plural );
         this.importable = importable;
         this.exportable = exportable;
         this.deletable = deletable;
@@ -89,6 +94,13 @@ public class Schema
     public void setKlass( Class<?> klass )
     {
         this.klass = klass;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public boolean isIdentifiableObject()
+    {
+        return identifiableObject;
     }
 
     @JsonProperty
