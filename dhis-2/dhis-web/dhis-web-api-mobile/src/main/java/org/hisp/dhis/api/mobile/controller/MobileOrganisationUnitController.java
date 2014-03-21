@@ -42,6 +42,7 @@ import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.Contact;
 import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
+import org.hisp.dhis.api.mobile.model.DataSetValueList;
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.MobileModel;
 import org.hisp.dhis.api.mobile.model.ModelList;
@@ -229,6 +230,14 @@ public class MobileOrganisationUnitController
     {
         facilityReportingService.saveDataSetValues( getUnit( id ), dataSetValue );
         return DATASET_REPORT_UPLOADED;
+    }
+    
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/dataSetValue")
+    @ResponseBody
+    public DataSetValueList getDataSetValues( @PathVariable int id, @RequestBody DataSetList dataSetList )
+        throws NotAllowedException
+    {
+        return facilityReportingService.getDataSetValues( getUnit( id ), dataSetList );
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/activitiyplan" )
