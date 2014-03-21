@@ -344,7 +344,6 @@ public class MobileOrgUnitLinks
     }
 
     public void serialize( DataOutputStream dataOutputStream )
-
         throws IOException
     {
         dataOutputStream.writeInt( id );
