@@ -55,26 +55,26 @@ public class EditSMSCommandForm
     // Dependencies
     // -------------------------------------------------------------------------
     private SMSCommandService smsCommandService;
-    
+
     public void setSmsCommandService( SMSCommandService smsCommandService )
     {
         this.smsCommandService = smsCommandService;
     }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
 
     private DataElementService dataElementService;
-    
+
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private UserGroupService userGroupService;
 
     public void setUserGroupService( UserGroupService userGroupService )
@@ -89,11 +89,11 @@ public class EditSMSCommandForm
     private String name;
 
     private int selectedDataSetID;
-    
+
     private Integer userGroupID;
 
     private String codeDataelementOption;
-    
+
     private String specialCharactersInfo;
 
     private String separator;
@@ -101,14 +101,16 @@ public class EditSMSCommandForm
     private String codeSeparator;
 
     private String defaultMessage;
-    
+
     private String receivedMessage;
-    
+
     private String wrongFormatMessage;
-    
+
     private String noUserMessage;
-    
+
     private String moreThanOneOrgUnitMessage;
+
+    private Integer completenessMethod;
 
     private int selectedCommandID = -1;
 
@@ -134,9 +136,10 @@ public class EditSMSCommandForm
             c.setOptionId( x.getInt( "optionId" ) );
             codeSet.add( c );
         }
-        
+
         @SuppressWarnings( "unchecked" )
-        List<JSONObject> jsonSpecialCharacters = (List<JSONObject>) JSONObject.fromObject( specialCharactersInfo ).get( "specialCharacters" );
+        List<JSONObject> jsonSpecialCharacters = (List<JSONObject>) JSONObject.fromObject( specialCharactersInfo ).get(
+            "specialCharacters" );
         Set<SMSSpecialCharacter> specialCharacterSet = new HashSet<SMSSpecialCharacter>();
         for ( JSONObject x : jsonSpecialCharacters )
         {
@@ -153,31 +156,36 @@ public class EditSMSCommandForm
         }
 
         SMSCommand c = getSMSCommand();
-        
+
         if ( selectedDataSetID > -1 && c != null )
         {
             c.setCurrentPeriodUsedForReporting( currentPeriodUsedForReporting );
             c.setName( name );
             c.setSeparator( separator );
-            
-            //remove codes
+
+            if ( completenessMethod != null )
+            {
+                c.setCompletenessMethod( completenessMethod );
+            }
+
+            // remove codes
             Set<SMSCode> toRemoveCodes = c.getCodes();
             smsCommandService.deleteCodeSet( toRemoveCodes );
-            
-            //remove special characters
+
+            // remove special characters
             Set<SMSSpecialCharacter> toRemoveCharacters = c.getSpecialCharacters();
             smsCommandService.deleteSpecialCharacterSet( toRemoveCharacters );
-            
+
             c.setCodes( codeSet );
-            
+
             // message
             c.setDefaultMessage( defaultMessage );
             c.setReceivedMessage( receivedMessage );
             c.setMoreThanOneOrgUnitMessage( moreThanOneOrgUnitMessage );
             c.setNoUserMessage( noUserMessage );
             c.setWrongFormatMessage( wrongFormatMessage );
-            
-            if( userGroupID != null && userGroupID > -1 )
+
+            if ( userGroupID != null && userGroupID > -1 )
             {
                 c.setUserGroup( userGroupService.getUserGroup( userGroupID ) );
             }
@@ -207,7 +215,6 @@ public class EditSMSCommandForm
     {
         return smsCommandService.getSMSCommand( selectedCommandID );
     }
-
 
     public int getSelectedDataSetID()
     {
@@ -344,5 +351,15 @@ public class EditSMSCommandForm
     public void setMoreThanOneOrgUnitMessage( String moreThanOneOrgUnitMessage )
     {
         this.moreThanOneOrgUnitMessage = moreThanOneOrgUnitMessage;
+    }
+
+    public int getCompletenessMethod()
+    {
+        return completenessMethod;
+    }
+
+    public void setCompletenessMethod( int completenessMethod )
+    {
+        this.completenessMethod = completenessMethod;
     }
 }

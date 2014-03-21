@@ -36,11 +36,21 @@ import java.util.Set;
 
 public class SMSCommand
 {
+    //Default message
+    
     public static final String WRONG_FORMAT_MESSAGE = "Wrong format for command";
     
     public static final String MORE_THAN_ONE_ORGUNIT_MESSAGE = "Found more than one org unit for this number. Please specify one organisation unit";
     
     public static final String NO_USER_MESSAGE = "No user associated with this phone number. Please contact your supervisor.";
+    
+    //Completeness method code
+    
+    public static final int RECEIVE_ALL_DATAVALUE = 1;
+    
+    public static final int RECEIVE_AT_LEAST_ONE_DATAVALUE = 2;
+    
+    public static final int DO_NOT_MARK_COMPLETE = 3;
     
     private int id;
 
@@ -63,6 +73,8 @@ public class SMSCommand
     private Set<SMSSpecialCharacter> specialCharacters;
 
     private boolean currentPeriodUsedForReporting = false; // default is prev
+    
+    private Integer completenessMethod;
     
     //Messages
     
@@ -339,4 +351,16 @@ public class SMSCommand
     {
         this.moreThanOneOrgUnitMessage = moreThanOneOrgUnitMessage;
     }
+
+    public Integer getCompletenessMethod()
+    {
+        return completenessMethod;
+    }
+
+    public void setCompletenessMethod( Integer completenessMethod )
+    {
+        this.completenessMethod = completenessMethod;
+    }
+    
+    
 }

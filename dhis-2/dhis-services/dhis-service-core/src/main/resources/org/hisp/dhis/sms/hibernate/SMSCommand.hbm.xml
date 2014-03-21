@@ -29,6 +29,7 @@
     <property name="noUserMessage" type="text" />
     <property name="moreThanOneOrgUnitMessage" type="text" />
     <property name="currentPeriodUsedForReporting" type="boolean" />
+    <property name="completenessMethod" />
 
     <many-to-one name="dataset" class="org.hisp.dhis.dataset.DataSet" column="datasetid" foreign-key="fk_dataset_datasetid" />
 

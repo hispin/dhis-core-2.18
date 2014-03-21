@@ -135,10 +135,10 @@
 		<tr>
 		<td>$i18n.getString( "completeness_method" )</td>
 			<td>
-				<select>
-					<option>$i18n.getString( "receive_at_least_one_datavalue" )</option>
-					<option>$i18n.getString( "receive_all_compulsory_datavalue" )</option>
-					<option>$i18n.getString( "receive_all_datavalue" )</option>
+				<select id="completenessMethod" name="completenessMethod">
+					<option value="1" #if($smsCommand.completenessMethod == 1) selected #end>$i18n.getString( "receive_all_datavalue" )</option>
+					<option value="2" #if($smsCommand.completenessMethod == 2) selected #end>$i18n.getString( "receive_at_least_one_datavalue" )</option>
+					<option value="3" #if($smsCommand.completenessMethod == 3) selected #end>$i18n.getString( "do_not_mark_complete" )</option>
 				</select>
 			</td>
 		</tr>
