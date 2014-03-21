@@ -28,29 +28,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionType.CATEGORY;
-import static org.hisp.dhis.common.DimensionType.CATEGORYOPTION_GROUPSET;
-import static org.hisp.dhis.common.DimensionType.DATAELEMENT;
-import static org.hisp.dhis.common.DimensionType.DATAELEMENT_GROUPSET;
-import static org.hisp.dhis.common.DimensionType.DATAELEMENT_OPERAND;
-import static org.hisp.dhis.common.DimensionType.DATASET;
-import static org.hisp.dhis.common.DimensionType.INDICATOR;
-import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
-import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
-import static org.hisp.dhis.common.DimensionType.PERIOD;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
@@ -72,11 +49,21 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.sharing.SharingUtils;
+import org.hisp.dhis.sharing.SharingService;
 import org.hisp.dhis.system.util.UniqueArrayList;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.hisp.dhis.common.DimensionType.*;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.*;
 
 /**
  * @author Lars Helge Overland
@@ -86,10 +73,10 @@ public class DefaultDimensionService
 {
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
-    
+
     @Autowired
     private DataElementCategoryService categoryService;
-    
+
     @Autowired
     private DataElementOperandService operandService;
 
@@ -103,102 +90,105 @@ public class DefaultDimensionService
     private DataElementService dataElementService;
 
     @Autowired
+    private SharingService sharingService;
+
+    @Autowired
     private CurrentUserService currentUserService;
-    
+
     //--------------------------------------------------------------------------
     // DimensionService implementation
     //--------------------------------------------------------------------------
 
     @Override
     public DimensionalObject getDimension( String uid )
-    {        
+    {
         DataElementCategory cat = identifiableObjectManager.get( DataElementCategory.class, uid );
-        
+
         if ( cat != null )
         {
             return cat;
         }
-        
+
         DataElementGroupSet degs = identifiableObjectManager.get( DataElementGroupSet.class, uid );
-        
+
         if ( degs != null )
         {
             return degs;
         }
-        
+
         OrganisationUnitGroupSet ougs = identifiableObjectManager.get( OrganisationUnitGroupSet.class, uid );
-        
+
         if ( ougs != null )
         {
             return ougs;
         }
 
         CategoryOptionGroupSet cogs = identifiableObjectManager.get( CategoryOptionGroupSet.class, uid );
-        
+
         if ( cogs != null )
         {
             return cogs;
         }
-        
+
         return null;
     }
-    
+
     public List<NameableObject> getCanReadDimensionItems( String uid )
     {
         DimensionalObject dimension = getDimension( uid );
-        
+
         List<NameableObject> items = new ArrayList<NameableObject>();
-        
+
         if ( dimension != null && dimension.getItems() != null )
         {
             User user = currentUserService.getCurrentUser();
-            
+
             for ( NameableObject item : dimension.getItems() )
             {
-                boolean canRead = SharingUtils.canRead( user, item );
-                
+                boolean canRead = sharingService.canRead( user, item );
+
                 if ( canRead )
                 {
                     items.add( item );
                 }
             }
         }
-        
+
         return items;
     }
-    
+
     public DimensionType getDimensionType( String uid )
     {
         DataElementCategory cat = identifiableObjectManager.get( DataElementCategory.class, uid );
-        
+
         if ( cat != null )
         {
             return DimensionType.CATEGORY;
-        }        
+        }
 
         DataElementGroupSet degs = identifiableObjectManager.get( DataElementGroupSet.class, uid );
-        
+
         if ( degs != null )
         {
             return DimensionType.DATAELEMENT_GROUPSET;
         }
-        
+
         OrganisationUnitGroupSet ougs = identifiableObjectManager.get( OrganisationUnitGroupSet.class, uid );
-        
+
         if ( ougs != null )
         {
             return DimensionType.ORGANISATIONUNIT_GROUPSET;
         }
 
         CategoryOptionGroupSet cogs = identifiableObjectManager.get( CategoryOptionGroupSet.class, uid );
-        
+
         if ( cogs != null )
         {
             return DimensionType.CATEGORYOPTION_GROUPSET;
         }
-        
+
         final Map<String, DimensionType> dimObjectTypeMap = new HashMap<String, DimensionType>();
-        
+
         dimObjectTypeMap.put( DimensionalObject.DATA_X_DIM_ID, DimensionType.DATA_X );
         dimObjectTypeMap.put( DimensionalObject.INDICATOR_DIM_ID, DimensionType.INDICATOR );
         dimObjectTypeMap.put( DimensionalObject.DATAELEMENT_DIM_ID, DimensionType.DATAELEMENT );
@@ -206,10 +196,10 @@ public class DefaultDimensionService
         dimObjectTypeMap.put( DimensionalObject.DATAELEMENT_OPERAND_ID, DimensionType.DATAELEMENT_OPERAND );
         dimObjectTypeMap.put( DimensionalObject.PERIOD_DIM_ID, DimensionType.PERIOD );
         dimObjectTypeMap.put( DimensionalObject.ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT );
-        
+
         return dimObjectTypeMap.get( uid );
     }
-    
+
     @Override
     public List<DimensionalObject> getAllDimensions()
     {
@@ -224,7 +214,7 @@ public class DefaultDimensionService
         dimensions.addAll( cogs );
         dimensions.addAll( degs );
         dimensions.addAll( ougs );
-        
+
         return dimensions;
     }
 
@@ -243,10 +233,10 @@ public class DefaultDimensionService
             {
                 object.setUser( currentUserService.getCurrentUser() );
             }
-            
+
             mergeDimensionalObjects( object, object.getColumns() );
             mergeDimensionalObjects( object, object.getRows() );
-            mergeDimensionalObjects( object, object.getFilters() );            
+            mergeDimensionalObjects( object, object.getFilters() );
         }
     }
 
@@ -255,15 +245,15 @@ public class DefaultDimensionService
     //--------------------------------------------------------------------------
 
     /**
-     * Sets persistent objects for dimensional associations on the given 
-     * BaseAnalyticalObject based on the given list of transient DimensionalObjects. 
-     * 
-     * Relative periods represented by enums are converted into a RelativePeriods 
-     * object. User organisation units represented by enums are converted and 
+     * Sets persistent objects for dimensional associations on the given
+     * BaseAnalyticalObject based on the given list of transient DimensionalObjects.
+     * <p/>
+     * Relative periods represented by enums are converted into a RelativePeriods
+     * object. User organisation units represented by enums are converted and
      * represented by the user organisation unit persisted properties on the
      * BaseAnalyticalObject.
-     * 
-     * @param object the BaseAnalyticalObject to merge.
+     *
+     * @param object     the BaseAnalyticalObject to merge.
      * @param dimensions the
      */
     private void mergeDimensionalObjects( BaseAnalyticalObject object, List<DimensionalObject> dimensions )
@@ -272,19 +262,19 @@ public class DefaultDimensionService
         {
             return;
         }
-        
+
         for ( DimensionalObject dimension : dimensions )
         {
             DimensionType type = getDimensionType( dimension.getDimension() );
-            
+
             String dimensionId = dimension.getDimension();
-            
+
             List<NameableObject> items = dimension.getItems();
-            
+
             if ( items != null )
             {
                 List<String> uids = getUids( items );
-                
+
                 if ( INDICATOR.equals( type ) )
                 {
                     object.getIndicators().addAll( identifiableObjectManager.getByUid( Indicator.class, uids ) );
@@ -303,9 +293,9 @@ public class DefaultDimensionService
                 }
                 else if ( PERIOD.equals( type ) )
                 {
-                    List<RelativePeriodEnum> enums = new ArrayList<RelativePeriodEnum>();                
+                    List<RelativePeriodEnum> enums = new ArrayList<RelativePeriodEnum>();
                     List<Period> periods = new UniqueArrayList<Period>();
-                    
+
                     for ( String isoPeriod : uids )
                     {
                         if ( RelativePeriodEnum.contains( isoPeriod ) )
@@ -315,14 +305,14 @@ public class DefaultDimensionService
                         else
                         {
                             Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
-                        
+
                             if ( period != null )
                             {
                                 periods.add( period );
                             }
                         }
                     }
-    
+
                     object.setRelatives( new RelativePeriods().setRelativePeriodsFromEnums( enums ) );
                     object.setPeriods( periodService.reloadPeriods( new ArrayList<Period>( periods ) ) );
                 }
@@ -345,7 +335,7 @@ public class DefaultDimensionService
                         else if ( ou != null && ou.startsWith( KEY_LEVEL ) )
                         {
                             int level = DimensionalObjectUtils.getLevelFromLevelParam( ou );
-                            
+
                             if ( level > 0 )
                             {
                                 object.getOrganisationUnitLevels().add( level );
@@ -354,9 +344,9 @@ public class DefaultDimensionService
                         else if ( ou != null && ou.startsWith( KEY_ORGUNIT_GROUP ) )
                         {
                             String uid = DimensionalObjectUtils.getUidFromOrgUnitGroupParam( ou );
-                            
+
                             OrganisationUnitGroup group = identifiableObjectManager.get( OrganisationUnitGroup.class, uid );
-                            
+
                             if ( group != null )
                             {
                                 object.getItemOrganisationUnitGroups().add( group );
@@ -365,7 +355,7 @@ public class DefaultDimensionService
                         else
                         {
                             OrganisationUnit unit = identifiableObjectManager.get( OrganisationUnit.class, ou );
-                            
+
                             if ( unit != null )
                             {
                                 object.getOrganisationUnits().add( unit );
@@ -378,7 +368,7 @@ public class DefaultDimensionService
                     DataElementCategoryDimension categoryDimension = new DataElementCategoryDimension();
                     categoryDimension.setDimension( categoryService.getDataElementCategory( dimensionId ) );
                     categoryDimension.getItems().addAll( categoryService.getDataElementCategoryOptionsByUid( uids ) );
-                    
+
                     object.getCategoryDimensions().add( categoryDimension );
                 }
                 else if ( DATAELEMENT_GROUPSET.equals( type ) )
