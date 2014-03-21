@@ -28,17 +28,6 @@ package org.hisp.dhis.dxf2.metadata.importers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.PredicateUtils.idObjectCollectionsWithScanned;
-import static org.hisp.dhis.system.util.PredicateUtils.idObjects;
-
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -48,7 +37,6 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.sharing.SharingUtils;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -67,12 +55,24 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.sharing.SharingService;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.system.util.PredicateUtils.idObjectCollectionsWithScanned;
+import static org.hisp.dhis.system.util.PredicateUtils.idObjects;
 
 /**
  * Importer that can handle IdentifiableObject and NameableObject.
@@ -109,7 +109,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired(required = false)
+    @Autowired
+    private SharingService sharingService;
+
+    @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -411,7 +414,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean deleteObject( User user, T persistedObject )
     {
-        if ( !SharingUtils.canDelete( user, persistedObject ) )
+        if ( !sharingService.canDelete( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "You do not have delete access to class type." ) );
@@ -449,7 +452,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean newObject( User user, T object )
     {
-        if ( !SharingUtils.canCreatePublic( user, object ) && !SharingUtils.canCreatePrivate( user, object ) )
+        if ( !sharingService.canCreatePublic( user, object.getClass() ) && !sharingService.canCreatePrivate( user, object.getClass() ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have create access to class type." ) );
@@ -533,7 +536,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean updateObject( User user, T object, T persistedObject )
     {
-        if ( !SharingUtils.canUpdate( user, persistedObject ) )
+        if ( !sharingService.canUpdate( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have update access to object." ) );

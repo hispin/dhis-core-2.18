@@ -28,16 +28,8 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.ListMap;
-import org.hisp.dhis.sharing.SharingUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -52,10 +44,18 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.sharing.SharingService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -103,7 +103,7 @@ public class GetMetaDataAction
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
@@ -115,7 +115,10 @@ public class GetMetaDataAction
     {
         this.currentUserService = currentUserService;
     }
-    
+
+    @Autowired
+    protected SharingService sharingService;
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -175,28 +178,28 @@ public class GetMetaDataAction
     {
         return emptyOrganisationUnits;
     }
-    
+
     private List<DataElementCategoryCombo> categoryCombos;
 
     public List<DataElementCategoryCombo> getCategoryCombos()
     {
         return categoryCombos;
     }
-    
+
     private List<DataElementCategory> categories;
 
     public List<DataElementCategory> getCategories()
     {
         return categories;
     }
-    
+
     private DataElementCategoryCombo defaultCategoryCombo;
 
     public DataElementCategoryCombo getDefaultCategoryCombo()
     {
         return defaultCategoryCombo;
     }
-    
+
     private ListMap<String, DataElementCategoryOption> categoryOptionMap = new ListMap<String, DataElementCategoryOption>();
 
     public ListMap<String, DataElementCategoryOption> getCategoryOptionMap()
@@ -211,7 +214,7 @@ public class GetMetaDataAction
     public String execute()
     {
         User user = currentUserService.getCurrentUser();
-        
+
         if ( user.getOrganisationUnits().isEmpty() )
         {
             emptyOrganisationUnits = true;
@@ -245,7 +248,7 @@ public class GetMetaDataAction
 
         Set<DataElementCategoryCombo> categoryComboSet = new HashSet<DataElementCategoryCombo>();
         Set<DataElementCategory> categorySet = new HashSet<DataElementCategory>();
-        
+
         for ( DataSet dataSet : dataSets )
         {
             if ( dataSet.getCategoryCombo() != null )
@@ -253,7 +256,7 @@ public class GetMetaDataAction
                 categoryComboSet.add( dataSet.getCategoryCombo() );
             }
         }
-        
+
         for ( DataElementCategoryCombo categoryCombo : categoryComboSet )
         {
             if ( categoryCombo.getCategories() != null )
@@ -261,27 +264,27 @@ public class GetMetaDataAction
                 categorySet.addAll( categoryCombo.getCategories() );
             }
         }
-        
+
         categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryComboSet );
         categories = new ArrayList<DataElementCategory>( categorySet );
-        
+
         for ( DataElementCategory category : categories )
         {
             for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
             {
-                if ( SharingUtils.canRead( user, categoryOption ) )
+                if ( sharingService.canRead( user, categoryOption ) )
                 {
                     categoryOptionMap.putValue( category.getUid(), categoryOption );
                 }
             }
         }
-        
+
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( categories, IdentifiableObjectNameComparator.INSTANCE );
-        
+
         defaultCategoryCombo = categoryService.getDefaultDataElementCategoryCombo();
-        
+
         return SUCCESS;
     }
 }
