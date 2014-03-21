@@ -104,7 +104,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity instances */
-.factory('TrackedEntityService', function($http, AttributesFactory) {
+.factory('TrackedEntityInstanceService', function($http, AttributesFactory) {
     
     var promise;
     return {
@@ -118,10 +118,10 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         
         getByOrgUnitAndProgram: function(orgUnitUid, programUid) {
             
-            var attributes = AttributesFactory.convertListingForToQuery();
+            //var attributes = AttributesFactory.convertListingForToQuery();
             var url = '../api/trackedEntityInstances.json?ou=' + orgUnitUid + '&program=' + programUid;
             
-            promise = $http.get(  url + attributes ).then(function(response){
+            promise = $http.get( url ).then(function(response){
                
                 return entityFormatter(response.data);
             });            
@@ -129,10 +129,10 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         },
         getByOrgUnit: function(orgUnitUid) {
             
-            var attributes = AttributesFactory.convertListingForToQuery();
+            //var attributes = AttributesFactory.convertListingForToQuery();
             var url =  '../api/trackedEntityInstances.json?ou=' + orgUnitUid;
             
-            promise = $http.get( url + attributes ).then(function(response){
+            promise = $http.get( url ).then(function(response){
                                 
                 return entityFormatter(response.data);
             });            
@@ -183,9 +183,9 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     
     return {
         
-        getByPerson: function(person, orgUnit, program){   
-            var promise = $http.get( '../api/events.json?' + 'person=' + person + '&orgUnit=' + orgUnit + '&program=' + program + '&paging=false').then(function(response){
-                return response.data.eventList;
+        getByEntity: function(entity, orgUnit, program){   
+            var promise = $http.get( '../api/events.json?' + 'trackedEntityInstance=' + entity + '&orgUnit=' + orgUnit + '&program=' + program + '&paging=false').then(function(response){
+                return response.data.events;
             });            
             return promise;
         },
@@ -194,7 +194,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             var promise = $http.get( '../api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&paging=false')
                     .then(function(response){
                         
-                return response.data.eventList;             
+                return response.data.events;             
         
             }, function(){
                 

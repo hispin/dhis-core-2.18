@@ -2,7 +2,36 @@
     <accordion-group is-open="{{dataEntry.isOpen}}">
         <accordion-heading>
             <span class="list-title">{{dataEntry.title| translate}}</span>
-        </accordion-heading>                        
-        This is data entry.
+        </accordion-heading>     
+        <div ng-show="dhis2Events">
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="stage-flow">
+                                <table class="stage-flow">
+                                    <tbody>
+                                        <tr>                                            
+                                            <td ng-repeat="dhis2Event in dhis2Events">
+                                                <span class="arrow-container">→</span><input type="button" class="stage-object" value="{{programStages[dhis2Event.programStage].name}}" style="border-color: rgb(152, 142, 128);" ng-click="showDataEntry()">
+                                            </td>
+                                            
+                                        </tr>
+                                    </tbody>
+                                    
+                                </table>
+                            </div>
+                            
+                        </td>
+                        <td class="right">
+                            <input type="button" class="entity-instance-object" value="{{'new_event' | translate}}" ng-click="createNewEvent()">
+                        </td>
+                    </tr>
+                </tbody>                
+            </table>
+            <hr>
+            
+            hi there...
+        </div>
     </accordion-group>
 </accordion>
