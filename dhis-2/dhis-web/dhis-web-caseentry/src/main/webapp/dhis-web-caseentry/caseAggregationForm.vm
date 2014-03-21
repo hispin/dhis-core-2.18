@@ -18,7 +18,7 @@
 					$i18n.getString( "dataset_list" )
 				</td>
 				<td>
-					<select id="dataSetId" name="dataSetId" style="width: 30em">
+					<select id="dataSetId" name="dataSetId" style="width: 30em" class="{validate:{required:true}}">
 						#if( $datasets.size()== 0 )
 						<option value=''>[$i18n.getString('none_dataset')]</option>
 						#elseif( $datasets.size() > 1 )
@@ -34,14 +34,14 @@
 			<tr>
 				<td>$i18n.getString( "from" )</td>
 				<td>
-					<input type='text' id="startDate" name="startDate" style="width:355px;" />
+					<input type='text' id="startDate" name="startDate" style="width:355px;" class="{validate:{required:true}}" />
 				</td>
 			</tr>
 			
 			<tr>
 				<td>$i18n.getString( "to" )</td>
 				<td>
-					<input type='text' id="endDate" name="endDate" style="width:355px;" />
+					<input type='text' id="endDate" name="endDate" style="width:355px;" class="{validate:{required:true}}" />
 					<script>
 						datePickerInRange( 'startDate','endDate', true, true );
 					</script>

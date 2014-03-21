@@ -119,28 +119,30 @@ function saveAggregateDataValues( isSaveAll )
 		}); 
 	}
 		
-	$.ajax({
-		   type: "POST",
-		   url: "saveAggregateDataValue.action",
-		   data: params,
-		   dataType: "json",
-		   success: function(json){
-				if( isSaveAll )
-				{
-					jQuery("input[name=aggregateValues]").each(function( ){
-							$(this).replaceWith('<span>' + i18n_saved + '<span>' );
-						}); 
-				}
-				else
-				{
-					jQuery("input[name=aggregateValues]:checked").each(function( ){
-							$(this).replaceWith('<span>' + i18n_saved + '<span>' );
-						}); 
-				}
-				unLockScreen();
-				showSuccessMessage( i18n_save_success );
-		   }
-		});
+	if( params!=""){
+		$.ajax({
+			   type: "POST",
+			   url: "saveAggregateDataValue.action",
+			   data: params,
+			   dataType: "json",
+			   success: function(json){
+					if( isSaveAll )
+					{
+						jQuery("input[name=aggregateValues]").each(function( ){
+								$(this).replaceWith('<span>' + i18n_saved + '<span>' );
+							}); 
+					}
+					else
+					{
+						jQuery("input[name=aggregateValues]:checked").each(function( ){
+								$(this).replaceWith('<span>' + i18n_saved + '<span>' );
+							}); 
+					}
+					unLockScreen();
+					showSuccessMessage( i18n_save_success );
+			   }
+			});
+	}
 }
 
 function toogleAllCheckBoxes( tableDiv, checked )

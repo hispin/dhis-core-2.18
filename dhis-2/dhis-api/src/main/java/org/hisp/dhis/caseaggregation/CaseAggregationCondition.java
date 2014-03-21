@@ -88,7 +88,7 @@ public class CaseAggregationCondition
 
     public static String MINUS_DATAELEMENT_OPERATOR = "DEDATEDIFF";
 
-    public static String AUTO_STORED_BY = "DHIS-SYSTEM";
+    public static String AUTO_STORED_BY = "aggregated_from_tracker";
 
     public static final String regExp = "\\[(" + OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE + "|" + OBJECT_PROGRAM + "|"
         + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PROGRAM_STAGE + "|" + OBJECT_TRACKED_ENTITY_PROGRAM_STAGE_PROPERTY

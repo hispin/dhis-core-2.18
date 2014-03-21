@@ -2,9 +2,10 @@
 { "attributes": [
 #foreach( $attribute in $attributes )
  {
-	"id":  "attr_${attribute.id}",
+	"id":  "${attribute.id}",
 	"name": "$!encoder.jsonEncode( ${attribute.displayName} )"
   }#if( $velocityCount < $size ),#end
 #end
 ]
 }
+

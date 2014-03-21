@@ -1,3 +1,4 @@
+					
 <h4> $i18n.getString( "case_aggregation_result" )</h4>
 <div>
 		<input type="button" value="$i18n.getString( 'back' )" onclick="backBtnOnClick();" style="width:10em">
@@ -33,14 +34,17 @@
 		<tbody>
 			#foreach( $row in $grid.getRows() )
 				<tr>
-					#foreach( $col in $row )
+					
+					#foreach( $col in $row ) 
 						#if($velocityCount==1)
 							#set($dataelementid=$col)
 						#elseif($velocityCount==2)
 							#set($categoryoptioncomboid=$col)
 						#elseif($velocityCount==3)
+							#set($attributeoptioncomboid=$col)
+						#elseif($velocityCount==4)
 							#set($organisationunitid=$col)
-						#elseif($velocityCount==6)
+						#elseif($velocityCount==7)
 							#set($periodid=$col)
 						#elseif($velocityCount==$row.size())
 							#set($value=$col)
