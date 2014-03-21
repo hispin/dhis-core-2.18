@@ -73,6 +73,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataValueSMSListener
     implements IncomingSmsListener
 {
+   
     private static final String defaultPattern = "([a-zA-Z]+)\\s*(\\d+)";
 
     private CompleteDataSetRegistrationService registrationService;
@@ -470,7 +471,7 @@ public class DataValueSMSListener
         SMSCommand command, Date date )
     {
         Period period = null;
-
+        int numberOfEmptyValue = 0;
         for ( SMSCode code : command.getCodes() )
         {
 
@@ -483,10 +484,33 @@ public class DataValueSMSListener
 
             if ( dv == null && !StringUtils.isEmpty( code.getCode() ) )
             {
-                return; // not marked as complete
+                numberOfEmptyValue++;
+                // emptyValue = true;
+                // return; // not marked as complete
             }
         }
 
+        // Check completeness method
+        if ( command.getCompletenessMethod() == SMSCommand.RECEIVE_ALL_DATAVALUE )
+        {
+            if ( numberOfEmptyValue > 0 )
+            {
+                return;
+            }
+        }
+        else if ( command.getCompletenessMethod() == SMSCommand.RECEIVE_AT_LEAST_ONE_DATAVALUE )
+        {
+            if ( numberOfEmptyValue == command.getCodes().size() )
+            {
+                return;
+            }
+        }
+        else if ( command.getCompletenessMethod() == SMSCommand.DO_NOT_MARK_COMPLETE )
+        {
+            return;
+        }
+
+        // Go through the complete process
         String storedBy = getUser( sender, command ).getUsername();
 
         if ( StringUtils.isBlank( storedBy ) )
