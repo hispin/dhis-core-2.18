@@ -32,7 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.SharingUtils;
+import org.hisp.dhis.sharing.SharingUtils;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.setting.SystemSettingManager;

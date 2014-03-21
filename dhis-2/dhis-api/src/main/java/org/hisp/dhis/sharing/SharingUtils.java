@@ -1,4 +1,4 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.sharing;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;

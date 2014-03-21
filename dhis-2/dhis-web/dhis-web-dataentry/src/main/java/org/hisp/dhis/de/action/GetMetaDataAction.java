@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.common.ListMap;
-import org.hisp.dhis.common.SharingUtils;
+import org.hisp.dhis.sharing.SharingUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
