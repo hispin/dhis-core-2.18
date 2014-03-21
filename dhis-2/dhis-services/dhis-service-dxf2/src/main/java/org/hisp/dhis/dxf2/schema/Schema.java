@@ -29,11 +29,15 @@ package org.hisp.dhis.dxf2.schema;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.collect.Lists;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
 
 import java.util.List;
 
@@ -48,6 +52,14 @@ public class Schema
     private String singular;
 
     private String plural;
+
+    private boolean shareable;
+
+    private List<String> publicAuthorities = Lists.newArrayList();
+
+    private List<String> privateAuthorities = Lists.newArrayList();
+
+    private List<String> externalAuthorities = Lists.newArrayList();
 
     private boolean importable;
 
@@ -105,6 +117,57 @@ public class Schema
     public void setPlural( String plural )
     {
         this.plural = plural;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isShareable()
+    {
+        return shareable;
+    }
+
+    public void setShareable( boolean shareable )
+    {
+        this.shareable = shareable;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "publicAuthorities", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "publicAuthority", namespace = DxfNamespaces.DXF_2_0 )
+    public List<String> getPublicAuthorities()
+    {
+        return publicAuthorities;
+    }
+
+    public void setPublicAuthorities( List<String> publicAuthorities )
+    {
+        this.publicAuthorities = publicAuthorities;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "privateAuthorities", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "privateAuthority", namespace = DxfNamespaces.DXF_2_0 )
+    public List<String> getPrivateAuthorities()
+    {
+        return privateAuthorities;
+    }
+
+    public void setPrivateAuthorities( List<String> privateAuthorities )
+    {
+        this.privateAuthorities = privateAuthorities;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "externalAuthorities", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "externalAuthority", namespace = DxfNamespaces.DXF_2_0 )
+    public List<String> getExternalAuthorities()
+    {
+        return externalAuthorities;
+    }
+
+    public void setExternalAuthorities( List<String> externalAuthorities )
+    {
+        this.externalAuthorities = externalAuthorities;
     }
 
     @JsonProperty
