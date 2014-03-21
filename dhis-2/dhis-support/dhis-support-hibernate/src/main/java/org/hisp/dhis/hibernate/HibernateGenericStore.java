@@ -36,18 +36,18 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
-import org.hisp.dhis.sharing.AccessStringHelper;
 import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.sharing.SharingUtils;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.interpretation.Interpretation;
+import org.hisp.dhis.sharing.AccessStringHelper;
+import org.hisp.dhis.sharing.SharingService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserGroupAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +83,9 @@ public class HibernateGenericStore<T>
 
     @Autowired
     protected CurrentUserService currentUserService;
+
+    @Autowired
+    protected SharingService sharingService;
 
     protected Class<T> clazz;
 
@@ -224,7 +227,7 @@ public class HibernateGenericStore<T>
     @Override
     public int save( T object )
     {
-        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUserService.getCurrentUser() != null && SharingUtils.isSupported( clazz ) )
+        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUserService.getCurrentUser() != null && sharingService.isSupported( clazz ) )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
 
@@ -237,9 +240,9 @@ public class HibernateGenericStore<T>
                 identifiableObject.setUser( currentUserService.getCurrentUser() );
             }
 
-            if ( SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject ) )
+            if ( sharingService.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
             {
-                if ( SharingUtils.defaultPublic( clazz ) )
+                if ( sharingService.defaultPublic( identifiableObject.getClass() ) )
                 {
                     String build = AccessStringHelper.newInstance()
                         .enable( AccessStringHelper.Permission.READ )
@@ -254,7 +257,7 @@ public class HibernateGenericStore<T>
                     identifiableObject.setPublicAccess( build );
                 }
             }
-            else if ( SharingUtils.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject ) )
+            else if ( sharingService.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
             {
                 identifiableObject.setPublicAccess( AccessStringHelper.newInstance().build() );
             }
@@ -397,9 +400,9 @@ public class HibernateGenericStore<T>
 
     protected boolean sharingEnabled()
     {
-        boolean enabled = forceAcl() || ( SharingUtils.isSupported( clazz ) && !( currentUserService.getCurrentUser() == null ||
-            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), SharingUtils.SHARING_OVERRIDE_AUTHORITIES ) ) );
-        
+        boolean enabled = forceAcl() || (sharingService.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
+            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), SharingService.SHARING_OVERRIDE_AUTHORITIES )));
+
         return enabled;
     }
 
@@ -411,7 +414,7 @@ public class HibernateGenericStore<T>
 
             if ( sharingEnabled() )
             {
-                return SharingUtils.canRead( currentUserService.getCurrentUser(), idObject );
+                return sharingService.canRead( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -426,7 +429,7 @@ public class HibernateGenericStore<T>
 
             if ( sharingEnabled() )
             {
-                return SharingUtils.canWrite( currentUserService.getCurrentUser(), idObject );
+                return sharingService.canWrite( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -439,9 +442,9 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( SharingUtils.isSupported( clazz ) )
+            if ( sharingService.isSupported( clazz ) )
             {
-                return SharingUtils.canUpdate( currentUserService.getCurrentUser(), idObject );
+                return sharingService.canUpdate( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -454,9 +457,9 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( SharingUtils.isSupported( clazz ) )
+            if ( sharingService.isSupported( clazz ) )
             {
-                return SharingUtils.canDelete( currentUserService.getCurrentUser(), idObject );
+                return sharingService.canDelete( currentUserService.getCurrentUser(), idObject );
             }
         }
 

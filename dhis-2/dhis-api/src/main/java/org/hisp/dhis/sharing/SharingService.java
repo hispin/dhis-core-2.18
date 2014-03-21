@@ -31,11 +31,16 @@ package org.hisp.dhis.sharing;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.user.User;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public interface SharingService
 {
+    public static final List<String> SHARING_OVERRIDE_AUTHORITIES = Arrays.asList( "ALL", "F_METADATA_IMPORT" );
+
     boolean isSupported( String type );
 
     boolean isSupported( Class<?> klass );

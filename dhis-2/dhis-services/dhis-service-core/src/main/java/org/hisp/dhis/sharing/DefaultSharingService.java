@@ -52,8 +52,6 @@ public class DefaultSharingService implements SharingService
     @Autowired
     private SchemaService schemaService;
 
-    public static final List<String> SHARING_OVERRIDE_AUTHORITIES = Arrays.asList( "ALL", "F_METADATA_IMPORT" );
-
     @Override
     public boolean isSupported( String type )
     {

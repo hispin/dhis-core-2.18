@@ -71,7 +71,15 @@ public class DefaultSchemaService implements SchemaService
     @Override
     public Schema getSchema( Class<?> klass )
     {
-        return classSchemaMap.get( klass );
+        try
+        {
+            return classSchemaMap.get( klass );
+        }
+        catch ( NullPointerException ignored )
+        {
+        }
+
+        return null;
     }
 
     @Override
