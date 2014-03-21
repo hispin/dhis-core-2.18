@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.dxf2.schema.Schema;
 import org.hisp.dhis.dxf2.schema.SchemaDescriptor;
@@ -42,6 +43,12 @@ public class ChartSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( Chart.class, "chart", "charts", true, true, true );
+        Schema schema = new Schema( Chart.class, "chart", "charts", true, true, true );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_CHART_PUBLIC_ADD" ) );
+        schema.setExternalAuthorities( Lists.newArrayList( "F_CHART_EXTERNAL" ) );
+
+        return schema;
     }
 }

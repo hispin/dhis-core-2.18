@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.dxf2.schema.Schema;
 import org.hisp.dhis.dxf2.schema.SchemaDescriptor;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
@@ -42,6 +43,12 @@ public class IndicatorGroupSetSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( IndicatorGroupSet.class, "indicatorGroupSet", "indicatorGroupSets", true, true, true );
+        Schema schema = new Schema( IndicatorGroupSet.class, "indicatorGroupSet", "indicatorGroupSets", true, true, true );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_INDICATORGROUPSET_PUBLIC_ADD" ) );
+        schema.setPrivateAuthorities( Lists.newArrayList( "F_INDICATORGROUPSET_PRIVATE_ADD" ) );
+
+        return schema;
     }
 }

@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dxf2.schema.Schema;
 import org.hisp.dhis.dxf2.schema.SchemaDescriptor;
@@ -42,6 +43,12 @@ public class DataElementSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( DataElement.class, "dataElement", "dataElements", true, true, true );
+        Schema schema = new Schema( DataElement.class, "dataElement", "dataElements", true, true, true );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_DATAELEMENT_PUBLIC_ADD" ) );
+        schema.setPrivateAuthorities( Lists.newArrayList( "F_DATAELEMENT_PRIVATE_ADD" ) );
+
+        return schema;
     }
 }

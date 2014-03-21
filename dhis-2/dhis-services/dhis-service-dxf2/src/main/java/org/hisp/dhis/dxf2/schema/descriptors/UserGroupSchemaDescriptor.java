@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.dxf2.schema.Schema;
 import org.hisp.dhis.dxf2.schema.SchemaDescriptor;
 import org.hisp.dhis.user.UserGroup;
@@ -42,6 +43,11 @@ public class UserGroupSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( UserGroup.class, "userGroup", "userGroups", true, true, false );
+        Schema schema = new Schema( UserGroup.class, "userGroup", "userGroups", true, true, false );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_USERGROUP_PUBLIC_ADD" ) );
+
+        return schema;
     }
 }
