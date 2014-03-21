@@ -32,9 +32,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.filter.ops.Op;
-import org.hisp.dhis.dxf2.schema.Property;
-import org.hisp.dhis.dxf2.schema.Schema;
-import org.hisp.dhis.dxf2.schema.SchemaService;
+import org.hisp.dhis.schema.Property;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 

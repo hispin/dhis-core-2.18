@@ -29,8 +29,8 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.dxf2.schema.Schema;
-import org.hisp.dhis.dxf2.schema.SchemaService;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
