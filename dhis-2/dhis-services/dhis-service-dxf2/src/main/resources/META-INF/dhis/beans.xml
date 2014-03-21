@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=
-    "http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
-    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
-
-  <context:component-scan base-package="org.hisp.dhis.dxf2.schema.descriptors" />
+  "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
   <bean id="org.hisp.dhis.dxf2.filter.FilterService" class="org.hisp.dhis.dxf2.filter.DefaultFilterService" />
 
   <bean id="org.hisp.dhis.dxf2.filter.ParserService" class="org.hisp.dhis.dxf2.filter.DefaultParserService" />
-
-  <bean id="org.hisp.dhis.dxf2.schema.SchemaService" class="org.hisp.dhis.dxf2.schema.DefaultSchemaService" />
-
-  <bean id="org.hisp.dhis.dxf2.schema.PropertyScannerService" class="org.hisp.dhis.dxf2.schema.DefaultPropertyScannerService" />
 
   <bean id="org.hisp.dhis.dxf2.metadata.ExportService" class="org.hisp.dhis.dxf2.metadata.DefaultExportService" scope="prototype" />
 
@@ -30,7 +23,8 @@
 
   <bean id="org.hisp.dhis.dxf2.events.event.EventService" class="org.hisp.dhis.dxf2.events.event.JacksonEventService" />
 
-  <bean id="org.hisp.dhis.dxf2.events.person.PersonService" class="org.hisp.dhis.dxf2.events.trackedentity.JacksonTrackedEntityInstanceService" />
+  <bean id="org.hisp.dhis.dxf2.events.person.PersonService"
+    class="org.hisp.dhis.dxf2.events.trackedentity.JacksonTrackedEntityInstanceService" />
 
   <bean id="org.hisp.dhis.dxf2.events.enrollment.EnrollmentService" class="org.hisp.dhis.dxf2.events.enrollment.JacksonEnrollmentService" />
 
