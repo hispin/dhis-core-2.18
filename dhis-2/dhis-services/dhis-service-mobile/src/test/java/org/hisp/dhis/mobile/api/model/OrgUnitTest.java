@@ -51,6 +51,7 @@ public class OrgUnitTest
         unit.setId( 1 );
         unit.setName( "name" );
         unit.setDownloadAllUrl( "downloadAllUrl" );
+        unit.setDownloadFacilityReportUrl( "downloadFacilityReportUrl" );
         unit.setUpdateActivityPlanUrl( "updateActivityPlanUrl" );
         unit.setUploadFacilityReportUrl( "uploadFacilityReportUrl" );
         unit.setUploadActivityReportUrl( "uploadActivityReportUrl" );
