@@ -132,11 +132,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.program.ProgramTrackedEntityAttributeStore"
-		class="org.hisp.dhis.program.hibernate.HibernateProgramTrackedEntityAttributeStore">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
 	<!-- Service definitions -->
 
 	<bean id="org.hisp.dhis.program.ProgramDataEntryService" class="org.hisp.dhis.program.DefaultProgramDataEntryService">
@@ -298,11 +293,6 @@
 			ref="org.hisp.dhis.trackedentity.TrackedEntityStore" />
 	</bean>
 	
-		<bean id="org.hisp.dhis.program.ProgramTrackedEntityAttributeService"
-		class="org.hisp.dhis.program.DefaultProgramTrackedEntityAttributeService">
-	</bean>
-	
-
 	<!-- TrackedEntityComment -->
 
 	<bean id="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService"

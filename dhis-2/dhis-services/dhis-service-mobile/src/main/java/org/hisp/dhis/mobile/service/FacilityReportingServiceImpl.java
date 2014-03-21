@@ -31,6 +31,7 @@ package org.hisp.dhis.mobile.service;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -49,6 +51,7 @@ import org.hisp.dhis.api.mobile.model.DataElement;
 import org.hisp.dhis.api.mobile.model.DataSet;
 import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
+import org.hisp.dhis.api.mobile.model.DataSetValueList;
 import org.hisp.dhis.api.mobile.model.DataValue;
 import org.hisp.dhis.api.mobile.model.Section;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -236,9 +239,9 @@ public class FacilityReportingServiceImpl
 
         ds.setName( name );
         ds.setVersion( 1 );
-        
+
         Integer version = dataSet.getVersion();
-        
+
         if ( version != null )
         {
             ds.setVersion( version );
@@ -259,7 +262,7 @@ public class FacilityReportingServiceImpl
             Collections.sort( dataElements, dataElementComparator );
 
             // Fake section to store data elements
-            
+
             Section section = new Section();
             section.setId( 0 );
             section.setName( "" );
@@ -274,16 +277,17 @@ public class FacilityReportingServiceImpl
                 section.setId( sec.getId() );
                 section.setName( sec.getName() );
 
-                List<org.hisp.dhis.dataelement.DataElement> des = new ArrayList<org.hisp.dhis.dataelement.DataElement>( sec.getDataElements() );
-                
+                List<org.hisp.dhis.dataelement.DataElement> des = new ArrayList<org.hisp.dhis.dataelement.DataElement>(
+                    sec.getDataElements() );
+
                 // Remove grey fields in order to not display them on mobile
-                
+
                 List<DataElement> dataElementList = getDataElements( locale, des );
 
                 List<DataElement> dataElementListFinal = new ArrayList<DataElement>( dataElementList );
 
                 int tempI = 0;
-                
+
                 for ( int i = 0; i < dataElementList.size(); i++ )
                 {
                     if ( isGreyField( sec, dataElementList.get( i ).getId() ) )
@@ -292,7 +296,7 @@ public class FacilityReportingServiceImpl
                         tempI++;
                     }
                 }
-                
+
                 section.setDataElements( dataElementListFinal );
                 sectionList.add( section );
             }
@@ -312,12 +316,12 @@ public class FacilityReportingServiceImpl
             DataElement de = ModelMapping.getDataElement( dataElement );
 
             // For facility Reporting, no data elements are mandatory
-            
+
             de.setCompulsory( false );
 
             dataElementList.add( de );
         }
-        
+
         return dataElementList;
     }
 
@@ -369,7 +373,8 @@ public class FacilityReportingServiceImpl
 
         }
 
-        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, unit );
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
+            unit );
 
         if ( registration != null )
         {
@@ -389,6 +394,63 @@ public class FacilityReportingServiceImpl
             + ", " + period.getIsoDate() );
     }
 
+    @Override
+    public DataSetValueList getDataSetValues( OrganisationUnit unit, DataSetList dataSetList )
+        throws NotAllowedException
+    {
+        DataSetValueList dataSetValueList = new DataSetValueList();
+        List<DataSet> dataSets = dataSetList.getCurrentDataSets();
+
+        for ( DataSet dataSet : dataSets )
+        {
+            log.info( "Getting DataSetValue for: " + dataSet.getName() );
+
+            org.hisp.dhis.dataset.DataSet apiDataSet = dataSetService.getDataSet( dataSet.getId() );
+
+            Vector<String> periods = PeriodUtil.generatePeriods( dataSet.getPeriodType() );
+
+            if ( periods != null )
+            {
+                for ( int i = 0; i < periods.size(); i++ )
+                {
+                    Period period = getPeriod( periods.elementAt( i ), apiDataSet.getPeriodType() );
+                    
+                    if ( period != null )
+                    {
+                        Collection<org.hisp.dhis.dataelement.DataElement> dataElements = apiDataSet.getDataElements();
+                        Collection<org.hisp.dhis.datavalue.DataValue> dataValues = dataValueService.getDataValues(
+                            unit, period, dataElements );
+
+                        if ( dataValues != null && !dataValues.isEmpty() )
+                        {
+                            DataSetValue dataSetValue = new DataSetValue();
+                            dataSetValue.setId( dataSet.getId() );
+                            dataSetValue.setName( dataSet.getName() );
+                            dataSetValue.setPeriodName( periods.elementAt( i ) );
+                            dataSetValue.setCompleted( true );
+
+                            for ( org.hisp.dhis.datavalue.DataValue dataValue : dataValues )
+                            {
+                                DataValue dv = new DataValue();
+                                dv.setCategoryOptComboID( dataValue.getCategoryOptionCombo().getId() );
+                                dv.setClientVersion( dataSet.getClientVersion() );
+                                dv.setId( dataValue.getDataElement().getId() ); 
+                                dv.setValue( dataValue.getValue() );
+                                dataSetValue.getDataValues().add( dv );
+                                
+                            }
+                            dataSetValueList.getDataSetValues().add( dataSetValue );
+                        }
+                    }
+                }
+            }
+        }
+
+        log.info( "Retrieved Data value set: " + unit.getName() + ", " + dataSetList.getName() );
+
+        return dataSetValueList;
+    }
+
     private Map<Integer, org.hisp.dhis.dataelement.DataElement> getDataElementIdMapping(
         org.hisp.dhis.dataset.DataSet dataSet )
     {
@@ -398,7 +460,7 @@ public class FacilityReportingServiceImpl
         {
             dataElementMap.put( dataElement.getId(), dataElement );
         }
-        
+
         return dataElementMap;
     }
 
@@ -407,19 +469,21 @@ public class FacilityReportingServiceImpl
         return unit.getDataSets().contains( dataSet );
     }
 
-    private void saveValue( OrganisationUnit unit, Period period, org.hisp.dhis.dataelement.DataElement dataElement, DataValue dv )
+    private void saveValue( OrganisationUnit unit, Period period, org.hisp.dhis.dataelement.DataElement dataElement,
+        DataValue dv )
     {
         String value = dv.getValue().trim();
 
         DataElementCategoryOptionCombo catOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
             .getCategoryOptComboID() );
 
-        org.hisp.dhis.datavalue.DataValue dataValue = dataValueService.getDataValue( dataElement, period,
-            unit, catOptCombo );
+        org.hisp.dhis.datavalue.DataValue dataValue = dataValueService.getDataValue( dataElement, period, unit,
+            catOptCombo );
 
         if ( dataValue == null )
         {
-            dataValue = new org.hisp.dhis.datavalue.DataValue( dataElement, period, unit, catOptCombo, catOptCombo, value, "", new Date(), "" );
+            dataValue = new org.hisp.dhis.datavalue.DataValue( dataElement, period, unit, catOptCombo, catOptCombo,
+                value, "", new Date(), "" );
             dataValueService.addDataValue( dataValue );
         }
         else
@@ -463,7 +527,7 @@ public class FacilityReportingServiceImpl
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -521,7 +585,8 @@ public class FacilityReportingServiceImpl
 
     @Override
     public Contact updateContactForMobile()
-    {        Contact contact = new Contact();
+    {
+        Contact contact = new Contact();
 
         List<String> listOfContacts = new ArrayList<String>();
 

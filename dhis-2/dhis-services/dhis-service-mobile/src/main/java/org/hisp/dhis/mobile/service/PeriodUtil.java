@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -180,7 +181,7 @@ public class PeriodUtil
         {
             return null;
         }
-        
+
         return date;
     }
 
@@ -197,4 +198,92 @@ public class PeriodUtil
         }
     }
 
+    public static Vector<String> generatePeriods( String periodType )
+    {
+        Vector<String> periods = null;
+        if ( periodType.equals( "Monthly" ) )
+        {
+            periods = PeriodUtil.generateMonthlyPeriods();
+        }
+        else if ( periodType.equals( "Yearly" ) )
+        {
+            periods = PeriodUtil.generateYearlyPeriods();
+        }
+        else if ( periodType.equals( "Quarterly" ) )
+        {
+            periods = PeriodUtil.generateQuaterlyPeriods();
+        }
+        return periods;
+    }
+
+    public static Vector<String> generateMonthlyPeriods()
+    {
+        Vector<String> months = new Vector<String>();
+        Calendar cal = Calendar.getInstance();
+
+        // Display only 12 previous periods including the current one
+        cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) );
+
+        for ( int i = 0; i < 11; i++ )
+        {
+            if ( cal.get( Calendar.MONTH ) < 0 )
+            {
+                cal.set( Calendar.MONTH, 11 );
+                cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - 1 );
+            }
+            months.addElement( cal.get( Calendar.MONTH ) + "-" + cal.get( Calendar.YEAR ) );
+            cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) - 1 );
+        }
+
+        return months;
+    }
+
+    public static Vector<String> generateYearlyPeriods()
+    {
+        Vector<String> years = new Vector<String>();
+        Calendar cal = Calendar.getInstance();
+
+        // Display only 12 previous periods including the current one
+        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) );
+
+        for ( int i = 0; i < 2; i++ )
+        {
+            years.addElement( Integer.toString( cal.get( Calendar.YEAR ) ) );
+            cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - 1 );
+        }
+
+        return years;
+    }
+    
+    public static Vector<String> generateQuaterlyPeriods()
+    {
+        Vector<String> quarters = new Vector<String>();
+        Calendar cal = Calendar.getInstance();
+        String[] quatersStr = { "Jan to Mar", "Apr to Jun", "Jul to Sep", "Oct to Dec" };
+
+        if ( cal.get( Calendar.MONTH ) >= 0 && cal.get( Calendar.MONTH ) <= 2 )
+        {
+            quarters.addElement( quatersStr[0] + " " + cal.get( Calendar.YEAR ) );
+        }
+        else if ( cal.get( Calendar.MONTH ) >= 3 && cal.get( Calendar.MONTH ) <= 5 )
+        {
+            quarters.addElement( quatersStr[1] + " " + cal.get( Calendar.YEAR ) );
+            quarters.addElement( quatersStr[0] + " " + cal.get( Calendar.YEAR ) );
+        }
+        else if ( cal.get( Calendar.MONTH ) >= 6 && cal.get( Calendar.MONTH ) <= 8 )
+        {
+            quarters.addElement( quatersStr[2] + " " + cal.get( Calendar.YEAR ) );
+            quarters.addElement( quatersStr[1] + " " + cal.get( Calendar.YEAR ) );
+            quarters.addElement( quatersStr[0] + " " + cal.get( Calendar.YEAR ) );
+        }
+        else if ( cal.get( Calendar.MONTH ) >= 9 && cal.get( Calendar.MONTH ) <= 11 )
+        {
+            quarters.addElement( quatersStr[3] + " " + cal.get( Calendar.YEAR ) );
+            quarters.addElement( quatersStr[2] + " " + cal.get( Calendar.YEAR ) );
+            quarters.addElement( quatersStr[1] + " " + cal.get( Calendar.YEAR ) );
+            quarters.addElement( quatersStr[0] + " " + cal.get( Calendar.YEAR ) );
+        }
+        return quarters;
+    }
+    
 }

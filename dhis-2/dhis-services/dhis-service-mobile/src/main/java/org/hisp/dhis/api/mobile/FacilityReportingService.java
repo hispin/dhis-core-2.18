@@ -35,6 +35,7 @@ import org.hisp.dhis.api.mobile.model.Contact;
 import org.hisp.dhis.api.mobile.model.DataSet;
 import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
+import org.hisp.dhis.api.mobile.model.DataSetValueList;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
@@ -57,6 +58,9 @@ public interface FacilityReportingService
      * @throws NotAllowedException if saving is not allowed
      */
     public void saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue )
+        throws NotAllowedException;
+
+    public DataSetValueList getDataSetValues( OrganisationUnit unit, DataSetList dataSetList )
         throws NotAllowedException;
 
     public DataSetList getUpdatedDataSet( DataSetList dataSetList, OrganisationUnit unit, String locale );
