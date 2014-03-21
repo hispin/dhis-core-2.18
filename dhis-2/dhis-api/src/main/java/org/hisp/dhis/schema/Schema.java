@@ -97,7 +97,7 @@ public class Schema
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isIdentifiableObject()
     {
         return identifiableObject;
