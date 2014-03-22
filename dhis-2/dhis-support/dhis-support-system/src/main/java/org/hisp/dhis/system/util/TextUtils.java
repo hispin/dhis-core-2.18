@@ -28,7 +28,10 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -107,6 +110,22 @@ public class TextUtils
         }
         
         return text.replaceAll( "(\n|\r|\r\n)", "<br>" );
+    }
+    
+    /**
+     * Returns a list of tokens based on the given string.
+     * 
+     * @param string the string.
+     * @return the list of tokens.
+     */
+    public static List<String> getTokens( String string )
+    {
+        if ( string == null )
+        {
+            return null;
+        }
+        
+        return new ArrayList<String>( Arrays.asList( string.split( "\\s" ) ) );
     }
     
     /**
