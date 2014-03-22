@@ -159,7 +159,7 @@ public class HibernateTrackedEntityInstanceStore
         {
             String col = statementBuilder.columnQuote( item.getItemId() );
             
-            String joinClause = item.hasFilter() ? "inner join" : "full outer join"; //TODO left join?
+            String joinClause = item.hasFilter() ? "inner join" : "left join";
             
             sql += 
                 joinClause + " trackedentityattributevalue as " + col + " " +
@@ -205,7 +205,7 @@ public class HibernateTrackedEntityInstanceStore
         if ( params.hasProgram() )
         {
             sql += 
-                hlp.whereAnd() + " exists ( select trackedentityinstanceid from programinstance pi " +
+                hlp.whereAnd() + " exists (select trackedentityinstanceid from programinstance pi " +
                 "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " +
                 "and pi.programid = " + params.getProgram().getId() + ") ";
         }
