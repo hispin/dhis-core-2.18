@@ -28,7 +28,12 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
@@ -45,11 +50,7 @@ import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -191,9 +192,6 @@ public class UpdateUserAction
     public String execute()
         throws Exception
     {
-        UserCredentials currentUserCredentials = currentUserService.getCurrentUser() != null ? currentUserService
-            .getCurrentUser().getUserCredentials() : null;
-
         // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
@@ -236,14 +234,11 @@ public class UpdateUserAction
 
         for ( String id : selectedList )
         {
-            UserAuthorityGroup group = userService.getUserAuthorityGroup( Integer.parseInt( id ) );
-
-            if ( currentUserCredentials != null && currentUserCredentials.canIssue( group ) )
-            {
-                userAuthorityGroups.add( group );
-            }
+            userAuthorityGroups.add( userService.getUserAuthorityGroup( Integer.parseInt( id ) ) );
         }
 
+        userService.canIssueFilter( userAuthorityGroups );
+        
         userCredentials.setUserAuthorityGroups( userAuthorityGroups );
 
         if ( rawPassword != null )

@@ -11,5 +11,5 @@
 	  <numberOrgunit>$userCredentials.user.organisationUnits.size()</numberOrgunit>
 	</user>
 	#end
-	<currentUserName>$currentUserName</currentUserName>
+	<currentUserName>$currentUsername</currentUserName>
 </users>

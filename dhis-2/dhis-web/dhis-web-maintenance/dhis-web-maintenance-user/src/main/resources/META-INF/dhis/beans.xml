@@ -12,7 +12,6 @@
     <property name="passwordManager" ref="org.hisp.dhis.security.PasswordManager" />
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
@@ -31,12 +30,10 @@
     scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.action.GetUserListAction" class="org.hisp.dhis.user.action.GetUserListAction" scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.action.RemoveUserAction" class="org.hisp.dhis.user.action.RemoveUserAction" scope="prototype">
@@ -62,7 +59,6 @@
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     <property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />

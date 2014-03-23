@@ -7,6 +7,7 @@ jQuery( document ).ready( function() {
             selfRegistrationNoRecaptcha: jQuery( '#selfRegistrationNoRecaptcha' ).is( ':checked' ),
             accountRecovery: jQuery( '#accountRecovery' ).is( ':checked' ),
             accountInvite: jQuery( '#accountInvite' ).is( ':checked' ),
+            canGrantOwnUserAuthorityGroups: jQuery( '#canGrantOwnUserAuthorityGroups' ).is( ':checked' ),
             credentialsExpires: jQuery( '#credentialsExpires' ).val(),
             openIdProvider: jQuery( '#openIdProvider' ).val(),
             openIdProviderLabel: jQuery( '#openIdProviderLabel' ).val()
@@ -60,6 +61,11 @@ jQuery( document ).ready( function() {
 <div class="setting">
     <input type="checkbox" id="accountInvite" name="accountInvite"#if( $keyAccountInvite ) checked="checked"#end>
     <label for="accountInvite">$i18n.getString( "enable_user_account_invite" )</label>
+</div>
+
+<div class="setting">
+    <input type="checkbox" id="canGrantOwnUserAuthorityGroups" name="canGrantOwnUserAuthorityGroups"#if( $keyCanGrantOwnUserAuthorityGroups ) checked="checked"#end>
+    <label for="canGrantOwnUserAuthorityGroups">$i18n.getString( "allow_users_to_grant_own_user_roles" )</label>
 </div>
 
 <div class="settingLabel">$i18n.getString( "user_credentials_expires" )</div>

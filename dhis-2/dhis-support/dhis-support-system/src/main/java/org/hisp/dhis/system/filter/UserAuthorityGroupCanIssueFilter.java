@@ -41,21 +41,24 @@ public class UserAuthorityGroupCanIssueFilter
 {
     private UserCredentials userCredentials;
     
+    private boolean canGrantOwnUserAuthorityGroups = false;
+    
     protected UserAuthorityGroupCanIssueFilter()
     {
     }
     
-    public UserAuthorityGroupCanIssueFilter( User user )
+    public UserAuthorityGroupCanIssueFilter( User user, boolean canGrantOwnUserAuthorityGroups )
     {
         if ( user != null && user.getUserCredentials() != null )
         {
             this.userCredentials = user.getUserCredentials();
+            this.canGrantOwnUserAuthorityGroups = canGrantOwnUserAuthorityGroups;
         }
     }
 
     @Override
     public boolean retain( UserAuthorityGroup group )
     {
-        return userCredentials != null && userCredentials.canIssue( group );
+        return userCredentials != null && userCredentials.canIssue( group, canGrantOwnUserAuthorityGroups );
     }
 }

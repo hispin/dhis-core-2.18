@@ -235,8 +235,10 @@ public class UserCredentials
      * authority.
      *
      * @param group the user authority group.
+     * @param canGrantOwnUserAuthorityGroups indicates whether this users can grant
+     *        its own authoritiy groups to others.
      */
-    public boolean canIssue( UserAuthorityGroup group )
+    public boolean canIssue( UserAuthorityGroup group, boolean canGrantOwnUserAuthorityGroups )
     {
         if ( group == null )
         {
@@ -250,7 +252,12 @@ public class UserCredentials
             return true;
         }
 
-        return !userAuthorityGroups.contains( group ) && authorities.containsAll( group.getAuthorities() );
+        if ( !canGrantOwnUserAuthorityGroups && userAuthorityGroups.contains( group ) )
+        {
+            return false;
+        }
+        
+        return authorities.containsAll( group.getAuthorities() );
     }
 
     /**
@@ -282,12 +289,14 @@ public class UserCredentials
      * groups in the given collection.
      *
      * @param groups the collection of user authority groups.
+     * @param canGrantOwnUserAuthorityGroups indicates whether this users can grant
+     *        its own authoritiy groups to others.
      */
-    public boolean canIssueAll( Collection<UserAuthorityGroup> groups )
+    public boolean canIssueAll( Collection<UserAuthorityGroup> groups, boolean canGrantOwnUserAuthorityGroups )
     {
         for ( UserAuthorityGroup group : groups )
         {
-            if ( !canIssue( group ) )
+            if ( !canIssue( group, canGrantOwnUserAuthorityGroups ) )
             {
                 return false;
             }
