@@ -47,10 +47,7 @@ import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
 import org.hisp.dhis.system.util.AttributeUtils;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -88,13 +85,6 @@ public class SetupTreeAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
     }
 
     private AttributeService attributeService;
@@ -201,8 +191,8 @@ public class SetupTreeAction
     {
         userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
 
-        FilterUtils.filter( userAuthorityGroups, new UserAuthorityGroupCanIssueFilter( currentUserService.getCurrentUser() ) );
-
+        userService.canIssueFilter( userAuthorityGroups );
+        
         availableLocales = localeManager.getAvailableLocales();
         
         availableLocalesDb = i18nService.getAvailableLocales();

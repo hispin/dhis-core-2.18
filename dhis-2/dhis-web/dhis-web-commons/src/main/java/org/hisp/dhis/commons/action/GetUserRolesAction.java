@@ -33,9 +33,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.comparator.UserRoleComparator;
@@ -55,13 +52,6 @@ public class GetUserRolesAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -84,8 +74,8 @@ public class GetUserRolesAction
     {
         userRoles = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
 
-        FilterUtils.filter( userRoles, new UserAuthorityGroupCanIssueFilter( currentUserService.getCurrentUser() ) );
-
+        userService.canIssueFilter( userRoles );
+        
         Collections.sort( userRoles, new UserRoleComparator() );
 
         if ( usePaging )

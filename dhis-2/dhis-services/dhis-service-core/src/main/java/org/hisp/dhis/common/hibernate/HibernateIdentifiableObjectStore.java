@@ -307,8 +307,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
             return query.list();
         }
 
-        // fallback to using name
-        return getAllLikeName( shortName );
+        return getAllLikeName( shortName ); // Fallback to name
     }
 
     private Query getQueryAllLikeShortNameAcl( String shortName )

@@ -248,6 +248,14 @@ public interface UserService
 
     int getActiveUsersCount( Date since );
 
+    /**
+     * Filters the given list of user credentials based on whether the current
+     * user is allowed to update.
+     * 
+     * @param userCredentials the list of user credentials.
+     */
+    void canUpdateFilter( Collection<UserCredentials> userCredentials );
+    
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
     // -------------------------------------------------------------------------
@@ -325,6 +333,14 @@ public interface UserService
 
     int getUserRoleCountByName( String name );
 
+    /**
+     * Filters the given collection of user roles based on whether the current user
+     * is allowed to issue it.
+     * 
+     * @param userRoles the collection of user roles.
+     */
+    void canIssueFilter( Collection<UserAuthorityGroup> userRoles );
+    
     // -------------------------------------------------------------------------
     // UserSettings
     // -------------------------------------------------------------------------

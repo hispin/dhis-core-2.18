@@ -37,9 +37,6 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
@@ -70,13 +67,6 @@ public class GetOrgunitUserListAction
         this.selectionManager = selectionManager;
     }
     
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -140,7 +130,7 @@ public class GetOrgunitUserListAction
             }
         }
         
-        FilterUtils.filter( userCredentialsList, new UserCredentialsCanUpdateFilter( currentUserService.getCurrentUser() ) );
+        userService.canUpdateFilter( userCredentialsList );
         
         Collections.sort( userCredentialsList, new UsernameComparator() );
 

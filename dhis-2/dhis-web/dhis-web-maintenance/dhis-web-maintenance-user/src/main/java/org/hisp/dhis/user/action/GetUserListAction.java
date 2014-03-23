@@ -28,20 +28,17 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.comparator.UsernameComparator;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.comparator.UsernameComparator;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -61,13 +58,6 @@ public class GetUserListAction
         this.userService = userService;
     }
 
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -77,13 +67,6 @@ public class GetUserListAction
     public List<UserCredentials> getUserCredentialsList()
     {
         return userCredentialsList;
-    }
-
-    private String currentUserName;
-
-    public String getCurrentUserName()
-    {
-        return currentUserName;
     }
 
     private String key;
@@ -162,10 +145,7 @@ public class GetUserListAction
             Collections.sort( userCredentialsList, new UsernameComparator() );
         }
 
-        FilterUtils.filter( userCredentialsList, new UserCredentialsCanUpdateFilter( currentUserService
-            .getCurrentUser() ) );
-
-        currentUserName = currentUserService.getCurrentUsername();
+        userService.canUpdateFilter( userCredentialsList );
 
         return SUCCESS;
     }
