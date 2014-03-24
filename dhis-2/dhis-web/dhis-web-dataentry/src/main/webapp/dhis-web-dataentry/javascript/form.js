@@ -1286,7 +1286,7 @@ function getAndInsertDataValues()
     $( '[name="max"]' ).html( '' );
 
     $( '.entryfield' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
-    
+
     var params = {
 		periodId : periodId,
         dataSetId : dataSetId,
@@ -1323,7 +1323,7 @@ function getAndInsertDataValues()
       complete: function()
       {
         $( '.indicator' ).attr( 'readonly', 'readonly' );
-        $('document').trigger('dhis2.de.event.dataValuesLoaded');
+        $( document ).trigger('dhis2.de.event.dataValuesLoaded');
       }
 	} );
 }
