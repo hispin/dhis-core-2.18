@@ -28,13 +28,6 @@ package org.hisp.dhis.startup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.quick.StatementHolder;
@@ -48,6 +41,13 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -563,6 +563,9 @@ public class TableAlteror
         executeSql( "UPDATE userroleauthorities SET authority='F_USERGROUP_DELETE' WHERE authority='F_USER_GRUP_DELETE'" );
         executeSql( "UPDATE userroleauthorities SET authority='F_USERGROUP_LIST' WHERE authority='F_USER_GRUP_LIST'" );
 
+        executeSql( "UPDATE userroleauthorities SET authority='F_SQLVIEW_PUBLIC_ADD' WHERE authority='F_SQLVIEW_ADD'" );
+        executeSql( "UPDATE userroleauthorities SET authority='F_OPTIONSET_PUBLIC_ADD' WHERE authority='F_OPTIONSET_ADD'" );
+
         // remove unused authorities
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_CONCEPT_UPDATE'" );
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_CONSTANT_UPDATE'" );
@@ -635,7 +638,7 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE dataelementcategory DROP COLUMN conceptid" );
         executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN conceptid" );
-        
+
         // upgrade system charts/maps to public read-only sharing
         executeSql( "UPDATE chart SET publicaccess='r-------' WHERE user IS NULL AND publicaccess IS NULL;" );
         executeSql( "UPDATE map SET publicaccess='r-------' WHERE user IS NULL AND publicaccess IS NULL;" );
@@ -704,9 +707,9 @@ public class TableAlteror
     private void upgradeDataValuesWithAttributeOptionCombo()
     {
         final String sql = statementBuilder.getNumberOfColumnsInPrimaryKey( "datavalue" );
-        
+
         Integer no = statementManager.getHolder().queryForInteger( sql );
-        
+
         if ( no >= 5 )
         {
             return; // attributeoptioncomboid already part of datavalue primary key
