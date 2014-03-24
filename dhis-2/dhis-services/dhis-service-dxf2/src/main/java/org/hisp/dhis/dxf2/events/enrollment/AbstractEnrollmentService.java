@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.events.enrollment;
 import com.google.common.collect.Maps;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.dxf2.events.trackedentity.Attribute;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
@@ -509,6 +510,7 @@ public abstract class AbstractEnrollmentService
         }
         else if ( attribute.getProgramScope() )
         {
+            params.setOrganisationUnitMode( OrganisationUnitSelectionMode.ALL );
             params.setProgram( program );
         }
 
