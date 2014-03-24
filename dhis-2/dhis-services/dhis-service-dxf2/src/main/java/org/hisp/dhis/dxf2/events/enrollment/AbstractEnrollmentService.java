@@ -70,7 +70,7 @@ public abstract class AbstractEnrollmentService
     private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
-    private org.hisp.dhis.trackedentity.TrackedEntityInstanceService entityInstanceService;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstanceService teiService;
 
     @Autowired
     private TrackedEntityAttributeService trackedEntityAttributeService;
@@ -423,7 +423,7 @@ public abstract class AbstractEnrollmentService
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
         Program program = getProgram( enrollment.getProgram() );
-        org.hisp.dhis.trackedentity.TrackedEntityInstance trackedEntityInstance = entityInstanceService.getTrackedEntityInstance(
+        org.hisp.dhis.trackedentity.TrackedEntityInstance trackedEntityInstance = teiService.getTrackedEntityInstance(
             enrollment.getTrackedEntityInstance() );
 
         Map<TrackedEntityAttribute, Boolean> mandatoryMap = Maps.newHashMap();
@@ -467,8 +467,6 @@ public abstract class AbstractEnrollmentService
                 List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>( trackedEntityAttributeValueService.getTrackedEntityInstance(
                     trackedEntityAttribute, attributeValueMap.get( trackedEntityAttribute.getUid() ) ) );
 
-                System.err.println( "instances: " + instances );
-
                 importConflicts.addAll( checkScope( enrollment, instance, trackedEntityAttribute, instances ) );
             }
 
@@ -487,7 +485,7 @@ public abstract class AbstractEnrollmentService
     private List<ImportConflict> checkScope( Enrollment enrollment, TrackedEntityInstance trackedEntityInstance, TrackedEntityAttribute attribute, List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        org.hisp.dhis.trackedentity.TrackedEntityInstance instance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance instance = teiService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
 
         if ( instances.isEmpty() || (instances.size() == 1 && instances.contains( instance )) )
         {
@@ -562,7 +560,7 @@ public abstract class AbstractEnrollmentService
 
     private void updateAttributeValues( Enrollment enrollment )
     {
-        org.hisp.dhis.trackedentity.TrackedEntityInstance trackedEntityInstance = entityInstanceService.getTrackedEntityInstance(
+        org.hisp.dhis.trackedentity.TrackedEntityInstance trackedEntityInstance = teiService.getTrackedEntityInstance(
             enrollment.getTrackedEntityInstance() );
         Map<String, String> attributeValueMap = Maps.newHashMap();
 
@@ -611,7 +609,7 @@ public abstract class AbstractEnrollmentService
 
     private org.hisp.dhis.trackedentity.TrackedEntityInstance getTrackedEntityInstance( String trackedEntityInstance )
     {
-        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = teiService.getTrackedEntityInstance( trackedEntityInstance );
 
         if ( entityInstance == null )
         {
