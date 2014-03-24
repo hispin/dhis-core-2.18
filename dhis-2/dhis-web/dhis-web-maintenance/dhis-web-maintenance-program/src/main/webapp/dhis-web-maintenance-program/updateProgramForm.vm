@@ -280,7 +280,7 @@
 								#set($attribute = $programAttribute.attribute)
 								<tr ondblclick="unSelectProperties( this )" id="attr_$programAttribute.attribute.id">
 									<td onmousedown="select(event, this)">$encoder.htmlEncode( $attribute.name )</td>
-									<td align="center"><input type="checkbox" name="displayed" value="attr_$programAttribute.attribute.id" #if($programAttribute.displayedInList == true ) checked #end #if($program.type==3) disabled #end  /></td>
+									<td align="center"><input type="checkbox" name="displayed" value="attr_$programAttribute.attribute.id" #if($programAttribute.displayInList == true ) checked #end #if($program.type==3) disabled #end  /></td>
 									<td align="center"><input type="checkbox" name="mandatory" #if($programAttribute.mandatory == "true" ) checked #end #if($program.type==3) disabled #end  /></td>
 								</tr>
 							#end
