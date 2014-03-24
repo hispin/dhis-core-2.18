@@ -95,10 +95,4 @@ public class RemoveProgramStageReminderAction
 
         return SUCCESS;
     }
-
-    public static void main( String[] args )
-    {
-        Stage
-    }
-
 }
