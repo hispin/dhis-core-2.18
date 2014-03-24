@@ -147,6 +147,18 @@ public class DefaultTrackedEntityInstanceService
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
         validate( params );
+
+        // ---------------------------------------------------------------------
+        // Verify params
+        // ---------------------------------------------------------------------
+
+        for ( OrganisationUnit organisationUnit : params.getOrganisationUnits() )
+        {
+            if ( !organisationUnit.hasLevel() )
+            {
+                organisationUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
+            }
+        }
         
         // ---------------------------------------------------------------------
         // If params of type query and no attributes or filters defined, use
@@ -275,8 +287,6 @@ public class DefaultTrackedEntityInstanceService
                 {
                     throw new IllegalQueryException( "Organisation unit does not exist: " + orgUnit );
                 }
-                
-                organisationUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
                 
                 params.getOrganisationUnits().add( organisationUnit );
             }
