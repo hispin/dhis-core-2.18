@@ -2729,7 +2729,10 @@ Ext.onReady( function() {
 				reader: {
 					type: 'json',
 					root: 'objects'
-				}
+				},
+				pageParam: false,
+				startParam: false,
+				limitParam: false
 			},
 			listeners: {
 				load: function(s) {
