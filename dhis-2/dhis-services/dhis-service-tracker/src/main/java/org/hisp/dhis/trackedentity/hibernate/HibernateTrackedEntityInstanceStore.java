@@ -196,7 +196,10 @@ public class HibernateTrackedEntityInstanceStore
             
             sql = sql.substring( 0, sql.length() - 3 ); // Remove last or
         }
-        else // SELECTED
+        else if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.ALL ) )
+        {
+        }
+        else // SELECTED (default)
         {
             sql += hlp.whereAnd() + " tei.organisationunitid in (" + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
         }

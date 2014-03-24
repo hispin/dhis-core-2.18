@@ -33,5 +33,5 @@ package org.hisp.dhis.common;
  */
 public enum OrganisationUnitSelectionMode
 {
-    SELECTED, CHILDREN, DESCENDANTS;
+    SELECTED, CHILDREN, DESCENDANTS, ALL
 }
