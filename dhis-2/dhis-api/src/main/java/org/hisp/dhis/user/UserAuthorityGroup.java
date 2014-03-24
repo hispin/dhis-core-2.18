@@ -56,7 +56,7 @@ public class UserAuthorityGroup
 
     public static final String[] CRITICAL_AUTHS = { "ALL", "F_SCHEDULING_ADMIN",
         "F_PERFORM_MAINTENANCE", "F_MERGE_ORGANISATION_UNITS", "F_ELIMINATE_DUPLICATE_DATA_ELEMENTS",
-        "F_SQLVIEW_MANAGEMENT", "F_SYSTEM_SETTING", "F_USERROLE_LIST", "F_USERROLE_DELETE", "F_USERROLE_ADD" };
+        "F_SQLVIEW_MANAGEMENT", "F_SYSTEM_SETTING", "F_USERROLE_LIST", "F_USERROLE_DELETE", "F_USERROLE_PUBLIC_ADD" };
 
     /**
      * Required and unique.
@@ -97,7 +97,7 @@ public class UserAuthorityGroup
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
@@ -110,7 +110,7 @@ public class UserAuthorityGroup
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "authorities", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "authority", namespace = DxfNamespaces.DXF_2_0 )
     public Set<String> getAuthorities()
@@ -135,7 +135,7 @@ public class UserAuthorityGroup
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "dataSets", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "dataSet", namespace = DxfNamespaces.DXF_2_0 )
     public Set<DataSet> getDataSets()
