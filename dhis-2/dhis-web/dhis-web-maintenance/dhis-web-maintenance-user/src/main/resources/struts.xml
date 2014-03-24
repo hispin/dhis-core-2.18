@@ -112,26 +112,26 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/addRoleForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/role.js</param>
-      <param name="requiredAuthorities">F_USERROLE_ADD</param>
+      <param name="anyAuthorities">F_USERROLE_PUBLIC_ADD, F_USERROLE_PRIVATE_ADD</param>
     </action>
 
     <action name="addRole" class="org.hisp.dhis.user.action.AddRoleAction">
       <result name="success" type="redirect">allRole.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <result name="error" type="redirect">showAddRoleForm.action</result>
-      <param name="requiredAuthorities">F_USERROLE_ADD</param>
+      <param name="anyAuthorities">F_USERROLE_PUBLIC_ADD, F_USERROLE_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateRoleForm" class="org.hisp.dhis.user.action.GetRoleAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/updateRoleForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/role.js</param>
-      <param name="requiredAuthorities">F_USERROLE_ADD</param>
+      <param name="anyAuthorities">F_USERROLE_PUBLIC_ADD, F_USERROLE_PRIVATE_ADD</param>
     </action>
 
     <action name="updateRole" class="org.hisp.dhis.user.action.UpdateRoleAction">
       <result name="success" type="redirect">allRole.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <result name="error" type="redirect">showUpdateRoleForm.action</result>
-      <param name="requiredAuthorities">F_USERROLE_ADD</param>
+      <param name="anyAuthorities">F_USERROLE_PUBLIC_ADD, F_USERROLE_PRIVATE_ADD</param>
     </action>
 
     <action name="validateRole" class="org.hisp.dhis.user.action.ValidateRoleAction">
