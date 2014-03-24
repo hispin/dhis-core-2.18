@@ -125,14 +125,11 @@ public class DefaultEventAnalyticsService
 
     // TODO order event analytics tables on execution date to avoid default
     // TODO sorting in queries
-    // TODO parallel processing of queries
 
     public Grid getAggregatedEventData( EventQueryParams params )
     {
         queryPlanner.validate( params );
         
-        List<String> validPartitions = analyticsManager.getAnalyticsTables( params.getProgram() );
-
         Grid grid = new ListGrid();
 
         // ---------------------------------------------------------------------
@@ -155,7 +152,7 @@ public class DefaultEventAnalyticsService
         // Data
         // ---------------------------------------------------------------------
 
-        List<EventQueryParams> queries = queryPlanner.planQuery( params, validPartitions );
+        List<EventQueryParams> queries = queryPlanner.planAggregateQuery( params );
 
         for ( EventQueryParams query : queries )
         {
@@ -222,24 +219,24 @@ public class DefaultEventAnalyticsService
 
         Timer t = new Timer().start();
 
-        List<EventQueryParams> queries = queryPlanner.planQuery( params, null );
+        params = queryPlanner.planEventQuery( params );
 
-        t.getSplitTime( "Planned query, got: " + queries.size() );
+        t.getSplitTime( "Planned query, got partitions: " + params.getPartitions() );
 
         int count = 0;
 
-        for ( EventQueryParams query : queries )
+        if ( params.getPartitions().hasAny() )
         {
             if ( params.isPaging() )
             {
-                count += analyticsManager.getEventCount( query );
+                count += analyticsManager.getEventCount( params );
             }
-
-            analyticsManager.getEvents( query, grid );
+    
+            analyticsManager.getEvents( params, grid );
+    
+            t.getTime( "Queried events, got: " + grid.getHeight() );
         }
-
-        t.getTime( "Queried events, got: " + grid.getHeight() );
-
+        
         // ---------------------------------------------------------------------
         // Meta-data
         // ---------------------------------------------------------------------

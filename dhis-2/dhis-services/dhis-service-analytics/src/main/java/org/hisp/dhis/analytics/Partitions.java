@@ -95,13 +95,13 @@ public class Partitions
     
     /**
      * Prunes this instance so that it retains only the partitions included in 
-     * the given list. No operation takes place if the given live is null.
+     * the given list. No operation takes place if the given list is null or empty.
      * 
      * @param validPartitions list of valid partitions to retain.
      */
     public Partitions prunePartitions( List<String> validPartitions )
     {
-        if ( validPartitions != null )
+        if ( validPartitions != null && !validPartitions.isEmpty() )
         {
             partitions.retainAll( validPartitions );
         }
