@@ -105,12 +105,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-validationrule/addValidationRuleGroupForm.vm</param>
       <param name="javascripts">javascript/validationRuleGroup.js, javascript/addValidationRuleGroupForm.js</param>
-      <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_ADD</param>
+      <param name="anyAuthorities">F_VALIDATIONRULEGROUP_PUBLIC_ADD, F_VALIDATIONRULEGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="addValidationRuleGroup" class="org.hisp.dhis.validationrule.action.validationrulegroup.AddValidationRuleGroupAction">
       <result name="success" type="redirect">showValidationRuleGroupForm.action</result>
-      <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_ADD</param>
+      <param name="anyAuthorities">F_VALIDATIONRULEGROUP_PUBLIC_ADD, F_VALIDATIONRULEGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateValidationRuleGroupForm"
@@ -118,13 +118,13 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-validationrule/updateValidationRuleGroupForm.vm</param>
       <param name="javascripts">javascript/validationRuleGroup.js, javascript/updateValidationRuleGroupForm.js</param>
-      <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_ADD</param>
+      <param name="anyAuthorities">F_VALIDATIONRULEGROUP_PUBLIC_ADD, F_VALIDATIONRULEGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="updateValidationRuleGroup"
       class="org.hisp.dhis.validationrule.action.validationrulegroup.UpdateValidationRuleGroupAction">
       <result name="success" type="redirect">showValidationRuleGroupForm.action?currentPage=${keyCurrentPage}</result>
-      <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_ADD</param>
+      <param name="anyAuthorities">F_VALIDATIONRULEGROUP_PUBLIC_ADD, F_VALIDATIONRULEGROUP_PRIVATE_ADD</param>
     </action>
 
     <action name="validateValidationRuleGroup"
