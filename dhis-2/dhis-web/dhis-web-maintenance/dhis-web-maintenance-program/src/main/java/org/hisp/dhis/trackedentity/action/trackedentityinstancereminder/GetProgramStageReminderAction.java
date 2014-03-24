@@ -28,9 +28,14 @@ package org.hisp.dhis.trackedentity.action.trackedentityinstancereminder;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
@@ -39,20 +44,27 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $ AddProgramReminderAction.java Jan 5, 2014 10:59:10 PM $
+ * @version $ GetProgramStageReminderAction.java Jan 6, 2014 9:32:56 AM $
  */
-public class AddProgramReminderAction
+public class GetProgramStageReminderAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramService programService;
+    private ProgramStageService programStageService;
 
-    public void setProgramService( ProgramService programService )
+    public void setProgramStageService( ProgramStageService programStageService )
     {
-        this.programService = programService;
+        this.programStageService = programStageService;
+    }
+
+    private TrackedEntityInstanceReminderService reminderService;
+
+    public void setReminderService( TrackedEntityInstanceReminderService reminderService )
+    {
+        this.reminderService = reminderService;
     }
 
     private UserGroupService userGroupService;
@@ -63,104 +75,66 @@ public class AddProgramReminderAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input && Output
     // -------------------------------------------------------------------------
 
-    private int programId;
+    private int id;
 
-    public void setProgramId( int programId )
+    public void setId( int id )
     {
-        this.programId = programId;
+        this.id = id;
     }
 
-    public int getProgramId()
+    private int programStageId;
+
+    public void setProgramStageId( int programStageId )
     {
-        return programId;
+        this.programStageId = programStageId;
     }
 
-    private String name;
+    private ProgramStage programStage;
 
-    public void setName( String name )
+    public ProgramStage getProgramStage()
     {
-        this.name = name;
+        return programStage;
     }
 
-    private Integer daysAllowedSendMessage;
+    private TrackedEntityInstanceReminder reminder;
 
-    public void setDaysAllowedSendMessage( Integer daysAllowedSendMessage )
+    public TrackedEntityInstanceReminder getReminder()
     {
-        this.daysAllowedSendMessage = daysAllowedSendMessage;
+        return reminder;
     }
 
-    private String templateMessage;
+    private List<UserGroup> userGroups;
 
-    public void setTemplateMessage( String templateMessage )
+    public List<UserGroup> getUserGroups()
     {
-        this.templateMessage = templateMessage;
+        return userGroups;
     }
 
-    private String datesToCompare;
+    public List<TrackedEntityAttribute> attributes;
 
-    public void setDatesToCompare( String datesToCompare )
+    public List<TrackedEntityAttribute> getAttributes()
     {
-        this.datesToCompare = datesToCompare;
-    }
-
-    private Integer sendTo;
-
-    public void setSendTo( Integer sendTo )
-    {
-        this.sendTo = sendTo;
-    }
-
-    private Integer whenToSend;
-
-    public void setWhenToSend( Integer whenToSend )
-    {
-        this.whenToSend = whenToSend;
-    }
-
-    private Integer messageType;
-
-    public void setMessageType( Integer messageType )
-    {
-        this.messageType = messageType;
-    }
-
-    private Integer userGroup;
-
-    public void setUserGroup( Integer userGroup )
-    {
-        this.userGroup = userGroup;
+        return attributes;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        Program program = programService.getProgram( programId );
+        reminder = reminderService.getReminder( id );
 
-        TrackedEntityInstanceReminder reminder = new TrackedEntityInstanceReminder( name, daysAllowedSendMessage, templateMessage );
-        reminder.setDateToCompare( datesToCompare );
-        reminder.setSendTo( sendTo );
-        reminder.setWhenToSend( whenToSend );
-        reminder.setMessageType( messageType );
+        programStage = programStageService.getProgramStage( programStageId );
 
-        if ( reminder.getSendTo() == TrackedEntityInstanceReminder.SEND_TO_USER_GROUP )
-        {
-            UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup );
-            reminder.setUserGroup( selectedUserGroup );
-        }
-        else
-        {
-            reminder.setUserGroup( null );
-        }
+        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
-        program.getInstanceReminders().add( reminder );
-        programService.updateProgram( program );
+        attributes = new ArrayList<TrackedEntityAttribute>( programStage.getProgram().getTrackedEntityAttributes() );
 
         return SUCCESS;
     }
