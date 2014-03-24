@@ -4,6 +4,7 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
+    <li data-enabled="canManageTemplateMessage"><a data-target-fn="programStageReminder"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "view_template_reminder_message" )</a></li>
     <li><a data-target-fn="showUpdateProgramStageForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
     <li><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>
     <li data-enabled="canRemove"><a data-target-fn="removeProgramStage"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
@@ -43,6 +44,7 @@
 						    data-can-manage="$security.canManage( $association )"
 						    data-can-update="$security.canUpdate( $association )"
 						    data-can-delete="$security.canDelete( $association )"
+							data-can-manage-template-message="#if($association.program.type!=3)true#{else}false#end"
 						    data-can-remove="#if( $program.type=='1' )true#{else}false#end">
 						    <td>$encoder.htmlEncode( $!association.displayName )</td>
 						    <td>$encoder.htmlEncode( $!association.description )</td>
@@ -74,7 +76,6 @@
 				<p><label class="bold">$i18n.getString( "open_data_entry_form_after_enrolment" ):</label><br><span id="openAfterEnrollmentField"></span></p>
 				<p><label class="bold">$i18n.getString( "report_date_to_use" ):</label><br><span id="reportDateToUseField"></span></p>
 				<p><label class="bold">$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>		
-				<p><span id="templateMessageField"></span></p>
 			</div>
 		</td>
 	</tr>

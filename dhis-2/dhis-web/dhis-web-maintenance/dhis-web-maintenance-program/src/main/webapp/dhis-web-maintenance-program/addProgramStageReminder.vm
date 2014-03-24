@@ -14,11 +14,11 @@
 </script>
 
 <h3>$i18n.getString( "create_new_template_reminder_message" )</h3>
-<h5>$program.displayName</h5>
+<h5>$programStage.displayName</h5>
 
-<form id="addReminderForm" name="addReminderForm" action="addProgramReminder.action" method="post" onsubmit="selectAllById('selectedPropertyIds');" class="inputForm">
+<form id="addReminderForm" name="addReminderForm" action="addProgramStageReminder.action" method="post" onsubmit="selectAllById('selectedPropertyIds');" class="inputForm">
   
-  <input type="hidden" id="programId" name="programId" value="$program.id">
+  <input type="hidden" id="programStageId" name="programStageId" value="$programStage.id">
   <table>
     <thead>
       <tr>
@@ -36,17 +36,7 @@
 			<td>
 				<select type="text" id="whenToSend" name="whenToSend" onchange='whenToSendOnChange()'>
 					<option value="" >$i18n.getString("days_scheduled")</option>
-					<option value="3" >$i18n.getString("complete_program")</option>
-					<option value="1" >$i18n.getString("program_enrollment")</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td><label>$i18n.getString( "date_to_compare")</label></td>
-			<td>
-				<select id='datesToCompare' name='datesToCompare'/>
-					<option value="enrollmentdate">$i18n.getString( "enrollment_date" )</option>
-					<option value="dateofincident">$i18n.getString( "incident_date" )</option>
+					<option value="2" >$i18n.getString("complete_event")</option>
 				</select>
 			</td>
 		</tr>
@@ -77,9 +67,9 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "user_group" )</label></td>
+			<td><label>$i18n.getString( "user_group" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
-				<select type="text" id="userGroup" name="userGroup" class="userGroup" disabled>
+				<select type="text" id="userGroup" name="userGroup" disabled class="{validate:{required:true}}">
 					<option value="">[$i18n.getString("please_select")]</option>
 					#foreach($eachGroup in $userGroups)
 						<option value="$eachGroup.id">$i18n.getString($eachGroup.name)</option>
@@ -90,7 +80,7 @@
 		<tr>
 			<td><label>$i18n.getString( "message_type" )</label></td>
 			<td>
-				<select type="text" id="messageType" name="messageType" #if($!reminder.sendTo==1 || $!reminder.sendTo==3) disabled #end class="messageType {validate:{required:true,number:true}}" >
+				<select type="text" id="messageType" name="messageType" disabled class="messageType {validate:{required:true,number:true}}" >
 					<option value="1">$i18n.getString("direct_sms")</option>
 					<option value="2">$i18n.getString("message")</option>
 					<option value="3">$i18n.getString("both")</option>
@@ -102,10 +92,9 @@
 			<td>
 				<select multiple size='4' ondblclick="insertParams(this.value);">
 					<option value="{program-name}">$i18n.getString("program_name")</option>
-					<option value="{incident-date}">$i18n.getString("incident_date")</option>
-					<option value="{days-since-incident-date}">$i18n.getString("days_since_incident_date")</option>
-					<option value="{enrollement-date}">$i18n.getString("enrollement_date")</option>
-					<option value="{days-since-enrollement-date}">$i18n.getString("days_since_enrollment_date")</option>
+					<option value="{program-stage-name}">$i18n.getString("program_stage_name")</option>
+					<option value="{due-date}">$i18n.getString("due_date")</option>'
+					<option value="{days-since-due-date}">$i18n.getString("days_since_due_date")</option>'
 					<option value="{orgunit-name}">$i18n.getString("orgunit_name")</option>
 					#foreach($attribute in $attributes)
 						<option value={attributeid=$attribute.uid}>$attribute.displayName</option>
@@ -127,8 +116,8 @@
 	 <tr>
 		<td></td>
       	<td>
-			<input type="submit" value="$i18n.getString( 'add' )">
-			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programReminder.action?id=$program.id'">
+			<input type="submit" value="$i18n.getString( 'add' )" style="width:10em" >
+			<input type="button" value="$i18n.getString( 'cancel' )" style="width:10em" onclick="window.location.href='programStageReminder.action?id=$programStage.id'">
 		</td>
       </tr>
   </table>

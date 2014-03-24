@@ -28,8 +28,8 @@ package org.hisp.dhis.trackedentity.action.trackedentityinstancereminder;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
@@ -39,20 +39,20 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $ AddProgramReminderAction.java Jan 5, 2014 10:59:10 PM $
+ * @version $ AddProgramStageReminderAction.java Jan 5, 2014 10:59:10 PM $
  */
-public class AddProgramReminderAction
+public class AddProgramStageReminderAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ProgramService programService;
+    private ProgramStageService programStageService;
 
-    public void setProgramService( ProgramService programService )
+    public void setProgramStageService( ProgramStageService programStageService )
     {
-        this.programService = programService;
+        this.programStageService = programStageService;
     }
 
     private UserGroupService userGroupService;
@@ -66,16 +66,16 @@ public class AddProgramReminderAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private int programId;
+    private int programStageId;
 
-    public void setProgramId( int programId )
+    public void setProgramStageId( int programStageId )
     {
-        this.programId = programId;
+        this.programStageId = programStageId;
     }
 
-    public int getProgramId()
+    public int getProgramStageId()
     {
-        return programId;
+        return programStageId;
     }
 
     private String name;
@@ -141,9 +141,10 @@ public class AddProgramReminderAction
     public String execute()
         throws Exception
     {
-        Program program = programService.getProgram( programId );
+        ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        TrackedEntityInstanceReminder reminder = new TrackedEntityInstanceReminder( name, daysAllowedSendMessage, templateMessage );
+        TrackedEntityInstanceReminder reminder = new TrackedEntityInstanceReminder( name, daysAllowedSendMessage,
+            templateMessage );
         reminder.setDateToCompare( datesToCompare );
         reminder.setSendTo( sendTo );
         reminder.setWhenToSend( whenToSend );
@@ -159,8 +160,8 @@ public class AddProgramReminderAction
             reminder.setUserGroup( null );
         }
 
-        program.getInstanceReminders().add( reminder );
-        programService.updateProgram( program );
+        programStage.getReminders().add( reminder );
+        programStageService.updateProgramStage( programStage );
 
         return SUCCESS;
     }

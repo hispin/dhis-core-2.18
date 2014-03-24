@@ -14,12 +14,6 @@
 <form id="addProgramStageForm" name="addProgramStageForm" action="addProgramStage.action" method="get" class="inputForm">
 	<input type="hidden" id="programId" name="programId" value="$program.id"/>
 	<input type='hidden' id="id" name="id" value="$program.id"/>
-	<select id='daysAllowedSendMessages' name="daysAllowedSendMessages" multiple="multiple" class="hidden"></select>
-	<select id='templateMessages' name="templateMessages" multiple="multiple" class="hidden"></select>
-	<select id='sendTo' name="sendTo" multiple="multiple" class="hidden"></select>
-	<select id='whenToSend' name="whenToSend" multiple="multiple" class="hidden"></select>
-	<select id='messageType' name="messageType" multiple="multiple" class="hidden"></select>
-	<select id='userGroup' name="userGroup" multiple="multiple" class="hidden"></select>
 <table>
 	<thead>
 		<tr><th colspan="2">$i18n.getString( "program_stage_details" )</th></tr>
@@ -212,20 +206,6 @@
         </td>  
 		</tr>
     </tbody>
-	<tr>
-		<th colspan='3'>$i18n.getString("template_reminder_message")</th>
-	</tr>
-</table>
-
-<table>
-	<tbody id='programStageMessage'>
-	</tbody>
-	<tr>
-		<td></td>
-		<td>
-			<input type="button" value="$i18n.getString('add_more')" onclick='generateTemplateMessageForm();'>
-		</td>
-	</tr>
 </table>
 
 <p>

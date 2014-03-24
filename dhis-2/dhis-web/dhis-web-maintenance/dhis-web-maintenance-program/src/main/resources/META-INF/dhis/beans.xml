@@ -125,7 +125,7 @@
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowUpdateAttributeAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowUpdateAttributeAction"
@@ -135,7 +135,7 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeVisitScheduleFormAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeVisitScheduleFormAction"
@@ -151,7 +151,7 @@
 		<property name="attributeService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeInListNoProgramAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeInListNoProgramAction"
@@ -171,7 +171,8 @@
 	<!-- Program -->
 
 	<bean id="org.hisp.dhis.trackedentity.action.program.AddProgramAction"
-		class="org.hisp.dhis.trackedentity.action.program.AddProgramAction" scope="prototype">
+		class="org.hisp.dhis.trackedentity.action.program.AddProgramAction"
+		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
@@ -196,7 +197,8 @@
 	</bean>
 
 	<bean id="org.hisp.dhis.trackedentity.action.program.GetProgramAction"
-		class="org.hisp.dhis.trackedentity.action.program.GetProgramAction" scope="prototype">
+		class="org.hisp.dhis.trackedentity.action.program.GetProgramAction"
+		scope="prototype">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
@@ -211,7 +213,8 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.trackedentity.action.program.ShowAddProgramFormAction"
+	<bean
+		id="org.hisp.dhis.trackedentity.action.program.ShowAddProgramFormAction"
 		class="org.hisp.dhis.trackedentity.action.program.ShowAddProgramFormAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
@@ -244,7 +247,8 @@
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.trackedentity.action.program.ValidateProgramAction"
+	<bean
+		id="org.hisp.dhis.trackedentity.action.program.ValidateProgramAction"
 		class="org.hisp.dhis.trackedentity.action.program.ValidateProgramAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
@@ -281,7 +285,8 @@
 
 	<!-- ProgramStage -->
 
-	<bean id="org.hisp.dhis.trackedentity.action.programstage.AddProgramStageAction"
+	<bean
+		id="org.hisp.dhis.trackedentity.action.programstage.AddProgramStageAction"
 		class="org.hisp.dhis.trackedentity.action.programstage.AddProgramStageAction"
 		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
@@ -299,7 +304,8 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction"
+	<bean
+		id="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction"
 		class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
@@ -377,7 +383,8 @@
 		class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageSectionAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
+		<property name="programStageSectionService"
+			ref="org.hisp.dhis.program.ProgramStageSectionService" />
 	</bean>
 
 	<bean
@@ -659,7 +666,7 @@
 		<property name="attributeGroupService"
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService" />
 	</bean>
-	
+
 	<!-- Case Aggregation Mapping -->
 
 	<bean
@@ -955,7 +962,8 @@
 
 	<!-- Scheduling -->
 
-	<bean id="org.hisp.dhis.trackedentity.action.schedule.GetScheduleParamsAction"
+	<bean
+		id="org.hisp.dhis.trackedentity.action.schedule.GetScheduleParamsAction"
 		class="org.hisp.dhis.trackedentity.action.schedule.GetScheduleParamsAction"
 		scope="prototype">
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
@@ -1082,7 +1090,8 @@
 		class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.UpdateProgramReminderAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="reminderService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
@@ -1091,7 +1100,8 @@
 		class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.RemoveProgramReminderAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="reminderService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
 	</bean>
 
 	<bean
@@ -1099,7 +1109,8 @@
 		class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.GetInstanceReminderAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="reminderService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
@@ -1107,7 +1118,8 @@
 		id="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ValidateProgramReminderAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ValidateProgramReminderAction"
 		scope="prototype">
-		<property name="reminderService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
 	</bean>
 
 	<bean
@@ -1117,43 +1129,95 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
-	
+
+	<!-- ProgramStage reminder -->
+
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.AddProgramStageReminderAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.AddProgramStageReminderAction"
+		scope="prototype">
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.UpdateProgramStageReminderAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.UpdateProgramStageReminderAction"
+		scope="prototype">
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.RemoveProgramStageReminderAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.RemoveProgramStageReminderAction"
+		scope="prototype">
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.GetProgramStageReminderAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.GetProgramStageReminderAction"
+		scope="prototype">
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ShowAddProgramStageReminderAction"
+		class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ShowAddProgramStageReminderAction"
+		scope="prototype">
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+	</bean>
+
 	<!-- TrackedEntity -->
-	
+
 	<bean
 		id="org.hisp.dhis.trackedentity.action.trackedentity.AddTrackedEntityAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentity.AddTrackedEntityAction"
 		scope="prototype">
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityAction"
 		scope="prototype">
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityListAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityListAction"
 		scope="prototype">
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.trackedentity.action.trackedentity.RemoveTrackedEntityAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentity.RemoveTrackedEntityAction"
 		scope="prototype">
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.trackedentity.action.trackedentity.UpdateTrackedEntityAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentity.UpdateTrackedEntityAction"
 		scope="prototype">
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.trackedentity.action.trackedentity.ValidateTrackedEntityAction"
 		class="org.hisp.dhis.trackedentity.action.trackedentity.ValidateTrackedEntityAction"
 		scope="prototype">
 	</bean>
-	
+
 </beans>

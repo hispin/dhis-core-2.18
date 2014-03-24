@@ -193,7 +193,7 @@
 			<result name="success" type="redirect">index.action</result>
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
-		
+
 		<action name="attributeInListNoProgram"
 			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeInListNoProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -210,7 +210,7 @@
 			<result name="success" type="redirect">index.action</result>
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
 		</action>
-		
+
 		<!-- Program -->
 
 		<action name="program"
@@ -712,7 +712,7 @@
 			<result name="success" type="redirect">attributeGroup.action
 			</result>
 		</action>
-		
+
 		<!-- Case Aggregation Condition -->
 
 		<action name="caseAggregation"
@@ -1093,7 +1093,7 @@
 			</result>
 		</action>
 
-		<!-- Tracked entity instance reminder -->
+		<!-- Program reminder -->
 
 		<action name="programReminder"
 			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
@@ -1150,18 +1150,75 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="validateProgramReminder"
+		<action name="validateReminder"
 			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ValidateProgramReminderAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm
 			</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
 		</action>
-		
+
+		<!-- Program Stage reminder -->
+
+		<action name="programStageReminder"
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-program/programStageReminder.vm</param>
+			<param name="menu">/dhis-web-maintenance-program/menu.vm</param>
+			<param name="javascripts">javascript/programStageReminder.js</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
+		</action>
+
+		<action name="showAddProgramStageReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ShowAddProgramStageReminderAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-program/addProgramStageReminder.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programStageReminder.js</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
+		</action>
+
+		<action name="addProgramStageReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.AddProgramStageReminderAction">
+			<result name="success" type="redirect">programStageReminder.action?id=${programStageId}
+			</result>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
+		</action>
+
+		<action name="showUpdateProgramStageReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.GetProgramStageReminderAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-program/updateProgramStageReminder.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programStageReminder.js</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
+		</action>
+
+		<action name="updateProgramStageReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.UpdateProgramStageReminderAction">
+			<result name="success" type="redirect">programStageReminder.action?id=${programStageId}
+			</result>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
+		</action>
+
+		<action name="removeProgramStageReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.RemoveProgramStageReminderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_REMINDER_MANAGEMENT</param>
+		</action>
+
+		<action name="getProgramStageReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.GetProgramStageReminderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonTrackedEntityInstanceReminder.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<!-- TrackedEntity -->
-	
+
 		<action name="trackedEntity"
 			class="org.hisp.dhis.trackedentity.action.trackedentity.GetTrackedEntityListAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -1171,8 +1228,7 @@
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_MANAGEMENT</param>
 		</action>
 
-		<action name="showAddTrackedEntityForm"
-			class="org.hisp.dhis.trackedentity.action.NoAction">
+		<action name="showAddTrackedEntityForm" class="org.hisp.dhis.trackedentity.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-program/addTrackedEntity.vm</param>
 			<param name="javascripts">javascript/trackedEntity.js</param>
@@ -1226,6 +1282,6 @@
 				/dhis-web-commons/ajax/jsonResponseError.vm
 			</result>
 		</action>
-		
+
 	</package>
 </struts>
