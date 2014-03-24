@@ -38,6 +38,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -57,6 +58,7 @@ public class DataElementGroupStoreTest
     }
     
     @Test
+    @Ignore
     public void testAddDataElementGroup()
     {
         DataElementGroup dataElementGroupA = new DataElementGroup( "DataElementGroupA" );
