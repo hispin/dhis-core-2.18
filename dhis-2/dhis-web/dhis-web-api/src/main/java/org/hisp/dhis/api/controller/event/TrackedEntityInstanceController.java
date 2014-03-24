@@ -41,10 +41,10 @@ import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
-import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IllegalQueryException;
+import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -101,7 +101,7 @@ public class TrackedEntityInstanceController
         @RequestParam(required=false) Set<String> attribute,
         @RequestParam(required=false) Set<String> filter,
         @RequestParam String ou,
-        @RequestParam(required=false, defaultValue=DimensionalObject.OU_MODE_SELECTED) String ouMode,
+        @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
         @RequestParam(required=false) String program,
         @RequestParam(required=false) String trackedEntity,
         @RequestParam(required=false) Integer page,
@@ -126,7 +126,7 @@ public class TrackedEntityInstanceController
         @RequestParam(required=false) Set<String> attribute,
         @RequestParam(required=false) Set<String> filter,
         @RequestParam String ou,
-        @RequestParam(required=false, defaultValue=DimensionalObject.OU_MODE_SELECTED) String ouMode,
+        @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
         @RequestParam(required=false) String program,
         @RequestParam(required=false) String trackedEntity,
         @RequestParam(required=false) Integer page,
@@ -148,7 +148,7 @@ public class TrackedEntityInstanceController
         @RequestParam(required=false) Set<String> attribute,
         @RequestParam(required=false) Set<String> filter,
         @RequestParam String ou,
-        @RequestParam(required=false, defaultValue=DimensionalObject.OU_MODE_SELECTED) String ouMode,
+        @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
         @RequestParam(required=false) String program,
         @RequestParam(required=false) String trackedEntity,
         @RequestParam(required=false) Integer page,

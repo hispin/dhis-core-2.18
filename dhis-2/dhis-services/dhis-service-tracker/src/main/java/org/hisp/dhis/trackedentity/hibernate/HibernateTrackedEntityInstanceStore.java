@@ -60,8 +60,8 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -175,7 +175,7 @@ public class HibernateTrackedEntityInstanceStore
             }
         }
         
-        if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_DESCENDANTS ) )
+        if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.DESCENDANTS ) )
         {
             sql += "left join _orgunitstructure ous on tei.organisationunitid = ous.organisationunitid ";
         }
@@ -185,7 +185,7 @@ public class HibernateTrackedEntityInstanceStore
             sql += hlp.whereAnd() + " tei.trackedentityid = " + params.getTrackedEntity().getId() + " ";
         }
 
-        if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_DESCENDANTS ) )
+        if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.DESCENDANTS ) )
         {
             SetMap<Integer, OrganisationUnit> levelOuMap = params.getLevelOrgUnitMap();
             
@@ -196,7 +196,7 @@ public class HibernateTrackedEntityInstanceStore
             
             sql = sql.substring( 0, sql.length() - 3 ); // Remove last or
         }
-        else // OU_MODE_SELECTED
+        else // SELECTED
         {
             sql += hlp.whereAnd() + " tei.organisationunitid in (" + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
         }

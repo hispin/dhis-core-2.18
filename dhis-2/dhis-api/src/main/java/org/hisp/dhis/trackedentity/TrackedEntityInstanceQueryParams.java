@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -85,7 +86,7 @@ public class TrackedEntityInstanceQueryParams
     /**
      * Selection mode for the specified organisation units.
      */
-    private String organisationUnitMode;
+    private OrganisationUnitSelectionMode organisationUnitMode;
 
     /**
      * Page number.
@@ -205,9 +206,9 @@ public class TrackedEntityInstanceQueryParams
     /**
      * Indicates whethert this params is of the given organisation unit mode.
      */
-    public boolean isOrganisationUnitMode( String mode )
+    public boolean isOrganisationUnitMode( OrganisationUnitSelectionMode mode )
     {
-        return organisationUnitMode != null && organisationUnitMode.equalsIgnoreCase( mode );
+        return organisationUnitMode != null && organisationUnitMode.equals( mode );
     }
 
     /**
@@ -276,12 +277,12 @@ public class TrackedEntityInstanceQueryParams
         this.filters = filters;
     }
 
-    public String getOrganisationUnitMode()
+    public OrganisationUnitSelectionMode getOrganisationUnitMode()
     {
         return organisationUnitMode;
     }
 
-    public void setOrganisationUnitMode( String organisationUnitMode )
+    public void setOrganisationUnitMode( OrganisationUnitSelectionMode organisationUnitMode )
     {
         this.organisationUnitMode = organisationUnitMode;
     }
