@@ -62,27 +62,19 @@
       <param name="page">/dhis-web-maintenance-program/updateRelationshipTypeForm.vm</param>
       <param name="javascripts">javascript/relationship.js</param>
       <param name="stylesheets">style/basic.css</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
-    <action name="updateRelationshipType"
-      class="org.hisp.dhis.trackedentity.action.relationship.UpdateRelationshipTypeAction">
-      <result name="success" type="redirect">relationshipType.action
-      </result>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+    <action name="updateRelationshipType" class="org.hisp.dhis.trackedentity.action.relationship.UpdateRelationshipTypeAction">
+      <result name="success" type="redirect">relationshipType.action</result>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="validateRelationshipType"
       class="org.hisp.dhis.trackedentity.action.relationship.ValidateRelationshipTypeAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
-      <result name="input" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseInput.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -91,129 +83,97 @@
     <action name="attribute"
       class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributeListAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">
-        /dhis-web-maintenance-program/attribute.vm
-      </param>
+      <param name="page">/dhis-web-maintenance-program/attribute.vm</param>
       <param name="menu">/dhis-web-maintenance-program/menu.vm</param>
       <param name="javascripts">javascript/attribute.js</param>
     </action>
 
-    <action name="getAttribute"
-      class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributeAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonTrackedEntityAttribute.vm
-      </result>
+    <action name="getAttribute" class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributeAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonTrackedEntityAttribute.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="getAttributes"
-      class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributeListAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonTrackedEntityAttributes.vm
-      </result>
+    <action name="getAttributes" class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributeListAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonTrackedEntityAttributes.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="getAttributeWithoutGroup"
-      class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributesWithoutGroupAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonTrackedEntityAttributes.vm
-      </result>
+    <action name="getAttributeWithoutGroup" class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributesWithoutGroupAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonTrackedEntityAttributes.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="removeAttribute"
-      class="org.hisp.dhis.trackedentity.action.trackedentityattribute.RemoveAttributeAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+    <action name="removeAttribute" class="org.hisp.dhis.trackedentity.action.trackedentityattribute.RemoveAttributeAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_DELETE</param>
     </action>
 
-    <action name="addAttribute"
-      class="org.hisp.dhis.trackedentity.action.trackedentityattribute.AddAttributeAction">
-      <result name="success" type="redirect">attribute.action
-      </result>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+    <action name="addAttribute" class="org.hisp.dhis.trackedentity.action.trackedentityattribute.AddAttributeAction">
+      <result name="success" type="redirect">attribute.action</result>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
-    <action name="showAddAttributeForm"
-      class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAddAttributeFormAction">
+    <action name="showAddAttributeForm" class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAddAttributeFormAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">
-        /dhis-web-maintenance-program/addAttributeForm.vm
-      </param>
+      <param name="page">/dhis-web-maintenance-program/addAttributeForm.vm</param>
       <param name="javascripts">javascript/attribute.js</param>
       <param name="stylesheets">style/basic.css</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateAttributeForm"
       class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowUpdateAttributeAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">
-        /dhis-web-maintenance-program/updateAttibuteForm.vm
-      </param>
+      <param name="page">/dhis-web-maintenance-program/updateAttibuteForm.vm</param>
       <param name="javascripts">javascript/attribute.js</param>
       <param name="stylesheets">style/basic.css</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="updateAttribute"
       class="org.hisp.dhis.trackedentity.action.trackedentityattribute.UpdateAttributeAction">
-      <result name="success" type="redirect">attribute.action
-      </result>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <result name="success" type="redirect">attribute.action</result>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="validateAttribute"
       class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ValidateAttributeAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="input" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseInput.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="attributeVisitSchedule"
       class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeVisitScheduleFormAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">
-        /dhis-web-maintenance-program/attributeVisitSchedule.vm
-      </param>
+      <param name="page">/dhis-web-maintenance-program/attributeVisitSchedule.vm</param>
       <param name="menu">/dhis-web-maintenance-program/menu.vm</param>
       <param name="javascripts">javascript/attribute.js</param>
       <param name="stylesheets">style/basic.css</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="saveAttributeVisitSchedule"
       class="org.hisp.dhis.trackedentity.action.trackedentityattribute.SaveAttributeVisitScheduleAction">
       <result name="success" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="attributeInListNoProgram"
       class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeInListNoProgramAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">
-        /dhis-web-maintenance-program/attributeInListNoProgram.vm
-      </param>
+      <param name="page">/dhis-web-maintenance-program/attributeInListNoProgram.vm</param>
       <param name="menu">/dhis-web-maintenance-program/menu.vm</param>
       <param name="javascripts">javascript/attribute.js</param>
       <param name="stylesheets">style/basic.css</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="saveAttributeInListNoProgram"
       class="org.hisp.dhis.trackedentity.action.trackedentityattribute.SaveAttributeInListNoProgramAction">
       <result name="success" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <!-- Program -->
@@ -658,17 +618,14 @@
 
     <action name="removeAttributeGroup"
       class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.RemoveAttributeGroupAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_DELETE</param>
     </action>
 
     <action name="addAttributeGroup"
       class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.AddAttributeGroupAction">
-      <result name="success" type="redirect">attributeGroup.action
-      </result>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <result name="success" type="redirect">attributeGroup.action</result>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="showAddAttributeGroupForm" class="org.hisp.dhis.trackedentity.action.NoAction">
@@ -676,7 +633,7 @@
       <param name="page">/dhis-web-maintenance-program/addAttributeGroupForm.vm</param>
       <param name="javascripts">javascript/attributeGroup.js</param>
       <param name="stylesheets">style/basic.css</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateAttributeGroupForm"
@@ -685,27 +642,20 @@
       <param name="page">/dhis-web-maintenance-program/updateAttibuteGroupForm.vm</param>
       <param name="javascripts">javascript/attributeGroup.js</param>
       <param name="stylesheets">style/basic.css</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="updateAttributeGroup"
       class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.UpdateAttributeGroupAction">
-      <result name="success" type="redirect">attributeGroup.action
-      </result>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <result name="success" type="redirect">attributeGroup.action</result>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="validateAttributeGroup"
       class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.ValidateAttributeGroupAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
-      <result name="input" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseInput.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -715,13 +665,12 @@
       <param name="page">/dhis-web-maintenance-program/sortAttributeGroupForm.vm</param>
       <param name="javascripts">javascript/attributeGroup.js</param>
       <param name="stylesheets">style/basic.css</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_ADD</param>
+      <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
     <action name="saveAttributeGroupSortOrder"
       class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.SaveAttributeGroupSortOrderAction">
-      <result name="success" type="redirect">attributeGroup.action
-      </result>
+      <result name="success" type="redirect">attributeGroup.action</result>
     </action>
 
     <!-- Case Aggregation Condition -->
