@@ -51,22 +51,50 @@ public class TrackedEntityInstanceQueryParams
     public static final String TRACKED_ENTITY_ATTRIBUTE_ID = "teattribute";
     public static final String TRACKED_ENTITY_ATTRIBUTE_VALUE_ID = "tevalue";
     
+    /**
+     * Query value, will apply to all relevant attributes.
+     */
     private String query;
     
+    /**
+     * Attributes to be included in the response. Can be used to filter response.
+     */
     private List<QueryItem> attributes = new ArrayList<QueryItem>();
 
+    /**
+     * Filters for the response.
+     */
     private List<QueryItem> filters = new ArrayList<QueryItem>();
     
+    /**
+     * Organisation units for which instances in the response were registered at.
+     * Is related to the specified OrganisationUnitMode.
+     */
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
     
+    /**
+     * Program for which instances in the response must be enrolled in.
+     */
     private Program program;
     
+    /**
+     * Tracked entity of the instances in the response.
+     */
     private TrackedEntity trackedEntity;
     
+    /**
+     * Selection mode for the specified organisation units.
+     */
     private String organisationUnitMode;
 
+    /**
+     * Page number.
+     */
     private Integer page;
     
+    /**
+     * Page size.
+     */
     private Integer pageSize;
 
     // -------------------------------------------------------------------------

@@ -81,7 +81,6 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceStore;
-import org.hisp.dhis.trackedentity.TrackedEntityQueryParams;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.jdbc.core.RowMapper;
@@ -295,30 +294,6 @@ public class HibernateTrackedEntityInstanceStore
         query.setEntity( "organisationUnit", organisationUnit );
         query.setEntity( "program", program );
         query.setInteger( "status", ProgramInstance.STATUS_ACTIVE );
-
-        return query.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public List<TrackedEntityInstance> query( TrackedEntityQueryParams params )
-    {
-        SqlHelper hlp = new SqlHelper();
-
-        String hql = "select pt from TrackedEntityInstance pt left join pt.attributeValues av";
-
-        for ( QueryItem at : params.getAttributes() )
-        {
-            hql += " " + hlp.whereAnd();
-            hql += " (av.attribute = :attr" + at.getItemId() + " and av.value = :filt" + at.getItemId() + ")";
-        }
-
-        Query query = getQuery( hql );
-
-        for ( QueryItem at : params.getAttributes() )
-        {
-            query.setEntity( "attr" + at.getItemId(), at.getItem() );
-            query.setString( "filt" + at.getItemId(), at.getFilter() );
-        }
 
         return query.list();
     }

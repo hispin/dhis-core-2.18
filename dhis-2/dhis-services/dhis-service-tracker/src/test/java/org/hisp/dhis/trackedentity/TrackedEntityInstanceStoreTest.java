@@ -320,20 +320,4 @@ public class TrackedEntityInstanceStoreTest
         assertEquals( 1, entityInstances.size() );
         assertTrue( entityInstances.contains( entityInstanceA3 ) );
     }
-
-    @Test
-    public void testQuery()
-    {
-        entityInstanceStore.save( entityInstanceA1 );
-        entityInstanceStore.save( entityInstanceA2 );
-        entityInstanceStore.save( entityInstanceA3 );
-        entityInstanceStore.save( entityInstanceB1 );
-        entityInstanceStore.save( entityInstanceB2 );
-
-        TrackedEntityQueryParams params = new TrackedEntityQueryParams();
-
-        List<TrackedEntityInstance> list = entityInstanceStore.query( params );
-
-        assertEquals( 5, list.size() );
-    }
 }

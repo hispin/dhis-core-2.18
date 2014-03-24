@@ -1,4 +1,4 @@
-package org.hisp.dhis.organisationunit;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,10 +28,10 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * @author Lars Helge Overland
+ */
 public enum OrganisationUnitSelectionMode
 {
-    EXPLICIT,
-    SUBTREE,
-    ACCESSIBLE,
-    ALL
+    SELECTED, CHILDREN, DESCENDANTS;
 }
