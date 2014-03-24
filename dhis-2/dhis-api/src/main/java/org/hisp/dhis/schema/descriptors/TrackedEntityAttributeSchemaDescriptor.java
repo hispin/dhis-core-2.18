@@ -28,6 +28,7 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
@@ -42,6 +43,12 @@ public class TrackedEntityAttributeSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( TrackedEntityAttribute.class, "trackedEntityAttribute", "trackedEntityAttributes", false, false, true );
+        Schema schema = new Schema( TrackedEntityAttribute.class, "trackedEntityAttribute", "trackedEntityAttributes", false, false, true );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD" ) );
+        schema.setPrivateAuthorities( Lists.newArrayList( "F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD" ) );
+
+        return schema;
     }
 }

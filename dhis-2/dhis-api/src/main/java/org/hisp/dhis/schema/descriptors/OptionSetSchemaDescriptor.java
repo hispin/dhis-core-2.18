@@ -28,9 +28,10 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
-import org.hisp.dhis.option.OptionSet;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,6 +43,12 @@ public class OptionSetSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( OptionSet.class, "optionSet", "optionSets", true, true, true );
+        Schema schema = new Schema( OptionSet.class, "optionSet", "optionSets", true, true, true );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_OPTIONSET_PUBLIC_ADD" ) );
+        schema.setPrivateAuthorities( Lists.newArrayList( "F_OPTIONSET_PRIVATE_ADD" ) );
+
+        return schema;
     }
 }

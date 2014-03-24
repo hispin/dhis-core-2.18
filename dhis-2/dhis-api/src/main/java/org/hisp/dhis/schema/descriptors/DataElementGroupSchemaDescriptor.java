@@ -28,6 +28,7 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
@@ -42,6 +43,12 @@ public class DataElementGroupSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( DataElementGroup.class, "dataElementGroup", "dataElementsGroups", true, true, true );
+        Schema schema = new Schema( DataElementGroup.class, "dataElementGroup", "dataElementsGroups", true, true, true );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_DATAELEMENTGROUP_PUBLIC_ADD" ) );
+        schema.setPrivateAuthorities( Lists.newArrayList( "F_DATAELEMENTGROUP_PRIVATE_ADD" ) );
+
+        return schema;
     }
 }
