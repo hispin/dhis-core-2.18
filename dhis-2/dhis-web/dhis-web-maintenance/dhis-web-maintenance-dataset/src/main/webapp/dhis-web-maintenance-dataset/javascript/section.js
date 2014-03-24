@@ -41,9 +41,9 @@ function getSectionByDataSet( dataSetId )
 	window.location.href = "section.action?dataSetId=" + dataSetId;
 }
 
-function removeSection(sectionId, sectionName) 
+function removeSection( context ) 
 {
-	removeItem( sectionId, sectionName, i18n_confirm_delete, "removeSection.action" );
+	removeItem( context.id, context.name, i18n_confirm_delete, "removeSection.action" );
 }
 
 function addSectionSubmit() 
