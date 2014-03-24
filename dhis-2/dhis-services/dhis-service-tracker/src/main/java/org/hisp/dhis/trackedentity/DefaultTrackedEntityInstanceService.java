@@ -33,9 +33,11 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
+import static org.hisp.dhis.common.OrganisationUnitSelectionMode.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -243,7 +245,7 @@ public class DefaultTrackedEntityInstanceService
         {
             violation = "Program and tracked entity cannot be specified simultaneously";
         }
-
+        
         if ( violation != null )
         {
             log.warn( "Validation failed: " + violation );
@@ -306,7 +308,14 @@ public class DefaultTrackedEntityInstanceService
         {
             throw new IllegalQueryException( "Tracked entity does not exist: " + program );
         }
+
+        List<OrganisationUnitSelectionMode> VALID_OU_MODES = new ArrayList<OrganisationUnitSelectionMode>( Arrays.asList( SELECTED, CHILDREN, DESCENDANTS ) );
         
+        if ( ouMode != null && !VALID_OU_MODES.contains( ouMode ) )
+        {
+            throw new IllegalQueryException( "Invalid organisation unit selection mode: " + ouMode );
+        }
+
         params.setQuery( query );
         params.setProgram( pr );
         params.setTrackedEntity( te );

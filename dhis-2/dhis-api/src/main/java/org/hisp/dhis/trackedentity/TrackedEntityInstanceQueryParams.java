@@ -210,7 +210,7 @@ public class TrackedEntityInstanceQueryParams
     {
         return organisationUnitMode != null && organisationUnitMode.equals( mode );
     }
-
+    
     /**
      * Indicates whether paging is enabled.
      */
