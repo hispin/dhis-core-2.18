@@ -32,13 +32,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -58,28 +56,15 @@ public class DataElementGroupStoreTest
     }
     
     @Test
-    @Ignore
     public void testAddDataElementGroup()
     {
         DataElementGroup dataElementGroupA = new DataElementGroup( "DataElementGroupA" );
         DataElementGroup dataElementGroupB = new DataElementGroup( "DataElementGroupB" );
         DataElementGroup dataElementGroupC = new DataElementGroup( "DataElementGroupC" );
-        DataElementGroup dataElementGroupD = new DataElementGroup( "DataElementGroupA" );
         
         int idA = dataElementGroupStore.save( dataElementGroupA );
         int idB = dataElementGroupStore.save( dataElementGroupB );
         int idC = dataElementGroupStore.save( dataElementGroupC );
-
-        try
-        {
-            // Should give unique constraint violation
-            dataElementGroupStore.save( dataElementGroupD );
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // Expected
-        }
 
         dataElementGroupA = dataElementGroupStore.get( idA );
         assertNotNull( dataElementGroupA );

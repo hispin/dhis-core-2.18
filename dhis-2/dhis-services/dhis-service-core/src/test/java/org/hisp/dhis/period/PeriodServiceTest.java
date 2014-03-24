@@ -32,7 +32,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -103,21 +102,9 @@ public class PeriodServiceTest
         Period periodA = new Period( periodTypeA, getDay( 0 ), getDay( 1 ) );
         Period periodB = new Period( periodTypeA, getDay( 1 ), getDay( 2 ) );
         Period periodC = new Period( periodTypeB, getDay( 2 ), getDay( 3 ) );
-        Period periodD = new Period( periodTypeA, getDay( 0 ), getDay( 1 ) );
         int idA = periodService.addPeriod( periodA );
         int idB = periodService.addPeriod( periodB );
         int idC = periodService.addPeriod( periodC );
-
-        try
-        {
-            // Should give unique constraint violation.
-            periodService.addPeriod( periodD );
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // Expected.
-        }
 
         periodA = periodService.getPeriod( idA );
         assertNotNull( periodA );
