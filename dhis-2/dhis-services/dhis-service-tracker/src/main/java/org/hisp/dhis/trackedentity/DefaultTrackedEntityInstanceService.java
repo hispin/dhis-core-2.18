@@ -225,7 +225,8 @@ public class DefaultTrackedEntityInstanceService
         
         return grid;
     }
-    
+
+    @Override
     public void validate( TrackedEntityInstanceQueryParams params )
         throws IllegalQueryException
     {
@@ -236,7 +237,7 @@ public class DefaultTrackedEntityInstanceService
             throw new IllegalQueryException( "Params cannot be null" );
         }
 
-        if ( !params.hasOrganisationUnits() )
+        if ( !params.hasOrganisationUnits() && !params.isOrganisationUnitMode( OrganisationUnitSelectionMode.ALL ) )
         {
             violation = "At least one organisation unit must be specified";
         }
