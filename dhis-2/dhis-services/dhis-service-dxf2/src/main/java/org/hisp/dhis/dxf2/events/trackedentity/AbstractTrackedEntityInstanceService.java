@@ -322,7 +322,6 @@ public abstract class AbstractTrackedEntityInstanceService
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
-        params.setOrganisationUnitMode( "DESCENDANTS" );
 
         QueryItem queryItem = new QueryItem( attribute, "eq", value, false );
         params.getAttributes().add( queryItem );
