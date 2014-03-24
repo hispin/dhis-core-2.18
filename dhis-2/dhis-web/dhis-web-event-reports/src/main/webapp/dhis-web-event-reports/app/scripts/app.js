@@ -163,7 +163,10 @@ Ext.onReady( function() {
 
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
-                    width: buttonCmpWidth
+                    width: buttonCmpWidth,
+                    handler: function() {
+						container.duplicateDataElement();
+					}
                 });
 
                 this.removeCmp = Ext.create('Ext.button.Button', {
@@ -235,7 +238,10 @@ Ext.onReady( function() {
 
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
-                    width: buttonCmpWidth
+                    width: buttonCmpWidth,
+                    handler: function() {
+						container.duplicateDataElement();
+					}
                 });
 
                 this.removeCmp = Ext.create('Ext.button.Button', {
@@ -297,7 +303,10 @@ Ext.onReady( function() {
 
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
-                    width: buttonCmpWidth
+                    width: buttonCmpWidth,
+                    handler: function() {
+						container.duplicateDataElement();
+					}
                 });
 
                 this.removeCmp = Ext.create('Ext.button.Button', {
@@ -508,7 +517,10 @@ Ext.onReady( function() {
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
                     width: buttonCmpWidth,
-                    style: 'font-weight:bold'
+                    style: 'font-weight:bold',
+                    handler: function() {
+						container.duplicateDataElement();
+					}
                 });
 
                 this.removeCmp = Ext.create('Ext.button.Button', {
@@ -554,6 +566,8 @@ Ext.onReady( function() {
 			getSetup,
             addDimension,
             removeDimension,
+            hasDimension,
+            saveState,
             dimensionStoreMap = {},
 
 			dimensionPanel,
@@ -622,9 +636,9 @@ Ext.onReady( function() {
 
 		colStore = getStore();
 		colStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
+        colStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
 
 		rowStore = getStore();
-        rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
 
 		filterStore = getStore();
 
@@ -805,9 +819,12 @@ Ext.onReady( function() {
 			};
 		};
 
-        addDimension = function(record) {
-            var store = dimensionStoreMap[record.id] || dimensionStore;
-            store.add(record);
+        addDimension = function(record, store) {
+            var store = dimensionStoreMap[record.id] || store || dimensionStore;
+
+            if (!hasDimension(record.id)) {
+                store.add(record);
+            }
         };
 
         removeDimension = function(dataElementId) {
@@ -829,7 +846,7 @@ Ext.onReady( function() {
 
             for (var i = 0, store, index; i < stores.length; i++) {
                 store = stores[i];
-                index = store.findExact('id', dataElementId);
+                index = store.findExact('id', id);
 
                 if (index != -1) {
                     return true;
@@ -837,6 +854,24 @@ Ext.onReady( function() {
             }
 
             return false;
+        };
+
+        saveState = function() {
+            colStore.each(function(record) {
+                dimensionStoreMap[record.data.id] = colStore;
+            });
+
+            rowStore.each(function(record) {
+                dimensionStoreMap[record.data.id] = rowStore;
+            });
+
+            filterStore.each(function(record) {
+                dimensionStoreMap[record.data.id] = filterStore;
+            });
+
+            dimensionStore.each(function(record) {
+                dimensionStoreMap[record.data.id] = dimensionStore;
+            });
         };
 
 		window = Ext.create('Ext.window.Window', {
@@ -854,6 +889,7 @@ Ext.onReady( function() {
             addDimension: addDimension,
             removeDimension: removeDimension,
             hasDimension: hasDimension,
+            saveState: saveState,
 			hideOnBlur: true,
 			items: {
 				layout: 'column',
@@ -3014,7 +3050,7 @@ Ext.onReady( function() {
 
 				addUxFromDataElement(element);
 
-                ns.app.aggregateLayoutWindow.colStore.add(element);
+                ns.app.aggregateLayoutWindow.addDimension(element, ns.app.aggregateLayoutWindow.rowStore);
                 ns.app.queryLayoutWindow.colStore.add(element);
 			}
         };
@@ -3071,10 +3107,14 @@ Ext.onReady( function() {
             if (mode === 'dates') {
                 startEndDate.show();
                 periods.hide();
+
+                ns.app.aggregateLayoutWindow.removeDimension(dimConf.period.dimensionName);
             }
             else if (mode === 'periods') {
                 startEndDate.hide();
                 periods.show();
+
+                ns.app.aggregateLayoutWindow.addDimension({id: dimConf.period.dimensionName, name: dimConf.period.name}, ns.app.aggregateLayoutWindow.colStore);
             }
         };
 
@@ -3123,186 +3163,13 @@ Ext.onReady( function() {
             items: [
                 startDate,
                 endDate
-
-                //{
-                    //xtype: 'container',
-                    //cls: 'ns-container-default',
-                    //items: [
-                        //startDate,
-                        //{
-                            //xtype: 'container',
-                            //cls: 'ns-container-default',
-                            //layout: 'column',
-                            //items: [
-                                //{
-                                    //xtype: 'container',
-                                    //cls: 'ns-container-default',
-                                    //columnWidth: 0.3,
-                                    //layout: 'anchor',
-                                    //items: [
-                                        //getDateLink('+1 year', function() {
-                                            //var date = startDate.getValue();
-                                            //date.setFullYear(date.getFullYear() + 1);
-                                            //startDate.setValue(date);
-                                        //}),
-                                        //getDateLink('-1 year', function() {
-                                            //var date = startDate.getValue();
-                                            //date.setFullYear(date.getFullYear() - 1);
-                                            //startDate.setValue(date);
-                                        //}),
-                                        //getDateLink((new Date()).getFullYear() + '-01-01', function() {
-                                            //startDate.setValue((new Date()).getFullYear() + '-01-01');
-                                        //}, 'margin-top: 7px'),
-                                        //getDateLink(((new Date()).getFullYear() - 1) + '-01-01', function() {
-                                            //startDate.setValue(((new Date()).getFullYear() - 1) + '-01-01');
-                                        //}),
-                                        //getDateLink(((new Date()).getFullYear() - 2) + '-01-01', function() {
-                                            //startDate.setValue(((new Date()).getFullYear() - 2) + '-01-01');
-                                        //})
-                                    //]
-                                //},
-                                //{
-                                    //xtype: 'container',
-                                    //cls: 'ns-container-default',
-                                    //columnWidth: 0.3,
-                                    //items: [
-                                        //getDateLink('+1 month', function() {
-                                            //var date = startDate.getValue();
-                                            //date.setMonth(date.getMonth() + 1);
-                                            //startDate.setValue(date);
-                                        //}),
-                                        //getDateLink('-1 month', function() {
-                                            //var date = startDate.getValue();
-                                            //date.setMonth(date.getMonth() - 1);
-                                            //startDate.setValue(date);
-                                        //}),
-                                        //getDateLink((new Date()).getFullYear() + '-07-01', function() {
-                                            //startDate.setValue((new Date()).getFullYear() + '-07-01');
-                                        //}, 'margin-top: 7px'),
-                                        //getDateLink(((new Date()).getFullYear() - 1) + '-07-01', function() {
-                                            //startDate.setValue(((new Date()).getFullYear() - 1) + '-07-01');
-                                        //}),
-                                        //getDateLink(((new Date()).getFullYear() - 2) + '-07-01', function() {
-                                            //startDate.setValue(((new Date()).getFullYear() - 2) + '-07-01');
-                                        //})
-                                    //]
-                                //},
-                                //{
-                                    //xtype: 'container',
-                                    //cls: 'ns-container-default',
-                                    //columnWidth: 0.3,
-                                    //items: [
-                                        //getDateLink('+1 day', function() {
-                                            //var date = startDate.getValue();
-                                            //date.setDate(date.getDate() + 1);
-                                            //startDate.setValue(date);
-                                        //}),
-                                        //getDateLink('-1 day', function() {
-                                            //var date = startDate.getValue();
-                                            //date.setDate(date.getDate() - 1);
-                                            //startDate.setValue(date);
-                                        //})
-                                    //]
-                                //}
-                            //]
-                        //}
-                    //]
-                //},
-                //{
-                    //xtype: 'container',
-                    //cls: 'ns-container-default',
-                    //items: [
-                        //endDate,
-                        //{
-                            //xtype: 'container',
-                            //cls: 'ns-container-default',
-                            //layout: 'column',
-                            //items: [
-                                //{
-                                    //xtype: 'container',
-                                    //cls: 'ns-container-default',
-                                    //columnWidth: 0.3,
-                                    //layout: 'anchor',
-                                    //items: [
-                                        //getDateLink('+1 year', function() {
-                                            //var a = endDate.getRawValue().split('-'),
-                                                //year = (parseInt(a[0]) + 1).toString();
-
-                                            //endDate.setValue((year.length === 1 ? '0' + year : year) + '-' + a[1] + '-' + a[2]);
-                                        //}),
-                                        //getDateLink('-1 year', function() {
-                                            //var a = endDate.getRawValue().split('-'),
-                                                //year = (parseInt(a[0]) - 1).toString();
-
-                                            //endDate.setValue((year.length === 1 ? '0' + year : year) + '-' + a[1] + '-' + a[2]);
-                                        //}),
-                                        //getDateLink((new Date()).getFullYear() + '-06-30', function() {
-                                            //endDate.setValue((new Date()).getFullYear() + '-06-30');
-                                        //}, 'margin-top: 7px'),
-                                        //getDateLink(((new Date()).getFullYear() - 1) + '-06-30', function() {
-                                            //endDate.setValue(((new Date()).getFullYear() - 1) + '-06-30');
-                                        //}),
-                                        //getDateLink(((new Date()).getFullYear() - 2) + '-06-30', function() {
-                                            //endDate.setValue(((new Date()).getFullYear() - 2) + '-06-30');
-                                        //})
-                                    //]
-                                //},
-                                //{
-                                    //xtype: 'container',
-                                    //cls: 'ns-container-default',
-                                    //columnWidth: 0.3,
-                                    //items: [
-                                        //getDateLink('+1 month', function() {
-                                            //var a = endDate.getRawValue().split('-'),
-                                                //month = (parseInt(a[1]) + 1).toString();
-
-                                            //endDate.setValue(a[0] + '-' + (month.length === 1 ? '0' + month : month) + '-' + a[2]);
-                                        //}),
-                                        //getDateLink('-1 month', function() {
-                                            //var a = endDate.getRawValue().split('-'),
-                                                //month = (parseInt(a[1]) - 1).toString();
-
-                                            //endDate.setValue(a[0] + '-' + (month.length === 1 ? '0' + month : month) + '-' + a[2]);
-                                        //}),
-                                        //getDateLink((new Date()).getFullYear() + '-12-31', function() {
-                                            //endDate.setValue((new Date()).getFullYear() + '-12-31');
-                                        //}, 'margin-top: 7px'),
-                                        //getDateLink(((new Date()).getFullYear() - 1) + '-12-31', function() {
-                                            //endDate.setValue(((new Date()).getFullYear() - 1) + '-12-31');
-                                        //}),
-                                        //getDateLink(((new Date()).getFullYear() - 2) + '-12-31', function() {
-                                            //endDate.setValue(((new Date()).getFullYear() - 2) + '-12-31');
-                                        //})
-                                    //]
-                                //},
-                                //{
-                                    //xtype: 'container',
-                                    //cls: 'ns-container-default',
-                                    //columnWidth: 0.3,
-                                    //items: [
-                                        //getDateLink('+1 day', function() {
-                                            //var date = endDate.getValue();
-                                            //date.setDate(date.getDate() + 1);
-                                            //endDate.setValue(date);
-                                        //}),
-                                        //getDateLink('-1 day', function() {
-                                            //var date = endDate.getValue();
-                                            //date.setDate(date.getDate() - 1);
-                                            //endDate.setValue(date);
-                                        //})
-                                    //]
-                                //}
-                            //]
-                        //}
-                    //]
-                //}
             ]
         });
 
             // relative periods
         onPeriodChange = function() {
-            if ((period.isRelativePeriods() || fixedPeriodSelectedStore.getRange().length) && !ns.app.aggregateLayoutWindow.hasDimension(dimConf.period.dimensionName)) {
-                ns.app.aggregateLayoutWindow.rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
+            if ((period.isRelativePeriods() || fixedPeriodSelectedStore.getRange().length)) {
+                ns.app.aggregateLayoutWindow.addDimension({id: dimConf.period.dimensionName, name: dimConf.period.name}, ns.app.aggregateLayoutWindow.colStore);
             }
             else {
                 ns.app.aggregateLayoutWindow.removeDimension(dimConf.period.dimensionName);
@@ -4418,16 +4285,6 @@ Ext.onReady( function() {
 
 				treePanel.selectGraphMap(view.parentGraphMap);
 			}());
-
-			// layer gui
-			if (layer) {
-
-				// layer item
-				layer.item.setValue(true, view.opacity);
-
-				// layer menu
-				layer.menu.enableItems();
-			}
 		};
 
 		getView = function(config) {
@@ -4436,10 +4293,25 @@ Ext.onReady( function() {
             view.program = program.getRecord();
             view.stage = stage.getRecord();
 
-            view.startDate = startDate.getSubmitValue();
-            view.endDate = endDate.getSubmitValue();
+            if (!view.stage) {
+                return;
+            }
 
-            view.periods = periods.getRecords();
+            if (periodMode.getValue() === 'dates') {
+                view.startDate = startDate.getSubmitValue();
+                view.endDate = endDate.getSubmitValue();
+
+                if (!(view.startDate && view.endDate)) {
+                    return;
+                }
+            }
+            else if (periodMode.getValue() === 'periods') {
+                view.periods = periods.getRecords();
+
+                if (!view.periods) {
+                    return;
+                }
+            }
 
             view.dataElements = [];
 
@@ -4450,10 +4322,6 @@ Ext.onReady( function() {
             }
 
             view.organisationUnits = treePanel.getDimension().items;
-
-            if (!(view.program && view.stage && ((view.startDate && view.endDate) || view.periods.length))) {
-				return;
-			}
 
 			return view;
 		};
@@ -5033,8 +4901,11 @@ Ext.onReady( function() {
 
 				// ou
 				if (Ext.isArray(view.organisationUnits)) {
+                    paramString += '&dimension=ou:';
+
 					for (var i = 0; i < view.organisationUnits.length; i++) {
-						paramString += '&dimension=ou:' + view.organisationUnits[i].id;
+						paramString += view.organisationUnits[i].id;
+                        paramString += i < (view.organisationUnits.length - 1) ? ';' : '';
 					}
 				}
 
@@ -5370,11 +5241,14 @@ Ext.onReady( function() {
 
 		update = function() {
 			var config = ns.core.web.report.getLayoutConfig();
-				//layout = ns.core.api.layout.Layout(config);
 
 			if (!config) {
 				return;
 			}
+
+            if (typeToolbar.getType() === 'aggregate') {
+                ns.app.aggregateLayoutWindow.saveState();
+            }
 
 			ns.core.web.report.getData(config, false);
 		};
