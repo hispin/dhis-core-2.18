@@ -78,9 +78,6 @@ function showProgramStageDetails( context )
 		setInnerHTML( 'descriptionField', json.programStage.description );
 		setInnerHTML( 'scheduledDaysFromStartField', json.programStage.minDaysFromStart ); 
 		
-		var relatedTrackedEntity = (json.programStage.relatedTrackedEntity=='true') ? i18n_yes : i18n_no;
-		setInnerHTML( 'relatedTrackedEntityField', relatedPatient );  
-		
 		var irregular = (json.programStage.irregular=='true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'irregularField', irregular );  
 		
