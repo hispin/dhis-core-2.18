@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -56,7 +57,7 @@ public interface TrackedEntityInstanceService
     Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
     
     TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, 
-        Set<String> ou, String ouMode, String program, String trackedEntity, Integer page, Integer pageSize );
+        Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, String trackedEntity, Integer page, Integer pageSize );
     
     /**
      * Adds an {@link TrackedEntityInstance}
