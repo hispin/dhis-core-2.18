@@ -29,6 +29,9 @@ package org.hisp.dhis.dxf2.events.enrollment;
  */
 
 import com.google.common.collect.Maps;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.dxf2.events.trackedentity.Attribute;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
@@ -44,6 +47,7 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +81,9 @@ public abstract class AbstractEnrollmentService
 
     @Autowired
     private TrackedEntityAttributeValueService trackedEntityAttributeValueService;
+
+    @Autowired
+    private IdentifiableObjectManager manager;
 
     @Autowired
     private I18nManager i18nManager;
@@ -461,13 +468,13 @@ public abstract class AbstractEnrollmentService
                 continue;
             }
 
-
             if ( trackedEntityAttribute.isUnique() )
             {
-                List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>( trackedEntityAttributeValueService.getTrackedEntityInstance(
-                    trackedEntityAttribute, attributeValueMap.get( trackedEntityAttribute.getUid() ) ) );
+                OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, instance.getOrgUnit() );
 
-                importConflicts.addAll( checkScope( enrollment, instance, trackedEntityAttribute, instances ) );
+                importConflicts.addAll(
+                    checkScope( trackedEntityInstance, trackedEntityAttribute, attributeValueMap.get( trackedEntityAttribute.getUid() ), organisationUnit, program )
+                );
             }
 
             attributeValueMap.remove( trackedEntityAttribute.getUid() );
@@ -482,78 +489,38 @@ public abstract class AbstractEnrollmentService
         return importConflicts;
     }
 
-    private List<ImportConflict> checkScope( Enrollment enrollment, TrackedEntityInstance trackedEntityInstance, TrackedEntityAttribute attribute, List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances )
+    private List<ImportConflict> checkScope( org.hisp.dhis.trackedentity.TrackedEntityInstance tei, TrackedEntityAttribute attribute, String value, OrganisationUnit organisationUnit, Program program )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        org.hisp.dhis.trackedentity.TrackedEntityInstance instance = teiService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
 
-        if ( instances.isEmpty() || (instances.size() == 1 && instances.contains( instance )) )
+        TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
+        params.setOrganisationUnitMode( "DESCENDANTS" );
+
+        QueryItem queryItem = new QueryItem( attribute, "eq", value, false );
+        params.getAttributes().add( queryItem );
+
+        if ( attribute.getOrgunitScope() && attribute.getProgramScope() )
+        {
+            params.setProgram( program );
+            params.getOrganisationUnits().add( organisationUnit );
+        }
+        else if ( attribute.getOrgunitScope() )
+        {
+            params.getOrganisationUnits().add( organisationUnit );
+        }
+        else if ( attribute.getProgramScope() )
+        {
+            params.setProgram( program );
+        }
+
+        Grid instances = teiService.getTrackedEntityInstances( params );
+
+        if ( instances.getHeight() == 0 || (instances.getHeight() == 1 && instances.getRow( 0 ).contains( tei.getUid() )) )
         {
             return importConflicts;
         }
 
-        if ( attribute.getOrgunitScope() && attribute.getProgramScope() )
-        {
-            for ( org.hisp.dhis.trackedentity.TrackedEntityInstance tei : instances )
-            {
-                boolean orgUnitMatch = false;
-                boolean programMatch = false;
-
-                if ( trackedEntityInstance.getOrgUnit().equals( tei.getOrganisationUnit().getUid() ) )
-                {
-                    orgUnitMatch = true;
-                }
-
-                for ( ProgramInstance programInstance : tei.getProgramInstances() )
-                {
-                    if ( enrollment.getProgram().equals( programInstance.getProgram().getUid() ) )
-                    {
-                        programMatch = true;
-                        break;
-                    }
-                }
-
-                if ( orgUnitMatch && programMatch )
-                {
-                    importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
-                        attribute.getUid() + ", with scope orgUnit+program." ) );
-                    break;
-                }
-            }
-
-        }
-        else if ( attribute.getOrgunitScope() )
-        {
-            for ( org.hisp.dhis.trackedentity.TrackedEntityInstance tei : instances )
-            {
-                if ( trackedEntityInstance.getOrgUnit().equals( tei.getOrganisationUnit().getUid() ) )
-                {
-                    importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
-                        attribute.getUid() + ", with scope orgUnit." ) );
-                    break;
-                }
-            }
-        }
-        else if ( attribute.getProgramScope() )
-        {
-            for ( org.hisp.dhis.trackedentity.TrackedEntityInstance tei : instances )
-            {
-                for ( ProgramInstance programInstance : tei.getProgramInstances() )
-                {
-                    if ( enrollment.getProgram().equals( programInstance.getProgram().getUid() ) )
-                    {
-                        importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
-                            attribute.getUid() + ", with scope program." ) );
-                        break;
-                    }
-                }
-            }
-        }
-        else
-        {
-            importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
-                attribute.getUid() ) );
-        }
+        importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value '" + value + "' for attribute " + attribute.getUid() ) );
 
         return importConflicts;
     }

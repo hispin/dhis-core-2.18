@@ -28,7 +28,9 @@ package org.hisp.dhis.dxf2.events.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -38,6 +40,7 @@ import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
@@ -59,7 +62,7 @@ public abstract class AbstractTrackedEntityInstanceService
     // -------------------------------------------------------------------------
 
     @Autowired
-    private org.hisp.dhis.trackedentity.TrackedEntityInstanceService trackedEntityInstanceService;
+    private org.hisp.dhis.trackedentity.TrackedEntityInstanceService teiService;
 
     @Autowired
     private TrackedEntityAttributeValueService attributeValueService;
@@ -86,7 +89,7 @@ public abstract class AbstractTrackedEntityInstanceService
     @Override
     public TrackedEntityInstance getTrackedEntityInstance( String uid )
     {
-        return getTrackedEntityInstance( trackedEntityInstanceService.getTrackedEntityInstance( uid ) );
+        return getTrackedEntityInstance( teiService.getTrackedEntityInstance( uid ) );
     }
 
     @Override
@@ -174,10 +177,10 @@ public abstract class AbstractTrackedEntityInstanceService
         }
 
         org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( trackedEntityInstance );
-        trackedEntityInstanceService.addTrackedEntityInstance( entityInstance );
+        teiService.addTrackedEntityInstance( entityInstance );
 
         updateAttributeValues( trackedEntityInstance, entityInstance );
-        trackedEntityInstanceService.updateTrackedEntityInstance( entityInstance );
+        teiService.updateTrackedEntityInstance( entityInstance );
 
         importSummary.setReference( entityInstance.getUid() );
         importSummary.getImportCount().incrementImported();
@@ -227,11 +230,11 @@ public abstract class AbstractTrackedEntityInstanceService
 
         removeRelationships( entityInstance );
         removeAttributeValues( entityInstance );
-        trackedEntityInstanceService.updateTrackedEntityInstance( entityInstance );
+        teiService.updateTrackedEntityInstance( entityInstance );
 
         updateRelationships( trackedEntityInstance, entityInstance );
         updateAttributeValues( trackedEntityInstance, entityInstance );
-        trackedEntityInstanceService.updateTrackedEntityInstance( entityInstance );
+        teiService.updateTrackedEntityInstance( entityInstance );
 
         importSummary.setStatus( ImportStatus.SUCCESS );
         importSummary.setReference( entityInstance.getUid() );
@@ -247,11 +250,11 @@ public abstract class AbstractTrackedEntityInstanceService
     @Override
     public void deleteTrackedEntityInstance( TrackedEntityInstance trackedEntityInstance )
     {
-        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = trackedEntityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
+        org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = teiService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
 
         if ( entityInstance != null )
         {
-            trackedEntityInstanceService.deleteTrackedEntityInstance( entityInstance );
+            teiService.deleteTrackedEntityInstance( entityInstance );
         }
         else
         {
@@ -302,43 +305,41 @@ public abstract class AbstractTrackedEntityInstanceService
 
             if ( entityAttribute.isUnique() )
             {
-                List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances = new ArrayList<org.hisp.dhis.trackedentity.TrackedEntityInstance>( trackedEntityAttributeValueService.getTrackedEntityInstance(
-                    entityAttribute, attribute.getValue() ) );
+                OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, trackedEntityInstance.getOrgUnit() );
+                org.hisp.dhis.trackedentity.TrackedEntityInstance tei = teiService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
 
-                importConflicts.addAll( checkScope( trackedEntityInstance, entityAttribute, instances ) );
+                importConflicts.addAll(
+                    checkScope( tei, entityAttribute, attribute.getValue(), organisationUnit )
+                );
             }
         }
 
         return importConflicts;
     }
 
-    private List<ImportConflict> checkScope( TrackedEntityInstance trackedEntityInstance, TrackedEntityAttribute attribute, List<org.hisp.dhis.trackedentity.TrackedEntityInstance> instances )
+    private List<ImportConflict> checkScope( org.hisp.dhis.trackedentity.TrackedEntityInstance tei, TrackedEntityAttribute attribute, String value, OrganisationUnit organisationUnit )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        org.hisp.dhis.trackedentity.TrackedEntityInstance instance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
 
-        if ( instances.isEmpty() || (instances.size() == 1 && instances.contains( instance )) )
+        TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
+        params.setOrganisationUnitMode( "DESCENDANTS" );
+
+        QueryItem queryItem = new QueryItem( attribute, "eq", value, false );
+        params.getAttributes().add( queryItem );
+
+        if ( attribute.getOrgunitScope() )
+        {
+            params.getOrganisationUnits().add( organisationUnit );
+        }
+
+        Grid instances = teiService.getTrackedEntityInstances( params );
+
+        if ( instances.getHeight() == 0 || (instances.getHeight() == 1 && instances.getRow( 0 ).contains( tei.getUid() )) )
         {
             return importConflicts;
         }
 
-        if ( attribute.getOrgunitScope() )
-        {
-            for ( org.hisp.dhis.trackedentity.TrackedEntityInstance tei : instances )
-            {
-                if ( trackedEntityInstance.getOrgUnit().equals( tei.getOrganisationUnit().getUid() ) )
-                {
-                    importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
-                        attribute.getUid() + ", with scope orgUnit." ) );
-                    break;
-                }
-            }
-        }
-        else
-        {
-            importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value for attribute " +
-                attribute.getUid() ) );
-        }
+        importConflicts.add( new ImportConflict( "Attribute.value", "Non-unique attribute value '" + value + "' for attribute " + attribute.getUid() ) );
 
         return importConflicts;
     }
@@ -422,6 +423,6 @@ public abstract class AbstractTrackedEntityInstanceService
             attributeValueService.deleteTrackedEntityAttributeValue( trackedEntityAttributeValue );
         }
 
-        trackedEntityInstanceService.updateTrackedEntityInstance( entityInstance );
+        teiService.updateTrackedEntityInstance( entityInstance );
     }
 }
