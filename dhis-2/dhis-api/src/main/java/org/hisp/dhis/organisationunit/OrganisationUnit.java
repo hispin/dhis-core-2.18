@@ -698,15 +698,20 @@ public class OrganisationUnit
         return map;
     }
 
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
+    public boolean hasLevel()
+    {
+        return level > 0;
+    }
+    
     @Override
     public boolean haveUniqueNames()
     {
         return false;
     }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     @JsonProperty
     @JsonView( UuidView.class )
