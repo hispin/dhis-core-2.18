@@ -32,7 +32,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -151,19 +150,6 @@ public class CompleteDataSetRegistrationServiceTest
         
         assertEquals( registrationA, completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodA, sourceA ) );
         assertEquals( registrationB, completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodB, sourceA ) );
-        
-        registrationC = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date(), "" );
-        
-        try
-        {
-            completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationC );
-            
-            fail();
-        }
-        catch ( Exception ex )
-        {
-            // Expected unique constraint exception
-        }
     }
 
     @Test

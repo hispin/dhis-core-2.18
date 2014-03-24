@@ -32,7 +32,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -149,23 +148,10 @@ public class DataValueServiceTest
         dataValueB.setValue( "2" );
         DataValue dataValueC = new DataValue( dataElementC, periodC, sourceA, optionCombo, optionCombo );
         dataValueC.setValue( "3" );
-        DataValue dataValueD = new DataValue( dataElementA, periodA, sourceA, optionCombo, optionCombo );
-        dataValueD.setValue( "4" );
 
         dataValueService.addDataValue( dataValueA );
         dataValueService.addDataValue( dataValueB );
         dataValueService.addDataValue( dataValueC );
-
-        try
-        {
-            // Should give unique constraint violation
-            dataValueService.addDataValue( dataValueD );
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // Expected
-        }
 
         dataValueA = dataValueService.getDataValue( dataElementA, periodA, sourceA, optionCombo );
         assertNotNull( dataValueA );
