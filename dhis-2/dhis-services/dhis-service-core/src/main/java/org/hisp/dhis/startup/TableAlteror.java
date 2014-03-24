@@ -568,6 +568,7 @@ public class TableAlteror
         executeSql( "UPDATE userroleauthorities SET authority='F_SQLVIEW_PUBLIC_ADD' WHERE authority='F_SQLVIEW_ADD'" );
         executeSql( "UPDATE userroleauthorities SET authority='F_OPTIONSET_PUBLIC_ADD' WHERE authority='F_OPTIONSET_ADD'" );
         executeSql( "UPDATE userroleauthorities SET authority='F_VALIDATIONRULEGROUP_PUBLIC_ADD' WHERE authority='F_VALIDATIONRULEGROUP_ADD'" );
+        executeSql( "UPDATE userroleauthorities SET authority='F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD' WHERE authority='F_TRACKED_ENTITY_ATTRIBUTE_ADD'" );
 
         // remove unused authorities
         executeSql( "DELETE FROM userroleauthorities WHERE authority='F_CONCEPT_UPDATE'" );
