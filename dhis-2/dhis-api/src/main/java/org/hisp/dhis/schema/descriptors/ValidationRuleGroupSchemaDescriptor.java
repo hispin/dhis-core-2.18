@@ -28,6 +28,7 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.hisp.dhis.validation.ValidationRuleGroup;
@@ -42,6 +43,12 @@ public class ValidationRuleGroupSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( ValidationRuleGroup.class, "validationRuleGroup", "validationRuleGroups", true, true, true );
+        Schema schema = new Schema( ValidationRuleGroup.class, "validationRuleGroup", "validationRuleGroups", true, true, true );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_VALIDATIONRULEGROUP_PUBLIC_ADD" ) );
+        schema.setPrivateAuthorities( Lists.newArrayList( "F_VALIDATIONRULEGROUP_PRIVATE_ADD" ) );
+
+        return schema;
     }
 }

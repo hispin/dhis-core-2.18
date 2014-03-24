@@ -28,6 +28,7 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -42,6 +43,12 @@ public class UserRoleSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( UserAuthorityGroup.class, "userRole", "userRoles", true, true, false );
+        Schema schema = new Schema( UserAuthorityGroup.class, "userRole", "userRoles", true, true, false );
+
+        schema.setShareable( true );
+        schema.setPublicAuthorities( Lists.newArrayList( "F_USERROLE_PUBLIC_ADD" ) );
+        schema.setPrivateAuthorities( Lists.newArrayList( "F_USERROLE_PRIVATE_ADD" ) );
+
+        return schema;
     }
 }
