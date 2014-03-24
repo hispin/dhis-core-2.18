@@ -35,5 +35,16 @@
       <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet" foreign-key="fk_userroledataset_datasetid" />
     </set>
 
+    <!-- Access properties -->
+    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_userrole_userid" />
+
+    <property name="publicAccess" length="8" />
+
+    <set name="userGroupAccesses" table="userroleusergroupaccesses">
+      <cache usage="read-write" />
+      <key column="userroleid" />
+      <many-to-many class="org.hisp.dhis.user.UserGroupAccess" column="usergroupaccessid" unique="true" />
+    </set>
+
   </class>
 </hibernate-mapping>
