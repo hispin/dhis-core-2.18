@@ -81,8 +81,6 @@ public interface TrackedEntityInstanceStore
     Collection<TrackedEntityInstance> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program,
         Integer min, Integer max );
 
-    List<TrackedEntityInstance> query( TrackedEntityQueryParams params );
-
     /**
      * Search instances who has the same representative
      * 
