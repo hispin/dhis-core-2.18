@@ -300,7 +300,7 @@
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/addSqlViewForm.vm</param>
       <param name="javascripts">javascript/sqlView.js, javascript/addSqlViewForm.js</param>
-      <param name="requiredAuthorities">F_SQLVIEW_ADD</param>
+      <param name="anyAuthorities">F_SQLVIEW_PUBLIC_ADD, F_SQLVIEW_PRIVATE_ADD</param>
     </action>
 
     <action name="validateAddUpdateSqlView" class="org.hisp.dhis.dataadmin.action.sqlview.ValidateAddUpdateSqlViewAction">
@@ -314,7 +314,7 @@
         showSqlViewListForm.action
       </result>
       <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_SQLVIEW_ADD</param>
+      <param name="anyAuthorities">F_SQLVIEW_PUBLIC_ADD, F_SQLVIEW_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateSqlViewForm" class="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction">
@@ -322,13 +322,13 @@
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/updateSqlViewForm.vm</param>
       <param name="javascripts">javascript/sqlView.js, javascript/updateSqlViewForm.js</param>
-      <param name="requiredAuthorities">F_SQLVIEW_ADD</param>
+      <param name="anyAuthorities">F_SQLVIEW_PUBLIC_ADD, F_SQLVIEW_PRIVATE_ADD</param>
     </action>
 
     <action name="updateSqlViewInstance" class="org.hisp.dhis.dataadmin.action.sqlview.UpdateSqlViewAction">
       <result name="success" type="redirect">showSqlViewListForm.action</result>
       <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_SQLVIEW_ADD</param>
+      <param name="anyAuthorities">F_SQLVIEW_PUBLIC_ADD, F_SQLVIEW_PRIVATE_ADD</param>
     </action>
 
     <action name="removeSqlViewObject" class="org.hisp.dhis.dataadmin.action.sqlview.RemoveSqlViewAction">
@@ -612,24 +612,24 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/addOptionSetForm.vm</param>
       <param name="javascripts">javascript/optionSet.js</param>
-      <param name="requiredAuthorities">F_OPTIONSET_ADD</param>
+      <param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
     </action>
 
     <action name="addOptionSet" class="org.hisp.dhis.dataadmin.action.option.AddOptionSetAction">
       <result name="success" type="redirect">optionSet.action</result>
-      <param name="requiredAuthorities">F_OPTIONSET_ADD</param>
+      <param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateOptionSetForm" class="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/updateOptionSetForm.vm</param>
       <param name="javascripts">javascript/optionSet.js</param>
-      <param name="requiredAuthorities">F_OPTIONSET_ADD</param>
+      <param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
     </action>
 
     <action name="updateOptionSet" class="org.hisp.dhis.dataadmin.action.option.UpdateOptionSetAction">
       <result name="success" type="redirect">optionSet.action</result>
-      <param name="requiredAuthorities">F_OPTIONSET_ADD</param>
+      <param name="anyAuthorities">F_OPTIONSET_PUBLIC_ADD, F_OPTIONSET_PRIVATE_ADD</param>
     </action>
 
     <action name="removeOptionSet" class="org.hisp.dhis.dataadmin.action.option.RemoveOptionSetAction">
