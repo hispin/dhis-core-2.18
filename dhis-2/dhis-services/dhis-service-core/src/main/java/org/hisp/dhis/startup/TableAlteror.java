@@ -553,6 +553,7 @@ public class TableAlteror
         executeSql( "UPDATE userroleauthorities SET authority='F_DATAELEMENTGROUPSET_PUBLIC_ADD' WHERE authority='F_DATAELEMENTGROUPSET_ADD'" );
 
         executeSql( "UPDATE userroleauthorities SET authority='F_ORGUNITGROUP_PUBLIC_ADD' WHERE authority='F_ORGUNITGROUP_ADD'" );
+        executeSql( "UPDATE userroleauthorities SET authority='F_ORGUNITGROUPSET_PUBLIC_ADD' WHERE authority='F_ORGUNITGROUPSET_ADD'" );
 
         executeSql( "UPDATE userroleauthorities SET authority='F_INDICATOR_PUBLIC_ADD' WHERE authority='F_INDICATOR_ADD'" );
         executeSql( "UPDATE userroleauthorities SET authority='F_INDICATORGROUP_PUBLIC_ADD' WHERE authority='F_INDICATORGROUP_ADD'" );

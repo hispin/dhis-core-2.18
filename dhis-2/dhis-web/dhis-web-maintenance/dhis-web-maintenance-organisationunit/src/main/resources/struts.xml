@@ -143,7 +143,7 @@
 
     <action name="addOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.AddGroupSetAction">
       <result name="success" type="redirect">organisationUnitGroupSet.action</result>
-      <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
+      <param name="anyAuthorities">F_ORGUNITGROUPSET_PUBLIC_ADD, F_ORGUNITGROUPSET_PRIVATE_ADD</param>
     </action>
 
     <action name="validateOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.ValidateGroupSetAction">
@@ -156,14 +156,14 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupSetForm.vm</param>
       <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
-      <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
+      <param name="anyAuthorities">F_ORGUNITGROUPSET_PUBLIC_ADD, F_ORGUNITGROUPSET_PRIVATE_ADD</param>
     </action>
 
     <action name="showUpdateOrganisationUnitGroupSetForm" class="org.hisp.dhis.oum.action.organisationunitgroupset.ShowUpdateGroupSetFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupSetForm.vm</param>
       <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
-      <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
+      <param name="anyAuthorities">F_ORGUNITGROUPSET_PUBLIC_ADD, F_ORGUNITGROUPSET_PRIVATE_ADD</param>
     </action>
 
     <action name="removeOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.RemoveGroupSetAction">
@@ -175,7 +175,7 @@
 
     <action name="updateOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.UpdateGroupSetAction">
       <result name="success" type="redirect">organisationUnitGroupSet.action?currentPage=${keyCurrentPage}</result>
-      <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
+      <param name="anyAuthorities">F_ORGUNITGROUPSET_PUBLIC_ADD, F_ORGUNITGROUPSET_PRIVATE_ADD</param>
     </action>
 
     <!-- Hierarchy -->
