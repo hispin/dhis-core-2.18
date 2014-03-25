@@ -1034,7 +1034,7 @@ Ext.onReady( function() {
 							this.currentValue = this.getValue();
 
 							var value = this.getValue(),
-								url = value ? ns.core.init.contextPath + '/api/reportTables/filtered.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+								url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 								store = ns.app.stores.reportTable;
 
 							store.page = 1;
@@ -1050,7 +1050,7 @@ Ext.onReady( function() {
 			text: NS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables/filtered.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+					url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -1062,7 +1062,7 @@ Ext.onReady( function() {
 			text: NS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables/filtered.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+					url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page + 1;
@@ -2495,10 +2495,10 @@ Ext.onReady( function() {
                 }
 
 				if (Ext.isString(uid)) {
-					path = '/indicators/filtered.json?include=id,name&filter=indicatorGroups.id:eq:' + uid + (filter ? '&filter=name:like:' + filter : '');
+					path = '/indicators.json?include=id,name&filter=indicatorGroups.id:eq:' + uid + (filter ? '&filter=name:like:' + filter : '');
 				}
 				else if (uid === 0) {
-					path = '/indicators/filtered.json?include=id,name' + (filter ? '&filter=name:like:' + filter : '');
+					path = '/indicators.json?include=id,name' + (filter ? '&filter=name:like:' + filter : '');
 				}
 
 				if (!path) {
@@ -2519,7 +2519,7 @@ Ext.onReady( function() {
                     },
                     success: function(r) {
                         var response = Ext.decode(r.responseText),
-                            data = response.objects || [],
+                            data = response.indicators || [],
                             pager = response.pager;
 
                         store.loadStore(data, pager, append);
@@ -2555,10 +2555,10 @@ Ext.onReady( function() {
 			fields: ['id', 'name', 'index'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/indicatorGroups/filtered.json?include=id,name&paging=false',
+				url: ns.core.init.contextPath + '/api/indicatorGroups.json?include=id,name&paging=false',
 				reader: {
 					type: 'json',
-					root: 'objects'
+					root: 'indicatorGroups'
 				},
 				pageParam: false,
 				startParam: false,
@@ -2623,10 +2623,10 @@ Ext.onReady( function() {
                 }
 
 				if (Ext.isString(uid)) {
-					path = '/dataElements/filtered.json?include=id,name&filter=dataElementGroups.id:eq:' + uid + (filter ? '&filter=name:like:' + filter : '');
+					path = '/dataElements.json?include=id,name&filter=dataElementGroups.id:eq:' + uid + (filter ? '&filter=name:like:' + filter : '');
 				}
 				else if (uid === 0) {
-					path = '/dataElements/filtered.json?include=id,name' + (filter ? '&filter=name:like:' + filter : '');
+					path = '/dataElements.json?include=id,name' + (filter ? '&filter=name:like:' + filter : '');
 				}
 
 				if (!path) {
@@ -2647,7 +2647,7 @@ Ext.onReady( function() {
                     },
                     success: function(r) {
                         var response = Ext.decode(r.responseText),
-                            data = response.objects || [],
+                            data = response.dataElements || [],
                             pager = response.pager;
 
                         store.loadStore(data, pager, append);
@@ -2666,7 +2666,7 @@ Ext.onReady( function() {
 					path = '/dataElementGroups/' + uid + '/operands' + (filter ? '/query/' + filter : '') + '.json';
 				}
 				else if (uid === 0) {
-					path = '/generatedDataElementOperands/filtered.json?include=id,name' + (filter ? '&filter=name:like:' + filter : '');
+					path = '/generatedDataElementOperands.json?include=id,name' + (filter ? '&filter=name:like:' + filter : '');
 				}
 
 				if (!path) {
@@ -2725,10 +2725,10 @@ Ext.onReady( function() {
 			fields: ['id', 'name', 'index'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/dataElementGroups/filtered.json?include=id,name&paging=false',
+				url: ns.core.init.contextPath + '/api/dataElementGroups.json?include=id,name&paging=false',
 				reader: {
 					type: 'json',
-					root: 'objects'
+					root: 'dataElementGroups'
 				},
 				pageParam: false,
 				startParam: false,
@@ -2755,10 +2755,10 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/dataSets/filtered.json?include=id,name',
+				url: ns.core.init.contextPath + '/api/dataSets.json?include=id,name',
 				reader: {
 					type: 'json',
-					root: 'objects'
+					root: 'dataSets'
 				},
 				pageParam: false,
 				startParam: false,
@@ -2818,7 +2818,7 @@ Ext.onReady( function() {
 				type: 'ajax',
 				reader: {
 					type: 'json',
-					root: 'objects'
+					root: 'reportTables'
 				},
 				startParam: false,
 				limitParam: false
@@ -2826,7 +2826,7 @@ Ext.onReady( function() {
 			isLoaded: false,
 			pageSize: 10,
 			page: 1,
-			defaultUrl: ns.core.init.contextPath + '/api/reportTables/filtered.json?viewClass=sharing&include=id,name,access',
+			defaultUrl: ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&include=id,name,access',
 			loadStore: function(url) {
 				this.proxy.url = url || this.defaultUrl;
 
@@ -2867,10 +2867,10 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/organisationUnitGroups/filtered.json?include=id,name&paging=false',
+				url: ns.core.init.contextPath + '/api/organisationUnitGroups.json?include=id,name&paging=false',
 				reader: {
 					type: 'json',
-					root: 'objects'
+					root: 'organisationUnitGroups'
 				},
 				pageParam: false,
 				startParam: false,
@@ -5771,27 +5771,27 @@ Ext.onReady( function() {
 
 								// root nodes
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits/filtered.json?userDataViewFallback=true&include=id,name,children[id,name]',
+									url: init.contextPath + '/api/organisationUnits.json?userDataViewFallback=true&include=id,name,children[id,name]',
 									success: function(r) {
-										init.rootNodes = Ext.decode(r.responseText).objects || [];
+										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
 										fn();
 									}
 								});
 
 								// organisation unit levels
 								requests.push({
-									url: init.contextPath + '/api/organisationUnitLevels/filtered.json?include=id,name,level&paging=false',
+									url: init.contextPath + '/api/organisationUnitLevels.json?include=id,name,level&paging=false',
 									success: function(r) {
-										init.organisationUnitLevels = Ext.decode(r.responseText).objects || [];
+										init.organisationUnitLevels = Ext.decode(r.responseText).organisationUnitLevels || [];
 										fn();
 									}
 								});
 
 								// user orgunits and children
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits/filtered.json?userOnly=true&include=id,name,children[id,name]&paging=false',
+									url: init.contextPath + '/api/organisationUnits.json?userOnly=true&include=id,name,children[id,name]&paging=false',
 									success: function(r) {
-										var organisationUnits = Ext.decode(r.responseText).objects || [],
+										var organisationUnits = Ext.decode(r.responseText).organisationUnits || [],
 											ou = [],
 											ouc = [];
 
@@ -5818,9 +5818,9 @@ Ext.onReady( function() {
 
 								// legend sets
 								requests.push({
-									url: init.contextPath + '/api/mapLegendSets/filtered.json?include=id,name,mapLegends[id,name,startValue,endValue,color]&paging=false',
+									url: init.contextPath + '/api/mapLegendSets.json?include=id,name,mapLegends[id,name,startValue,endValue,color]&paging=false',
 									success: function(r) {
-										init.legendSets = Ext.decode(r.responseText).objects || [];
+										init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
 										fn();
 									}
 								});
