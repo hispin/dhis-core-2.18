@@ -1,3 +1,6 @@
+
+#sharingDialog()
+
 <script type="text/javascript">
 	jQuery(document).ready(function(){	
 		tableSorter( 'listTable' );	
@@ -16,10 +19,11 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
+    <li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
     <li><a data-target-fn="runSqlViewQuery"><i class="fa fa-caret-square-o-right"></i>&nbsp;&nbsp;$i18n.getString( "run" )</a></li>
     <li><a data-target-fn="showDataSqlViewForm"><i class="fa fa-table"></i>&nbsp;&nbsp;$i18n.getString( "show_sql_view" )</a></li>
-    <li><a data-target-fn="showUpdateSqlViewForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
-    <li><a data-target-fn="removeSqlViewObject"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
+    <li data-enabled="canUpdate"><a data-target-fn="showUpdateSqlViewForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
+    <li data-enabled="canDelete"><a data-target-fn="removeSqlViewObject"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
     <li><a data-target-fn="showSqlViewDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
   </ul>
 </div>
@@ -44,9 +48,12 @@
 				<tbody id="list">
 					#foreach( $sqlViewObject in $sqlViewObjectList )
 					<tr id="tr${sqlViewObject.id}">
-            <td data-id="$!sqlViewObject.id" data-uid="$!sqlViewObject.uid" data-type="SqlViewObject" data-name="$encoder.htmlEncode( $!sqlViewObject.displayName )">
-              $encoder.htmlEncode( $!sqlViewObject.displayName )
-            </td>
+                    <td data-id="$!sqlViewObject.id" data-uid="$!sqlViewObject.uid" data-type="SqlView" data-name="$encoder.htmlEncode( $!sqlViewObject.displayName )"
+                      data-can-manage="$security.canManage( $sqlViewObject )"
+                      data-can-update="$security.canUpdate( $sqlViewObject )"
+                      data-can-delete="$security.canDelete( $sqlViewObject )">
+                      $encoder.htmlEncode( $!sqlViewObject.displayName )
+                    </td>
 					</tr>
 					#end
 				</tbody>                

@@ -14,6 +14,8 @@
 
 <h3>$i18n.getString( "add_option_set" )</h3>
 
+#sharingCreateNotification( "optionSet" )
+
 <form id="addOptionSetForm" name="addOptionSetForm" action="addOptionSet.action" method="post" class="inputForm">
   <table>
       <colgroup>
