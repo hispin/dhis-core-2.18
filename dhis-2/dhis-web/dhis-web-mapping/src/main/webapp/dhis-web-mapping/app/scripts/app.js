@@ -596,7 +596,7 @@ Ext.onReady( function() {
 				isLoaded: false,
 				pageSize: 10,
 				page: 1,
-				defaultUrl: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps.json?viewClass=sharing&links=false',
+				defaultUrl: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps.json?viewClass=sharing&include=id,name,access',
 				loadStore: function(url) {
 					this.proxy.url = url || this.defaultUrl;
 
@@ -2651,7 +2651,7 @@ Ext.onReady( function() {
 							this.currentValue = this.getValue();
 
 							var value = this.getValue(),
-								url = value ? gis.init.contextPath + gis.conf.finals.url.path_api + 'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
+								url = value ? gis.init.contextPath + '/api/maps.json?viewClass=sharing&include=id,name,access&filter=name:like:' + value : null,
 								store = gis.store.maps;
 
 							store.page = 1;
@@ -2667,7 +2667,7 @@ Ext.onReady( function() {
 			text: GIS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.init.contextPath + gis.conf.finals.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
+					url = value ? gis.init.contextPath + '/api/maps.json?viewClass=sharing&include=id,name,access&filter=name:like:' + value : null,
 					store = gis.store.maps;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -2679,7 +2679,7 @@ Ext.onReady( function() {
 			text: GIS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.init.contextPath + gis.conf.finals.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
+					url = value ? gis.init.contextPath + '/api/maps.json?viewClass=sharing&include=id,name,access&filter=name:like:' + value : null,
 					store = gis.store.maps;
 
 				store.page = store.page + 1;
@@ -3043,10 +3043,10 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: gis.init.contextPath + gis.conf.finals.url.path_api + 'mapLegendSets/filtered.json?include=id,name&paging=false',
+				url: gis.init.contextPath + gis.conf.finals.url.path_api + 'mapLegendSets.json?include=id,name&paging=false',
 				reader: {
 					type: 'json',
-					root: 'objects'
+					root: 'mapLegendSets'
 				},
 				pageParam: false,
 				startParam: false,
@@ -8576,27 +8576,27 @@ Ext.onReady( function() {
 
 								// root nodes
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits/filtered.json?userDataViewFallback=true&include=id,name,children[id,name]',
+									url: init.contextPath + '/api/organisationUnits.json?userDataViewFallback=true&include=id,name,children[id,name]',
 									success: function(r) {
-										init.rootNodes = Ext.decode(r.responseText).objects || [];
+										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
 										fn();
 									}
 								});
 
 								// organisation unit levels
 								requests.push({
-									url: init.contextPath + '/api/organisationUnitLevels/filtered.json?include=id,name,level&paging=false',
+									url: init.contextPath + '/api/organisationUnitLevels.json?include=id,name,level&paging=false',
 									success: function(r) {
-										init.organisationUnitLevels = Ext.decode(r.responseText).objects || [];
+										init.organisationUnitLevels = Ext.decode(r.responseText).organisationUnitLevels || [];
 										fn();
 									}
 								});
 
 								// user orgunits and children
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits/filtered.json?userOnly=true&include=id,name,children[id,name]&paging=false',
+									url: init.contextPath + '/api/organisationUnits.json?userOnly=true&include=id,name,children[id,name]&paging=false',
 									success: function(r) {
-										var organisationUnits = Ext.decode(r.responseText).objects || [],
+										var organisationUnits = Ext.decode(r.responseText).organisationUnits || [],
 											ou = [],
 											ouc = [];
 
@@ -8632,18 +8632,18 @@ Ext.onReady( function() {
 
 								// indicator groups
 								requests.push({
-									url: init.contextPath + '/api/indicatorGroups/filtered.json?include=id,name&paging=false',
+									url: init.contextPath + '/api/indicatorGroups.json?include=id,name&paging=false',
 									success: function(r) {
-										init.indicatorGroups = Ext.decode(r.responseText).objects || [];
+										init.indicatorGroups = Ext.decode(r.responseText).indicatorGroups || [];
 										fn();
 									}
 								});
 
 								// data element groups
 								requests.push({
-									url: init.contextPath + '/api/dataElementGroups/filtered.json?include=id,name&paging=false',
+									url: init.contextPath + '/api/dataElementGroups.json?include=id,name&paging=false',
 									success: function(r) {
-										init.dataElementGroups = Ext.decode(r.responseText).objects || [];
+										init.dataElementGroups = Ext.decode(r.responseText).dataElementGroups || [];
 										fn();
 									}
 								});
