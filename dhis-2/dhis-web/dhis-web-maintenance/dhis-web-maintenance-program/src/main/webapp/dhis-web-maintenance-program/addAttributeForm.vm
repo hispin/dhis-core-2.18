@@ -1,5 +1,9 @@
 <script type="text/javascript" src="javascript/addAttributeForm.js"></script>
+
 <h3>$i18n.getString( "create_new_tracked_entity_attribute" )</h3>
+
+#sharingCreateNotification( "trackedEntityAttribute" )
+
 <form id="addAttributeForm" action="addAttribute.action" method="post" class="inputForm">
 
 <table id="attrTable"> 
