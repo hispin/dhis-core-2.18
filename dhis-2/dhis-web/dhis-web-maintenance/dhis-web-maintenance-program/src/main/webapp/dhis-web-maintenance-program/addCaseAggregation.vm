@@ -80,7 +80,7 @@
 			<label for="programStage">$i18n.getString( "program_stage" )</label>
 		</td>
 		<td>
-			<select id="programStageId" name="programStageId" onChange="getTrackedEmtityDataElements();"></select>
+			<select id="programStageId" name="programStageId" onChange="getTrackedEntityDataElements();"></select>
 		</td>
 	</tr>
 	

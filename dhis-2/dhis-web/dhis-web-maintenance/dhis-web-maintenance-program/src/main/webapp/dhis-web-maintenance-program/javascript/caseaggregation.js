@@ -399,10 +399,10 @@ function filterDataElement( event, value, fieldName, backupFieldsName ) {
     var option = jQuery(this);
     if( valueType == '' || valueType == option.attr('valueType') ) {
       if( value.length == 0 ) {
-        jQuery('#' + fieldName).append("<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('optionset') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>");
+        jQuery('#' + fieldName).append("<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('suggested') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>");
       }
       else if( option.text().toLowerCase().indexOf(value.toLowerCase()) != -1 ) {
-        jQuery('#' + fieldName).append("<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('optionset') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>");
+        jQuery('#' + fieldName).append("<option value='" + option.attr('value') + "' title='" + option.text() + "' suggested='" + option.attr('suggested') + "' valueType='" + option.attr('valueType') + "'>" + option.text() + "</option>");
       }
     }
   });
