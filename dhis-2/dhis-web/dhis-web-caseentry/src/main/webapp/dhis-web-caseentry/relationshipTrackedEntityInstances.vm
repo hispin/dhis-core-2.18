@@ -24,7 +24,7 @@
 		<tr>
 			<th>#</th>
 			#foreach( $attributeValue in $entityInstance.attributeValues)
-				#if($attributeValue.attribute.displayedInList=='true')
+				#if($attributeValue.attribute.displayInList=='true')
 					<th>$!attributeValue.attribute.displayName</th>
 				#end
 			#end 
@@ -41,7 +41,7 @@
 			<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">
 				<a>
 				#foreach( $attributeValue in $entityInstance.attributeValues)
-					#if($attributeValue.attribute.displayedInList=='true')
+					#if($attributeValue.attribute.displayInList=='true')
 						<td>$!attributeValue.value</td>
 					#end
 				#end 

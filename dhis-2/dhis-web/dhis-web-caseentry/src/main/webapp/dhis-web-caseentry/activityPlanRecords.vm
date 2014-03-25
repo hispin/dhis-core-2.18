@@ -19,7 +19,7 @@
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
 				#foreach( $programAttribute in $program.programAttributes )
-					#if($programAttribute.displayedInList=='true')
+					#if($programAttribute.displayInList=='true')
 						<th id="attributeName">$encoder.htmlEncode($programAttribute.attribute.displayName)</th>
 					#end
 				#end
@@ -57,7 +57,7 @@
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
 				#foreach( $programAttribute in $program.programAttributes )
-					#if($programAttribute.displayedInList=='true')
+					#if($programAttribute.displayInList=='true')
 						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">
 							#foreach( $attributeValue in $entityInstance.attributeValues)
 								#if($!attributeValue.attribute.id==$programAttribute.attribute.id)
