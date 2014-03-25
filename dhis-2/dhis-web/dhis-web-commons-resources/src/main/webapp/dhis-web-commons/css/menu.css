@@ -1,0 +1,264 @@
+.app-menu:after {
+    clear: both;
+    content: "";
+}
+
+.app-menu ul,
+.app-menu li {
+    list-style: none;
+}
+
+.app-manager-header,
+.app-menu {
+    margin: 0 auto;
+    position: relative;
+    width: 808px;
+}
+
+.app-menu li {
+    float: left;
+    position: relative;
+}
+
+#menuOrderBy {
+    float: right;
+}
+
+.app-menu .app-menu-item,
+.app-menu .app-menu-placeholder {
+    margin: 10px;
+    display: block;
+    border: 1px solid lightgray;
+    background: rgba(245, 245, 245, .9);
+    width: 225px;
+    height: 56px;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 1px 1px 7px lightgray;
+}
+
+.app-menu .app-menu-item img {
+    max-height: 36px;
+    max-width: 36px;
+    display: block;
+    left: 25px;
+    top: 29px;
+    position: absolute;
+}
+
+.app-menu .app-menu-item span {
+    font-size: 1.25em;
+    padding-left: 48px;
+    display: block;
+    padding-top: 15px;
+}
+
+.app-menu .app-menu-placeholder,
+.app-menu .app-menu-item:hover {
+    border: 1px dotted rgba(0, 0, 0, .2);
+}
+
+.app-menu-item-description {
+    display: none;
+}
+
+.app-menu-item-description .fa.fa-arrows {
+    font-size: 1.3em;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+/**
+ * When hovered display the description and hide the favorites icon
+ */
+.app-menu li:hover a .app-menu-item-description {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #276696;
+    display: block;
+    margin: 10px;
+    padding: 5px 10px;
+    font-size: 1em;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.app-menu-item .app-menu-item-description span {
+    color: #7fc9fd;
+    display: block;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0;
+    padding-bottom: 5px;
+    margin: 0;
+}
+
+.app-menu li:hover a .fa.fa-bookmark {
+    display: none;
+}
+
+.app-menu a.app-menu-item .fa.fa-bookmark {
+    font-size: 2em;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+}
+
+/**
+ * IE8 hack to display all items after the 9th item differently
+ * TODO: When support for IE8 is dropped this can be changed to a nth style selector
+ */
+.app-menu li + li + li + li + li + li + li + li + li + li a.app-menu-item .fa.fa-bookmark {
+    display: none;
+}
+
+/**
+ * App menu item
+ */
+.menuLink {
+    width: 105px;
+}
+
+.menuLink i.fa {
+    font-size: 2em;
+    padding-right: 10px;
+    position: relative;
+    top: 5px;
+}
+
+#menuLink1 {
+    left: 762px;
+}
+
+/**
+ * App menu dropdown box
+ */
+.app-menu-dropdown {
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    box-shadow: 0px 0px 3px #bbb;
+    color: #000;
+    opacity: 1;
+    overflow-y: inherit;
+    padding: 10px;
+    width: 360px;
+}
+
+.app-menu-dropdown ul {
+    margin: 0;
+}
+
+.app-menu-dropdown li {
+    float: left;
+}
+
+.app-menu-dropdown img {
+    padding-left: 36px;
+    padding-right: 36px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+
+.app-menu-dropdown span {
+    display: block;
+    height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    width: 100px;
+}
+
+.app-menu-dropdown .caret-up-background,
+.app-menu-dropdown .caret-up-border {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.app-menu-dropdown .caret-up-background {
+    border-bottom: 10px solid #fff;
+    top: -9px;
+}
+
+.app-menu-dropdown .caret-up-border {
+    border-bottom: 10px solid #bbb;
+    top: -10px;
+}
+
+.app-menu-dropdown a.app-menu-item {
+    color: #000;
+    display: block;
+    height: 110px;
+    padding: 0;
+    width: 120px;
+}
+
+.app-menu-dropdown a.app-menu-item:hover span {
+    color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    width:100px;
+}
+
+.apps-menu-more {
+    display: table;
+    height: 30px;
+    padding-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.apps-menu-more a {
+    color: #4A89BA;
+    border: 1px solid #4A89BA;
+    border-radius: 5px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.apps-menu-more a:hover {
+    color: #fff;
+    background-color: #4A89BA;
+}
+
+/**
+ * Overrides
+ * TODO: Merge these with the main stylesheet
+ */
+#menuDropDown1 {
+    top: 55px;
+    left: 603px;
+}
+
+#menuDropDown3 {
+    top: 55px;
+    left: 733px;
+}
+
+hr.app-separator {
+    border: none;
+    border-top: 1px solid #4A89BA;
+    height: 1px;
+    position: absolute;
+    top: 288px;
+    width: 100%;
+}
+
+#menuDropDown1 .caret-up-background,
+#menuDropDown1 .caret-up-border {
+    left: 182px;
+}
+
+#menuDropDown3 .caret-up-background,
+#menuDropDown3 .caret-up-border {
+    left: 182px;
+}

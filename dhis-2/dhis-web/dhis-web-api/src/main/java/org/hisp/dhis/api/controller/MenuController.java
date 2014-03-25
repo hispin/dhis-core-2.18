@@ -1,7 +1,7 @@
-package org.hisp.dhis.webportal.menu.action;
+package org.hisp.dhis.api.controller;
 
 /*
- * Copyright (c) 2004-2014, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,59 +28,44 @@ package org.hisp.dhis.webportal.menu.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
-import java.util.Comparator;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.io.InputStream;
 import java.util.List;
 
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.webportal.module.Module;
-import org.hisp.dhis.webportal.module.ModuleManager;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Action;
-
-/**
- * @author Lars Helge Overland
- */
-public class GetModulesAction
-    implements Action
+@Controller
+@RequestMapping( value = MenuController.RESOURCE_PATH )
+public class MenuController
 {
-    @Autowired
-    private ModuleManager manager;
+    public static final String RESOURCE_PATH = "/menu";
 
     @Autowired
     private CurrentUserService currentUserService;
-    
-    private List<Module> modules;
-    
-    public List<Module> getModules()
-    {
-        return modules;
-    }
 
-    @Override
-    public String execute()
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void saveMenuOrder( InputStream input )
         throws Exception
     {
-        modules = manager.getAccessibleMenuModulesAndApps();
+        List<String> apps = JacksonUtils.fromJson( input, List.class );
 
-        final List<String> userApps = currentUserService.getCurrentUser().getApps();
-        
-        if ( userApps != null )
-        {
-            Collections.sort( modules, new Comparator<Module>()
-            {
-                @Override
-                public int compare( Module m1, Module m2 )
-                {
-                    Integer i1 = userApps.indexOf( m1.getName() );
-                    Integer i2 = userApps.indexOf( m2.getName() );
-                    
-                    return i1 != -1 ? ( i2 != -1 ? i1.compareTo( i2 ) : -1 ) : 1;
-                }
-            } );
-        }
-        
-        return SUCCESS;
+        User user = currentUserService.getCurrentUser();
+
+        user.getApps().clear();
+        user.getApps().addAll( apps );
+
+        userService.updateUser( user );
     }
 }
