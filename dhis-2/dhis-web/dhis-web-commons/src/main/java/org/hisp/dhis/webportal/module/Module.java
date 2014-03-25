@@ -85,7 +85,10 @@ public class Module
         boolean hasIcon = app.getIcons() != null && app.getIcons().getIcon48() != null;
         
         String defaultAction = app.getLaunchUrl();
-        String icon = hasIcon ? app.getFolderName() + File.separator + app.getIcons().getIcon48() : null;
+
+        String icon = hasIcon ? icon = app.getBaseUrl() + File.separator + app.getFolderName() +
+            File.separator + app.getIcons().getIcon48() : null;
+
         String description = TextUtils.subString( app.getDescription(), 0, 80 );
         
         Module module = new Module( app.getName(), app.getName(), defaultAction );
@@ -97,7 +100,7 @@ public class Module
     
     public String getIconFallback()
     {
-        return icon != null ? icon : name + ".png";
+        return icon != null ? icon : ".." + File.separator + "icons" + File.separator + name + ".png";
     }
     
     // -------------------------------------------------------------------------
