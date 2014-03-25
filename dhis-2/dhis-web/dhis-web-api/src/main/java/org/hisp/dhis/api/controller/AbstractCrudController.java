@@ -99,7 +99,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getObjectListHtml(
+    public String getObjectList(
         @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request )
     {
         WebOptions options = new WebOptions( parameters );
