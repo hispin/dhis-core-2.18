@@ -28,11 +28,12 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
@@ -41,12 +42,10 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Nguyen Hong Duc
@@ -175,7 +174,7 @@ public class UserCredentials
         Set<String> all = new HashSet<String>( getAllAuthorities() );
         return all.removeAll( auths );
     }
-    
+
     /**
      * Tests whether the user has the given authority. Returns true in any case
      * if the user has the ALL authority.
@@ -186,12 +185,12 @@ public class UserCredentials
         {
             return false;
         }
-        
+
         final Set<String> auths = getAllAuthorities();
-        
+
         return auths.contains( UserAuthorityGroup.AUTHORITY_ALL ) || auths.contains( auth );
     }
-    
+
     /**
      * Indicates whether this user credentials is a super user, implying that the
      * ALL authority is present in at least one of the user authority groups of
@@ -234,9 +233,9 @@ public class UserCredentials
      * of this user credentials, or this user credentials must have the ALL
      * authority.
      *
-     * @param group the user authority group.
+     * @param group                          the user authority group.
      * @param canGrantOwnUserAuthorityGroups indicates whether this users can grant
-     *        its own authoritiy groups to others.
+     *                                       its own authoritiy groups to others.
      */
     public boolean canIssue( UserAuthorityGroup group, boolean canGrantOwnUserAuthorityGroups )
     {
@@ -256,7 +255,7 @@ public class UserCredentials
         {
             return false;
         }
-        
+
         return authorities.containsAll( group.getAuthorities() );
     }
 
@@ -288,9 +287,9 @@ public class UserCredentials
      * Indicates whether this user credentials can issue all of the user authority
      * groups in the given collection.
      *
-     * @param groups the collection of user authority groups.
+     * @param groups                         the collection of user authority groups.
      * @param canGrantOwnUserAuthorityGroups indicates whether this users can grant
-     *        its own authoritiy groups to others.
+     *                                       its own authoritiy groups to others.
      */
     public boolean canIssueAll( Collection<UserAuthorityGroup> groups, boolean canGrantOwnUserAuthorityGroups )
     {
@@ -453,8 +452,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getOpenId()
     {
         return openId;
