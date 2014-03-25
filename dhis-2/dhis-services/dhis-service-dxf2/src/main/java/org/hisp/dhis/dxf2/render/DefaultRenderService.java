@@ -53,6 +53,32 @@ public class DefaultRenderService implements RenderService
         configureObjectMapper();
     }
 
+    //--------------------------------------------------------------------------
+    // RenderService
+    //--------------------------------------------------------------------------
+
+    @Override
+    public <T> void toJson( OutputStream output, T value ) throws IOException
+    {
+        jsonMapper.writeValue( output, value );
+    }
+
+    @Override
+    public <T> void toJson( OutputStream output, T value, Class<?> klass ) throws IOException
+    {
+        jsonMapper.writerWithView( klass ).writeValue( output, value );
+    }
+
+    @Override
+    public <T> T fromJson( InputStream input, Class<T> klass ) throws IOException
+    {
+        return jsonMapper.readValue( input, klass );
+    }
+
+    //--------------------------------------------------------------------------
+    // Helpers
+    //--------------------------------------------------------------------------
+
     private void configureObjectMapper()
     {
         jsonMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
@@ -72,18 +98,5 @@ public class DefaultRenderService implements RenderService
         jsonMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
 
         jsonMapper.getJsonFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
-    }
-
-    @Override
-    public void toJson( OutputStream output, Object value ) throws IOException
-    {
-        jsonMapper.writeValue( output, value );
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public <T> T fromJson( InputStream input, Class<?> clazz ) throws IOException
-    {
-        return (T) jsonMapper.readValue( input, clazz );
     }
 }
