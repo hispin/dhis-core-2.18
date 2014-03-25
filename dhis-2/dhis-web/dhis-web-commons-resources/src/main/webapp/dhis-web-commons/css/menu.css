@@ -55,7 +55,8 @@
 
 .app-menu .app-menu-placeholder,
 .app-menu .app-menu-item:hover {
-    border: 1px dotted rgba(0, 0, 0, .2);
+    border: 1px dashed #9ec5df;
+    background-color: #e9f5fb;
 }
 
 .app-menu-item-description {
