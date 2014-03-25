@@ -39,6 +39,8 @@ import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dxf2.filter.FilterService;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.sharing.Access;
 import org.hisp.dhis.sharing.SharingService;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -85,6 +87,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     @Autowired
     protected SharingService sharingService;
 
+    @Autowired
+    protected SchemaService schemaService;
+
     //--------------------------------------------------------------------------
     // GET
     //--------------------------------------------------------------------------
@@ -98,6 +103,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     {
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
+
+        Schema schema = schemaService.getSchema( getEntityClass() );
 
         boolean hasPaging = options.hasPaging();
 
@@ -151,7 +158,15 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
                 output.put( "pager", metaData.getPager() );
             }
 
-            output.put( "objects", objects );
+            if ( schema != null )
+            {
+                output.put( schema.getPlural(), objects );
+            }
+            else
+            {
+                output.put( "objects", objects );
+            }
+
             JacksonUtils.toJson( response.getOutputStream(), output );
         }
         else
