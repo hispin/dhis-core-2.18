@@ -21,6 +21,8 @@
 
 <h3>$i18n.getString( "add_dataelementgroupset" )</h3>
 
+#sharingCreateNotification( "dataElementGroupSet" )
+
 <form id="addDataElementGroupSet" action="addDataElementGroupSet.action" method="post" class="inputForm">
 
 <table>
