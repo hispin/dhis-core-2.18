@@ -28,13 +28,6 @@ package org.hisp.dhis.api.controller.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
@@ -47,12 +40,11 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -71,7 +63,7 @@ public class GeneratedDataElementOperandController
     protected List<DataElementOperand> getEntityList( WebMetaData metaData, WebOptions options )
     {
         List<DataElement> dataElements = null;
-        
+
         if ( options.getOptions().containsKey( "dataElementGroup" ) )
         {
             DataElementGroup group = manager.get( DataElementGroup.class, options.getOptions().get( "dataElementGroup" ) );
@@ -87,65 +79,16 @@ public class GeneratedDataElementOperandController
         {
             dataElements = new ArrayList<DataElement>( manager.getAllSorted( DataElement.class ) );
         }
-        
+
         List<DataElementOperand> entityList = new ArrayList<DataElementOperand>( categoryService.getOperands( dataElements ) );
-        
+
         if ( options.hasPaging() )
         {
             Pager pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
             metaData.setPager( pager );
-            entityList = PagerUtils.pageCollection( entityList, pager );            
+            entityList = PagerUtils.pageCollection( entityList, pager );
         }
 
         return entityList;
-    }
-
-    @Override
-    @RequestMapping( value = "/query/{query}", method = RequestMethod.GET )
-    public String query( @PathVariable String query, @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
-    {
-        WebOptions options = new WebOptions( parameters );
-        WebMetaData metaData = new WebMetaData();
-
-        List<DataElementOperand> allOperands = new ArrayList<DataElementOperand>( categoryService.getOperands( manager.getAllSorted( DataElement.class ) ) );
-        List<DataElementOperand> dataElementOperands = new ArrayList<DataElementOperand>();
-        
-        //TODO this will not scale well
-
-        for ( DataElementOperand operand : allOperands )
-        {
-            if ( operand.getDisplayName().toLowerCase().contains( query.toLowerCase() ) )
-            {
-                dataElementOperands.add( operand );
-            }
-        }
-
-        if ( options.hasPaging() )
-        {
-            Pager pager = new Pager( options.getPage(), dataElementOperands.size(), options.getPageSize() );
-            metaData.setPager( pager );
-            dataElementOperands = PagerUtils.pageCollection( dataElementOperands, pager );
-        }
-
-        metaData.setDataElementOperands( dataElementOperands );
-
-        String viewClass = options.getViewClass( "basic" );
-
-        if ( viewClass.equals( "basic" ) || viewClass.equals( "sharingBasic" ) )
-        {
-            handleLinksAndAccess( options, metaData, dataElementOperands, false );
-        }
-        else
-        {
-            handleLinksAndAccess( options, metaData, dataElementOperands, true );
-        }
-
-        postProcessEntities( dataElementOperands );
-        postProcessEntities( dataElementOperands, options, parameters );
-
-        model.addAttribute( "model", metaData );
-        model.addAttribute( "viewClass", viewClass );
-
-        return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
 }

@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller;
 
 import com.google.common.collect.Maps;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
-import org.hisp.dhis.api.controller.exception.NotFoundForQueryException;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -173,35 +172,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
 
-    @RequestMapping( value = "/query/{query}", method = RequestMethod.GET )
-    public String query( @PathVariable String query, @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
-    {
-        WebOptions options = new WebOptions( parameters );
-        WebMetaData metaData = new WebMetaData();
-        List<T> entityList = queryForEntityList( metaData, options, query );
-
-        ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
-
-        String viewClass = options.getViewClass( "basic" );
-
-        if ( viewClass.equals( "basic" ) || viewClass.equals( "sharingBasic" ) )
-        {
-            handleLinksAndAccess( options, metaData, entityList, false );
-        }
-        else
-        {
-            handleLinksAndAccess( options, metaData, entityList, true );
-        }
-
-        postProcessEntities( entityList );
-        postProcessEntities( entityList, options, parameters );
-
-        model.addAttribute( "model", metaData );
-        model.addAttribute( "viewClass", viewClass );
-
-        return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
-    }
-
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
     public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
@@ -229,32 +199,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         model.addAttribute( "model", entity );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
-
-        return StringUtils.uncapitalize( getEntitySimpleName() );
-    }
-
-    @RequestMapping( value = "/search/{query}", method = RequestMethod.GET )
-    public String search( @PathVariable String query, @RequestParam Map<String, String> parameters,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
-    {
-        WebOptions options = new WebOptions( parameters );
-        T entity = searchForEntity( getEntityClass(), query );
-
-        if ( entity == null )
-        {
-            throw new NotFoundForQueryException( query );
-        }
-
-        if ( options.hasLinks() )
-        {
-            WebUtils.generateLinks( entity );
-        }
-
-        postProcessEntity( entity );
-        postProcessEntity( entity, options, parameters );
-
-        model.addAttribute( "model", entity );
-        model.addAttribute( "viewClass", "detailed" );
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
@@ -347,11 +291,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // Helpers
     //--------------------------------------------------------------------------
 
-    protected T searchForEntity( Class<T> clazz, String query )
-    {
-        return manager.search( clazz, query );
-    }
-
     protected List<T> getEntityList( WebMetaData metaData, WebOptions options )
     {
         List<T> entityList;
@@ -377,26 +316,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         return entityList;
-    }
-
-    protected List<T> queryForEntityList( WebMetaData metaData, WebOptions options, String query )
-    {
-        List<T> entityList = queryForList( getEntityClass(), query );
-
-        if ( options.hasPaging() )
-        {
-            Pager pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
-            metaData.setPager( pager );
-
-            entityList = PagerUtils.pageCollection( entityList, pager );
-        }
-
-        return entityList;
-    }
-
-    protected List<T> queryForList( Class<T> clazz, String query )
-    {
-        return new ArrayList<T>( manager.filter( getEntityClass(), query ) );
     }
 
     protected T getEntity( String uid )
