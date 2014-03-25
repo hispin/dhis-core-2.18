@@ -38,6 +38,7 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dxf2.filter.FilterService;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
+import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
@@ -89,6 +90,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @Autowired
     protected SchemaService schemaService;
+
+    @Autowired
+    protected RenderService renderService;
 
     //--------------------------------------------------------------------------
     // GET
@@ -167,7 +171,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
                 output.put( "objects", objects );
             }
 
-            JacksonUtils.toJson( response.getOutputStream(), output );
+            renderService.toJson( response.getOutputStream(), output );
         }
         else
         {
