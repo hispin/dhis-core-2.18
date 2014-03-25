@@ -1833,6 +1833,25 @@ Ext.onReady( function() {
                         return false;
                     };
 
+                    store.getNumberOfDecimals = function() {
+                        var records = store.getRange(),
+                            values = [];
+                        
+                        for (var i = 0; i < records.length; i++) {
+                            for (var j = 0, value; j < store.rangeFields.length; j++) {
+                                value = records[i].data[store.rangeFields[j]];
+                                
+                                if (Ext.isNumber(value) && (value % 1)) {
+                                    value = value.toString();
+
+                                    values.push(value.length - value.indexOf('.') - 1);
+                                }
+                            }
+                        }
+
+                        return Ext.Array.max(values);
+                    };
+
                     if (DV.isDebug) {
                         console.log("data", data);
                         console.log("rangeFields", store.rangeFields);
@@ -1849,8 +1868,18 @@ Ext.onReady( function() {
                     var typeConf = conf.finals.chart,
                         minimum = store.getMinimum(),
                         maximum,
-                        renderer,
+                        numberOfDecimals,
                         axis;
+
+                    getRenderer = function(numberOfDecimals) {
+                        var renderer = '0.';
+
+                        for (var i = 0; i < numberOfDecimals; i++) {
+                            renderer += '0';
+                        }
+
+                        return renderer;
+                    };
 
                     // set maximum if stacked + extra line
                     if ((xLayout.type === typeConf.stackedcolumn || xLayout.type === typeConf.stackedbar) &&
@@ -1861,7 +1890,8 @@ Ext.onReady( function() {
                     }
 
                     // renderer
-                    renderer = store.hasDecimals() && (store.getMaximum() < 20) ? '0.0' : '0,0';
+                    numberOfDecimals = store.getNumberOfDecimals();
+                    renderer = !!numberOfDecimals && (store.getMaximum() < 20) ? getRenderer(numberOfDecimals) : '0,0';
 
                     axis = {
                         type: 'Numeric',
