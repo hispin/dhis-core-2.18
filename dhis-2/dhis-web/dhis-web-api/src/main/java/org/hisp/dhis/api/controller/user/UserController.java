@@ -44,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,7 +54,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = UserController.RESOURCE_PATH )
+@RequestMapping(value = UserController.RESOURCE_PATH)
 public class UserController
     extends AbstractCrudController<User>
 {
@@ -64,14 +65,18 @@ public class UserController
 
     @Override
     @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
-    public String getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
+    public String getObjectList(
+        @RequestParam( required = false ) String include,
+        @RequestParam( required = false ) String exclude,
+        @RequestParam( value = "filter", required = false ) List<String> filters,
+        @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
-        return super.getObjectList( parameters, model, request );
+        return super.getObjectList( include, exclude, filters, parameters, model, response, request );
     }
 
     @Override
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, Model model,
+    @PreAuthorize("hasRole('ALL') or hasRole('F_USER_VIEW')")
+    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters, Model model,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         return super.getObject( uid, parameters, model, request, response );
