@@ -2,6 +2,8 @@
 
 <h3>$encoder.htmlEncode( $i18n.getString( "add_new_sql_view" ) )</h3>
 
+#sharingCreateNotification( "sqlView" )
+
 <form id="addSqlViewForm" action="addSqlView.action" method="post" class="inputForm">
 	<table>
 		<tr>
