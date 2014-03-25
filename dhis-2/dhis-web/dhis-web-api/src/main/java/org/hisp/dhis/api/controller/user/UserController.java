@@ -66,13 +66,9 @@ public class UserController
 
     @Override
     @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
-    public void getObjectList(
-        @RequestParam( required = false ) String include,
-        @RequestParam( required = false ) String exclude,
-        @RequestParam( value = "filter", required = false ) List<String> filters,
-        @RequestParam Map<String, String> parameters, ModelAndView modelAndView, HttpServletResponse response, HttpServletRequest request ) throws IOException
+    public String getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request )
     {
-        super.getObjectList( include, exclude, filters, parameters, modelAndView, response, request );
+        return super.getObjectList( parameters, model, response, request );
     }
 
     @Override
