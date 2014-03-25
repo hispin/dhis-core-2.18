@@ -2647,10 +2647,10 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/programs/filtered.json?include=id,name&paging=false',
+				url: ns.core.init.contextPath + '/api/programs.json?include=id,name&paging=false',
 				reader: {
 					type: 'json',
-					root: 'objects'
+					root: 'programs'
 				},
 				pageParam: false,
 				startParam: false,
@@ -2784,9 +2784,9 @@ Ext.onReady( function() {
             }
             else {
                 Ext.Ajax.request({
-                    url: ns.core.init.contextPath + '/api/programs/filtered.json?filter=id:eq:' + programId + '&include=programStages[id,name],attributes&paging=false',
+                    url: ns.core.init.contextPath + '/api/programs.json?filter=id:eq:' + programId + '&include=programStages[id,name],attributes&paging=false',
                     success: function(r) {
-                        var objects = Ext.decode(r.responseText).objects,
+                        var objects = Ext.decode(r.responseText).programs,
                             stages,
                             attributes,
                             stageId;
@@ -2873,9 +2873,9 @@ Ext.onReady( function() {
             }
             else {
                 Ext.Ajax.request({
-                    url: ns.core.init.contextPath + '/api/programStages/filtered.json?filter=id:eq:' + stageId + '&include=programStageDataElements[dataElement[id,name,type,optionSet[id,name]]]',
+                    url: ns.core.init.contextPath + '/api/programStages.json?filter=id:eq:' + stageId + '&include=programStageDataElements[dataElement[id,name,type,optionSet[id,name]]]',
                     success: function(r) {
-                        var objects = Ext.decode(r.responseText).objects,
+                        var objects = Ext.decode(r.responseText).programStages,
                             dataElements;
 
                         if (!objects.length) {
@@ -6021,27 +6021,27 @@ Ext.onReady( function() {
 
 								// root nodes
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits/filtered.json?userDataViewFallback=true&include=id,name,children[id,name]',
+									url: init.contextPath + '/api/organisationUnits.json?userDataViewFallback=true&include=id,name,children[id,name]',
 									success: function(r) {
-										init.rootNodes = Ext.decode(r.responseText).objects || [];
+										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
 										fn();
 									}
 								});
 
 								// organisation unit levels
 								requests.push({
-									url: init.contextPath + '/api/organisationUnitLevels/filtered.json?include=id,name,level&paging=false',
+									url: init.contextPath + '/api/organisationUnitLevels.json?include=id,name,level&paging=false',
 									success: function(r) {
-										init.organisationUnitLevels = Ext.decode(r.responseText).objects || [];
+										init.organisationUnitLevels = Ext.decode(r.responseText).organisationUnitLevels || [];
 										fn();
 									}
 								});
 
 								// user orgunits and children
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits/filtered.json?userOnly=true&include=id,name,children[id,name]&paging=false',
+									url: init.contextPath + '/api/organisationUnits.json?userOnly=true&include=id,name,children[id,name]&paging=false',
 									success: function(r) {
-										var organisationUnits = Ext.decode(r.responseText).objects || [],
+										var organisationUnits = Ext.decode(r.responseText).organisationUnits || [],
 											ou = [],
 											ouc = [];
 

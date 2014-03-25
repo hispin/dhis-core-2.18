@@ -2651,7 +2651,7 @@ Ext.onReady( function() {
 							this.currentValue = this.getValue();
 
 							var value = this.getValue(),
-								url = value ? gis.init.contextPath + '/api/maps.json?viewClass=sharing&include=id,name,access&filter=name:like:' + value : null,
+								url = value ? gis.init.contextPath + '/api/maps.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 								store = gis.store.maps;
 
 							store.page = 1;
@@ -2667,7 +2667,7 @@ Ext.onReady( function() {
 			text: GIS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.init.contextPath + '/api/maps.json?viewClass=sharing&include=id,name,access&filter=name:like:' + value : null,
+					url = value ? gis.init.contextPath + '/api/maps.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = gis.store.maps;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -2679,7 +2679,7 @@ Ext.onReady( function() {
 			text: GIS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.init.contextPath + '/api/maps.json?viewClass=sharing&include=id,name,access&filter=name:like:' + value : null,
+					url = value ? gis.init.contextPath + '/api/maps.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = gis.store.maps;
 
 				store.page = store.page + 1;
