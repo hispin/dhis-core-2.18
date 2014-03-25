@@ -61,7 +61,6 @@ import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -90,22 +89,23 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // GET
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/filtered", method = RequestMethod.GET )
-    public void getObjectListFiltered(
+    @RequestMapping( method = RequestMethod.GET )
+    public String getObjectList(
         @RequestParam( required = false ) String include,
         @RequestParam( required = false ) String exclude,
         @RequestParam( value = "filter", required = false ) List<String> filters,
-        @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
+        @RequestParam Map<String, String> parameters, HttpServletResponse response, Model model ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
-        options.getOptions().put( "links", "false" );
 
         boolean hasPaging = options.hasPaging();
 
         // get full list if we are using filters
         if ( filters != null && !filters.isEmpty() )
         {
+            options.getOptions().put( "links", "false" );
+
             if ( options.hasPaging() )
             {
                 hasPaging = true;
@@ -115,11 +115,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         List<T> entityList = getEntityList( metaData, options );
 
-        handleLinksAndAccess( options, metaData, entityList, true );
-
-        postProcessEntities( entityList );
-        postProcessEntities( entityList, options, parameters );
-
+        // enable object filter
         if ( filters != null && !filters.isEmpty() )
         {
             entityList = filterService.filterObjects( entityList, filters );
@@ -131,28 +127,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
                 entityList = PagerUtils.pageCollection( entityList, pager );
             }
         }
-
-        List<Object> objects = filterService.filterProperties( entityList, include, exclude );
-        Map<String, Object> output = Maps.newLinkedHashMap();
-
-        if ( hasPaging )
-        {
-            output.put( "pager", metaData.getPager() );
-        }
-
-        output.put( "objects", objects );
-
-        JacksonUtils.toJson( response.getOutputStream(), output );
-    }
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
-    {
-        WebOptions options = new WebOptions( parameters );
-        WebMetaData metaData = new WebMetaData();
-        List<T> entityList = getEntityList( metaData, options );
-
-        ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
 
         if ( options.getViewClass( "basic" ).equals( "basic" ) )
         {
@@ -166,8 +140,27 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
 
-        model.addAttribute( "model", metaData );
-        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+        // enable property filter
+        if ( include != null || exclude != null )
+        {
+            List<Object> objects = filterService.filterProperties( entityList, include, exclude );
+            Map<String, Object> output = Maps.newLinkedHashMap();
+
+            if ( hasPaging )
+            {
+                output.put( "pager", metaData.getPager() );
+            }
+
+            output.put( "objects", objects );
+            JacksonUtils.toJson( response.getOutputStream(), output );
+        }
+        else
+        {
+            ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
+
+            model.addAttribute( "model", metaData );
+            model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+        }
 
         return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
