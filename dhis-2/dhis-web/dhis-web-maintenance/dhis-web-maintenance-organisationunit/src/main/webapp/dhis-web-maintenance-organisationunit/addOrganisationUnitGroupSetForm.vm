@@ -34,6 +34,8 @@
 
 <h3>$i18n.getString( "create_new_org_unit_group_set" ) #openHelp( "ou_groupsets_edit" )</h3>
 
+#sharingCreateNotification( "organisationUnitGroupSet" )
+
 <form id="addOrganisationUnitGroupSetForm" action="addOrganisationUnitGroupSet.action" method="post" class="inputForm">
 
 <table>
