@@ -28,13 +28,13 @@
 .app-menu .app-menu-placeholder {
     margin: 10px;
     display: block;
-    border: 1px solid lightgray;
+    border: 1px solid #ccc;
     background: rgba(245, 245, 245, .9);
     width: 225px;
     height: 56px;
     border-radius: 5px;
     padding: 10px;
-    box-shadow: 1px 1px 7px lightgray;
+    box-shadow: #eee 0 1px 1px 0;
 }
 
 .app-menu .app-menu-item img {
@@ -247,7 +247,7 @@
 
 hr.app-separator {
     border: none;
-    border-top: 1px solid #4A89BA;
+    border-top: 1px solid #bbb;
     height: 1px;
     position: absolute;
     top: 288px;
