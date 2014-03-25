@@ -295,13 +295,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     {
         List<T> entityList;
 
-        Date lastUpdated = options.getLastUpdated();
-
-        if ( lastUpdated != null )
-        {
-            entityList = new ArrayList<T>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
-        }
-        else if ( options.hasPaging() )
+        if ( options.hasPaging() )
         {
             int count = manager.getCount( getEntityClass() );
 
