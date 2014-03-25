@@ -28,8 +28,6 @@ package org.hisp.dhis.dxf2.render;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.core.JsonParseException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,7 +37,9 @@ import java.io.OutputStream;
  */
 public interface RenderService
 {
-    void toJson( OutputStream output, Object value ) throws IOException;
+    <T> void toJson( OutputStream output, T value ) throws IOException;
 
-    <T> T fromJson( InputStream input, Class<?> clazz ) throws IOException;
+    <T> void toJson( OutputStream output, T value, Class<?> klass ) throws IOException;
+
+    <T> T fromJson( InputStream input, Class<T> klass ) throws IOException;
 }

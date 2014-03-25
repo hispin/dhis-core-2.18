@@ -29,7 +29,6 @@ package org.hisp.dhis.api.controller;
  */
 
 import com.google.common.collect.Maps;
-import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -48,6 +47,7 @@ import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -99,7 +99,36 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getObjectList(
+    public String getObjectListHtml(
+        @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request )
+    {
+        WebOptions options = new WebOptions( parameters );
+        WebMetaData metaData = new WebMetaData();
+        List<T> entityList = getEntityList( metaData, options );
+        String viewClass = options.getViewClass( "basic" );
+
+        postProcessEntities( entityList );
+        postProcessEntities( entityList, options, parameters );
+
+        ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
+
+        if ( viewClass.equals( "basic" ) )
+        {
+            handleLinksAndAccess( options, metaData, entityList, false );
+        }
+        else
+        {
+            handleLinksAndAccess( options, metaData, entityList, true );
+        }
+
+        model.addAttribute( "model", metaData );
+        model.addAttribute( "viewClass", viewClass );
+
+        return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
+    }
+
+    @RequestMapping( method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE } )
+    public void getObjectListJson(
         @RequestParam( required = false ) String include,
         @RequestParam( required = false ) String exclude,
         @RequestParam( value = "filter", required = false ) List<String> filters,
@@ -139,15 +168,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             }
         }
 
-        if ( options.getViewClass( "basic" ).equals( "basic" ) )
-        {
-            handleLinksAndAccess( options, metaData, entityList, false );
-        }
-        else
-        {
-            handleLinksAndAccess( options, metaData, entityList, true );
-        }
-
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
 
@@ -177,42 +197,19 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
 
-            model.addAttribute( "model", metaData );
-            model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+            String viewClass = options.getViewClass( "basic" );
+
+            if ( viewClass.equals( "basic" ) )
+            {
+                handleLinksAndAccess( options, metaData, entityList, false );
+            }
+            else
+            {
+                handleLinksAndAccess( options, metaData, entityList, true );
+            }
+
+            renderService.toJson( response.getOutputStream(), metaData, JacksonUtils.getViewClass( viewClass ) );
         }
-
-        return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
-    {
-        WebOptions options = new WebOptions( parameters );
-        T entity = getEntity( uid );
-
-        if ( entity == null )
-        {
-            throw new NotFoundException( uid );
-        }
-
-        if ( options.hasLinks() )
-        {
-            WebUtils.generateLinks( entity );
-        }
-
-        if ( sharingService.isSupported( getEntityClass() ) )
-        {
-            addAccessProperties( entity );
-        }
-
-        postProcessEntity( entity );
-        postProcessEntity( entity, options, parameters );
-
-        model.addAttribute( "model", entity );
-        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
-
-        return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
     //--------------------------------------------------------------------------
