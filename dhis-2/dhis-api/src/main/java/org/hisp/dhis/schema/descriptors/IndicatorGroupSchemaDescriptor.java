@@ -43,7 +43,7 @@ public class IndicatorGroupSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( IndicatorGroup.class, "indicatorGroup", "indicatorsGroups", true, true, true );
+        Schema schema = new Schema( IndicatorGroup.class, "indicatorGroup", "indicatorGroups", true, true, true );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_INDICATORGROUP_PUBLIC_ADD" ) );
