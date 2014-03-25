@@ -1697,7 +1697,7 @@ Ext.onReady( function() {
                         baseLineFields = [],
                         store;
 
-                    // Data
+                    // data
                     for (var i = 0, obj, category; i < rowIds.length; i++) {
                         obj = {};
                         category = rowIds[i];
@@ -1712,7 +1712,7 @@ Ext.onReady( function() {
                         data.push(obj);
                     }
 
-                    // Trend lines
+                    // trend lines
                     if (xLayout.showTrendLine) {
                         for (var i = 0, regression, key; i < columnIds.length; i++) {
                             regression = new SimpleRegression();
@@ -1731,7 +1731,7 @@ Ext.onReady( function() {
                         }
                     }
 
-                    // Target line
+                    // target line
                     if (Ext.isNumber(xLayout.targetLineValue) || Ext.isNumber(parseFloat(xLayout.targetLineValue))) {
                         for (var i = 0; i < data.length; i++) {
                             data[i][conf.finals.data.targetLine] = parseFloat(xLayout.targetLineValue);
@@ -1740,7 +1740,7 @@ Ext.onReady( function() {
                         targetLineFields.push(conf.finals.data.targetLine);
                     }
 
-                    // Base line
+                    // base line
                     if (Ext.isNumber(xLayout.baseLineValue) || Ext.isNumber(parseFloat(xLayout.baseLineValue))) {
                         for (var i = 0; i < data.length; i++) {
                             data[i][conf.finals.data.baseLine] = parseFloat(xLayout.baseLineValue);
@@ -1804,6 +1804,22 @@ Ext.onReady( function() {
                         return Ext.Array.max(sums);
                     };
 
+                    store.hasDecimals = function() {
+                        var records = store.getRange();
+                        
+                        for (var i = 0; i < records.length; i++) {
+                            for (var j = 0, value; j < store.rangeFields.length; j++) {
+                                value = records[i].data[store.rangeFields[j]];
+                                
+                                if (Ext.isNumber(value) && (value % 1)) {
+                                    return true;
+                                }
+                            }
+                        }
+
+                        return false;
+                    };
+
                     if (DV.isDebug) {
                         console.log("data", data);
                         console.log("rangeFields", store.rangeFields);
@@ -1820,9 +1836,10 @@ Ext.onReady( function() {
                     var typeConf = conf.finals.chart,
                         minimum = store.getMinimum(),
                         maximum,
+                        renderer,
                         axis;
 
-                    // Set maximum if stacked + extra line
+                    // set maximum if stacked + extra line
                     if ((xLayout.type === typeConf.stackedcolumn || xLayout.type === typeConf.stackedbar) &&
                         (xLayout.showTrendLine || xLayout.targetLineValue || xLayout.baseLineValue)) {
                         var a = [store.getMaximum(), store.getMaximumSum()];
@@ -1830,13 +1847,16 @@ Ext.onReady( function() {
                         maximum = Math.floor(maximum / 10) * 10;
                     }
 
+                    // renderer
+                    renderer = store.hasDecimals() && (store.getMaximum() < 20) ? '0.0' : '0,0';
+
                     axis = {
                         type: 'Numeric',
                         position: 'left',
                         fields: store.numericFields,
                         minimum: minimum < 0 ? minimum : 0,
                         label: {
-                            renderer: Ext.util.Format.numberRenderer('0,0')
+                            renderer: Ext.util.Format.numberRenderer(renderer)
                         },
                         grid: {
                             odd: {
