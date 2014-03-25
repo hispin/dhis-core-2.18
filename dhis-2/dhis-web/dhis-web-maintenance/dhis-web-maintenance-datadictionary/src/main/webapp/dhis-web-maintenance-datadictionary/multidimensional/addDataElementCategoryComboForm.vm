@@ -20,6 +20,8 @@
 
 <h3>$i18n.getString( "create_new_data_element_category_combo" )</h3>
 
+#sharingCreateNotification( "categoryCombo" )
+
 <form id="addDataElementCategoryComboForm" name="addDataElementCategoryComboForm" action="addDataElementCategoryCombo.action" method="post" class="inputForm">
   <table id="detailsList">
     <thead>
