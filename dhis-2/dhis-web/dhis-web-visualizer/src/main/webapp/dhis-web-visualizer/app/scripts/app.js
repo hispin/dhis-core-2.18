@@ -42,6 +42,7 @@ Ext.onReady( function() {
 			baseLineTitle,
 
 			showValues,
+            hideEmptyRows,
 			hideLegend,
 			hideTitle,
 			title,
@@ -112,6 +113,11 @@ Ext.onReady( function() {
 			boxLabel: NS.i18n.show_values,
 			style: 'margin-bottom:4px',
 			checked: true
+		});
+
+		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.hide_empty_category_items,
+			style: 'margin-bottom:4px'
 		});
 
 		hideLegend = Ext.create('Ext.form.field.Checkbox', {
@@ -204,6 +210,7 @@ Ext.onReady( function() {
 			style: 'margin-left:14px',
 			items: [
 				showValues,
+                hideEmptyRows,
 				hideLegend,
 				hideTitle,
 				title,
@@ -228,6 +235,7 @@ Ext.onReady( function() {
 					baseLineValue: baseLineValue.getValue(),
 					baseLineTitle: baseLineTitle.getValue(),
 					showValues: showValues.getValue(),
+                    hideEmptyRows: hideEmptyRows.getValue(),
 					hideLegend: hideLegend.getValue(),
 					hideTitle: hideTitle.getValue(),
 					title: title.getValue(),
@@ -238,6 +246,7 @@ Ext.onReady( function() {
 			setOptions: function(layout) {
 				showTrendLine.setValue(Ext.isBoolean(layout.showTrendLine) ? layout.showTrendLine : false);
 				showValues.setValue(Ext.isBoolean(layout.showValues) ? layout.showValues : false);
+				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
 				hideLegend.setValue(Ext.isBoolean(layout.hideLegend) ? layout.hideLegend : false);
 				hideTitle.setValue(Ext.isBoolean(layout.hideTitle) ? layout.hideTitle : false);
 
@@ -353,6 +362,7 @@ Ext.onReady( function() {
 					w.baseLineValue = baseLineValue;
 					w.baseLineTitle = baseLineTitle;
 					w.showValues = showValues;
+                    w.hideEmptyRows = hideEmptyRows;
 					w.hideLegend = hideLegend;
 					w.hideTitle = hideTitle;
 					w.title = title;

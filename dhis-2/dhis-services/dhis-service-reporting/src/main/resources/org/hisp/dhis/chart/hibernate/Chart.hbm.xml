@@ -158,6 +158,8 @@
 
     <property name="showData" />
 
+    <property name="hideEmptyRows" />
+
     <property name="rewindRelativePeriods" />
 
     <!-- Access properties -->
