@@ -33,6 +33,8 @@
 
 <h3>$i18n.getString( "create_new_user_role" )</h3>
 
+#sharingCreateNotification( "userRole" )
+
 <form id="addRoleForm" name="addRoleForm" action="addRole.action" method="post" class="inputForm">
 <table>
   	<col style="width: 120px"/>
