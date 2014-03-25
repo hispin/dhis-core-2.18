@@ -29,7 +29,7 @@
 			<th>#</th>
 			<th>$i18n.getString('date_scheduled')</th>
 			#foreach( $programAttribute in $program.programAttributes )
-				#if($programAttribute.displayedInList=='true')
+				#if($programAttribute.displayInList=='true')
 					 $programAttribute.attribute.displayName
 				#end
 			#end
@@ -57,7 +57,7 @@
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
 				#foreach( $programAttribute in $program.programAttributes )
-					#if($programAttribute.displayedInList=='true')
+					#if($programAttribute.displayInList=='true')
 						<td><a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">
 							#foreach( $attributeValue in $entityInstance.attributeValues)
 								#if($!attributeValue.attribute.id==$programAttribute.attribute.id)

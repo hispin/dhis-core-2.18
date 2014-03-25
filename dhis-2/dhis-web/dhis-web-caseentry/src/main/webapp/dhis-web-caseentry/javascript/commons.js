@@ -1256,7 +1256,15 @@ function unenrollmentForm( programInstanceId, status )
 				// disable remove event icons
 				$('[id=tab-3]').find('img').parent().removeAttr("href");
 			
-				showSuccessMessage( i18n_unenrol_success );
+				if( status==1){
+					showSuccessMessage( i18n_complete_success );
+				}
+				else if( status==2){
+					showSuccessMessage( i18n_program_cancelled_success );
+				}
+				else{
+					showSuccessMessage( i18n_program_active_success );
+				}
 			}
 		});
 	

@@ -28,7 +28,7 @@
           <col width="30"/>
 			#if($program)
 				#foreach( $programAttribute in $program.attributes )
-					#if($programAttribute.displayedInList=='true')
+					#if($programAttribute.displayInList=='true')
 						<col/>
 					#end
 				#end
@@ -48,7 +48,7 @@
 				<th>#</th>
 				#if($program)
 					#foreach( $attribute in $program.attributes )
-						#if($attribute.displayedInList=='true')
+						#if($attribute.displayInList=='true')
 							<th id="attributeName">$encoder.htmlEncode($attribute.attribute.displayName)</th>
 						#end
 					#end
@@ -76,7 +76,7 @@
 				</td>
 				#if($program)
 					#foreach( $programAttribute in $program.attributes )
-						#if($programAttribute.displayedInList=='true')
+						#if($programAttribute.displayInList=='true')
 							#set($value='')
 							<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">
 								#foreach( $attributeValue in $entityInstance.attributeValues)
