@@ -29,12 +29,11 @@
     margin: 10px;
     display: block;
     border: 1px solid #ccc;
-    background: rgba(245, 245, 245, .9);
+    background: #f6f7f8;
     width: 225px;
     height: 56px;
     border-radius: 5px;
     padding: 10px;
-    box-shadow: #eee 0 1px 1px 0;
 }
 
 .app-menu .app-menu-item img {
@@ -57,7 +56,6 @@
 .app-menu .app-menu-item:hover {
     border: 1px dashed #9ec5df;
     background-color: #e9f5fb;
-	box-shadow: 0;
 }
 
 .app-menu-item-description {
