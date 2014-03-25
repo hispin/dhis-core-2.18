@@ -158,8 +158,6 @@ a.menuLink:hover
   background-color: #b91010;
   display: none;
   z-index: 10;
-  filter: alpha(opacity=98);
-  opacity: 0.98;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   box-shadow: #ccc 0px 1px 1px 0px;
