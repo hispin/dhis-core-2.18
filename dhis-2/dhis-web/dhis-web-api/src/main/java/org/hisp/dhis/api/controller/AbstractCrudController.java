@@ -94,7 +94,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         @RequestParam( required = false ) String include,
         @RequestParam( required = false ) String exclude,
         @RequestParam( value = "filter", required = false ) List<String> filters,
-        @RequestParam Map<String, String> parameters, HttpServletResponse response, Model model ) throws IOException
+        @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
