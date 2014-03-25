@@ -412,6 +412,7 @@ public class TableAlteror
         executeSql( "update chart set regression = false where regression is null" );
         executeSql( "update chart set hidesubtitle = false where hidesubtitle is null" );
         executeSql( "update chart set userorganisationunit = false where userorganisationunit is null" );
+        executeSql( "update chart set hideemptyrows = false where hideemptyrows is null" );
         executeSql( "update indicator set annualized = false where annualized is null" );
         executeSql( "update indicatortype set indicatornumber = false where indicatornumber is null" );
         executeSql( "update dataset set mobile = false where mobile is null" );

@@ -214,5 +214,6 @@
 "financial_july",
 "financial_april",
 "all_indicators",
-"all_data_elements"
+"all_data_elements",
+"hide_empty_category_items"
 ]

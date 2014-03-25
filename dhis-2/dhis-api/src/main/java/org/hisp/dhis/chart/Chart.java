@@ -105,6 +105,8 @@ public class Chart
     private String baseLineLabel;
 
     private boolean showData;
+    
+    private boolean hideEmptyRows;
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -492,6 +494,19 @@ public class Chart
     @JsonProperty
     @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
     @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    public boolean isHideEmptyRows()
+    {
+        return hideEmptyRows;
+    }
+
+    public void setHideEmptyRows( boolean hideEmptyRows )
+    {
+        this.hideEmptyRows = hideEmptyRows;
+    }
+
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isRewindRelativePeriods()
     {
         return rewindRelativePeriods;
@@ -558,6 +573,7 @@ public class Chart
             baseLineValue = chart.getBaseLineValue() == null ? baseLineValue : chart.getBaseLineValue();
             baseLineLabel = chart.getBaseLineLabel() == null ? baseLineLabel : chart.getBaseLineLabel();
             showData = chart.isShowData();
+            hideEmptyRows = chart.isHideEmptyRows();
             rewindRelativePeriods = chart.isRewindRelativePeriods();
 
             filterDimensions.clear();
