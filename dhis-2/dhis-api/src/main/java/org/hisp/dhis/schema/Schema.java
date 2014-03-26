@@ -60,7 +60,7 @@ public class Schema
 
     private boolean shareable;
 
-    private Authorities authorities;
+    private List<Authority> authorities = Lists.newArrayList();
 
     private List<String> publicAuthorities = Lists.newArrayList();
 
@@ -142,13 +142,14 @@ public class Schema
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Authorities getAuthorities()
+    @JacksonXmlElementWrapper( localName = "authorities", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "authority", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Authority> getAuthorities()
     {
         return authorities;
     }
 
-    public void setAuthorities( Authorities authorities )
+    public void setAuthorities( List<Authority> authorities )
     {
         this.authorities = authorities;
     }
