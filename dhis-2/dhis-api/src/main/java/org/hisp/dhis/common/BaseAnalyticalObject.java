@@ -499,7 +499,7 @@ public abstract class BaseAnalyticalObject
         {
             // Data element group set
             
-            ListMap<String, BaseNameableObject> deGroupMap = new ListMap<String, BaseNameableObject>();
+            ListMap<String, NameableObject> deGroupMap = new ListMap<String, NameableObject>();
             
             for ( DataElementGroup group : dataElementGroups )
             {
@@ -516,7 +516,7 @@ public abstract class BaseAnalyticalObject
             
             // Organisation unit group set
             
-            ListMap<String, BaseNameableObject> ouGroupMap = new ListMap<String, BaseNameableObject>();
+            ListMap<String, NameableObject> ouGroupMap = new ListMap<String, NameableObject>();
             
             for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
@@ -533,7 +533,7 @@ public abstract class BaseAnalyticalObject
             
             // Category option group set
             
-            ListMap<String, BaseNameableObject> coGroupMap = new ListMap<String, BaseNameableObject>();
+            ListMap<String, NameableObject> coGroupMap = new ListMap<String, NameableObject>();
             
             for ( CategoryOptionGroup group : categoryOptionGroups )
             {
