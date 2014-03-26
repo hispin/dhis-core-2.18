@@ -287,15 +287,6 @@ public class SaveBeneficiaryAction
 
         patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
-        if ( this.patientFullName.trim().length() < 7 )
-        {
-            validationMap.put( "fullName", "is_invalid_name_length" );
-        }
-        else
-        {
-            patient.setName( patientFullName.trim() );
-        }
-
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get( StrutsStatics.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
 
@@ -312,16 +303,17 @@ public class SaveBeneficiaryAction
             patientAttributeSet.add( patientAttribute );
 
             String key = "AT" + patientAttribute.getId();
+
             String value = parameterMap.get( key ).trim();
 
             if ( value != null )
             {
-               /* if ( patientAttribute.isMandatory() && value.trim().equals( "" ) )
-                {
-                    this.validationMap.put( key, "is_mandatory" );
-                }
-                else */
-                    if ( value.trim().length() > 0
+                /*
+                 * if ( patientAttribute.isMandatory() && value.trim().equals(
+                 * "" ) ) { this.validationMap.put( key, "is_mandatory" ); }
+                 * else
+                 */
+                if ( value.trim().length() > 0
                     && patientAttribute.getValueType().equals( TrackedEntityAttribute.TYPE_INT )
                     && !MathUtils.isInteger( value ) )
                 {
