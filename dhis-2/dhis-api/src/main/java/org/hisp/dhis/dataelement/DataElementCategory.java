@@ -67,7 +67,7 @@ public class DataElementCategory
 
     public static final String DEFAULT_NAME = "default";
     
-    private String dimensionType;
+    private String dataDimensionType;
 
     @Scanned
     private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
@@ -182,14 +182,14 @@ public class DataElementCategory
     @JsonProperty
     @JsonView({ DetailedView.class, ExportView.class })
     @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
-    public String getDimensionType()
+    public String getDataDimensionType()
     {
-        return dimensionType;
+        return dataDimensionType;
     }
 
-    public void setDimensionType( String dimensionType )
+    public void setDataDimensionType( String dataDimensionType )
     {
-        this.dimensionType = dimensionType;
+        this.dataDimensionType = dataDimensionType;
     }
 
     @JsonProperty

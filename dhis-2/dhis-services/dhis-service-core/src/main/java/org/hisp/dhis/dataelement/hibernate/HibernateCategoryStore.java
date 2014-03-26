@@ -45,6 +45,6 @@ public class HibernateCategoryStore
     @SuppressWarnings("unchecked")
     public Collection<DataElementCategory> getCategoriesByDimensionType( String dimensionType )
     {
-        return getCriteria( Restrictions.eq( "dimensionType", dimensionType ) ).list();
+        return getCriteria( Restrictions.eq( "dataDimensionType", dimensionType ) ).list();
     }
 }
