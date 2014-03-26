@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!--<html manifest="event-capture.appcache" ng-app="eventCapture">-->
-<html ng-app="eventCapture">    
+<html manifest="event-capture.appcache" ng-app="eventCapture">
     <head>
         <title>Event Capture</title>
 
@@ -12,7 +11,7 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css">       
 
-        <script type="text/javascript" src="../dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>        
                 
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular-resource.js"></script>
@@ -45,7 +44,7 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
-        <!--<script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>-->
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/ouwt/ouwt.js"></script>
         
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
@@ -112,12 +111,20 @@
                                     <option value="">{{'please_select'| translate}}</option>
                                 </select>      
                             </td>
-                            <td style='padding-left: 20px;'>
+                            <td style='padding-left: 10px;'>
                                 <button class="button"
                                         ng-show="selectedProgramStage" 
                                         ng-click="showEventRegistration()" 
                                         ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
                                     {{'register_new_event'| translate}}
+                                </button>  
+                            </td>
+                            <td style='padding-left: 10px;'>
+                                <button class="button"
+                                        ng-show="dhis2Events.length"
+                                        ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid"                                        
+                                        ng-click="showHideColumns()">
+                                    {{'show_hide_columns'| translate}}
                                 </button>  
                             </td>
                         </tr>                       
@@ -126,31 +133,7 @@
                 <!-- selection ends -->
 
                 <!-- event grid begins -->
-                <div id="listDiv" ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">                    
-                    
-                    <!-- show/hide grid column begins -->
-                    <div class="right" ng-show="dhis2Events.length">
-                        <accordion>
-                            <accordion-group>
-                                <accordion-heading>
-                                    {{'show_hide_columns' | translate}}
-                                </accordion-heading>
-                                <table width='100%'>                                    
-                                    <tr ng-repeat="eventGridColumn in eventGridColumns">
-                                        <td>
-                                            {{eventGridColumn.name}}
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" ng-model="eventGridColumn.hide" ng-change="showHideColumns(eventGridColumn,false)" ng-disabled="hiddenGridColumns + 1 == eventGridColumns.length && !eventGridColumn.hide">
-                                        </td>
-                                    </tr>                                    
-                                </table>
-                                <button ng-click="showHideColumns(null,true)" ng-disabled="hiddenGridColumns < 1">{{'show_all'| translate}}</button>
-                            </accordion-group>
-                        </accordion>
-                    </div>
-                    <!-- show/hide grid column ends -->
-                                        
+                <div ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">
                     <h2>
                         {{'registered_events'| translate}}                                                 
                     </h2>               
@@ -184,7 +167,7 @@
                             <!-- grid begins -->
                             <form name="outerForm" novalidate>                              
 
-                                <table class="listTable dhis2-table-striped-border dhis2-table-hover">                    
+                                <table class="listTable dhis2-table-striped-border dhis2-table-hover">                                       
                                     <thead>                        
                                         <tr>
                                             <th ng-show="!eventGridColumn.hide" 
@@ -211,9 +194,9 @@
                                                 <!-- filter icon ends -->
                                                 
                                                 <!-- filter input field begins -->
-                                                <div ng-show="eventGridColumn.showFilter">
+                                                <span ng-show="eventGridColumn.showFilter">
                                                     <span ng-show="eventGridColumn.type !=='date'">
-                                                        <input type="text" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid(eventGridColumn)">
+                                                        <input type="text" class="form-control" style="width: 50%;" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid(eventGridColumn)">
                                                     </span>                                                    
                                                     <span ng-show="eventGridColumn.type ==='date'">
                                                         <input placeholder="{{'start_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].start" data-ng-date readonly="readonly">
@@ -225,7 +208,7 @@
                                                             <a href ng-click='removeEndFilterText(eventGridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
                                                         </span>
                                                     </span>
-                                                </div>
+                                                </span>
                                                 <!-- filter input field ends -->
                                                 
                                             </th>
@@ -315,7 +298,7 @@
                                                     </div>
                                                 </ng-form>                                                
                                             </td>
-                                           <td>                                
+                                            <td>                                
                                                 <span ng-show="currentEvent.event == dhis2Event.event">
                                                     <a href ng-click="showEventList()" title="{{'close_editing'| translate}}"><span class='black'><i class="fa fa-times-circle-o fa-2x"></i></span></a>                                                    
                                                 </span>

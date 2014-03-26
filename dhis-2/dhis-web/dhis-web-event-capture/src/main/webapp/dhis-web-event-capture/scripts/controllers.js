@@ -7,6 +7,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 .controller('MainController',
         function($scope,
                 $filter,
+                $modal,
                 Paginator,
                 TranslationService,
                 storage,
@@ -14,7 +15,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 orderByFilter,
                 ContextMenuSelectedItem,
                 ModalService,
-                ColumnsDialogService,
                 DialogService) {   
    
     //selected org unit
@@ -206,29 +206,25 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.reverse = false;    
     };
     
-    $scope.showHideColumns = function(gridColumn, showAllColumns){
-        if(showAllColumns){
-            angular.forEach($scope.eventGridColumns, function(gridHeader){
-                gridHeader.hide = false;                
-            });
-            $scope.hiddenGridColumns = 0;
-        }
-        if(!showAllColumns){            
-            if(gridColumn.hide){
-                $scope.hiddenGridColumns++;
+    $scope.showHideColumns = function(){               
+        
+        var modalInstance = $modal.open({
+            templateUrl: 'views/column-modal.html',
+            controller: 'ColumnDisplayController',
+            resolve: {
+                eventGridColumns: function () {
+                    return $scope.eventGridColumns;
+                },
+                hiddenGridColumns: function(){
+                    return $scope.hiddenGridColumns;
+                }
             }
-            else{
-                $scope.hiddenGridColumns--;
-            }
-        }       
-        
-        /*var dialogOptions = {
-            headerText: 'show_hide_columns',
-            bodyText: $scope.eventGridColumns
-        };
-        
-        ColumnsDialogService.showDialog({}, dialogOptions);*/
-        
+        });
+
+        modalInstance.result.then(function (eventGridColumns) {
+            $scope.eventGridColumns = eventGridColumns;
+        }, function () {
+        });
     };
     
     $scope.searchInGrid = function(gridColumn){           
@@ -459,6 +455,39 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     $scope.home = function(){        
         window.location = DHIS2URL;
+    };
+    
+})
+
+//Controller for column show/hide
+.controller('ColumnDisplayController', 
+    function($scope, 
+            $modalInstance, 
+            hiddenGridColumns,
+            eventGridColumns){
+    
+    $scope.eventGridColumns = eventGridColumns;
+    $scope.hiddenGridColumns = hiddenGridColumns;
+    
+    $scope.close = function () {
+      $modalInstance.close($scope.eventGridColumns);
+    };
+    
+    $scope.showHideColumns = function(gridColumn, showAllColumns){
+        if(showAllColumns){
+            angular.forEach($scope.eventGridColumns, function(gridHeader){
+                gridHeader.hide = false;                
+            });
+            $scope.hiddenGridColumns = 0;
+        }
+        if(!showAllColumns){            
+            if(gridColumn.hide){
+                $scope.hiddenGridColumns++;
+            }
+            else{
+                $scope.hiddenGridColumns--;
+            }
+        }
     };
     
 });

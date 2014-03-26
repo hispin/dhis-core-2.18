@@ -254,59 +254,6 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 
     }])
 
-/* Popup dialog for displaying columns show/hide */
-.service('ColumnsDialogService', ['$modal', function($modal) {
-
-    var dialogDefaults = {
-        backdrop: true,
-        keyboard: true,
-        backdropClick: true,
-        modalFade: true,
-        templateUrl: 'views/column-modal.html'
-    };
-
-    var dialogOptions = {
-        closeButtonText: 'close',
-        actionButtonText: 'ok',
-        headerText: 'dhis2_tracker',
-        bodyText: 'Perform this action?',
-        note: 'note',
-        created_by: 'created_by',
-        date: 'date'
-    };
-
-    this.showDialog = function(customDialogDefaults, customDialogOptions) {
-        if (!customDialogDefaults)
-            customDialogDefaults = {};
-        customDialogDefaults.backdropClick = false;
-        return this.show(customDialogDefaults, customDialogOptions);
-    };
-
-    this.show = function(customDialogDefaults, customDialogOptions) {
-        //Create temp objects to work with since we're in a singleton service
-        var tempDialogDefaults = {};
-        var tempDialogOptions = {};
-
-        //Map angular-ui modal custom defaults to modal defaults defined in service
-        angular.extend(tempDialogDefaults, dialogDefaults, customDialogDefaults);
-
-        //Map modal.html $scope custom properties to defaults defined in service
-        angular.extend(tempDialogOptions, dialogOptions, customDialogOptions);
-
-        if (!tempDialogDefaults.controller) {
-            tempDialogDefaults.controller = function($scope, $modalInstance) {
-                $scope.dialogOptions = tempDialogOptions;
-                $scope.dialogOptions.ok = function(result) {
-                    $modalInstance.close(result);
-                };                           
-            };
-        }
-
-        return $modal.open(tempDialogDefaults).result;
-    };
-
-}])
-
 /* Context menu for grid*/
 .service('ContextMenuSelectedItem', function(){
     this.selectedItem = '';
