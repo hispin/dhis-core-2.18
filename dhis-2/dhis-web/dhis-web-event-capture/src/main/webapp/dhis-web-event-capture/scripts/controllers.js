@@ -51,7 +51,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             //apply translation - by now user's profile is fetched from server.
             TranslationService.translate();
             
-            var programs = storage.get('PROGRAMS');            
+            var programs = storage.get('EVENT_PROGRAMS');            
             if( programs ){                
                 $scope.loadPrograms($scope.selectedOrgUnit);     
             }            
@@ -69,9 +69,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
             $scope.programs = [];
             
-            var programs = storage.get('PROGRAMS');
+            var programs = storage.get('EVENT_PROGRAMS');
             
-            if( programs ){
+            if( programs && programs != 'undefined' ){
                 for(var i=0; i<programs.length; i++){
                     var program = storage.get(programs[i].id);   
                     if(program.organisationUnits.hasOwnProperty(orgUnit.id)){
@@ -144,13 +144,16 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
                     for(var i=0; i < $scope.dhis2Events.length; i++){  
                         //check if event is empty
-                        if(!angular.isUndefined($scope.dhis2Events[i].dataValues[0].dataElement)){
+                        if(!angular.isUndefined($scope.dhis2Events[i].dataValues)){
                             $scope.dhis2Events[i].dataValues = orderByFilter($scope.dhis2Events[i].dataValues, '-dataElement');
                             angular.forEach($scope.dhis2Events[i].dataValues, function(dataValue){
 
-                                //converting int value to integer for proper sorting.
+                                //converting event.datavalues[i].datavalue.dataelement = value to
+                                //event[dataElement] = value for easier grid display.
                                 var dataElement = $scope.programStageDataElements[dataValue.dataElement].dataElement;
                                 if(angular.isObject(dataElement)){                               
+                                    
+                                    //converting int string value to integer for proper sorting.
                                     if(dataElement.type == 'int'){
                                         if( !isNaN(parseInt(dataValue.value)) ){
                                             dataValue.value = parseInt(dataValue.value);
@@ -160,11 +163,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                         }
                                         
                                     }
+                                    
                                     $scope.dhis2Events[i][dataValue.dataElement] = dataValue.value; 
                                 }                                
-                             });  
+                            });  
 
-                             delete $scope.dhis2Events[i].dataValues;
+                            delete $scope.dhis2Events[i].dataValues;
                         }
                         else{//event is empty, remove from grid
                             var index = $scope.dhis2Events.indexOf($scope.dhis2Events[i]);                           

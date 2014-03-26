@@ -1,108 +1,78 @@
-<accordion>
-    <accordion-group is-open="{{dataEntry.isOpen}}">
-        <accordion-heading>
-            <span class="list-title">{{dataEntry.title| translate}}</span>
-        </accordion-heading>     
-        <div ng-show="dhis2Events">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {{dataEntry.title| translate}}
+        <span class="new-event" ng-click="createNewEvent()">
+            {{'create_new_event'| translate}}
+        </span>
+    </div>
+    <div class="panel-body">        
+        <div ng-show="dhis2Events">            
             <table class="table-borderless">
                 <tbody>
                     <tr>
-                        <td>
-                            <div class="stage-flow">
-                                <table class="stage-flow">
-                                    <tbody>
-                                        <tr>                                            
-                                            <td class="inline-block" ng-repeat="dhis2Event in dhis2Events">
-                                                <span class="block orgunit-container">{{dhis2Event.orgUnitName}}</span>
-                                                <span class="arrow-container">→</span>
-                                                <span class="stage-container"                                                     
-                                                      ng-class="{'current-stage': currentEvent.programStage == dhis2Event.programStage, '{{dhis2Event.statusColor}}': true}"                                                      
-                                                      ng-click="showDataEntry(dhis2Event)">
-                                                    {{dhis2Event.name}}<br/>
-                                                    {{dhis2Event.eventDate}}                                                    
-                                                </span>                                                
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                        <td class="right">
-                            <input type="button" class="entity-instance-object" value="{{'new_event'| translate}}" ng-click="createNewEvent()">
-                        </td>
+                        <td class="inline-block" ng-repeat="dhis2Event in dhis2Events">
+                            <span class="block orgunit-container">{{dhis2Event.orgUnitName}}</span>
+                            <span class="arrow-container">→</span>
+                            <span class="stage-container"                                                     
+                                  ng-class="{'current-stage': currentEvent.programStage == dhis2Event.programStage, '{{dhis2Event.statusColor}}': true}"                                                      
+                                  ng-click="showDataEntry(dhis2Event)">
+                                {{dhis2Event.name}}<br/>
+                                {{dhis2Event.eventDate}}                                                    
+                            </span>                                                
+                        </td>                        
                     </tr>
                 </tbody>                
             </table>
             <hr>
             <div ng-show="currentEvent">
-                <table class="dhis2-list-table-striped">                    
-                    <thead>                        
-                        <tr>
-                            <th>
-                                {{'data_element'| translate}}                    
-                            </th>
-                            <th>
-                                {{'value'| translate}}                    
-                            </th>         
-                        </tr>                        
-                    </thead>
-                    <tbody id="list">
-                        <tr ng-repeat="prStDe in currentStage.programStageDataElements">
-                            <td class="max-column-width">
-                                {{prStDe.dataElement.name}}                                              
-                            </td>
-                            <td class="max-column-width">
-                                <ng-form name="innerFormAdd">
-                                    <div ng-switch="prStDe.dataElement.type">
-                                        <div ng-switch-when="int">
-                                            <input type="number" 
-                                                   ng-model="currentEvent[prStDe.dataElement.id]" 
-                                                   ng-required={{prStDe.compulsory}} 
-                                                   name="foo" 
-                                                   style="width:98%;"/>
-                                            <span ng-show="outerForm.submitted && innerFormAdd.foo.$invalid" class="red">{{'required'| translate}}</span>
-                                        </div>
-                                        <div ng-switch-when="string">                                        
-                                            <div class="container-fluid">
-                                                <input type="text" 
-                                                       ng-model="currentEvent[prStDe.dataElement.id]" 
-                                                       ng-required={{prStDe.compulsory}} 
-                                                       typeahead="option for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                                       typeahead-open-on-focus                                                        
-                                                       name="foo" 
-                                                       style="width:98%;">                                            
-                                                <span ng-show="outerForm.submitted && innerFormAdd.foo.$invalid" class="red">{{'required'| translate}}</span>
-                                            </div>
-                                        </div>
-                                        <div ng-switch-when="bool">
-                                            <select ng-model="currentEvent[prStDe.dataElement.id]" 
-                                                    ng-required={{prStDe.compulsory}} 
-                                                    name="foo" 
-                                                    style="width:98%;">
-                                                <option value="">{{'please_select'| translate}}</option>                        
-                                                <option value="0">{{'no'| translate}}</option>
-                                                <option value="1">{{'yes'| translate}}</option>
-                                            </select>
-                                            <span ng-show="outerForm.submitted && innerFormAdd.foo.$invalid" class="red">{{'required'| translate}}</span>
-                                        </div>
-                                        <div ng-switch-when="date">
-                                            <input type="text" 
-                                                   placeholder="yyyy-mm-dd" 
-                                                   ng-date 
-                                                   ng-model="currentEvent[prStDe.dataElement.id]" 
-                                                   ng-required={{prStDe.compulsory}}  
-                                                   name="foo" 
-                                                   style="width:98%;">
-                                            <span ng-show="outerForm.submitted && innerFormAdd.foo.$invalid" class="red">{{'required'| translate}}</span>
-                                        </div>
-                                    </div>
-                                </ng-form>
-                            </td>
-                        </tr>
-                    </tbody>        
-                </table>
+                <div class="form-group">
+                    <div class="row" ng-repeat="prStDe in currentStage.programStageDataElements">
+                        <div class="col-sm-6">
+                            {{prStDe.dataElement.name}}-{{prStDe.dataElement.type}}
+                        </div>
+                        <div class="col-sm-6">
+                            <div ng-switch="prStDe.dataElement.type">
+                                <div ng-switch-when="int">
+                                    <input type="number"
+                                           class="form-control"
+                                           ng-model="currentEvent[prStDe.dataElement.id]" 
+                                           ng-required={{prStDe.compulsory}} 
+                                           name="foo"/>
+                                </div>
+                                <div ng-switch-when="string">                                        
+                                    <input type="text"
+                                           class="form-control"
+                                           ng-model="currentEvent[prStDe.dataElement.id]" 
+                                           ng-required={{prStDe.compulsory}} 
+                                           typeahead="option for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                           typeahead-open-on-focus                                                        
+                                           name="foo"/>
+                                </div>
+                                <div ng-switch-when="bool">
+                                    <select class="form-control"
+                                            ng-model="currentEvent[prStDe.dataElement.id]" 
+                                            ng-required={{prStDe.compulsory}} 
+                                            name="foo">
+                                        <option value="">{{'please_select'| translate}}</option>                        
+                                        <option value="0">{{'no'| translate}}</option>
+                                        <option value="1">{{'yes'| translate}}</option>
+                                    </select>
 
+                                </div>
+                                <div ng-switch-when="date">
+                                    <input type="text" 
+                                           placeholder="yyyy-mm-dd" 
+                                           ng-date 
+                                           class="form-control"
+                                           ng-model="currentEvent[prStDe.dataElement.id]" 
+                                           ng-required={{prStDe.compulsory}}  
+                                           name="foo"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </accordion-group>
-</accordion>
+    </div>
+</div>
