@@ -509,6 +509,25 @@ table.small td {
 	border-right: 0 none;
 }
 
+    /* Multiselect dynamic/fixed */
+.ns-multiselect-fixed .x-panel-body {
+    border-bottom: 0 none;
+}
+.ns-multiselect-fixed .x-boundlist-item {
+    font-style: italic;
+    color: #666;
+    cursor: auto;
+}
+.ns-multiselect-fixed .x-boundlist-item-over {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.ns-multiselect-dynamic .x-panel-body {
+    border-top: 0 none;
+}
+
+
 
 /*----------------------------------------------------------------------------
  * Checkbox
