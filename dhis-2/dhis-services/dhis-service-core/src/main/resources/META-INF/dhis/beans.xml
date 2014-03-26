@@ -9,7 +9,7 @@
 
   <bean id="org.hisp.dhis.schema.SchemaService" class="org.hisp.dhis.schema.DefaultSchemaService" />
 
-  <bean id="org.hisp.dhis.schema.PropertyScannerService" class="org.hisp.dhis.schema.DefaultPropertyScannerService" />
+  <bean id="org.hisp.dhis.schema.PropertyIntrospectorService" class="org.hisp.dhis.schema.DefaultPropertyIntrospectorService" />
 
   <bean id="org.hisp.dhis.sharing.SharingService" class="org.hisp.dhis.sharing.DefaultSharingService" />
 

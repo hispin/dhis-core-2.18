@@ -46,12 +46,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Default PropertyScannerService implementation that uses Reflection and Jackson annotations
+ * Default PropertyIntrospectorService implementation that uses Reflection and Jackson annotations
  * for reading in properties.
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DefaultPropertyScannerService implements PropertyScannerService
+public class DefaultPropertyIntrospectorService implements PropertyIntrospectorService
 {
     @Override
     public List<Property> getProperties( Class<?> klass )
