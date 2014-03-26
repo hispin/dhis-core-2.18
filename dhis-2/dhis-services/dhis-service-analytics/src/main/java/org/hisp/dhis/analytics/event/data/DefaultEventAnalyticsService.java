@@ -189,6 +189,8 @@ public class DefaultEventAnalyticsService
     {
         queryPlanner.validate( params );
 
+        params.replacePeriodsWithStartEndDates();
+        
         Grid grid = new ListGrid();
 
         // ---------------------------------------------------------------------
