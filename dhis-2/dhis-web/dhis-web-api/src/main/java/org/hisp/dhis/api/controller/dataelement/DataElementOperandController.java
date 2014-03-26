@@ -72,7 +72,11 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
     {
         List<DataElementOperand> entityList;
 
-        if ( options.getOptions().containsKey( "dataElementGroup" ) )
+        if ( options.getOptions().containsKey( "query" ) )
+        {
+            entityList = Lists.newArrayList( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
+        }
+        else if ( options.getOptions().containsKey( "dataElementGroup" ) )
         {
             DataElementGroup dataElementGroup = manager.get( DataElementGroup.class, options.getOptions().get( "dataElementGroup" ) );
 

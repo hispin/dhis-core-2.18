@@ -28,14 +28,7 @@ package org.hisp.dhis.api.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
@@ -50,11 +43,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = UserController.RESOURCE_PATH)
+@RequestMapping( value = UserController.RESOURCE_PATH )
 public class UserController
     extends AbstractCrudController<User>
 {
@@ -71,8 +70,8 @@ public class UserController
     }
 
     @Override
-    @PreAuthorize("hasRole('ALL') or hasRole('F_USER_VIEW')")
-    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters, Model model,
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
+    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, Model model,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         return super.getObject( uid, parameters, model, request, response );
@@ -83,11 +82,9 @@ public class UserController
     {
         List<User> entityList;
 
-        Date lastUpdated = options.getLastUpdated();
-
-        if ( lastUpdated != null )
+        if ( options.getOptions().containsKey( "query" ) )
         {
-            entityList = new ArrayList<User>( userService.getUsersByLastUpdated( lastUpdated ) );
+            entityList = Lists.newArrayList( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
         }
         else if ( options.hasPaging() )
         {
