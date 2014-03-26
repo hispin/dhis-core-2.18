@@ -57,6 +57,8 @@ public class Schema
 
     private boolean shareable;
 
+    private Authorities authorities;
+
     private List<String> publicAuthorities = Lists.newArrayList();
 
     private List<String> privateAuthorities = Lists.newArrayList();
@@ -134,6 +136,18 @@ public class Schema
     public void setShareable( boolean shareable )
     {
         this.shareable = shareable;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Authorities getAuthorities()
+    {
+        return authorities;
+    }
+
+    public void setAuthorities( Authorities authorities )
+    {
+        this.authorities = authorities;
     }
 
     @JsonProperty

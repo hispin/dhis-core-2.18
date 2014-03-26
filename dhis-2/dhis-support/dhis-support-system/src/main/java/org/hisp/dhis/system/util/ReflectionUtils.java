@@ -34,6 +34,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.google.common.collect.Maps;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Description;
+import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.system.util.functional.Predicate;
 import org.springframework.util.StringUtils;
@@ -404,7 +405,7 @@ public class ReflectionUtils
         return methods;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static <T> T invokeMethod( Object target, Method method, Object... args )
     {
         if ( Modifier.isProtected( method.getModifiers() ) || Modifier.isPrivate( method.getModifiers() ) )
@@ -426,7 +427,7 @@ public class ReflectionUtils
         }
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static <T> T getFieldObject( Field field, T target )
     {
         return (T) invokeGetterMethod( field.getName(), target );
@@ -541,6 +542,8 @@ public class ReflectionUtils
 
         private String xmlName;
 
+        private String xmlNamespace;
+
         private boolean xmlAttribute;
 
         private String xmlCollectionName;
@@ -567,6 +570,17 @@ public class ReflectionUtils
         public void setName( String name )
         {
             this.name = name;
+        }
+
+        @JsonProperty
+        public String getXmlNamespace()
+        {
+            return xmlNamespace;
+        }
+
+        public void setXmlNamespace( String xmlNamespace )
+        {
+            this.xmlNamespace = xmlNamespace;
         }
 
         @JsonProperty
@@ -730,6 +744,7 @@ public class ReflectionUtils
                         descriptor.setXmlName( jacksonXmlProperty.localName() );
                     }
 
+                    descriptor.setXmlNamespace( jacksonXmlProperty.namespace() );
                     descriptor.setXmlAttribute( jacksonXmlProperty.isAttribute() );
                 }
 
