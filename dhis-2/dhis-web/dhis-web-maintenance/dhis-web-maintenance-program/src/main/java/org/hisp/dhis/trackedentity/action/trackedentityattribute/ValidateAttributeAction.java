@@ -71,6 +71,20 @@ public class ValidateAttributeAction
         this.name = name;
     }
 
+    private String shortName;
+
+    public void setShortName( String shortName )
+    {
+        this.shortName = shortName;
+    }
+
+    private String code;
+    
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     private String message;
 
     public String getMessage()
@@ -92,15 +106,40 @@ public class ValidateAttributeAction
     public String execute()
         throws Exception
     {
-        name = name.trim();
-
-        TrackedEntityAttribute match = attributeService.getTrackedEntityAttribute( name );
-
-        if ( match != null && (id == null || match.getId() != id.intValue()) )
+        if ( name != null )
         {
-            message = i18n.getString( "name_in_use" );
+            TrackedEntityAttribute match = attributeService.getTrackedEntityAttributeByName( name );
+    
+            if ( match != null && (id == null || match.getId() != id.intValue()) )
+            {
+                message = i18n.getString( "name_in_use" );
+    
+                return INPUT;
+            }
+        }
+        
+        if ( shortName != null )
+        {
+            TrackedEntityAttribute match = attributeService.getTrackedEntityAttributeByShortName( shortName );
+    
+            if ( match != null && (id == null || match.getId() != id.intValue()) )
+            {
+                message = i18n.getString( "short_name_in_use" );
+    
+                return INPUT;
+            }
+        }
 
-            return INPUT;
+        if ( code != null )
+        {
+            TrackedEntityAttribute match = attributeService.getTrackedEntityAttributeByCode( code );
+    
+            if ( match != null && (id == null || match.getId() != id.intValue()) )
+            {
+                message = i18n.getString( "code_in_use" );
+    
+                return INPUT;
+            }
         }
 
         message = i18n.getString( "everything_is_ok" );

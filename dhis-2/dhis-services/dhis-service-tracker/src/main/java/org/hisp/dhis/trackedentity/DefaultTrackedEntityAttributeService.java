@@ -99,6 +99,16 @@ public class DefaultTrackedEntityAttributeService
         return attributeStore.getByName( name );
     }
 
+    public TrackedEntityAttribute getTrackedEntityAttributeByShortName( String shortName )
+    {
+        return attributeStore.getByShortName( shortName );
+    }
+
+    public TrackedEntityAttribute getTrackedEntityAttributeByCode( String code )
+    {
+        return attributeStore.getByShortName( code );
+    }
+
     public Collection<TrackedEntityAttribute> getOptionalAttributesWithoutGroup()
     {
         return attributeStore.getOptionalAttributesWithoutGroup();
