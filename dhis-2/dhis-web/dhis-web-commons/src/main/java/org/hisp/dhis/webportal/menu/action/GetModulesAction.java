@@ -66,7 +66,7 @@ public class GetModulesAction
 
         final List<String> userApps = currentUserService.getCurrentUser().getApps();
         
-        if ( userApps != null )
+        if ( userApps != null && !userApps.isEmpty() )
         {
             Collections.sort( modules, new Comparator<Module>()
             {

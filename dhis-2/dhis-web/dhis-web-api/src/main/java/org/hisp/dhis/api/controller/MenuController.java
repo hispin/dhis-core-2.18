@@ -63,9 +63,12 @@ public class MenuController
 
         User user = currentUserService.getCurrentUser();
 
-        user.getApps().clear();
-        user.getApps().addAll( apps );
+        if ( apps != null && !apps.isEmpty() && user != null )
+        {        
+            user.getApps().clear();
+            user.getApps().addAll( apps );
 
-        userService.updateUser( user );
+            userService.updateUser( user );
+        }
     }
 }
