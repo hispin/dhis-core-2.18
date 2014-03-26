@@ -566,7 +566,7 @@
 
     <action name="removeDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_CATEGORY_OPTION_DELETE</param>
+      <!--<param name="requiredAuthorities">F_CATEGORY_OPTION_DELETE</param>-->
     </action>
 
     <action name="getDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">

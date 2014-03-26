@@ -30,6 +30,8 @@ package org.hisp.dhis.schema.descriptors;
 
 import com.google.common.collect.Lists;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.springframework.stereotype.Component;
@@ -46,9 +48,11 @@ public class DocumentSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( Document.class, "document", "documents" );
 
         schema.setShareable( true );
-        schema.setPublicAuthorities( Lists.newArrayList( "F_DOCUMENT_PUBLIC_ADD" ) );
-        schema.setPrivateAuthorities( Lists.newArrayList( "F_DOCUMENT_PRIVATE_ADD" ) );
-        schema.setExternalAuthorities( Lists.newArrayList( "F_DOCUMENT_EXTERNAL" ) );
+
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_DOCUMENT_PUBLIC_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_DOCUMENT_PRIVATE_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.EXTERNALIZE, Lists.newArrayList( "F_DOCUMENT_EXTERNAL" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_DOCUMENT_DELETE" ) ) );
 
         return schema;
     }

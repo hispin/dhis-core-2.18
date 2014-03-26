@@ -30,6 +30,8 @@ package org.hisp.dhis.schema.descriptors;
 
 import com.google.common.collect.Lists;
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.springframework.stereotype.Component;
@@ -46,8 +48,9 @@ public class ChartSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( Chart.class, "chart", "charts" );
 
         schema.setShareable( true );
-        schema.setPublicAuthorities( Lists.newArrayList( "F_CHART_PUBLIC_ADD" ) );
-        schema.setExternalAuthorities( Lists.newArrayList( "F_CHART_EXTERNAL" ) );
+
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_CHART_PUBLIC_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.EXTERNALIZE, Lists.newArrayList( "F_CHART_EXTERNAL" ) ) );
 
         return schema;
     }

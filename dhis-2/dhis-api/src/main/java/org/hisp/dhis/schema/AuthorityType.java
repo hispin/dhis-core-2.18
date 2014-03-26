@@ -33,6 +33,7 @@ package org.hisp.dhis.schema;
  */
 public enum AuthorityType
 {
+    CREATE,
     CREATE_PUBLIC,
     CREATE_PRIVATE,
     EXTERNALIZE,

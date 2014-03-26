@@ -28,7 +28,10 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.springframework.stereotype.Component;
@@ -42,6 +45,11 @@ public class IndicatorTypeSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( IndicatorType.class, "indicatorType", "indicatorTypes" );
+        Schema schema = new Schema( IndicatorType.class, "indicatorType", "indicatorTypes" );
+
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_INDICATORTYPE_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_INDICATORTYPE_DELETE" ) ) );
+
+        return schema;
     }
 }

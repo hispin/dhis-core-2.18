@@ -29,6 +29,8 @@ package org.hisp.dhis.schema.descriptors;
  */
 
 import com.google.common.collect.Lists;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.hisp.dhis.user.UserGroup;
@@ -46,7 +48,7 @@ public class UserGroupSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( UserGroup.class, "userGroup", "userGroups" );
 
         schema.setShareable( true );
-        schema.setPublicAuthorities( Lists.newArrayList( "F_USERGROUP_PUBLIC_ADD" ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_USERGROUP_PUBLIC_ADD" ) ) );
 
         return schema;
     }
