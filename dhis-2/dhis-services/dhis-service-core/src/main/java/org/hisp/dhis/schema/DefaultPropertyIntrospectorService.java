@@ -59,6 +59,21 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
         return scanClass( klass );
     }
 
+    @Override
+    public Map<String, Property> getPropertiesMap( Class<?> klass )
+    {
+        Map<String, Property> propertyMap = Maps.newHashMap();
+
+        List<Property> properties = scanClass( klass );
+
+        for ( Property property : properties )
+        {
+            propertyMap.put( property.getName(), property );
+        }
+
+        return propertyMap;
+    }
+
     // -------------------------------------------------------------------------
     // Scanning Helpers
     // -------------------------------------------------------------------------
