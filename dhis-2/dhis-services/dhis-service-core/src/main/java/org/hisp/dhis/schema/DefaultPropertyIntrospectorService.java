@@ -56,38 +56,29 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
     @Override
     public List<Property> getProperties( Class<?> klass )
     {
-        return scanClass( klass );
+        return Lists.newArrayList( scanClass( klass ).values() );
     }
 
     @Override
     public Map<String, Property> getPropertiesMap( Class<?> klass )
     {
-        Map<String, Property> propertyMap = Maps.newHashMap();
-
-        List<Property> properties = scanClass( klass );
-
-        for ( Property property : properties )
-        {
-            propertyMap.put( property.getName(), property );
-        }
-
-        return propertyMap;
+        return scanClass( klass );
     }
 
     // -------------------------------------------------------------------------
     // Scanning Helpers
     // -------------------------------------------------------------------------
 
-    private static Map<Class<?>, List<Property>> classMapCache = Maps.newHashMap();
+    private static Map<Class<?>, Map<String, Property>> classMapCache = Maps.newHashMap();
 
-    private static List<Property> scanClass( Class<?> clazz )
+    private static Map<String, Property> scanClass( Class<?> clazz )
     {
         if ( classMapCache.containsKey( clazz ) )
         {
             return classMapCache.get( clazz );
         }
 
-        List<Property> properties = Lists.newArrayList();
+        Map<String, Property> propertyMap = Maps.newHashMap();
         List<Method> allMethods = ReflectionUtils.getAllMethods( clazz );
 
         for ( Method method : allMethods )
@@ -148,7 +139,7 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                 }
 
                 property.setName( name );
-                properties.add( property );
+                propertyMap.put( name, property );
 
                 Class<?> returnType = method.getReturnType();
                 property.setKlass( returnType );
@@ -177,8 +168,8 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
             }
         }
 
-        classMapCache.put( clazz, properties );
+        classMapCache.put( clazz, propertyMap );
 
-        return properties;
+        return propertyMap;
     }
 }
