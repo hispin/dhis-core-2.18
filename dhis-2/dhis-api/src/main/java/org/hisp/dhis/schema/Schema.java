@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 
 import java.util.List;
 
@@ -47,6 +48,8 @@ public class Schema
     private Class<?> klass;
 
     private boolean identifiableObject;
+
+    private boolean nameableObject;
 
     private String singular;
 
@@ -72,6 +75,7 @@ public class Schema
     {
         this.klass = klass;
         this.identifiableObject = IdentifiableObject.class.isAssignableFrom( klass );
+        this.nameableObject = NameableObject.class.isAssignableFrom( klass );
         this.singular = singular;
         this.plural = plural;
     }
@@ -101,6 +105,13 @@ public class Schema
     public boolean isIdentifiableObject()
     {
         return identifiableObject;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isNameableObject()
+    {
+        return nameableObject;
     }
 
     @JsonProperty
