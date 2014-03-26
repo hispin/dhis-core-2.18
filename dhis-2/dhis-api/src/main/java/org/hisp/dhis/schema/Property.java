@@ -47,6 +47,8 @@ public class Property
 
     private String xmlName;
 
+    private String xmlNamespace;
+
     private boolean xmlAttribute;
 
     private String xmlCollectionName;
@@ -98,6 +100,18 @@ public class Property
     public void setXmlName( String xmlName )
     {
         this.xmlName = xmlName;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getXmlNamespace()
+    {
+        return xmlNamespace;
+    }
+
+    public void setXmlNamespace( String xmlNamespace )
+    {
+        this.xmlNamespace = xmlNamespace;
     }
 
     @JsonProperty

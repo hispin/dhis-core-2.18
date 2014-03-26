@@ -28,48 +28,13 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
-import org.hisp.dhis.system.util.ReflectionUtils;
-
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
 /**
- * Default PropertyScannerService implementation that uses Reflection and Jackson annotations
- * for reading in properties.
- *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DefaultPropertyScannerService implements PropertyScannerService
+@JacksonXmlRootElement( localName = "authorities", namespace = DxfNamespaces.DXF_2_0 )
+public class Authorities
 {
-    @Override
-    public List<Property> getProperties( Class<?> klass )
-    {
-        return scanClass( klass );
-    }
-
-    private List<Property> scanClass( Class<?> klass )
-    {
-        List<Property> properties = Lists.newArrayList();
-
-        Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( klass );
-
-        // for now, just use the reflection utils directly
-        for ( ReflectionUtils.PropertyDescriptor descriptor : classMap.values() )
-        {
-            Property property = new Property( descriptor.getMethod() );
-            properties.add( property );
-
-            property.setKlass( descriptor.getClazz() );
-            property.setCollection( descriptor.isCollection() );
-            property.setIdentifiableObject( descriptor.isIdentifiableObject() );
-            property.setName( descriptor.getName() );
-            property.setXmlName( descriptor.getXmlName() );
-            property.setXmlNamespace( descriptor.getXmlNamespace() );
-            property.setXmlCollectionName( descriptor.getXmlCollectionName() );
-            property.setDescription( descriptor.getDescription() );
-        }
-
-        return properties;
-    }
 }
