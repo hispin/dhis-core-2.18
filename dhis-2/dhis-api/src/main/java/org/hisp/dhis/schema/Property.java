@@ -61,6 +61,8 @@ public class Property
 
     private boolean identifiableObject;
 
+    private boolean nameableObject;
+
     public Property( Method method )
     {
         this.method = method;
@@ -182,6 +184,18 @@ public class Property
     public void setIdentifiableObject( boolean identifiableObject )
     {
         this.identifiableObject = identifiableObject;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isNameableObject()
+    {
+        return nameableObject;
+    }
+
+    public void setNameableObject( boolean nameableObject )
+    {
+        this.nameableObject = nameableObject;
     }
 
     @Override
