@@ -1,4 +1,4 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.analytics.dimension;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -37,6 +37,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.BaseDimensionalObject;
+import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.DimensionService;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;

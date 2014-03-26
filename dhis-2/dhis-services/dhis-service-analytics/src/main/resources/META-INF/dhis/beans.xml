@@ -50,6 +50,10 @@
 
   <bean id="org.hisp.dhis.analytics.event.EventQueryPlanner" class="org.hisp.dhis.analytics.event.data.DefaultEventQueryPlanner" />
 
+  <!-- Dimension -->
+
+  <bean id="org.hisp.dhis.analytics.dimension.DimensionService" class="org.hisp.dhis.analytics.dimension.DefaultDimensionService" />
+
   <!-- Scheduled tasks -->
   
   <bean id="analyticsAllTask" class="org.hisp.dhis.analytics.scheduling.AnalyticsTableTask">
