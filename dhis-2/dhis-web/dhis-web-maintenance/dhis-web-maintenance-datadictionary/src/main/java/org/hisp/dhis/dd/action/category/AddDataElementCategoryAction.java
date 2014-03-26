@@ -96,7 +96,7 @@ public class AddDataElementCategoryAction
         DataElementCategory dataElementCategory = new DataElementCategory();
         dataElementCategory.setName( name );
         dataElementCategory.setDataDimension( dataDimension );
-        dataElementCategory.setDimensionType( dimensionType );
+        dataElementCategory.setDataDimensionType( dimensionType );
 
         List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>();
 
