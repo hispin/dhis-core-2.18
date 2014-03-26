@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html manifest="event-capture.appcache" ng-app="eventCapture">
+<!--<html manifest="event-capture.appcache" ng-app="eventCapture">-->
+<html ng-app="eventCapture">    
     <head>
         <title>Event Capture</title>
 
@@ -44,7 +45,7 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
-        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
+        <!--<script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>-->
         <script type="text/javascript" src="../dhis-web-commons/ouwt/ouwt.js"></script>
         
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
@@ -96,12 +97,13 @@
                     <table>
                         <tr>
                             <td><label>{{'registering_unit'| translate}}</label></td>
-                            <td><input type="text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" disabled=""></td>
+                            <td><input type="text" class="fixed-width-text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" disabled=""></td>
                         </tr>
                         <tr>
                             <td><label>{{'program'| translate}}<em title="{{'required'| translate}}" class="required">*</em></label></td>
                             <td>
                                 <select id="programId" 
+                                        class="fixed-width-select"
                                         name="programId" 
                                         ng-model="pr" 
                                         ng-options="program as program.name for program in programs | orderBy: 'name'" 
@@ -246,7 +248,7 @@
                                             <!-- Visible when event is under editing - in grid -->
                                             <td class="max-column-width"
                                                 style="cursor:default;"                                                
-                                                ng-show="(currentEvent.event == dhis2Event.event) && !eventGridColumn.hide" 
+                                                ng-if="(currentEvent.event == dhis2Event.event) && !eventGridColumn.hide" 
                                                 ng-repeat="eventGridColumn in eventGridColumns">
                                                 <ng-form name="innerFormGrid">
                                                     <div ng-switch="eventGridColumn.type">
@@ -330,12 +332,12 @@
                 <!-- event grid ends -->
 
                 <!-- event update in full begins-->
-                <div ng-show="editingEventInFull">
-                    <h2>
-                        {{'update_event'| translate}}                                                 
-                    </h2>                                           
-                    <div class="bordered-div" style="width:50%;">
-                        <form name="outerForm" novalidate>
+                <form name="outerForm" novalidate>
+                    <div ng-if="editingEventInFull">
+                        <h2>
+                            {{'update_event'| translate}}                                                 
+                        </h2>                                           
+                        <div class="bordered-div" style="width:50%;">
                             <table class="dhis2-list-table-striped">                    
                                 <thead>                        
                                     <tr>
@@ -418,19 +420,19 @@
                                 </tr>
                                 </tbody>        
                             </table>                            
-                            <button ng-click="showEventList()" class="button">{{'back'| translate}}</button>  
-                        </form>    
+                            <button ng-click="showEventList()" class="button">{{'back'| translate}}</button> 
+                        </div>
                     </div>
-                </div>
+                </form>    
                 <!-- event update ends -->
 
                 <!-- event registration begins -->
-                <div ng-show="eventRegistration">
-                    <h2>
-                        {{'new_event'| translate}}                                                 
-                    </h2>   
-                    <div class="bordered-div" style="width:50%;">
-                        <form name="outerForm" novalidate>
+                <form name="outerForm" novalidate>
+                    <div ng-if="eventRegistration">
+                        <h2>
+                            {{'new_event'| translate}}                                                 
+                        </h2>   
+                        <div class="bordered-div" style="width:50%;">
                             <table class="dhis2-list-table-striped">
                              <tbody id="list"> 
                                  <tr>
@@ -517,15 +519,14 @@
                                     </tr>
                                 </tbody>        
                             </table>
-
                             <button ng-click="addEvent(true)" class="button">{{'save_and_add_new'| translate}}</button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <button ng-click="addEvent()" class="button">{{'save_and_close'| translate}}</button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <button ng-click="showEventList(null)" class="button">{{'close'| translate}}</button>
-                        </form>
-                    </div>
-                </div>              
+                            <button ng-click="showEventList(null)" class="button">{{'close'| translate}}</button>                        
+                        </div>
+                    </div> 
+                </form>
                 <!-- event registration ends -->              
                 
             </div>           

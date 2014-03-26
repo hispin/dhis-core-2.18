@@ -2,8 +2,7 @@
 /* Form
 /*----------------------------------------------------------------------------*/
 
-input[type="text"] 
-{
+.fixed-width-text {
     width: 260px;
 }
 
@@ -12,8 +11,7 @@ input.option
     width: 240px;
 }
 
-select 
-{
+.fixed-width-select{
     width: 264px;
 }
 
@@ -31,6 +29,12 @@ table
 // --------------------------------------------------------------
 // App specific
 // --------------------------------------------------------------
+
+// Block level inputs
+.container-filters {
+    display: block;
+    width: 100%;    
+}
 
 .container-heading {
     color: white;
@@ -490,7 +494,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     margin-bottom: 20px;
     background-color: #fff;
     border: 1px solid transparent;
-    
+
     -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
     box-shadow: 0 1px 1px rgba(0,0,0,0.05)
 }

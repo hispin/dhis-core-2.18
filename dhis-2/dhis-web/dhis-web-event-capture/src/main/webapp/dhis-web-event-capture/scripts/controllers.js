@@ -13,7 +13,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 DHIS2EventFactory,                
                 orderByFilter,
                 ContextMenuSelectedItem,
-                ModalService,                
+                ModalService,
+                ColumnsDialogService,
                 DialogService) {   
    
     //selected org unit
@@ -219,7 +220,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             else{
                 $scope.hiddenGridColumns--;
             }
-        }      
+        }       
+        
+        /*var dialogOptions = {
+            headerText: 'show_hide_columns',
+            bodyText: $scope.eventGridColumns
+        };
+        
+        ColumnsDialogService.showDialog({}, dialogOptions);*/
+        
     };
     
     $scope.searchInGrid = function(gridColumn){           
