@@ -29,9 +29,9 @@ package org.hisp.dhis.schema.descriptors;
  */
 
 import com.google.common.collect.Lists;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
-import org.hisp.dhis.program.Program;
 import org.springframework.stereotype.Component;
 
 /**
@@ -43,7 +43,7 @@ public class ProgramSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Program.class, "program", "programs", false, false, true );
+        Schema schema = new Schema( Program.class, "program", "programs" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_PROGRAM_PUBLIC_ADD" ) );

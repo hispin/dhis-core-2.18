@@ -43,7 +43,7 @@ public class DataElementGroupSetSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataElementGroupSet.class, "dataElementGroupSet", "dataElementGroupSets", true, true, true );
+        Schema schema = new Schema( DataElementGroupSet.class, "dataElementGroupSet", "dataElementGroupSets" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_DATAELEMENTGROUPSET_PUBLIC_ADD" ) );

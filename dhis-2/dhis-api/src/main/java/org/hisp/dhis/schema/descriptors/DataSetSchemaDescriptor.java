@@ -43,7 +43,7 @@ public class DataSetSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataSet.class, "dataSet", "dataSets", true, true, true );
+        Schema schema = new Schema( DataSet.class, "dataSet", "dataSets" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_DATASET_PUBLIC_ADD" ) );

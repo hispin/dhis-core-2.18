@@ -43,7 +43,7 @@ public class UserGroupSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( UserGroup.class, "userGroup", "userGroups", true, true, false );
+        Schema schema = new Schema( UserGroup.class, "userGroup", "userGroups" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_USERGROUP_PUBLIC_ADD" ) );

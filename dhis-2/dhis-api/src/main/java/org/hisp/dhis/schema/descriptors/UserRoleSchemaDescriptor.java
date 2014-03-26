@@ -43,7 +43,7 @@ public class UserRoleSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( UserAuthorityGroup.class, "userRole", "userRoles", true, true, false );
+        Schema schema = new Schema( UserAuthorityGroup.class, "userRole", "userRoles" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_USERROLE_PUBLIC_ADD" ) );

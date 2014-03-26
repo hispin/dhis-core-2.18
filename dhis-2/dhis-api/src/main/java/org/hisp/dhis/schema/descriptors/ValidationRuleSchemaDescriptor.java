@@ -42,6 +42,6 @@ public class ValidationRuleSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( ValidationRule.class, "validationRule", "validationRules", true, true, true );
+        return new Schema( ValidationRule.class, "validationRule", "validationRules" );
     }
 }

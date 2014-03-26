@@ -28,9 +28,9 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
-import org.hisp.dhis.mapping.MapView;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,6 +42,6 @@ public class MapViewSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( MapView.class, "mapView", "mapViews", true, true, true );
+        return new Schema( MapView.class, "mapView", "mapViews" );
     }
 }

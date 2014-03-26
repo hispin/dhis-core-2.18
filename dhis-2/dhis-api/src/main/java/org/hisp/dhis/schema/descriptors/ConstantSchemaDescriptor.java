@@ -42,6 +42,6 @@ public class ConstantSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( Constant.class, "constant", "constants", true, true, true );
+        return new Schema( Constant.class, "constant", "constants" );
     }
 }

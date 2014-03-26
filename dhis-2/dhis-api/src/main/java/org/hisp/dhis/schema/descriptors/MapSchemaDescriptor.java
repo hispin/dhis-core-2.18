@@ -29,9 +29,9 @@ package org.hisp.dhis.schema.descriptors;
  */
 
 import com.google.common.collect.Lists;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
-import org.hisp.dhis.mapping.Map;
 import org.springframework.stereotype.Component;
 
 /**
@@ -43,7 +43,7 @@ public class MapSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Map.class, "map", "maps", true, true, true );
+        Schema schema = new Schema( Map.class, "map", "maps" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_MAP_PUBLIC_ADD" ) );

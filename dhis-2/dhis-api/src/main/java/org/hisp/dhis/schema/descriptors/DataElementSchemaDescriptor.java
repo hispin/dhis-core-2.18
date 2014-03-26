@@ -43,7 +43,7 @@ public class DataElementSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataElement.class, "dataElement", "dataElements", true, true, true );
+        Schema schema = new Schema( DataElement.class, "dataElement", "dataElements" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_DATAELEMENT_PUBLIC_ADD" ) );

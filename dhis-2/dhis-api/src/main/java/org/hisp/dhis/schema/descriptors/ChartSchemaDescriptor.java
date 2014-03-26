@@ -43,7 +43,7 @@ public class ChartSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Chart.class, "chart", "charts", true, true, true );
+        Schema schema = new Schema( Chart.class, "chart", "charts" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_CHART_PUBLIC_ADD" ) );

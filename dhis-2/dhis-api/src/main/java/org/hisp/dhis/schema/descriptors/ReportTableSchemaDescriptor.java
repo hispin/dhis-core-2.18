@@ -29,9 +29,9 @@ package org.hisp.dhis.schema.descriptors;
  */
 
 import com.google.common.collect.Lists;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
-import org.hisp.dhis.reporttable.ReportTable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -43,7 +43,7 @@ public class ReportTableSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( ReportTable.class, "reportTable", "reportTables", true, true, true );
+        Schema schema = new Schema( ReportTable.class, "reportTable", "reportTables" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_REPORTTABLE_PUBLIC_ADD" ) );
