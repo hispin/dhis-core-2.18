@@ -43,7 +43,7 @@ public class OptionSetSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( OptionSet.class, "optionSet", "optionSets", true, true, true );
+        Schema schema = new Schema( OptionSet.class, "optionSet", "optionSets" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_OPTIONSET_PUBLIC_ADD" ) );

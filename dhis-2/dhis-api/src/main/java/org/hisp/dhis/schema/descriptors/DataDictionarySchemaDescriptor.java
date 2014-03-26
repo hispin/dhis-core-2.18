@@ -43,7 +43,7 @@ public class DataDictionarySchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataDictionary.class, "dataDictionary", "dataDictionaries", true, true, true );
+        Schema schema = new Schema( DataDictionary.class, "dataDictionary", "dataDictionaries" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_DATADICTIONARY_PUBLIC_ADD" ) );

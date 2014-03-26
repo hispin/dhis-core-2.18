@@ -63,12 +63,6 @@ public class Schema
 
     private List<String> externalAuthorities = Lists.newArrayList();
 
-    private boolean importable;
-
-    private boolean exportable;
-
-    private boolean deletable;
-
     private List<Property> properties = Lists.newArrayList();
 
     public Schema( Class<?> klass, String singular, String plural )
@@ -78,14 +72,6 @@ public class Schema
         this.nameableObject = NameableObject.class.isAssignableFrom( klass );
         this.singular = singular;
         this.plural = plural;
-    }
-
-    public Schema( Class<?> klass, String singular, String plural, boolean importable, boolean exportable, boolean deletable )
-    {
-        this( klass, singular, plural );
-        this.importable = importable;
-        this.exportable = exportable;
-        this.deletable = deletable;
     }
 
     @JsonProperty
@@ -190,42 +176,6 @@ public class Schema
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isImportable()
-    {
-        return importable;
-    }
-
-    public void setImportable( boolean importable )
-    {
-        this.importable = importable;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isExportable()
-    {
-        return exportable;
-    }
-
-    public void setExportable( boolean exportable )
-    {
-        this.exportable = exportable;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isDeletable()
-    {
-        return deletable;
-    }
-
-    public void setDeletable( boolean deletable )
-    {
-        this.deletable = deletable;
-    }
-
-    @JsonProperty
     @JacksonXmlElementWrapper( localName = "properties", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "property", namespace = DxfNamespaces.DXF_2_0 )
     public List<Property> getProperties()
@@ -243,11 +193,14 @@ public class Schema
     {
         return "Schema{" +
             "klass=" + klass +
+            ", identifiableObject=" + identifiableObject +
+            ", nameableObject=" + nameableObject +
             ", singular='" + singular + '\'' +
             ", plural='" + plural + '\'' +
-            ", importable=" + importable +
-            ", exportable=" + exportable +
-            ", deletable=" + deletable +
+            ", shareable=" + shareable +
+            ", publicAuthorities=" + publicAuthorities +
+            ", privateAuthorities=" + privateAuthorities +
+            ", externalAuthorities=" + externalAuthorities +
             ", properties=" + properties +
             '}';
     }

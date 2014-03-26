@@ -42,6 +42,6 @@ public class ConceptSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( Concept.class, "concept", "concepts", true, true, true );
+        return new Schema( Concept.class, "concept", "concepts" );
     }
 }

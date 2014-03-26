@@ -43,7 +43,7 @@ public class CategoryComboSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataElementCategoryCombo.class, "categoryCombo", "categoryCombos", true, true, true );
+        Schema schema = new Schema( DataElementCategoryCombo.class, "categoryCombo", "categoryCombos" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_CATEGORY_COMBO_PUBLIC_ADD" ) );

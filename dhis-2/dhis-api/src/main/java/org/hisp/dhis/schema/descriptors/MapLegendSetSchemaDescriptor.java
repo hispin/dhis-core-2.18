@@ -28,9 +28,9 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
-import org.hisp.dhis.mapping.MapLegendSet;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,6 +42,6 @@ public class MapLegendSetSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( MapLegendSet.class, "mapLegendSet", "mapLegendSets", true, true, true );
+        return new Schema( MapLegendSet.class, "mapLegendSet", "mapLegendSets" );
     }
 }

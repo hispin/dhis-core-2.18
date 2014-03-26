@@ -43,7 +43,7 @@ public class ValidationRuleGroupSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( ValidationRuleGroup.class, "validationRuleGroup", "validationRuleGroups", true, true, true );
+        Schema schema = new Schema( ValidationRuleGroup.class, "validationRuleGroup", "validationRuleGroups" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_VALIDATIONRULEGROUP_PUBLIC_ADD" ) );

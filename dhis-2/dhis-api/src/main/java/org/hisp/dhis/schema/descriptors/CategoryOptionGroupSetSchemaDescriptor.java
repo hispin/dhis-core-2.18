@@ -43,7 +43,7 @@ public class CategoryOptionGroupSetSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( CategoryOptionGroupSet.class, "categoryOptionGroupSet", "categoryOptionGroupSets", false, false, true );
+        Schema schema = new Schema( CategoryOptionGroupSet.class, "categoryOptionGroupSet", "categoryOptionGroupSets" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_CATEGORY_OPTION_GROUP_SET_PUBLIC_ADD" ) );

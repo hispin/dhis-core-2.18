@@ -43,7 +43,7 @@ public class TrackedEntityAttributeSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( TrackedEntityAttribute.class, "trackedEntityAttribute", "trackedEntityAttributes", false, false, true );
+        Schema schema = new Schema( TrackedEntityAttribute.class, "trackedEntityAttribute", "trackedEntityAttributes" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD" ) );

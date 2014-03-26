@@ -43,7 +43,7 @@ public class OrganisationUnitGroupSetSchemaDescriptor implements SchemaDescripto
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( OrganisationUnitGroupSet.class, "organisationUnitGroupSet", "organisationUnitGroupSets", true, true, true );
+        Schema schema = new Schema( OrganisationUnitGroupSet.class, "organisationUnitGroupSet", "organisationUnitGroupSets" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_ORGUNITGROUPSET_PUBLIC_ADD" ) );

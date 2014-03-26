@@ -43,7 +43,7 @@ public class SqlViewSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( SqlView.class, "sqlView", "sqlViews", true, true, true );
+        Schema schema = new Schema( SqlView.class, "sqlView", "sqlViews" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_SQLVIEW_PUBLIC_ADD" ) );

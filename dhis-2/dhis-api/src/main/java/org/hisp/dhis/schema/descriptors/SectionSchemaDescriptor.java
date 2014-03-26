@@ -42,6 +42,6 @@ public class SectionSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( Section.class, "section", "sections", true, true, true );
+        return new Schema( Section.class, "section", "sections" );
     }
 }

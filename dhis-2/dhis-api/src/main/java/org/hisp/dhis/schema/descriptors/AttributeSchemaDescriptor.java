@@ -42,6 +42,6 @@ public class AttributeSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( Attribute.class, "attribute", "attributes", true, true, true );
+        return new Schema( Attribute.class, "attribute", "attributes" );
     }
 }

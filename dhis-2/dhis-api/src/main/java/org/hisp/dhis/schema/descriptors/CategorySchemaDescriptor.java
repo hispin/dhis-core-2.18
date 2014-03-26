@@ -43,7 +43,7 @@ public class CategorySchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataElementCategory.class, "category", "categories", true, true, true );
+        Schema schema = new Schema( DataElementCategory.class, "category", "categories" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_CATEGORY_PUBLIC_ADD" ) );

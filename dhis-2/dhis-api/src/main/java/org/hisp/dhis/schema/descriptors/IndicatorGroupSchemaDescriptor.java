@@ -29,9 +29,9 @@ package org.hisp.dhis.schema.descriptors;
  */
 
 import com.google.common.collect.Lists;
+import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
-import org.hisp.dhis.indicator.IndicatorGroup;
 import org.springframework.stereotype.Component;
 
 /**
@@ -43,7 +43,7 @@ public class IndicatorGroupSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( IndicatorGroup.class, "indicatorGroup", "indicatorGroups", true, true, true );
+        Schema schema = new Schema( IndicatorGroup.class, "indicatorGroup", "indicatorGroups" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_INDICATORGROUP_PUBLIC_ADD" ) );

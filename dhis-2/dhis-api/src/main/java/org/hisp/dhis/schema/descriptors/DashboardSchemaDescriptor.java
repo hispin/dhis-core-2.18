@@ -43,7 +43,7 @@ public class DashboardSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Dashboard.class, "dashboard", "dashboards", false, false, true );
+        Schema schema = new Schema( Dashboard.class, "dashboard", "dashboards" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_DASHBOARD_PUBLIC_ADD" ) );

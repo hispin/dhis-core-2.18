@@ -43,7 +43,7 @@ public class DocumentSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Document.class, "document", "documents", true, true, true );
+        Schema schema = new Schema( Document.class, "document", "documents" );
 
         schema.setShareable( true );
         schema.setPublicAuthorities( Lists.newArrayList( "F_DOCUMENT_PUBLIC_ADD" ) );
