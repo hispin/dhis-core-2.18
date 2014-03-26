@@ -76,6 +76,7 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.TextUtils;
+import org.hisp.dhis.system.util.Timer;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
@@ -236,13 +237,15 @@ public class HibernateTrackedEntityInstanceStore
             sql += "limit " + params.getPageSizeWithDefault() + " offset " + params.getOffset();
         }
 
-        log.info( "Tracked entity instance query SQL: " + sql );
-
         // ---------------------------------------------------------------------
         // Query
         // ---------------------------------------------------------------------
-
+        
+        Timer t = new Timer().start();
+        
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+        
+        t.getTime( "Tracked entity instance query SQL: " + sql );
         
         List<Map<String, String>> list = new ArrayList<Map<String,String>>();
         

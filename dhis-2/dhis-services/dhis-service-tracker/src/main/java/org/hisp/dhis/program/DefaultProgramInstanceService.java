@@ -512,7 +512,7 @@ public class DefaultProgramInstanceService
 
         return messageConversations;
     }
-
+    
     @Override
     public ProgramInstance enrollTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program,
         Date enrollmentDate, Date dateOfIncident, OrganisationUnit organisationUnit )
