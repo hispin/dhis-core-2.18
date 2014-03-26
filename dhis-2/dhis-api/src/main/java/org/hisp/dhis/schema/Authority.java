@@ -81,4 +81,13 @@ public class Authority
     {
         this.authorities = authorities;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Authority{" +
+            "type=" + type +
+            ", authorities=" + authorities +
+            '}';
+    }
 }
