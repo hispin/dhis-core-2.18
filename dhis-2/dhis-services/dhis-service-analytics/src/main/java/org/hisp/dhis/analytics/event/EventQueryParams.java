@@ -28,6 +28,8 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -40,8 +42,10 @@ import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 
@@ -150,6 +154,34 @@ public class EventQueryParams
         }
         
         return uniqueItems;
+    }
+    
+    /**
+     * Replaces periods with start and end dates, using the earliest start date
+     * from the periods as start date and the latest end date from the periods
+     * as end date. Remove the period dimension or filter.
+     */
+    public void replacePeriodsWithStartEndDates()
+    {
+        List<Period> periods = NameableObjectUtils.asTypedList( getDimensionOrFilter( PERIOD_DIM_ID ), Period.class );
+        
+        for ( Period period : periods )
+        {
+            Date start = period.getStartDate();
+            Date end = period.getEndDate();
+            
+            if ( startDate == null || ( start != null && start.before( startDate ) ) )
+            {
+                startDate = start;
+            }
+            
+            if ( endDate == null || ( end != null && end.after( endDate ) ) )
+            {
+                endDate = end;
+            }
+        }
+        
+        removeDimensionOrFilter( PERIOD_DIM_ID );
     }
     
     public boolean isOrganisationUnitMode( String mode )

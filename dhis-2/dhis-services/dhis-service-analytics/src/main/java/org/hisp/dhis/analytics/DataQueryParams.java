@@ -379,6 +379,17 @@ public class DataQueryParams
         
         return this;
     }
+
+    /**
+     * Removes the dimension or filter with the given identifier.
+     */
+    public DataQueryParams removeDimensionOrFilter( String dimension )
+    {
+        removeDimension( dimension );
+        removeFilter( dimension );
+        
+        return this;
+    }
     
     /**
      * Removes dimensions of the given type.
