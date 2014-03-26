@@ -316,7 +316,7 @@ public class DefaultQueryPlanner
             for ( List<NameableObject> valuePage : valuePages )
             {
                 DataQueryParams subQuery = query.instance();
-                subQuery.setDimensionOptions( dim.getDimension(), dim.getType(), dim.getDimensionName(), valuePage );
+                subQuery.setDimensionOptions( dim.getDimension(), dim.getDimensionType(), dim.getDimensionName(), valuePage );
                 subQueries.add( subQuery );
             }
         }
@@ -416,7 +416,7 @@ public class DefaultQueryPlanner
             
             for ( String periodType : periodTypePeriodMap.keySet() )
             {
-                params.getFilters().add( new BaseDimensionalObject( filter.getDimension(), filter.getType(), periodType.toLowerCase(), periodTypePeriodMap.get( periodType ) ) );
+                params.getFilters().add( new BaseDimensionalObject( filter.getDimension(), filter.getDimensionType(), periodType.toLowerCase(), periodTypePeriodMap.get( periodType ) ) );
             }
             
             queries.add( params );
@@ -460,7 +460,7 @@ public class DefaultQueryPlanner
             
             for ( Integer level : levelOrgUnitMap.keySet() )
             {
-                params.getFilters().add( new BaseDimensionalObject( filter.getDimension(), filter.getType(), LEVEL_PREFIX + level, levelOrgUnitMap.get( level ) ) );
+                params.getFilters().add( new BaseDimensionalObject( filter.getDimension(), filter.getDimensionType(), LEVEL_PREFIX + level, levelOrgUnitMap.get( level ) ) );
             }
             
             queries.add( params );
