@@ -34,6 +34,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Description;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
@@ -147,6 +148,11 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                 if ( IdentifiableObject.class.isAssignableFrom( returnType ) )
                 {
                     property.setIdentifiableObject( true );
+
+                    if ( NameableObject.class.isAssignableFrom( returnType ) )
+                    {
+                        property.setNameableObject( true );
+                    }
                 }
                 else if ( Collection.class.isAssignableFrom( returnType ) )
                 {
@@ -162,6 +168,11 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                         if ( IdentifiableObject.class.isAssignableFrom( klass ) )
                         {
                             property.setIdentifiableObject( true );
+
+                            if ( NameableObject.class.isAssignableFrom( klass ) )
+                            {
+                                property.setNameableObject( true );
+                            }
                         }
                     }
                 }
