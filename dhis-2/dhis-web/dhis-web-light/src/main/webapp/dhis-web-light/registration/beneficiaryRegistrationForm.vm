@@ -21,14 +21,7 @@
 
 	
 	<p style="text-align: left;">
-		<label>$i18n.getString( "full_name" )*</label>
 
-		#if( $validationMap.get( "fullName" ) )
-           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "fullName" ))</span>
-     	#end
-
-		<input type="text" name="patientFullName" value="$!previousValues.get("fullName")" />
-		
 		#foreach($patientAttribute in $patientAttributes)
 			#if(! $patientAttribute.program)
 				#set($key = "AT${patientAttribute.id}")
@@ -37,15 +30,11 @@
 		           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( $key ))</span>
 		     	#end
 				#if($patientAttribute.getValueType() == "combo")
-					<select type="text" name="$key">
-					#foreach($option in $patientAttribute.getAttributeOptions())
-						<option value="$option.id" 
-							#if( $previousValues.get( $key ) == $option.id ) 
-								selected="selected"
-							#end
-							> $option.getName() </option>
-					#end
-					</select>
+				<select type="text" name="$key">
+				 #foreach ($option in $patientAttribute.optionSet.options )
+					 <option value="$option" #if("$value"=="$option") selected #end>$option</option>
+				#end
+				</select>
 				#elseif( $patientAttribute.getValueType() == "bool" )
 					<select name="$key">
 							<option value="">$i18n.getString("select")</option>

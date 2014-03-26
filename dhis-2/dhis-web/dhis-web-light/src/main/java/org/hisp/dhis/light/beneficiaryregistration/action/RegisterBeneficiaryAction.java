@@ -33,6 +33,7 @@ import java.util.Collection;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 
@@ -142,15 +143,28 @@ public class RegisterBeneficiaryAction
         this.phoneNumberAreaCode = phoneNumberAreaCode;
     }
 
+    private Collection<TrackedEntity> trackedEntities;
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
+
+    public Collection<TrackedEntity> getTrackedEntities()
+    {
+        return trackedEntities;
+    }
+
+    public void setTrackedEntities( Collection<TrackedEntity> trackedEntities )
+    {
+        this.trackedEntities = trackedEntities;
+    }
 
     @Override
     public String execute()
         throws Exception
     {
         patientAttributes = patientAttributeService.getAllTrackedEntityAttributes();
+
         phoneNumberAreaCode = (String) systemSettingManager
             .getSystemSetting( SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE );
         if ( phoneNumberAreaCode == null )
