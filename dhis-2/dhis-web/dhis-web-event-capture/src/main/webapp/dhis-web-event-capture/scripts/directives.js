@@ -138,16 +138,15 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
             element.datepicker({
                 changeYear: true,
                 changeMonth: true,
+                maxDate: new Date(),
                 dateFormat: 'yy-mm-dd',
                 onSelect: function(date) {
-                    //scope.date = date;
                     ctrl.$setViewValue(date);
                     $(this).change();                    
                     scope.$apply();
                 }                
             })
             .change(function() {
-                //var rawDate = $filter('date')(this.value, 'yyyy-MM-dd'); 
                 var rawDate = this.value;
                 var convertedDate = moment(this.value, 'YYYY-MM-DD')._d;
                 convertedDate = $filter('date')(convertedDate, 'yyyy-MM-dd');       
@@ -189,7 +188,6 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     link: function (scope, element, attr, ctrls) {        
       element.bind('focus', function () {
         ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
-        //scope.$apply();
       });
     }
   };
