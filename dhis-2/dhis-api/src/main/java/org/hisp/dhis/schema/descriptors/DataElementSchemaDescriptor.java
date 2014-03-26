@@ -49,8 +49,8 @@ public class DataElementSchemaDescriptor implements SchemaDescriptor
 
         schema.setShareable( true );
 
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, true, Lists.newArrayList( "F_DATAELEMENT_PUBLIC_ADD" ) ) );
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, false, Lists.newArrayList( "F_DATAELEMENT_PRIVATE_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_DATAELEMENT_PUBLIC_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_DATAELEMENT_PRIVATE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_DATAELEMENT_DELETE" ) ) );
 
         return schema;

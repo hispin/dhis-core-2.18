@@ -44,29 +44,16 @@ public class Authority
 {
     private AuthorityType type;
 
-    private Boolean publicAuthority;
-
-    private Boolean privateAuthority;
-
-    private Boolean externalAuthority;
-
     private List<String> authorities;
 
-    public Authority()
+    public Authority( AuthorityType type )
     {
+        this.type = type;
     }
 
     public Authority( AuthorityType type, List<String> authorities )
     {
-        this.type = type;
-        this.authorities = authorities;
-    }
-
-    public Authority( AuthorityType type, boolean isPublic, List<String> authorities )
-    {
-        this.type = type;
-        this.publicAuthority = isPublic;
-        this.privateAuthority = !isPublic;
+        this( type );
         this.authorities = authorities;
     }
 
@@ -80,42 +67,6 @@ public class Authority
     public void setType( AuthorityType type )
     {
         this.type = type;
-    }
-
-    @JsonProperty( "public" )
-    @JacksonXmlProperty( isAttribute = true )
-    public Boolean getPublicAuthority()
-    {
-        return publicAuthority;
-    }
-
-    public void setPublicAuthority( Boolean publicAuthority )
-    {
-        this.publicAuthority = publicAuthority;
-    }
-
-    @JsonProperty( "private" )
-    @JacksonXmlProperty( isAttribute = true )
-    public Boolean getPrivateAuthority()
-    {
-        return privateAuthority;
-    }
-
-    public void setPrivateAuthority( Boolean privateAuthority )
-    {
-        this.privateAuthority = privateAuthority;
-    }
-
-    @JsonProperty( "external" )
-    @JacksonXmlProperty( isAttribute = true )
-    public Boolean getExternalAuthority()
-    {
-        return externalAuthority;
-    }
-
-    public void setExternalAuthority( Boolean externalAuthority )
-    {
-        this.externalAuthority = externalAuthority;
     }
 
     @JsonProperty
