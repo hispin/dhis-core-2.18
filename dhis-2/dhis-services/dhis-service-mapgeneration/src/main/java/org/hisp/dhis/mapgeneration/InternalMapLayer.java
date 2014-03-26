@@ -65,6 +65,8 @@ public class InternalMapLayer
 
     protected Integer method;
 
+    protected String layer;
+    
     protected Integer radiusHigh;
 
     protected Integer radiusLow;
@@ -105,6 +107,15 @@ public class InternalMapLayer
             ", color high: " + colorHigh + ", color low: " + colorLow + ", classes: " + classes + "]";
     }
     
+    /**
+     * Indicates whether this layer is a data layer.
+     * @return
+     */
+    public boolean isDataLayer()
+    {
+        return MapView.DATA_LAYERS.contains( layer );
+    }
+        
     /**
      * Interpolates the radii of this map layer's set of map objects according
      * the highest and lowest values among them.
@@ -430,6 +441,16 @@ public class InternalMapLayer
     public void setMethod( Integer method )
     {
         this.method = method;
+    }
+
+    public String getLayer()
+    {
+        return layer;
+    }
+
+    public void setLayer( String layer )
+    {
+        this.layer = layer;
     }
 
     public Integer getRadiusHigh()

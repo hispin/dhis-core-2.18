@@ -34,10 +34,39 @@ import java.util.List;
 public class InternalMap
 {
     private List<InternalMapLayer> layers = new ArrayList<InternalMapLayer>();
-    
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public InternalMap()
     {
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns the first data layer of the list of layers for this map. Returns
+     * null of none of the layers are data layers.
+     */
+    public InternalMapLayer getFirstDataLayer()
+    {
+        for ( InternalMapLayer layer : layers )
+        {
+            if ( layer != null && layer.isDataLayer() )
+            {
+                return layer;
+            }
+        }
+        
+        return null;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     public List<InternalMapLayer> getLayers()
     {

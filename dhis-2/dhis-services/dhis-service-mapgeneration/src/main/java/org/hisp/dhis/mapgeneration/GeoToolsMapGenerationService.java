@@ -147,21 +147,19 @@ public class GeoToolsMapGenerationService
             return null;
         }
         
-        boolean dataLayer = map.getMapViews().get( 0 ).isDataLayer();
+        InternalMapLayer dataLayer = internalMap.getFirstDataLayer();
         
         // Build representation of a map using GeoTools, then render as image
         BufferedImage mapImage = MapUtils.render( internalMap, width, height );
 
-        if ( !dataLayer )
+        if ( dataLayer == null )
         {
             return mapImage;
         }
         else
         {
-            // Build the legend set, then render it to an image
-            InternalMapLayer mapLayer = internalMap.getLayers().get( 0 ); //TODO improve
-            
-            LegendSet legendSet = new LegendSet( mapLayer ); //TODO
+            // Build the legend set, then render it to an image            
+            LegendSet legendSet = new LegendSet( dataLayer );
             
             BufferedImage titleImage = MapUtils.renderTitle( map.getName(), width );
             
@@ -258,6 +256,7 @@ public class GeoToolsMapGenerationService
         mapLayer.setName( name );
         mapLayer.setPeriod( period );
         mapLayer.setMethod( mapView.getMethod() );
+        mapLayer.setLayer( mapView.getLayer() );
         mapLayer.setRadiusLow( radiusLow );
         mapLayer.setRadiusHigh( radiusHigh );
         mapLayer.setColorLow( colorLow );
