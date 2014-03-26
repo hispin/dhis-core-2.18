@@ -29,6 +29,8 @@ package org.hisp.dhis.schema.descriptors;
  */
 
 import com.google.common.collect.Lists;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -46,8 +48,10 @@ public class UserRoleSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( UserAuthorityGroup.class, "userRole", "userRoles" );
 
         schema.setShareable( true );
-        schema.setPublicAuthorities( Lists.newArrayList( "F_USERROLE_PUBLIC_ADD" ) );
-        schema.setPrivateAuthorities( Lists.newArrayList( "F_USERROLE_PRIVATE_ADD" ) );
+
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_USERROLE_PUBLIC_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_USERROLE_PRIVATE_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_USERROLE_DELETE" ) ) );
 
         return schema;
     }

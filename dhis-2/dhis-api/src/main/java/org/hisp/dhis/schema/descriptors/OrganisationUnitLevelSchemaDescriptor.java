@@ -28,7 +28,10 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.springframework.stereotype.Component;
@@ -42,6 +45,10 @@ public class OrganisationUnitLevelSchemaDescriptor implements SchemaDescriptor
     @Override
     public Schema getSchema()
     {
-        return new Schema( OrganisationUnitLevel.class, "organisationUnitLevel", "organisationUnitLevels" );
+        Schema schema = new Schema( OrganisationUnitLevel.class, "organisationUnitLevel", "organisationUnitLevels" );
+
+        schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_ORGANISATIONUNITLEVEL_UPDATE" ) ) );
+
+        return schema;
     }
 }
