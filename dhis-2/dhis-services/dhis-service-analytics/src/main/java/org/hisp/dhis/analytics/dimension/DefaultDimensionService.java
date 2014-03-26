@@ -58,6 +58,9 @@ import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.sharing.SharingService;
 import org.hisp.dhis.system.util.UniqueArrayList;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeDimension;
+import org.hisp.dhis.trackedentity.TrackedEntityDataElementDimension;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,7 +139,21 @@ public class DefaultDimensionService
         {
             return cogs;
         }
-
+        
+        TrackedEntityAttribute tea = identifiableObjectManager.get( TrackedEntityAttribute.class, uid );
+        
+        if ( tea != null )
+        {
+            return tea;
+        }
+        
+        DataElement de = identifiableObjectManager.get( DataElement.class, uid );
+        
+        if ( de != null )
+        {
+            return de;
+        }
+        
         return null;
     }
 
@@ -192,6 +209,20 @@ public class DefaultDimensionService
         if ( cogs != null )
         {
             return DimensionType.CATEGORYOPTION_GROUPSET;
+        }
+
+        TrackedEntityAttribute tea = identifiableObjectManager.get( TrackedEntityAttribute.class, uid );
+        
+        if ( tea != null )
+        {
+            return DimensionType.TRACKED_ENTITY_ATTRIBUTE;
+        }
+        
+        DataElement de = identifiableObjectManager.get( DataElement.class, uid );
+        
+        if ( de != null )
+        {
+            return DimensionType.TRACKED_ENTITY_DATAELEMENT;
         }
 
         final Map<String, DimensionType> dimObjectTypeMap = new HashMap<String, DimensionType>();
@@ -389,6 +420,24 @@ public class DefaultDimensionService
                 else if ( CATEGORYOPTION_GROUPSET.equals( type ) )
                 {
                     object.getCategoryOptionGroups().addAll( identifiableObjectManager.getByUid( CategoryOptionGroup.class, uids ) );
+                }
+                else if ( TRACKED_ENTITY_ATTRIBUTE.equals( type ) )
+                {
+                    TrackedEntityAttributeDimension attributeDimension = new TrackedEntityAttributeDimension();
+                    attributeDimension.setAttribute( identifiableObjectManager.get( TrackedEntityAttribute.class, dimensionId ) );
+                    attributeDimension.setOperator( dimension.getOperator() );
+                    attributeDimension.setFilter( dimension.getFilter() );
+                    
+                    object.getAttributeDimensions().add( attributeDimension );
+                }
+                else if ( TRACKED_ENTITY_DATAELEMENT.equals( type ) )
+                {
+                    TrackedEntityDataElementDimension dataElementDimension = new TrackedEntityDataElementDimension();
+                    dataElementDimension.setDataElement( identifiableObjectManager.get( DataElement.class, dimensionId ) );
+                    dataElementDimension.setOperator( dimension.getOperator() );
+                    dataElementDimension.setFilter( dimension.getFilter() );
+                    
+                    object.getDataElementDimensions().add( dataElementDimension );
                 }
             }
         }
