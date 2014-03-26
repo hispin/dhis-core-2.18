@@ -37,6 +37,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.message.Message;
@@ -100,11 +101,9 @@ public class MessageConversationController
     {
         List<MessageConversation> entityList;
 
-        Date lastUpdated = options.getLastUpdated();
-
-        if ( lastUpdated != null )
+        if ( options.getOptions().containsKey( "query" ) )
         {
-            entityList = new ArrayList<MessageConversation>( manager.getByLastUpdated( getEntityClass(), lastUpdated ) );
+            entityList = Lists.newArrayList( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
         }
         else if ( options.hasPaging() )
         {

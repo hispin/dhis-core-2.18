@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
@@ -81,7 +82,10 @@ public class TrackedEntityAttributeController
             entityList = new ArrayList<TrackedEntityAttribute>(
                 trackedEntityAttributeService.getTrackedEntityAttributesWithoutProgram() );
         }
-
+        else if ( options.getOptions().containsKey( "query" ) )
+        {
+            entityList = Lists.newArrayList( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
+        }
         else if ( options.getOptions().containsKey( "program" ) )
         {
             String programId = options.getOptions().get( "program" );
@@ -92,7 +96,6 @@ public class TrackedEntityAttributeController
                 entityList = new ArrayList<TrackedEntityAttribute>( program.getTrackedEntityAttributes() );
             }
         }
-
         else if ( options.hasPaging() )
         {
             int count = manager.getCount( getEntityClass() );

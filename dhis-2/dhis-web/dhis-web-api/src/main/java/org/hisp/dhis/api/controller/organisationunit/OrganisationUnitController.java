@@ -28,16 +28,6 @@ package org.hisp.dhis.api.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
@@ -64,6 +54,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -84,8 +82,6 @@ public class OrganisationUnitController
     protected List<OrganisationUnit> getEntityList( WebMetaData metaData, WebOptions options )
     {
         List<OrganisationUnit> entityList;
-
-        Date lastUpdated = options.getLastUpdated();
 
         boolean levelSorted = options.getOptions().containsKey( "levelSorted" ) && Boolean.parseBoolean( options.getOptions().get( "levelSorted" ) );
 
@@ -124,7 +120,7 @@ public class OrganisationUnitController
         else if ( "true".equals( options.getOptions().get( "userDataViewFallback" ) ) )
         {
             User user = currentUserService.getCurrentUser();
-            
+
             if ( user != null && user.hasDataViewOrganisationUnit() )
             {
                 entityList = new ArrayList<OrganisationUnit>( user.getDataViewOrganisationUnits() );
@@ -134,9 +130,9 @@ public class OrganisationUnitController
                 entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
             }
         }
-        else if ( lastUpdated != null )
+        else if ( options.getOptions().containsKey( "query" ) )
         {
-            entityList = new ArrayList<OrganisationUnit>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
+            entityList = new ArrayList<OrganisationUnit>( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
 
             if ( levelSorted )
             {
@@ -184,8 +180,8 @@ public class OrganisationUnitController
     }
 
     @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
+    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -272,19 +268,19 @@ public class OrganisationUnitController
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
-    
+
     @RequestMapping(value = "/withinRange", method = RequestMethod.GET, produces = { "*/*", "application/json" })
-    public void getEntitiesWithinRange( @RequestParam Double longitude, @RequestParam Double latitude, 
+    public void getEntitiesWithinRange( @RequestParam Double longitude, @RequestParam Double latitude,
         @RequestParam Double distance, @RequestParam(required = false) String orgUnitGroupSetId,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         List<OrganisationUnit> entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getWithinCoordinateArea( longitude, latitude, distance ) );
-                 
+
         for ( OrganisationUnit orgunit : entityList )
         {
             Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
             attributeValues.clear();
-            
+
             if ( orgUnitGroupSetId != null ) // Add org unit group symbol into attr
             {
                 for ( OrganisationUnitGroup orgunitGroup : orgunit.getGroups() )
@@ -292,21 +288,21 @@ public class OrganisationUnitController
                     if ( orgunitGroup.getGroupSet() != null )
                     {
                         OrganisationUnitGroupSet orgunitGroupSet = orgunitGroup.getGroupSet();
-                                                    
+
                         if ( orgunitGroupSet.getUid().compareTo( orgUnitGroupSetId ) == 0 )
-                        {                        
+                        {
                             AttributeValue attributeValue = new AttributeValue();
                             attributeValue.setAttribute( new Attribute( "OrgUnitGroupSymbol", "OrgUnitGroupSymbol" ) );
                             attributeValue.setValue( orgunitGroup.getSymbol() );
-        
+
                             attributeValues.add( attributeValue );
                         }
                     }
                 }
             }
-            
+
             orgunit.setAttributeValues( attributeValues );
-            
+
             // Clear out all data not needed for this task
             orgunit.removeAllDataSets();
             orgunit.removeAllUsers();

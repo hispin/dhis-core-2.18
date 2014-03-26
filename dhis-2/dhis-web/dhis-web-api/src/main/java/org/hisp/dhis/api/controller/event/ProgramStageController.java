@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
@@ -40,7 +41,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,11 +66,9 @@ public class ProgramStageController
     {
         List<ProgramStage> entityList = new ArrayList<ProgramStage>();
 
-        Date lastUpdated = options.getLastUpdated();
-
-        if ( lastUpdated != null )
+        if ( options.getOptions().containsKey( "query" ) )
         {
-            entityList = new ArrayList<ProgramStage>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
+            entityList = Lists.newArrayList( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
         }
         else if ( options.hasPaging() )
         {
