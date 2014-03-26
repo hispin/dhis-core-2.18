@@ -29,7 +29,6 @@ package org.hisp.dhis.trackedentity.action.program;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -154,9 +153,9 @@ public class ShowUpdateProgramFormAction
         this.organisationUnitGroupId = organisationUnitGroupId;
     }
 
-    private Collection<TrackedEntityAttribute> availableAttributes;
+    private List<TrackedEntityAttribute> availableAttributes;
 
-    public Collection<TrackedEntityAttribute> getAvailableAttributes()
+    public List<TrackedEntityAttribute> getAvailableAttributes()
     {
         return availableAttributes;
     }
@@ -198,11 +197,14 @@ public class ShowUpdateProgramFormAction
     {
         program = programService.getProgram( id );
 
-        availableAttributes = attributeService.getAllTrackedEntityAttributes();
+        availableAttributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+        
         for ( ProgramTrackedEntityAttribute programAttribue : program.getAttributes() )
         {
             availableAttributes.remove( programAttribue.getAttribute() );
         }
+        
+        Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
