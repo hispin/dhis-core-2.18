@@ -133,17 +133,17 @@ public class DefaultFilterService implements FilterService
         }
 
         Map<String, Object> output = Maps.newHashMap();
-        Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
+        Schema schema = schemaService.getSchema( object.getClass() );
 
         for ( String key : fieldMap.keySet() )
         {
-            if ( !classMap.containsKey( key ) )
+            if ( !schema.containsProperty( key ) )
             {
                 continue;
             }
 
             Map value = fieldMap.get( key );
-            ReflectionUtils.PropertyDescriptor descriptor = classMap.get( key );
+            Property descriptor = schema.getPropertyByName( key );
 
             Object returned = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
 
@@ -234,11 +234,11 @@ public class DefaultFilterService implements FilterService
     private Map<String, Object> getIdentifiableObjectProperties( Object object, List<String> fields )
     {
         Map<String, Object> idProps = Maps.newLinkedHashMap();
-        Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
+        Schema schema = schemaService.getSchema( object.getClass() );
 
         for ( String field : fields )
         {
-            ReflectionUtils.PropertyDescriptor descriptor = classMap.get( field );
+            Property descriptor = schema.getPropertyByName( field );
 
             if ( descriptor == null )
             {
@@ -259,17 +259,22 @@ public class DefaultFilterService implements FilterService
     @SuppressWarnings( "unchecked" )
     private <T extends IdentifiableObject> boolean evaluateWithFilters( T object, Filters filters )
     {
-        Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( object.getClass() );
+        Schema schema = schemaService.getSchema( object.getClass() );
 
         for ( String field : filters.getFilters().keySet() )
         {
-            if ( !classMap.containsKey( field ) )
+            if ( !schema.containsProperty( field ) )
             {
                 System.err.println( "Skipping non-existent field: " + field );
                 continue;
             }
 
-            ReflectionUtils.PropertyDescriptor descriptor = classMap.get( field );
+            Property descriptor = schema.getPropertyByName( field );
+
+            if ( descriptor == null )
+            {
+                continue;
+            }
 
             Object value = ReflectionUtils.invokeMethod( object, descriptor.getMethod() );
 

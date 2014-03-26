@@ -28,9 +28,20 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Description;
 import org.hisp.dhis.system.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -48,27 +59,110 @@ public class DefaultPropertyScannerService implements PropertyScannerService
         return scanClass( klass );
     }
 
-    private List<Property> scanClass( Class<?> klass )
+    // -------------------------------------------------------------------------
+    // Scanning Helpers
+    // -------------------------------------------------------------------------
+
+    private static Map<Class<?>, List<Property>> classMapCache = Maps.newHashMap();
+
+    private static List<Property> scanClass( Class<?> clazz )
     {
-        List<Property> properties = Lists.newArrayList();
-
-        Map<String, ReflectionUtils.PropertyDescriptor> classMap = ReflectionUtils.getJacksonClassMap( klass );
-
-        // for now, just use the reflection utils directly
-        for ( ReflectionUtils.PropertyDescriptor descriptor : classMap.values() )
+        if ( classMapCache.containsKey( clazz ) )
         {
-            Property property = new Property( descriptor.getMethod() );
-            properties.add( property );
-
-            property.setKlass( descriptor.getClazz() );
-            property.setCollection( descriptor.isCollection() );
-            property.setIdentifiableObject( descriptor.isIdentifiableObject() );
-            property.setName( descriptor.getName() );
-            property.setXmlName( descriptor.getXmlName() );
-            property.setXmlNamespace( descriptor.getXmlNamespace() );
-            property.setXmlCollectionName( descriptor.getXmlCollectionName() );
-            property.setDescription( descriptor.getDescription() );
+            return classMapCache.get( clazz );
         }
+
+        List<Property> properties = Lists.newArrayList();
+        List<Method> allMethods = ReflectionUtils.getAllMethods( clazz );
+
+        for ( Method method : allMethods )
+        {
+            if ( method.isAnnotationPresent( JsonProperty.class ) )
+            {
+                JsonProperty jsonProperty = method.getAnnotation( JsonProperty.class );
+                Property property = new Property( method );
+
+                String name = jsonProperty.value();
+
+                if ( StringUtils.isEmpty( name ) )
+                {
+                    String[] getters = new String[]{
+                        "is", "has", "get"
+                    };
+
+                    name = method.getName();
+
+                    for ( String getter : getters )
+                    {
+                        if ( name.startsWith( getter ) )
+                        {
+                            name = name.substring( getter.length() );
+                        }
+                    }
+
+                    name = StringUtils.uncapitalize( name );
+                }
+
+                if ( method.isAnnotationPresent( Description.class ) )
+                {
+                    Description description = method.getAnnotation( Description.class );
+                    property.setDescription( description.value() );
+                }
+
+                if ( method.isAnnotationPresent( JacksonXmlProperty.class ) )
+                {
+                    JacksonXmlProperty jacksonXmlProperty = method.getAnnotation( JacksonXmlProperty.class );
+
+                    if ( jacksonXmlProperty.localName().isEmpty() )
+                    {
+                        property.setXmlName( name );
+                    }
+                    else
+                    {
+                        property.setXmlName( jacksonXmlProperty.localName() );
+                    }
+
+                    property.setXmlNamespace( jacksonXmlProperty.namespace() );
+                    property.setXmlAttribute( jacksonXmlProperty.isAttribute() );
+                }
+
+                if ( method.isAnnotationPresent( JacksonXmlElementWrapper.class ) )
+                {
+                    JacksonXmlElementWrapper jacksonXmlElementWrapper = method.getAnnotation( JacksonXmlElementWrapper.class );
+                    property.setXmlCollectionName( jacksonXmlElementWrapper.localName() );
+                }
+
+                property.setName( name );
+                properties.add( property );
+
+                Class<?> returnType = method.getReturnType();
+                property.setKlass( returnType );
+
+                if ( IdentifiableObject.class.isAssignableFrom( returnType ) )
+                {
+                    property.setIdentifiableObject( true );
+                }
+                else if ( Collection.class.isAssignableFrom( returnType ) )
+                {
+                    property.setCollection( true );
+
+                    Type type = method.getGenericReturnType();
+
+                    if ( ParameterizedType.class.isInstance( type ) )
+                    {
+                        ParameterizedType parameterizedType = (ParameterizedType) type;
+                        Class<?> klass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+
+                        if ( IdentifiableObject.class.isAssignableFrom( klass ) )
+                        {
+                            property.setIdentifiableObject( true );
+                        }
+                    }
+                }
+            }
+        }
+
+        classMapCache.put( clazz, properties );
 
         return properties;
     }
