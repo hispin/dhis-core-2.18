@@ -151,5 +151,6 @@
 "count",
 "sum",
 "by_data_element",
-"relative_periods"
+"relative_periods",
+"start_end_dates"
 ]
