@@ -82,6 +82,13 @@ public class UpdateAttributeAction
         this.name = name;
     }
 
+    private String shortName;
+    
+    public void setShortName( String shortName )
+    {
+        this.shortName = shortName;
+    }
+
     private String code;
 
     public void setCode( String code )
@@ -164,6 +171,7 @@ public class UpdateAttributeAction
         TrackedEntityAttribute attribute = attributeService.getTrackedEntityAttribute( id );
 
         attribute.setName( name );
+        attribute.setShortName( shortName );
         attribute.setCode( StringUtils.isEmpty( code.trim() ) ? null : code );
         attribute.setDescription( description );
         attribute.setValueType( valueType );
