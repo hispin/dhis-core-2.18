@@ -30,6 +30,8 @@ package org.hisp.dhis.schema.descriptors;
 
 import com.google.common.collect.Lists;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.springframework.stereotype.Component;
@@ -46,8 +48,10 @@ public class DataElementSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( DataElement.class, "dataElement", "dataElements" );
 
         schema.setShareable( true );
-        schema.setPublicAuthorities( Lists.newArrayList( "F_DATAELEMENT_PUBLIC_ADD" ) );
-        schema.setPrivateAuthorities( Lists.newArrayList( "F_DATAELEMENT_PRIVATE_ADD" ) );
+
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, true, Lists.newArrayList( "F_DATAELEMENT_PUBLIC_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, false, Lists.newArrayList( "F_DATAELEMENT_PRIVATE_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_DATAELEMENT_DELETE" ) ) );
 
         return schema;
     }

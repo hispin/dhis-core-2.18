@@ -28,18 +28,10 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
-
-import java.util.List;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "authorities", namespace = DxfNamespaces.DXF_2_0 )
-public class Authorities
+public enum AuthorityType
 {
-    List<String> publicCreate;
-
-    List<String> privateCreate;
+    CREATE, READ, UPDATE, DELETE
 }
