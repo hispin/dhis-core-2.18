@@ -188,14 +188,10 @@ public class TrackedEntityInstanceStoreTest
         entityInstanceStore.save( entityInstanceA2 );
         entityInstanceStore.save( entityInstanceB2 );
 
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit,
-            null );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit,
-            null );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA2, programA, date, date, organisationUnit,
-            null );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB2, programB, date, date, organisationUnit,
-            null );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceA2, programA, date, date, organisationUnit );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceB2, programB, date, date, organisationUnit );
 
         Collection<TrackedEntityInstance> entityInstances = entityInstanceStore.getByOrgUnitProgram( organisationUnit,
             programA, 0, 100 );
@@ -221,14 +217,10 @@ public class TrackedEntityInstanceStoreTest
         entityInstanceStore.save( entityInstanceA2 );
         entityInstanceStore.save( entityInstanceB2 );
 
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit,
-            null );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA2, programA, date, date, organisationUnit,
-            null );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit,
-            null );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB2, programB, date, date, organisationUnit,
-            null );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceA2, programA, date, date, organisationUnit );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceB2, programB, date, date, organisationUnit );
 
         Collection<TrackedEntityInstance> entityInstances = entityInstanceStore.getByProgram( programA, 0, 100 );
 
@@ -300,10 +292,8 @@ public class TrackedEntityInstanceStoreTest
             entityInstanceAttribute );
         attributeValueService.addTrackedEntityAttributeValue( attributeValue );
 
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit,
-            null );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit,
-            null );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit );
+        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
 
         List<String> searchKeys = new ArrayList<String>();
         searchKeys.add( TrackedEntityInstance.PREFIX_TRACKED_ENTITY_ATTRIBUTE + TrackedEntityInstance.SEARCH_SAPERATE

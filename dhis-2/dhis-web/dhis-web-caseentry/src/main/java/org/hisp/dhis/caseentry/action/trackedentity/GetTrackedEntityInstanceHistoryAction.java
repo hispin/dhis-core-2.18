@@ -32,7 +32,6 @@ import java.util.List;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
@@ -70,13 +69,6 @@ public class GetTrackedEntityInstanceHistoryAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -120,7 +112,7 @@ public class GetTrackedEntityInstanceHistoryAction
     {
         entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
 
-        grids = programInstanceService.getProgramInstanceReport( entityInstance, i18n, format );
+        grids = programInstanceService.getProgramInstanceReport( entityInstance, i18n );
 
         if ( type == null )
         {

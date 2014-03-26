@@ -148,7 +148,7 @@ public class ProgramValidationServiceTest
         entityInstanceService.addTrackedEntityInstance( entityInstance );
 
         ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, new Date(),
-            new Date(), organisationUnit, null );
+            new Date(), organisationUnit );
 
         stageInstanceA = programStageInstanceService.getProgramStageInstance( programInstance, stageA );
         stageInstanceB = programStageInstanceService.getProgramStageInstance( programInstance, stageB );

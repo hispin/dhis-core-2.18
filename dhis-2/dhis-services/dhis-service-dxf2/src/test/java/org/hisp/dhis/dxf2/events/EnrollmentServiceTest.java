@@ -30,7 +30,6 @@ package org.hisp.dhis.dxf2.events;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -46,7 +45,6 @@ import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.program.Program;
@@ -136,8 +134,8 @@ public class EnrollmentServiceTest
     @Test
     public void testGetEnrollments()
     {
-        programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
-        programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+        programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA );
+        programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA );
 
         assertEquals( 2, enrollmentService.getEnrollments().getEnrollments().size() );
     }
@@ -145,8 +143,8 @@ public class EnrollmentServiceTest
     @Test
     public void testGetEnrollmentsByPatient()
     {
-        programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
-        programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+        programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA );
+        programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA );
 
         assertEquals( 1, enrollmentService.getEnrollments( maleA ).getEnrollments().size() );
         assertEquals( 1, enrollmentService.getEnrollments( femaleA ).getEnrollments().size() );
@@ -156,8 +154,8 @@ public class EnrollmentServiceTest
     public void testGetEnrollmentsByPerson()
     {
 
-        programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
-        programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+        programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA );
+        programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA );
 
         TrackedEntityInstance male = trackedEntityInstanceService.getTrackedEntityInstance( maleA );
         TrackedEntityInstance female = trackedEntityInstanceService.getTrackedEntityInstance( femaleA );
@@ -169,8 +167,8 @@ public class EnrollmentServiceTest
     @Test
     public void testGetEnrollmentsByStatus()
     {
-        ProgramInstance piMale = programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
-        ProgramInstance piFemale = programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+        ProgramInstance piMale = programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA );
+        ProgramInstance piFemale = programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA );
 
         assertEquals( 2, enrollmentService.getEnrollments( EnrollmentStatus.ACTIVE ).getEnrollments().size() );
         assertEquals( 0, enrollmentService.getEnrollments( EnrollmentStatus.CANCELLED ).getEnrollments().size() );
@@ -182,7 +180,7 @@ public class EnrollmentServiceTest
         assertEquals( 1, enrollmentService.getEnrollments( EnrollmentStatus.CANCELLED ).getEnrollments().size() );
         assertEquals( 0, enrollmentService.getEnrollments( EnrollmentStatus.COMPLETED ).getEnrollments().size() );
 
-        programInstanceService.completeProgramInstanceStatus( piFemale, mock( I18nFormat.class ) );
+        programInstanceService.completeProgramInstanceStatus( piFemale );
 
         assertEquals( 0, enrollmentService.getEnrollments( EnrollmentStatus.ACTIVE ).getEnrollments().size() );
         assertEquals( 1, enrollmentService.getEnrollments( EnrollmentStatus.CANCELLED ).getEnrollments().size() );

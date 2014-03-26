@@ -30,7 +30,6 @@ package org.hisp.dhis.caseentry.action.trackedentity;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 
@@ -60,13 +59,6 @@ public class GetProgramInstanceHistoryAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -103,7 +95,7 @@ public class GetProgramInstanceHistoryAction
     {
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
-        grid = programInstanceService.getProgramInstanceReport( programInstance, i18n, format );
+        grid = programInstanceService.getProgramInstanceReport( programInstance, i18n );
         
         return ( type == null ) ? SUCCESS : type;
     }

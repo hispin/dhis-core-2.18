@@ -41,7 +41,6 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
@@ -49,9 +48,9 @@ import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
@@ -118,16 +117,12 @@ public class ProgramInstanceServiceTest
 
     private Collection<Integer> orgunitIds;
 
-    private MockI18nFormat mockFormat;
-
     @Autowired
     JdbcTemplate jdbcTemplate;
 
     @Override
     public void setUpTest()
     {
-        mockFormat = new MockI18nFormat();
-
         organisationUnitA = createOrganisationUnit( 'A' );
         int idA = organisationUnitService.addOrganisationUnit( organisationUnitA );
 
@@ -448,7 +443,7 @@ public class ProgramInstanceServiceTest
         programInstanceService.addProgramInstance( programInstanceD );
 
         ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstanceA, programA, enrollmentDate,
-            incidenDate, organisationUnitA, null );
+            incidenDate, organisationUnitA );
         programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
         programInstanceService.updateProgramInstance( programInstance );
 
@@ -464,12 +459,12 @@ public class ProgramInstanceServiceTest
         programInstanceService.addProgramInstance( programInstanceA );
 
         ProgramInstance programInstance1 = programInstanceService.enrollTrackedEntityInstance( entityInstanceA, programA, enrollmentDate,
-            incidenDate, organisationUnitA, null );
+            incidenDate, organisationUnitA );
         programInstance1.setStatus( ProgramInstance.STATUS_COMPLETED );
         programInstanceService.updateProgramInstance( programInstance1 );
 
         ProgramInstance programInstance2 = programInstanceService.enrollTrackedEntityInstance( entityInstanceA, programA, enrollmentDate,
-            incidenDate, organisationUnitA, null );
+            incidenDate, organisationUnitA );
         programInstance2.setStatus( ProgramInstance.STATUS_COMPLETED );
         programInstanceService.updateProgramInstance( programInstance2 );
 
@@ -577,7 +572,7 @@ public class ProgramInstanceServiceTest
 
         programInstanceService.addProgramInstance( programInstanceA );
         Collection<OutboundSms> outboundSmsList = programInstanceService.sendMessages( programInstanceA,
-            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
+            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT );
         assertEquals( 1, outboundSmsList.size() );
         assertEquals( "Test program message template", outboundSmsList.iterator().next().getMessage() );
     }
@@ -592,7 +587,7 @@ public class ProgramInstanceServiceTest
         programInstanceService.addProgramInstance( programInstanceB );
 
         Collection<MessageConversation> messages = programInstanceService.sendMessageConversations( programInstanceA,
-            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
+            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT );
         assertEquals( 1, messages.size() );
         assertEquals( "Test program message template", messages.iterator().next().getMessages().get( 0 ).getText() );
     }
@@ -601,7 +596,7 @@ public class ProgramInstanceServiceTest
     public void testEnrollTrackedEntityInstance()
     {
         ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstanceA, programB, enrollmentDate,
-            incidenDate, organisationUnitA, mockFormat );
+            incidenDate, organisationUnitA );
 
         assertNotNull( programInstanceService.getProgramInstance( programInstance.getId() ) );
     }
@@ -622,8 +617,8 @@ public class ProgramInstanceServiceTest
         int idA = programInstanceService.addProgramInstance( programInstanceA );
         int idD = programInstanceService.addProgramInstance( programInstanceD );
 
-        programInstanceService.completeProgramInstanceStatus( programInstanceA, mockFormat );
-        programInstanceService.completeProgramInstanceStatus( programInstanceD, mockFormat );
+        programInstanceService.completeProgramInstanceStatus( programInstanceA );
+        programInstanceService.completeProgramInstanceStatus( programInstanceD );
 
         assertEquals( ProgramInstance.STATUS_COMPLETED, programInstanceService.getProgramInstance( idA ).getStatus() );
         assertEquals( ProgramInstance.STATUS_COMPLETED, programInstanceService.getProgramInstance( idD ).getStatus() );

@@ -133,7 +133,7 @@ public class ProgramIndicatorServiceTest
         enrollmentDate = calEnrollment.getTime();
 
         programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, programA, enrollmentDate, incidenDate,
-            organisationUnit, null );
+            organisationUnit );
 
         indicatorDate = new ProgramIndicator( "IndicatorA", "IndicatorDesA", ProgramIndicator.VALUE_TYPE_INT, "( "
             + ProgramIndicator.INCIDENT_DATE + " - " + ProgramIndicator.ENROLLEMENT_DATE + " )  / 7" );

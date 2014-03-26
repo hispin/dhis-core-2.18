@@ -171,7 +171,7 @@ public class TrackedEntityInstanceReminderServiceTest
         programService.updateProgram( program );
 
         programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, new Date(),
-            new Date(), organisationUnit, null );
+            new Date(), organisationUnit );
     }
 
     @Test

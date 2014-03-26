@@ -291,8 +291,7 @@ public abstract class AbstractEnrollmentService
         }
 
         ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program,
-            enrollment.getDateOfEnrollment(), enrollment.getDateOfIncident(), entityInstance.getOrganisationUnit(),
-            i18nManager.getI18nFormat() );
+            enrollment.getDateOfEnrollment(), enrollment.getDateOfIncident(), entityInstance.getOrganisationUnit() );
 
         if ( programInstance == null )
         {
@@ -369,7 +368,7 @@ public abstract class AbstractEnrollmentService
             }
             else if ( enrollment.getStatus().equals( EnrollmentStatus.COMPLETED ) )
             {
-                programInstanceService.completeProgramInstanceStatus( programInstance, i18nManager.getI18nFormat() );
+                programInstanceService.completeProgramInstanceStatus( programInstance );
             }
             else
             {
@@ -419,7 +418,7 @@ public abstract class AbstractEnrollmentService
         ProgramInstance programInstance = programInstanceService.getProgramInstance( enrollment.getEnrollment() );
         Assert.notNull( programInstance );
 
-        programInstanceService.completeProgramInstanceStatus( programInstance, i18nManager.getI18nFormat() );
+        programInstanceService.completeProgramInstanceStatus( programInstance );
     }
 
     // -------------------------------------------------------------------------

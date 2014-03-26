@@ -151,7 +151,7 @@ public class TrackedEntityDataValueServiceTest
         tomorrow = calTomorrow.getTime();
 
         programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, yesterday, yesterday,
-            organisationUnit, null );
+            organisationUnit );
 
         stageInstanceA = programStageInstanceService.getProgramStageInstance( programInstance, stageA );
         stageInstanceB = programStageInstanceService.getProgramStageInstance( programInstance, stageB );

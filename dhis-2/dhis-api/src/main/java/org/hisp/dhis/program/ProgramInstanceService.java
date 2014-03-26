@@ -28,17 +28,16 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
-
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Abyot Asalefew
@@ -266,23 +265,21 @@ public interface ProgramInstanceService
      * 
      * @param entityInstance TrackedEntityInstance
      * @param i18n I18n object
-     * @param format I18nFormat object
      * 
      * @return Grid list in which each grid is the program information details
      *         of the TrackedEntityInstance
      */
-    List<Grid> getProgramInstanceReport( TrackedEntityInstance entityInstance, I18n i18n, I18nFormat format );
+    List<Grid> getProgramInstanceReport( TrackedEntityInstance entityInstance, I18n i18n );
 
     /**
      * Export a program information details report
      * 
      * @param programInstance ProgramInstance
      * @param i18n I18n object
-     * @param format I18nFormat object
      * 
      * @return Grid object
      */
-    Grid getProgramInstanceReport( ProgramInstance programInstance, I18n i18n, I18nFormat format );
+    Grid getProgramInstanceReport( ProgramInstance programInstance, I18n i18n );
 
     /**
      * Retrieve program instances with a certain status on a program and an
@@ -330,11 +327,10 @@ public interface ProgramInstanceService
      * @param programInstance ProgramInstance
      * @param status The time to send message, send when a person enrolled an
      *        program or complete a program or send by scheduled days
-     * @param format I18nFormat object
      * 
      * @return OutboundSms list
      */
-    Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status, I18nFormat format );
+    Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status );
 
     /**
      * Send messages defined as DHIS messages for a program
@@ -342,12 +338,10 @@ public interface ProgramInstanceService
      * @param programInstance ProgramInstance
      * @param status The time to send message, send when a person enrolled an
      *        program or complete a program or send by scheduled days
-     * @param format I18nFormat object
      * 
      * @return MessageConversation list
      */
-    Collection<MessageConversation> sendMessageConversations( ProgramInstance programInstance, int status,
-        I18nFormat format );
+    Collection<MessageConversation> sendMessageConversations( ProgramInstance programInstance, int status );
 
     /**
      * Enroll a TrackedEntityInstance into a program
@@ -357,12 +351,11 @@ public interface ProgramInstanceService
      * @param enrollmentDate The date of enrollment
      * @param dateOfIncident The date of incident
      * @param orgunit Organisation Unit
-     * @param format I18nFormat object
      * 
      * @return ProgramInsance
      */
     ProgramInstance enrollTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program, Date enrollmentDate, Date dateOfIncident,
-        OrganisationUnit orgunit, I18nFormat format );
+        OrganisationUnit orgunit );
 
     /**
      * Check a program instance if it can be completed automatically. If there
@@ -380,9 +373,8 @@ public interface ProgramInstanceService
      * send if it was defined to send when to complete this program
      * 
      * @param programInstance ProgramInstance
-     * @param format I18nFormat
      */
-    void completeProgramInstanceStatus( ProgramInstance programInstance, I18nFormat format );
+    void completeProgramInstanceStatus( ProgramInstance programInstance );
 
     /**
      * Set status as skipped for overdue events; Remove scheduled events
