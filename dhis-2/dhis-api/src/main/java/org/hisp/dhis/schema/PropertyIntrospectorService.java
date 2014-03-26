@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface PropertyScannerService
+public interface PropertyIntrospectorService
 {
     List<Property> getProperties( Class<?> klass );
 }
