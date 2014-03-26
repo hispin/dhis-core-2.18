@@ -29,6 +29,7 @@ package org.hisp.dhis.schema;
  */
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -36,4 +37,6 @@ import java.util.List;
 public interface PropertyIntrospectorService
 {
     List<Property> getProperties( Class<?> klass );
+
+    Map<String, Property> getPropertiesMap( Class<?> klass );
 }
