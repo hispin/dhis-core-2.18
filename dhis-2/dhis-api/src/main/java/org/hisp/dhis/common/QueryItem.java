@@ -57,8 +57,12 @@ public class QueryItem
     private String operator;
 
     private String filter;
-    
-    private boolean numeric;
+
+    // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+
+    private transient boolean numeric;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -69,6 +73,13 @@ public class QueryItem
         this.item = item;
     }
     
+    public QueryItem( IdentifiableObject item, String operator, String filter )
+    {
+        this.item = item;
+        this.operator = operator;
+        this.filter = filter;
+    }
+
     public QueryItem( IdentifiableObject item, String operator, String filter, boolean numeric )
     {
         this.item = item;
@@ -140,7 +151,7 @@ public class QueryItem
         
         for ( IdentifiableObject object : objects )
         {
-            queryItems.add( new QueryItem( object, null, null, false ) );
+            queryItems.add( new QueryItem( object, null, null ) );
         }
         
         return queryItems;
