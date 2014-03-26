@@ -91,4 +91,14 @@ public interface DimensionalObject
     boolean isAllItems();
     
     boolean hasItems();
+    
+    /**
+     * Gets the operator. Applicable for events only.
+     */
+    String getOperator();
+
+    /**
+     * Gets the filter. Applicable for events only.
+     */
+    String getFilter();
 }

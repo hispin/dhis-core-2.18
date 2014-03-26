@@ -62,6 +62,16 @@ public class BaseDimensionalObject
      */
     private List<NameableObject> items = new ArrayList<NameableObject>();
     
+    /**
+     * Operator. Applicable for events only.
+     */
+    private String operator;
+    
+    /**
+     * Filter. Applicable for events only.
+     */
+    private String filter;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -103,6 +113,16 @@ public class BaseDimensionalObject
         this.dimensionName = dimensionName;
         this.displayName = displayName;
         this.items = new ArrayList<NameableObject>( items );
+    }
+
+    public BaseDimensionalObject( String dimension, DimensionType dimensionType, String dimensionName, String displayName, String operator, String filter )
+    {
+        this.uid = dimension;
+        this.dimensionType = dimensionType;
+        this.dimensionName = dimensionName;
+        this.displayName = displayName;
+        this.operator = operator;
+        this.filter = filter;
     }
 
     // -------------------------------------------------------------------------
@@ -179,6 +199,32 @@ public class BaseDimensionalObject
     public void setItems( List<NameableObject> items )
     {
         this.items = items;
+    }
+
+    @JsonProperty
+    @JsonView( {DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getOperator()
+    {
+        return operator;
+    }
+
+    public void setOperator( String operator )
+    {
+        this.operator = operator;
+    }
+
+    @JsonProperty
+    @JsonView( {DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getFilter()
+    {
+        return filter;
+    }
+
+    public void setFilter( String filter )
+    {
+        this.filter = filter;
     }
 
     //--------------------------------------------------------------------------
