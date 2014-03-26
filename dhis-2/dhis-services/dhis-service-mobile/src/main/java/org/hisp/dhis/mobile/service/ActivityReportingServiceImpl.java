@@ -118,8 +118,6 @@ public class ActivityReportingServiceImpl
 
     private TrackedEntityAttributeValueService attValueService;
 
-    private TrackedEntityAttributeService attService;
-
     private TrackedEntityDataValueService dataValueService;
 
     private TrackedEntityMobileSettingService mobileSettingService;
@@ -186,12 +184,6 @@ public class ActivityReportingServiceImpl
     public void setAttValueService( TrackedEntityAttributeValueService attValueService )
     {
         this.attValueService = attValueService;
-    }
-
-    @Required
-    public void setAttService( TrackedEntityAttributeService attService )
-    {
-        this.attService = attService;
     }
 
     @Required

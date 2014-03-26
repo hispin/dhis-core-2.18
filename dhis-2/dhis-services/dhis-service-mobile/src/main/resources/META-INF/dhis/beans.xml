@@ -18,7 +18,6 @@
 
   <bean id="org.hisp.dhis.mobile.api.ActivityReportingService" class="org.hisp.dhis.mobile.service.ActivityReportingServiceImpl">
     <property name="attValueService" ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
-    <property name="attService" ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
     <property name="mobileSettingService" ref="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService" />
     <property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
