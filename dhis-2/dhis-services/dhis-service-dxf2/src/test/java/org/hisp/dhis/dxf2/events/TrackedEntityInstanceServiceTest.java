@@ -36,7 +36,6 @@ import static org.junit.Assert.assertNull;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
@@ -110,8 +109,8 @@ public class TrackedEntityInstanceServiceTest
         manager.save( femaleB );
         manager.save( programA );
 
-        programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA, null );
-        programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA, null );
+        programInstanceService.enrollTrackedEntityInstance( maleA, programA, null, null, organisationUnitA );
+        programInstanceService.enrollTrackedEntityInstance( femaleA, programA, null, null, organisationUnitA );
     }
 
     // @Override

@@ -177,8 +177,7 @@ public class SaveProgramEnrollmentAction
 
         if ( programInstance == null )
         {
-            programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, enrollment, incident, orgunit,
-                format );
+            programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, enrollment, incident, orgunit );
         }
 
         // ---------------------------------------------------------------------

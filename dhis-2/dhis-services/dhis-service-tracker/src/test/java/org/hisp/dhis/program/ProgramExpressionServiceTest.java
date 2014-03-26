@@ -135,7 +135,7 @@ public class ProgramExpressionServiceTest
         entityInstanceService.addTrackedEntityInstance( entityInstance );
 
         ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, new Date(),
-            new Date(), organisationUnit, null );
+            new Date(), organisationUnit );
         stageInstance = programStageInstanceService.getProgramStageInstance( programInstance, stageA );
 
         TrackedEntityDataValue dataValueA = new TrackedEntityDataValue( stageInstance, dataElementA, "1" );

@@ -31,7 +31,6 @@ package org.hisp.dhis.caseentry.action.trackedentity;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -54,13 +53,6 @@ public class SetProgramInstanceStatusAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -100,7 +92,7 @@ public class SetProgramInstanceStatusAction
 
         if ( status == ProgramInstance.STATUS_COMPLETED )
         {
-            programInstanceService.completeProgramInstanceStatus( programInstance, format );
+            programInstanceService.completeProgramInstanceStatus( programInstance );
         }
 
         else if ( status == ProgramInstance.STATUS_CANCELLED )

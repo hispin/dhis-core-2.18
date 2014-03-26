@@ -255,7 +255,7 @@ public class CaseAggregationConditionServiceTest
         Calendar today = Calendar.getInstance();
         PeriodType.clearTimeOfDay( today );
         ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program,
-            today.getTime(), today.getTime(), organisationUnit, null );
+            today.getTime(), today.getTime(), organisationUnit );
 
         ProgramStageInstance stageInstanceA = programStageInstanceService.getProgramStageInstance( programInstance,
             stageA );
