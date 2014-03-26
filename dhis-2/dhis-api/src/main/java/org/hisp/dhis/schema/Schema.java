@@ -33,11 +33,14 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -200,6 +203,42 @@ public class Schema
     public void setProperties( List<Property> properties )
     {
         this.properties = properties;
+    }
+
+    private Map<String, Property> propertyMap = Maps.newHashMap();
+
+    public boolean containsProperty( String name )
+    {
+        if ( StringUtils.isEmpty( name ) )
+        {
+            return false;
+        }
+
+        if ( propertyMap.containsKey( name ) )
+        {
+            return true;
+        }
+
+        for ( Property property : properties )
+        {
+            if ( name.equals( property.getName() ) )
+            {
+                propertyMap.put( name, property );
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Property getPropertyByName( String name )
+    {
+        if ( containsProperty( name ) )
+        {
+            return propertyMap.get( name );
+        }
+
+        return null;
     }
 
     @Override
