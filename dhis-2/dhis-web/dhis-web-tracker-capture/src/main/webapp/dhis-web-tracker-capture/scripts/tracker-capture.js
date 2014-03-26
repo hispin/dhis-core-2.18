@@ -1,4 +1,3 @@
-
 dhis2.util.namespace('dhis2.tc');
 
 // whether current user has any organisation units
@@ -18,9 +17,9 @@ var i18n_sync_success = 'Upload to server was successful';
 var i18n_sync_failed = 'Upload to server failed, please try again later';
 var i18n_uploading_data_notification = 'Uploading locally stored data to the server';
 
-var PROGRAMS_METADATA = 'PROGRAMS';
+var PROGRAMS_METADATA = 'TRACKER_PROGRAMS';
 
-var EVENT_VALUES = 'EVENTVALUES';
+var TRACKER_VALUES = 'TRACKER_VALUES';
 
 DAO.store = new dhis2.storage.Store({
     name: 'dhis2',
@@ -37,7 +36,6 @@ DAO.store = new dhis2.storage.Store({
         }
     };
 })(jQuery);
-
 
 /**
  * Page init. The order of events is:
@@ -61,6 +59,7 @@ $(document).ready(function()
         
         promise = promise.then( getUserProfile );
         promise = promise.then( getAttributes );
+        promise = promise.then( getTrackedEntities );
         promise = promise.then( getMetaPrograms );     
         promise = promise.then( getPrograms );      
         promise = promise.then( getProgramStages );        
@@ -168,14 +167,13 @@ function getUserProfile()
 
 function getMetaPrograms()
 {
-    var PROGRAMS_METADATA = 'PROGRAMS';
     var def = $.Deferred();
 
     $.ajax({
-        url: '../api/programs.json',
+        url: '../api/programs',
         type: 'GET',
-        data:'type=1'
-    }).done( function(response) {            
+        data:'type=1&paging=false'
+    }).done( function(response) {        
         localStorage[PROGRAMS_METADATA] = JSON.stringify(response.programs);           
         def.resolve( response.programs );
     });
@@ -275,10 +273,29 @@ function getAttributes()
     var def = $.Deferred();
 
     $.ajax({
-        url: '../api/trackedEntityAttributes.json?viewClass=detailed&paging=false',
-        type: 'GET'
+        url: '../api/trackedEntityAttributes',
+        type: 'GET',
+        data:'viewClass=detailed&paging=false'
     }).done( function(response) {            
         localStorage['ATTRIBUTES'] = JSON.stringify(response.trackedEntityAttributes);
+        def.resolve();
+    });
+    
+    return def.promise(); 
+}
+
+function getTrackedEntities()
+{
+    var def = $.Deferred();
+
+    $.ajax({
+        url: '../api/trackedEntities',
+        type: 'GET',
+        data:'viewClass=detailed&paging=false'
+    }).done( function(response) {
+        _.each(_.values(response.trackedEntities), function(te){
+            localStorage[te.id] = JSON.stringify(te);;
+        });        
         def.resolve();
     });
     
@@ -392,7 +409,7 @@ function StorageManager()
      */
     this.clear = function ()
     {
-        localStorage.removeItem(EVENT_VALUES);        
+        localStorage.removeItem(TRACKER_VALUES);        
     };    
     
     /**
@@ -414,16 +431,16 @@ function StorageManager()
 
         var events = {};
 
-        if (localStorage[EVENT_VALUES] != null)
+        if (localStorage[TRACKER_VALUES] != null)
         {
-            events = JSON.parse(localStorage[EVENT_VALUES]);
+            events = JSON.parse(localStorage[TRACKER_VALUES]);
         }
 
         events[event.event] = event;
 
         try
         {
-            localStorage[EVENT_VALUES] = JSON.stringify(events);
+            localStorage[TRACKER_VALUES] = JSON.stringify(events);
 
             log('Successfully stored event - locally');
         }
@@ -442,9 +459,9 @@ function StorageManager()
      */
     this.getEvent = function(id)
     {
-        if (localStorage[EVENT_VALUES] != null)
+        if (localStorage[TRACKER_VALUES] != null)
         {
-            var events = JSON.parse(localStorage[EVENT_VALUES]);
+            var events = JSON.parse(localStorage[TRACKER_VALUES]);
 
             return events[id];
         }
@@ -464,7 +481,7 @@ function StorageManager()
         if (events != null && events[event.event] != null)
         {
             delete events[event.event];
-            localStorage[EVENT_VALUES] = JSON.stringify(events);
+            localStorage[TRACKER_VALUES] = JSON.stringify(events);
         }
     };
     
@@ -495,7 +512,7 @@ function StorageManager()
      */
     this.getAllEvents = function()
     {
-        return localStorage[EVENT_VALUES] != null ? JSON.parse( localStorage[EVENT_VALUES] ) : null;
+        return localStorage[TRACKER_VALUES] != null ? JSON.parse( localStorage[TRACKER_VALUES] ) : null;
     };    
 
     /**

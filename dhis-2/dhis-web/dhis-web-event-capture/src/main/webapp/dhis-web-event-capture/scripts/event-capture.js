@@ -18,9 +18,9 @@ var i18n_sync_success = 'Upload to server was successful';
 var i18n_sync_failed = 'Upload to server failed, please try again later';
 var i18n_uploading_data_notification = 'Uploading locally stored data to the server';
 
-var PROGRAMS_METADATA = 'PROGRAMS';
+var PROGRAMS_METADATA = 'EVENT_PROGRAMS';
 
-var EVENT_VALUES = 'EVENTVALUES';
+var EVENT_VALUES = 'EVENT_VALUES';
 
 DAO.store = new dhis2.storage.Store({
     name: 'dhis2',
@@ -168,16 +168,15 @@ function getUserProfile()
 
 function getMetaPrograms()
 {
-    var PROGRAMS_METADATA = 'PROGRAMS';
     var def = $.Deferred();
 
     $.ajax({
-        url: '../api/programs.json',
+        url: '../api/programs',
         type: 'GET',
-        data:'type=3'
-    }).done( function(response) {            
+        data:'type=3&paging=false'
+    }).done( function(response) {             
         localStorage[PROGRAMS_METADATA] = JSON.stringify(response.programs);           
-        def.resolve( response.programs );
+        def.resolve(response.programs);
     });
     
     return def.promise(); 
@@ -298,7 +297,7 @@ function uploadLocalData()
     events = JSON.stringify(events);  
     
     $.ajax( {
-        url: '../api/events.json',
+        url: '../api/events',
         type: 'POST',
         data: events,
         contentType: 'application/json',              

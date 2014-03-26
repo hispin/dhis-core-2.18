@@ -25,13 +25,14 @@
     <div>
         <table>
             <tr>
-                <td><label>{{'registering_unit'| translate}}</label></td>
-                <td><input type="text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name|| 'please_select'| translate}}" disabled=""></td>                           
+                <td>{{'registering_unit'| translate}}</td>
+                <td><input type="text" class="fixed-text-width" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name|| 'please_select'| translate}}" disabled=""></td>                           
             </tr>
             <tr>
-                <td><label>{{'program'| translate}}<em title="{{'required'| translate}}" class="required">*</em></label></td>
+                <td>{{'program'| translate}}<em title="{{'required'| translate}}" class="required">*</em></td>
                 <td>
-                    <select id="programId" 
+                    <select class="fixed-select-width"
+                            id="programId" 
                             name="programId" 
                             ng-model="selectedProgram" 
                             ng-options="program as program.name for program in programs | orderBy: 'name'" 
@@ -60,7 +61,7 @@
     <!-- selection ends -->   
 
     <!-- search begins -->
-    <div style="width: 30%;">
+    <div style="width: 50%;">
         <accordion>
             <accordion>
                 <accordion-group is-open="{{searchField.isOpen}}">
@@ -68,40 +69,45 @@
                         {{searchField.title| translate}}
                     </accordion-heading>
                     <div>
-                        <div class="list-element" ng-repeat="attribute in attributes">
-                            {{attribute.name}}
-                            <div class="right">
-                                <div ng-switch="attribute.valueType">
-                                    <div ng-switch-when="date">
-                                        <input type="text" ng-date ng-model="attribute.value" />
-                                    </div>
-                                    <div ng-switch-when="trueOnly">
-                                        <input type="checkbox" ng-model="attribute.value" />
-                                    </div>
-                                    <div ng-switch-when="bool">
-                                        <select ng-model="attribute.value" />
-                                        <option value="">{{'please_select'| translate}}</option>                        
-                                        <option value="0">{{'no'| translate}}</option>
-                                        <option value="1">{{'yes'| translate}}</option>
-                                        </select>
-                                    </div>
-                                    <div ng-switch-when="combo">
-                                        <input type="text" 
-                                               ng-model="attribute.value"                                                 
-                                               typeahead="option.name for option in attribute.personAttributeOptions | filter:$viewValue | limitTo:20" 
-                                               typeahead-open-on-focus 
-                                               />
-                                    </div>
-                                    <div ng-switch-when="number">
-                                        <input type="number" ng-model="attribute.value"/>
-                                    </div>
-                                    <div ng-switch-default>
-                                        <input type="text" ng-model="attribute.value" />                                        
-                                    </div>
-                                </div>                                                                                                    
+                        <div class="form-group">
+                            <div class="row" ng-repeat="attribute in attributes">
+                                <div class="col-sm-6">
+                                    {{attribute.name}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <div ng-switch="attribute.valueType">
+                                        <div ng-switch-when="date">
+                                            <input type="text" class="form-control" ng-date ng-model="attribute.value" />
+                                        </div>
+                                        <div ng-switch-when="trueOnly">
+                                            <input type="checkbox" class="form-control" ng-model="attribute.value" />
+                                        </div>
+                                        <div ng-switch-when="bool">
+                                            <select ng-model="attribute.value" class="form-control">
+                                            <option value="">{{'please_select'| translate}}</option>                        
+                                            <option value="0">{{'no'| translate}}</option>
+                                            <option value="1">{{'yes'| translate}}</option>
+                                            </select>
+                                        </div>
+                                        <div ng-switch-when="combo">
+                                            <input type="text" 
+                                                   class="form-control"
+                                                   ng-model="attribute.value"                                                 
+                                                   typeahead="option.name for option in attribute.personAttributeOptions | filter:$viewValue | limitTo:20" 
+                                                   typeahead-open-on-focus 
+                                                   />
+                                        </div>
+                                        <div ng-switch-when="number">
+                                            <input type="number" class="form-control" ng-model="attribute.value"/>
+                                        </div>
+                                        <div ng-switch-default>
+                                            <input type="text" class="form-control" ng-model="attribute.value" />                                        
+                                        </div>
+                                    </div>                                                                                                    
+                                </div>
                             </div>
                         </div>
-                        
+
                         <div class="vertial-spacing">
                             <button ng-click="search()">{{'search'| translate}}</button>
                         </div>
@@ -117,17 +123,17 @@
         <div ng-switch-when=""></div>
         <div ng-switch-default>
             <h2>
-                {{selectedProgram.trackedEntity.name || 'entity' | translate}} {{'list'| translate}}
+                {{selectedProgram.trackedEntity.name|| 'entity' | translate}} {{'list'| translate}}
             </h2>
             <div ng-switch="trackedEntityList.rows.length">
                 <div ng-switch-when="undefined">
                     <p>
-                        {{'empty'| translate}} {{selectedProgram.trackedEntity.name || 'entity' | translate}} {{'list'| translate}}                        
+                        {{'empty'| translate}} {{selectedProgram.trackedEntity.name|| 'entity' | translate}} {{'list'| translate}}                        
                     </p>
                 </div>
                 <div ng-switch-when="0">
                     <p>
-                        {{'empty'| translate}} {{selectedProgram.trackedEntity.name || 'entity' | translate}} {{'list'| translate}}
+                        {{'empty'| translate}} {{selectedProgram.trackedEntity.name|| 'entity' | translate}} {{'list'| translate}}
                     </p>
                 </div>
                 <div ng-switch-default>
@@ -151,36 +157,36 @@
                                     <!-- filter icon begins -->
                                     <span class='pull-right'>
                                         <span ng-show="gridColumn.type !== 'date'">
-                                            <a href ng-click="filterInGrid(gridColumn)" title="{{'filter'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [filterText[gridColumn.id] == undefined || filterText[gridColumn.id] == '']"><i class="fa fa-filter"></i></span></a>
+                                            <a href ng-click="filterInGrid(gridColumn)" title="{{'filter'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [filterText[gridColumn.id] == undefined || filterText[gridColumn.id] == '']"><i class="fa fa-filter"></i></span></a>
                                         </span>
                                         <span ng-show="gridColumn.type === 'date'">
-                                            <a href ng-click="filterInGrid(gridColumn)" title="{{'filter'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [(filterText[gridColumn.id].start == 'undefined' || filterText[gridColumn.id].start == '') && (filterText[gridColumn.id].end == 'undefined' || filterText[gridColumn.id].end == '')]"><i class="fa fa-filter"></i></span></a>
+                                            <a href ng-click="filterInGrid(gridColumn)" title="{{'filter'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [(filterText[gridColumn.id].start == 'undefined' || filterText[gridColumn.id].start == '') && (filterText[gridColumn.id].end == 'undefined' || filterText[gridColumn.id].end == '')]"><i class="fa fa-filter"></i></span></a>
                                         </span>                                                    
                                     </span>
                                     <!-- filter icon ends -->
 
                                     <!-- filter input field begins -->
-                        <div ng-show="gridColumn.showFilter">
-                            <span ng-show="gridColumn.type !== 'date'">
-                                <input type="text" ng-model="filterText[gridColumn.id]" ng-blur="filterInGrid(gridColumn)">
-                            </span>                                                    
-                            <span ng-show="gridColumn.type === 'date'">
-                                <input placeholder="{{'start_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].start" data-ng-date readonly="readonly">
-                                <span ng-hide="filterText[gridColumn.id].start == 'undefined' || filterText[gridColumn.id].start == ''">
-                                    <a href ng-click='removeStartFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
-                                </span>
-                                <input placeholder="{{'end_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].end" data-ng-date readonly="readonly">
-                                <span ng-hide="filterText[gridColumn.id].end == 'undefined' || filterText[gridColumn.id].end == ''">
-                                    <a href ng-click='removeEndFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
-                                </span>
-                            </span>
-                        </div>
-                        <!-- filter input field ends -->
-                        </th>                                    
-                        </tr>                        
+                                    <div ng-show="gridColumn.showFilter">
+                                        <span ng-show="gridColumn.type !== 'date'">
+                                            <input type="text" ng-model="filterText[gridColumn.id]" ng-blur="filterInGrid(gridColumn)">
+                                        </span>                                                    
+                                        <span ng-show="gridColumn.type === 'date'">
+                                            <input placeholder="{{'start_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].start" data-ng-date readonly="readonly">
+                                            <span ng-hide="filterText[gridColumn.id].start == 'undefined' || filterText[gridColumn.id].start == ''">
+                                                <a href ng-click='removeStartFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
+                                            </span>
+                                            <input placeholder="{{'end_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].end" data-ng-date readonly="readonly">
+                                            <span ng-hide="filterText[gridColumn.id].end == 'undefined' || filterText[gridColumn.id].end == ''">
+                                                <a href ng-click='removeEndFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <!-- filter input field ends -->
+                                </th>                                    
+                            </tr>                        
                         </thead>
                         <tbody id="list">
-                            <tr ng-repeat="trackedEntity in trackedEntityList.rows | paginate:rowsPerPage | orderBy:sortHeader:reverse | gridFilter:filterText:currentFilter" 
+                            <tr ng-repeat="trackedEntity in trackedEntityList.rows| paginate:rowsPerPage | orderBy:sortHeader:reverse | gridFilter:filterText:currentFilter" 
                                 ng-click="showDashboard(trackedEntity)">
 
                                 <td class="max-column-width"                                              

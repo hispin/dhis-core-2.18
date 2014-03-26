@@ -42,7 +42,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             TranslationService.translate();
             $scope.attributes = storage.get('ATTRIBUTES');
             
-            var programs = storage.get('PROGRAMS');            
+            var programs = storage.get('TRACKER_PROGRAMS');            
             if( programs ){                
                 $scope.loadPrograms($scope.selectedOrgUnit);     
             }
@@ -60,9 +60,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
             $scope.programs = [];
             
-            var programs = storage.get('PROGRAMS');
+            var programs = storage.get('TRACKER_PROGRAMS');
             
-            if( programs ){
+            if( programs && programs != 'undefined'){
                 for(var i=0; i<programs.length; i++){
                     var program = storage.get(programs[i].id);   
                     if(program.organisationUnits.hasOwnProperty(orgUnit.id)){
@@ -236,7 +236,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     //listen for the selected items
     $scope.$on('selectedItems', function(event, args) {        
-        $scope.selectedEntity = args.selectedEntity;                 
+        $scope.selectedEntity = args.selectedEntity;        
+        $scope.trackedEntity = storage.get($scope.selectedEntity.trackedEntity);
     });    
 })
 
@@ -255,7 +256,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //programs for enrollment
     $scope.enrollments = [];
     $scope.programs = [];
-    var programs = storage.get('PROGRAMS'); 
+    var programs = storage.get('TRACKER_PROGRAMS'); 
     
     //listen for the selected items
     $scope.$on('selectedItems', function(event, args) {
@@ -305,14 +306,14 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             }
         });
         
-        if( isEnrolled && selectedEnrollment ){
+        //if( isEnrolled && selectedEnrollment ){
            
             //broadcast current selections for data entry
             $rootScope.$broadcast('dataentry', {selectedEntity: $scope.selectedEntity, 
                                                 selectedProgramId: prId,
                                                 selectedOrgUnitId: $scope.selectedOrgUnitId,
                                                 selectedEnrollment: selectedEnrollment});
-        }     
+        //}     
         
     };
 })
@@ -428,13 +429,41 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         console.log('need to create new event');        
     };
     
-    $scope.showDataEntry = function(event){  
+    $scope.showDataEntry = function(event){
         
         if(event){
-            $scope.currentEvent = event;            
-            $scope.currentStage = storage.get($scope.currentEvent.programStage);            
+            
+            $scope.currentEvent = event;   
+            $scope.currentStage = storage.get($scope.currentEvent.programStage); 
+            
+            angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){                
+                $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
+            });
+            
+            angular.forEach($scope.currentEvent.dataValues, function(dataValue){
+                var val = dataValue.value;
+                var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
+                if( de && de.type == 'int' && val){
+                    val = parseInt(val);
+                }
+        
+                $scope.currentEvent[dataValue.dataElement] = val;
+            });                   
         }     
-    };
+    };    
+})
+
+//Controller for the dashboard menu section
+.controller('DashboardMenuController',
+        function($scope,                
+                storage,
+                TranslationService) {
+
+    TranslationService.translate();
+    
+    $scope.dashboardMenu = {title: 'Menu', isOpen: true};
+    
+    $scope.attributes = storage.get('ATTRIBUTES');
     
 })
 

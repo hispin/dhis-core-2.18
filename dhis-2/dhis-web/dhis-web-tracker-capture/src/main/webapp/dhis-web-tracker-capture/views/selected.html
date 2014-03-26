@@ -1,0 +1,13 @@
+<div class="panel panel-default">
+    <div class="panel-heading">{{selected.title| translate}}</div>    
+    <div class="panel-body dashboard-element-container">
+        <div class="row" ng-repeat="selection in selected.selections">
+            <div class="col-sm-6">
+                {{selection.title| translate}}
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="{{selection.value| translate}}" ng-disabled="true"/>                
+            </div>
+        </div>        
+    </div>
+</div>
