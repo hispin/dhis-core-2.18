@@ -141,6 +141,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .table-borderless>tbody>tr>td, 
 .table-borderless>tfoot>tr>td {
     border-top: none;     
+    white-space:nowrap;
 }
 
 .dhis2-table>thead>tr>th, 
@@ -171,7 +172,8 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .dhis2-table-striped>thead>tr, 
 .dhis2-table-striped>tbody>tr, 
 .dhis2-table-striped>tfoot>tr {
-    border-bottom: 1px solid #cad5e5;    
+    border-bottom: 1px solid #cad5e5;  
+    white-space:nowrap;
 }
 
 .dhis2-table-striped > tbody > tr:nth-child(odd)> td, .dhis2-table-striped > tbody > tr:nth-child(odd)> th {
