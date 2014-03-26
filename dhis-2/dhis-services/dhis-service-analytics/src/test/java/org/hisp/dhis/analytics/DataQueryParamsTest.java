@@ -128,7 +128,7 @@ public class DataQueryParamsTest
         params.pruneToDimensionType( DimensionType.ORGANISATIONUNIT );
         
         assertEquals( 1, params.getDimensions().size() );
-        assertEquals( DimensionType.ORGANISATIONUNIT, params.getDimensions().get( 0 ).getType() );
+        assertEquals( DimensionType.ORGANISATIONUNIT, params.getDimensions().get( 0 ).getDimensionType() );
         assertEquals( 0, params.getFilters().size() );
     }
 }

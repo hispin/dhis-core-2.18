@@ -1026,7 +1026,7 @@ public class DefaultAnalyticsService
         {
             List<NameableObject> items = new ArrayList<NameableObject>( dimension.getItems() );
 
-            boolean hierarchy = hierarchyMeta && DimensionType.ORGANISATIONUNIT.equals( dimension.getType() );
+            boolean hierarchy = hierarchyMeta && DimensionType.ORGANISATIONUNIT.equals( dimension.getDimensionType() );
             
             // -----------------------------------------------------------------
             // If dimension is not fixed and has no options, insert all options
@@ -1034,15 +1034,15 @@ public class DefaultAnalyticsService
             
             if ( !FIXED_DIMS.contains( dimension.getDimension() ) && items.isEmpty() )
             {
-                if ( DimensionType.ORGANISATIONUNIT_GROUPSET.equals( dimension.getType() ) )
+                if ( DimensionType.ORGANISATIONUNIT_GROUPSET.equals( dimension.getDimensionType() ) )
                 {
                     items = asList( organisationUnitGroupService.getOrganisationUnitGroupSet( dimension.getDimension() ).getOrganisationUnitGroups() );
                 }
-                else if ( DimensionType.DATAELEMENT_GROUPSET.equals( dimension.getType() ) )
+                else if ( DimensionType.DATAELEMENT_GROUPSET.equals( dimension.getDimensionType() ) )
                 {
                     items = asList( dataElementService.getDataElementGroupSet( dimension.getDimension() ).getMembers() );
                 }
-                else if ( DimensionType.CATEGORY.equals( dimension.getType() ) )
+                else if ( DimensionType.CATEGORY.equals( dimension.getDimensionType() ) )
                 {
                     items = asList( categoryService.getDataElementCategory( dimension.getDimension() ).getCategoryOptions() );
                 }

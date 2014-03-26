@@ -72,7 +72,7 @@ public interface DimensionalObject
     /**
      * Gets the dimension type.
      */
-    DimensionType getType();
+    DimensionType getDimensionType();
     
     /**
      * Gets the dimension name, which corresponds to a column in the analytics

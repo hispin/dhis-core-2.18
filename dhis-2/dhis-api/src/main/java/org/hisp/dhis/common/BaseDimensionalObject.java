@@ -48,7 +48,7 @@ public class BaseDimensionalObject
     /**
      * The type of this dimension.
      */
-    private DimensionType type;
+    private DimensionType dimensionType;
 
     /**
      * The name of this dimension. For the dynamic dimensions this will be equal
@@ -81,25 +81,25 @@ public class BaseDimensionalObject
         this.items = new ArrayList<NameableObject>( items );
     }
     
-    public BaseDimensionalObject( String dimension, DimensionType type, List<? extends NameableObject> items )
+    public BaseDimensionalObject( String dimension, DimensionType dimensionType, List<? extends NameableObject> items )
     {
         this.uid = dimension;
-        this.type = type;
+        this.dimensionType = dimensionType;
         this.items = new ArrayList<NameableObject>( items );
     }
 
-    public BaseDimensionalObject( String dimension, DimensionType type, String dimensionName, List<? extends NameableObject> items )
+    public BaseDimensionalObject( String dimension, DimensionType dimensionType, String dimensionName, List<? extends NameableObject> items )
     {
         this.uid = dimension;
-        this.type = type;
+        this.dimensionType = dimensionType;
         this.dimensionName = dimensionName;
         this.items = new ArrayList<NameableObject>( items );
     }
 
-    public BaseDimensionalObject( String dimension, DimensionType type, String dimensionName, String displayName, List<? extends NameableObject> items )
+    public BaseDimensionalObject( String dimension, DimensionType dimensionType, String dimensionName, String displayName, List<? extends NameableObject> items )
     {
         this.uid = dimension;
-        this.type = type;
+        this.dimensionType = dimensionType;
         this.dimensionName = dimensionName;
         this.displayName = displayName;
         this.items = new ArrayList<NameableObject>( items );
@@ -154,14 +154,14 @@ public class BaseDimensionalObject
     @JsonProperty
     @JsonView( {DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public DimensionType getType()
+    public DimensionType getDimensionType()
     {
-        return type;
+        return dimensionType;
     }
 
-    public void setType( DimensionType type )
+    public void setDimensionType( DimensionType dimensionType )
     {
-        this.type = type;
+        this.dimensionType = dimensionType;
     }
 
     @Override
@@ -188,6 +188,6 @@ public class BaseDimensionalObject
     @Override
     public String toString()
     {
-        return "[" + uid + ", type: " + type  + ", " + items + "]";
+        return "[" + uid + ", type: " + dimensionType  + ", " + items + "]";
     }
 }
