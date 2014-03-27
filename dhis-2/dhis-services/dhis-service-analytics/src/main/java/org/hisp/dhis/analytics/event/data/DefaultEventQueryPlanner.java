@@ -39,6 +39,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
+import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.analytics.table.PartitionUtils;
@@ -108,6 +109,11 @@ public class DefaultEventQueryPlanner
         if ( params.getPageSize() != null && params.getPageSize() < 0 )
         {
             violation = "Page size must be zero or positive: " + params.getPageSize();
+        }
+        
+        if ( params.hasLimit() && params.getLimit() > EventAnalyticsService.MAX_ROWS_LIMIT )
+        {
+            violation = "Limit of: " + params.getLimit() + " is larger than max limit: " + EventAnalyticsService.MAX_ROWS_LIMIT;
         }
         
         if ( violation != null )

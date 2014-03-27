@@ -39,6 +39,8 @@ import org.hisp.dhis.i18n.I18nFormat;
  */
 public interface EventAnalyticsService
 {
+    final int MAX_ROWS_LIMIT = 10000;
+    
     Grid getAggregatedEventData( EventQueryParams params );
     
     Grid getEvents( EventQueryParams params );
