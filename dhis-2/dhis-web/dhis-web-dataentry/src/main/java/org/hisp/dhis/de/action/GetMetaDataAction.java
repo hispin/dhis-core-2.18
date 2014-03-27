@@ -44,7 +44,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.accesscontrol.AccessControlService;
+import org.hisp.dhis.acl.AccessControlService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;

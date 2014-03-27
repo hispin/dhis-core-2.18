@@ -35,7 +35,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.accesscontrol.AccessControlService;
+import org.hisp.dhis.acl.AccessControlService;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.system.velocity.VelocityManager;
 import org.hisp.dhis.user.CurrentUserService;
