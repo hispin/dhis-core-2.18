@@ -423,7 +423,7 @@ Ext.onReady( function() {
                     enableKeyEvents: true,
                     queryMode: 'local',
                     listConfig: {
-                        minWidth: 300
+                        minWidth: 304
                     },
                     store: this.valueStore,
                     listeners: {
@@ -470,7 +470,7 @@ Ext.onReady( function() {
                             Ext.Ajax.request({
                                 url: ns.core.init.contextPath + '/api/optionSets/' + container.dataElement.optionSet.id + '/options.json',
                                 params: {
-                                    'max': 15
+                                    'max': 14
                                 },
                                 success: function(r) {
                                     var options = Ext.decode(r.responseText),
@@ -1013,7 +1013,7 @@ Ext.onReady( function() {
 				height: 25,
 				items: {
 					xtype: 'label',
-					text: NS.i18n.dimensions,
+					text: NS.i18n.filter,
 					cls: 'ns-toolbar-multiselect-leftright-label'
 				}
 			},
