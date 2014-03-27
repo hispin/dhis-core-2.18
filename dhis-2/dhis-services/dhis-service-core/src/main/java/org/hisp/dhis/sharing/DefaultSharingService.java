@@ -30,6 +30,7 @@ package org.hisp.dhis.sharing;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dashboard.Dashboard;
+import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.user.User;
@@ -37,9 +38,7 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.springframework.util.CollectionUtils.containsAny;
@@ -78,7 +77,7 @@ public class DefaultSharingService implements SharingService
 
         //TODO ( (object instanceof User) && canCreatePrivate( user, object ) ): review possible security breaches and best way to give update access upon user import
         if ( haveOverrideAuthority( user )
-            || (object.getUser() == null && canCreatePublic( user, object.getClass() ) && !schema.getPrivateAuthorities().isEmpty())
+            || (object.getUser() == null && canCreatePublic( user, object.getClass() ) && !schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ).isEmpty())
             || (user != null && user.equals( object.getUser() ))
             //|| authorities.contains( PRIVATE_AUTHORITIES.get( object.getClass() ) )
             || ((object instanceof User) && canCreatePrivate( user, object.getClass() ))
@@ -153,7 +152,7 @@ public class DefaultSharingService implements SharingService
         }
 
         if ( haveOverrideAuthority( user )
-            || (object.getUser() == null && canCreatePublic( user, object.getClass() ) && !schema.getPrivateAuthorities().isEmpty())
+            || (object.getUser() == null && canCreatePublic( user, object.getClass() ) && !schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ).isEmpty())
             || user.equals( object.getUser() )
             || AccessStringHelper.canWrite( object.getPublicAccess() ) )
         {
@@ -184,7 +183,7 @@ public class DefaultSharingService implements SharingService
             return false;
         }
 
-        return containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getPublicAuthorities() );
+        return containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.CREATE_PUBLIC ) );
     }
 
     @Override
@@ -199,7 +198,7 @@ public class DefaultSharingService implements SharingService
             return false;
         }
 
-        return containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getPrivateAuthorities() );
+        return containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ) );
     }
 
     @Override
@@ -214,7 +213,7 @@ public class DefaultSharingService implements SharingService
             return false;
         }
 
-        return containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getExternalAuthorities() );
+        return containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) );
     }
 
     @Override

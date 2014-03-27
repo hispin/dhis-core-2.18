@@ -61,12 +61,6 @@ public class Schema
 
     private List<Authority> authorities = Lists.newArrayList();
 
-    private List<String> publicAuthorities = Lists.newArrayList();
-
-    private List<String> privateAuthorities = Lists.newArrayList();
-
-    private List<String> externalAuthorities = Lists.newArrayList();
-
     private List<Property> properties = Lists.newArrayList();
 
     public Schema( Class<?> klass, String singular, String plural )
@@ -154,45 +148,6 @@ public class Schema
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "publicAuthorities", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "publicAuthority", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getPublicAuthorities()
-    {
-        return publicAuthorities;
-    }
-
-    public void setPublicAuthorities( List<String> publicAuthorities )
-    {
-        this.publicAuthorities = publicAuthorities;
-    }
-
-    @JsonProperty
-    @JacksonXmlElementWrapper( localName = "privateAuthorities", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "privateAuthority", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getPrivateAuthorities()
-    {
-        return privateAuthorities;
-    }
-
-    public void setPrivateAuthorities( List<String> privateAuthorities )
-    {
-        this.privateAuthorities = privateAuthorities;
-    }
-
-    @JsonProperty
-    @JacksonXmlElementWrapper( localName = "externalAuthorities", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "externalAuthority", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getExternalAuthorities()
-    {
-        return externalAuthorities;
-    }
-
-    public void setExternalAuthorities( List<String> externalAuthorities )
-    {
-        this.externalAuthorities = externalAuthorities;
-    }
-
-    @JsonProperty
     @JacksonXmlElementWrapper( localName = "properties", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "property", namespace = DxfNamespaces.DXF_2_0 )
     public List<Property> getProperties()
@@ -205,7 +160,27 @@ public class Schema
         this.properties = properties;
     }
 
-    private Map<String, Property> propertyMap = Maps.newHashMap();
+    private Map<AuthorityType, List<Authority>> authorityMap = Maps.newHashMap();
+
+    public List<Authority> getAuthorityByType( AuthorityType type )
+    {
+        if ( !authorityMap.containsKey( type ) )
+        {
+            List<Authority> authorityList = Lists.newArrayList();
+
+            for ( Authority authority : authorities )
+            {
+                if ( type.equals( authority.getType() ) )
+                {
+                    authorityList.add( authority );
+                }
+            }
+
+            authorityMap.put( type, authorityList );
+        }
+
+        return authorityMap.get( type );
+    }
 
     @Override
     public String toString()
@@ -217,9 +192,7 @@ public class Schema
             ", singular='" + singular + '\'' +
             ", plural='" + plural + '\'' +
             ", shareable=" + shareable +
-            ", publicAuthorities=" + publicAuthorities +
-            ", privateAuthorities=" + privateAuthorities +
-            ", externalAuthorities=" + externalAuthorities +
+            ", authorities=" + authorities +
             ", properties=" + properties +
             '}';
     }
