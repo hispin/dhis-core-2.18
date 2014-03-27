@@ -115,9 +115,23 @@ public class EventReport
 
     @Override
     public void populateAnalyticalProperties()
-    {        
+    {
+        for ( String column : columnDimensions )
+        {
+            columns.addAll( getDimensionalObjectList( column ) );
+        }
+        
+        for ( String row : rowDimensions )
+        {
+            rows.addAll( getDimensionalObjectList( row ) );
+        }
+        
+        for ( String filter : filterDimensions )
+        {
+            filters.addAll( getDimensionalObjectList( filter ) );
+        }
     }
-
+    
     @Override
     public void mergeWith( IdentifiableObject other )
     {
