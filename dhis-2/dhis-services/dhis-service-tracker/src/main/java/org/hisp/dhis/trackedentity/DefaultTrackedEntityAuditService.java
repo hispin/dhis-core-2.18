@@ -96,5 +96,4 @@ public class DefaultTrackedEntityAuditService
     {
         return auditStore.get( instanceId, visitor, date, accessedModule );
     }
-
 }

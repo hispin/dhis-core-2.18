@@ -808,20 +808,14 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public Collection<TrackedEntityInstance> searchTrackedEntityInstancesForMobile( String searchText,
-
-    int orgUnitId, int attributeId )
+    public Collection<TrackedEntityInstance> searchTrackedEntityInstancesForMobile( String searchText, int orgUnitId, int attributeId )
     {
-
         Set<TrackedEntityInstance> entityInstances = new HashSet<TrackedEntityInstance>();
 
-        entityInstances.addAll( getTrackedEntityInstancesByAttributeValue( searchText,
-
-        attributeId, 0, Integer.MAX_VALUE ) );
+        entityInstances.addAll( getTrackedEntityInstancesByAttributeValue( searchText, attributeId, 0, Integer.MAX_VALUE ) );
 
         if ( orgUnitId != 0 )
         {
-
             Set<TrackedEntityInstance> toRemoveList = new HashSet<TrackedEntityInstance>();
 
             for ( TrackedEntityInstance instance : entityInstances )
@@ -834,6 +828,7 @@ public class DefaultTrackedEntityInstanceService
             }
             entityInstances.removeAll( toRemoveList );
         }
+        
         return entityInstances;
     }
 
