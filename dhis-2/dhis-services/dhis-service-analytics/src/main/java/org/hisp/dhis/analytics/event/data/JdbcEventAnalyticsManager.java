@@ -115,7 +115,7 @@ public class JdbcEventAnalyticsManager
         }
         
         // ---------------------------------------------------------------------
-        // Limit
+        // Limit, add one to max to enable later check against max limit
         // ---------------------------------------------------------------------
 
         if ( params.hasLimit() )
@@ -124,7 +124,7 @@ public class JdbcEventAnalyticsManager
         }
         else
         {
-            sql += "limit " + EventAnalyticsService.MAX_ROWS_LIMIT;
+            sql += "limit " + ( EventAnalyticsService.MAX_ROWS_LIMIT + 1 );
         }
         
         // ---------------------------------------------------------------------

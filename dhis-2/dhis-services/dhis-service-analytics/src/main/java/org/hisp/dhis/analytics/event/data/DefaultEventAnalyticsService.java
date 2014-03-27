@@ -159,6 +159,11 @@ public class DefaultEventAnalyticsService
             analyticsManager.getAggregatedEventData( query, grid );
         }
 
+        if ( grid.getHeight() > MAX_ROWS_LIMIT )
+        {
+            throw new IllegalQueryException( "Number of rows produced by query is larger than the max limit: " + MAX_ROWS_LIMIT );
+        }
+        
         // ---------------------------------------------------------------------
         // Meta-data
         // ---------------------------------------------------------------------
