@@ -260,6 +260,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             throw new CreateAccessDeniedException( "You don't have the proper permissions to create this object." );
         }
+
+        T parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
+        manager.save( parsed );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
@@ -269,6 +272,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             throw new CreateAccessDeniedException( "You don't have the proper permissions to create this object." );
         }
+
+        T parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
+        manager.save( parsed );
     }
 
     //--------------------------------------------------------------------------
@@ -286,6 +292,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
         }
+
+        T parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
+        ((BaseIdentifiableObject) parsed).setUid( uid );
+
+        object.mergeWith( parsed );
+        manager.update( object );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
@@ -299,6 +311,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
         }
+
+        T parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
+        ((BaseIdentifiableObject) parsed).setUid( uid );
+
+        object.mergeWith( parsed );
+        manager.update( object );
     }
 
     //--------------------------------------------------------------------------
