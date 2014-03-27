@@ -216,6 +216,10 @@ public class JdbcEventAnalyticsManager
         {
             sql += "limit " + params.getPageSizeWithDefault() + " offset " + params.getOffset();
         }
+        else
+        {
+            sql += "limit " + ( EventAnalyticsService.MAX_ROWS_LIMIT + 1 );
+        }
 
         // ---------------------------------------------------------------------
         // Grid
