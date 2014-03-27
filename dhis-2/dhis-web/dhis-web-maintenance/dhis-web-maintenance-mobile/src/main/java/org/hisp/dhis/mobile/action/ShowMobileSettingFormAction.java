@@ -48,28 +48,18 @@ public class ShowMobileSettingFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private TrackedEntityAttributeService patientAttributeService;
+    private TrackedEntityAttributeService attributeService;
 
-    public TrackedEntityAttributeService getTrackedEntityAttributeService()
+    public void setAttributeService( TrackedEntityAttributeService attributeService )
     {
-        return patientAttributeService;
+        this.attributeService = attributeService;
     }
 
-    public void setTrackedEntityAttributeService( TrackedEntityAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
+    private TrackedEntityMobileSettingService mobileSettingService;
 
-    private TrackedEntityMobileSettingService patientMobileSettingService;
-
-    public TrackedEntityMobileSettingService getTrackedEntityMobileSettingService()
+    public void setMobileSettingService( TrackedEntityMobileSettingService mobileSettingService )
     {
-        return patientMobileSettingService;
-    }
-
-    public void setTrackedEntityMobileSettingService( TrackedEntityMobileSettingService patientMobileSettingService )
-    {
-        this.patientMobileSettingService = patientMobileSettingService;
+        this.mobileSettingService = mobileSettingService;
     }
 
     // -------------------------------------------------------------------------
@@ -132,10 +122,10 @@ public class ShowMobileSettingFormAction
     public String execute()
         throws Exception
     {
-        attributes = patientAttributeService.getAllTrackedEntityAttributes();
+        attributes = attributeService.getAllTrackedEntityAttributes();
         allAttributes = new ArrayList<TrackedEntityAttribute>(attributes);
 
-        Collection<TrackedEntityMobileSetting> paSettings = new HashSet<TrackedEntityMobileSetting>( patientMobileSettingService
+        Collection<TrackedEntityMobileSetting> paSettings = new HashSet<TrackedEntityMobileSetting>( mobileSettingService
             .getCurrentSetting() );
 
         if ( !paSettings.isEmpty() )

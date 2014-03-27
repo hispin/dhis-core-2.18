@@ -76,11 +76,11 @@ public class DefaultSelectedStateManager
         this.selectionManager = selectionManager;
     }
 
-    private TrackedEntityInstanceService patientService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
-    public void setPatientService( TrackedEntityInstanceService patientService )
+    public void setTrackedEntityInstanceService( TrackedEntityInstanceService trackedEntityInstanceService )
     {
-        this.patientService = patientService;
+        this.trackedEntityInstanceService = trackedEntityInstanceService;
     }
 
     private ProgramInstanceService programInstanceService;
@@ -120,7 +120,7 @@ public class DefaultSelectedStateManager
             return null;
         }
 
-        return patientService.getTrackedEntityInstance( id );
+        return trackedEntityInstanceService.getTrackedEntityInstance( id );
     }
 
     public void clearSelectedPatient()

@@ -47,28 +47,18 @@ public class UpdateMobileSettingAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private TrackedEntityAttributeService patientAttributeService;
+    private TrackedEntityAttributeService attributeService;
 
-    public TrackedEntityAttributeService getTrackedEntityAttributeService()
+    public void setAttributeService( TrackedEntityAttributeService attributeService )
     {
-        return patientAttributeService;
+        this.attributeService = attributeService;
     }
 
-    public void setTrackedEntityAttributeService( TrackedEntityAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
+    private TrackedEntityMobileSettingService mobileSettingService;
 
-    private TrackedEntityMobileSettingService patientMobileSettingService;
-
-    public TrackedEntityMobileSettingService getTrackedEntityMobileSettingService()
+    public void setMobileSettingService( TrackedEntityMobileSettingService mobileSettingService )
     {
-        return patientMobileSettingService;
-    }
-
-    public void setTrackedEntityMobileSettingService( TrackedEntityMobileSettingService patientMobileSettingService )
-    {
-        this.patientMobileSettingService = patientMobileSettingService;
+        this.mobileSettingService = mobileSettingService;
     }
 
     // -------------------------------------------------------------------------
@@ -106,13 +96,13 @@ public class UpdateMobileSettingAction
         if ( selectedList.size() > 0 )
         {
             TrackedEntityMobileSetting setting;
-            if ( patientMobileSettingService.getCurrentSetting().size() > 0 )
+            if ( mobileSettingService.getCurrentSetting().size() > 0 )
             {
-                setting = patientMobileSettingService.getCurrentSetting().iterator().next();
+                setting = mobileSettingService.getCurrentSetting().iterator().next();
                 List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
                 setting.setAttributes( attributes );
                 fillValues( attributes );
-                patientMobileSettingService.updateTrackedEntityMobileSetting( setting );
+                mobileSettingService.updateTrackedEntityMobileSetting( setting );
             }
             else
             {
@@ -120,19 +110,19 @@ public class UpdateMobileSettingAction
                 List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
                 setting.setAttributes( attributes );
                 fillValues( attributes );
-                patientMobileSettingService.saveTrackedEntityMobileSetting( setting );
+                mobileSettingService.saveTrackedEntityMobileSetting( setting );
             }
         }
         else
         {
             TrackedEntityMobileSetting setting;
-            if ( patientMobileSettingService.getCurrentSetting().size() > 0 )
+            if ( mobileSettingService.getCurrentSetting().size() > 0 )
             {
-                setting = patientMobileSettingService.getCurrentSetting().iterator().next();
+                setting = mobileSettingService.getCurrentSetting().iterator().next();
                 List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
                 setting.setAttributes( attributes );
                 fillValues( attributes );
-                patientMobileSettingService.updateTrackedEntityMobileSetting( setting );
+                mobileSettingService.updateTrackedEntityMobileSetting( setting );
             }
             else
             {
@@ -140,20 +130,15 @@ public class UpdateMobileSettingAction
                 List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
                 setting.setAttributes( attributes );
                 fillValues( attributes );
-                patientMobileSettingService.saveTrackedEntityMobileSetting( setting );
+                mobileSettingService.saveTrackedEntityMobileSetting( setting );
             }
         }
 
-        Collection<TrackedEntityAttribute> allTrackedEntityAttributes = patientAttributeService.getAllTrackedEntityAttributes();
+        Collection<TrackedEntityAttribute> allTrackedEntityAttributes = attributeService.getAllTrackedEntityAttributes();
 
         for ( TrackedEntityAttribute patientAttribute : allTrackedEntityAttributes )
         {
-//            patientAttribute.setGroupBy( false );
-//            if ( patientAttribute.getId() == groupingAttributeId )
-//            {
-//                patientAttribute.setGroupBy( true );
-//            }
-            patientAttributeService.updateTrackedEntityAttribute( patientAttribute );
+            attributeService.updateTrackedEntityAttribute( patientAttribute );
         }
 
         return SUCCESS;
@@ -167,7 +152,7 @@ public class UpdateMobileSettingAction
     {
         for ( String id : selectedList )
         {
-            attributes.add( patientAttributeService.getTrackedEntityAttribute( Integer.parseInt( id ) ) );
+            attributes.add( attributeService.getTrackedEntityAttribute( Integer.parseInt( id ) ) );
         }
     }
 }

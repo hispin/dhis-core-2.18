@@ -13,7 +13,7 @@
 	<bean id="org.hisp.dhis.mobile.caseentry.state.SelectedStateManager"
 		class="org.hisp.dhis.mobile.caseentry.state.DefaultSelectedStateManager"
         scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="trackedEntityInstanceService" ref="org.hisp.dhis.tracker.TrackedEntityInstanceService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
@@ -69,19 +69,19 @@
 	<bean id="org.hisp.dhis.mobile.action.ShowMobileSettingFormAction"
 		class="org.hisp.dhis.mobile.action.ShowMobileSettingFormAction" 
 		scope="prototype">
-		<property name="patientMobileSettingService"
-			ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="mobileSettingService"
+			ref="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.mobile.action.UpdateMobileSettingAction"
 		class="org.hisp.dhis.mobile.action.UpdateMobileSettingAction" 
 		scope="prototype">
-		<property name="patientMobileSettingService"
-			ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="mobileSettingService"
+			ref="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 	</bean>
 
 	<!-- Mobile DataSet -->
@@ -173,14 +173,12 @@
 	<bean id="org.hisp.dhis.mobile.action.J2meClientUpdateAction"
 		class="org.hisp.dhis.mobile.action.J2meClientUpdateAction" 
 		scope="prototype">
-		<property name="patientMobileSettingService"
-			ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
+		<property name="mobileSettingService"
+			ref="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.mobile.action.incoming.ProcessingSendQuickSMSAction"
         class="org.hisp.dhis.mobile.action.incoming.ProcessingSendQuickSMSAction" 
         scope="prototype"/>
 
-	<!-- <bean id="org.hisp.dhis.mobile.action.MobilePhonesPatternAction" class="org.hisp.dhis.mobile.action.MobilePhonesPatternAction" 
-		scope="prototype"> </bean> -->
 </beans>
