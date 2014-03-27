@@ -956,11 +956,15 @@
         <artifactId>guava</artifactId>
         <version>16.0.1</version>
       </dependency>
-
       <dependency>
-          <groupId>org.openid4java</groupId>
-          <artifactId>openid4java</artifactId>
-          <version>0.9.7</version>
+        <groupId>com.googlecode.jsmpp</groupId>
+        <artifactId>jsmpp</artifactId>
+        <version>2.1.0-RELEASE</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openid4java</groupId>
+        <artifactId>openid4java</artifactId>
+        <version>0.9.7</version>
       </dependency>
 
     </dependencies>
