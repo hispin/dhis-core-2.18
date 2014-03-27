@@ -41,6 +41,8 @@ import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.eventreport.EventReportService;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +63,12 @@ public class EventReportController
 
     @Autowired
     private DimensionService dimensionService;
+    
+    @Autowired
+    private ProgramService programService;
+    
+    @Autowired
+    private ProgramStageService programStageService;
     
     //--------------------------------------------------------------------------
     // CRUD
@@ -94,5 +102,15 @@ public class EventReportController
         report.getColumnDimensions().addAll( getUniqueDimensions( report.getColumns() ) );
         report.getRowDimensions().addAll( getUniqueDimensions( report.getRows() ) );
         report.getFilterDimensions().addAll( getUniqueDimensions( report.getFilters() ) );
+        
+        if ( report.getProgram() != null )
+        {
+            report.setProgram( programService.getProgram( report.getProgram().getUid() ) );
+        }
+        
+        if ( report.getProgramStage() != null )
+        {
+            report.setProgramStage( programStageService.getProgramStage( report.getProgramStage().getUid() ) );
+        }
     }
 }

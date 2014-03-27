@@ -33,11 +33,21 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.DimensionalView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.user.User;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
 * @author Lars Helge Overland
@@ -108,10 +118,29 @@ public class EventReport
     {        
     }
 
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            EventReport report = (EventReport) other;
+            
+            program = report.getProgram();
+            programStage = report.getProgramStage();
+            startDate = report.getStartDate();
+            endDate = report.getEndDate();
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Program getProgram()
     {
         return program;
@@ -122,6 +151,9 @@ public class EventReport
         this.program = program;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public ProgramStage getProgramStage()
     {
         return programStage;
@@ -132,6 +164,9 @@ public class EventReport
         this.programStage = programStage;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Date getStartDate()
     {
         return startDate;
@@ -142,6 +177,9 @@ public class EventReport
         this.startDate = startDate;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Date getEndDate()
     {
         return endDate;
@@ -152,6 +190,10 @@ public class EventReport
         this.endDate = endDate;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "columnDimensions", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "column", namespace = DxfNamespaces.DXF_2_0)
     public List<String> getColumnDimensions()
     {
         return columnDimensions;
@@ -162,6 +204,10 @@ public class EventReport
         this.columnDimensions = columnDimensions;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "rowDimensions", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "row", namespace = DxfNamespaces.DXF_2_0)
     public List<String> getRowDimensions()
     {
         return rowDimensions;
@@ -172,6 +218,10 @@ public class EventReport
         this.rowDimensions = rowDimensions;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "filter", namespace = DxfNamespaces.DXF_2_0)
     public List<String> getFilterDimensions()
     {
         return filterDimensions;
