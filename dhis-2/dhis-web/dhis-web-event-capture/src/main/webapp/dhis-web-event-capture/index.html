@@ -170,7 +170,7 @@
                                 <table class="listTable dhis2-table-striped-border dhis2-table-hover">                                       
                                     <thead>                        
                                         <tr>
-                                            <th ng-show="!eventGridColumn.hide" 
+                                            <th ng-show="eventGridColumn.show" 
                                                 class="max-column-width"                                                
                                                 ng-repeat="eventGridColumn in eventGridColumns">
                                                 
@@ -223,7 +223,7 @@
                                             <td dhis-context-menu 
                                                 selected-item={{dhis2Event}} 
                                                 class="max-column-width" 
-                                                ng-hide="(currentEvent.event == dhis2Event.event) || eventGridColumn.hide" 
+                                                ng-hide="(currentEvent.event == dhis2Event.event) || !eventGridColumn.show" 
                                                 ng-repeat="eventGridColumn in eventGridColumns">                                                
                                                 {{dhis2Event[eventGridColumn.id]}}                                                
                                             </td>
@@ -231,7 +231,7 @@
                                             <!-- Visible when event is under editing - in grid -->
                                             <td class="max-column-width"
                                                 style="cursor:default;"                                                
-                                                ng-if="(currentEvent.event == dhis2Event.event) && !eventGridColumn.hide" 
+                                                ng-if="(currentEvent.event == dhis2Event.event) && eventGridColumn.show" 
                                                 ng-repeat="eventGridColumn in eventGridColumns">
                                                 <ng-form name="innerFormGrid">
                                                     <div ng-switch="eventGridColumn.type">
