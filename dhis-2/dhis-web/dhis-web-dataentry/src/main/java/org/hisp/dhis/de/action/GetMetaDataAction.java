@@ -29,6 +29,7 @@ package org.hisp.dhis.de.action;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
@@ -44,7 +45,6 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.acl.AccessControlService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +117,7 @@ public class GetMetaDataAction
     }
 
     @Autowired
-    protected AccessControlService accessControlService;
+    protected AclService aclService;
 
     // -------------------------------------------------------------------------
     // Output
@@ -272,7 +272,7 @@ public class GetMetaDataAction
         {
             for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
             {
-                if ( accessControlService.canRead( user, categoryOption ) )
+                if ( aclService.canRead( user, categoryOption ) )
                 {
                     categoryOptionMap.putValue( category.getUid(), categoryOption );
                 }

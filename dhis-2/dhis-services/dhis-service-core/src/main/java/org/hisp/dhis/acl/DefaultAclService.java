@@ -45,9 +45,11 @@ import java.util.Set;
 import static org.springframework.util.CollectionUtils.containsAny;
 
 /**
+ * Default ACL implementation that uses SchemaDescriptors to get authorities / sharing flags.
+ *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DefaultAccessControlService implements AccessControlService
+public class DefaultAclService implements AclService
 {
     @Autowired
     private SchemaService schemaService;
@@ -63,6 +65,13 @@ public class DefaultAccessControlService implements AccessControlService
     public boolean isSupported( Class<?> klass )
     {
         Schema schema = schemaService.getSchema( klass );
+        return schema != null && schema.isShareable();
+    }
+
+    @Override
+    public boolean isShareable( String type )
+    {
+        Schema schema = schemaService.getSchemaBySingularName( type );
         return schema != null && schema.isShareable();
     }
 
@@ -173,14 +182,6 @@ public class DefaultAccessControlService implements AccessControlService
         return canAccess( user, schema.getAuthorityByType( AuthorityType.DELETE ) ) && canWrite( user, object );
     }
 
-    private boolean canAccess( User user, Collection<String> requiredAuthorities )
-    {
-        Set<String> userAuthorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
-
-        return user == null || containsAny( userAuthorities, SHARING_OVERRIDE_AUTHORITIES ) ||
-            containsAny( userAuthorities, requiredAuthorities );
-    }
-
     @Override
     public boolean canManage( User user, IdentifiableObject object )
     {
@@ -280,5 +281,10 @@ public class DefaultAccessControlService implements AccessControlService
     private boolean haveOverrideAuthority( User user )
     {
         return user == null || containsAny( user.getUserCredentials().getAllAuthorities(), SHARING_OVERRIDE_AUTHORITIES );
+    }
+
+    private boolean canAccess( User user, Collection<String> requiredAuthorities )
+    {
+        return haveOverrideAuthority( user ) || containsAny( user.getUserCredentials().getAllAuthorities(), requiredAuthorities );
     }
 }

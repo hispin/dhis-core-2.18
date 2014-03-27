@@ -38,6 +38,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -52,7 +53,6 @@ import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.acl.Access;
-import org.hisp.dhis.acl.AccessControlService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +89,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     protected FilterService filterService;
 
     @Autowired
-    protected AccessControlService accessControlService;
+    protected AclService aclService;
 
     @Autowired
     protected SchemaService schemaService;
@@ -233,7 +233,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             WebUtils.generateLinks( entity );
         }
 
-        if ( accessControlService.isSupported( getEntityClass() ) )
+        if ( aclService.isSupported( getEntityClass() ) )
         {
             addAccessProperties( entity );
         }
@@ -372,12 +372,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     protected void addAccessProperties( T object )
     {
         Access access = new Access();
-        access.setManage( accessControlService.canManage( currentUserService.getCurrentUser(), object ) );
-        access.setExternalize( accessControlService.canExternalize( currentUserService.getCurrentUser(), object.getClass() ) );
-        access.setWrite( accessControlService.canWrite( currentUserService.getCurrentUser(), object ) );
-        access.setRead( accessControlService.canRead( currentUserService.getCurrentUser(), object ) );
-        access.setUpdate( accessControlService.canUpdate( currentUserService.getCurrentUser(), object ) );
-        access.setDelete( accessControlService.canDelete( currentUserService.getCurrentUser(), object ) );
+        access.setManage( aclService.canManage( currentUserService.getCurrentUser(), object ) );
+        access.setExternalize( aclService.canExternalize( currentUserService.getCurrentUser(), object.getClass() ) );
+        access.setWrite( aclService.canWrite( currentUserService.getCurrentUser(), object ) );
+        access.setRead( aclService.canRead( currentUserService.getCurrentUser(), object ) );
+        access.setUpdate( aclService.canUpdate( currentUserService.getCurrentUser(), object ) );
+        access.setDelete( aclService.canDelete( currentUserService.getCurrentUser(), object ) );
 
         ((BaseIdentifiableObject) object).setAccess( access );
     }
@@ -394,7 +394,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             return;
         }
 
-        if ( entityList != null && accessControlService.isSupported( getEntityClass() ) )
+        if ( entityList != null && aclService.isSupported( getEntityClass() ) )
         {
             for ( T object : entityList )
             {

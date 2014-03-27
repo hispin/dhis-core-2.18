@@ -36,6 +36,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.GenericStore;
@@ -46,7 +47,6 @@ import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.interpretation.Interpretation;
-import org.hisp.dhis.acl.AccessControlService;
 import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserGroupAccess;
@@ -85,7 +85,7 @@ public class HibernateGenericStore<T>
     protected CurrentUserService currentUserService;
 
     @Autowired
-    protected AccessControlService accessControlService;
+    protected AclService aclService;
 
     protected Class<T> clazz;
 
@@ -227,7 +227,7 @@ public class HibernateGenericStore<T>
     @Override
     public int save( T object )
     {
-        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUserService.getCurrentUser() != null && accessControlService.isSupported( clazz ) )
+        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUserService.getCurrentUser() != null && aclService.isSupported( clazz ) )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
 
@@ -240,9 +240,9 @@ public class HibernateGenericStore<T>
                 identifiableObject.setUser( currentUserService.getCurrentUser() );
             }
 
-            if ( accessControlService.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
+            if ( aclService.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
             {
-                if ( accessControlService.defaultPublic( identifiableObject.getClass() ) )
+                if ( aclService.defaultPublic( identifiableObject.getClass() ) )
                 {
                     String build = AccessStringHelper.newInstance()
                         .enable( AccessStringHelper.Permission.READ )
@@ -257,7 +257,7 @@ public class HibernateGenericStore<T>
                     identifiableObject.setPublicAccess( build );
                 }
             }
-            else if ( accessControlService.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
+            else if ( aclService.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
             {
                 identifiableObject.setPublicAccess( AccessStringHelper.newInstance().build() );
             }
@@ -400,8 +400,8 @@ public class HibernateGenericStore<T>
 
     protected boolean sharingEnabled()
     {
-        boolean enabled = forceAcl() || (accessControlService.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
-            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), AccessControlService.SHARING_OVERRIDE_AUTHORITIES )));
+        boolean enabled = forceAcl() || (aclService.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
+            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), AclService.SHARING_OVERRIDE_AUTHORITIES )));
 
         return enabled;
     }
@@ -414,7 +414,7 @@ public class HibernateGenericStore<T>
 
             if ( sharingEnabled() )
             {
-                return accessControlService.canRead( currentUserService.getCurrentUser(), idObject );
+                return aclService.canRead( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -429,7 +429,7 @@ public class HibernateGenericStore<T>
 
             if ( sharingEnabled() )
             {
-                return accessControlService.canWrite( currentUserService.getCurrentUser(), idObject );
+                return aclService.canWrite( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -442,9 +442,9 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( accessControlService.isSupported( clazz ) )
+            if ( aclService.isSupported( clazz ) )
             {
-                return accessControlService.canUpdate( currentUserService.getCurrentUser(), idObject );
+                return aclService.canUpdate( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -457,9 +457,9 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( accessControlService.isSupported( clazz ) )
+            if ( aclService.isSupported( clazz ) )
             {
-                return accessControlService.canDelete( currentUserService.getCurrentUser(), idObject );
+                return aclService.canDelete( currentUserService.getCurrentUser(), idObject );
             }
         }
 

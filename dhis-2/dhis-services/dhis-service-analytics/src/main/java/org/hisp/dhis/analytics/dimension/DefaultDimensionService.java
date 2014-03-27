@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
@@ -56,7 +57,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.acl.AccessControlService;
 import org.hisp.dhis.system.util.UniqueArrayList;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeDimension;
@@ -100,7 +100,7 @@ public class DefaultDimensionService
     private DataElementService dataElementService;
 
     @Autowired
-    private AccessControlService accessControlService;
+    private AclService aclService;
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -169,7 +169,7 @@ public class DefaultDimensionService
 
             for ( NameableObject item : dimension.getItems() )
             {
-                boolean canRead = accessControlService.canRead( user, item );
+                boolean canRead = aclService.canRead( user, item );
 
                 if ( canRead )
                 {
