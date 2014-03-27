@@ -1994,7 +1994,7 @@ Ext.onReady( function() {
 					if (uuidDimUuidsMap.hasOwnProperty(key)) {
 						valueEl = Ext.get(key);
 
-						if (parseFloat(valueEl.dom.textContent)) {
+						if (valueEl && parseFloat(valueEl.dom.textContent)) {
 							valueEl.dom.onValueMouseClick = web.events.onValueMouseClick;
 							valueEl.dom.onValueMouseOver = web.events.onValueMouseOver;
 							valueEl.dom.onValueMouseOut = web.events.onValueMouseOut;
