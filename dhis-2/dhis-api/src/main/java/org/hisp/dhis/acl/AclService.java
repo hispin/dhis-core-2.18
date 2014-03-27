@@ -116,6 +116,15 @@ public interface AclService
     boolean canManage( User user, IdentifiableObject object );
 
     /**
+     * Can create
+     * @param user
+     * @param klass
+     * @param <T>
+     * @return
+     */
+    <T extends IdentifiableObject> boolean canCreate( User user, Class<T> klass );
+
+    /**
      * Checks if a user can create a public instance of a certain object.
      * <p/>
      * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
