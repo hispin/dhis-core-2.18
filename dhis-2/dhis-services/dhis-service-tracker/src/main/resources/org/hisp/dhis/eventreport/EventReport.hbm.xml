@@ -81,6 +81,8 @@
     
     <property name="endDate" />
     
+    <property name="dataType" not-null="true" />
+    
     <list name="columnDimensions" table="eventreport_columns">
       <cache usage="read-write" />
       <key column="eventreportid" foreign-key="fk_eventreport_columns_eventreportid" />
