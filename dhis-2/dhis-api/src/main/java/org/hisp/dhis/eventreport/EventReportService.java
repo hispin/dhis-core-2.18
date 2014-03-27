@@ -43,5 +43,7 @@ public interface EventReportService
     
     EventReport getEventReport( String uid );
     
+    void deleteEventReport( EventReport report );
+    
     List<EventReport> getAllEventReprots();
 }

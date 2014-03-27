@@ -28,7 +28,7 @@ package org.hisp.dhis.eventreport;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.program.Program;
@@ -74,5 +74,42 @@ public class EventReportServiceTest
         assertEquals( "erA", eventReportService.getEventReport( idA ).getName() );
         assertEquals( "erB", eventReportService.getEventReport( idB ).getName() );
         assertEquals( "erC", eventReportService.getEventReport( idC ).getName() );
+    }
+    
+    @Test
+    public void testDelete()
+    {
+        EventReport erA = new EventReport( "erA" );
+        erA.setProgram( prA );
+        EventReport erB = new EventReport( "erB" );
+        erB.setProgram( prA );
+        EventReport erC = new EventReport( "erC" );
+        erC.setProgram( prA );
+        
+        int idA = eventReportService.saveEventReport( erA );
+        int idB = eventReportService.saveEventReport( erB );
+        int idC = eventReportService.saveEventReport( erC );
+        
+        assertNotNull( eventReportService.getEventReport( idA ) );
+        assertNotNull( eventReportService.getEventReport( idB ) );
+        assertNotNull( eventReportService.getEventReport( idC ) );
+        
+        eventReportService.deleteEventReport( erA );
+
+        assertNull( eventReportService.getEventReport( idA ) );
+        assertNotNull( eventReportService.getEventReport( idB ) );
+        assertNotNull( eventReportService.getEventReport( idC ) );
+
+        eventReportService.deleteEventReport( erB );
+
+        assertNull( eventReportService.getEventReport( idA ) );
+        assertNull( eventReportService.getEventReport( idB ) );
+        assertNotNull( eventReportService.getEventReport( idC ) );
+
+        eventReportService.deleteEventReport( erC );
+
+        assertNull( eventReportService.getEventReport( idA ) );
+        assertNull( eventReportService.getEventReport( idB ) );
+        assertNull( eventReportService.getEventReport( idC ) );        
     }
 }

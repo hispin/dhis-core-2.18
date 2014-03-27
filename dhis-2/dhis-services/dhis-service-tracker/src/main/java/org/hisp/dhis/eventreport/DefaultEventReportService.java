@@ -71,6 +71,11 @@ public class DefaultEventReportService
         return eventReportStore.getByUid( uid );
     }
     
+    public void deleteEventReport( EventReport report )
+    {
+        eventReportStore.delete( report );
+    }
+    
     public List<EventReport> getAllEventReprots()
     {
         return eventReportStore.getAll();
