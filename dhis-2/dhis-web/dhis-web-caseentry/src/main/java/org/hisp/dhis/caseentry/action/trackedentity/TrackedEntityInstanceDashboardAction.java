@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramIndicatorService;
@@ -101,9 +102,16 @@ public class TrackedEntityInstanceDashboardAction
 
     private Map<String, String> programIndicatorsMap = new HashMap<String, String>();
 
+    private I18nFormat format;
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
 
     public Map<String, String> getProgramIndicatorsMap()
     {
@@ -203,7 +211,7 @@ public class TrackedEntityInstanceDashboardAction
         // Get relationship
         // ---------------------------------------------------------------------
 
-        relationships = relationshipService.getRelationshipsForTrackedEntityInstance(  entityInstance );
+        relationships = relationshipService.getRelationshipsForTrackedEntityInstance( entityInstance );
 
         Collection<ProgramInstance> programInstances = entityInstance.getProgramInstances();
 
@@ -222,6 +230,13 @@ public class TrackedEntityInstanceDashboardAction
             {
                 if ( atttributes.contains( attributeValue.getAttribute() ) )
                 {
+                    String value = attributeValue.getValue();
+                    if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
+                    {
+                        value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
+                    }
+
+                    attributeValue.setValue( value );
                     attributeValues.add( attributeValue );
                 }
             }
@@ -262,11 +277,12 @@ public class TrackedEntityInstanceDashboardAction
         PeriodType.clearTimeOfDay( today );
         Date date = today.getTime();
         String visitor = currentUserService.getCurrentUsername();
-        TrackedEntityAudit entityInstanceAudit = auditService.getTrackedEntityAudit( entityInstance.getId(), visitor, date,
-            TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );
+        TrackedEntityAudit entityInstanceAudit = auditService.getTrackedEntityAudit( entityInstance.getId(), visitor,
+            date, TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );
         if ( entityInstanceAudit == null )
         {
-            entityInstanceAudit = new TrackedEntityAudit( entityInstance, visitor, date, TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );
+            entityInstanceAudit = new TrackedEntityAudit( entityInstance, visitor, date,
+                TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );
             auditService.saveTrackedEntityAudit( entityInstanceAudit );
         }
 
