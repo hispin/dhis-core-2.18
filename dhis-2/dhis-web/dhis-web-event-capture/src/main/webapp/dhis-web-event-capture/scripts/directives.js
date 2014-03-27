@@ -203,15 +203,15 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     };
 })
 
-.directive('modalWindow', function(){
+.directive('draggableModal', function(){
     return {
       restrict: 'EA',
       link: function(scope, element) {
         element.draggable();
       }
     };  
-})
-  
+}) 
+
 .directive('clientsidePaginator', function factory() {
     return {
         restrict: 'E',
