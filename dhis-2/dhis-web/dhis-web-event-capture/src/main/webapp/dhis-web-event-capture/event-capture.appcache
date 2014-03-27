@@ -83,6 +83,7 @@ scripts/filters.js
 views/serverside-pagination.html
 views/modal.html
 views/dialog.html
+views/column-modal.html
 
 i18n/en.json
 

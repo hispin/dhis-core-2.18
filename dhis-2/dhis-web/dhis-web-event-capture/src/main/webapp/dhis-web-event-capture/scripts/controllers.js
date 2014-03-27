@@ -35,13 +35,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.editingEventInGrid = false;   
     $scope.currentGridColumnId = '';    
     
-    $scope.programStageDataElements = [];
+    /*$scope.programStageDataElements = [];
                 
     $scope.dhis2Events = [];
     $scope.eventGridColumns = [];
     $scope.hiddenGridColumns = 0;
     $scope.newDhis2Event = {dataValues: []};
-    $scope.currentEvent = {dataValues: []};
+    $scope.currentEvent = {dataValues: []};*/    
     $scope.currentEventOrginialValue = '';   
     
     //watch for selection of org unit from tree
@@ -103,7 +103,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
             $scope.programStageDataElements = [];  
             $scope.eventGridColumns = [];
-            $scope.hiddenGridColumns = 0;
+
             $scope.newDhis2Event = {dataValues: []};
             $scope.currentEvent = {dataValues: []};
 
@@ -116,7 +116,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 var dataElement = prStDe.dataElement;
                 var name = dataElement.formName || dataElement.name;
                 $scope.newDhis2Event.dataValues.push({id: dataElement.id, value: ''});                       
-                $scope.eventGridColumns.push({name: name, id: dataElement.id, type: dataElement.type, compulsory: prStDe.compulsory, showFilter: false, hide: false});
+                $scope.eventGridColumns.push({name: name, id: dataElement.id, type: dataElement.type, compulsory: prStDe.compulsory, showFilter: false, show: prStDe.displayInReports});
 
                 if(dataElement.type === 'date'){
                      $scope.filterText[dataElement.id]= {start: '', end: ''};
@@ -206,7 +206,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.reverse = false;    
     };
     
-    $scope.showHideColumns = function(){               
+    $scope.showHideColumns = function(){
+        
+        $scope.hiddenGridColumns = 0;
+        
+        angular.forEach($scope.eventGridColumns, function(eventGridColumn){
+            if(!eventGridColumn.show){
+                $scope.hiddenGridColumns++;
+            }
+        })
         
         var modalInstance = $modal.open({
             templateUrl: 'views/column-modal.html',
@@ -473,21 +481,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
       $modalInstance.close($scope.eventGridColumns);
     };
     
-    $scope.showHideColumns = function(gridColumn, showAllColumns){
-        if(showAllColumns){
-            angular.forEach($scope.eventGridColumns, function(gridHeader){
-                gridHeader.hide = false;                
-            });
-            $scope.hiddenGridColumns = 0;
+    $scope.showHideColumns = function(gridColumn){
+       
+        if(gridColumn.show){                
+            $scope.hiddenGridColumns--;            
         }
-        if(!showAllColumns){            
-            if(gridColumn.hide){
-                $scope.hiddenGridColumns++;
-            }
-            else{
-                $scope.hiddenGridColumns--;
-            }
-        }
-    };
-    
+        else{
+            $scope.hiddenGridColumns++;            
+        }      
+    };    
 });

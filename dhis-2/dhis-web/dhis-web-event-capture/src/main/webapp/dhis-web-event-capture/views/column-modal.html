@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h3>{{'select_columns_to_hide'| translate}}</h3>
+    <h3>{{'select_columns_to_show'| translate}}</h3>
 </div>
 
 <div class="modal-body">   
@@ -9,13 +9,12 @@
                 {{eventGridColumn.name}}
             </td>
             <td>
-                <input type="checkbox" ng-model="eventGridColumn.hide" ng-change="showHideColumns(eventGridColumn, false)" ng-disabled="hiddenGridColumns + 1 == eventGridColumns.length && !eventGridColumn.hide">
+                <input type="checkbox" ng-model="eventGridColumn.show" ng-change="showHideColumns(eventGridColumn)" ng-disabled="hiddenGridColumns + 1 == eventGridColumns.length && eventGridColumn.show">
             </td>
         </tr>                                    
     </table>    
 </div>
 
-<div class="modal-footer">    
-    <button ng-click="showHideColumns(null, true)" ng-disabled="hiddenGridColumns < 1">{{'show_all'| translate}}</button>
+<div class="modal-footer">        
     <button data-ng-click="close()">{{'close'| translate}}</button>
 </div> 
