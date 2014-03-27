@@ -62,10 +62,13 @@ public class EventReportServiceTest
     {
         EventReport erA = new EventReport( "erA" );
         erA.setProgram( prA );
+        erA.setDataType( EventReport.DATA_TYPE_AGGREGATED_VALUES );
         EventReport erB = new EventReport( "erB" );
         erB.setProgram( prA );
+        erB.setDataType( EventReport.DATA_TYPE_AGGREGATED_VALUES );
         EventReport erC = new EventReport( "erC" );
         erC.setProgram( prA );
+        erC.setDataType( EventReport.DATA_TYPE_AGGREGATED_VALUES );
         
         int idA = eventReportService.saveEventReport( erA );
         int idB = eventReportService.saveEventReport( erB );
@@ -81,10 +84,13 @@ public class EventReportServiceTest
     {
         EventReport erA = new EventReport( "erA" );
         erA.setProgram( prA );
+        erA.setDataType( EventReport.DATA_TYPE_AGGREGATED_VALUES );
         EventReport erB = new EventReport( "erB" );
         erB.setProgram( prA );
+        erB.setDataType( EventReport.DATA_TYPE_AGGREGATED_VALUES );
         EventReport erC = new EventReport( "erC" );
         erC.setProgram( prA );
+        erC.setDataType( EventReport.DATA_TYPE_AGGREGATED_VALUES );
         
         int idA = eventReportService.saveEventReport( erA );
         int idB = eventReportService.saveEventReport( erB );

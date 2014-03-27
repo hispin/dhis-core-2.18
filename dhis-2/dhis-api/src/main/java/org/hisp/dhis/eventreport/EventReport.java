@@ -57,6 +57,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 public class EventReport
     extends BaseAnalyticalObject
 {
+    public static final String DATA_TYPE_AGGREGATED_VALUES = "aggregated_values";
+    public static final String DATA_TYPE_INDIVIDUAL_CASES = "individual_cases";
+    
     /**
      * Program. Required.
      */
@@ -76,6 +79,11 @@ public class EventReport
      * End date.
      */
     private Date endDate;
+    
+    /**
+     * Type of data, can be aggregated values and individual cases.
+     */
+    private String dataType;
     
     /**
      * Dimensions to crosstabulate / use as columns.
@@ -206,6 +214,19 @@ public class EventReport
     public void setEndDate( Date endDate )
     {
         this.endDate = endDate;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getDataType()
+    {
+        return dataType;
+    }
+
+    public void setDataType( String dataType )
+    {
+        this.dataType = dataType;
     }
 
     @JsonProperty
