@@ -161,12 +161,13 @@ public class AddTrackedEntityInstanceAction
                     attributeValue = new TrackedEntityAttributeValue();
                     attributeValue.setEntityInstance( entityInstance );
                     attributeValue.setAttribute( attribute );
-                    attributeValue.setValue( value.trim() );
 
                     if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
                     {
                         value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
                     }
+
+                    attributeValue.setValue( value.trim() );
                     attributeValues.add( attributeValue );
                 }
                 else if ( attribute.getInherit() && relationship != null )

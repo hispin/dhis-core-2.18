@@ -247,16 +247,17 @@ public class GetTrackedEntityInstanceAction
                         }
                     }
                 }
-                
 
-                for( TrackedEntityAttribute attribute : attributes){
+                for ( TrackedEntityAttribute attribute : attributes )
+                {
                     mandatoryMap.put( attribute.getId(), false );
                 }
             }
             else
             {
                 attributes = program.getTrackedEntityAttributes();
-                for( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() ){
+                for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
+                {
                     mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
                 }
             }
@@ -290,8 +291,7 @@ public class GetTrackedEntityInstanceAction
         {
             String value = attributeValue.getValue();
 
-            if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE )
-                && value != null )
+            if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
             {
                 Date date = format.parseDate( value );
                 value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
