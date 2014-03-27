@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.metadata.importers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
+import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.AttributeValue;
@@ -55,7 +56,6 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.acl.AccessControlService;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
@@ -110,7 +110,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private SessionFactory sessionFactory;
 
     @Autowired
-    private AccessControlService accessControlService;
+    private AclService aclService;
 
     @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
@@ -414,7 +414,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean deleteObject( User user, T persistedObject )
     {
-        if ( !accessControlService.canDelete( user, persistedObject ) )
+        if ( !aclService.canDelete( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "You do not have delete access to class type." ) );
@@ -452,7 +452,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean newObject( User user, T object )
     {
-        if ( !accessControlService.canCreatePublic( user, object.getClass() ) && !accessControlService.canCreatePrivate( user, object.getClass() ) )
+        if ( !aclService.canCreatePublic( user, object.getClass() ) && !aclService.canCreatePrivate( user, object.getClass() ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have create access to class type." ) );
@@ -536,7 +536,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean updateObject( User user, T object, T persistedObject )
     {
-        if ( !accessControlService.canUpdate( user, persistedObject ) )
+        if ( !aclService.canUpdate( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have update access to object." ) );

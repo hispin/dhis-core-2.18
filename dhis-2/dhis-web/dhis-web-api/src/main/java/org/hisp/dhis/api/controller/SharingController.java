@@ -30,6 +30,7 @@ package org.hisp.dhis.api.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.webdomain.sharing.Sharing;
 import org.hisp.dhis.api.webdomain.sharing.SharingUserGroupAccess;
@@ -38,7 +39,6 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.acl.AccessControlService;
 import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserGroup;
@@ -81,18 +81,18 @@ public class SharingController
     private UserGroupAccessService userGroupAccessService;
 
     @Autowired
-    private AccessControlService accessControlService;
+    private AclService aclService;
 
     @RequestMapping( value = "", produces = { "application/json", "text/*" } )
     public void getSharing( @RequestParam String type, @RequestParam String id, HttpServletResponse response ) throws IOException
     {
-        if ( !accessControlService.isSupported( type ) )
+        if ( !aclService.isShareable( type ) )
         {
             ContextUtils.notFoundResponse( response, "Type " + type + " is not supported." );
             return;
         }
 
-        Class<? extends IdentifiableObject> klass = accessControlService.classForType( type );
+        Class<? extends IdentifiableObject> klass = aclService.classForType( type );
         IdentifiableObject object = manager.get( klass, id );
 
         if ( object == null )
@@ -101,15 +101,15 @@ public class SharingController
             return;
         }
 
-        if ( !accessControlService.canManage( currentUserService.getCurrentUser(), object ) )
+        if ( !aclService.canManage( currentUserService.getCurrentUser(), object ) )
         {
             throw new AccessDeniedException( "You do not have manage access to this object." );
         }
 
         Sharing sharing = new Sharing();
 
-        sharing.getMeta().setAllowPublicAccess( accessControlService.canCreatePublic( currentUserService.getCurrentUser(), object.getClass() ) );
-        sharing.getMeta().setAllowExternalAccess( accessControlService.canExternalize( currentUserService.getCurrentUser(), object.getClass() ) );
+        sharing.getMeta().setAllowPublicAccess( aclService.canCreatePublic( currentUserService.getCurrentUser(), object.getClass() ) );
+        sharing.getMeta().setAllowExternalAccess( aclService.canExternalize( currentUserService.getCurrentUser(), object.getClass() ) );
 
         sharing.getObject().setId( object.getUid() );
         sharing.getObject().setName( object.getDisplayName() );
@@ -119,7 +119,7 @@ public class SharingController
         {
             String access;
 
-            if ( accessControlService.canCreatePublic( currentUserService.getCurrentUser(), klass ) )
+            if ( aclService.canCreatePublic( currentUserService.getCurrentUser(), klass ) )
             {
                 access = AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).enable( AccessStringHelper.Permission.WRITE ).build();
             }
@@ -157,7 +157,7 @@ public class SharingController
     @RequestMapping( value = "", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json" )
     public void setSharing( @RequestParam String type, @RequestParam String id, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
-        BaseIdentifiableObject object = (BaseIdentifiableObject) manager.get( accessControlService.classForType( type ), id );
+        BaseIdentifiableObject object = (BaseIdentifiableObject) manager.get( aclService.classForType( type ), id );
 
         if ( object == null )
         {
@@ -165,7 +165,7 @@ public class SharingController
             return;
         }
 
-        if ( !accessControlService.canManage( currentUserService.getCurrentUser(), object ) )
+        if ( !aclService.canManage( currentUserService.getCurrentUser(), object ) )
         {
             throw new AccessDeniedException( "You do not have manage access to this object." );
         }
@@ -173,13 +173,13 @@ public class SharingController
         Sharing sharing = JacksonUtils.fromJson( request.getInputStream(), Sharing.class );
 
         // Ignore externalAccess if user is not allowed to make objects external
-        if ( accessControlService.canExternalize( currentUserService.getCurrentUser(), object.getClass() ) )
+        if ( aclService.canExternalize( currentUserService.getCurrentUser(), object.getClass() ) )
         {
             object.setExternalAccess( sharing.getObject().hasExternalAccess() );
         }
 
         // Ignore publicAccess if user is not allowed to make objects public
-        if ( accessControlService.canCreatePublic( currentUserService.getCurrentUser(), object.getClass() ) )
+        if ( aclService.canCreatePublic( currentUserService.getCurrentUser(), object.getClass() ) )
         {
             object.setPublicAccess( sharing.getObject().getPublicAccess() );
         }

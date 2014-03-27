@@ -11,7 +11,7 @@
 
   <bean id="org.hisp.dhis.schema.PropertyIntrospectorService" class="org.hisp.dhis.schema.DefaultPropertyIntrospectorService" />
 
-  <bean id="org.hisp.dhis.acl.AccessControlService" class="org.hisp.dhis.acl.DefaultAccessControlService" />
+  <bean id="org.hisp.dhis.acl.AclService" class="org.hisp.dhis.acl.DefaultAclService" />
 
   <!-- Store definitions -->
 

@@ -37,13 +37,15 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface AccessControlService
+public interface AclService
 {
     public static final List<String> SHARING_OVERRIDE_AUTHORITIES = Arrays.asList( "ALL", "F_METADATA_IMPORT" );
 
     boolean isSupported( String type );
 
     boolean isSupported( Class<?> klass );
+
+    boolean isShareable( String type );
 
     boolean isShareable( Class<?> klass );
 
