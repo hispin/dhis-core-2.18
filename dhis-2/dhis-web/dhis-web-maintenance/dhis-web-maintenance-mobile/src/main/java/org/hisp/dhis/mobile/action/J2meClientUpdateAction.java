@@ -45,13 +45,13 @@ public class J2meClientUpdateAction
     // Dependencies
     // -------------------------------------------------------------------------
     
-    TrackedEntityMobileSettingService TrackedEntityMobileSettingService;
+    private TrackedEntityMobileSettingService mobileSettingService;
 
-    public void setTrackedEntityMobileSettingService( TrackedEntityMobileSettingService TrackedEntityMobileSettingService )
+    public void setMobileSettingService( TrackedEntityMobileSettingService mobileSettingService )
     {
-        this.TrackedEntityMobileSettingService = TrackedEntityMobileSettingService;
+        this.mobileSettingService = mobileSettingService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -70,11 +70,11 @@ public class J2meClientUpdateAction
         this.autoUpdate = autoUpdate;
     }
     
-    private TrackedEntityMobileSetting TrackedEntityMobileSetting;
+    private TrackedEntityMobileSetting trackedEntityMobileSetting;
 
     public TrackedEntityMobileSetting getTrackedEntityMobileSetting()
     {
-        return TrackedEntityMobileSetting;
+        return trackedEntityMobileSetting;
     }
 
     @Override
@@ -83,31 +83,31 @@ public class J2meClientUpdateAction
     { 
         List<TrackedEntityMobileSetting> list;
         
-        list = (List<TrackedEntityMobileSetting>) TrackedEntityMobileSettingService.getCurrentSetting();
+        list = (List<TrackedEntityMobileSetting>) mobileSettingService.getCurrentSetting();
         
         if( list.size() == 0 )
         {
-            this.TrackedEntityMobileSetting = new TrackedEntityMobileSetting();
+            trackedEntityMobileSetting = new TrackedEntityMobileSetting();
         }
         else
         {
-            this.TrackedEntityMobileSetting = list.get( 0 );
+            trackedEntityMobileSetting = list.get( 0 );
         }    
         if ( this.version != 0 )
         {
-            this.TrackedEntityMobileSetting.setVersionToUpdate( this.version );
+            trackedEntityMobileSetting.setVersionToUpdate( this.version );
         }
         if ( autoUpdate != null && autoUpdate.equals( "yes" ) )
         {
-            this.TrackedEntityMobileSetting.setAutoUpdateClient( true );
+            trackedEntityMobileSetting.setAutoUpdateClient( true );
         }
         
         if ( autoUpdate != null && autoUpdate.equals( "no" ) )
         {
-            this.TrackedEntityMobileSetting.setAutoUpdateClient( false );
+            trackedEntityMobileSetting.setAutoUpdateClient( false );
         }
-        TrackedEntityMobileSettingService.saveTrackedEntityMobileSetting( this.TrackedEntityMobileSetting );
+        
+        mobileSettingService.saveTrackedEntityMobileSetting( this.trackedEntityMobileSetting );
         return SUCCESS;
     }
-
 }
