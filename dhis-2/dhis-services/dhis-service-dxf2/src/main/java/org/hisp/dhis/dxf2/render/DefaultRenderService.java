@@ -82,19 +82,19 @@ public class DefaultRenderService implements RenderService
     @Override
     public <T> void toXml( OutputStream output, T value ) throws IOException
     {
-
+        xmlMapper.writeValue( output, value );
     }
 
     @Override
     public <T> void toXml( OutputStream output, T value, Class<?> klass ) throws IOException
     {
-
+        xmlMapper.writerWithView( klass ).writeValue( output, value );
     }
 
     @Override
     public <T> T fromXml( InputStream input, Class<T> klass ) throws IOException
     {
-        return null;
+        return xmlMapper.readValue( input, klass );
     }
 
     //--------------------------------------------------------------------------
