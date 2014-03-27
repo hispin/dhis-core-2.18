@@ -160,19 +160,19 @@ public class Schema
         this.properties = properties;
     }
 
-    private Map<AuthorityType, List<Authority>> authorityMap = Maps.newHashMap();
+    private Map<AuthorityType, List<String>> authorityMap = Maps.newHashMap();
 
-    public List<Authority> getAuthorityByType( AuthorityType type )
+    public List<String> getAuthorityByType( AuthorityType type )
     {
         if ( !authorityMap.containsKey( type ) )
         {
-            List<Authority> authorityList = Lists.newArrayList();
+            List<String> authorityList = Lists.newArrayList();
 
             for ( Authority authority : authorities )
             {
                 if ( type.equals( authority.getType() ) )
                 {
-                    authorityList.add( authority );
+                    authorityList.addAll( authority.getAuthorities() );
                 }
             }
 
