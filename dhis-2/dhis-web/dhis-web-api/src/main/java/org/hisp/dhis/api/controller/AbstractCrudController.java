@@ -256,8 +256,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        if ( !aclService.canCreatePublic( currentUserService.getCurrentUser(), getEntityClass() )
-            && !aclService.canCreatePrivate( currentUserService.getCurrentUser(), getEntityClass() ) )
+        if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
         {
             throw new CreateAccessDeniedException( "You don't have the proper permissions to create this object." );
         }
@@ -266,8 +265,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
-        if ( !aclService.canCreatePublic( currentUserService.getCurrentUser(), getEntityClass() )
-            && !aclService.canCreatePrivate( currentUserService.getCurrentUser(), getEntityClass() ) )
+        if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
         {
             throw new CreateAccessDeniedException( "You don't have the proper permissions to create this object." );
         }

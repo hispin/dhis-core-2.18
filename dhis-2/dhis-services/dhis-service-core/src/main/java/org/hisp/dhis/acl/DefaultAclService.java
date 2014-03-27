@@ -205,6 +205,19 @@ public class DefaultAclService implements AclService
     }
 
     @Override
+    public <T extends IdentifiableObject> boolean canCreate( User user, Class<T> klass )
+    {
+        Schema schema = schemaService.getSchema( klass );
+
+        if ( !schema.isShareable() )
+        {
+            return canAccess( user, schema.getAuthorityByType( AuthorityType.CREATE ) );
+        }
+
+        return canCreatePublic( user, klass ) || canCreatePrivate( user, klass );
+    }
+
+    @Override
     public <T extends IdentifiableObject> boolean canCreatePublic( User user, Class<T> klass )
     {
         Schema schema = schemaService.getSchema( klass );
