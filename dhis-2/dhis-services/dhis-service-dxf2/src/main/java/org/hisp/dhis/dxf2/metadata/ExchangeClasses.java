@@ -190,8 +190,6 @@ final public class ExchangeClasses
         importClasses.remove( Dashboard.class );
         importClasses.remove( BaseDimensionalObject.class );
         
-        importClasses.remove( EventReport.class );
-
         // tracker types are not enabled for meta-data import-export yet
         exportClasses.remove( Program.class );
         exportClasses.remove( ProgramStage.class );

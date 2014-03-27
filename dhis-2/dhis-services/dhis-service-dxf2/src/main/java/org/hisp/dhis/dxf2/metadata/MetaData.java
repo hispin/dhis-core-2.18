@@ -57,6 +57,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.dxf2.events.event.Event;
+import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.indicator.Indicator;
@@ -204,6 +205,8 @@ public class MetaData
     
     private List<Event> events = new ArrayList<Event>();
 
+    private List<EventReport> eventReports = new ArrayList<EventReport>();
+    
     private List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
     private List<TrackedEntityAttribute> trackedEntityAttributes = new ArrayList<TrackedEntityAttribute>();
@@ -861,6 +864,19 @@ public class MetaData
     public void setEvents( List<Event> events )
     {
         this.events = events;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "eventReports", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "eventReport", namespace = DxfNamespaces.DXF_2_0 )
+    public List<EventReport> getEventReports()
+    {
+        return eventReports;
+    }
+
+    public void setEventReports( List<EventReport> eventReports )
+    {
+        this.eventReports = eventReports;
     }
 
     @JsonProperty
