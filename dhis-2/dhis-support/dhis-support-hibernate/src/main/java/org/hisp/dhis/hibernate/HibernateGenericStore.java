@@ -401,7 +401,7 @@ public class HibernateGenericStore<T>
     protected boolean sharingEnabled()
     {
         boolean enabled = forceAcl() || (aclService.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
-            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), AclService.SHARING_OVERRIDE_AUTHORITIES )));
+            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), AclService.ACL_OVERRIDE_AUTHORITIES )));
 
         return enabled;
     }

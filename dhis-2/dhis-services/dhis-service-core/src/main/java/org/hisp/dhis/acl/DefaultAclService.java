@@ -224,7 +224,7 @@ public class DefaultAclService implements AclService
             return false;
         }
 
-        return containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.CREATE_PUBLIC ) );
+        return containsAny( authorities, ACL_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.CREATE_PUBLIC ) );
     }
 
     @Override
@@ -239,7 +239,7 @@ public class DefaultAclService implements AclService
             return false;
         }
 
-        return containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ) );
+        return containsAny( authorities, ACL_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ) );
     }
 
     @Override
@@ -254,7 +254,7 @@ public class DefaultAclService implements AclService
             return false;
         }
 
-        return containsAny( authorities, SHARING_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) );
+        return containsAny( authorities, ACL_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) );
     }
 
     @Override
@@ -280,7 +280,7 @@ public class DefaultAclService implements AclService
 
     private boolean haveOverrideAuthority( User user )
     {
-        return user == null || containsAny( user.getUserCredentials().getAllAuthorities(), SHARING_OVERRIDE_AUTHORITIES );
+        return user == null || containsAny( user.getUserCredentials().getAllAuthorities(), ACL_OVERRIDE_AUTHORITIES );
     }
 
     private boolean canAccess( User user, Collection<String> requiredAuthorities )
