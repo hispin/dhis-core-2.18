@@ -56,14 +56,14 @@ public class DefaultAclService implements AclService
     public boolean isSupported( String type )
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
-        return schema != null && schema.isShareable();
+        return schema != null;
     }
 
     @Override
     public boolean isSupported( Class<?> klass )
     {
         Schema schema = schemaService.getSchema( klass );
-        return schema != null && schema.isShareable();
+        return schema != null;
     }
 
     @Override
@@ -133,6 +133,10 @@ public class DefaultAclService implements AclService
             {
                 return true;
             }
+        }
+        else
+        {
+            return false;
         }
 
         if ( haveOverrideAuthority( user )
