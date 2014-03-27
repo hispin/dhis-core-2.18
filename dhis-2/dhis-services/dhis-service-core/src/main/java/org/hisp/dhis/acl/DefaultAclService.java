@@ -85,16 +85,19 @@ public class DefaultAclService implements AclService
     {
         Schema schema = schemaService.getSchema( object.getClass() );
 
-        if ( schema == null || !schema.isShareable() )
+        if ( schema == null )
         {
             return false;
         }
 
-        //TODO ( (object instanceof User) && canCreatePrivate( user, object ) ): review possible security breaches and best way to give update access upon user import
+        if ( !schema.isShareable() )
+        {
+            return canAccess( user, schema.getAuthorityByType( AuthorityType.CREATE ) );
+        }
+
         if ( haveOverrideAuthority( user )
             || (object.getUser() == null && canCreatePublic( user, object.getClass() ) && !schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ).isEmpty())
             || (user != null && user.equals( object.getUser() ))
-            //|| authorities.contains( PRIVATE_AUTHORITIES.get( object.getClass() ) )
             || ((object instanceof User) && canCreatePrivate( user, object.getClass() ))
             || AccessStringHelper.canWrite( object.getPublicAccess() ) )
         {
@@ -119,9 +122,17 @@ public class DefaultAclService implements AclService
     {
         Schema schema = schemaService.getSchema( object.getClass() );
 
-        if ( schema == null || !schema.isShareable() )
+        if ( schema == null )
         {
             return false;
+        }
+
+        if ( canAccess( user, schema.getAuthorityByType( AuthorityType.READ ) ) )
+        {
+            if ( !schema.isShareable() )
+            {
+                return true;
+            }
         }
 
         if ( haveOverrideAuthority( user )
@@ -150,36 +161,14 @@ public class DefaultAclService implements AclService
     public boolean canUpdate( User user, IdentifiableObject object )
     {
         Schema schema = schemaService.getSchema( object.getClass() );
-
-        if ( schema == null )
-        {
-            return false;
-        }
-
-        if ( schema.isShareable() )
-        {
-            return canAccess( user, schema.getAuthorityByType( AuthorityType.UPDATE ) ) && canWrite( user, object );
-        }
-
-        return canAccess( user, schema.getAuthorityByType( AuthorityType.UPDATE ) );
+        return schema != null && canAccess( user, schema.getAuthorityByType( AuthorityType.UPDATE ) ) && (!schema.isShareable() || canWrite( user, object ));
     }
 
     @Override
     public boolean canDelete( User user, IdentifiableObject object )
     {
         Schema schema = schemaService.getSchema( object.getClass() );
-
-        if ( schema == null )
-        {
-            return false;
-        }
-
-        if ( schema.isShareable() )
-        {
-            return canAccess( user, schema.getAuthorityByType( AuthorityType.DELETE ) ) && canWrite( user, object );
-        }
-
-        return canAccess( user, schema.getAuthorityByType( AuthorityType.DELETE ) );
+        return schema != null && canAccess( user, schema.getAuthorityByType( AuthorityType.DELETE ) ) && (!schema.isShareable() || canWrite( user, object ));
     }
 
     @Override
