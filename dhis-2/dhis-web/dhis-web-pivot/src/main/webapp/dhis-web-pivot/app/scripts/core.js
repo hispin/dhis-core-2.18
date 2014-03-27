@@ -1722,7 +1722,7 @@ Ext.onReady( function() {
 
 				component.mask = new Ext.create('Ext.LoadMask', component, {
 					shadow: false,
-					message: message,
+					msg: message,
 					style: 'box-shadow:0',
 					bodyStyle: 'box-shadow:0'
 				});
@@ -1945,6 +1945,10 @@ Ext.onReady( function() {
 					if (!Ext.isObject(config)) {
 						return '';
 					}
+
+                    if (config.hidden || config.collapsed) {
+                        return '';
+                    }
 
 					// Background color from legend set
 					if (isNumeric && xLayout.legendSet) {
