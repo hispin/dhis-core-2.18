@@ -28,11 +28,13 @@ package org.hisp.dhis.eventreport;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -43,12 +45,27 @@ public class EventReportServiceTest
     @Autowired
     private EventReportService eventReportService;
     
+    @Autowired
+    private ProgramService programService;
+    
+    private Program prA;
+    
+    @Override
+    public void setUpTest()
+    {
+        prA = createProgram( 'A', null, null );
+        programService.addProgram( prA );
+    }
+    
     @Test
     public void testSaveGet()
     {
         EventReport erA = new EventReport( "erA" );
+        erA.setProgram( prA );
         EventReport erB = new EventReport( "erB" );
+        erB.setProgram( prA );
         EventReport erC = new EventReport( "erC" );
+        erC.setProgram( prA );
         
         int idA = eventReportService.saveEventReport( erA );
         int idB = eventReportService.saveEventReport( erB );

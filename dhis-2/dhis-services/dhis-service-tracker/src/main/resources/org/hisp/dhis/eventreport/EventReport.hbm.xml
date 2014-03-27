@@ -71,6 +71,16 @@
 
     <property name="userOrganisationUnitGrandChildren" />
 
+    <many-to-one name="program" class="org.hisp.dhis.program.Program"
+      column="programid" not-null="true" foreign-key="fk_eventreport_programid" />
+    
+    <many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
+      column="programstageid" foreign-key="fk_eventreport_programstageid" />
+    
+    <property name="startDate" />
+    
+    <property name="endDate" />
+    
     <list name="columnDimensions" table="eventreport_columns">
       <cache usage="read-write" />
       <key column="eventreportid" foreign-key="fk_eventreport_columns_eventreportid" />
