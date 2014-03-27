@@ -247,7 +247,7 @@ public class DefaultAclService implements AclService
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
 
-        if ( schema != null && schema.isShareable() && schema.isIdentifiableObject() )
+        if ( schema != null && schema.isIdentifiableObject() )
         {
             return (Class<? extends IdentifiableObject>) schema.getKlass();
         }

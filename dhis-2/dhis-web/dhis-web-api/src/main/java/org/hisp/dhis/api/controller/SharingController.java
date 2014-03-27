@@ -30,6 +30,7 @@ package org.hisp.dhis.api.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.webdomain.sharing.Sharing;
@@ -39,7 +40,6 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.acl.AccessStringHelper;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
@@ -157,7 +157,15 @@ public class SharingController
     @RequestMapping( value = "", method = { RequestMethod.POST, RequestMethod.PUT }, consumes = "application/json" )
     public void setSharing( @RequestParam String type, @RequestParam String id, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
-        BaseIdentifiableObject object = (BaseIdentifiableObject) manager.get( aclService.classForType( type ), id );
+        Class<? extends IdentifiableObject> sharingClass = aclService.classForType( type );
+
+        if ( sharingClass == null || !aclService.isShareable( sharingClass ) )
+        {
+            ContextUtils.notFoundResponse( response, "Type " + type + " is not supported." );
+            return;
+        }
+
+        BaseIdentifiableObject object = (BaseIdentifiableObject) manager.get( sharingClass, id );
 
         if ( object == null )
         {

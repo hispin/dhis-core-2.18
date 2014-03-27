@@ -289,7 +289,7 @@ public class DefaultSecurityService
     @Override
     public boolean canCreatePublic( IdentifiableObject identifiableObject )
     {
-        return !aclService.isSupported( identifiableObject.getClass() )
+        return !aclService.isShareable( identifiableObject.getClass() )
             || aclService.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject.getClass() );
     }
 
@@ -298,14 +298,14 @@ public class DefaultSecurityService
     {
         Class<? extends IdentifiableObject> klass = aclService.classForType( type );
 
-        return !aclService.isSupported( klass )
+        return !aclService.isShareable( klass )
             || aclService.canCreatePublic( currentUserService.getCurrentUser(), klass );
     }
 
     @Override
     public boolean canCreatePrivate( IdentifiableObject identifiableObject )
     {
-        return !aclService.isSupported( identifiableObject.getClass() )
+        return !aclService.isShareable( identifiableObject.getClass() )
             || aclService.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject.getClass() );
     }
 
@@ -314,7 +314,7 @@ public class DefaultSecurityService
     {
         Class<? extends IdentifiableObject> klass = aclService.classForType( type );
 
-        return !aclService.isSupported( klass )
+        return !aclService.isShareable( klass )
             || aclService.canCreatePrivate( currentUserService.getCurrentUser(), klass );
     }
 
@@ -349,7 +349,7 @@ public class DefaultSecurityService
     @Override
     public boolean canManage( IdentifiableObject identifiableObject )
     {
-        return !aclService.isSupported( identifiableObject.getClass() )
+        return !aclService.isShareable( identifiableObject.getClass() )
             || aclService.canManage( currentUserService.getCurrentUser(), identifiableObject );
     }
 }
