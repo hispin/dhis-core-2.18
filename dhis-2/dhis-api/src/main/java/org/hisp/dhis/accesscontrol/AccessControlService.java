@@ -1,4 +1,4 @@
-package org.hisp.dhis.sharing;
+package org.hisp.dhis.accesscontrol;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
