@@ -86,10 +86,19 @@ public interface DimensionalObject
      */
     String getDisplayName();
         
+    /**
+     * Dimension items.
+     */
     List<NameableObject> getItems();
     
+    /**
+     * Indicates whether all items for this dimension should be used.
+     */
     boolean isAllItems();
     
+    /**
+     * Indicates whether this dimension has any items.
+     */
     boolean hasItems();
     
     /**
