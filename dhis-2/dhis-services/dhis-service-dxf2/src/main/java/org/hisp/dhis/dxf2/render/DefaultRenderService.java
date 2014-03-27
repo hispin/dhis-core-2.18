@@ -34,6 +34,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,9 +50,11 @@ public class DefaultRenderService implements RenderService
 {
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
+    private final XmlMapper xmlMapper = new XmlMapper();
+
     public DefaultRenderService()
     {
-        configureObjectMapper();
+        configureObjectMappers();
     }
 
     //--------------------------------------------------------------------------
@@ -75,28 +79,53 @@ public class DefaultRenderService implements RenderService
         return jsonMapper.readValue( input, klass );
     }
 
+    @Override
+    public <T> void toXml( OutputStream output, T value ) throws IOException
+    {
+
+    }
+
+    @Override
+    public <T> void toXml( OutputStream output, T value, Class<?> klass ) throws IOException
+    {
+
+    }
+
+    @Override
+    public <T> T fromXml( InputStream input, Class<T> klass ) throws IOException
+    {
+        return null;
+    }
+
     //--------------------------------------------------------------------------
     // Helpers
     //--------------------------------------------------------------------------
 
-    private void configureObjectMapper()
+    private void configureObjectMappers()
     {
-        jsonMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
-        jsonMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
-        jsonMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
-        jsonMapper.configure( SerializationFeature.FAIL_ON_EMPTY_BEANS, false );
-        jsonMapper.configure( SerializationFeature.WRAP_EXCEPTIONS, true );
+        ObjectMapper[] objectMappers = new ObjectMapper[]{ jsonMapper, xmlMapper };
 
-        jsonMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
-        jsonMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true );
-        jsonMapper.configure( DeserializationFeature.WRAP_EXCEPTIONS, true );
+        for ( ObjectMapper objectMapper : objectMappers )
+        {
+            // objectMapper.setDateFormat( format );
+            objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
+            objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+            objectMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
+            objectMapper.configure( SerializationFeature.FAIL_ON_EMPTY_BEANS, false );
+            objectMapper.configure( SerializationFeature.WRAP_EXCEPTIONS, true );
 
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_FIELDS );
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_CREATORS );
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_GETTERS );
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_SETTERS );
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
+            objectMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+            objectMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true );
+            objectMapper.configure( DeserializationFeature.WRAP_EXCEPTIONS, true );
+
+            objectMapper.disable( MapperFeature.AUTO_DETECT_FIELDS );
+            objectMapper.disable( MapperFeature.AUTO_DETECT_CREATORS );
+            objectMapper.disable( MapperFeature.AUTO_DETECT_GETTERS );
+            objectMapper.disable( MapperFeature.AUTO_DETECT_SETTERS );
+            objectMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
+        }
 
         jsonMapper.getJsonFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
+        xmlMapper.configure( ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true );
     }
 }

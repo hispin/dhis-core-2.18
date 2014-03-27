@@ -42,4 +42,10 @@ public interface RenderService
     <T> void toJson( OutputStream output, T value, Class<?> klass ) throws IOException;
 
     <T> T fromJson( InputStream input, Class<T> klass ) throws IOException;
+
+    <T> void toXml( OutputStream output, T value ) throws IOException;
+
+    <T> void toXml( OutputStream output, T value, Class<?> klass ) throws IOException;
+
+    <T> T fromXml( InputStream input, Class<T> klass ) throws IOException;
 }
