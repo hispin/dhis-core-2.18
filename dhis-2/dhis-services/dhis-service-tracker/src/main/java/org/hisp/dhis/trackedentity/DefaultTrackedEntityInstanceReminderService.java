@@ -96,8 +96,8 @@ public class DefaultTrackedEntityInstanceReminderService
     }
 
     @Override
-    public String getMessageFromTemplate( TrackedEntityInstanceReminder reminder,
-        ProgramInstance programInstance, I18nFormat format )
+    public String getMessageFromTemplate( TrackedEntityInstanceReminder reminder, ProgramInstance programInstance,
+        I18nFormat format )
     {
         TrackedEntityInstance entityInstance = programInstance.getEntityInstance();
         String templateMessage = reminder.getTemplateMessage();
@@ -133,7 +133,8 @@ public class DefaultTrackedEntityInstanceReminderService
             if ( matcher.group( 1 ).equals( ATTRIBUTE ) )
             {
                 String uid = matcher.group( 2 );
-                for ( TrackedEntityAttributeValue attributeValue : programInstance.getEntityInstance().getAttributeValues() )
+                for ( TrackedEntityAttributeValue attributeValue : programInstance.getEntityInstance()
+                    .getAttributeValues() )
                 {
                     if ( attributeValue.getAttribute().getUid().equals( uid ) )
                     {

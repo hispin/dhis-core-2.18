@@ -248,9 +248,9 @@ public class DefaultTrackedEntityFormService
         if ( hasBirthdate && hasAge )
         {
             dobType = "<select id=\'dobType\' name=\"dobType\" style=\'width:120px\' onchange=\'dobTypeOnChange(\"instanceForm\")\' >";
-            dobType += "     <option value=\"V\" >" + i18n.getString( "verified" ) + "</option>";
-            dobType += "     <option value=\"D\" >" + i18n.getString( "declared" ) + "</option>";
-            dobType += "     <option value=\"A\" >" + i18n.getString( "approximated" ) + "</option>";
+            dobType += "<option value=\"V\" >" + i18n.getString( "verified" ) + "</option>";
+            dobType += "<option value=\"D\" >" + i18n.getString( "declared" ) + "</option>";
+            dobType += "<option value=\"A\" >" + i18n.getString( "approximated" ) + "</option>";
             dobType += "</select>";
         }
         else if ( hasBirthdate )
