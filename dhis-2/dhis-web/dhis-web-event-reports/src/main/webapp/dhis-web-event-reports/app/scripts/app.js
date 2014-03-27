@@ -1191,29 +1191,9 @@ Ext.onReady( function() {
 
 		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.hide_empty_rows,
-			style: 'margin-bottom:4px'
+			style: 'margin-bottom:4px',
+            checked: true
 		});
-
-		//aggregationType = Ext.create('Ext.form.field.ComboBox', {
-			//cls: 'ns-combo',
-			//style: 'margin-bottom:3px',
-			//width: comboboxWidth,
-			//labelWidth: 130,
-			//fieldLabel: NS.i18n.aggregation_type,
-			//labelStyle: 'color:#333',
-			//queryMode: 'local',
-			//valueField: 'id',
-			//editable: false,
-			//value: 'default',
-			//store: Ext.create('Ext.data.Store', {
-				//fields: ['id', 'text'],
-				//data: [
-					//{id: 'default', text: NS.i18n.by_data_element},
-					//{id: 'count', text: NS.i18n.count},
-					//{id: 'sum', text: NS.i18n.sum}
-				//]
-			//})
-		//});
 
 		showHierarchy = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_hierarchy,
@@ -1296,76 +1276,6 @@ Ext.onReady( function() {
 			//store: ns.app.stores.legendSet
 		//});
 
-		//reportingPeriod = Ext.create('Ext.form.field.Checkbox', {
-			//boxLabel: NS.i18n.reporting_period,
-			//style: 'margin-bottom:4px',
-		//});
-
-		//organisationUnit = Ext.create('Ext.form.field.Checkbox', {
-			//boxLabel: NS.i18n.organisation_unit,
-			//style: 'margin-bottom:4px',
-		//});
-
-		//parentOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
-			//boxLabel: NS.i18n.parent_organisation_unit,
-			//style: 'margin-bottom:4px',
-		//});
-
-		//regression = Ext.create('Ext.form.field.Checkbox', {
-			//boxLabel: NS.i18n.include_regression,
-			//style: 'margin-bottom:4px',
-		//});
-
-		//cumulative = Ext.create('Ext.form.field.Checkbox', {
-			//boxLabel: NS.i18n.include_cumulative,
-			//style: 'margin-bottom:6px',
-		//});
-
-		//sortOrder = Ext.create('Ext.form.field.ComboBox', {
-			//cls: 'ns-combo',
-			//style: 'margin-bottom:3px',
-			//width: 250,
-			//labelWidth: 130,
-			//fieldLabel: NS.i18n.sort_order,
-			//labelStyle: 'color:#333',
-			//queryMode: 'local',
-			//valueField: 'id',
-			//editable: false,
-			//value: 0,
-			//store: Ext.create('Ext.data.Store', {
-				//fields: ['id', 'text'],
-				//data: [
-					//{id: 0, text: NS.i18n.none},
-					//{id: 1, text: NS.i18n.low_to_high},
-					//{id: 2, text: NS.i18n.high_to_low}
-				//]
-			//})
-		//});
-
-		//topLimit = Ext.create('Ext.form.field.ComboBox', {
-			//cls: 'ns-combo',
-			//style: 'margin-bottom:0',
-			//width: 250,
-			//labelWidth: 130,
-			//fieldLabel: NS.i18n.top_limit,
-			//labelStyle: 'color:#333',
-			//queryMode: 'local',
-			//valueField: 'id',
-			//editable: false,
-			//value: 0,
-			//store: Ext.create('Ext.data.Store', {
-				//fields: ['id', 'text'],
-				//data: [
-					//{id: 0, text: NS.i18n.none},
-					//{id: 5, text: 5},
-					//{id: 10, text: 10},
-					//{id: 20, text: 20},
-					//{id: 50, text: 50},
-					//{id: 100, text: 100}
-				//]
-			//})
-		//});
-
 		data = {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
@@ -1396,20 +1306,6 @@ Ext.onReady( function() {
 			]
 		};
 
-		//parameters = {
-			//bodyStyle: 'border:0 none; background:transparent',
-			//style: 'margin-left:14px',
-			//items: [
-				//reportingPeriod,
-				//organisationUnit,
-				//parentOrganisationUnit,
-				//regression,
-				//cumulative,
-				//sortOrder,
-				//topLimit
-			//]
-		//};
-
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_options,
 			bodyStyle: 'background-color:#fff; padding:5px',
@@ -1423,19 +1319,11 @@ Ext.onReady( function() {
 					showTotals: showTotals.getValue(),
 					showSubTotals: showSubTotals.getValue(),
 					hideEmptyRows: hideEmptyRows.getValue(),
-                    //aggregationType: aggregationType.getValue(),
 					showHierarchy: showHierarchy.getValue(),
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue(),
 					digitGroupSeparator: digitGroupSeparator.getValue()
-					//legendSet: {id: legendSet.getValue()},
-					//reportingPeriod: reportingPeriod.getValue(),
-					//organisationUnit: organisationUnit.getValue(),
-					//parentOrganisationUnit: parentOrganisationUnit.getValue(),
-					//regression: regression.getValue(),
-					//cumulative: cumulative.getValue(),
-					//sortOrder: sortOrder.getValue(),
-					//topLimit: topLimit.getValue()
+					//legendSet: {id: legendSet.getValue()}
 				};
 			},
 			setOptions: function(layout) {
@@ -1481,19 +1369,6 @@ Ext.onReady( function() {
 					html: NS.i18n.style
 				},
 				style
-				//{
-					//bodyStyle: 'border:0 none; padding:4px'
-				//},
-				//{
-					//bodyStyle: 'border:1px solid #d5d5d5; padding:5px; background-color:#f0f0f0',
-					//items: [
-						//{
-							//bodyStyle: 'border:0 none; padding:0 5px 6px 2px; background-color:transparent; color:#222; font-size:12px',
-							//html: '<b>' + NS.i18n.parameters + '</b> <span style="font-size:11px"> (' + NS.i18n.for_standard_reports_only + ')</span>'
-						//},
-						//parameters
-					//]
-				//}
 			],
 			bbar: [
 				'->',
@@ -1537,19 +1412,10 @@ Ext.onReady( function() {
 					w.showTotals = showTotals;
 					w.showSubTotals = showSubTotals;
 					w.hideEmptyRows = hideEmptyRows;
-                    //w.aggregationType = aggregationType;
 					w.showHierarchy = showHierarchy;
 					w.displayDensity = displayDensity;
 					w.fontSize = fontSize;
 					w.digitGroupSeparator = digitGroupSeparator;
-					//w.legendSet = legendSet;
-					//w.reportingPeriod = reportingPeriod;
-					//w.organisationUnit = organisationUnit;
-					//w.parentOrganisationUnit = parentOrganisationUnit;
-					//w.regression = regression;
-					//w.cumulative = cumulative;
-					//w.sortOrder = sortOrder;
-					//w.topLimit = topLimit;
 				}
 			}
 		});
@@ -4914,11 +4780,26 @@ Ext.onReady( function() {
 				// hierarchy
 				paramString += view.showHierarchy ? '&hierarchyMeta=true' : '';
 
+				// show mask
+				web.mask.show(ns.app.centerRegion);
+
+                // timing
+                ns.app.dateData = new Date();
+
 				Ext.Ajax.request({
 					url: ns.core.init.contextPath + '/api/analytics/events/' + view.type + '/' + view.program.id + '.json' + paramString,
 					disableCaching: false,
 					scope: this,
+					failure: function(r) {
+						//ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
+
+						web.mask.hide(ns.app.centerRegion);
+
+                        alert(r.responseText);
+					},
 					success: function(r) {
+                        ns.app.dateCreate = new Date();
+
                         var response = api.response.Response(Ext.decode(r.responseText));
 
                         if (!response) {
@@ -4926,6 +4807,8 @@ Ext.onReady( function() {
 							web.mask.hide(ns.app.centerRegion);
 							return;
 						}
+
+                        web.mask.show(ns.app.centerRegion, 'Creating table..');
 
                         ns.app.paramString = paramString;
 
@@ -4963,11 +4846,11 @@ Ext.onReady( function() {
 
 					table = getHtml(xLayout, xResponse);
 
-					console.log("layout", layout);
-					console.log("response", response);
-					console.log("xResponse", xResponse);
-					console.log("xLayout", xLayout);
-					console.log("table", table);
+                    if (table.tdCount > 20000 || (layout.hideEmptyRows && table.tdCount > 10000)) {
+                        alert('Table has too many cells. Please reduce the table and try again.');
+                        web.mask.hide(ns.app.centerRegion);
+                        return;
+                    }
 
 					if (layout.sorting) {
 						xResponse = web.report.aggregate.sort(xLayout, xResponse, xColAxis);
@@ -4975,8 +4858,16 @@ Ext.onReady( function() {
 						table = getHtml(xLayout, xResponse);
 					}
 
+                    web.mask.show(ns.app.centerRegion, 'Rendering table..');
+
+                    // timing
+                    ns.app.dateRender = new Date();
+
 					ns.app.centerRegion.removeAll(true);
 					ns.app.centerRegion.update(table.html);
+
+                    // timing
+                    ns.app.dateTotal = new Date();
 
 					// after render
 					ns.app.layout = layout;
@@ -4999,6 +4890,15 @@ Ext.onReady( function() {
 					web.mask.hide(ns.app.centerRegion);
 
 					if (NS.isDebug) {
+                        console.log("Number of cells", table.tdCount);
+                        console.log("DATA", (ns.app.dateCreate - ns.app.dateData) / 1000);
+                        console.log("CREATE", (ns.app.dateRender - ns.app.dateCreate) / 1000);
+                        console.log("RENDER", (ns.app.dateTotal - ns.app.dateRender) / 1000);
+                        console.log("TOTAL", (ns.app.dateTotal - ns.app.dateData) / 1000);
+                        console.log("layout", layout);
+                        console.log("response", response);
+                        console.log("xResponse", xResponse);
+                        console.log("xLayout", xLayout);
 						console.log("core", ns.core);
 						console.log("app", ns.app);
 					}
