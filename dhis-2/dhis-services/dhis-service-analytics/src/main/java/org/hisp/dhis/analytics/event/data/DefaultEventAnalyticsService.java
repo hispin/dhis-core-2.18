@@ -82,7 +82,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class DefaultEventAnalyticsService
     implements EventAnalyticsService
-{
+{    
     private static final String ITEM_EVENT = "psi";
     private static final String ITEM_PROGRAM_STAGE = "ps";
     private static final String ITEM_EXECUTION_DATE = "eventdate";

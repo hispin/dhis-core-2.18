@@ -41,6 +41,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
+import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.common.DimensionalObject;
@@ -68,8 +69,6 @@ public class JdbcEventAnalyticsManager
     implements EventAnalyticsManager
 {
     private static final Log log = LogFactory.getLog( JdbcEventAnalyticsManager.class );
-    
-    private static final int MAX_LIMIT = 10000;
     
     private static final String QUERY_ERR_MSG = "Query failed, likely because the requested analytics table does not exist";
     
@@ -125,7 +124,7 @@ public class JdbcEventAnalyticsManager
         }
         else
         {
-            sql += "limit " + MAX_LIMIT;
+            sql += "limit " + EventAnalyticsService.MAX_ROWS_LIMIT;
         }
         
         // ---------------------------------------------------------------------
