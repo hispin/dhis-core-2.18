@@ -201,6 +201,7 @@ public class BaseDimensionalObject
         this.items = items;
     }
 
+    @Override
     @JsonProperty
     @JsonView( {DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -214,6 +215,7 @@ public class BaseDimensionalObject
         this.operator = operator;
     }
 
+    @Override
     @JsonProperty
     @JsonView( {DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )

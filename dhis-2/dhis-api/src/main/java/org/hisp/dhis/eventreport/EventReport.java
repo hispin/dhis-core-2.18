@@ -155,7 +155,7 @@ public class EventReport
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Program getProgram()
@@ -169,7 +169,7 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public ProgramStage getProgramStage()
