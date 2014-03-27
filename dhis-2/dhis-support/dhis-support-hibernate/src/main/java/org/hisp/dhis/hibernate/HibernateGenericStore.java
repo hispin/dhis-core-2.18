@@ -227,7 +227,7 @@ public class HibernateGenericStore<T>
     @Override
     public int save( T object )
     {
-        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUserService.getCurrentUser() != null && aclService.isSupported( clazz ) )
+        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUserService.getCurrentUser() != null && aclService.isShareable( clazz ) )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
 
@@ -400,7 +400,7 @@ public class HibernateGenericStore<T>
 
     protected boolean sharingEnabled()
     {
-        boolean enabled = forceAcl() || (aclService.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
+        boolean enabled = forceAcl() || (aclService.isShareable( clazz ) && !(currentUserService.getCurrentUser() == null ||
             CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), AclService.ACL_OVERRIDE_AUTHORITIES )));
 
         return enabled;
@@ -442,7 +442,7 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( aclService.isSupported( clazz ) )
+            if ( aclService.isShareable( clazz ) )
             {
                 return aclService.canUpdate( currentUserService.getCurrentUser(), idObject );
             }
@@ -457,7 +457,7 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( aclService.isSupported( clazz ) )
+            if ( aclService.isShareable( clazz ) )
             {
                 return aclService.canDelete( currentUserService.getCurrentUser(), idObject );
             }
