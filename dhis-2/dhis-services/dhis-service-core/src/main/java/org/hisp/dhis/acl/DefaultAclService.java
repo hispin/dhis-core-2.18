@@ -39,8 +39,6 @@ import org.hisp.dhis.user.UserGroupAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.springframework.util.CollectionUtils.containsAny;
 
@@ -105,6 +103,7 @@ public class DefaultAclService implements AclService
 
         for ( UserGroupAccess userGroupAccess : object.getUserGroupAccesses() )
         {
+            /* Is the user allowed to write to this object through group access? */
             if ( AccessStringHelper.canWrite( userGroupAccess.getAccess() )
                 && userGroupAccess.getUserGroup().getMembers().contains( user ) )
             {
@@ -136,6 +135,7 @@ public class DefaultAclService implements AclService
 
         for ( UserGroupAccess userGroupAccess : object.getUserGroupAccesses() )
         {
+            /* Is the user allowed to read this object through group access? */
             if ( AccessStringHelper.canRead( userGroupAccess.getAccess() )
                 && userGroupAccess.getUserGroup().getMembers().contains( user ) )
             {
@@ -202,6 +202,7 @@ public class DefaultAclService implements AclService
 
         for ( UserGroupAccess userGroupAccess : object.getUserGroupAccesses() )
         {
+            /* Is the user allowed to write to this object through group access? */
             if ( AccessStringHelper.canWrite( userGroupAccess.getAccess() )
                 && userGroupAccess.getUserGroup().getMembers().contains( user ) )
             {
@@ -215,46 +216,22 @@ public class DefaultAclService implements AclService
     @Override
     public <T extends IdentifiableObject> boolean canCreatePublic( User user, Class<T> klass )
     {
-        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
-
         Schema schema = schemaService.getSchema( klass );
-
-        if ( schema == null || !schema.isShareable() )
-        {
-            return false;
-        }
-
-        return containsAny( authorities, ACL_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.CREATE_PUBLIC ) );
+        return !(schema == null || !schema.isShareable()) && canAccess( user, schema.getAuthorityByType( AuthorityType.CREATE_PUBLIC ) );
     }
 
     @Override
     public <T extends IdentifiableObject> boolean canCreatePrivate( User user, Class<T> klass )
     {
-        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
-
         Schema schema = schemaService.getSchema( klass );
-
-        if ( schema == null || !schema.isShareable() )
-        {
-            return false;
-        }
-
-        return containsAny( authorities, ACL_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ) );
+        return !(schema == null || !schema.isShareable()) && canAccess( user, schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ) );
     }
 
     @Override
     public <T extends IdentifiableObject> boolean canExternalize( User user, Class<T> klass )
     {
-        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
-
         Schema schema = schemaService.getSchema( klass );
-
-        if ( schema == null || !schema.isShareable() )
-        {
-            return false;
-        }
-
-        return containsAny( authorities, ACL_OVERRIDE_AUTHORITIES ) || containsAny( authorities, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) );
+        return !(schema == null || !schema.isShareable()) && canAccess( user, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) );
     }
 
     @Override
