@@ -46,8 +46,8 @@ import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.interpretation.Interpretation;
+import org.hisp.dhis.sharing.AccessControlService;
 import org.hisp.dhis.sharing.AccessStringHelper;
-import org.hisp.dhis.sharing.SharingService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserGroupAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +85,7 @@ public class HibernateGenericStore<T>
     protected CurrentUserService currentUserService;
 
     @Autowired
-    protected SharingService sharingService;
+    protected AccessControlService accessControlService;
 
     protected Class<T> clazz;
 
@@ -227,7 +227,7 @@ public class HibernateGenericStore<T>
     @Override
     public int save( T object )
     {
-        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUserService.getCurrentUser() != null && sharingService.isSupported( clazz ) )
+        if ( !Interpretation.class.isAssignableFrom( clazz ) && currentUserService.getCurrentUser() != null && accessControlService.isSupported( clazz ) )
         {
             BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
 
@@ -240,9 +240,9 @@ public class HibernateGenericStore<T>
                 identifiableObject.setUser( currentUserService.getCurrentUser() );
             }
 
-            if ( sharingService.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
+            if ( accessControlService.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
             {
-                if ( sharingService.defaultPublic( identifiableObject.getClass() ) )
+                if ( accessControlService.defaultPublic( identifiableObject.getClass() ) )
                 {
                     String build = AccessStringHelper.newInstance()
                         .enable( AccessStringHelper.Permission.READ )
@@ -257,7 +257,7 @@ public class HibernateGenericStore<T>
                     identifiableObject.setPublicAccess( build );
                 }
             }
-            else if ( sharingService.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
+            else if ( accessControlService.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject.getClass() ) )
             {
                 identifiableObject.setPublicAccess( AccessStringHelper.newInstance().build() );
             }
@@ -400,8 +400,8 @@ public class HibernateGenericStore<T>
 
     protected boolean sharingEnabled()
     {
-        boolean enabled = forceAcl() || (sharingService.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
-            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), SharingService.SHARING_OVERRIDE_AUTHORITIES )));
+        boolean enabled = forceAcl() || (accessControlService.isSupported( clazz ) && !(currentUserService.getCurrentUser() == null ||
+            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), AccessControlService.SHARING_OVERRIDE_AUTHORITIES )));
 
         return enabled;
     }
@@ -414,7 +414,7 @@ public class HibernateGenericStore<T>
 
             if ( sharingEnabled() )
             {
-                return sharingService.canRead( currentUserService.getCurrentUser(), idObject );
+                return accessControlService.canRead( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -429,7 +429,7 @@ public class HibernateGenericStore<T>
 
             if ( sharingEnabled() )
             {
-                return sharingService.canWrite( currentUserService.getCurrentUser(), idObject );
+                return accessControlService.canWrite( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -442,9 +442,9 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( sharingService.isSupported( clazz ) )
+            if ( accessControlService.isSupported( clazz ) )
             {
-                return sharingService.canUpdate( currentUserService.getCurrentUser(), idObject );
+                return accessControlService.canUpdate( currentUserService.getCurrentUser(), idObject );
             }
         }
 
@@ -457,9 +457,9 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( sharingService.isSupported( clazz ) )
+            if ( accessControlService.isSupported( clazz ) )
             {
-                return sharingService.canDelete( currentUserService.getCurrentUser(), idObject );
+                return accessControlService.canDelete( currentUserService.getCurrentUser(), idObject );
             }
         }
 

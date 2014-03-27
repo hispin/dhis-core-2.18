@@ -55,7 +55,7 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.sharing.SharingService;
+import org.hisp.dhis.sharing.AccessControlService;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
@@ -110,7 +110,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private SessionFactory sessionFactory;
 
     @Autowired
-    private SharingService sharingService;
+    private AccessControlService accessControlService;
 
     @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
@@ -414,7 +414,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean deleteObject( User user, T persistedObject )
     {
-        if ( !sharingService.canDelete( user, persistedObject ) )
+        if ( !accessControlService.canDelete( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( persistedObject ), "You do not have delete access to class type." ) );
@@ -452,7 +452,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean newObject( User user, T object )
     {
-        if ( !sharingService.canCreatePublic( user, object.getClass() ) && !sharingService.canCreatePrivate( user, object.getClass() ) )
+        if ( !accessControlService.canCreatePublic( user, object.getClass() ) && !accessControlService.canCreatePrivate( user, object.getClass() ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have create access to class type." ) );
@@ -536,7 +536,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean updateObject( User user, T object, T persistedObject )
     {
-        if ( !sharingService.canUpdate( user, persistedObject ) )
+        if ( !accessControlService.canUpdate( user, persistedObject ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have update access to object." ) );

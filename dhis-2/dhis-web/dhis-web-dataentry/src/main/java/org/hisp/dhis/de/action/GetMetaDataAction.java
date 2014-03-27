@@ -44,7 +44,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.sharing.SharingService;
+import org.hisp.dhis.sharing.AccessControlService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +117,7 @@ public class GetMetaDataAction
     }
 
     @Autowired
-    protected SharingService sharingService;
+    protected AccessControlService accessControlService;
 
     // -------------------------------------------------------------------------
     // Output
@@ -272,7 +272,7 @@ public class GetMetaDataAction
         {
             for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
             {
-                if ( sharingService.canRead( user, categoryOption ) )
+                if ( accessControlService.canRead( user, categoryOption ) )
                 {
                     categoryOptionMap.putValue( category.getUid(), categoryOption );
                 }
