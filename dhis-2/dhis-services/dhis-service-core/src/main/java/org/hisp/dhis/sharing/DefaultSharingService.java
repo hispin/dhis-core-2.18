@@ -38,6 +38,7 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -132,13 +133,47 @@ public class DefaultSharingService implements SharingService
     @Override
     public boolean canUpdate( User user, IdentifiableObject object )
     {
-        return canWrite( user, object );
+        Schema schema = schemaService.getSchema( object.getClass() );
+
+        if ( schema == null || !schema.isShareable() )
+        {
+            return false;
+        }
+
+        if ( schema.getAuthorityByType( AuthorityType.UPDATE ).isEmpty() )
+        {
+            return canWrite( user, object );
+        }
+
+        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
+
+        return canAccess( authorities, schema.getAuthorityByType( AuthorityType.UPDATE ) ) && canWrite( user, object );
     }
 
     @Override
     public boolean canDelete( User user, IdentifiableObject object )
     {
-        return canWrite( user, object );
+        Schema schema = schemaService.getSchema( object.getClass() );
+
+        if ( schema == null || !schema.isShareable() )
+        {
+            return false;
+        }
+
+        if ( schema.getAuthorityByType( AuthorityType.DELETE ).isEmpty() )
+        {
+            return canWrite( user, object );
+        }
+
+        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
+
+        return canAccess( authorities, schema.getAuthorityByType( AuthorityType.DELETE ) ) && canWrite( user, object );
+    }
+
+    private boolean canAccess( Collection<String> userAuthorities, Collection<String> requiredAuthorities )
+    {
+        return containsAny( userAuthorities, SHARING_OVERRIDE_AUTHORITIES ) ||
+            containsAny( userAuthorities, requiredAuthorities );
     }
 
     @Override
