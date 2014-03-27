@@ -394,9 +394,9 @@ public abstract class BaseAnalyticalObject
             
             if ( attributes.containsKey( dimension ) )
             {
-                items.add( attributes.get( dimension ).getQueryFilter() );
+                TrackedEntityAttributeDimension tead = attributes.get( dimension );
                 
-                type = DimensionType.TRACKED_ENTITY_ATTRIBUTE;
+                return new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_ATTRIBUTE, null, null, tead.getOperator(), tead.getFilter() );
             }
             
             // Tracked entity data element
@@ -410,9 +410,9 @@ public abstract class BaseAnalyticalObject
             
             if ( dataElements.containsKey( dimension ) )
             {
-                items.add( dataElements.get( dimension ).getQueryFilter() );
+                TrackedEntityDataElementDimension tedd = dataElements.get( dimension );
                 
-                type = DimensionType.TRACKED_ENTITY_DATAELEMENT;
+                return new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, null, null, tedd.getOperator(), tedd.getFilter() );
             }
         }
         
@@ -599,7 +599,9 @@ public abstract class BaseAnalyticalObject
             
             if ( attributes.containsKey( dimension ) )
             {
-                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_ATTRIBUTE, attributes.get( dimension ).getQueryFilterAsList() ) );
+                TrackedEntityAttributeDimension tead = attributes.get( dimension );
+                
+                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_ATTRIBUTE, null, null, tead.getOperator(), tead.getFilter() ) );
             }
             
             // Tracked entity data element
@@ -613,7 +615,9 @@ public abstract class BaseAnalyticalObject
             
             if ( dataElements.containsKey( dimension ) )
             {
-                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, dataElements.get( dimension ).getQueryFilterAsList() ) );
+                TrackedEntityDataElementDimension tedd = dataElements.get( dimension );
+                
+                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, null, null, tedd.getOperator(), tedd.getFilter() ) );
             }            
         }
         

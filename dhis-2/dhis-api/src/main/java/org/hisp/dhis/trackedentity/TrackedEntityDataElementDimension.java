@@ -27,11 +27,6 @@ package org.hisp.dhis.trackedentity;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.dataelement.DataElement;
 
 /**
@@ -64,18 +59,6 @@ public class TrackedEntityDataElementDimension
         return dataElement != null ? dataElement.getUid() : null;
     }
     
-    public QueryFilter getQueryFilter()
-    {
-        return new QueryFilter( operator, filter );
-    }
-    
-    public List<QueryFilter> getQueryFilterAsList()
-    {
-        List<QueryFilter> list = new ArrayList<QueryFilter>();
-        list.add( getQueryFilter() );
-        return list;
-    }
-
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
