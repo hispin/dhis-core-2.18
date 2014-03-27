@@ -55,15 +55,13 @@ public class DefaultAclService implements AclService
     @Override
     public boolean isSupported( String type )
     {
-        Schema schema = schemaService.getSchemaBySingularName( type );
-        return schema != null;
+        return schemaService.getSchemaBySingularName( type ) != null;
     }
 
     @Override
     public boolean isSupported( Class<?> klass )
     {
-        Schema schema = schemaService.getSchema( klass );
-        return schema != null;
+        return schemaService.getSchema( klass ) != null;
     }
 
     @Override
