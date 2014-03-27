@@ -35,6 +35,8 @@ import java.util.List;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.user.User;
 
 /**
@@ -43,6 +45,26 @@ import org.hisp.dhis.user.User;
 public class EventReport
     extends BaseAnalyticalObject
 {
+    /**
+     * Program. Required.
+     */
+    private Program program;
+    
+    /**
+     * Program stage.
+     */
+    private ProgramStage programStage;
+
+    /**
+     * Start date.
+     */
+    private Date startDate;
+    
+    /**
+     * End date.
+     */
+    private Date endDate;
+    
     /**
      * Dimensions to crosstabulate / use as columns.
      */
@@ -89,6 +111,46 @@ public class EventReport
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
+    public void setProgram( Program program )
+    {
+        this.program = program;
+    }
+
+    public ProgramStage getProgramStage()
+    {
+        return programStage;
+    }
+
+    public void setProgramStage( ProgramStage programStage )
+    {
+        this.programStage = programStage;
+    }
+
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+
+    public void setStartDate( Date startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate()
+    {
+        return endDate;
+    }
+
+    public void setEndDate( Date endDate )
+    {
+        this.endDate = endDate;
+    }
 
     public List<String> getColumnDimensions()
     {

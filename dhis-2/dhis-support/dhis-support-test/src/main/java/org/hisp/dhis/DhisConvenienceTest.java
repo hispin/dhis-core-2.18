@@ -1011,9 +1011,12 @@ public abstract class DhisConvenienceTest
         program.setProgramStages( programStages );
         program.setType( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
 
-        for ( ProgramStage programStage : programStages )
+        if ( programStages != null )
         {
-            programStage.setProgram( program );
+            for ( ProgramStage programStage : programStages )
+            {
+                programStage.setProgram( program );
+            }
         }
 
         program.getOrganisationUnits().add( organisationUnit );
