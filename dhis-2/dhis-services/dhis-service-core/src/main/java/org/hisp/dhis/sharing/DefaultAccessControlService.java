@@ -47,7 +47,7 @@ import static org.springframework.util.CollectionUtils.containsAny;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DefaultSharingService implements SharingService
+public class DefaultAccessControlService implements AccessControlService
 {
     @Autowired
     private SchemaService schemaService;
