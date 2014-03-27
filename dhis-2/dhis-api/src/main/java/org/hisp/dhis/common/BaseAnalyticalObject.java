@@ -613,7 +613,7 @@ public abstract class BaseAnalyticalObject
             
             if ( dataElements.containsKey( dimension ) )
             {
-                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, attributes.get( dimension ).getQueryFilterAsList() ) );
+                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, dataElements.get( dimension ).getQueryFilterAsList() ) );
             }            
         }
         
