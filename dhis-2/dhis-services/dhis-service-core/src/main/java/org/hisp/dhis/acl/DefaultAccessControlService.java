@@ -67,6 +67,13 @@ public class DefaultAccessControlService implements AccessControlService
     }
 
     @Override
+    public boolean isShareable( Class<?> klass )
+    {
+        Schema schema = schemaService.getSchema( klass );
+        return schema != null && schema.isShareable();
+    }
+
+    @Override
     public boolean canWrite( User user, IdentifiableObject object )
     {
         Schema schema = schemaService.getSchema( object.getClass() );
@@ -145,9 +152,7 @@ public class DefaultAccessControlService implements AccessControlService
             return canWrite( user, object );
         }
 
-        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
-
-        return canAccess( authorities, schema.getAuthorityByType( AuthorityType.UPDATE ) ) && canWrite( user, object );
+        return canAccess( user, schema.getAuthorityByType( AuthorityType.UPDATE ) ) && canWrite( user, object );
     }
 
     @Override
@@ -165,14 +170,14 @@ public class DefaultAccessControlService implements AccessControlService
             return canWrite( user, object );
         }
 
-        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
-
-        return canAccess( authorities, schema.getAuthorityByType( AuthorityType.DELETE ) ) && canWrite( user, object );
+        return canAccess( user, schema.getAuthorityByType( AuthorityType.DELETE ) ) && canWrite( user, object );
     }
 
-    private boolean canAccess( Collection<String> userAuthorities, Collection<String> requiredAuthorities )
+    private boolean canAccess( User user, Collection<String> requiredAuthorities )
     {
-        return containsAny( userAuthorities, SHARING_OVERRIDE_AUTHORITIES ) ||
+        Set<String> userAuthorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
+
+        return user == null || containsAny( userAuthorities, SHARING_OVERRIDE_AUTHORITIES ) ||
             containsAny( userAuthorities, requiredAuthorities );
     }
 

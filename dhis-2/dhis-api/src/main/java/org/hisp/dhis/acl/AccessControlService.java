@@ -45,6 +45,8 @@ public interface AccessControlService
 
     boolean isSupported( Class<?> klass );
 
+    boolean isShareable( Class<?> klass );
+
     /**
      * Can user write to this object (create)
      * <p/>
@@ -138,7 +140,7 @@ public interface AccessControlService
     /**
      * Can user make this object external? (read with no login)
      *
-     * @param user   User to check against
+     * @param user  User to check against
      * @param klass Type to check
      * @return Result of test
      */
