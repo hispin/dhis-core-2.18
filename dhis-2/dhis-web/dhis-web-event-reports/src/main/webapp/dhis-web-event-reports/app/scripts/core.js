@@ -1623,7 +1623,7 @@ Ext.onReady( function() {
 
 			web.mask.show = function(component, message) {
 				if (!Ext.isObject(component)) {
-					console.log('support.gui.mask.show: component not an object');
+					console.log('web.mask.show: component not an object');
 					return null;
 				}
 
@@ -1636,7 +1636,7 @@ Ext.onReady( function() {
 
 				component.mask = new Ext.create('Ext.LoadMask', component, {
 					shadow: false,
-					message: message,
+					msg: message,
 					style: 'box-shadow:0',
 					bodyStyle: 'box-shadow:0'
 				});
@@ -1830,6 +1830,7 @@ Ext.onReady( function() {
 					totalColObjects = [],
 					uuidDimUuidsMap = {},
 					isLegendSet = Ext.isObject(xLayout.legendSet) && Ext.isArray(xLayout.legendSet.mapLegends) && xLayout.legendSet.mapLegends.length,
+                    tdCount = 0,
 					htmlArray;
 
 				xResponse.sortableIdObjects = [];
@@ -1856,7 +1857,14 @@ Ext.onReady( function() {
 						return '';
 					}
 
-					// Background color from legend set
+					if (config.hidden || config.collapsed) {
+						return '';
+					}
+
+                    // number of cells
+                    tdCount = tdCount + 1;
+
+					// background color from legend set
 					if (isNumeric && xLayout.legendSet) {
 						var value = parseFloat(config.value);
 						mapLegends = xLayout.legendSet.mapLegends;
@@ -2510,7 +2518,8 @@ Ext.onReady( function() {
 						html: getHtml(htmlArray),
 						uuidDimUuidsMap: uuidDimUuidsMap,
 						xColAxis: xColAxis,
-						xRowAxis: xRowAxis
+						xRowAxis: xRowAxis,
+                        tdCount: tdCount
 					};
 				}();
 			};
