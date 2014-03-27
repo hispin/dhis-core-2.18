@@ -134,26 +134,20 @@
 
                 <!-- event grid begins -->
                 <div ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">
-                    <h2>
-                        {{'registered_events'| translate}}                                                 
-                    </h2>               
-
                     <div ng-switch="dhis2Events.length">
-
                         <div ng-switch-when="undefined">
-                            <p>
+                            <h2>
                                 {{'empty_event_list'| translate}}
-                            </p>
-                        </div>
-                        
+                            </2>
+                        </div>                        
                         <div ng-switch-when="0">
-                            <p>
-                                {{'empty_event_list'| translate}}
-                            </p>
+                            <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
                         </div>
-
                         <div ng-switch-default>
-
+                            <h2>
+                                {{'registered_events'| translate}}                                                 
+                            </h2>
+                            
                             <!-- context menu for event grid -->
                             <div id="contextMenu" class="contextMenu" style="width: 180px;">
                                 <ul id="contextMenuItems" class="contextMenuItems">
@@ -300,7 +294,7 @@
                                             </td>
                                             <td>                                
                                                 <span ng-show="currentEvent.event == dhis2Event.event">
-                                                    <a href ng-click="showEventList()" title="{{'close_editing'| translate}}"><span class='black'><i class="fa fa-times-circle-o fa-2x"></i></span></a>                                                    
+                                                    <a href ng-click="showEventList()" title="{{'done'| translate}}"><span class='black'><i class="fa fa-check-square fa-2x"></i></span></a>                                                    
                                                 </span>
                                             </td>                           
                                         </tr>
@@ -415,27 +409,7 @@
                         <h2>
                             {{'new_event'| translate}}                                                 
                         </h2>   
-                        <div class="bordered-div" style="width:50%;">
-                            <table class="dhis2-list-table-striped">
-                             <tbody id="list"> 
-                                 <tr>
-                                     <td>
-                                         {{selectedProgram.dateOfIncidentDescription}}
-                                     </td>
-                                     <td>
-                                         <input type="text" 
-                                                placeholder="yyyy-mm-dd" 
-                                                ng-date 
-                                                ng-model="currentEvent.eventDate" 
-                                                ng-required="true" 
-                                                name="eventDate" 
-                                                style="width:98%;">
-                                         <span ng-show="outerForm.submitted && outerForm.eventDate.$invalid" class="red">{{'required'| translate}}</span>
-                                     </td>
-                                 </tr>                                     
-                             </tbody>
-                            </table>
-                            <hr>
+                        <div class="bordered-div" style="width:50%;">                            
                             <table class="dhis2-list-table-striped">                    
                                 <thead>                        
                                     <tr>
@@ -448,6 +422,21 @@
                                     </tr>                        
                                 </thead>
                                 <tbody id="list">
+                                    <tr>
+                                        <td>
+                                             {{selectedProgram.dateOfIncidentDescription}}
+                                        </td>
+                                        <td>
+                                            <input type="text" 
+                                                    placeholder="yyyy-mm-dd" 
+                                                    ng-date 
+                                                    ng-model="currentEvent.eventDate" 
+                                                    ng-required="true" 
+                                                    name="eventDate" 
+                                                    style="width:98%;">
+                                            <span ng-show="outerForm.submitted && outerForm.eventDate.$invalid" class="red">{{'required'| translate}}</span>
+                                        </td>
+                                    </tr> 
                                     <tr ng-repeat="eventGridColumn in eventGridColumns">
                                         <td class="max-column-width">
                                             {{eventGridColumn.name}}                                              
@@ -506,13 +495,14 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <button ng-click="addEvent()" class="button">{{'save_and_close'| translate}}</button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <button ng-click="showEventList(null)" class="button">{{'close'| translate}}</button>                        
+                            <button ng-click="showEventList(null)" class="button">{{'discard'| translate}}</button>                        
                         </div>
                     </div> 
                 </form>
                 <!-- event registration ends -->              
                 
             </div>           
+            
         </div>
 
     </body>
