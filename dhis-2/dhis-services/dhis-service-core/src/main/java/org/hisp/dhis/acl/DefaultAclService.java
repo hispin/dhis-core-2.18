@@ -151,17 +151,17 @@ public class DefaultAclService implements AclService
     {
         Schema schema = schemaService.getSchema( object.getClass() );
 
-        if ( schema == null || !schema.isShareable() )
+        if ( schema == null )
         {
             return false;
         }
 
-        if ( schema.getAuthorityByType( AuthorityType.UPDATE ).isEmpty() )
+        if ( schema.isShareable() )
         {
-            return canWrite( user, object );
+            return canAccess( user, schema.getAuthorityByType( AuthorityType.UPDATE ) ) && canWrite( user, object );
         }
 
-        return canAccess( user, schema.getAuthorityByType( AuthorityType.UPDATE ) ) && canWrite( user, object );
+        return canAccess( user, schema.getAuthorityByType( AuthorityType.UPDATE ) );
     }
 
     @Override
@@ -169,17 +169,17 @@ public class DefaultAclService implements AclService
     {
         Schema schema = schemaService.getSchema( object.getClass() );
 
-        if ( schema == null || !schema.isShareable() )
+        if ( schema == null )
         {
             return false;
         }
 
-        if ( schema.getAuthorityByType( AuthorityType.DELETE ).isEmpty() )
+        if ( schema.isShareable() )
         {
-            return canWrite( user, object );
+            return canAccess( user, schema.getAuthorityByType( AuthorityType.DELETE ) ) && canWrite( user, object );
         }
 
-        return canAccess( user, schema.getAuthorityByType( AuthorityType.DELETE ) ) && canWrite( user, object );
+        return canAccess( user, schema.getAuthorityByType( AuthorityType.DELETE ) );
     }
 
     @Override
@@ -193,8 +193,8 @@ public class DefaultAclService implements AclService
         }
 
         if ( haveOverrideAuthority( user )
-            || (object.getUser() == null && canCreatePublic( user, object.getClass() ) && !schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ).isEmpty())
             || user.equals( object.getUser() )
+            || (object.getUser() == null && canCreatePublic( user, object.getClass() ) && !schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ).isEmpty())
             || AccessStringHelper.canWrite( object.getPublicAccess() ) )
         {
             return true;
@@ -262,6 +262,6 @@ public class DefaultAclService implements AclService
 
     private boolean canAccess( User user, Collection<String> requiredAuthorities )
     {
-        return haveOverrideAuthority( user ) || containsAny( user.getUserCredentials().getAllAuthorities(), requiredAuthorities );
+        return haveOverrideAuthority( user ) || requiredAuthorities.isEmpty() || containsAny( user.getUserCredentials().getAllAuthorities(), requiredAuthorities );
     }
 }
