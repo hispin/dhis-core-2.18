@@ -28,6 +28,13 @@ package org.hisp.dhis.startup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.quick.StatementHolder;
@@ -37,21 +44,10 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.jdbc.batchhandler.RelativePeriodsBatchHandler;
-import org.hisp.dhis.option.OptionService;
-import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -717,35 +713,10 @@ public class TableAlteror
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
         
-        removeNullOptionSet();
-
         log.info( "Tables updated" );
     }
 
-    private OptionService optionService;
-
-    private void removeNullOptionSet()
-    {
-        Collection<OptionSet> optionSets = optionService.getAllOptionSets();
-        for ( OptionSet optionSet : optionSets )
-        {
-            boolean flag = false;
-            Iterator<String> iterOption = optionSet.getOptions().iterator();
-            while ( iterOption.hasNext() )
-            {
-                if ( iterOption.next() == null )
-                {
-                    iterOption.remove();
-                    flag = true;
-                }
-            }
-            if ( flag )
-            {
-                optionService.updateOptionSet( optionSet );
-            }
-
-        }
-    }
+  
 
     private void upgradeDataValuesWithAttributeOptionCombo()
     {
