@@ -1,7 +1,7 @@
 package org.hisp.dhis.dataapproval;
 
 /*
- * Copyright (c) 2004-2014, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,51 +33,46 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
+import java.util.List;
+
 /**
  * Defines the functionality for persisting DataApproval objects.
  *
  * @author Jim Grace
  */
-public interface DataApprovalStore
-//        extends GenericStore<DataApproval>
+public interface DataApprovalLevelStore
 {
-    String ID = DataApprovalStore.class.getName();
+    String ID = DataApprovalLevelStore.class.getName();
 
     // -------------------------------------------------------------------------
-    // Basic DataApproval
+    // Basic DataApprovalLevel
     // -------------------------------------------------------------------------
 
     /**
-     * Adds a DataApproval in order to approve data.
+     * Gets a list of all data approval levels.
      *
-     * @param dataApproval the DataApproval to add.
+     * @return List of all data approval levels, ordered from 1 to n.
      */
-    void addDataApproval( DataApproval dataApproval );
+    List<DataApprovalLevel> getAllDataApprovalLevels();
 
     /**
-     * Updates a DataApproval.
+     * Adds a data approval level.
      *
-     * @param dataApproval the DataApproval to update.
+     * @param dataApprovalLevel the DataApprovalLevel to add.
      */
-    void updateDataApproval( DataApproval dataApproval );
+    void addDataApproval( DataApprovalLevel dataApprovalLevel );
 
     /**
-     * Deletes a DataApproval in order to un-approve data.
+     * Updates a data approval level.
      *
-     * @param dataApproval the DataApproval to delete.
+     * @param dataApprovalLevel The DataApprovalLevel to update.
      */
-    void deleteDataApproval( DataApproval dataApproval );
+    void updateDataApprovalLevel( DataApprovalLevel dataApprovalLevel );
 
     /**
-     * Returns the DataApproval object (if any) for a given
-     * dataset, period and organisation unit.
+     * Deletes a data approval level.
      *
-     * @param dataSet DataSet for approval
-     * @param period Period for approval
-     * @param organisationUnit OrganisationUnit for approval
-     * @param categoryOptionGroup CategoryOptionGroup (if any) for approval.
-     * @return matching DataApproval object, if any
+     * @param dataApprovalLevel the DataApprovalLevel to delete.
      */
-    DataApproval getDataApproval( DataSet dataSet, Period period, 
-        OrganisationUnit organisationUnit, CategoryOptionGroup categoryOptionGroup );
+    void deleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel );
 }

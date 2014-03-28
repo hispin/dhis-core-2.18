@@ -485,5 +485,10 @@ var validationRules = {
 			"required" : true,
 			"number" : true
 		}
-	}
+	},
+    "dataApprovalLevel" : {
+        "organisationUnitLevel" : {
+            "required" : true
+        }
+    }
 };
