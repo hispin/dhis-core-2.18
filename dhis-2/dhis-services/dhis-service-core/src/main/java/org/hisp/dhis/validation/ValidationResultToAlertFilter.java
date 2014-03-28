@@ -36,6 +36,6 @@ public class ValidationResultToAlertFilter
     @Override
     public boolean retain( ValidationResult result )
     {
-        return result != null && result.getValidationRule() != null && result.getValidationRule().hasUserRolesToAlert();
+        return result != null && result.getValidationRule() != null && result.getValidationRule().hasUserGroupsToAlert();
     }
 }

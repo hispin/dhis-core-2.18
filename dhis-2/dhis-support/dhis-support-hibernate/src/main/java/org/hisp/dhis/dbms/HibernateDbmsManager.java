@@ -115,7 +115,7 @@ public class HibernateDbmsManager
         emptyTable( "datadictionaryindicators" );
         emptyTable( "datadictionary" );
 
-        emptyTable( "validationrulegroupuserrolestoalert" );
+        emptyTable( "validationrulegroupusergroupstoalert" );
         emptyTable( "validationrulegroupmembers" );
         emptyTable( "validationrulegroup" );
         emptyTable( "validationrule" );

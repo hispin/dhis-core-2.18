@@ -12,7 +12,7 @@ function showValidationRuleGroupDetails( context ) {
     setInnerHTML('nameField', json.validationRuleGroup.name);
     setInnerHTML('descriptionField', json.validationRuleGroup.description);
     setInnerHTML('memberCountField', json.validationRuleGroup.memberCount);
-    setInnerHTML('userRolesToAlertCountField', json.validationRuleGroup.userRolesToAlertCount);
+    setInnerHTML('userGroupsToAlertCountField', json.validationRuleGroup.userGroupsToAlertCount);
 
     showDetails();
   });
@@ -40,13 +40,13 @@ function initLists() {
       $("<option></option>").attr("value", id).text(availableValidationRules[id]));
   }
 
-  for( var id in availableUserRolesToAlert ) {
-    $("#availableUserRolesToAlert").append($("<option></option>").attr("value", id).text(availableUserRolesToAlert[id]));
+  for( var id in availableUserGroupsToAlert ) {
+    $("#availableUserGroupsToAlert").append($("<option></option>").attr("value", id).text(availableUserGroupsToAlert[id]));
   }
 
-  for( var id in selectedUserRolesToAlert ) {
+  for( var id in selectedUserGroupsToAlert ) {
     $("#availableValidationRules").append(
-      $("<option></option>").attr("value", id).text(selectedUserRolesToAlert[id]));
+      $("<option></option>").attr("value", id).text(selectedUserGroupsToAlert[id]));
   }
 }
 
@@ -114,14 +114,14 @@ function removeGroupMembers() {
   filterAvailableValidationRules();
 }
 
-function filterAvailableUserRolesToAlert() {
-  var filter = document.getElementById('availableUserRolesToAlertFilter').value;
-  var list = document.getElementById('availableUserRolesToAlert');
+function filterAvailableUserGroupsToAlert() {
+  var filter = document.getElementById('availableUserGroupsToAlertFilter').value;
+  var list = document.getElementById('availableUserGroupsToAlert');
 
   list.options.length = 0;
 
-  for( var id in availableUserRolesToAlert ) {
-    var value = availableUserRolesToAlert[id];
+  for( var id in availableUserGroupsToAlert ) {
+    var value = availableUserGroupsToAlert[id];
 
     if( value.toLowerCase().indexOf(filter.toLowerCase()) != -1 ) {
       list.add(new Option(value, id), null);
@@ -129,14 +129,14 @@ function filterAvailableUserRolesToAlert() {
   }
 }
 
-function filterSelectedUserRolesToAlert() {
-  var filter = document.getElementById('selectedUserRolesToAlertFilter').value;
-  var list = document.getElementById('selectedUserRolesToAlert');
+function filterSelectedUserGroupsToAlert() {
+  var filter = document.getElementById('selectedUserGroupsToAlertFilter').value;
+  var list = document.getElementById('selectedUserGroupsToAlert');
 
   list.options.length = 0;
 
-  for( var id in selectedUserRolesToAlert ) {
-    var value = selectedUserRolesToAlert[id];
+  for( var id in selectedUserGroupsToAlert ) {
+    var value = selectedUserGroupsToAlert[id];
 
     if( value.toLowerCase().indexOf(filter.toLowerCase()) != -1 ) {
       list.add(new Option(value, id), null);
@@ -144,36 +144,36 @@ function filterSelectedUserRolesToAlert() {
   }
 }
 
-function addSelectedUserRolesToAlert() {
-  var list = document.getElementById('selectedUserRolesToAlert');
+function addSelectedUserGroupsToAlert() {
+  var list = document.getElementById('selectedUserGroupsToAlert');
 
   while( list.selectedIndex != -1 ) {
     var id = list.options[list.selectedIndex].value;
 
     list.options[list.selectedIndex].selected = false;
 
-    selectedUserRolesToAlert[id] = availableUserRolesToAlert[id];
+    selectedUserGroupsToAlert[id] = availableUserGroupsToAlert[id];
 
-    delete availableUserRolesToAlert[id];
+    delete availableUserGroupsToAlert[id];
   }
 
-  filterAvailableUserRolesToAlert();
-  filterSelectedUserRolesToAlert();
+  filterAvailableUserGroupsToAlert();
+  filterSelectedUserGroupsToAlert();
 }
 
-function removeSelectedUserRolesToAlert() {
-  var list = document.getElementById('selectedUserRolesToAlert');
+function removeSelectedUserGroupsToAlert() {
+  var list = document.getElementById('selectedUserGroupsToAlert');
 
   while( list.selectedIndex != -1 ) {
     var id = list.options[list.selectedIndex].value;
 
     list.options[list.selectedIndex].selected = false;
 
-    availableUserRolesToAlert[id] = selectedUserRolesToAlert[id];
+    availableUserGroupsToAlert[id] = selectedUserGroupsToAlert[id];
 
-    delete selectedUserRolesToAlert[id];
+    delete selectedUserGroupsToAlert[id];
   }
 
-  filterAvailableUserRolesToAlert();
-  filterSelectedUserRolesToAlert();
+  filterAvailableUserGroupsToAlert();
+  filterSelectedUserGroupsToAlert();
 }

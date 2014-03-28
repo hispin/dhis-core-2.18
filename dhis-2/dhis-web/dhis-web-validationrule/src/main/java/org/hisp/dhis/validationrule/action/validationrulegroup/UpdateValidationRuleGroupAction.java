@@ -30,7 +30,7 @@ package org.hisp.dhis.validationrule.action.validationrulegroup;
 
 import java.util.Set;
 
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -54,11 +54,11 @@ public class UpdateValidationRuleGroupAction
         this.validationRuleService = validationRuleService;
     }
     
-    private UserService userService;
+    private UserGroupService userGroupService;
 
-    public void setUserService( UserService userService )
+    public void setUserGroupService( UserGroupService userGroupService )
     {
-        this.userService = userService;
+        this.userGroupService = userGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -93,13 +93,20 @@ public class UpdateValidationRuleGroupAction
         this.groupMembers = groupMembers;
     }
 
-    private Set<String> userRolesToAlert;
+    private Set<String> userGroupsToAlert;
 
-    public void setUserRolesToAlert( Set<String> userRolesToAlert )
+    public void setUserGroupsToAlert( Set<String> userGroupsToAlert )
     {
-        this.userRolesToAlert = userRolesToAlert;
+        this.userGroupsToAlert = userGroupsToAlert;
     }
-    
+
+    private boolean alertByOrgUnits;
+
+    public void setAlertByOrgUnits( boolean alertByOrgUnits )
+    {
+        this.alertByOrgUnits = alertByOrgUnits;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -120,16 +127,18 @@ public class UpdateValidationRuleGroupAction
             }
         }
         
-        group.getUserAuthorityGroupsToAlert().clear();
+        group.getUserGroupsToAlert().clear();
 
-        if ( userRolesToAlert != null )
+        if ( userGroupsToAlert != null )
         {
-            for ( String id : userRolesToAlert )
+            for ( String id : userGroupsToAlert )
             {
-                group.getUserAuthorityGroupsToAlert().add( userService.getUserAuthorityGroup( Integer.valueOf( id ) ) );
+                group.getUserGroupsToAlert().add( userGroupService.getUserGroup( Integer.valueOf( id ) ) );
             }
         }
-        
+
+        group.setAlertByOrgUnits( alertByOrgUnits );
+
         validationRuleService.updateValidationRuleGroup( group );
         
         return SUCCESS;
