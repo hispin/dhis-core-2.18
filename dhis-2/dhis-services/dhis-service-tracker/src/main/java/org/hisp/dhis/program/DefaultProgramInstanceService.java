@@ -46,6 +46,7 @@ import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
@@ -63,7 +64,6 @@ import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -140,15 +140,26 @@ public class DefaultProgramInstanceService
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    private TrackedEntityInstanceService trackedEntityInstanceService;
+    
+    public void setTrackedEntityInstanceService( TrackedEntityInstanceService trackedEntityInstanceService )
+    {
+        this.trackedEntityInstanceService = trackedEntityInstanceService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private I18nManager i18nManager;
     
     public void setI18nManager( I18nManager i18nManager )
     {
         this.i18nManager = i18nManager;
     }
-
-    @Autowired
-    private TrackedEntityInstanceService entityInstanceService;
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -514,6 +525,17 @@ public class DefaultProgramInstanceService
     }
     
     @Override
+    public ProgramInstance enrollTrackedEntityInstance( String entityInstance, String program, 
+        Date enrollmentDate, Date dateOfIncident, String organisationUnit )
+    {
+        TrackedEntityInstance tei = trackedEntityInstanceService.getTrackedEntityInstance( entityInstance );
+        Program pr = programService.getProgram( program );
+        OrganisationUnit ou = organisationUnitService.getOrganisationUnit( organisationUnit );
+        
+        return enrollTrackedEntityInstance( tei, pr, enrollmentDate, dateOfIncident, ou );        
+    }
+    
+    @Override
     public ProgramInstance enrollTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program,
         Date enrollmentDate, Date dateOfIncident, OrganisationUnit organisationUnit )
     {
@@ -591,7 +613,7 @@ public class DefaultProgramInstanceService
         messages.addAll( sendMessageConversations( programInstance, TrackedEntityInstanceReminder.SEND_WHEN_TO_EMROLLEMENT ) );
 
         updateProgramInstance( programInstance );
-        entityInstanceService.updateTrackedEntityInstance( entityInstance );
+        trackedEntityInstanceService.updateTrackedEntityInstance( entityInstance );
 
         return programInstance;
     }

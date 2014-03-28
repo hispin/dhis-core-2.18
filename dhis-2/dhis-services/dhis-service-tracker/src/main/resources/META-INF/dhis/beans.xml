@@ -208,6 +208,8 @@
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="i18nManager" ref="org.hisp.dhis.i18n.I18nManager" />
+		<property name="trackedEntityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageService" class="org.hisp.dhis.program.DefaultProgramStageService">
