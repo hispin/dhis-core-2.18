@@ -115,6 +115,7 @@ public class UpdateTrackedEntityInstanceAction
         {
             trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
         }
+
         entityInstance.setTrackedEntity( trackedEntity );
 
         // ---------------------------------------------------------------------
@@ -144,7 +145,7 @@ public class UpdateTrackedEntityInstanceAction
                 {
                     if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
                     {
-                        value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
+                       value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
                     }
 
                     attributeValue = attributeValueService.getTrackedEntityAttributeValue( entityInstance, attribute );
@@ -182,6 +183,11 @@ public class UpdateTrackedEntityInstanceAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
+    }
+
+    public void setTrackedEntityId( Integer trackedEntityId )
+    {
+        this.trackedEntityId = trackedEntityId;
     }
 
     public void setTrackedEntityService( TrackedEntityService trackedEntityService )

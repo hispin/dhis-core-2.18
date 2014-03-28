@@ -272,11 +272,16 @@ public class DefaultTrackedEntityFormService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String getAttributeField( String inputHtml, TrackedEntityAttribute attribute, Program program, String value, I18n i18n,
-        int index, String hidden, String style )
+    private String getAttributeField( String inputHtml, TrackedEntityAttribute attribute, Program program,
+        String value, I18n i18n, int index, String hidden, String style )
     {
-        boolean mandatory = program.getAttribute(attribute).isMandatory(); //TODO fix
-                
+        boolean mandatory = false;
+
+        if ( program != null && program.getAttribute( attribute ) != null )
+        {
+            mandatory = program.getAttribute( attribute ).isMandatory();
+        }
+
         inputHtml = TAG_OPEN + "input id=\"attr" + attribute.getId() + "\" name=\"attr" + attribute.getId()
             + "\" tabindex=\"" + index + "\" style=\"" + style + "\"";
 
@@ -345,8 +350,8 @@ public class DefaultTrackedEntityFormService
         {
             inputHtml += " value=\"" + value + "\"" + TAG_CLOSE;
         }
-         
-       return inputHtml;
+
+        return inputHtml;
     }
 
     private Object getValueFromProgram( String property, ProgramInstance programInstance )
