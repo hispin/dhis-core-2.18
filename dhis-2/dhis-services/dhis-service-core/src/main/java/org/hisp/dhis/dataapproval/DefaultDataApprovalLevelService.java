@@ -40,7 +40,7 @@ import java.util.List;
  */
 @Transactional
 public class DefaultDataApprovalLevelService
-        implements DataApprovalLevelService
+    implements DataApprovalLevelService
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -169,9 +169,8 @@ public class DefaultDataApprovalLevelService
 
         dataApprovalLevels.add( index, newLevel );
 
-        //
         // Move down from end to here, to avoid duplicate level in database.
-        //
+
         for (int i = dataApprovalLevels.size() - 1; i > index; i-- )
         {
             update( dataApprovalLevels.get( i ), i );
@@ -197,9 +196,8 @@ public class DefaultDataApprovalLevelService
 
             dataApprovalLevels.remove( index );
 
-            //
             // Move up from here to end, to avoid duplicate level in database.
-            //
+
             for (int i = index; i < dataApprovalLevels.size(); i++ )
             {
                 update( dataApprovalLevels.get( i ), i );
