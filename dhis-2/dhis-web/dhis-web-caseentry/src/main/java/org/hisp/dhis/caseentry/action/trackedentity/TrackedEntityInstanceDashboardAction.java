@@ -223,23 +223,16 @@ public class TrackedEntityInstanceDashboardAction
             .getTrackedEntityAttributeValues( entityInstance );
         attributeValues = new HashSet<TrackedEntityAttributeValue>();
 
-        for ( Program program : programs )
+        for ( TrackedEntityAttributeValue attributeValue : _attributeValues )
         {
-            Collection<TrackedEntityAttribute> atttributes = program.getTrackedEntityAttributes();
-            for ( TrackedEntityAttributeValue attributeValue : _attributeValues )
+            String value = attributeValue.getValue();
+            if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
             {
-                if ( atttributes.contains( attributeValue.getAttribute() ) )
-                {
-                    String value = attributeValue.getValue();
-                    if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
-                    {
-                        value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
-                    }
-
-                    attributeValue.setValue( value );
-                    attributeValues.add( attributeValue );
-                }
+                Date date = format.parseDate( value );
+                value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
             }
+            
+            attributeValues.add( attributeValue );
         }
 
         // ---------------------------------------------------------------------
