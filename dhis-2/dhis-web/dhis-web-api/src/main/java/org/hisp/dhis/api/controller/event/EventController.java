@@ -33,6 +33,7 @@ import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dxf2.events.event.Event;
@@ -122,12 +123,11 @@ public class EventController
     @RequestMapping( value = "", method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public String getEvents(
-        @RequestParam( value = "program", required = false ) String programUid,
-        @RequestParam( value = "programStage", required = false ) String programStageUid,
-        @RequestParam( value = "trackedEntityInstance", required = false ) String trackedEntityInstanceUid,
-        @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
-        @RequestParam( value = "includeChildren", required = false, defaultValue = "false" ) boolean includeChildren,
-        @RequestParam( value = "includeDescendants", required = false, defaultValue = "false" ) boolean includeDescendants,
+        @RequestParam( required = false ) String program,
+        @RequestParam( required = false ) String programStage,
+        @RequestParam( required = false ) String trackedEntityInstance,
+        @RequestParam( required = false ) String orgUnit,
+        @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
@@ -135,38 +135,38 @@ public class EventController
         WebOptions options = new WebOptions( parameters );        
         WebMetaData metaData = new WebMetaData();
         
-        Program program = manager.get( Program.class, programUid );
-        ProgramStage programStage = manager.get( ProgramStage.class, programStageUid );
+        Program pr = manager.get( Program.class, program );
+        ProgramStage prs = manager.get( ProgramStage.class, programStage );
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
         OrganisationUnit rootOrganisationUnit;
-        TrackedEntityInstance trackedEntityInstance = null;
+        TrackedEntityInstance tei = null;
 
-        if ( trackedEntityInstanceUid != null )
+        if ( trackedEntityInstance != null )
         {
-            trackedEntityInstance = trackedEntityInstanceService.getTrackedEntityInstance( trackedEntityInstanceUid );
+            tei = trackedEntityInstanceService.getTrackedEntityInstance( trackedEntityInstance );
 
-            if ( trackedEntityInstance == null )
+            if ( tei == null )
             {
-                throw new NotFoundException( "TrackedEntityInstance", trackedEntityInstanceUid );
+                throw new NotFoundException( "TrackedEntityInstance", trackedEntityInstance );
             }
         }
 
-        rootOrganisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
+        rootOrganisationUnit = manager.get( OrganisationUnit.class, orgUnit );
 
         if ( rootOrganisationUnit == null )
         {
             try
             {
-                rootOrganisationUnit = manager.get( OrganisationUnit.class, Integer.parseInt( orgUnitUid ) );
+                rootOrganisationUnit = manager.get( OrganisationUnit.class, Integer.parseInt( orgUnit ) );
             }
             catch ( NumberFormatException ignored )
             {
             }
         }
 
-        if ( rootOrganisationUnit == null && trackedEntityInstance != null )
+        if ( rootOrganisationUnit == null && tei != null )
         {
-            Events events = eventService.getEvents( Arrays.asList( program ), Arrays.asList( programStage ), null, trackedEntityInstance, startDate, endDate );
+            Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), null, tei, startDate, endDate );
 
             model.addAttribute( "model", events );
             model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
@@ -177,24 +177,24 @@ public class EventController
 
         if ( rootOrganisationUnit == null )
         {
-            throw new NotFoundException( "OrganisationUnit", programUid );
+            throw new NotFoundException( "OrganisationUnit", program );
         }
 
-        if ( includeDescendants )
+        if ( OrganisationUnitSelectionMode.DESCENDANTS.equals( ouMode ) )
         {
             organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( rootOrganisationUnit.getUid() ) );
         }
-        else if ( includeChildren )
+        else if ( OrganisationUnitSelectionMode.CHILDREN.equals( ouMode ) )
         {
             organisationUnits.add( rootOrganisationUnit );
             organisationUnits.addAll( rootOrganisationUnit.getChildren() );
         }
-        else
+        else // SELECTED
         {
             organisationUnits.add( rootOrganisationUnit );
         }
 
-        Events events = eventService.getEvents( Arrays.asList( program ), Arrays.asList( programStage ), organisationUnits, trackedEntityInstance, startDate, endDate );
+        Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), organisationUnits, tei, startDate, endDate );
         
         List<Event> eventList = new ArrayList<Event>( events.getEvents() );
 
