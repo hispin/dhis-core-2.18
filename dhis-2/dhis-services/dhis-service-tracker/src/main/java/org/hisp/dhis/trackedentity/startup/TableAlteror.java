@@ -290,7 +290,8 @@ public class TableAlteror
         executeSql( "update datavalue set storedby='aggregated_from_tracker' where storedby='DHIS-System'" );
 
         executeSql( "ALTER TABLE trackedentityattribute DROP COLUMN groupBy" );
-
+        
+        executeSql( "update trackedentityattribute set valuetype='string' where valuetype='combo' and  optionsetid is null" );
     }
 
     // -------------------------------------------------------------------------
