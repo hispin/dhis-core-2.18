@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!--<html manifest="event-capture.appcache" ng-app="eventCapture">-->
-<html ng-app="eventCapture">
+<html manifest="event-capture.appcache" ng-app="eventCapture">
     <head>
         <title>Event Capture</title>
 
@@ -45,7 +44,7 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
-        <!--<script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>-->
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/ouwt/ouwt.js"></script>
         
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
@@ -134,12 +133,12 @@
                 <!-- selection ends -->
 
                 <!-- event grid begins -->
-                <div ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">
-                    <div ng-switch="dhis2Events.length">
+                <div ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">                    
+                    <div ng-switch="eventLength">
                         <div ng-switch-when="undefined">
                             <h2>
                                 {{'empty_event_list'| translate}}
-                            </2>
+                            </h2>
                         </div>                        
                         <div ng-switch-when="0">
                             <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
@@ -157,7 +156,7 @@
                                     <li><a href ng-click="removeEvent()"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;{{'remove'| translate}}</a></li>                                       
                                 </ul>
                             </div>
-                            <!-- context menu ends -->
+                            <!-- context menu ends -->                            
 
                             <!-- grid begins -->
                             <form name="outerForm" novalidate>                              
@@ -191,7 +190,7 @@
                                                 <!-- filter input field begins -->
                                                 <span ng-show="eventGridColumn.showFilter">
                                                     <span ng-show="eventGridColumn.type !=='date'">
-                                                        <input type="text" class="form-control" style="width: 50%;" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid(eventGridColumn)">
+                                                        <input type="text" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid(eventGridColumn)">
                                                     </span>                                                    
                                                     <span ng-show="eventGridColumn.type ==='date'">
                                                         <input placeholder="{{'start_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].start" data-ng-date readonly="readonly">
@@ -211,7 +210,7 @@
                                         </tr>                        
                                     </thead>
                                     <tbody id="list">
-                                        <tr ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:programStageDataElements" 
+                                        <tr ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:programStageDataElements"                                        
                                             ng-click="showContextMenu(dhis2Event)">
 
                                             <!-- Visible when event is not under editing -->

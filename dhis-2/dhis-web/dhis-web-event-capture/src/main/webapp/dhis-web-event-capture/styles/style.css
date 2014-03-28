@@ -23,7 +23,6 @@ table
 {
     font-size: 13px;
     line-height: 18px;
-    margin-bottom: 10px;
 }
 
 // --------------------------------------------------------------
@@ -290,7 +289,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 .modal-header {
     min-height: 16.428571429px;
-    padding: 15px;
+    padding: 0 15px;
     border-bottom: 1px solid #e5e5e5
 }
 .modal-header .close {
@@ -302,7 +301,6 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 .modal-body {
     position: relative;
-    padding: 20px
 }
 .modal-footer {
     padding: 19px 20px 20px;    
@@ -482,4 +480,8 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 .open > .dropdown-menu {
     display: block
+}
+
+.dropdown-menu li:hover {
+    cursor: pointer;
 }
