@@ -21,3 +21,7 @@
 <ul>
 	<li><a href="getAllLookups.action">$i18n.getString( "Lookup" )</a></li>
 </ul>
+<h2>$i18n.getString( "payment_adjustment" )</h2>
+<ul>
+	<li><a href="getPaymentAdjustmentDetail.action">$i18n.getString( "payment_adjustment" )</a></li>
+</ul>

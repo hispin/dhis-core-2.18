@@ -238,6 +238,29 @@
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 	
+	<!-- Payment Adjustment -->
+	
+	<bean id="org.hisp.dhis.pbf.payment.action.GetOrganisationUnitForPaymentAction" class="org.hisp.dhis.pbf.payment.action.GetOrganisationUnitForPaymentAction" scope="prototype">
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    </bean>
+	
+	<bean id="org.hisp.dhis.pbf.payment.action.GetPaymentAdjustmentDetailsAction"  class="org.hisp.dhis.pbf.payment.action.GetPaymentAdjustmentDetailsAction" scope="prototype">
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		<property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />        	
+        <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />		
+	</bean>
+	
+	<bean id="org.hisp.dhis.pbf.payment.action.LoadPaymentAdjustmentDetailsAction"  class="org.hisp.dhis.pbf.payment.action.LoadPaymentAdjustmentDetailsAction" scope="prototype">
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="tariffDataValueService" ref="org.hisp.dhis.pbf.api.TariffDataValueService" />
+	</bean>
+	
 	<!-- Save Quality Data -->
 	
 	<bean id="org.hisp.dhis.pbf.quality.dataentry.SaveDataValueAction"  class="org.hisp.dhis.pbf.quality.dataentry.SaveDataValueAction" scope="prototype">
@@ -337,16 +360,7 @@
         class="org.hisp.dhis.pbf.aggregation.action.GetAggregationQueryAction"
         scope="prototype">
         <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
-    </bean>	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    </bean>
 	
 	 <!-- Get All Lookups -->
     
