@@ -32,7 +32,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.editGridColumns = false;
     $scope.editingEventInFull = false;
     $scope.editingEventInGrid = false;   
-    $scope.currentGridColumnId = '';    
+    $scope.currentGridColumnId = '';       
     
     /*$scope.programStageDataElements = [];
                 
@@ -74,9 +74,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             if( programs && programs != 'undefined' ){
                 for(var i=0; i<programs.length; i++){
                     var program = storage.get(programs[i].id);   
-                    if(program.organisationUnits.hasOwnProperty(orgUnit.id)){
-                        $scope.programs.push(program);
-                    }
+                    if(angular.isObject(program)){
+                        if(program.organisationUnits.hasOwnProperty(orgUnit.id)){
+                            $scope.programs.push(program);
+                        }
+                    }                    
                 }
                 
                 if( !angular.isUndefined($scope.programs)){                    
@@ -95,6 +97,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         
         $scope.dhis2Events = [];
         $scope.eventLength = 0;
+
+        $scope.eventFetched = false;
                
         if( program ){
             
@@ -130,7 +134,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             //Load events for the selected program stage and orgunit
             DHIS2EventFactory.getByStage($scope.selectedOrgUnit.id, $scope.selectedProgramStage.id, pager ).then(function(data){
                 
-                $scope.eventLength = data.events.length;
+                if(data.events){
+                    $scope.eventLength = data.events.length;
+                }                
                 
                 $scope.dhis2Events = data.events; 
                 
@@ -183,7 +189,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                             i--;                           
                         }
                     }                                  
-                }                                            
+                }
+                
+                $scope.eventFetched = true;
             });            
         }        
     };
@@ -349,6 +357,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     $scope.dhis2Events = [];                   
                 }
                 $scope.dhis2Events.splice(0,0,newEvent);
+                
+                $scope.eventLength++;
                 
                 //decide whether to stay in the current screen or not.
                 if(!addingAnotherEvent){
