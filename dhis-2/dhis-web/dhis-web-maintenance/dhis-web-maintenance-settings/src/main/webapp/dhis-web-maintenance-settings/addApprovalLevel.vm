@@ -27,10 +27,12 @@
                 </select>
             </td>
         </tr>
+        <tr>
+        	<td></td>
+        	<td>
+        		<input type="submit" value="$i18n.getString( "add" )" style="width:10em" />
+                <input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='systemApprovalSettings.action'" style="width:10em" />
+            </td>
+        </tr>
     </table>
 </form>
-
-<p>
-    <input type="submit" value="$i18n.getString( "add" )" style="width:10em" />
-    <input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='systemApprovalSettings.action'" style="width:10em" />
-</p>
