@@ -120,7 +120,7 @@ public class AddApprovalLevelAction
             catOptGroupSet = dataElementCategoryService.getCategoryOptionGroupSet( categoryOptionGroupSet );
         }
 
-        DataApprovalLevel dataApprovalLevel = new DataApprovalLevel(orgUnitLevel, catOptGroupSet );
+        DataApprovalLevel dataApprovalLevel = new DataApprovalLevel( orgUnitLevel, catOptGroupSet );
 
         boolean added = dataApprovalLevelService.addDataApprovalLevel( dataApprovalLevel );
 

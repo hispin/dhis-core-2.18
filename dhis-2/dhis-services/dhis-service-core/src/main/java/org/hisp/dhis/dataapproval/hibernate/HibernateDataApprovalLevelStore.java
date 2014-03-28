@@ -34,15 +34,13 @@ import org.hibernate.criterion.Order;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Jim Grace
  */
-@Transactional
 public class HibernateDataApprovalLevelStore
-        extends HibernateGenericStore<DataApprovalLevel>
-        implements DataApprovalLevelStore
+    extends HibernateGenericStore<DataApprovalLevel>
+    implements DataApprovalLevelStore
 {
     // -------------------------------------------------------------------------
     // DataApprovalLevelStore implementation
