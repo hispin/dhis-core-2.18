@@ -134,14 +134,17 @@
 
                 <!-- event grid begins -->
                 <div ng-show="selectedProgramStage && !eventRegistration && !editingEventInFull">                    
-                    <div ng-switch="eventLength">
+                    <img src="../images/ajax-loader-bar.gif" ng-if="!eventFetched"/>
+                    <div ng-switch="eventLength">                        
                         <div ng-switch-when="undefined">
                             <h2>
                                 {{'empty_event_list'| translate}}
                             </h2>
                         </div>                        
-                        <div ng-switch-when="0">
-                            <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
+                        <div ng-switch-when="0">  
+                            <h2 ng-if="eventFetched">
+                                {{'empty_event_list'| translate}}
+                            </h2>
                         </div>
                         <div ng-switch-default>
                             <h2>
