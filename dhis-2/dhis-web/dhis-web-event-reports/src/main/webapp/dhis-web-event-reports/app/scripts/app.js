@@ -559,14 +559,13 @@ Ext.onReady( function() {
 			filterStore,
 			value,
 
-			getData,
 			getStore,
 			getStoreKeys,
-			getSetup,
             addDimension,
             removeDimension,
             hasDimension,
             saveState,
+            resetData,
             dimensionStoreMap = {},
 
 			dimensionPanel,
@@ -577,19 +576,6 @@ Ext.onReady( function() {
 			defaultWidth = 160,
 			defaultHeight = 220,
 			maxHeight = (ns.app.viewport.getHeight() - 100) / 2;
-
-		getData = function(all) {
-			var data = [];
-
-			if (all) {
-				data.push({id: dimConf.data.dimensionName, name: dimConf.data.name});
-				data.push({id: dimConf.period.dimensionName, name: dimConf.relativePeriod.name});
-				data.push({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
-			}
-
-			//return data.concat(Ext.clone(ns.core.init.dimensions));
-			return data;
-		};
 
 		getStore = function(data) {
 			var config = {};
@@ -823,23 +809,38 @@ Ext.onReady( function() {
             return false;
         };
 
-        saveState = function() {
+        saveState = function(map) {
+			map = map || dimensionStoreMap;
+
             colStore.each(function(record) {
-                dimensionStoreMap[record.data.id] = colStore;
+                map[record.data.id] = colStore;
             });
 
             rowStore.each(function(record) {
-                dimensionStoreMap[record.data.id] = rowStore;
+                map[record.data.id] = rowStore;
             });
 
             filterStore.each(function(record) {
-                dimensionStoreMap[record.data.id] = filterStore;
+                map[record.data.id] = filterStore;
             });
 
             fixedFilterStore.each(function(record) {
-                dimensionStoreMap[record.data.id] = fixedFilterStore;
+                map[record.data.id] = fixedFilterStore;
             });
+
+            return map;
         };
+
+		resetData = function() {
+			var map = saveState({}),
+				keys = ['ou', 'pe', 'dates'];
+
+			for (var key in map) {
+				if (map.hasOwnProperty(key) && !Ext.Array.contains(keys, key)) {
+					removeDimension(key);
+				}
+			}
+		};
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_layout,
@@ -848,7 +849,6 @@ Ext.onReady( function() {
 			autoShow: true,
 			modal: true,
 			resizable: false,
-			getSetup: getSetup,
 			colStore: colStore,
 			rowStore: rowStore,
             fixedFilterStore: fixedFilterStore,
@@ -857,6 +857,7 @@ Ext.onReady( function() {
             removeDimension: removeDimension,
             hasDimension: hasDimension,
             saveState: saveState,
+            resetData: resetData,
 			hideOnBlur: true,
 			items: selectPanel,
 			bbar: [
@@ -926,6 +927,8 @@ Ext.onReady( function() {
 			getSetup,
             addDimension,
             removeDimension,
+            saveState,
+            resetData,
             dimensionStoreMap = {},
 
 			dimensionPanel,
@@ -1092,6 +1095,29 @@ Ext.onReady( function() {
             }
         };
 
+		saveState = function(map) {
+            dimensionStore.each(function(record) {
+                map[record.data.id] = dimensionStore;
+            });
+
+            colStore.each(function(record) {
+                map[record.data.id] = colStore;
+            });
+
+            return map;
+        };
+
+		resetData = function() {
+			var map = saveState({}),
+				keys = ['eventdate', 'latitude', 'longitude', 'ouname'];
+
+			for (var key in map) {
+				if (map.hasOwnProperty(key) && !Ext.Array.contains(keys, key)) {
+					removeDimension(key);
+				}
+			}
+		};
+
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_layout,
             layout: 'column',
@@ -1105,6 +1131,7 @@ Ext.onReady( function() {
 			colStore: colStore,
             addDimension: addDimension,
             removeDimension: removeDimension,
+            resetData: resetData,
 			hideOnBlur: true,
 			items: [
                 dimension,
@@ -2598,6 +2625,9 @@ Ext.onReady( function() {
                 stagesByProgramStore.removeAll();
                 stagesByProgramStore.loadData(stages);
 
+                ns.app.aggregateLayoutWindow.resetData();
+				ns.app.queryLayoutWindow.resetData();
+
                 stageId = (favorite ? favorite.programStage.id : null) || (stages.length === 1 ? stages[0].id : null);
 
                 if (stageId) {
@@ -2673,6 +2703,8 @@ Ext.onReady( function() {
 
 		onStageSelect = function(stageId, favorite) {
 			dataElementSelected.removeAll();
+            ns.app.aggregateLayoutWindow.resetData();
+            ns.app.queryLayoutWindow.resetData();
 
 			loadDataElements(stageId, favorite);
 		};
