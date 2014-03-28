@@ -171,6 +171,27 @@
 			/dhis-web-maintenance-pbf/status.vm</result>
 		<param name="onExceptionReturn">plainTextError</param>					
 	</action>
+		
+	<!-- Payment Adjustment Screen -->
+	<action name="getOrganisationUnitForPayment" class="org.hisp.dhis.pbf.payment.action.GetOrganisationUnitForPaymentAction">
+        <result name="success" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseSuccess.vm</result>
+        <result name="input" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseInput.vm</result>
+    </action>
+    
+	<action name="getPaymentAdjustmentDetail" class="org.hisp.dhis.pbf.payment.action.GetPaymentAdjustmentDetailsAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-pbf/getPaymentAdjustmentList.vm</param>
+      <param name="menu">/dhis-web-maintenance-pbf/menuPayment.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/paymentAdjustment.js</param>
+      <param name="stylesheets">css/dataentry.css</param>
+    </action>
+    
+	<!-- Load Payment Adjustment List -->
+	<action name="loadPaymentAdjustmentList" class="org.hisp.dhis.pbf.payment.action.LoadPaymentAdjustmentDetailsAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-maintenance-pbf/loadPaymentAdjustment.vm</param>
+	</action>
 
     <!--  Aggregation Engine -->
     <action name="aggregationQueryList" class="org.hisp.dhis.pbf.aggregation.action.AggregationQueryListAction">
