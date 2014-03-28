@@ -1,4 +1,5 @@
 package org.hisp.dhis.settings.action.system;
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -38,10 +39,9 @@ import java.util.List;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class GetAddApprovalLevelFormParameters
-        implements Action
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

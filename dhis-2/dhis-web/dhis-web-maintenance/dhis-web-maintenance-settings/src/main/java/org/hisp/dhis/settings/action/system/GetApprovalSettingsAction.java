@@ -35,10 +35,9 @@ import java.util.List;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class GetApprovalSettingsAction
-        implements Action
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

@@ -34,9 +34,7 @@ package org.hisp.dhis.dataapproval;
  * is permitted to perform on this data selection.
  *
  * @author Jim Grace
- * @version $Id$
  */
-
 public class DataApprovalPermissions
 {
     private DataApprovalStatus dataApprovalStatus;

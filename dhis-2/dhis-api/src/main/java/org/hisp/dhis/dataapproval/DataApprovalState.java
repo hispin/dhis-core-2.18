@@ -33,9 +33,7 @@ package org.hisp.dhis.dataapproval;
  * organisation unit, and category options or category group options.
  *
  * @author Jim Grace
- * @version $Id$
  */
-
 public enum DataApprovalState
 {
     /**

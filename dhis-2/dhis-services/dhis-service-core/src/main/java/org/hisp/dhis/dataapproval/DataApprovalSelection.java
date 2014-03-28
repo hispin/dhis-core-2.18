@@ -49,7 +49,6 @@ import java.util.*;
  * between methods.
  *
  * @author Jim Grace
- * @version $Id$
  */
 class DataApprovalSelection
 {
