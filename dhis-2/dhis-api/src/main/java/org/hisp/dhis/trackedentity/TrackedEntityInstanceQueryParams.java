@@ -38,6 +38,7 @@ import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStatus;
 
 /**
  * @author Lars Helge Overland
@@ -77,6 +78,11 @@ public class TrackedEntityInstanceQueryParams
      * Program for which instances in the response must be enrolled in.
      */
     private Program program;
+    
+    /**
+     * Status of the tracked entity instance in the given program.
+     */
+    private ProgramStatus programStatus;
     
     /**
      * Tracked entity of the instances in the response.
@@ -196,6 +202,14 @@ public class TrackedEntityInstanceQueryParams
     }
     
     /**
+     * Indicates whether this params specifies a program status.
+     */
+    public boolean hasProgramStatus()
+    {
+        return programStatus != null;
+    }
+    
+    /**
      * Indicates whether this params specifies a tracked entity.
      */
     public boolean hasTrackedEntity()
@@ -295,6 +309,16 @@ public class TrackedEntityInstanceQueryParams
     public void setProgram( Program program )
     {
         this.program = program;
+    }
+
+    public ProgramStatus getProgramStatus()
+    {
+        return programStatus;
+    }
+
+    public void setProgramStatus( ProgramStatus programStatus )
+    {
+        this.programStatus = programStatus;
     }
 
     public TrackedEntity getTrackedEntity()

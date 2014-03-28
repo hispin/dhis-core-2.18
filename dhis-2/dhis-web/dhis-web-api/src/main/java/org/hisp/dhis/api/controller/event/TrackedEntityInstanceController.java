@@ -51,6 +51,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +104,7 @@ public class TrackedEntityInstanceController
         @RequestParam String ou,
         @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
         @RequestParam(required=false) String program,
+        @RequestParam(required=false) ProgramStatus programStatus,
         @RequestParam(required=false) String trackedEntity,
         @RequestParam(required=false) Integer page,
         @RequestParam(required=false) Integer pageSize,
@@ -110,7 +112,7 @@ public class TrackedEntityInstanceController
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, program, trackedEntity, page, pageSize );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, program, programStatus, trackedEntity, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -118,6 +120,29 @@ public class TrackedEntityInstanceController
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );
         return "grid";
+    }
+
+    @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_XML )
+    public void queryTrackedEntityInstancesXml(
+        @RequestParam(required=false) String query,
+        @RequestParam(required=false) Set<String> attribute,
+        @RequestParam(required=false) Set<String> filter,
+        @RequestParam String ou,
+        @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
+        @RequestParam(required=false) String program,
+        @RequestParam(required=false) ProgramStatus programStatus,
+        @RequestParam(required=false) String trackedEntity,
+        @RequestParam(required=false) Integer page,
+        @RequestParam(required=false) Integer pageSize,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, program, programStatus, trackedEntity, page, pageSize );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE );
+        Grid grid = instanceService.getTrackedEntityInstances( params );
+        GridUtils.toXml( grid, response.getOutputStream() );
     }
 
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_EXCEL )
@@ -128,6 +153,7 @@ public class TrackedEntityInstanceController
         @RequestParam String ou,
         @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
         @RequestParam(required=false) String program,
+        @RequestParam(required=false) ProgramStatus programStatus,
         @RequestParam(required=false) String trackedEntity,
         @RequestParam(required=false) Integer page,
         @RequestParam(required=false) Integer pageSize,
@@ -135,7 +161,7 @@ public class TrackedEntityInstanceController
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, program, trackedEntity, page, pageSize );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, program, programStatus, trackedEntity, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -150,6 +176,7 @@ public class TrackedEntityInstanceController
         @RequestParam String ou,
         @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
         @RequestParam(required=false) String program,
+        @RequestParam(required=false) ProgramStatus programStatus,
         @RequestParam(required=false) String trackedEntity,
         @RequestParam(required=false) Integer page,
         @RequestParam(required=false) Integer pageSize,
@@ -157,7 +184,7 @@ public class TrackedEntityInstanceController
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, program, trackedEntity, page, pageSize );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, program, programStatus, trackedEntity, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
