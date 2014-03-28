@@ -39,6 +39,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.validation.ValidationCriteria;
 
@@ -71,13 +72,14 @@ public interface TrackedEntityInstanceService
      * @param ou the organisation unit string.
      * @param ouMode the OrganisationUnitSelectionMode.
      * @param program the Program uid.
+     * @param programStatus the ProgramStatus of the given Program.
      * @param trackedEntity the TrackedEntity uid.
      * @param page the page number.
      * @param pageSize the page size.
      * @return a TrackedEntityInstanceQueryParams.
      */
     TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, 
-        Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, String trackedEntity, Integer page, Integer pageSize );
+        Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, String trackedEntity, Integer page, Integer pageSize );
     
     /**
      * Validates the given TrackedEntityInstanceQueryParams. The params is

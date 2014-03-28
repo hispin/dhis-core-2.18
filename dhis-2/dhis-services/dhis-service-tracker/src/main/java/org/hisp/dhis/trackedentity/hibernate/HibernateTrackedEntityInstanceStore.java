@@ -73,6 +73,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.TextUtils;
@@ -98,6 +99,12 @@ public class HibernateTrackedEntityInstanceStore
 {
     private static final Log log = LogFactory.getLog( HibernateTrackedEntityInstanceStore.class );
 
+    private static final Map<ProgramStatus, Integer> PROGRAM_STATUS_MAP = new HashMap<ProgramStatus, Integer>() { {
+        put( ProgramStatus.ACTIVE, ProgramInstance.STATUS_ACTIVE );
+        put( ProgramStatus.COMPLETED, ProgramInstance.STATUS_COMPLETED );
+        put( ProgramStatus.CANCELLED, ProgramInstance.STATUS_CANCELLED );
+    } };
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -208,9 +215,17 @@ public class HibernateTrackedEntityInstanceStore
         if ( params.hasProgram() )
         {
             sql += 
-                hlp.whereAnd() + " exists (select trackedentityinstanceid from programinstance pi " +
+                hlp.whereAnd() + " exists (" +
+                "select trackedentityinstanceid from programinstance pi " +
                 "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " +
-                "and pi.programid = " + params.getProgram().getId() + ") ";
+                "and pi.programid = " + params.getProgram().getId() + " ";
+            
+            if ( params.hasProgramStatus() )
+            {
+                sql += "and pi.status = " + PROGRAM_STATUS_MAP.get( params.getProgramStatus() );
+            }
+            
+            sql += ") ";
         }
         
         if ( params.isOrQuery() && params.hasAttributesOrFilters() )

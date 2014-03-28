@@ -60,6 +60,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -247,6 +248,11 @@ public class DefaultTrackedEntityInstanceService
             violation = "Program and tracked entity cannot be specified simultaneously";
         }
         
+        if ( params.hasProgramStatus() && !params.hasProgram() )
+        {
+            violation = "Program must be defined when program status is defined";
+        }
+        
         if ( violation != null )
         {
             log.warn( "Validation failed: " + violation );
@@ -257,7 +263,7 @@ public class DefaultTrackedEntityInstanceService
     
     @Override
     public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, Set<String> ou, 
-        OrganisationUnitSelectionMode ouMode, String program, String trackedEntity, Integer page, Integer pageSize )
+        OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, String trackedEntity, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
@@ -319,6 +325,7 @@ public class DefaultTrackedEntityInstanceService
 
         params.setQuery( query );
         params.setProgram( pr );
+        params.setProgramStatus( programStatus );
         params.setTrackedEntity( te );
         params.setOrganisationUnitMode( ouMode );
         params.setPage( page );
