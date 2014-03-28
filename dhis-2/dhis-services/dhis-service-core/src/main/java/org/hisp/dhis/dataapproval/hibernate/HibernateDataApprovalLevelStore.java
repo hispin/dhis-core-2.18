@@ -28,40 +28,27 @@ package org.hisp.dhis.dataapproval.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.period.PeriodService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 @Transactional
 public class HibernateDataApprovalLevelStore
         extends HibernateGenericStore<DataApprovalLevel>
         implements DataApprovalLevelStore
 {
-
     // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataApprovalLevelStore dataApprovalLevelStore;
-
-    public void setDataApprovalLevelStore( DataApprovalLevelStore dataApprovalLevelStore )
-    {
-        this.dataApprovalLevelStore = dataApprovalLevelStore;
-    }
-
-    // -------------------------------------------------------------------------
-    // DataApprovalLevel
+    // DataApprovalLevelStore implementation
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings("unchecked")
     public List<DataApprovalLevel> getAllDataApprovalLevels()
     {
         return getCriteria().addOrder( Order.asc( "level" ) ).list();

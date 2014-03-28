@@ -1,4 +1,5 @@
 package org.hisp.dhis.settings.action.system;
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -27,7 +28,6 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -36,15 +36,13 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import java.util.Date;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class AddApprovalLevelAction
-        implements Action
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

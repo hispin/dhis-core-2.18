@@ -35,7 +35,6 @@ import org.hisp.dhis.dataapproval.DataApprovalStore;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -43,7 +42,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class HibernateDataApprovalStore
     extends HibernateGenericStore<DataApproval>
@@ -68,9 +66,11 @@ public class HibernateDataApprovalStore
     {
         dataApproval.setPeriod( periodService.reloadPeriod( dataApproval.getPeriod() ) );
 
+        // ---------------------------------------------------------------------
         // In general null values do not violate a unique constraint,
         // so we check by hand if categoryOptionGroup has a null value,
         // that no identical record exists with a null value.
+        // ---------------------------------------------------------------------
 
         if ( dataApproval.getCategoryOptionGroup() == null )
         {
@@ -107,6 +107,7 @@ public class HibernateDataApprovalStore
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
+        
         if ( categoryOptionGroup != null )
         {
             criteria.add( Restrictions.eq( "categoryOptionGroup", categoryOptionGroup ) );
