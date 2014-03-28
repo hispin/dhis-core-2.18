@@ -761,6 +761,10 @@
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -771,7 +775,7 @@
       <dependency>
         <groupId>org.jfree</groupId>
         <artifactId>jfreechart</artifactId>
-        <version>1.0.15</version>
+        <version>1.0.17</version>
         <exclusions>
           <exclusion>
             <groupId>gnujaxp</groupId>
