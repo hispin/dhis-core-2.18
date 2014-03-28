@@ -32,12 +32,14 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataapproval.DataApproval;
 import org.hisp.dhis.dataapproval.DataApprovalStore;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  * @author Jim Grace
@@ -66,7 +68,29 @@ public class HibernateDataApprovalStore
     {
         dataApproval.setPeriod( periodService.reloadPeriod( dataApproval.getPeriod() ) );
 
+        // In general null values do not violate a unique constraint,
+        // so we check by hand if categoryOptionGroup has a null value,
+        // that no identical record exists with a null value.
+
+        if ( dataApproval.getCategoryOptionGroup() == null )
+        {
+            DataApproval duplicate = getDataApproval( dataApproval.getDataSet(),
+                    dataApproval.getPeriod(), dataApproval.getOrganisationUnit(), null );
+
+            if ( duplicate != null )
+            {
+                throw new DataIntegrityViolationException( dataApproval.toString() );
+            }
+        }
+
         save( dataApproval );
+    }
+
+    public void updateDataApproval( DataApproval dataApproval )
+    {
+        dataApproval.setPeriod( periodService.reloadPeriod( dataApproval.getPeriod() ) );
+
+        update ( dataApproval );
     }
 
     public void deleteDataApproval( DataApproval dataApproval )
@@ -75,7 +99,7 @@ public class HibernateDataApprovalStore
     }
 
     public DataApproval getDataApproval( DataSet dataSet, Period period, 
-        OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
+        OrganisationUnit organisationUnit, CategoryOptionGroup categoryOptionGroup )
     {
         Period storedPeriod = periodService.reloadPeriod( period );
 
@@ -83,7 +107,14 @@ public class HibernateDataApprovalStore
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
-        criteria.add( Restrictions.eq( "attributeOptionCombo", attributeOptionCombo ) );
+        if ( categoryOptionGroup != null )
+        {
+            criteria.add( Restrictions.eq( "categoryOptionGroup", categoryOptionGroup ) );
+        }
+        else
+        {
+            criteria.add( Restrictions.isNull( "categoryOptionGroup" ) );
+        }
 
         return (DataApproval) criteria.uniqueResult();
     }

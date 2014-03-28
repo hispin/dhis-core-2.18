@@ -59,12 +59,61 @@
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
+  <bean id="org.hisp.dhis.settings.action.system.GetApprovalSettingsAction"
+      class="org.hisp.dhis.settings.action.system.GetApprovalSettingsAction"
+      scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.GetAddApprovalLevelFormParameters"
+      class="org.hisp.dhis.settings.action.system.GetAddApprovalLevelFormParameters"
+      scope="prototype">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+
+  <!--
+  <bean id="org.hisp.dhis.settings.action.system.ValidateApprovalLevelAction"
+      class="org.hisp.dhis.settings.action.system.ValidateApprovalLevelAction"
+      scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+  -->
+
+  <bean id="org.hisp.dhis.settings.action.system.AddApprovalLevelAction"
+        class="org.hisp.dhis.settings.action.system.AddApprovalLevelAction"
+        scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.MoveApprovalLevelDownAction"
+        class="org.hisp.dhis.settings.action.system.MoveApprovalLevelDownAction"
+        scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.MoveApprovalLevelUpAction"
+        class="org.hisp.dhis.settings.action.system.MoveApprovalLevelUpAction"
+        scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.RemoveApprovalLevelAction"
+      class="org.hisp.dhis.settings.action.system.RemoveApprovalLevelAction"
+      scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+  </bean>
+
   <bean id="org.hisp.dhis.settings.action.system.GetAccessSettingsAction"
       class="org.hisp.dhis.settings.action.system.GetAccessSettingsAction"
-      scope="prototype"/>
+      scope="prototype" />
 
   <bean id="org.hisp.dhis.settings.action.system.SetAccessSettingsAction"
       class="org.hisp.dhis.settings.action.system.SetAccessSettingsAction"
-      scope="prototype"/>
+      scope="prototype" />
 
 </beans>

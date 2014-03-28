@@ -66,7 +66,53 @@
 	  <param name="onExceptionReturn">plainTextError</param>
 	  <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
-    
+
+    <!-- Approval settings -->
+
+    <action name="systemApprovalSettings" class="org.hisp.dhis.settings.action.system.GetApprovalSettingsAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-settings/systemApprovalSettings.vm</param>
+      <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
+      <param name="javascripts">javascripts/systemApprovalSettings.js</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+    </action>
+
+    <action name="showAddApprovalLevelForm" class="org.hisp.dhis.settings.action.system.GetAddApprovalLevelFormParameters">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-settings/addApprovalLevel.vm</param>
+      <param name="javascripts">javascripts/addApprovalLevel.js</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="addApprovalLevel" class="org.hisp.dhis.settings.action.system.AddApprovalLevelAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="page">/dhis-web-maintenance-settings/systemApprovalSettings.vm</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="moveApprovalLevelDown" class="org.hisp.dhis.settings.action.system.MoveApprovalLevelDownAction">
+      <result name="success" type="redirect">systemApprovalSettings.action</result>
+      <param name="page">/dhis-web-maintenance-settings/systemApprovalSettings.vm</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="moveApprovalLevelUp" class="org.hisp.dhis.settings.action.system.MoveApprovalLevelUpAction">
+      <result name="success" type="redirect">systemApprovalSettings.action</result>
+      <param name="page">/dhis-web-maintenance-settings/systemApprovalSettings.vm</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="removeApprovalLevel" class="org.hisp.dhis.settings.action.system.RemoveApprovalLevelAction">
+      <result name="success" type="redirect">systemApprovalSettings.action</result>
+      <param name="page">/dhis-web-maintenance-settings/systemApprovalSettings.vm</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <!-- Access settings -->
 
     <action name="systemAccessSettings" class="org.hisp.dhis.settings.action.system.GetAccessSettingsAction">

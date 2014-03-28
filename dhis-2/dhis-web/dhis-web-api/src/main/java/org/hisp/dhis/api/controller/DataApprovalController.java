@@ -37,9 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.InputUtils;
-import org.hisp.dhis.dataapproval.DataApproval;
-import org.hisp.dhis.dataapproval.DataApprovalService;
-import org.hisp.dhis.dataapproval.DataApprovalState;
+import org.hisp.dhis.dataapproval.*;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
@@ -68,10 +66,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class DataApprovalController
 {
     public static final String RESOURCE_PATH = "/dataApprovals";
-    
+    public static final String ACCEPTANCES_PATH = "/acceptances";
+
     private static final String APPROVAL_STATE = "state";
     private static final String APPROVAL_MAY_APPROVE = "mayApprove";
     private static final String APPROVAL_MAY_UNAPPROVE = "mayUnapprove";
+    private static final String APPROVAL_MAY_ACCEPT = "mayAccept";
+    private static final String APPROVAL_MAY_UNACCEPT = "mayUnaccept";
 
     @Autowired
     private DataApprovalService dataApprovalService;
@@ -130,23 +131,15 @@ public class DataApprovalController
             return;
         }
         
-        DataApprovalState state = dataApprovalService.getDataApprovalState( dataSet, period, organisationUnit, attributeOptionCombo );
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
 
-        boolean mayApprove = dataApprovalService.mayApprove( organisationUnit );
-        boolean mayUnapprove = false;
-        
-        if ( DataApprovalState.APPROVED.equals( state ) )
-        {
-            DataApproval approval = dataApprovalService.getDataApproval( dataSet, period, organisationUnit, attributeOptionCombo );
-            
-            mayUnapprove = dataApprovalService.mayUnapprove( approval );
-        }
-        
         Map<String, Object> approvalState = new HashMap<String, Object>();
-        approvalState.put( APPROVAL_STATE, state.toString() );
-        approvalState.put( APPROVAL_MAY_APPROVE, mayApprove );
-        approvalState.put( APPROVAL_MAY_UNAPPROVE, mayUnapprove );
-        
+        approvalState.put( APPROVAL_STATE, permissions.getDataApprovalStatus().getDataApprovalState().toString() );
+        approvalState.put( APPROVAL_MAY_APPROVE, permissions.isMayApprove() );
+        approvalState.put( APPROVAL_MAY_UNAPPROVE, permissions.isMayUnapprove() );
+        approvalState.put( APPROVAL_MAY_ACCEPT, permissions.isMayAccept() );
+        approvalState.put( APPROVAL_MAY_UNACCEPT, permissions.isMayUnaccept() );
+
         JacksonUtils.toJson( response.getOutputStream(), approvalState );
     }
     
@@ -190,25 +183,27 @@ public class DataApprovalController
             return;
         }
         
-        if ( !dataApprovalService.mayApprove( organisationUnit ) )
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
+        
+        if ( !DataApprovalState.UNAPPROVED_READY.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
+        {
+            ContextUtils.conflictResponse( response, "Data is not ready for approval, current state is: " + permissions.getDataApprovalStatus().getDataApprovalState().name() );
+            return;
+        }
+
+        if ( !permissions.isMayApprove() )
         {
             ContextUtils.conflictResponse( response, "Current user is not authorized to approve for organisation unit: " + ou );
             return;
         }
-        
-        DataApprovalState state = dataApprovalService.getDataApprovalState( dataSet, period, organisationUnit, attributeOptionCombo );
-        
-        if ( !DataApprovalState.READY_FOR_APPROVAL.equals( state ) )
-        {
-            ContextUtils.conflictResponse( response, "Data is not ready for approval, current state is: " + state );
-            return;
-        }
 
         User user = currentUserService.getCurrentUser();
-        
-        DataApproval approval = new DataApproval( dataSet, period, organisationUnit, attributeOptionCombo, new Date(), user );
-        
-        dataApprovalService.addDataApproval( approval );
+
+        //TODO: FIX. We need to know what CategoryOptionGroup if any was selected, to use when constructing the data approval object.
+
+        //TODO: FIX. DataApproval approval = new DataApproval( dataSet, period, organisationUnit, attributeOptionGroup, new Date(), user );
+
+        //TODO: FIX. dataApprovalService.addDataApproval( approval );
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
@@ -252,20 +247,150 @@ public class DataApprovalController
             return;
         }
 
-        DataApproval approval = dataApprovalService.getDataApproval( dataSet, period, organisationUnit, attributeOptionCombo );
-        
-        if ( approval == null )
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
+
+        if ( !DataApprovalState.APPROVED_HERE.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
         {
-            ContextUtils.conflictResponse( response, "Data is not approved and cannot be unapproved" );
+            ContextUtils.conflictResponse( response, "Data is not approved here and cannot be unapproved" );
             return;
         }
 
-        if ( !dataApprovalService.mayUnapprove( approval ) )
+        if ( !permissions.isMayUnapprove() )
         {
-            ContextUtils.conflictResponse( response, "Current user is not authorized to unapprove for organisation unit: " + ou );
+            ContextUtils.conflictResponse( response, "Current user is not authorized to unapprove for "
+                    + approvalParameters( dataSet, period, organisationUnit, attributeOptionCombo ) );
             return;
         }
         
-        dataApprovalService.deleteDataApproval( approval );
+        dataApprovalService.deleteDataApproval( permissions.getDataApprovalStatus().getDataApproval() );
+    }
+
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
+    @RequestMapping( value = ACCEPTANCES_PATH, method = RequestMethod.POST )
+    public void acceptApproval(
+            @RequestParam String ds,
+            @RequestParam String pe,
+            @RequestParam String ou,
+            @RequestParam( required = false ) String cc,
+            @RequestParam( required = false ) String cp, HttpServletResponse response )
+    {
+        DataSet dataSet = dataSetService.getDataSet( ds );
+
+        if ( dataSet == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal data set identifier: " + ds );
+            return;
+        }
+
+        Period period = PeriodType.getPeriodFromIsoString( pe );
+
+        if ( period == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal period identifier: " + pe );
+            return;
+        }
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+
+        if ( organisationUnit == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
+            return;
+        }
+
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+
+        if ( attributeOptionCombo == null )
+        {
+            return;
+        }
+
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
+
+        if ( !DataApprovalState.APPROVED_HERE.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
+        {
+            ContextUtils.conflictResponse( response, "Data is not approved here, current state is: " + permissions.getDataApprovalStatus().getDataApprovalState().name() );
+            return;
+        }
+
+        if ( !permissions.isMayAccept() )
+        {
+            ContextUtils.conflictResponse( response, "Current user is not authorized to accept approval for "
+                    + approvalParameters( dataSet, period, organisationUnit, attributeOptionCombo ) );
+            return;
+        }
+
+        dataApprovalService.accept( permissions.getDataApprovalStatus().getDataApproval() );
+    }
+
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCEPT_DATA_LOWER_LEVELS')" )
+    @RequestMapping( value = ACCEPTANCES_PATH, method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void unacceptApproval(
+            @RequestParam String ds,
+            @RequestParam String pe,
+            @RequestParam String ou,
+            @RequestParam( required = false ) String cc,
+            @RequestParam( required = false ) String cp, HttpServletResponse response )
+    {
+        DataSet dataSet = dataSetService.getDataSet( ds );
+
+        if ( dataSet == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal data set identifier: " + ds );
+            return;
+        }
+
+        Period period = PeriodType.getPeriodFromIsoString( pe );
+
+        if ( period == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal period identifier: " + pe );
+            return;
+        }
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+
+        if ( organisationUnit == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
+            return;
+        }
+
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+
+        if ( attributeOptionCombo == null )
+        {
+            return;
+        }
+
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
+
+        if ( !DataApprovalState.ACCEPTED_HERE.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
+        {
+            ContextUtils.conflictResponse( response, "Data is not approved here, current state is: " + permissions.getDataApprovalStatus().getDataApprovalState().name() );
+            return;
+        }
+
+        if ( !permissions.isMayUnaccept() )
+        {
+            ContextUtils.conflictResponse( response, "Current user is not authorized to unaccept approval for "
+                    + approvalParameters( dataSet, period, organisationUnit, attributeOptionCombo ) );
+            return;
+        }
+
+        dataApprovalService.unaccept( permissions.getDataApprovalStatus().getDataApproval() );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private String approvalParameters( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        return "dataSet " + dataSet.getName()
+                + ", period " + period.getName()
+                + ", org unit " + organisationUnit.getName() + "(" + organisationUnit.getLevel() + ")"
+                + ", attributeOptionCombo " + ( attributeOptionCombo == null ? "null" : attributeOptionCombo.getName() );
     }
 }

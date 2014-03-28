@@ -28,56 +28,78 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
-
 /**
- * Defines the functionality for persisting DataApproval objects.
+ * Current status of data approval for a given selection of data from a
+ * data set. Also shows what approval-type actions (if any) the current user
+ * is permitted to perform on this data selection.
  *
  * @author Jim Grace
+ * @version $Id$
  */
-public interface DataApprovalStore
-//        extends GenericStore<DataApproval>
+
+public class DataApprovalPermissions
 {
-    String ID = DataApprovalStore.class.getName();
+    private DataApprovalStatus dataApprovalStatus;
+
+    private boolean mayApprove;
+
+    private boolean mayUnapprove;
+
+    private boolean mayAccept;
+
+    private boolean mayUnaccept;
 
     // -------------------------------------------------------------------------
-    // Basic DataApproval
+    // Getters and setters
     // -------------------------------------------------------------------------
 
-    /**
-     * Adds a DataApproval in order to approve data.
-     *
-     * @param dataApproval the DataApproval to add.
-     */
-    void addDataApproval( DataApproval dataApproval );
+    public DataApprovalStatus getDataApprovalStatus()
+    {
+        return dataApprovalStatus;
+    }
 
-    /**
-     * Updates a DataApproval.
-     *
-     * @param dataApproval the DataApproval to update.
-     */
-    void updateDataApproval( DataApproval dataApproval );
+    public void setDataApprovalStatus( DataApprovalStatus dataApprovalStatus )
+    {
+        this.dataApprovalStatus = dataApprovalStatus;
+    }
 
-    /**
-     * Deletes a DataApproval in order to un-approve data.
-     *
-     * @param dataApproval the DataApproval to delete.
-     */
-    void deleteDataApproval( DataApproval dataApproval );
+    public boolean isMayApprove()
+    {
+        return mayApprove;
+    }
 
-    /**
-     * Returns the DataApproval object (if any) for a given
-     * dataset, period and organisation unit.
-     *
-     * @param dataSet DataSet for approval
-     * @param period Period for approval
-     * @param organisationUnit OrganisationUnit for approval
-     * @param categoryOptionGroup CategoryOptionGroup (if any) for approval.
-     * @return matching DataApproval object, if any
-     */
-    DataApproval getDataApproval( DataSet dataSet, Period period, 
-        OrganisationUnit organisationUnit, CategoryOptionGroup categoryOptionGroup );
+    public void setMayApprove( boolean mayApprove )
+    {
+        this.mayApprove = mayApprove;
+    }
+
+    public boolean isMayUnapprove()
+    {
+        return mayUnapprove;
+    }
+
+    public void setMayUnapprove( boolean mayUnapprove )
+    {
+        this.mayUnapprove = mayUnapprove;
+    }
+
+    public boolean isMayAccept()
+    {
+        return mayAccept;
+    }
+
+    public void setMayAccept( boolean mayAccept )
+    {
+        this.mayAccept = mayAccept;
+    }
+
+    public boolean isMayUnaccept()
+    {
+        return mayUnaccept;
+    }
+
+    public void setMayUnaccept( boolean mayUnaccept )
+    {
+        this.mayUnaccept = mayUnaccept;
+    }
 }

@@ -1,7 +1,7 @@
-package org.hisp.dhis.dataapproval;
+package org.hisp.dhis.dataapproval.hibernate;
 
 /*
- * Copyright (c) 2004-2014, University of Oslo
+ * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,56 +28,57 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
+import org.hibernate.criterion.Order;
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
+import org.hisp.dhis.dataapproval.DataApprovalLevelStore;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.period.PeriodService;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
- * Defines the functionality for persisting DataApproval objects.
- *
  * @author Jim Grace
+ * @version $Id$
  */
-public interface DataApprovalStore
-//        extends GenericStore<DataApproval>
+@Transactional
+public class HibernateDataApprovalLevelStore
+        extends HibernateGenericStore<DataApprovalLevel>
+        implements DataApprovalLevelStore
 {
-    String ID = DataApprovalStore.class.getName();
 
     // -------------------------------------------------------------------------
-    // Basic DataApproval
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    /**
-     * Adds a DataApproval in order to approve data.
-     *
-     * @param dataApproval the DataApproval to add.
-     */
-    void addDataApproval( DataApproval dataApproval );
+    private DataApprovalLevelStore dataApprovalLevelStore;
 
-    /**
-     * Updates a DataApproval.
-     *
-     * @param dataApproval the DataApproval to update.
-     */
-    void updateDataApproval( DataApproval dataApproval );
+    public void setDataApprovalLevelStore( DataApprovalLevelStore dataApprovalLevelStore )
+    {
+        this.dataApprovalLevelStore = dataApprovalLevelStore;
+    }
 
-    /**
-     * Deletes a DataApproval in order to un-approve data.
-     *
-     * @param dataApproval the DataApproval to delete.
-     */
-    void deleteDataApproval( DataApproval dataApproval );
+    // -------------------------------------------------------------------------
+    // DataApprovalLevel
+    // -------------------------------------------------------------------------
 
-    /**
-     * Returns the DataApproval object (if any) for a given
-     * dataset, period and organisation unit.
-     *
-     * @param dataSet DataSet for approval
-     * @param period Period for approval
-     * @param organisationUnit OrganisationUnit for approval
-     * @param categoryOptionGroup CategoryOptionGroup (if any) for approval.
-     * @return matching DataApproval object, if any
-     */
-    DataApproval getDataApproval( DataSet dataSet, Period period, 
-        OrganisationUnit organisationUnit, CategoryOptionGroup categoryOptionGroup );
+    public List<DataApprovalLevel> getAllDataApprovalLevels()
+    {
+        return getCriteria().addOrder( Order.asc( "level" ) ).list();
+    }
+
+    public void addDataApproval( DataApprovalLevel dataApprovalLevel )
+    {
+        save( dataApprovalLevel );
+    }
+
+    public void updateDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
+    {
+        update( dataApprovalLevel );
+    }
+
+    public void deleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
+    {
+        delete( dataApprovalLevel );
+    }
 }
