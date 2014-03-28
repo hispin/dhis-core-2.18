@@ -31,7 +31,6 @@ package org.hisp.dhis.trackedentity.startup;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,8 +44,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.option.OptionService;
-import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
@@ -106,9 +103,6 @@ public class TableAlteror
 
     @Autowired
     private StatementBuilder statementBuilder;
-
-    @Autowired
-    private OptionService optionService;
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -297,36 +291,11 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE trackedentityattribute DROP COLUMN groupBy" );
 
-        removeNullOptionSet();
-
     }
 
     // -------------------------------------------------------------------------
     // Supporting methods
     // -------------------------------------------------------------------------
-
-    private void removeNullOptionSet()
-    {
-        Collection<OptionSet> optionSets = optionService.getAllOptionSets();
-        for ( OptionSet optionSet : optionSets )
-        {
-            boolean flag = false;
-            Iterator<String> iterOption = optionSet.getOptions().iterator();
-            while ( iterOption.hasNext() )
-            {
-                if ( iterOption.next() == null )
-                {
-                    iterOption.remove();
-                    flag = true;
-                }
-            }
-            if ( flag )
-            {
-                optionService.updateOptionSet( optionSet );
-            }
-
-        }
-    }
 
     private void updateProgramAttributes()
     {
