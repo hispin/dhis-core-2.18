@@ -253,13 +253,13 @@ public class ValidationRule
     }
     
     /**
-     * Indicates whether this validation rule has user roles to alert.
+     * Indicates whether this validation rule has user groups to alert.
      */
-    public boolean hasUserRolesToAlert()
+    public boolean hasUserGroupsToAlert()
     {
         for ( ValidationRuleGroup group : groups )
         {
-            if ( group.hasUserRolesToAlert() )
+            if ( group.hasUserGroupsToAlert() )
             {
                 return true;
             }

@@ -45,6 +45,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.user.UserGroup;
 
 /**
  * @author Lars Helge Overland
@@ -63,8 +64,10 @@ public class ValidationRuleGroup
     @Scanned
     private Set<ValidationRule> members = new HashSet<ValidationRule>();
     
-    private Set<UserAuthorityGroup> userAuthorityGroupsToAlert = new HashSet<UserAuthorityGroup>();
-    
+    private Set<UserGroup> userGroupsToAlert = new HashSet<UserGroup>();
+
+    private boolean alertByOrgUnits;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------     
@@ -104,9 +107,9 @@ public class ValidationRuleGroup
     /**
      * Indicates whether this group has user roles to alert.
      */
-    public boolean hasUserRolesToAlert()
+    public boolean hasUserGroupsToAlert()
     {
-        return userAuthorityGroupsToAlert != null && !userAuthorityGroupsToAlert.isEmpty();
+        return userGroupsToAlert != null && !userGroupsToAlert.isEmpty();
     }
 
     // -------------------------------------------------------------------------
@@ -144,16 +147,32 @@ public class ValidationRuleGroup
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
-    @JacksonXmlElementWrapper( localName = "userRolesToAlert", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "userRoleToAlert", namespace = DxfNamespaces.DXF_2_0)
-    public Set<UserAuthorityGroup> getUserAuthorityGroupsToAlert()
+    @JacksonXmlElementWrapper( localName = "userGroupsToAlert", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "userGroupToAlert", namespace = DxfNamespaces.DXF_2_0)
+    public Set<UserGroup> getUserGroupsToAlert()
     {
-        return userAuthorityGroupsToAlert;
+        return userGroupsToAlert;
     }
 
-    public void setUserAuthorityGroupsToAlert( Set<UserAuthorityGroup> userAuthorityGroupsToAlert )
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public void setUserGroupsToAlert( Set<UserGroup> userGroupsToAlert )
     {
-        this.userAuthorityGroupsToAlert = userAuthorityGroupsToAlert;
+        this.userGroupsToAlert = userGroupsToAlert;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isAlertByOrgUnits()
+    {
+        return alertByOrgUnits;
+    }
+
+    public void setAlertByOrgUnits( boolean alertByOrgUnits )
+    {
+        this.alertByOrgUnits = alertByOrgUnits;
     }
 
     @Override

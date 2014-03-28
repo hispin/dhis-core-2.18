@@ -122,6 +122,7 @@ public class TableAlteror
         executeSql( "DROP TABLE loginfailure" );
         executeSql( "DROP TABLE dashboarditem_trackedentitytabularreports" );
         executeSql( "DROP TABLE categoryoptioncombousergroupaccesses" );
+        executeSql( "DROP TABLE validationrulegroupuserrolestoalert" );
         executeSql( "ALTER TABLE categoryoptioncombo drop column userid" );
         executeSql( "ALTER TABLE categoryoptioncombo drop column publicaccess" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
@@ -702,6 +703,9 @@ public class TableAlteror
 
         // update attribute.code, set to null if code=''
         executeSql( "UPDATE attribute SET code=NULL WHERE code=''" );
+
+        // validation rule group, new column alertbyorgunits needs values
+        executeSql( "UPDATE validationrulegroup SET alertbyorgunits=false WHERE alertbyorgunits IS NULL" );
 
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();

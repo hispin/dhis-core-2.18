@@ -34,6 +34,8 @@ import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
@@ -61,11 +63,11 @@ public class ShowUpdateValidationRuleGroupFormAction
         this.validationRuleService = validationRuleService;
     }
     
-    private UserService userService;
+    private UserGroupService userGroupService;
 
-    public void setUserService( UserService userService )
+    public void setUserGroupService( UserGroupService userGroupService )
     {
-        this.userService = userService;
+        this.userGroupService = userGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -104,18 +106,25 @@ public class ShowUpdateValidationRuleGroupFormAction
         return groupMembers;
     }
 
-    private List<UserAuthorityGroup> availableUserRolesToAlert = new ArrayList<UserAuthorityGroup>();
+    private List<UserGroup> availableUserGroupsToAlert = new ArrayList<UserGroup>();
     
-    public List<UserAuthorityGroup> getAvailableUserRolesToAlert()
+    public List<UserGroup> getAvailableUserGroupsToAlert()
     {
-        return availableUserRolesToAlert;
+        return availableUserGroupsToAlert;
     }
 
-    private List<UserAuthorityGroup> userRolesToAlert = new ArrayList<UserAuthorityGroup>();
+    private List<UserGroup> userGroupsToAlert = new ArrayList<UserGroup>();
 
-    public List<UserAuthorityGroup> getUserRolesToAlert()
+    public List<UserGroup> getUserGroupsToAlert()
     {
-        return userRolesToAlert;
+        return userGroupsToAlert;
+    }
+
+    private boolean alertByOrgUnits;
+
+    public boolean getAlertByOrgUnits()
+    {
+        return alertByOrgUnits;
     }
    
     // -------------------------------------------------------------------------
@@ -130,11 +139,13 @@ public class ShowUpdateValidationRuleGroupFormAction
 
         Collections.sort( groupMembers, IdentifiableObjectNameComparator.INSTANCE );
         
-        availableUserRolesToAlert = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
+        availableUserGroupsToAlert = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
-        userRolesToAlert = new ArrayList<UserAuthorityGroup>( validationRuleGroup.getUserAuthorityGroupsToAlert() );
+        userGroupsToAlert = new ArrayList<UserGroup>( validationRuleGroup.getUserGroupsToAlert() );
         
-        Collections.sort( userRolesToAlert, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( userGroupsToAlert, IdentifiableObjectNameComparator.INSTANCE );
+
+        alertByOrgUnits = validationRuleGroup.isAlertByOrgUnits();
 
         return SUCCESS;
     }
