@@ -83,12 +83,17 @@ public class DefaultSchemaService implements SchemaService
         }
         */
 
-        if ( !classSchemaMap.containsKey( klass ) && classSchemaMap.containsKey( klass.getSuperclass() ) )
+        if ( classSchemaMap.containsKey( klass ) )
+        {
+            return classSchemaMap.get( klass );
+        }
+
+        if ( classSchemaMap.containsKey( klass.getSuperclass() ) )
         {
             return classSchemaMap.get( klass.getSuperclass() );
         }
 
-        return classSchemaMap.get( klass );
+        return null;
     }
 
     @Override
