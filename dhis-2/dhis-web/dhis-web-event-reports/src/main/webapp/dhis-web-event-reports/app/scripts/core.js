@@ -1666,71 +1666,59 @@ Ext.onReady( function() {
 			// analytics
 			web.analytics = {};
 
-			web.analytics.getParamString = function(xLayout, isSorted) {
-				var axisDimensionNames = isSorted ? xLayout.sortedAxisDimensionNames : xLayout.axisDimensionNames,
-					filterDimensions = isSorted ? xLayout.sortedFilterDimensions : xLayout.filterDimensions,
-					dimensionNameIdsMap = isSorted ? xLayout.dimensionNameSortedIdsMap : xLayout.dimensionNameIdsMap,
-					paramString = '?',
-					addCategoryDimension = false,
-					map = xLayout.dimensionNameItemsMap,
-					dx = dimConf.indicator.dimensionName,
-					co = dimConf.category.dimensionName,
-                    aggTypes = {
-                        'count': 'COUNT',
-                        'sum': 'SUM'
-                    };
+			web.analytics.getParamString = function(view, format) {
+                var paramString;
 
-				for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
-					dimName = axisDimensionNames[i];
+                format = format || 'json';
 
-					paramString += 'dimension=' + dimName;
+                paramString = '/api/analytics/events/' + view.type + '/' + view.program.id + '.' + format + '?';
 
-					items = Ext.clone(dimensionNameIdsMap[dimName]);
+				// stage
+				paramString += 'stage=' + view.stage.id;
 
-					if (dimName === dx) {
-						for (var j = 0, index; j < items.length; j++) {
-							index = items[j].indexOf('-');
+				// ou
+				if (Ext.isArray(view.organisationUnits)) {
+                    paramString += '&dimension=ou:';
 
-							if (index > 0) {
-								addCategoryDimension = true;
-								items[j] = items[j].substr(0, index);
-							}
+					for (var i = 0; i < view.organisationUnits.length; i++) {
+						paramString += view.organisationUnits[i].id;
+                        paramString += i < (view.organisationUnits.length - 1) ? ';' : '';
+					}
+				}
+
+				// de
+				for (var i = 0, element; i < view.dataElements.length; i++) {
+					element = view.dataElements[i];
+
+					paramString += '&dimension=' + element.id;
+
+					if (element.value) {
+						if (element.operator) {
+							paramString += ':' + element.operator;
 						}
 
-						items = Ext.Array.unique(items);
-					}
-
-					if (dimName !== co) {
-						paramString += ':' + items.join(';');
-					}
-
-					if (i < (axisDimensionNames.length - 1)) {
-						paramString += '&';
+						paramString += ':' + element.value;
 					}
 				}
 
-				if (addCategoryDimension) {
-					paramString += '&dimension=' + conf.finals.dimension.category.dimensionName;
-				}
+				// pe
+				if (Ext.isArray(view.periods)) {
+					paramString += '&dimension=pe:';
 
-				if (Ext.isArray(filterDimensions) && filterDimensions.length) {
-					for (var i = 0, dim; i < filterDimensions.length; i++) {
-						dim = filterDimensions[i];
-
-						paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
+					for (var i = 0; i < view.periods.length; i++) {
+						paramString += view.periods[i].id + (i < view.periods.length - 1 ?  ';' : '');
 					}
 				}
-
-				if (xLayout.showHierarchy) {
-					paramString += '&hierarchyMeta=true';
+				else {
+					paramString += '&startDate=' + view.startDate;
+					paramString += '&endDate=' + view.endDate;
 				}
 
-                if (aggTypes.hasOwnProperty(xLayout.aggregationType)) {
-                    paramString += '&aggregationType=' + aggTypes[xLayout.aggregationType];
-                }
+				// hierarchy
+				paramString += view.showHierarchy ? '&hierarchyMeta=true' : '';
 
-				return paramString;
-			};
+                return paramString;
+            };
 
 			web.analytics.validateUrl = function(url) {
 				var msg;

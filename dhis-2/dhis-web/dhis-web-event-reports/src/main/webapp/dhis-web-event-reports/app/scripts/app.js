@@ -4765,52 +4765,7 @@ Ext.onReady( function() {
 			};
 
 			web.report.getData = function(view, isUpdateGui) {
-				var paramString = '?',
-					features = [];
-
-				// stage
-				paramString += 'stage=' + view.stage.id;
-
-				// ou
-				if (Ext.isArray(view.organisationUnits)) {
-                    paramString += '&dimension=ou:';
-
-					for (var i = 0; i < view.organisationUnits.length; i++) {
-						paramString += view.organisationUnits[i].id;
-                        paramString += i < (view.organisationUnits.length - 1) ? ';' : '';
-					}
-				}
-
-				// de
-				for (var i = 0, element; i < view.dataElements.length; i++) {
-					element = view.dataElements[i];
-
-					paramString += '&dimension=' + element.id;
-
-					if (element.value) {
-						if (element.operator) {
-							paramString += ':' + element.operator;
-						}
-
-						paramString += ':' + element.value;
-					}
-				}
-
-				// pe
-				if (Ext.isArray(view.periods)) {
-					paramString += '&dimension=pe:';
-
-					for (var i = 0; i < view.periods.length; i++) {
-						paramString += view.periods[i].id + (i < view.periods.length - 1 ?  ';' : '');
-					}
-				}
-				else {
-					paramString += '&startDate=' + view.startDate;
-					paramString += '&endDate=' + view.endDate;
-				}
-
-				// hierarchy
-				paramString += view.showHierarchy ? '&hierarchyMeta=true' : '';
+				var paramString = web.analytics.getParamString(view);
 
 				// show mask
 				web.mask.show(ns.app.centerRegion);
@@ -4819,7 +4774,7 @@ Ext.onReady( function() {
                 ns.app.dateData = new Date();
 
 				Ext.Ajax.request({
-					url: ns.core.init.contextPath + '/api/analytics/events/' + view.type + '/' + view.program.id + '.json' + paramString,
+					url: ns.core.init.contextPath + paramString,
 					disableCaching: false,
 					scope: this,
 					failure: function(r) {
@@ -4947,6 +4902,11 @@ Ext.onReady( function() {
 
 					ns.app.centerRegion.removeAll(true);
 					ns.app.centerRegion.update(table.html);
+
+					// after render
+					ns.app.layout = layout;
+					ns.app.response = response;
+					ns.app.xResponse = xResponse;
 
 					if (NS.isSessionStorage) {
 						web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
@@ -5251,14 +5211,8 @@ Ext.onReady( function() {
 			}
 		});
 
-		getParamString = function() {
-			var paramString = ns.core.web.analytics.getParamString(ns.core.service.layout.getExtendedLayout(ns.app.layout));
-
-			if (ns.app.layout.showHierarchy) {
-				paramString += '&showHierarchy=true';
-			}
-
-			return paramString;
+		getParamString = function(format) {
+			return ns.core.init.contextPath + ns.core.web.analytics.getParamString(ns.app.layout, format);
 		};
 
 		openTableLayoutTab = function(type, isNewTab) {
@@ -5293,32 +5247,6 @@ Ext.onReady( function() {
 				items: [
 					{
 						xtype: 'label',
-						text: NS.i18n.table_layout,
-						style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
-					},
-					{
-						text: 'Microsoft Excel (.xls)',
-						iconCls: 'ns-menu-item-tablelayout',
-						handler: function() {
-							openTableLayoutTab('xls');
-						}
-					},
-					{
-						text: 'CSV (.csv)',
-						iconCls: 'ns-menu-item-tablelayout',
-						handler: function() {
-							openTableLayoutTab('csv');
-						}
-					},
-					{
-						text: 'HTML (.html)',
-						iconCls: 'ns-menu-item-tablelayout',
-						handler: function() {
-							openTableLayoutTab('html', true);
-						}
-					},
-					{
-						xtype: 'label',
 						text: NS.i18n.plain_data_sources,
 						style: 'padding:7px 5px 5px 7px; font-weight:bold'
 					},
@@ -5327,7 +5255,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(ns.core.init.contextPath + '/api/analytics.json' + getParamString(), '_blank');
+								window.open(getParamString('json'), '_blank');
 							}
 						}
 					},
@@ -5336,7 +5264,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(ns.core.init.contextPath + '/api/analytics.xml' + getParamString(), '_blank');
+								window.open(getParamString('xml'), '_blank');
 							}
 						}
 					},
@@ -5345,7 +5273,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.location.href = ns.core.init.contextPath + '/api/analytics.xls' + getParamString();
+								window.open(getParamString('xls'), '_blank');
 							}
 						}
 					},
@@ -5354,7 +5282,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.location.href = ns.core.init.contextPath + '/api/analytics.csv' + getParamString();
+								window.open(getParamString('csv'), '_blank');
 							}
 						}
 					},
@@ -5363,7 +5291,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(ns.core.init.contextPath + '/api/analytics.jrxml' + getParamString(), '_blank');
+								window.open(getParamString('jrxml'), '_blank');
 							}
 						}
 					}
@@ -5575,23 +5503,25 @@ Ext.onReady( function() {
 		});
 
 		setGui = function(layout, xLayout, updateGui) {
-			var dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || [])),
-				dimMap = ns.core.service.layout.getObjectNameDimensionMapFromDimensionArray(dimensions),
-				recMap = ns.core.service.layout.getObjectNameDimensionItemsMapFromDimensionArray(dimensions),
-				graphMap = layout.parentGraphMap,
-				objectName,
-				periodRecords,
-				fixedPeriodRecords = [],
-				dimNames = [],
-				isOu = false,
-				isOuc = false,
-				isOugc = false,
-				levels = [],
-				groups = [],
-				orgunits = [];
+			//var dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || [])),
+				//dimMap = ns.core.service.layout.getObjectNameDimensionMapFromDimensionArray(dimensions),
+				//recMap = ns.core.service.layout.getObjectNameDimensionItemsMapFromDimensionArray(dimensions),
+				//graphMap = layout.parentGraphMap,
+				//objectName,
+				//periodRecords,
+				//fixedPeriodRecords = [],
+				//dimNames = [],
+				//isOu = false,
+				//isOuc = false,
+				//isOugc = false,
+				//levels = [],
+				//groups = [],
+				//orgunits = [];
 
 			// State
-			//downloadButton.enable();
+			downloadButton.enable();
+
+            return;
 
 			if (layout.id) {
 				//shareButton.enable();
