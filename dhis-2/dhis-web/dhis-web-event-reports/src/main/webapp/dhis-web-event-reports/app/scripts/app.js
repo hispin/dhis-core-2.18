@@ -5251,6 +5251,15 @@ Ext.onReady( function() {
 						style: 'padding:7px 5px 5px 7px; font-weight:bold'
 					},
 					{
+						text: 'HTML',
+						iconCls: 'ns-menu-item-datasource',
+						handler: function() {
+							if (ns.core.init.contextPath && ns.app.paramString) {
+								window.open(getParamString('html'), '_blank');
+							}
+						}
+					},
+					{
 						text: 'JSON',
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
@@ -5283,15 +5292,6 @@ Ext.onReady( function() {
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
 								window.open(getParamString('csv'), '_blank');
-							}
-						}
-					},
-					{
-						text: 'JRXML',
-						iconCls: 'ns-menu-item-datasource',
-						handler: function() {
-							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(getParamString('jrxml'), '_blank');
 							}
 						}
 					}
