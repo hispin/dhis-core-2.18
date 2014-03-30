@@ -53,6 +53,8 @@ public class TrackedEntityInstanceQueryParams
     public static final String TRACKED_ENTITY_ATTRIBUTE_ID = "teattribute";
     public static final String TRACKED_ENTITY_ATTRIBUTE_VALUE_ID = "tevalue";
     
+    public static final String META_DATA_NAMES_KEY = "names";
+    
     /**
      * Query value, will apply to all relevant attributes.
      */
