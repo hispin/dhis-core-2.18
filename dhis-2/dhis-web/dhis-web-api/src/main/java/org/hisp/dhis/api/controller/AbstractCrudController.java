@@ -176,6 +176,19 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE + "; charset=UTF-8" );
 
+        ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
+
+        String viewClass = options.getViewClass( "basic" );
+
+        if ( viewClass.equals( "basic" ) )
+        {
+            handleLinksAndAccess( options, metaData, entityList, false );
+        }
+        else
+        {
+            handleLinksAndAccess( options, metaData, entityList, true );
+        }
+
         // enable property filter
         if ( include != null || exclude != null )
         {
@@ -200,19 +213,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
         else
         {
-            ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
-
-            String viewClass = options.getViewClass( "basic" );
-
-            if ( viewClass.equals( "basic" ) )
-            {
-                handleLinksAndAccess( options, metaData, entityList, false );
-            }
-            else
-            {
-                handleLinksAndAccess( options, metaData, entityList, true );
-            }
-
             renderService.toJson( response.getOutputStream(), metaData, JacksonUtils.getViewClass( viewClass ) );
         }
     }
