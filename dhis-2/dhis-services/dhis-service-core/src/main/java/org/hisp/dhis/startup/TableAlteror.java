@@ -707,7 +707,10 @@ public class TableAlteror
         // update attribute.code, set to null if code=''
         executeSql( "UPDATE attribute SET code=NULL WHERE code=''" );
 
-        // validation rule group, new column alertbyorgunits needs values
+        // data approval, new column accepted
+        executeSql( "UPDATE dataapproval SET accepted=false WHERE accepted IS NULL" );
+
+        // validation rule group, new column alertbyorgunits
         executeSql( "UPDATE validationrulegroup SET alertbyorgunits=false WHERE alertbyorgunits IS NULL" );
 
         upgradeDataValuesWithAttributeOptionCombo();

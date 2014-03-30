@@ -29,6 +29,8 @@ package org.hisp.dhis.dataapproval;
  */
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.security.SecurityService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +55,13 @@ public class DefaultDataApprovalLevelService
         this.dataApprovalLevelStore = dataApprovalLevelStore;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private SecurityService securityService;
 
     public void setSecurityService( SecurityService securityService )
@@ -66,7 +75,29 @@ public class DefaultDataApprovalLevelService
 
     public List<DataApprovalLevel> getAllDataApprovalLevels()
     {
-        return dataApprovalLevelStore.getAllDataApprovalLevels();
+        List<DataApprovalLevel> dataApprovalLevels = dataApprovalLevelStore.getAllDataApprovalLevels();
+
+        for ( DataApprovalLevel dataApprovalLevel : dataApprovalLevels)
+        {
+            String ouLevelName;
+
+            int ouLevelNumber = dataApprovalLevel.getOrgUnitLevel();
+
+            OrganisationUnitLevel ouLevel = organisationUnitService.getOrganisationUnitLevelByLevel( ouLevelNumber );
+
+            if ( ouLevel != null )
+            {
+                ouLevelName = ouLevelNumber + " " + ouLevel.getName();
+            }
+            else
+            {
+                ouLevelName = "Organization unit level " + ouLevelNumber;
+            }
+
+            dataApprovalLevel.setOrgUnitLevelName( ouLevelName );
+        }
+
+        return dataApprovalLevels;
     }
 
     public boolean canDataApprovalLevelMoveDown( int level )
@@ -83,7 +114,7 @@ public class DefaultDataApprovalLevelService
         DataApprovalLevel test = dataApprovalLevels.get( index );
         DataApprovalLevel next = dataApprovalLevels.get( index + 1 );
 
-        if ( test.getOrganisationUnitLevel().getLevel() == next.getOrganisationUnitLevel().getLevel()
+        if ( test.getOrgUnitLevel() == next.getOrgUnitLevel()
                 && test.getCategoryOptionGroupSet() != null )
         {
             return true;
@@ -108,7 +139,7 @@ public class DefaultDataApprovalLevelService
         DataApprovalLevel test = dataApprovalLevels.get( index );
         DataApprovalLevel previous = dataApprovalLevels.get( index - 1 );
 
-        if ( test.getOrganisationUnitLevel().getLevel() == previous.getOrganisationUnitLevel().getLevel()
+        if ( test.getOrgUnitLevel() == previous.getOrgUnitLevel()
                 && previous.getCategoryOptionGroupSet() != null )
         {
             return true;
@@ -141,7 +172,7 @@ public class DefaultDataApprovalLevelService
 
         for ( DataApprovalLevel dataApprovalLevel : dataApprovalLevels )
         {
-            if ( testLevel.getOrganisationUnitLevel() == dataApprovalLevel.getOrganisationUnitLevel()
+            if ( testLevel.getOrgUnitLevel() == dataApprovalLevel.getOrgUnitLevel()
                     && testLevel.getCategoryOptionGroupSet() == dataApprovalLevel.getCategoryOptionGroupSet() )
             {
                 return true;
@@ -155,7 +186,7 @@ public class DefaultDataApprovalLevelService
     {
         List<DataApprovalLevel> dataApprovalLevels = getAllDataApprovalLevels();
 
-        if ( newLevel.getOrganisationUnitLevel() == null )
+        if ( newLevel.getOrgUnitLevel() <= 0 )
         {
             return false;
         }
@@ -289,7 +320,7 @@ public class DefaultDataApprovalLevelService
         {
             DataApprovalLevel test = dataApprovalLevels.get( i );
 
-            int orgLevelDifference = newLevel.getOrganisationUnitLevel().getLevel() - test.getOrganisationUnitLevel().getLevel();
+            int orgLevelDifference = newLevel.getOrgUnitLevel() - test.getOrgUnitLevel();
 
             if ( orgLevelDifference > 0 )
             {

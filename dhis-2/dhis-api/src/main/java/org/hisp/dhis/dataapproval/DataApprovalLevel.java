@@ -58,7 +58,7 @@ public class DataApprovalLevel
     /**
      * The organisation unit level for this data approval level.
      */
-    private OrganisationUnitLevel organisationUnitLevel;
+    private int orgUnitLevel;
 
     /**
      * The category option group set (optional) for this data approval level.
@@ -75,6 +75,11 @@ public class DataApprovalLevel
      */
     private Date updated;
 
+    /**
+     * The name of the organisation unit level (derived through the service.)
+     */
+    private String orgUnitLevelName;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -83,19 +88,19 @@ public class DataApprovalLevel
     {
     }
 
-    public DataApprovalLevel( OrganisationUnitLevel organisationUnitLevel,
+    public DataApprovalLevel( int orgUnitLevel,
                               CategoryOptionGroupSet categoryOptionGroupSet )
     {
-        this.organisationUnitLevel = organisationUnitLevel;
+        this.orgUnitLevel = orgUnitLevel;
         this.categoryOptionGroupSet = categoryOptionGroupSet;
     }
 
-    public DataApprovalLevel( int level, OrganisationUnitLevel organisationUnitLevel,
+    public DataApprovalLevel( int level, int orgUnitLevel,
                               CategoryOptionGroupSet categoryOptionGroupSet,
                               Date created, Date updated )
     {
         this.level = level;
-        this.organisationUnitLevel = organisationUnitLevel;
+        this.orgUnitLevel = orgUnitLevel;
         this.categoryOptionGroupSet = categoryOptionGroupSet;
         this.created = created;
         this.updated = updated;
@@ -112,7 +117,7 @@ public class DataApprovalLevel
      */
     public String getName()
     {
-        String name = organisationUnitLevel.getName()
+        String name = orgUnitLevel
                 + ( categoryOptionGroupSet == null ? "" : ( " - " + categoryOptionGroupSet.getName() ) );
 
         return name;
@@ -155,14 +160,14 @@ public class DataApprovalLevel
         this.level = level;
     }
 
-    public OrganisationUnitLevel getOrganisationUnitLevel()
+    public int getOrgUnitLevel()
     {
-        return organisationUnitLevel;
+        return orgUnitLevel;
     }
 
-    public void setOrganisationUnitLevel( OrganisationUnitLevel organisationUnitLevel )
+    public void setOrgUnitLevel( int orgUnitLevel )
     {
-        this.organisationUnitLevel = organisationUnitLevel;
+        this.orgUnitLevel = orgUnitLevel;
     }
 
     public CategoryOptionGroupSet getCategoryOptionGroupSet()
@@ -194,4 +199,15 @@ public class DataApprovalLevel
     {
         this.updated = updated;
     }
+
+    public String getOrgUnitLevelName()
+    {
+        return orgUnitLevelName;
+    }
+
+    public void setOrgUnitLevelName( String orgUnitLevelName )
+    {
+        this.orgUnitLevelName = orgUnitLevelName;
+    }
+
 }

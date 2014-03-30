@@ -31,12 +31,15 @@ package org.hisp.dhis.dataapproval;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.security.SecurityService;
@@ -51,6 +54,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataApprovalService
     implements DataApprovalService
 {
+    private final static Log log = LogFactory.getLog( DefaultDataApprovalService.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -67,6 +72,13 @@ public class DefaultDataApprovalService
     public void setDataApprovalLevelService( DataApprovalLevelService dataApprovalLevelService )
     {
         this.dataApprovalLevelService = dataApprovalLevelService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     private CurrentUserService currentUserService;
@@ -103,21 +115,37 @@ public class DefaultDataApprovalService
 
     public void addDataApproval( DataApproval dataApproval )
     {
-        dataApprovalStore.addDataApproval( dataApproval );
+        if ( ( dataApproval.getCategoryOptionGroup() == null || securityService.canRead( dataApproval.getCategoryOptionGroup() ) )
+                && mayApprove( dataApproval.getOrganisationUnit() ) )
+        {
+            dataApprovalStore.addDataApproval( dataApproval );
+        }
+        else
+        {
+            warnNotPermitted( dataApproval, "approve", mayApprove( dataApproval.getOrganisationUnit() ) );
+        }
     }
 
     public void deleteDataApproval( DataApproval dataApproval )
     {
-        dataApprovalStore.deleteDataApproval( dataApproval );
-
-        for ( OrganisationUnit ancestor : dataApproval.getOrganisationUnit().getAncestors() )
+        if ( ( dataApproval.getCategoryOptionGroup() == null || securityService.canRead( dataApproval.getCategoryOptionGroup() ) )
+                && mayUnapprove( dataApproval.getOrganisationUnit(), dataApproval.isAccepted() ))
         {
-            DataApproval ancestorApproval = dataApprovalStore.getDataApproval(
-                    dataApproval.getDataSet(), dataApproval.getPeriod(), ancestor, dataApproval.getCategoryOptionGroup() );
+            dataApprovalStore.deleteDataApproval( dataApproval );
 
-            if ( ancestorApproval != null ) {
-                dataApprovalStore.deleteDataApproval ( ancestorApproval );
+            for ( OrganisationUnit ancestor : dataApproval.getOrganisationUnit().getAncestors() )
+            {
+                DataApproval ancestorApproval = dataApprovalStore.getDataApproval(
+                        dataApproval.getDataSet(), dataApproval.getPeriod(), ancestor, dataApproval.getCategoryOptionGroup() );
+
+                if ( ancestorApproval != null ) {
+                    dataApprovalStore.deleteDataApproval ( ancestorApproval );
+                }
             }
+        }
+        else
+        {
+            warnNotPermitted( dataApproval, "unapprove", mayUnapprove( dataApproval.getOrganisationUnit(), dataApproval.isAccepted() ) );
         }
     }
 
@@ -135,7 +163,7 @@ public class DefaultDataApprovalService
         DataApprovalSelection dataApprovalSelection = new DataApprovalSelection( dataSet, period, organisationUnit,
                 categoryOptionGroup, dataElementCategoryOptions,
                 dataApprovalStore, dataApprovalLevelService,
-                categoryService, periodService);
+                organisationUnitService, categoryService, periodService);
 
         return dataApprovalSelection.getDataApprovalStatus();
     }
@@ -156,47 +184,71 @@ public class DefaultDataApprovalService
 
         DataApprovalPermissions permissions = new DataApprovalPermissions();
 
+        log.info( "getDataApprovalPermissions() getting permissions." );
+
         permissions.setDataApprovalStatus( status );
 
         if ( canReadCategoryOptionGroups( categoryOptionGroup, dataElementCategoryOptions ) )
         {
+            boolean accepted = false;
+
             switch ( status.getDataApprovalState() )
             {
+                case APPROVED_HERE:
+                case ACCEPTED_HERE:
+                    accepted = status.getDataApproval().isAccepted();
                 case UNAPPROVED_READY:
                     permissions.setMayApprove( mayApprove( organisationUnit ) );
-                    break;
-
-                case APPROVED_HERE:
-                    permissions.setMayUnapprove( mayUnapprove( status ) );
-                    permissions.setMayAccept( mayAcceptOrUnaccept( status ) );
-                    break;
-
-                case ACCEPTED_HERE:
-                    permissions.setMayUnapprove( mayUnapprove( status ) );
-                    permissions.setMayUnaccept( mayAcceptOrUnaccept( status ) );
+                    permissions.setMayUnapprove( mayUnapprove( organisationUnit, accepted ) );
+                    permissions.setMayAccept( mayAcceptOrUnaccept( organisationUnit ) );
+                    permissions.setMayUnaccept( permissions.isMayAccept() );
                     break;
             }
         }
+
+        log.info( "Returning permissions for " + organisationUnit.getName()
+                + " " + status.getDataApprovalState().name()
+                + " may approve = " + permissions.isMayApprove()
+                + " may unapprove = " + permissions.isMayUnapprove()
+                + " may accept = " + permissions.isMayAccept()
+                + " may unaccept = " + permissions.isMayUnaccept() );
+
         return permissions;
     }
 
     public void accept( DataApproval dataApproval )
     {
-        if ( !dataApproval.isAccepted() )
+        if ( ( dataApproval.getCategoryOptionGroup() == null || securityService.canRead( dataApproval.getCategoryOptionGroup() ) )
+                && mayAcceptOrUnaccept( dataApproval.getOrganisationUnit() ) )
         {
-            dataApproval.setAccepted( true );
+            if ( !dataApproval.isAccepted() )
+            {
+                dataApproval.setAccepted( true );
 
-            dataApprovalStore.updateDataApproval( dataApproval );
+                dataApprovalStore.updateDataApproval( dataApproval );
+            }
+        }
+        else
+        {
+            warnNotPermitted( dataApproval, "accept", mayAcceptOrUnaccept( dataApproval.getOrganisationUnit() ) );
         }
     }
 
     public void unaccept( DataApproval dataApproval )
     {
-        if ( dataApproval.isAccepted() )
+        if ( ( dataApproval.getCategoryOptionGroup() == null || securityService.canRead( dataApproval.getCategoryOptionGroup() ) )
+                && mayAcceptOrUnaccept( dataApproval.getOrganisationUnit() ) )
         {
-            dataApproval.setAccepted( false );
+            if ( dataApproval.isAccepted() )
+            {
+                dataApproval.setAccepted( false );
 
-            dataApprovalStore.updateDataApproval( dataApproval );
+                dataApprovalStore.updateDataApproval( dataApproval );
+            }
+        }
+        else
+        {
+            warnNotPermitted( dataApproval, "unaccept", mayAcceptOrUnaccept( dataApproval.getOrganisationUnit() ) );
         }
     }
 
@@ -224,6 +276,8 @@ public class DefaultDataApprovalService
     {
         if ( categoryOptionGroup != null && !securityService.canRead( categoryOptionGroup ) )
         {
+            log.info( "User cannot read categoryOptionGroup " + categoryOptionGroup.getName() + " for approval." );
+
             return false;
         }
 
@@ -231,25 +285,35 @@ public class DefaultDataApprovalService
         {
             for ( DataElementCategoryOption option : dataElementCategoryOptions )
             {
-                boolean canReadGroup = false;
-
-                for ( CategoryOptionGroup group : option.getGroups() )
+                if ( !securityService.canRead( option ) )
                 {
-                    if ( securityService.canRead( group ) )
-                    {
-                        canReadGroup = true;
+                    boolean canReadGroup = false;
 
-                        break;
+                    for ( CategoryOptionGroup group : option.getGroups() )
+                    {
+                        log.info( "User " + ( securityService.canRead( group ) ? "can" : "cannot" )
+                                + " read option group" + group.getName()
+                                + " for option " + option.getName() );
+
+                        if ( securityService.canRead( group ) )
+                        {
+                            canReadGroup = true;
+
+                            break;
+                        }
                     }
 
-                }
+                    if ( !canReadGroup && option.getGroups().size() != 0 )
+                    {
+                        log.info( "User cannot read option " + option.getName() );
 
-                if ( !canReadGroup )
-                {
-                    return false;
+                        return false;
+                    }
                 }
             }
         }
+
+        log.info( "User can read categoryOptionGroup and/or dataElementCategoryOptions" );
 
         return true;
     }
@@ -271,6 +335,9 @@ public class DefaultDataApprovalService
 
             if ( mayApprove && user.getOrganisationUnits().contains( organisationUnit ) )
             {
+                log.info( "mayApprove = true because organisation unit " + organisationUnit.getName()
+                        + " is assigned to user and user may approve at same level." );
+
                 return true;
             }
 
@@ -279,15 +346,20 @@ public class DefaultDataApprovalService
             if ( mayApproveAtLowerLevels && CollectionUtils.containsAny( user.getOrganisationUnits(),
                     organisationUnit.getAncestors() ) )
             {
+                log.info( "mayApprove = true because organisation unit " + organisationUnit.getName()
+                        + " is under user and user may approve at lower levels." );
+
                 return true;
             }
         }
+
+        log.info( "mayApprove = false for organisation unit " + organisationUnit.getName() );
 
         return false;
     }
 
     /**
-     * Checks to see whether a user may unapprove a given data approval.
+     * Checks to see whether a user may unapprove for a given organisation unit.
      * <p>
      * A user may unapprove data for organisation unit A if they have the
      * authority to approve data for organisation unit B, and B is an
@@ -301,45 +373,55 @@ public class DefaultDataApprovalService
      * has been approved already at a higher level for the same period and
      * data set, and the user is not authorized to remove that approval as well.
      *
-     * @param status The data approval status to check for permission.
+     * @param organisationUnit The data approval status to check for permission.
+     * @param accepted Whether selection is accepted.
+     * @return true if the user may unapprove, otherwise false
      */
-    private boolean mayUnapprove( DataApprovalStatus status )
+    private boolean mayUnapprove( OrganisationUnit organisationUnit, boolean accepted )
     {
-        DataApproval dataApproval = status.getDataApproval();
-
-        if ( dataApproval != null && isAuthorizedToUnapprove( dataApproval.getOrganisationUnit() ) )
+        if ( isAuthorizedToUnapprove( organisationUnit ) )
         {
-            if ( !dataApproval.isAccepted() || mayAcceptOrUnaccept( status ) )
+            if ( !accepted || mayAcceptOrUnaccept( organisationUnit ) )
             {
+                log.info( "mayUnapprove = true for organisation unit " + organisationUnit.getName() );
+
                 return true;
             }
         }
+
+        log.info( "mayUnapprove = false for organisation unit " + organisationUnit.getName() );
 
         return false;
     }
 
     /**
-     * Checks to see whether a user may accept or unaccept a given data approval.
+     * Checks to see whether a user may accept or unaccept for a given
+     * organisation unit.
      *
-     * @param status The data approval status to check for permission.
-     * @return true if the user may accept or unaccept it, otherwise false.
+     * @param organisationUnit The organisation unit to check for permission.
+     * @return true if the user may accept or unaccept, otherwise false.
      */
-    private boolean mayAcceptOrUnaccept ( DataApprovalStatus status )
+    private boolean mayAcceptOrUnaccept ( OrganisationUnit organisationUnit )
     {
         User user = currentUserService.getCurrentUser();
 
-        DataApproval dataApproval = status.getDataApproval();
-
-        if ( user != null && dataApproval != null )
+        if ( user != null )
         {
             boolean mayAcceptAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS );
 
             if ( mayAcceptAtLowerLevels && CollectionUtils.containsAny( user.getOrganisationUnits(),
-                    dataApproval.getOrganisationUnit().getAncestors() ) )
+                    organisationUnit.getAncestors() ) )
             {
+                log.info( "User may accept or unaccept for organisation unit " + organisationUnit.getName() );
+
                 return true;
             }
         }
+
+        log.info( "User with AUTH_ACCEPT_LOWER_LEVELS " + user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS )
+                + " with " + user.getOrganisationUnits().size() + " org units"
+                + " may not accept or unaccept for organisation unit " + organisationUnit.getName()
+                + " with " + organisationUnit.getAncestors().size() + " ancestors.");
 
         return false;
     }
@@ -357,8 +439,12 @@ public class DefaultDataApprovalService
      */
     private boolean isAuthorizedToUnapprove( OrganisationUnit organisationUnit )
     {
+        log.info( "isAuthorizedToUnapprove( " + organisationUnit.getName() + ")" );
+
         if ( mayApprove( organisationUnit ) )
         {
+            log.info( "User may unapprove at " + organisationUnit.getName() );
+
             return true;
         }
 
@@ -366,10 +452,47 @@ public class DefaultDataApprovalService
         {
             if ( mayApprove( ancestor ) )
             {
+                log.info( "User may unapprove at " + ancestor.getName() );
+
                 return true;
             }
         }
 
+        log.info( "User may not unapprove at " + organisationUnit.getName() );
+
         return false;
+    }
+
+    /**
+     * Warns if the user is not permitted to make a data approval operation.
+     * If the UI is working correctly, the user should never be able to choose
+     * an operation for which they are not permitted. So this should happen
+     * only if there is a programming error, or if the user is trying to perform
+     * an operation that the UI would not normally offer.
+     *
+     * @param dataApproval the data approval object for the attempted operation.
+     * @param operation the name of the operation attempted.
+     * @param mayOperate whether the user may perform this operation.
+     */
+    private void warnNotPermitted( DataApproval dataApproval, String operation, boolean mayOperate )
+    {
+        String warning = "User " + currentUserService.getCurrentUsername() + " tried to " + operation
+                + " data for (org unit " + dataApproval.getOrganisationUnit().getName()
+                + ", period " + dataApproval.getPeriod().getName()
+                + ", data set " + dataApproval.getDataSet().getName()
+                + ", COG " + ( dataApproval.getCategoryOptionGroup() == null ? "[null]" : dataApproval.getCategoryOptionGroup().getName() )
+                + ")";
+
+        if ( dataApproval.getCategoryOptionGroup() != null && !securityService.canRead( dataApproval.getCategoryOptionGroup() ) )
+        {
+            warning += " but couldn't read COG";
+        }
+
+        if ( !mayOperate )
+        {
+            warning += " but couldn't " + operation;
+        }
+
+        log.warn( warning + "." );
     }
 }

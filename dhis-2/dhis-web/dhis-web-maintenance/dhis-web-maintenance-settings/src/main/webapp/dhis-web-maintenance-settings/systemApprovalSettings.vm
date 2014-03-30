@@ -46,7 +46,7 @@
                     <tr id="tr${level.level}" data-id="$!level.level" data-name="$encoder.htmlEncode( $!level.getName() )"
                             data-can-move-up="$approvalLevelService.canMoveUp( $level.level )"
                             data-can-move-down="$approvalLevelService.canMoveDown( $level.level )">
-                        <td>$encoder.htmlEncode( $!level.organisationUnitLevel.name )</td>
+                        <td>$encoder.htmlEncode( $!level.orgUnitLevelName )</td>
                         <td>$encoder.htmlEncode( $!level.getCategoryOptionGroupSetName() )</td>
                     </tr>
                     #end
