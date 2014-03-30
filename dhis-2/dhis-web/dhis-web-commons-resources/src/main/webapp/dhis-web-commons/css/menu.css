@@ -24,23 +24,12 @@ a.menuLink:hover
 .menuDropDownArea
 {
     font-size: 9pt;
-    color: #fff;
     border-right: 1px solid #888;
     border-bottom: 1px solid #888;
     border-left: 1px solid #888;
-    padding-left: 4px;
-    padding-right: 4px;
-    width: 189px;
     max-height: 610px;
-    overflow-y: auto;
-    background-color: #276696;
     display: none;
     z-index: 10;
-    filter: alpha(opacity=94);
-    opacity: 0.94;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    box-shadow: #ccc 0 1px 1px 0;
 }
 
 .menuDropDownBox
@@ -52,12 +41,6 @@ a.menuLink:hover
 
 .menuDropDownBox a
 {
-    display: block;
-    padding-top: 8px;
-    padding-left: 10px;
-    padding-bottom: 7px;
-    padding-right: 10px;
-    color: #fff;
     border-radius: 3px;
     cursor: pointer;
 }
@@ -65,7 +48,8 @@ a.menuLink:hover
 .menuDropDownBox a:hover
 {
     text-decoration: none;
-    background-color: #4A89BA;
+    background-color: #f5f5f7;
+    color: #000;
 }
 
 /****************************************************/
@@ -128,11 +112,6 @@ a.menuLink:hover
 .app-menu .app-menu-item:hover {
     border: 1px dashed #9ec5df;
     background-color: #e9f5fb;
-    box-shadow: none;
-    -moz-box-shadow: none;
-    -o-box-shadow: none;
-    -ie-box-shadow: none;
-    -webkit-box-shadow: none;
 }
 
 .app-menu-item-description {
@@ -149,7 +128,7 @@ a.menuLink:hover
 /**
  * When hovered display the description and hide the favorites icon
  */
-    .app-menu li:hover a .app-menu-item-description {
+.app-menu li:hover a .app-menu-item-description {
     position: absolute;
     top: 0;
     right: 0;
@@ -281,7 +260,6 @@ a.menuLink:hover
 }
 
 .app-menu-dropdown a.app-menu-item:hover span {
-    color: #fff;
     padding-left: 10px;
     padding-right: 10px;
     text-align: center;
