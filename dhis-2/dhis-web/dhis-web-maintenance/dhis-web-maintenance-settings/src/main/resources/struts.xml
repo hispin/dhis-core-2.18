@@ -106,10 +106,10 @@
     </action>
 
     <action name="removeApprovalLevel" class="org.hisp.dhis.settings.action.system.RemoveApprovalLevelAction">
-      <result name="success" type="redirect">systemApprovalSettings.action</result>
-      <param name="page">/dhis-web-maintenance-settings/systemApprovalSettings.vm</param>
-      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 
     <!-- Access settings -->

@@ -22,7 +22,7 @@
 <table class="mainPageTable">
     <tr>
         <td style="vertical-align:top">
-            <table width="100%">
+            <table width="75%">
                 <tr>
                     <td><div class="settingLabel">$i18n.getString( "data_approval_levels" )</div></td>
                     <td style="text-align:right">
