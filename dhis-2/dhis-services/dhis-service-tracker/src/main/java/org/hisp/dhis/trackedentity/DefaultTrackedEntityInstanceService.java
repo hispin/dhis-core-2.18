@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -209,8 +210,10 @@ public class DefaultTrackedEntityInstanceService
         // Grid rows
         // ---------------------------------------------------------------------
 
+        Set<String> tes = new HashSet<String>();
+                
         for ( Map<String, String> entity : entities )
-        {
+        {            
             grid.addRow();
             grid.addValue( entity.get( TRACKED_ENTITY_INSTANCE_ID ) );
             grid.addValue( entity.get( CREATED_ID ) );
@@ -218,10 +221,25 @@ public class DefaultTrackedEntityInstanceService
             grid.addValue( entity.get( ORG_UNIT_ID ) );
             grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
             
+            tes.add( entity.get( TRACKED_ENTITY_ID ) );
+            
             for ( QueryItem item : params.getAttributes() )
             {
                 grid.addValue( entity.get( item.getItemId() ) );
             }
+        }
+        
+        if ( !params.isSkipMeta() )
+        {
+            Map<Object, Object> metaData = new HashMap<Object, Object>();
+            
+            for ( String te : tes )
+            {
+                TrackedEntity entity = trackedEntityService.getTrackedEntity( te );
+                metaData.put( te, entity != null ? entity.getDisplayName() : null );
+            }
+            
+            grid.setMetaData( metaData );
         }
         
         return grid;
@@ -263,7 +281,7 @@ public class DefaultTrackedEntityInstanceService
     
     @Override
     public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, Set<String> ou, 
-        OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, String trackedEntity, Integer page, Integer pageSize )
+        OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, String trackedEntity, boolean skipMeta, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
@@ -328,6 +346,7 @@ public class DefaultTrackedEntityInstanceService
         params.setProgramStatus( programStatus );
         params.setTrackedEntity( te );
         params.setOrganisationUnitMode( ouMode );
+        params.setSkipMeta( skipMeta );
         params.setPage( page );
         params.setPageSize( pageSize );
         
