@@ -276,7 +276,8 @@ a.menuLink:hover
 
 .apps-menu-more a {
     color: #4A89BA;
-    border: 1px solid #4A89BA;
+    border: 1px solid #ccc;
+    background-color: #f5f5f7;
     border-radius: 5px;
     display: table-cell;
     vertical-align: middle;
@@ -285,6 +286,7 @@ a.menuLink:hover
 
 .apps-menu-more a:hover {
     color: #fff;
+    border: 1px solid #4A89BA;
     background-color: #4A89BA;
 }
 
@@ -298,10 +300,6 @@ a.menuLink:hover
  * Overrides
  * TODO: Merge these with the main stylesheet
  */
-#menuDropDown1 {
-
-}
-
 hr.app-separator {
     border: none;
     border-top: 1px solid #bbb;
