@@ -87,26 +87,26 @@
       </span>
       
       <ul id="menuLinkArea">
-        <li>
-            <a id="menuLink1" href="../dhis-web-commons-about/modules.action" class="menuLink">
-              <i class="fa fa-th"></i>$i18n.getString( "applications" )
-            </a>
-        </li>
-        <li>
-            <a id="menuLink3" href="../dhis-web-commons-about/functions.action" class="menuLink">
+        <li id="menuDropDown3_button">
+            <a id="menuLink3" class="menuLink drop-down-menu-link">
               <i class="fa fa-user"></i>$i18n.getString( "profile" )
           </a>
         </li>
+        <li id="menuDropDown1_button">
+          <a id="menuLink1" class="menuLink drop-down-menu-link">
+            <i class="fa fa-th"></i>$i18n.getString( "applications" )
+          </a>
+          </li>
       </ul>
 
-      <div id="menuDropDown1" class="menuDropDownArea app-menu-dropdown" >
+      <div id="menuDropDown1" class="menuDropDownArea app-menu-dropdown menuLink1_menu" >
         <div class="caret-up-border"></div>
         <div class="caret-up-background"></div>
-        <ul class="menuDropDownBox"></ul>
+        <ul class="menuDropDownBox"><li class="menu-placeholder"><img src="../images/ajax-loader-bar.gif"></li></ul>
         <div class="apps-menu-more"><a href="../dhis-web-commons-about/modules.action">$i18n.getString( "more_applications" )</a></div>
       </div>
 
-	  <div id="menuDropDown3" class="menuDropDownArea app-menu-dropdown">
+	  <div id="menuDropDown3" class="menuDropDownArea app-menu-dropdown ui-helper-clearfix menuLink3_menu">
         <div class="caret-up-border"></div>
         <div class="caret-up-background"></div>
         <ul class="menuDropDownBox">

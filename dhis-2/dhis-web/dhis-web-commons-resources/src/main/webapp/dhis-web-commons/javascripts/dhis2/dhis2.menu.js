@@ -357,7 +357,7 @@
     markup += '  <a href="${defaultAction}" class="app-menu-item" title="${name}">';
     markup += '    <img src="${icon}" onError="javascript: this.onerror=null; this.src = \'../icons/program.png\';">';
     markup += '    <span>${name}</span>';
-    markup += '    <div class="app-menu-item-description"><span>${name}</span><i class="fa fa-arrows"></i>${description}</div>';
+    markup += '    <div class="app-menu-item-description"><span class="bold">${name}</span><i class="fa fa-arrows"></i>${description}</div>';
     markup += '  </a>';
     markup += '</li>';
 
