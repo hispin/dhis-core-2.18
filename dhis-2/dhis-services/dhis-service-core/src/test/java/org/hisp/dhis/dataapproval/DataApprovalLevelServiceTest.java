@@ -64,11 +64,6 @@ public class DataApprovalLevelServiceTest
     // Supporting data
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitLevel orgUnitLevel1;
-    private OrganisationUnitLevel orgUnitLevel2;
-    private OrganisationUnitLevel orgUnitLevel3;
-    private OrganisationUnitLevel orgUnitLevel4;
-
     private CategoryOptionGroupSet setA;
     private CategoryOptionGroupSet setB;
     private CategoryOptionGroupSet setC;
@@ -110,16 +105,6 @@ public class DataApprovalLevelServiceTest
         // Add supporting data
         // ---------------------------------------------------------------------
 
-        orgUnitLevel1 = new OrganisationUnitLevel( 1, "Level 1");
-        orgUnitLevel2 = new OrganisationUnitLevel( 2, "Level 2");
-        orgUnitLevel3 = new OrganisationUnitLevel( 3, "Level 3");
-        orgUnitLevel4 = new OrganisationUnitLevel( 4, "Level 4");
-
-        organisationUnitService.addOrganisationUnitLevel( orgUnitLevel1 );
-        organisationUnitService.addOrganisationUnitLevel( orgUnitLevel2 );
-        organisationUnitService.addOrganisationUnitLevel( orgUnitLevel3 );
-        organisationUnitService.addOrganisationUnitLevel( orgUnitLevel4 );
-
         setA = new CategoryOptionGroupSet( "Set A" );
         setB = new CategoryOptionGroupSet( "Set B" );
         setC = new CategoryOptionGroupSet( "Set C" );
@@ -132,29 +117,29 @@ public class DataApprovalLevelServiceTest
 
         Date now = new Date();
 
-        level1 = new DataApprovalLevel( orgUnitLevel1, null );
-        level1A = new DataApprovalLevel( orgUnitLevel1, setA );
-        level1B = new DataApprovalLevel( orgUnitLevel1, setB );
-        level1C = new DataApprovalLevel( orgUnitLevel1, setC );
-        level1D = new DataApprovalLevel( orgUnitLevel1, setD );
+        level1 = new DataApprovalLevel( 1, null );
+        level1A = new DataApprovalLevel( 1, setA );
+        level1B = new DataApprovalLevel( 1, setB );
+        level1C = new DataApprovalLevel( 1, setC );
+        level1D = new DataApprovalLevel( 1, setD );
 
-        level2 = new DataApprovalLevel( orgUnitLevel2, null );
-        level2A = new DataApprovalLevel( orgUnitLevel2, setA );
-        level2B = new DataApprovalLevel( orgUnitLevel2, setB );
-        level2C = new DataApprovalLevel( orgUnitLevel2, setC );
-        level2D = new DataApprovalLevel( orgUnitLevel2, setD );
+        level2 = new DataApprovalLevel( 2, null );
+        level2A = new DataApprovalLevel( 2, setA );
+        level2B = new DataApprovalLevel( 2, setB );
+        level2C = new DataApprovalLevel( 2, setC );
+        level2D = new DataApprovalLevel( 2, setD );
 
-        level3 = new DataApprovalLevel( orgUnitLevel3, null );
-        level3A = new DataApprovalLevel( orgUnitLevel3, setA );
-        level3B = new DataApprovalLevel( orgUnitLevel3, setB );
-        level3C = new DataApprovalLevel( orgUnitLevel3, setC );
-        level3D = new DataApprovalLevel( orgUnitLevel3, setD );
+        level3 = new DataApprovalLevel( 3, null );
+        level3A = new DataApprovalLevel( 3, setA );
+        level3B = new DataApprovalLevel( 3, setB );
+        level3C = new DataApprovalLevel( 3, setC );
+        level3D = new DataApprovalLevel( 3, setD );
 
-        level4 = new DataApprovalLevel( orgUnitLevel4, null );
-        level4A = new DataApprovalLevel( orgUnitLevel4, setA );
-        level4B = new DataApprovalLevel( orgUnitLevel4, setB );
-        level4C = new DataApprovalLevel( orgUnitLevel4, setC );
-        level4D = new DataApprovalLevel( orgUnitLevel4, setD );
+        level4 = new DataApprovalLevel( 4, null );
+        level4A = new DataApprovalLevel( 4, setA );
+        level4B = new DataApprovalLevel( 4, setB );
+        level4C = new DataApprovalLevel( 4, setC );
+        level4D = new DataApprovalLevel( 4, setD );
     }
 
     // -------------------------------------------------------------------------
@@ -173,57 +158,57 @@ public class DataApprovalLevelServiceTest
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 1, levels.size() );
 
-        assertEquals( "Level 3", levels.get( 0 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 3, levels.get( 0 ).getOrgUnitLevel() );
         assertEquals( "Set B", levels.get( 0 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "Level 3 - Set B", levels.get( 0 ).getName() );
+        assertEquals( "3 - Set B", levels.get( 0 ).getName() );
 
         dataApprovalLevelService.addDataApprovalLevel( level2C );
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 2, levels.size() );
 
-        assertEquals( "Level 2", levels.get( 0 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 2, levels.get( 0 ).getOrgUnitLevel() );
         assertEquals( "Set C", levels.get( 0 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "Level 2 - Set C", levels.get( 0 ).getName() );
+        assertEquals( "2 - Set C", levels.get( 0 ).getName() );
 
-        assertEquals( "Level 3", levels.get( 1 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 3, levels.get( 1 ).getOrgUnitLevel() );
         assertEquals( "Set B", levels.get( 1 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "Level 3 - Set B", levels.get( 1 ).getName() );
+        assertEquals( "3 - Set B", levels.get( 1 ).getName() );
 
         dataApprovalLevelService.addDataApprovalLevel( level3 );
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 3, levels.size() );
 
-        assertEquals( "Level 2", levels.get( 0 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 2, levels.get( 0 ).getOrgUnitLevel() );
         assertEquals( "Set C", levels.get( 0 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "Level 2 - Set C", levels.get( 0 ).getName() );
+        assertEquals( "2 - Set C", levels.get( 0 ).getName() );
 
-        assertEquals( "Level 3", levels.get( 1 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 3, levels.get( 1 ).getOrgUnitLevel() );
         assertNull( levels.get( 1 ).getCategoryOptionGroupSet() );
-        assertEquals( "Level 3", levels.get( 1 ).getName() );
+        assertEquals( "3", levels.get( 1 ).getName() );
 
-        assertEquals( "Level 3", levels.get( 2 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 3, levels.get( 2 ).getOrgUnitLevel() );
         assertEquals( "Set B", levels.get( 2 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "Level 3 - Set B", levels.get( 2 ).getName() );
+        assertEquals( "3 - Set B", levels.get( 2 ).getName() );
 
         dataApprovalLevelService.addDataApprovalLevel( level4A );
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 4, levels.size() );
 
-        assertEquals( "Level 2", levels.get( 0 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 2, levels.get( 0 ).getOrgUnitLevel() );
         assertEquals( "Set C", levels.get( 0 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "Level 2 - Set C", levels.get( 0 ).getName() );
+        assertEquals( "2 - Set C", levels.get( 0 ).getName() );
 
-        assertEquals( "Level 3", levels.get( 1 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 3, levels.get( 1 ).getOrgUnitLevel() );
         assertNull( levels.get( 1 ).getCategoryOptionGroupSet() );
-        assertEquals( "Level 3", levels.get( 1 ).getName() );
+        assertEquals( "3", levels.get( 1 ).getName() );
 
-        assertEquals( "Level 3", levels.get( 2 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 3, levels.get( 2 ).getOrgUnitLevel() );
         assertEquals( "Set B", levels.get( 2 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "Level 3 - Set B", levels.get( 2 ).getName() );
+        assertEquals( "3 - Set B", levels.get( 2 ).getName() );
 
-        assertEquals( "Level 4", levels.get( 3 ).getOrganisationUnitLevel().getName() );
+        assertEquals( 4, levels.get( 3 ).getOrgUnitLevel() );
         assertEquals( "Set A", levels.get( 3 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "Level 4 - Set A", levels.get( 3 ).getName() );
+        assertEquals( "4 - Set A", levels.get( 3 ).getName() );
     }
 
     @Test
@@ -238,31 +223,31 @@ public class DataApprovalLevelServiceTest
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 4, levels.size() );
-        assertEquals( "Level 1 - Set A", levels.get( 0 ).getName() );
-        assertEquals( "Level 2 - Set B", levels.get( 1 ).getName() );
-        assertEquals( "Level 3 - Set C", levels.get( 2 ).getName() );
-        assertEquals( "Level 4 - Set D", levels.get( 3 ).getName() );
+        assertEquals( "1 - Set A", levels.get( 0 ).getName() );
+        assertEquals( "2 - Set B", levels.get( 1 ).getName() );
+        assertEquals( "3 - Set C", levels.get( 2 ).getName() );
+        assertEquals( "4 - Set D", levels.get( 3 ).getName() );
 
         dataApprovalLevelService.deleteDataApprovalLevel( 2 );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 3, levels.size() );
-        assertEquals( "Level 1 - Set A", levels.get( 0 ).getName() );
-        assertEquals( "Level 3 - Set C", levels.get( 1 ).getName() );
-        assertEquals( "Level 4 - Set D", levels.get( 2 ).getName() );
+        assertEquals( "1 - Set A", levels.get( 0 ).getName() );
+        assertEquals( "3 - Set C", levels.get( 1 ).getName() );
+        assertEquals( "4 - Set D", levels.get( 2 ).getName() );
 
         dataApprovalLevelService.deleteDataApprovalLevel( 3 );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 2, levels.size() );
-        assertEquals( "Level 1 - Set A", levels.get( 0 ).getName() );
-        assertEquals( "Level 3 - Set C", levels.get( 1 ).getName() );
+        assertEquals( "1 - Set A", levels.get( 0 ).getName() );
+        assertEquals( "3 - Set C", levels.get( 1 ).getName() );
 
         dataApprovalLevelService.deleteDataApprovalLevel( 1 );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 1, levels.size() );
-        assertEquals( "Level 3 - Set C", levels.get( 0 ).getName() );
+        assertEquals( "3 - Set C", levels.get( 0 ).getName() );
 
         dataApprovalLevelService.deleteDataApprovalLevel( 1 );
 
@@ -364,31 +349,31 @@ public class DataApprovalLevelServiceTest
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 5, levels.size() );
-        assertEquals( "Level 1", levels.get( 0 ).getName() );
-        assertEquals( "Level 1 - Set A", levels.get( 1 ).getName() );
-        assertEquals( "Level 1 - Set B", levels.get( 2 ).getName() );
-        assertEquals( "Level 1 - Set C", levels.get( 3 ).getName() );
-        assertEquals( "Level 1 - Set D", levels.get( 4 ).getName() );
+        assertEquals( "1", levels.get( 0 ).getName() );
+        assertEquals( "1 - Set A", levels.get( 1 ).getName() );
+        assertEquals( "1 - Set B", levels.get( 2 ).getName() );
+        assertEquals( "1 - Set C", levels.get( 3 ).getName() );
+        assertEquals( "1 - Set D", levels.get( 4 ).getName() );
 
         dataApprovalLevelService.moveDataApprovalLevelDown( 2 );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 5, levels.size() );
-        assertEquals( "Level 1", levels.get( 0 ).getName() );
-        assertEquals( "Level 1 - Set B", levels.get( 1 ).getName() );
-        assertEquals( "Level 1 - Set A", levels.get( 2 ).getName() );
-        assertEquals( "Level 1 - Set C", levels.get( 3 ).getName() );
-        assertEquals( "Level 1 - Set D", levels.get( 4 ).getName() );
+        assertEquals( "1", levels.get( 0 ).getName() );
+        assertEquals( "1 - Set B", levels.get( 1 ).getName() );
+        assertEquals( "1 - Set A", levels.get( 2 ).getName() );
+        assertEquals( "1 - Set C", levels.get( 3 ).getName() );
+        assertEquals( "1 - Set D", levels.get( 4 ).getName() );
 
         dataApprovalLevelService.moveDataApprovalLevelDown( 3 );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 5, levels.size() );
-        assertEquals( "Level 1", levels.get( 0 ).getName() );
-        assertEquals( "Level 1 - Set B", levels.get( 1 ).getName() );
-        assertEquals( "Level 1 - Set C", levels.get( 2 ).getName() );
-        assertEquals( "Level 1 - Set A", levels.get( 3 ).getName() );
-        assertEquals( "Level 1 - Set D", levels.get( 4 ).getName() );
+        assertEquals( "1", levels.get( 0 ).getName() );
+        assertEquals( "1 - Set B", levels.get( 1 ).getName() );
+        assertEquals( "1 - Set C", levels.get( 2 ).getName() );
+        assertEquals( "1 - Set A", levels.get( 3 ).getName() );
+        assertEquals( "1 - Set D", levels.get( 4 ).getName() );
     }
 
     @Test
@@ -404,30 +389,30 @@ public class DataApprovalLevelServiceTest
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 5, levels.size() );
-        assertEquals( "Level 1", levels.get( 0 ).getName() );
-        assertEquals( "Level 1 - Set A", levels.get( 1 ).getName() );
-        assertEquals( "Level 1 - Set B", levels.get( 2 ).getName() );
-        assertEquals( "Level 1 - Set C", levels.get( 3 ).getName() );
-        assertEquals( "Level 1 - Set D", levels.get( 4 ).getName() );
+        assertEquals( "1", levels.get( 0 ).getName() );
+        assertEquals( "1 - Set A", levels.get( 1 ).getName() );
+        assertEquals( "1 - Set B", levels.get( 2 ).getName() );
+        assertEquals( "1 - Set C", levels.get( 3 ).getName() );
+        assertEquals( "1 - Set D", levels.get( 4 ).getName() );
 
         dataApprovalLevelService.moveDataApprovalLevelUp( 5 );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 5, levels.size() );
-        assertEquals( "Level 1", levels.get( 0 ).getName() );
-        assertEquals( "Level 1 - Set A", levels.get( 1 ).getName() );
-        assertEquals( "Level 1 - Set B", levels.get( 2 ).getName() );
-        assertEquals( "Level 1 - Set D", levels.get( 3 ).getName() );
-        assertEquals( "Level 1 - Set C", levels.get( 4 ).getName() );
+        assertEquals( "1", levels.get( 0 ).getName() );
+        assertEquals( "1 - Set A", levels.get( 1 ).getName() );
+        assertEquals( "1 - Set B", levels.get( 2 ).getName() );
+        assertEquals( "1 - Set D", levels.get( 3 ).getName() );
+        assertEquals( "1 - Set C", levels.get( 4 ).getName() );
 
         dataApprovalLevelService.moveDataApprovalLevelUp( 4 );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 5, levels.size() );
-        assertEquals( "Level 1", levels.get( 0 ).getName() );
-        assertEquals( "Level 1 - Set A", levels.get( 1 ).getName() );
-        assertEquals( "Level 1 - Set D", levels.get( 2 ).getName() );
-        assertEquals( "Level 1 - Set B", levels.get( 3 ).getName() );
-        assertEquals( "Level 1 - Set C", levels.get( 4 ).getName() );
+        assertEquals( "1", levels.get( 0 ).getName() );
+        assertEquals( "1 - Set A", levels.get( 1 ).getName() );
+        assertEquals( "1 - Set D", levels.get( 2 ).getName() );
+        assertEquals( "1 - Set B", levels.get( 3 ).getName() );
+        assertEquals( "1 - Set C", levels.get( 4 ).getName() );
     }
 }

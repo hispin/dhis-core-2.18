@@ -87,7 +87,7 @@
 
     <action name="addApprovalLevel" class="org.hisp.dhis.settings.action.system.AddApprovalLevelAction">
       <result name="success" type="redirect">systemApprovalSettings.action</result>
-      <result name="input" type="velocity-xml">/dhis-web-commons/ajax/xmlResponseInput.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 

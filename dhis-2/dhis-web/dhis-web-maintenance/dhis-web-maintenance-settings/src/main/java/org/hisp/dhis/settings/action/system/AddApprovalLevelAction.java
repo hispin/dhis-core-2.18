@@ -111,8 +111,6 @@ public class AddApprovalLevelAction
 
     public String execute()
     {
-        OrganisationUnitLevel orgUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( organisationUnitLevel );
-
         CategoryOptionGroupSet catOptGroupSet = null;
 
         if ( categoryOptionGroupSet != 0 )
@@ -120,7 +118,7 @@ public class AddApprovalLevelAction
             catOptGroupSet = dataElementCategoryService.getCategoryOptionGroupSet( categoryOptionGroupSet );
         }
 
-        DataApprovalLevel dataApprovalLevel = new DataApprovalLevel( orgUnitLevel, catOptGroupSet );
+        DataApprovalLevel dataApprovalLevel = new DataApprovalLevel( organisationUnitLevel, catOptGroupSet );
 
         boolean added = dataApprovalLevelService.addDataApprovalLevel( dataApprovalLevel );
 

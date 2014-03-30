@@ -31,6 +31,7 @@ package org.hisp.dhis.dataapproval.hibernate;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.hibernate.proxy.HibernateProxy;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;

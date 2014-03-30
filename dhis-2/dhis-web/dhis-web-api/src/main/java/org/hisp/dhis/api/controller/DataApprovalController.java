@@ -35,9 +35,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.InputUtils;
 import org.hisp.dhis.dataapproval.*;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
@@ -65,6 +68,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping(value = DataApprovalController.RESOURCE_PATH)
 public class DataApprovalController
 {
+    private final static Log log = LogFactory.getLog( DataApprovalController.class );
+
     public static final String RESOURCE_PATH = "/dataApprovals";
     public static final String ACCEPTANCES_PATH = "/acceptances";
 
@@ -100,6 +105,8 @@ public class DataApprovalController
         @RequestParam( required = false ) String cc, 
         @RequestParam( required = false ) String cp, HttpServletResponse response ) throws IOException
     {
+        log.info( "getApprovalState called." );
+
         DataSet dataSet = dataSetService.getDataSet( ds );
         
         if ( dataSet == null )
@@ -152,6 +159,8 @@ public class DataApprovalController
         @RequestParam( required = false ) String cc, 
         @RequestParam( required = false ) String cp, HttpServletResponse response )
     {
+        log.info( "saveApproval called." );
+
         DataSet dataSet = dataSetService.getDataSet( ds );
         
         if ( dataSet == null )
@@ -200,10 +209,11 @@ public class DataApprovalController
         User user = currentUserService.getCurrentUser();
 
         //TODO: FIX. We need to know what CategoryOptionGroup if any was selected, to use when constructing the data approval object.
+        CategoryOptionGroup attributeOptionGroup = null;
 
-        //TODO: FIX. DataApproval approval = new DataApproval( dataSet, period, organisationUnit, attributeOptionGroup, new Date(), user );
+        DataApproval approval = new DataApproval( dataSet, period, organisationUnit, attributeOptionGroup, false, new Date(), user );
 
-        //TODO: FIX. dataApprovalService.addDataApproval( approval );
+        dataApprovalService.addDataApproval( approval );
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
@@ -216,6 +226,8 @@ public class DataApprovalController
         @RequestParam( required = false ) String cc, 
         @RequestParam( required = false ) String cp, HttpServletResponse response )
     {
+        log.info( "removeApproval called." );
+
         DataSet dataSet = dataSetService.getDataSet( ds );
         
         if ( dataSet == null )
@@ -274,6 +286,8 @@ public class DataApprovalController
             @RequestParam( required = false ) String cc,
             @RequestParam( required = false ) String cp, HttpServletResponse response )
     {
+        log.info( "acceptApproval called." );
+
         DataSet dataSet = dataSetService.getDataSet( ds );
 
         if ( dataSet == null )
@@ -333,6 +347,8 @@ public class DataApprovalController
             @RequestParam( required = false ) String cc,
             @RequestParam( required = false ) String cp, HttpServletResponse response )
     {
+        log.info( "unacceptApproval called." );
+
         DataSet dataSet = dataSetService.getDataSet( ds );
 
         if ( dataSet == null )
@@ -390,7 +406,7 @@ public class DataApprovalController
     {
         return "dataSet " + dataSet.getName()
                 + ", period " + period.getName()
-                + ", org unit " + organisationUnit.getName() + "(" + organisationUnit.getLevel() + ")"
+                + ", org unit " + organisationUnit.getName()
                 + ", attributeOptionCombo " + ( attributeOptionCombo == null ? "null" : attributeOptionCombo.getName() );
     }
 }

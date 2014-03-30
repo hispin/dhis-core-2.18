@@ -14,7 +14,7 @@
     <property name="level" column="level" not-null="true" />
 
     <properties name="dataapprovallevel_orgunitlevel_categoryoptiongroupset_unique_key" unique="true">
-      <many-to-one name="organisationUnitLevel" class="org.hisp.dhis.organisationunit.OrganisationUnitLevel" not-null="true" column="organisationunitlevelid" foreign-key="fk_dataapprovallevel_organisationunitlevelid" />
+      <property name="orgUnitLevel" not-null="true" column="orgunitlevel" />
       <many-to-one name="categoryOptionGroupSet" class="org.hisp.dhis.dataelement.CategoryOptionGroupSet" column="categoryoptiongroupsetid" foreign-key="fK_dataapprovallevel_categoryoptiongroupsetid" />
     </properties>
 
