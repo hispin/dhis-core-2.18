@@ -35,8 +35,6 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ TrackedEntity.java Feb 14, 2014 11:52:47 PM $
  */
 @JacksonXmlRootElement( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )
 public class TrackedEntity

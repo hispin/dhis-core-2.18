@@ -95,6 +95,11 @@ public class TrackedEntityInstanceQueryParams
     private OrganisationUnitSelectionMode organisationUnitMode;
 
     /**
+     * Indicates whether not to include meta data in the response.
+     */
+    private boolean skipMeta;
+
+    /**
      * Page number.
      */
     private Integer page;
@@ -103,7 +108,7 @@ public class TrackedEntityInstanceQueryParams
      * Page size.
      */
     private Integer pageSize;
-
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -341,6 +346,16 @@ public class TrackedEntityInstanceQueryParams
         this.organisationUnits = organisationUnits;
     }
 
+    public boolean isSkipMeta()
+    {
+        return skipMeta;
+    }
+
+    public void setSkipMeta( boolean skipMeta )
+    {
+        this.skipMeta = skipMeta;
+    }
+    
     public Integer getPage()
     {
         return page;
