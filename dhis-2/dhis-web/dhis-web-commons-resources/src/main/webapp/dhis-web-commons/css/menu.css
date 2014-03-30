@@ -1,3 +1,75 @@
+#menuLinkArea
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menuLink
+{
+    height: 44px;
+    width: 100px;
+    font-size: 9pt;
+    text-align: center;
+    line-height: 44px;
+    cursor: pointer;
+    color: #fff;
+}
+
+a.menuLink:hover
+{
+    text-decoration: none;
+}
+
+.menuDropDownArea
+{
+    font-size: 9pt;
+    color: #fff;
+    border-right: 1px solid #888;
+    border-bottom: 1px solid #888;
+    border-left: 1px solid #888;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 189px;
+    max-height: 610px;
+    overflow-y: auto;
+    background-color: #276696;
+    display: none;
+    z-index: 10;
+    filter: alpha(opacity=94);
+    opacity: 0.94;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    box-shadow: #ccc 0 1px 1px 0;
+}
+
+.menuDropDownBox
+{
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.menuDropDownBox a
+{
+    display: block;
+    padding-top: 8px;
+    padding-left: 10px;
+    padding-bottom: 7px;
+    padding-right: 10px;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.menuDropDownBox a:hover
+{
+    text-decoration: none;
+    background-color: #4A89BA;
+}
+
+/****************************************************/
+
 .app-menu:after {
     clear: both;
     content: "";
@@ -56,6 +128,11 @@
 .app-menu .app-menu-item:hover {
     border: 1px dashed #9ec5df;
     background-color: #e9f5fb;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    -ie-box-shadow: none;
+    -webkit-box-shadow: none;
 }
 
 .app-menu-item-description {
@@ -72,7 +149,7 @@
 /**
  * When hovered display the description and hide the favorites icon
  */
-.app-menu li:hover a .app-menu-item-description {
+    .app-menu li:hover a .app-menu-item-description {
     position: absolute;
     top: 0;
     right: 0;
@@ -87,11 +164,18 @@
     border-radius: 5px;
 }
 
+.app-menu li.ui-sortable-helper:hover a .app-menu-item-description {
+    display: none;
+}
+
+.app-menu li.ui-sortable-helper:hover a {
+    background-color: rgba(49, 98, 197, 0.50);
+}
+
 .app-menu-item .app-menu-item-description span {
     color: #7fc9fd;
     display: block;
     font-size: 1em;
-    font-weight: bold;
     padding: 0;
     padding-bottom: 5px;
     margin: 0;
@@ -102,6 +186,7 @@
 }
 
 .app-menu a.app-menu-item .fa.fa-bookmark {
+    color: #276696;
     font-size: 2em;
     position: absolute;
     right: 15px;
@@ -128,10 +213,6 @@
     padding-right: 10px;
     position: relative;
     top: 5px;
-}
-
-#menuLink1 {
-    left: 762px;
 }
 
 /**
@@ -221,6 +302,7 @@
     border-radius: 5px;
     display: table-cell;
     vertical-align: middle;
+    text-decoration: none;
 }
 
 .apps-menu-more a:hover {
@@ -228,18 +310,18 @@
     background-color: #4A89BA;
 }
 
+.menu-placeholder {
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
 /**
  * Overrides
  * TODO: Merge these with the main stylesheet
  */
 #menuDropDown1 {
-    top: 55px;
-    left: 603px;
-}
 
-#menuDropDown3 {
-    top: 55px;
-    left: 733px;
 }
 
 hr.app-separator {
@@ -253,10 +335,36 @@ hr.app-separator {
 
 #menuDropDown1 .caret-up-background,
 #menuDropDown1 .caret-up-border {
-    left: 182px;
+    left: 296px;
 }
 
 #menuDropDown3 .caret-up-background,
 #menuDropDown3 .caret-up-border {
-    left: 182px;
+    left: 292px;
+}
+
+.drop-down-menu-link {
+    cursor: pointer;
+    display: block;
+}
+
+#menuLinkArea {
+    max-width: 1300px;
+}
+
+#menuLinkArea li {
+    float: right;
+}
+
+.show-menu {
+    display: block;
+}
+
+/*
+ * Media queries for the menu
+ */
+@media only screen and (max-width: 590px) {
+    #headerText {
+        display: none;
+    }
 }

@@ -6,9 +6,8 @@
       <i class="fa fa-arrows"></i> $i18n.getString( "app_draggable_description" )
     </p>
     <select id="menuOrderBy">
-        <option selected value="custom">-- $i18n.getString( "app_order_custom" ) --</option>
-        <option value="name-asc">$i18n.getString( "app_order_name_asc" )</option>
-        <option value="name-desc">$i18n.getString( "app_order_name_desc" )</option>
+        <option selected value="custom">$i18n.getString( "app_order_custom" )</option>
+        <option value="name-asc">$i18n.getString( "app_order_name_alpha" )</option>
     </select>
 </div>
 

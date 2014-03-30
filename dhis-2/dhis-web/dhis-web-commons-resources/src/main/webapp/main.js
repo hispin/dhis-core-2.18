@@ -57,6 +57,39 @@ function pageInit()
 	{
 		hideDropDownTimeout();
 	} );
+
+
+    $('.drop-down-menu-link').get().forEach(function (element, index, elements) {
+        var id = $(element).parent().attr('id'),
+            dropdown_menu = $('div#' + id.split('_')[0]);
+
+        $(element).click(function () {
+            var open = false;
+
+            return function () {
+                if (open === true) {
+                    $(dropdown_menu).attr('data-clicked-open', 'false');
+                    hideDropDown();
+                    open = false;
+                } else {
+                    $(dropdown_menu).attr('data-clicked-open', 'true');
+                    showDropDown(dropdown_menu.attr('id'));
+                    open = true;
+                }
+            }
+        }());
+    });
+
+    $(window).resize(function () {
+        $('.app-menu-dropdown').get().forEach(function (element, index, elements) {
+            var newDropDownId = '#' + $(element).attr('id'),
+                position = $(newDropDownId + '_button').position();
+
+            $(newDropDownId).css('position', 'absolute');
+            $(newDropDownId).css('top', '55px');
+            $(newDropDownId).css('left', Math.ceil(position.left - Math.ceil(parseInt($(newDropDownId).innerWidth(), 10) - 108)) + 'px');
+        });
+    });
 }
 
 function setTableStyles()
@@ -88,10 +121,16 @@ var dropDownId = null;
 
 function showDropDown( id )
 {
+    var newDropDownId = "#" + id,
+        position = $(newDropDownId + '_button').position();
+
     cancelHideDropDownTimeout();
-    
-    var newDropDownId = "#" + id;
-  
+
+    $(newDropDownId).css('position', 'absolute');
+    $(newDropDownId).css('top', '55px');
+    $(newDropDownId).css('left', Math.ceil(position.left - Math.ceil(parseInt($(newDropDownId).innerWidth(), 10) - 108)) + 'px');
+
+
     if ( dropDownId != newDropDownId )
     {   
         hideDropDown();
@@ -106,6 +145,9 @@ function hideDropDown()
 {
 	if ( dropDownId )
 	{
+        if ($( dropDownId ).attr( 'data-clicked-open' ) === 'true') {
+            return;
+        }
 	    $( dropDownId ).hide();
 	    
 	    dropDownId = null;
