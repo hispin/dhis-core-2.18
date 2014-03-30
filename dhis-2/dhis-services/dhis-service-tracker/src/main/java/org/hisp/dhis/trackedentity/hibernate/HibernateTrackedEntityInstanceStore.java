@@ -177,7 +177,7 @@ public class HibernateTrackedEntityInstanceStore
             
             if ( !params.isOrQuery() && item.hasFilter() )
             {
-                String queryCol = item.isNumeric() ? ( col + ".value" ) : "lower(" + col + ".value)";
+                String queryCol = item.isNumeric() ? ( col + ".value" ) : "lower(" + col + ".value) ";
                 
                 sql += "and " + queryCol + item.getSqlOperator() + " " + StringUtils.lowerCase( item.getSqlFilter( filter ) ) + " ";
             }
