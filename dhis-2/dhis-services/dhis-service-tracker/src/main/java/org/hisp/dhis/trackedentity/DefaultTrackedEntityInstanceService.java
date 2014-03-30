@@ -231,14 +231,16 @@ public class DefaultTrackedEntityInstanceService
         
         if ( !params.isSkipMeta() )
         {
-            Map<Object, Object> metaData = new HashMap<Object, Object>();
+            Map<Object, Object> metaData = new HashMap<Object, Object>();            
+            Map<String, String> names = new HashMap<String, String>();
             
             for ( String te : tes )
             {
                 TrackedEntity entity = trackedEntityService.getTrackedEntity( te );
-                metaData.put( te, entity != null ? entity.getDisplayName() : null );
+                names.put( te, entity != null ? entity.getDisplayName() : null );
             }
             
+            metaData.put( TrackedEntityInstanceQueryParams.META_DATA_NAMES_KEY, names );
             grid.setMetaData( metaData );
         }
         
