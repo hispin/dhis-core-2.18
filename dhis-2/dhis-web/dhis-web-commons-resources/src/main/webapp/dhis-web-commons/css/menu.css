@@ -1,8 +1,13 @@
 #menuLinkArea
 {
     list-style-type: none;
+    max-width: 1200px;
     margin: 0;
-    padding: 0;
+    padding: 0 20px 0 0;
+}
+
+#menuLinkArea li {
+    float: right;
 }
 
 .menuLink
@@ -324,14 +329,6 @@ hr.app-separator {
     display: block;
 }
 
-#menuLinkArea {
-    max-width: 1300px;
-}
-
-#menuLinkArea li {
-    float: right;
-}
-
 .show-menu {
     display: block;
 }
@@ -339,7 +336,7 @@ hr.app-separator {
 /*
  * Media queries for the menu
  */
-@media only screen and (max-width: 590px) {
+@media only screen and (max-width: 580px) {
     #headerText {
         display: none;
     }
