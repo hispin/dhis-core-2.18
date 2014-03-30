@@ -33,8 +33,6 @@ import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,18 +53,11 @@ public class AddApprovalLevelAction
         this.dataApprovalLevelService = dataApprovalLevelService;
     }
 
-    private OrganisationUnitService organisationUnitService;
+    private DataElementCategoryService categoryService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    private DataElementCategoryService dataElementCategoryService;
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
+        this.categoryService = categoryService;
     }
 
     private I18n i18n;
@@ -115,7 +106,7 @@ public class AddApprovalLevelAction
 
         if ( categoryOptionGroupSet != 0 )
         {
-            catOptGroupSet = dataElementCategoryService.getCategoryOptionGroupSet( categoryOptionGroupSet );
+            catOptGroupSet = categoryService.getCategoryOptionGroupSet( categoryOptionGroupSet );
         }
 
         DataApprovalLevel dataApprovalLevel = new DataApprovalLevel( organisationUnitLevel, catOptGroupSet );

@@ -32,7 +32,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 /**
  * Records the approval of DataSet values for a given OrganisationUnit and
