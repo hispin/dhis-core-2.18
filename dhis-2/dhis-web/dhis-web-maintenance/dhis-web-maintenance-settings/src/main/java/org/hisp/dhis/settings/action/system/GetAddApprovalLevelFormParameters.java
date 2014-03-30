@@ -54,11 +54,11 @@ public class GetAddApprovalLevelFormParameters
         this.organisationUnitService = organisationUnitService;
     }
 
-    private DataElementCategoryService dataElementCategoryService;
+    private DataElementCategoryService categoryService;
 
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryService = dataElementCategoryService;
+        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -86,7 +86,7 @@ public class GetAddApprovalLevelFormParameters
     public String execute()
     {
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
-        categoryOptionGroupSets = dataElementCategoryService.getAllCategoryOptionGroupSets();
+        categoryOptionGroupSets = categoryService.getAllCategoryOptionGroupSets();
 
         return SUCCESS;
     }
