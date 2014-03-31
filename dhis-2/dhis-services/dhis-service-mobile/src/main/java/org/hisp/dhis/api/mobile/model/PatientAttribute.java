@@ -48,22 +48,22 @@ public class PatientAttribute
     private String type;
 
     private boolean isMandatory;
-    
+
     private boolean isDisplayedInList = false;
 
-    private List<String> predefinedValues = new ArrayList<String>();
+    private OptionSet optionSet;
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public PatientAttribute( String name, String value, String type, boolean isMandatory, List<String> predefinedValues )
+    public PatientAttribute( String name, String value, String type, boolean isMandatory, OptionSet optionSet )
     {
         this.name = name;
         this.value = value;
         this.type = type;
         this.isMandatory = isMandatory;
-        this.predefinedValues = predefinedValues;
+        this.optionSet = optionSet;
     }
 
     public PatientAttribute()
@@ -116,14 +116,14 @@ public class PatientAttribute
         this.type = type;
     }
 
-    public List<String> getPredefinedValues()
+    public OptionSet getOptionSet()
     {
-        return predefinedValues;
+        return optionSet;
     }
 
-    public void setPredefinedValues( List<String> predefinedValues )
+    public void setOptionSet( OptionSet optionSet )
     {
-        this.predefinedValues = predefinedValues;
+        this.optionSet = optionSet;
     }
 
     public boolean isMandatory()
@@ -135,7 +135,7 @@ public class PatientAttribute
     {
         this.isMandatory = isMandatory;
     }
-    
+
     public boolean isDisplayedInList()
     {
         return isDisplayedInList;
@@ -155,15 +155,14 @@ public class PatientAttribute
         dout.writeUTF( this.type );
         dout.writeBoolean( this.isMandatory );
         dout.writeBoolean( this.isDisplayedInList );
+        
+        int optionSize = (this.optionSet == null || this.optionSet.getOptions() == null) ? 0 : this.optionSet
+            .getOptions().size();
+        dout.writeInt( optionSize );
 
-        int valueSize = this.predefinedValues.size();
-        dout.writeInt( valueSize );
-        if ( valueSize > 0 )
+        if ( optionSize > 0 )
         {
-            for ( String option : predefinedValues )
-            {
-                dout.writeUTF( option );
-            }
+            optionSet.serialize( dout );
         }
 
     }
@@ -178,15 +177,14 @@ public class PatientAttribute
         isMandatory = dataInputStream.readBoolean();
         isDisplayedInList = dataInputStream.readBoolean();
 
-        List<String> optionList = new ArrayList<String>();
+        int optionSize = dataInputStream.readInt();
 
-        int size = dataInputStream.readInt();
-
-        for ( int i = 0; i < size; i++ )
+        if ( optionSize > 0 )
         {
-            optionList.add( dataInputStream.readUTF() );
+            optionSet = new OptionSet();
+            optionSet.deSerialize( dataInputStream );
         }
-        predefinedValues = optionList;
+
     }
 
     @Override
