@@ -88,6 +88,28 @@ public class DataElementCategoryOption
         return name.equals( DEFAULT_NAME );
     }
 
+    /**
+     * Returns a set of category option group sets which are associated with the
+     * category option groups of this category option.
+     */
+    public Set<CategoryOptionGroupSet> getGroupSets()
+    {
+        Set<CategoryOptionGroupSet> groupSets = new HashSet<CategoryOptionGroupSet>();
+        
+        if ( groups != null )
+        {
+            for ( CategoryOptionGroup group : groups )
+            {
+                if ( group.getGroupSet() != null )
+                {
+                    groupSets.add( group.getGroupSet() );
+                }
+            }
+        }
+        
+        return groupSets;
+    }
+    
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------

@@ -46,8 +46,11 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.indicator.Indicator;
@@ -461,6 +464,28 @@ public class DataSet
     {
         version = version != null ? version + 1 : 1;
         return this;
+    }
+
+    /**
+     * Returns a set of category option group sets which are linked to this data
+     * set through its category combination.
+     */
+    public Set<CategoryOptionGroupSet> getCategoryOptionGroupSets()
+    {
+        Set<CategoryOptionGroupSet> groupSets = new HashSet<CategoryOptionGroupSet>();
+        
+        if ( categoryCombo != null )
+        {
+            for ( DataElementCategory category : categoryCombo.getCategories() )
+            {
+                for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
+                {
+                    groupSets.addAll( categoryOption.getGroupSets() );
+                }
+            }
+        }
+        
+        return groupSets;
     }
 
     // -------------------------------------------------------------------------
