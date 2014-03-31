@@ -32,6 +32,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.editGridColumns = false;
     $scope.editingEventInFull = false;
     $scope.editingEventInGrid = false;   
+    $scope.updateSuccess = false;
     $scope.currentGridColumnId = '';  
     $scope.currentEventOrginialValue = '';   
     
