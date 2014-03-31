@@ -138,6 +138,11 @@ public abstract class AbstractEventService
         ProgramStage programStage = programStageService.getProgramStage( event.getProgramStage() );
         ProgramStageInstance programStageInstance = null;
 
+        if ( importOptions == null )
+        {
+            importOptions = new ImportOptions();
+        }
+
         if ( program == null )
         {
             return new ImportSummary( ImportStatus.ERROR, "Event.program does not point to a valid program" );
