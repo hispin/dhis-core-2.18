@@ -24,6 +24,15 @@
 		<option value="true">$i18n.getString( "json" )</option>
     </select></td>
 </tr>
+<tr>
+	<td>$i18n.getString( "orgunit_scheme" )</td>
+	<td><select id="orgUnitIdScheme" name="orgUnitIdScheme" style="width:190px">
+		<option value="UID">$i18n.getString( "UID" )</option>
+		<option value="UUID">$i18n.getString( "UUID" )</option>
+		<option value="CODE">$i18n.getString( "CODE" )</option>
+		<option value="NAME">$i18n.getString( "NAME" )</option>
+    </select></td>
+</tr>
 
 <tr>
 	<td></td>

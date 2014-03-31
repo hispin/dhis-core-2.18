@@ -90,6 +90,13 @@ public class ImportEventAction implements Action
         this.jsonInput = jsonInput;
     }
 
+    private String orgUnitIdScheme = "UID";
+
+    public void setOrgUnitIdScheme( String orgUnitIdScheme )
+    {
+        this.orgUnitIdScheme = orgUnitIdScheme;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -106,6 +113,7 @@ public class ImportEventAction implements Action
 
         ImportOptions importOptions = new ImportOptions();
         importOptions.setDryRun( dryRun );
+        importOptions.setOrgUnitIdScheme( orgUnitIdScheme );
 
         scheduler.executeTask( new ImportEventTask( in, eventService, importOptions, taskId, jsonInput ) );
 
