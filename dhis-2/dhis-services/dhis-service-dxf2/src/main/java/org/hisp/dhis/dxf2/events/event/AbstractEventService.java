@@ -28,14 +28,9 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
@@ -67,8 +62,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -244,13 +244,15 @@ public abstract class AbstractEventService
             {
                 return new ImportSummary( ImportStatus.ERROR,
                     "No active event exists for single event no registration program " + program.getUid()
-                        + ", please check and correct your database." );
+                        + ", please check and correct your database."
+                );
             }
             else if ( programInstances.size() > 1 )
             {
                 return new ImportSummary( ImportStatus.ERROR,
                     "Multiple active events exists for single event no registration program " + program.getUid()
-                        + ", please check and correct your database." );
+                        + ", please check and correct your database."
+                );
             }
 
             programInstance = programInstances.get( 0 );
@@ -266,7 +268,30 @@ public abstract class AbstractEventService
             }
         }
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
+        OrganisationUnit organisationUnit = null;
+
+        if ( IdentifiableObject.IdentifiableProperty.ID.equals( importOptions.getOrgUnitIdScheme() ) ||
+            IdentifiableObject.IdentifiableProperty.UID.equals( importOptions.getOrgUnitIdScheme() ) )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
+        }
+        else if ( IdentifiableObject.IdentifiableProperty.UUID.equals( importOptions.getOrgUnitIdScheme() ) )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( event.getOrgUnit() );
+        }
+        else if ( IdentifiableObject.IdentifiableProperty.CODE.equals( importOptions.getOrgUnitIdScheme() ) )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnitByCode( event.getOrgUnit() );
+        }
+        else if ( IdentifiableObject.IdentifiableProperty.NAME.equals( importOptions.getOrgUnitIdScheme() ) )
+        {
+            List<OrganisationUnit> organisationUnitByName = organisationUnitService.getOrganisationUnitByName( event.getOrgUnit() );
+
+            if ( organisationUnitByName.size() == 1 )
+            {
+                organisationUnit = organisationUnitByName.get( 0 );
+            }
+        }
 
         if ( organisationUnit == null )
         {
@@ -517,17 +542,17 @@ public abstract class AbstractEventService
                     value.getProvidedElsewhere() );
             }
         }
-        
-        if( !singleValue )
+
+        if ( !singleValue )
         {
             for ( TrackedEntityDataValue value : dataValues )
             {
                 dataValueService.deleteTrackedEntityDataValue( value );
-            }   
+            }
         }
-        
+
     }
-    
+
     // -------------------------------------------------------------------------
     // DELETE
     // -------------------------------------------------------------------------
@@ -589,7 +614,8 @@ public abstract class AbstractEventService
                     List<Double> list = objectMapper.readValue( coordinate.getCoordinateString(),
                         new TypeReference<List<Double>>()
                         {
-                        } );
+                        }
+                    );
 
                     coordinate.setLongitude( list.get( 0 ) );
                     coordinate.setLatitude( list.get( 1 ) );
@@ -695,7 +721,8 @@ public abstract class AbstractEventService
             {
                 importSummary.getConflicts().add(
                     new ImportConflict( "storedBy", storedBy
-                        + " is more than 31 characters, using current username instead." ) );
+                        + " is more than 31 characters, using current username instead." )
+                );
             }
             storedBy = currentUserService.getCurrentUsername();
         }

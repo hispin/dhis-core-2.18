@@ -38,7 +38,7 @@ public class ImportOptions
 {
     private IdentifiableProperty dataElementIdScheme;
 
-    private IdentifiableProperty orgUnitIdScheme;
+    private IdentifiableProperty orgUnitIdScheme = IdentifiableProperty.UID;
 
     private boolean dryRun;
 
