@@ -4,6 +4,6 @@
     #introListImgItem( "systemGeneralSettings.action" "system_general_settings" "systemsettings" )
     #introListImgItem( "systemAppearanceSettings.action" "system_appearance_settings" "systemsettings" )
     #introListImgItem( "systemEmailSettings.action" "system_email_settings" "systemsettings" )
-    #introListImgItem( "systemApprovalSettings.action" "system_approval_settings" "systemsettings" )
     #introListImgItem( "systemAccessSettings.action" "system_access_settings" "systemsettings" )
+    #introListImgItem( "systemApprovalSettings.action" "system_approval_settings" "systemsettings" )
 </ul>

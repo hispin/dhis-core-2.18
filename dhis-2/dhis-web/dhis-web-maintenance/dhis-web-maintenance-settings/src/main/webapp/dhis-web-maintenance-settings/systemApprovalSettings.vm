@@ -19,10 +19,10 @@
     </ul>
 </div>
 
-<table class="mainPageTable">
+<table class="mainPageTable" style="width:75%">
     <tr>
         <td style="vertical-align:top">
-            <table width="75%">
+            <table width="100%">
                 <tr>
                     <td><div class="settingLabel">$i18n.getString( "data_approval_levels" )</div></td>
                     <td style="text-align:right">
