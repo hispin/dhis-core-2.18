@@ -215,6 +215,8 @@ public class CsvObjectUtils
             string = values[index];
         }
         
+        string = StringUtils.trimToNull( string );
+        
         if ( string != null )
         {
             return max != null ? StringUtils.substring( string, 0, max ) : string;
