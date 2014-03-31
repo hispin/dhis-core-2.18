@@ -87,10 +87,4 @@ public class UserAuthorityGroupDeletionHandler
             userService.updateUserAuthorityGroup( group );
         }
     }
-
-    @Override
-    public String allowDeleteDataSet( DataSet dataSet )
-    {
-        return userService.countDataSetUserAuthorityGroups( dataSet ) == 0 ? null : ERROR;
-    }
 }
