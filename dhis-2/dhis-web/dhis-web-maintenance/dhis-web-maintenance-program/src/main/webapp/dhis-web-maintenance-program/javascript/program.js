@@ -118,6 +118,7 @@ function programOnChange() {
     disable("generatedByEnrollmentDate");
     disable("availablePropertyIds");
     disable('ignoreOverdueEvents');
+    disable('trackedEntityId');
     hideById('selectedList');
     hideById('programMessageTB');
 
@@ -134,6 +135,7 @@ function programOnChange() {
     enable('dateOfEnrollmentDescription');
     enable("displayIncidentDate");
     enable('ignoreOverdueEvents');
+    enable('trackedEntityId');
     showById('programMessageTB');
     showById("selectedList");
 
