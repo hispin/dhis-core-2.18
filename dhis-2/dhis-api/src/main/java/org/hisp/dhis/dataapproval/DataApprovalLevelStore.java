@@ -30,12 +30,15 @@ package org.hisp.dhis.dataapproval;
 
 import java.util.List;
 
+import org.hisp.dhis.common.GenericStore;
+
 /**
  * Defines the functionality for persisting DataApproval objects.
  *
  * @author Jim Grace
  */
 public interface DataApprovalLevelStore
+    extends GenericStore<DataApprovalLevel>
 {
     String ID = DataApprovalLevelStore.class.getName();
 
@@ -49,25 +52,4 @@ public interface DataApprovalLevelStore
      * @return List of all data approval levels, ordered from 1 to n.
      */
     List<DataApprovalLevel> getAllDataApprovalLevels();
-
-    /**
-     * Adds a data approval level.
-     *
-     * @param dataApprovalLevel the DataApprovalLevel to add.
-     */
-    void addDataApproval( DataApprovalLevel dataApprovalLevel );
-
-    /**
-     * Updates a data approval level.
-     *
-     * @param dataApprovalLevel The DataApprovalLevel to update.
-     */
-    void updateDataApprovalLevel( DataApprovalLevel dataApprovalLevel );
-
-    /**
-     * Deletes a data approval level.
-     *
-     * @param dataApprovalLevel the DataApprovalLevel to delete.
-     */
-    void deleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel );
 }
