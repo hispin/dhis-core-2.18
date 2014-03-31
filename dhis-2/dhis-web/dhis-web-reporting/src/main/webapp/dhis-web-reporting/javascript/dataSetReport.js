@@ -108,7 +108,7 @@ dhis2.dsr.setAttributesMarkup = function( categoryIds )
 			var category = cat[0];
 			
 			html += '<div class="inputSection">';
-			html += '<label>' + category.name + '</label>';
+			html += '<div><label>' + category.name + '</label></div>';
 			html += '<select class="dimension" data-uid="' + category.id + '" style="width:330px">';
 			html += '<option value="-1">[ ' + i18n_select_option_view_all + ' ]</option>';
 			
@@ -347,10 +347,18 @@ function hideContent()
 	$( ".downloadButton" ).hide();
 }
 
-function showAdvancedOptions()
+function showMoreOptions()
 {
-	$( "#advancedOptionsLink" ).hide();
+	$( "#moreOptionsLink" ).hide();
+	$( "#lessOptionsLink" ).show();
 	$( "#advancedOptions" ).show();
+}
+
+function showLessOptions()
+{
+	$( "#moreOptionsLink" ).show();
+	$( "#lessOptionsLink" ).hide();
+	$( "#advancedOptions" ).hide();
 }
 
 dhis2.dsr.showApproval = function()
