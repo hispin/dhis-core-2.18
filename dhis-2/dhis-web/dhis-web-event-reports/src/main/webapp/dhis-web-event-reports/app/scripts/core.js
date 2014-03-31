@@ -1600,6 +1600,12 @@ Ext.onReady( function() {
 					header.index = i;
 
 					nameHeaderMap[header.name] = header;
+
+					if (header.type === 'java.lang.Double') {
+						for (var j = 0, value; j < xResponse.rows.length; j++) {
+							xResponse.rows[j][i] = parseFloat(xResponse.rows[j][i]);
+						}
+					}
 				}
 
                 for (var i = 0, name; i < dimensionNames.length; i++) {
@@ -1777,7 +1783,7 @@ Ext.onReady( function() {
 						value: Ext.isNumber(value) ? value : (Number.MAX_VALUE * -1)
 					});
 				}
-
+console.log("objects", objects);
 				support.prototype.array.sort(objects, direction, 'value');
 
 				// new id order
@@ -2521,6 +2527,7 @@ Ext.onReady( function() {
 					index = xResponse.nameHeaderMap[id].index,
 					rows = xResponse.rows;
 
+console.log("objects", rows);
 				support.prototype.array.sort(rows, direction, index);
 
 				return xResponse;
