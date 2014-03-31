@@ -28,18 +28,26 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.*;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.springframework.util.CollectionUtils;
-
-import java.util.*;
 
 /**
  * This package-private class is used by the data approval service to

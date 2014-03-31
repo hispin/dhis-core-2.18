@@ -108,8 +108,6 @@ public class ExportParams
 
     private Collection<Integer> charts = new ArrayList<Integer>();
 
-    private Collection<Integer> olapUrls = new ArrayList<Integer>();
-
     private Collection<DataElement> dataElementObjects = new ArrayList<DataElement>();
 
     private Collection<Indicator> indicatorObjects = new ArrayList<Indicator>();
@@ -452,16 +450,6 @@ public class ExportParams
     public void setCharts( Collection<Integer> charts )
     {
         this.charts = charts;
-    }
-
-    public Collection<Integer> getOlapUrls()
-    {
-        return olapUrls;
-    }
-
-    public void setOlapUrls( Collection<Integer> olapUrls )
-    {
-        this.olapUrls = olapUrls;
     }
 
     // -------------------------------------------------------------------------

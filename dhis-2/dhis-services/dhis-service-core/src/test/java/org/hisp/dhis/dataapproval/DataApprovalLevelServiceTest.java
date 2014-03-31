@@ -33,13 +33,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,8 +112,6 @@ public class DataApprovalLevelServiceTest
         categoryService.saveCategoryOptionGroupSet( setB );
         categoryService.saveCategoryOptionGroupSet( setC );
         categoryService.saveCategoryOptionGroupSet( setD );
-
-        Date now = new Date();
 
         level1 = new DataApprovalLevel( 1, null );
         level1A = new DataApprovalLevel( 1, setA );

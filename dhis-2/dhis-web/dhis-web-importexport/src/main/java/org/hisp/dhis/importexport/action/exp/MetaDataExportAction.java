@@ -226,13 +226,6 @@ public class MetaDataExportAction
         this.charts = charts;
     }
 
-    private boolean olapUrls;
-
-    public void setOlapUrls( boolean olapUrls )
-    {
-        this.olapUrls = olapUrls;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -328,11 +321,6 @@ public class MetaDataExportAction
         {
             params.setCharts( null );
             params.setPeriods( null );
-        }
-
-        if ( olapUrls )
-        {
-            params.setOlapUrls( null );
         }
 
         params.setMetaData( true );
