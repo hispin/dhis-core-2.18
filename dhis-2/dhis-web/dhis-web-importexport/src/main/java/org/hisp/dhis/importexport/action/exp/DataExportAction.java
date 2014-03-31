@@ -182,7 +182,8 @@ public class DataExportAction
             params.setCategoryCombos( null );
             params.setCategoryOptions( null );
             params.setCategoryOptionCombos( null );
-            /*params.setDataElementGroups( null );
+            /*
+            params.setDataElementGroups( null );
             params.setDataElementGroupSets( null );
             params.setIndicators( null );
             params.setIndicatorTypes( null );
@@ -198,12 +199,11 @@ public class DataExportAction
             params.setReportTables( null );
             params.setPeriods( null ); // TODO Include only relevant periods
             params.setCharts( null );
-            params.setPeriods( null );
-            params.setOlapUrls( null );*/
+            params.setPeriods( null );*/
             
-            Set<Integer> dataElementz = new HashSet<Integer>();;
+            Set<Integer> dataElementz = new HashSet<Integer>();
             
-            Collection<DataElement> children = dataElementService.getAllDataElements();;
+            Collection<DataElement> children = dataElementService.getAllDataElements();
             
             for ( DataElement child : children )
             {
