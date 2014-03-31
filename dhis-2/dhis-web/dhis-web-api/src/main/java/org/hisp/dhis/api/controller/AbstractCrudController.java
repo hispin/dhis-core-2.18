@@ -178,7 +178,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
 
-        if ( include.contains( "access" ) )
+        if ( include != null && include.contains( "access" ) )
         {
             options.getOptions().put( "viewClass", "sharing" );
         }
