@@ -83,10 +83,10 @@ public interface DataApprovalLevelService
      * unit level and category option group set (but not necessarily the
      * same level number.)
      *
-     * @param testLevel Data approval level to test for existence.
+     * @param level Data approval level to test for existence.
      * @return true if it exists, otherwise false.
      */
-    public boolean dataApprovalLevelExists ( DataApprovalLevel testLevel );
+    public boolean dataApprovalLevelExists ( DataApprovalLevel level );
 
     /**
      * Adds a new data approval level. Adds the new level at the highest

@@ -32,7 +32,6 @@ import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
@@ -60,13 +59,6 @@ public class AddApprovalLevelAction
         this.categoryService = categoryService;
     }
 
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -86,17 +78,6 @@ public class AddApprovalLevelAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
@@ -111,14 +92,7 @@ public class AddApprovalLevelAction
 
         DataApprovalLevel dataApprovalLevel = new DataApprovalLevel( organisationUnitLevel, catOptGroupSet );
 
-        boolean added = dataApprovalLevelService.addDataApprovalLevel( dataApprovalLevel );
-
-        if ( !added )
-        {
-            message = i18n.getString( "approval_level_is_already_defined" );
-
-            return INPUT;
-        }
+        dataApprovalLevelService.addDataApprovalLevel( dataApprovalLevel );
 
         return SUCCESS;
     }

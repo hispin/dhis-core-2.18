@@ -67,6 +67,22 @@
 	  <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 
+    <!-- Access settings -->
+
+    <action name="systemAccessSettings" class="org.hisp.dhis.settings.action.system.GetAccessSettingsAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-settings/systemAccessSettings.vm</param>
+      <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+    </action>
+
+    <action name="setSystemAccessSettings" class="org.hisp.dhis.settings.action.system.SetAccessSettingsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+    </action>
+
     <!-- Approval settings -->
 
     <action name="systemApprovalSettings" class="org.hisp.dhis.settings.action.system.GetApprovalSettingsAction">
@@ -87,7 +103,6 @@
 
     <action name="addApprovalLevel" class="org.hisp.dhis.settings.action.system.AddApprovalLevelAction">
       <result name="success" type="redirect">systemApprovalSettings.action</result>
-      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 
@@ -111,21 +126,11 @@
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
-
-    <!-- Access settings -->
-
-    <action name="systemAccessSettings" class="org.hisp.dhis.settings.action.system.GetAccessSettingsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-settings/systemAccessSettings.vm</param>
-      <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
-      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
-    </action>
-
-    <action name="setSystemAccessSettings" class="org.hisp.dhis.settings.action.system.SetAccessSettingsAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+    
+    <action name="validateApprovalLevel" class="org.hisp.dhis.settings.action.system.ValidateApprovalLevelAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>    
     </action>
     
   </package>
