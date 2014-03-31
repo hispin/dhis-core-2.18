@@ -99,8 +99,10 @@
   <cache name="org.hisp.dhis.chart.Chart" maxElementsInMemory="1000" />
 
   <cache name="org.hisp.dhis.mapping.Map" maxElementsInMemory="1000" />
-
+  
   <cache name="org.hisp.dhis.reporttable.ReportTable" maxElementsInMemory="100" />
+
+  <cache name="org.hisp.dhis.eventreport.EventReport" maxElementsInMemory="1000" />
 
   <cache name="org.hisp.dhis.report.Report" maxElementsInMemory="100" />
 
@@ -321,6 +323,22 @@
   <cache name="org.hisp.dhis.mapping.MapView.organisationUnitLevels" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.mapping.MapView.itemOrganisationUnitGroups" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.eventreport.EventReport.columnDimensions" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.eventreport.EventReport.rowDimensions" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.eventreport.EventReport.filterDimensions" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.eventreport.EventReport.periods" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.eventreport.EventReport.organisationUnits" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.eventreport.EventReport.organisationUnitLevels" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.eventreport.EventReport.itemOrganisationUnitGroups" maxElementsInMemory="500" />
+
+  <cache name="org.hisp.dhis.eventreport.EventReport.userGroupAccesses" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.attribute.Attribute.attributeValues" maxElementsInMemory="5000" />
 
