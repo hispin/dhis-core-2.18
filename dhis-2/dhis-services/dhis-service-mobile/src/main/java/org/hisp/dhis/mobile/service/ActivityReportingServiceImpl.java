@@ -52,6 +52,7 @@ import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.Beneficiary;
 import org.hisp.dhis.api.mobile.model.DataValue;
+import org.hisp.dhis.api.mobile.model.OptionSet;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.Task;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
@@ -760,7 +761,7 @@ public class ActivityReportingServiceImpl
             {
                 org.hisp.dhis.api.mobile.model.PatientAttribute patientAttribute = new org.hisp.dhis.api.mobile.model.PatientAttribute(
                     value.getAttribute().getName(), value.getValue(), value.getAttribute().getValueType(), false,
-                    new ArrayList<String>() );
+                    new OptionSet() );
                 
                 patientAtts.add( patientAttribute );
             }
@@ -1387,7 +1388,7 @@ public class ActivityReportingServiceImpl
 
         for ( TrackedEntityAttribute patientAtt : getPatientAtts( null ) )
         {
-            list.add( new PatientAttribute( patientAtt.getName(), null, patientAtt.getValueType(), false, new ArrayList<String>() ) );
+            list.add( new PatientAttribute( patientAtt.getName(), null, patientAtt.getValueType(), false, new OptionSet() ) );
         }
 
         return list;

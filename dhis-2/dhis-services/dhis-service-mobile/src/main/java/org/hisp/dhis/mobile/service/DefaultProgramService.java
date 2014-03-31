@@ -38,6 +38,7 @@ import org.hisp.dhis.api.mobile.IProgramService;
 import org.hisp.dhis.api.mobile.model.DataElement;
 import org.hisp.dhis.api.mobile.model.Model;
 import org.hisp.dhis.api.mobile.model.ModelList;
+import org.hisp.dhis.api.mobile.model.OptionSet;
 import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -296,6 +297,7 @@ public class DefaultProgramService
         mobileAttribute.setName( pa.getName() );
         mobileAttribute.setType( pa.getValueType() );
         mobileAttribute.setValue( "" );
+
         if ( ppa.isDisplayInList() )
         {
             mobileAttribute.setDisplayedInList( true );
@@ -304,6 +306,21 @@ public class DefaultProgramService
         {
             mobileAttribute.setDisplayedInList( false );
         }
+
+        if ( pa.getValueType().equals( TrackedEntityAttribute.TYPE_COMBO ) )
+        {
+            OptionSet optionSet = new OptionSet();
+
+            if ( pa.getOptionSet() != null )
+            {
+                optionSet.setId( pa.getOptionSet().getId() );
+                optionSet.setName( pa.getOptionSet().getName() );
+                optionSet.setOptions( pa.getOptionSet().getOptions() );
+
+                mobileAttribute.setOptionSet( optionSet );
+            }
+        }
+
         return mobileAttribute;
     }
 
