@@ -64,14 +64,14 @@ public class GetTrackedEntityInstanceLocationAction
     // Getter && Setter
     // -------------------------------------------------------------------------
 
-    private Integer entityInstanceId;
+    private String entityInstanceId;
 
-    public void setEntityInstanceId( Integer entityInstanceId )
+    public void setEntityInstanceId( String entityInstanceId )
     {
         this.entityInstanceId = entityInstanceId;
     }
 
-    public Integer getEntityInstanceId()
+    public String getEntityInstanceId()
     {
         return entityInstanceId;
     }

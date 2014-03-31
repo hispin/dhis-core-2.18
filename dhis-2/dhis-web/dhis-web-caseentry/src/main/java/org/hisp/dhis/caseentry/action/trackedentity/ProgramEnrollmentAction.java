@@ -31,11 +31,13 @@ package org.hisp.dhis.caseentry.action.trackedentity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
@@ -63,6 +65,8 @@ public class ProgramEnrollmentAction
 
     private OrganisationUnitSelectionManager selectionManager;
 
+    private I18nFormat format;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -88,9 +92,15 @@ public class ProgramEnrollmentAction
     // -------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------
+
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     public Collection<TrackedEntityAttribute> getNoGroupAttributes()
@@ -190,8 +200,14 @@ public class ProgramEnrollmentAction
             {
                 if ( attributes.contains( attributeValue.getAttribute() ) )
                 {
-                    attributeValueMap.put( attributeValue.getAttribute().getId(),
-                        attributeValue.getValue() );
+                    String value = attributeValue.getValue();
+                    if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
+                    {
+                        Date date = format.parseDate( value );
+                        value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
+                    }
+
+                    attributeValueMap.put( attributeValue.getAttribute().getId(), value );
                 }
             }
         }
