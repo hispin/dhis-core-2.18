@@ -178,13 +178,21 @@ public class DefaultFilterService implements FilterService
                     for ( Object obj : objects )
                     {
                         Map<String, Object> properties = buildObjectOutput( obj, value );
-                        arrayList.add( properties );
+
+                        if ( !properties.isEmpty() )
+                        {
+                            arrayList.add( properties );
+                        }
                     }
                 }
                 else
                 {
                     Map<String, Object> properties = buildObjectOutput( returned, value );
-                    output.put( key, properties );
+
+                    if ( !properties.isEmpty() )
+                    {
+                        output.put( key, properties );
+                    }
                 }
             }
         }
