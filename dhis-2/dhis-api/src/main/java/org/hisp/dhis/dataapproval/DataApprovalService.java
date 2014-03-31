@@ -84,13 +84,13 @@ public interface DataApprovalService
      * @param dataSet DataSet to check for approval.
      * @param period Period to check for approval.
      * @param organisationUnit OrganisationUnit to check for approval.
-     * @param categoryOptionGroup CategoryOptionGroup (if any) for approval.
+     * @param categoryOptionGroups CategoryOptionGroups (if any) for approval.
      * @param dataElementCategoryOptions Selected category options (if any).
      * @return the data approval status.
      */
     public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period,
                                                      OrganisationUnit organisationUnit,
-                                                     CategoryOptionGroup categoryOptionGroup,
+                                                     Set<CategoryOptionGroup> categoryOptionGroups,
                                                      Set<DataElementCategoryOption> dataElementCategoryOptions );
 
     /**
@@ -117,13 +117,13 @@ public interface DataApprovalService
      * @param dataSet DataSet to check for approval.
      * @param period Period to check for approval.
      * @param organisationUnit OrganisationUnit to check for approval.
-     * @param categoryOptionGroup CategoryOptionGroup (if any) for approval.
+     * @param categoryOptionGroups CategoryOptionGroups (if any) for approval.
      * @param dataElementCategoryOptions Selected category options (if any).
      * @return the data approval permissions (including status.)
      */
     public DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period,
                                                      OrganisationUnit organisationUnit,
-                                                     CategoryOptionGroup categoryOptionGroup,
+                                                     Set<CategoryOptionGroup> categoryOptionGroups,
                                                      Set<DataElementCategoryOption> dataElementCategoryOptions );
 
     /**
