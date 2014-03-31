@@ -31,7 +31,6 @@ package org.hisp.dhis.dataapproval.hibernate;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
-import org.hibernate.proxy.HibernateProxy;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -51,20 +50,5 @@ public class HibernateDataApprovalLevelStore
     public List<DataApprovalLevel> getAllDataApprovalLevels()
     {
         return getCriteria().addOrder( Order.asc( "level" ) ).list();
-    }
-
-    public void addDataApproval( DataApprovalLevel dataApprovalLevel )
-    {
-        save( dataApprovalLevel );
-    }
-
-    public void updateDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
-    {
-        update( dataApprovalLevel );
-    }
-
-    public void deleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
-    {
-        delete( dataApprovalLevel );
     }
 }
