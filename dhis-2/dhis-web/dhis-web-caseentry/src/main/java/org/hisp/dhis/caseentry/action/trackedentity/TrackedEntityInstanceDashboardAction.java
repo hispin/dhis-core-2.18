@@ -232,6 +232,7 @@ public class TrackedEntityInstanceDashboardAction
                 value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
             }
             
+            attributeValue.setValue( value );
             attributeValues.add( attributeValue );
         }
 

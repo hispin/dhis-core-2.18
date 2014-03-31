@@ -103,7 +103,7 @@ public class GetTrackedEntityInstanceAction
 
     private Collection<RelationshipType> relationshipTypes;
 
-    private int id;
+    private String id;
 
     private TrackedEntityInstance entityInstance;
 
@@ -338,7 +338,7 @@ public class GetTrackedEntityInstanceAction
         return relationship;
     }
 
-    public void setId( int id )
+    public void setId( String id )
     {
         this.id = id;
     }
