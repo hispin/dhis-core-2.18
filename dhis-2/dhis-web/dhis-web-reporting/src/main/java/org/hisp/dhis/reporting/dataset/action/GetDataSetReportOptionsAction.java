@@ -183,11 +183,11 @@ public class GetDataSetReportOptionsAction
         return categoryCombos;
     }
 
-    private List<OrganisationUnitGroupSet> groupSets;
+    private List<OrganisationUnitGroupSet> organisationUnitGroupSets;
 
-    public List<OrganisationUnitGroupSet> getGroupSets()
+    public List<OrganisationUnitGroupSet> getOrganisationUnitGroupSets()
     {
-        return groupSets;
+        return organisationUnitGroupSets;
     }
 
     // -------------------------------------------------------------------------
@@ -218,11 +218,10 @@ public class GetDataSetReportOptionsAction
         defaultCategoryCombo = categoryService.getDefaultDataElementCategoryCombo();
         
         categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAttributeCategoryCombos() );
-        
-        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
+        organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
 
         Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );
-        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( organisationUnitGroupSets, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }
