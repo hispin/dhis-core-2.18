@@ -12,9 +12,11 @@ dhis2.dsr.permissions = null;
 
 function getDataSetReport()
 {
+	var ds = $( "#dataSetId" ).val();
+	
     var dataSetReport = {
-        ds: $( "#dataSetId" ).val(),
-        cc: $( "#dataSetId :selected" ).data( "categorycombo" ),
+        ds: ds,
+        cc: dhis2.dsr.metaData.dataSets[ds].categoryCombo,
         periodType: $( "#periodType" ).val(),
         pe: $( "#periodId" ).val(),
         ou: selectionTreeSelection.getSelectedUid()[0],
@@ -73,7 +75,8 @@ function setDataSetReport( dataSetReport )
 dhis2.dsr.dataSetSelected = function()
 {
 	var ds = $( "#dataSetId" ).val();
-	var cc = $( "#dataSetId :selected" ).data( "categorycombo" );
+	var cc = dhis2.dsr.metaData.dataSets[ds].categoryCombo;
+	var cogs = dhis2.dsr.metaData.dataSets[ds].categoryOptionGroupSets;
 	
 	if ( cc && cc != dhis2.dsr.metaData.defaultCategoryCombo ) {
 		var categoryCombo = dhis2.dsr.metaData.categoryCombos[cc];
@@ -82,9 +85,52 @@ dhis2.dsr.dataSetSelected = function()
 		dhis2.dsr.setAttributesMarkup( categoryIds );		
 	}
 	else {
-		$( "#attributeComboDiv" ).html( "" ).hide();
+		$( "#attributeComboDiv" ).empty().hide();
+	}
+	
+	if ( cogs && cogs.length ) {
+		dhis2.dsr.setCategoryOptionGroupSetsMarkup( cogs );
+	}
+	else {
+		$( "#categoryOptionGroupSetDiv" ).empty().hide();
 	}
 }
+
+dhis2.dsr.setCategoryOptionGroupSetsMarkup = function( groupSetIds )
+{
+	if ( !groupSetIds || groupSetIds.length == 0 ) {
+		return;
+	}
+	
+	var cogsRx = [];
+	$.each( groupSetIds, function( idx, id ) {
+		cogsRx.push( $.get( "../api/categoryOptionGroupSets/" + id + ".json" ) );
+	} );
+	
+	$.when.apply( $, cogsRx ).done( function() {
+		var html = '';
+		var args = dhis2.util.normalizeArguments( arguments );
+		
+		$.each( args, function( idx, cogs ) {
+			var groupSet = cogs[0];			
+
+			html += '<div class="inputSection">';
+			html += '<div><label>' + groupSet.name + '</label></div>';
+			html += '<select class="dimension" data-uid="' + groupSet.id + '" style="width:330px">';
+			html += '<option value="-1">[ ' + i18n_select_option_view_all + ' ]</option>';
+			
+			$.each( groupSet.items, function( idx, option ) {
+				html += '<option value="' + option.id + '">' + option.name + '</option>';
+			} );
+			
+			html += '</select>';
+			html += '</div>';
+		} );
+
+		$( "#categoryOptionGroupSetDiv" ).show().html( html );
+	} );
+}
+
 
 /**
 * Sets markup for drop down boxes for the given categories in the selection div.
