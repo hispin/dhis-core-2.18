@@ -270,12 +270,7 @@ public abstract class AbstractEventService
 
         OrganisationUnit organisationUnit = null;
 
-        if ( IdentifiableObject.IdentifiableProperty.ID.equals( importOptions.getOrgUnitIdScheme() ) ||
-            IdentifiableObject.IdentifiableProperty.UID.equals( importOptions.getOrgUnitIdScheme() ) )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
-        }
-        else if ( IdentifiableObject.IdentifiableProperty.UUID.equals( importOptions.getOrgUnitIdScheme() ) )
+        if ( IdentifiableObject.IdentifiableProperty.UUID.equals( importOptions.getOrgUnitIdScheme() ) )
         {
             organisationUnit = organisationUnitService.getOrganisationUnitByUuid( event.getOrgUnit() );
         }
@@ -291,6 +286,10 @@ public abstract class AbstractEventService
             {
                 organisationUnit = organisationUnitByName.get( 0 );
             }
+        }
+        else
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
         }
 
         if ( organisationUnit == null )
