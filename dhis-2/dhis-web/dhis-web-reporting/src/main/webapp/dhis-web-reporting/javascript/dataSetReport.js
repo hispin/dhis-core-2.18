@@ -102,8 +102,9 @@ dhis2.dsr.setAttributesMarkup = function( categoryIds )
 
 	$.when.apply( $, categoryRx ).done( function() {
 		var html = '';
+		var args = dhis2.util.normalizeArguments( arguments );
 		
-		$.each( arguments, function( idx, cat ) {
+		$.each( args, function( idx, cat ) {
 			var category = cat[0];
 			
 			html += '<div class="inputSection">';
