@@ -3777,7 +3777,7 @@ Ext.onReady( function() {
 		textarea = Ext.create('Ext.form.field.TextArea', {
 			cls: 'gis-textarea',
 			height: 130,
-			fieldStyle: 'padding-left: 4px; padding-top: 3px',
+			fieldStyle: 'padding-left: 3px; padding-top: 3px',
 			emptyText: GIS.i18n.write_your_interpretation + '..'
 		});
 
@@ -3788,12 +3788,12 @@ Ext.onReady( function() {
 					apiUrl = gis.init.contextPath + '/api/maps/' + gis.map.id + '/data',
 					html = '';
 
-				html += '<div><b>GIS link: </b><span class="user-select"><a href="' + moduleUrl + '" target="_blank">' + moduleUrl + '</a></span></div>';
+				html += '<div><b>Map link: </b><span class="user-select"><a href="' + moduleUrl + '" target="_blank">' + moduleUrl + '</a></span></div>';
 				html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
 
 				return html;
 			}(),
-			style: 'padding-top: 8px; padding-bottom: 5px'
+			style: 'padding-top: 3px; padding-bottom: 2px; padding-left: 2px',
 		});
 
 		button = Ext.create('Ext.button.Button', {
@@ -3818,7 +3818,7 @@ Ext.onReady( function() {
 			layout: 'fit',
 			iconCls: 'gis-window-title-icon-interpretation',
 			cls: 'gis-container-default',
-            bodyStyle: 'padding:5px 5px 2px',
+            bodyStyle: 'padding: 2px',
 			width: 500,
 			resizable: true,
 			modal: true,
