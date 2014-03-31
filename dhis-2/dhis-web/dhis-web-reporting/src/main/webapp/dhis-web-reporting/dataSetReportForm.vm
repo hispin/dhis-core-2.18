@@ -142,15 +142,18 @@ div.inputSection {
 
 <div id="advancedOptions" style="display:none">
 #foreach( $groupSet in $organisationUnitGroupSets )
+<div class="inputSection">
+<div><label>$encoder.htmlEncode( $groupSet.name )</label></div>
 <select class="dimension" data-uid="${groupSet.uid}" style="width:330px" class="advanced">
-    <option value="">[ $i18n.getString( "select" ) $encoder.htmlEncode( $groupSet.name ) / $i18n.getString( "view_all" ) ]</option>
+    <option value="">[ $i18n.getString( "select_option_view_all" ) ]</option>
     #foreach( $group in $groupSet.organisationUnitGroups )
     <option value="${group.uid}">$encoder.htmlEncode( $group.name )</option>
     #end
-</select><br>
+</select></div>
 #end </div>
 
-<div id="advancedOptionsLink" style="padding: 8px 0;"><a href="javascript:showAdvancedOptions()">$i18n.getString( "more_options" )</a></div>
+<div id="moreOptionsLink" style="padding: 8px 0;"><a href="javascript:showMoreOptions()">$i18n.getString( "show_more_options" )</a></div>
+<div id="lessOptionsLink" style="display: none; padding: 8px 0;"><a href="javascript:showLessOptions()">$i18n.getString( "show_less_options" )</a></div>
 
 <div class="inputSection">
 <input type="button" value='$i18n.getString( "get_report" )' style="width:120px" onclick="generateDataSetReport()">
