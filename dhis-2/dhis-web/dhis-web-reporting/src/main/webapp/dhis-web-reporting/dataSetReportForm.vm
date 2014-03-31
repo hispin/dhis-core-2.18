@@ -29,6 +29,29 @@ dhis2.dsr.metaData = {
 #end
 ] }#if( $velocityCount < $size1 ),#end
 #end
+},
+"categoryOptionGroupSets": {
+#set( $size1 = $categoryOptionGroupSets.size() )
+#foreach( $groupSet in $categoryOptionGroupSets )
+"${groupSet.uid}":{"id":"${groupSet.uid}","name":"$encoder.jsonEncode( ${groupSet.displayName} )","members":[
+#set( $size2 = $groupSet.members.size() )
+#foreach( $group in $groupSet.members )
+"${group.uid}"#if( $velocityCount < $size2 ),#end
+#end
+] }#if( $velocityCount < $size1 ),#end
+#end
+},
+"dataSets": {
+#set( $size1 = $dataSets.size() )
+#foreach( $dataSet in $dataSets )
+"${dataSet.uid}":{"id":"{dataSet.uid}","name":"$encoder.jsonEncode( ${dataSet.displayName} )",
+"categoryCombo":"$!{dataSet.categoryCombo.uid}","categoryOptionGroupSets":[
+#set( $size2 = $dataSet.categoryOptionGroupSets.size() )
+#foreach( $cogs in $dataSet.categoryOptionGroupSets )
+"${cogs.uid}"#if( $velocityCount < $size2 ),#end
+#end
+] }#if( $velocityCount < $size1 ),#end
+#end
 }
 }
 
@@ -100,13 +123,14 @@ div.inputSection {
 <select id="dataSetId" name="dataSetId" style="width:330px" onchange="dhis2.dsr.dataSetSelected()">
   <option value="">[ $i18n.getString( "select" ) ]</option>
   #foreach( $dataSet in $dataSets )
-  <option value="$dataSet.uid" data-categorycombo="${dataSet.categoryCombo.uid}" data-approval="${dataSet.approveData}">
+  <option value="$dataSet.uid" data-approval="${dataSet.approveData}">
   $encoder.htmlEncode( $dataSet.displayName )
   </option>
   #end
 </select>
 </div>
 
+<div id="categoryOptionGroupSetDiv" style="display:none"></div>
 <div id="attributeComboDiv" style="display:none"></div>
 
 <!-- Period -->
