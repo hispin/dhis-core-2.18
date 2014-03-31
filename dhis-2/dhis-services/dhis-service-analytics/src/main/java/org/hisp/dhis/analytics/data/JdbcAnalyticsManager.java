@@ -32,6 +32,8 @@ import static org.hisp.dhis.analytics.AggregationType.AVERAGE_BOOL;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.COUNT;
+import static org.hisp.dhis.analytics.AggregationType.STDDEV;
+import static org.hisp.dhis.analytics.AggregationType.VARIANCE;
 import static org.hisp.dhis.analytics.DataQueryParams.VALUE_ID;
 import static org.hisp.dhis.analytics.MeasureFilter.EQ;
 import static org.hisp.dhis.analytics.MeasureFilter.GE;
@@ -200,6 +202,14 @@ public class JdbcAnalyticsManager
         else if ( params.isAggregationType( COUNT ) )
         {
             sql += "count(value)";
+        }
+        else if ( params.isAggregationType( STDDEV ) )
+        {
+            sql += "stddev(value)";
+        }
+        else if ( params.isAggregationType( VARIANCE ) )
+        {
+            sql += "variance(value)";
         }
         else // SUM, AVERAGE_DISAGGREGATION and undefined //TODO
         {
