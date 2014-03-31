@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.webportal.module.Module;
 import org.hisp.dhis.webportal.module.ModuleManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +65,12 @@ public class GetModulesAction
     {
         modules = manager.getAccessibleMenuModulesAndApps();
 
-        final List<String> userApps = currentUserService.getCurrentUser().getApps();
+        User user = currentUserService.getCurrentUser();
         
-        if ( userApps != null && !userApps.isEmpty() )
+        if ( user != null && user.getApps() != null && !user.getApps().isEmpty() )
         {
+            final List<String> userApps = user.getApps();
+            
             Collections.sort( modules, new Comparator<Module>()
             {
                 @Override
