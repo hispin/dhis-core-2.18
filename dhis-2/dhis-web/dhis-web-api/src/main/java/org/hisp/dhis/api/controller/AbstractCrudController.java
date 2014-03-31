@@ -178,9 +178,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
 
-        String viewClass = options.getViewClass( "basic" );
+        if ( include.contains( "access" ) )
+        {
+            options.getOptions().put( "viewClass", "sharing" );
+        }
 
-        if ( viewClass.equals( "basic" ) )
+        if ( options.getViewClass( "basic" ).equals( "basic" ) )
         {
             handleLinksAndAccess( options, metaData, entityList, false );
         }
@@ -213,7 +216,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
         else
         {
-            renderService.toJson( response.getOutputStream(), metaData, JacksonUtils.getViewClass( viewClass ) );
+            renderService.toJson( response.getOutputStream(), metaData, JacksonUtils.getViewClass( options.getViewClass( "basic" ) ) );
         }
     }
 
