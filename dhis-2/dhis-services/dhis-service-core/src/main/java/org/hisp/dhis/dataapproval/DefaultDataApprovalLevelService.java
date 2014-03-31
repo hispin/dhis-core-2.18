@@ -166,14 +166,14 @@ public class DefaultDataApprovalLevelService
         }
     }
 
-    public boolean dataApprovalLevelExists( DataApprovalLevel testLevel )
+    public boolean dataApprovalLevelExists( DataApprovalLevel level )
     {
         List<DataApprovalLevel> dataApprovalLevels = getAllDataApprovalLevels();
 
         for ( DataApprovalLevel dataApprovalLevel : dataApprovalLevels )
         {
-            if ( testLevel.getOrgUnitLevel() == dataApprovalLevel.getOrgUnitLevel()
-                    && testLevel.getCategoryOptionGroupSet() == dataApprovalLevel.getCategoryOptionGroupSet() )
+            if ( level.getOrgUnitLevel() == dataApprovalLevel.getOrgUnitLevel()
+                    && level.getCategoryOptionGroupSet() == dataApprovalLevel.getCategoryOptionGroupSet() )
             {
                 return true;
             }
