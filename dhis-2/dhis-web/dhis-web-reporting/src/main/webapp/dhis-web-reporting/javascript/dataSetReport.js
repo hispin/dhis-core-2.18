@@ -96,6 +96,10 @@ dhis2.dsr.dataSetSelected = function()
 	}
 }
 
+/**
+ * Sets markup for drop down boxes for the given category option group sets in the
+ * selection div.
+ */
 dhis2.dsr.setCategoryOptionGroupSetsMarkup = function( groupSetIds )
 {
 	if ( !groupSetIds || groupSetIds.length == 0 ) {
@@ -130,7 +134,6 @@ dhis2.dsr.setCategoryOptionGroupSetsMarkup = function( groupSetIds )
 		$( "#categoryOptionGroupSetDiv" ).show().html( html );
 	} );
 }
-
 
 /**
 * Sets markup for drop down boxes for the given categories in the selection div.
@@ -168,28 +171,6 @@ dhis2.dsr.setAttributesMarkup = function( categoryIds )
 
 		$( "#attributeComboDiv" ).show().html( html );
 	} );
-}
-
-/**
- * Indicates whether all attributes have a valid selection.
- */
-dhis2.dsr.attributesSelected = function( dataSetReport )
-{
-	if ( dhis2.dsr.metaData.defaultCategoryCombo == dataSetReport.cc ) {
-		return true; // Default category combo requires no selection
-	}
-	
-	var cc = dataSetReport.cc;
-	var categoryCombo = dhis2.dsr.metaData.categoryCombos[cc];
-	
-	if ( !categoryCombo || !categoryCombo.categories ) {
-		return false;
-	}
-		
-	var expected = categoryCombo.categories.length;
-	var actual = dataSetReport.cp.length;
-	
-	return !!( expected == actual );
 }
 
 //------------------------------------------------------------------------------
@@ -412,12 +393,11 @@ dhis2.dsr.showApproval = function()
 	var dataSetReport = dhis2.dsr.currentDataSetReport;
 	
 	var approval = $( "#dataSetId :selected" ).data( "approval" );
-	// var attributesSelected = dhis2.dsr.attributesSelected( dataSetReport );
 
 	$( "#approvalNotification" ).hide();
     $( "#approvalDiv" ).hide();
 
-	if ( !approval /* || !attributesSelected */ ) {
+	if ( !approval ) {
 		return;
 	}
 	
