@@ -32,15 +32,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.editGridColumns = false;
     $scope.editingEventInFull = false;
     $scope.editingEventInGrid = false;   
-    $scope.currentGridColumnId = '';       
-    
-    /*$scope.programStageDataElements = [];
-                
-    $scope.dhis2Events = [];
-    $scope.eventGridColumns = [];
-    $scope.hiddenGridColumns = 0;
-    $scope.newDhis2Event = {dataValues: []};
-    $scope.currentEvent = {dataValues: []};*/    
+    $scope.currentGridColumnId = '';  
     $scope.currentEventOrginialValue = '';   
     
     //watch for selection of org unit from tree
@@ -388,7 +380,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.updateSuccess = false;
             currentEvent[dataElement] = oldValue;
             return;
-        }      
+        }   
+        
+        if( $scope.programStageDataElements[dataElement].compulsory && !newValue ) {
+            $scope.updateSuccess = false;
+            currentEvent[dataElement] = oldValue;
+            return;
+        }        
                 
         if( newValue !== oldValue ){                     
             
@@ -408,7 +406,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $scope.currentEventOrginialValue = angular.copy(currentEvent);      
                 
                 $scope.updateSuccess = true;
-            });            
+            });    
         }
     };
     
@@ -442,7 +440,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };
     
     $scope.getHelpContent = function(){
-        console.log('I will get help content');
     };
     
     //for simplicity of grid display, events were changed from
