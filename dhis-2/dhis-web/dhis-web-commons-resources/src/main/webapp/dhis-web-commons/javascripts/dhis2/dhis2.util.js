@@ -102,6 +102,27 @@ dhis2.util.uuid = function() {
 }
 
 /**
+ * Normalizes an argument object returned from a jQuery promise. If the argument
+ * is undefined, not an array or an empty array, undefined is returned. If the 
+ * argument is a single promise object, the object is wrapped in an array. If the
+ * argument is an array of promise objects, the array is returned unmodified.
+ */
+dhis2.util.normalizeArguments = function( args ) {
+	if ( !args || !args.length || !args[0] ) {
+		return undefined;
+	}
+	
+	if ( $.isArray( args[0] ) ) {
+		return args;
+	}
+	else {
+		var arr = [];
+		arr[0] = args;
+		return arr;
+	}
+}
+
+/**
  * adds ':containsNC' to filtering.
  * $(sel).find(':containsNC(key)').doSomething();
  */
