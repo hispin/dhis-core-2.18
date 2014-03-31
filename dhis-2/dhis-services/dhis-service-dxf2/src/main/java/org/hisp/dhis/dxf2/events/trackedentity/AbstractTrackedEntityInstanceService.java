@@ -30,6 +30,7 @@ package org.hisp.dhis.dxf2.events.trackedentity;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -177,6 +178,7 @@ public abstract class AbstractTrackedEntityInstanceService
         }
 
         org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = getTrackedEntityInstance( trackedEntityInstance );
+
         teiService.addTrackedEntityInstance( entityInstance );
 
         updateAttributeValues( trackedEntityInstance, entityInstance );
@@ -329,6 +331,10 @@ public abstract class AbstractTrackedEntityInstanceService
         if ( attribute.getOrgunitScope() )
         {
             params.getOrganisationUnits().add( organisationUnit );
+        }
+        else
+        {
+            params.setOrganisationUnitMode( OrganisationUnitSelectionMode.ALL );
         }
 
         Grid instances = teiService.getTrackedEntityInstances( params );
