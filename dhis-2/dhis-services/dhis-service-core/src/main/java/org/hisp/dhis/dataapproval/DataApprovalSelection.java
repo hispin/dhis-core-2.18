@@ -64,6 +64,8 @@ class DataApprovalSelection
 {
     private final static Log log = LogFactory.getLog( DataApprovalSelection.class );
 
+    private final static int INDEX_NOT_FOUND = -1;
+
     // -------------------------------------------------------------------------
     // Data selection parameters
     // -------------------------------------------------------------------------
@@ -74,7 +76,7 @@ class DataApprovalSelection
 
     private OrganisationUnit organisationUnit;
 
-    private CategoryOptionGroup categoryOptionGroup;
+    private Set<CategoryOptionGroup> categoryOptionGroups;
 
     private Set<DataElementCategoryOption> dataElementCategoryOptions;
 
@@ -98,13 +100,11 @@ class DataApprovalSelection
 
     private int organisationUnitLevel;
 
-    private Map<CategoryOptionGroupSet, Set<CategoryOptionGroup>> dataGroups = null;
+    private Map<CategoryOptionGroupSet, Set<CategoryOptionGroup>> selectionGroups = null;
 
     private List<DataApprovalLevel> matchingApprovalLevels;
 
     private List<Set<CategoryOptionGroup>> categoryOptionGroupsByLevel;
-
-    boolean approvableAtLevel;
 
     int thisIndex;
 
@@ -135,7 +135,7 @@ class DataApprovalSelection
     DataApprovalSelection( DataSet dataSet,
                            Period period,
                            OrganisationUnit organisationUnit,
-                           CategoryOptionGroup categoryOptionGroup,
+                           Set<CategoryOptionGroup> categoryOptionGroups,
                            Set<DataElementCategoryOption> dataElementCategoryOptions,
                            DataApprovalStore dataApprovalStore,
                            DataApprovalLevelService dataApprovalLevelService,
@@ -146,7 +146,7 @@ class DataApprovalSelection
         this.dataSet = dataSet;
         this.period = period;
         this.organisationUnit = organisationUnit;
-        this.categoryOptionGroup = categoryOptionGroup;
+        this.categoryOptionGroups = categoryOptionGroups;
         this.dataElementCategoryOptions = dataElementCategoryOptions;
         this.dataApprovalStore = dataApprovalStore;
         this.dataApprovalLevelService = dataApprovalLevelService;
@@ -228,7 +228,16 @@ class DataApprovalSelection
      */
     private String logSelection()
     {
+        String categoryOptionGroupsString = "";
         String categoryOptionsString = "";
+
+        if ( categoryOptionGroups != null )
+        {
+            for ( CategoryOptionGroup group : categoryOptionGroups )
+            {
+                categoryOptionGroupsString += ( categoryOptionGroupsString.isEmpty() ? "" : ", " ) + group.getName();
+            }
+        }
 
         if ( dataElementCategoryOptions != null )
         {
@@ -240,7 +249,7 @@ class DataApprovalSelection
 
         return "getDataApprovalStatus( " + dataSet.getName() + ", " + period.getPeriodType().getName() + ":" + period.getShortName()
                 + ", " + organisationUnit.getName() + " (level " + organisationUnitLevel + "), "
-                + ( categoryOptionGroup == null ? "null" : categoryOptionGroup.getName() ) + ", "
+                + ( categoryOptionGroupsString.isEmpty() ? "null" : ( "[" + categoryOptionGroupsString + "]" ) ) + " )"
                 + ( categoryOptionsString.isEmpty() ? "null" : ( "[" + categoryOptionsString + "]" ) ) + " )";
     }
 
@@ -386,7 +395,7 @@ class DataApprovalSelection
 
         boolean unapprovedBelow = isUnapprovedBelow( organisationUnit, organisationUnitLevel );
 
-        if ( approvableAtLevel )
+        if ( thisIndex != INDEX_NOT_FOUND ) // Could be approved at this level but is not.
         {
             if ( !unapprovedBelow )
             {
@@ -447,9 +456,9 @@ class DataApprovalSelection
                 }
                 else
                 {
-                    initDataGroups();
+                    initSelectionGroups();
 
-                    Set<CategoryOptionGroup> groups = dataGroups.get( level.getCategoryOptionGroupSet() );
+                    Set<CategoryOptionGroup> groups = selectionGroups.get( level.getCategoryOptionGroupSet() );
 
                     if ( groups != null )
                     {
@@ -465,27 +474,39 @@ class DataApprovalSelection
     }
 
     /**
-     * Initializes the data groups if they have not yet been initialized.
+     * Initializes the selection groups if they have not yet been initialized.
      * This is a "lazy" operation that is only done if we find approval
      * levels that contain category option group sets we need to compare with.
+     *
+     * selectionGroups are constructed by finding all the category option groups
+     * (COGs) that contain COG and/or category options of the selection. The
+     * selectionGroup map is indexed by category option group set (COGS). For
+     * each COGS, it contains all the COGs that describe the data selection.
+     *
+     * We will then use this information when we encounter an approval level
+     * with a COGS. The selectionGroups map will tell us which COGs, if any,
+     * from the selected data set apply to the COGS of the approval level.
      */
-    private void initDataGroups()
+    private void initSelectionGroups()
     {
-        if ( dataGroups == null )
+        if ( selectionGroups == null )
         {
-            dataGroups = new HashMap<CategoryOptionGroupSet, Set<CategoryOptionGroup>>();
+            selectionGroups = new HashMap<CategoryOptionGroupSet, Set<CategoryOptionGroup>>();
 
-            if ( categoryOptionGroup != null && categoryOptionGroup.getGroupSet() != null )
+            if ( categoryOptionGroups != null )
             {
-                addDataGroup( categoryOptionGroup.getGroupSet(), categoryOptionGroup );
+                for ( CategoryOptionGroup  group : categoryOptionGroups )
+                {
+                    if ( group.getGroupSet() != null )
+                    {
+                        addDataGroup( group.getGroupSet(), group );
 
-                log.info( "initDataGroups() adding categoryOptionGroupSet "
-                        + categoryOptionGroup.getGroupSet().getName()
-                        + ", group " + categoryOptionGroup.getName() );
+                        log.info( "initSelectionGroups() adding categoryOptionGroupSet "
+                                + group.getGroupSet().getName()
+                                + ", group " + group.getName() );
+                    }
+                }
             }
-
-            else log.info( "initDataGroups() - not adding categoryOptionGroup "
-                    + ( categoryOptionGroup == null ? "null" : categoryOptionGroup.getName() ) );
 
             if ( dataElementCategoryOptions != null )
             {
@@ -494,9 +515,9 @@ class DataApprovalSelection
 
             if ( log.isInfoEnabled() )
             {
-                log.info("initDataGroups() returning " + dataGroups.size() + " group sets:");
+                log.info("initSelectionGroups() returning " + selectionGroups.size() + " group sets:");
 
-                for ( Map.Entry<CategoryOptionGroupSet,Set<CategoryOptionGroup>> entry : dataGroups.entrySet() )
+                for ( Map.Entry<CategoryOptionGroupSet,Set<CategoryOptionGroup>> entry : selectionGroups.entrySet() )
                 {
                     String s = "";
 
@@ -570,13 +591,13 @@ class DataApprovalSelection
      */
     private void addDataGroup( CategoryOptionGroupSet groupSet, CategoryOptionGroup group )
     {
-        Set<CategoryOptionGroup> groups = dataGroups.get( groupSet );
+        Set<CategoryOptionGroup> groups = selectionGroups.get( groupSet );
 
         if ( groups == null )
         {
             groups = new HashSet<CategoryOptionGroup>();
 
-            dataGroups.put( groupSet, groups );
+            selectionGroups.put( groupSet, groups );
         }
 
         groups.add( group );
@@ -599,9 +620,15 @@ class DataApprovalSelection
 
             if ( organisationUnitLevel == matchingApprovalLevels.get( i ).getOrgUnitLevel() )
             {
-                approvableAtLevel = true;
+                if ( approvableAtLevel( i ) )
+                {
+                    thisIndex = i;
+                }
+                else
+                {
+                    thisIndex = INDEX_NOT_FOUND;
+                }
 
-                thisIndex = i;
                 thisOrHigherIndex = i;
                 lowerIndex = i + 1;
 
@@ -611,9 +638,7 @@ class DataApprovalSelection
             }
             else if ( organisationUnitLevel > matchingApprovalLevels.get( i ).getOrgUnitLevel() )
             {
-                approvableAtLevel = false;
-
-                thisIndex = -1;
+                thisIndex = INDEX_NOT_FOUND;
                 thisOrHigherIndex = i;
                 lowerIndex = i+1;
 
@@ -623,13 +648,50 @@ class DataApprovalSelection
             }
         }
 
-        approvableAtLevel = false;
-
-        thisIndex = -1;
-        thisOrHigherIndex = -1;
+        thisIndex = INDEX_NOT_FOUND;
+        thisOrHigherIndex = INDEX_NOT_FOUND;
         lowerIndex = 0;
 
         log.info( "findThisLevel() - org higher than all levels, thisOrHigher=" + thisOrHigherIndex + ", lower=" + lowerIndex );
+    }
+
+    /**
+     * Is this data selection approvable at level index i? This method is
+     * called when we already know that the organisation unit level is
+     * compatible between the data selection and the matching approval level
+     * at index i. The job of this method is to determine whether the selected
+     * category option groups and/or category options (if any) are compatible
+     * with the category option group set (if any) defined for this level.
+     *
+     * If any category options were specified, then the data is not approvable
+     * at any level.
+     *
+     * If the level contains no category option group set, then the selection
+     * must contain no category option group.
+     *
+     * If the level contains a category option group set, then the selection
+     * must contain one (only) category option group. (Previous logic has
+     * determined that if this is the case, the group will be a member of
+     * the group set.)
+     *
+     * @param i the matching approval level index to test.
+     * @return true if approvable at this level, otherwise false
+     */
+    private boolean approvableAtLevel( int i )
+    {
+        if ( dataElementCategoryOptions != null && dataElementCategoryOptions.size() != 0 )
+        {
+            return false;
+        }
+
+        if ( matchingApprovalLevels.get( i ).getCategoryOptionGroupSet() == null )
+        {
+            return ( categoryOptionGroups == null || categoryOptionGroups.size() == 0 );
+        }
+        else
+        {
+            return ( categoryOptionGroups.size() == 1 );
+        }
     }
 
     /**
@@ -685,7 +747,7 @@ class DataApprovalSelection
 
     /**
      * Is this data selection approved at the given level index, for the
-     * given organisation unit?
+     * given organisation unit and category option group(s)?
      *
      * @param index (matching) approval level index at which to test
      * @param orgUnit organisation unit to tes.
