@@ -141,7 +141,7 @@ div.inputSection {
 <!-- Org unit group sets -->
 
 <div id="advancedOptions" style="display:none">
-#foreach( $groupSet in $groupSets )
+#foreach( $groupSet in $organisationUnitGroupSets )
 <select class="dimension" data-uid="${groupSet.uid}" style="width:330px" class="advanced">
     <option value="">[ $i18n.getString( "select" ) $encoder.htmlEncode( $groupSet.name ) / $i18n.getString( "view_all" ) ]</option>
     #foreach( $group in $groupSet.organisationUnitGroups )

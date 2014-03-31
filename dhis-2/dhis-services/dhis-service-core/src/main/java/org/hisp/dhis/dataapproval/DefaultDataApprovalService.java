@@ -155,10 +155,8 @@ public class DefaultDataApprovalService
                 attributeOptionCombo == null ? null : attributeOptionCombo.getCategoryOptions() );
     }
 
-    public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period,
-                                                     OrganisationUnit organisationUnit,
-                                                     CategoryOptionGroup categoryOptionGroup,
-                                                     Set<DataElementCategoryOption> dataElementCategoryOptions )
+    public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
+        CategoryOptionGroup categoryOptionGroup, Set<DataElementCategoryOption> dataElementCategoryOptions )
     {
         DataApprovalSelection dataApprovalSelection = new DataApprovalSelection( dataSet, period, organisationUnit,
                 categoryOptionGroup, dataElementCategoryOptions,
@@ -168,16 +166,15 @@ public class DefaultDataApprovalService
         return dataApprovalSelection.getDataApprovalStatus();
     }
 
-    public DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
+    public DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period, 
+        OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
         return getDataApprovalPermissions( dataSet, period, organisationUnit, null,
                 attributeOptionCombo == null ? null : attributeOptionCombo.getCategoryOptions() );
     }
 
     public DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period,
-                                                     OrganisationUnit organisationUnit,
-                                                     CategoryOptionGroup categoryOptionGroup,
-                                                     Set<DataElementCategoryOption> dataElementCategoryOptions )
+        OrganisationUnit organisationUnit, CategoryOptionGroup categoryOptionGroup, Set<DataElementCategoryOption> dataElementCategoryOptions )
     {
         DataApprovalStatus status = getDataApprovalStatus( dataSet, period,
                 organisationUnit, categoryOptionGroup, dataElementCategoryOptions );
