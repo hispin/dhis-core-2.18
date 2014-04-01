@@ -5,6 +5,14 @@
 	currentDiv = 'paymentAdjustmentForm';
 	
     }); 
+    function adjustPer()
+	{
+		var amountAvail = $("#amountAvail").val();	
+		var totalAvail = $("#total").val();	
+		
+		var adjustmentPer = ( parseFloat( amountAvail ) / parseFloat (totalAvail) ) * 100 ;
+		$("#adjustment").val( adjustmentPer.toFixed(2) );
+	}
     function saveDataValue()
     {
     	var period = document.getElementById("selectedPeriodId").value;
@@ -36,7 +44,8 @@
 	    var code = json.c;
 	    if ( code == '0' || code == 0) // Value successfully saved on server
 	    {
-	    	 markValue( fieldId, COLOR_GREEN );
+	    	markValue( fieldId, COLOR_GREEN );
+	    	adjustPer();
 	    }
 	    else if ( code == 2 )
 	    {
@@ -52,7 +61,7 @@
 
 	function handleError( jqXHR, textStatus, errorThrown )
 	{       
-	    markValue( fieldId, COLOR_GREEN );
+	    markValue( fieldId, COLOR_RED );
 	}
 
 	function markValue( fieldId, color )
@@ -89,10 +98,10 @@
 </div>
 
 <div class="inputCriteria" style="width:90%;height:auto;">
-<table>
+<table style="width:100%;">
 	<tr>
 		<td>
-			<table>
+			<table style="width:100%;">
 					<tr>
 						<td><label for="orgUnitName">$i18n.getString( "organisation_unit" )</label></td>
 						<td><input type="text" id="orgUnitName" name = "orgUnitName" readonly="readonly" value="$!organisationUnit.name" style="width:352px"></td>
@@ -125,11 +134,11 @@
 				</table>
 		</td>
 		<td>
-			<table>
+			<table style="width:100%;">
 				<tr>
 					<td>$i18n.getString( "amount_avaliable" )</td>
-					<td><input type="text" id="amountAvail" name="amountAvail" onblur="saveDataValue() "/></td>
-				</tr>
+					<td><input type="text" id="amountAvail" name="amountAvail" onblur="saveDataValue()" value="$!amountAvailable"/></td>
+				</tr>				
 				<tr>
 					<td>$i18n.getString( "adjustment_per" )</td>
 					<td><input type="text" id="adjustment" name="adjustment"/></td>
