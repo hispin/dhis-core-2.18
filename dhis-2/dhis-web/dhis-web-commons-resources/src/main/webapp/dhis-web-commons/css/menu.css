@@ -6,7 +6,8 @@
     padding: 0 20px 0 0;
 }
 
-#menuLinkArea li {
+#menuLinkArea li
+{
     float: right;
 }
 
@@ -30,34 +31,40 @@
     color: #000;
 }
 
-.app-menu:after {
+.app-menu:after
+{
     clear: both;
     content: "";
 }
 
 .app-menu ul,
-.app-menu li {
+.app-menu li
+{
     list-style: none;
 }
 
 .app-manager-header,
-.app-menu {
+.app-menu
+{
     margin: 0 auto;
     position: relative;
-    width: 808px;
+    width: 535px;
 }
 
-.app-menu li {
+.app-menu li
+{
     float: left;
     position: relative;
 }
 
-#menuOrderBy {
+#menuOrderBy
+{
     float: right;
 }
 
 .app-menu .app-menu-item,
-.app-menu .app-menu-placeholder {
+.app-menu .app-menu-placeholder
+{
     margin: 10px;
     display: block;
     border: 1px solid #d0d0d0;
@@ -68,7 +75,8 @@
     padding: 10px;
 }
 
-.app-menu .app-menu-item img {
+.app-menu .app-menu-item img
+{
     max-height: 36px;
     max-width: 36px;
     display: block;
@@ -77,7 +85,8 @@
     position: absolute;
 }
 
-.app-menu .app-menu-item span {
+.app-menu .app-menu-item span
+{
     font-size: 1.15em;
     padding-left: 48px;
     display: block;
@@ -86,17 +95,20 @@
 }
 
 .app-menu .app-menu-placeholder,
-.app-menu .app-menu-item:hover {
+.app-menu .app-menu-item:hover
+{
     border: 1px dashed #9ec5df;
     background-color: #e9f5fb;
     text-decoration: none;
 }
 
-.app-menu-item-description {
+.app-menu-item-description
+{
     display: none;
 }
 
-.app-menu-item-description .fa.fa-arrows {
+.app-menu-item-description .fa.fa-arrows
+{
     font-size: 1.3em;
     position: absolute;
     right: 5px;
@@ -106,7 +118,8 @@
 /**
  * When hovered display the description and hide the favorites icon
  */
-.app-menu li:hover a .app-menu-item-description {
+.app-menu li:hover a .app-menu-item-description
+{
     position: absolute;
     top: 0;
     right: 0;
@@ -122,15 +135,18 @@
     border-radius: 5px;
 }
 
-.app-menu li.ui-sortable-helper:hover a .app-menu-item-description {
+.app-menu li.ui-sortable-helper:hover a .app-menu-item-description
+{
     display: none;
 }
 
-.app-menu li.ui-sortable-helper:hover a {
+.app-menu li.ui-sortable-helper:hover a
+{
     background-color: rgba(255, 255, 255, 0.30);
 }
 
-.app-menu-item .app-menu-item-description span {
+.app-menu-item .app-menu-item-description span
+{
     color: #444;
     display: block;
     font-size: 1em;
@@ -139,18 +155,21 @@
     margin: 0;
 }
 
-.app-menu-item .app-menu-item-description p {
+.app-menu-item .app-menu-item-description p
+{
     height: 35px;
     margin: 0;
     overflow: hidden;
     padding: 0;
 }
 
-.app-menu li:hover a .fa.fa-bookmark {
+.app-menu li:hover a .fa.fa-bookmark
+{
     display: none;
 }
 
-.app-menu a.app-menu-item .fa.fa-bookmark {
+.app-menu a.app-menu-item .fa.fa-bookmark
+{
     color: #276696;
     font-size: 2em;
     position: absolute;
@@ -162,7 +181,8 @@
  * IE8 hack to display all items after the 9th item differently
  * TODO: When support for IE8 is dropped this can be changed to a nth style selector
  */
-.app-menu li + li + li + li + li + li + li + li + li + li a.app-menu-item .fa.fa-bookmark {
+.app-menu li + li + li + li + li + li + li + li + li + li a.app-menu-item .fa.fa-bookmark
+{
     display: none;
 }
 
@@ -179,7 +199,8 @@
     width: 105px;
 }
 
-.menu-link i.fa {
+.menu-link i.fa
+{
     font-size: 2em;
     padding-right: 10px;
     position: relative;
@@ -194,7 +215,8 @@ a.menu-link:hover
 /**
  * App menu dropdown box
  */
-.app-menu-dropdown {
+.app-menu-dropdown
+{
     background-color: #fff;
     border: 1px solid #bbb;
     border-radius: 2px;
@@ -209,22 +231,26 @@ a.menu-link:hover
     z-index: 10;
 }
 
-.app-menu-dropdown ul {
+.app-menu-dropdown ul
+{
     margin: 0;
 }
 
-.app-menu-dropdown li {
+.app-menu-dropdown li
+{
     float: left;
 }
 
-.app-menu-dropdown img {
+.app-menu-dropdown img
+{
     padding-left: 36px;
     padding-right: 36px;
     padding-top: 15px;
     padding-bottom: 5px;
 }
 
-.app-menu-dropdown span {
+.app-menu-dropdown span
+{
     display: block;
     height: 30px;
     padding-left: 10px;
@@ -235,7 +261,8 @@ a.menu-link:hover
 }
 
 .app-menu-dropdown .caret-up-background,
-.app-menu-dropdown .caret-up-border {
+.app-menu-dropdown .caret-up-border
+{
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     width: 0;
@@ -243,17 +270,20 @@ a.menu-link:hover
     position: absolute;
 }
 
-.app-menu-dropdown .caret-up-background {
+.app-menu-dropdown .caret-up-background
+{
     border-bottom: 10px solid #fff;
     top: -9px;
 }
 
-.app-menu-dropdown .caret-up-border {
+.app-menu-dropdown .caret-up-border
+{
     border-bottom: 10px solid #bbb;
     top: -10px;
 }
 
-.app-menu-dropdown a.app-menu-item {
+.app-menu-dropdown a.app-menu-item
+{
     color: #000;
     display: block;
     height: 110px;
@@ -261,14 +291,16 @@ a.menu-link:hover
     width: 120px;
 }
 
-.app-menu-dropdown a.app-menu-item:hover span {
+.app-menu-dropdown a.app-menu-item:hover span
+{
     padding-left: 10px;
     padding-right: 10px;
     text-align: center;
     width:100px;
 }
 
-.apps-menu-more {
+.apps-menu-more
+{
     display: table;
     height: 30px;
     padding-top: 10px;
@@ -276,7 +308,8 @@ a.menu-link:hover
     width: 100%;
 }
 
-.apps-menu-more a {
+.apps-menu-more a
+{
     color: #4A89BA;
     border: 1px solid #ccc;
     background-color: #f5f5f7;
@@ -286,13 +319,15 @@ a.menu-link:hover
     text-decoration: none;
 }
 
-.apps-menu-more a:hover {
+.apps-menu-more a:hover
+{
     color: #fff;
     border: 1px solid #4A89BA;
     background-color: #4A89BA;
 }
 
-.menu-placeholder {
+.menu-placeholder
+{
     width: 100%;
     text-align: center;
     vertical-align: middle;
@@ -302,39 +337,60 @@ a.menu-link:hover
  * Overrides
  * TODO: Merge these with the main stylesheet
  */
-hr.app-separator {
+hr.app-separator
+{
     border: none;
     border-top: 1px solid #bbb;
     height: 1px;
     position: absolute;
-    top: 288px;
+    top: 484px;
     width: 100%;
 }
 
 #menuDropDown1 .caret-up-background,
-#menuDropDown1 .caret-up-border {
+#menuDropDown1 .caret-up-border
+{
     left: 296px;
 }
 
 #menuDropDown3 .caret-up-background,
-#menuDropDown3 .caret-up-border {
+#menuDropDown3 .caret-up-border
+{
     left: 292px;
 }
 
-.drop-down-menu-link {
+.drop-down-menu-link
+{
     cursor: pointer;
     display: block;
 }
 
-.show-menu {
+.show-menu
+{
     display: block;
 }
 
 /*
  * Media queries for the menu
  */
-@media only screen and (max-width: 580px) {
-    #headerText {
+@media only screen and (max-width: 580px)
+{
+    #headerText
+    {
         display: none;
+    }
+}
+
+@media only screen and (min-width: 840px)
+{
+    .app-manager-header,
+    .app-menu
+    {
+        width: 808px;
+    }
+
+    hr.app-separator
+    {
+        top: 288px;
     }
 }
