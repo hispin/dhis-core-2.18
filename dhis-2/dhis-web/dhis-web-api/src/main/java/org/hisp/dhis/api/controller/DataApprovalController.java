@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,7 +42,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.InputUtils;
 import org.hisp.dhis.dataapproval.*;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -89,9 +90,6 @@ public class DataApprovalController
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    private DataElementCategoryService categoryService;
-    
-    @Autowired
     private CurrentUserService currentUserService;
     
     @Autowired
@@ -102,7 +100,7 @@ public class DataApprovalController
         @RequestParam String ds,
         @RequestParam String pe,
         @RequestParam String ou,
-        @RequestParam( required = false ) String cc, 
+        @RequestParam( required = false ) Set<String> cog,
         @RequestParam( required = false ) String cp, HttpServletResponse response ) throws IOException
     {
         log.info( "getApprovalState called." );
@@ -130,15 +128,22 @@ public class DataApprovalController
             ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
             return;
         }
-        
-        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
-        
-        if ( attributeOptionCombo == null )
+
+        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroups( response, cog );
+
+        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
+        {
+            return;
+        }
+
+        Set<DataElementCategoryOption> categoryOptions = inputUtils.getAttributeOptions( response, cp );
+
+        if ( categoryOptions != null && categoryOptions.isEmpty() )
         {
             return;
         }
         
-        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, categoryOptions );
 
         Map<String, Object> approvalState = new HashMap<String, Object>();
         approvalState.put( APPROVAL_STATE, permissions.getDataApprovalStatus().getDataApprovalState().toString() );
@@ -156,8 +161,7 @@ public class DataApprovalController
         @RequestParam String ds,
         @RequestParam String pe,
         @RequestParam String ou,
-        @RequestParam( required = false ) String cc, 
-        @RequestParam( required = false ) String cp, HttpServletResponse response )
+        @RequestParam( required = false ) String cog, HttpServletResponse response )
     {
         log.info( "saveApproval called." );
 
@@ -184,15 +188,15 @@ public class DataApprovalController
             ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
             return;
         }
-        
-        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
-        
-        if ( attributeOptionCombo == null )
+
+        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+
+        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
         {
             return;
         }
-        
-        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
+
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
         
         if ( !DataApprovalState.UNAPPROVED_READY.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
         {
@@ -202,16 +206,16 @@ public class DataApprovalController
 
         if ( !permissions.isMayApprove() )
         {
-            ContextUtils.conflictResponse( response, "Current user is not authorized to approve for organisation unit: " + ou );
+            ContextUtils.conflictResponse( response, "Current user is not authorized to approve for "
+                    + approvalParameters( dataSet, period, organisationUnit, categoryOptionGroups ) );
             return;
         }
 
         User user = currentUserService.getCurrentUser();
 
-        //TODO: FIX. We need to know what CategoryOptionGroup if any was selected, to use when constructing the data approval object.
-        CategoryOptionGroup attributeOptionGroup = null;
+        CategoryOptionGroup categoryOptionGroup = categoryOptionGroups == null ? null : (CategoryOptionGroup) categoryOptionGroups.toArray() [0];
 
-        DataApproval approval = new DataApproval( dataSet, period, organisationUnit, attributeOptionGroup, false, new Date(), user );
+        DataApproval approval = new DataApproval( dataSet, period, organisationUnit, categoryOptionGroup, false, new Date(), user );
 
         dataApprovalService.addDataApproval( approval );
     }
@@ -223,8 +227,7 @@ public class DataApprovalController
         @RequestParam String ds,
         @RequestParam String pe,
         @RequestParam String ou,
-        @RequestParam( required = false ) String cc, 
-        @RequestParam( required = false ) String cp, HttpServletResponse response )
+        @RequestParam( required = false ) String cog, HttpServletResponse response )
     {
         log.info( "removeApproval called." );
 
@@ -251,15 +254,15 @@ public class DataApprovalController
             ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
             return;
         }
-        
-        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
-        
-        if ( attributeOptionCombo == null )
+
+        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+
+        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
         {
             return;
         }
 
-        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
 
         if ( !DataApprovalState.APPROVED_HERE.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
         {
@@ -270,7 +273,7 @@ public class DataApprovalController
         if ( !permissions.isMayUnapprove() )
         {
             ContextUtils.conflictResponse( response, "Current user is not authorized to unapprove for "
-                    + approvalParameters( dataSet, period, organisationUnit, attributeOptionCombo ) );
+                    + approvalParameters( dataSet, period, organisationUnit, categoryOptionGroups ) );
             return;
         }
         
@@ -283,8 +286,7 @@ public class DataApprovalController
             @RequestParam String ds,
             @RequestParam String pe,
             @RequestParam String ou,
-            @RequestParam( required = false ) String cc,
-            @RequestParam( required = false ) String cp, HttpServletResponse response )
+            @RequestParam( required = false ) String cog, HttpServletResponse response )
     {
         log.info( "acceptApproval called." );
 
@@ -312,14 +314,14 @@ public class DataApprovalController
             return;
         }
 
-        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
 
-        if ( attributeOptionCombo == null )
+        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
         {
             return;
         }
 
-        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
 
         if ( !DataApprovalState.APPROVED_HERE.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
         {
@@ -330,7 +332,7 @@ public class DataApprovalController
         if ( !permissions.isMayAccept() )
         {
             ContextUtils.conflictResponse( response, "Current user is not authorized to accept approval for "
-                    + approvalParameters( dataSet, period, organisationUnit, attributeOptionCombo ) );
+                    + approvalParameters( dataSet, period, organisationUnit, categoryOptionGroups ) );
             return;
         }
 
@@ -344,8 +346,7 @@ public class DataApprovalController
             @RequestParam String ds,
             @RequestParam String pe,
             @RequestParam String ou,
-            @RequestParam( required = false ) String cc,
-            @RequestParam( required = false ) String cp, HttpServletResponse response )
+            @RequestParam( required = false ) String cog, HttpServletResponse response )
     {
         log.info( "unacceptApproval called." );
 
@@ -373,14 +374,14 @@ public class DataApprovalController
             return;
         }
 
-        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
 
-        if ( attributeOptionCombo == null )
+        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
         {
             return;
         }
 
-        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, attributeOptionCombo );
+        DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
 
         if ( !DataApprovalState.ACCEPTED_HERE.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
         {
@@ -391,7 +392,7 @@ public class DataApprovalController
         if ( !permissions.isMayUnaccept() )
         {
             ContextUtils.conflictResponse( response, "Current user is not authorized to unaccept approval for "
-                    + approvalParameters( dataSet, period, organisationUnit, attributeOptionCombo ) );
+                    + approvalParameters( dataSet, period, organisationUnit, categoryOptionGroups ) );
             return;
         }
 
@@ -402,11 +403,11 @@ public class DataApprovalController
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String approvalParameters( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
+    private String approvalParameters( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Set<CategoryOptionGroup> categoryOptionGroups )
     {
         return "dataSet " + dataSet.getName()
                 + ", period " + period.getName()
                 + ", org unit " + organisationUnit.getName()
-                + ", attributeOptionCombo " + ( attributeOptionCombo == null ? "null" : attributeOptionCombo.getName() );
+                + ", categoryOptionGroup " + ( categoryOptionGroups == null ? "null" : ( (CategoryOptionGroup) categoryOptionGroups.toArray() [0] ).getName() );
     }
 }
