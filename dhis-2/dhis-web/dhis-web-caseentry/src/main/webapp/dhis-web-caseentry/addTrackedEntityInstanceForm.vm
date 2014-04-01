@@ -35,7 +35,7 @@
 <h5 name='addRelationShipLink'>
 	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'tracked_entity_instance_management' )</a>
 	&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$entityInstanceUid');">$i18n.getString( 'dashboard' )</a>
-	&#8226; <a href="javascript:setFieldValue( 'isShowTrackedEntityInstanceList', 'false' ); showRelationshipList('$entityInstance.id')">$i18n.getString( "relationship_management" )
+	&#8226; <a href="javascript:setFieldValue( 'isShowTrackedEntityInstanceList', 'false' ); showRelationshipList('$entityInstance.uid')">$i18n.getString( "relationship_management" )
 </h5>
 <h3 name='addRelationShipLink'>	
 	&raquo; <a href="javascript:showAddRelationship('$entityInstanceId')" >$i18n.getString( 'seach_available_tracked_entity_instance' )</a>
@@ -83,7 +83,7 @@
 			#else
 			<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick="isContinue=false;" style="width:70px;" />
 			<input type="submit" class="button" value="$i18n.getString( 'add_and_register_new' )" style="width:140px;" onclick="isContinue=true;"/>
-			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="loadEntityInstanceList();" style="width:70px;" />
+			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="loadTrackedEntityInstanceList();" style="width:70px;" />
 			#end
 		</td>
 	</tr>
