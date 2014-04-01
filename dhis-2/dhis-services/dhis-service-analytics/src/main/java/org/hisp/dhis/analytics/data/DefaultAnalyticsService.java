@@ -36,6 +36,8 @@ import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIO
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_PERIOD;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LONGITUDE;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LATITUDE;
 import static org.hisp.dhis.analytics.DataQueryParams.FIXED_DIMS;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
@@ -45,6 +47,8 @@ import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.LONGITUDE_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.LATITUDE_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.common.NameableObjectUtils.asList;
@@ -938,6 +942,20 @@ public class DefaultAnalyticsService
             }
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, null, DISPLAY_NAME_ORGUNIT, orgUnits );
+            
+            return Arrays.asList( object );
+        }
+        
+        if ( LONGITUDE_DIM_ID.contains( dimension ) )
+        {
+            DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.STATIC, null, DISPLAY_NAME_LONGITUDE, new ArrayList<NameableObject>() );
+            
+            return Arrays.asList( object );
+        }
+
+        if ( LATITUDE_DIM_ID.contains( dimension ) )
+        {
+            DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.STATIC, null, DISPLAY_NAME_LATITUDE, new ArrayList<NameableObject>() );
             
             return Arrays.asList( object );
         }

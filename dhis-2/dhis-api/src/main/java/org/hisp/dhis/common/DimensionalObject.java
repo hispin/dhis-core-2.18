@@ -56,7 +56,11 @@ public interface DimensionalObject
     
     final String DIMENSION_SEP = "-";
 
-    final List<String> DATA_X_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, DATAELEMENT_OPERAND_ID );
+    final String LONGITUDE_DIM_ID = "longitude";
+    final String LATITUDE_DIM_ID = "latitude";
+
+    final List<String> DATA_X_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, DATAELEMENT_OPERAND_ID );    
+    final List<String> STATIC_DIMS = Arrays.asList( LONGITUDE_DIM_ID, LATITUDE_DIM_ID );
     
     final Map<String, String> PRETTY_NAMES = DimensionalObjectUtils.asMap( 
         DATA_X_DIM_ID, "Data",

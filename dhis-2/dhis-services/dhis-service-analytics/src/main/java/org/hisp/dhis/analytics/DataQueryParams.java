@@ -89,7 +89,9 @@ public class DataQueryParams
     public static final String DISPLAY_NAME_DATA_X = "Data";
     public static final String DISPLAY_NAME_CATEGORYOPTIONCOMBO = "Category";
     public static final String DISPLAY_NAME_PERIOD = "Period";
-    public static final String DISPLAY_NAME_ORGUNIT = "Organisation unit";    
+    public static final String DISPLAY_NAME_ORGUNIT = "Organisation unit";
+    public static final String DISPLAY_NAME_LONGITUDE = "Longitude";
+    public static final String DISPLAY_NAME_LATITUDE = "Latitude";
     
     public static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATAELEMENT_OPERAND_ID, DATASET_DIM_ID );
     public static final List<String> FIXED_DIMS = Arrays.asList( DATA_X_DIM_ID, INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );

@@ -37,6 +37,7 @@ import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.STATIC_DIMS;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
@@ -324,6 +325,10 @@ public abstract class BaseAnalyticalObject
             
             type = DimensionType.CATEGORY;
         }
+        else if ( STATIC_DIMS.contains( dimension ) )
+        {            
+            type = DimensionType.STATIC;
+        }
         else // Group set
         {
             // Data element group set
@@ -534,6 +539,10 @@ public abstract class BaseAnalyticalObject
             DataElementCategoryDimension categoryDimension = categoryDimensions.get( categoryDims.indexOf( dimension ) );
             
             objects.add( new BaseDimensionalObject( dimension, DimensionType.CATEGORY, categoryDimension.getItems() ) );
+        }
+        else if ( STATIC_DIMS.contains( dimension ) )
+        {
+            objects.add( new BaseDimensionalObject( dimension, DimensionType.STATIC, new ArrayList<NameableObject>() ) );
         }
         else // Group set
         {
