@@ -225,7 +225,6 @@ public abstract class AbstractEventService
                     programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance,
                         programStage );
                 }
-
                 else
                 {
                     if ( event.getEvent() != null )

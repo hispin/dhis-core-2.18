@@ -338,7 +338,6 @@ public class EventController
             response.setHeader( "Location", ContextUtils.getRootPath( request ) + "/system/tasks/" + TaskCategory.EVENT_IMPORT );
             response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         }
-
     }
 
     // -------------------------------------------------------------------------
