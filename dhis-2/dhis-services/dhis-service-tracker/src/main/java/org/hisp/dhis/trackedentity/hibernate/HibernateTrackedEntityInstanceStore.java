@@ -153,11 +153,90 @@ public class HibernateTrackedEntityInstanceStore
         sql = sql.substring( 0, sql.length() - 2 ) + " "; // Remove last comma
 
         // ---------------------------------------------------------------------
-        // From, join and where clause. For attribute params, restriction is set
-        // in inner join. For query params, restriction is set in where clause.
+        // From and where clause
+        // ---------------------------------------------------------------------
+
+        sql += getFromWhereClause( params, hlp );
+        
+        // ---------------------------------------------------------------------
+        // Paging clause
+        // ---------------------------------------------------------------------
+
+        if ( params.isPaging() )
+        {
+            sql += "limit " + params.getPageSizeWithDefault() + " offset " + params.getOffset();
+        }
+
+        // ---------------------------------------------------------------------
+        // Query
         // ---------------------------------------------------------------------
         
-        sql +=        
+        Timer t = new Timer().start();
+        
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+        
+        t.getTime( "Tracked entity instance query SQL: " + sql );
+        
+        List<Map<String, String>> list = new ArrayList<Map<String,String>>();
+        
+        while ( rowSet.next() )
+        {
+            final Map<String, String> map = new HashMap<String, String>();
+            
+            map.put( TRACKED_ENTITY_INSTANCE_ID, rowSet.getString( TRACKED_ENTITY_INSTANCE_ID ) );
+            map.put( CREATED_ID, rowSet.getString( CREATED_ID ) );
+            map.put( LAST_UPDATED_ID, rowSet.getString( LAST_UPDATED_ID ) );
+            map.put( ORG_UNIT_ID, rowSet.getString( ORG_UNIT_ID ) );
+            map.put( TRACKED_ENTITY_ID, rowSet.getString( TRACKED_ENTITY_ID ) );
+            
+            for ( QueryItem item : params.getAttributes() )
+            {
+                map.put( item.getItemId(), rowSet.getString( item.getItemId() ) );
+            }
+            
+            list.add( map );
+        }
+        
+        return list;
+    }
+
+    @Override
+    public int getTrackedEntityInstanceCount( TrackedEntityInstanceQueryParams params )
+    {
+        SqlHelper hlp = new SqlHelper();
+
+        // ---------------------------------------------------------------------
+        // Select clause
+        // ---------------------------------------------------------------------
+        
+        String sql = "select count(tei.uid) as " + TRACKED_ENTITY_INSTANCE_ID + " ";
+
+        // ---------------------------------------------------------------------
+        // From and where clause
+        // ---------------------------------------------------------------------
+
+        sql += getFromWhereClause( params, hlp );
+
+        // ---------------------------------------------------------------------
+        // Query
+        // ---------------------------------------------------------------------
+        
+        Timer t = new Timer().start();
+        
+        Integer count = jdbcTemplate.queryForObject( sql, Integer.class );
+        
+        t.getTime( "Tracked entity instance count SQL: " + sql );
+        
+        return count;        
+    }
+    
+    /**
+     * From, join and where clause. For attribute params, restriction is set
+     * in inner join. For query params, restriction is set in where clause.
+     */
+    private String getFromWhereClause( TrackedEntityInstanceQueryParams params, SqlHelper hlp )
+    {
+        String sql =        
             "from trackedentityinstance tei " +
             "inner join trackedentity te on tei.trackedentityid = te.trackedentityid " +
             "inner join organisationunit ou on tei.organisationunitid = ou.organisationunitid ";
@@ -243,46 +322,7 @@ public class HibernateTrackedEntityInstanceStore
             sql = sql.substring( 0, sql.length() - 3 ) + ") "; // Remove last or
         }
 
-        // ---------------------------------------------------------------------
-        // Paging clause
-        // ---------------------------------------------------------------------
-
-        if ( params.isPaging() )
-        {
-            sql += "limit " + params.getPageSizeWithDefault() + " offset " + params.getOffset();
-        }
-
-        // ---------------------------------------------------------------------
-        // Query
-        // ---------------------------------------------------------------------
-        
-        Timer t = new Timer().start();
-        
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-        
-        t.getTime( "Tracked entity instance query SQL: " + sql );
-        
-        List<Map<String, String>> list = new ArrayList<Map<String,String>>();
-        
-        while ( rowSet.next() )
-        {
-            final Map<String, String> map = new HashMap<String, String>();
-            
-            map.put( TRACKED_ENTITY_INSTANCE_ID, rowSet.getString( TRACKED_ENTITY_INSTANCE_ID ) );
-            map.put( CREATED_ID, rowSet.getString( CREATED_ID ) );
-            map.put( LAST_UPDATED_ID, rowSet.getString( LAST_UPDATED_ID ) );
-            map.put( ORG_UNIT_ID, rowSet.getString( ORG_UNIT_ID ) );
-            map.put( TRACKED_ENTITY_ID, rowSet.getString( TRACKED_ENTITY_ID ) );
-            
-            for ( QueryItem item : params.getAttributes() )
-            {
-                map.put( item.getItemId(), rowSet.getString( item.getItemId() ) );
-            }
-            
-            list.add( map );
-        }
-        
-        return list;
+        return sql;
     }
     
     @Override

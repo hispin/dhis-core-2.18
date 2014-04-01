@@ -52,6 +52,8 @@ public interface TrackedEntityInstanceStore
 
     List<Map<String, String>> getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
     
+    int getTrackedEntityInstanceCount( TrackedEntityInstanceQueryParams params );
+    
     /**
      * Search entityInstances who registered in a certain organisation unit
      * 
