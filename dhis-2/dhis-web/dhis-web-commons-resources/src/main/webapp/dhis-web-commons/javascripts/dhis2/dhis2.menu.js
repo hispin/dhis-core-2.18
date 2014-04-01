@@ -355,7 +355,7 @@
     markup += '<li data-id="${id}" data-app-name="${name}" data-app-action="${defaultAction}">';
     markup += '  <a href="${defaultAction}" class="app-menu-item">';
     markup += '    <img src="${icon}" onError="javascript: this.onerror=null; this.src = \'../icons/program.png\';">';
-    markup += '    <span class="bold">${name}</span>';
+    markup += '    <span>${name}</span>';
     markup += '    <div class="app-menu-item-description"><span class="bold">${name}</span><i class="fa fa-arrows"></i><p>${description}</p></div>';
     markup += '  </a>';
     markup += '</li>';
