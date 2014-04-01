@@ -32,7 +32,7 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.CREAT
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_UPDATED_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
-import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.*;
 import static org.hisp.dhis.common.OrganisationUnitSelectionMode.*;
 
 import java.lang.reflect.Type;
@@ -54,6 +54,7 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -228,10 +229,19 @@ public class DefaultTrackedEntityInstanceService
                 grid.addValue( entity.get( item.getItemId() ) );
             }
         }
+
+        Map<Object, Object> metaData = new HashMap<Object, Object>();   
+
+        if ( params.isPaging() )
+        {
+            int count = trackedEntityInstanceStore.getTrackedEntityInstanceCount( params );
+            
+            Pager pager = new Pager( params.getPageWithDefault(), count, params.getPageSizeWithDefault() );
+            metaData.put( PAGER_META_KEY, pager );
+        }
         
         if ( !params.isSkipMeta() )
-        {
-            Map<Object, Object> metaData = new HashMap<Object, Object>();            
+        {         
             Map<String, String> names = new HashMap<String, String>();
             
             for ( String te : tes )
@@ -240,9 +250,10 @@ public class DefaultTrackedEntityInstanceService
                 names.put( te, entity != null ? entity.getDisplayName() : null );
             }
             
-            metaData.put( TrackedEntityInstanceQueryParams.META_DATA_NAMES_KEY, names );
-            grid.setMetaData( metaData );
+            metaData.put( META_DATA_NAMES_KEY, names );
         }
+
+        grid.setMetaData( metaData );
         
         return grid;
     }
