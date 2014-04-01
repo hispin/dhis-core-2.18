@@ -90,7 +90,7 @@ public class BaseDimensionalObject
         this.uid = dimension;
         this.items = new ArrayList<NameableObject>( items );
     }
-    
+
     public BaseDimensionalObject( String dimension, DimensionType dimensionType, List<? extends NameableObject> items )
     {
         this.uid = dimension;
