@@ -129,8 +129,7 @@ public class JacksonEventService extends AbstractEventService
 
         notifier.clear( taskId ).notify( taskId, "Importing events" );
 
-        Timer timer = new SystemNanoTimer();
-        timer.start();
+        Timer timer = new SystemNanoTimer().start();
 
         try
         {
@@ -206,8 +205,7 @@ public class JacksonEventService extends AbstractEventService
 
         notifier.clear( taskId ).notify( taskId, "Importing events" );
 
-        Timer timer = new SystemNanoTimer();
-        timer.start();
+        Timer timer = new SystemNanoTimer().start();
 
         try
         {
