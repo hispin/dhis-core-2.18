@@ -40,15 +40,17 @@ public class SystemNanoTimer implements Timer<Long>
     private long _end = 0;
 
     @Override
-    public void start()
+    public Timer<Long> start()
     {
         _start = System.nanoTime();
+        return this;
     }
 
     @Override
-    public void stop()
+    public Timer<Long> stop()
     {
         _end = System.nanoTime();
+        return this;
     }
 
     @Override

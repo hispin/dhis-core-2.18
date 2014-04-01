@@ -35,9 +35,9 @@ package org.hisp.dhis.dxf2.timer;
  */
 public interface Timer<T>
 {
-    void start();
+    Timer<T> start();
 
-    void stop();
+    Timer<T> stop();
 
     T getDuration();
 }
