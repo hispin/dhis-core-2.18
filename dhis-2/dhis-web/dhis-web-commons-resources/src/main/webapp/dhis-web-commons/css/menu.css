@@ -89,6 +89,7 @@
 .app-menu .app-menu-item:hover {
     border: 1px dashed #9ec5df;
     background-color: #e9f5fb;
+    text-decoration: none;
 }
 
 .app-menu-item-description {
