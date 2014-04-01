@@ -10,33 +10,6 @@
     float: right;
 }
 
-.menuLink
-{
-    height: 44px;
-    width: 100px;
-    font-size: 9pt;
-    text-align: center;
-    line-height: 44px;
-    cursor: pointer;
-    color: #fff;
-}
-
-a.menuLink:hover
-{
-    text-decoration: none;
-}
-
-.menuDropDownArea
-{
-    font-size: 9pt;
-    border-right: 1px solid #888;
-    border-bottom: 1px solid #888;
-    border-left: 1px solid #888;
-    max-height: 610px;
-    display: none;
-    z-index: 10;
-}
-
 .menuDropDownBox
 {
     list-style-type: none;
@@ -56,8 +29,6 @@ a.menuLink:hover
     background-color: #f5f5f7;
     color: #000;
 }
-
-/****************************************************/
 
 .app-menu:after {
     clear: both;
@@ -165,6 +136,13 @@ a.menuLink:hover
     margin: 0;
 }
 
+.app-menu-item .app-menu-item-description p {
+    height: 35px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
 .app-menu li:hover a .fa.fa-bookmark {
     display: none;
 }
@@ -188,15 +166,26 @@ a.menuLink:hover
 /**
  * App menu item
  */
-.menuLink {
+.menu-link {
+    color: #fff;
+    cursor: pointer;
+    font-size: 9pt;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
     width: 105px;
 }
 
-.menuLink i.fa {
+.menu-link i.fa {
     font-size: 2em;
     padding-right: 10px;
     position: relative;
     top: 5px;
+}
+
+a.menu-link:hover
+{
+    text-decoration: none;
 }
 
 /**
@@ -208,9 +197,13 @@ a.menuLink:hover
     border-radius: 2px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 8px 0px;
     color: #000;
+    display: none;
+    font-size: 9pt;
+    max-height: 610px;
     overflow-y: inherit;
     padding: 10px;
     width: 360px;
+    z-index: 10;
 }
 
 .app-menu-dropdown ul {
