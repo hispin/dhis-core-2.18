@@ -33,11 +33,20 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dataelement.*;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -409,7 +418,6 @@ public class DataApprovalServiceTest
         DataApproval dataApprovalB = new DataApproval( dataSetA, periodA, organisationUnitB, NO_GROUP, NOT_ACCEPTED, date, userA );
         DataApproval dataApprovalC = new DataApproval( dataSetA, periodB, organisationUnitA, NO_GROUP, NOT_ACCEPTED, date, userA );
         DataApproval dataApprovalD = new DataApproval( dataSetB, periodA, organisationUnitA, NO_GROUP, NOT_ACCEPTED, date, userA );
-        DataApproval dataApprovalE;
 
         dataApprovalService.addDataApproval( dataApprovalA );
         dataApprovalService.addDataApproval( dataApprovalB );
