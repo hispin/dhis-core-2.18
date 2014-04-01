@@ -3,39 +3,35 @@ package org.hisp.dhis.pbf.payment.action;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.pbf.api.LookupService;
-import org.hisp.dhis.pbf.api.QualityMaxValue;
-import org.hisp.dhis.pbf.api.QualityMaxValueService;
 import org.hisp.dhis.pbf.api.TariffDataValue;
 import org.hisp.dhis.pbf.api.TariffDataValueService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 public class LoadPaymentAdjustmentDetailsAction
     implements Action
 {
-
+	private final static String PAYMENT_ADJUSTMENT_AMOUNT_DE = "PAYMENT_ADJUSTMENT_AMOUNT_DE";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -73,8 +69,21 @@ public class LoadPaymentAdjustmentDetailsAction
     {
         this.tariffDataValueService = tariffDataValueService;
     }
+    private DataElementService dataElementService;
 
+	public void setDataElementService(DataElementService dataElementService) {
+		this.dataElementService = dataElementService;
+	}
 
+	private ConstantService constantService;
+
+	public void setConstantService(ConstantService constantService) {
+		this.constantService = constantService;
+	}
+	
+	@Autowired
+	private PeriodService periodService;
+	
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -125,6 +134,12 @@ public class LoadPaymentAdjustmentDetailsAction
 		return tariffDataValueMap;
 	}
     
+    private String amountAvailable = "";
+    
+    public String getAmountAvailable() {
+		return amountAvailable;
+	}
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -140,31 +155,46 @@ public class LoadPaymentAdjustmentDetailsAction
         
         dataElements.addAll(dataSet.getDataElements());
         
+        Constant paymentAmount = constantService.getConstantByName(PAYMENT_ADJUSTMENT_AMOUNT_DE);
+		
+		String amountDEId = paymentAmount.getValue()+"";
+        
         DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         for(DataElement de : dataElements)
         {
-        	DataValue dataValue = dataValueService.getDataValue(de, period, organisationUnit, optionCombo );
-        	if(dataValue != null)
+        	int quantityValue = 0;
+        	int tariffValue = 0;
+        	List<OrganisationUnit> orgList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId()));
+        	for(OrganisationUnit ou : orgList )
         	{
-        		quantityValidatedMap.put(de.getUid(), dataValue.getValue());
+        		List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates(period.getStartDate(), period.getEndDate()));
+	        	for(Period prd : periodList)
+	        	{
+	        		DataValue dataValue = dataValueService.getDataValue(de, prd, ou, optionCombo );
+		        	if(dataValue != null)
+		        	{
+		        		quantityValue = quantityValue + Integer.parseInt(dataValue.getValue());	        		
+		        	}	        	
+		        	TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( ou , de, dataSet, prd.getStartDate(), prd.getEndDate());
+		        	
+		        	if(tariffDataValue != null)
+		        	{
+		        		tariffValue = tariffValue + Integer.parseInt(tariffDataValue.getValue()+"");
+		        	}
+	        	}
         	}
-        	else
-        	{
-        		quantityValidatedMap.put(de.getUid(), "");
-        	} 
-        	TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue(organisationUnit, de, dataSet, period.getStartDate(), period.getEndDate());
-        	
-        	if(tariffDataValue != null)
-        	{
-        		tariffDataValueMap.put(de.getUid(), tariffDataValue.getValue()+"");
-        	}
-        	else
-        	{
-        		tariffDataValueMap.put(de.getUid(), "");
-        	}
+        	quantityValidatedMap.put(de.getUid(), quantityValue+"" );
+        	tariffDataValueMap.put(de.getUid(), tariffValue+"");
         }
+        Collections.sort(dataElements);
+        DataElement dataElement = dataElementService.getDataElement((int)paymentAmount.getValue());
+        DataValue dataValue = dataValueService.getDataValue(dataElement, period, organisationUnit, optionCombo);
         
+        if(dataValue != null)
+        {
+        	amountAvailable = dataValue.getValue();        	
+        }
         return SUCCESS;
     }
 }

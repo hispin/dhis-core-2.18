@@ -18,8 +18,7 @@ function orgUnitHasBeenSelected( orgUnitIds )
 		 $.getJSON( 'getOrganisationUnitForPayment.action', {orgUnitId:orgUnitIds[0]}
 	        , function( json ) 
 	        {
-	            var type = json.response;
-	            alert(type);
+	            var type = json.response;	            
 	            setFieldValue('orgUnitName', json.message );
 	            setFieldValue('selectedOrgunitName', json.message );	            
 	            if( type == "success" )
@@ -52,9 +51,10 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	        } );		
 	}
 }
-
-selection.setListenerFunction( orgUnitHasBeenSelected );
-
+jQuery(window).load(function() 
+{
+	selection.setListenerFunction( orgUnitHasBeenSelected );
+});
 
 function loadDataEntryForm()
 {
@@ -247,10 +247,9 @@ function loadPeriods()
 		enable('prevButton');
 		enable('nextButton');
 				
-		var url = 'loadPeriods.action?dataSetId=' + dataSetId;
+		var url = 'loadPaymentPeriods.action';
 		
 		var list = document.getElementById( 'selectedPeriodId' );
-			
 		clearList( list );
 		
 		addOptionToList( list, '-1', '[ Select ]' );
@@ -259,6 +258,7 @@ function loadPeriods()
 	    	for ( i in json.periods ) {
 	    		addOptionToList( list, json.periods[i].isoDate, json.periods[i].name );
 	    	}
+	    	document.getElementById("amountAvail").value = json.amountAvailable;
 	    } );
 	    
 	}	
@@ -269,9 +269,6 @@ function loadPeriods()
 function getAvailablePeriodsTemp( availablePeriodsId, selectedPeriodsId, year )
 {	
 	$( '#paymentDiv' ).html( '' );
-	
-	var dataSetId = $( '#dataSetId' ).val();
-	
 	var availableList = document.getElementById( availablePeriodsId );
 	var selectedList = document.getElementById( selectedPeriodsId );
 	
@@ -279,15 +276,14 @@ function getAvailablePeriodsTemp( availablePeriodsId, selectedPeriodsId, year )
 	
 	addOptionToList( selectedList, '-1', '[ Select ]' );
 	
-	$.getJSON( "getAvailableNextPrePeriods.action", {
-		"dataSetId": dataSetId ,
+	$.getJSON( "getPaymentAvailableNextPrePeriods.action", {
 		"year": year },
 		function( json ) {
 			
 			for ( i in json.periods ) {
 	    		addOptionToList( selectedList, json.periods[i].isoDate, json.periods[i].name );
 	    	}
-			
+			document.getElementById("amountAvail").value = json.amountAvailable;
 		} );
 }
 
