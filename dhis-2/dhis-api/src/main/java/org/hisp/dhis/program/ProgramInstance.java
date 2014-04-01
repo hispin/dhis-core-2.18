@@ -50,7 +50,6 @@ import java.util.Set;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 @JacksonXmlRootElement( localName = "programInstance", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramInstance
@@ -69,7 +68,7 @@ public class ProgramInstance
 
     private int id;
 
-    private Date dateOfIncident;
+    private Date dateOfIncident; //TODO rename to incidenceDate
 
     private Date enrollmentDate;
 
