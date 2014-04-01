@@ -88,12 +88,12 @@
       
       <ul id="menuLinkArea">
         <li id="menuDropDown3_button">
-            <a id="menuLink3" class="menuLink drop-down-menu-link">
+            <a id="menuLink3" class="menu-link drop-down-menu-link">
               <i class="fa fa-user"></i>$i18n.getString( "profile" )
           </a>
         </li>
         <li id="menuDropDown1_button">
-          <a id="menuLink1" class="menuLink drop-down-menu-link">
+          <a id="menuLink1" class="menu-link drop-down-menu-link">
             <i class="fa fa-th"></i>$i18n.getString( "applications" )
           </a>
           </li>

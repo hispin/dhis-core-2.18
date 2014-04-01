@@ -82,14 +82,13 @@
          **********************************************************************/
 
         function processTranslations(translations) {
-            var itemIndex,
-                items = dhis2.menu.getApps();
+            var items = dhis2.menu.getApps();
 
             items.forEach(function (element, index, items) {
                 if (element.id && translations[element.id]) {
                     items[index].name = translations.get(element.id);
                 }
-                if (element.description === '' && translations.get('intro_' + element.id) !== element.id){
+                if (element.description === '' && translations.get('intro_' + element.id) !== 'intro_' + element.id){
                     element.description = translations['intro_' + element.id];
                 }
             });
@@ -357,7 +356,7 @@
     markup += '  <a href="${defaultAction}" class="app-menu-item" title="${name}">';
     markup += '    <img src="${icon}" onError="javascript: this.onerror=null; this.src = \'../icons/program.png\';">';
     markup += '    <span>${name}</span>';
-    markup += '    <div class="app-menu-item-description"><span class="bold">${name}</span><i class="fa fa-arrows"></i>${description}</div>';
+    markup += '    <div class="app-menu-item-description"><span class="bold">${name}</span><i class="fa fa-arrows"></i><p>${description}</p></div>';
     markup += '  </a>';
     markup += '</li>';
 
@@ -425,9 +424,7 @@
 
                     //Render the dropdown menu
                     renderDropDownFavorites();
-                },
-                //Constrict the draggable elements to the parent element
-                containment: 'parent'
+                }
             };
 
         renderAppManager(selector);
