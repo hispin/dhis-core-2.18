@@ -19,7 +19,6 @@ dhis2.dsr.getDataSetReport = function()
 	
     var dataSetReport = {
         ds: ds,
-        cc: dhis2.dsr.metaData.dataSets[ds].categoryCombo,
         periodType: $( "#periodType" ).val(),
         pe: $( "#periodId" ).val(),
         ou: selectionTreeSelection.getSelectedUid()[0],
@@ -300,17 +299,6 @@ dhis2.dsr.getDataApprovalUrl = function( dataSetReport )
         "&pe=" + dataSetReport.pe +
         "&ou=" + dataSetReport.ou;
 
-    if ( dataSetReport.cc && dataSetReport.cp && dataSetReport.cp.length > 0 ) {
-        url += "&cc=" + dataSetReport.cc;
-        url += "&cp=";
-
-        $.each( dataSetReport.cp, function( idx, item ) {
-            url += item + ";";
-        } );
-
-        url = url.slice( 0, -1 );
-    }
-
     return url;
 }
 
@@ -323,17 +311,6 @@ dhis2.dsr.getDataApprovalAcceptanceUrl = function( dataSetReport )
         "?ds=" + dataSetReport.ds +
         "&pe=" + dataSetReport.pe +
         "&ou=" + dataSetReport.ou;
-
-    if ( dataSetReport.cc && dataSetReport.cp && dataSetReport.cp.length > 0 ) {
-        url += "&cc=" + dataSetReport.cc;
-        url += "&cp=";
-
-        $.each( dataSetReport.cp, function( idx, item ) {
-            url += item + ";";
-        } );
-
-        url = url.slice( 0, -1 );
-    }
 
     return url;
 }

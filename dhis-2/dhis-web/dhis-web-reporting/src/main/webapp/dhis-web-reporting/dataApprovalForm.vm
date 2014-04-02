@@ -81,11 +81,6 @@ div.inputSection {
 <!-- Organisation unit -->
 
 <div class="inputSection">
-<label>$i18n.getString( "use_data_for_selected_unit_only" )</label>
-<input type="checkbox" id="selectedUnitOnly" name="selectedUnitOnly" value="true">
-</div>
-
-<div class="inputSection">
 <label>$i18n.getString( "report_organisation_unit" )</label><br>
 <div id="selectionTree" style="width:328px; height:200px; overflow:auto; border:1px solid #ccc; margin-bottom: 8px;"></div>
 </div>
