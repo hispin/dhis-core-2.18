@@ -183,7 +183,12 @@ dhis2.dsr.setAttributesMarkup = function( categoryIds )
 dhis2.dsr.displayPeriods = function()
 {
     var periodType = $( "#periodType" ).val();
-    var periods = dhis2.dsr.periodTypeFactory.get( periodType ).generatePeriods( dhis2.dsr.currentPeriodOffset );
+    dhis2.dsr.displayPeriodsInternal( periodType, dhis2.dsr.currentPeriodOffset );
+}
+
+dhis2.dsr.displayPeriodsInternal = function( periodType, offset )
+{
+	var periods = dhis2.dsr.periodTypeFactory.get( periodType ).generatePeriods( offset );
     periods = dhis2.dsr.periodTypeFactory.reverse( periods );
     periods = dhis2.dsr.periodTypeFactory.filterFuturePeriodsExceptCurrent( periods );
 
