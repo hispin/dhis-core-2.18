@@ -1,0 +1,108 @@
+<script type="text/javascript">
+jQuery(document).ready(function() {        
+            
+  #if( $render == true )
+  var dataSetReport = {
+    dataSet: "${ds}",
+    periodType: "${periodType.name}",
+    period: "${pe}",
+    offset: ${offset}
+  };
+  dhis2.dsr.setDataSetReport( dataSetReport );        
+  #else
+  selectionTreeSelection.setMultipleSelectionAllowed( false );
+  selectionTree.clearSelectedOrganisationUnits();
+  selectionTree.buildSelectionTree();
+  #end
+});
+
+var i18n_select_data_set = '$encoder.jsEscape( $i18n.getString( "select_data_set" ), "'")';
+var i18n_select_period = '$encoder.jsEscape( $i18n.getString( "select_period" ), "'")';
+var i18n_select_organisation_unit = '$encoder.jsEscape( $i18n.getString( "select_organisation_unit" ), "'")';
+var i18n_generating_report = '$encoder.jsEscape( $i18n.getString( "generating_report" ), "'")';    
+var i18n_select_option_view_all = '$encoder.jsEscape( $i18n.getString( "select_option_view_all" ) , "'")';
+var i18n_waiting_for_lower_level_approval = '$encoder.jsEscape( $i18n.getString( "waiting_for_lower_level_approval" ) , "'")';
+var i18n_ready_for_approval = '$encoder.jsEscape( $i18n.getString( "ready_for_approval" ) , "'")';
+var i18n_approved = '$encoder.jsEscape( $i18n.getString( "approved" ) , "'")';
+var i18n_approved_and_accepted = '$encoder.jsEscape( $i18n.getString( "approved_and_accepted" ) , "'")';
+var i18n_confirm_approval = '$encoder.jsEscape( $i18n.getString( "confirm_approval" ) , "'")';
+var i18n_confirm_unapproval = '$encoder.jsEscape( $i18n.getString( "confirm_unapproval" ) , "'")';
+var i18n_confirm_accept = '$encoder.jsEscape( $i18n.getString( "confirm_accept" ) , "'")';
+var i18n_confirm_unaccept = '$encoder.jsEscape( $i18n.getString( "confirm_unaccept" ) , "'")';
+</script>
+
+<style type="text/css">
+div#control {
+  margin-bottom: 15px;
+}
+
+div.inputSection {
+  padding-top: 7px;
+  padding-bottom: 5px;
+}
+</style>
+
+<h3 id="dataSetReportHeader">$i18n.getString( "dataset_report" ) #openHelp( "dataset_reports" )</h3>
+
+<div id="control">
+<input type="button" value='$i18n.getString( "data" )' style="width:140px" onclick="dhis2.dsr.showCriteria()">
+<input type="button" id="approveButton" value="$i18n.getString( 'approve' )" onclick="dhis2.dsr.approveData()" style="width:120px">
+<input type="button" id="unapproveButton" value="$i18n.getString( 'unapprove' )" onclick="dhis2.dsr.unapproveData()" style="width:120px">
+<input type="button" id="acceptButton" value="$i18n.getString( 'accept' )" onclick="dhis2.dsr.acceptData()" style="width:120px">
+<input type="button" id="unacceptButton" value="$i18n.getString( 'unaccept' )" onclick="dhis2.dsr.unacceptData()" style="width:120px">
+</div>
+
+<div id="criteria" class="inputCriteria" style="width:360px;">
+
+<!-- Data set -->
+
+<div class="inputSection">
+<label>$i18n.getString( "dataset" )</label><br>
+<select id="dataSetId" name="dataSetId" style="width:330px" onchange="dhis2.dsr.dataSetSelected()">
+  <option value="">[ $i18n.getString( "select" ) ]</option>
+  #foreach( $dataSet in $dataSets )
+  <option value="$dataSet.uid" data-approval="${dataSet.approveData}">
+  $encoder.htmlEncode( $dataSet.displayName )
+  </option>
+  #end
+</select>
+</div>
+
+<div id="categoryOptionGroupSetDiv" style="display:none"></div>
+<div id="attributeComboDiv" style="display:none"></div>
+
+<!-- Period -->
+
+<div class="inputSection">
+<label>$i18n.getString( "report_period" )</label><br>
+<select id="periodType" name="periodType" style="width:174px" onchange="dhis2.dsr.displayPeriods()">
+  <option value="">[ $i18n.getString( "select_period_type" ) ]</option>
+  #foreach ( $type in $periodTypes )
+  <option value="$type.name">$i18n.getString( $type.name )</option>
+  #end
+</select>
+<input type="button" style="width:75px" value="$i18n.getString( 'prev_year' )" onclick="dhis2.dsr.displayPreviousPeriods()" />
+<input type="button" style="width:75px" value="$i18n.getString( 'next_year' )" onclick="dhis2.dsr.displayNextPeriods()" /><br>
+
+<select id="periodId" name="periodId" style="width:330px" disabled="disabled">
+</select>
+</div>
+
+<!-- Organisation unit -->
+
+<div class="inputSection">
+<label>$i18n.getString( "use_data_for_selected_unit_only" )</label>
+<input type="checkbox" id="selectedUnitOnly" name="selectedUnitOnly" value="true">
+</div>
+
+<div class="inputSection">
+<label>$i18n.getString( "report_organisation_unit" )</label><br>
+<div id="selectionTree" style="width:328px; height:200px; overflow:auto; border:1px solid #ccc; margin-bottom: 8px;"></div>
+</div>
+
+</div>
+
+#parse( "dhis-web-commons/loader/loader.vm" )
+
+<div id="content"></div>
+
