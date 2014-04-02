@@ -41,6 +41,8 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dxf2.filter.FilterService;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
+import org.hisp.dhis.dxf2.metadata.ImportService;
+import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.dxf2.render.RenderService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
@@ -96,6 +98,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @Autowired
     protected RenderService renderService;
+
+    @Autowired
+    protected ImportService importService;
 
     //--------------------------------------------------------------------------
     // GET
@@ -265,7 +270,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         T parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
-        manager.save( parsed );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed );
+        renderService.toJson( response.getOutputStream(), summary );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
@@ -277,7 +283,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         T parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
-        manager.save( parsed );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed );
+        renderService.toJson( response.getOutputStream(), summary );
     }
 
     //--------------------------------------------------------------------------
@@ -299,8 +306,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         T parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
         ((BaseIdentifiableObject) parsed).setUid( uid );
 
-        object.mergeWith( parsed );
-        manager.update( object );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed );
+        renderService.toJson( response.getOutputStream(), summary );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
@@ -318,8 +325,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         T parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
         ((BaseIdentifiableObject) parsed).setUid( uid );
 
-        object.mergeWith( parsed );
-        manager.update( object );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed );
+        renderService.toJson( response.getOutputStream(), summary );
     }
 
     //--------------------------------------------------------------------------
