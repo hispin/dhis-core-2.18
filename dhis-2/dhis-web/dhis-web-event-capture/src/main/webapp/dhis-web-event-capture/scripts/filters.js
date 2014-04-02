@@ -4,9 +4,9 @@
 
 var eventCaptureFilters = angular.module('eventCaptureFilters', [])
 
-.filter('gridFilter', function(){    
+.filter('gridFilter', function($filter){    
     
-    return function(data, filterText, filterObjectTypes){
+    return function(data, filterText, filterTypes){
         
         if(!data ){
             return;
@@ -17,47 +17,25 @@ var eventCaptureFilters = angular.module('eventCaptureFilters', [])
         }        
         else{            
             
-            var keys = [];
-            var filteredData = data;
+            var dateFilter = {}, nonDateFilter = {}, filteredData = data;
             
             for(var key in filterText){
-                keys.push(key);
                 
-                for(var i=0; i<filteredData.length; i++){
-                    
-                    var val = filteredData[i][key];
-                    
-                    if( filterObjectTypes[key].dataElement.type === 'date'){
-                        
-                        if( filterText[key].start || filterText[key].end){
-                            var start = moment(filterText[key].start, 'YYYY-MM-DD');
-                            var end = moment(filterText[key].end, 'YYYY-MM-DD');  
-                            var date = moment(val, 'YYYY-MM-DD');                              
-                            
-                            if( ( Date.parse(date) > Date.parse(end) ) || (Date.parse(date) < Date.parse(start)) ){  
-                                filteredData.splice(i,1);
-                                i--;
-                            }                                                        
-                        }
-                        
+                if(filterTypes[key] === 'date'){
+                    if( filterText[key].start || filterText[key].end){
+                        dateFilter[key] = filterText[key];
                     }
-                    else{
-                        if( filterObjectTypes[key].dataElement.type === 'int'){
-                            val = val.toString();
-                        }
-
-                        val = val.toLowerCase();
-                        if( val.indexOf(filterText[key].toLowerCase()) === -1 ){
-                            filteredData.splice(i,1);
-                            i--;
-                        }                        
-                    }
-                                        
                 }
-            }            
+                else{
+                    nonDateFilter[key] = filterText[key];
+                }
+            }           
+                      
+            filteredData = $filter('filter')(filteredData, nonDateFilter);             
+                        
             return filteredData;
         } 
-    };    
+    };   
 })
 
 .filter('paginate', function(Paginator) {

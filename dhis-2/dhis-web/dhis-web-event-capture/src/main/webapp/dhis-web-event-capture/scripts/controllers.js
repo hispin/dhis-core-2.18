@@ -21,11 +21,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.selectedOrgUnit = '';
     
     //Paging
-    $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};
-    
-    //Filtering
-    $scope.reverse = false;
-    $scope.filterText = {}; 
+    $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};   
     
     //Editing
     $scope.eventRegistration = false;
@@ -88,6 +84,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     //get events for the selected program (and org unit)
     $scope.loadEvents = function(program, pager){   
         
+        //Filtering
+        $scope.reverse = false;
+        $scope.filterText = {}; 
+    
         $scope.dhis2Events = [];
         $scope.eventLength = 0;
 
@@ -119,8 +119,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $scope.filterTypes[dataElement.id] = dataElement.type;
                 
                 if(dataElement.type === 'date'){
-                     $scope.filterText[dataElement.id]= {start: '', end: ''};
-                }               
+                     $scope.filterText[dataElement.id]= {};
+                }
+                //$scope.filterText[dataElement.id]= '';
                 
             });           
 
@@ -166,8 +167,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                         }
                                         else{
                                             dataValue.value = '';
+                                        }                                        
+                                    }
+                                    else if( dataElement.type == 'trueOnly'){
+                                        if(dataValue.value == 'true'){
+                                            dataValue.value = true;
                                         }
-                                        
+                                        else{
+                                            dataValue.value = false;
+                                        }
                                     }
                                     
                                     $scope.dhis2Events[i][dataValue.dataElement] = dataValue.value; 
@@ -259,11 +267,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };    
     
     $scope.removeStartFilterText = function(gridColumnId){
-        $scope.filterText[gridColumnId].start = '';
+        $scope.filterText[gridColumnId].start = undefined;
     };
     
     $scope.removeEndFilterText = function(gridColumnId){
-        $scope.filterText[gridColumnId].end = '';
+        $scope.filterText[gridColumnId].end = undefined;
     };
     
     $scope.showEventList = function(){
@@ -367,13 +375,16 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     }; 
        
     $scope.updateEventDataValue = function(currentEvent, dataElement){
-        
+
         //get current column
         $scope.currentGridColumnId = dataElement;
         
         //get new and old values
         var newValue = currentEvent[dataElement];
         var oldValue = $scope.currentEventOrginialValue[dataElement];
+        
+        console.log('old:  ', oldValue);
+        console.log('new:  ', newValue);
         
         //check for form validity
         $scope.outerForm.submitted = true;        
