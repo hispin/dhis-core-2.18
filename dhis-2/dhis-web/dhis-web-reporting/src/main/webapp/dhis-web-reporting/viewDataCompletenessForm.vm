@@ -63,7 +63,7 @@
     <!-- Get report -->
     
     <input id="reportButton" type="button" value="$i18n.getString( 'get_report' )" style="width:135px" onclick="displayCompleteness()"/> &nbsp;
-    <a id="advancedOptionsLink" href="javascript:showAdvancedOptions()">$i18n.getString( "more_options" )</a><br><br>
+    <a id="advancedOptionsLink" href="javascript:showAdvancedOptions()">$i18n.getString( "show_more_options" )</a><br><br>
     
     <!-- Export -->
     
