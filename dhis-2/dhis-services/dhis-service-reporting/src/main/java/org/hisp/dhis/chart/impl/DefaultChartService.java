@@ -28,6 +28,27 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.chart.Chart.TYPE_AREA;
+import static org.hisp.dhis.chart.Chart.TYPE_BAR;
+import static org.hisp.dhis.chart.Chart.TYPE_COLUMN;
+import static org.hisp.dhis.chart.Chart.TYPE_LINE;
+import static org.hisp.dhis.chart.Chart.TYPE_PIE;
+import static org.hisp.dhis.chart.Chart.TYPE_RADAR;
+import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
+import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
+import static org.hisp.dhis.system.util.ConversionUtils.getArray;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
@@ -36,7 +57,7 @@ import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.ChartStore;
+import org.hisp.dhis.common.AnalyticalObjectStore;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -86,18 +107,6 @@ import org.jfree.ui.RectangleInsets;
 import org.jfree.util.TableOrder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import static org.hisp.dhis.chart.Chart.*;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
-import static org.hisp.dhis.system.util.ConversionUtils.getArray;
-
 /**
  * @author Lars Helge Overland
  */
@@ -124,9 +133,9 @@ public class DefaultChartService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ChartStore chartStore;
+    private AnalyticalObjectStore<Chart> chartStore;
 
-    public void setChartStore( ChartStore chartStore )
+    public void setChartStore( AnalyticalObjectStore<Chart> chartStore )
     {
         this.chartStore = chartStore;
     }
