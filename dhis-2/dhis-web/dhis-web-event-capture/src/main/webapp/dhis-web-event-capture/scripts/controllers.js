@@ -374,8 +374,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
        
     $scope.updateEventDataValue = function(currentEvent, dataElement){
 
-        //get current column
-        $scope.currentGridColumnId = dataElement;
+        $scope.updateSuccess = false;
+        
+        //get current element
+        $scope.currentElement = {id: dataElement};
         
         //get new and old values
         var newValue = currentEvent[dataElement];
@@ -384,18 +386,18 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         //check for form validity
         $scope.outerForm.submitted = true;        
         if( $scope.outerForm.$invalid ){
-            $scope.updateSuccess = false;
+            $scope.currentElement.updated = false;
             currentEvent[dataElement] = oldValue;
             return;
         }   
         
-        if( $scope.programStageDataElements[dataElement].compulsory && !newValue ) {
-            $scope.updateSuccess = false;
+        if( $scope.programStageDataElements[dataElement].compulsory && !newValue ) {            
             currentEvent[dataElement] = oldValue;
+            $scope.currentElement.updated = false;
             return;
         }        
                 
-        if( newValue !== oldValue ){                     
+        if( newValue != oldValue ){                     
             
             var updatedSingleValueEvent = {event: currentEvent.event, dataValues: [{value: newValue, dataElement: dataElement}]};
             var updatedFullValueEvent = reconstructEvent(currentEvent, $scope.selectedProgramStage.programStageDataElements);
@@ -412,6 +414,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 //update original value
                 $scope.currentEventOrginialValue = angular.copy(currentEvent);      
                 
+                $scope.currentElement.updated = true;
                 $scope.updateSuccess = true;
             });    
         }
