@@ -28,11 +28,18 @@ package org.hisp.dhis.dataelement.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.ListMap;
@@ -41,16 +48,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.RowCallbackHandler;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -68,81 +68,48 @@ public class HibernateDataElementStore
     @SuppressWarnings("unchecked")
     public Collection<DataElement> searchDataElementsByName( String key )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.ilike( "name", "%" + key + "%" ) );
-
-        return criteria.list();
+        return getCriteria( Restrictions.ilike( "name", "%" + key + "%" ) ).list();
     }
 
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getAggregateableDataElements()
     {
-        Session session = sessionFactory.getCurrentSession();
-
         Set<String> types = new HashSet<String>();
 
         types.add( DataElement.VALUE_TYPE_INT );
         types.add( DataElement.VALUE_TYPE_BOOL );
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-
-        criteria.add( Restrictions.in( "type", types ) );
-
-        return criteria.list();
+        
+        return getCriteria( Restrictions.in( "type", types ) ).list();
     }
 
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getAllActiveDataElements()
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "active", true ) );
-
-        return criteria.list();
+        return getCriteria( Restrictions.eq( "active", true ) ).list();
     }
 
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "aggregationOperator", aggregationOperator ) );
-
-        return criteria.list();
+        return getCriteria( Restrictions.eq( "aggregationOperator", aggregationOperator ) ).list();
     }
 
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByType( String type )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "type", type ) );
-
-        return criteria.list();
+        return getCriteria( Restrictions.eq( "type", type ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsByDomainType( String domainType )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "domainType", domainType ) );
-
-        return criteria.list();
+        return getCriteria( Restrictions.eq( "domainType", domainType ) ).list();
     }
 
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByDomainType( String domainType, int first, int max )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
+        Criteria criteria = getCriteria();
         criteria.add( Restrictions.eq( "domainType", domainType ) );
 
         criteria.setFirstResult( first );
@@ -155,12 +122,7 @@ public class HibernateDataElementStore
     @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "categoryCombo", categoryCombo ) );
-
-        return criteria.list();
+        return getCriteria( Restrictions.eq( "categoryCombo", categoryCombo ) ).list();
     }
 
     @SuppressWarnings("unchecked")
@@ -168,24 +130,24 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.groupSets.size > 0";
 
-        return getQuery( hql ).setCacheable( true ).list();
+        return getQuery( hql ).list();
     }
 
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )
     {
-        Session session = sessionFactory.getCurrentSession();
+        String hql = "update DataElement set zeroIsSignificant = false";
 
-        String sql = "update DataElement set zeroIsSignificant = false";
-
-        Query query = session.createQuery( sql );
+        Query query = getQuery( hql );
 
         query.executeUpdate();
+        
+        //TODO improve
 
         if ( !dataElementIds.isEmpty() )
         {
-            sql = "update DataElement set zeroIsSignificant=true where id in (:dataElementIds)";
+            hql = "update DataElement set zeroIsSignificant=true where id in (:dataElementIds)";
 
-            query = session.createQuery( sql );
+            query = getQuery( hql );
             query.setParameterList( "dataElementIds", dataElementIds );
 
             query.executeUpdate();
@@ -198,7 +160,6 @@ public class HibernateDataElementStore
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.eq( "zeroIsSignificant", zeroIsSignificant ) );
         criteria.add( Restrictions.eq( "type", DataElement.VALUE_TYPE_INT ) );
-        criteria.setCacheable( true );
 
         return criteria.list();
     }
@@ -232,8 +193,7 @@ public class HibernateDataElementStore
     {
         String hql = "select distinct de from DataElement de join de.dataSets ds where ds.id in (:ids)";
 
-        return sessionFactory.getCurrentSession().createQuery( hql )
-            .setParameterList( "ids", ConversionUtils.getIdentifiers( DataSet.class, dataSets ) ).list();
+        return getQuery( hql ).setParameterList( "ids", getIdentifiers( DataSet.class, dataSets ) ).list();
     }
 
     @SuppressWarnings("unchecked")
@@ -289,6 +249,7 @@ public class HibernateDataElementStore
 
         Query query = getQuery( hql );
         query.setInteger( "dataSetId", dataSet.getId() );
+        
         if ( max != null )
         {
             query.setMaxResults( max );
@@ -300,11 +261,6 @@ public class HibernateDataElementStore
     @Override
     public int getCountByDomainType( String domainType )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "domainType", domainType ) );
-
-        return criteria.list().size();
+        return getCriteria( Restrictions.eq( "domainType", domainType ) ).list().size(); // TODO improve
     }
 }
