@@ -305,7 +305,7 @@ a.menu-link:hover
     height: 30px;
     padding-top: 10px;
     text-align: center;
-    width: 100%;
+    width: 360px;
 }
 
 .apps-menu-more a
@@ -345,6 +345,24 @@ hr.app-separator
     position: absolute;
     top: 484px;
     width: 100%;
+}
+
+.menu-drop-down-wrap
+{
+    overflow: hidden;
+    height: 330px;
+}
+
+.menu-drop-down-scroll
+{
+    height: 330px;
+    width: 384px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#menuDropDown1 ul {
+    height: 330px;
 }
 
 #menuDropDown1 .caret-up-background,
@@ -404,7 +422,7 @@ hr.app-separator
     display: block;
     padding: .5em 0;
     text-align: center;
-    width: 100%;
+    width: 358px;
 }
 
 .app-menu-error:hover

@@ -364,13 +364,12 @@
 
     function renderDropDownFavorites() {
         var selector = '#menuDropDown1 .menuDropDownBox',
-            favorites = dhis2.menu.getFavorites();
+            apps = dhis2.menu.getOrderedAppList();
 
-        $(selector).parent().addClass('app-menu-dropdown ui-helper-clearfix');
+        $('#menuDropDown1').addClass('app-menu-dropdown ui-helper-clearfix');
         $(selector).html('');
-        $.tmpl( "appMenuItemTemplate", favorites).appendTo(selector);
-
-        twoColumnRowFix();
+        $.tmpl( "appMenuItemTemplate", apps).appendTo(selector);
+        $('.apps-menu-more').clone().addClass('ui-helper-clearfix').appendTo($('#menuDropDown1 .menu-drop-down-scroll'));
     }
 
     function renderAppManager(selector) {
@@ -384,6 +383,8 @@
         $('#' + selector + ' ul li').each(function (index, item) {
             $(item).children('a').append($('<i class="fa fa-bookmark"></i>'));
         });
+
+        twoColumnRowFix();
     }
 
     /**
@@ -491,7 +492,40 @@
             renderMenu();
         });
 
+        /**
+         * Check if we need to fix columns when the window resizes
+         */
         $(window).resize(twoColumnRowFix);
+
+        /**
+         * Adds a scrolling mechanism that modifies the height of the menu box to show only two rows
+         * Additionally it makes space for the scrollbar and shows/hides the more apps button
+         */
+        $('.menu-drop-down-scroll').scroll(function (event) {
+            var self = $(this),
+                moreAppsElement = $('#menuDropDown1 > .apps-menu-more');
+
+            if (self.parent(':animated').length !== 0)
+                return;
+
+            if (self.scrollTop() < 10 && self.innerHeight() === 220) {
+                moreAppsElement.show();
+                self.parent().css('width', '370px');
+                self.parent().parent().css('width', '370px');
+                self.css('height', '330px');
+                self.parent().clearQueue().animate( {'height': '330px'} );
+            } else {
+                if (self.innerHeight() === 330 ) {
+                    moreAppsElement.hide();
+                    self.parent().css('width', '384px');
+                    self.parent().parent().css('width', '384px');
+                    self.css('height', '220px');
+                    self.parent().clearQueue().animate( {'height': '220px'} );
+                }
+            }
+
+        });
+
     });
 
 })(jQuery, dhis2.menu);
