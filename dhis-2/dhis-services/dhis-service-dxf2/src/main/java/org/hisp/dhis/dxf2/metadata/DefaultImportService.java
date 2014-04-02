@@ -36,6 +36,7 @@ import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
+import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
@@ -91,13 +92,14 @@ public class DefaultImportService
     //-------------------------------------------------------------------------------------------------------
 
     @Override
-    public <T extends IdentifiableObject> ImportTypeSummary importObject( String userUid, T object )
+    public <T extends IdentifiableObject> ImportTypeSummary importObject( String userUid, T object, ImportStrategy importStrategy )
     {
         User user = userService.getUser( userUid );
 
         ImportOptions importOptions = new ImportOptions();
         importOptions.setDryRun( false );
         importOptions.setPreheatCache( false );
+        importOptions.setImportStrategy( importStrategy.toString() );
 
         objectBridge.setWriteEnabled( !importOptions.isDryRun() );
         objectBridge.setPreheatCache( importOptions.isPreheatCache() );
