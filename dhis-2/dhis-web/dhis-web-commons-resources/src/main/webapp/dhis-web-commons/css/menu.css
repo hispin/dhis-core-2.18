@@ -384,6 +384,15 @@ hr.app-separator
 .app-menu-help .fa-bookmark
 {
     color: #276696;
+    font-size: 1.5em;
+    padding-right: 5px;
+    position: relative;
+    top: 2px;
+}
+
+.app-menu-help .fa-arrows
+{
+    padding-right: 4px;
 }
 
 /*
