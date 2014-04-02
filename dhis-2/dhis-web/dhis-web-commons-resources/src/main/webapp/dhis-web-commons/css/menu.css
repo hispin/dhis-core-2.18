@@ -395,6 +395,37 @@ hr.app-separator
     padding-right: 4px;
 }
 
+.app-menu-error
+{
+    background: darkred;
+    background: rgba(160, 0, 0, .70);
+    border: 1px solid darkred;
+    border-radius: 5px;
+    display: block;
+    padding: .5em 0;
+    text-align: center;
+    width: 100%;
+}
+
+.app-menu-error:hover
+{
+    background: rgba(160, 0, 0, .80);
+    cursor: pointer;
+}
+
+.app-menu-error a
+{
+    background-color: transparent;
+    color: white;
+}
+
+.app-menu-error a:hover
+{
+    background-color: transparent;
+    color: white;
+    text-decoration: none;
+}
+
 /*
  * Media queries for the menu
  */

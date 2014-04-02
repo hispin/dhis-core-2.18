@@ -404,8 +404,6 @@
                 //TODO: Give user feedback for successful save
             }).error(function () {
                 //TODO: Give user feedback for failure to save
-                //TODO: Translate this error message
-                alert('Unable to save your app order to the server.');
             });
         }
     }
@@ -475,8 +473,11 @@
                 menu.addMenuItems(data.modules);
             }
         }).error(function () {
+            //TODO: Give user feedback for failure to load items
             //TODO: Translate this error message
-            alert('Can not load apps from server.');
+            var error_template = '<li class="app-menu-error"><a href="' + window.location.href +'">Unable to load your apps, click to refresh</a></li>';
+            $('#' + selector).addClass('app-menu').html('<ul>' + error_template + '</ul>');
+            $('#menuDropDown1 .menuDropDownBox').html(error_template);
         });
 
         /**
