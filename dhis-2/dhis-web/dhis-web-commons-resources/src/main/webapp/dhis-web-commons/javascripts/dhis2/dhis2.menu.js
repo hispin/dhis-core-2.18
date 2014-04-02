@@ -510,8 +510,8 @@
 
             if (self.scrollTop() < 10 && self.innerHeight() === 220) {
                 moreAppsElement.show();
-                self.parent().css('width', '370px');
-                self.parent().parent().css('width', '370px');
+                self.parent().css('width', '360px');
+                self.parent().parent().css('width', '360px');
                 self.css('height', '330px');
                 self.parent().clearQueue().animate( {'height': '330px'} );
             } else {
