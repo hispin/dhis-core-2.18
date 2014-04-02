@@ -37,6 +37,7 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
+import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -62,7 +63,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = UserController.RESOURCE_PATH)
+@RequestMapping( value = UserController.RESOURCE_PATH )
 public class UserController
     extends AbstractCrudController<User>
 {
@@ -75,15 +76,15 @@ public class UserController
     private PasswordManager passwordManager;
 
     @Override
-    @PreAuthorize("hasRole('ALL') or hasRole('F_USER_VIEW')")
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
     public String getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request )
     {
         return super.getObjectList( parameters, model, response, request );
     }
 
     @Override
-    @PreAuthorize("hasRole('ALL') or hasRole('F_USER_VIEW')")
-    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters, Model model,
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
+    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, Model model,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         return super.getObject( uid, parameters, model, request, response );
@@ -140,7 +141,7 @@ public class UserController
             user.getUserCredentials().getPassword() );
         user.getUserCredentials().setPassword( encodePassword );
 
-        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user, ImportStrategy.CREATE );
         renderService.toJson( response.getOutputStream(), summary );
     }
 
@@ -159,7 +160,7 @@ public class UserController
             user.getUserCredentials().getPassword() );
         user.getUserCredentials().setPassword( encodePassword );
 
-        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user, ImportStrategy.CREATE );
         renderService.toJson( response.getOutputStream(), summary );
     }
 
@@ -192,7 +193,7 @@ public class UserController
             parsed.getUserCredentials().getPassword() );
         parsed.getUserCredentials().setPassword( encodePassword );
 
-        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
         renderService.toJson( response.getOutputStream(), summary );
     }
 
@@ -221,7 +222,7 @@ public class UserController
             parsed.getUserCredentials().getPassword() );
         parsed.getUserCredentials().setPassword( encodePassword );
 
-        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed );
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
         renderService.toJson( response.getOutputStream(), summary );
     }
 }
