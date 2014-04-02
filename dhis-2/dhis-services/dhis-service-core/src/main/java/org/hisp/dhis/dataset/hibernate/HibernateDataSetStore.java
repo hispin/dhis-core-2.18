@@ -28,9 +28,10 @@ package org.hisp.dhis.dataset.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
+import java.util.Collection;
+
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataset.DataSet;
@@ -38,9 +39,6 @@ import org.hisp.dhis.dataset.DataSetStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.ConversionUtils;
-
-import java.util.Collection;
 
 /**
  * @author Kristian Nordal
@@ -89,12 +87,7 @@ public class HibernateDataSetStore
     {
         periodType = periodService.reloadPeriodType( periodType );
 
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataSet.class );
-        criteria.add( Restrictions.eq( "periodType", periodType ) );
-
-        return criteria.list();
+        return getCriteria( Restrictions.eq( "periodType", periodType ) ).list();
     }
 
     @SuppressWarnings("unchecked")
@@ -102,26 +95,22 @@ public class HibernateDataSetStore
     {
         String hql = "select distinct d from DataSet d join d.sources s where s.id in (:ids)";
 
-        return sessionFactory.getCurrentSession().createQuery( hql )
-            .setParameterList( "ids", ConversionUtils.getIdentifiers( OrganisationUnit.class, sources ) ).list();
+        return getQuery( hql ).setParameterList( "ids", getIdentifiers( OrganisationUnit.class, sources ) ).list();
     }
 
     @SuppressWarnings("unchecked")
     public Collection<DataSet> getDataSetsForMobile( OrganisationUnit source )
     {
         String hql = "from DataSet d where :source in elements(d.sources) and d.mobile = true";
-        Query query = sessionFactory.getCurrentSession().createQuery( hql );
-        query.setEntity( "source", source );
-
-        return query.list();
+        
+        return getQuery( hql ).setEntity( "source", source ).list();
     }
 
     @SuppressWarnings("unchecked")
     public Collection<DataSet> getDataSetsForMobile()
     {
         String hql = "from DataSet d where d.mobile = true";
-        Query query = sessionFactory.getCurrentSession().createQuery( hql );
-
-        return query.list();
+        
+        return getQuery( hql ).list();
     }
 }

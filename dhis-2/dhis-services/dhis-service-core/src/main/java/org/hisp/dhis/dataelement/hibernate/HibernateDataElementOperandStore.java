@@ -49,9 +49,8 @@ public class HibernateDataElementOperandStore
     public List<DataElementOperand> getAllOrderedName()
     {
         String hql = "from DataElementOperand d";
-        Query query = getQuery( hql );
-
-        return query.list();
+        
+        return getQuery( hql ).list();
     }
 
     @Override
@@ -59,6 +58,7 @@ public class HibernateDataElementOperandStore
     public List<DataElementOperand> getAllOrderedName( int first, int max )
     {
         String hql = "from DataElementOperand d";
+        
         Query query = getQuery( hql );
         query.setFirstResult( first );
         query.setMaxResults( max );
@@ -71,6 +71,7 @@ public class HibernateDataElementOperandStore
     public Collection<DataElementOperand> getByDataElementGroup( DataElementGroup dataElementGroup )
     {
         String hql = "select d from DataElementOperand d, DataElementGroup deg where deg=:dataElementGroup and d.dataElement in elements(deg.members)";
+        
         Query query = getQuery( hql );
         query.setEntity( "dataElementGroup", dataElementGroup );
 
