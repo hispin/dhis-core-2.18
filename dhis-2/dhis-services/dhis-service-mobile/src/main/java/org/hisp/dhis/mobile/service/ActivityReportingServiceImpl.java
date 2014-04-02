@@ -760,9 +760,9 @@ public class ActivityReportingServiceImpl
             if ( value != null )
             {
                 org.hisp.dhis.api.mobile.model.PatientAttribute patientAttribute = new org.hisp.dhis.api.mobile.model.PatientAttribute(
-                    value.getAttribute().getName(), value.getValue(), value.getAttribute().getValueType(), false,
-                    new OptionSet() );
-                
+                    value.getAttribute().getName(), value.getValue(), value.getAttribute().getValueType(), false, value
+                        .getAttribute().getDisplayInListNoProgram(), new OptionSet() );
+
                 patientAtts.add( patientAttribute );
             }
         }
@@ -1388,7 +1388,8 @@ public class ActivityReportingServiceImpl
 
         for ( TrackedEntityAttribute patientAtt : getPatientAtts( null ) )
         {
-            list.add( new PatientAttribute( patientAtt.getName(), null, patientAtt.getValueType(), false, new OptionSet() ) );
+            list.add( new PatientAttribute( patientAtt.getName(), null, patientAtt.getValueType(), false, patientAtt
+                .getDisplayInListNoProgram(), new OptionSet() ) );
         }
 
         return list;
@@ -1407,7 +1408,7 @@ public class ActivityReportingServiceImpl
             patientAttribute.setName( name );
             patientAttribute.setType( pa.getValueType() );
             patientAttribute.setValue( "" );
-           
+
             list.add( patientAttribute );
         }
         return list;
@@ -1675,8 +1676,8 @@ public class ActivityReportingServiceImpl
                 && lostEvent.getSMS() != null )
             {
                 List<User> recipientsList = new ArrayList<User>();
-                for ( TrackedEntityAttributeValue attrValue : programStageInstance.getProgramInstance().getEntityInstance()
-                    .getAttributeValues() )
+                for ( TrackedEntityAttributeValue attrValue : programStageInstance.getProgramInstance()
+                    .getEntityInstance().getAttributeValues() )
                 {
                     if ( attrValue.getAttribute().getValueType().equals( "phoneNumber" ) )
                     {
