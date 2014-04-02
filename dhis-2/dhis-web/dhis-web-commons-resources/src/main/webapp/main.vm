@@ -102,7 +102,11 @@
       <div id="menuDropDown1" class="menuDropDownArea app-menu-dropdown menuLink1_menu" >
         <div class="caret-up-border"></div>
         <div class="caret-up-background"></div>
-        <ul class="menuDropDownBox"><li class="menu-placeholder"><img src="../images/ajax-loader-bar.gif"></li></ul>
+        <div class="menu-drop-down-wrap">
+            <div class="menu-drop-down-scroll">
+              <ul class="menuDropDownBox"><li class="menu-placeholder"><img src="../images/ajax-loader-bar.gif"></li></ul>
+            </div>
+        </div>
         <div class="apps-menu-more"><a href="../dhis-web-commons-about/modules.action">$i18n.getString( "more_applications" )</a></div>
       </div>
 
