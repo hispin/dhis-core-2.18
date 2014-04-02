@@ -33,6 +33,7 @@ import com.google.common.collect.Maps;
 import org.hisp.dhis.acl.Access;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -298,6 +299,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     {
         T object = getEntity( uid );
 
+        if ( object == null )
+        {
+            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
+            return;
+        }
+
         if ( !aclService.canUpdate( currentUserService.getCurrentUser(), object ) )
         {
             throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
@@ -316,6 +323,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         input ) throws Exception
     {
         T object = getEntity( uid );
+
+        if ( object == null )
+        {
+            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
+            return;
+        }
 
         if ( !aclService.canUpdate( currentUserService.getCurrentUser(), object ) )
         {
