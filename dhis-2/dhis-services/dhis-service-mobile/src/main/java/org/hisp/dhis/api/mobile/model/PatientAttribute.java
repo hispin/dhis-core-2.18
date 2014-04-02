@@ -55,12 +55,13 @@ public class PatientAttribute
     // Constructors
     // -------------------------------------------------------------------------
 
-    public PatientAttribute( String name, String value, String type, boolean isMandatory, OptionSet optionSet )
+    public PatientAttribute( String name, String value, String type, boolean isMandatory, boolean isDisplayedInList, OptionSet optionSet )
     {
         this.name = name;
         this.value = value;
         this.type = type;
         this.isMandatory = isMandatory;
+        this.isDisplayedInList = isDisplayedInList;
         this.optionSet = optionSet;
     }
 

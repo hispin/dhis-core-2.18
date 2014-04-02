@@ -258,7 +258,7 @@ function loadPeriods()
 	    	for ( i in json.periods ) {
 	    		addOptionToList( list, json.periods[i].isoDate, json.periods[i].name );
 	    	}
-	    	document.getElementById("amountAvail").value = json.amountAvailable;
+	    	
 	    } );
 	    
 	}	

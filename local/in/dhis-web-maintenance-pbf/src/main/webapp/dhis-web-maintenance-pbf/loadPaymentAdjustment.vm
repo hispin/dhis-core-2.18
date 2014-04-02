@@ -1,5 +1,9 @@
 
 <script type="text/javascript" >
+	jQuery(document).ready( function(){
+		document.getElementById("amountAvail").value = $amountAvailable;
+		adjustPer();
+	});
 	var total = 0;
 	var windowWidth = $(window).width();
 	var windowHeight = $(window).height();
@@ -20,7 +24,7 @@
 </script>
 
 <script >
-$(function() {
+jQuery(document).ready( function(){
 			Ext.QuickTips.init();
 			
 			var grid = Ext.create('Ext.ux.grid.TransformGrid', "paymentDetails", {				
@@ -123,8 +127,9 @@ $(function() {
         <script>
         	function calVal( ) {
         		var amount = 0.0;
-        		amount = parseFloat( '$!quantityValidatedMap.get( $dataElement.uid )' ) * parseFloat( '$!tariffDataValueMap.get( $dataElement.uid )' );
-        		$('#amount_'+$dataElement.id).text( amount.toFixed(2) );
+        		amount = parseFloat( $!quantityValidatedMap.get( $dataElement.uid ) ) * parseFloat( $!tariffDataValueMap.get( $dataElement.uid ) );
+        		document.getElementById("amount_"+$dataElement.id).firstChild.nodeValue = amount.toFixed(2);
+        		
         		total = total + parseFloat( amount  );
         		document.getElementById("total").value = total.toFixed(2) ;
         	}
@@ -133,10 +138,8 @@ $(function() {
 		#end
 		<tr>
 			<td>&nbsp; </td>			
-			<td colspan="2" >Unadjusted Amount </td>
-			<td colspan="2"><input type="text" name="total" id="total"/></td>
-			<td>&nbsp; </td>
-			<td>&nbsp; </td>>
+			<td colspan="3" >Unadjusted Amount </td>
+			<td colspan="3"><input type="text" name="total" id="total"/></td>			
 		</tr>
     </tbody>
 </table>
