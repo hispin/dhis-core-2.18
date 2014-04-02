@@ -192,8 +192,8 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-pbf/getPaymentAdjustmentList.vm</param>
       <param name="menu">/dhis-web-maintenance-pbf/menuPayment.vm</param>
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/paymentAdjustment.js,../dhis-web-commons/javascripts/ext/ext-all.js,javascript/TransformGrid.js</param>
-      <param name="stylesheets">../dhis-web-commons/javascripts/ext/resources/css/ext-all-gray.css,css/dataentry.css</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/paymentAdjustment.js</param>
+      <param name="stylesheets">css/dataentry.css</param>
     </action>
     
 	<!-- Load Payment Adjustment List -->

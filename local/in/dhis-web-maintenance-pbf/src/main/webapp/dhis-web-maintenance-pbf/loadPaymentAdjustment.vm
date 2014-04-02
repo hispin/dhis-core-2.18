@@ -1,88 +1,15 @@
 
 <script type="text/javascript" >
 	jQuery(document).ready( function(){
-		document.getElementById("amountAvail").value = $amountAvailable;
+		document.getElementById("amountAvail").value = '$amountAvailable';
 		adjustPer();
 	});
-	var total = 0;
-	var windowWidth = $(window).width();
-	var windowHeight = $(window).height();
-	var tableWidth = (parseInt( windowWidth ) * 75) / 100 ;	
-	var columnWidth = (parseInt( windowWidth ) * 10) / 100 ;
-	var indicatorWidth = (parseInt( windowWidth ) * 15) / 100 ;
-	Ext.Loader.setConfig({
-		enabled: true
-	});
-	Ext.Loader.setPath('Ext.ux.grid', 'javascript');
-	Ext.require([
-		'Ext.data.*',
-		'Ext.grid.*',
-		'Ext.toolbar.Paging',
-		'Ext.ux.grid.TransformGrid'
-	]);
+	var total = 0.0;
 	
 </script>
 
 <script >
-jQuery(document).ready( function(){
-			Ext.QuickTips.init();
-			
-			var grid = Ext.create('Ext.ux.grid.TransformGrid', "paymentDetails", {				
-			sortableColumns: true,
-            enableColumnMove: true,
-            enableColumnResize: true,
-            sortOnLoad: true,
-			width: tableWidth,
-        	height: 200,			
-            sorters: {direction: 'ASC'},
-			autoCreateViewPort:false,
-			renderTo: Ext.Element.get('#paymentTable'),
-        	layout: {
-            	type: 'hbox',
-            	align: 'stretch'
-        	},
-			columns: [
-    		{
-                text     : '$i18n.getString( "indicator" )',
-    			width    : indicatorWidth,            
-                sortable : true
-            },
-			{
-                text     : '$i18n.getString( "quantity_for" )',
-    			width    : columnWidth,            
-                sortable : true
-            },
-			{
-                text     : '$i18n.getString( "Tariff" )',
-    			width    : columnWidth,						
-                sortable : true
-            },
-			{
-                text     : '$i18n.getString( "amount" )',
-    			width    : columnWidth,						
-                sortable : true
-            },
-			{
-                text     : '$i18n.getString( "amount_including_quality" )',
-    			width    : columnWidth,						
-                sortable : true
-            },
-			{
-                text     : '$i18n.getString( "adjusted_per" )',
-    			width    : columnWidth,						
-                sortable : true
-            },
-			{
-                text     : '$i18n.getString( "adjusted_per" )',
-    			width    : columnWidth,						
-                sortable : false
-            }
-			]
-			});
-			
-			grid.render();
 
-});
 </script>
 <style >
 	.mandatory
@@ -93,10 +20,10 @@ jQuery(document).ready( function(){
 </style>
 
 <input type="hidden" id="dataElementId" name="dataElementId" value="$!selecteddataElement.id"/>
-<div style="width:100%;" id="paymentTable">
-<table id="paymentDetails" name="paymentDetails" cellspacing="0">
+<div style="width:95%;" id="paymentTable">
+<table style="width:100%;" id="paymentDetails" name="paymentDetails" cellspacing="0" class="formSection">
 	<thead >
-		<tr >
+		<tr bgcolor="#CBDDEB">
 			<th >$i18n.getString( "indicator" )</th>
 			<th >$i18n.getString( "quantity_for" )</th>
 			<th >$i18n.getString( "Tariff" )</th>			
@@ -108,6 +35,7 @@ jQuery(document).ready( function(){
 	</thead>
 	<tbody>
 		#set( $mark = false )
+		
 		#foreach( $dataElement in $dataElements )
 			#if( $mark )
                 #set( $mark = false )
@@ -115,31 +43,33 @@ jQuery(document).ready( function(){
 				#set( $mark = true )
 			#end
 			
-            <tr >
+            <tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8" #end>
 				<td>$!dataElement.name</td>
 				<td>$!quantityValidatedMap.get( $dataElement.uid )</td>
 				<td>$!tariffDataValueMap.get( $dataElement.uid )</td>				
-				<td id="amount_$dataElement.id"></td>
+				<td>$!amountMap.get( $dataElement.uid )</td>
 				<td>&nbsp; </td>
-				<td>&nbsp;</td>
+				<td id="adjusted_$dataElement.uid">&nbsp;</td>
 	            <td>&nbsp;</td>		            		
         </tr>
         <script>
-        	function calVal( ) {
-        		var amount = 0.0;
-        		amount = parseFloat( $!quantityValidatedMap.get( $dataElement.uid ) ) * parseFloat( $!tariffDataValueMap.get( $dataElement.uid ) );
-        		document.getElementById("amount_"+$dataElement.id).firstChild.nodeValue = amount.toFixed(2);
-        		
-        		total = total + parseFloat( amount  );
-        		document.getElementById("total").value = total.toFixed(2) ;
+        	function calValue()
+        	{
+        		var adjusted = $("#adjustment").val();
+        		var amount = '$!tariffDataValueMap.get( $dataElement.uid )';
+        		var adjustedPer = 0.0;
+        		adjustedPer = (parseFloat(amount)/parseFloat(adjusted))*100
+        		$('#adjusted_$dataElement.uid').text(adjustedPer.toFixed(2));
         	}
-        	calVal( );
+        	calValue();
         </script>
 		#end
 		<tr>
-			<td>&nbsp; </td>			
-			<td colspan="3" >Unadjusted Amount </td>
-			<td colspan="3"><input type="text" name="total" id="total"/></td>			
+			<td>&nbsp; </td>						
+			<td colspan="2" >Unadjusted Amount </td>
+			<td colspan="2"><input type="text" name="total" id="total" value="$!unAdjustedAmount"/></td>			
+			<td>&nbsp; </td>
+			<td>&nbsp; </td>
 		</tr>
     </tbody>
 </table>

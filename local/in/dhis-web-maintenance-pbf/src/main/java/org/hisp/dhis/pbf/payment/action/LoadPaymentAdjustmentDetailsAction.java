@@ -19,6 +19,10 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.pbf.api.Lookup;
+import org.hisp.dhis.pbf.api.LookupService;
+import org.hisp.dhis.pbf.api.QualityMaxValue;
+import org.hisp.dhis.pbf.api.QualityMaxValueService;
 import org.hisp.dhis.pbf.api.TariffDataValue;
 import org.hisp.dhis.pbf.api.TariffDataValueService;
 import org.hisp.dhis.period.Period;
@@ -32,6 +36,7 @@ public class LoadPaymentAdjustmentDetailsAction
     implements Action
 {
 	private final static String PAYMENT_ADJUSTMENT_AMOUNT_DE = "PAYMENT_ADJUSTMENT_AMOUNT_DE";
+	private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -84,6 +89,12 @@ public class LoadPaymentAdjustmentDetailsAction
 	@Autowired
 	private PeriodService periodService;
 	
+	@Autowired
+    private LookupService lookupService;
+	
+	@Autowired
+	private QualityMaxValueService qualityMaxValueService;
+    
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -134,10 +145,21 @@ public class LoadPaymentAdjustmentDetailsAction
 		return tariffDataValueMap;
 	}
     
-    private String amountAvailable = "";
+    private Map<String,String> amountMap = new HashMap<String, String>();
+    
+    public Map<String, String> getAmountMap() {
+		return amountMap;
+	}
+
+	private String amountAvailable = "";
     
     public String getAmountAvailable() {
 		return amountAvailable;
+	}
+    private String unAdjustedAmount;
+    
+    public String getUnAdjustedAmount() {
+		return unAdjustedAmount;
 	}
     
     // -------------------------------------------------------------------------
@@ -159,34 +181,111 @@ public class LoadPaymentAdjustmentDetailsAction
 		
 		String amountDEId = paymentAmount.getValue()+"";
         
+		Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+        int tariff_setting_authority = 0;
+        if ( tariff_authority == null )
+        {
+            tariff_setting_authority = 1;
+
+        }
+        else
+        {
+            tariff_setting_authority = (int) tariff_authority.getValue();
+
+        }
+        
         DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
+        List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PAYMENT_TYPE ) );
+		
+        Double allMax = 0.0;
+        Double allScore = 0.0;
+        double quantityValue = 0;
+        for( Lookup lookup : lookups )
+        {
+			String[] lookupType = lookup.getValue().split(":");
+			//System.out.println("lookupType[0] "+lookupType[0]+" dataSetId "+dataSetId);
+			if(Integer.parseInt( lookupType[0] ) == Integer.parseInt(dataSetId))
+			{
+				DataSet lookupdataSet = dataSetService.getDataSet(Integer.parseInt(lookupType[1]));
+				for(DataElement de : lookupdataSet.getDataElements())
+					{
+					List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>();
+		            OrganisationUnit parentOrgunit = findParentOrgunitforTariff( organisationUnit, tariff_setting_authority );
+		            if ( parentOrgunit != null )
+		            {
+		                qualityMaxValues = new ArrayList<QualityMaxValue>( qualityMaxValueService.getQuanlityMaxValues(
+		                    parentOrgunit, de ) );
+		            }
+		            List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates(period.getStartDate(), period.getEndDate()));
+		        	//System.out.println("Period Size: "+ periodList.size() );
+		            for(Period prd : periodList)		        		
+		        	{
+		            	
+		        		List<OrganisationUnit> orgList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId()));
+		        		//System.out.println("orgList Size: "+ orgList.size() );
+		        		for(OrganisationUnit ou : orgList )
+		            	{
+				            DataValue dataValue = dataValueService.getDataValue( de, prd, ou, optionCombo );
+				            for ( QualityMaxValue qualityMaxValue : qualityMaxValues )
+				            {
+				            	//System.out.println("qualityMaxValue.getValue() "+qualityMaxValue.getValue());
+				                if ( qualityMaxValue.getStartDate().getTime() <= period.getStartDate().getTime()
+				                    && period.getEndDate().getTime() <= qualityMaxValue.getEndDate().getTime() )
+				                {
+				                    if ( dataValue != null )
+				                    {
+				                    	allMax = allMax + qualityMaxValue.getValue();
+				                    	//System.out.println("dataValue.getValue() "+dataValue.getValue());
+				                        allScore = allScore + Double.parseDouble(dataValue.getValue()) ;
+				                    }
+				                    break;
+				                }
+				            }
+		            	}
+		        	}
+				}
+			}
+        }
+        
+		quantityValue = Math.round(( allScore / allMax ) * 100) ;
+		System.out.println("quantityValue: "+quantityValue);
+		//quantityValue = Math.round( quantityValue );
+		double unadjusted = 0.0;
         for(DataElement de : dataElements)
         {
-        	int quantityValue = 0;
-        	int tariffValue = 0;
-        	List<OrganisationUnit> orgList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId()));
+        	double tariffValue = 0;
+        	List<OrganisationUnit> orgList = new ArrayList<OrganisationUnit>();
+        	OrganisationUnit parentOrgunit2 = findParentOrgunitforTariff( organisationUnit, tariff_setting_authority );
+            if ( parentOrgunit2 != null )
+            {
+            	orgList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( parentOrgunit2.getId()));
+            }
+            else
+            {
+            	orgList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId()));
+            }
         	for(OrganisationUnit ou : orgList )
         	{
         		List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates(period.getStartDate(), period.getEndDate()));
 	        	for(Period prd : periodList)
-	        	{
-	        		DataValue dataValue = dataValueService.getDataValue(de, prd, ou, optionCombo );
-		        	if(dataValue != null)
-		        	{
-		        		quantityValue = quantityValue + Integer.parseInt(dataValue.getValue());	        		
-		        	}	        	
+	        	{       	
 		        	TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( ou , de, dataSet, prd.getStartDate(), prd.getEndDate());
 		        	
 		        	if(tariffDataValue != null)
 		        	{
-		        		tariffValue = tariffValue + Integer.parseInt(tariffDataValue.getValue()+"");
+		        		System.out.println( tariffDataValue.getValue() );
+		        		tariffValue = tariffValue + tariffDataValue.getValue();
 		        	}
 	        	}
         	}
         	quantityValidatedMap.put(de.getUid(), quantityValue+"" );
         	tariffDataValueMap.put(de.getUid(), tariffValue+"");
+        	double amount = ( quantityValue * tariffValue );
+        	amountMap.put(de.getUid(), amount+"" );
+        	unadjusted = unadjusted + amount;
         }
+        unAdjustedAmount = unadjusted+"";
         Collections.sort(dataElements);
         DataElement dataElement = dataElementService.getDataElement((int)paymentAmount.getValue());
         DataValue dataValue = dataValueService.getDataValue(dataElement, period, organisationUnit, optionCombo);
@@ -196,5 +295,17 @@ public class LoadPaymentAdjustmentDetailsAction
         	amountAvailable = dataValue.getValue();        	
         }
         return SUCCESS;
+    }
+	public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
+    {
+        Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
+        if ( tariffOULevel == ouLevel )
+        {
+            return organisationUnit;
+        }
+        else
+        {
+            return findParentOrgunitforTariff( organisationUnit.getParent(), tariffOULevel );
+        }
     }
 }
