@@ -28,19 +28,12 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.springframework.util.Assert.notNull;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
 import org.hisp.dhis.scheduling.TaskId;
@@ -53,7 +46,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.springframework.util.Assert.notNull;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -89,6 +89,27 @@ public class DefaultImportService
     //-------------------------------------------------------------------------------------------------------
     // ImportService Implementation
     //-------------------------------------------------------------------------------------------------------
+
+    @Override
+    public <T extends IdentifiableObject> ImportTypeSummary importObject( String userUid, T object )
+    {
+        User user = userService.getUser( userUid );
+
+        ImportOptions importOptions = new ImportOptions();
+        importOptions.setDryRun( false );
+        importOptions.setPreheatCache( false );
+
+        objectBridge.setWriteEnabled( !importOptions.isDryRun() );
+        objectBridge.setPreheatCache( importOptions.isPreheatCache() );
+        objectBridge.init();
+
+        ImportTypeSummary importTypeSummary = doImport( user, object, importOptions );
+
+        cacheManager.clearCache();
+        objectBridge.destroy();
+
+        return importTypeSummary;
+    }
 
     @Override
     public ImportSummary importMetaData( String userUid, MetaData metaData, TaskId taskId )
@@ -248,6 +269,22 @@ public class DefaultImportService
             {
                 log.warn( "Importer for object of type " + objects.get( 0 ).getClass().getSimpleName() + " not found." );
             }
+        }
+
+        return null;
+    }
+
+    private <T extends IdentifiableObject> ImportTypeSummary doImport( User user, T object, ImportOptions importOptions )
+    {
+        Importer<T> importer = findImporterClass( object.getClass() );
+
+        if ( importer != null )
+        {
+            return importer.importObject( user, object, importOptions );
+        }
+        else
+        {
+            log.warn( "Importer for object of type " + object.getClass().getSimpleName() + " not found." );
         }
 
         return null;

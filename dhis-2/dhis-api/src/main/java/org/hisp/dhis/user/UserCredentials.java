@@ -28,6 +28,7 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -388,12 +389,6 @@ public class UserCredentials
     }
 
     @Override
-    public String toString()
-    {
-        return "[" + username + "]";
-    }
-
-    @Override
     public boolean haveUniqueNames()
     {
         return false;
@@ -403,16 +398,22 @@ public class UserCredentials
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonIgnore
     public String getPassword()
     {
         return password;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public void setPassword( String password )
     {
         this.password = password;
     }
 
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Date getPasswordLastUpdated()
     {
         return passwordLastUpdated;
@@ -531,5 +532,23 @@ public class UserCredentials
     public void setDisabled( boolean disabled )
     {
         this.disabled = disabled;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "UserCredentials{" +
+            "username='" + username + '\'' +
+            ", openId='" + openId + '\'' +
+            ", password='" + password + '\'' +
+            ", passwordLastUpdated=" + passwordLastUpdated +
+            ", userAuthorityGroups=" + userAuthorityGroups +
+            ", lastLogin=" + lastLogin +
+            ", restoreToken='" + restoreToken + '\'' +
+            ", restoreCode='" + restoreCode + '\'' +
+            ", restoreExpiry=" + restoreExpiry +
+            ", selfRegistered=" + selfRegistered +
+            ", disabled=" + disabled +
+            '}';
     }
 }
