@@ -28,3 +28,26 @@
   vertical-align: top;
   margin-left: 15px;
 }
+
+@media print
+{
+	div#control 
+    {
+	  display: none;
+	}
+	
+	h3#dataSetReportHeader
+    {
+	  display: none;
+	}
+		
+	#shareForm 
+    {
+	  display: none;
+	}  
+	
+	.gridTable 
+    {
+	    width: 100%;
+	}
+}
