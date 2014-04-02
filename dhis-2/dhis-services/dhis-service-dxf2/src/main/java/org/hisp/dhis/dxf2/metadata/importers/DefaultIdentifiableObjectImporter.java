@@ -452,7 +452,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected boolean newObject( User user, T object )
     {
-        if ( !aclService.canCreatePublic( user, object.getClass() ) && !aclService.canCreatePrivate( user, object.getClass() ) )
+        if ( !aclService.canCreate( user, object.getClass() ) )
         {
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have create access to class type." ) );
