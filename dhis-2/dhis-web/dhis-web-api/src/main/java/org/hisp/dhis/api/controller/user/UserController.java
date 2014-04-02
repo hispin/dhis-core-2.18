@@ -32,19 +32,28 @@ import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
+import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
+import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
+import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +62,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = UserController.RESOURCE_PATH )
+@RequestMapping(value = UserController.RESOURCE_PATH)
 public class UserController
     extends AbstractCrudController<User>
 {
@@ -62,16 +71,19 @@ public class UserController
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PasswordManager passwordManager;
+
     @Override
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_USER_VIEW')")
     public String getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request )
     {
         return super.getObjectList( parameters, model, response, request );
     }
 
     @Override
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, Model model,
+    @PreAuthorize("hasRole('ALL') or hasRole('F_USER_VIEW')")
+    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters, Model model,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         return super.getObject( uid, parameters, model, request, response );
@@ -107,5 +119,109 @@ public class UserController
     protected User getEntity( String uid )
     {
         return userService.getUser( uid );
+    }
+
+    //--------------------------------------------------------------------------
+    // POST
+    //--------------------------------------------------------------------------
+
+    @Override
+    @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
+        {
+            throw new CreateAccessDeniedException( "You don't have the proper permissions to create this object." );
+        }
+
+        User user = renderService.fromXml( request.getInputStream(), getEntityClass() );
+
+        String encodePassword = passwordManager.encodePassword( user.getUsername(),
+            user.getUserCredentials().getPassword() );
+        user.getUserCredentials().setPassword( encodePassword );
+
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user );
+        renderService.toJson( response.getOutputStream(), summary );
+    }
+
+    @Override
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
+        {
+            throw new CreateAccessDeniedException( "You don't have the proper permissions to create this object." );
+        }
+
+        User user = renderService.fromJson( request.getInputStream(), getEntityClass() );
+
+        String encodePassword = passwordManager.encodePassword( user.getUsername(),
+            user.getUserCredentials().getPassword() );
+        user.getUserCredentials().setPassword( encodePassword );
+
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), user );
+        renderService.toJson( response.getOutputStream(), summary );
+    }
+
+    //--------------------------------------------------------------------------
+    // PUT
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
+        input ) throws Exception
+    {
+        User object = getEntity( uid );
+
+        if ( object == null )
+        {
+            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
+            return;
+        }
+
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), object ) )
+        {
+            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
+        }
+
+        User parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
+        parsed.setUid( uid );
+
+        String encodePassword = passwordManager.encodePassword( parsed.getUsername(),
+            parsed.getUserCredentials().getPassword() );
+        parsed.getUserCredentials().setPassword( encodePassword );
+
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed );
+        renderService.toJson( response.getOutputStream(), summary );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
+        input ) throws Exception
+    {
+        User object = getEntity( uid );
+
+        if ( object == null )
+        {
+            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
+            return;
+        }
+
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), object ) )
+        {
+            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
+        }
+
+        User parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
+        parsed.setUid( uid );
+
+        String encodePassword = passwordManager.encodePassword( parsed.getUsername(),
+            parsed.getUserCredentials().getPassword() );
+        parsed.getUserCredentials().setPassword( encodePassword );
+
+        ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed );
+        renderService.toJson( response.getOutputStream(), summary );
     }
 }
