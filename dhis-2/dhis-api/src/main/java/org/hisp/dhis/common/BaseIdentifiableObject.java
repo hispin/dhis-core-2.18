@@ -37,6 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.annotation.Description;
+import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.SharingBasicView;
 import org.hisp.dhis.common.view.SharingDetailedView;
 import org.hisp.dhis.common.view.SharingExportView;
@@ -325,12 +326,16 @@ public class BaseIdentifiableObject
     {
         this.access = access;
     }
-
+    
+    @Override
+    @JsonView( { DimensionalView.class } )
+    @JsonProperty
     public String getDisplayName()
     {
         return displayName != null && !displayName.trim().isEmpty() ? displayName : getName();
     }
-
+    
+    @JsonIgnore
     public void setDisplayName( String displayName )
     {
         this.displayName = displayName;
