@@ -153,18 +153,7 @@ public class BaseDimensionalObject
     {
         return dimensionName != null ? dimensionName : uid;
     }
-    
-    /**
-     * Override from IdentifiableObject for DimensionalView.
-     */
-    @Override
-    @JsonView( {DimensionalView.class} )
-    @JsonProperty
-    public String getDisplayName()
-    {
-        return super.getDisplayName();
-    }
-    
+        
     //--------------------------------------------------------------------------
     // Getters and setters
     //--------------------------------------------------------------------------
