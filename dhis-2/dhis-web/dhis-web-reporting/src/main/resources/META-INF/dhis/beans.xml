@@ -109,6 +109,12 @@
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
+  
+  <!-- Data Approval -->
+
+  <bean id="org.hisp.dhis.reporting.dataapproval.action.GetDataApprovalOptionsAction" class="org.hisp.dhis.reporting.dataapproval.action.GetDataApprovalOptionsAction"
+    scope="prototype">
+  </bean>
 
   <!-- Data completeness -->
 
