@@ -162,7 +162,7 @@ public class BaseDimensionalObject
     @JsonProperty
     public String getDisplayName()
     {
-        return displayName != null && !displayName.trim().isEmpty() ? displayName : getName();
+        return super.getDisplayName();
     }
     
     //--------------------------------------------------------------------------
