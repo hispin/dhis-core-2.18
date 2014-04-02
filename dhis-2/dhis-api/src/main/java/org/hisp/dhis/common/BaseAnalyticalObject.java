@@ -401,7 +401,7 @@ public abstract class BaseAnalyticalObject
             {
                 TrackedEntityAttributeDimension tead = attributes.get( dimension );
                 
-                return new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_ATTRIBUTE, null, null, tead.getOperator(), tead.getFilter() );
+                return new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_ATTRIBUTE, null, tead.getDisplayName(), tead.getOperator(), tead.getFilter() );
             }
             
             // Tracked entity data element
@@ -417,7 +417,7 @@ public abstract class BaseAnalyticalObject
             {
                 TrackedEntityDataElementDimension tedd = dataElements.get( dimension );
                 
-                return new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, null, null, tedd.getOperator(), tedd.getFilter() );
+                return new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, null, tedd.getDisplayName(), tedd.getOperator(), tedd.getFilter() );
             }
         }
         
@@ -610,7 +610,7 @@ public abstract class BaseAnalyticalObject
             {
                 TrackedEntityAttributeDimension tead = attributes.get( dimension );
                 
-                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_ATTRIBUTE, null, null, tead.getOperator(), tead.getFilter() ) );
+                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_ATTRIBUTE, null, tead.getDisplayName(), tead.getOperator(), tead.getFilter() ) );
             }
             
             // Tracked entity data element
@@ -626,7 +626,7 @@ public abstract class BaseAnalyticalObject
             {
                 TrackedEntityDataElementDimension tedd = dataElements.get( dimension );
                 
-                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, null, null, tedd.getOperator(), tedd.getFilter() ) );
+                objects.add( new BaseDimensionalObject( dimension, DimensionType.TRACKED_ENTITY_DATAELEMENT, null, tedd.getDisplayName(), tedd.getOperator(), tedd.getFilter() ) );
             }            
         }
         

@@ -59,6 +59,11 @@ public class TrackedEntityDataElementDimension
         return dataElement != null ? dataElement.getUid() : null;
     }
     
+    public String getDisplayName()
+    {
+        return dataElement != null ? dataElement.getDisplayName() : null;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

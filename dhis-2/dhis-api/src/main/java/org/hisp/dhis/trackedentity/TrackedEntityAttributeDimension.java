@@ -57,6 +57,11 @@ public class TrackedEntityAttributeDimension
     {
         return attribute != null ? attribute.getUid() : null;
     }
+    
+    public String getDisplayName()
+    {
+        return attribute != null ? attribute.getDisplayName() : null;
+    }
         
     // -------------------------------------------------------------------------
     // Getters and setters
