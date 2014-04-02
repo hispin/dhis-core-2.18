@@ -19,6 +19,7 @@ var eventCaptureFilters = angular.module('eventCaptureFilters', [])
             
             var dateFilter = {}, 
                 textFilter = {}, 
+                numberFilter = {},
                 filteredData = data;
             
             for(var key in filters){
@@ -28,17 +29,19 @@ var eventCaptureFilters = angular.module('eventCaptureFilters', [])
                         dateFilter[key] = filters[key];
                     }
                 }
-                else if(filterTypes[key] === 'date'){
-                    
+                else if(filterTypes[key] === 'int'){
+                    if(filters[key].start || filters[key].end){
+                        numberFilter[key] = filters[key];
+                    }
                 }
                 else{
                     textFilter[key] = filters[key];
                 }
             }
             
-            filteredData = $filter('filter')(filteredData, textFilter);               
- 
+            filteredData = $filter('filter')(filteredData, textFilter); 
             filteredData = $filter('filter')(filteredData, dateFilter, dateComparator);            
+            filteredData = $filter('filter')(filteredData, numberFilter, numberComparator);
                         
             return filteredData;
         } 
@@ -53,6 +56,16 @@ var eventCaptureFilters = angular.module('eventCaptureFilters', [])
             return ( Date.parse(date) <= Date.parse(end) ) && (Date.parse(date) >= Date.parse(start));
         }        
         return ( Date.parse(date) <= Date.parse(end) ) || (Date.parse(date) >= Date.parse(start));
+    }
+    
+    function numberComparator(data,filter){
+        var start = filter.start;
+        var end = filter.end;
+        
+        if(filter.start && filter.end){
+            return ( data <= end ) && ( data >= start );
+        }        
+        return ( data <= end ) || ( data >= start );
     }
 })
 

@@ -150,6 +150,15 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
   };
 })
 
+.directive('draggableModal', function(){
+    return {
+      restrict: 'EA',
+      link: function(scope, element) {
+        element.draggable();
+      }
+    };  
+}) 
+
 .directive('serversidePaginator', function factory() {
     return {
         restrict: 'E',
@@ -159,15 +168,6 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
         templateUrl: 'views/serverside-pagination.html'
     };
 })
-
-.directive('draggableModal', function(){
-    return {
-      restrict: 'EA',
-      link: function(scope, element) {
-        element.draggable();
-      }
-    };  
-}) 
 
 .directive('clientsidePaginator', function factory() {
     return {

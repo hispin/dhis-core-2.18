@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html manifest="event-capture.appcache" ng-app="eventCapture">
+<!--<html manifest="event-capture.appcache" ng-app="eventCapture">-->
+<html ng-app="eventCapture">
     <head>
         <title>Event Capture</title>
 
@@ -44,7 +45,7 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
-        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
+        <!--<script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>-->
         <script type="text/javascript" src="../dhis-web-commons/ouwt/ouwt.js"></script>
         
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
@@ -181,30 +182,36 @@
                                                 
                                                 <!-- filter icon begins -->
                                                 <span class='pull-right'>
-                                                    <span ng-show="eventGridColumn.type !=='date'">
+                                                    <span ng-show="eventGridColumn.type !='date' && eventGridColumn.type !='int'">
                                                         <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [filterText[eventGridColumn.id] == undefined || filterText[eventGridColumn.id] == '']"><i class="fa fa-search"></i></span></a>
                                                     </span>
-                                                    <span ng-show="eventGridColumn.type ==='date'">
+                                                    <span ng-show="eventGridColumn.type ==='date' || eventGridColumn.type ==='int'">
                                                         <a href ng-click="searchInGrid(eventGridColumn)" title="{{'search'| translate}}"><span ng-class="{true: 'filter-without-content', false: 'filter-with-content'} [(filterText[eventGridColumn.id].start == undefined || filterText[eventGridColumn.id].start == '') && (filterText[eventGridColumn.id].end == undefined || filterText[eventGridColumn.id].end == '')]"><i class="fa fa-search"></i></span></a>
                                                     </span>                                                    
                                                 </span>
                                                 <!-- filter icon ends -->
                                                 
                                                 <!-- filter input field begins -->
-                                                <span ng-show="eventGridColumn.showFilter">                                                    
-                                                    <span ng-show="eventGridColumn.type !=='date'">
-                                                        <input type="text" style="width: 90%;" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid(eventGridColumn)">
+                                                <span ng-show="eventGridColumn.showFilter">  
+                                                    <span ng-switch="eventGridColumn.type">
+                                                        <span ng-switch-when="int">
+                                                            <input style="width: 45%;" placeholder="{{'lower_limit' | translate}}" type="number" ng-model="filterText[eventGridColumn.id].start" ng-blur="searchInGrid(eventGridColumn)">
+                                                            <input style="width: 45%;" placeholder="{{'upper_limit' | translate}}" type="number" ng-model="filterText[eventGridColumn.id].end" ng-blur="searchInGrid(eventGridColumn)">
+                                                        </span>
+                                                        <span ng-switch-when="date">
+                                                            <input style="width: 70%;" placeholder="{{'start_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].start" data-ng-date readonly="readonly">
+                                                            <span ng-hide="filterText[eventGridColumn.id].start == undefined || filterText[eventGridColumn.id].start == ''">
+                                                                <a href ng-click='removeStartFilterText(eventGridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
+                                                            </span>
+                                                            <input style="width: 70%;" placeholder="{{'end_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].end" data-ng-date readonly="readonly">
+                                                            <span ng-hide="filterText[eventGridColumn.id].end == undefined || filterText[eventGridColumn.id].end == ''">
+                                                                <a href ng-click='removeEndFilterText(eventGridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
+                                                            </span> 
+                                                        </span>
+                                                        <span ng-switch-default>
+                                                            <input type="text" style="width: 90%;" ng-model="filterText[eventGridColumn.id]" ng-blur="searchInGrid(eventGridColumn)">
+                                                        </span> 
                                                     </span>                                                    
-                                                    <span ng-show="eventGridColumn.type ==='date'">
-                                                        <input style="width: 70%;" placeholder="{{'start_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].start" data-ng-date readonly="readonly">
-                                                        <span ng-hide="filterText[eventGridColumn.id].start == undefined || filterText[eventGridColumn.id].start == ''">
-                                                            <a href ng-click='removeStartFilterText(eventGridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
-                                                        </span>
-                                                        <input style="width: 70%;" placeholder="{{'end_date' | translate}}" type="text" ng-model="filterText[eventGridColumn.id].end" data-ng-date readonly="readonly">
-                                                        <span ng-hide="filterText[eventGridColumn.id].end == undefined || filterText[eventGridColumn.id].end == ''">
-                                                            <a href ng-click='removeEndFilterText(eventGridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
-                                                        </span>
-                                                    </span>
                                                 </span>
                                                 <!-- filter input field ends -->
                                                 
