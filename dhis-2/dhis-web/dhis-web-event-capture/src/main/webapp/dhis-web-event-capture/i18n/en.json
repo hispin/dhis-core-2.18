@@ -57,6 +57,8 @@
     "periods": "Periods",
     "start_date": "Start date",
     "end_date": "End date",
+    "lower_limit": "Lower limit",
+    "upper_limit": "Upper limit",
     "please_select": "[Please Select]",    
     "not_selected": "NOT_SELECTED",   
     "search": "Search",

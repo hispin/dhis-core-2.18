@@ -118,10 +118,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 
                 $scope.filterTypes[dataElement.id] = dataElement.type;
                 
-                if(dataElement.type === 'date'){
+                if(dataElement.type === 'date' || dataElement.type === 'int' ){
                      $scope.filterText[dataElement.id]= {};
                 }
-                //$scope.filterText[dataElement.id]= '';
                 
             });           
 
@@ -142,7 +141,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     Paginator.setPageCount($scope.pager.pageCount);
                     Paginator.setPageSize($scope.pager.pageSize);
                     Paginator.setItemCount($scope.pager.total);                    
-                    
                 }
                 
                 //process event list for easier tabular sorting
@@ -382,9 +380,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         //get new and old values
         var newValue = currentEvent[dataElement];
         var oldValue = $scope.currentEventOrginialValue[dataElement];
-        
-        console.log('old:  ', oldValue);
-        console.log('new:  ', newValue);
         
         //check for form validity
         $scope.outerForm.submitted = true;        
