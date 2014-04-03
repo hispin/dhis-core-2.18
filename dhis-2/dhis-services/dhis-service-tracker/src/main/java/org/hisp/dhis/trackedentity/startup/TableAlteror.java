@@ -292,6 +292,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE trackedentityattribute DROP COLUMN groupBy" );
         
         executeSql( "update trackedentityattribute set valuetype='string' where valuetype='combo' and  optionsetid is null" );
+
+        executeSql( "UPDATE trackedentityattribute SET valuetype='string' WHERE valuetype='localId';" );
     }
 
     // -------------------------------------------------------------------------
