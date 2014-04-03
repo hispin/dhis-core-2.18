@@ -369,6 +369,7 @@
         $('#menuDropDown1').addClass('app-menu-dropdown ui-helper-clearfix');
         $(selector).html('');
         $.tmpl( "appMenuItemTemplate", apps).appendTo(selector);
+        $('#menuDropDown1 .menu-drop-down-scroll .apps-menu-more').remove();
         $('.apps-menu-more').clone().addClass('ui-helper-clearfix').appendTo($('#menuDropDown1 .menu-drop-down-scroll'));
     }
 
