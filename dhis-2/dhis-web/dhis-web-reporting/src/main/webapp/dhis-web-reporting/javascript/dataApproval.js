@@ -126,7 +126,6 @@ dhis2.appr.setApprovalState = function()
 {
 	var data = dhis2.appr.getDataReport();
 	
-	$( "#approvalNotification" ).hide();
     $( "#approvalDiv" ).hide();
 		
 	$.getJSON( "../api/dataApprovals", data, function( json ) {	
@@ -138,47 +137,47 @@ dhis2.appr.setApprovalState = function()
 		
 	    $( ".approveButton" ).hide();
 	
-	    switch (json.state) {
+	    switch ( json.state ) {
 		    case "UNAPPROVED_WAITING":
-		        $("#approvalNotification").show().html(i18n_waiting_for_lower_level_approval);
+		        $( "#approvalNotification" ).html( i18n_waiting_for_lower_level_approval );
 		        break;
 		
 		    case "UNAPPROVED_READY":
-		        $("#approvalNotification").show().html(i18n_ready_for_approval);
+		        $( "#approvalNotification" ).html( i18n_ready_for_approval );
 		        
-		        if (json.mayApprove) {
-		            $("#approvalDiv").show();
-		            $("#approveButton").show();
+		        if ( json.mayApprove ) {
+		            $( "#approvalDiv" ).show();
+		            $( "#approveButton" ).show();
 		        }
 		        
 		        break;
 		
 		    case "APPROVED_HERE":
-		        $("#approvalNotification").show().html(i18n_approved);
+		        $( "#approvalNotification" ).html( i18n_approved );
 		        
 		        if (json.mayUnapprove)  {
-		            $("#approvalDiv").show();
-		            $("#unapproveButton").show();
+		            $( "#approvalDiv" ).show();
+		            $( "#unapproveButton" ).show();
 		        }
 		        
 		        if (json.mayAccept)  {
-		            $("#approvalDiv").show();
-		            $("#acceptButton").show();
+		            $( "#approvalDiv" ).show();
+		            $( "#acceptButton" ).show();
 		        }
 		        
 		        break;
 		
 		    case "ACCEPTED_HERE":
-		        $("#approvalNotification").show().html(i18n_approved);
+		        $( "#approvalNotification" ).html( i18n_approved );
 		        
-		        if (json.mayUnapprove)  {
-		            $("#approvalDiv").show();
-		            $("#unapproveButton").show();
+		        if ( json.mayUnapprove )  {
+		            $( "#approvalDiv" ).show();
+		            $( "#unapproveButton" ).show();
 		        }
 		        
 		        if (json.mayUnccept)  {
-		            $("#approvalDiv").show();
-		            $("#unacceptButton").show();
+		            $( "#approvalDiv" ).show();
+		            $( "#unacceptButton" ).show();
 		        }
 		        
 		        break;
@@ -249,7 +248,6 @@ dhis2.appr.acceptData = function()
 
     $.ajax( {
 		url: dhis2.appr.getAcceptanceUrl(),
-		data: dataReport,
         type: "post",
         success: function() {
             $( "#approvalNotification" ).show().html( i18n_approved_and_accepted );
@@ -280,7 +278,6 @@ dhis2.appr.unacceptData = function()
 
     $.ajax( {
 		url: dhis2.appr.getAcceptanceUrl(),
-		data: dataReport,
         type: "delete",
         success: function() {
             $( "#approvalNotification" ).show().html( i18n_approved );
