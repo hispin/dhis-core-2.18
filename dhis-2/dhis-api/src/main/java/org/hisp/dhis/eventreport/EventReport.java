@@ -100,6 +100,31 @@ public class EventReport
      */
     private List<String> filterDimensions = new ArrayList<String>();
 
+    /**
+     * Indicates rendering of sub-totals for the table.
+     */
+    private boolean totals;
+
+    /**
+     * Indicates rendering of sub-totals for the table.
+     */
+    private boolean subtotals;
+
+    /**
+     * Indicates rendering of empty rows for the table.
+     */
+    private boolean hideEmptyRows;
+    
+    /**
+     * The display density of the text in the table.
+     */
+    private String displayDensity;
+    
+    /**
+     * The font size of the text in the table.
+     */
+    private String fontSize;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -155,6 +180,11 @@ public class EventReport
             programStage = report.getProgramStage();
             startDate = report.getStartDate();
             endDate = report.getEndDate();
+            totals = report.isTotals();
+            subtotals = report.isSubtotals();
+            hideEmptyRows = report.isHideEmptyRows();
+            displayDensity = report.getDisplayDensity();
+            fontSize = report.getFontSize();
         }
     }
     
@@ -270,4 +300,59 @@ public class EventReport
     {
         this.filterDimensions = filterDimensions;
     }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+	public boolean isTotals() {
+		return totals;
+	}
+
+	public void setTotals(boolean totals) {
+		this.totals = totals;
+	}
+
+	@JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+	public boolean isSubtotals() {
+		return subtotals;
+	}
+
+	public void setSubtotals(boolean subtotals) {
+		this.subtotals = subtotals;
+	}
+
+	@JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+	public boolean isHideEmptyRows() {
+		return hideEmptyRows;
+	}
+
+	public void setHideEmptyRows(boolean hideEmptyRows) {
+		this.hideEmptyRows = hideEmptyRows;
+	}
+
+	@JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+	public String getDisplayDensity() {
+		return displayDensity;
+	}
+
+	public void setDisplayDensity(String displayDensity) {
+		this.displayDensity = displayDensity;
+	}
+
+	@JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+	public String getFontSize() {
+		return fontSize;
+	}
+
+	public void setFontSize(String fontSize) {
+		this.fontSize = fontSize;
+	}    
 }

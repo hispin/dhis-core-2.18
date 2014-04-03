@@ -104,6 +104,18 @@
       <element type="string" column="dimension" />
     </list>
 
+    <property name="totals" />
+
+    <property name="subtotals" />
+
+    <property name="hideEmptyRows" />
+
+    <property name="digitGroupSeparator" />
+
+    <property name="displayDensity" />
+
+    <property name="fontSize" />	  
+
     <!-- Access properties -->
     <property name="externalAccess" />
 
