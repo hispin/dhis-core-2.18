@@ -2,7 +2,7 @@
 { "objects": [
 #foreach( $object in $objects )
   {
-    "id": $!{object.id},
+    "id": "$!{object.id}",
     "uid": "$!{object.uid}",
     "name": "$!encoder.jsonEncode( ${object.displayName} )",
     "code": "$!encoder.jsonEncode( ${object.code} )",

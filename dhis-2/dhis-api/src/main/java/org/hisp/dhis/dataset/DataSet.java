@@ -487,6 +487,15 @@ public class DataSet
         
         return groupSets;
     }
+    
+    /**
+     * Indicates whether this data set has a category combination which is different
+     * from the default category combination.
+     */
+    public boolean hasCategoryCombo()
+    {
+        return categoryCombo != null && !DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME.equals( categoryCombo.getName() );
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
