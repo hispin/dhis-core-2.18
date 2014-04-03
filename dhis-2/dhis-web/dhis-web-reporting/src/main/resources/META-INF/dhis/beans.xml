@@ -115,6 +115,10 @@
   <bean id="org.hisp.dhis.reporting.dataapproval.action.GetDataApprovalOptionsAction" class="org.hisp.dhis.reporting.dataapproval.action.GetDataApprovalOptionsAction"
     scope="prototype">
   </bean>
+  
+  <bean id="org.hisp.dhis.reporting.dataapproval.action.GetCategoryOptionGroupsAction" class="org.hisp.dhis.reporting.dataapproval.action.GetCategoryOptionGroupsAction"
+    scope="prototype">
+  </bean>
 
   <!-- Data completeness -->
 

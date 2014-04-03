@@ -197,6 +197,11 @@
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataSetReport.js,javascript/dataApproval.js</param>
       <param name="stylesheets">style/dhis-web-reporting.css</param>
     </action>
+    
+    <action name="getCategoryOptionGroups" class="org.hisp.dhis.reporting.dataapproval.action.GetCategoryOptionGroupsAction">    
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIdentifiableObjects.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
 
     <!-- Organisation Unit Distribution -->
 
