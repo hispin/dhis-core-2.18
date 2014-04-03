@@ -27,13 +27,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// Make sure that dhis2 object exists
+var dhis2 = dhis2 || {};
+
 /**
  * Created by Mark Polak on 28/01/14.
- *
- * @see Underscore.js (http://underscorejs.org)
  */
-(function (dhis2, _, undefined) {
+(function (dhis2, undefined) {
     var MAX_FAVORITES = 9,
+        du = {
+            isFunction: function(obj) {
+                return Object.prototype.toString.call(obj) == '[object Function]';
+            }
+        },
         /**
          * Object that represents the list of menu items
          * and managers the order of the items to be saved.
@@ -68,7 +74,7 @@
             }
         })();
 
-    dhis2.util.namespace( 'dhis2.menu' );
+    dhis2.menu = {};
 
     dhis2.menu = function () {
         var that = {},
@@ -253,7 +259,7 @@
         that.subscribe = function (callback, onlyOnce) {
             var once = onlyOnce ? true : false;
 
-            if ( ! _.isFunction(callback)) {
+            if ( ! du.isFunction(callback)) {
                 return false;
             }
 
@@ -330,7 +336,7 @@
         }
 
         that.save = function (saveMethod) {
-            if ( ! _.isFunction(saveMethod)) {
+            if ( ! du.isFunction(saveMethod)) {
                 return false;
             }
 
@@ -339,7 +345,7 @@
 
         return that;
     }();
-})(dhis2, _);
+})(dhis2);
 
 /**
  * Created by Mark Polak on 28/01/14.
