@@ -1,25 +1,10 @@
-<!--<accordion>
-    <accordion-group is-open="{{enrollment.isOpen}}">
-        <accordion-heading>
-            <span class="list-title">{{enrollment.title| translate}}</span>
-        </accordion-heading>                        
-        <div>
-            <div> 
-                {{'program'| translate}}
-                <span class="right">
-                    <select ng-model="selectedProgram"
-                            class="form-control"
-                            ng-options="program as program.name for program in programs | orderBy: 'name'" 
-                            ng-change="loadEvents(selectedProgram.id)">
-                        <option value="">{{'please_select'| translate}}</option>
-                    </select>
-                </span>
-            </div>
-        </div>                        
-    </accordion-group>
-</accordion>   -->             
-<div class="panel panel-default">
-    <div class="panel-heading">{{enrollment.title| translate}}</div>
+<div class="panel panel-default" ng-controller="EnrollmentController">
+    <div class="panel-heading">
+        {{enrollmentWidget.title| translate}}
+        <span class="pull-right">
+            <a href ng-click="removeWidget(enrollmentWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
+        </span>
+    </div>
     <div class="panel-body dashboard-element-container">
         <div>
             <div> 

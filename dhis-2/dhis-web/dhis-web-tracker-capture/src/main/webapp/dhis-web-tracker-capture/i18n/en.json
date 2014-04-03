@@ -42,5 +42,8 @@
     "dataentry": "Data Entry",
     "current_selections": "Current selections",
     "data_element": "Data element",
-    "value": "Value"
+    "value": "Value",
+    "show_hide_widgets": "Show/Hide widgets",
+    "select_widgets_to_show": "Select widgets to show",
+    "close": "Close"
 }

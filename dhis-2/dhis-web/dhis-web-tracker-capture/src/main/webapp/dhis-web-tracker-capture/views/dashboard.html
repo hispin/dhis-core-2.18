@@ -1,12 +1,9 @@
 <div class="container-1-1">    
-    <div class="col-sm-12">
-        <div class="btn-toolbar" role="toolbar">
-            <button type="button" class="btn btn-default" ng-click="back()">{{'back'| translate}}</button>
-            <span class="horizonal-spacing">
-                <input class="fixed-text-width" type="text" placeholder="{{'search_for_dashboard'| translate}}" />
-                <button type="button" class="btn btn-default" ng-click="searchDashboard()">{{'search'| translate}}</button>
-            </span>            
-        </div>
+    <div class="col-sm-12">        
+        <button type="button" class="btn btn-default" ng-click="back()">{{'back'| translate}}</button>
+        <span class="right">
+            <button type="button" class="btn btn-default" ng-click="showHideWidgets()">{{'show_hide_widgets'| translate}}</button>
+        </span>        
     </div>
 
     <div class='separator'></div>
@@ -15,25 +12,20 @@
         <div class="row">            
             <div class="col-sm-6 col-md-8">
                 <div sortable class="row connectedSortable empty-dashboard-container">
-                    <div class="col-sm-12" ng-controller="ProfileController" ng-include="'views/profile.html'"></div>               
-                    <div class="col-sm-12" ng-controller="DataEntryController" ng-include="'views/dataentry.html'"></div>                                        
+                    <div ng-repeat="biggerWidget in dashboardWidgets.bigger">
+                        <div class="col-sm-12" ng-show="biggerWidget.show" ng-include="biggerWidget.view"></div>
+                    </div>                                       
                 </div>                
             </div>            
             <div class="col-sm-6 col-md-4">
-                <div sortable class="row connectedSortable empty-dashboard-container">
-                    <div class="col-sm-12">
-                        <div ng-include="'views/selected.html'"></div>
-                    </div>
-                    <div class="col-sm-12" ng-controller="EnrollmentController">
-                        <div ng-include="'views/enrollment.html'"></div>
-                    </div>
-                    <div class="col-sm-12" ng-controller="NotesController">
-                        <div ng-include="'views/notes.html'"></div>             
-                    </div>
+                <div sortable class="row connectedSortable empty-dashboard-container">                    
+                    <div class="col-sm-12" ng-repeat="smallerWidget in dashboardWidgets.smaller">                        
+                        <div ng-show="smallerWidget.show" ng-include="smallerWidget.view"></div>
+                    </div>                   
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 </div>
 
 

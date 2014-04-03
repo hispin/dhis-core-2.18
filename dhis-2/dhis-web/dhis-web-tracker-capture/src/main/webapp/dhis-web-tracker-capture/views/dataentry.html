@@ -1,9 +1,12 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-controller="DataEntryController">
     <div class="panel-heading">
-        {{dataEntry.title| translate}}
-        <span class="new-event" ng-click="createNewEvent()">
-            {{'create_new_event'| translate}}
+        {{dataentryWidget.title| translate}} 
+        <span class="nav-pills" ng-show="selectedEnrollment">
+           | <span><a href ng-click="createNewEvent()">{{'create_new_event'| translate}}</a></span>            
         </span>
+        <span class="pull-right">
+            <a href ng-click="removeWidget(dataentryWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
+        </span>        
     </div>
     <div class="panel-body">        
         <div ng-show="dhis2Events">            
