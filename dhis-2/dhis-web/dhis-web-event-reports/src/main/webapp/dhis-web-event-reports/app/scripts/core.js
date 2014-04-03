@@ -1488,6 +1488,20 @@ Ext.onReady( function() {
 				return layout;
 			};
 
+            service.layout.getDataDimensionsFromLayout = function(layout) {
+                var dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || [])),
+                    ignoreKeys = ['pe', 'ou'],
+                    dataDimensions = [];
+
+                for (var i = 0; i < dimensions.length; i++) {
+                    if (!Ext.Array.contains(ignoreKeys, dimensions[i].dimension)) {
+                        dataDimensions.push(dimensions[i]);
+                    }
+                }
+
+                return dataDimensions;
+            };
+
 			// response
 			service.response = {};
 
@@ -1593,7 +1607,11 @@ Ext.onReady( function() {
                     dimensionNames = Ext.Array.pluck(layout.columns, 'dimension'),
                     dimensionHeaders = [],
 					headers = xResponse.headers,
-					nameHeaderMap = {};
+					nameHeaderMap = {},
+                    nameMap = {};
+
+                nameMap['pe'] = 'eventdate';
+                nameMap['ou'] = 'ouname';
 
 				for (var i = 0, header; i < headers.length; i++) {
 					header = headers[i];
@@ -1609,7 +1627,7 @@ Ext.onReady( function() {
 				}
 
                 for (var i = 0, name; i < dimensionNames.length; i++) {
-                    name = dimensionNames[i];
+                    name = nameMap[dimensionNames[i]] || dimensionNames[i];
 
                     dimensionHeaders.push(nameHeaderMap[name]);
                 }
@@ -1673,52 +1691,49 @@ Ext.onReady( function() {
 			web.analytics = {};
 
 			web.analytics.getParamString = function(view, format) {
-                var paramString;
+                var paramString,
+                    dimensions = Ext.Array.clean([].concat(view.columns || [], view.rows || [], view.filters || [])),
+                    ignoreKeys = ['longitude', 'latitude'],
+                    dataTypeMap = {
+                        'aggregated_values': 'aggregate',
+                        'individual_cases': 'query'
+                    };
 
                 format = format || 'json';
 
-                paramString = '/api/analytics/events/' + view.type + '/' + view.program.id + '.' + format + '?';
+                paramString = '/api/analytics/events/' + dataTypeMap[view.dataType] + '/' + view.program.id + '.' + format + '?';
 
 				// stage
-				paramString += 'stage=' + view.stage.id;
+				paramString += 'stage=' + view.programStage.id;
 
-				// ou
-				if (Ext.isArray(view.organisationUnits)) {
-                    paramString += '&dimension=ou:';
+                // dimensions
+                for (var i = 0, dim, con; i < dimensions.length; i++) {
+                    dim = dimensions[i];
 
-					for (var i = 0; i < view.organisationUnits.length; i++) {
-						paramString += view.organisationUnits[i].id;
-                        paramString += i < (view.organisationUnits.length - 1) ? ';' : '';
-					}
-				}
+                    if (Ext.Array.contains(ignoreKeys, dim.dimension)) {
+                        continue;
+                    }
 
-				// de
-				for (var i = 0, element; i < view.dataElements.length; i++) {
-					element = view.dataElements[i];
+                    paramString += '&dimension=' + dim.dimension;
 
-					paramString += '&dimension=' + element.id;
+                    if (dim.items && dim.items.length) {
+                        paramString += ':';
 
-					if (element.value) {
-						if (element.operator) {
-							paramString += ':' + element.operator;
-						}
+                        for (var j = 0, item; j < dim.items.length; j++) {
+                            item = dim.items[j];
 
-						paramString += ':' + element.value;
-					}
-				}
+                            paramString += item.id + ((j < (dim.items.length - 1)) ? ';' : '');
+                        }
+                    }
+                    else if (dim.operator && !Ext.isEmpty(dim.filter)) {
+                        paramString += ':' + dim.operator + ':' + dim.filter;
+                    }
+                }
 
-				// pe
-				if (Ext.isArray(view.periods)) {
-					paramString += '&dimension=pe:';
-
-					for (var i = 0; i < view.periods.length; i++) {
-						paramString += view.periods[i].id + (i < view.periods.length - 1 ?  ';' : '');
-					}
-				}
-				else {
-					paramString += '&startDate=' + view.startDate;
-					paramString += '&endDate=' + view.endDate;
-				}
+                // dates
+                if (view.startDate && view.endDate) {
+                    paramString += '&startDate=' + view.startDate + '&endDate=' + view.endDate;
+                }
 
 				// hierarchy
 				paramString += view.showHierarchy ? '&hierarchyMeta=true' : '';
@@ -1783,7 +1798,7 @@ Ext.onReady( function() {
 						value: Ext.isNumber(value) ? value : (Number.MAX_VALUE * -1)
 					});
 				}
-console.log("objects", objects);
+
 				support.prototype.array.sort(objects, direction, 'value');
 
 				// new id order
@@ -2527,7 +2542,6 @@ console.log("objects", objects);
 					index = xResponse.nameHeaderMap[id].index,
 					rows = xResponse.rows;
 
-console.log("objects", rows);
 				support.prototype.array.sort(rows, direction, index);
 
 				return xResponse;
