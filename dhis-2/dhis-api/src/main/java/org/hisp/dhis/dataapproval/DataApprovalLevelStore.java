@@ -52,4 +52,12 @@ public interface DataApprovalLevelStore
      * @return List of all data approval levels, ordered from 1 to n.
      */
     List<DataApprovalLevel> getAllDataApprovalLevels();
+
+    /**
+     * Gets data approval levels by org unit level.
+     * 
+     * @param orgUnitLevel the org unit level.
+     * @return a list of data approval levels.
+     */
+    List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel );
 }
