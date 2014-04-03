@@ -52,7 +52,6 @@ import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,7 +132,7 @@ public class JdbcEventAnalyticsManager
 
         try
         {
-            grid.addRows( getAggregatedEventData( params, sql ) );
+            getAggregatedEventData( grid, params, sql );
         }
         catch ( BadSqlGrammarException ex )
         {
@@ -143,12 +142,10 @@ public class JdbcEventAnalyticsManager
         return grid;
     }
     
-    private Grid getAggregatedEventData( EventQueryParams params, String sql )
+    private void getAggregatedEventData( Grid grid, EventQueryParams params, String sql )
     {
         Timer t = new Timer().start();
-        
-        Grid grid = new ListGrid();
-        
+                
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         t.getTime( "Analytics event aggregate SQL: " + sql );
@@ -173,8 +170,6 @@ public class JdbcEventAnalyticsManager
             
             grid.addValue( value );
         }
-
-        return grid;
     }
     
     public Grid getEvents( EventQueryParams params, Grid grid )
@@ -225,11 +220,9 @@ public class JdbcEventAnalyticsManager
         // Grid
         // ---------------------------------------------------------------------
 
-        int rowLength = grid.getHeaders().size();
-
         try
         {
-            grid.addRows( getEvents( params, sql, rowLength ) );
+            getEvents( grid, params, sql );
         }
         catch ( BadSqlGrammarException ex )
         {
@@ -239,12 +232,12 @@ public class JdbcEventAnalyticsManager
         return grid;
     }
 
-    private Grid getEvents( EventQueryParams params, String sql, int rowLength )
+    private void getEvents( Grid grid, EventQueryParams params, String sql )
     {
         Timer t = new Timer().start();
 
-        Grid grid = new ListGrid();
-        
+        int rowLength = grid.getHeaders().size();
+
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         t.getTime( "Analytics event query SQL: " + sql );
@@ -260,8 +253,6 @@ public class JdbcEventAnalyticsManager
                 grid.addValue( rowSet.getString( index ) );
             }
         }
-        
-        return grid;
     }
     
     public int getEventCount( EventQueryParams params )
