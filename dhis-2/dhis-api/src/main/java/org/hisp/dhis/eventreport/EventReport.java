@@ -302,57 +302,67 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-	public boolean isTotals() {
-		return totals;
-	}
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isTotals()
+    {
+        return totals;
+    }
 
-	public void setTotals(boolean totals) {
-		this.totals = totals;
-	}
+    public void setTotals( boolean totals )
+    {
+        this.totals = totals;
+    }
 
-	@JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-	public boolean isSubtotals() {
-		return subtotals;
-	}
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isSubtotals()
+    {
+        return subtotals;
+    }
 
-	public void setSubtotals(boolean subtotals) {
-		this.subtotals = subtotals;
-	}
+    public void setSubtotals( boolean subtotals )
+    {
+        this.subtotals = subtotals;
+    }
 
-	@JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-	public boolean isHideEmptyRows() {
-		return hideEmptyRows;
-	}
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isHideEmptyRows()
+    {
+        return hideEmptyRows;
+    }
 
-	public void setHideEmptyRows(boolean hideEmptyRows) {
-		this.hideEmptyRows = hideEmptyRows;
-	}
+    public void setHideEmptyRows( boolean hideEmptyRows )
+    {
+        this.hideEmptyRows = hideEmptyRows;
+    }
 
-	@JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-	public String getDisplayDensity() {
-		return displayDensity;
-	}
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getDisplayDensity()
+    {
+        return displayDensity;
+    }
 
-	public void setDisplayDensity(String displayDensity) {
-		this.displayDensity = displayDensity;
-	}
+    public void setDisplayDensity( String displayDensity )
+    {
+        this.displayDensity = displayDensity;
+    }
 
-	@JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-	public String getFontSize() {
-		return fontSize;
-	}
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getFontSize()
+    {
+        return fontSize;
+    }
 
-	public void setFontSize(String fontSize) {
-		this.fontSize = fontSize;
-	}    
+    public void setFontSize( String fontSize )
+    {
+        this.fontSize = fontSize;
+    }
 }
