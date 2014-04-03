@@ -175,7 +175,7 @@ public class AddAttributeAction
         inherit = (inherit == null) ? false : true;
         attribute.setInherit( inherit );
 
-        if ( valueType.equals( TrackedEntityAttribute.VALUE_TYPE_LOCAL_ID ) )
+        if ( unique )
         {
             orgunitScope = (orgunitScope == null) ? false : orgunitScope;
             programScope = (programScope == null) ? false : programScope;

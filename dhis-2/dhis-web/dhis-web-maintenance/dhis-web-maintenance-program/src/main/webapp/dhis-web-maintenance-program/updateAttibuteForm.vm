@@ -77,6 +77,9 @@
 		</td>
 	</tr>
 
+programScope: $attribute.programScope
+orgunitScope: $attribute.orgunitScope
+
 	<tr name='localIdField' #if($attribute.valueType!='localId' ) style='display:none;' #end >
 		<th colspan='2'><label for="type">$i18n.getString( "scope" )</label></th>
 	</tr>
@@ -88,7 +91,7 @@
 		</td>
 		<td></td>
 	</tr>
-	
+
 	<tr name='localIdField' #if($attribute.valueType!='localId' ) style='display:none;' #end>
 		<td><label for="type">$i18n.getString( "program" )</label></td>
 		<td>
@@ -96,20 +99,7 @@
 		</td>
 		<td></td>
 	</tr>
-	
-	<tr name='localIdField' #if($attribute.valueType!='localId' ) style='display:none;' #end>
-		<td><label for="type">$i18n.getString( "period_type" )</label></td>
-		<td>
-			<select type='checkbox' id="periodTypeName" name="periodTypeName" >
-				<option value="">[$i18n.getString( "please_select" )]</option>
-				#foreach ( $periodType in $periodTypes )
-				<option value="$periodType.name" #if( $attribute.periodType.name==$periodType.name ) selected #end>$i18n.getString( $periodType.name )</option>
-				#end
-			</select>
-		</td>
-		<td></td>
-	</tr>
-		
+
     </tbody>
 	
 	<tr>
