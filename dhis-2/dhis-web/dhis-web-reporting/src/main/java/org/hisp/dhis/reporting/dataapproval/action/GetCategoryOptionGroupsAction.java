@@ -73,11 +73,11 @@ public class GetCategoryOptionGroupsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<CategoryOptionGroup> objects;
+    private List<CategoryOptionGroup> categoryOptionGroups;
 
-    public List<CategoryOptionGroup> getObjects()
+    public List<CategoryOptionGroup> getCategoryOptionGroups()
     {
-        return objects;
+        return categoryOptionGroups;
     }
 
     // -------------------------------------------------------------------------
@@ -95,15 +95,17 @@ public class GetCategoryOptionGroupsAction
     {
         if ( ou != null )
         {
-            int ouLevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
             
-            List<DataApprovalLevel> approvalLevels = approvalLevelService.getUserDataApprovalLevels(); // TODO filter by org unit level
-    
+            List<DataApprovalLevel> approvalLevels = approvalLevelService.getUserDataApprovalLevels();
+
+            FilterUtils.filter( approvalLevels, new DataApprovalLevelOrgUnitLevelFilter( orgUnitLevel ) );
+            
             Set<CategoryOptionGroupSet> groupSets = getCategoryOptionGroupSets( approvalLevels );
             
-            objects = new ArrayList<CategoryOptionGroup>( categoryService.getAllCategoryOptionGroups() );
+            categoryOptionGroups = new ArrayList<CategoryOptionGroup>( categoryService.getAllCategoryOptionGroups() );
             
-            FilterUtils.filter( objects, new CategoryOptionGroupGroupSetFilter( groupSets ) );        
+            FilterUtils.filter( categoryOptionGroups, new CategoryOptionGroupGroupSetFilter( groupSets ) );        
         }
         
         return SUCCESS;    
@@ -133,6 +135,23 @@ public class GetCategoryOptionGroupsAction
         }
         
         return groupSets;
+    }
+    
+    class DataApprovalLevelOrgUnitLevelFilter
+        implements Filter<DataApprovalLevel>
+    {
+        private int orgUnitLevel;
+        
+        public DataApprovalLevelOrgUnitLevelFilter( int orgUnitLevel )
+        {
+            this.orgUnitLevel = orgUnitLevel;
+        }
+        
+        @Override
+        public boolean retain( DataApprovalLevel level )
+        {
+            return level != null && level.getOrgUnitLevel() == orgUnitLevel;
+        }
     }
     
     class CategoryOptionGroupGroupSetFilter

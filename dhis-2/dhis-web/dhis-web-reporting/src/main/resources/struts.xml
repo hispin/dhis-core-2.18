@@ -199,7 +199,7 @@
     </action>
     
     <action name="getCategoryOptionGroups" class="org.hisp.dhis.reporting.dataapproval.action.GetCategoryOptionGroupsAction">    
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIdentifiableObjects.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonCategoryOptionGroups.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
