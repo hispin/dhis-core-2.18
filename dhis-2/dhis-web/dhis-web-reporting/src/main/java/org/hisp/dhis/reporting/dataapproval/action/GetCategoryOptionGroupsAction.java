@@ -137,6 +137,9 @@ public class GetCategoryOptionGroupsAction
         return groupSets;
     }
     
+    /**
+     * Filter for org unit level on data approval levels.
+     */
     class DataApprovalLevelOrgUnitLevelFilter
         implements Filter<DataApprovalLevel>
     {
@@ -154,6 +157,9 @@ public class GetCategoryOptionGroupsAction
         }
     }
     
+    /**
+     * Filter for group set on category option groups.
+     */
     class CategoryOptionGroupGroupSetFilter
         implements Filter<CategoryOptionGroup>
     {

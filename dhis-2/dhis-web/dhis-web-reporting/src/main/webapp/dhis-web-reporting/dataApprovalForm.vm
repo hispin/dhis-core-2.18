@@ -48,6 +48,11 @@ div.inputSection {
 
 <h3 id="dataSetReportHeader">$i18n.getString( "data_approval" )</h3>
 
+<div class="message message-info" style="margin-bottom: 14px">
+<span>$i18n.getString( "approval_status" )</span>:
+<span id="approvalNotification">$i18n.getString( "please_make_selection" )</span>
+</div>
+
 <div id="control">
 <input type="button" value='$i18n.getString( "data" )' style="width:140px" onclick="dhis2.dsr.showCriteria()">
 <input type="button" id="approveButton" value="$i18n.getString( 'approve' )" onclick="dhis2.appr.approveData()" class="approveButton" style="width:120px">
