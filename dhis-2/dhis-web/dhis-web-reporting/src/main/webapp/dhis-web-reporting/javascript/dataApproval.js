@@ -47,11 +47,21 @@ dhis2.appr.displayPreviousPeriods = function()
 
 dhis2.appr.displayCategoryOptionGroups = function( ou )
 {
+	if ( !ou ) {
+		return;
+	}
+	
 	var url = "getCategoryOptionGroups.action";
 	
 	$.getJSON( url, {ou:ou}, function( json ) {
+		var html = "";
+		$.each( json.objects, function( index, group ) {
+			html += "<option value=\"" + group.uid + "\">" + group.name + "</option>";
+		} );
 		
-	} ):
+		$( "#categoryOptionGroupSection" ).show();
+		$( "#categoryOptionGroupId" ).html( html );
+	} );
 }
 
 //------------------------------------------------------------------------------
