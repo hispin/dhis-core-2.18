@@ -170,6 +170,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         function($rootScope,
                 $scope,
                 $location,
+                $modal,
                 storage,
                 TrackedEntityInstanceService,                
                 TranslationService) {
@@ -177,20 +178,24 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //do translation of the dashboard page
     TranslationService.translate();    
     
-    //dashboard item   
-    $scope.selected = {title: 'current_selections', isOpen: true, selections: []};
+    //dashboard items   
+    $rootScope.dashboardWidgets = {bigger: [], smaller: []};   
+    $rootScope.profileWidget = {title: 'profile', view: "views/profile.html", show: true};
+    $rootScope.dataentryWidget = {title: 'dataentry', view: "views/dataentry.html", show: true};
+    //$rootScope.selectedWidget = {title: 'current_selections', view: "views/selected.html", show: true};
+    $rootScope.enrollmentWidget = {title: 'enrollment', view: "views/enrollment.html", show: true};
+    $rootScope.notesWidget = {title: 'notes', view: "views/notes.html", show: true};    
+   
+    $rootScope.dashboardWidgets.bigger.push($rootScope.profileWidget);
+    $rootScope.dashboardWidgets.bigger.push($rootScope.dataentryWidget);
+    //$rootScope.dashboardWidgets.smaller.push($rootScope.selectedWidget);
+    $rootScope.dashboardWidgets.smaller.push($rootScope.enrollmentWidget);
+    $rootScope.dashboardWidgets.smaller.push($rootScope.notesWidget);
     
     //selections
     $scope.selectedEntityId = ($location.search()).selectedEntityId;
-    $scope.selectedProgramId = ($location.search()).selectedProgramId;
-    
-    $scope.selectedOrgUnit = storage.get('SELECTED_OU');
-    
-    $scope.selectedProgram = null;
-    
-    if($scope.selectedProgramId){
-        $scope.selectedProgram = storage.get($scope.selectedProgramId);        
-    }   
+    $scope.selectedProgramId = ($location.search()).selectedProgramId;    
+    $scope.selectedOrgUnit = storage.get('SELECTED_OU');     
         
     if( $scope.selectedEntityId ){
         
@@ -203,10 +208,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                                     selectedProgramId: $scope.selectedProgramId, 
                                                     selectedOrgUnitId: $scope.selectedOrgUnit.id});            
         });       
-    }
-    
-    $scope.selected.selections.push({title: 'registering_unit', value: $scope.selectedOrgUnit ? $scope.selectedOrgUnit.name : 'not_selected'});
-    $scope.selected.selections.push({title: 'program', value: $scope.selectedProgram ? $scope.selectedProgram.name : 'not_selected'});    
+    }   
     
     $scope.back = function(){
         $location.path('/');
@@ -216,6 +218,20 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.showEnrollment = function(){
         $scope.displayEnrollment = true;
     };
+    
+    $scope.removeWidget = function(widget){        
+        widget.show = false;
+    };
+    
+    $scope.showHideWidgets = function(){
+        var modalInstance = $modal.open({
+            templateUrl: "views/widgets.html",
+            controller: "DashboardWidgetsController"
+        });
+
+        modalInstance.result.then(function () {
+        });
+    };   
 })
 
 //Controller for the profile section
@@ -225,8 +241,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 TranslationService) {
 
     TranslationService.translate();
-    
-    $scope.profile = {title: 'profile', isOpen: true};
     
     //attributes for profile    
     $scope.attributes = {};    
@@ -238,7 +252,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.$on('selectedItems', function(event, args) {        
         $scope.selectedEntity = args.selectedEntity;        
         $scope.trackedEntity = storage.get($scope.selectedEntity.trackedEntity);
-    });    
+    });
 })
 
 //Controller for the enrollment section
@@ -250,8 +264,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 TranslationService) {
 
     TranslationService.translate();
-    
-    $scope.enrollment = {title: 'enrollment', isOpen: true};
     
     //programs for enrollment
     $scope.enrollments = [];
@@ -316,6 +328,14 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         //}     
         
     };
+    
+    /*$scope.removeWidget = function(){        
+        angular.forEach($rootScope.dashboardWidgets.bigger, function(widget){
+            if(widget.title == 'enrollment'){
+                widget.show = false;
+            }
+        });
+    };*/
 })
 
 //Controller for the data entry section
@@ -329,8 +349,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 TranslationService) {
 
     TranslationService.translate();
-    
-    $scope.dataEntry = {title: 'dataentry', isOpen: true}; 
     
     $scope.attributes = storage.get('ATTRIBUTES');
     
@@ -453,18 +471,17 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };    
 })
 
-//Controller for the dashboard menu section
-.controller('DashboardMenuController',
-        function($scope,                
-                storage,
-                TranslationService) {
-
+//Controller for the dashboard widgets
+.controller('DashboardWidgetsController', 
+    function($scope, 
+            $modalInstance,
+            TranslationService){
+    
     TranslationService.translate();
     
-    $scope.dashboardMenu = {title: 'Menu', isOpen: true};
-    
-    $scope.attributes = storage.get('ATTRIBUTES');
-    
+    $scope.close = function () {
+        $modalInstance.close($scope.eventGridColumns);
+    };       
 })
 
 //Controller for the notes section
@@ -475,10 +492,35 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
     TranslationService.translate();
     
-    $scope.notes = {title: 'notes', isOpen: true};
-    
     $scope.attributes = storage.get('ATTRIBUTES');
     
+})
+
+//Controller for the selected section
+.controller('SelectedInfoController',
+        function($scope,                
+                storage,
+                TranslationService) {
+
+    TranslationService.translate();
+    
+    //listen for the selected items
+    $scope.$on('selectedItems', function(event, args) {
+        
+        $scope.selectedEntity = args.selectedEntity;
+        $scope.selectedProgramId = args.selectedProgramId;        
+        $scope.selectedOrgUnitId = args.selectedOrgUnitId;        
+        
+        if($scope.selectedProgramId){
+            $scope.selectedProgram = storage.get($scope.selectedProgramId);        
+        }
+        
+        $scope.selectedOrgUnit = storage.get('SELECTED_OU');
+        
+        $scope.selected.selections.push({title: 'registering_unit', value: $scope.selectedOrgUnit ? $scope.selectedOrgUnit.name : 'not_selected'});
+        $scope.selected.selections.push({title: 'program', value: $scope.selectedProgram ? $scope.selectedProgram.name : 'not_selected'});               
+        
+    });     
 })
 
 //Controller for the header section

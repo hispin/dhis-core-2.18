@@ -217,5 +217,14 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
         },
         templateUrl: 'views/pagination.html'
     };
+})
+
+.directive('draggableModal', function(){
+    return {
+      restrict: 'EA',
+      link: function(scope, element) {
+        element.draggable();
+      }
+    };  
 });
 
