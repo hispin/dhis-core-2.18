@@ -135,4 +135,12 @@ public interface DataApprovalLevelService
      * @return level number of the lowest level the user can view.
      */
     int getLowestUserDataApprovalLevel();
+    
+    /**
+     * Gets the data approval level with the given name.
+     * 
+     * @param name the name.
+     * @return a data approval level.
+     */
+    DataApprovalLevel getDataApprovalLevelByName( String name );
 }

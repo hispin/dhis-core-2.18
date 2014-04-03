@@ -10,6 +10,9 @@
     <id name="id" column="dataapprovallevelid">
       <generator class="native" />
     </id>
+    &identifiableProperties;
+
+    <property name="name" column="name" not-null="true" unique="true" length="230" />
 
     <property name="level" column="level" not-null="true" />
 
@@ -17,10 +20,6 @@
       <property name="orgUnitLevel" not-null="true" column="orgunitlevel" />
       <many-to-one name="categoryOptionGroupSet" class="org.hisp.dhis.dataelement.CategoryOptionGroupSet" column="categoryoptiongroupsetid" foreign-key="fK_dataapprovallevel_categoryoptiongroupsetid" />
     </properties>
-
-    <property name="created" column="created" not-null="true" type="timestamp" />
-
-    <property name="updated" column="updated" type="timestamp" />
 
     </class>
 </hibernate-mapping>

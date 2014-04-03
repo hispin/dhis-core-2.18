@@ -64,7 +64,7 @@ public class ValidateApprovalLevelAction
     {
         CategoryOptionGroupSet catOptGroupSet = categoryService.getCategoryOptionGroupSet( categoryOptionGroupSet );
         
-        DataApprovalLevel level = new DataApprovalLevel( organisationUnitLevel, catOptGroupSet );
+        DataApprovalLevel level = new DataApprovalLevel( null, organisationUnitLevel, catOptGroupSet );
         
         boolean exists = dataApprovalLevelService.dataApprovalLevelExists( level );
 

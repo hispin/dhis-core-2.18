@@ -32,15 +32,15 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelStore;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
 
 /**
  * @author Jim Grace
  */
 public class HibernateDataApprovalLevelStore
-    extends HibernateGenericStore<DataApprovalLevel>
+    extends HibernateIdentifiableObjectStore<DataApprovalLevel>
     implements DataApprovalLevelStore
 {
     // -------------------------------------------------------------------------
