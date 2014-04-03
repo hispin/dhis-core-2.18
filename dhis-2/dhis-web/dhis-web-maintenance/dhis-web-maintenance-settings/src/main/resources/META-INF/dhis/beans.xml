@@ -76,8 +76,6 @@
   <bean id="org.hisp.dhis.settings.action.system.AddApprovalLevelAction"
       class="org.hisp.dhis.settings.action.system.AddApprovalLevelAction"
       scope="prototype">
-    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
   <bean id="org.hisp.dhis.settings.action.system.GetAddApprovalLevelFormParameters"

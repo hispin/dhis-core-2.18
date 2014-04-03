@@ -1,7 +1,7 @@
-package org.hisp.dhis.dataapproval;
+package org.hisp.dhis.api.controller;
 
 /*
- * Copyright (c) 2004-2013, University of Oslo
+ * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,36 +28,14 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-
-/**
- * Defines the functionality for persisting DataApproval objects.
- *
- * @author Jim Grace
- */
-public interface DataApprovalLevelStore
-    extends GenericIdentifiableObjectStore<DataApprovalLevel>
+@Controller
+@RequestMapping( value = DataApprovalLevelController.RESOURCE_PATH )
+public class DataApprovalLevelController
+    extends AbstractCrudController<DataApprovalLevel>
 {
-    String ID = DataApprovalLevelStore.class.getName();
-
-    // -------------------------------------------------------------------------
-    // Basic DataApprovalLevel
-    // -------------------------------------------------------------------------
-
-    /**
-     * Gets a list of all data approval levels.
-     *
-     * @return List of all data approval levels, ordered from 1 to n.
-     */
-    List<DataApprovalLevel> getAllDataApprovalLevels();
-
-    /**
-     * Gets data approval levels by org unit level.
-     * 
-     * @param orgUnitLevel the org unit level.
-     * @return a list of data approval levels.
-     */
-    List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel );
+    public static final String RESOURCE_PATH = "/dataApprovalLevels";
 }

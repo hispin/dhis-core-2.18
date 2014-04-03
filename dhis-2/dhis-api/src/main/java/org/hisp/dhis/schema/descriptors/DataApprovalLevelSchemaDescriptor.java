@@ -1,7 +1,7 @@
-package org.hisp.dhis.dataapproval;
+package org.hisp.dhis.schema.descriptors;
 
 /*
- * Copyright (c) 2004-2013, University of Oslo
+ * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,36 +28,27 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
+import org.hisp.dhis.schema.Authority;
+import org.hisp.dhis.schema.AuthorityType;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaDescriptor;
+import org.springframework.stereotype.Component;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import com.google.common.collect.Lists;
 
-/**
- * Defines the functionality for persisting DataApproval objects.
- *
- * @author Jim Grace
- */
-public interface DataApprovalLevelStore
-    extends GenericIdentifiableObjectStore<DataApprovalLevel>
+@Component
+public class DataApprovalLevelSchemaDescriptor implements SchemaDescriptor
 {
-    String ID = DataApprovalLevelStore.class.getName();
-
-    // -------------------------------------------------------------------------
-    // Basic DataApprovalLevel
-    // -------------------------------------------------------------------------
-
-    /**
-     * Gets a list of all data approval levels.
-     *
-     * @return List of all data approval levels, ordered from 1 to n.
-     */
-    List<DataApprovalLevel> getAllDataApprovalLevels();
-
-    /**
-     * Gets data approval levels by org unit level.
-     * 
-     * @param orgUnitLevel the org unit level.
-     * @return a list of data approval levels.
-     */
-    List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel );
+    @Override
+    public Schema getSchema()
+    {
+        Schema schema = new Schema( DataApprovalLevel.class, "dataApprovalLevel", "dataApprovalLevels" );
+        
+        schema.setShareable( false );
+        
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_SYSTEM_SETTING" ) ) );
+        
+        return schema;
+    }
 }

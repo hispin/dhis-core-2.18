@@ -271,6 +271,11 @@ public class DefaultDataApprovalLevelService
 
         return 0;
     }
+    
+    public DataApprovalLevel getDataApprovalLevelByName( String name )
+    {
+        return dataApprovalLevelStore.getByName( name );
+    }
 
     // -------------------------------------------------------------------------
     // Supportive methods

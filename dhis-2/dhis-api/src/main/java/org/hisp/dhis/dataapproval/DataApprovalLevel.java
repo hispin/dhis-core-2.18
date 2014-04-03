@@ -28,10 +28,18 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.Date;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * Records the approval of DataSet values for a given OrganisationUnit and
@@ -39,15 +47,11 @@ import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
  *
  * @author Jim Grace
  */
+@JacksonXmlRootElement( localName = "dataApprovalLevel", namespace = DxfNamespaces.DXF_2_0 )
 public class DataApprovalLevel
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     private static final long serialVersionUID = -8424400562969386167L;
-
-    /**
-     * Identifies the data approval level instance.
-     */
-    private int id;
 
     /**
      * The data approval level, 1=highest level, max=lowest level.
@@ -65,16 +69,6 @@ public class DataApprovalLevel
     private CategoryOptionGroupSet categoryOptionGroupSet;
 
     /**
-     * The Date (including time) when the data approval level was created.
-     */
-    private Date created;
-
-    /**
-     * The Date (including time) when the data approval level was last updated.
-     */
-    private Date updated;
-
-    /**
      * The name of the organisation unit level (derived through the service.)
      */
     private String orgUnitLevelName;
@@ -87,22 +81,22 @@ public class DataApprovalLevel
     {
     }
 
-    public DataApprovalLevel( int orgUnitLevel,
-                              CategoryOptionGroupSet categoryOptionGroupSet )
+    public DataApprovalLevel( String name, int orgUnitLevel, CategoryOptionGroupSet categoryOptionGroupSet )
     {
+        this.name = name;
         this.orgUnitLevel = orgUnitLevel;
         this.categoryOptionGroupSet = categoryOptionGroupSet;
     }
 
-    public DataApprovalLevel( int level, int orgUnitLevel,
-                              CategoryOptionGroupSet categoryOptionGroupSet,
-                              Date created, Date updated )
+    public DataApprovalLevel( String name, int level, int orgUnitLevel, CategoryOptionGroupSet categoryOptionGroupSet,
+        Date created, Date lastUpdated )
     {
+        this.name = name;
         this.level = level;
         this.orgUnitLevel = orgUnitLevel;
         this.categoryOptionGroupSet = categoryOptionGroupSet;
         this.created = created;
-        this.updated = updated;
+        this.lastUpdated = lastUpdated;
     }
 
     // -------------------------------------------------------------------------
@@ -145,16 +139,9 @@ public class DataApprovalLevel
     // Getters and Setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getLevel()
     {
         return level;
@@ -165,6 +152,9 @@ public class DataApprovalLevel
         this.level = level;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getOrgUnitLevel()
     {
         return orgUnitLevel;
@@ -175,6 +165,9 @@ public class DataApprovalLevel
         this.orgUnitLevel = orgUnitLevel;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public CategoryOptionGroupSet getCategoryOptionGroupSet()
     {
         return categoryOptionGroupSet;
@@ -183,26 +176,6 @@ public class DataApprovalLevel
     public void setCategoryOptionGroupSet( CategoryOptionGroupSet categoryOptionGroupSet )
     {
         this.categoryOptionGroupSet = categoryOptionGroupSet;
-    }
-
-    public Date getCreated()
-    {
-        return created;
-    }
-
-    public void setCreated( Date created )
-    {
-        this.created = created;
-    }
-
-    public Date getUpdated()
-    {
-        return updated;
-    }
-
-    public void setUpdated( Date updated )
-    {
-        this.updated = updated;
     }
 
     public String getOrgUnitLevelName()

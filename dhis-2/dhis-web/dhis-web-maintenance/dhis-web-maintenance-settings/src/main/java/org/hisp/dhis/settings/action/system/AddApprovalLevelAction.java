@@ -32,8 +32,13 @@ import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
+
+import static org.hisp.dhis.system.util.TextUtils.*;
 
 /**
  * @author Jim Grace
@@ -45,20 +50,15 @@ public class AddApprovalLevelAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private DataApprovalLevelService dataApprovalLevelService;
 
-    public void setDataApprovalLevelService( DataApprovalLevelService dataApprovalLevelService )
-    {
-        this.dataApprovalLevelService = dataApprovalLevelService;
-    }
-
+    @Autowired
     private DataElementCategoryService categoryService;
 
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -83,14 +83,18 @@ public class AddApprovalLevelAction
 
     public String execute()
     {
-        CategoryOptionGroupSet catOptGroupSet = null;
+        CategoryOptionGroupSet groupSet = null;
 
         if ( categoryOptionGroupSet != 0 )
         {
-            catOptGroupSet = categoryService.getCategoryOptionGroupSet( categoryOptionGroupSet );
+            groupSet = categoryService.getCategoryOptionGroupSet( categoryOptionGroupSet );
         }
+        
+        OrganisationUnitLevel ouLevel = organisationUnitService.getOrganisationUnitLevelByLevel( organisationUnitLevel );
+        
+        String name = ouLevel.getName() + ( groupSet != null ? SPACE + groupSet.getName() : EMPTY ); 
 
-        DataApprovalLevel dataApprovalLevel = new DataApprovalLevel( organisationUnitLevel, catOptGroupSet );
+        DataApprovalLevel dataApprovalLevel = new DataApprovalLevel( name, organisationUnitLevel, groupSet );
 
         dataApprovalLevelService.addDataApprovalLevel( dataApprovalLevel );
 

@@ -35,6 +35,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.Dashboard;
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -156,6 +157,8 @@ final public class ExchangeClasses
         allExportClasses.put( Report.class, "reports" );
         allExportClasses.put( Chart.class, "charts" );
         allExportClasses.put( EventReport.class, "eventReports" );
+        
+        allExportClasses.put( DataApprovalLevel.class, "dataApprovalLevels" );
 
         allExportClasses.put( Dashboard.class, "dashboards" );
 

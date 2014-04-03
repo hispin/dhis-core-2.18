@@ -284,10 +284,10 @@ public class DataApprovalServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitE );
         organisationUnitService.addOrganisationUnit( organisationUnitF );
 
-        dataApprovalLevel1 = new DataApprovalLevel( 1, null );
-        dataApprovalLevel2 = new DataApprovalLevel( 2, null );
-        dataApprovalLevel3 = new DataApprovalLevel( 3, null );
-        dataApprovalLevel4 = new DataApprovalLevel( 4, null );
+        dataApprovalLevel1 = new DataApprovalLevel( "1", 1, null );
+        dataApprovalLevel2 = new DataApprovalLevel( "2", 2, null );
+        dataApprovalLevel3 = new DataApprovalLevel( "3", 3, null );
+        dataApprovalLevel4 = new DataApprovalLevel( "4", 4, null );
 
         userA = createUser( 'A' );
         userB = createUser( 'B' );
@@ -387,14 +387,14 @@ public class DataApprovalServiceTest
         groupSetB.addCategoryOptionGroup( groupC );
         groupSetB.addCategoryOptionGroup( groupD );
 
-        dataApprovalLevel1A = new DataApprovalLevel( 1, groupSetA );
-        dataApprovalLevel1B = new DataApprovalLevel( 1, groupSetB );
-        dataApprovalLevel2A = new DataApprovalLevel( 2, groupSetA );
-        dataApprovalLevel2B = new DataApprovalLevel( 2, groupSetB );
-        dataApprovalLevel3A = new DataApprovalLevel( 3, groupSetA );
-        dataApprovalLevel3B = new DataApprovalLevel( 3, groupSetB );
-        dataApprovalLevel4A = new DataApprovalLevel( 4, groupSetA );
-        dataApprovalLevel4B = new DataApprovalLevel( 4, groupSetB );
+        dataApprovalLevel1A = new DataApprovalLevel( "1A", 1, groupSetA );
+        dataApprovalLevel1B = new DataApprovalLevel( "1B",1, groupSetB );
+        dataApprovalLevel2A = new DataApprovalLevel( "2A", 2, groupSetA );
+        dataApprovalLevel2B = new DataApprovalLevel( "2B", 2, groupSetB );
+        dataApprovalLevel3A = new DataApprovalLevel( "3A", 3, groupSetA );
+        dataApprovalLevel3B = new DataApprovalLevel( "3B", 3, groupSetB );
+        dataApprovalLevel4A = new DataApprovalLevel( "4A", 4, groupSetA );
+        dataApprovalLevel4B = new DataApprovalLevel( "4B", 4, groupSetB );
     }
 
     // -------------------------------------------------------------------------

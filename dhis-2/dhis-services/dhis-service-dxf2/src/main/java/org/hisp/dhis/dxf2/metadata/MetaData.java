@@ -42,6 +42,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.Dashboard;
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -104,9 +105,11 @@ public class MetaData
     private Date created;
 
     private List<Schema> schemas = Lists.newArrayList();
-
+    
     private List<Attribute> attributes = new ArrayList<Attribute>();
 
+    private List<DataApprovalLevel> dataApprovalLevels = new ArrayList<DataApprovalLevel>();
+    
     private List<Document> documents = new ArrayList<Document>();
 
     private List<Constant> constants = new ArrayList<Constant>();
@@ -253,6 +256,19 @@ public class MetaData
     public void setAttributes( List<Attribute> attributes )
     {
         this.attributes = attributes;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "dataApprovalLevels", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataApprovalLevel", namespace = DxfNamespaces.DXF_2_0 )
+    public List<DataApprovalLevel> getDataApprovalLevels()
+    {
+        return dataApprovalLevels;
+    }
+
+    public void setDataApprovalLevels( List<DataApprovalLevel> dataApprovalLevels )
+    {
+        this.dataApprovalLevels = dataApprovalLevels;
     }
 
     @JsonProperty
