@@ -13,6 +13,11 @@ dhis2.appr.dataSetSelected = function()
 	dhis2.appr.displayPeriods();
 }
 
+dhis2.appr.orgUnitSelected = function()
+{
+	
+}
+
 dhis2.appr.displayPeriods = function()
 {
 	var pt = $( '#dataSetId :selected' ).data( "pt" );

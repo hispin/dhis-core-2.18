@@ -16,39 +16,45 @@ var selectedOrganisationUnitUid = new Array();
 
 function SelectionTreeSelection()
 {
-  var onSelectFunction = undefined;
+    var onSelectFunction = undefined;
 
-  var listenerFunction = undefined;
+    var listenerFunction = undefined;
 
-  var multipleSelectionAllowed = true;
+    var multipleSelectionAllowed = true;
 
-  this.setOnSelectFunction = function( onSelectFunction_ ) {
-    onSelectFunction = onSelectFunction_;
-  };
-
-  this.setListenerFunction = function( listenerFunction_ ) {
-    listenerFunction = listenerFunction_;
-  };
-
-  this.setMultipleSelectionAllowed = function( allowed ) {
-    multipleSelectionAllowed = allowed;
-  };
-
-  this.getSelected = function() {
-    return selectedOrganisationUnit;
-  };
-
-  this.getSelectedUid = function() {
-    return selectedOrganisationUnit;
-  }
-
-  this.isSelected = function() {
-    return selectedOrganisationUnit && selectedOrganisationUnit.length > 0;
-  }
-
-  this.select = function( unitId )
+    this.setOnSelectFunction = function( onSelectFunction_ ) 
     {
-       if ( onSelectFunction )
+        onSelectFunction = onSelectFunction_;
+    }
+
+    this.setListenerFunction = function( listenerFunction_ ) 
+    {
+        listenerFunction = listenerFunction_;
+    }
+
+    this.setMultipleSelectionAllowed = function( allowed ) 
+    {
+        multipleSelectionAllowed = allowed;
+    }
+
+    this.getSelected = function() 
+    {
+        return selectedOrganisationUnit;
+    }
+
+    this.getSelectedUid = function() 
+    {
+        return selectedOrganisationUnit;
+    }
+
+    this.isSelected = function() 
+    {
+        return selectedOrganisationUnit && selectedOrganisationUnit.length > 0;
+    }
+
+    this.select = function( unitId )
+    {
+        if ( onSelectFunction )
         {
             onSelectFunction();
         }
@@ -58,7 +64,7 @@ function SelectionTreeSelection()
 
         if ( linkTags[0].className == 'selected' )
         {
-			$.post( selectionTreePath + 'removeorgunit.action', { id:unitId }, responseReceived );
+            $.post( selectionTreePath + 'removeorgunit.action', { id:unitId }, responseReceived );
 				
             linkTags[0].className = '';			
         }
@@ -68,7 +74,7 @@ function SelectionTreeSelection()
             {
                 $.post( selectionTreePath + 'addorgunit.action', { id:unitId }, responseReceived );
 				
-				linkTags[0].className = 'selected';
+                linkTags[0].className = 'selected';
             }
             else
             {
@@ -93,25 +99,27 @@ function SelectionTreeSelection()
 
     function responseReceived( json )
     {
-      selectedOrganisationUnit = [];
-      selectedOrganisationUnitUid = [];
+        selectedOrganisationUnit = [];
+        selectedOrganisationUnitUid = [];
 
-      var unitIds = [];
-      var unitUids = [];
+        var unitIds = [];
+        var unitUids = [];
 
-      for( i in json.selectedUnits ) {
-        unitIds[i] = json.selectedUnits[i].id;
-        selectedOrganisationUnit.push(unitIds[i]);
+        for ( i in json.selectedUnits ) 
+        {
+            unitIds[i] = json.selectedUnits[i].id;
+            selectedOrganisationUnit.push(unitIds[i]);
 
-        unitUids[i] = json.selectedUnits[i].uid;
-        selectedOrganisationUnitUid.push(unitUids[i]);
-      }
+            unitUids[i] = json.selectedUnits[i].uid;
+            selectedOrganisationUnitUid.push(unitUids[i]);
+        }
 
-      jQuery('body').trigger('oust.selected', selectedOrganisationUnit);
+        jQuery('body').trigger('oust.selected', selectedOrganisationUnit);
 
-      if( listenerFunction ) {
-        listenerFunction(unitIds);
-      }
+        if ( listenerFunction ) 
+        {
+            listenerFunction(unitIds);
+        }
     }
 
     function getTagId( unitId )
