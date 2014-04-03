@@ -55,13 +55,67 @@ dhis2.appr.displayCategoryOptionGroups = function( ou )
 	
 	$.getJSON( url, {ou:ou}, function( json ) {
 		var html = "";
-		$.each( json.objects, function( index, group ) {
-			html += "<option value=\"" + group.uid + "\">" + group.name + "</option>";
+		$.each( json.categoryOptionGroups, function( index, group ) {
+			html += "<option value=\"" + group.uid + "\" data-dimension=\"" + group.groupSet + "\">" + group.name + "</option>";
 		} );
 		
 		$( "#categoryOptionGroupSection" ).show();
 		$( "#categoryOptionGroupId" ).html( html );
 	} );
+}
+
+dhis2.appr.getDataReport = function()
+{
+	var ds = $( "#dataSetId" ).val();
+	
+    var dataReport = {
+        ds: ds,
+        pe: $( "#periodId" ).val(),
+        ou: selectionTreeSelection.getSelectedUid()[0]
+    };
+    
+    var cog = $( "#categoryOptionGroupId" ).val();
+    var cogs = $( "#categoryOptionGroupId :selected" ).data( "dimension" );
+    
+    if ( cog && cogs ) {
+    	var item = cogs + ":" + cog;
+    	dataReport.dimension = item;
+    }
+    
+    return dataReport;
+}
+
+dhis2.appr.generateDataReport = function()
+{
+	var dataReport = dhis2.appr.getDataReport();
+	
+	if ( !dataReport.ds )
+    {
+        setHeaderMessage( i18n_select_data_set );
+        return false;
+    }
+    if ( !dataReport.pe )
+    {
+        setHeaderMessage( i18n_select_period );
+        return false;
+    }
+    if ( !selectionTreeSelection.isSelected() )
+    {
+        setHeaderMessage( i18n_select_organisation_unit );
+        return false;
+    }
+
+    hideHeaderMessage();
+	$( "#criteria" ).hide( "fast" );
+	$( "#content" ).hide( "fast" );
+    showLoader();
+    
+    $.get( "generateDataSetReport.action", dataReport, function( data ) {
+    	$( '#content' ).html( data );
+    	hideLoader();
+    	$( "#content" ).show( "fast" );
+    	setTableStyles();
+    } );
 }
 
 //------------------------------------------------------------------------------

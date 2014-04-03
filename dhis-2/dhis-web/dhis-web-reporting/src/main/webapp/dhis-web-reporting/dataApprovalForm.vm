@@ -92,7 +92,7 @@ div.inputSection {
 </div>
 
 <div class="inputSection">
-<input type="button" value='$i18n.getString( "get_data" )' style="width:120px" onclick="dhis2.dsr.generateDataSetReport()">
+<input type="button" value='$i18n.getString( "get_data" )' style="width:120px" onclick="dhis2.appr.generateDataReport()">
 <input type="button" value='$i18n.getString( "cancel" )' style="width:120px" onclick="dhis2.dsr.hideCriteria()">
 </div>
 
