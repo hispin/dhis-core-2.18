@@ -40,16 +40,20 @@ div.inputSection {
   padding-top: 7px;
   padding-bottom: 5px;
 }
+
+.approveButton {
+  display: none;
+}
 </style>
 
 <h3 id="dataSetReportHeader">$i18n.getString( "data_approval" )</h3>
 
 <div id="control">
 <input type="button" value='$i18n.getString( "data" )' style="width:140px" onclick="dhis2.dsr.showCriteria()">
-<input type="button" id="approveButton" value="$i18n.getString( 'approve' )" onclick="dhis2.dsr.approveData()" style="width:120px">
-<input type="button" id="unapproveButton" value="$i18n.getString( 'unapprove' )" onclick="dhis2.dsr.unapproveData()" style="width:120px">
-<input type="button" id="acceptButton" value="$i18n.getString( 'accept' )" onclick="dhis2.dsr.acceptData()" style="width:120px">
-<input type="button" id="unacceptButton" value="$i18n.getString( 'unaccept' )" onclick="dhis2.dsr.unacceptData()" style="width:120px">
+<input type="button" id="approveButton" value="$i18n.getString( 'approve' )" onclick="dhis2.appr.approveData()" class="approveButton" style="width:120px">
+<input type="button" id="unapproveButton" value="$i18n.getString( 'unapprove' )" onclick="dhis2.appr.unapproveData()" class="approveButton" style="width:120px">
+<input type="button" id="acceptButton" value="$i18n.getString( 'accept' )" onclick="dhis2.appr.acceptData()" class="approveButton" style="width:120px">
+<input type="button" id="unacceptButton" value="$i18n.getString( 'unaccept' )" onclick="dhis2.appr.unacceptData()" class="approveButton" style="width:120px">
 </div>
 
 <div id="criteria" class="inputCriteria" style="width:360px;">
