@@ -40,7 +40,7 @@ import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
  * @author Jim Grace
  */
 public class DataApprovalLevel
-        implements Serializable
+    implements Serializable
 {
     private static final long serialVersionUID = -8424400562969386167L;
 
@@ -117,7 +117,7 @@ public class DataApprovalLevel
     public String getName()
     {
         String name = orgUnitLevel
-                + ( categoryOptionGroupSet == null ? "" : ( " - " + categoryOptionGroupSet.getName() ) );
+            + ( categoryOptionGroupSet == null ? "" : ( " - " + categoryOptionGroupSet.getName() ) );
 
         return name;
     }
@@ -130,9 +130,15 @@ public class DataApprovalLevel
      */
     public String getCategoryOptionGroupSetName()
     {
-        String categoryOptionGroupSetName = ( categoryOptionGroupSet == null ? "" : categoryOptionGroupSet.getName() );
-
-        return categoryOptionGroupSetName;
+        return ( categoryOptionGroupSet == null ? "" : categoryOptionGroupSet.getName() );
+    }
+    
+    /**
+     * Indicates whether this approval level specified a category option group set.
+     */
+    public boolean hasCategoryOptionGroupSet()
+    {
+        return categoryOptionGroupSet != null;
     }
 
     // -------------------------------------------------------------------------
@@ -208,5 +214,4 @@ public class DataApprovalLevel
     {
         this.orgUnitLevelName = orgUnitLevelName;
     }
-
 }
