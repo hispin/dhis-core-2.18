@@ -92,7 +92,7 @@ public class HibernateDataApprovalStore
 
         update ( dataApproval );
     }
-
+    
     public void deleteDataApproval( DataApproval dataApproval )
     {
         delete( dataApproval );

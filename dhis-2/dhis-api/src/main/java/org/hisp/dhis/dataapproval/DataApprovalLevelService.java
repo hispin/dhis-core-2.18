@@ -45,6 +45,14 @@ public interface DataApprovalLevelService
     List<DataApprovalLevel> getAllDataApprovalLevels();
 
     /**
+     * Gets data approval levels by org unit level.
+     * 
+     * @param orgUnitLevel the org unit level.
+     * @return a list of data approval levels.
+     */
+    List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel );
+    
+    /**
      * Tells whether a level can move down in the list (can switch places with
      * the level below.)
      *

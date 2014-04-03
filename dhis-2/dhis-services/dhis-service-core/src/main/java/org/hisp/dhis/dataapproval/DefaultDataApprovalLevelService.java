@@ -99,6 +99,11 @@ public class DefaultDataApprovalLevelService
 
         return dataApprovalLevels;
     }
+    
+    public List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel )
+    {
+        return dataApprovalLevelStore.getDataApprovalLevelsByOrgUnitLevel( orgUnitLevel );
+    }
 
     public boolean canDataApprovalLevelMoveDown( int level )
     {
@@ -229,7 +234,7 @@ public class DefaultDataApprovalLevelService
 
             // Move up from here to end, to avoid duplicate level in database.
 
-            for (int i = index; i < dataApprovalLevels.size(); i++ )
+            for ( int i = index; i < dataApprovalLevels.size(); i++ )
             {
                 update( dataApprovalLevels.get( i ), i );
             }

@@ -143,7 +143,7 @@ $( document ).ready( function()
     {
         log( 'Ouwt loaded' );
         loadMetaData();
-   } );
+    } );
 
     $( document ).bind( 'dhis2.online', function( event, loggedIn )
 	{
