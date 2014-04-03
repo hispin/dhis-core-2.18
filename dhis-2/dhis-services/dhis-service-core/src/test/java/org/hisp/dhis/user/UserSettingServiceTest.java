@@ -36,7 +36,7 @@ import org.junit.Test;
 /**
  * @author Kiran Prakash
  */
-public class DefaultUserSettingServiceTest
+public class UserSettingServiceTest
     extends DhisSpringTest
 {
     private UserSettingService userSettingService;
