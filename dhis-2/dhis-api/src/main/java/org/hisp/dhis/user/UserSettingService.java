@@ -71,6 +71,16 @@ public interface UserSettingService
     void saveUserSetting( String name, Serializable value );
 
     /**
+     * Saves the name/value pair as a user setting connected to user identified by username
+     *
+     * @param name the name/handle of the value.
+     * @param value the value to store.
+     * @param username the username of user.
+     * @throws NoCurrentUserException if there is no user.
+     */
+    void saveUserSetting( String name, Serializable value, String username );
+
+    /**
      * Returns the value of the user setting specified by the given name.
      * 
      * @param name the name of the user setting.

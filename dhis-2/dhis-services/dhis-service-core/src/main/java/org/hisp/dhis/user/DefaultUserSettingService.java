@@ -59,7 +59,7 @@ public class DefaultUserSettingService
     {
         this.userService = userService;
     }
-    
+
     // -------------------------------------------------------------------------
     // UserSettingService implementation
     // -------------------------------------------------------------------------
@@ -67,18 +67,33 @@ public class DefaultUserSettingService
     public void saveUserSetting( String name, Serializable value )
     {
         User currentUser = currentUserService.getCurrentUser();
+        
+        save( name, value, currentUser );
+    }
 
-        if ( currentUser == null )
+    public void saveUserSetting( String name, Serializable value, String username )
+    {
+        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
+        
+        if ( credentials != null )
+        {        
+            save( name, value, credentials.getUser() );
+        }
+    }
+
+    private void save( String name, Serializable value, User user )
+    {
+        if ( user == null )
         {
             return;
         }
 
-        UserSetting userSetting = userService.getUserSetting( currentUser, name );
+        UserSetting userSetting = userService.getUserSetting( user, name );
 
         if ( userSetting == null )
         {
             userSetting = new UserSetting();
-            userSetting.setUser( currentUser );
+            userSetting.setUser( user );
             userSetting.setName( name );
             userSetting.setValue( value );
 
@@ -149,6 +164,6 @@ public class DefaultUserSettingService
         if ( currentUser != null )
         {
             userService.deleteUserSetting( userService.getUserSetting( currentUser, name ) );
-        }        
+        }
     }
 }
