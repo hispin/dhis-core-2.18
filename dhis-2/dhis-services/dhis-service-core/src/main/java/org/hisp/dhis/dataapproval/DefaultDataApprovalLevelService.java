@@ -99,6 +99,12 @@ public class DefaultDataApprovalLevelService
 
         return dataApprovalLevels;
     }
+
+    public List<DataApprovalLevel> getUserDataApprovalLevels()
+    {
+        //TODO: Write the logic to filter the list according to the user.
+        return getAllDataApprovalLevels();
+    }
     
     public List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel )
     {

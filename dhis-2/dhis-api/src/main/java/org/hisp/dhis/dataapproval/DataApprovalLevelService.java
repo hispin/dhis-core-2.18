@@ -45,6 +45,14 @@ public interface DataApprovalLevelService
     List<DataApprovalLevel> getAllDataApprovalLevels();
 
     /**
+     * Gets a list of the data approval levels for which the user has
+     * permission to approve, un.
+     *
+     * @return List of all data approval levels, ordered from 1 to n.
+     */
+    List<DataApprovalLevel> getUserDataApprovalLevels();
+
+    /**
      * Gets data approval levels by org unit level.
      * 
      * @param orgUnitLevel the org unit level.
