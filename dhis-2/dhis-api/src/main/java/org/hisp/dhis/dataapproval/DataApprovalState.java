@@ -29,7 +29,7 @@ package org.hisp.dhis.dataapproval;
  */
 
 /**
- * Current status of data approval for a selected combination of data set, period,
+ * Current state of data approval for a selected combination of data set, period,
  * organisation unit, and category options or category group options.
  *
  * @author Jim Grace
@@ -40,28 +40,28 @@ public enum DataApprovalState
      * Data approval does not apply to this selection. (Data is neither
      * "approved" nor "unapproved".)
      */
-    UNAPPROVABLE ( false, false, false, false, false ),
-
-    /**
-     * Data is unapproved, and is ready to be approved for this selection.
-     */
-    UNAPPROVED_READY ( false, true, true, false, true ),
+    UNAPPROVABLE ( DataApprovalBaseState.UNAPPROVABLE, false, false, false, false, false ),
 
     /**
      * Data is unapproved, and is waiting for some lower-level approval.
      */
-    UNAPPROVED_WAITING ( false, true, true, false, false ),
+    UNAPPROVED_WAITING ( DataApprovalBaseState.UNAPPROVED_NOT_READY, false, true, true, false, false ),
 
     /**
      * Data is unapproved, and is waiting for approval somewhere else
      * (not approvable here.)
      */
-    UNAPPROVED_ELSEWHERE ( false, true, false, false, false ),
+    UNAPPROVED_ELSEWHERE ( DataApprovalBaseState.UNAPPROVED_NOT_READY, false, true, false, false, false ),
+
+    /**
+     * Data is unapproved, and is ready to be approved for this selection.
+     */
+    UNAPPROVED_READY ( DataApprovalBaseState.UNAPPROVED_READY, false, true, true, false, true ),
 
     /**
      * Data is approved, and was approved here (so could be unapproved here.)
      */
-    APPROVED_HERE ( true, false, true, false, false ),
+    APPROVED_HERE ( DataApprovalBaseState.APPROVED, true, false, true, false, false ),
 
     /**
      * Data is approved, but was not approved here (so cannot be unapproved here.)
@@ -74,17 +74,22 @@ public enum DataApprovalState
      * In the first two cases, there is a single data approval object
      * that covers the selection. In the third case there is not.
      */
-    APPROVED_ELSEWHERE( true, false, false, false, false ),
+    APPROVED_ELSEWHERE( DataApprovalBaseState.APPROVED, true, false, false, false, false ),
 
     /**
      * Data is approved and accepted here (so could be unapproved here.)
      */
-    ACCEPTED_HERE ( true, false, true, true, false ),
+    ACCEPTED_HERE ( DataApprovalBaseState.ACCEPTED, true, false, true, true, false ),
 
     /**
      * Data is approved and accepted, but elsewhere.
      */
-    ACCEPTED_ELSEWHERE ( true, false, false, true, false );
+    ACCEPTED_ELSEWHERE ( DataApprovalBaseState.ACCEPTED, true, false, false, true, false );
+
+    /**
+     * "Base", or simplified, state of data approval.
+     */
+    private DataApprovalBaseState baseState;
 
     /**
      * Is this data approved (and therefore locked)?
@@ -115,8 +120,10 @@ public enum DataApprovalState
     // Constructor
     // -------------------------------------------------------------------------
 
-    DataApprovalState( boolean approved, boolean unapproved, boolean approvable, boolean accepted, boolean ready )
+    DataApprovalState( DataApprovalBaseState baseState, boolean approved, boolean unapproved,
+                       boolean approvable, boolean accepted, boolean ready )
     {
+        this.baseState = baseState;
         this.approved = approved;
         this.unapproved = unapproved;
         this.approvable = approvable;
@@ -127,6 +134,11 @@ public enum DataApprovalState
     // -------------------------------------------------------------------------
     // Getters
     // -------------------------------------------------------------------------
+
+    public DataApprovalBaseState getBaseState()
+    {
+        return baseState;
+    }
 
     public boolean isApproved()
     {
