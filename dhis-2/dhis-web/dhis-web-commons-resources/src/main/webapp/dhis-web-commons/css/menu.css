@@ -302,10 +302,11 @@ a.menu-link:hover
 .apps-menu-more
 {
     display: table;
-    height: 30px;
-    padding-top: 10px;
+    height: 34px;
+    padding-top: 12px;
     text-align: center;
     width: 360px;
+	margin-top: 5px;
 }
 
 .apps-menu-more a
