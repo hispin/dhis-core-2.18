@@ -21,6 +21,7 @@ dhis2.appr.dataSetSelected = function()
 
 dhis2.appr.orgUnitSelected = function( event, ou )
 {
+	dhis2.appr.displayCategoryOptionGroups( ou );
 }
 
 dhis2.appr.displayPeriods = function()
@@ -42,6 +43,15 @@ dhis2.appr.displayPreviousPeriods = function()
 {
     dhis2.appr.currentPeriodOffset--;
     dhis2.appr.displayPeriods();
+}
+
+dhis2.appr.displayCategoryOptionGroups = function( ou )
+{
+	var url = "getCategoryOptionGroups.action";
+	
+	$.getJSON( url, {ou:ou}, function( json ) {
+		
+	} ):
 }
 
 //------------------------------------------------------------------------------

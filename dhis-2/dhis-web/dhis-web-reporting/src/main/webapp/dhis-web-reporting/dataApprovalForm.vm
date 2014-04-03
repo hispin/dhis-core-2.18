@@ -90,6 +90,8 @@ div.inputSection {
 <input type="button" value='$i18n.getString( "cancel" )' style="width:120px" onclick="hideCriteria()">
 </div>
 
+<div class="inputSection">
+</div>
 </div>
 
 #parse( "dhis-web-commons/loader/loader.vm" )

@@ -1057,21 +1057,23 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public String getDigitGroupSeparator() {
-		return digitGroupSeparator;
-	}
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getDigitGroupSeparator()
+    {
+        return digitGroupSeparator;
+    }
 
-	public void setDigitGroupSeparator(String digitGroupSeparator) {
-		this.digitGroupSeparator = digitGroupSeparator;
-	}
+    public void setDigitGroupSeparator( String digitGroupSeparator )
+    {
+        this.digitGroupSeparator = digitGroupSeparator;
+    }
 
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
 
-	@JsonIgnore
+    @JsonIgnore
     public List<OrganisationUnit> getTransientOrganisationUnits()
     {
         return transientOrganisationUnits;
