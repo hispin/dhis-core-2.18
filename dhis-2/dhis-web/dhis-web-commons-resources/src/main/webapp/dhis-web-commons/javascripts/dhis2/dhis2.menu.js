@@ -370,7 +370,7 @@
         $(selector).html('');
         $.tmpl( "appMenuItemTemplate", apps).appendTo(selector);
         $('#menuDropDown1 .menu-drop-down-scroll .apps-menu-more').remove();
-        $('.apps-menu-more').clone().addClass('ui-helper-clearfix').appendTo($('#menuDropDown1 .menu-drop-down-scroll'));
+        $('.apps-menu-more').clone().css('display', 'table').addClass('ui-helper-clearfix').appendTo($('#menuDropDown1 .menu-drop-down-scroll'));
     }
 
     function renderAppManager(selector) {
@@ -506,22 +506,15 @@
             var self = $(this),
                 moreAppsElement = $('#menuDropDown1 > .apps-menu-more');
 
-            if (self.parent(':animated').length !== 0)
-                return;
-
-            if (self.scrollTop() < 10 && self.innerHeight() === 220) {
+            if (self.scrollTop() < 10) {
                 moreAppsElement.show();
                 self.parent().css('width', '360px');
                 self.parent().parent().css('width', '360px');
-                self.css('height', '330px');
-                self.parent().clearQueue().animate( {'height': '330px'} );
             } else {
                 if (self.innerHeight() === 330 ) {
                     moreAppsElement.hide();
                     self.parent().css('width', '384px');
                     self.parent().parent().css('width', '384px');
-                    self.css('height', '220px');
-                    self.parent().clearQueue().animate( {'height': '220px'} );
                 }
             }
 
