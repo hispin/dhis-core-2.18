@@ -527,6 +527,10 @@
 			ref="org.hisp.dhis.trackedentity.TrackedEntityAuditService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.program.ProgramIndicatorDeletionHandler"
+		class="org.hisp.dhis.program.ProgramIndicatorDeletionHandler">
+	</bean>
+	
 	<!-- DeletionManager -->
 
 	<bean
@@ -553,6 +557,7 @@
 					<ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
+					<ref local="org.hisp.dhis.program.ProgramIndicatorDeletionHandler" />
 				</list>
 			</list>
 		</property>
@@ -602,6 +607,9 @@
 				method="intercept" />
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.program.ProgramValidationService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramIndicatorService.delete*(..) )"
 				method="intercept" />
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService.delete*(..) )"
