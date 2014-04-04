@@ -70,7 +70,6 @@ public class ProgramStageDataElementDeletionHandler
         while ( iterator.hasNext() )
         {
             ProgramStageDataElement de = iterator.next();
-            iterator.remove();
             programStageDEService.deleteProgramStageDataElement( de );
         }
     }
