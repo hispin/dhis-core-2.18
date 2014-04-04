@@ -94,6 +94,28 @@ public class DimensionalObjectUtils
     }
 
     /**
+     * Creates a list of dimension identifiers based on the given list of 
+     * DimensionalObjects.
+     * 
+     * @param dimensions the list of DimensionalObjects.
+     * @return list of dimension identifiers.
+     */
+    public static List<String> getDimensions( List<DimensionalObject> dimensions )
+    {
+        List<String> dims = new ArrayList<String>();
+        
+        if ( dimensions != null )
+        {
+            for ( DimensionalObject dimension : dimensions )
+            {
+                dims.add( dimension.getDimension() );
+            }
+        }
+        
+        return dims;
+    }
+
+    /**
      * Creates a two-dimensional array of dimension items based on the list of
      * DimensionalObjects. I.e. the list of items of each DimensionalObject is
      * converted to an array and inserted into the outer array in the same order.
