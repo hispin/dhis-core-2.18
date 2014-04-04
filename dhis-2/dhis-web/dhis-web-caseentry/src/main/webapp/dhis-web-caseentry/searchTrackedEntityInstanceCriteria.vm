@@ -1,5 +1,5 @@
 <input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
-<input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.id' >
+<input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.uid' >
 <input type="hidden" id='hideLink' name='hideLink' value='false'>
 <input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
 
@@ -12,13 +12,13 @@
 			<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
 		</td>
 		<td valign='bottom' id='criteriaBtnTD'>
-			<input type="button" id='addEntityInstanceBtn' name='addEntityInstanceBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddTrackedEntityInstanceForm('', getFieldValue('programIdAddEntityInstance'),'', false );" >
+			<input type="button" id='addEntityInstanceBtn' name='addEntityInstanceBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddTrackedEntityInstanceForm('', getFieldValue('program'),'', false );" >
 		</td>
 	</tr>
 	<tr id='programAddEntityInstanceTR'>
 		<td>$i18n.getString('program')</td>
 		<td>
-			<select id='programIdAddEntityInstance' name='programIdAddEntityInstance' onchange='enableBtn();'>
+			<select id='program' name='program' onchange='enableBtn();'>
 				#if($programs.size()==0)
 					<option value="">[$i18n.getString( "none_program" )]</option>
 					<script>disable('listEntityInstanceBtn')</script>
@@ -30,16 +30,17 @@
 				#end
 				
 				#foreach($program in $programs)
-					<option value="$program.id" type='$program.type'>$program.displayName</option>
+					<option value="$program.uid" type='$program.type'>$program.displayName</option>
 				#end
 			</select>
 			<span id="programLoader" style="display:none;" ><img src="../images/ajax-loader-bar.gif" /></span>
 		</td>
 		<td id='listEntityInstanceBtnTD'>
-			<input type="button" id='listEntityInstanceBtn' value="$i18n.getString( 'list_all_tracked_entity_instances' )" onclick="listAllTrackedEntityInstance();">
+			<input type="button" id='listEntityInstanceBtn' value="$i18n.getString( 'list_all_tracked_entity_instances' )" onclick="listAllTrackedEntityInstance(1);">
 			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
 		</td>
 	</tr>
+	
 	<tr id='scheduleVisitTR' class='hidden'>
 		<td>$i18n.getString('scheduled_visits')</td>
 		<td>
@@ -54,12 +55,13 @@
 	<tr id='programStageAddEntityInstanceTR' class='hidden'>
 		<td>$i18n.getString('status')</td>
 		<td>
-			<select id="statusEvent" name="statusEvent">
-				<option value='4'>$i18n.getString("overdue")</option>
-				<option value='2'>$i18n.getString("incomplete")</option>
-				<option value='1'>$i18n.getString("completed")</option>
-				<option value='3'>$i18n.getString("scheduled_in_future")</option> 
-				<option value='5'>$i18n.getString("skipped")</option> 
+			<select id="status" name="status">
+				<option value='LATE_VISIT'>$i18n.getString("overdue")</option>
+				<option value='ACTIVE'>$i18n.getString("active")</option>
+				<option value='VISITED'>$i18n.getString("incomplete")</option>
+				<option value='COMPLETED'>$i18n.getString("completed")</option>
+				<option value='FUTURE_VISIT'>$i18n.getString("scheduled_in_future")</option> 
+				<option value='SKIPPED'>$i18n.getString("skipped")</option> 
 			</select>
 		</td>
 	</tr>
@@ -84,25 +86,35 @@
 		<tr>
 			<td>$i18n.getString('orgunit_search_type')</td>
 			<td>
-				<select id='facilityLB' name='facilityLB'>
-					<option value='' />$i18n.getString('selected')</option>
-					#if( $auth.hasAccess( "dhis-web-caseentry", "searchInOtherOrgunits" ) )
-						<option value='searchInBelowSelectedOrgunit' />$i18n.getString('selected_and_all_below')</option>
-					#end
-					<option value='searchInUserOrgunits' />$i18n.getString('all_visible')</option>
-					#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
-						<option value='searchInAllOrgunits' />$i18n.getString('all_in_system')</option>
-					#end
+				<select id='ouMode' name='ouMode'>
+					<option value='SELECTED ' />$i18n.getString('selected')</option>
+					<option value='CHILDREN' />$i18n.getString('children')</option>
+					<option value='DESCENDANTS' />$i18n.getString('selected_and_all_below')</option>
 				</select>
 			</td>
 		</tr>
+		
+		<tr id='trackedEntityTR' class='hidden'>
+			<td>$i18n.getString('tracked_entity')</td>
+			<td>
+				<select id='trackedEntity' name='trackedEntity'>
+					<option value="">[$i18n.getString('please_select')]</option>
+					#foreach($trackedEntity in $trackedEntities)
+						<option value="$trackedEntity.uid">$trackedEntity.name</option>
+					#end
+				</select>
+				<span id="programLoader" style="display:none;" ><img src="../images/ajax-loader-bar.gif" /></span>
+			</td>
+		</tr>
+		
 		<tr id="enrollmentSelectTR" class='hidden' >
 			<td>$i18n.getString('show')</td>
 			<td>
-				<select id='statusEnrollment'>
-					<option value='0'>$i18n.getString('active_enrollments_only')</option>
-					<option value='1'>$i18n.getString('completed_enrollments_only')</option>
-					<option value=''>$i18n.getString('active_and_completed_enrolments')</option>
+				<select id='programStatus' name='programStatus'>
+					<option value=''>$i18n.getString('all_statuses')</option>
+					<option value='ACTIVE'>$i18n.getString('active_enrollments_only')</option>
+					<option value='COMPLETED'>$i18n.getString('completed_enrollments_only')</option>
+					<option value='CANCELLED'>$i18n.getString('cancelled_enrollments_only')</option>
 				</select>
 			</td>
 		</tr>
@@ -118,7 +130,7 @@
 			  <select class='search-field' id="searchObjectId" name="searchObjectId" #if( $attributes.size() == 0 ) disabled="disabled" #end onchange="searchObjectOnChange(this)">
 				#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
 					#foreach( $attribute in $attributes )
-						<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
+						<option value="$attribute.uid" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
 					#end
 				#end
 			  </select>
@@ -131,7 +143,7 @@
 				  <select class='search-field' id="searchObjectId" name="searchObjectId" #if( $attributes.size() == 0 ) disabled="disabled" #end onchange="searchObjectOnChange(this)">
 					#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
 						#foreach( $attribute in $attributes )
-							<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
+							<option value="$attribute.uid" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
 						#end
 					  </select>
 					#end

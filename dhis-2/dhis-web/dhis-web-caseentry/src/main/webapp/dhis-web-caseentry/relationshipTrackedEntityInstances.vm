@@ -50,8 +50,8 @@
 			
 			<td>
 			  <a href="javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )" title='$i18n.getString( "entityInstance_dashboard" )'><img src="../images/enroll.png"></a>
-			  <a href="javascript:validateAddRelationship($entityInstance.id);" title="$i18n.getString( 'assign_relationship' )" ><img src="../images/relationship.png" ></a>
-			  <a href="javascript:showTrackedEntityInstanceHistory('$entityInstance.id')" title='$i18n.getString( "tracked_entity_instance_details_and_history" )'><img src="../images/information.png"></a>
+			  <a href="javascript:validateAddRelationship($entityInstance.uid);" title="$i18n.getString( 'assign_relationship' )" ><img src="../images/relationship.png" ></a>
+			  <a href="javascript:showTrackedEntityInstanceHistory('$entityInstance.uid')" title='$i18n.getString( "tracked_entity_instance_details_and_history" )'><img src="../images/information.png"></a>
 			</td>
 			
 		</tr>

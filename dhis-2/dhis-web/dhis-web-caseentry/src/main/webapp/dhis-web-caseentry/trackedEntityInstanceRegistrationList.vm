@@ -127,13 +127,13 @@
 				
 				<td>
 				  <a href="javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )" title='$i18n.getString( "dashboard" )'><img src="../images/enroll.png" alt='$i18n.getString( "dashboard" )'></a>
-				  <a href="javascript:isDashboard=false;showUpdateTrackedEntityInstanceForm( '$entityInstance.id' )" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
-				  <a href="javascript:setFieldValue( 'isShowTrackedEntityInstanceList', 'false' ); showRelationshipList('$entityInstance.id')" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
+				  <a href="javascript:isDashboard=false;showUpdateTrackedEntityInstanceForm( '$entityInstance.uid' )" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
+				  <a href="javascript:setFieldValue( 'isShowTrackedEntityInstanceList', 'false' ); showRelationshipList('$entityInstance.uid')" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
                   #if( $auth.hasAccess( "dhis-web-caseentry", "getTrackedEntityInstanceLocation" ) )
-				  <a href="javascript:isDashboard=false;getTrackedEntityInstanceLocation( '$entityInstance.id' );" title='$i18n.getString( "change_location" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "change_tracked_entity_instance_location" )' style='width:25px; height:25px'></a>
+				  <a href="javascript:isDashboard=false;getTrackedEntityInstanceLocation( '$entityInstance.uid' );" title='$i18n.getString( "change_location" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "change_tracked_entity_instance_location" )' style='width:25px; height:25px'></a>
 				  #end
-				  <a href="javascript:removeTrackedEntityInstance( '$entityInstance.id' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
-				  <a href="javascript:showTrackedEntityInstanceHistory( '$entityInstance.id' )" title='$i18n.getString( "tracked_entity_instance_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "tracked_entity_instance_details_and_history" )'></a>
+				  <a href="javascript:removeTrackedEntityInstance( '$entityInstance.uid' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+				  <a href="javascript:showTrackedEntityInstanceHistory( '$entityInstance.uid' )" title='$i18n.getString( "tracked_entity_instance_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "tracked_entity_instance_details_and_history" )'></a>
 				</td>
 				
 			</tr>
