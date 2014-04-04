@@ -41,6 +41,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.scheduling.TaskId;
 
 /**
@@ -55,7 +56,7 @@ public interface EventService
     Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, 
         TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate );
 
-    Events getEvents( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, 
+    Events getEvents( List<Program> programs, List<ProgramStage> programStages, ProgramStatus programStatus, List<OrganisationUnit> organisationUnits, 
         TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status );
 
     Event getEvent( String uid );
