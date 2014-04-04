@@ -128,6 +128,7 @@ public class EventController
         @RequestParam( required = false ) String program,
         @RequestParam( required = false ) String programStage,
         @RequestParam( required = false ) ProgramStatus programStatus,
+        @RequestParam( required = false ) Boolean followUp,
         @RequestParam( required = false ) String trackedEntityInstance,
         @RequestParam( required = false ) String orgUnit,
         @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
@@ -170,7 +171,7 @@ public class EventController
 
         if ( rootOrganisationUnit == null && tei != null )
         {
-            Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), programStatus, null, tei, startDate, endDate, status );
+            Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), programStatus, followUp, null, tei, startDate, endDate, status );
 
             model.addAttribute( "model", events );
             model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
@@ -197,7 +198,7 @@ public class EventController
             organisationUnits.add( rootOrganisationUnit );
         }
 
-        Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), programStatus, organisationUnits, tei, startDate, endDate, status );
+        Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
         
         List<Event> eventList = new ArrayList<Event>( events.getEvents() );
 

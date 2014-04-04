@@ -75,12 +75,12 @@ public class JdbcEventStore
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
         TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), null, Arrays.asList( organisationUnit ),
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), null, false, Arrays.asList( organisationUnit ),
             trackedEntityInstance, startDate, endDate, null );
     }
 
     @Override
-    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, ProgramStatus programStatus,
+    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, ProgramStatus programStatus, Boolean followUp,
         List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
     {
         List<Event> events = new ArrayList<Event>();
@@ -97,7 +97,7 @@ public class JdbcEventStore
             }
         }
 
-        String sql = buildSql( getIdList( programs ), getIdList( programStages ), programStatus, getIdList( organisationUnits ),
+        String sql = buildSql( getIdList( programs ), getIdList( programStages ), programStatus, followUp, getIdList( organisationUnits ),
             trackedEntityInstanceId, startDate, endDate, status );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -177,7 +177,7 @@ public class JdbcEventStore
         return events;
     }
 
-    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, ProgramStatus programStatus, List<Integer> orgUnitIds,
+    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, ProgramStatus programStatus, Boolean followUp, List<Integer> orgUnitIds,
         Integer trackedEntityInstanceId, Date startDate, Date endDate, EventStatus status )
     {
         SqlHelper hlp = new SqlHelper();
@@ -212,6 +212,11 @@ public class JdbcEventStore
         if ( programStatus != null )
         {
             sql += hlp.whereAnd() + " pi.status = " + programStatus.getValue() + " ";
+        }
+        
+        if ( followUp != null )
+        {
+            sql += hlp.whereAnd() + " pi.followup is " + ( followUp ? "true" : "false" ) + " ";
         }
 
         if ( !orgUnitIds.isEmpty() )
