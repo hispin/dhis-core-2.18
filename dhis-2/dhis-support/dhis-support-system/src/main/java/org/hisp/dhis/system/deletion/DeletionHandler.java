@@ -72,6 +72,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramIndicator;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -751,6 +752,15 @@ public abstract class DeletionHandler
     }
     
     public String allowTrackedEntity( TrackedEntity trackedEntity )
+    {
+        return null;
+    }
+    
+    public void deleteProgramIndicator( ProgramIndicator programIndicator )
+    {
+    }
+    
+    public String allowProgramIndicator( ProgramIndicator programIndicator )
     {
         return null;
     }
