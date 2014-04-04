@@ -287,7 +287,7 @@ public class DefaultDataApprovalLevelService
 
         // Move down from end to here, to avoid duplicate level in database.
 
-        for (int i = dataApprovalLevels.size() - 1; i > index; i-- )
+        for ( int i = dataApprovalLevels.size() - 1; i > index; i-- )
         {
             update( dataApprovalLevels.get( i ), i );
         }
