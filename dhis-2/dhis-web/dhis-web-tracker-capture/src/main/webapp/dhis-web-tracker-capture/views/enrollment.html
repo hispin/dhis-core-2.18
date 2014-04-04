@@ -5,19 +5,59 @@
             <a href ng-click="removeWidget(enrollmentWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
         </span>
     </div>
-    <div class="panel-body dashboard-element-container">
-        <div>
-            <div> 
+    <table class="table">
+        <tr>
+            <td>
                 {{'program'| translate}}
-                <span class="right">
-                    <select ng-model="selectedProgram"
-                            class="form-control"
-                            ng-options="program as program.name for program in programs | orderBy: 'name'" 
-                            ng-change="loadEvents(selectedProgram.id)">
-                        <option value="">{{'please_select'| translate}}</option>
-                    </select>
-                </span>
-            </div>
-        </div> 
-    </div>
+            </td>
+            <td>
+                <select ng-model="selectedProgram"
+                        class="form-control"
+                        ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                        ng-change="loadEvents()">
+                    <option value="">{{'please_select'| translate}}</option>
+                </select>
+            </td>
+            <td>
+                <button type="button" 
+                        class="btn btn-default"
+                        ng-if="selectedProgram && !selectedEnrollment" 
+                        ng-click="enroll()">
+                    {{'enroll'| translate}}
+                </button>  
+            </td>                
+            <td>
+                <button type="button" 
+                        class="btn btn-default"
+                        ng-if="selectedProgram && selectedEnrollment" 
+                        ng-click="scheduling()">
+                    {{'scheduling'| translate}}
+                </button>                                
+            </td>
+        </tr>
+    </table>
+    <div ng-if="selectedProgram">
+        <div ng-if="programStages">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            {{'program_stage'| translate}}
+                        </th>
+                        <th>
+                            {{'scheduled_date'| translate}}
+                        </th>
+                    </tr>                
+                </thead>
+                <tr ng-repeat="programStage in programStages">
+                    <td>
+                        {{programStage.name}}
+                    </td>
+                    <td>
+                        {{programStage.minDaysFromStart}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>    
 </div>

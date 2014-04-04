@@ -6,7 +6,7 @@
     <table class="listTable dhis2-table-striped-border">
         <tr ng-repeat="biggerWidget in dashboardWidgets.bigger">
             <td>
-                {{biggerWidget.title}}
+                {{biggerWidget.title | translate}}
             </td>
             <td>
                 <input type="checkbox" ng-model="biggerWidget.show">
@@ -14,7 +14,7 @@
         </tr>
         <tr ng-repeat="smallerWidget in dashboardWidgets.smaller">
             <td>
-                {{smallerWidget.title}}
+                {{smallerWidget.title | translate}}
             </td>
             <td>
                 <input type="checkbox" ng-model="smallerWidget.show">
