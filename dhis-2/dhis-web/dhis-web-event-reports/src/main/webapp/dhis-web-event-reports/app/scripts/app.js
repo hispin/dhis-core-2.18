@@ -1574,10 +1574,12 @@ Ext.onReady( function() {
 				delete favorite.showSubTotals;
 
 				delete favorite.type;
-
 				delete favorite.parentGraphMap;
-
                 delete favorite.id;
+                delete favorite.displayName;
+                delete favorite.access;
+                delete favorite.lastUpdated;
+                delete favorite.created;
 			}
 
 			return favorite;
@@ -5227,6 +5229,13 @@ Ext.onReady( function() {
 					},
 					success: function(r) {
 						var config = Ext.decode(r.responseText);
+
+						// sync
+						config.showTotals = config.totals;
+						delete config.totals;
+
+						config.showSubTotals = config.subtotals;
+						delete config.subtotals;
 
 						web.report.getData(config, true);
 					}
