@@ -141,7 +141,8 @@ public class DefaultDataApprovalLevelService
 
             for ( DataApprovalLevel approvalLevel : getAllDataApprovalLevels() )
             {
-                Boolean canReadThisLevel = ( approvalLevel.getCategoryOptionGroupSet() == null || securityService.canRead( approvalLevel.getCategoryOptionGroupSet() ) );
+                Boolean canReadThisLevel = ( securityService.canRead( approvalLevel ) &&
+                        ( approvalLevel.getCategoryOptionGroupSet() == null || securityService.canRead( approvalLevel.getCategoryOptionGroupSet() ) ) );
 
                 //
                 // Test using assignedAtLevel and approvableAtLevel values from the previous (higher) level:
