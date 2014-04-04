@@ -2,80 +2,80 @@
     <div class="panel-heading">
         {{dataentryWidget.title| translate}} 
         <span class="nav-pills" ng-show="selectedEnrollment">
-           | <span><a href ng-click="createNewEvent()">{{'create_new_event'| translate}}</a></span>            
+            | <span><a href ng-click="createNewEvent()">{{'create_new_event'| translate}}</a></span>            
         </span>
         <span class="pull-right">
             <a href ng-click="removeWidget(dataentryWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
         </span>        
     </div>
-    <div class="panel-body">        
-        <div ng-show="dhis2Events">            
-            <table class="table-borderless">
-                <tbody>
-                    <tr>
-                        <td class="inline-block" ng-repeat="dhis2Event in dhis2Events">
-                            <span class="block orgunit-container">{{dhis2Event.orgUnitName}}</span>
-                            <span class="arrow-container">→</span>
-                            <span class="stage-container"                                                     
-                                  ng-class="{'current-stage': currentEvent.programStage == dhis2Event.programStage, '{{dhis2Event.statusColor}}': true}"                                                      
-                                  ng-click="showDataEntry(dhis2Event)">
-                                {{dhis2Event.name}}<br/>
-                                {{dhis2Event.eventDate}}                                                    
-                            </span>                                                
-                        </td>                        
-                    </tr>
-                </tbody>                
-            </table>
-            <hr>
-            <div ng-show="currentEvent">
-                <div class="form-group">
-                    <div class="row" ng-repeat="prStDe in currentStage.programStageDataElements">
-                        <div class="col-sm-6">
-                            {{prStDe.dataElement.name}}-{{prStDe.dataElement.type}}
-                        </div>
-                        <div class="col-sm-6">
-                            <div ng-switch="prStDe.dataElement.type">
-                                <div ng-switch-when="int">
-                                    <input type="number"
-                                           class="form-control"
-                                           ng-model="currentEvent[prStDe.dataElement.id]" 
-                                           ng-required={{prStDe.compulsory}} 
-                                           name="foo"/>
-                                </div>
-                                <div ng-switch-when="string">                                        
-                                    <input type="text"
-                                           class="form-control"
-                                           ng-model="currentEvent[prStDe.dataElement.id]" 
-                                           ng-required={{prStDe.compulsory}} 
-                                           typeahead="option for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                           typeahead-open-on-focus                                                        
-                                           name="foo"/>
-                                </div>
-                                <div ng-switch-when="bool">
-                                    <select class="form-control"
-                                            ng-model="currentEvent[prStDe.dataElement.id]" 
-                                            ng-required={{prStDe.compulsory}} 
-                                            name="foo">
-                                        <option value="">{{'please_select'| translate}}</option>                        
-                                        <option value="0">{{'no'| translate}}</option>
-                                        <option value="1">{{'yes'| translate}}</option>
-                                    </select>
 
-                                </div>
-                                <div ng-switch-when="date">
-                                    <input type="text" 
-                                           placeholder="yyyy-mm-dd" 
-                                           ng-date 
-                                           class="form-control"
-                                           ng-model="currentEvent[prStDe.dataElement.id]" 
-                                           ng-required={{prStDe.compulsory}}  
-                                           name="foo"/>
-                                </div>
+    <div ng-show="dhis2Events">            
+        <table class="table-borderless">
+            <tbody>
+                <tr>
+                    <td class="inline-block" ng-repeat="dhis2Event in dhis2Events">
+                        <span class="block orgunit-container">{{dhis2Event.orgUnitName}}</span>
+                        <span class="arrow-container">→</span>
+                        <span class="stage-container"                                                     
+                              ng-class="{'current-stage': currentEvent.programStage == dhis2Event.programStage, '{{dhis2Event.statusColor}}': true}"                                                      
+                              ng-click="showDataEntry(dhis2Event)">
+                            {{dhis2Event.name}}<br/>
+                            {{dhis2Event.eventDate}}                                                    
+                        </span>                                                
+                    </td>                        
+                </tr>
+            </tbody>                
+        </table>
+        <hr>
+        <div ng-show="currentEvent">
+            <table class="table table-striped table-hover">
+                <tr ng-repeat="prStDe in currentStage.programStageDataElements">
+                    <td>
+                        {{prStDe.dataElement.name}}
+                    </td>
+                    <td>
+                        <div ng-switch="prStDe.dataElement.type">
+                            <div ng-switch-when="int">
+                                <input type="number"
+                                       class="form-control"
+                                       ng-model="currentEvent[prStDe.dataElement.id]" 
+                                       ng-required={{prStDe.compulsory}} 
+                                       name="foo"/>
+                            </div>
+                            <div ng-switch-when="string">                                        
+                                <input type="text"
+                                       class="form-control"
+                                       ng-model="currentEvent[prStDe.dataElement.id]" 
+                                       ng-required={{prStDe.compulsory}} 
+                                       typeahead="option for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                       typeahead-open-on-focus                                                        
+                                       name="foo"/>
+                            </div>
+                            <div ng-switch-when="bool">
+                                <select class="form-control"
+                                        ng-model="currentEvent[prStDe.dataElement.id]" 
+                                        ng-required={{prStDe.compulsory}} 
+                                        name="foo">
+                                    <option value="">{{'please_select'| translate}}</option>                        
+                                    <option value="0">{{'no'| translate}}</option>
+                                    <option value="1">{{'yes'| translate}}</option>
+                                </select>
+
+                            </div>
+                            <div ng-switch-when="date">
+                                <input type="text" 
+                                       placeholder="yyyy-mm-dd" 
+                                       ng-date 
+                                       class="form-control"
+                                       ng-model="currentEvent[prStDe.dataElement.id]" 
+                                       ng-required={{prStDe.compulsory}}  
+                                       name="foo"/>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </td>
+                </tr>
+            </table>                
         </div>
     </div>
+
 </div>

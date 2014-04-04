@@ -45,5 +45,9 @@
     "value": "Value",
     "show_hide_widgets": "Show/Hide widgets",
     "select_widgets_to_show": "Select widgets to show",
-    "close": "Close"
+    "close": "Close",
+    "program_stage": "Program stage",
+    "scheduled_date": "Scheduled date",
+    "scheduling": "Scheduling",
+    "enroll": "Enroll"
 }
