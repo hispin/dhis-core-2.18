@@ -49,11 +49,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Jim Grace
- * @version $Id$
  */
 public class DataApprovalLevelServiceTest
-        extends DhisSpringTest
+    extends DhisSpringTest
 {
+    private static final String AUTH_APPR_LEVEL = "F_SYSTEM_SETTING";
+    
     @Autowired
     private DataApprovalLevelService dataApprovalLevelService;
 
@@ -439,7 +440,7 @@ public class DataApprovalLevelServiceTest
     {
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false );
+        createUserAndInjectSecurityContext( units, false, AUTH_APPR_LEVEL );
 
         List<DataApprovalLevel> levels;
 
@@ -468,7 +469,7 @@ public class DataApprovalLevelServiceTest
     {
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE );
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, AUTH_APPR_LEVEL );
 
         List<DataApprovalLevel> levels;
 
@@ -499,7 +500,7 @@ public class DataApprovalLevelServiceTest
     {
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
 
         List<DataApprovalLevel> levels;
 
@@ -534,7 +535,7 @@ public class DataApprovalLevelServiceTest
     {
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
 
         List<DataApprovalLevel> levels;
 
@@ -570,7 +571,7 @@ public class DataApprovalLevelServiceTest
     {
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_ACCEPT_LOWER_LEVELS );
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_ACCEPT_LOWER_LEVELS, AUTH_APPR_LEVEL );
 
         List<DataApprovalLevel> levels;
 
