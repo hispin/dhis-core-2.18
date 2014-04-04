@@ -34,7 +34,7 @@
 		<td>
 			<select style='width:322px' multiple="multiple" id="availableAttributes" name="availableAttributes" size="15" ondblclick="moveSelectedById( 'availableAttributes', 'selectedAttributeIds' )" >
 				#foreach($attribute in $availableAttributes)
-					<option value='attr_$attribute.id'>$attribute.displayName</option>
+					<option value='$attribute.id'>$attribute.displayName</option>
 				#end
 			</select>
 		</td>
@@ -47,7 +47,7 @@
 		<td>
 			<select style='width:322px' multiple="multiple" id="selectedAttributeIds" name="selectedAttributeIds" size="15" ondblclick="moveSelectedById( 'selectedAttributeIds', 'availableAttributes' )" >
 				#foreach($attribute in $selectedAttributes)
-					<option value='attr_$attribute.id'>$attribute.displayName</option>
+					<option value='$attribute.id'>$attribute.displayName</option>
 				#end
 			</select>
 		</td>

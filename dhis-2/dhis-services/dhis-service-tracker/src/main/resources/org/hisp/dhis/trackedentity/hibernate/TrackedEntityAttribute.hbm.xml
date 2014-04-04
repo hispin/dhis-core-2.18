@@ -37,6 +37,8 @@
     <property name="sortOrderInVisitSchedule" />
 
     <property name="displayInListNoProgram" />
+    
+    <property name="sortOrderInListNoProgram" />
 
     <property name="unique" column="uniquefield" />
 

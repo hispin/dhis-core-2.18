@@ -172,7 +172,7 @@
 
     <action name="saveAttributeInListNoProgram"
       class="org.hisp.dhis.trackedentity.action.trackedentityattribute.SaveAttributeInListNoProgramAction">
-      <result name="success" type="redirect">index.action</result>
+      <result name="success" type="redirect">attribute.action</result>
       <param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD, F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD</param>
     </action>
 
