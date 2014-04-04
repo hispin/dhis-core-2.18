@@ -2474,7 +2474,7 @@ Ext.onReady( function() {
 			stage,
             onStageSelect,
             loadDataElements,
-            dataElementAvailable,
+            //dataElementAvailable,
             dataElementSelected,
             addUxFromDataElement,
             selectDataElements,
@@ -2502,7 +2502,7 @@ Ext.onReady( function() {
             checkboxes = [],
 
             fixedPeriodAvailable,
-            fixedPeriodSelected,
+            //fixedPeriodSelected,
             onPeriodTypeSelect,
             periodType,
             prevYear,
@@ -3648,7 +3648,7 @@ Ext.onReady( function() {
             height: 24,
             handler: function() {
                 if (periodType.getValue()) {
-                    periodType.periodOffset--;
+                    periodType.periodOffset++;
                     onPeriodTypeSelect(periodType.getValue());
                 }
             }
@@ -3678,8 +3678,12 @@ Ext.onReady( function() {
             bodyStyle: 'border-style:none',
             getRecords: function() {
                 var map = relativePeriodCmpMap,
-                    selectedPeriods = fixedPeriodSelected.getValue(),
+                    selectedPeriods = [],
 					records = [];
+
+				fixedPeriodSelectedStore.each( function(r) {
+					selectedPeriods.push(r.data.id);
+				});
 
                 for (var i = 0; i < selectedPeriods.length; i++) {
                     records.push({id: selectedPeriods[i]});
@@ -4304,59 +4308,6 @@ Ext.onReady( function() {
 			//}
 		};
 
-		setGui = function(view) {
-			//var ouDim = view.rows[0],
-				//isOu = false,
-				//isOuc = false,
-				//isOugc = false,
-				//levels = [],
-				//groups = [];
-
-			// widget gui
-			(function() {
-
-				reset(true);
-
-				// organisation units
-				for (var i = 0, item; i < ouDim.items.length; i++) {
-					item = ouDim.items[i];
-
-					if (item.id === 'USER_ORGUNIT') {
-						isOu = true;
-					}
-					else if (item.id === 'USER_ORGUNIT_CHILDREN') {
-						isOuc = true;
-					}
-					else if (item.id === 'USER_ORGUNIT_GRANDCHILDREN') {
-						isOugc = true;
-					}
-					else if (item.id.substr(0,5) === 'LEVEL') {
-						levels.push(parseInt(item.id.split('-')[1]));
-					}
-					else if (item.id.substr(0,8) === 'OU_GROUP') {
-						groups.push(parseInt(item.id.split('-')[1]));
-					}
-				}
-
-				if (levels.length) {
-					toolMenu.clickHandler('level');
-					organisationUnitLevel.setValue(levels);
-				}
-				else if (groups.length) {
-					toolMenu.clickHandler('group');
-					organisationUnitGroup.setValue(groups);
-				}
-				else {
-					toolMenu.clickHandler('orgunit');
-					userOrganisationUnit.setValue(isOu);
-					userOrganisationUnitChildren.setValue(isOuc);
-					userOrganisationUnitGrandChildren.setValue(isOugc);
-				}
-
-				treePanel.selectGraphMap(view.parentGraphMap);
-			}());
-		};
-
         setGui = function(layout, xLayout, updateGui) {
 			var dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || [])),
 				//dimMap = ns.core.service.layout.getObjectNameDimensionMapFromDimensionArray(dimensions),
@@ -4626,25 +4577,33 @@ Ext.onReady( function() {
 
             if (layoutWindow.colStore) {
 				layoutWindow.colStore.each(function(item) {
-					columns.push(map[item.data.id]);
+					if (map[item.data.id]) {
+						columns.push(map[item.data.id]);
+					}
 				});
 			}
 
             if (layoutWindow.rowStore) {
 				layoutWindow.rowStore.each(function(item) {
-					rows.push(map[item.data.id]);
+					if (map[item.data.id]) {
+						rows.push(map[item.data.id]);
+					}
 				});
 			}
 
             if (layoutWindow.filterStore) {
 				layoutWindow.filterStore.each(function(item) {
-					filters.push(map[item.data.id]);
+					if (map[item.data.id]) {
+						filters.push(map[item.data.id]);
+					}
 				});
 			}
 
             if (layoutWindow.fixedFilterStore) {
 				layoutWindow.fixedFilterStore.each(function(item) {
-					filters.push(map[item.data.id]);
+					if (map[item.data.id]) {
+						filters.push(map[item.data.id]);
+					}
 				});
 			}
 
