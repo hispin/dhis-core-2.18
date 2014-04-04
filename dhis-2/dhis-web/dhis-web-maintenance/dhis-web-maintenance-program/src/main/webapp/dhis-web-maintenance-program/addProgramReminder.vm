@@ -90,7 +90,7 @@
 		<tr>
 			<td><label>$i18n.getString( "message_type" )</label></td>
 			<td>
-				<select type="text" id="messageType" name="messageType" #if($!reminder.sendTo==1 || $!reminder.sendTo==3) disabled #end class="messageType {validate:{required:true,number:true}}" >
+				<select type="text" id="messageType" name="messageType" disabled class="messageType {validate:{required:true,number:true}}" >
 					<option value="1">$i18n.getString("direct_sms")</option>
 					<option value="2">$i18n.getString("message")</option>
 					<option value="3">$i18n.getString("both")</option>

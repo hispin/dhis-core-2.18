@@ -46,7 +46,8 @@ function removeProgramReminder( context ) {
 function showReminderDetails( context ) {
  
   jQuery.getJSON("getReminder.action", {
-    id: context.id
+    id: context.id,
+	programId: getFieldValue('programId')
   }, function( json ) {
     setInnerHTML('nameField', json.reminder.name);
     setInnerHTML('daysAllowedSendMessageField', json.reminder.daysAllowedSendMessage);
