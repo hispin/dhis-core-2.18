@@ -367,7 +367,7 @@ function generateTemplateMessageForm()
 				+			'<option value="{due-date}">' + i18n_due_date + '</option>'
 				+			'<option value="{days-since-due-date}">' + i18n_days_since_due_date + '</option>'
 				+			'<option value="{orgunit-name}">' + i18n_orgunit_name + '</option>'
-				+			idenAttrOptions
+				+			attrOptions
 				+		'</select>'
 				+	'</td>'
 				+ '</tr>'

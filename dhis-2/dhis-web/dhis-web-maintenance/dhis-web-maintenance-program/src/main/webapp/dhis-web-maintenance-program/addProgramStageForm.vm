@@ -255,8 +255,8 @@
 		programStageList.push("$programStage.displayName");
 	#end
 	
-	var idenAttrOptions = "";
-	#foreach($programAttribute in $program.programAttributes)
-		idenAttrOptions+="<option value={attributeid=$programAttribute.attribute.uid}>$programAttribute.attribute.displayName</option>";
+	var attrOptions = "";
+	#foreach($programAttribute in $program.attributes)
+		attrOptions+="<option value={attributeid=$programAttribute.attribute.uid}>$programAttribute.attribute.displayName</option>";
 	#end
 </script>
