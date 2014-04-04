@@ -139,13 +139,13 @@
 
 		<tr name='nonAnonymous'>
 			<td><label for="dateOfIncidentDescription">$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input style="width: 330px;" type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:2}}" value="Incident Date"></td>
+			<td><input style="width: 330px;" type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:2}}" value="$i18n.getString('incident_date')"></td>
 			<td></td>
 		</tr>
 		
 		<tr name='nonAnonymous'>
 			<td><label for="dateOfEnrollmentDescription">$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input style="width: 330px;" type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}" value="Enrollment Date"></td>
+			<td><input style="width: 330px;" type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}" value="$i18n.getString('enrollment_date')"></td>
 			<td></td>
 		</tr>
 			
