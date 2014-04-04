@@ -75,7 +75,7 @@ public class JdbcEventStore
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
         TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), null, false, Arrays.asList( organisationUnit ),
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), null, null, Arrays.asList( organisationUnit ),
             trackedEntityInstance, startDate, endDate, null );
     }
 
