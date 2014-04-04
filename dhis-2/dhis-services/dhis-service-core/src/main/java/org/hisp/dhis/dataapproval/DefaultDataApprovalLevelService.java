@@ -29,13 +29,19 @@ package org.hisp.dhis.dataapproval;
  */
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.security.SecurityService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Jim Grace
@@ -60,6 +66,13 @@ public class DefaultDataApprovalLevelService
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     private SecurityService securityService;
@@ -102,8 +115,73 @@ public class DefaultDataApprovalLevelService
 
     public List<DataApprovalLevel> getUserDataApprovalLevels()
     {
-        //TODO: Write the logic to filter the list according to the user.
-        return getAllDataApprovalLevels();
+        List<DataApprovalLevel> userDataApprovalLevels = new ArrayList<DataApprovalLevel>();
+
+        User user = currentUserService.getCurrentUser();
+
+        boolean mayApprove = user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE );
+        boolean mayApproveAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        boolean mayAcceptAtLowerLevels = user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS );
+
+        if ( mayApprove || mayApproveAtLowerLevels || mayAcceptAtLowerLevels )
+        {
+            Set<Integer> userOrgUnitLevels = new HashSet<Integer>();
+
+            for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
+            {
+                int orgUnitLevel = orgUnit.getLevel() != 0 ?
+                        orgUnit.getLevel() : organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getUid() );
+
+                userOrgUnitLevels.add( orgUnitLevel );
+
+                System.out.println("User assigned to org unit level " + orgUnitLevel );
+            }
+
+            boolean assignedAtLevel = false;
+            boolean approvableAtLevel = false;
+            boolean approvableAtAllLowerLevels = false;
+
+            for ( DataApprovalLevel approvalLevel : getAllDataApprovalLevels() )
+            {
+                Boolean canReadThisLevel = ( approvalLevel.getCategoryOptionGroupSet() == null || securityService.canRead( approvalLevel.getCategoryOptionGroupSet() ) );
+
+                //
+                // Test using assignedAtLevel and approvableAtLevel values from the previous (higher) level:
+                //
+                Boolean addBecauseOfPreviousLevel = false;
+
+                if ( canReadThisLevel && ( approvableAtLevel // Approve at previous higher level implies unapprove at current level.
+                        || ( assignedAtLevel && mayAcceptAtLowerLevels ) ) ) // Assigned at previous level and mayAcceptAtLowerLevels means may accept here.
+                {
+                    addBecauseOfPreviousLevel = true;
+                }
+
+                if ( assignedAtLevel && mayApproveAtLowerLevels )
+                {
+                    approvableAtAllLowerLevels = true;
+                }
+
+                //
+                // Get new values of assignedAtLevel and approvableAtLevel for the current approval level.
+                //
+                assignedAtLevel = canReadThisLevel && userOrgUnitLevels.contains( approvalLevel.getOrgUnitLevel() );
+
+                approvableAtLevel = canReadThisLevel && ( ( mayApprove && assignedAtLevel ) || approvableAtAllLowerLevels );
+
+                System.out.println( approvalLevel.getName() + " read " + canReadThisLevel + " assigned " + assignedAtLevel + " approvable " + approvableAtLevel );
+
+                //
+                // Test using assignedAtLevel and approvableAtLevel values from the current level:
+                //
+                if ( approvableAtLevel || addBecauseOfPreviousLevel )
+                {
+                    userDataApprovalLevels.add( approvalLevel );
+                }
+
+            }
+        }
+
+        return userDataApprovalLevels;
     }
     
     public List<DataApprovalLevel> getDataApprovalLevelsByOrgUnitLevel( int orgUnitLevel )

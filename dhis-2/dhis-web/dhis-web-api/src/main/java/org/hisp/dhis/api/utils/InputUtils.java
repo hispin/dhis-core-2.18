@@ -167,15 +167,18 @@ public class InputUtils
 
             for ( String id : cog )
             {
-                CategoryOptionGroup categoryOptionGroup = categoryService.getCategoryOptionGroup( id );
-
-                if ( categoryOptionGroup == null )
+                if ( "undefined".compareTo( id ) != 0 )
                 {
-                    ContextUtils.conflictResponse( response, "Illegal category option group identifier: " + cog );
-                    return null;
-                }
+                    CategoryOptionGroup categoryOptionGroup = categoryService.getCategoryOptionGroup( id );
 
-                groups.add( categoryOptionGroup );
+                    if ( categoryOptionGroup == null )
+                    {
+                        ContextUtils.conflictResponse( response, "Illegal category option group identifier: " + cog );
+                        return null;
+                    }
+
+                    groups.add( categoryOptionGroup );
+                }
             }
         }
 

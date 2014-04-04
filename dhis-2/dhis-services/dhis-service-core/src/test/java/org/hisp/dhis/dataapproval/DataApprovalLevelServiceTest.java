@@ -33,12 +33,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -91,6 +96,11 @@ public class DataApprovalLevelServiceTest
     private DataApprovalLevel level4C;
     private DataApprovalLevel level4D;
 
+    private OrganisationUnit organisationUnitA;
+    private OrganisationUnit organisationUnitB;
+    private OrganisationUnit organisationUnitC;
+    private OrganisationUnit organisationUnitD;
+
     // -------------------------------------------------------------------------
     // Set up/tear down
     // -------------------------------------------------------------------------
@@ -98,6 +108,8 @@ public class DataApprovalLevelServiceTest
     @Override
     public void setUpTest() throws Exception
     {
+        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
+        userService = (UserService) getBean( UserService.ID );
 
         // ---------------------------------------------------------------------
         // Add supporting data
@@ -136,6 +148,16 @@ public class DataApprovalLevelServiceTest
         level4B = new DataApprovalLevel( "4B", 4, setB );
         level4C = new DataApprovalLevel( "4C", 4, setC );
         level4D = new DataApprovalLevel( "4D", 4, setD );
+
+        organisationUnitA = createOrganisationUnit( 'A' );
+        organisationUnitB = createOrganisationUnit( 'B', organisationUnitA );
+        organisationUnitC = createOrganisationUnit( 'C', organisationUnitB );
+        organisationUnitD = createOrganisationUnit( 'D', organisationUnitC );
+
+        organisationUnitService.addOrganisationUnit( organisationUnitA );
+        organisationUnitService.addOrganisationUnit( organisationUnitB );
+        organisationUnitService.addOrganisationUnit( organisationUnitC );
+        organisationUnitService.addOrganisationUnit( organisationUnitD );
     }
 
     // -------------------------------------------------------------------------
@@ -410,5 +432,183 @@ public class DataApprovalLevelServiceTest
         assertEquals( "1 - Set D", levels.get( 2 ).getName() );
         assertEquals( "1 - Set B", levels.get( 3 ).getName() );
         assertEquals( "1 - Set C", levels.get( 4 ).getName() );
+    }
+
+    @Test
+    public void testGetUserDataApprovalLevelsNoAuthorities() throws Exception
+    {
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        units.add( organisationUnitB );
+        createUserAndInjectSecurityContext( units, false );
+
+        List<DataApprovalLevel> levels;
+
+        System.out.println("\n--- NoAuthorities" );
+        levels = dataApprovalLevelService.getUserDataApprovalLevels();
+        assertEquals( 0, levels.size() );
+
+        dataApprovalLevelService.addDataApprovalLevel( level4B );
+        dataApprovalLevelService.addDataApprovalLevel( level4A );
+        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level3B );
+        dataApprovalLevelService.addDataApprovalLevel( level3A );
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+        dataApprovalLevelService.addDataApprovalLevel( level2B );
+        dataApprovalLevelService.addDataApprovalLevel( level2A );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B );
+        dataApprovalLevelService.addDataApprovalLevel( level1A );
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+
+        levels = dataApprovalLevelService.getUserDataApprovalLevels();
+        assertEquals( 0, levels.size() );
+    }
+
+    @Test
+    public void testGetUserDataApprovalLevelsApproveHere() throws Exception
+    {
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        units.add( organisationUnitB );
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE );
+
+        List<DataApprovalLevel> levels;
+
+        dataApprovalLevelService.addDataApprovalLevel( level4B );
+        dataApprovalLevelService.addDataApprovalLevel( level4A );
+        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level3B );
+        dataApprovalLevelService.addDataApprovalLevel( level3A );
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+        dataApprovalLevelService.addDataApprovalLevel( level2B );
+        dataApprovalLevelService.addDataApprovalLevel( level2A );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B );
+        dataApprovalLevelService.addDataApprovalLevel( level1A );
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+
+        System.out.println("\n--- ApproveHere" );
+        levels = dataApprovalLevelService.getUserDataApprovalLevels();
+        for ( DataApprovalLevel level : levels )
+        {
+            System.out.println("Here " + level.getName() );
+        }
+        assertEquals( 4, levels.size() );
+        assertEquals( "2", levels.get( 0 ).getName() );
+        assertEquals( "2 - Set A", levels.get( 1 ).getName() );
+        assertEquals( "2 - Set B", levels.get( 2 ).getName() );
+        assertEquals( "3", levels.get( 3 ).getName() );
+    }
+
+    @Test
+    public void testGetUserDataApprovalLevelsApproveLower() throws Exception
+    {
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        units.add( organisationUnitB );
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+
+        List<DataApprovalLevel> levels;
+
+        dataApprovalLevelService.addDataApprovalLevel( level4B );
+        dataApprovalLevelService.addDataApprovalLevel( level4A );
+        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level3B );
+        dataApprovalLevelService.addDataApprovalLevel( level3A );
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+        dataApprovalLevelService.addDataApprovalLevel( level2B );
+        dataApprovalLevelService.addDataApprovalLevel( level2A );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B );
+        dataApprovalLevelService.addDataApprovalLevel( level1A );
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+
+        System.out.println("\n--- ApproveLower" );
+        levels = dataApprovalLevelService.getUserDataApprovalLevels();
+        for ( DataApprovalLevel level : levels )
+        {
+            System.out.println("Lower " + level.getName() );
+        }
+        assertEquals( 8, levels.size() );
+        assertEquals( "2 - Set A", levels.get( 0 ).getName() );
+        assertEquals( "2 - Set B", levels.get( 1 ).getName() );
+        assertEquals( "3", levels.get( 2 ).getName() );
+        assertEquals( "3 - Set A", levels.get( 3 ).getName() );
+        assertEquals( "3 - Set B", levels.get( 4 ).getName() );
+        assertEquals( "4", levels.get( 5 ).getName() );
+        assertEquals( "4 - Set A", levels.get( 6 ).getName() );
+        assertEquals( "4 - Set B", levels.get( 7 ).getName() );
+    }
+
+    @Test
+    public void testGetUserDataApprovalLevelsApproveHereAndLower() throws Exception
+    {
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        units.add( organisationUnitB );
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+
+        List<DataApprovalLevel> levels;
+
+        dataApprovalLevelService.addDataApprovalLevel( level4B );
+        dataApprovalLevelService.addDataApprovalLevel( level4A );
+        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level3B );
+        dataApprovalLevelService.addDataApprovalLevel( level3A );
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+        dataApprovalLevelService.addDataApprovalLevel( level2B );
+        dataApprovalLevelService.addDataApprovalLevel( level2A );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B );
+        dataApprovalLevelService.addDataApprovalLevel( level1A );
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+
+        System.out.println("\n--- HereAndLower" );
+        levels = dataApprovalLevelService.getUserDataApprovalLevels();
+        for ( DataApprovalLevel level : levels )
+        {
+            System.out.println("HereAndLower " + level.getName() );
+        }
+        assertEquals( 9, levels.size() );
+        assertEquals( "2", levels.get( 0 ).getName() );
+        assertEquals( "2 - Set A", levels.get( 1 ).getName() );
+        assertEquals( "2 - Set B", levels.get( 2 ).getName() );
+        assertEquals( "3", levels.get( 3 ).getName() );
+        assertEquals( "3 - Set A", levels.get( 4 ).getName() );
+        assertEquals( "3 - Set B", levels.get( 5 ).getName() );
+        assertEquals( "4", levels.get( 6 ).getName() );
+        assertEquals( "4 - Set A", levels.get( 7 ).getName() );
+        assertEquals( "4 - Set B", levels.get( 8 ).getName() );
+    }
+
+    @Test
+    public void testGetUserDataApprovalLevelsAcceptLower() throws Exception
+    {
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        units.add( organisationUnitB );
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_ACCEPT_LOWER_LEVELS );
+
+        List<DataApprovalLevel> levels;
+
+        dataApprovalLevelService.addDataApprovalLevel( level4B );
+        dataApprovalLevelService.addDataApprovalLevel( level4A );
+        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level3B );
+        dataApprovalLevelService.addDataApprovalLevel( level3A );
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+        dataApprovalLevelService.addDataApprovalLevel( level2B );
+        dataApprovalLevelService.addDataApprovalLevel( level2A );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B );
+        dataApprovalLevelService.addDataApprovalLevel( level1A );
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+
+        System.out.println("\n--- AcceptLower" );
+        levels = dataApprovalLevelService.getUserDataApprovalLevels();
+        for ( DataApprovalLevel level : levels )
+        {
+            System.out.println("AcceptLower " + level.getName() );
+        }
+        assertEquals( 3, levels.size() );
+        assertEquals( "2 - Set A", levels.get( 0 ).getName() );
+        assertEquals( "2 - Set B", levels.get( 1 ).getName() );
+        assertEquals( "3", levels.get( 2 ).getName() );
     }
 }
