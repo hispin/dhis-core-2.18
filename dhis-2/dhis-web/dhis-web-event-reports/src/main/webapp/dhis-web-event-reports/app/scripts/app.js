@@ -2969,15 +2969,24 @@ Ext.onReady( function() {
 			width: accBaseWidth,
             height: 240,
             bodyStyle: 'padding:2px 0 5px 3px; overflow-y: scroll',
-            tbar: {
-                height: 27,
-                items: {
+            tbar: [
+				{
 					xtype: 'label',
                     text: 'Selected data items',
                     style: 'padding-left:6px; color:#222',
 					cls: 'ns-toolbar-multiselect-left-label'
+				},
+				'->',
+				{
+					xtype: 'button',
+					icon: 'images/arrowupdouble.png',
+					width: 22,
+					height: 22,
+					handler: function() {
+						dataElementSelected.removeAllDataElements();
+					}
 				}
-            },
+			],
             getChildIndex: function(child) {
 				var items = this.items.items;
 
@@ -2999,6 +3008,14 @@ Ext.onReady( function() {
 				});
 
 				return hasDataElement;
+			},
+			removeAllDataElements: function() {
+				var items = this.items.items,
+					len = items.length;
+
+				for (var i = 0; i < len; i++) {
+					items[0].removeDataElement();
+				}
 			}
         });
 
