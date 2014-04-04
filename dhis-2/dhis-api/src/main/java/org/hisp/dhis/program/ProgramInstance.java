@@ -56,9 +56,7 @@ public class ProgramInstance
     extends BaseIdentifiableObject
 {
     public static int STATUS_ACTIVE = 0;
-
     public static int STATUS_COMPLETED = 1;
-
     public static int STATUS_CANCELLED = 2;
 
     /**

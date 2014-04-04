@@ -33,5 +33,17 @@ package org.hisp.dhis.program;
  */
 public enum ProgramStatus
 {
-    ACTIVE, COMPLETED, CANCELLED
+    ACTIVE( 0 ), COMPLETED( 1 ), CANCELLED( 2 );
+    
+    private int value;
+    
+    private ProgramStatus( int value )
+    {
+        this.value = value;
+    }
+
+    public int getValue()
+    {
+        return value;
+    }
 }

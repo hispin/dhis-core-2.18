@@ -44,6 +44,7 @@ import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,12 +75,12 @@ public class JdbcEventStore
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
         TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), null, Arrays.asList( organisationUnit ),
             trackedEntityInstance, startDate, endDate, null );
     }
 
     @Override
-    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages,
+    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, ProgramStatus programStatus,
         List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
     {
         List<Event> events = new ArrayList<Event>();
@@ -96,12 +97,12 @@ public class JdbcEventStore
             }
         }
 
-        String sql = buildSql( getIdList( programs ), getIdList( programStages ), getIdList( organisationUnits ),
+        String sql = buildSql( getIdList( programs ), getIdList( programStages ), programStatus, getIdList( organisationUnits ),
             trackedEntityInstanceId, startDate, endDate, status );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
         
-        log.debug( "Event query SQL: " + sql );
+        log.info( "Event query SQL: " + sql );
 
         Event event = new Event();
         event.setEvent( "not_valid" );
@@ -176,7 +177,7 @@ public class JdbcEventStore
         return events;
     }
 
-    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds,
+    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, ProgramStatus programStatus, List<Integer> orgUnitIds,
         Integer trackedEntityInstanceId, Date startDate, Date endDate, EventStatus status )
     {
         SqlHelper hlp = new SqlHelper();
@@ -206,6 +207,11 @@ public class JdbcEventStore
         if ( !programStageIds.isEmpty() )
         {
             sql += hlp.whereAnd() + " ps.programstageid in (" + getCommaDelimitedString( programStageIds ) + ") ";
+        }
+        
+        if ( programStatus != null )
+        {
+            sql += hlp.whereAnd() + " pi.status = " + programStatus.getValue() + " ";
         }
 
         if ( !orgUnitIds.isEmpty() )

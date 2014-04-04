@@ -50,6 +50,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
@@ -326,10 +327,10 @@ public abstract class AbstractEventService
     }
 
     @Override
-    public Events getEvents( List<Program> programs, List<ProgramStage> programStages,
+    public Events getEvents( List<Program> programs, List<ProgramStage> programStages, ProgramStatus programStatus,
         List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
     {
-        List<Event> eventList = eventStore.getAll( programs, programStages, organisationUnits, 
+        List<Event> eventList = eventStore.getAll( programs, programStages, programStatus, organisationUnits, 
             trackedEntityInstance, startDate, endDate, status );
         Events events = new Events();
         events.setEvents( eventList );

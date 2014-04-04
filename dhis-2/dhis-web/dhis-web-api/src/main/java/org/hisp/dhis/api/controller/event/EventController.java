@@ -52,6 +52,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.scheduling.Scheduler;
@@ -126,6 +127,7 @@ public class EventController
     public String getEvents(
         @RequestParam( required = false ) String program,
         @RequestParam( required = false ) String programStage,
+        @RequestParam( required = false ) ProgramStatus programStatus,
         @RequestParam( required = false ) String trackedEntityInstance,
         @RequestParam( required = false ) String orgUnit,
         @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
@@ -168,7 +170,7 @@ public class EventController
 
         if ( rootOrganisationUnit == null && tei != null )
         {
-            Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), null, tei, startDate, endDate, status );
+            Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), programStatus, null, tei, startDate, endDate, status );
 
             model.addAttribute( "model", events );
             model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
@@ -195,7 +197,7 @@ public class EventController
             organisationUnits.add( rootOrganisationUnit );
         }
 
-        Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), organisationUnits, tei, startDate, endDate, status );
+        Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), programStatus, organisationUnits, tei, startDate, endDate, status );
         
         List<Event> eventList = new ArrayList<Event>( events.getEvents() );
 
