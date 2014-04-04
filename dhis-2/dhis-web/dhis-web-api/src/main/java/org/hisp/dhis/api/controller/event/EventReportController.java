@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
+import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensions;
 
 import java.io.InputStream;
 
@@ -173,9 +173,9 @@ public class EventReportController
         report.getRowDimensions().clear();
         report.getFilterDimensions().clear();
         
-        report.getColumnDimensions().addAll( getUniqueDimensions( report.getColumns() ) );
-        report.getRowDimensions().addAll( getUniqueDimensions( report.getRows() ) );
-        report.getFilterDimensions().addAll( getUniqueDimensions( report.getFilters() ) );
+        report.getColumnDimensions().addAll( getDimensions( report.getColumns() ) );
+        report.getRowDimensions().addAll( getDimensions( report.getRows() ) );
+        report.getFilterDimensions().addAll( getDimensions( report.getFilters() ) );
         
         if ( report.getProgram() != null )
         {
