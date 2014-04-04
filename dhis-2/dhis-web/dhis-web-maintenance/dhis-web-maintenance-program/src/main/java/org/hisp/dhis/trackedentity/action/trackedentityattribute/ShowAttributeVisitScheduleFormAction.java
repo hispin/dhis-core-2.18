@@ -35,6 +35,7 @@ import java.util.List;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeSortOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -88,7 +89,7 @@ public class ShowAttributeVisitScheduleFormAction
 
         selectedAttributes = new ArrayList<TrackedEntityAttribute>(
             attributeService.getTrackedEntityAttributesByDisplayOnVisitSchedule( true ) );
-        Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( selectedAttributes, new TrackedEntityAttributeSortOrderComparator() );
 
         return SUCCESS;
     }
