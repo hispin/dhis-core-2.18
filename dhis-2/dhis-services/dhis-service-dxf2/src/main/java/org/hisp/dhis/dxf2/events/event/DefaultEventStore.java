@@ -28,19 +28,9 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.system.util.TextUtils;
-import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.util.StringUtils;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdList;
+import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,8 +38,19 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdList;
-import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
+import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.system.util.SqlHelper;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.util.StringUtils;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -172,6 +173,8 @@ public class DefaultEventStore
     private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds,
         Integer trackedEntityInstanceId, Date startDate, Date endDate )
     {
+        SqlHelper hlp = new SqlHelper();
+        
         String sql = "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, "
             + "psi.executiondate as psi_executiondate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude,"
             + " pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid"
@@ -184,58 +187,24 @@ public class DefaultEventStore
             + " left join dataelement de on pdv.dataelementid=de.dataelementid "
             + " left join trackedentityinstance pa on pa.trackedentityinstanceid=pi.trackedentityinstanceid ";
 
-        boolean startedWhere = false;
-
         if ( trackedEntityInstanceId != null )
         {
-            if ( startedWhere )
-            {
-                sql += " and pa.trackedentityinstanceid=" + trackedEntityInstanceId;
-            }
-            else
-            {
-                sql += " where pa.trackedentityinstanceid=" + trackedEntityInstanceId;
-                startedWhere = true;
-            }
+            sql += hlp.whereAnd() + " pa.trackedentityinstanceid=" + trackedEntityInstanceId + " ";
         }
 
         if ( !programIds.isEmpty() )
         {
-            if ( startedWhere )
-            {
-                sql += " and p.programid in (" + TextUtils.getCommaDelimitedString( programIds ) + ") ";
-            }
-            else
-            {
-                sql += " where p.programid in (" + TextUtils.getCommaDelimitedString( programIds ) + ") ";
-                startedWhere = true;
-            }
+            sql += hlp.whereAnd() + " p.programid in (" + getCommaDelimitedString( programIds ) + ") ";
         }
 
         if ( !programStageIds.isEmpty() )
         {
-            if ( startedWhere )
-            {
-                sql += " and ps.programstageid in (" + TextUtils.getCommaDelimitedString( programStageIds ) + ") ";
-            }
-            else
-            {
-                sql += " where ps.programstageid in (" + TextUtils.getCommaDelimitedString( programStageIds ) + ") ";
-                startedWhere = true;
-            }
+            sql += hlp.whereAnd() + " ps.programstageid in (" + getCommaDelimitedString( programStageIds ) + ") ";
         }
 
         if ( !orgUnitIds.isEmpty() )
         {
-            if ( startedWhere )
-            {
-                sql += " and ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnitIds ) + ") ";
-            }
-            else
-            {
-                sql += " where ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnitIds ) + ") ";
-                startedWhere = true;
-            }
+            sql += hlp.whereAnd() + " ou.organisationunitid in (" + getCommaDelimitedString( orgUnitIds ) + ") ";
         }
 
         if ( startDate != null )
