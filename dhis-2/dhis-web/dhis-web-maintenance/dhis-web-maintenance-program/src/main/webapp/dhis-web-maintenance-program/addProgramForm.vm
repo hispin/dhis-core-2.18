@@ -1,4 +1,5 @@
 <script>
+	var i18n_please_select_at_least_attribute_for_displaying_in_list = '$encoder.jsEscape( $i18n.getString( "please_select_at_least_attribute_for_displaying_in_list" ) , "'" )';
 	
 	jQuery( document ).ready( function()
 	{	
@@ -232,7 +233,7 @@
 			<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
 			<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
 			<select style='display:none;' multiple id="mandatory" name="mandatory" ></select>
-			<select id='compulsaryIdentifier' name="compulsaryIdentifier" multiple="multiple" class="hidden {validate:{required:true}}"></select>
+			<select id='compulsaryIdentifier' name="compulsaryIdentifier" multiple="multiple" class="hidden {validate:{required:true}}" title="$i18n.getString('please_select_at_least_attribute_for_displaying_in_list')"></select>
 		</th>
 	  </tr>
 	</thead>
