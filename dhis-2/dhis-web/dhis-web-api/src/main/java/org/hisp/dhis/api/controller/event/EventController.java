@@ -38,6 +38,7 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
+import org.hisp.dhis.dxf2.events.event.EventStatus;
 import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.dxf2.events.event.ImportEventTask;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
@@ -130,6 +131,7 @@ public class EventController
         @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam( required = false ) EventStatus status,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );        
@@ -166,14 +168,13 @@ public class EventController
 
         if ( rootOrganisationUnit == null && tei != null )
         {
-            Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), null, tei, startDate, endDate );
+            Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), null, tei, startDate, endDate, status );
 
             model.addAttribute( "model", events );
             model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
             return "events";            
         }        
-        
 
         if ( rootOrganisationUnit == null )
         {
@@ -194,7 +195,7 @@ public class EventController
             organisationUnits.add( rootOrganisationUnit );
         }
 
-        Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), organisationUnits, tei, startDate, endDate );
+        Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), organisationUnits, tei, startDate, endDate, status );
         
         List<Event> eventList = new ArrayList<Event>( events.getEvents() );
 

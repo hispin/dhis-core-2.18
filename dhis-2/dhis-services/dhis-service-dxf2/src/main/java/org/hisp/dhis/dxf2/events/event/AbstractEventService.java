@@ -327,10 +327,10 @@ public abstract class AbstractEventService
 
     @Override
     public Events getEvents( List<Program> programs, List<ProgramStage> programStages,
-        List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
+        List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
     {
-        List<Event> eventList = eventStore.getAll( programs, programStages, organisationUnits, trackedEntityInstance, startDate,
-            endDate );
+        List<Event> eventList = eventStore.getAll( programs, programStages, organisationUnits, 
+            trackedEntityInstance, startDate, endDate, status );
         Events events = new Events();
         events.setEvents( eventList );
 

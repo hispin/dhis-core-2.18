@@ -38,6 +38,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
@@ -58,6 +60,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JdbcEventStore
     implements EventStore
 {
+    private static final Log log = LogFactory.getLog( JdbcEventStore.class );
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -71,12 +75,12 @@ public class JdbcEventStore
         TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
     {
         return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
-            trackedEntityInstance, startDate, endDate );
+            trackedEntityInstance, startDate, endDate, null );
     }
 
     @Override
     public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages,
-        List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
+        List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
     {
         List<Event> events = new ArrayList<Event>();
 
@@ -93,9 +97,11 @@ public class JdbcEventStore
         }
 
         String sql = buildSql( getIdList( programs ), getIdList( programStages ), getIdList( organisationUnits ),
-            trackedEntityInstanceId, startDate, endDate );
+            trackedEntityInstanceId, startDate, endDate, status );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+        
+        log.debug( "Event query SQL: " + sql );
 
         Event event = new Event();
         event.setEvent( "not_valid" );
@@ -171,7 +177,7 @@ public class JdbcEventStore
     }
 
     private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds,
-        Integer trackedEntityInstanceId, Date startDate, Date endDate )
+        Integer trackedEntityInstanceId, Date startDate, Date endDate, EventStatus status )
     {
         SqlHelper hlp = new SqlHelper();
         
@@ -209,12 +215,17 @@ public class JdbcEventStore
 
         if ( startDate != null )
         {
-            sql += " and psi.executiondate >= '" + getMediumDateString( startDate ) + "' ";
+            sql += hlp.whereAnd() + " psi.executiondate >= '" + getMediumDateString( startDate ) + "' ";
         }
 
         if ( endDate != null )
         {
-            sql += " and psi.executiondate <= '" + getMediumDateString( endDate ) + "' ";
+            sql += hlp.whereAnd() + " psi.executiondate <= '" + getMediumDateString( endDate ) + "' ";
+        }
+        
+        if ( status != null )
+        {
+            sql += hlp.whereAnd() + " psi.status = " + status.getValue() + " ";
         }
 
         sql += " order by psi_uid;";
