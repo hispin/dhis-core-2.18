@@ -55,6 +55,7 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -294,7 +295,7 @@ public class DefaultTrackedEntityInstanceService
     
     @Override
     public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, Set<String> ou, 
-        OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, String trackedEntity, boolean skipMeta, Integer page, Integer pageSize )
+        OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, Set<String> programDate, String trackedEntity, boolean skipMeta, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
@@ -340,6 +341,16 @@ public class DefaultTrackedEntityInstanceService
             throw new IllegalQueryException( "Program does not exist: " + program );
         }
         
+        if ( programDate != null )
+        {
+            for ( String date : programDate )
+            {
+                QueryFilter queryFilter = getQueryFilter( date );
+                
+                params.getProgramDates().add( queryFilter );
+            }
+        }
+        
         TrackedEntity te = trackedEntity != null ? trackedEntityService.getTrackedEntity( trackedEntity ) : null;
         
         if ( trackedEntity != null && te == null )
@@ -366,6 +377,18 @@ public class DefaultTrackedEntityInstanceService
         return params;
     }
 
+    private QueryFilter getQueryFilter( String filter )
+    {
+        String[] split = filter.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
+        
+        if ( split == null || split.length != 2 )
+        {
+            throw new IllegalQueryException( "Program date filter has invalid format: " + filter );
+        }
+        
+        return new QueryFilter( split[0], split[1] );
+    }
+    
     private QueryItem getQueryItem( String item )
     {
         if ( !item.contains( DimensionalObjectUtils.DIMENSION_NAME_SEP ) )
