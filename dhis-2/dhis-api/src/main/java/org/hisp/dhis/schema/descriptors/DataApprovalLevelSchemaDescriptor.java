@@ -47,9 +47,9 @@ public class DataApprovalLevelSchemaDescriptor implements SchemaDescriptor
         
         schema.setShareable( true );
         
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_DATAAPPROVALLEVEL_PUBLIC_ADD" ) ) );
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_DATAAPPROVALLEVEL_PRIVATE_ADD" ) ) );
-        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_DATAAPPROVALLEVEL_DELETE" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_SYSTEM_SETTING" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_SYSTEM_SETTING" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_SYSTEM_SETTING" ) ) );
         
         return schema;
     }
