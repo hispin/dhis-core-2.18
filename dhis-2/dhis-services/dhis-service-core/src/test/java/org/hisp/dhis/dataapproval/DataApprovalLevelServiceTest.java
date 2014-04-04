@@ -443,7 +443,6 @@ public class DataApprovalLevelServiceTest
 
         List<DataApprovalLevel> levels;
 
-        System.out.println("\n--- NoAuthorities" );
         levels = dataApprovalLevelService.getUserDataApprovalLevels();
         assertEquals( 0, levels.size() );
 
@@ -486,12 +485,8 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1A );
         dataApprovalLevelService.addDataApprovalLevel( level1 );
 
-        System.out.println("\n--- ApproveHere" );
         levels = dataApprovalLevelService.getUserDataApprovalLevels();
-        for ( DataApprovalLevel level : levels )
-        {
-            System.out.println("Here " + level.getName() );
-        }
+
         assertEquals( 4, levels.size() );
         assertEquals( "2", levels.get( 0 ).getName() );
         assertEquals( "2 - Set A", levels.get( 1 ).getName() );
@@ -521,12 +516,8 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1A );
         dataApprovalLevelService.addDataApprovalLevel( level1 );
 
-        System.out.println("\n--- ApproveLower" );
         levels = dataApprovalLevelService.getUserDataApprovalLevels();
-        for ( DataApprovalLevel level : levels )
-        {
-            System.out.println("Lower " + level.getName() );
-        }
+        
         assertEquals( 8, levels.size() );
         assertEquals( "2 - Set A", levels.get( 0 ).getName() );
         assertEquals( "2 - Set B", levels.get( 1 ).getName() );
@@ -560,12 +551,8 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1A );
         dataApprovalLevelService.addDataApprovalLevel( level1 );
 
-        System.out.println("\n--- HereAndLower" );
         levels = dataApprovalLevelService.getUserDataApprovalLevels();
-        for ( DataApprovalLevel level : levels )
-        {
-            System.out.println("HereAndLower " + level.getName() );
-        }
+        
         assertEquals( 9, levels.size() );
         assertEquals( "2", levels.get( 0 ).getName() );
         assertEquals( "2 - Set A", levels.get( 1 ).getName() );
@@ -600,12 +587,8 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1A );
         dataApprovalLevelService.addDataApprovalLevel( level1 );
 
-        System.out.println("\n--- AcceptLower" );
         levels = dataApprovalLevelService.getUserDataApprovalLevels();
-        for ( DataApprovalLevel level : levels )
-        {
-            System.out.println("AcceptLower " + level.getName() );
-        }
+        
         assertEquals( 3, levels.size() );
         assertEquals( "2 - Set A", levels.get( 0 ).getName() );
         assertEquals( "2 - Set B", levels.get( 1 ).getName() );
