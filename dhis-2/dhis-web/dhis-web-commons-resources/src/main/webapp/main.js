@@ -41,64 +41,6 @@ function setTableStyles()
 }
 
 // -----------------------------------------------------------------------------
-// Menu functions
-// -----------------------------------------------------------------------------
-
-var menuTimeout = 500;
-var closeTimer = null;
-var dropDownId = null;
-
-function showDropDown( id )
-{
-    var newDropDownId = "#" + id,
-        position = $(newDropDownId + '_button').position();
-
-    cancelHideDropDownTimeout();
-
-    $(newDropDownId).css('position', 'absolute');
-    $(newDropDownId).css('top', '55px');
-    $(newDropDownId).css('left', Math.ceil(position.left - Math.ceil(parseInt($(newDropDownId).innerWidth(), 10) - 108)) + 'px');
-
-
-    if ( dropDownId != newDropDownId )
-    {   
-        hideDropDown();
-
-        dropDownId = newDropDownId;
-        
-        $( dropDownId ).show();
-    }
-}
-
-function hideDropDown()
-{
-	if ( dropDownId )
-	{
-        if ($( dropDownId ).attr( 'data-clicked-open' ) === 'true') {
-            return;
-        }
-	    $( dropDownId ).hide();
-	    
-	    dropDownId = null;
-	}
-}
-
-function hideDropDownTimeout()
-{
-    closeTimer = window.setTimeout( "hideDropDown()", menuTimeout );
-}
-
-function cancelHideDropDownTimeout()
-{
-    if ( closeTimer )
-    {
-        window.clearTimeout( closeTimer );
-        
-        closeTimer = null;
-    }
-}
-
-// -----------------------------------------------------------------------------
 // Leftbar
 // -----------------------------------------------------------------------------
 
