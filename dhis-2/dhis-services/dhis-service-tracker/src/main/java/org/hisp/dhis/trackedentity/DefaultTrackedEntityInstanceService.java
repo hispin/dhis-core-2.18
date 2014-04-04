@@ -285,6 +285,11 @@ public class DefaultTrackedEntityInstanceService
             violation = "Program must be defined when program status is defined";
         }
         
+        if ( params.hasProgramDates() && !params.hasProgram() )
+        {
+            violation = "Program must be defined when program dates are specified";
+        }
+        
         if ( violation != null )
         {
             log.warn( "Validation failed: " + violation );
