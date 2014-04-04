@@ -62,6 +62,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
+import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -301,7 +302,17 @@ public class HibernateTrackedEntityInstanceStore
             
             if ( params.hasProgramStatus() )
             {
-                sql += "and pi.status = " + PROGRAM_STATUS_MAP.get( params.getProgramStatus() );
+                sql += "and pi.status = " + PROGRAM_STATUS_MAP.get( params.getProgramStatus() + " " );
+            }
+            
+            if ( params.hasProgramDates() )
+            {
+                for ( QueryFilter date : params.getProgramDates() )
+                {
+                    String filter = statementBuilder.encode( date.getFilter(), false );
+                    
+                    sql += "and pi.enrollmentdate " + date.getSqlOperator() + " " + date.getSqlFilter( filter ) + " ";                    
+                }
             }
             
             sql += ") ";

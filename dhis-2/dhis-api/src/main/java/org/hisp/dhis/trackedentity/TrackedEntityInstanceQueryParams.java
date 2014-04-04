@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
+import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -86,6 +87,11 @@ public class TrackedEntityInstanceQueryParams
      * Status of the tracked entity instance in the given program.
      */
     private ProgramStatus programStatus;
+    
+    /**
+     * Enrollment dates for the given program.
+     */
+    private List<QueryFilter> programDates = new ArrayList<QueryFilter>();
     
     /**
      * Tracked entity of the instances in the response.
@@ -218,6 +224,15 @@ public class TrackedEntityInstanceQueryParams
     }
     
     /**
+     * Indicates whether this params specifies any program dates.
+     * @return
+     */
+    public boolean hasProgramDates()
+    {
+        return programDates != null && !programDates.isEmpty();
+    }
+    
+    /**
      * Indicates whether this params specifies a tracked entity.
      */
     public boolean hasTrackedEntity()
@@ -327,6 +342,16 @@ public class TrackedEntityInstanceQueryParams
     public void setProgramStatus( ProgramStatus programStatus )
     {
         this.programStatus = programStatus;
+    }
+
+    public List<QueryFilter> getProgramDates()
+    {
+        return programDates;
+    }
+
+    public void setProgramDates( List<QueryFilter> programDates )
+    {
+        this.programDates = programDates;
     }
 
     public TrackedEntity getTrackedEntity()

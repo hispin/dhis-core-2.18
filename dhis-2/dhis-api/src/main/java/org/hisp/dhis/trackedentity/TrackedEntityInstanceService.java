@@ -73,6 +73,7 @@ public interface TrackedEntityInstanceService
      * @param ouMode the OrganisationUnitSelectionMode.
      * @param program the Program uid.
      * @param programStatus the ProgramStatus of the given Program.
+     * @param programDate the set of filters for program enrollment dates.
      * @param trackedEntity the TrackedEntity uid.
      * @param skipMeta indicates whether to include meta data in the response.
      * @param page the page number.
@@ -80,7 +81,7 @@ public interface TrackedEntityInstanceService
      * @return a TrackedEntityInstanceQueryParams.
      */
     TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, 
-        Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, 
+        Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, Set<String> programDate,
         String trackedEntity, boolean skipMeta, Integer page, Integer pageSize );
     
     /**
