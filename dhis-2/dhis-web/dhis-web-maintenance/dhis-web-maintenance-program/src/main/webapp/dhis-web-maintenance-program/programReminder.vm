@@ -30,12 +30,12 @@
 			  </tr>
 			</thead>
 			<tbody id="list">
-          #foreach( $reminder in $program.reminders )
+          #foreach( $reminder in $program.instanceReminders )
             <tr id="tr${reminder.id}" 
 				data-id="$!reminder.id" 
 				data-type="reminder" 
 				data-name="$encoder.htmlEncode( $!reminder.name )">
-                <td>$encoder.htmlEncode( $!reminders.name )</td>
+                <td>$encoder.htmlEncode( $!reminder.name )</td>
             </tr>
           #end
       </tbody>

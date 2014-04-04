@@ -25,6 +25,11 @@
 	</div>
 	<div id="tab-2">
 		<table>
+			<colgroup>
+				<col style='width:500px'/>
+				<col/>
+				<col style='width:500px'/>
+			</colgroup>
 			<thead>
 				<tr>
 					<th>$i18n.getString( "available" )</th>
@@ -34,7 +39,7 @@
 			</thead>
 			<tr>
 				<td>
-					<select multiple id='orgunitGroupAvailable' size='10' ondblclick="moveSelectedById( 'orgunitGroupAvailable', 'orgunitGroupIds' )">
+					<select multiple id='orgunitGroupAvailable' style="height: 200px; width: 100%;" ondblclick="moveSelectedById( 'orgunitGroupAvailable', 'orgunitGroupIds' )">
 					#foreach($group in $availableOrgunitGroups)
 						<option value='$group.id'>$encoder.htmlEncode($group.name)</option>
 					#end
@@ -47,7 +52,7 @@
 					<input type="button" style="width:40px" value="&lt;&lt;" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'orgunitGroupIds', 'orgunitGroupAvailable' )" />
 				</td>
 				<td>
-					<select multiple id='orgunitGroupIds' name='orgunitGroupIds' size='10' ondblclick="moveSelectedById( 'orgunitGroupIds', 'orgunitGroupAvailable' )">
+					<select multiple id='orgunitGroupIds' name='orgunitGroupIds' style="height: 200px; width: 100%;" ondblclick="moveSelectedById( 'orgunitGroupIds', 'orgunitGroupAvailable' )">
 					#foreach($group in $program.organisationUnitGroups)
 						<option value='$group.id'>$encoder.htmlEncode($group.name)</option>
 					#end
