@@ -30,33 +30,18 @@ package org.hisp.dhis.common;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
+ * Class which encapsulates a query parameter and value. Operator and filter 
+ * are inherited from QueryFilter.
+ * 
  * @author Lars Helge Overland
  */
 public class QueryItem
+    extends QueryFilter
 {
-    public static final String OPTION_SEP = ";";
-    
-    public static final Map<String, String> OPERATOR_MAP = new HashMap<String, String>() { {
-        put( "eq", "=" );
-        put( "gt", ">" );
-        put( "ge", ">=" );
-        put( "lt", "<" );
-        put( "le", "<=" );
-        put( "ne", "!=" );
-        put( "like", "like" );
-        put( "in", "in" );
-    } };
-    
     private IdentifiableObject item;
-
-    private String operator;
-
-    private String filter;
 
     private boolean numeric;
 
@@ -80,49 +65,6 @@ public class QueryItem
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
-
-    public boolean hasFilter()
-    {
-        return operator != null && !operator.isEmpty() && filter != null && !filter.isEmpty();
-    }
-    
-    public String getSqlOperator()
-    {
-        if ( operator == null )
-        {
-            return null;
-        }
-        
-        return OPERATOR_MAP.get( operator.toLowerCase() );
-    }
-    
-    public String getSqlFilter( String encodedFilter )
-    {
-        if ( operator == null || encodedFilter == null )
-        {
-            return null;
-        }
-                
-        if ( operator.equalsIgnoreCase( "like" ) )
-        {
-            return "'%" + encodedFilter + "%'";
-        }
-        else if ( operator.equalsIgnoreCase( "in" ) )
-        {
-            String[] split = encodedFilter.split( OPTION_SEP );
-            
-            final StringBuffer buffer = new StringBuffer( "(" );        
-            
-            for ( String el : split )
-            {
-                buffer.append( "'" ).append( el ).append( "'," );
-            }
-            
-            return buffer.deleteCharAt( buffer.length() - 1 ).append( ")" ).toString();
-        }
-        
-        return "'" + encodedFilter + "'";
-    }
     
     public String getItemId()
     {
@@ -168,26 +110,6 @@ public class QueryItem
     public void setItem( IdentifiableObject item )
     {
         this.item = item;
-    }
-
-    public String getOperator()
-    {
-        return operator;
-    }
-
-    public void setOperator( String operator )
-    {
-        this.operator = operator;
-    }
-
-    public String getFilter()
-    {
-        return filter;
-    }
-
-    public void setFilter( String filter )
-    {
-        this.filter = filter;
     }
 
     public boolean isNumeric()
