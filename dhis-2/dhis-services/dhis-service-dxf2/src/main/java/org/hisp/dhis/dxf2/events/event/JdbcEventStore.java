@@ -55,7 +55,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DefaultEventStore
+public class JdbcEventStore
     implements EventStore
 {
     @Autowired
