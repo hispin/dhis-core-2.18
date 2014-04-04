@@ -38,8 +38,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,90 +50,97 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class SelectAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class SelectAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager selectionManager;
+	private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
+	public void setSelectionManager(
+			OrganisationUnitSelectionManager selectionManager) {
+		this.selectionManager = selectionManager;
+	}
 
-    private TrackedEntityAttributeService attributeService;
+	private TrackedEntityAttributeService attributeService;
 
-    public void setAttributeService( TrackedEntityAttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
+	public void setAttributeService(
+			TrackedEntityAttributeService attributeService) {
+		this.attributeService = attributeService;
+	}
 
-    private ProgramService programService;
+	private ProgramService programService;
 
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
+	public void setProgramService(ProgramService programService) {
+		this.programService = programService;
+	}
 
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
+	@Autowired
+	private TrackedEntityService trackedEntityService;
 
-    private List<TrackedEntityAttribute> attributes;
+	// -------------------------------------------------------------------------
+	// Input/output
+	// -------------------------------------------------------------------------
 
-    public List<TrackedEntityAttribute> getAttributes()
-    {
-        return attributes;
-    }
+	private List<TrackedEntityAttribute> attributes;
 
-    private List<Program> programs;
+	public List<TrackedEntityAttribute> getAttributes() {
+		return attributes;
+	}
 
-    public List<Program> getPrograms()
-    {
-        return programs;
-    }
+	private List<Program> programs;
 
-    private OrganisationUnit organisationUnit;
+	public List<Program> getPrograms() {
+		return programs;
+	}
 
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
+	private OrganisationUnit organisationUnit;
 
-    private int status;
+	public OrganisationUnit getOrganisationUnit() {
+		return organisationUnit;
+	}
 
-    public int getStatus()
-    {
-        return status;
-    }
+	private int status;
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+	public int getStatus() {
+		return status;
+	}
 
-    public String execute()
-        throws Exception
-    {
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+	private List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
-        Collection<TrackedEntityAttribute> _attributes = attributeService.getTrackedEntityAttributesWithoutProgram();
-        _attributes.addAll( attributeService.getTrackedEntityAttributesDisplayInList( true ));
-        
-        attributes = new ArrayList<TrackedEntityAttribute>( _attributes );
+	public List<TrackedEntity> getTrackedEntities() {
+		return trackedEntities;
+	}
 
-        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
 
-        if ( organisationUnit != null )
-        {
-            programs = new ArrayList<Program>( programService.getProgramsByCurrentUser( organisationUnit ) );
-            programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+	public String execute() throws Exception {
 
-            Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
-        }
+		organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        return SUCCESS;
-    }
+		Collection<TrackedEntityAttribute> _attributes = attributeService
+				.getTrackedEntityAttributesWithoutProgram();
+		_attributes.addAll(attributeService
+				.getTrackedEntityAttributesDisplayInList(true));
+		attributes = new ArrayList<TrackedEntityAttribute>(_attributes);
+		Collections.sort(attributes, IdentifiableObjectNameComparator.INSTANCE);
+
+		trackedEntities = new ArrayList<TrackedEntity>(
+				trackedEntityService.getAllTrackedEntity());
+		Collections.sort(trackedEntities, IdentifiableObjectNameComparator.INSTANCE);
+
+		if (organisationUnit != null) {
+			programs = new ArrayList<Program>(
+					programService.getProgramsByCurrentUser(organisationUnit));
+			programs.removeAll(programService
+					.getPrograms(Program.SINGLE_EVENT_WITHOUT_REGISTRATION));
+
+			Collections.sort(programs,
+					IdentifiableObjectNameComparator.INSTANCE);
+		}
+
+		return SUCCESS;
+	}
 }

@@ -1,10 +1,31 @@
-#set( $size = $attributes.size() )
+#set( $size = 0 )
+
+#if( $!attributes )
+	#set( $size = $!attributes.size() ) 
+#end
+
+#if( $!program.attributes )
+	#set( $size = $size + $!program.attributes.size() ) 
+#end
+
 { "attributes": [
 #foreach( $attribute in $attributes )
  {
-	"id":  "${attribute.id}",
-	"name": "$!encoder.jsonEncode( ${attribute.displayName} )"
+	"id":  "${attribute.uid}",
+	"name": "$!encoder.jsonEncode( ${attribute.displayName} )",
+	"displayed": "true"
   }#if( $velocityCount < $size ),#end
+#end
+
+#set( $idx = $attributes.size() )
+#foreach( $programAttribute in $program.attributes )
+ {
+	"id":  "${programAttribute.attribute.uid}",
+	"name": "$!encoder.jsonEncode( ${programAttribute.attribute.displayName} )",
+	"displayed": "$programAttribute.displayInList"
+  }#if( $idx < $size ),#end
+  
+  #set( $idx = $idx + 1 )
 #end
 ]
 }

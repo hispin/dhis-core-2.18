@@ -100,6 +100,13 @@ public class GetAttributesByProgramAction
         return attributeValueMaps;
     }
 
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -110,8 +117,7 @@ public class GetAttributesByProgramAction
     {
         if ( id != null )
         {
-            Program program = programService.getProgram( id );
-            attributes.addAll( program.getTrackedEntityAttributes() );
+            program = programService.getProgram( id );
         }
         else
         {

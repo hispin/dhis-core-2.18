@@ -219,8 +219,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
 
-        updateProgramAttributes();
-
         executeSql( "UPDATE program SET displayIncidentDate=false WHERE displayIncidentDate is null" );
         executeSql( "UPDATE program SET relationshipFromA=false WHERE relationshipFromA is null" );
 
@@ -299,23 +297,6 @@ public class TableAlteror
     // -------------------------------------------------------------------------
     // Supporting methods
     // -------------------------------------------------------------------------
-
-    private void updateProgramAttributes()
-    {
-        String autoIncrVal = statementBuilder.getAutoIncrementValue();
-
-        String attributeSql = "INSERT INTO program_attributes (programattributeid, attributeid, sort_order, displayinlist, programid) "
-            + "SELECT "
-            + autoIncrVal
-            + ", pp.trackedentityattributeid, pp.sort_order, false, pp.programid "
-            + "FROM program_trackedentityattributes pp";
-        executeSql( attributeSql );
-
-        log.info( "Inserted data into program_attributes table." );
-
-        executeSql( "DROP TABLE program_attributes." );
-        log.info( "Dropped program_attributes table." );
-    }
 
     private void updateUidInDataEntryFrom()
     {

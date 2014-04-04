@@ -13,9 +13,9 @@
 	<div class="link-area">
 		<p class='header'>
 			$i18n.getString("demographics")
-			&#8226; <a href="javascript:showUpdateTrackedEntityInstanceForm( '$entityInstance.id', true );">$i18n.getString("edit_profile")</a>
+			&#8226; <a href="javascript:showUpdateTrackedEntityInstanceForm( '$entityInstance.uid', true );">$i18n.getString("edit_profile")</a>
 			#if( $auth.hasAccess( "dhis-web-caseentry", "getTrackedEntityInstanceLocation" ) )
-				&#8226; <a href="javascript:getTrackedEntityInstanceLocation( '$entityInstance.id', true );">$i18n.getString("change_location")</a>
+				&#8226; <a href="javascript:getTrackedEntityInstanceLocation( '$entityInstance.uid', true );">$i18n.getString("change_location")</a>
 			#end<br>&nbsp;
 		</p>
 		<div class="contentProviderTable">
@@ -168,7 +168,7 @@
 			$i18n.getString("relationships")
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "showRelationshipList" ) )			
-				&#8226; <a href="javascript:showRelationshipList( '$entityInstance.id');">$i18n.getString("add_relative")</a>
+				&#8226; <a href="javascript:showRelationshipList( '$entityInstance.uid');">$i18n.getString("add_relative")</a>
 				<span id="entityInstanceRelatedStageSpan">&nbsp;<span>
 			#end
 		</p>

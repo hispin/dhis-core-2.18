@@ -32,7 +32,7 @@
 							#end 
 						#end
 						<input type='button' class='entity-instance-object' value="$value"
-							onclick='javascript:showTrackedEntityInstanceHistory( $programInstance.entityInstance.id )' title='$i18n.getString( "entity-instance_details_and_history" )'>
+							onclick='javascript:showTrackedEntityInstanceHistory( $programInstance.entityInstance.uid )' title='$i18n.getString( "entity-instance_details_and_history" )'>
 					</td>	
 					<td>
 						#set( $programStageInstances = $programInstance.programStageInstances )
