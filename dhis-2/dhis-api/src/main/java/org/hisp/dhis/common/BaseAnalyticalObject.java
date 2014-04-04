@@ -789,6 +789,8 @@ public abstract class BaseAnalyticalObject
             dataElementGroups.addAll( object.getDataElementGroups() );
             organisationUnitGroups.addAll( object.getOrganisationUnitGroups() );
             categoryOptionGroups.addAll( object.getCategoryOptionGroups() );
+            attributeDimensions.addAll( object.getAttributeDimensions() );
+            dataElementDimensions.addAll( object.getDataElementDimensions() );
             userOrganisationUnit = object.isUserOrganisationUnit();
             userOrganisationUnitChildren = object.isUserOrganisationUnitChildren();
             userOrganisationUnitGrandChildren = object.isUserOrganisationUnitGrandChildren();
