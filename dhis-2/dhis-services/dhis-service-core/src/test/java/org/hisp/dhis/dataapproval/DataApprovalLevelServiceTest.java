@@ -127,28 +127,28 @@ public class DataApprovalLevelServiceTest
         categoryService.saveCategoryOptionGroupSet( setD );
 
         level1 = new DataApprovalLevel( "1", 1, null );
-        level1A = new DataApprovalLevel( "1A", 1, setA );
-        level1B = new DataApprovalLevel( "1B", 1, setB );
-        level1C = new DataApprovalLevel( "1C", 1, setC );
-        level1D = new DataApprovalLevel( "1D", 1, setD );
+        level1A = new DataApprovalLevel( "1 - Set A", 1, setA );
+        level1B = new DataApprovalLevel( "1 - Set B", 1, setB );
+        level1C = new DataApprovalLevel( "1 - Set C", 1, setC );
+        level1D = new DataApprovalLevel( "1 - Set D", 1, setD );
 
         level2 = new DataApprovalLevel( "2", 2, null );
-        level2A = new DataApprovalLevel( "2A", 2, setA );
-        level2B = new DataApprovalLevel( "2B", 2, setB );
-        level2C = new DataApprovalLevel( "2C", 2, setC );
-        level2D = new DataApprovalLevel( "2D", 2, setD );
+        level2A = new DataApprovalLevel( "2 - Set A", 2, setA );
+        level2B = new DataApprovalLevel( "2 - Set B", 2, setB );
+        level2C = new DataApprovalLevel( "2 - Set C", 2, setC );
+        level2D = new DataApprovalLevel( "2 - Set D", 2, setD );
 
         level3 = new DataApprovalLevel( "3", 3, null );
-        level3A = new DataApprovalLevel( "3A", 3, setA );
-        level3B = new DataApprovalLevel( "3B", 3, setB );
-        level3C = new DataApprovalLevel( "3C", 3, setC );
-        level3D = new DataApprovalLevel( "3D", 3, setD );
+        level3A = new DataApprovalLevel( "3 - Set A", 3, setA );
+        level3B = new DataApprovalLevel( "3 - Set B", 3, setB );
+        level3C = new DataApprovalLevel( "3 - Set C", 3, setC );
+        level3D = new DataApprovalLevel( "3 - Set D", 3, setD );
 
         level4 = new DataApprovalLevel( "4", 4, null );
-        level4A = new DataApprovalLevel( "4A", 4, setA );
-        level4B = new DataApprovalLevel( "4B", 4, setB );
-        level4C = new DataApprovalLevel( "4C", 4, setC );
-        level4D = new DataApprovalLevel( "4D", 4, setD );
+        level4A = new DataApprovalLevel( "4 - Set A", 4, setA );
+        level4B = new DataApprovalLevel( "4 - Set B", 4, setB );
+        level4C = new DataApprovalLevel( "4 - Set C", 4, setC );
+        level4D = new DataApprovalLevel( "4 - Set D", 4, setD );
 
         organisationUnitA = createOrganisationUnit( 'A' );
         organisationUnitB = createOrganisationUnit( 'B', organisationUnitA );
