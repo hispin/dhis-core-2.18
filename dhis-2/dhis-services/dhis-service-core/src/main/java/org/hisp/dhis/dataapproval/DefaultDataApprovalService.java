@@ -187,7 +187,11 @@ public class DefaultDataApprovalService
 
         permissions.setDataApprovalStatus( status );
 
-        if ( canReadCategoryOptionGroups( categoryOptionGroups, dataElementCategoryOptions ) )
+        DataApprovalLevel dataApprovalLevel = status.getDataApprovalLevel();
+
+        if ( dataApprovalLevel != null && securityService.canRead( dataApprovalLevel )
+            && ( dataApprovalLevel.getCategoryOptionGroupSet() == null || securityService.canRead( dataApprovalLevel.getCategoryOptionGroupSet() ))
+            && canReadOneCategoryOptionGroup( categoryOptionGroups ) )
         {
             boolean accepted = false;
 
@@ -256,71 +260,25 @@ public class DefaultDataApprovalService
     // -------------------------------------------------------------------------
 
     /**
-     * Return whether the user can read the category option groups (if any)
-     * in this data selection. Note that if the user cannot read these groups,
-     * they should not have been able to see the data in the first place through
-     * the normal webapp, so this test would never fail. So the purpose of this
-     * test is to make sure that the web API is not being used to attempt an
-     * operation for which the user does not have the security clearance.
-     * <p>
-     * If category options are specified, then the user must be able to view
-     * EVERY category option. The user may view a category option if they
-     * have permission to view ANY category option group to which it belongs.
+     * Return true if there are no category option groups, or if there is
+     * one and the user can read it.
      *
      * @param categoryOptionGroups option groups (if any) for data selection
-     * @param dataElementCategoryOptions category options (if any) for data selection
-     * @return true if user can read the option groups, else false
+     * @return true if at most 1 option group and user can read, else false
      */
-    boolean canReadCategoryOptionGroups( Set<CategoryOptionGroup> categoryOptionGroups, Set<DataElementCategoryOption> dataElementCategoryOptions)
+    boolean canReadOneCategoryOptionGroup( Set<CategoryOptionGroup> categoryOptionGroups )
     {
-        if ( categoryOptionGroups != null )
+        if ( categoryOptionGroups == null || categoryOptionGroups.size() == 0 )
         {
-            for ( CategoryOptionGroup group : categoryOptionGroups )
-            {
-                if ( !securityService.canRead( group ) )
-                {
-                    log.info( "User cannot read categoryOptionGroup " + group.getName() + " for approval." );
-
-                    return false;
-                }
-            }
+            return true;
         }
 
-        if ( dataElementCategoryOptions != null )
+        if ( categoryOptionGroups.size() != 1 )
         {
-            for ( DataElementCategoryOption option : dataElementCategoryOptions )
-            {
-                if ( !securityService.canRead( option ) )
-                {
-                    boolean canReadGroup = false;
-
-                    for ( CategoryOptionGroup group : option.getGroups() )
-                    {
-                        log.info( "User " + ( securityService.canRead( group ) ? "can" : "cannot" )
-                                + " read option group" + group.getName()
-                                + " for option " + option.getName() );
-
-                        if ( securityService.canRead( group ) )
-                        {
-                            canReadGroup = true;
-
-                            break;
-                        }
-                    }
-
-                    if ( !canReadGroup && option.getGroups().size() != 0 )
-                    {
-                        log.info( "User cannot read option " + option.getName() );
-
-                        return false;
-                    }
-                }
-            }
+            return false;
         }
 
-        log.info( "User can read categoryOptionGroup and/or dataElementCategoryOptions" );
-
-        return true;
+        return ( securityService.canRead( (CategoryOptionGroup) categoryOptionGroups.toArray()[0] ) );
     }
 
     /**

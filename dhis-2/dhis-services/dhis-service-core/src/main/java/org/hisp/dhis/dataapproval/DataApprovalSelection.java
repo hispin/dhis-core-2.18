@@ -322,7 +322,6 @@ class DataApprovalSelection
                         lowestApprovalLevel = dataApprovalLevel;
                     }
 
-
                     break;
 
                 case UNAPPROVED_READY:
@@ -399,7 +398,9 @@ class DataApprovalSelection
         {
             if ( !unapprovedBelow )
             {
-                log.info( "getState() - not unapproved below." );
+                log.info( "getState() - unapproved ready." );
+
+                dataApprovalLevel = matchingApprovalLevels.get( thisIndex );
 
                 return DataApprovalState.UNAPPROVED_READY;
             }
