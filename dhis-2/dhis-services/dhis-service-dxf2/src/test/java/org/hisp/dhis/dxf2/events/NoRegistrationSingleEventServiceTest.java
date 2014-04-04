@@ -130,51 +130,6 @@ public class NoRegistrationSingleEventServiceTest
     }
 
     @Test
-    public void testGetPersonsByProgramOrgUnit()
-    {
-        for ( int i = 0; i < 10; i++ )
-        {
-            Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
-
-            ImportSummary importSummary = eventService.addEvent( event );
-            assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
-            assertNotNull( importSummary.getReference() );
-        }
-
-        assertEquals( 10, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
-    }
-
-    @Test
-    public void testGetPersonsByProgramStageOrgUnit()
-    {
-        for ( int i = 0; i < 10; i++ )
-        {
-            Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
-
-            ImportSummary importSummary = eventService.addEvent( event );
-            assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
-            assertNotNull( importSummary.getReference() );
-        }
-
-        assertEquals( 10, eventService.getEvents( programStageA, organisationUnitA ).getEvents().size() );
-    }
-
-    @Test
-    public void testGetPersonsByProgramProgramStageOrgUnit()
-    {
-        for ( int i = 0; i < 10; i++ )
-        {
-            Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
-
-            ImportSummary importSummary = eventService.addEvent( event );
-            assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
-            assertNotNull( importSummary.getReference() );
-        }
-
-        assertEquals( 10, eventService.getEvents( programA, programStageA, organisationUnitA ).getEvents().size() );
-    }
-
-    @Test
     public void testGetPersonsByProgramStageInstance()
     {
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
