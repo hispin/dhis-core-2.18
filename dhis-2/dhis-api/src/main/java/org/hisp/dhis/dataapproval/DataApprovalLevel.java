@@ -104,19 +104,6 @@ public class DataApprovalLevel
     // -------------------------------------------------------------------------
 
     /**
-     * Constructs a name that can refer to this data approval level.
-     *
-     * @return name of this data approval level.
-     */
-    public String getName()
-    {
-        String name = orgUnitLevel
-            + ( categoryOptionGroupSet == null ? "" : ( " - " + categoryOptionGroupSet.getName() ) );
-
-        return name;
-    }
-
-    /**
      * Returns the name of the category option group set for this data approval
      * level, or an empty string if there is no category option group set.
      *

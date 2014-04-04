@@ -1,3 +1,6 @@
+
+#sharingDialog()
+
 <script type="text/javascript">
     jQuery(document).ready(function() {
         dhis2.contextmenu.makeContextMenu({
@@ -13,6 +16,7 @@
 
 <div id="contextMenu" class="contextMenu">
     <ul id="contextMenuItems" class="contextMenuItems">
+    	<li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
         <li data-enabled="canMoveUp"><a data-target-fn="moveApprovalLevelUp"><i class="fa fa-arrow-up"></i>&nbsp;&nbsp;$i18n.getString( "move_up" )</a></li>
         <li data-enabled="canMoveDown"><a data-target-fn="moveApprovalLevelDown"><i class="fa fa-arrow-down"></i>&nbsp;&nbsp;$i18n.getString( "move_down" )</a></li>
         <li><a data-target-fn="removeApprovalLevel"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
@@ -43,9 +47,10 @@
                 </thead>
                 <tbody id="list">
                     #foreach( $level in $dataApprovalLevels )
-                    <tr id="tr${level.level}" data-id="$!level.level" data-name="$encoder.htmlEncode( $!level.getName() )"
+                    <tr id="tr${level.level}" data-id="$!level.id" data-uid="$!level.uid" data-type="DataApprovalLevel" data-name="$encoder.htmlEncode( $!level.displayName )"
                             data-can-move-up="$approvalLevelService.canMoveUp( $level.level )"
-                            data-can-move-down="$approvalLevelService.canMoveDown( $level.level )">
+                            data-can-move-down="$approvalLevelService.canMoveDown( $level.level )"
+                            data-can-manage="$security.canManage( $level )">
                         <td>$encoder.htmlEncode( $!level.orgUnitLevelName )</td>
                         <td>$encoder.htmlEncode( $!level.getCategoryOptionGroupSetName() )</td>
                     </tr>
