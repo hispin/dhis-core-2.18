@@ -629,7 +629,16 @@ public abstract class DeletionHandler
     public void deleteProgramValidation( ProgramValidation programValidation )
     {
     }
-
+    
+    public void deleteProgramIndicator( ProgramIndicator programIndicator )
+    {
+    }
+    
+    public String allowDeleteProgramIndicator( ProgramIndicator programIndicator )
+    {
+        return null;
+    }
+    
     public String allowDeleteValidationCriteria( ValidationCriteria validationCriteria )
     {
         return null;
@@ -752,15 +761,6 @@ public abstract class DeletionHandler
     }
     
     public String allowTrackedEntity( TrackedEntity trackedEntity )
-    {
-        return null;
-    }
-    
-    public void deleteProgramIndicator( ProgramIndicator programIndicator )
-    {
-    }
-    
-    public String allowProgramIndicator( ProgramIndicator programIndicator )
     {
         return null;
     }
