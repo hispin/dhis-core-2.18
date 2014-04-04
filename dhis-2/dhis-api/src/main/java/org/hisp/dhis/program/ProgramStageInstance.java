@@ -55,15 +55,10 @@ public class ProgramStageInstance
     private static final long serialVersionUID = 6239130884678145713L;
 
     public static final int ACTIVE_STATUS = 0;
-
     public static final int COMPLETED_STATUS = 1;
-
     public static final int VISITED_STATUS = 2;
-
     public static final int FUTURE_VISIT_STATUS = 3;
-
     public static final int LATE_VISIT_STATUS = 4;
-
     public static final int SKIPPED_STATUS = 5;
 
     private ProgramInstance programInstance;
