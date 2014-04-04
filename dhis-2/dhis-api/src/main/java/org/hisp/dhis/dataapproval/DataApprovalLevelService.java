@@ -46,9 +46,10 @@ public interface DataApprovalLevelService
 
     /**
      * Gets a list of the data approval levels for which the user has
-     * permission to approve, un.
+     * permission to perform at least one operation (approve, unapprove,
+     * accept, unaccept) for some selection of data at this approval level.
      *
-     * @return List of all data approval levels, ordered from 1 to n.
+     * @return List of selected user data approval levels, in ascending order.
      */
     List<DataApprovalLevel> getUserDataApprovalLevels();
 

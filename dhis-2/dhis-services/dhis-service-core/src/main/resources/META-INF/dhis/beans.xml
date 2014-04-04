@@ -421,6 +421,7 @@
   <bean id="org.hisp.dhis.dataapproval.DataApprovalLevelService" class="org.hisp.dhis.dataapproval.DefaultDataApprovalLevelService">
     <property name="dataApprovalLevelStore" ref="org.hisp.dhis.dataapproval.DataApprovalLevelStore" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="securityService" ref="org.hisp.dhis.security.SecurityService" />
   </bean>
 

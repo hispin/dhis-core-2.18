@@ -58,7 +58,7 @@ dhis2.appr.displayCategoryOptionGroups = function( ou )
 		$.each( json.categoryOptionGroups, function( index, group ) {
 			html += "<option value=\"" + group.uid + "\" data-dimension=\"" + group.groupSet + "\">" + group.name + "</option>";
 		} );
-		
+
 		$( "#categoryOptionGroupSection" ).show();
 		$( "#categoryOptionGroupId" ).html( html );
 	} );
