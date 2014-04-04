@@ -87,19 +87,19 @@
       </span>
       
       <ul id="menuLinkArea">
-        <li id="menuDropDown3_button">
-            <a id="menuLink3" class="menu-link drop-down-menu-link">
+        <li id="profileDropDown_button">
+            <a id="profileMenuLink" class="menu-link drop-down-menu-link">
               <i class="fa fa-user"></i>$i18n.getString( "profile" )
           </a>
         </li>
-        <li id="menuDropDown1_button">
-          <a id="menuLink1" class="menu-link drop-down-menu-link">
+        <li id="appsDropDown_button">
+          <a id="appsMenuLink" class="menu-link drop-down-menu-link">
             <i class="fa fa-th"></i>$i18n.getString( "applications" )
           </a>
           </li>
       </ul>
 
-      <div id="menuDropDown1" class="menuDropDownArea app-menu-dropdown menuLink1_menu" >
+      <div id="appsDropDown" class="menuDropDownArea app-menu-dropdown appsMenuLink_menu" >
         <div class="caret-up-border"></div>
         <div class="caret-up-background"></div>
         <div class="menu-drop-down-wrap">
@@ -110,7 +110,7 @@
         <div class="apps-menu-more"><a href="../dhis-web-commons-about/modules.action">$i18n.getString( "more_applications" )</a></div>
       </div>
 
-	  <div id="menuDropDown3" class="menuDropDownArea app-menu-dropdown ui-helper-clearfix menuLink3_menu">
+	  <div id="profileDropDown" class="menuDropDownArea app-menu-dropdown ui-helper-clearfix profileMenuLink_menu">
         <div class="caret-up-border"></div>
         <div class="caret-up-background"></div>
         <ul class="menuDropDownBox">

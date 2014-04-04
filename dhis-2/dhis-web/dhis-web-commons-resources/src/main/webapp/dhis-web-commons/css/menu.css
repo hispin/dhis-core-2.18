@@ -362,18 +362,18 @@ hr.app-separator
     overflow-x: hidden;
 }
 
-#menuDropDown1 ul {
+#appsDropDown ul {
     height: 330px;
 }
 
-#menuDropDown1 .caret-up-background,
-#menuDropDown1 .caret-up-border
+#appsDropDown .caret-up-background,
+#appsDropDown .caret-up-border
 {
     left: 296px;
 }
 
-#menuDropDown3 .caret-up-background,
-#menuDropDown3 .caret-up-border
+#profileDropDown .caret-up-background,
+#profileDropDown .caret-up-border
 {
     left: 292px;
 }
