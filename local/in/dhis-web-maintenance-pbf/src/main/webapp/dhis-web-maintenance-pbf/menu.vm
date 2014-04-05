@@ -25,3 +25,7 @@
 <ul>
 	<li><a href="getPaymentAdjustmentDetail.action">$i18n.getString( "payment_adjustment" )</a></li>
 </ul>
+<h2>$i18n.getString( "reports" )</h2>
+<ul>
+    <li><a href="PBFInvoiceReportForm.action">$i18n.getString( "quarterly_invoice_for_PBF_indicators_PMA" )</a></li>
+</ul>
