@@ -33,8 +33,9 @@ import java.util.Collection;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
+ * The web tree is used for data input and data capture.
+ * 
  * @author Torgeir Lorange Ostby
- * @version $Id: OrganisationUnitSelectionManager.java 5549 2008-08-20 05:23:35Z abyot $
  */
 public interface OrganisationUnitSelectionManager
 {

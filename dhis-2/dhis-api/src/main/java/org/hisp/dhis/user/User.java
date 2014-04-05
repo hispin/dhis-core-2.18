@@ -103,12 +103,15 @@ public class User
     private Set<UserGroup> groups = new HashSet<UserGroup>();
 
     /**
-     * All OrgUnits where the user could belong <p/> TODO This should have been
-     * put in UserCredentials
+     * Organisation units for data input and data capture / write operations.
+     * TODO move to UserCredentials.
      */
     @Scanned
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
     
+    /**
+     * Organisation units for data output and data analysis / read operations.
+     */
     @Scanned
     private Set<OrganisationUnit> dataViewOrganisationUnits = new HashSet<OrganisationUnit>();
 
@@ -117,6 +120,9 @@ public class User
      */
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
+    /**
+     * Ordered favorite apps.
+     */
     private List<String> apps = new ArrayList<String>();
     
     // -------------------------------------------------------------------------
@@ -150,7 +156,7 @@ public class User
             addOrganisationUnit( unit );
         }
     }
-
+            
     /**
      * Returns the concatenated first name and surname.
      */

@@ -41,8 +41,6 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The selection tree is used for data output and analysis.
- * 
  * @author Torgeir Lorange Ostby
  */
 public class DefaultSelectionTreeManager
@@ -206,6 +204,7 @@ public class DefaultSelectionTreeManager
         setSelectedOrganisationUnits( set );
     }
 
+    //TODO remove?
     public boolean setCurrentUserOrganisationUnitAsSelected()
     {
         User user = currentUserService.getCurrentUser();

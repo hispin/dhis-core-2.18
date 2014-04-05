@@ -217,7 +217,7 @@ div#orgUnitTree
   background-color: white;
   overflow: auto;
   width: 235px;
-  height: 298px;
+  height: 300px;
   border-top: 1px solid #e3e3e3;
   border-bottom: 1px solid #e3e3e3;
 }
@@ -238,7 +238,7 @@ div#orgUnitTree li
   list-style-type: none;
   white-space: nowrap;
   margin-top: 0;
-  padding: 1px 0 1px 15px;
+  padding: 0 0 1px 15px;
   background-color: transparent;
   background-image: url('../../images/treeview-gray-line.gif');
   background-repeat: no-repeat;
@@ -272,7 +272,6 @@ div#orgUnitTree a.selected
 {
   color: #000;
   font-family: LiberationSansBold, arial;
-  font-size: 13px;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +286,7 @@ div#selectionTree
   width: 493px;  
   overflow: auto;
   border: 1px solid #ccc;   
-  padding: 2px 0 0 5px;
+  padding: 4px 0 0 5px;
 }
 
 div#selectionTree ul 

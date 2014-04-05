@@ -44,6 +44,14 @@
 	});
 </script>
 
+<style type="text/css">
+div#orgUnitTree
+{
+  width: 495px;
+  border: 1px solid #ccc;
+}
+</style>
+
 <h3>$i18n.getString( "create_new_user" )</h3>
 <form id="addUserForm" action="addUser.action" method="post" class="inputForm">
 
@@ -174,7 +182,7 @@
     </tr>
 </table>
 
-<table>
+<table style="margin-bottom: 20px">
 <colgroup>
   <col style="width: 500px;"/>
   <col/>
@@ -212,10 +220,18 @@
 
 <table>
 	<tr>
-		<td colspan="3">
-			#organisationUnitSelectionTree( true, true, false )
+		<th>$i18n.getString( "data_capture_maintenance_org_units" )</th>
+		<th></th>
+		<th>$i18n.getString( "data_output_analysis_org_units" )</th>
+	</tr>
+	<tr>
+		<td>			
+            #parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
 		</td>
-
+		<td style="width: 26px"></td>
+		<td>
+            #parse( "/dhis-web-commons/oust/selectionTree.vm" )
+		</td>
 	</tr>
 </table>
 
