@@ -28,12 +28,9 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
@@ -45,12 +42,19 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserSettingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -68,6 +72,9 @@ public class UpdateUserAction
     {
         this.userService = userService;
     }
+
+    @Autowired
+    private UserGroupService userGroupService;
 
     private PasswordManager passwordManager;
 
@@ -178,6 +185,13 @@ public class UpdateUserAction
         this.selectedList = selectedList;
     }
 
+    private List<String> ugSelected = Lists.newArrayList();
+
+    public void setUgSelected( List<String> ugSelected )
+    {
+        this.ugSelected = ugSelected;
+    }
+
     private List<String> jsonAttributeValues;
 
     public void setJsonAttributeValues( List<String> jsonAttributeValues )
@@ -238,7 +252,7 @@ public class UpdateUserAction
         }
 
         userService.canIssueFilter( userAuthorityGroups );
-        
+
         userCredentials.setUserAuthorityGroups( userAuthorityGroups );
 
         if ( rawPassword != null )
@@ -271,6 +285,33 @@ public class UpdateUserAction
 
         userService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_UI_LOCALE, LocaleUtils.getLocale( localeUi ) ) );
         userService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_DB_LOCALE, LocaleUtils.getLocale( localeDb ) ) );
+
+        Set<UserGroup> userGroups = Sets.newHashSet();
+
+        for ( String id : ugSelected )
+        {
+            UserGroup userGroup = userGroupService.getUserGroup( id );
+
+            if ( userGroup != null )
+            {
+                userGroups.add( userGroup );
+            }
+        }
+
+        for ( UserGroup userGroup : Sets.newHashSet( user.getGroups() ) )
+        {
+            if ( !userGroups.contains( userGroup ) )
+            {
+                userGroup.removeUser( user );
+                userGroupService.updateUserGroup( userGroup );
+            }
+        }
+
+        for ( UserGroup userGroup : userGroups )
+        {
+            userGroup.addUser( user );
+            userGroupService.updateUserGroup( userGroup );
+        }
 
         return SUCCESS;
     }

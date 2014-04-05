@@ -126,6 +126,13 @@ public class SetupTreeAction
         return userCredentials;
     }
 
+    private User user;
+
+    public User getUser()
+    {
+        return user;
+    }
+
     private List<UserAuthorityGroup> userAuthorityGroups;
 
     public List<UserAuthorityGroup> getUserAuthorityGroups()
@@ -199,7 +206,7 @@ public class SetupTreeAction
         
         if ( id != null )
         {
-            User user = userService.getUser( id );
+            user = userService.getUser( id );
 
             if ( user.getOrganisationUnits().size() > 0 )
             {
