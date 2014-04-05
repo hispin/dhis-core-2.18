@@ -28,14 +28,8 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.collect.Lists;
+import com.opensymphony.xwork2.Action;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.attribute.AttributeService;
@@ -50,18 +44,26 @@ import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserSettingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import com.opensymphony.xwork2.Action;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
  */
 public class AddUserAction
-        implements Action
+    implements Action
 {
     private String ACCOUNT_ACTION_INVITE = "invite";
 
@@ -89,6 +91,9 @@ public class AddUserAction
     {
         this.userService = userService;
     }
+
+    @Autowired
+    private UserGroupService userGroupService;
 
     private SecurityService securityService;
 
@@ -218,6 +223,13 @@ public class AddUserAction
         this.selectedList = selectedList;
     }
 
+    private List<String> ugSelected = Lists.newArrayList();
+
+    public void setUgSelected( List<String> ugSelected )
+    {
+        this.ugSelected = ugSelected;
+    }
+
     private List<String> jsonAttributeValues;
 
     public void setJsonAttributeValues( List<String> jsonAttributeValues )
@@ -230,7 +242,7 @@ public class AddUserAction
     // -------------------------------------------------------------------------
 
     public String execute()
-            throws Exception
+        throws Exception
     {
         // ---------------------------------------------------------------------
         // Prepare values
@@ -269,7 +281,7 @@ public class AddUserAction
             userCredentials.setUsername( inviteUsername );
             user.setEmail( inviteEmail );
 
-            securityService.prepareUserForInvite ( userCredentials );
+            securityService.prepareUserForInvite( userCredentials );
         }
         else
         {
@@ -284,20 +296,20 @@ public class AddUserAction
         user.updateOrganisationUnits( new HashSet<OrganisationUnit>( orgUnits ) );
 
         Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
-        
+
         for ( String id : selectedList )
         {
             userAuthorityGroups.add( userService.getUserAuthorityGroup( Integer.parseInt( id ) ) );
         }
 
         userService.canIssueFilter( userAuthorityGroups );
-        
+
         userCredentials.setUserAuthorityGroups( userAuthorityGroups );
 
         if ( jsonAttributeValues != null )
         {
             AttributeUtils.updateAttributeValuesFromJson( user.getAttributeValues(), jsonAttributeValues,
-                    attributeService );
+                attributeService );
         }
 
         userService.addUser( user );
@@ -316,6 +328,17 @@ public class AddUserAction
             RestoreOptions restoreOptions = inviteUsername.isEmpty() ? RestoreOptions.INVITE_WITH_USERNAME_CHOICE : RestoreOptions.INVITE_WITH_DEFINED_USERNAME;
 
             securityService.sendRestoreMessage( userCredentials, getRootPath(), restoreOptions );
+        }
+
+        for ( String id : ugSelected )
+        {
+            UserGroup userGroup = userGroupService.getUserGroup( id );
+
+            if ( userGroup != null )
+            {
+                userGroup.addUser( user );
+                userGroupService.updateUserGroup( userGroup );
+            }
         }
 
         return SUCCESS;
