@@ -40,9 +40,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import com.opensymphony.xwork2.ActionContext;
 
 /**
+ * The web tree is used for data input and data capture/write operations.
+ * 
  * @author Torgeir Lorange Ostby
- * @version $Id: DefaultOrganisationUnitSelectionManager.java 5652 2008-09-06
- *          13:24:34Z larshelg $
  */
 public class DefaultOrganisationUnitSelectionManager
     implements OrganisationUnitSelectionManager

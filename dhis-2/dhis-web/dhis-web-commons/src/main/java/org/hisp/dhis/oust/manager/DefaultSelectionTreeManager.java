@@ -41,8 +41,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * The selection tree is used for data output and analysis.
+ * 
  * @author Torgeir Lorange Ostby
- * @version $Id: DefaultSelectionTreeManager.java 5652 2008-09-06 13:24:34Z larshelg $
  */
 public class DefaultSelectionTreeManager
     implements SelectionTreeManager
