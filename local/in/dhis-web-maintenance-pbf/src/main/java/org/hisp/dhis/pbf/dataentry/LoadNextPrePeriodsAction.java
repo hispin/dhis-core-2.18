@@ -11,6 +11,7 @@ import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.util.SessionUtils;
@@ -73,6 +74,11 @@ public class LoadNextPrePeriodsAction implements Action
 
     private String periodType;
     
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -86,7 +92,10 @@ public class LoadNextPrePeriodsAction implements Action
         {
             periodType = dataset.getPeriodType().getName();
         }
-        
+        else if ( periodType != null && periodType.equals( "Quarterly" ) )
+        {
+            //periodType = QuarterlyPeriodType.NAME;
+        }
         else
         {
             periodType = MonthlyPeriodType.NAME;

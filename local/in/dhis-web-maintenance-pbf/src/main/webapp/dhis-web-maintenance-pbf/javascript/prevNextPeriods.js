@@ -5,13 +5,15 @@ function getAvailablePeriodsTemp( availablePeriodsId, selectedPeriodsId, year )
 {	
 	var availableList = document.getElementById( availablePeriodsId );
 	var selectedList = document.getElementById( selectedPeriodsId );
+	var periodType = availablePeriodsId;
 	
 	clearList( selectedList );
 	
 	addOptionToList( selectedList, '-1', '[ Select ]' );
 	
 	$.getJSON( "getAvailableNextPrePeriods.action", {
-		"year": year },
+		"year": year,
+		"periodType":periodType},
 		function( json ) {
 			
 			for ( i in json.periods ) {

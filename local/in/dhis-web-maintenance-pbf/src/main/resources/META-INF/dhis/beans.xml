@@ -262,6 +262,9 @@
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
 	</bean>
+
+    <bean id="org.hisp.dhis.pbf.payment.action.LoadPaymentAdjustmentAction"  class="org.hisp.dhis.pbf.payment.action.LoadPaymentAdjustmentAction" scope="prototype">
+    </bean>
 	
 	<!-- Save Quality Data -->
 	
