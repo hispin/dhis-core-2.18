@@ -204,20 +204,6 @@ public class DefaultSelectionTreeManager
         setSelectedOrganisationUnits( set );
     }
 
-    //TODO remove?
-    public boolean setCurrentUserOrganisationUnitAsSelected()
-    {
-        User user = currentUserService.getCurrentUser();
-
-        if ( user != null && user.getOrganisationUnit() != null )
-        {
-            setSelectedOrganisationUnit( user.getOrganisationUnit() );
-            return true;
-        }
-
-        return false;
-    }
-
     // -------------------------------------------------------------------------
     // Session methods
     // -------------------------------------------------------------------------
