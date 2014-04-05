@@ -143,7 +143,37 @@
 
 #tblDynamicAttributes( { "attributes": $attributes } )
 
-<!-- will be replaced by velocity macro -->
+<table>
+    <colgroup>
+        <col style="width: 500px;"/>
+        <col/>
+        <col style="width: 500px;"/>
+    </colgroup>
+
+    <tr>
+        <th>$i18n.getString( "available_roles" )</th>
+        <th></th>
+        <th>$i18n.getString( "selected_roles" )<select id="roleValidator" style="display:none"/></th>
+    </tr>
+
+    <tr style="margin-bottom: 15px;">
+    <td>
+        <select id="availableList" name="availableList" multiple="multiple" style="height: 200px; width: 100%;"></select>
+    </td>
+
+    <td style="text-align:center">
+        <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableList' );"/><br/>
+        <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedList' );"/><br/>
+        <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableList' );"/><br/>
+        <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedList' );"/>
+    </td>
+
+    <td>
+        <select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;"></select>
+    </td>
+    </tr>
+</table>
+
 <table>
 <colgroup>
   <col style="width: 500px;"/>
@@ -181,37 +211,6 @@
 </table>
 
 <table>
-    <colgroup>
-      <col style="width: 500px;"/>
-      <col/>
-      <col style="width: 500px;"/>
-    </colgroup>
-
-	<tr>
-		<th>$i18n.getString( "available_roles" )</th>
-		<th></th>
-		<th>$i18n.getString( "selected_roles" )
-			<select id="roleValidator" style="display:none"/>
-		</th>
-	</tr>
-
-	<tr style="margin-bottom: 15px;">
-        <td>
-            <select id="availableList" name="availableList" multiple="multiple" style="height: 200px; width: 100%;"></select>
-        </td>
-
-        <td style="text-align:center">
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableList' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedList' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedList' );"/>
-        </td>
-
-		<td>
-            <select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;"></select>
-        </td>
-	</tr>
-
 	<tr>
 		<td colspan="3">
 			#organisationUnitSelectionTree( true, true, false )
