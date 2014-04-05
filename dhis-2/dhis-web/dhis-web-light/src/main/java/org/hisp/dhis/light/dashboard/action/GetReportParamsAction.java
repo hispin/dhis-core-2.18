@@ -41,6 +41,9 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -68,6 +71,9 @@ public class GetReportParamsAction
         this.selectionTreeManager = selectionTreeManager;
     }
 
+    @Autowired
+    private CurrentUserService currentUserService;
+    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -115,7 +121,9 @@ public class GetReportParamsAction
 
     public String execute()
     {
-        selectionTreeManager.setCurrentUserOrganisationUnitAsSelected();
+        User user = currentUserService.getCurrentUser();
+        
+        selectionTreeManager.setSelectedOrganisationUnit( user.getOrganisationUnit() );
         
         if ( uid != null )
         {
