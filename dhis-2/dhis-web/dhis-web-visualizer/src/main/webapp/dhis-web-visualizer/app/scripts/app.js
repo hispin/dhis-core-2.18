@@ -1249,7 +1249,7 @@ Ext.onReady( function() {
 					html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
 					return html;
 				}(),
-				style: 'padding-top: 3px; padding-bottom: 2px; padding-left: 2px',
+				style: 'padding: 3px',
 				bodyStyle: 'border: 0 none'
 			});
 
@@ -1278,9 +1278,8 @@ Ext.onReady( function() {
 			window = Ext.create('Ext.window.Window', {
 				title: ns.app.layout.name,
 				layout: 'fit',
-				//iconCls: 'ns-window-title-interpretation',
 				width: 500,
-				bodyStyle: 'padding:2px; background-color:#fff',
+				bodyStyle: 'padding:1px; background-color:#fff',
 				resizable: false,
 				destroyOnBlur: true,
 				modal: true,
