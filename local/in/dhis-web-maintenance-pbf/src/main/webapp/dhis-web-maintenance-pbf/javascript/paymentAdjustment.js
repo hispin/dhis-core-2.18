@@ -10,7 +10,28 @@
 function orgUnitHasBeenSelected( orgUnitIds )
 {    
 	$( '#paymentDiv' ).html( '' );
-	
+	var bValue = false;
+	for(var i=0;i<=countryTags.length-1;i++)
+	{
+    	if(countryTags[i] == orgUnitIds[0] )
+    	{
+    		bValue = true;
+    	}
+	}
+	if(bValue == false)
+	{
+		disable('dataSetId');
+        disable('selectedPeriodId');
+        disable('prevButton');
+        disable('nextButton');
+       
+        setFieldValue('orgUnitName', orgUnitNames[0] );
+        setFieldValue('selectedOrgunitName', orgUnitNames[0] );
+        
+		alert('Please Select Correct OrgUnit');
+	}
+	else
+	{		
 	if( orgUnitIds != null && orgUnitIds != "" )
 	{
 		var dataSetId = $( '#dataSetId' ).val();
@@ -26,6 +47,7 @@ function orgUnitHasBeenSelected( orgUnitIds )
 					enable('dataSetId');
 					
 					var options = '';
+					
 		            $.each(json.dataSets, function(i, obj){
 		                options += '<option value="' + obj.id + '"'+ '>' + obj.name + '</option>';
 		            });
@@ -49,6 +71,7 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	                setFieldValue('selectedOrgunitName', json.message );
 	            }
 	        } );		
+	}
 	}
 }
 jQuery(window).load(function() 
