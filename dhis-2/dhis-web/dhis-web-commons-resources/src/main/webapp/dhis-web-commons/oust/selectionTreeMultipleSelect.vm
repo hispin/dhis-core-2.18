@@ -31,7 +31,7 @@ function selectedOrganisationUnitXML__( xml )
 }
 </script>
 
-<table cellspacing=0 width="535px">
+<table>
 	<thead>
 		<tr>
 			<th colspan="2">$i18n.getString( "organisation_unit_selection_tree" )
@@ -52,7 +52,7 @@ function selectedOrganisationUnitXML__( xml )
 						<select id="groupList" name="groupList" style="width:10em"/>
 						<input type="button" value="$i18n.getString( 'unselect_in_group' )" onclick="unSelectOrganisationUnitByGroup()" style="width:10em">	
 						<input type="button" value="$i18n.getString( 'select_children' )" onclick="selectChildren()" style="width:10em"/>	
-						<div id="selectionTree" style="padding:5px;width:100%"></div>
+						<div id="selectionTree"></div>
 					</div>
 				</div>
 			</td>

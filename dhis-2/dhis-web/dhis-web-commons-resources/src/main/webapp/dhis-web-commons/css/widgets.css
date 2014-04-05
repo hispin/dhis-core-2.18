@@ -284,9 +284,10 @@ div#selectionTree
   font-size: 9pt; /* Size to change */
   background-color: white;
   height: 300px;
-  width:595px;  
-  overflow:auto;
-  border:1px solid #cccccc;   
+  width: 493px;  
+  overflow: auto;
+  border: 1px solid #ccc;   
+  padding: 2px 0 0 5px;
 }
 
 div#selectionTree ul 
