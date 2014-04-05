@@ -2357,7 +2357,7 @@ Ext.onReady( function() {
 			textArea = Ext.create('Ext.form.field.TextArea', {
 				cls: 'ns-textarea',
 				height: 130,
-				fieldStyle: 'padding-left: 4px; padding-top: 3px',
+				fieldStyle: 'padding-left: 3px; padding-top: 3px',
 				emptyText: NS.i18n.write_your_interpretation,
 				enableKeyEvents: true,
 				listeners: {
@@ -2369,15 +2369,15 @@ Ext.onReady( function() {
 
 			linkPanel = Ext.create('Ext.panel.Panel', {
 				html: function() {
-					var eventReportUrl = ns.core.init.contextPath + '/dhis-web-event-report/app/index.html?id=' + ns.app.layout.id,
+					var url = ns.core.init.contextPath + '/dhis-web-event-reports/app/index.html?id=' + ns.app.layout.id,
 						apiUrl = ns.core.init.contextPath + '/api/eventReports/' + ns.app.layout.id + '/data.html',
 						html = '';
 
-					html += '<div><b>Report link: </b><span class="user-select"><a href="' + eventReportUrl + '" target="_blank">' + eventReportUrl + '</a></span></div>';
+					html += '<div><b>Report link: </b><span class="user-select"><a href="' + url + '" target="_blank">' + url + '</a></span></div>';
 					html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
 					return html;
 				}(),
-				style: 'padding-top: 8px; padding-bottom: 5px',
+				style: 'padding:3px',
 				bodyStyle: 'border: 0 none'
 			});
 
@@ -2390,7 +2390,7 @@ Ext.onReady( function() {
 				handler: function() {
 					if (textArea.getValue()) {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/interpretations/eventReport/' + ns.app.layout.id,
+							url: ns.core.init.contextPath + '/api/interpretations/eventReports/' + ns.app.layout.id,
 							method: 'POST',
 							params: textArea.getValue(),
 							headers: {'Content-Type': 'text/html'},
@@ -2406,9 +2406,8 @@ Ext.onReady( function() {
 			window = Ext.create('Ext.window.Window', {
 				title: ns.app.layout.name,
 				layout: 'fit',
-				//iconCls: 'ns-window-title-interpretation',
 				width: 500,
-				bodyStyle: 'padding:5px 5px 3px; background-color:#fff',
+				bodyStyle: 'padding:1px; background-color:#fff',
 				resizable: false,
 				destroyOnBlur: true,
 				modal: true,
@@ -5397,7 +5396,7 @@ Ext.onReady( function() {
 			isLoaded: false,
 			pageSize: 10,
 			page: 1,
-			defaultUrl: ns.core.init.contextPath + '/api/eventReports.json?include=id,name,lastUpdated,access',
+			defaultUrl: ns.core.init.contextPath + '/api/eventReports.json?include=id,name,access',
 			loadStore: function(url) {
 				this.proxy.url = url || this.defaultUrl;
 

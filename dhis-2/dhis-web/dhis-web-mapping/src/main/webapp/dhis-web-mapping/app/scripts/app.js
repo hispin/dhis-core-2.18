@@ -3793,7 +3793,7 @@ Ext.onReady( function() {
 
 				return html;
 			}(),
-			style: 'padding-top: 3px; padding-bottom: 2px; padding-left: 2px',
+			style: 'padding:3px',
 		});
 
 		button = Ext.create('Ext.button.Button', {
@@ -3818,7 +3818,7 @@ Ext.onReady( function() {
 			layout: 'fit',
 			iconCls: 'gis-window-title-icon-interpretation',
 			cls: 'gis-container-default',
-            bodyStyle: 'padding: 2px',
+            bodyStyle: 'padding: 1px',
 			width: 500,
 			resizable: true,
 			modal: true,

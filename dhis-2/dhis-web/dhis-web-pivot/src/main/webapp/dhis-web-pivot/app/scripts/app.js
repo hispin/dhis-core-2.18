@@ -1659,7 +1659,7 @@ Ext.onReady( function() {
 					html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
 					return html;
 				}(),
-				style: 'padding-top: 3px; padding-bottom: 2px; padding-left: 2px',
+				style: 'padding:3px',
 				bodyStyle: 'border: 0 none'
 			});
 
