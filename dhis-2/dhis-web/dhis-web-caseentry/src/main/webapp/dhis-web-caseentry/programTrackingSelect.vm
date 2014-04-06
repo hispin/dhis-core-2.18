@@ -4,13 +4,11 @@
         showById('sendSmsToListBtn');
         jQuery("#program option").each(function() {
             var item = jQuery(this);
-            if( item.attr('type') != 1 && item.val() != '' ) {
+            if( item.attr('type') != 1 || item.val() != '' ) {
                 item.remove();
             }
         });
 
-        jQuery("#searchObjectId [value=prg]").remove();
-        jQuery("#searchObjectId [value=prg]").remove();
         jQuery("#searchObjectId").prepend('<option value="-100">' + i18n_please_select_criteria + '</option>');
         jQuery("#searchObjectId [value=]").attr("selected", "selected");
 
