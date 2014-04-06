@@ -25,6 +25,11 @@
 
     checkValueIsExist("openId", "validateUser.action", { id: $userCredentials.id });
 
+    selection.clearSelected(); // Sync ouwt from server
+    selection.setMultipleSelectionAllowed( true );
+    selection.setUnselectAllowed( true );
+    selection.setAutoSelectRoot( false );
+
     jQuery("#cancel").click(function() {
       dhis2.commons.redirectCurrentPage('alluser.action');
     });

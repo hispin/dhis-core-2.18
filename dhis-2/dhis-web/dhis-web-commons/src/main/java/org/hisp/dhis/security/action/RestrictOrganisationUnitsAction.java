@@ -88,19 +88,24 @@ public class RestrictOrganisationUnitsAction
             Set<OrganisationUnit> dataCaptureOrgUnits = user.getOrganisationUnits();
             Set<OrganisationUnit> dataViewOrgUnits = user.getDataViewOrganisationUnits();
 
-            if ( dataCaptureOrgUnits.size() > 0 )
+            if ( !dataCaptureOrgUnits.isEmpty() )
             {
                 selectionManager.setRootOrganisationUnits( dataCaptureOrgUnits );
                 selectionManager.setSelectedOrganisationUnits( dataCaptureOrgUnits );
-                
-                selectionTreeManager.setRootOrganisationUnits( dataViewOrgUnits );                
-                selectionTreeManager.setSelectedOrganisationUnits( dataViewOrgUnits );
             }
             else
             {
                 selectionManager.resetRootOrganisationUnits();
                 selectionManager.clearSelectedOrganisationUnits();
-                
+            }
+            
+            if ( !dataViewOrgUnits.isEmpty() )
+            {                
+                selectionTreeManager.setRootOrganisationUnits( dataViewOrgUnits );                
+                selectionTreeManager.setSelectedOrganisationUnits( dataViewOrgUnits );
+            }
+            else
+            {                
                 selectionTreeManager.resetRootOrganisationUnits();                
                 selectionTreeManager.clearSelectedOrganisationUnits();
             }
