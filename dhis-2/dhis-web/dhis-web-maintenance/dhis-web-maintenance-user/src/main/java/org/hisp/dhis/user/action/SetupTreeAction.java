@@ -212,10 +212,18 @@ public class SetupTreeAction
             {
                 selectionManager.setSelectedOrganisationUnits( user.getOrganisationUnits() );
             }
+            else
+            {
+                selectionManager.clearSelectedOrganisationUnits();
+            }
             
             if ( user.hasDataViewOrganisationUnit() )
             {
                 selectionTreeManager.setSelectedOrganisationUnits( user.getDataViewOrganisationUnits() );
+            }
+            else
+            {
+                selectionTreeManager.clearSelectedOrganisationUnits();
             }
             
             userCredentials = userService.getUserCredentials( userService.getUser( id ) );
