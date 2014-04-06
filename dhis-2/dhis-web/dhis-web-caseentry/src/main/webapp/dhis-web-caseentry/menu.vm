@@ -20,9 +20,6 @@
 <h2>$i18n.getString( "data_entry" )&nbsp;</h2>
 #end
 <ul>
-	#if( $auth.hasAccess( "dhis-web-caseentry", "multipledataEntrySelect" ) )
-		<li><a href="multipledataEntrySelect.action">$i18n.getString( "multiple_individual_records" )&nbsp;</a></li>
-	#end
 	#if( $auth.hasAccess( "dhis-web-caseentry", "singleEventSelect" ) )
 		<li><a href="singleEventSelect.action">$i18n.getString( "single_event_with_registration" )</a></li>
 	#end
