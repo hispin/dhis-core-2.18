@@ -88,7 +88,7 @@ public class ValidateTrackedEntityInstanceAction
 
     private Integer id;
 
-    private Integer programId;
+    private String programId;
 
     // -------------------------------------------------------------------------
     // Output
@@ -177,7 +177,7 @@ public class ValidateTrackedEntityInstanceAction
         this.programService = programService;
     }
 
-    public void setProgramId( Integer programId )
+    public void setProgramId( String programId )
     {
         this.programId = programId;
     }

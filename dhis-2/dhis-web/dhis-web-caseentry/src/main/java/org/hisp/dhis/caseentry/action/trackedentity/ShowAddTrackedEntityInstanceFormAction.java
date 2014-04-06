@@ -139,9 +139,9 @@ public class ShowAddTrackedEntityInstanceFormAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer programId;
+    private String programId;
 
-    public void setProgramId( Integer programId )
+    public void setProgramId( String programId )
     {
         this.programId = programId;
     }

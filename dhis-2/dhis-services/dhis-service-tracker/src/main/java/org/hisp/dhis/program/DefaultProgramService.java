@@ -28,19 +28,18 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.trackedentity.TrackedEntity;
-import org.hisp.dhis.validation.ValidationCriteria;
-import org.springframework.transaction.annotation.Transactional;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.trackedentity.TrackedEntity;
+import org.hisp.dhis.validation.ValidationCriteria;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Abyot Asalefew
@@ -111,25 +110,21 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getPrograms( OrganisationUnit organisationUnit )
     {
-        Set<Program> programs = new HashSet<Program>();
-
-        for ( Program program : getAllPrograms() )
-        {
-            Set<OrganisationUnitGroup> orgunitGroups = program.getOrganisationUnitGroups();
-            for ( OrganisationUnitGroup orgunitGroup : orgunitGroups )
-            {
-                if ( orgunitGroup.getMembers().contains( organisationUnit ) )
-                {
-                    programs.add( program );
-                }
-            }
-            if ( program.getOrganisationUnits().contains( organisationUnit ) )
-            {
-                programs.add( program );
-            }
-        }
-
-        return i18n( i18nService, programs );
+        /*
+         * Set<Program> programs = new HashSet<Program>();
+         * 
+         * for ( Program program : getAllPrograms() ) {
+         * Set<OrganisationUnitGroup> orgunitGroups =
+         * program.getOrganisationUnitGroups(); for ( OrganisationUnitGroup
+         * orgunitGroup : orgunitGroups ) { if (
+         * orgunitGroup.getMembers().contains( organisationUnit ) ) {
+         * programs.add( program ); } } if (
+         * program.getOrganisationUnits().contains( organisationUnit ) ) {
+         * programs.add( program ); } }
+         * 
+         * return i18n( i18nService, programs );
+         */
+        return i18n( i18nService, programStore.get( organisationUnit ) );
     }
 
     @Override
@@ -157,7 +152,7 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getPrograms( int type, OrganisationUnit orgunit )
     {
-        return i18n( i18nService, programStore.get( type, orgunit ) );
+        return i18n( i18nService, getPrograms( type, orgunit ) );
     }
 
     @Override

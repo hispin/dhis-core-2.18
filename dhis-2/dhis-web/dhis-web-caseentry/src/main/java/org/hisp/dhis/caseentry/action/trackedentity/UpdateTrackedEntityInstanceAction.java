@@ -55,179 +55,173 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class UpdateTrackedEntityInstanceAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class UpdateTrackedEntityInstanceAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private TrackedEntityInstanceService entityInstanceService;
+	private TrackedEntityInstanceService entityInstanceService;
 
-    private TrackedEntityAttributeService attributeService;
+	private TrackedEntityAttributeService attributeService;
 
-    private TrackedEntityAttributeValueService attributeValueService;
+	private TrackedEntityAttributeValueService attributeValueService;
 
-    @Autowired
-    private TrackedEntityService trackedEntityService;
+	@Autowired
+	private TrackedEntityService trackedEntityService;
 
-    @Autowired
-    private ProgramService programService;
+	@Autowired
+	private ProgramService programService;
 
-    private I18nFormat format;
+	private I18nFormat format;
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Input
+	// -------------------------------------------------------------------------
 
-    private Integer id;
+	private Integer id;
 
-    private Integer representativeId;
+	private Integer representativeId;
 
-    private Integer relationshipTypeId;
+	private Integer relationshipTypeId;
 
-    private Integer trackedEntityId;
+	private Integer trackedEntityId;
 
-    private Integer programId;
+	private String programId;
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Output
+	// -------------------------------------------------------------------------
 
-    private TrackedEntityInstance entityInstance;
+	private TrackedEntityInstance entityInstance;
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
-    {
-        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( id );
-        TrackedEntity trackedEntity = null;
+	public String execute() throws Exception {
+		TrackedEntityInstance entityInstance = entityInstanceService
+				.getTrackedEntityInstance(id);
+		TrackedEntity trackedEntity = null;
 
-        if ( programId != null )
-        {
-            Program program = programService.getProgram( programId );
-            trackedEntity = program.getTrackedEntity();
-        }
-        else
-        {
-            trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
-        }
+		if (programId != null) {
+			Program program = programService.getProgram(programId);
+			trackedEntity = program.getTrackedEntity();
+		} else {
+			trackedEntity = trackedEntityService
+					.getTrackedEntity(trackedEntityId);
+		}
 
-        entityInstance.setTrackedEntity( trackedEntity );
+		entityInstance.setTrackedEntity(trackedEntity);
 
-        // ---------------------------------------------------------------------
-        // Save Tracked Entity Instance Attributes
-        // ---------------------------------------------------------------------
+		// ---------------------------------------------------------------------
+		// Save Tracked Entity Instance Attributes
+		// ---------------------------------------------------------------------
 
-        HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 
-        Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
+		Collection<TrackedEntityAttribute> attributes = attributeService
+				.getAllTrackedEntityAttributes();
 
-        List<TrackedEntityAttributeValue> valuesForSave = new ArrayList<TrackedEntityAttributeValue>();
-        List<TrackedEntityAttributeValue> valuesForUpdate = new ArrayList<TrackedEntityAttributeValue>();
-        Collection<TrackedEntityAttributeValue> valuesForDelete = null;
+		List<TrackedEntityAttributeValue> valuesForSave = new ArrayList<TrackedEntityAttributeValue>();
+		List<TrackedEntityAttributeValue> valuesForUpdate = new ArrayList<TrackedEntityAttributeValue>();
+		Collection<TrackedEntityAttributeValue> valuesForDelete = null;
 
-        TrackedEntityAttributeValue attributeValue = null;
+		TrackedEntityAttributeValue attributeValue = null;
 
-        if ( attributes != null && attributes.size() > 0 )
-        {
-            valuesForDelete = attributeValueService.getTrackedEntityAttributeValues( entityInstance );
+		if (attributes != null && attributes.size() > 0) {
+			valuesForDelete = attributeValueService
+					.getTrackedEntityAttributeValues(entityInstance);
 
-            for ( TrackedEntityAttribute attribute : attributes )
-            {
-                String value = request.getParameter( AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE
-                    + attribute.getId() );
+			for (TrackedEntityAttribute attribute : attributes) {
+				String value = request
+						.getParameter(AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE
+								+ attribute.getId());
 
-                if ( StringUtils.isNotBlank( value ) )
-                {
-                    if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
-                    {
-                       value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
-                    }
+				if (StringUtils.isNotBlank(value)) {
+					if (attribute.getValueType().equals(
+							TrackedEntityAttribute.TYPE_AGE)) {
+						value = format.formatDate(TrackedEntityAttribute
+								.getDateFromAge(Integer.parseInt(value)));
+					}
 
-                    attributeValue = attributeValueService.getTrackedEntityAttributeValue( entityInstance, attribute );
+					attributeValue = attributeValueService
+							.getTrackedEntityAttributeValue(entityInstance,
+									attribute);
 
-                    if ( attributeValue == null )
-                    {
-                        attributeValue = new TrackedEntityAttributeValue();
-                        attributeValue.setEntityInstance( entityInstance );
-                        attributeValue.setAttribute( attribute );
-                        attributeValue.setValue( value.trim() );
+					if (attributeValue == null) {
+						attributeValue = new TrackedEntityAttributeValue();
+						attributeValue.setEntityInstance(entityInstance);
+						attributeValue.setAttribute(attribute);
+						attributeValue.setValue(value.trim());
 
-                        valuesForSave.add( attributeValue );
-                    }
-                    else
-                    {
-                        attributeValue.setValue( value.trim() );
+						valuesForSave.add(attributeValue);
+					} else {
+						attributeValue.setValue(value.trim());
 
-                        valuesForUpdate.add( attributeValue );
-                        valuesForDelete.remove( attributeValue );
-                    }
-                }
-            }
-        }
+						valuesForUpdate.add(attributeValue);
+						valuesForDelete.remove(attributeValue);
+					}
+				}
+			}
+		}
 
-        entityInstanceService.updateTrackedEntityInstance( entityInstance, representativeId, relationshipTypeId,
-            valuesForSave, valuesForUpdate, valuesForDelete );
+		entityInstanceService.updateTrackedEntityInstance(entityInstance,
+				representativeId, relationshipTypeId, valuesForSave,
+				valuesForUpdate, valuesForDelete);
 
-        return SUCCESS;
-    }
+		return SUCCESS;
+	}
 
-    // -------------------------------------------------------------------------
-    // Getter/Setter
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Getter/Setter
+	// -------------------------------------------------------------------------
 
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
+	public void setFormat(I18nFormat format) {
+		this.format = format;
+	}
 
-    public void setTrackedEntityId( Integer trackedEntityId )
-    {
-        this.trackedEntityId = trackedEntityId;
-    }
+	public void setTrackedEntityId(Integer trackedEntityId) {
+		this.trackedEntityId = trackedEntityId;
+	}
 
-    public void setTrackedEntityService( TrackedEntityService trackedEntityService )
-    {
-        this.trackedEntityService = trackedEntityService;
-    }
+	public void setTrackedEntityService(
+			TrackedEntityService trackedEntityService) {
+		this.trackedEntityService = trackedEntityService;
+	}
 
-    public void setentityInstanceService( TrackedEntityInstanceService entityInstanceService )
-    {
-        this.entityInstanceService = entityInstanceService;
-    }
+	public void setentityInstanceService(
+			TrackedEntityInstanceService entityInstanceService) {
+		this.entityInstanceService = entityInstanceService;
+	}
 
-    public void setattributeService( TrackedEntityAttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
+	public void setattributeService(
+			TrackedEntityAttributeService attributeService) {
+		this.attributeService = attributeService;
+	}
 
-    public void setattributeValueService( TrackedEntityAttributeValueService attributeValueService )
-    {
-        this.attributeValueService = attributeValueService;
-    }
+	public void setattributeValueService(
+			TrackedEntityAttributeValueService attributeValueService) {
+		this.attributeValueService = attributeValueService;
+	}
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public TrackedEntityInstance getEntityInstance()
-    {
-        return entityInstance;
-    }
+	public TrackedEntityInstance getEntityInstance() {
+		return entityInstance;
+	}
 
-    public void setRepresentativeId( Integer representativeId )
-    {
-        this.representativeId = representativeId;
-    }
+	public void setRepresentativeId(Integer representativeId) {
+		this.representativeId = representativeId;
+	}
 
-    public void setRelationshipTypeId( Integer relationshipTypeId )
-    {
-        this.relationshipTypeId = relationshipTypeId;
-    }
+	public void setRelationshipTypeId(Integer relationshipTypeId) {
+		this.relationshipTypeId = relationshipTypeId;
+	}
+
+	public void setProgramId(String programId) {
+		this.programId = programId;
+	}
 
 }

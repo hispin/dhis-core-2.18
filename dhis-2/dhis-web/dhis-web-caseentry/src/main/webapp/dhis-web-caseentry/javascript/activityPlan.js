@@ -38,7 +38,7 @@ function showActitityList()
 	hideById('listEntityInstanceDiv');
 	$('#contentDataRecord').html('');
 	var facilityLB = $('input[name=facilityLB]:checked').val();
-	var programId = getFieldValue('programIdAddEntityInstance');
+	var programId = getFieldValue('program');
     var searchTexts = "stat_" + programId
         + "_" + getFieldValue('startDueDate')
         + "_" + getFieldValue('endDueDate');
@@ -72,10 +72,10 @@ function showActitityList()
 function exportActitityList( type )
 {
     var facilityLB = $('input[name=facilityLB]:checked').val();
-    var params = "programId=" + getFieldValue('programIdAddEntityInstance');
+    var params = "programId=" + getFieldValue('program');
 
     params += "&type=xls";
-    params += "&searchTexts=stat_" + getFieldValue('programIdAddEntityInstance')
+    params += "&searchTexts=stat_" + getFieldValue('program')
         + "_" + getFieldValue('startDueDate')
         + "_" + getFieldValue('endDueDate');
 

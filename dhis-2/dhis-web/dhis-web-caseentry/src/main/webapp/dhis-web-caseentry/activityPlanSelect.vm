@@ -46,7 +46,7 @@
 			<tr>
 				<td>$i18n.getString('program')</td>
 				<td>
-					<select id='programIdAddEntityInstance' name='programIdAddEntityInstance' class="{validate:{required:true}}" >
+					<select id='program' name='program' class="{validate:{required:true}}" >
 						#if($programs.size()==0)
 						<option value="">[$i18n.getString( "none_program" )]</option>
 						#elseif($programs.size()>1)

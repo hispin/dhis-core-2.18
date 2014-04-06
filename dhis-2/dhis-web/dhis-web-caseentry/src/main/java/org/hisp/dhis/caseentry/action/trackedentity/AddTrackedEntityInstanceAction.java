@@ -61,230 +61,216 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class AddTrackedEntityInstanceAction
-    implements Action
-{
-    public static final String PREFIX_ATTRIBUTE = "attr";
+public class AddTrackedEntityInstanceAction implements Action {
+	public static final String PREFIX_ATTRIBUTE = "attr";
 
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private TrackedEntityInstanceService entityInstanceService;
+	private TrackedEntityInstanceService entityInstanceService;
 
-    private TrackedEntityAttributeService attributeService;
+	private TrackedEntityAttributeService attributeService;
 
-    private RelationshipTypeService relationshipTypeService;
+	private RelationshipTypeService relationshipTypeService;
 
-    private RelationshipService relationshipService;
+	private RelationshipService relationshipService;
 
-    private OrganisationUnitSelectionManager selectionManager;
+	private OrganisationUnitSelectionManager selectionManager;
 
-    @Autowired
-    private TrackedEntityService trackedEntityService;
+	@Autowired
+	private TrackedEntityService trackedEntityService;
 
-    @Autowired
-    private ProgramService programService;
+	@Autowired
+	private ProgramService programService;
 
-    @Autowired
-    private TrackedEntityAttributeValueService attributeValueService;
+	@Autowired
+	private TrackedEntityAttributeValueService attributeValueService;
 
-    private I18nFormat format;
+	private I18nFormat format;
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Input
+	// -------------------------------------------------------------------------
 
-    private Integer representativeId;
+	private Integer representativeId;
 
-    private Integer relationshipTypeId;
+	private Integer relationshipTypeId;
 
-    private Integer relationshipId;
+	private Integer relationshipId;
 
-    private boolean relationshipFromA;
+	private boolean relationshipFromA;
 
-    private Integer trackedEntityId;
+	private Integer trackedEntityId;
 
-    private Integer programId;
+	private String programId;
 
-    private String message;
+	private String message;
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
 
-    public String execute()
-    {
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-        TrackedEntityInstance entityInstance = new TrackedEntityInstance();
-        TrackedEntity trackedEntity = null;
+	public String execute() {
+		OrganisationUnit organisationUnit = selectionManager
+				.getSelectedOrganisationUnit();
+		TrackedEntityInstance entityInstance = new TrackedEntityInstance();
+		TrackedEntity trackedEntity = null;
 
-        if ( programId != null )
-        {
-            Program program = programService.getProgram( programId );
-            trackedEntity = program.getTrackedEntity();
-        }
-        else
-        {
-            trackedEntity = trackedEntityService.getTrackedEntity( trackedEntityId );
-        }
+		if (programId != null) {
+			Program program = programService.getProgram(programId);
+			trackedEntity = program.getTrackedEntity();
+		} else {
+			trackedEntity = trackedEntityService
+					.getTrackedEntity(trackedEntityId);
+		}
 
-        entityInstance.setTrackedEntity( trackedEntity );
-        entityInstance.setOrganisationUnit( organisationUnit );
+		entityInstance.setTrackedEntity(trackedEntity);
+		entityInstance.setOrganisationUnit(organisationUnit);
 
-        // ---------------------------------------------------------------------
-        // Tracked Entity Attributes
-        // ---------------------------------------------------------------------
+		// ---------------------------------------------------------------------
+		// Tracked Entity Attributes
+		// ---------------------------------------------------------------------
 
-        TrackedEntityInstance relationship = null;
+		TrackedEntityInstance relationship = null;
 
-        if ( relationshipId != null && relationshipTypeId != null )
-        {
-            relationship = entityInstanceService.getTrackedEntityInstance( relationshipId );
-        }
+		if (relationshipId != null && relationshipTypeId != null) {
+			relationship = entityInstanceService
+					.getTrackedEntityInstance(relationshipId);
+		}
 
-        HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 
-        Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
+		Collection<TrackedEntityAttribute> attributes = attributeService
+				.getAllTrackedEntityAttributes();
 
-        Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
+		Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
 
-        TrackedEntityAttributeValue attributeValue = null;
+		TrackedEntityAttributeValue attributeValue = null;
 
-        if ( attributes != null && attributes.size() > 0 )
-        {
-            for ( TrackedEntityAttribute attribute : attributes )
-            {
-                String value = request.getParameter( PREFIX_ATTRIBUTE + attribute.getId() );
-                if ( StringUtils.isNotBlank( value ) )
-                {
-                    attributeValue = new TrackedEntityAttributeValue();
-                    attributeValue.setEntityInstance( entityInstance );
-                    attributeValue.setAttribute( attribute );
+		if (attributes != null && attributes.size() > 0) {
+			for (TrackedEntityAttribute attribute : attributes) {
+				String value = request.getParameter(PREFIX_ATTRIBUTE
+						+ attribute.getId());
+				if (StringUtils.isNotBlank(value)) {
+					attributeValue = new TrackedEntityAttributeValue();
+					attributeValue.setEntityInstance(entityInstance);
+					attributeValue.setAttribute(attribute);
 
-                    if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
-                    {
-                        value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
-                    }
+					if (attribute.getValueType().equals(
+							TrackedEntityAttribute.TYPE_AGE)) {
+						value = format.formatDate(TrackedEntityAttribute
+								.getDateFromAge(Integer.parseInt(value)));
+					}
 
-                    attributeValue.setValue( value.trim() );
-                    attributeValues.add( attributeValue );
-                }
-                else if ( attribute.getInherit() && relationship != null )
-                {
-                    TrackedEntityAttributeValue av = attributeValueService.getTrackedEntityAttributeValue(
-                        relationship, attribute );
-                    if ( av != null )
-                    {
-                        attributeValue = new TrackedEntityAttributeValue();
-                        attributeValue.setEntityInstance( entityInstance );
-                        attributeValue.setAttribute( attribute );
-                        attributeValue.setValue( av.getValue() );
-                        
-                        attributeValues.add( attributeValue );
-                    }
-                }
-            }
-        }
+					attributeValue.setValue(value.trim());
+					attributeValues.add(attributeValue);
+				} else if (attribute.getInherit() && relationship != null) {
+					TrackedEntityAttributeValue av = attributeValueService
+							.getTrackedEntityAttributeValue(relationship,
+									attribute);
+					if (av != null) {
+						attributeValue = new TrackedEntityAttributeValue();
+						attributeValue.setEntityInstance(entityInstance);
+						attributeValue.setAttribute(attribute);
+						attributeValue.setValue(av.getValue());
 
-        int entityInstanceId = entityInstanceService.createTrackedEntityInstance( entityInstance, representativeId,
-            relationshipTypeId, attributeValues );
+						attributeValues.add(attributeValue);
+					}
+				}
+			}
+		}
 
-        // -------------------------------------------------------------------------
-        // Create relationship
-        // -------------------------------------------------------------------------
+		int entityInstanceId = entityInstanceService
+				.createTrackedEntityInstance(entityInstance, representativeId,
+						relationshipTypeId, attributeValues);
 
-        if ( relationship != null )
-        {
-            Relationship rel = new Relationship();
-            if ( relationshipFromA )
-            {
-                rel.setEntityInstanceA( relationship );
-                rel.setEntityInstanceB( entityInstance );
-            }
-            else
-            {
-                rel.setEntityInstanceA( entityInstance );
-                rel.setEntityInstanceB( relationship );
-            }
-            if ( relationshipTypeId != null )
-            {
-                RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
-                if ( relType != null )
-                {
-                    rel.setRelationshipType( relType );
-                    relationshipService.addRelationship( rel );
-                }
-            }
-        }
+		// -------------------------------------------------------------------------
+		// Create relationship
+		// -------------------------------------------------------------------------
 
-        message = entityInstance.getUid() + "_" + entityInstanceId;
+		if (relationship != null) {
+			Relationship rel = new Relationship();
+			if (relationshipFromA) {
+				rel.setEntityInstanceA(relationship);
+				rel.setEntityInstanceB(entityInstance);
+			} else {
+				rel.setEntityInstanceA(entityInstance);
+				rel.setEntityInstanceB(relationship);
+			}
+			if (relationshipTypeId != null) {
+				RelationshipType relType = relationshipTypeService
+						.getRelationshipType(relationshipTypeId);
+				if (relType != null) {
+					rel.setRelationshipType(relType);
+					relationshipService.addRelationship(rel);
+				}
+			}
+		}
 
-        return SUCCESS;
-    }
+		message = entityInstance.getUid() + "_" + entityInstanceId;
 
-    // -----------------------------------------------------------------------------
-    // Getter/Setter
-    // -----------------------------------------------------------------------------
+		return SUCCESS;
+	}
 
-    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
-    {
-        this.relationshipTypeService = relationshipTypeService;
-    }
+	// -----------------------------------------------------------------------------
+	// Getter/Setter
+	// -----------------------------------------------------------------------------
 
-    public void setRelationshipId( Integer relationshipId )
-    {
-        this.relationshipId = relationshipId;
-    }
+	public void setRelationshipTypeService(
+			RelationshipTypeService relationshipTypeService) {
+		this.relationshipTypeService = relationshipTypeService;
+	}
 
-    public void setRelationshipFromA( boolean relationshipFromA )
-    {
-        this.relationshipFromA = relationshipFromA;
-    }
+	public void setRelationshipId(Integer relationshipId) {
+		this.relationshipId = relationshipId;
+	}
 
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
-    }
+	public void setRelationshipFromA(boolean relationshipFromA) {
+		this.relationshipFromA = relationshipFromA;
+	}
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
+	public void setRelationshipService(RelationshipService relationshipService) {
+		this.relationshipService = relationshipService;
+	}
 
-    public void setTrackedEntityId( Integer trackedEntityId )
-    {
-        this.trackedEntityId = trackedEntityId;
-    }
+	public void setSelectionManager(
+			OrganisationUnitSelectionManager selectionManager) {
+		this.selectionManager = selectionManager;
+	}
 
-    public String getMessage()
-    {
-        return message;
-    }
+	public void setTrackedEntityId(Integer trackedEntityId) {
+		this.trackedEntityId = trackedEntityId;
+	}
 
-    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
-    {
-        this.entityInstanceService = entityInstanceService;
-    }
+	public void setProgramId(String programId) {
+		this.programId = programId;
+	}
 
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setAttributeService( TrackedEntityAttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
+	public void setEntityInstanceService(
+			TrackedEntityInstanceService entityInstanceService) {
+		this.entityInstanceService = entityInstanceService;
+	}
 
-    public void setRepresentativeId( Integer representativeId )
-    {
-        this.representativeId = representativeId;
-    }
+	public void setFormat(I18nFormat format) {
+		this.format = format;
+	}
 
-    public void setRelationshipTypeId( Integer relationshipTypeId )
-    {
-        this.relationshipTypeId = relationshipTypeId;
-    }
+	public void setAttributeService(
+			TrackedEntityAttributeService attributeService) {
+		this.attributeService = attributeService;
+	}
+
+	public void setRepresentativeId(Integer representativeId) {
+		this.representativeId = representativeId;
+	}
+
+	public void setRelationshipTypeId(Integer relationshipTypeId) {
+		this.relationshipTypeId = relationshipTypeId;
+	}
 
 }

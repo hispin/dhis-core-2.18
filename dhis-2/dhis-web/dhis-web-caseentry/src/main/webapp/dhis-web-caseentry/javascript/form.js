@@ -80,8 +80,8 @@ function listAllTrackedEntityInstance()
 	showLoader();
 	jQuery('#contentDiv').load( 'listAllTrackedEntityInstances.action',{
 			listAll:false,
-			programId:	getFieldValue("programIdAddEntityInstance"),
-			searchTexts: "prg_" + getFieldValue("programIdAddEntityInstance"),
+			programId:	getFieldValue("program"),
+			searchTexts: "prg_" + getFieldValue("program"),
 			searchByUserOrgunits: false,
 			searchBySelectedOrgunit:true
 		},
@@ -137,7 +137,7 @@ function showSelectedDataRecoding( entityInstanceId, programId )
 			hideById('contentDiv');
 			hideById('contentDiv');
 			hideById('mainLinkLbl');
-			setInnerHTML('singleProgramName',jQuery('#programIdAddEntityInstance option:selected').text());
+			setInnerHTML('singleProgramName',jQuery('#program option:selected').text());
 			loadProgramStages( entityInstanceId, programId );
 		});
 }

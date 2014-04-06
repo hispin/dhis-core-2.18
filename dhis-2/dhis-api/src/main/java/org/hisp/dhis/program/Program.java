@@ -121,8 +121,8 @@ public class Program
     private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
 
     /**
-     * Allow enrolling trackedEntity to all orgunit no matter what the program is
-     * assigned for the orgunit or not
+     * Allow enrolling trackedEntity to all orgunit no matter what the program
+     * is assigned for the orgunit or not
      */
     private Boolean displayOnAllOrgunit = true;
 
@@ -173,10 +173,10 @@ public class Program
                 return programAttribute;
             }
         }
-        
+
         return null;
     }
-    
+
     /**
      * Returns all data elements which are part of the stages of this program.
      */

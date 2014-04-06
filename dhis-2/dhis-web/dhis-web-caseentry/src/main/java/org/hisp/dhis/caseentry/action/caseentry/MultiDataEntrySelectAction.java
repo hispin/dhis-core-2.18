@@ -79,14 +79,14 @@ public class MultiDataEntrySelectAction
         return organisationUnit;
     }
 
-    private Integer programId;
+    private String programId;
 
-    public void setProgramId( Integer programId )
+    public void setProgramId( String programId )
     {
         this.programId = programId;
     }
 
-    public Integer getProgramId()
+    public String getProgramId()
     {
         return programId;
     }
