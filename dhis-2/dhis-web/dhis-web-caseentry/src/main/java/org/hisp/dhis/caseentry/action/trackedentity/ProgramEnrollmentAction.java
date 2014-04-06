@@ -45,6 +45,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.program.comparator.ProgramStageInstanceVisitDateComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
@@ -86,7 +87,7 @@ public class ProgramEnrollmentAction
 
     private Boolean hasDataEntry;
 
-    private List<TrackedEntityAttribute> attributes;
+    private List<ProgramTrackedEntityAttribute> attributes;
 
     private ProgramInstance programInstance;
 
@@ -144,7 +145,7 @@ public class ProgramEnrollmentAction
         return hasDataEntry;
     }
 
-    public List<TrackedEntityAttribute> getAttributes()
+    public List<ProgramTrackedEntityAttribute> getAttributes()
     {
         return attributes;
     }
@@ -190,7 +191,7 @@ public class ProgramEnrollmentAction
         // Load attributes of the selected program
         // ---------------------------------------------------------------------
 
-        attributes = new ArrayList<TrackedEntityAttribute>( programInstance.getProgram().getTrackedEntityAttributes() );
+        attributes = new ArrayList<ProgramTrackedEntityAttribute>( programInstance.getProgram().getAttributes() );
 
         if ( attributes != null )
         {
@@ -199,8 +200,7 @@ public class ProgramEnrollmentAction
 
             for ( TrackedEntityAttributeValue attributeValue : attributeValues )
             {
-                if ( attributes.contains( attributeValue.getAttribute() ) )
-                {
+                
                     String value = attributeValue.getValue();
                     if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
                     {
@@ -209,7 +209,6 @@ public class ProgramEnrollmentAction
                     }
 
                     attributeValueMap.put( attributeValue.getAttribute().getId(), value );
-                }
             }
         }
     }

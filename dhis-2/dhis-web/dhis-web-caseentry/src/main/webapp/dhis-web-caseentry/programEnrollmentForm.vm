@@ -58,11 +58,12 @@
 				<table>
 					#set( $mark = false ) 
 					<!-- ATTRIBUTES IN GROUPS -->
-					#foreach($attribute in $attributes )
+					#foreach($programAttribute in $attributes )
 						#set( $attributeValue = '')
+						#set($attribute = $programAttribute.attribute)
 						#set( $attributeValue = $!attributeValueMap.get( $attribute.id ) )
 						<tr name='attributesFields'>
-							#set($mandatory = $attribute.mandatory )
+							#set($mandatory = $programAttribute.mandatory )
 							<td class='text-column'><label>$attribute.displayName #if($mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 							<td class="input-column" >
 								#if( $attribute.valueType == "bool" ) 
