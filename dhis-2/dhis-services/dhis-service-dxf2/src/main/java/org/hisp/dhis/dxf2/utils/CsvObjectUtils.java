@@ -40,8 +40,10 @@ import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 
 import com.csvreader.CsvReader;
 
@@ -64,6 +66,10 @@ public class CsvObjectUtils
         {
             metaData.setDataElements( dataElementsFromCsv( reader, input ) );
         }
+        else if ( DataElementGroup.class.equals( clazz ) )
+        {
+            metaData.setDataElementGroups( dataElementGroupsFromCsv( reader, input ) );
+        }
         else if ( DataElementCategoryOption.class.equals( clazz ) )
         {
             metaData.setCategoryOptions( categoryOptionsFromCsv( reader, input ) );
@@ -75,6 +81,10 @@ public class CsvObjectUtils
         else if ( OrganisationUnit.class.equals( clazz ) )
         {
             metaData.setOrganisationUnits( organisationUnitsFromCsv( reader, input ) );
+        }
+        else if ( OrganisationUnitGroup.class.equals( clazz ) )
+        {
+            metaData.setOrganisationUnitGroups( organisationUnitGroupsFromCsv( reader, input ) );
         }
         
         return metaData;
@@ -118,7 +128,7 @@ public class CsvObjectUtils
         }
         
         return list;
-    }    
+    }
     
     private static List<DataElement> dataElementsFromCsv( CsvReader reader, InputStream input )
         throws IOException
@@ -151,8 +161,28 @@ public class CsvObjectUtils
         
         return list;
     }
+
+    private static List<DataElementGroup> dataElementGroupsFromCsv( CsvReader reader, InputStream input )
+        throws IOException
+    {
+        List<DataElementGroup> list = new ArrayList<DataElementGroup>();
+
+        while ( reader.readRecord() )
+        {
+            String[] values = reader.getValues();
+
+            if ( values != null && values.length > 0 )
+            {
+                DataElementGroup object = new DataElementGroup();
+                setIdentifiableObject( object, values );
+                list.add( object );
+            }
+        }
+        
+        return list;
+    }
     
-    public static List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader, InputStream input )
+    private static List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<OrganisationUnit> list = new ArrayList<OrganisationUnit>();
@@ -186,6 +216,30 @@ public class CsvObjectUtils
         
         return list;
     }
+
+    private static List<OrganisationUnitGroup> organisationUnitGroupsFromCsv( CsvReader reader, InputStream input )
+        throws IOException
+    {
+        List<OrganisationUnitGroup> list = new ArrayList<OrganisationUnitGroup>();
+
+        while ( reader.readRecord() )
+        {
+            String[] values = reader.getValues();
+
+            if ( values != null && values.length > 0 )
+            {
+                OrganisationUnitGroup object = new OrganisationUnitGroup();
+                setIdentifiableObject( object, values );
+                list.add( object );
+            }
+        }
+        
+        return list;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
 
     private static void setIdentifiableObject( BaseIdentifiableObject object, String[] values )
     {
