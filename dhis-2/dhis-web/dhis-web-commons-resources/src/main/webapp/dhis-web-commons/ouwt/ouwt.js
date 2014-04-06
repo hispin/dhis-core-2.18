@@ -387,8 +387,8 @@ function Selection()
                     $.each( selected, function( i, item ) {
                         $.post( organisationUnitTreePath + "addorgunit.action", {
                             id: item
-                        } );
-                    } ).complete( fn );
+                        } ).complete( fn );
+                    } );
                 } else {
                     selected = $.isArray( selected ) ? selected[0] : selected;
 
