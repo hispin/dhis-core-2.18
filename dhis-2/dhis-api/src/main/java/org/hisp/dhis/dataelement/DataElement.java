@@ -31,6 +31,7 @@ package org.hisp.dhis.dataelement;
 import static org.hisp.dhis.dataset.DataSet.NO_EXPIRY;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +44,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.comparator.DataSetFrequencyComparator;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.PeriodType;
@@ -297,12 +299,28 @@ public class DataElement
     }
 
     /**
+     * Returns the data set of this data element. If this data element has
+     * multiple data sets, the data set with the highest collection frequency is
+     * returned.
+     */
+    public DataSet getDataSet()
+    {
+        List<DataSet> list = new ArrayList<DataSet>( dataSets );
+        Collections.sort( list, DataSetFrequencyComparator.INSTANCE );
+        return !list.isEmpty() ? list.get( 0 ) : null;
+    }
+
+    /**
      * Returns the PeriodType of the DataElement, based on the PeriodType of the
-     * DataSet which the DataElement is registered for.
+     * DataSet which the DataElement is registered for. If this data element has
+     * multiple data sets, the data set with the highest collection frequency is
+     * returned.
      */
     public PeriodType getPeriodType()
     {
-        return dataSets != null && !dataSets.isEmpty() ? dataSets.iterator().next().getPeriodType() : null;
+        DataSet dataSet = getDataSet();
+        
+        return dataSet != null ? dataSet.getPeriodType() : null;
     }
 
     /**
@@ -431,7 +449,7 @@ public class DataElement
     {
         return optionSet != null;
     }
-
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
