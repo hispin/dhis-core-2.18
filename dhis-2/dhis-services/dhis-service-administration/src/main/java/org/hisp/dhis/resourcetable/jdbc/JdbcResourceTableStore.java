@@ -118,7 +118,7 @@ public class JdbcResourceTableStore
         StringBuilder sql = new StringBuilder();
         
         sql.append( "CREATE TABLE " ).append( TABLE_NAME_ORGANISATION_UNIT_STRUCTURE ).
-            append( " ( organisationunitid INTEGER NOT NULL PRIMARY KEY, level INTEGER" );
+            append( " ( organisationunitid INTEGER NOT NULL PRIMARY KEY, organisationunituid CHARACTER(11), level INTEGER" );
         
         for ( int k = 1 ; k <= maxLevel; k++ )
         {

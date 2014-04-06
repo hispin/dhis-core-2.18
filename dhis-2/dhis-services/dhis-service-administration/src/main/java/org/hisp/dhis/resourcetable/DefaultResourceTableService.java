@@ -173,6 +173,7 @@ public class DefaultResourceTableService
                 List<Object> values = new ArrayList<Object>();
 
                 values.add( unit.getId() );
+                values.add( unit.getUid() );
                 values.add( level );
 
                 Map<Integer, Integer> identifiers = new HashMap<Integer, Integer>();
@@ -196,7 +197,7 @@ public class DefaultResourceTableService
             }
         }
 
-        resourceTableStore.batchUpdate( ( maxLevel * 2 ) + 2, TABLE_NAME_ORGANISATION_UNIT_STRUCTURE, batchArgs );
+        resourceTableStore.batchUpdate( ( maxLevel * 2 ) + 3, TABLE_NAME_ORGANISATION_UNIT_STRUCTURE, batchArgs );
         
         log.info( "Organisation unit structure table generated" );
     }
