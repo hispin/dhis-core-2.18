@@ -42,7 +42,7 @@ var validationRules = {
         "phoneNumber" : {
             "rangelength" : [ 0, 80 ]
         },
-        "roleValidator" : {
+        "urValidator" : {
             "required" : true
         }
     },

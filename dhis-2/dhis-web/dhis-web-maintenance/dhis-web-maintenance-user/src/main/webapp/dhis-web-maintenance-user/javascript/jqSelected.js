@@ -2,18 +2,6 @@
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 
-$(function() {
-  var $ugTarget = $('#ugSelected');
-  var $ugAvailableSearch = $('#ugAvailableSearch');
-
-  $('#ugAvailable').selected({
-    url: '../api/userGroups.json',
-    target: $ugTarget,
-    search: $ugAvailableSearch,
-    iterator: 'userGroups'
-  });
-});
-
 !(function( $, window, document, undefined ) {
   var methods = {
     create: function( options ) {
