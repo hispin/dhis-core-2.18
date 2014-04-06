@@ -1,53 +1,51 @@
 <script src="javascript/jqSelected.js"></script>
 <script type="text/javascript">
-	jQuery(function() {
-	    var rules = getValidationRules( "user" );
-	    rules["rawPassword"].required = false;
-        rules["retypePassword"].required = false;
-        rules["inviteEmail"].required = false;
+  jQuery(function() {
+    var rules = getValidationRules("user");
+    rules["rawPassword"].required = false;
+    rules["retypePassword"].required = false;
+    rules["inviteEmail"].required = false;
 
-	    validation2( 'updateUserForm', function( form )
-	    {
-            jQuery( "#selectedList" ).children().attr( "selected", "selected" );
- 	        jQuery( "#ugSelected" ).children().attr( "selected", "selected" );
+    validation2('updateUserForm', function( form ) {
+      jQuery("#urSelected").children().attr("selected", "selected");
+      jQuery("#ugSelected").children().attr("selected", "selected");
 
-            if( $('#selectionTree').find('.selected').size() == 0 ) {
-                setHeaderDelayMessage('$i18n.getString( "organisation_unit_required_for_user" )');
-            } else {
-                form.submit();
-            }
-	    }, {
-	        'beforeValidateHandler' : function()
-	        {
-	            listValidator( 'roleValidator', 'selectedList' );
-	            #tblDynamicAttributesJavascript()
-	        },
-	        'rules' : rules
-	    } );
+      if( $('#selectionTree').find('.selected').size() == 0 ) {
+        setHeaderDelayMessage('$i18n.getString( "organisation_unit_required_for_user" )');
+      } else {
+        form.submit();
+      }
+    }, {
+      'beforeValidateHandler': function() {
+        listValidator('urValidator', 'urSelected');
+          #tblDynamicAttributesJavascript()
+      },
+      'rules': rules
+    });
 
-        checkValueIsExist( "openId", "validateUser.action", { id : $userCredentials.id } );
+    checkValueIsExist("openId", "validateUser.action", { id: $userCredentials.id });
 
-	    jQuery( "#cancel" ).click( function()
-	    {
-            dhis2.commons.redirectCurrentPage( 'alluser.action' );
-	    } );
+    jQuery("#cancel").click(function() {
+      dhis2.commons.redirectCurrentPage('alluser.action');
+    });
 
-		jQuery("#availableList").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getUserRoles.action",
-			iterator: 'userRoles',
-			connectedTo: 'selectedList',
-			handler: function(item) {
-				var option = jQuery("<option />");
-				option.text( item.name );
-				option.attr( "value", item.id );
+    selectionTreeSelection.setMultipleSelectionAllowed(true);
+    selectionTree.buildSelectionTree();
 
-				return option;
-			}
-		});
-		
-        selectionTreeSelection.setMultipleSelectionAllowed(true);
-        selectionTree.buildSelectionTree();
-	});
+    $('#urAvailable').selected({
+      url: '../api/userRoles.json',
+      target: $('#urSelected'),
+      search: $('#urAvailableSearch'),
+      iterator: 'userRoles'
+    });
+
+    $('#ugAvailable').selected({
+      url: '../api/userGroups.json',
+      target: $('#ugSelected'),
+      search: $('#ugAvailableSearch'),
+      iterator: 'userGroups'
+    });
+  });
 </script>
 
 <style type="text/css">
@@ -61,10 +59,7 @@ div#orgUnitTree
 <h3>$i18n.getString( "edit_user" )</h3>
 
 <form id="updateUserForm" action="updateUser.action" method="post" class="inputForm">
-
-<div>
-    <input type="hidden" id="id" name="id" value="$userCredentials.id"/>
-</div>
+<div><input type="hidden" id="id" name="id" value="$userCredentials.id"/></div>
 
 <table>
     <col style="width: 120px"/>
@@ -141,8 +136,53 @@ div#orgUnitTree
     
 </table>
 
-#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
+#tblDynamicAttributes( {
+    "attributes": $attributes,
+    "attributeValues": $attributeValues
+})
 
+#jqSelected({
+    "prefix": "ur",
+    "required": true,
+    "i18n_available": "available_roles",
+    "i18n_selected": "selected_roles",
+    "objects": $userCredentials.userAuthorityGroups
+})
+
+#jqSelected({
+    "prefix": "ug",
+    "i18n_available": "available_user_groups",
+    "i18n_selected": "selected_user_groups",
+    "objects": $user.groups
+})
+
+<table>
+    <tr>
+        <th>$i18n.getString( "data_capture_maintenance_org_units" )</th>
+        <th></th>
+        <th>$i18n.getString( "data_output_analysis_org_units" )</th>
+    </tr>
+    <tr>
+        <td>            
+            #parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+        </td>
+        <td style="width: 26px"></td>
+        <td>
+            <div id="selectionTree"></div>
+        </td>
+    </tr>
+</table>
+
+<p>
+	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em" />
+	<input type="button" id="cancel" value="$i18n.getString( 'cancel' )" style="width:10em" />
+</p>
+
+</form>
+
+
+
+<!--
 <table>
   <colgroup>
     <col style="width: 500px;"/>
@@ -179,67 +219,4 @@ div#orgUnitTree
       </td>
 </tr>
 </table>
-
-<table style="margin-bottom: 20px">
-<colgroup>
-<col style="width: 500px;"/>
-<col/>
-<col style="width: 500px;"/>
-</colgroup>
-<thead>
-<tr>
-<th>$i18n.getString( "available_user_groups" )</th>
-<th></th>
-<th>$i18n.getString( "selected_user_groups" )</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><input id="ugAvailableSearch" type="text" placeholder=" Search.." style="width: 100%; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;" /></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>
-  <select id="ugAvailable" name="ugAvailable" multiple="multiple" style="height: 200px; width: 100%;"/>
-</td>
-<td>
-  <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveSelected('#ugAvailable');"><span class="fa fa-angle-right"> </span></button><br />
-  <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveSelected('#ugSelected');"><span class="fa fa-angle-left"> </span></button><br />
-  <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveAll('#ugAvailable');"><span class="fa fa-angle-double-right"> </span></button><br />
-  <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveAll('#ugSelected');"><span class="fa fa-angle-double-left"> </span></button><br />
-</td>
-<td>
-  <select id="ugSelected" name="ugSelected" multiple="multiple" style="height: 200px; width: 100%;">
-  #foreach ( $group in $user.groups )
-  <option value="$group.uid">$encoder.htmlEncode( $group.name )</option>
-  #end
-  </select>
-</td>
-</tr>
-</tbody>
-</table>
-
-<table>
-    <tr>
-        <th>$i18n.getString( "data_capture_maintenance_org_units" )</th>
-        <th></th>
-        <th>$i18n.getString( "data_output_analysis_org_units" )</th>
-    </tr>
-    <tr>
-        <td>            
-            #parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
-        </td>
-        <td style="width: 26px"></td>
-        <td>
-            <div id="selectionTree"></div>
-        </td>
-    </tr>
-</table>
-
-<p>
-	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em" />
-	<input type="button" id="cancel" value="$i18n.getString( 'cancel' )" style="width:10em" />
-</p>
-
-</form>
+-->

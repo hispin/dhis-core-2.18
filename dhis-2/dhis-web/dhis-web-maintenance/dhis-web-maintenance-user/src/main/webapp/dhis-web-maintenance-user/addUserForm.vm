@@ -1,47 +1,44 @@
 <script src="javascript/jqSelected.js"></script>
 <script type="text/javascript">
-	jQuery(function()
-    {
-	    validation2( 'addUserForm', function( form )
-	    {
-	        jQuery( "#selectedList" ).children().attr( "selected", "selected" );
-	        jQuery( "#ugSelected" ).children().attr( "selected", "selected" );
+  jQuery(function() {
+    validation2('addUserForm', function( form ) {
+      jQuery("#urSelected").children().attr("selected", "selected");
+      jQuery("#ugSelected").children().attr("selected", "selected");
 
-            if( $('#selectionTree').find('.selected').size() == 0 ) {
-                setHeaderDelayMessage('$encoder.jsEncode( $i18n.getString( "organisation_unit_required_for_user" ) )');
-            } else {
-                form.submit();
-            }
-        }, {
-	        'beforeValidateHandler' : function()
-	        {
-	            listValidator( 'roleValidator', 'selectedList' );
-	            #tblDynamicAttributesJavascript()
-	        },
-	        'rules' : getValidationRules( "user" )
-	    } );
-	
-	    checkValueIsExist( "username", "validateUser.action" );
-	    checkValueIsExist( "openId", "validateUser.action" );
+      if( $('#selectionTree').find('.selected').size() == 0 ) {
+        setHeaderDelayMessage('$encoder.jsEncode( $i18n.getString( "organisation_unit_required_for_user" ) )');
+      } else {
+        form.submit();
+      }
+    }, {
+      'beforeValidateHandler': function() {
+        listValidator('urValidator', 'urSelected');
+          #tblDynamicAttributesJavascript()
+      },
+      'rules': getValidationRules("user")
+    });
 
-	    jQuery( "#cancel" ).click( function()
-	    {
-            dhis2.commons.redirectCurrentPage( 'alluser.action' );
-	    } );
-	
-		jQuery("#availableList").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getUserRoles.action",
-			iterator: 'userRoles',
-			connectedTo: 'selectedList',
-			handler: function(item) {
-				var option = jQuery("<option />");
-				option.text( item.name );
-				option.attr( "value", item.id );
+    checkValueIsExist("username", "validateUser.action");
+    checkValueIsExist("openId", "validateUser.action");
 
-				return option;
-			}
-		});
-	});
+    jQuery("#cancel").click(function() {
+      dhis2.commons.redirectCurrentPage('alluser.action');
+    });
+
+    $('#urAvailable').selected({
+      url: '../api/userRoles.json',
+      target: $('#urSelected'),
+      search: $('#urAvailableSearch'),
+      iterator: 'userRoles'
+    });
+
+    $('#ugAvailable').selected({
+      url: '../api/userGroups.json',
+      target: $('#ugSelected'),
+      search: $('#ugAvailableSearch'),
+      iterator: 'userGroups'
+    });
+  });
 </script>
 
 <style type="text/css">
@@ -149,74 +146,22 @@ div#orgUnitTree
     
 </table>
 
-#tblDynamicAttributes( { "attributes": $attributes } )
+#tblDynamicAttributes({
+    "attributes": $attributes
+})
 
-<table>
-    <colgroup>
-        <col style="width: 500px;"/>
-        <col/>
-        <col style="width: 500px;"/>
-    </colgroup>
+#jqSelected({
+    "prefix": "ur",
+    "required": true,
+    "i18n_available": "available_roles",
+    "i18n_selected": "selected_roles"
+})
 
-    <tr>
-        <th>$i18n.getString( "available_roles" )</th>
-        <th></th>
-        <th>$i18n.getString( "selected_roles" )<select id="roleValidator" style="display:none"/></th>
-    </tr>
-
-    <tr style="margin-bottom: 15px;">
-    <td>
-        <select id="availableList" name="availableList" multiple="multiple" style="height: 200px; width: 100%;"></select>
-    </td>
-
-    <td style="text-align:center">
-        <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableList' );"/><br/>
-        <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedList' );"/><br/>
-        <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableList' );"/><br/>
-        <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedList' );"/>
-    </td>
-
-    <td>
-        <select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;"></select>
-    </td>
-    </tr>
-</table>
-
-<table style="margin-bottom: 20px">
-<colgroup>
-  <col style="width: 500px;"/>
-  <col/>
-  <col style="width: 500px;"/>
-</colgroup>
-<thead>
-<tr>
-  <th>$i18n.getString( "available_user_groups" )</th>
-  <th></th>
-  <th>$i18n.getString( "selected_user_groups" )</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><input id="ugAvailableSearch" type="text" placeholder=" Search.." style="width: 100%; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;" /></td>
-  <td></td>
-  <td></td>
-</tr>
-<tr>
-  <td>
-    <select id="ugAvailable" name="ugAvailable" multiple="multiple" style="height: 200px; width: 100%;"/>
-  </td>
-  <td>
-    <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveSelected('#ugAvailable');"><span class="fa fa-angle-right"> </span></button><br />
-    <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveSelected('#ugSelected');"><span class="fa fa-angle-left"> </span></button><br />
-    <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveAll('#ugAvailable');"><span class="fa fa-angle-double-right"> </span></button><br />
-    <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveAll('#ugSelected');"><span class="fa fa-angle-double-left"> </span></button><br />
-  </td>
-  <td>
-    <select id="ugSelected" name="ugSelected" multiple="multiple" style="height: 200px; width: 100%;" />
-  </td>
-</tr>
-</tbody>
-</table>
+#jqSelected({
+    "prefix": "ug",
+    "i18n_available": "available_user_groups",
+    "i18n_selected": "selected_user_groups"
+})
 
 <table>
 	<tr>

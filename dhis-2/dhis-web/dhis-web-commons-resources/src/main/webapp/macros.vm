@@ -1,3 +1,4 @@
+
 #macro( objectList $objectName $objects )
     <table class="objectListTable">
         <col>
@@ -404,4 +405,61 @@ jQuery.each(attributes, function(i, item) {
 </script>
 #end
 
+#end
+
+#************************************************************************************
+ * Args:
+ *   prefix: prefix to add before Available/Selected identifiers
+ *   required: true/false (default false), selection is required
+ *   i18n_available: i18n string for available part
+ *   i18n_selected: i18n string for selected part
+ *   objects: objects to add to selected, uses value=uid and name=displayName
+ ************************************************************************************#
+#macro( jqSelected $args )
+#if( "$!args.required" == "" ) #set( $required = false ) #else #set( $required = true ) #end
+
+<table style="margin-bottom: 20px">
+    <colgroup>
+      <col style="width: 500px;"/>
+      <col/>
+      <col style="width: 500px;"/>
+    </colgroup>
+    <thead>
+    <tr>
+      <th>$i18n.getString( $args.i18n_available )</th>
+      <th></th>
+      <th>$i18n.getString( $args.i18n_selected )
+          #if( $required )
+            <em title="$i18n.getString( 'required' )" class="required">*</em>
+            <select id="${args.prefix}Validator" style="display:none"></select>
+          #end
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><input id="${args.prefix}AvailableSearch}" type="text" placeholder=" Search.." style="width: 100%; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;" /></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <select id="${args.prefix}Available" name="${args.prefix}Available" multiple="multiple" style="height: 200px; width: 100%;"/>
+      </td>
+      <td>
+        <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveSelected('#${args.prefix}Available');"><span class="fa fa-angle-right"> </span></button><br />
+        <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveSelected('#${args.prefix}Selected');"><span class="fa fa-angle-left"> </span></button><br />
+        <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveAll('#${args.prefix}Available');"><span class="fa fa-angle-double-right"> </span></button><br />
+        <button type="button" style="width: 25px; text-align: center;" onclick="$.fn.selected.defaults.defaultMoveAll('#${args.prefix}Selected');"><span class="fa fa-angle-double-left"> </span></button><br />
+      </td>
+      <td>
+        <select id="${args.prefix}Selected" name="${args.prefix}Selected" multiple="multiple" style="height: 200px; width: 100%;">
+        #foreach ( $object in $args.objects )
+        <option value="$object.uid">$encoder.htmlEncode( $object.displayName )</option>
+        #end
+        </select>
+      </td>
+    </tr>
+    </tbody>
+</table>
 #end
