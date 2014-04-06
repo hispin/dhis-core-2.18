@@ -29,9 +29,15 @@ package org.hisp.dhis.api.controller.user;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -42,4 +48,16 @@ public class UserRoleController
     extends AbstractCrudController<UserAuthorityGroup>
 {
     public static final String RESOURCE_PATH = "/userRoles";
+
+    @Autowired
+    private UserService userService;
+
+    @Override
+    protected List<UserAuthorityGroup> getEntityList( WebMetaData metaData, WebOptions options )
+    {
+        List<UserAuthorityGroup> entityList = super.getEntityList( metaData, options );
+        userService.canIssueFilter( entityList );
+
+        return entityList;
+    }
 }
