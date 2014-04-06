@@ -56,7 +56,11 @@ public class UserRoleController
     protected List<UserAuthorityGroup> getEntityList( WebMetaData metaData, WebOptions options )
     {
         List<UserAuthorityGroup> entityList = super.getEntityList( metaData, options );
-        userService.canIssueFilter( entityList );
+
+        if ( options.getOptions().containsKey( "canIssue" ) && Boolean.parseBoolean( options.getOptions().get( "canIssue" ) ) )
+        {
+            userService.canIssueFilter( entityList );
+        }
 
         return entityList;
     }

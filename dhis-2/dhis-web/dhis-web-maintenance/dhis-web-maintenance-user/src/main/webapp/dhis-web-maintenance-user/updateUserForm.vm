@@ -33,7 +33,7 @@
     selectionTree.buildSelectionTree();
 
     $('#urAvailable').selected({
-      url: '../api/userRoles.json',
+      url: '../api/userRoles.json?canIssue=true',
       target: $('#urSelected'),
       search: $('#urAvailableSearch'),
       iterator: 'userRoles'
