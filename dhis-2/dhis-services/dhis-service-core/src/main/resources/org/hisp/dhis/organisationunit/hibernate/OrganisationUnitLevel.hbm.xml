@@ -8,6 +8,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.organisationunit.OrganisationUnitLevel" table="orgunitlevel">
 
+    <cache usage="read-write" />
+
     <id name="id" column="orgunitlevelid">
       <generator class="native" />
     </id>

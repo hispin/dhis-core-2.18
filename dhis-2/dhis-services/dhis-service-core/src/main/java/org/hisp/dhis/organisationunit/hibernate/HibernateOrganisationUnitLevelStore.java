@@ -49,7 +49,7 @@ public class HibernateOrganisationUnitLevelStore
 
     public OrganisationUnitLevel getByLevel( int level )
     {
-        return (OrganisationUnitLevel) getCriteria().add( Restrictions.eq( "level", level ) ).uniqueResult();
+        return (OrganisationUnitLevel) getCriteria( Restrictions.eq( "level", level ) ).uniqueResult();
     }
 
     @Override
