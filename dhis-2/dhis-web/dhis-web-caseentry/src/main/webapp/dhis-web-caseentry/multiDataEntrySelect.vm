@@ -1,14 +1,14 @@
 <script>
     jQuery(document).ready(function() {
-        jQuery("#programIdAddEntityInstance option").each(function() {
+        jQuery("#program option").each(function() {
             var item = jQuery(this);
             if( item.attr('type') != 1 && item.val() != '' ) {
                 item.remove();
             }
         });
 
-        if( jQuery("#programIdAddEntityInstance option").length == 1 ) {
-            jQuery("#programIdAddEntityInstance [value=]").remove();
+        if( jQuery("#program option").length == 1 ) {
+            jQuery("#program [value=]").remove();
         }
 
         disable('scheduledVisitDays');

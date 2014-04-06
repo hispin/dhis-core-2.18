@@ -127,7 +127,7 @@ public class ShowEventWithRegistrationFormAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer programId;
+    private String programId;
 
     private Collection<TrackedEntityAttribute> noGroupAttributes = new HashSet<TrackedEntityAttribute>();
 
@@ -236,7 +236,7 @@ public class ShowEventWithRegistrationFormAction
         return customRegistrationForm;
     }
 
-    public void setProgramId( Integer programId )
+    public void setProgramId( String programId )
     {
         this.programId = programId;
     }

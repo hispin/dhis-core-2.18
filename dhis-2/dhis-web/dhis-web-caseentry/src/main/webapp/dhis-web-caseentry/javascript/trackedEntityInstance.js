@@ -1,3 +1,4 @@
+
 function organisationUnitSelected(orgUnits, orgUnitNames) {
 	showById('selectDiv');
 	showById('searchDiv');
@@ -412,9 +413,7 @@ function removeTrackedEntityInstance(entityInstanceId) {
 
 function addTrackedEntityInstance(programId, related, isContinue) {
 	var entityInstance = new TrackedEntityInstance();
-	var params = 'programId=' + programId + '&'
-			+ getParamsForDiv('entityInstanceForm');
-	entityInstance.add(programId, related, params, isContinue);
+	entityInstance.add(programId, related, getParamsForDiv('entityInstanceForm'), isContinue);
 	registrationProgress = true;
 	return false;
 }

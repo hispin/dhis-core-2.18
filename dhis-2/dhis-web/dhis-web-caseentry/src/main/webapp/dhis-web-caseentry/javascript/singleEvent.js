@@ -3,35 +3,35 @@ var _continue = false;
 
 function orgunitSelected( orgUnits, orgUnitNames )
 {	
-	var width = jQuery('#programIdAddEntityInstance').width();
-	jQuery('#programIdAddEntityInstance').width(width-30);
+	var width = jQuery('#program').width();
+	jQuery('#program').width(width-30);
 	showById( "programLoader" );
-	disable('programIdAddEntityInstance');
+	disable('program');
 	hideById('addNewDiv');
 	organisationUnitSelected( orgUnits, orgUnitNames );
-	clearListById('programIdAddEntityInstance');
+	clearListById('program');
 	$.postJSON( 'singleEventPrograms.action', {}, function( json )
 		{
 			var count = 0;
 			for ( i in json.programs ) {
 				if( json.programs[i].type==2){
-					jQuery( '#programIdAddEntityInstance').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
+					jQuery( '#program').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
 					count++;
 				}
 			}
 			
 			if(count==0){
-				jQuery( '#programIdAddEntityInstance').prepend( '<option value="" >' + i18n_none_program + '</option>' );
+				jQuery( '#program').prepend( '<option value="" >' + i18n_none_program + '</option>' );
 			}
 			else if(count>1){
-				jQuery( '#programIdAddEntityInstance').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
+				jQuery( '#program').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
 				enable('addEntityInstanceBtn');
 			}
 			
 			enableBtn();
 			hideById('programLoader');
-			jQuery('#programIdAddEntityInstance').width(width);
-			enable('programIdAddEntityInstance');
+			jQuery('#program').width(width);
+			enable('program');
 		});
 }
 selection.setListenerFunction( orgunitSelected );
@@ -49,10 +49,10 @@ function showAddTrackedEntityInstanceForm()
 	jQuery('#loaderDiv').show();
 	jQuery('#addNewDiv').load('showEventWithRegistrationForm.action',
 		{
-			programId: getFieldValue('programIdAddEntityInstance')
+			programId: getFieldValue('program')
 		}, function()
 		{
-			setInnerHTML('singleProgramName',jQuery('#programIdAddEntityInstance option:selected').text());	
+			setInnerHTML('singleProgramName',jQuery('#program option:selected').text());	
 			unSave = true;
 			showById('singleProgramName');
 			showById('addNewDiv');
@@ -65,11 +65,11 @@ function showUpdateTrackedEntityInstanceForm( entityInstanceId )
 	hideById('dataEntryMenu');
 	showById('eventActionMenu');
 	hideById('nextEventLink');
-	setInnerHTML('singleProgramName',jQuery('#programIdAddEntityInstance option:selected').text());	
+	setInnerHTML('singleProgramName',jQuery('#program option:selected').text());	
 	showById('singleProgramName');
 	setInnerHTML('addNewDiv','');
 	unSave = false;
-	showSelectedDataRecoding(entityInstanceId, getFieldValue('programIdAddEntityInstance'));
+	showSelectedDataRecoding(entityInstanceId, getFieldValue('program'));
 }
 
 function addEventForEntityInstanceForm( divname )
@@ -81,7 +81,7 @@ function addEventForEntityInstanceForm( divname )
 
 function validateData()
 {
-	var params = "programId=" + getFieldValue('programIdAddEntityInstance') + "&" + getParamsForDiv('entityInstanceForm');
+	var params = "programId=" + getFieldValue('program') + "&" + getParamsForDiv('entityInstanceForm');
 	$("#entityInstanceForm :input").attr("disabled", true);
 	$("#entryForm :input").attr("disabled", true);
 	$.ajax({
@@ -132,14 +132,14 @@ function addTrackedEntityInstance()
 		data: getParamsForDiv('entityInstanceForm'),
 		success: function(json) {
 			var entityInstanceId = json.message.split('_')[1];
-			addData( getFieldValue('programIdAddEntityInstance'), entityInstanceId );
+			addData( getFieldValue('program'), entityInstanceId );
 		}
      });
 }
 
 function addData( programId, entityInstanceId )
 {		
-	var params = "programId=" + getFieldValue('programIdAddEntityInstance');
+	var params = "programId=" + getFieldValue('program');
 		params += "&entityInstanceId=" + entityInstanceId;
 		params += "&" + getParamsForDiv('entryForm');
 		

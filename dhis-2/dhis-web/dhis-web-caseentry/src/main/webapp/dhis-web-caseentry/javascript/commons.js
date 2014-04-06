@@ -143,36 +143,47 @@ function getSearchParams(page) {
 			var dateOperator = "";
 			var p = "";
 			jQuery(this).find(':input').each(
-					function(idx, item) {
-						if (item.type != "button") {
-							if (idx == 0) {
-								if (item.value == 'programDate') {
-									p += "&programDate=";
+				function(idx, item) {
+					if (item.type != "button") {
+						if (idx == 0) {
+							if (item.value == 'programDate') {
+								p += "&programDate=";
+							} else {
+								p += "&attribute=" + item.value;
+							}
+						} else if (item.name == 'dateOperator') {
+							dateOperator = item.value;
+						} else if (item.name == 'searchText') {
+							if (item.value != '') {
+								if (dateOperator.length > 0) {
+									p += dateOperator + ":" + item.value.toLowerCase();
 								} else {
-									p += "&attribute=" + item.value + ":";
+									var key = item.value.toLowerCase()
+											.replace(/^\s*/, "")
+											.replace(/\s*$/, "");
+									p += ":LIKE:" + key;
 								}
-							} else if (item.name == 'dateOperator') {
-								dateOperator = item.value;
-							} else if (item.name == 'searchText') {
-								if (item.value != '') {
-									if (dateOperator.length > 0) {
-										p += dateOperator + ":" + item.value.toLowerCase();
-									} else {
-										var keys = item.value.toLowerCase()
-												.replace(/^\s*/, "")
-												.replace(/\s*$/, "")
-												.replace(/ /g, ";");
-										p += "IN:" + keys;
-									}
-								} else {
-									p = "";
-								}
+							} else {
+								p = "";
 							}
 						}
-					});
+					}
+				});
 			params += p;
 		});
-			
+	
+	$('#advancedSearchTB tr').each(
+		function(i, row) {
+			jQuery(this).find(':input').each(
+				function(idx, item) {
+					if (item.type != "button" 
+						&& idx == 0 
+						&& $(item).find('option:selected').attr('displayed')=="true") {
+							params += "&query=" + item.value;
+					}
+				})
+			});
+		
 	params += '&ouMode=' + getFieldValue('ouMode');
 
 	return params;
@@ -348,14 +359,15 @@ function enableBtn() {
 		clearListById('searchObjectId');
 		if (getFieldValue('program') != '') {
 			jQuery('#searchObjectId').append(
-					'<option value="programDate">' + i18n_enrollment_date
-							+ '</option>');
+				'<option value="programDate" displayed="true">' + i18n_enrollment_date
+					+ '</option>');
 		}
 
 		for ( var i in json.attributes) {
 			jQuery('#searchObjectId').append(
-					'<option value="' + json.attributes[i].id + '">'
-							+ json.attributes[i].name + '</option>');
+				'<option value="' + json.attributes[i].id 
+					+ '" displayed="' + json.attributes[i].displayed  + '">'
+					+ json.attributes[i].name + '</option>');
 		}
 
 		addAttributeOption();

@@ -72,7 +72,7 @@ public class SaveAttributeAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer programId;
+    private String programId;
 
     private Integer entityInstanceId;
 
@@ -102,12 +102,12 @@ public class SaveAttributeAction
         this.programService = programService;
     }
 
-    public void setProgramId( Integer programId )
+    public void setProgramId( String programId )
     {
         this.programId = programId;
     }
 
-    public Integer getProgramId()
+    public String getProgramId()
     {
         return programId;
     }

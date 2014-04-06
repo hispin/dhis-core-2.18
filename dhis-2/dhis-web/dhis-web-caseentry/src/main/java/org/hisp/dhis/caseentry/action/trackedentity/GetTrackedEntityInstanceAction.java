@@ -68,334 +68,303 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class GetTrackedEntityInstanceAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class GetTrackedEntityInstanceAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private TrackedEntityInstanceService entityInstanceService;
+	private TrackedEntityInstanceService entityInstanceService;
 
-    private ProgramService programService;
+	public void setEntityInstanceService(
+			TrackedEntityInstanceService entityInstanceService) {
+		this.entityInstanceService = entityInstanceService;
+	}
 
-    private RelationshipTypeService relationshipTypeService;
+	private ProgramService programService;
 
-    private TrackedEntityFormService trackedEntityFormService;
+	public void setProgramService(ProgramService programService) {
+		this.programService = programService;
+	}
 
-    private TrackedEntityAttributeGroupService attributeGroupService;
+	private RelationshipTypeService relationshipTypeService;
 
-    private TrackedEntityAttributeService attributeService;
+	public void setRelationshipTypeService(
+			RelationshipTypeService relationshipTypeService) {
+		this.relationshipTypeService = relationshipTypeService;
+	}
 
-    @Autowired
-    private TrackedEntityService trackedEntityService;
+	private TrackedEntityFormService trackedEntityFormService;
 
-    @Autowired
-    private ProgramInstanceService programInstanceService;
+	public void setTrackedEntityFormService(
+			TrackedEntityFormService trackedEntityFormService) {
+		this.trackedEntityFormService = trackedEntityFormService;
+	}
 
-    private I18n i18n;
+	private TrackedEntityAttributeGroupService attributeGroupService;
 
-    private I18nFormat format;
+	public void setAttributeGroupService(
+			TrackedEntityAttributeGroupService attributeGroupService) {
+		this.attributeGroupService = attributeGroupService;
+	}
 
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
+	private TrackedEntityAttributeService attributeService;
 
-    private Collection<RelationshipType> relationshipTypes;
+	public void setAttributeService(
+			TrackedEntityAttributeService attributeService) {
+		this.attributeService = attributeService;
+	}
 
-    private String id;
+	@Autowired
+	private TrackedEntityService trackedEntityService;
 
-    private TrackedEntityInstance entityInstance;
+	@Autowired
+	private ProgramInstanceService programInstanceService;
 
-    private Collection<Program> programs;
+	private I18n i18n;
 
-    private Map<Integer, String> attributeValueMap = new HashMap<Integer, String>();
+	public void setI18n(I18n i18n) {
+		this.i18n = i18n;
+	}
 
-    private Collection<TrackedEntityAttribute> noGroupAttributes = new HashSet<TrackedEntityAttribute>();
+	private I18nFormat format;
 
-    private List<TrackedEntityAttributeGroup> attributeGroups;
+	public void setFormat(I18nFormat format) {
+		this.format = format;
+	}
 
-    private Relationship relationship;
+	// -------------------------------------------------------------------------
+	// Input/Output
+	// -------------------------------------------------------------------------
 
-    private Map<Integer, Collection<TrackedEntityAttribute>> attributeGroupsMap = new HashMap<Integer, Collection<TrackedEntityAttribute>>();
+	private String id;
 
-    private Collection<User> healthWorkers;
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    private Integer programId;
+	private Collection<RelationshipType> relationshipTypes;
 
-    private Map<String, List<TrackedEntityAttribute>> attributesMap = new HashMap<String, List<TrackedEntityAttribute>>();
+	public Collection<RelationshipType> getRelationshipTypes() {
+		return relationshipTypes;
+	}
 
-    private TrackedEntityForm trackedEntityForm;
+	private TrackedEntityInstance entityInstance;
 
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
+	public TrackedEntityInstance getEntityInstance() {
+		return entityInstance;
+	}
 
-    private String customRegistrationForm;
+	private Collection<Program> programs;
 
-    public String getCustomRegistrationForm()
-    {
-        return customRegistrationForm;
-    }
+	public Collection<Program> getPrograms() {
+		return programs;
+	}
 
-    private Integer programStageInstanceId;
+	private Map<Integer, String> attributeValueMap = new HashMap<Integer, String>();
 
-    public Integer getProgramStageInstanceId()
-    {
-        return programStageInstanceId;
-    }
+	public Map<Integer, String> getAttributeValueMap() {
+		return attributeValueMap;
+	}
 
-    public void setProgramStageInstanceId( Integer programStageInstanceId )
-    {
-        this.programStageInstanceId = programStageInstanceId;
-    }
+	private Collection<TrackedEntityAttribute> noGroupAttributes = new HashSet<TrackedEntityAttribute>();
 
-    public void setAttributeService( TrackedEntityAttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
+	public Collection<TrackedEntityAttribute> getNoGroupAttributes() {
+		return noGroupAttributes;
+	}
 
-    public Map<String, List<TrackedEntityAttribute>> getAttributesMap()
-    {
-        return attributesMap;
-    }
-
-    public TrackedEntityForm getTrackedEntityForm()
-    {
-        return trackedEntityForm;
-    }
-
-    private List<TrackedEntity> trackedEntities;
-
-    public List<TrackedEntity> getTrackedEntities()
-    {
-        return trackedEntities;
-    }
-
-    private Map<Integer, Boolean> mandatoryMap = new HashMap<Integer, Boolean>();
-
-    public Map<Integer, Boolean> getMandatoryMap()
-    {
-        return mandatoryMap;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
-        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
-        entityInstance = entityInstanceService.getTrackedEntityInstance( id );
-
-        healthWorkers = entityInstance.getOrganisationUnit().getUsers();
-        Program program = null;
-
-        if ( programId == null )
-        {
-            trackedEntityForm = trackedEntityFormService.getCommonTrackedEntityForm();
-
-            if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
-            {
-                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
-                    .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, entityInstance,
-                    null, i18n, format );
-            }
-        }
-        else
-        {
-            program = programService.getProgram( programId );
-            trackedEntityForm = trackedEntityFormService.getTrackedEntityForm( program );
-
-            Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( entityInstance,
-                program, ProgramInstance.STATUS_ACTIVE );
-            ProgramInstance programIntance = null;
-            if ( programInstances != null )
-            {
-                programIntance = programInstances.iterator().next();
-            }
-            if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
-            {
-                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
-                    .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, entityInstance,
-                    programIntance, i18n, format );
-            }
-        }
-
-        List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
-
-        if ( customRegistrationForm == null )
-        {
-            attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
-                attributeGroupService.getAllTrackedEntityAttributeGroups() );
-            Collections.sort( attributeGroups, new TrackedEntityAttributeGroupSortOrderComparator() );
-
-            if ( program == null )
-            {
-                attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
-                Collection<Program> programs = programService.getAllPrograms();
-                for ( Program p : programs )
-                {
-                    for ( ProgramTrackedEntityAttribute programAttribute : p.getAttributes() )
-                    {
-                        if ( !programAttribute.isDisplayInList() )
-                        {
-                            attributes.remove( programAttribute.getAttribute() );
-                        }
-                    }
-                }
-
-                for ( TrackedEntityAttribute attribute : attributes )
-                {
-                    mandatoryMap.put( attribute.getId(), false );
-                }
-            }
-            else
-            {
-                attributes = program.getTrackedEntityAttributes();
-                for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
-                {
-                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
-                }
-            }
-
-            for ( TrackedEntityAttribute attribute : attributes )
-            {
-                TrackedEntityAttributeGroup attributeGroup = attribute.getAttributeGroup();
-                String groupName = (attributeGroup == null) ? "" : attributeGroup.getDisplayName();
-                if ( attributesMap.containsKey( groupName ) )
-                {
-                    List<TrackedEntityAttribute> attrs = attributesMap.get( groupName );
-                    attrs.add( attribute );
-                }
-                else
-                {
-                    List<TrackedEntityAttribute> attrs = new ArrayList<TrackedEntityAttribute>();
-                    attrs.add( attribute );
-                    attributesMap.put( groupName, attrs );
-                }
-            }
-
-        }
-
-        // -------------------------------------------------------------------------
-        // Get attribute values
-        // -------------------------------------------------------------------------
-
-        Collection<TrackedEntityAttributeValue> attributeValues = entityInstance.getAttributeValues();
-
-        for ( TrackedEntityAttributeValue attributeValue : attributeValues )
-        {
-            String value = attributeValue.getValue();
-
-            if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
-            {
-                Date date = format.parseDate( value );
-                value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
-            }
-
-            attributeValueMap.put( attributeValue.getAttribute().getId(), value );
-        }
-
-        return SUCCESS;
-
-    }
-
-    // -----------------------------------------------------------------------------
-    // Getter / Setter
-    // -----------------------------------------------------------------------------
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
-    public Collection<RelationshipType> getRelationshipTypes()
-    {
-        return relationshipTypes;
-    }
-
-    public Collection<User> getHealthWorkers()
-    {
-        return healthWorkers;
-    }
-
-    public Map<Integer, Collection<TrackedEntityAttribute>> getAttributeGroupsMap()
-    {
-        return attributeGroupsMap;
-    }
-
-    public Relationship getRelationship()
-    {
-        return relationship;
-    }
-
-    public void setId( String id )
-    {
-        this.id = id;
-    }
-
-    public TrackedEntityInstance getEntityInstance()
-    {
-        return entityInstance;
-    }
-
-    public Collection<Program> getPrograms()
-    {
-        return programs;
-    }
-
-    public Map<Integer, String> getAttributeValueMap()
-    {
-        return attributeValueMap;
-    }
-
-    public Collection<TrackedEntityAttribute> getNoGroupAttributes()
-    {
-        return noGroupAttributes;
-    }
-
-    public List<TrackedEntityAttributeGroup> getAttributeGroups()
-    {
-        return attributeGroups;
-    }
-
-    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
-    {
-        this.entityInstanceService = entityInstanceService;
-    }
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
-    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
-    {
-        this.relationshipTypeService = relationshipTypeService;
-    }
-
-    public void setTrackedEntityFormService( TrackedEntityFormService trackedEntityFormService )
-    {
-        this.trackedEntityFormService = trackedEntityFormService;
-    }
-
-    public void setAttributeGroupService( TrackedEntityAttributeGroupService attributeGroupService )
-    {
-        this.attributeGroupService = attributeGroupService;
-    }
-
-    public void setTrackedEntityForm( TrackedEntityForm trackedEntityForm )
-    {
-        this.trackedEntityForm = trackedEntityForm;
-    }
+	private List<TrackedEntityAttributeGroup> attributeGroups;
+
+	public List<TrackedEntityAttributeGroup> getAttributeGroups() {
+		return attributeGroups;
+	}
+
+	private Relationship relationship;
+
+	public Relationship getRelationship() {
+		return relationship;
+	}
+
+	private Map<Integer, Collection<TrackedEntityAttribute>> attributeGroupsMap = new HashMap<Integer, Collection<TrackedEntityAttribute>>();
+
+	public Map<Integer, Collection<TrackedEntityAttribute>> getAttributeGroupsMap() {
+		return attributeGroupsMap;
+	}
+
+	private Collection<User> healthWorkers;
+
+	public Collection<User> getHealthWorkers() {
+		return healthWorkers;
+	}
+
+	public void setTrackedEntityForm(TrackedEntityForm trackedEntityForm) {
+		this.trackedEntityForm = trackedEntityForm;
+	}
+
+	private String programId;
+
+	public void setProgramId(String programId) {
+		this.programId = programId;
+	}
+
+	private Map<String, List<TrackedEntityAttribute>> attributesMap = new HashMap<String, List<TrackedEntityAttribute>>();
+
+	public Map<String, List<TrackedEntityAttribute>> getAttributesMap() {
+		return attributesMap;
+	}
+
+	private TrackedEntityForm trackedEntityForm;
+
+	public TrackedEntityForm getTrackedEntityForm() {
+		return trackedEntityForm;
+	}
+
+	private String customRegistrationForm;
+
+	public String getCustomRegistrationForm() {
+		return customRegistrationForm;
+	}
+
+	private Integer programStageInstanceId;
+
+	public Integer getProgramStageInstanceId() {
+		return programStageInstanceId;
+	}
+
+	public void setProgramStageInstanceId(Integer programStageInstanceId) {
+		this.programStageInstanceId = programStageInstanceId;
+	}
+
+	private List<TrackedEntity> trackedEntities;
+
+	public List<TrackedEntity> getTrackedEntities() {
+		return trackedEntities;
+	}
+
+	private Map<Integer, Boolean> mandatoryMap = new HashMap<Integer, Boolean>();
+
+	public Map<Integer, Boolean> getMandatoryMap() {
+		return mandatoryMap;
+	}
+
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
+
+	public String execute() throws Exception {
+		relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
+		trackedEntities = new ArrayList<TrackedEntity>(
+				trackedEntityService.getAllTrackedEntity());
+		entityInstance = entityInstanceService.getTrackedEntityInstance(id);
+
+		healthWorkers = entityInstance.getOrganisationUnit().getUsers();
+		Program program = null;
+
+		if (programId == null) {
+			trackedEntityForm = trackedEntityFormService
+					.getCommonTrackedEntityForm();
+
+			if (trackedEntityForm != null
+					&& trackedEntityForm.getDataEntryForm() != null) {
+				customRegistrationForm = trackedEntityFormService
+						.prepareDataEntryFormForAdd(trackedEntityForm
+								.getDataEntryForm().getHtmlCode(),
+								trackedEntityForm.getProgram(), healthWorkers,
+								entityInstance, null, i18n, format);
+			}
+		} else {
+			program = programService.getProgram(programId);
+			trackedEntityForm = trackedEntityFormService
+					.getTrackedEntityForm(program);
+
+			Collection<ProgramInstance> programInstances = programInstanceService
+					.getProgramInstances(entityInstance, program,
+							ProgramInstance.STATUS_ACTIVE);
+			ProgramInstance programIntance = null;
+			if (programInstances != null) {
+				programIntance = programInstances.iterator().next();
+			}
+			if (trackedEntityForm != null
+					&& trackedEntityForm.getDataEntryForm() != null) {
+				customRegistrationForm = trackedEntityFormService
+						.prepareDataEntryFormForAdd(trackedEntityForm
+								.getDataEntryForm().getHtmlCode(),
+								trackedEntityForm.getProgram(), healthWorkers,
+								entityInstance, programIntance, i18n, format);
+			}
+		}
+
+		List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+
+		if (customRegistrationForm == null) {
+			attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
+					attributeGroupService.getAllTrackedEntityAttributeGroups());
+			Collections.sort(attributeGroups,
+					new TrackedEntityAttributeGroupSortOrderComparator());
+
+			if (program == null) {
+				attributes = new ArrayList<TrackedEntityAttribute>(
+						attributeService.getAllTrackedEntityAttributes());
+				Collection<Program> programs = programService.getAllPrograms();
+				for (Program p : programs) {
+					for (ProgramTrackedEntityAttribute programAttribute : p
+							.getAttributes()) {
+						if (!programAttribute.isDisplayInList()) {
+							attributes.remove(programAttribute.getAttribute());
+						}
+					}
+				}
+
+				for (TrackedEntityAttribute attribute : attributes) {
+					mandatoryMap.put(attribute.getId(), false);
+				}
+			} else {
+				attributes = program.getTrackedEntityAttributes();
+				for (ProgramTrackedEntityAttribute programAttribute : program
+						.getAttributes()) {
+					mandatoryMap.put(programAttribute.getAttribute().getId(),
+							programAttribute.isMandatory());
+				}
+			}
+
+			for (TrackedEntityAttribute attribute : attributes) {
+				TrackedEntityAttributeGroup attributeGroup = attribute
+						.getAttributeGroup();
+				String groupName = (attributeGroup == null) ? ""
+						: attributeGroup.getDisplayName();
+				if (attributesMap.containsKey(groupName)) {
+					List<TrackedEntityAttribute> attrs = attributesMap
+							.get(groupName);
+					attrs.add(attribute);
+				} else {
+					List<TrackedEntityAttribute> attrs = new ArrayList<TrackedEntityAttribute>();
+					attrs.add(attribute);
+					attributesMap.put(groupName, attrs);
+				}
+			}
+
+		}
+
+		// -------------------------------------------------------------------------
+		// Get attribute values
+		// -------------------------------------------------------------------------
+
+		Collection<TrackedEntityAttributeValue> attributeValues = entityInstance
+				.getAttributeValues();
+
+		for (TrackedEntityAttributeValue attributeValue : attributeValues) {
+			String value = attributeValue.getValue();
+
+			if (attributeValue.getAttribute().getValueType()
+					.equals(TrackedEntityAttribute.TYPE_AGE)) {
+				Date date = format.parseDate(value);
+				value = TrackedEntityAttribute.getAgeFromDate(date) + "";
+			}
+
+			attributeValueMap.put(attributeValue.getAttribute().getId(), value);
+		}
+
+		return SUCCESS;
+
+	}
 
 }

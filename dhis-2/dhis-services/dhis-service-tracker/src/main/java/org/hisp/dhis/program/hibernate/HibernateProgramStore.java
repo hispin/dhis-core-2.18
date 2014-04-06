@@ -82,13 +82,44 @@ public class HibernateProgramStore
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Program> get( int type, OrganisationUnit organisationUnit )
+    public Collection<Program> get( OrganisationUnit organisationUnit )
     {
         Criteria criteria = getCriteria();
         criteria.createAlias( "organisationUnits", "orgunit" );
-        criteria.add( Restrictions.eq( "type", type ) );
-        criteria.add( Restrictions.eq( "orgunit.id", organisationUnit.getId() ) );
+        criteria.createAlias( "organisationUnitGroups", "orgunitGroup" );
+        criteria.createAlias( "orgunitGroup.members", "orgunitMembers" );
+        criteria.add( Restrictions.or( Restrictions.eq( "orgunit.id", organisationUnit.getId() ),
+            Restrictions.eq( "orgunitMembers.id", organisationUnit.getId() ) ) );
         return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<Program> get( int type, OrganisationUnit organisationUnit )
+    {
+        Criteria criteria1 = getCriteria();
+        criteria1.createAlias( "organisationUnits", "orgunit" );
+        criteria1.add( Restrictions.eq( "type", type ) );
+        criteria1.add( Restrictions.eq( "orgunit.id", organisationUnit.getId() ) );
+
+        Criteria criteria2 = getCriteria();
+        criteria2.createAlias( "organisationUnitGroups", "orgunitGroup" );
+        criteria2.createAlias( "orgunitGroup.members", "orgunitMember" );
+        criteria2.add( Restrictions.eq( "type", type ) );
+        criteria2.add( Restrictions.eq( "orgunitMember.id", organisationUnit.getId() ) );
+
+        Collection<Program> programs = new HashSet<Program>();
+        if ( criteria1.list() != null )
+        {
+            programs.addAll( criteria1.list() );
+        }
+
+        if ( criteria2.list() != null )
+        {
+            programs.addAll( criteria2.list() );
+        }
+
+        return programs;
     }
 
     @Override
@@ -147,16 +178,40 @@ public class HibernateProgramStore
     @SuppressWarnings( "unchecked" )
     public Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
     {
-        Criteria criteria = getCriteria();
-        criteria.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
+        Collection<Program> programs = new HashSet<Program>();
 
         if ( orgunit != null )
         {
-            criteria.createAlias( "organisationUnits", "orgunit" );
-            criteria.add( Restrictions.eq( "orgunit.id", orgunit.getId() ) );
+            Criteria criteria1 = getCriteria();
+            criteria1.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
+            criteria1.createAlias( "organisationUnits", "orgunit" );
+            criteria1.add( Restrictions.eq( "orgunit.id", orgunit.getId() ) );
+
+            Criteria criteria2 = getCriteria();
+            criteria1.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
+            criteria2.createAlias( "organisationUnitGroups", "orgunitGroup" );
+            criteria2.createAlias( "orgunitGroup.members", "orgunitMember" );
+            criteria2.add( Restrictions.eq( "orgunitMember.id", orgunit.getId() ) );
+
+            if ( criteria1.list() != null )
+            {
+                programs.addAll( criteria1.list() );
+            }
+
+            if ( criteria2.list() != null )
+            {
+                programs.addAll( criteria2.list() );
+            }
+        }
+        else
+        {
+            Criteria criteria = getCriteria();
+            criteria.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
+
+            programs = criteria.list();
         }
 
-        return criteria.list();
+        return programs;
     }
 
     @Override

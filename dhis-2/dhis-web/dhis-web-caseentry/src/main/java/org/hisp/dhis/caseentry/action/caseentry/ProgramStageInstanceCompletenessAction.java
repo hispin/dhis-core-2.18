@@ -93,9 +93,9 @@ public class ProgramStageInstanceCompletenessAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer programId;
+    private String programId;
 
-    public void setProgramId( Integer programId )
+    public void setProgramId( String programId )
     {
         this.programId = programId;
     }

@@ -57,6 +57,15 @@ public interface ProgramStore
     /**
      * Get {@link Program} assigned to an {@link OrganisationUnit} by a type
      * 
+     * @param organisationUnit Where programs assigned
+     * 
+     * @return Program list by a type specified
+     */
+    Collection<Program> get( OrganisationUnit organisationUnit );
+
+    /**
+     * Get {@link Program} assigned to an {@link OrganisationUnit} by a type
+     * 
      * @param type The type of program. There are three types, include Multi
      *        events with registration, Single event with registration and
      *        Single event without registration
@@ -103,5 +112,5 @@ public interface ProgramStore
      * @param trackedEntity {@link TrackedEntity}
      */
     Collection<Program> getByTrackedEntity( TrackedEntity trackedEntity );
-    
+
 }

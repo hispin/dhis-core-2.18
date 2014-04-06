@@ -1,16 +1,16 @@
 <script>
 	jQuery(document).ready(	function(){
-		jQuery("#programIdAddEntityInstance option").each(function() {
+		jQuery("#program option").each(function() {
             var item = jQuery(this);
             if( item.attr('type') != 2 ) {
                 item.remove();
             }
         });
-		jQuery("#programIdAddEntityInstance [value=]").remove();
+		jQuery("#program [value=]").remove();
 	
-		if(jQuery("#programIdAddEntityInstance option").length==0)
+		if(jQuery("#program option").length==0)
 		{
-			jQuery( '#programIdAddEntityInstance').append( '<option value="" type="">' + i18n_none_program + '</option>' );
+			jQuery( '#program').append( '<option value="" type="">' + i18n_none_program + '</option>' );
 			disable('listEntityInstanceBtn');
 			disable('addEntityInstanceBtn');
 		}

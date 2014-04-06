@@ -3,10 +3,10 @@ var generateResultParams = "";
 
 function orgunitSelected( orgUnits, orgUnitNames )
 {
-	var width = jQuery('#programIdAddEntityInstance').width();
-	jQuery('#programIdAddEntityInstance').width(width-30);
+	var width = jQuery('#program').width();
+	jQuery('#program').width(width-30);
 	showById( "programLoader" );
-	disable('programIdAddEntityInstance');
+	disable('program');
 	disable('listEntityInstanceBtn');
 	showById('mainLinkLbl');
 	showById('searchDiv');
@@ -22,7 +22,7 @@ function orgunitSelected( orgUnits, orgUnitNames )
 	hideById('addRelationshipDiv');
 	hideById('migrationEntityInstanceDiv');
 
-	clearListById('programIdAddEntityInstance');
+	clearListById('program');
 	$('#contentDataRecord').html('');
 	setFieldValue('orgunitName', orgUnitNames[0]);
 	setFieldValue('orgunitId', orgUnits[0]);
@@ -33,21 +33,21 @@ function orgunitSelected( orgUnits, orgUnitNames )
 			for ( i in json.programs ) {
 				if(json.programs[i].type==1){
 					count++;
-					jQuery( '#programIdAddEntityInstance').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
+					jQuery( '#program').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
 				}
 			}
 			if(count==0){
-				jQuery( '#programIdAddEntityInstance').prepend( '<option value="" selected>' + i18n_none_program + '</option>' );
+				jQuery( '#program').prepend( '<option value="" selected>' + i18n_none_program + '</option>' );
 			}
 			else if(count>1){
-				jQuery( '#programIdAddEntityInstance').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
+				jQuery( '#program').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
 				enable('listEntityInstanceBtn');
 			}
 			
 			enableBtn();
 			hideById('programLoader');
-			jQuery('#programIdAddEntityInstance').width(width);
-			enable('programIdAddEntityInstance');
+			jQuery('#program').width(width);
+			enable('program');
 		});
 }
 
@@ -74,7 +74,7 @@ function listAllTrackedEntityInstance()
 	var startDate = jQuery.datepicker.formatDate( dateFormat, new Date(y1, m, d) );
 	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y2, m, d) );
 	
-	var programId = getFieldValue('programIdAddEntityInstance');
+	var programId = getFieldValue('program');
 	var searchTexts = "stat_" + programId + "_" 
 				+ startDate + "_" + endDate + "_" 
 				+ getFieldValue('orgunitId') + "_true_" 
@@ -114,7 +114,7 @@ function advancedSearch( params )
 	$('#listEventDiv').html('');
 	hideById('listEventDiv');
 	showLoader();
-	params += "&programId=" + getFieldValue('programIdAddEntityInstance');
+	params += "&programId=" + getFieldValue('program');
 	generateResultParams = params;
 	
 	$.ajax({

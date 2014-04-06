@@ -2,7 +2,7 @@
     jQuery(document).ready(function() {
         showById('programStageAddEntityInstanceTR');
         showById('sendSmsToListBtn');
-        jQuery("#programIdAddEntityInstance option").each(function() {
+        jQuery("#program option").each(function() {
             var item = jQuery(this);
             if( item.attr('type') != 1 && item.val() != '' ) {
                 item.remove();
