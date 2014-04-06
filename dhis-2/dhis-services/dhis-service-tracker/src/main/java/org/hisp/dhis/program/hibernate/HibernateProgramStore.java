@@ -84,13 +84,27 @@ public class HibernateProgramStore
     @Override
     public Collection<Program> get( OrganisationUnit organisationUnit )
     {
-        Criteria criteria = getCriteria();
-        criteria.createAlias( "organisationUnits", "orgunit" );
-        criteria.createAlias( "organisationUnitGroups", "orgunitGroup" );
-        criteria.createAlias( "orgunitGroup.members", "orgunitMembers" );
-        criteria.add( Restrictions.or( Restrictions.eq( "orgunit.id", organisationUnit.getId() ),
-            Restrictions.eq( "orgunitMembers.id", organisationUnit.getId() ) ) );
-        return criteria.list();
+        Criteria criteria1 = getCriteria();
+        criteria1.createAlias( "organisationUnits", "orgunit" );
+        criteria1.add( Restrictions.eq( "orgunit.id", organisationUnit.getId() ) );
+
+        Criteria criteria2 = getCriteria();
+        criteria2.createAlias( "organisationUnitGroups", "orgunitGroup" );
+        criteria2.createAlias( "orgunitGroup.members", "orgunitMember" );
+        criteria2.add( Restrictions.eq( "orgunitMember.id", organisationUnit.getId() ) );
+
+        Collection<Program> programs = new HashSet<Program>();
+        if ( criteria1.list() != null )
+        {
+            programs.addAll( criteria1.list() );
+        }
+
+        if ( criteria2.list() != null )
+        {
+            programs.addAll( criteria2.list() );
+        }
+
+        return programs;
     }
 
     @SuppressWarnings( "unchecked" )

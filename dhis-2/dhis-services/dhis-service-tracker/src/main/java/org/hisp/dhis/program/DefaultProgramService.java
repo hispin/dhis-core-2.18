@@ -110,20 +110,6 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getPrograms( OrganisationUnit organisationUnit )
     {
-        /*
-         * Set<Program> programs = new HashSet<Program>();
-         * 
-         * for ( Program program : getAllPrograms() ) {
-         * Set<OrganisationUnitGroup> orgunitGroups =
-         * program.getOrganisationUnitGroups(); for ( OrganisationUnitGroup
-         * orgunitGroup : orgunitGroups ) { if (
-         * orgunitGroup.getMembers().contains( organisationUnit ) ) {
-         * programs.add( program ); } } if (
-         * program.getOrganisationUnits().contains( organisationUnit ) ) {
-         * programs.add( program ); } }
-         * 
-         * return i18n( i18nService, programs );
-         */
         return i18n( i18nService, programStore.get( organisationUnit ) );
     }
 
@@ -152,7 +138,7 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getPrograms( int type, OrganisationUnit orgunit )
     {
-        return i18n( i18nService, getPrograms( type, orgunit ) );
+        return i18n( i18nService, programStore.get( type, orgunit ) );
     }
 
     @Override
