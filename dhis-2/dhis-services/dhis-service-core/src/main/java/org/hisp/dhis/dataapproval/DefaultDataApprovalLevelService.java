@@ -129,7 +129,7 @@ public class DefaultDataApprovalLevelService
 
             for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
             {
-                int orgUnitLevel = orgUnit.getLevel() != 0 ?
+                int orgUnitLevel = orgUnit.hasLevel() ?
                     orgUnit.getLevel() : organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getUid() );
 
                 userOrgUnitLevels.add( orgUnitLevel );
@@ -145,7 +145,7 @@ public class DefaultDataApprovalLevelService
                     ( !approvalLevel.hasCategoryOptionGroupSet() || securityService.canRead( approvalLevel.getCategoryOptionGroupSet() ) ) );
 
                 //
-                // Test using assignedAtLevel and approvableAtLevel values from the previous (higher) level:
+                // Test using assignedAtLevel and approvableAtLevel values from the previous (higher) level.
                 //
                 Boolean addBecauseOfPreviousLevel = false;
 
@@ -168,7 +168,7 @@ public class DefaultDataApprovalLevelService
                 approvableAtLevel = canReadThisLevel && ( ( mayApprove && assignedAtLevel ) || approvableAtAllLowerLevels );
 
                 //
-                // Test using assignedAtLevel and approvableAtLevel values from the current level:
+                // Test using assignedAtLevel and approvableAtLevel values from the current level.
                 //
                 if ( approvableAtLevel || addBecauseOfPreviousLevel )
                 {
