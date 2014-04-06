@@ -5,8 +5,8 @@
       jQuery("#urSelected").children().attr("selected", "selected");
       jQuery("#ugSelected").children().attr("selected", "selected");
 
-      if( $('#selectionTree').find('.selected').size() == 0 ) {
-        setHeaderDelayMessage('$encoder.jsEncode( $i18n.getString( "organisation_unit_required_for_user" ) )');
+      if( $('#orgUnitTree').find('.selected').size() == 0 ) {
+        setHeaderDelayMessage('$encoder.jsEncode( $i18n.getString( "data_capture_organisation_unit_required_for_user" ) )');
       } else {
         form.submit();
       }
