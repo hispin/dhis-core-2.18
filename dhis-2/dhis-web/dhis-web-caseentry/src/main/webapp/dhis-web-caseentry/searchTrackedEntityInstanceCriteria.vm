@@ -83,6 +83,7 @@
 			<td>$i18n.getString('select_orgunit_for_search')</td>
 			<td><span id='orgunitForSearch'>$!organisationUnit.name</span></td>
 		</tr>
+		
 		<tr>
 			<td>$i18n.getString('orgunit_search_type')</td>
 			<td>
@@ -94,10 +95,10 @@
 			</td>
 		</tr>
 		
-		<tr id='trackedEntityTR' class='hidden'>
+		<tr id='trackedEntityTR'>
 			<td>$i18n.getString('tracked_entity')</td>
 			<td>
-				<select id='trackedEntity' name='trackedEntity'>
+				<select id='trackedEntity' name='trackedEntity' onchange='trackedEntityOnChange()'>
 					<option value="">[$i18n.getString('please_select')]</option>
 					#foreach($trackedEntity in $trackedEntities)
 						<option value="$trackedEntity.uid">$trackedEntity.name</option>

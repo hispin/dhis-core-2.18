@@ -129,7 +129,10 @@ var followup = false;
 function getSearchParams(page) {
 	var params = "ou=" + getFieldValue("orgunitId");
 	params += "&page=" + page;
-	if (getFieldValue('program') != '') {
+	if( getFieldValue('trackedEntity')!=''){
+		params += '&trackedEntity=' + getFieldValue('trackedEntity');
+	}
+	else if (getFieldValue('program') != '') {
 		params += "&program=" + getFieldValue('program');
 	}
 	
@@ -185,7 +188,7 @@ function getSearchParams(page) {
 			});
 		
 	params += '&ouMode=' + getFieldValue('ouMode');
-
+	
 	return params;
 }
 
@@ -1923,6 +1926,7 @@ function advancedSearchOnclick() {
 		showById('searchByIdTR');
 	}
 }
+
 function clearAndCloseSearch() {
 	$('#advancedSearchTB tr').each(function(i, item) {
 		if (i > 0 && $(this).id == undefined) {
@@ -1932,12 +1936,26 @@ function clearAndCloseSearch() {
 	addAttributeOption();
 	hideById('advanced-search');
 	showById('searchByIdTR');
+	enable('program');
+	setFieldValue('program', '');
 }
+
 function hideSearchCriteria() {
 	hideById('advanced-search');
 	showById('showSearchCriteriaDiv');
 }
+
 function showSearchCriteria() {
 	showById('advanced-search');
 	hideById('showSearchCriteriaDiv');
+}
+
+function trackedEntityOnChange()
+{
+	if( getFieldValue('trackedEntity')!=''){
+		disable('program');
+	}
+	else{
+		enable('program');
+	}
 }
