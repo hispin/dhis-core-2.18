@@ -507,7 +507,7 @@ public class DefaultEventAnalyticsService
 
         TrackedEntityAttribute at = attributeService.getTrackedEntityAttribute( item );
 
-        if ( at != null && program.getAttributes().contains( at ) )
+        if ( at != null && program.getTrackedEntityAttributes().contains( at ) )
         {
             return new QueryItem( at, operator, filter, at.isNumericType() );
         }

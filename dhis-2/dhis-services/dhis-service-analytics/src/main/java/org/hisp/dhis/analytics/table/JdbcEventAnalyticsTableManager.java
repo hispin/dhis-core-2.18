@@ -223,9 +223,8 @@ public class JdbcEventAnalyticsTableManager
             columns.add( col );
         }
 
-        for ( ProgramTrackedEntityAttribute programAttribute : table.getProgram().getAttributes() )
+        for ( TrackedEntityAttribute attribute : table.getProgram().getTrackedEntityAttributes() )
         {
-            TrackedEntityAttribute attribute = programAttribute.getAttribute();
             String dataType = attribute.isNumericType() ? dbl : text;
             String dataClause = attribute.isNumericType() ? numericClause : "";
             String select = attribute.isNumericType() ? doubleSelect : "value";
