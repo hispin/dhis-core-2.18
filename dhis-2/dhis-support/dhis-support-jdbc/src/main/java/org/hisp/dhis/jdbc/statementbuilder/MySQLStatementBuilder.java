@@ -65,6 +65,18 @@ public class MySQLStatementBuilder
     {
         return "regexp";
     }
+
+    @Override
+    public String getRegexpWordStart()
+    {
+        return "[[:<:]]";
+    }
+
+    @Override
+    public String getRegexpWordEnd()
+    {
+        return " [[:>:]]";
+    }
     
     @Override
     public String getDeleteZeroDataValues()

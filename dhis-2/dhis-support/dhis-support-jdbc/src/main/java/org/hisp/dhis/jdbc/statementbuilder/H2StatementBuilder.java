@@ -65,6 +65,18 @@ public class H2StatementBuilder
     {
         return "regexp";
     }
+
+    @Override
+    public String getRegexpWordStart() //TODO test
+    {
+        return "[[:<:]]";
+    }
+
+    @Override
+    public String getRegexpWordEnd()
+    {
+        return " [[:>:]]";
+    }
     
     @Override
     public String getDeleteZeroDataValues()
