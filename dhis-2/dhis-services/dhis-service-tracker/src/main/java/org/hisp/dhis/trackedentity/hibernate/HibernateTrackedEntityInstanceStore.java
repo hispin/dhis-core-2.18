@@ -320,14 +320,24 @@ public class HibernateTrackedEntityInstanceStore
         
         if ( params.isOrQuery() && params.hasAttributesOrFilters() )
         {
+            String regexp = statementBuilder.getRegexpMatch();
+            String wordStart = statementBuilder.getRegexpWordStart();
+            String wordEnd = statementBuilder.getRegexpWordEnd();
+            
             sql += hlp.whereAnd() + " (";
             
             for ( QueryItem item : params.getAttributesAndFilters() )
             {
                 String col = statementBuilder.columnQuote( item.getItemId() );
-                String query = statementBuilder.encode( params.getQuery(), false );
                 
-                sql += "lower(" + col + ".value) = '" + StringUtils.lowerCase( query ) + "' or ";
+                List<String> queryTokens = TextUtils.getTokens( params.getQuery() );
+                                
+                for ( String queryToken : queryTokens )
+                {
+                    String query = statementBuilder.encode( queryToken, false );                    
+                    
+                    sql += "lower(" + col + ".value) " + regexp + " '" + wordStart + StringUtils.lowerCase( query ) + wordEnd + "' or ";
+                }
             }
             
             sql = sql.substring( 0, sql.length() - 3 ) + ") "; // Remove last or
