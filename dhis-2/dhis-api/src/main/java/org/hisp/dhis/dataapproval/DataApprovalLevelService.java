@@ -111,9 +111,9 @@ public interface DataApprovalLevelService
      * approval levels from low to high.)
      *
      * @param newLevel the new level to add.
-     * @return true if level was added, false if not well formed or duplicate.
+     * @return the identifier of the added level, or -1 if not well formed or duplicate.
      */
-    boolean addDataApprovalLevel( DataApprovalLevel newLevel );
+    int addDataApprovalLevel( DataApprovalLevel newLevel );
 
     /**
      * Removes a data approval level.
