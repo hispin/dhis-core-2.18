@@ -109,6 +109,10 @@
       }
     },
     defaultProgressiveLoader: function( settings, search ) {
+      if( settings.page === undefined ) {
+        return;
+      }
+
       var request = {
         url: settings.url,
         data: {
@@ -124,13 +128,14 @@
       }
 
       return $.ajax(request).done(function( data ) {
-        if( data.pager === undefined || data.pager.page == 1 ) {
-          settings.page = 1;
+        if( data.pager.page == 1 ) {
           settings.source.children().remove();
         }
 
-        if( data.pager.pageCount >= settings.page ) {
-          settings.page = data.pager.pageCount;
+        settings.page++;
+
+        if( settings.page > data.pager.pageCount ) {
+          delete settings.page;
         }
 
         if( data[settings.iterator] === undefined ) {
