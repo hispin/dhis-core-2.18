@@ -7,40 +7,40 @@
 !(function( $, window, document, undefined ) {
   var methods = {
     create: function( options ) {
-      var settings = {};
-      $.extend(settings, $.fn.selected.defaults, options);
+      var context = {};
+      $.extend(context, $.fn.selected.defaults, options);
 
-      if( settings.target === undefined ) {
+      if( context.target === undefined ) {
         $.error('selected: Missing options.target, please add your target box either as a jqEl or as a query.');
-      } else if( settings.url === undefined ) {
+      } else if( context.url === undefined ) {
         $.error('selected: Missing options.url, please give URL of where to find the source data.');
-      } else if( !$.isFunction(settings.handler) ) {
+      } else if( !$.isFunction(context.handler) ) {
         $.error('selected: Invalid options.handler.');
       }
 
       // pass-through if jqEl, query if string
-      settings.source = this;
-      settings.target = $(settings.target);
-      settings.search = $(settings.search);
+      context.source = this;
+      context.target = $(context.target);
+      context.search = $(context.search);
 
-      if( !(settings.source instanceof $) ) {
+      if( !(context.source instanceof $) ) {
         $.error('selected: Invalid source.');
-      } else if( !(settings.target instanceof $) ) {
+      } else if( !(context.target instanceof $) ) {
         $.error('selected: Invalid target.');
       }
 
-      settings.source.data('selected', settings);
-      settings.target.data('selected', settings);
+      context.source.data('selected', context);
+      context.target.data('selected', context);
 
-      settings.page = 1;
-      settings.defaultProgressiveLoader(settings);
+      context.page = 1;
+      context.defaultProgressiveLoader(context);
 
-      settings.source.on('dblclick', 'option', settings.defaultSourceDblClickHandler);
-      settings.target.on('dblclick', 'option', settings.defaultTargetDblClickHandler);
-      settings.source.on('scroll', settings.makeScrollHandler(settings));
+      context.source.on('dblclick', 'option', context.defaultSourceDblClickHandler);
+      context.target.on('dblclick', 'option', context.defaultTargetDblClickHandler);
+      context.source.on('scroll', context.makeScrollHandler(context));
 
-      if( settings.search instanceof $ ) {
-        settings.search.on('keypress', settings.makeSearchHandler(settings));
+      if( context.search instanceof $ ) {
+        context.search.on('keypress', context.makeSearchHandler(context));
       }
     }
   };
@@ -93,62 +93,64 @@
       $this.removeAttr('selected');
       $selected.source.append($this);
     },
-    makeSearchHandler: function( settings ) {
+    makeSearchHandler: function( context ) {
       return function( e ) {
         if( e.keyCode == 13 ) {
-          settings.defaultProgressiveLoader(settings, $(this).val());
+          context.page = 1;
+          context.like = $(this).val();
+          context.defaultProgressiveLoader(context);
           e.preventDefault();
         }
       }
     },
-    makeScrollHandler: function( settings ) {
+    makeScrollHandler: function( context ) {
       return function( e ) {
-        if( settings.source[0].offsetHeight + settings.source.scrollTop() >= settings.source[0].scrollHeight ) {
-          settings.defaultProgressiveLoader(settings);
+        if( context.source[0].offsetHeight + context.source.scrollTop() >= context.source[0].scrollHeight ) {
+          context.defaultProgressiveLoader(context);
         }
       }
     },
-    defaultProgressiveLoader: function( settings, search ) {
-      if( settings.page === undefined ) {
+    defaultProgressiveLoader: function( context ) {
+      if( context.page === undefined ) {
         return;
       }
 
       var request = {
-        url: settings.url,
+        url: context.url,
         data: {
           paging: true,
           pageSize: 50,
-          page: settings.page
+          page: context.page
         },
         dataType: 'json'
       };
 
-      if( search !== undefined && search.length > 0 ) {
-        request.data.filter = 'name:like:' + search;
+      if( context.like !== undefined && context.like.length > 0 ) {
+        request.data.filter = 'name:like:' + context.like;
       }
 
       return $.ajax(request).done(function( data ) {
         if( data.pager.page == 1 ) {
-          settings.source.children().remove();
+          context.source.children().remove();
         }
 
-        settings.page++;
+        context.page++;
 
-        if( settings.page > data.pager.pageCount ) {
-          delete settings.page;
+        if( context.page > data.pager.pageCount ) {
+          delete context.page;
         }
 
-        if( data[settings.iterator] === undefined ) {
-          $.error('selected: Invalid iterator for source url: ' + settings.iterator);
+        if( data[context.iterator] === undefined ) {
+          $.error('selected: Invalid iterator for source url: ' + context.iterator);
         }
 
-        $.each(data[settings.iterator], function( idx ) {
-          if( settings.target.find('option[value=' + this.id + ']').length == 0 ) {
-            settings.source.append(settings.handler(this));
+        $.each(data[context.iterator], function( idx ) {
+          if( context.target.find('option[value=' + this.id + ']').length == 0 ) {
+            context.source.append(context.handler(this));
           }
         });
       }).fail(function() {
-        settings.source.children().remove();
+        context.source.children().remove();
       });
     }
   };

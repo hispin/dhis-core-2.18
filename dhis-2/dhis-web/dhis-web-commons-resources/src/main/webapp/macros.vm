@@ -438,7 +438,7 @@ jQuery.each(attributes, function(i, item) {
     </thead>
     <tbody>
     <tr>
-      <td><input id="${args.prefix}AvailableSearch}" type="text" placeholder=" Search.." style="width: 100%; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;" /></td>
+      <td><input id="${args.prefix}AvailableSearch" type="text" placeholder=" Search.." style="width: 100%; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;" /></td>
       <td></td>
       <td></td>
     </tr>

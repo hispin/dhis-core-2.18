@@ -28,8 +28,8 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import com.opensymphony.xwork2.Action;
-
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -44,7 +44,6 @@ import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +52,6 @@ import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
 /**
  * @author Kristian
- * @version $Id: AddDataSetAction.java 6255 2008-11-10 16:01:24Z larshelg $
  */
 public class AddDataSetAction
     implements Action
@@ -82,7 +80,7 @@ public class AddDataSetAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
@@ -219,9 +217,9 @@ public class AddDataSetAction
     {
         this.validCompleteOnly = validCompleteOnly;
     }
-    
+
     private boolean noValueRequiresComment;
-    
+
     public void setNoValueRequiresComment( boolean noValueRequiresComment )
     {
         this.noValueRequiresComment = noValueRequiresComment;
@@ -255,22 +253,22 @@ public class AddDataSetAction
         this.renderHorizontally = renderHorizontally;
     }
 
-    private Collection<String> dataElementsSelectedList = new HashSet<String>();
+    private List<String> deSelected = Lists.newArrayList();
 
-    public void setDataElementsSelectedList( Collection<String> dataElementsSelectedList )
+    public void setDeSelected( List<String> deSelected )
     {
-        this.dataElementsSelectedList = dataElementsSelectedList;
+        this.deSelected = deSelected;
     }
 
-    private Collection<String> indicatorsSelectedList = new HashSet<String>();
+    private List<String> inSelected = Lists.newArrayList();
 
-    public void setIndicatorsSelectedList( Collection<String> indicatorsSelectedList )
+    public void setInSelected( List<String> inSelected )
     {
-        this.indicatorsSelectedList = indicatorsSelectedList;
+        this.inSelected = inSelected;
     }
 
     private Integer categoryComboId;
-    
+
     public void setCategoryComboId( Integer categoryComboId )
     {
         this.categoryComboId = categoryComboId;
@@ -315,23 +313,23 @@ public class AddDataSetAction
         dataSet.setTimelyDays( timelyDays );
         dataSet.setSkipAggregation( skipAggregation );
 
-        for ( String id : dataElementsSelectedList )
+        for ( String id : deSelected )
         {
-            dataSet.addDataElement( dataElementService.getDataElement( Integer.parseInt( id ) ) );
+            dataSet.addDataElement( dataElementService.getDataElement( id ) );
         }
 
         Set<Indicator> indicators = new HashSet<Indicator>();
 
-        for ( String id : indicatorsSelectedList )
+        for ( String id : inSelected )
         {
-            indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
+            indicators.add( indicatorService.getIndicator( id ) );
         }
 
         if ( categoryComboId != null )
         {
             dataSet.setCategoryCombo( categoryService.getDataElementCategoryCombo( categoryComboId ) );
         }
-        
+
         dataSet.setDescription( description );
         dataSet.setVersion( 1 );
         dataSet.setMobile( false );
