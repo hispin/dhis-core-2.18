@@ -346,6 +346,11 @@ public class DefaultDataApprovalLevelService
         return 0;
     }
     
+    public DataApprovalLevel getDataApprovalLevel( int id )
+    {
+        return dataApprovalLevelStore.get( id );
+    }
+    
     public DataApprovalLevel getDataApprovalLevelByName( String name )
     {
         return dataApprovalLevelStore.getByName( name );
