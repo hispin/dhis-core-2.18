@@ -118,9 +118,9 @@ public interface DataApprovalLevelService
     /**
      * Removes a data approval level.
      *
-     * @param index index of the level to move up.
+     * @param level the level of approval to delete.
      */
-    void deleteDataApprovalLevel( int index );
+    void deleteDataApprovalLevel( int level );
 
     /**
      * Gets the lowest data approval level that the current user may view.
