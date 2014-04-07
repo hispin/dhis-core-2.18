@@ -150,5 +150,4 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         
         return tariffDataValueMap;
     }
-
 }

@@ -1,8 +1,16 @@
 package org.hisp.dhis.pbf.payment.action;
 
-import java.util.HashMap;
-import java.util.Map;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -12,7 +20,9 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.pbf.api.Lookup;
 import org.hisp.dhis.pbf.api.LookupService;
+import org.hisp.dhis.pbf.api.PBFDataValueService;
 import org.hisp.dhis.pbf.api.QualityMaxValueService;
 import org.hisp.dhis.pbf.api.TariffDataValueService;
 import org.hisp.dhis.period.Period;
@@ -41,6 +51,9 @@ public class LoadPaymentAdjustmentAction implements Action
     private DataValueService dataValueService;
 
     @Autowired
+    private PBFDataValueService pbfDataValueService;
+    
+    @Autowired
     private TariffDataValueService tariffDataValueService;
 
     @Autowired
@@ -61,6 +74,19 @@ public class LoadPaymentAdjustmentAction implements Action
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
+    private Map<Integer, Double> pbfQtyMap = new HashMap<Integer, Double>();
+
+    public Map<Integer, Double> getPbfQtyMap()
+    {
+        return pbfQtyMap;
+    }
+
+    private Map<Integer, Double> pbfTariffMap = new HashMap<Integer, Double>();
+
+    public Map<Integer, Double> getPbfTariffMap()
+    {
+        return pbfTariffMap;
+    }
 
     private String orgUnitId;
 
@@ -96,22 +122,60 @@ public class LoadPaymentAdjustmentAction implements Action
         
         Period period = PeriodType.getPeriodFromIsoString( periodIso );
         
+        period = periodService.reloadPeriod( period );
         
-        //----------------------------------------------
+        Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ) );
+        Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers( Period.class, periods ) );
+        String periodIdsByComma = getCommaDelimitedString( periodIds );
+        
+        Set<DataElement> dataElements = new HashSet<DataElement>( selDataSet.getDataElements() );
+        
+        Set<OrganisationUnit> pbfQtyOrgUnits = new HashSet<OrganisationUnit>();
+        pbfQtyOrgUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
+        pbfQtyOrgUnits.retainAll( selDataSet.getSources() );
+        Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, pbfQtyOrgUnits ) );
+        String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+        
+        //--------------------------------------------------------
         // Quantity Calculation
-        //----------------------------------------------
+        //--------------------------------------------------------
         
-        Map<DataElement, Double> pbfQtyMap = new HashMap<DataElement, Double>();
+        pbfQtyMap.putAll( pbfDataValueService.getPBFDataValues( orgUnitIdsByComma, selDataSet, periodIdsByComma ) );
         
-        //-------------------------------------------------
+        //--------------------------------------------------------
         // Quantity Tariff Calculation
-        //-------------------------------------------------
-        Map<DataElement, Double> pbfTariffMap = new HashMap<DataElement, Double>();
+        //--------------------------------------------------------
+        Constant tariff_authority = constantService.getConstantByName( Lookup.TARIFF_SETTING_AUTHORITY );
+        int tariff_setting_authority = 1;
+        if ( tariff_authority != null )
+        {
+            tariff_setting_authority = (int) tariff_authority.getValue();
+        }
+
+        OrganisationUnit tariffOrgUnit = findParentOrgunitforTariff( selOrgUnit, tariff_setting_authority );
         
-        //-------------------------------------------------
-        // 
-        //-------------------------------------------------
+        if( tariffOrgUnit != null ) 
+        {
+            pbfTariffMap.putAll( tariffDataValueService.getTariffDataValues( tariffOrgUnit, selDataSet, period ) );
+        }
+        
+        //-----------------------------------------------------------
+        // QualityScore
+        //-----------------------------------------------------------
         
         return SUCCESS;
+    }
+    
+    public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
+    {
+        Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
+        if ( tariffOULevel == ouLevel )
+        {
+            return organisationUnit;
+        }
+        else
+        {
+            return findParentOrgunitforTariff( organisationUnit.getParent(), tariffOULevel );
+        }
     }
 }

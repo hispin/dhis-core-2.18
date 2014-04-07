@@ -19,6 +19,7 @@
     <bean id="org.hisp.dhis.pbf.api.PBFDataValueStore" class="org.hisp.dhis.pbf.impl.HibernatePBFDataValueStore">
         <property name="sessionFactory" ref="sessionFactory" />
         <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
     </bean>
     
     <bean id="org.hisp.dhis.pbf.api.TariffDataValueService" class="org.hisp.dhis.pbf.impl.DefaultTariffDataValueService">

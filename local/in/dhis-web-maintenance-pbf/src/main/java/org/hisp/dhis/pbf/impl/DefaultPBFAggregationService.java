@@ -204,6 +204,72 @@ public class DefaultPBFAggregationService
         return aggregationResultMap;
     }
     
+    
+    public Double calculateOverallQualityScore( Period period, Set<OrganisationUnit> orgUnits, Integer dataSetId, int maxScoreOrgUnitId )
+    {
+        Double overallQualityScore = 0.0;
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        
+        try
+        {
+            Double maxScore = 0.0;
+            String query = "SELECT dataelementid, (SUM(value) * "+orgUnits.size() +") FROM qualitymaxvalue " +
+                                " WHERE " +
+                                    " startdate <='"+ simpleDateFormat.format( period.getStartDate() ) +"' AND "+
+                                    " enddate >='"+ simpleDateFormat.format( period.getEndDate() ) +"' AND " +
+                                    " organisationunitid = "+ maxScoreOrgUnitId +" AND "+
+                                    " datasetid = " + dataSetId +" AND " +
+                                    " GROUP BY dataelementid";                                
+
+            //System.out.println( query );
+                
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer deId = rs.getInt( 1 );
+                Double value = rs.getDouble( 2 );
+                maxScore += value;
+            }                
+            
+            Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
+            String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+            
+            query = "SELECT SUM( CAST ( value AS NUMERIC ) ) FROM datavalue dv "+ 
+                                " INNER JOIN datasetmembers dsm on dsm.dataelementid = dv.dataelementid " +
+                                " WHERE " +
+                                    " dv.periodid = " + period.getId() + " AND "+
+                                    " dv.sourceid IN ("+ orgUnitIdsByComma +") AND " +
+                                    " dsm.datasetid = " + dataSetId;
+            
+            //System.out.println( query );
+            Double qualityScore = 0.0;
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+            if ( rs1.next() )
+            {
+                qualityScore = rs1.getDouble( 1 );
+            }
+            
+            try
+            {
+                if( maxScore != 0.0 )
+                {
+                    overallQualityScore = ( qualityScore / maxScore ) * 100.0;
+                }
+            }
+            catch( Exception e )
+            {
+                
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("Exception : "+ e.getMessage() );
+        }
+        
+        return overallQualityScore;
+    }
+
  
     public String importData( Map<String, Double> aggregationResultMap )
     {
