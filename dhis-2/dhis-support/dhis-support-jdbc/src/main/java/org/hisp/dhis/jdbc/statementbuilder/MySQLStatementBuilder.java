@@ -75,7 +75,7 @@ public class MySQLStatementBuilder
     @Override
     public String getRegexpWordEnd()
     {
-        return " [[:>:]]";
+        return "[[:>:]]";
     }
     
     @Override
