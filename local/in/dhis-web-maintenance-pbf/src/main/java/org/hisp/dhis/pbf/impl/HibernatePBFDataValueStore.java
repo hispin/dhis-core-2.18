@@ -1,7 +1,10 @@
 package org.hisp.dhis.pbf.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -14,6 +17,8 @@ import org.hisp.dhis.pbf.api.PBFDataValue;
 import org.hisp.dhis.pbf.api.PBFDataValueStore;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 public class HibernatePBFDataValueStore implements PBFDataValueStore
 {
@@ -36,43 +41,49 @@ public class HibernatePBFDataValueStore implements PBFDataValueStore
         this.periodStore = periodStore;
     }
 
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     // -------------------------------------------------------------------------
     // PBFDataValue
     // -------------------------------------------------------------------------
 
-	@Override
-	public void addPBFDataValue( PBFDataValue pbfDataValue ) 
-	{
-		pbfDataValue.setPeriod( periodStore.reloadForceAddPeriod( pbfDataValue.getPeriod() ) );
+    @Override
+    public void addPBFDataValue( PBFDataValue pbfDataValue ) 
+    {
+	pbfDataValue.setPeriod( periodStore.reloadForceAddPeriod( pbfDataValue.getPeriod() ) );
 
         Session session = sessionFactory.getCurrentSession();
 
         session.save( pbfDataValue );
-	}
+    }
 
-	@Override
-	public void updatePBFDataValue( PBFDataValue pbfDataValue ) 
-	{
-		pbfDataValue.setPeriod( periodStore.reloadForceAddPeriod( pbfDataValue.getPeriod() ) );
+    @Override
+    public void updatePBFDataValue( PBFDataValue pbfDataValue ) 
+    {
+	pbfDataValue.setPeriod( periodStore.reloadForceAddPeriod( pbfDataValue.getPeriod() ) );
 
         Session session = sessionFactory.getCurrentSession();
 
         session.update( pbfDataValue );
-	}
+    }
 
-	@Override
-	public void deletePBFDataValue( PBFDataValue pbfDataValue ) 
-	{
+    @Override
+    public void deletePBFDataValue( PBFDataValue pbfDataValue ) 
+    {
         Session session = sessionFactory.getCurrentSession();
 
         session.delete( pbfDataValue );
-	}
+    }
 
-
-	@Override
-	public PBFDataValue getPBFDataValue( OrganisationUnit organisationUnit, DataSet dataSet, Period period, DataElement dataElement ) 
-	{
-		Period storedPeriod = periodStore.reloadPeriod( period );
+    @Override
+    public PBFDataValue getPBFDataValue( OrganisationUnit organisationUnit, DataSet dataSet, Period period, DataElement dataElement ) 
+    {
+	Period storedPeriod = periodStore.reloadPeriod( period );
 
         if ( storedPeriod == null )
         {
@@ -88,12 +99,12 @@ public class HibernatePBFDataValueStore implements PBFDataValueStore
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
 
         return ( PBFDataValue ) criteria.uniqueResult();
-	}
+    }
 
-	@Override
-	public Collection<PBFDataValue> getPBFDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period ) 
-	{
-		Period storedPeriod = periodStore.reloadPeriod( period );
+    @Override
+    public Collection<PBFDataValue> getPBFDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period ) 
+    {
+        Period storedPeriod = periodStore.reloadPeriod( period );
 
         if ( storedPeriod == null )
         {
@@ -108,6 +119,34 @@ public class HibernatePBFDataValueStore implements PBFDataValueStore
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
 
         return criteria.list();
-	}
+    }
 
+    public Map<Integer, Double> getPBFDataValues( String orgUnitIds, DataSet dataSet, String periodIds )
+    {
+        Map<Integer, Double> pbfDataValueMap = new HashMap<Integer, Double>();
+        
+        try
+        {
+            String query = "SELECT dataelementid, SUM( CAST( qtyvalidated AS NUMERIC) ) FROM pbfdatavalue " +                                
+                                " WHERE " + 
+                                    " organisationunitid IN (" + orgUnitIds + ") AND " +
+                                    " datasetid = "+ dataSet.getId() + " AND " +
+                                    " periodid IN (" + periodIds + ") " +
+                                    " GROUP BY dataelementid";
+                
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer dataElementId = rs.getInt( 1 );
+                Double value = rs.getDouble( 2 );
+                pbfDataValueMap.put( dataElementId, value );
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("In getTariffDataValues Exception :"+ e.getMessage() );
+        }
+        
+        return pbfDataValueMap;
+    }
 }
