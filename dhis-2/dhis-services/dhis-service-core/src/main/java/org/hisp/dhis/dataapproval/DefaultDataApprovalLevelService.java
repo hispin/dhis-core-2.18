@@ -319,7 +319,7 @@ public class DefaultDataApprovalLevelService
         }
     }
 
-    public int getLowestUserDataApprovalLevel()
+    public int getLowestUserViewDataApprovalLevel()
     {
         List<DataApprovalLevel> levels = getAllDataApprovalLevels();
 
