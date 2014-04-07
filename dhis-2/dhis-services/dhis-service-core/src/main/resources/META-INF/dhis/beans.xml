@@ -1013,6 +1013,10 @@
 
   <!-- DeletionHandlers -->
 
+  <bean id="org.hisp.dhis.dataapproval.DataApprovalDeletionHandler" class="org.hisp.dhis.dataapproval.DataApprovalDeletionHandler">
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
+  </bean>
+
   <bean id="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler" class="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler">
     <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
   </bean>
@@ -1182,6 +1186,7 @@
     <property name="arguments">
       <list>
         <list>
+          <ref local="org.hisp.dhis.dataapproval.DataApprovalDeletionHandler" />
           <ref local="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.DataElementDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" />
