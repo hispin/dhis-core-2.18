@@ -176,6 +176,26 @@ public class TrackedEntityInstanceQueryParams
     }
 
     /**
+     * Returns a list of query items which appear more than once as attributes
+     * or filters.
+     */
+    public List<QueryItem> getDuplicateAttributesAndFilters()
+    {
+        Set<QueryItem> items = new HashSet<QueryItem>();
+        List<QueryItem> duplicates = new ArrayList<QueryItem>();
+        
+        for ( QueryItem item : getAttributesAndFilters() )
+        {
+            if ( !items.add( item ) )
+            {
+                duplicates.add( item );
+            }
+        }
+        
+        return duplicates;
+    }
+    
+    /**
      * Indicates whether this params specifies any attributes and/or filters.
      */
     public boolean hasAttributesOrFilters()

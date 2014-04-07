@@ -113,7 +113,74 @@ public class QueryFilter
         
         return "'" + encodedFilter + "'";
     }
+
+    // -------------------------------------------------------------------------
+    // hashCode, equals and toString
+    // -------------------------------------------------------------------------
     
+    @Override
+    public String toString()
+    {
+        return "[Operator: " + operator + ", filter: " + filter + "]";
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( ( filter == null) ? 0 : filter.hashCode() );
+        result = prime * result + ( ( operator == null) ? 0 : operator.hashCode() );
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        
+        if ( object == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        QueryFilter other = (QueryFilter) object;
+        
+        if ( filter == null )
+        {
+            if ( other.filter != null )
+            {
+                return false;
+            }
+        }
+        else if ( !filter.equals( other.filter ) )
+        {
+            return false;
+        }
+        
+        if ( operator == null )
+        {
+            if ( other.operator != null )
+            {
+                return false;
+            }
+        }
+        else if ( !operator.equals( other.operator ) )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

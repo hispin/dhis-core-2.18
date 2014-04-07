@@ -89,8 +89,37 @@ public class QueryItem
     }
     
     // -------------------------------------------------------------------------
-    // toString
+    // hashCode, equals and toString
     // -------------------------------------------------------------------------
+    
+    @Override
+    public int hashCode()
+    {
+        return item.hashCode();
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        
+        if ( object == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        final QueryItem other = (QueryItem) object;
+        
+        return item.equals( other.getItem() );
+    }
 
     @Override
     public String toString()
