@@ -81,7 +81,19 @@ public class PostgreSQLStatementBuilder
     @Override
     public String getRegexpMatch()
     {
-        return "~";
+        return "~*";
+    }
+    
+    @Override
+    public String getRegexpWordStart()
+    {
+        return "\\m";
+    }
+
+    @Override
+    public String getRegexpWordEnd()
+    {
+        return "\\M";
     }
     
     @Override

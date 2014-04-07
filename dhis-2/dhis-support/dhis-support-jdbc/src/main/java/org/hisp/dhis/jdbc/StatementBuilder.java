@@ -116,10 +116,20 @@ public interface StatementBuilder
     String getDoubleColumnType();
     
     /**
-     * Returns the value used to match a column to a regular expression.
-     * @return the value used to match a column to a regular expression.
+     * Returns the value used to match a column to a regular expression. Matching
+     * is case insensitive.
      */
     String getRegexpMatch();
+
+    /**
+     * Returns the regular expression marker for end of a word.
+     */
+    String getRegexpWordStart();
+    
+    /**
+     * Returns the regular expression marker for start of a word.
+     */
+    String getRegexpWordEnd();
     
     /**
      * Creates a SELECT statement returning the identifier of the given Period.
