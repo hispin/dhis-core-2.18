@@ -17,6 +17,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //Selection
     $scope.selectedOrgUnit = '';
     $scope.selectedProgram = '';
+    $scope.ouMode = 'SELECTED';
     
     //Filtering
     $scope.reverse = false;
@@ -49,7 +50,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         $scope.searchField.isOpen = false;
         
-        $scope.trackedEntityList = [];
+        $scope.trackedEntityList = null;
         
         $scope.gridColumns = AttributesFactory.getForListing();
 
@@ -69,15 +70,19 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };
     
     $scope.clearEntities = function(){
-        $scope.trackedEntityList = [];
+        $scope.trackedEntityList = null;
     };
     
     $scope.showRegistration = function(){
         
     };  
     
-    $scope.showSearch = function(){
+    $scope.showSearch = function(){        
         $scope.showSearchDiv = !$scope.showSearchDiv;
+    };
+    
+    $scope.hideSearch = function(){        
+        $scope.showSearchDiv = false;
     };
     
     $scope.closeSearch = function(){
@@ -118,11 +123,149 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.search = function(){       
         console.log('the search is:  ', $scope.attributes);
+        console.log('the mode is:  ', $scope.ouMode);
     };
        
     $scope.getHelpContent = function(){
         console.log('I will get help content');
     };    
+})
+
+//Controller for the search section
+.controller('SearchController',
+        function($scope,                
+                storage,
+                TranslationService) {
+
+    TranslationService.translate();
+    
+    //search attibutes
+    $scope.attributes = storage.get('ATTRIBUTES');     
+    $scope.availableAttributes = [];
+    $scope.selectedAttributes = [];
+    $scope.showAdvancedSearchDiv = false;
+    
+    angular.forEach($scope.attributes, function(attribute){
+        $scope.availableAttributes.push(attribute);
+    });
+    
+    $scope.moveToSelected = function(attribute, fromView){  
+        
+        if(attribute){
+            
+            if(fromView){
+                attribute = attribute[0];
+            }
+
+            if(angular.isObject(attribute)) {            
+                if($scope.selectedAttributes.indexOf(attribute) === -1){       
+
+                    var filter = {operands: [], operand: '', values: [], value: ''};
+
+                    if(attribute.valueType === 'number' || attribute.valueType === 'date'){
+                        filter.operands = ['=', '>','>=', '<', '<=', '!=' ];
+                        filter.operand = filter.operands[0];
+                    }
+
+                    else if(attribute.valueType === 'bool'){
+                        filter.operands = ['One of'];
+                        filter.operand = filter.operands[0];
+                        filter.values = ['No', 'Yes'];
+                        filter.value = filter.values[0];
+                    }
+
+                    else if(attribute.valueType === 'combo'){
+                        filter.operands = ['One of'];
+                        filter.operand = filter.operands[0];
+                        filter.values = attribute.optionSet.options;
+                        filter.value = filter.values[0];
+                    }
+                    else{
+                        filter.operands = ['like', 'not_like' ];
+                        filter.operand = filter.operands[0];
+                    }
+
+                    attribute.filters = [filter];
+                    $scope.selectedAttributes.push(attribute);
+                    var index = $scope.availableAttributes.indexOf(attribute);
+                    $scope.availableAttributes.splice(index, 1);
+                }
+            }            
+        }         
+    };
+    
+    $scope.moveAllToSelected = function(){     
+        for(var i=0; i<$scope.availableAttributes.length;)
+        angular.forEach($scope.availableAttributes, function(attribute){
+            //$scope.selectedAttributes.push(attribute);            
+            $scope.moveToSelected(attribute, false);
+        });        
+        
+        $scope.availableAttributes = [];
+    };
+    
+    $scope.addFilter = function(attribute){
+        
+        var filter = {operands: [], operand: '', values: [], value: ''};
+                    
+        if(attribute.valueType === 'number' || attribute.valueType === 'date'){
+            filter.operands = ['=', '>','>=', '<', '<=', '!=' ];
+            filter.operand = filter.operands[0];
+        }
+
+        else if(attribute.valueType === 'bool'){
+            filter.operands = ['One of'];
+            filter.operand = filter.operands[0];
+            filter.values = ['No', 'Yes'];
+            filter.value = filter.values[0];
+        }
+
+        else if(attribute.valueType === 'combo'){
+            filter.operands = ['One of'];
+            filter.operand = filter.operands[0];
+            filter.values = attribute.optionSet.options;
+            filter.value = filter.values[0];
+        }
+        else{
+            filter.operands = ['like', 'not_like' ];
+            filter.operand = filter.operands[0];
+        }
+
+        attribute.filters.push(filter);
+
+        //console.log('I am going to add filter for dataElement:  ', dataElement);  
+    };
+    
+    $scope.removeFilter = function(filter, attribute){
+        
+        var index = attribute.filters.indexOf(filter);        
+        attribute.filters.splice(index, 1);
+        
+        console.log();
+        if(attribute.filters.length === 0 || angular.isUndefined(attribute.filters.length)){
+            index = $scope.selectedAttributes.indexOf(attribute);
+            $scope.selectedAttributes.splice(index, 1);
+            $scope.availableAttributes.push(attribute);
+        }
+        
+    };
+    
+    $scope.showAdvancedSearch = function(){        
+        $scope.showAdvancedSearchDiv = !$scope.showAdvancedSearchDiv;
+    };
+    
+    $scope.hideAdvancedSearch = function(){        
+        $scope.showAdvancedSearchDiv = false;
+    };
+    
+    $scope.closeAdvancedSearch = function(){
+        $scope.showAdvancedSearchDiv = !$scope.showAdvancedSearchDiv;
+    }; 
+    
+    $scope.search = function(){
+        console.log($scope.attributes);
+    };
+    
 })
 
 //Controller for dashboard

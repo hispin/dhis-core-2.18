@@ -8,6 +8,7 @@
     "list_all_entities": "List All Entities",
     "list": "List",
     "search": "Search",
+    "advanced_search": "Advanced search",
     "search_for": "Search for",
     "registered_entities": "Registered Entities",
     "empty_entity_list": "There are no reigstered entities",
@@ -32,6 +33,8 @@
     "create_new_event": "Create new event",
     "close_search": "Close search",
     "search_attributes": "Search attributes",
+    "available_search_attributes": "Available search attributes",
+    "selected_search_attributes": "Selected search attributes",
     "search_for_dashboard": "Search for dashboard items",
     "dashboard": "Dashboard",
     "home": "Home",
@@ -41,6 +44,10 @@
     "notes": "Notes",
     "dataentry": "Data Entry",
     "current_selections": "Current selections",
+    "org_unit_mode": "Searching org unit",
+    "use_selected": "Use selected",
+    "use_immediate_children": "Use immdiate children",
+    "use_all_children": "Use all children",
     "data_element": "Data element",
     "value": "Value",
     "show_hide_widgets": "Show/Hide widgets",
@@ -49,5 +56,7 @@
     "program_stage": "Program stage",
     "scheduled_date": "Scheduled date",
     "scheduling": "Scheduling",
-    "enroll": "Enroll"
+    "enroll": "Enroll",
+    "like": "LIKE",
+    "not_like": "NOT LIKE"
 }
