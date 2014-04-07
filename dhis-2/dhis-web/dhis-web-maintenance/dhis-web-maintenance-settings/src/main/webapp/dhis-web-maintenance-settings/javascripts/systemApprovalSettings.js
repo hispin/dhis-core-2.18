@@ -10,9 +10,9 @@ function removeApprovalLevel( context ) {
 }
 
 function moveApprovalLevelUp( context ) {
-    location.href = 'moveApprovalLevelUp.action?level=' + context.id;
+    location.href = 'moveApprovalLevelUp.action?id=' + context.id;
 }
 
 function moveApprovalLevelDown( context ) {
-    location.href = 'moveApprovalLevelDown.action?level=' + context.id;
+    location.href = 'moveApprovalLevelDown.action?id=' + context.id;
 }

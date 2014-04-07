@@ -48,8 +48,8 @@
                 <tbody id="list">
                     #foreach( $level in $dataApprovalLevels )
                     <tr id="tr${level.id}" data-id="$!level.id" data-uid="$!level.uid" data-type="DataApprovalLevel" data-name="$encoder.htmlEncode( $!level.displayName )"
-                            data-can-move-up="$approvalLevelService.canMoveUp( $level.level )"
-                            data-can-move-down="$approvalLevelService.canMoveDown( $level.level )"
+                            data-can-move-up="$approvalLevelService.canDataApprovalLevelMoveUp( $level.level )"
+                            data-can-move-down="$approvalLevelService.canDataApprovalLevelMoveDown( $level.level )"
                             data-can-manage="$security.canManage( $level )">
                         <td>$encoder.htmlEncode( $!level.orgUnitLevelName )</td>
                         <td>$encoder.htmlEncode( $!level.getCategoryOptionGroupSetName() )</td>
