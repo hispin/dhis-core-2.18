@@ -75,7 +75,7 @@ public class H2StatementBuilder
     @Override
     public String getRegexpWordEnd()
     {
-        return " [[:>:]]";
+        return "[[:>:]]";
     }
     
     @Override

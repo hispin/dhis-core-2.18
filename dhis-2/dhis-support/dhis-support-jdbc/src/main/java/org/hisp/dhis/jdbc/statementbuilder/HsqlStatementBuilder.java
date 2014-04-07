@@ -75,7 +75,7 @@ public class HsqlStatementBuilder
     @Override
     public String getRegexpWordEnd()
     {
-        return " [[:>:]]";
+        return "[[:>:]]";
     }
     
     @Override
