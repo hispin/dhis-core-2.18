@@ -298,15 +298,15 @@ public class DefaultDataApprovalLevelService
         return dataApprovalLevelStore.save( newLevel );
     }
     
-    public void deleteDataApprovalLevel( int level )
+    public void deleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
     {
         List<DataApprovalLevel> dataApprovalLevels = getAllDataApprovalLevels();
 
-        int index = level - 1;
-
+        int index = dataApprovalLevel.getLevel() - 1;
+        
         if ( index >= 0 & index < dataApprovalLevels.size() )
         {
-            dataApprovalLevelStore.delete( dataApprovalLevels.get( index ) );
+            dataApprovalLevelStore.delete( dataApprovalLevel );
 
             dataApprovalLevels.remove( index );
 

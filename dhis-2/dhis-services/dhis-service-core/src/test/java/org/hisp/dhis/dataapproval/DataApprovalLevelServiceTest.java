@@ -231,13 +231,13 @@ public class DataApprovalLevelServiceTest
 
     @Test
     public void testDeleteDataApprovalLevel() throws Exception
-    {
+    {        
         dataApprovalLevelService.addDataApprovalLevel( level1A );
         dataApprovalLevelService.addDataApprovalLevel( level2B );
         dataApprovalLevelService.addDataApprovalLevel( level3C );
         dataApprovalLevelService.addDataApprovalLevel( level4D );
 
-        List<DataApprovalLevel> levels;
+        List<DataApprovalLevel> levels = null;
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 4, levels.size() );
@@ -246,7 +246,7 @@ public class DataApprovalLevelServiceTest
         assertEquals( "3C", levels.get( 2 ).getName() );
         assertEquals( "4D", levels.get( 3 ).getName() );
 
-        dataApprovalLevelService.deleteDataApprovalLevel( 2 );
+        dataApprovalLevelService.deleteDataApprovalLevel( level2B );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 3, levels.size() );
@@ -254,20 +254,20 @@ public class DataApprovalLevelServiceTest
         assertEquals( "3C", levels.get( 1 ).getName() );
         assertEquals( "4D", levels.get( 2 ).getName() );
 
-        dataApprovalLevelService.deleteDataApprovalLevel( 3 );
+        dataApprovalLevelService.deleteDataApprovalLevel( level4D );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 2, levels.size() );
         assertEquals( "1A", levels.get( 0 ).getName() );
         assertEquals( "3C", levels.get( 1 ).getName() );
 
-        dataApprovalLevelService.deleteDataApprovalLevel( 1 );
+        dataApprovalLevelService.deleteDataApprovalLevel( level1A );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 1, levels.size() );
         assertEquals( "3C", levels.get( 0 ).getName() );
 
-        dataApprovalLevelService.deleteDataApprovalLevel( 1 );
+        dataApprovalLevelService.deleteDataApprovalLevel( level3C );
 
         levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 0, levels.size() );

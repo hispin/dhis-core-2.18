@@ -28,6 +28,7 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 
 import com.opensymphony.xwork2.Action;
@@ -67,7 +68,9 @@ public class RemoveApprovalLevelAction
 
     public String execute()
     {
-        dataApprovalLevelService.deleteDataApprovalLevel( id );
+        DataApprovalLevel approvalLevel = dataApprovalLevelService.getDataApprovalLevel( id );
+        
+        dataApprovalLevelService.deleteDataApprovalLevel( approvalLevel );
 
         return SUCCESS;
     }
