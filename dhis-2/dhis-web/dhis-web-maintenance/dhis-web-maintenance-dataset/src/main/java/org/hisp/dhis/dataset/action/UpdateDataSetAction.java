@@ -28,6 +28,7 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -46,7 +47,6 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.UserGroupService;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +56,6 @@ import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
 /**
  * @author Kristian
- * @version $Id: UpdateDataSetAction.java 6255 2008-11-10 16:01:24Z larshelg $
  */
 public class UpdateDataSetAction
     implements Action
@@ -238,7 +237,7 @@ public class UpdateDataSetAction
     }
 
     private boolean noValueRequiresComment;
-    
+
     public void setNoValueRequiresComment( boolean noValueRequiresComment )
     {
         this.noValueRequiresComment = noValueRequiresComment;
@@ -272,22 +271,22 @@ public class UpdateDataSetAction
         this.renderHorizontally = renderHorizontally;
     }
 
-    private Collection<String> dataElementsSelectedList = new HashSet<String>();
+    private List<String> deSelected = Lists.newArrayList();
 
-    public void setDataElementsSelectedList( Collection<String> dataElementsSelectedList )
+    public void setDeSelected( List<String> deSelected )
     {
-        this.dataElementsSelectedList = dataElementsSelectedList;
+        this.deSelected = deSelected;
     }
 
-    private Collection<String> indicatorsSelectedList = new HashSet<String>();
+    private List<String> inSelected = Lists.newArrayList();
 
-    public void setIndicatorsSelectedList( Collection<String> indicatorsSelectedList )
+    public void setInSelected( List<String> inSelected )
     {
-        this.indicatorsSelectedList = indicatorsSelectedList;
+        this.inSelected = inSelected;
     }
 
     private Integer categoryComboId;
-    
+
     public void setCategoryComboId( Integer categoryComboId )
     {
         this.categoryComboId = categoryComboId;
@@ -326,16 +325,16 @@ public class UpdateDataSetAction
 
         MapLegendSet legendSet = mappingService.getMapLegendSet( selectedLegendSetId );
 
-        for ( String id : dataElementsSelectedList )
+        for ( String id : deSelected )
         {
-            dataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
+            dataElements.add( dataElementService.getDataElement( id ) );
         }
 
         Set<Indicator> indicators = new HashSet<Indicator>();
 
-        for ( String id : indicatorsSelectedList )
+        for ( String id : inSelected )
         {
-            indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
+            indicators.add( indicatorService.getIndicator( id ) );
         }
 
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
@@ -346,7 +345,7 @@ public class UpdateDataSetAction
         dataSet.setTimelyDays( timelyDays );
         dataSet.setSkipAggregation( skipAggregation );
 
-        if ( !( equalsNullSafe( name, dataSet.getName() ) &&
+        if ( !(equalsNullSafe( name, dataSet.getName() ) &&
             periodType.equals( dataSet.getPeriodType() ) &&
             dataElements.equals( dataSet.getDataElements() ) &&
             indicators.equals( dataSet.getIndicators() ) &&
@@ -379,7 +378,7 @@ public class UpdateDataSetAction
         {
             dataSet.setCategoryCombo( categoryService.getDataElementCategoryCombo( categoryComboId ) );
         }
-        
+
         if ( jsonAttributeValues != null )
         {
             AttributeUtils.updateAttributeValuesFromJson( dataSet.getAttributeValues(), jsonAttributeValues,
