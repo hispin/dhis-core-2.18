@@ -28,6 +28,7 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 
 import com.opensymphony.xwork2.Action;
@@ -53,11 +54,11 @@ public class MoveApprovalLevelUpAction
     // Input
     // -------------------------------------------------------------------------
 
-    private int level;
+    private int id;
 
-    public void setLevel( int level )
+    public void setLevel( int id )
     {
-        this.level = level;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
@@ -66,7 +67,9 @@ public class MoveApprovalLevelUpAction
 
     public String execute()
     {
-        dataApprovalLevelService.moveDataApprovalLevelUp( level );
+        DataApprovalLevel approvalLevel = dataApprovalLevelService.getDataApprovalLevel( id );
+
+        dataApprovalLevelService.moveDataApprovalLevelUp( approvalLevel.getLevel() );
 
         return SUCCESS;
     }
