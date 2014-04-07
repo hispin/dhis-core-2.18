@@ -138,6 +138,14 @@ public interface DataApprovalLevelService
     int getLowestUserDataApprovalLevel();
     
     /**
+     * Gets the data approval level with the given id.
+     * 
+     * @param id the id.
+     * @return a data approval level.
+     */
+    DataApprovalLevel getDataApprovalLevel( int id );
+    
+    /**
      * Gets the data approval level with the given name.
      * 
      * @param name the name.
