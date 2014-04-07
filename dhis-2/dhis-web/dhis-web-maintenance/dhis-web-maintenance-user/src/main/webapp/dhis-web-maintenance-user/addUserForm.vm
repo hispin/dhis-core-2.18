@@ -1,4 +1,3 @@
-<script src="javascript/jqSelected.js"></script>
 <script type="text/javascript">
   jQuery(function() {
     validation2('addUserForm', function( form ) {

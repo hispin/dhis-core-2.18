@@ -1,4 +1,6 @@
 /**
+ * Simple plugin for keeping two <select /> elements in sync.
+ *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 
