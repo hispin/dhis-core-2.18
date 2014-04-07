@@ -61,6 +61,9 @@ public class DataApprovalStoreTest
     private DataApprovalStore dataApprovalStore;
 
     @Autowired
+    private DataApprovalLevelService dataApprovalLevelService;
+
+    @Autowired
     private PeriodService periodService;
 
     @Autowired
@@ -78,6 +81,14 @@ public class DataApprovalStoreTest
     // -------------------------------------------------------------------------
     // Supporting data
     // -------------------------------------------------------------------------
+
+    private DataApprovalLevel level1;
+
+    private DataApprovalLevel level2;
+
+    private DataApprovalLevel level3;
+
+    private DataApprovalLevel level4;
 
     private DataSet dataSetA;
 
@@ -111,6 +122,11 @@ public class DataApprovalStoreTest
         // ---------------------------------------------------------------------
         // Add supporting data
         // ---------------------------------------------------------------------
+
+        level1 = new DataApprovalLevel( "1", 1, null );
+        level2 = new DataApprovalLevel( "2", 2, null );
+        level3 = new DataApprovalLevel( "3", 3, null );
+        level4 = new DataApprovalLevel( "4", 4, null );
 
         PeriodType periodType = PeriodType.getPeriodTypeByName( "Monthly" );
 
@@ -152,11 +168,14 @@ public class DataApprovalStoreTest
     @Test
     public void testAddAndGetDataApproval() throws Exception
     {
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+
         Date date = new Date();
-        DataApproval dataApprovalA = new DataApproval( dataSetA, periodA, sourceA, categoryOptionGroup, false, date, userA );
-        DataApproval dataApprovalB = new DataApproval( dataSetA, periodA, sourceB, categoryOptionGroup, false, date, userA );
-        DataApproval dataApprovalC = new DataApproval( dataSetA, periodB, sourceA, categoryOptionGroup, false, date, userA );
-        DataApproval dataApprovalD = new DataApproval( dataSetB, periodA, sourceA, categoryOptionGroup, false, date, userA );
+        DataApproval dataApprovalA = new DataApproval( level1, dataSetA, periodA, sourceA, categoryOptionGroup, false, date, userA );
+        DataApproval dataApprovalB = new DataApproval( level2, dataSetA, periodA, sourceB, categoryOptionGroup, false, date, userA );
+        DataApproval dataApprovalC = new DataApproval( level1, dataSetA, periodB, sourceA, categoryOptionGroup, false, date, userA );
+        DataApproval dataApprovalD = new DataApproval( level1, dataSetB, periodA, sourceA, categoryOptionGroup, false, date, userA );
         DataApproval dataApprovalE;
 
         dataApprovalStore.addDataApproval( dataApprovalA );
@@ -166,6 +185,7 @@ public class DataApprovalStoreTest
 
         dataApprovalA = dataApprovalStore.getDataApproval( dataSetA, periodA, sourceA, categoryOptionGroup );
         assertNotNull( dataApprovalA );
+        assertEquals( level1.getId(), dataApprovalA.getDataApprovalLevel().getId() );
         assertEquals( dataSetA.getId(), dataApprovalA.getDataSet().getId() );
         assertEquals( periodA, dataApprovalA.getPeriod() );
         assertEquals( sourceA.getId(), dataApprovalA.getOrganisationUnit().getId() );
@@ -174,6 +194,7 @@ public class DataApprovalStoreTest
 
         dataApprovalB = dataApprovalStore.getDataApproval( dataSetA, periodA, sourceB, categoryOptionGroup );
         assertNotNull( dataApprovalB );
+        assertEquals( level2.getId(), dataApprovalB.getDataApprovalLevel().getId() );
         assertEquals( dataSetA.getId(), dataApprovalB.getDataSet().getId() );
         assertEquals( periodA, dataApprovalB.getPeriod() );
         assertEquals( sourceB.getId(), dataApprovalB.getOrganisationUnit().getId() );
@@ -182,6 +203,7 @@ public class DataApprovalStoreTest
 
         dataApprovalC = dataApprovalStore.getDataApproval( dataSetA, periodB, sourceA, categoryOptionGroup );
         assertNotNull( dataApprovalC );
+        assertEquals( level1.getId(), dataApprovalC.getDataApprovalLevel().getId() );
         assertEquals( dataSetA.getId(), dataApprovalC.getDataSet().getId() );
         assertEquals( periodB, dataApprovalC.getPeriod() );
         assertEquals( sourceA.getId(), dataApprovalC.getOrganisationUnit().getId() );
@@ -190,6 +212,7 @@ public class DataApprovalStoreTest
 
         dataApprovalD = dataApprovalStore.getDataApproval( dataSetB, periodA, sourceA, categoryOptionGroup );
         assertNotNull( dataApprovalD );
+        assertEquals( level1.getId(), dataApprovalD.getDataApprovalLevel().getId() );
         assertEquals( dataSetB.getId(), dataApprovalD.getDataSet().getId() );
         assertEquals( periodA, dataApprovalD.getPeriod() );
         assertEquals( sourceA.getId(), dataApprovalD.getOrganisationUnit().getId() );
@@ -203,9 +226,11 @@ public class DataApprovalStoreTest
     @Test
     public void testAddDuplicateDataApproval() throws Exception
     {
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+
         Date date = new Date();
-        DataApproval dataApprovalA = new DataApproval( dataSetA, periodA, sourceA, categoryOptionGroup, false, date, userA );
-        DataApproval dataApprovalB = new DataApproval( dataSetA, periodA, sourceA, categoryOptionGroup, false, date, userA );
+        DataApproval dataApprovalA = new DataApproval( level1, dataSetA, periodA, sourceA, categoryOptionGroup, false, date, userA );
+        DataApproval dataApprovalB = new DataApproval( level1, dataSetA, periodA, sourceA, categoryOptionGroup, false, date, userA );
 
         dataApprovalStore.addDataApproval( dataApprovalA );
 
@@ -223,9 +248,12 @@ public class DataApprovalStoreTest
     @Test
     public void testDeleteDataApproval() throws Exception
     {
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+
         Date date = new Date();
-        DataApproval dataApprovalA = new DataApproval( dataSetA, periodA, sourceA, categoryOptionGroup, false, date, userA );
-        DataApproval dataApprovalB = new DataApproval( dataSetB, periodB, sourceB, categoryOptionGroup, false, date, userB );
+        DataApproval dataApprovalA = new DataApproval( level1, dataSetA, periodA, sourceA, categoryOptionGroup, false, date, userA );
+        DataApproval dataApprovalB = new DataApproval( level2, dataSetB, periodB, sourceB, categoryOptionGroup, false, date, userB );
 
         dataApprovalStore.addDataApproval( dataApprovalA );
         dataApprovalStore.addDataApproval( dataApprovalB );

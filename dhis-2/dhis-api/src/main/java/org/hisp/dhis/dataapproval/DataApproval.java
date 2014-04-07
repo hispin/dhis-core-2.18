@@ -58,6 +58,11 @@ public class DataApproval
     private int id;
 
     /**
+     * The approval level for which this approval is defined.
+     */
+    private DataApprovalLevel dataApprovalLevel;
+
+    /**
      * The DataSet for the values being approved (required).
      */
     private DataSet dataSet;
@@ -102,10 +107,12 @@ public class DataApproval
     {
     }
 
-    public DataApproval( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
+    public DataApproval( DataApprovalLevel dataApprovalLevel, DataSet dataSet,
+                         Period period, OrganisationUnit organisationUnit,
                          CategoryOptionGroup categoryOptionGroup, boolean accepted,
                          Date created, User creator )
     {
+        this.dataApprovalLevel = dataApprovalLevel;
         this.dataSet = dataSet;
         this.period = period;
         this.organisationUnit = organisationUnit;
@@ -127,6 +134,16 @@ public class DataApproval
     public void setId( int id )
     {
         this.id = id;
+    }
+
+    public DataApprovalLevel getDataApprovalLevel()
+    {
+        return dataApprovalLevel;
+    }
+
+    public void setDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
+    {
+        this.dataApprovalLevel = dataApprovalLevel;
     }
 
     public DataSet getDataSet()

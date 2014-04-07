@@ -217,7 +217,8 @@ public class DataApprovalController
 
         CategoryOptionGroup categoryOptionGroup = categoryOptionGroups == null ? null : (CategoryOptionGroup) categoryOptionGroups.toArray() [0];
 
-        DataApproval approval = new DataApproval( dataSet, period, organisationUnit, categoryOptionGroup, false, new Date(), user );
+        DataApproval approval = new DataApproval( permissions.getDataApprovalStatus().getDataApprovalLevel(),
+                dataSet, period, organisationUnit, categoryOptionGroup, false, new Date(), user );
 
         dataApprovalService.addDataApproval( approval );
     }
