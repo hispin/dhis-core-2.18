@@ -290,6 +290,11 @@ public class DefaultTrackedEntityInstanceService
             violation = "Program must be defined when program dates are specified";
         }
         
+        if ( !params.getDuplicateAttributesAndFilters().isEmpty() )
+        {
+            violation = "Attributes and filters cannot be specified more than once: " + params.getDuplicateAttributesAndFilters();
+        }
+        
         if ( violation != null )
         {
             log.warn( "Validation failed: " + violation );
