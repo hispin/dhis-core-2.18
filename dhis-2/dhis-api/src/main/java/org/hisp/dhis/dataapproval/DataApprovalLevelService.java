@@ -135,7 +135,7 @@ public interface DataApprovalLevelService
      *
      * @return level number of the lowest level the user can view.
      */
-    int getLowestUserDataApprovalLevel();
+    int getLowestUserViewDataApprovalLevel();
     
     /**
      * Gets the data approval level with the given id.
