@@ -35,6 +35,7 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dashboard.DashboardItem;
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -149,6 +150,15 @@ public abstract class DeletionHandler
     }
 
     public String allowDeleteChart( Chart chart )
+    {
+        return null;
+    }
+
+    public void deleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
+    {
+    }
+
+    public String allowDeleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel )
     {
         return null;
     }
