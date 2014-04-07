@@ -47,7 +47,7 @@
                 </thead>
                 <tbody id="list">
                     #foreach( $level in $dataApprovalLevels )
-                    <tr id="tr${level.level}" data-id="$!level.id" data-uid="$!level.uid" data-type="DataApprovalLevel" data-name="$encoder.htmlEncode( $!level.displayName )"
+                    <tr id="tr${level.id}" data-id="$!level.id" data-uid="$!level.uid" data-type="DataApprovalLevel" data-name="$encoder.htmlEncode( $!level.displayName )"
                             data-can-move-up="$approvalLevelService.canMoveUp( $level.level )"
                             data-can-move-down="$approvalLevelService.canMoveDown( $level.level )"
                             data-can-manage="$security.canManage( $level )">
