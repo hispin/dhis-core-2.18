@@ -1136,7 +1136,7 @@ public class DataQueryParams
   
     /**
      * Retrieves the options for the the dimension or filter with the given 
-     * identifier. Returns null of the dimension of filter is not present.
+     * identifier. Returns null if the dimension or filter is not present.
      */
     public List<NameableObject> getDimensionOrFilter( String key )
     {
@@ -1195,6 +1195,16 @@ public class DataQueryParams
     public boolean hasDimensionOrFilter( String key )
     {
         return dimensions.indexOf( new BaseDimensionalObject( key ) ) != -1 || filters.indexOf( new BaseDimensionalObject( key ) ) != -1;
+    }
+
+    /**
+     * Indicates whether a dimension or filter which specifies dimension items 
+     * with the given identifier exists.
+     */
+    public boolean hasDimensionOrFilterWithItems( String key )
+    {
+        List<NameableObject> items = getDimensionOrFilter( key );
+        return items != null && !items.isEmpty();
     }
     
     /**

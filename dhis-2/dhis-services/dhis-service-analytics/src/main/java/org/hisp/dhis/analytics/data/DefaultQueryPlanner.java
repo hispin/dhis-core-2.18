@@ -47,6 +47,7 @@ import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,6 +58,7 @@ import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.table.PartitionUtils;
 import org.hisp.dhis.common.BaseDimensionalObject;
+import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IllegalQueryException;
@@ -69,6 +71,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.PaginatedList;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -83,6 +87,12 @@ public class DefaultQueryPlanner
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private DimensionService dimensionService;
+    
+    @Autowired
+    private CurrentUserService currentUserService;
     
     // -------------------------------------------------------------------------
     // DefaultQueryPlanner implementation
@@ -281,6 +291,57 @@ public class DefaultQueryPlanner
         return queryGroups;
     }
 
+    public void applyDimensionConstraints( DataQueryParams params )
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        if ( params == null || user == null || user.getUserCredentials() == null )
+        {
+            return;
+        }
+        
+        if ( !user.getUserCredentials().hasDimensionConstraints()  )
+        {
+            return;
+        }
+        
+        Set<DimensionalObject> dimensionConstraints = user.getUserCredentials().getDimensionConstraints();
+        
+        for ( DimensionalObject dimension : dimensionConstraints )
+        {
+            // -----------------------------------------------------------------
+            // Check if constraint is already specified with items
+            // -----------------------------------------------------------------
+
+            if ( params.hasDimensionOrFilterWithItems( dimension.getUid() ) )
+            {
+                continue;
+            }
+
+            List<NameableObject> canReadItems = dimensionService.getCanReadDimensionItems( dimension.getDimension() );
+
+            // -----------------------------------------------------------------
+            // Check if current user has access to any items from constraint
+            // -----------------------------------------------------------------
+
+            if ( canReadItems == null || canReadItems.isEmpty() )
+            {
+                throw new IllegalQueryException( "Current user is constrained by a dimension but has access to no associated dimension items: " + dimension.getDimension() );
+            }
+
+            // -----------------------------------------------------------------
+            // Apply constraint as filter, and remove potential all-dimension
+            // -----------------------------------------------------------------
+
+            params.removeDimensionOrFilter( dimension.getDimension() );
+            
+            DimensionalObject constraint = new BaseDimensionalObject( dimension.getDimension(), 
+                dimension.getDimensionType(), null, dimension.getDisplayName(), canReadItems );
+            
+            params.getFilters().add( constraint );                        
+        }        
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

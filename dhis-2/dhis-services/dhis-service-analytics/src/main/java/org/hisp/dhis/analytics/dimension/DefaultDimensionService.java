@@ -164,8 +164,10 @@ public class DefaultDimensionService
         List<NameableObject> items = new ArrayList<NameableObject>();
 
         if ( dimension != null && dimension.getItems() != null )
-        {
+        {            
             User user = currentUserService.getCurrentUser();
+
+            //TODO do this with query to improve performance
 
             for ( NameableObject item : dimension.getItems() )
             {
@@ -180,7 +182,7 @@ public class DefaultDimensionService
 
         return items;
     }
-
+        
     public DimensionType getDimensionType( String uid )
     {
         DataElementCategory cat = identifiableObjectManager.get( DataElementCategory.class, uid );
