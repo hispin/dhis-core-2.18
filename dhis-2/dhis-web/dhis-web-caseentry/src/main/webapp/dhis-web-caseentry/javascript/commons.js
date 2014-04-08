@@ -174,19 +174,7 @@ function getSearchParams(page) {
 				});
 			params += p;
 		});
-	
-	$('#advancedSearchTB tr').each(
-		function(i, row) {
-			jQuery(this).find(':input').each(
-				function(idx, item) {
-					if (item.type != "button" 
-						&& idx == 0 
-						&& $(item).find('option:selected').attr('displayed')=="true") {
-							params += "&query=" + item.value;
-					}
-				})
-			});
-		
+			
 	params += '&ouMode=' + getFieldValue('ouMode');
 	
 	return params;
