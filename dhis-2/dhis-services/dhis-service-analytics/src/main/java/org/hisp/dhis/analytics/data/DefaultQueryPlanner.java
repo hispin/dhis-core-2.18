@@ -280,11 +280,6 @@ public class DefaultQueryPlanner
 
         return queryGroups;
     }
-        
-    public boolean canQueryFromDataMart( DataQueryParams params )
-    {
-        return true;
-    }
 
     // -------------------------------------------------------------------------
     // Supportive methods
