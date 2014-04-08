@@ -173,7 +173,8 @@ public class DefaultTrackedEntityInstanceService
         
         // ---------------------------------------------------------------------
         // If params of type query and no attributes or filters defined, use
-        // attributes from program if exists, if not, use all attributes.
+        // attributes from program if exists, if not, use display-in-list 
+        // attributes.
         // ---------------------------------------------------------------------
 
         if ( !params.hasAttributesOrFilters() )
@@ -292,6 +293,11 @@ public class DefaultTrackedEntityInstanceService
         if ( params.hasProgramDates() && !params.hasProgram() )
         {
             violation = "Program must be defined when program dates are specified";
+        }
+
+        if ( params.isOrQuery() && params.hasFilters() )
+        {
+            violation = "Query cannot be specified together with filters";
         }
         
         if ( !params.getDuplicateAttributes().isEmpty() )
