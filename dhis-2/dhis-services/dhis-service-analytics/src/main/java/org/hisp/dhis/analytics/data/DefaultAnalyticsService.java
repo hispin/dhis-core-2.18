@@ -203,6 +203,8 @@ public class DefaultAnalyticsService
     @Override
     public Grid getAggregatedDataValues( DataQueryParams params )
     {
+        queryPlanner.applyDimensionConstraints( params );
+        
         queryPlanner.validate( params );
         
         params.conform();
@@ -757,6 +759,8 @@ public class DefaultAnalyticsService
         
         return params;
     }
+    
+    // TODO verify that current user can read each dimension and dimension item
     
     public List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate, I18nFormat format )
     {        

@@ -36,11 +36,14 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DimensionType;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 
 import java.util.Collection;
@@ -91,6 +94,11 @@ public class UserCredentials
      */
     @Scanned
     private Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
+    
+    /**
+     * Category option group set dimensions to constrain data analytics aggregation.
+     */
+    private Set<CategoryOptionGroupSet> cogsDimensionConstraints = new HashSet<CategoryOptionGroupSet>();
 
     /**
      * Date of the user's last login.
@@ -354,6 +362,32 @@ public class UserCredentials
 
         return token.equals( this.restoreToken ) && code.equals( this.restoreCode );
     }
+    
+    /**
+     * Returns the dimensions to use as constrains (filters) in data analytics
+     * aggregation.
+     */
+    public Set<DimensionalObject> getDimensionConstraints()
+    {
+        Set<DimensionalObject> constraints = new HashSet<DimensionalObject>();
+        
+        for ( CategoryOptionGroupSet cogs : cogsDimensionConstraints )
+        {
+            cogs.setDimensionType( DimensionType.CATEGORYOPTION_GROUPSET );
+            constraints.add( cogs );
+        }
+        
+        return constraints;
+    }
+    
+    /**
+     * Indicates whether this user has dimension constraints.
+     */
+    public boolean hasDimensionConstraints()
+    {
+        Set<DimensionalObject> constraints = getDimensionConstraints();
+        return constraints != null && !constraints.isEmpty();
+    }
 
     // -------------------------------------------------------------------------
     // hashCode and equals
@@ -437,6 +471,21 @@ public class UserCredentials
     public void setUserAuthorityGroups( Set<UserAuthorityGroup> userAuthorityGroups )
     {
         this.userAuthorityGroups = userAuthorityGroups;
+    }
+
+    @JsonProperty
+    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "cogsDimensionConstraints", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "cogsDimensionConstraint", namespace = DxfNamespaces.DXF_2_0)
+    public Set<CategoryOptionGroupSet> getCogsDimensionConstraints()
+    {
+        return cogsDimensionConstraints;
+    }
+
+    public void setCogsDimensionConstraints( Set<CategoryOptionGroupSet> cogsDimensionConstraints )
+    {
+        this.cogsDimensionConstraints = cogsDimensionConstraints;
     }
 
     @JsonProperty
