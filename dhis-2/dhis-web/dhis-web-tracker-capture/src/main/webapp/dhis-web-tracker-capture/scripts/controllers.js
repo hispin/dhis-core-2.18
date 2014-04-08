@@ -5,7 +5,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
 //Controller for settings page
 .controller('SelectionController',
-        function($scope,
+        function($rootScope,
+                $scope,
                 $location,
                 Paginator,
                 TranslationService, 
@@ -83,7 +84,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.hideSearch = function(){        
         $scope.showSearchDiv = false;
-        $scope.showAdvancedSearchDiv = false;
+        $rootScope.showAdvancedSearchDiv = false;
     };
     
     $scope.closeSearch = function(){
@@ -134,7 +135,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
 //Controller for the search section
 .controller('SearchController',
-        function($scope,                
+        function($rootScope,
+                $scope,                
                 storage,
                 TranslationService) {
 
@@ -144,7 +146,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.attributes = storage.get('ATTRIBUTES');     
     $scope.availableAttributes = [];
     $scope.selectedAttributes = [];
-    $scope.showAdvancedSearchDiv = false;
+    $rootScope.showAdvancedSearchDiv = false;
+    $scope.ouMode = 'SELECTED';
     
     angular.forEach($scope.attributes, function(attribute){
         $scope.availableAttributes.push(attribute);
@@ -241,8 +244,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         var index = attribute.filters.indexOf(filter);        
         attribute.filters.splice(index, 1);
-        
-        console.log();
+
         if(attribute.filters.length === 0 || angular.isUndefined(attribute.filters.length)){
             index = $scope.selectedAttributes.indexOf(attribute);
             $scope.selectedAttributes.splice(index, 1);
@@ -252,20 +254,25 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };
     
     $scope.showAdvancedSearch = function(){        
-        $scope.showAdvancedSearchDiv = !$scope.showAdvancedSearchDiv;
+        $rootScope.showAdvancedSearchDiv = !$rootScope.showAdvancedSearchDiv;
     };
     
     $scope.hideAdvancedSearch = function(){        
-        $scope.showAdvancedSearchDiv = false;
+        $rootScope.showAdvancedSearchDiv = false;
     };
     
     $scope.closeAdvancedSearch = function(){
-        $scope.showAdvancedSearchDiv = !$scope.showAdvancedSearchDiv;
+        $rootScope.showAdvancedSearchDiv = !$rootScope.showAdvancedSearchDiv;
     }; 
     
     $scope.search = function(){
         console.log($scope.attributes);
+        console.log($scope.ouMode);
     };
+    
+    $scope.test = function(){
+        console.log('the mode is:  ', $scope.ouMode);
+    };                
     
 })
 

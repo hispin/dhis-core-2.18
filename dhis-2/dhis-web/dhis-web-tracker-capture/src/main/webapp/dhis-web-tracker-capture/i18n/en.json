@@ -58,5 +58,7 @@
     "scheduling": "Scheduling",
     "enroll": "Enroll",
     "like": "LIKE",
-    "not_like": "NOT LIKE"
+    "not_like": "NOT LIKE",
+    "move_to_selected": "Move to selected",
+    "move_all_to_selected": "Move all to selected"
 }
