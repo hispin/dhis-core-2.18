@@ -30,14 +30,14 @@ package org.hisp.dhis.trackedentity;
 
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.CREATED_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_UPDATED_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.META_DATA_NAMES_KEY;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.PAGER_META_KEY;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
-import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.*;
-import static org.hisp.dhis.common.OrganisationUnitSelectionMode.*;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -366,13 +366,6 @@ public class DefaultTrackedEntityInstanceService
         if ( trackedEntity != null && te == null )
         {
             throw new IllegalQueryException( "Tracked entity does not exist: " + program );
-        }
-
-        List<OrganisationUnitSelectionMode> VALID_OU_MODES = new ArrayList<OrganisationUnitSelectionMode>( Arrays.asList( SELECTED, CHILDREN, DESCENDANTS ) );
-        
-        if ( ouMode != null && !VALID_OU_MODES.contains( ouMode ) )
-        {
-            throw new IllegalQueryException( "Invalid organisation unit selection mode: " + ouMode );
         }
 
         params.setQuery( query );
