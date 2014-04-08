@@ -21,12 +21,11 @@
 
     <property name="valueType" column="valuetype" not-null="true" />
 
-    <many-to-one name="attributeGroup" column="trackedentityattributegroupid"
-      class="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup"
-      foreign-key="fk_attribute_group" />
+    <many-to-one name="attributeGroup" class="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup" 
+        column="trackedentityattributegroupid" foreign-key="fk_trackedentityattribute_attributegroupid" />
 
-    <many-to-one name="optionSet" class="org.hisp.dhis.option.OptionSet" column="optionsetid"
-      foreign-key="fk_trackedentityattribute_optionsetid" />
+    <many-to-one name="optionSet" class="org.hisp.dhis.option.OptionSet" 
+        column="optionsetid" foreign-key="fk_trackedentityattribute_optionsetid" />
 
     <property name="inherit" column="inherit" />
 
@@ -46,11 +45,12 @@
 
     <property name="programScope" />
 
-    <many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
-      foreign-key="fk_trackedentityattribute_periodtypeid" />
+    <many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" 
+        column="periodtypeid" foreign-key="fk_trackedentityattribute_periodtypeid" />
 
     <!-- Access properties -->
-    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_trackedentityattribute_userid" />
+    <many-to-one name="user" class="org.hisp.dhis.user.User" 
+        column="userid" foreign-key="fk_trackedentityattribute_userid" />
 
     <property name="publicAccess" length="8" />
 
