@@ -325,22 +325,26 @@ public class HibernateTrackedEntityInstanceStore
             String wordEnd = statementBuilder.getRegexpWordEnd();
             
             sql += hlp.whereAnd() + " (";
-            
-            for ( QueryItem item : params.getAttributesAndFilters() )
+
+            List<String> queryTokens = TextUtils.getTokens( params.getQuery() );
+
+            for ( String queryToken : queryTokens )
             {
-                String col = statementBuilder.columnQuote( item.getItemId() );
+                sql += "(";
                 
-                List<String> queryTokens = TextUtils.getTokens( params.getQuery() );
-                                
-                for ( String queryToken : queryTokens )
+                for ( QueryItem item : params.getAttributesAndFilters() )
                 {
+                    String col = statementBuilder.columnQuote( item.getItemId() );
+                                
                     String query = statementBuilder.encode( queryToken, false );                    
-                    
-                    sql += "lower(" + col + ".value) " + regexp + " '" + wordStart + StringUtils.lowerCase( query ) + wordEnd + "' or ";
+                        
+                    sql += "lower(" + col + ".value) " + regexp + " '" + wordStart + StringUtils.lowerCase( query ) + wordEnd + "' or ";                    
                 }
+                
+                sql = sql.substring( 0, sql.length() - 3 ) + ") and "; // Remove last or
             }
             
-            sql = sql.substring( 0, sql.length() - 3 ) + ") "; // Remove last or
+            sql = sql.substring( 0, sql.length() - 4 ) + ") "; // Remove last and
         }
 
         return sql;
