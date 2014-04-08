@@ -2450,7 +2450,7 @@ Ext.onReady( function() {
 
 		// Vars
 			windowWidth = 500,
-			windowCmpWidth = windowWidth - 22,
+			windowCmpWidth = windowWidth - 14,
 
 			dimConf = gis.conf.finals.dimension;
 
@@ -2604,7 +2604,7 @@ Ext.onReady( function() {
 			window = Ext.create('Ext.window.Window', {
 				title: id ? 'Rename favorite' : 'Create new favorite',
 				iconCls: 'gis-window-title-icon-favorite',
-				bodyStyle: 'padding:2px; background:#fff',
+				bodyStyle: 'padding:1px; background:#fff',
 				resizable: false,
 				modal: true,
 				items: nameTextfield,
@@ -2638,9 +2638,9 @@ Ext.onReady( function() {
 		});
 
 		searchTextfield = Ext.create('Ext.form.field.Text', {
-			width: windowCmpWidth - addButton.width - 11,
+			width: windowCmpWidth - addButton.width - 3,
 			height: 26,
-			fieldStyle: 'padding-right: 0; padding-left: 5px; border-radius: 1px; border-color: #bbb; font-size:11px',
+			fieldStyle: 'padding-right: 0; padding-left: 4px; border-radius: 1px; border-color: #bbb; font-size:11px',
 			emptyText: GIS.i18n.search_for_favorites,
 			enableKeyEvents: true,
 			currentValue: '',
@@ -2969,7 +2969,7 @@ Ext.onReady( function() {
 			title: 'Manage favorites',
 			iconCls: 'gis-window-title-icon-favorite',
 			cls: 'gis-container-default',
-			bodyStyle: 'padding:5px',
+			bodyStyle: 'padding:1px',
 			resizable: false,
 			modal: true,
 			width: windowWidth,
@@ -2978,12 +2978,13 @@ Ext.onReady( function() {
 					xtype: 'panel',
 					layout: 'hbox',
 					cls: 'gis-container-inner',
+					height: 27,
 					items: [
 						addButton,
 						{
-							height: 24,
+							height: 26,
 							width: 1,
-							style: 'width:1px; margin-left:5px; margin-right:5px; margin-top:1px',
+							style: 'width:1px; margin-left:1px; margin-right:1px',
 							bodyStyle: 'border-left: 1px solid #aaa'
 						},
 						searchTextfield
@@ -2993,7 +2994,7 @@ Ext.onReady( function() {
 			],
 			listeners: {
 				show: function() {
-					this.setPosition(115, 33);
+					this.setPosition(199, 33);
 
 					searchTextfield.focus(false, 500);
 				}
@@ -3221,7 +3222,7 @@ Ext.onReady( function() {
 					xtype: 'panel',
 					layout: 'hbox',
 					cls: 'gis-container-inner',
-					style: 'margin-bottom: 5px',
+					style: 'margin-bottom: 1px',
 					items: [
 						addButton
 					]
@@ -3416,6 +3417,7 @@ Ext.onReady( function() {
 			panel = Ext.create('Ext.panel.Panel', {
 				cls: 'gis-container-inner',
 				legendSetId: id,
+				bodyStyle: 'padding:3px',
 				items: [
 					legendSetName,
 					{
@@ -3661,7 +3663,7 @@ Ext.onReady( function() {
 		window = Ext.create('Ext.window.Window', {
 			title: GIS.i18n.legendsets,
 			iconCls: 'gis-window-title-icon-legendset', //todo
-            bodyStyle: 'padding:5px; background-color:#fff',
+            bodyStyle: 'padding:1px; background-color:#fff',
 			resizable: false,
 			width: 450,
 			modal: true,
@@ -3678,7 +3680,7 @@ Ext.onReady( function() {
 			},
 			listeners: {
 				show: function() {
-					this.setPosition(185, 33);
+					this.setPosition(269, 33);
 				}
 			}
 		});
@@ -3695,7 +3697,7 @@ Ext.onReady( function() {
 		format = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'gis-combo',
 			width: 60,
-			style: 'margin-bottom:0; margin-left:2px',
+			style: 'margin-bottom:0; margin-left:1px',
 			valueField: 'id',
 			displayField: 'text',
 			editable: false,
@@ -3747,7 +3749,7 @@ Ext.onReady( function() {
 			layout: 'column',
 			iconCls: 'gis-window-title-icon-download',
 			cls: 'gis-container-default',
-            bodyStyle: 'padding:2px',
+            bodyStyle: 'padding:1px',
 			resizable: true,
 			modal: true,
 			items: [
