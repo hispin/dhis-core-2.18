@@ -81,20 +81,18 @@
 
 	<property name="relationshipText" />
 
-	<many-to-one name="relationshipType"
-		class="org.hisp.dhis.relationship.RelationshipType" column="relationshiptypeid"
-		foreign-key="fk_program_relationshipid" />
+	<many-to-one name="relationshipType" class="org.hisp.dhis.relationship.RelationshipType" 
+	   column="relationshiptypeid" foreign-key="fk_program_relationshipid" />
 
 	<property name="relationshipFromA" />
 
 	<many-to-one name="relatedProgram" class="org.hisp.dhis.program.Program"
-		column="relatedprogramid" foreign-key="fk_program_relatedprogram" />
+	   column="relatedprogramid" foreign-key="fk_program_relatedprogram" />
 
 	<property name="dataEntryMethod" />
 	
-	<many-to-one name="trackedEntity"
-		class="org.hisp.dhis.trackedentity.TrackedEntity" column="trackedentityid"
-		foreign-key="fk_program_trackedentityid" />
+	<many-to-one name="trackedEntity" class="org.hisp.dhis.trackedentity.TrackedEntity" 
+	   column="trackedentityid" foreign-key="fk_program_trackedentityid" />
 
 	<!-- Access properties -->
 

@@ -33,8 +33,8 @@
 			<one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
 		</set>
 
-		<many-to-one name="dataEntryForm"
-			class="org.hisp.dhis.dataentryform.DataEntryForm" foreign-key="fk_programstage_dataentryform" cascade="all" />
+		<many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm" 
+		  column="dataentryformid" foreign-key="fk_programstage_dataentryform" cascade="all" />
 
 		<property name="standardInterval" />
 
