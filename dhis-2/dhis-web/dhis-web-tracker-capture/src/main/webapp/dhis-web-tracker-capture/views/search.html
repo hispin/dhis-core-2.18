@@ -8,173 +8,184 @@
         </span>
     </div>
     <div class="vertial-spacing">
-        <div ng-switch="showAdvancedSearchDiv">
-            <div ng-switch-when=true>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        {{'available_search_attributes'| translate}} |
-                        <span ng-show="availableAttributes.length > 0">                                        
-                            <a href ng-click="moveToSelected(selectedAttribute, true)" title="{{'move_to_selected'| translate}}"><i class="fa fa-angle-down"></i></a>                                        
-                            <a href ng-click="moveAllToSelected()" title="{{'move_all_to_selected'| translate}}"><i class="fa fa-angle-double-down"></i></a>                                        
-                        </span>                        
-                    </div>                                
-                    <select class="form-control" multiple ng-model="selectedAttribute" ng-options="attribute as attribute.name for attribute in availableAttributes | orderBy:'name'" ng-dblclick="moveToSelected(selectedAttribute, true)">                                        
-                    </select>
+
+        <div ng-if="showAdvancedSearchDiv">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{'org_unit_mode'| translate}}
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        {{'selected_search_attributes'| translate}}                                   
-                    </div>
-                    <div class="selected-data-item-list">
-                        <div class="selected-data-item" ng-show="selectedAttributes.length > 0" ng-repeat="attribute in selectedAttributes">
-                            <div class="filter-name">
-                                {{attribute.name}}                                         
-                            </div>
-                            <div>
-                                <div ng-switch="attribute.valueType">
-                                    <div ng-switch-when="number">
-                                        <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
-                                            <div class="filter-operand">
-                                                <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
-                                                </select>
-                                            </div>
-                                            <div class="filter-value">
-                                                <input type="number" ng-model="filter.value" class="input-field">
-                                            </div>
-                                            <div class="filter-add">
-                                                <a href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
-                                            </div>
-                                            <div class="filter-remove">
-                                                <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
-                                            </div>
-                                        </div>                        
-                                    </div>
-                                    <div ng-switch-when="combo">
-                                        <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
-                                            <div class="filter-operand">
-                                                <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
-                                                </select>
-                                            </div>
-                                            <div class="filter-value">
-                                                <select ng-model="filter.value" class="input-field" ng-options="value for value in filter.values">
-                                                </select>                                                            
-                                            </div>
-                                            <div class="filter-add">
-                                                <a ng-show="attribute.filters.length < filter.values.length" href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
-                                            </div>
-                                            <div class="filter-remove">
-                                                <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div ng-switch-when="bool">
-                                        <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
-                                            <div class="filter-operand">
-                                                <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
-                                                </select>
-                                            </div>
-                                            <div class="filter-value">
-                                                <select ng-model="filter.value" class="input-field" ng-options="value for value in filter.values">
-                                                </select>                                                            
-                                            </div>
-                                            <div class="filter-add">
-                                                <a ng-show="attribute.filters.length < filter.values.length" href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
-                                            </div>
-                                            <div class="filter-remove">
-                                                <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div ng-switch-when="date">
-                                        <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
-                                            <div class="filter-operand">
-                                                <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
-                                                </select>
-                                            </div>
-                                            <div class="filter-value">
-                                                <input type="text" ng-date ng-model="filter.value" class="input-field">
-                                            </div>
-                                            <div class="filter-add">
-                                                <a href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
-                                            </div>
-                                            <div class="filter-remove">
-                                                <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div ng-switch-default>
-                                        <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
-                                            <div class="filter-operand">
-                                                <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
-                                                </select>
-                                            </div>
-                                            <div class="filter-value">
-                                                <input type="text" ng-model="filter.value" class="input-field">
-                                            </div>
-                                            <div class="filter-add">
-                                                <a href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
-                                            </div>
-                                            <div class="filter-remove">
-                                                <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
+                <div class="panel-body">
+                    <input type='radio' ng-model='ouMode' value='SELECTED'>{{'use_selected'| translate}}<br/>
+                    <input type='radio' ng-model='ouMode' value='CHILDREN'>{{'use_immediate_children'| translate}}<br/>
+                    <input type='radio' ng-model='ouMode' value='DESCENDANTS'>{{'use_all_children'| translate}}
                 </div>
             </div>
-            <div ng-switch-when="false">
-                <table class="dhis2-list-table-striped dhis2-table-hover">
-                    <tr ng-repeat="attribute in attributes">
-                        <td>
-                            {{attribute.name}}
-                        </td>
-                        <td>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{'available_search_attributes'| translate}} |
+                    <span ng-show="availableAttributes.length > 0">                                        
+                        <a href ng-click="moveToSelected(selectedAttribute, true)" title="{{'move_to_selected'| translate}}"><span class="black"><i class="fa fa-angle-down"></i></span></a>                                        
+                        <a href ng-click="moveAllToSelected()" title="{{'move_all_to_selected'| translate}}"><span class="black"><i class="fa fa-angle-double-down"></i></span></a>                                        
+                    </span>                        
+                </div>                                
+                <select class="form-control" multiple ng-model="selectedAttribute" ng-options="attribute as attribute.name for attribute in availableAttributes | orderBy:'name'" ng-dblclick="moveToSelected(selectedAttribute, true)">                                        
+                </select>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{'selected_search_attributes'| translate}}                                   
+                </div>
+                <div class="selected-data-item-list">
+                    <div class="selected-data-item" ng-show="selectedAttributes.length > 0" ng-repeat="attribute in selectedAttributes">
+                        <div class="filter-name">
+                            {{attribute.name}}                                         
+                        </div>
+                        <div>
                             <div ng-switch="attribute.valueType">
-                                <div ng-switch-when="date">
-                                    <input type="text" class="form-control" ng-date ng-model="attribute.value" />
-                                </div>
-                                <div ng-switch-when="trueOnly">
-                                    <input type="checkbox" class="form-control" ng-model="attribute.value" />
-                                </div>
-                                <div ng-switch-when="bool">
-                                    <select ng-model="attribute.value" class="form-control">
-                                        <option value="">{{'please_select'| translate}}</option>                        
-                                        <option value="0">{{'no'| translate}}</option>
-                                        <option value="1">{{'yes'| translate}}</option>
-                                    </select>
+                                <div ng-switch-when="number">
+                                    <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
+                                        <div class="filter-operand">
+                                            <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
+                                            </select>
+                                        </div>
+                                        <div class="filter-value">
+                                            <input type="number" ng-model="filter.value" class="input-field">
+                                        </div>
+                                        <div class="filter-add">
+                                            <a href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
+                                        </div>
+                                        <div class="filter-remove">
+                                            <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
+                                        </div>
+                                    </div>                        
                                 </div>
                                 <div ng-switch-when="combo">
-                                    <input type="text" 
-                                           class="form-control"
-                                           ng-model="attribute.value"                                                 
-                                           typeahead="option for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
-                                           typeahead-open-on-focus 
-                                           />
+                                    <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
+                                        <div class="filter-operand">
+                                            <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
+                                            </select>
+                                        </div>
+                                        <div class="filter-value">
+                                            <select ng-model="filter.value" class="input-field" ng-options="value for value in filter.values">
+                                            </select>                                                            
+                                        </div>
+                                        <div class="filter-add">
+                                            <a ng-show="attribute.filters.length < filter.values.length" href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
+                                        </div>
+                                        <div class="filter-remove">
+                                            <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div ng-switch-when="number">
-                                    <input type="number" class="form-control" ng-model="attribute.value"/>
+                                <div ng-switch-when="bool">
+                                    <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
+                                        <div class="filter-operand">
+                                            <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
+                                            </select>
+                                        </div>
+                                        <div class="filter-value">
+                                            <select ng-model="filter.value" class="input-field" ng-options="value for value in filter.values">
+                                            </select>                                                            
+                                        </div>
+                                        <div class="filter-add">
+                                            <a ng-show="attribute.filters.length < filter.values.length" href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
+                                        </div>
+                                        <div class="filter-remove">
+                                            <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-switch-when="date">
+                                    <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
+                                        <div class="filter-operand">
+                                            <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
+                                            </select>
+                                        </div>
+                                        <div class="filter-value">
+                                            <input type="text" ng-date ng-model="filter.value" class="input-field">
+                                        </div>
+                                        <div class="filter-add">
+                                            <a href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
+                                        </div>
+                                        <div class="filter-remove">
+                                            <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div ng-switch-default>
-                                    <input type="text" class="form-control" ng-model="attribute.value" />                                        
+                                    <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
+                                        <div class="filter-operand">
+                                            <select ng-model="filter.operand" class="input-field" ng-options="operand for operand in filter.operands">
+                                            </select>
+                                        </div>
+                                        <div class="filter-value">
+                                            <input type="text" ng-model="filter.value" class="input-field">
+                                        </div>
+                                        <div class="filter-add">
+                                            <a href ng-click="addFilter(attribute)" title="{{'add_new_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></a> 
+                                        </div>
+                                        <div class="filter-remove">
+                                            <a href ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}"><span class="black"><i class="fa fa-trash-o"></i></span></a>
+                                        </div>
+                                    </div> 
                                 </div>
-                            </div>                                                                                                    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{{'org_unit_mode'| translate}}</td>
-                        <td>
-                            <input type='radio' ng-model='ouMode' value='SELECTED'>{{'use_selected'| translate}}<br/>
-                            <input type='radio' ng-model='ouMode' value='CHILDREN'>{{'use_immediate_children'| translate}}<br/>
-                            <input type='radio' ng-model='ouMode' value='DESCENDANTS'>{{'use_all_children'| translate}}
-                        </td>
-                    </tr>        
-                </table>
-            </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>                
         </div>
+
+        <div ng-if="!showAdvancedSearchDiv">
+            <table class="dhis2-list-table-striped dhis2-table-hover">
+                <tr ng-repeat="attribute in attributes">
+                    <td>
+                        {{attribute.name}}
+                    </td>
+                    <td>
+                        <div ng-switch="attribute.valueType">
+                            <div ng-switch-when="date">
+                                <input type="text" class="form-control" ng-date ng-model="attribute.value" />
+                            </div>
+                            <div ng-switch-when="trueOnly">
+                                <input type="checkbox" class="form-control" ng-model="attribute.value" />
+                            </div>
+                            <div ng-switch-when="bool">
+                                <select ng-model="attribute.value" class="form-control">
+                                    <option value="">{{'please_select'| translate}}</option>                        
+                                    <option value="0">{{'no'| translate}}</option>
+                                    <option value="1">{{'yes'| translate}}</option>
+                                </select>
+                            </div>
+                            <div ng-switch-when="combo">
+                                <input type="text" 
+                                       class="form-control"
+                                       ng-model="attribute.value"                                                 
+                                       typeahead="option for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
+                                       typeahead-open-on-focus 
+                                       />
+                            </div>
+                            <div ng-switch-when="number">
+                                <input type="number" class="form-control" ng-model="attribute.value"/>
+                            </div>
+                            <div ng-switch-default>
+                                <input type="text" class="form-control" ng-model="attribute.value" />                                        
+                            </div>
+                        </div>                                                                                                    
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{'org_unit_mode'| translate}}</td>
+                    <td>
+                        <input type='radio' ng-model='ouMode' value='SELECTED'>{{'use_selected'| translate}}<br/>
+                        <input type='radio' ng-model='ouMode' value='CHILDREN'>{{'use_immediate_children'| translate}}<br/>
+                        <input type='radio' ng-model='ouMode' value='DESCENDANTS'>{{'use_all_children'| translate}}
+                    </td>
+                </tr>        
+            </table>
+        </div>
+
     </div>
 
     <button type="button" class="btn big-button" title="{{'search'| translate}}" ng-click="search()">                    

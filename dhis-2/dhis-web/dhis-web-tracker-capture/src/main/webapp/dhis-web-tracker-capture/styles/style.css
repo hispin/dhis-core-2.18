@@ -509,7 +509,8 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 
 .container-1 {
     height: 100%; 
-    min-height: 100%;     
+    width: 100%;
+    overflow:auto; 
 }
 
 .container-1-1 {
