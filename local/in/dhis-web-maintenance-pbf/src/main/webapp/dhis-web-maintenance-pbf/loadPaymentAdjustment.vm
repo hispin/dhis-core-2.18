@@ -45,10 +45,11 @@
 			
             <tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8" #end>
 				<td>$!dataElement.name</td>
-				<td>$!quantityValidatedMap.get( $dataElement.uid )</td>
-				<td>$!tariffDataValueMap.get( $dataElement.uid )</td>				
-				<td>$!amountMap.get( $dataElement.uid )</td>
-				<td>&nbsp; </td>
+				<td>$!pbfQtyMap.get( $dataElement.id )</td>
+				<td>$!pbfTariffMap.get( $dataElement.id )</td>
+				#set( $tariffVal = $!pbfQtyMap.get( $dataElement.id ) * $!pbfTariffMap.get( $dataElement.id ) )
+				<td>$tariffVal</td>
+				<td>$!overAllQualityScore</td>
 				<td id="adjusted_$dataElement.uid">&nbsp;</td>
 	            <td>&nbsp;</td>		            		
         </tr>
@@ -56,7 +57,7 @@
         	function calValue()
         	{
         		var adjusted = $("#adjustment").val();
-        		var amount = '$!tariffDataValueMap.get( $dataElement.uid )';
+        		var amount = '$!pbfTariffMap.get( $dataElement.id )';
         		var adjustedPer = 0.0;
         		adjustedPer = (parseFloat(amount)/parseFloat(adjusted))*100
         		$('#adjusted_$dataElement.uid').text(adjustedPer.toFixed(2));
