@@ -152,7 +152,7 @@ function getSearchParams(page) {
 							if (item.value == 'programDate') {
 								p += "&programDate=";
 							} else {
-								p += "&attribute=" + item.value;
+								p += "&filter=" + item.value;
 							}
 						} else if (item.name == 'dateOperator') {
 							dateOperator = item.value;
