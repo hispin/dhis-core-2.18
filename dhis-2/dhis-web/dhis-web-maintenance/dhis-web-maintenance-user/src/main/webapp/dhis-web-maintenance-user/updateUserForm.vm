@@ -8,6 +8,7 @@
     validation2('updateUserForm', function( form ) {
       jQuery("#urSelected").children().attr("selected", "selected");
       jQuery("#ugSelected").children().attr("selected", "selected");
+      jQuery("#dcSelected").children().attr("selected", "selected");
 
       if( $('#orgUnitTree').find('.selected').size() == 0 ) {
         setHeaderDelayMessage('$i18n.getString( "data_capture_organisation_unit_required_for_user" )');
@@ -48,6 +49,13 @@
       target: $('#ugSelected'),
       search: $('#ugAvailableSearch'),
       iterator: 'userGroups'
+    });
+    
+    $('#dcAvailable').selected({
+      url: '../api/categoryOptionGroupSets.json',
+      target: $('#dcSelected'),
+      search: $('#dcAvailableSearch'),
+      iterator: 'categoryOptionGroupSets'
     });
   });
 </script>
@@ -153,14 +161,7 @@ div#orgUnitTree
     "objects": $userCredentials.userAuthorityGroups
 })
 
-#jqSelected({
-    "prefix": "ug",
-    "i18n_available": "available_user_groups",
-    "i18n_selected": "selected_user_groups",
-    "objects": $user.groups
-})
-
-<table>
+<table style="margin-bottom: 20px;">
     <tr>
         <th>$i18n.getString( "data_capture_maintenance_org_units" )</th>
         <th></th>
@@ -176,6 +177,28 @@ div#orgUnitTree
         </td>
     </tr>
 </table>
+
+<div id="showMoreOptions" style="margin-bottom: 20px;"><a href="javascript:showUserOptions()">$i18n.getString( "show_more_options" )</a></div>
+
+<div id="moreOptions" style="display:none">
+
+#jqSelected({
+    "prefix": "ug",
+    "i18n_available": "available_user_groups",
+    "i18n_selected": "selected_user_groups",
+    "objects": $user.groups
+})
+
+#jqSelected({
+    "prefix": "dc",
+    "i18n_available": "available_dimension_restrictions_for_data_analytics",
+    "i18n_selected": "selected_dimension_restrictions_for_data_analytics",
+    "objects": $userCredentials.cogsDimensionConstraints
+})
+
+<div id="showLessOptions" style="margin-bottom: 20px;"><a href="javascript:showUserOptions()">$i18n.getString( "show_less_options" )</a></div>
+
+</div>
 
 <p>
 	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em" />

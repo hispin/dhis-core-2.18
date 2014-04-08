@@ -28,11 +28,16 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -52,9 +57,7 @@ import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -89,9 +92,6 @@ public class AddUserAction
         this.userService = userService;
     }
 
-    @Autowired
-    private UserGroupService userGroupService;
-
     private SecurityService securityService;
 
     public void setSecurityService( SecurityService securityService )
@@ -113,6 +113,12 @@ public class AddUserAction
         this.attributeService = attributeService;
     }
 
+    @Autowired
+    private UserGroupService userGroupService;
+
+    @Autowired
+    private DataElementCategoryService categoryService;
+    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -213,18 +219,25 @@ public class AddUserAction
         this.localeDb = localeDb;
     }
 
-    private List<String> urSelected = Lists.newArrayList();
+    private List<String> urSelected = new ArrayList<String>();
 
     public void setUrSelected( List<String> urSelected )
     {
         this.urSelected = urSelected;
     }
 
-    private List<String> ugSelected = Lists.newArrayList();
+    private List<String> ugSelected = new ArrayList<String>();
 
     public void setUgSelected( List<String> ugSelected )
     {
         this.ugSelected = ugSelected;
+    }
+
+    private List<String> dcSelected = new ArrayList<String>();
+
+    public void setDcSelected( List<String> dcSelected )
+    {
+        this.dcSelected = dcSelected;
     }
 
     private List<String> jsonAttributeValues;
@@ -315,6 +328,16 @@ public class AddUserAction
 
         userCredentials.setUserAuthorityGroups( userAuthorityGroups );
 
+        // ---------------------------------------------------------------------
+        // Dimension constraints
+        // ---------------------------------------------------------------------
+
+        for ( String id : dcSelected )
+        {
+            CategoryOptionGroupSet cogs = categoryService.getCategoryOptionGroupSet( id );
+            userCredentials.getCogsDimensionConstraints().add( cogs );
+        }
+        
         userService.addUser( user );
         userService.addUserCredentials( userCredentials );
 
