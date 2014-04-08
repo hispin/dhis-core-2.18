@@ -48,7 +48,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //get events for the selected program (and org unit)
     $scope.loadTrackedEntities = function(){
         
-        $scope.searchField.isOpen = false;
+        $scope.showSearchDiv = false;
         
         $scope.trackedEntityList = null;
         
@@ -83,6 +83,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.hideSearch = function(){        
         $scope.showSearchDiv = false;
+        $scope.showAdvancedSearchDiv = false;
     };
     
     $scope.closeSearch = function(){
