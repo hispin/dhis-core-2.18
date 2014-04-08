@@ -237,6 +237,10 @@ public class HibernateTrackedEntityInstanceStore
      */
     private String getFromWhereClause( TrackedEntityInstanceQueryParams params, SqlHelper hlp )
     {
+        final String regexp = statementBuilder.getRegexpMatch();
+        final String wordStart = statementBuilder.getRegexpWordStart();
+        final String wordEnd = statementBuilder.getRegexpWordEnd();
+        
         String sql =        
             "from trackedentityinstance tei " +
             "inner join trackedentity te on tei.trackedentityid = te.trackedentityid " +
@@ -244,20 +248,20 @@ public class HibernateTrackedEntityInstanceStore
         
         for ( QueryItem item : params.getAttributesAndFilters() )
         {
-            String col = statementBuilder.columnQuote( item.getItemId() );
+            final String col = statementBuilder.columnQuote( item.getItemId() );
             
-            String joinClause = item.hasFilter() ? "inner join" : "left join";
+            final String joinClause = item.hasFilter() ? "inner join" : "left join";
             
             sql += 
                 joinClause + " trackedentityattributevalue as " + col + " " +
                 "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid " +
                 "and " + col + ".trackedentityattributeid = " + item.getItem().getId() + " ";
             
-            String filter = statementBuilder.encode( item.getFilter(), false );
+            final String filter = statementBuilder.encode( item.getFilter(), false );
             
             if ( !params.isOrQuery() && item.hasFilter() )
             {
-                String queryCol = item.isNumeric() ? ( col + ".value" ) : "lower(" + col + ".value)";
+                final String queryCol = item.isNumeric() ? ( col + ".value" ) : "lower(" + col + ".value)";
                 
                 sql += "and " + queryCol + " " + item.getSqlOperator() + " " + StringUtils.lowerCase( item.getSqlFilter( filter ) ) + " ";
             }
@@ -320,24 +324,20 @@ public class HibernateTrackedEntityInstanceStore
         
         if ( params.isOrQuery() && params.hasAttributesOrFilters() )
         {
-            String regexp = statementBuilder.getRegexpMatch();
-            String wordStart = statementBuilder.getRegexpWordStart();
-            String wordEnd = statementBuilder.getRegexpWordEnd();
-            
             sql += hlp.whereAnd() + " (";
 
             List<String> queryTokens = TextUtils.getTokens( params.getQuery() );
 
             for ( String queryToken : queryTokens )
-            {
+            {  
+                final String query = statementBuilder.encode( queryToken, false );                    
+                
                 sql += "(";
                 
                 for ( QueryItem item : params.getAttributesAndFilters() )
                 {
-                    String col = statementBuilder.columnQuote( item.getItemId() );
-                                
-                    String query = statementBuilder.encode( queryToken, false );                    
-                        
+                    final String col = statementBuilder.columnQuote( item.getItemId() );
+                              
                     sql += "lower(" + col + ".value) " + regexp + " '" + wordStart + StringUtils.lowerCase( query ) + wordEnd + "' or ";                    
                 }
                 
