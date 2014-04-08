@@ -2842,6 +2842,9 @@ Ext.onReady( function() {
 				startDate.setValue(layout.startDate);
 				endDate.setValue(layout.endDate);
 			}
+			else {
+				onPeriodModeSelect('periods');
+			}
 
 			for (var i = 0, periodRecord, checkbox; i < periodRecords.length; i++) {
 				periodRecord = periodRecords[i];
@@ -3335,7 +3338,7 @@ Ext.onReady( function() {
                 ]
             },
             reset: function() {
-				this.setValue('periods');
+				onPeriodModeSelect('periods');
 			},
             listeners: {
                 select: function(cmp) {
@@ -3345,6 +3348,8 @@ Ext.onReady( function() {
         });
 
         onPeriodModeSelect = function(mode) {
+			periodMode.setValue(mode);
+
             if (mode === 'dates') {
                 startEndDate.show();
                 periods.hide();
@@ -5190,6 +5195,14 @@ Ext.onReady( function() {
 
 						config.showSubTotals = config.subtotals;
 						delete config.subtotals;
+
+						if (config.startDate) {
+							config.startDate = config.startDate.substr(0,10);
+						}
+
+						if (config.endDate) {
+							config.endDate = config.endDate.substr(0,10);
+						}
 
 						web.report.getData(config, true);
 					}
