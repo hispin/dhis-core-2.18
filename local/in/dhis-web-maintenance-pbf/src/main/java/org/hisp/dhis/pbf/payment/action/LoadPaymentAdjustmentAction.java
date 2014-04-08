@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import org.hisp.dhis.pbf.api.LookupService;
 import org.hisp.dhis.pbf.api.PBFDataValueService;
 import org.hisp.dhis.pbf.api.QualityMaxValueService;
 import org.hisp.dhis.pbf.api.TariffDataValueService;
+import org.hisp.dhis.pbf.impl.DefaultPBFAggregationService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -70,6 +72,9 @@ public class LoadPaymentAdjustmentAction implements Action
 
     @Autowired
     private QualityMaxValueService qualityMaxValueService;
+    
+    @Autowired
+    private DefaultPBFAggregationService defaultPBFAggregationService;
 
     // -------------------------------------------------------------------------
     // Input / Output
@@ -88,7 +93,21 @@ public class LoadPaymentAdjustmentAction implements Action
         return pbfTariffMap;
     }
 
-    private String orgUnitId;
+    private Double overAllQualityScore = 0.0;
+    
+    public Double getOverAllQualityScore() 
+    {
+		return overAllQualityScore;
+	}
+    
+    Set<DataElement> dataElements = new HashSet<DataElement>();
+    
+	public Set<DataElement> getDataElements() 
+	{
+		return dataElements;
+	}
+
+	private String orgUnitId;
 
     public void setOrgUnitId( String orgUnitId )
     {
@@ -116,6 +135,12 @@ public class LoadPaymentAdjustmentAction implements Action
     public String execute()
         throws Exception
     {
+    	
+    	System.out.println("Inside Adjustment screen");
+    	
+    	if( periodIso.equals("-1") )
+    		return SUCCESS;
+    	
         OrganisationUnit selOrgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         
         DataSet selDataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
@@ -128,7 +153,7 @@ public class LoadPaymentAdjustmentAction implements Action
         Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers( Period.class, periods ) );
         String periodIdsByComma = getCommaDelimitedString( periodIds );
         
-        Set<DataElement> dataElements = new HashSet<DataElement>( selDataSet.getDataElements() );
+        dataElements.addAll( selDataSet.getDataElements() );
         
         Set<OrganisationUnit> pbfQtyOrgUnits = new HashSet<OrganisationUnit>();
         pbfQtyOrgUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
@@ -162,6 +187,24 @@ public class LoadPaymentAdjustmentAction implements Action
         //-----------------------------------------------------------
         // QualityScore
         //-----------------------------------------------------------
+        
+        List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PAYMENT_TYPE ) );
+        DataSet qualityScoreDataSet = null;
+        for ( Lookup lookup : lookups )
+        {
+            String[] lookupType = lookup.getValue().split( ":" );
+            if ( Integer.parseInt( lookupType[0] ) == Integer.parseInt( dataSetId ) )
+            {
+            	qualityScoreDataSet = dataSetService.getDataSet( lookupType[1] );
+            	break;
+            }
+        }
+        
+        if( qualityScoreDataSet != null )
+        {
+        	overAllQualityScore = defaultPBFAggregationService.calculateOverallQualityScore( period, qualityScoreDataSet.getSources(), qualityScoreDataSet.getId(), tariffOrgUnit.getId() );
+        }
+        
         
         return SUCCESS;
     }

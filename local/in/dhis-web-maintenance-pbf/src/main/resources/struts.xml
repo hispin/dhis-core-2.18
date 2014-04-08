@@ -197,7 +197,7 @@
     </action>
     
 	<!-- Load Payment Adjustment List -->
-	<action name="loadPaymentAdjustmentList" class="org.hisp.dhis.pbf.payment.action.LoadPaymentAdjustmentDetailsAction">
+	<action name="loadPaymentAdjustmentList" class="org.hisp.dhis.pbf.payment.action.LoadPaymentAdjustmentAction">
 		<result name="success" type="velocity">/content.vm</result>
 		<param name="page">/dhis-web-maintenance-pbf/loadPaymentAdjustment.vm</param>
 	</action>
