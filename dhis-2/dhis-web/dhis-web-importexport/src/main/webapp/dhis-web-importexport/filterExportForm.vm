@@ -1,104 +1,104 @@
 <script type="text/javascript">
-    var i18n_export = '$i18n.getString( "export" )';
-    var i18n_select_all = '$i18n.getString( "select_all" )';
+    var i18n_export = '$encoder.jsEscape( $i18n.getString( "export" ), "'" )';
+    var i18n_select_all = '$encoder.jsEscape( $i18n.getString( "select_all" ), "'" )';
 
-    var i18n_available_attributeTypes = '$i18n.getString( "available_attribute_types" )';
-    var i18n_selected_attributeTypes = '$i18n.getString( "selected_attribute_types" )';
+    var i18n_available_attributeTypes = '$encoder.jsEscape( $i18n.getString( "available_attribute_types" ), "'" )';
+    var i18n_selected_attributeTypes = '$encoder.jsEscape( $i18n.getString( "selected_attribute_types" ), "'" )';
 
-    var i18n_available_categories = '$i18n.getString( "available_categories" )';
-    var i18n_selected_categories = '$i18n.getString( "selected_categories" )';
+    var i18n_available_categories = '$encoder.jsEscape( $i18n.getString( "available_categories" ), "'" )';
+    var i18n_selected_categories = '$encoder.jsEscape( $i18n.getString( "selected_categories" ), "'" )';
 
-    var i18n_available_charts = '$i18n.getString( "available_charts" )';
-    var i18n_selected_charts = '$i18n.getString( "selected_charts" )';
+    var i18n_available_charts = '$encoder.jsEscape( $i18n.getString( "available_charts" ), "'" )';
+    var i18n_selected_charts = '$encoder.jsEscape( $i18n.getString( "selected_charts" ), "'" )';
 
-    var i18n_available_concepts = '$i18n.getString( "available_concepts" )';
-    var i18n_selected_concepts = '$i18n.getString( "selected_concepts" )';
+    var i18n_available_concepts = '$encoder.jsEscape( $i18n.getString( "available_concepts" ), "'" )';
+    var i18n_selected_concepts = '$encoder.jsEscape( $i18n.getString( "selected_concepts" ), "'" )';
 
-    var i18n_available_constants = '$i18n.getString( "available_constants" )';
-    var i18n_selected_constants = '$i18n.getString( "selected_constants" )';
+    var i18n_available_constants = '$encoder.jsEscape( $i18n.getString( "available_constants" ), "'" )';
+    var i18n_selected_constants = '$encoder.jsEscape( $i18n.getString( "selected_constants" ), "'" )';
 
-    var i18n_available_dataDictionaries = '$i18n.getString( "available_dataDictionaries" )';
-    var i18n_selected_dataDictionaries = '$i18n.getString( "selected_dataDictionaries" )';
+    var i18n_available_dataDictionaries = '$encoder.jsEscape( $i18n.getString( "available_dataDictionaries" ), "'" )';
+    var i18n_selected_dataDictionaries = '$encoder.jsEscape( $i18n.getString( "selected_dataDictionaries" ), "'" )';
 
-    var i18n_available_dataElementGroupSets = '$i18n.getString( "available_dataElementGroupSets" )';
-    var i18n_selected_dataElementGroupSets = '$i18n.getString( "selected_dataElementGroupSets" )';
+    var i18n_available_dataElementGroupSets = '$encoder.jsEscape( $i18n.getString( "available_dataElementGroupSets" ), "'" )';
+    var i18n_selected_dataElementGroupSets = '$encoder.jsEscape( $i18n.getString( "selected_dataElementGroupSets" ), "'" )';
 
-    var i18n_available_dataElementGroups = '$i18n.getString( "available_dataElementGroups" )';
-    var i18n_selected_dataElementGroups = '$i18n.getString( "selected_dataElementGroups" )';
+    var i18n_available_dataElementGroups = '$encoder.jsEscape( $i18n.getString( "available_dataElementGroups" ), "'" )';
+    var i18n_selected_dataElementGroups = '$encoder.jsEscape( $i18n.getString( "selected_dataElementGroups" ), "'" )';
 
-    var i18n_available_dataElements = '$i18n.getString( "available_data_elements" )';
-    var i18n_selected_dataElements = '$i18n.getString( "selected_data_elements" )';
+    var i18n_available_dataElements = '$encoder.jsEscape( $i18n.getString( "available_data_elements" ), "'" )';
+    var i18n_selected_dataElements = '$encoder.jsEscape( $i18n.getString( "selected_data_elements" ), "'" )';
 
-    var i18n_available_dataSets = '$i18n.getString( "available_datasets" )';
-    var i18n_selected_dataSets = '$i18n.getString( "selected_datasets" )';
+    var i18n_available_dataSets = '$encoder.jsEscape( $i18n.getString( "available_datasets" ), "'" )';
+    var i18n_selected_dataSets = '$encoder.jsEscape( $i18n.getString( "selected_datasets" ), "'" )';
 
-    var i18n_available_documents = '$i18n.getString( "available_documents" )';
-    var i18n_selected_documents = '$i18n.getString( "selected_documents" )';
+    var i18n_available_documents = '$encoder.jsEscape( $i18n.getString( "available_documents" ), "'" )';
+    var i18n_selected_documents = '$encoder.jsEscape( $i18n.getString( "selected_documents" ), "'" )';
 
-    var i18n_available_indicatorGroupSets = '$i18n.getString( "available_indicatorGroupSets" )';
-    var i18n_selected_indicatorGroupSets = '$i18n.getString( "selected_indicatorGroupSets" )';
+    var i18n_available_indicatorGroupSets = '$encoder.jsEscape( $i18n.getString( "available_indicatorGroupSets" ), "'" )';
+    var i18n_selected_indicatorGroupSets = '$encoder.jsEscape( $i18n.getString( "selected_indicatorGroupSets" ), "'" )';
 
-    var i18n_available_indicatorGroups = '$i18n.getString( "available_indicatorGroups" )';
-    var i18n_selected_indicatorGroups = '$i18n.getString( "selected_indicatorGroups" )';
+    var i18n_available_indicatorGroups = '$encoder.jsEscape( $i18n.getString( "available_indicatorGroups" ), "'" )';
+    var i18n_selected_indicatorGroups = '$encoder.jsEscape( $i18n.getString( "selected_indicatorGroups" ), "'" )';
 
-    var i18n_available_indicatorTypes = '$i18n.getString( "available_indicatorTypes" )';
-    var i18n_selected_indicatorTypes = '$i18n.getString( "selected_indicatorTypes" )';
+    var i18n_available_indicatorTypes = '$encoder.jsEscape( $i18n.getString( "available_indicatorTypes" ), "'" )';
+    var i18n_selected_indicatorTypes = '$encoder.jsEscape( $i18n.getString( "selected_indicatorTypes" ), "'" )';
 
-    var i18n_available_indicators = '$i18n.getString( "available_indicators" )';
-    var i18n_selected_indicators = '$i18n.getString( "selected_indicators" )';
+    var i18n_available_indicators = '$encoder.jsEscape( $i18n.getString( "available_indicators" ), "'" )';
+    var i18n_selected_indicators = '$encoder.jsEscape( $i18n.getString( "selected_indicators" ), "'" )';
 
-    var i18n_available_mapLegendSets = '$i18n.getString( "available_mapLegendSets" )';
-    var i18n_selected_mapLegendSets = '$i18n.getString( "selected_mapLegendSets" )';
+    var i18n_available_mapLegendSets = '$encoder.jsEscape( $i18n.getString( "available_mapLegendSets" ), "'" )';
+    var i18n_selected_mapLegendSets = '$encoder.jsEscape( $i18n.getString( "selected_mapLegendSets" ), "'" )';
 
-    var i18n_available_maps = '$i18n.getString( "available_maps" )';
-    var i18n_selected_maps = '$i18n.getString( "selected_maps" )';
+    var i18n_available_maps = '$encoder.jsEscape( $i18n.getString( "available_maps" ), "'" )';
+    var i18n_selected_maps = '$encoder.jsEscape( $i18n.getString( "selected_maps" ), "'" )';
 
-    var i18n_available_optionSets = '$i18n.getString( "available_optionSets" )';
-    var i18n_selected_optionSets = '$i18n.getString( "selected_optionSets" )';
+    var i18n_available_optionSets = '$encoder.jsEscape( $i18n.getString( "available_optionSets" ), "'" )';
+    var i18n_selected_optionSets = '$encoder.jsEscape( $i18n.getString( "selected_optionSets" ), "'" )';
 
-    var i18n_available_organisationUnitGroupSets = '$i18n.getString( "available_organisationUnitGroupSets" )';
-    var i18n_selected_organisationUnitGroupSets = '$i18n.getString( "selected_organisationUnitGroupSets" )';
+    var i18n_available_organisationUnitGroupSets = '$encoder.jsEscape( $i18n.getString( "available_organisationUnitGroupSets" ), "'" )';
+    var i18n_selected_organisationUnitGroupSets = '$encoder.jsEscape( $i18n.getString( "selected_organisationUnitGroupSets" ), "'" )';
 
-    var i18n_available_organisationUnitGroups = '$i18n.getString( "available_organisationUnitGroups" )';
-    var i18n_selected_organisationUnitGroups = '$i18n.getString( "selected_organisationUnitGroups" )';
+    var i18n_available_organisationUnitGroups = '$encoder.jsEscape( $i18n.getString( "available_organisationUnitGroups" ), "'" )';
+    var i18n_selected_organisationUnitGroups = '$encoder.jsEscape( $i18n.getString( "selected_organisationUnitGroups" ), "'" )';
 
-    var i18n_available_organisationUnitLevels = '$i18n.getString( "available_organisationUnitLevels" )';
-    var i18n_selected_organisationUnitLevels = '$i18n.getString( "selected_organisationUnitLevels" )';
+    var i18n_available_organisationUnitLevels = '$encoder.jsEscape( $i18n.getString( "available_organisationUnitLevels" ), "'" )';
+    var i18n_selected_organisationUnitLevels = '$encoder.jsEscape( $i18n.getString( "selected_organisationUnitLevels" ), "'" )';
 
-    var i18n_available_organisationUnits = '$i18n.getString( "available_organisationUnits" )';
-    var i18n_selected_organisationUnits = '$i18n.getString( "selected_organisationUnits" )';
+    var i18n_available_organisationUnits = '$encoder.jsEscape( $i18n.getString( "available_organisationUnits" ), "'" )';
+    var i18n_selected_organisationUnits = '$encoder.jsEscape( $i18n.getString( "selected_organisationUnits" ), "'" )';
 
-    var i18n_available_reportTables = '$i18n.getString( "available_reportTables" )';
-    var i18n_selected_reportTables = '$i18n.getString( "selected_reportTables" )';
+    var i18n_available_reportTables = '$encoder.jsEscape( $i18n.getString( "available_reportTables" ), "'" )';
+    var i18n_selected_reportTables = '$encoder.jsEscape( $i18n.getString( "selected_reportTables" ), "'" )';
 
-    var i18n_available_reports = '$i18n.getString( "available_reports" )';
-    var i18n_selected_reports = '$i18n.getString( "selected_reports" )';
+    var i18n_available_reports = '$encoder.jsEscape( $i18n.getString( "available_reports" ), "'" )';
+    var i18n_selected_reports = '$encoder.jsEscape( $i18n.getString( "selected_reports" ), "'" )';
 
-    var i18n_available_sqlViews = '$i18n.getString( "available_sqlViews" )';
-    var i18n_selected_sqlViews = '$i18n.getString( "selected_sqlViews" )';
+    var i18n_available_sqlViews = '$encoder.jsEscape( $i18n.getString( "available_sqlViews" ), "'" )';
+    var i18n_selected_sqlViews = '$encoder.jsEscape( $i18n.getString( "selected_sqlViews" ), "'" )';
 
-    var i18n_available_userGroups = '$i18n.getString( "available_userGroups" )';
-    var i18n_selected_userGroups = '$i18n.getString( "selected_userGroups" )';
+    var i18n_available_userGroups = '$encoder.jsEscape( $i18n.getString( "available_userGroups" ), "'" )';
+    var i18n_selected_userGroups = '$encoder.jsEscape( $i18n.getString( "selected_userGroups" ), "'" )';
 
-    var i18n_available_userRoles = '$i18n.getString( "available_userRoles" )';
-    var i18n_selected_userRoles = '$i18n.getString( "selected_userRoles" )';
+    var i18n_available_userRoles = '$encoder.jsEscape( $i18n.getString( "available_userRoles" ), "'" )';
+    var i18n_selected_userRoles = '$encoder.jsEscape( $i18n.getString( "selected_userRoles" ), "'" )';
 
-    var i18n_available_users = '$i18n.getString( "available_users" )';
-    var i18n_selected_users = '$i18n.getString( "selected_users" )';
+    var i18n_available_users = '$encoder.jsEscape( $i18n.getString( "available_users" ), "'" )';
+    var i18n_selected_users = '$encoder.jsEscape( $i18n.getString( "selected_users" ), "'" )';
 
-    var i18n_available_validationRuleGroups = '$i18n.getString( "available_validationRuleGroups" )';
-    var i18n_selected_validationRuleGroups = '$i18n.getString( "selected_validationRuleGroups" )';
+    var i18n_available_validationRuleGroups = '$encoder.jsEscape( $i18n.getString( "available_validationRuleGroups" ), "'" )';
+    var i18n_selected_validationRuleGroups = '$encoder.jsEscape( $i18n.getString( "selected_validationRuleGroups" ), "'" )';
 
-    var i18n_available_validationRules = '$i18n.getString( "available_validationRules" )';
-    var i18n_selected_validationRules = '$i18n.getString( "selected_validationRules" )';
+    var i18n_available_validationRules = '$encoder.jsEscape( $i18n.getString( "available_validationRules" ), "'" )';
+    var i18n_selected_validationRules = '$encoder.jsEscape( $i18n.getString( "selected_validationRules" ), "'" )';
 
-    var i18n_validate_filter = '$i18n.getString( "validate_filter" )';
+    var i18n_validate_filter = '$encoder.jsEscape( $i18n.getString( "validate_filter" ), "'" )';
 
-    var i18n_move_selected = '$i18n.getString( "move_selected" )';
-    var i18n_remove_selected = '$i18n.getString( "remove_selected" )';
-    var i18n_move_all = '$i18n.getString( "move_all" )';
-    var i18n_remove_all = '$i18n.getString( "remove_all" )';
-    var i18n_filter = '$i18n.getString( "filter" )';
+    var i18n_move_selected = '$encoder.jsEscape( $i18n.getString( "move_selected" ), "'" )';
+    var i18n_remove_selected = '$encoder.jsEscape( $i18n.getString( "remove_selected" ), "'" )';
+    var i18n_move_all = '$encoder.jsEscape( $i18n.getString( "move_all" ), "'" )';
+    var i18n_remove_all = '$encoder.jsEscape( $i18n.getString( "remove_all" ), "'" )';
+    var i18n_filter = '$encoder.jsEscape( $i18n.getString( "filter" ), "'" )';
 </script>
 
 ##@author Ovidiu Rosu <rosu.ovi@gmail.com>
