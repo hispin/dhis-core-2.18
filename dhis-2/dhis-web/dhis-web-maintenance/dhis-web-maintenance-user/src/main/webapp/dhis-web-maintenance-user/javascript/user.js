@@ -156,3 +156,9 @@ function enableUser( context ) {
       });
   }
 }
+
+function showUserOptions()
+{
+	$( "#showMoreOptions" ).toggle();
+	$( "#moreOptions" ).toggle();
+}

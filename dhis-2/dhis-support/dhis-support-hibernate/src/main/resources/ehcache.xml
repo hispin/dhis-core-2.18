@@ -368,7 +368,9 @@
 
   <cache name="org.hisp.dhis.user.UserGroup.userGroupAccesses" maxElementsInMemory="200" />
 
-  <cache name="org.hisp.dhis.user.UserCredentials.userAuthorityGroups" maxElementsInMemory="200" />
+  <cache name="org.hisp.dhis.user.UserCredentials.userAuthorityGroups" maxElementsInMemory="2000" />
+
+  <cache name="org.hisp.dhis.user.UserCredentials.cogsDimensionConstraints" maxElementsInMemory="2000" />
 
   <cache name="org.hisp.dhis.user.UserAuthorityGroup.authorities" maxElementsInMemory="500" />
 

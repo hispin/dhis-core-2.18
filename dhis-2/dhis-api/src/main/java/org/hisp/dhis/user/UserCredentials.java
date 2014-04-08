@@ -98,6 +98,7 @@ public class UserCredentials
     /**
      * Category option group set dimensions to constrain data analytics aggregation.
      */
+    @Scanned
     private Set<CategoryOptionGroupSet> cogsDimensionConstraints = new HashSet<CategoryOptionGroupSet>();
 
     /**

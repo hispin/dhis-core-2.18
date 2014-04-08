@@ -295,16 +295,13 @@ public class DefaultQueryPlanner
     {
         User user = currentUserService.getCurrentUser();
         
-        if ( params == null || user == null || user.getUserCredentials() == null )
+        if ( params == null || user == null || 
+            user.getUserCredentials() == null || !user.getUserCredentials().hasDimensionConstraints() )
         {
+            log.debug( "No dimension constraint applied" );
             return;
         }
-        
-        if ( !user.getUserCredentials().hasDimensionConstraints()  )
-        {
-            return;
-        }
-        
+                
         Set<DimensionalObject> dimensionConstraints = user.getUserCredentials().getDimensionConstraints();
         
         for ( DimensionalObject dimension : dimensionConstraints )
@@ -338,7 +335,9 @@ public class DefaultQueryPlanner
             DimensionalObject constraint = new BaseDimensionalObject( dimension.getDimension(), 
                 dimension.getDimensionType(), null, dimension.getDisplayName(), canReadItems );
             
-            params.getFilters().add( constraint );                        
+            params.getFilters().add( constraint );
+
+            log.info( "User: " + user.getUsername() + " constrained by dimension: " + constraint.getDimension() );
         }        
     }
     
