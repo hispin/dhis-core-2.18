@@ -38,6 +38,7 @@ Ext.onReady( function() {
 
 	// extensions
 
+		// data items
 	(function() {
         var operatorCmpWidth = 70,
             valueCmpWidth = 304,
@@ -125,7 +126,7 @@ Ext.onReady( function() {
 
         Ext.define('Ext.ux.panel.DataElementStringContainer', {
 			extend: 'Ext.container.Container',
-			alias: 'widget.dataelementintegerpanel',
+			alias: 'widget.dataelementstringpanel',
 			layout: 'column',
             bodyStyle: 'border:0 none',
             getRecord: function() {
@@ -574,6 +575,167 @@ Ext.onReady( function() {
             }
         });
 	}());
+
+		// toolbar
+    (function() {
+        Ext.define('Ext.ux.toolbar.StatusBar', {
+			extend: 'Ext.toolbar.Toolbar',
+			alias: 'widget.statusbar',
+            queryCmps: [],
+            showHideQueryCmps: function(fnName) {
+				Ext.Array.each(this.queryCmps, function(cmp) {
+					cmp[fnName]();
+				});
+			},
+            setStatus: function(layout, response) {
+                this.pager = response.metaData.pager;
+
+                this.reset(layout.dataType);
+
+                if (layout.dataType === 'aggregated_values') {
+                    this.statusCmp.setText(response.rows.length + ' values');
+                    return;
+                }
+
+                if (layout.dataType === 'individual_cases') {
+                    var maxVal = this.pager.page * this.pager.pageSize,
+						from = maxVal - this.pager.pageSize + 1,
+						to = Ext.Array.min([maxVal, this.pager.total]);
+
+                    this.pageCmp.setValue(this.pager.page);
+                    this.pageCmp.setMaxValue(this.pager.pageCount);
+                    this.totalPageCmp.setText(' of ' + this.pager.pageCount);
+                    this.statusCmp.setText(from + '-' + to + ' of ' + this.pager.total + ' cases');
+                    return;
+                }
+            },
+            reset: function(dataType) {
+                if (!dataType || dataType === 'aggregated_values') {
+					this.showHideQueryCmps('hide');
+                    this.pageCmp.setValue(1);
+                    this.totalPageCmp.setText('');
+                    this.statusCmp.setText('');
+                    return;
+                }
+
+                if (dataType === 'individual_cases') {
+					this.showHideQueryCmps('show');
+                    this.pageCmp.setValue(1);
+                    this.totalPageCmp.setText(' of 1');
+                    this.statusCmp.setText('');
+                }
+            },
+            getCurrentPage: function() {
+                return this.pageCmp.getValue();
+            },
+            getPageCount: function() {
+				return this.pageCount;
+			},
+            onPageChange: function(page, currentPage) {
+				currentPage = currentPage || this.getCurrentPage();
+
+				if (page && page >= 1 && page <= this.pager.pageCount && page != currentPage) {
+					ns.app.layout.paging.page = page;
+					this.pageCmp.setValue(page);
+					ns.core.web.report.getData(ns.app.layout);
+				}
+            },
+            initComponent: function() {
+                var container = this,
+                    size = this.pageSize;
+
+                this.firstCmp = Ext.create('Ext.button.Button', {
+					text: '<<',
+					handler: function() {
+						container.onPageChange(1);
+					}
+				});
+				this.queryCmps.push(this.firstCmp);
+
+                this.prevCmp = Ext.create('Ext.button.Button', {
+					text: '<',
+					handler: function() {
+						container.onPageChange(container.getCurrentPage() - 1);
+					}
+				});
+				this.queryCmps.push(this.prevCmp);
+
+                this.pageTextCmp = Ext.create('Ext.toolbar.TextItem', {
+                    text: 'Page ',
+                    style: 'line-height:21px',
+                });
+				this.queryCmps.push(this.pageTextCmp);
+
+                this.pageCmp = Ext.create('Ext.form.field.Number', {
+                    width: 34,
+                    height: 21,
+                    minValue: 1,
+                    value: 1,
+                    hideTrigger: true,
+                    enableKeyEvents: true,
+                    currentPage: 1,
+                    listeners: {
+						render: function() {
+							Ext.get(this.getInputId()).setStyle('padding-top', '2px');
+						},
+						keyup: {
+							fn: function(cmp) {
+								var currentPage = cmp.currentPage;
+
+								cmp.currentPage = cmp.getValue();
+
+								container.onPageChange(cmp.getValue(), currentPage);
+							},
+							buffer: 200
+						}
+					}
+                });
+				this.queryCmps.push(this.pageCmp);
+
+                this.totalPageCmp = Ext.create('Ext.toolbar.TextItem', {
+                    text: '',
+                    style: 'line-height:21px'
+                });
+				this.queryCmps.push(this.totalPageCmp);
+
+                this.nextCmp = Ext.create('Ext.button.Button', {
+					text: '>',
+					handler: function() {
+						container.onPageChange(container.getCurrentPage() + 1);
+					}
+				});
+				this.queryCmps.push(this.nextCmp);
+
+                this.lastCmp = Ext.create('Ext.button.Button', {
+					text: '>>',
+					handler: function() {
+						container.onPageChange(container.pager.pageCount);
+					}
+				});
+				this.queryCmps.push(this.lastCmp);
+
+                this.statusCmp = Ext.create('Ext.toolbar.TextItem', {
+                    text: '',
+                    style: 'line-height:21px',
+                });
+
+                this.items = [
+                    this.statusCmp,
+					this.firstCmp,
+					this.prevCmp,
+					this.pageTextCmp,
+                    this.pageCmp,
+                    this.totalPageCmp,
+                    this.nextCmp,
+                    this.lastCmp,
+                    '->',
+                    this.statusCmp
+                ];
+
+                this.callParent();
+            }
+        });
+    }());
 
 	// constructors
 
@@ -1768,7 +1930,7 @@ Ext.onReady( function() {
 			text: NS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/eventReports/query/' + value + '.json?viewClass=sharing&links=false' : null,
+					url = value ? ns.core.init.contextPath + '/api/eventReports.json?include=id,name,access&filter=name:like:' + value : null;
 					store = ns.app.stores.eventReport;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -2473,7 +2635,7 @@ Ext.onReady( function() {
 			stage,
             onStageSelect,
             loadDataElements,
-            //dataElementAvailable,
+            dataElementAvailable,
             dataElementSelected,
             addUxFromDataElement,
             selectDataElements,
@@ -2501,7 +2663,7 @@ Ext.onReady( function() {
             checkboxes = [],
 
             fixedPeriodAvailable,
-            //fixedPeriodSelected,
+            fixedPeriodSelected,
             onPeriodTypeSelect,
             periodType,
             prevYear,
@@ -2641,6 +2803,8 @@ Ext.onReady( function() {
 				groups = [];
 
             reset();
+
+            ns.app.typeToolbar.setType(layout.dataType);
             ns.app.aggregateLayoutWindow.reset();
             ns.app.queryLayoutWindow.reset();
 
@@ -2787,19 +2951,19 @@ Ext.onReady( function() {
             }
             else {
                 Ext.Ajax.request({
-                    url: ns.core.init.contextPath + '/api/programs.json?filter=id:eq:' + programId + '&include=programStages[id,name],attributes&paging=false',
+                    url: ns.core.init.contextPath + '/api/programs.json?filter=id:eq:' + programId + '&include=programStages[id,name],programTrackedEntityAttributes[attribute[id,name,valueType,optionSet[id,name]]]&paging=false',
                     success: function(r) {
-                        var objects = Ext.decode(r.responseText).programs,
+                        var program = Ext.decode(r.responseText).programs[0],
                             stages,
                             attributes,
                             stageId;
 
-                        if (!objects.length) {
+                        if (!program) {
                             return;
                         }
 
-                        stages = objects[0].programStages;
-                        attributes = objects[0].attributes;
+                        stages = program.programStages;
+                        attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'attribute');
 
                         // attributes cache
                         if (Ext.isArray(attributes) && attributes.length) {
@@ -2858,7 +3022,7 @@ Ext.onReady( function() {
 		};
 
 		loadDataElements = function(stageId, layout) {
-			var programId = program.getValue() || null,
+			var programId = layout ? layout.program.id : (program.getValue() || null),
                 load;
 
             stageId = stageId || layout.programStage.id;
@@ -2873,22 +3037,18 @@ Ext.onReady( function() {
                     var dataDimensions = ns.core.service.layout.getDataDimensionsFromLayout(layout),
                         records = [];
 
-                    for (var i = 0, dim, record; i < dataDimensions.length; i++) {
+                    for (var i = 0, dim, row; i < dataDimensions.length; i++) {
                         dim = dataDimensions[i];
-                        record = dataElementsByStageStore.getById(dataDimensions[i].dimension).data;
+                        row = dataElementsByStageStore.getById(dim.dimension);
 
-                        records.push(Ext.applyIf(dim, record));
+                        if (row) {
+                            records.push(Ext.applyIf(dim, row.data));
+                        }
                     }
 
                     selectDataElements(records, layout);
                 }
 			};
-
-            // favorite
-            //if (layout) {
-                //dataElementsByStageStore.loadData(layout.data); //todo
-                //return;
-            //}
 
             // data elements
             if (dataElementStorage.hasOwnProperty(stageId)) {
@@ -3024,6 +3184,8 @@ Ext.onReady( function() {
 			var getUxType,
 				ux;
 
+            element.type = element.type || element.valueType;
+
 			index = index || dataElementSelected.items.items.length;
 
 			getUxType = function(element) {
@@ -3031,7 +3193,7 @@ Ext.onReady( function() {
 					return 'Ext.ux.panel.DataElementOptionContainer';
 				}
 
-				if (element.type === 'int') {
+				if (element.type === 'int' || element.type === 'number') {
 					return 'Ext.ux.panel.DataElementIntegerContainer';
 				}
 
@@ -3076,7 +3238,8 @@ Ext.onReady( function() {
         selectDataElements = function(items, layout) {
             var dataElements = [],
                 aggWindow = ns.app.aggregateLayoutWindow,
-                queryWindow = ns.app.queryLayoutWindow;
+                queryWindow = ns.app.queryLayoutWindow,
+                includeKeys = ['int', 'number', 'boolean', 'bool'];
 
 			// data element objects
             for (var i = 0, item; i < items.length; i++) {
@@ -3098,6 +3261,7 @@ Ext.onReady( function() {
 			// panel, store
             for (var i = 0, element, ux, store; i < dataElements.length; i++) {
 				element = dataElements[i];
+                element.type = element.type || element.valueType;
 
 				ux = addUxFromDataElement(element);
 
@@ -3105,7 +3269,7 @@ Ext.onReady( function() {
                     ux.setRecord(element);
                 }
 
-                store = (element.type === 'int' || element.type === 'boolean' || element.optionSet) ? aggWindow.rowStore : aggWindow.fixedFilterStore;
+                store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.rowStore : aggWindow.fixedFilterStore;
 
                 aggWindow.addDimension(element, store);
                 queryWindow.colStore.add(element);
@@ -4307,21 +4471,9 @@ Ext.onReady( function() {
 			//}
 		};
 
-        setGui = function(layout, xLayout, updateGui) {
+        setGui = function(layout, xLayout, response, updateGui, table) {
 			var dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || [])),
-				//dimMap = ns.core.service.layout.getObjectNameDimensionMapFromDimensionArray(dimensions),
 				recMap = ns.core.service.layout.getObjectNameDimensionItemsMapFromDimensionArray(dimensions);
-				//graphMap = layout.parentGraphMap,
-				//objectName,
-				//periodRecords,
-				//fixedPeriodRecords = [],
-				//dimNames = [],
-				//isOu = false,
-				//isOuc = false,
-				//isOugc = false,
-				//levels = [],
-				//groups = [],
-				//orgunits = [];
 
 			// state
 			ns.app.downloadButton.enable();
@@ -4330,198 +4482,14 @@ Ext.onReady( function() {
 				ns.app.shareButton.enable();
 			}
 
+            ns.app.statusBar.setStatus(layout, response);
+
 			// set gui
 			if (!updateGui) {
 				return;
 			}
 
             setLayout(layout);
-
-            return;
-
-			// data
-			indicatorSelectedStore.removeAll();
-			objectName = dimConf.indicator.objectName;
-			if (dimMap[objectName]) {
-				indicatorSelectedStore.add(Ext.clone(recMap[objectName]));
-				ns.core.web.multiSelect.filterAvailable({store: indicatorAvailableStore}, {store: indicatorSelectedStore});
-			}
-
-			// Data elements
-			dataElementSelectedStore.removeAll();
-			objectName = dimConf.dataElement.objectName;
-			if (dimMap[objectName]) {
-				dataElementSelectedStore.add(Ext.clone(recMap[objectName]));
-				ns.core.web.multiSelect.filterAvailable({store: dataElementAvailableStore}, {store: dataElementSelectedStore});
-				dataElementDetailLevel.setValue(objectName);
-			}
-
-			// Operands
-			objectName = dimConf.operand.objectName;
-			if (dimMap[objectName]) {
-				dataElementSelectedStore.add(Ext.clone(recMap[objectName]));
-				ns.core.web.multiSelect.filterAvailable({store: dataElementAvailableStore}, {store: dataElementSelectedStore});
-				dataElementDetailLevel.setValue(objectName);
-			}
-
-			// Data sets
-			dataSetSelectedStore.removeAll();
-			objectName = dimConf.dataSet.objectName;
-			if (dimMap[objectName]) {
-				dataSetSelectedStore.add(Ext.clone(recMap[objectName]));
-				ns.core.web.multiSelect.filterAvailable({store: dataSetAvailableStore}, {store: dataSetSelectedStore});
-			}
-
-			// Periods
-			fixedPeriodSelectedStore.removeAll();
-			period.resetRelativePeriods();
-			periodRecords = recMap[dimConf.period.objectName] || [];
-			for (var i = 0, periodRecord, checkbox; i < periodRecords.length; i++) {
-				periodRecord = periodRecords[i];
-				checkbox = ns.app.relativePeriodCmpMap[periodRecord.id];
-				if (checkbox) {
-					checkbox.setValue(true);
-				}
-				else {
-					fixedPeriodRecords.push(periodRecord);
-				}
-			}
-			fixedPeriodSelectedStore.add(fixedPeriodRecords);
-			ns.core.web.multiSelect.filterAvailable({store: fixedPeriodAvailableStore}, {store: fixedPeriodSelectedStore});
-
-			// Group sets
-			for (var key in dimensionIdSelectedStoreMap) {
-				if (dimensionIdSelectedStoreMap.hasOwnProperty(key)) {
-					var a = dimensionIdAvailableStoreMap[key],
-						s = dimensionIdSelectedStoreMap[key];
-
-					if (s.getCount() > 0) {
-						a.reset();
-						s.removeAll();
-					}
-
-					if (recMap[key]) {
-						s.add(recMap[key]);
-						ns.core.web.multiSelect.filterAvailable({store: a}, {store: s});
-					}
-				}
-			}
-
-			// Layout
-			ns.app.stores.dimension.reset(true);
-			ns.app.aggregateLayoutWindow.colStore.removeAll();
-			ns.app.layoutWiaggregateLayoutWindowndow.rowStore.removeAll();
-			ns.app.aggregateLayoutWindow.filterStore.removeAll();
-
-			if (layout.columns) {
-				dimNames = [];
-
-				for (var i = 0, dim; i < layout.columns.length; i++) {
-					dim = dimConf.objectNameMap[layout.columns[i].dimension];
-
-					if (!Ext.Array.contains(dimNames, dim.dimensionName)) {
-						ns.app.aggregateLayoutWindow.colStore.add({
-							id: dim.dimensionName,
-							name: dimConf.objectNameMap[dim.dimensionName].name
-						});
-
-						dimNames.push(dim.dimensionName);
-					}
-
-					ns.app.stores.dimension.remove(ns.app.stores.dimension.getById(dim.dimensionName));
-				}
-			}
-
-			if (layout.rows) {
-				dimNames = [];
-
-				for (var i = 0, dim; i < layout.rows.length; i++) {
-					dim = dimConf.objectNameMap[layout.rows[i].dimension];
-
-					if (!Ext.Array.contains(dimNames, dim.dimensionName)) {
-						ns.app.stores.row.add({
-							id: dim.dimensionName,
-							name: dimConf.objectNameMap[dim.dimensionName].name
-						});
-
-						dimNames.push(dim.dimensionName);
-					}
-
-					ns.app.stores.dimension.remove(ns.app.stores.dimension.getById(dim.dimensionName));
-				}
-			}
-
-			if (layout.filters) {
-				dimNames = [];
-
-				for (var i = 0, dim; i < layout.filters.length; i++) {
-					dim = dimConf.objectNameMap[layout.filters[i].dimension];
-
-					if (!Ext.Array.contains(dimNames, dim.dimensionName)) {
-						ns.app.stores.filter.add({
-							id: dim.dimensionName,
-							name: dimConf.objectNameMap[dim.dimensionName].name
-						});
-
-						dimNames.push(dim.dimensionName);
-					}
-
-					ns.app.stores.dimension.remove(ns.app.stores.dimension.getById(dim.dimensionName));
-				}
-			}
-
-			// Options
-			if (ns.app.optionsWindow) {
-				ns.app.optionsWindow.setOptions(layout);
-			}
-
-			// Organisation units
-			if (recMap[dimConf.organisationUnit.objectName]) {
-				for (var i = 0, ouRecords = recMap[dimConf.organisationUnit.objectName]; i < ouRecords.length; i++) {
-					if (ouRecords[i].id === 'USER_ORGUNIT') {
-						isOu = true;
-					}
-					else if (ouRecords[i].id === 'USER_ORGUNIT_CHILDREN') {
-						isOuc = true;
-					}
-					else if (ouRecords[i].id === 'USER_ORGUNIT_GRANDCHILDREN') {
-						isOugc = true;
-					}
-					else if (ouRecords[i].id.substr(0,5) === 'LEVEL') {
-						levels.push(parseInt(ouRecords[i].id.split('-')[1]));
-					}
-					else if (ouRecords[i].id.substr(0,8) === 'OU_GROUP') {
-						groups.push(ouRecords[i].id.split('-')[1]);
-					}
-					else {
-						orgunits.push(ouRecords[i].id);
-					}
-				}
-
-				if (levels.length) {
-					toolMenu.clickHandler('level');
-					organisationUnitLevel.setValue(levels);
-				}
-				else if (groups.length) {
-					toolMenu.clickHandler('group');
-					organisationUnitGroup.setValue(groups);
-				}
-				else {
-					toolMenu.clickHandler('orgunit');
-					userOrganisationUnit.setValue(isOu);
-					userOrganisationUnitChildren.setValue(isOuc);
-					userOrganisationUnitGrandChildren.setValue(isOugc);
-				}
-
-				if (!(isOu || isOuc || isOugc)) {
-					if (Ext.isObject(graphMap)) {
-						treePanel.selectGraphMap(graphMap);
-					}
-				}
-			}
-			else {
-				treePanel.reset();
-			}
 		};
 
 		getView = function(config) {
@@ -4617,6 +4585,12 @@ Ext.onReady( function() {
 			if (filters.length) {
 				view.filters = filters;
 			}
+
+            // paging
+            view.paging = {
+                page: ns.app.statusBar.getCurrentPage(),
+                pageSize: 100
+            };
 
 			return view;
 		};
@@ -5104,7 +5078,12 @@ Ext.onReady( function() {
 					};
 				}
 
-				web.report.createReport(layout, response);
+                if (layout.dataType === 'aggregated_values') {
+                    web.report.createReport(layout, response);
+                }
+                else if (layout.dataType === 'individual_cases') {
+                    web.report.getData(layout);
+                }
 			};
 
 			web.events.onColumnHeaderMouseOver = function(el) {
@@ -5308,7 +5287,7 @@ Ext.onReady( function() {
 						web.storage.session.set(layout, 'table');
 					}
 
-					ns.app.widget.setGui(layout, xLayout, isUpdateGui);
+					ns.app.widget.setGui(layout, xLayout, response, isUpdateGui, table);
 
 					web.mask.hide(ns.app.centerRegion);
 
@@ -5348,7 +5327,7 @@ Ext.onReady( function() {
 						web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
 					}
 
-					ns.app.widget.setGui(layout, null, isUpdateGui);
+					ns.app.widget.setGui(layout, null, response, isUpdateGui, table);
 
 					web.mask.hide(ns.app.centerRegion);
 				};
@@ -5377,6 +5356,7 @@ Ext.onReady( function() {
             interpretationItem,
             pluginItem,
             shareButton,
+            statusBar,
             centerRegion,
             setGui,
             getLayoutWindow,
@@ -5464,6 +5444,13 @@ Ext.onReady( function() {
             getType: function() {
 				return aggregateButton.pressed ? aggregateButton.param : caseButton.param;
 			},
+            setType: function(dataType) {
+                var button = paramButtonMap[dataType];
+
+                if (button) {
+                    button.toggle(true);
+                }
+            },
             defaults: {
                 height: 40,
                 toggleGroup: 'mode',
@@ -5848,6 +5835,17 @@ Ext.onReady( function() {
 			}
 		});
 
+        statusBar = Ext.create('Ext.ux.toolbar.StatusBar', {
+            height: 27,
+            listeners: {
+                render: function() {
+                    ns.app.statusBar = this;
+
+                    this.reset();
+                }
+            }
+        });
+
 		centerRegion = Ext.create('Ext.panel.Panel', {
 			region: 'center',
 			bodyStyle: 'padding:1px',
@@ -5893,6 +5891,7 @@ Ext.onReady( function() {
 					}
 				]
 			},
+            bbar: statusBar,
 			listeners: {
 				added: function() {
 					ns.app.centerRegion = this;

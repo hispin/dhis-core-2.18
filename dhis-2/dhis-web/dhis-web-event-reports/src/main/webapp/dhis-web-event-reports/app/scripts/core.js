@@ -1738,6 +1738,19 @@ Ext.onReady( function() {
 				// hierarchy
 				paramString += view.showHierarchy ? '&hierarchyMeta=true' : '';
 
+                // sorting
+                if (view.dataType === 'individual_cases' && view.sorting) {
+                    if (view.sorting.id && view.sorting.direction) {
+                        paramString += '&' + view.sorting.direction.toLowerCase() + '=' + view.sorting.id;
+                    }
+                }
+
+                // paging
+                if (view.dataType === 'individual_cases' && view.paging) {
+                    paramString += view.paging.pageSize ? '&pageSize=' + view.paging.pageSize : '';
+                    paramString += view.paging.page ? '&page=' + view.paging.page : '';
+                }
+
                 return paramString;
             };
 
@@ -2521,6 +2534,7 @@ Ext.onReady( function() {
 
 				// get html
 				return function() {
+                    var rows = xResponse.rows;
 					htmlArray = Ext.Array.clean([].concat(getColAxisHtmlArray() || [], getRowHtmlArray() || [], getTotalHtmlArray() || []));
 
 					return {

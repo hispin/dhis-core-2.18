@@ -806,7 +806,7 @@ Ext.onReady( function() {
 
 		// Vars
 			windowWidth = 500,
-			windowCmpWidth = windowWidth - 22;
+			windowCmpWidth = windowWidth - 14;
 
 		ns.app.stores.reportTable.on('load', function(store, records) {
 			var pager = store.proxy.reader.jsonData.pager;
@@ -873,7 +873,7 @@ Ext.onReady( function() {
 			nameTextfield = Ext.create('Ext.form.field.Text', {
 				height: 26,
 				width: 371,
-				fieldStyle: 'padding-left: 5px; border-radius: 1px; border-color: #bbb; font-size:11px',
+				fieldStyle: 'padding-left: 4px; border-radius: 1px; border-color: #bbb; font-size:11px',
 				style: 'margin-bottom:0',
 				emptyText: 'Favorite name',
 				value: id ? record.data.name : '',
@@ -975,8 +975,7 @@ Ext.onReady( function() {
 
 			window = Ext.create('Ext.window.Window', {
 				title: id ? 'Rename favorite' : 'Create new favorite',
-				//iconCls: 'ns-window-title-icon-favorite',
-				bodyStyle: 'padding:2px; background:#fff',
+				bodyStyle: 'padding:1px; background:#fff',
 				resizable: false,
 				modal: true,
 				items: nameTextfield,
@@ -1021,9 +1020,9 @@ Ext.onReady( function() {
 		});
 
 		searchTextfield = Ext.create('Ext.form.field.Text', {
-			width: windowCmpWidth - addButton.width - 11,
+			width: windowCmpWidth - addButton.width - 3,
 			height: 26,
-			fieldStyle: 'padding-right: 0; padding-left: 5px; border-radius: 1px; border-color: #bbb; font-size:11px',
+			fieldStyle: 'padding-right: 0; padding-left: 4px; border-radius: 1px; border-color: #bbb; font-size:11px',
 			emptyText: NS.i18n.search_for_favorites,
 			enableKeyEvents: true,
 			currentValue: '',
@@ -1314,8 +1313,7 @@ Ext.onReady( function() {
 
 		favoriteWindow = Ext.create('Ext.window.Window', {
 			title: NS.i18n.manage_favorites,
-			//iconCls: 'ns-window-title-icon-favorite',
-			bodyStyle: 'padding:5px; background-color:#fff',
+			bodyStyle: 'padding:1px; background-color:#fff',
 			resizable: false,
 			modal: true,
 			width: windowWidth,
@@ -1325,12 +1323,13 @@ Ext.onReady( function() {
 					xtype: 'panel',
 					layout: 'hbox',
 					bodyStyle: 'border:0 none',
+					height: 27,
 					items: [
 						addButton,
 						{
-							height: 24,
+							height: 26,
 							width: 1,
-							style: 'width:1px; margin-left:5px; margin-right:5px; margin-top:1px',
+							style: 'width:1px; margin-left:1px; margin-right:1px',
 							bodyStyle: 'border-left: 1px solid #aaa'
 						},
 						searchTextfield
