@@ -2083,21 +2083,42 @@ Ext.onReady( function() {
 
 					// dimension
 					if (xRowAxis) {
+						var aLineBreak = new Array(xRowAxis.dims);
+
 						for (var i = 0, row; i < xRowAxis.size; i++) {
 							row = [];
 
 							for (var j = 0, obj, newObj; j < xRowAxis.dims; j++) {
 								obj = xRowAxis.objects.all[j][i];
 								obj.type = 'dimension';
-								obj.cls = 'pivot-dim td-nobreak' + (service.layout.isHierarchy(xLayout, xResponse, obj.id) ? ' align-left' : '');
+								obj.cls = 'pivot-dim ' + (service.layout.isHierarchy(xLayout, xResponse, obj.id) ? ' align-left' : '');
 								obj.noBreak = true;
 								obj.hidden = !(obj.rowSpan || obj.colSpan);
 								obj.htmlValue = service.layout.getItemName(xLayout, xResponse, obj.id, true);
 
 								row.push(obj);
+
+								// allow line break for this dim?
+								if (obj.htmlValue.length > 50) {
+									aLineBreak[j] = true;
+								}
 							}
 
 							axisAllObjects.push(row);
+						}
+
+						// add nowrap line break cls
+						for (var i = 0, dim; i < aLineBreak.length; i++) {
+							dim = aLineBreak[i];
+
+							if (!dim) {
+								for (var j = 0, obj; j < xRowAxis.size; j++) {
+									obj = axisAllObjects[j][i];
+
+									obj.cls += ' td-nobreak';
+									obj.noBreak = true;
+								}
+							}
 						}
 					}
 	//axisAllObjects = [ [ dim, dim ]
