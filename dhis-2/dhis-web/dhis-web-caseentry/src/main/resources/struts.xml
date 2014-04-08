@@ -34,13 +34,13 @@
 		<action name="searchAllFacilities" class="org.hisp.dhis.caseentry.action.NoAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_SEARCH_TRACKED_ENTITY_INSTANCE_IN_ALL_FACILITIES</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH_IN_ALL_ORGUNITS</param>
 		</action>
 
 		<action name="searchInOtherOrgunits" class="org.hisp.dhis.caseentry.action.NoAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_SEARCH_TRACKED_ENTITY_INSTANCE_IN_OTHER_ORGUNITS</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
 		</action>
 
 		<action name="searchTrackedEntityInstance"
@@ -55,7 +55,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="listAll">true</param>
 			<param name="page">/dhis-web-caseentry/listTrackedEntityInstance.vm</param>
-			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_LIST</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
 		</action>
 
 		<action name="selectDataRecording"
@@ -521,7 +521,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="anyAuthorities">F_ALLOW_EDIT_TRACKED_ENTITY_PROPERTIES, F_ALLOW_EDIT_TRACKED_ENTITY_ATTRIBUTES, F_ALLOW_EDIT_TRACKED_ENTITY_IDENTIFIERS</param>
+			<param name="anyAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_EDIT</param>
 		</action>
 
 		<action name="validateTrackedEntityInstance"
@@ -873,7 +873,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/trackedEntityInstanceDashboard.vm</param>
 			<param name="stylesheets">style/style.css</param>
-			<param name="requiredAuthorities">F_PATIENT_DASHBOARD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_DASHBOARD</param>
 		</action>
 
 		<action name="removeProgramInstance"
@@ -893,21 +893,21 @@
 			class="org.hisp.dhis.caseentry.action.reminder.SaveTrackedEntityCommentAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_PATIENT_COMMENT_ADD</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_COMMENT_ADD</param>
 		</action>
 
 		<action name="removeTrackedEntityInstanceComment"
 			class="org.hisp.dhis.caseentry.action.reminder.RemoveTrackedEntityInstanceCommentAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_PATIENT_COMMENT_DELETE</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_COMMENT_DELETE</param>
 		</action>
 
 		<action name="removeSms"
 			class="org.hisp.dhis.caseentry.action.reminder.RemoveSmsAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_PATIENT_COMMENT_DELETE</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_COMMENT_DELETE</param>
 		</action>
 
 		<!-- Activity plan -->
@@ -941,13 +941,13 @@
 		<action name="accessAttributes" class="org.hisp.dhis.caseentry.action.NoAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_ACCESS_PATIENT_ATTRIBUTES</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_VIEW</param>
 		</action>
 
 		<action name="allowEditAttributes" class="org.hisp.dhis.caseentry.action.NoAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_ALLOW_EDIT_PATIENT_ATTRIBUTES</param>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_ATTRIBUTE_EDIT</param>
 		</action>
 
 		<!-- Program-stage-completeness -->

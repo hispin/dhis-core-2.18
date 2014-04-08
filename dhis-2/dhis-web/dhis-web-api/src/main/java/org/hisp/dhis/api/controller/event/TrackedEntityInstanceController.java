@@ -72,7 +72,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @Controller
 @RequestMapping( value = TrackedEntityInstanceController.RESOURCE_PATH )
-@PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_LIST')" )
+@PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_INSTANCE_SEARCH')" )
 public class TrackedEntityInstanceController
 {
     public static final String RESOURCE_PATH = "/trackedEntityInstances";
