@@ -41,16 +41,18 @@ Ext.onReady( function() {
 		// data items
 	(function() {
         var operatorCmpWidth = 70,
-            valueCmpWidth = 304,
+            valueCmpWidth = 306,
             buttonCmpWidth = 20,
             nameCmpWidth = 400,
-            namePadding = '2px 5px';
+            namePadding = '2px 3px',
+            margin = '3px 0 1px';
 
         Ext.define('Ext.ux.panel.DataElementIntegerContainer', {
 			extend: 'Ext.container.Container',
 			alias: 'widget.dataelementintegerpanel',
 			layout: 'column',
             bodyStyle: 'border:0 none',
+            style: 'margin: ' + margin,
             getRecord: function() {
                 return {
                     dimension: this.dataElement.id,
@@ -78,6 +80,7 @@ Ext.onReady( function() {
                     queryMode: 'local',
                     editable: false,
                     width: operatorCmpWidth,
+					style: 'margin-bottom:0',
                     value: 'EQ',
                     store: {
                         fields: ['id', 'name'],
@@ -93,7 +96,8 @@ Ext.onReady( function() {
                 });
 
                 this.valueCmp = Ext.create('Ext.form.field.Number', {
-                    width: valueCmpWidth
+                    width: valueCmpWidth,
+					style: 'margin-bottom:0'
                 });
 
                 this.addCmp = Ext.create('Ext.button.Button', {
@@ -129,6 +133,7 @@ Ext.onReady( function() {
 			alias: 'widget.dataelementstringpanel',
 			layout: 'column',
             bodyStyle: 'border:0 none',
+            style: 'margin: ' + margin,
             getRecord: function() {
                 return {
                     dimension: this.dataElement.id,
@@ -156,6 +161,7 @@ Ext.onReady( function() {
                     queryMode: 'local',
                     editable: false,
                     width: operatorCmpWidth,
+					style: 'margin-bottom:0',
                     value: 'LIKE',
                     store: {
                         fields: ['id', 'name'],
@@ -167,7 +173,8 @@ Ext.onReady( function() {
                 });
 
                 this.valueCmp = Ext.create('Ext.form.field.Text', {
-                    width: valueCmpWidth
+                    width: valueCmpWidth,
+					style: 'margin-bottom:0'
                 });
 
                 this.addCmp = Ext.create('Ext.button.Button', {
@@ -203,6 +210,7 @@ Ext.onReady( function() {
 			alias: 'widget.dataelementdatepanel',
 			layout: 'column',
             bodyStyle: 'border:0 none',
+            style: 'margin: ' + margin,
             getRecord: function() {
                 return {
                     dimension: this.dataElement.id,
@@ -230,6 +238,7 @@ Ext.onReady( function() {
                     queryMode: 'local',
                     editable: false,
                     width: operatorCmpWidth,
+                    style: 'margin-bottom:0',
                     value: 'EQ',
                     store: {
                         fields: ['id', 'name'],
@@ -246,6 +255,7 @@ Ext.onReady( function() {
 
                 this.valueCmp = Ext.create('Ext.form.field.Date', {
 					width: valueCmpWidth,
+					style: 'margin-bottom:0',
 					format: 'Y-m-d'
 				});
 
@@ -282,6 +292,7 @@ Ext.onReady( function() {
 			alias: 'widget.dataelementbooleanpanel',
 			layout: 'column',
             bodyStyle: 'border:0 none',
+            style: 'margin: ' + margin,
             getRecord: function() {
                 return {
                     dimension: this.dataElement.id,
@@ -308,6 +319,7 @@ Ext.onReady( function() {
                     queryMode: 'local',
                     editable: false,
                     width: operatorCmpWidth + valueCmpWidth,
+                    style: 'margin-bottom:0',
                     value: 'false',
                     store: {
                         fields: ['id', 'name'],
@@ -350,6 +362,7 @@ Ext.onReady( function() {
 			alias: 'widget.dataelementoptionpanel',
 			layout: 'column',
             bodyStyle: 'border:0 none',
+            style: 'margin: ' + margin,
             getRecord: function() {
 				var valueArray = this.valueCmp.getValue().split(';');
 
@@ -382,6 +395,7 @@ Ext.onReady( function() {
                     displayField: 'name',
                     queryMode: 'local',
                     editable: false,
+                    style: 'margin-bottom:0',
                     width: operatorCmpWidth,
                     value: 'IN',
                     store: {
@@ -436,6 +450,7 @@ Ext.onReady( function() {
 
                 this.searchCmp = Ext.create('Ext.form.field.ComboBox', {
                     width: 62,
+                    style: 'margin-bottom:0',
                     emptyText: 'Search..',
                     valueField: 'id',
                     displayField: 'name',
@@ -515,6 +530,7 @@ Ext.onReady( function() {
 
                 this.valueCmp = Ext.create('Ext.form.field.Text', {
 					width: 224,
+                    style: 'margin-bottom:0',
 					addOptionValue: function(option) {
 						var value = this.getValue();
 
@@ -3128,13 +3144,14 @@ Ext.onReady( function() {
 
         dataElementSelected = Ext.create('Ext.panel.Panel', {
 			width: accBaseWidth,
-            height: 240,
-            bodyStyle: 'padding:2px 0 5px 3px; overflow-y: scroll',
+            height: 242,
+            bodyStyle: 'padding-left:1px',
+            autoScroll: true,
             tbar: [
 				{
 					xtype: 'label',
                     text: 'Selected data items',
-                    style: 'padding-left:6px; color:#222',
+                    style: 'padding-left:6px; color:#333',
 					cls: 'ns-toolbar-multiselect-left-label'
 				},
 				'->',
