@@ -152,11 +152,6 @@ public class DefaultTrackedEntityInstanceService
     @Override
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
-        if ( params != null )
-        {
-            params.conform();
-        }
-        
         validate( params );
 
         // ---------------------------------------------------------------------
@@ -177,11 +172,11 @@ public class DefaultTrackedEntityInstanceService
         // attributes.
         // ---------------------------------------------------------------------
 
-        if ( !params.hasAttributesOrFilters() )
+        if ( params.isOrQuery() || !params.hasAttributes() )
         {
             if ( params.hasProgram() )
             {
-                params.getAttributes().addAll( QueryItem.getQueryItems( params.getProgram().getTrackedEntityAttributes() ) );
+                params.addAttributesIfNotExist( QueryItem.getQueryItems( params.getProgram().getTrackedEntityAttributes() ) );
             }
             else 
             {
@@ -189,16 +184,22 @@ public class DefaultTrackedEntityInstanceService
                 Collection<TrackedEntityAttribute> attributes = attributeService.getTrackedEntityAttributesDisplayInList( true );
                 filters.removeAll( attributes );
                 
-                params.getAttributes().addAll( QueryItem.getQueryItems( attributes ) );
-                params.getFilters().addAll( QueryItem.getQueryItems( filters ) );
+                params.addAttributesIfNotExist( QueryItem.getQueryItems( attributes ) );
+                params.addFiltersIfNotExist( QueryItem.getQueryItems( filters ) );
             }
         }
 
-        Grid grid = new ListGrid();
+        // ---------------------------------------------------------------------
+        // Conform params
+        // ---------------------------------------------------------------------
+
+        params.conform();
 
         // ---------------------------------------------------------------------
         // Grid headers
         // ---------------------------------------------------------------------
+
+        Grid grid = new ListGrid();
 
         grid.addHeader( new GridHeader( TRACKED_ENTITY_INSTANCE_ID, "Instance" ) );
         grid.addHeader( new GridHeader( CREATED_ID, "Created" ) );
