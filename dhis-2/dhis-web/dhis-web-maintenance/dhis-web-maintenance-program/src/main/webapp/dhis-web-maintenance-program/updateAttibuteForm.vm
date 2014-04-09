@@ -63,7 +63,6 @@
 				<option value="age" #if( $attribute.valueType == 'age' ) selected="selected" #end>$i18n.getString( "age" )</option>
 				<option value="users" #if( $attribute.valueType == 'users' ) selected="selected" #end>$i18n.getString( "users" )</option>
 				<option value="combo" #if( $attribute.valueType == 'combo' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
-				<option value="localId" #if( $attribute.valueType == 'localId' ) selected="selected" #end>$i18n.getString( "local_identifier" )</option>
             </select>
         </td>
     </tr>
@@ -97,20 +96,7 @@
 		</td>
 		<td></td>
 	</tr>
-	
-	<tr name='localIdField' #if($attribute.valueType!='localId' ) style='display:none;' #end>
-		<td><label for="type">$i18n.getString( "period_type" )</label></td>
-		<td>
-			<select type='checkbox' id="periodTypeName" name="periodTypeName" >
-				<option value="">[$i18n.getString( "please_select" )]</option>
-				#foreach ( $periodType in $periodTypes )
-				<option value="$periodType.name" #if( $attribute.periodType.name==$periodType.name ) selected #end>$i18n.getString( $periodType.name )</option>
-				#end
-			</select>
-		</td>
-		<td></td>
-	</tr>
-		
+
     </tbody>
 	
 	<tr>
