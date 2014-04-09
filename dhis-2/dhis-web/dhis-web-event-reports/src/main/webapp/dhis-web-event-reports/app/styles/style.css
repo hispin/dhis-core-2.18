@@ -183,6 +183,7 @@ body.x-windows {
     background: #fff;
 }
 
+
 /*----------------------------------------------------------------------------
  * Pivot
  *--------------------------------------------------------------------------*/
@@ -698,6 +699,18 @@ table.small td {
 	border-color: #bbb;
 }
 
+.x-btn-default-toolbar-small-over {
+	background-image: none;
+    background-color: #f3f3f3;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f1f1f1), color-stop(100%, #f6f6f6));
+    background-image: -webkit-linear-gradient(top, #f1f1f1,#f6f6f6);
+    background-image: -moz-linear-gradient(top, #f1f1f1,#f6f6f6);
+    background-image: -o-linear-gradient(top, #f1f1f1,#f6f6f6);
+    background-image: -ms-linear-gradient(top, #f1f1f1,#f6f6f6);
+    background-image: linear-gradient(top, #f1f1f1,#f6f6f6);
+}
+
+
 	/* Chart image */
 .x-btn-default-toolbar-small-icon button {
     width: 32px !important;
@@ -712,15 +725,15 @@ table.small td {
 }
 
 .x-btn-default-toolbar-small-pressed {
-	border-color: #bbb;
+	border-color: #aaa;
     background-image: none;
     background-color: #d6d6d6;
-    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1d1d1), color-stop(100%, #e5e5e5));
-    background-image: -webkit-linear-gradient(top, #d1d1d1,#e5e5e5);
-    background-image: -moz-linear-gradient(top, #d1d1d1,#e5e5e5);
-    background-image: -o-linear-gradient(top, #d1d1d1,#e5e5e5);
-    background-image: -ms-linear-gradient(top, #d1d1d1,#e5e5e5);
-    background-image: linear-gradient(top, #d1d1d1,#e5e5e5);
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cccccc), color-stop(100%, #e5e5e5));
+    background-image: -webkit-linear-gradient(top, #cccccc,#e5e5e5);
+    background-image: -moz-linear-gradient(top, #cccccc,#e5e5e5);
+    background-image: -o-linear-gradient(top, #cccccc,#e5e5e5);
+    background-image: -ms-linear-gradient(top, #cccccc,#e5e5e5);
+    background-image: linear-gradient(top, #cccccc,#e5e5e5);
 }
 
 /*----------------------------------------------------------------------------

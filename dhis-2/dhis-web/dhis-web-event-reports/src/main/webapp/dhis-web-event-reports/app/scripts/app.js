@@ -805,7 +805,7 @@ Ext.onReady( function() {
 
                 this.sortOrderCmp = Ext.create('Ext.form.field.ComboBox', {
                     cls: 'ns-combo',
-                    style: 'margin-bottom:3px',
+                    style: 'margin-bottom:2px',
                     width: 70,
                     queryMode: 'local',
                     valueField: 'id',
@@ -822,7 +822,7 @@ Ext.onReady( function() {
 
                 this.topLimitCmp = Ext.create('Ext.form.field.Number', {
                     width: 56,
-                    style: 'margin-left:1px',
+                    style: 'margin-bottom:2px; margin-left:1px',
                     minValue: 1,
                     maxValue: 10000,
                     value: container.topLimit,
@@ -1567,7 +1567,7 @@ Ext.onReady( function() {
 
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:3px',
+			style: 'margin-bottom:2px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.display_density,
@@ -1588,7 +1588,7 @@ Ext.onReady( function() {
 
 		fontSize = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
-			style: 'margin-bottom:3px',
+			style: 'margin-bottom:2px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.font_size,
@@ -1610,7 +1610,7 @@ Ext.onReady( function() {
 		digitGroupSeparator = Ext.create('Ext.form.field.ComboBox', {
 			labelStyle: 'color:#333',
 			cls: 'ns-combo',
-			style: 'margin-bottom:3px',
+			style: 'margin-bottom:2px',
 			width: comboboxWidth,
 			labelWidth: 130,
 			fieldLabel: NS.i18n.digit_group_separator,
@@ -1674,7 +1674,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_options,
-			bodyStyle: 'background-color:#fff; padding:5px',
+			bodyStyle: 'background-color:#fff; padding:5px 5px 3px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
@@ -1721,7 +1721,7 @@ Ext.onReady( function() {
 				},
 				data,
 				{
-					bodyStyle: 'border:0 none; padding:7px'
+					bodyStyle: 'border:0 none; padding:5px'
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
@@ -1730,7 +1730,7 @@ Ext.onReady( function() {
 				},
 				organisationUnits,
 				{
-					bodyStyle: 'border:0 none; padding:7px'
+					bodyStyle: 'border:0 none; padding:5px'
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
@@ -3436,8 +3436,8 @@ Ext.onReady( function() {
             store: {
                 fields: ['id', 'name'],
                 data: [
-                    {id: 'periods', name: 'Select fixed and relative periods'},
-                    {id: 'dates', name: 'Select start/end dates'}
+                    {id: 'periods', name: 'Fixed and relative periods'},
+                    {id: 'dates', name: 'Start/end dates'}
                 ]
             },
             reset: function() {
@@ -5511,7 +5511,6 @@ Ext.onReady( function() {
 		// viewport
 
         aggregateButton = Ext.create('Ext.button.Button', {
-			//flex: 1,
             width: 223,
 			param: 'aggregated_values',
             text: '<b>Aggregated values</b><br/>Show aggregated event report',
@@ -5526,7 +5525,6 @@ Ext.onReady( function() {
         paramButtonMap[aggregateButton.param] = aggregateButton;
 
 		caseButton = Ext.create('Ext.button.Button', {
-			//flex: 1,'
             width: 224,
 			param: 'individual_cases',
             text: '<b>Individual cases</b><br/>Show case-based event report',
@@ -5557,7 +5555,7 @@ Ext.onReady( function() {
                 toggleGroup: 'mode',
 				cls: 'x-btn-default-toolbar-small-over',
                 handler: function(b) {
-					onTypeClick(b.param);
+					onTypeClick(b);
 				}
 			},
 			items: [
@@ -5571,9 +5569,7 @@ Ext.onReady( function() {
 			}
 		});
 
-		onTypeClick = function(param) {
-			var button = paramButtonMap[param];
-
+		onTypeClick = function(button) {
 			if (!button.pressed) {
 				button.toggle();
 			}
