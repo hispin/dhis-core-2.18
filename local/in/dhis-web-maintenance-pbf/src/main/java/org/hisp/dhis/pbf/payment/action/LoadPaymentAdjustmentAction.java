@@ -34,7 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
-public class LoadPaymentAdjustmentAction implements Action
+public class LoadPaymentAdjustmentAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -54,7 +55,7 @@ public class LoadPaymentAdjustmentAction implements Action
 
     @Autowired
     private PBFDataValueService pbfDataValueService;
-    
+
     @Autowired
     private TariffDataValueService tariffDataValueService;
 
@@ -72,7 +73,7 @@ public class LoadPaymentAdjustmentAction implements Action
 
     @Autowired
     private QualityMaxValueService qualityMaxValueService;
-    
+
     @Autowired
     private DefaultPBFAggregationService defaultPBFAggregationService;
 
@@ -94,20 +95,20 @@ public class LoadPaymentAdjustmentAction implements Action
     }
 
     private Double overAllQualityScore = 0.0;
-    
-    public Double getOverAllQualityScore() 
-    {
-		return overAllQualityScore;
-	}
-    
-    Set<DataElement> dataElements = new HashSet<DataElement>();
-    
-	public Set<DataElement> getDataElements() 
-	{
-		return dataElements;
-	}
 
-	private String orgUnitId;
+    public Double getOverAllQualityScore()
+    {
+        return overAllQualityScore;
+    }
+
+    Set<DataElement> dataElements = new HashSet<DataElement>();
+
+    public Set<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
+    private String orgUnitId;
 
     public void setOrgUnitId( String orgUnitId )
     {
@@ -135,41 +136,43 @@ public class LoadPaymentAdjustmentAction implements Action
     public String execute()
         throws Exception
     {
-    	
-    	System.out.println("Inside Adjustment screen");
-    	
-    	if( periodIso.equals("-1") )
-    		return SUCCESS;
-    	
+
+        System.out.println( "Inside Adjustment screen" );
+
+        if ( periodIso.equals( "-1" ) )
+            return SUCCESS;
+
         OrganisationUnit selOrgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-        
+
         DataSet selDataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-        
+
         Period period = PeriodType.getPeriodFromIsoString( periodIso );
-        
+
         period = periodService.reloadPeriod( period );
-        
-        Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ) );
+
+        Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriods( period.getStartDate(),
+            period.getEndDate() ) );
         Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers( Period.class, periods ) );
         String periodIdsByComma = getCommaDelimitedString( periodIds );
-        
+
         dataElements.addAll( selDataSet.getDataElements() );
-        
+
         Set<OrganisationUnit> pbfQtyOrgUnits = new HashSet<OrganisationUnit>();
         pbfQtyOrgUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
         pbfQtyOrgUnits.retainAll( selDataSet.getSources() );
-        Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, pbfQtyOrgUnits ) );
+        Collection<Integer> orgUnitIds = new ArrayList<Integer>(
+            getIdentifiers( OrganisationUnit.class, pbfQtyOrgUnits ) );
         String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
-        
-        //--------------------------------------------------------
+
+        // --------------------------------------------------------
         // Quantity Calculation
-        //--------------------------------------------------------
-        
+        // --------------------------------------------------------
+
         pbfQtyMap.putAll( pbfDataValueService.getPBFDataValues( orgUnitIdsByComma, selDataSet, periodIdsByComma ) );
-        
-        //--------------------------------------------------------
+
+        // --------------------------------------------------------
         // Quantity Tariff Calculation
-        //--------------------------------------------------------
+        // --------------------------------------------------------
         Constant tariff_authority = constantService.getConstantByName( Lookup.TARIFF_SETTING_AUTHORITY );
         int tariff_setting_authority = 1;
         if ( tariff_authority != null )
@@ -178,37 +181,37 @@ public class LoadPaymentAdjustmentAction implements Action
         }
 
         OrganisationUnit tariffOrgUnit = findParentOrgunitforTariff( selOrgUnit, tariff_setting_authority );
-        
-        if( tariffOrgUnit != null ) 
+
+        if ( tariffOrgUnit != null )
         {
             pbfTariffMap.putAll( tariffDataValueService.getTariffDataValues( tariffOrgUnit, selDataSet, period ) );
         }
-        
-        //-----------------------------------------------------------
+
+        // -----------------------------------------------------------
         // QualityScore
-        //-----------------------------------------------------------
-        
+        // -----------------------------------------------------------
+
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PAYMENT_TYPE ) );
         DataSet qualityScoreDataSet = null;
         for ( Lookup lookup : lookups )
         {
             String[] lookupType = lookup.getValue().split( ":" );
+            System.out.println( lookup.getValue() +"  " + Integer.parseInt( lookupType[0] ) + "  " + Integer.parseInt( dataSetId ) );
             if ( Integer.parseInt( lookupType[0] ) == Integer.parseInt( dataSetId ) )
             {
-            	qualityScoreDataSet = dataSetService.getDataSet( lookupType[1] );
-            	break;
+                qualityScoreDataSet = dataSetService.getDataSet( Integer.parseInt(  lookupType[1] ) );
+                break;
             }
         }
-        
-        if( qualityScoreDataSet != null )
+
+        if ( qualityScoreDataSet != null )
         {
-        	overAllQualityScore = defaultPBFAggregationService.calculateOverallQualityScore( period, qualityScoreDataSet.getSources(), qualityScoreDataSet.getId(), tariffOrgUnit.getId() );
+            overAllQualityScore = defaultPBFAggregationService.calculateOverallQualityScore( period, qualityScoreDataSet.getSources(), qualityScoreDataSet.getId(), tariffOrgUnit.getId() );
         }
-        
-        
+
         return SUCCESS;
     }
-    
+
     public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
     {
         Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );

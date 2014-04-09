@@ -219,7 +219,7 @@ public class DefaultPBFAggregationService
                                     " startdate <='"+ simpleDateFormat.format( period.getStartDate() ) +"' AND "+
                                     " enddate >='"+ simpleDateFormat.format( period.getEndDate() ) +"' AND " +
                                     " organisationunitid = "+ maxScoreOrgUnitId +" AND "+
-                                    " datasetid = " + dataSetId +" AND " +
+                                    " datasetid = " + dataSetId +" " +
                                     " GROUP BY dataelementid";                                
 
             //System.out.println( query );
