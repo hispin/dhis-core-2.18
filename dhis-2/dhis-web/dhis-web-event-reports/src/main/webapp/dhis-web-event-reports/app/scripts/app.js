@@ -814,8 +814,8 @@ Ext.onReady( function() {
                     store: Ext.create('Ext.data.Store', {
                         fields: ['id', 'text'],
                         data: [
-                            {id: '-1', text: NS.i18n.bottom},
-                            {id: '1', text: NS.i18n.top}
+                            {id: -1, text: NS.i18n.bottom},
+                            {id: 1, text: NS.i18n.top}
                         ]
                     })
                 });
