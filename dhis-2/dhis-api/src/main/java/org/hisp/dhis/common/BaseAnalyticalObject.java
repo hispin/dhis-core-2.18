@@ -105,6 +105,10 @@ public abstract class BaseAnalyticalObject
     public static final String NUMBER_FORMATTING_SPACE = "space";
     public static final String NUMBER_FORMATTING_NONE = "none";
     
+    public static final int ASC = -1;
+    public static final int DESC = 1;
+    public static final int NONE = 0;
+    
     // -------------------------------------------------------------------------
     // Persisted properties
     // -------------------------------------------------------------------------
@@ -162,6 +166,10 @@ public abstract class BaseAnalyticalObject
     protected boolean rewindRelativePeriods;
     
     protected String digitGroupSeparator;
+    
+    protected int sortOrder;
+    
+    protected int topLimit;
 
     // -------------------------------------------------------------------------
     // Analytical properties
@@ -765,6 +773,8 @@ public abstract class BaseAnalyticalObject
         itemOrganisationUnitGroups.clear();
         rewindRelativePeriods = false;
         digitGroupSeparator = NUMBER_FORMATTING_SPACE;
+        sortOrder = 0;
+        topLimit = 0;
     }
     
     @Override
@@ -798,6 +808,8 @@ public abstract class BaseAnalyticalObject
             itemOrganisationUnitGroups = object.getItemOrganisationUnitGroups();
             rewindRelativePeriods = object.isRewindRelativePeriods();
             digitGroupSeparator = object.getDigitGroupSeparator();
+            sortOrder = object.getSortOrder();
+            topLimit = object.getTopLimit();
         }
     }
 
@@ -1069,6 +1081,32 @@ public abstract class BaseAnalyticalObject
     public void setDigitGroupSeparator( String digitGroupSeparator )
     {
         this.digitGroupSeparator = digitGroupSeparator;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public int getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( int sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public int getTopLimit()
+    {
+        return topLimit;
+    }
+
+    public void setTopLimit( int topLimit )
+    {
+        this.topLimit = topLimit;
     }
 
     // -------------------------------------------------------------------------

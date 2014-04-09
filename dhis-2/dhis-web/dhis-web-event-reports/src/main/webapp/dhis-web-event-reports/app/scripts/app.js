@@ -753,6 +753,98 @@ Ext.onReady( function() {
         });
     }());
 
+        // sort, limit
+    (function() {
+        Ext.define('Ext.ux.container.LimitContainer', {
+            extend: 'Ext.container.Container',
+            alias: 'widget.limitcontainer',
+            layout: 'hbox',
+            onCheckboxChange: function(value) {
+                this.sortOrderCmp.setDisabled(!value);
+                this.topLimitCmp.setDisabled(!value);
+            },
+            getSortOrder: function() {
+                return this.activateCmp.getValue() ? this.sortOrderCmp.getValue() : 0;
+            },
+            getTopLimit: function() {
+                return this.activateCmp.getValue() ? this.topLimitCmp.getValue() : 0;
+            },
+            setValues: function(sortOrder, topLimit) {
+                sortOrder = parseInt(sortOrder);
+                topLimit = parseInt(topLimit);
+
+                if (Ext.isNumber(sortOrder)) {
+                    this.sortOrderCmp.setValue(sortOrder);
+                }
+                else {
+                    this.sortOrderCmp.reset();
+                }
+
+                if (Ext.isNumber(topLimit)) {
+                    this.topLimitCmp.setValue(topLimit);
+                }
+                else {
+                    this.topLimitCmp.reset();
+                }
+
+                this.activateCmp.setValue(!!(sortOrder > 0 && topLimit > 0));
+            },
+            initComponent: function() {
+                var container = this;
+
+                this.activateCmp = Ext.create('Ext.form.field.Checkbox', {
+                    boxLabel: container.boxLabel,
+                    width: 135,
+                    style: 'margin-bottom:4px',
+                    listeners: {
+                        change: function(cmp, newValue) {
+                            container.onCheckboxChange(newValue);
+                        }
+                    }
+                });
+
+                this.sortOrderCmp = Ext.create('Ext.form.field.ComboBox', {
+                    cls: 'ns-combo',
+                    style: 'margin-bottom:3px',
+                    width: 70,
+                    queryMode: 'local',
+                    valueField: 'id',
+                    editable: false,
+                    value: container.sortOrder,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['id', 'text'],
+                        data: [
+                            {id: '-1', text: NS.i18n.bottom},
+                            {id: '1', text: NS.i18n.top}
+                        ]
+                    })
+                });
+
+                this.topLimitCmp = Ext.create('Ext.form.field.Number', {
+                    width: 56,
+                    style: 'margin-left:1px',
+                    minValue: 1,
+                    maxValue: 10000,
+                    value: container.topLimit,
+                    allowBlank: false
+                });
+
+                this.items = [
+                    this.activateCmp,
+                    this.sortOrderCmp,
+                    this.topLimitCmp
+                ];
+
+                this.callParent();
+            },
+            listeners: {
+                render: function() {
+                    this.onCheckboxChange(false);
+                }
+            }
+        });
+    }());
+
 	// constructors
 
 	AggregateLayoutWindow = function() {
@@ -1462,6 +1554,12 @@ Ext.onReady( function() {
             checked: true
 		});
 
+        limit = Ext.create('Ext.ux.container.LimitContainer', {
+            boxLabel: NS.i18n.limit,
+            sortOrder: 1,
+            topLimit: 10
+        });
+
 		showHierarchy = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_hierarchy,
 			style: 'margin-bottom:4px'
@@ -1549,7 +1647,8 @@ Ext.onReady( function() {
 			items: [
 				showTotals,
 				showSubTotals,
-				hideEmptyRows
+				hideEmptyRows,
+                limit
                 //aggregationType
 			]
 		};
@@ -1586,6 +1685,8 @@ Ext.onReady( function() {
 					showTotals: showTotals.getValue(),
 					showSubTotals: showSubTotals.getValue(),
 					hideEmptyRows: hideEmptyRows.getValue(),
+                    sortOrder: limit.getSortOrder(),
+                    topLimit: limit.getTopLimit(),
 					showHierarchy: showHierarchy.getValue(),
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue(),
@@ -1597,6 +1698,7 @@ Ext.onReady( function() {
 				showTotals.setValue(Ext.isBoolean(layout.showTotals) ? layout.showTotals : true);
 				showSubTotals.setValue(Ext.isBoolean(layout.showSubTotals) ? layout.showSubTotals : true);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
+				limit.setValues(layout.sortOrder, layout.topLimit);
                 //aggregationType.setValue(Ext.isString(layout.aggregationType) ? layout.aggregationType : 'default');
 				showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
 				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
@@ -1679,6 +1781,7 @@ Ext.onReady( function() {
 					w.showTotals = showTotals;
 					w.showSubTotals = showSubTotals;
 					w.hideEmptyRows = hideEmptyRows;
+                    w.limit = limit;
 					w.showHierarchy = showHierarchy;
 					w.displayDensity = displayDensity;
 					w.fontSize = fontSize;
@@ -4523,7 +4626,7 @@ Ext.onReady( function() {
 				rows = [],
 				filters = [];
 
-			view.dataType = layoutWindow.dataType;
+			view.dataType = dataType;
             view.program = program.getRecord();
             view.programStage = stage.getRecord();
 
@@ -4607,12 +4710,6 @@ Ext.onReady( function() {
 			if (filters.length) {
 				view.filters = filters;
 			}
-
-            // paging
-            view.paging = {
-                page: ns.app.statusBar.getCurrentPage(),
-                pageSize: 100
-            };
 
 			return view;
 		};
@@ -5120,57 +5217,31 @@ Ext.onReady( function() {
 			web.report = web.report || {};
 
 			web.report.getLayoutConfig = function() {
-                var map = {},
-                    type = ns.app.typeToolbar.getType(),
-                    view = ns.app.widget.getView(),
+                var view = ns.app.widget.getView(),
                     options = ns.app.optionsWindow.getOptions();
-
-                map.aggregate = function() {
-                    var columnDimNames = ns.app.aggregateLayoutWindow.colStore.getDimensionNames(),
-                        rowDimNames = ns.app.aggregateLayoutWindow.rowStore.getDimensionNames(),
-                        filterDimNames = ns.app.aggregateLayoutWindow.filterStore.getDimensionNames();
-
-                    view.columns = [];
-                    view.rows = [];
-                    view.filters = [];
-
-                    for (var i = 0, dimNameArrays = [columnDimNames, rowDimNames, filterDimNames], axes = [view.columns, view.rows, view.filters], dimNameArray; i < dimNameArrays.length; i++) {
-                        dimNameArray = dimNameArrays[i];
-
-                        for (var j = 0, dimName; j < dimNameArray.length; j++) {
-                            dimName = dimNameArray[j];
-
-                            axes[i].push({
-                                dimension: dimName
-                            });
-                        }
-                    }
-
-                    return view;
-                };
-
-                map.query = function() {
-                    var columnDimNames = ns.app.queryLayoutWindow.colStore.getDimensionNames();
-
-                    view.columns = [];
-
-                    for (var i = 0; i < columnDimNames.length; i++) {
-                        view.columns.push({
-                            dimension: columnDimNames[i]
-                        });
-                    }
-
-                    return view;
-                };
 
                 if (!view) {
                     return;
                 }
 
                 Ext.applyIf(view, options);
-                view.type = type;
 
-                //return map[type]();
+                if (view.dataType === 'aggregated_values') {
+                    if (view.sortOrder && view.topLimit) {
+                        view.sorting = {
+                            id: 1,
+                            direction: view.sortOrder > 0 ? 'DESC' : 'ASC'
+                        };
+                    }
+                }
+
+                if (view.dataType === 'individual_cases') {
+                    view.paging = {
+                        page: ns.app.statusBar.getCurrentPage(),
+                        pageSize: 100
+                    };
+                }
+
                 return view;
             };
 

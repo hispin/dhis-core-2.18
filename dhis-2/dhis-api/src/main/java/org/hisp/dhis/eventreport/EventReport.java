@@ -52,19 +52,20 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
-* @author Lars Helge Overland
-*/
+ * @author Lars Helge Overland
+ */
 public class EventReport
     extends BaseAnalyticalObject
 {
     public static final String DATA_TYPE_AGGREGATED_VALUES = "aggregated_values";
+
     public static final String DATA_TYPE_INDIVIDUAL_CASES = "individual_cases";
-    
+
     /**
      * Program. Required.
      */
     private Program program;
-    
+
     /**
      * Program stage.
      */
@@ -74,27 +75,27 @@ public class EventReport
      * Start date.
      */
     private Date startDate;
-    
+
     /**
      * End date.
      */
     private Date endDate;
-    
+
     /**
      * Type of data, can be aggregated values and individual cases.
      */
     private String dataType;
-    
+
     /**
      * Dimensions to crosstabulate / use as columns.
      */
     private List<String> columnDimensions = new ArrayList<String>();
-    
+
     /**
      * Dimensions to use as rows.
      */
     private List<String> rowDimensions = new ArrayList<String>();
-    
+
     /**
      * Dimensions to use as filter.
      */
@@ -114,12 +115,12 @@ public class EventReport
      * Indicates rendering of empty rows for the table.
      */
     private boolean hideEmptyRows;
-    
+
     /**
      * The display density of the text in the table.
      */
     private String displayDensity;
-    
+
     /**
      * The font size of the text in the table.
      */
@@ -132,7 +133,7 @@ public class EventReport
     public EventReport()
     {
     }
-    
+
     public EventReport( String name )
     {
         this.name = name;
@@ -143,9 +144,10 @@ public class EventReport
     // -------------------------------------------------------------------------
 
     @Override
-    public void init( User user, Date date, OrganisationUnit organisationUnit, List<OrganisationUnit> organisationUnitsAtLevel, 
-        List<OrganisationUnit> organisationUnitsInGroups, I18nFormat format )
-    {        
+    public void init( User user, Date date, OrganisationUnit organisationUnit,
+        List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups,
+        I18nFormat format )
+    {
     }
 
     @Override
@@ -155,18 +157,18 @@ public class EventReport
         {
             columns.addAll( getDimensionalObjectList( column ) );
         }
-        
+
         for ( String row : rowDimensions )
         {
             rows.addAll( getDimensionalObjectList( row ) );
         }
-        
+
         for ( String filter : filterDimensions )
         {
             filters.addAll( getDimensionalObjectList( filter ) );
         }
     }
-    
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -175,7 +177,7 @@ public class EventReport
         if ( other.getClass().isInstance( this ) )
         {
             EventReport report = (EventReport) other;
-            
+
             program = report.getProgram();
             programStage = report.getProgramStage();
             startDate = report.getStartDate();
@@ -187,15 +189,15 @@ public class EventReport
             fontSize = report.getFontSize();
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Program getProgram()
     {
         return program;
@@ -208,8 +210,8 @@ public class EventReport
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ProgramStage getProgramStage()
     {
         return programStage;
@@ -221,8 +223,8 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getStartDate()
     {
         return startDate;
@@ -234,8 +236,8 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getEndDate()
     {
         return endDate;
@@ -247,8 +249,8 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDataType()
     {
         return dataType;
@@ -260,9 +262,9 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "columnDimensions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "column", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "columnDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "column", namespace = DxfNamespaces.DXF_2_0 )
     public List<String> getColumnDimensions()
     {
         return columnDimensions;
@@ -274,9 +276,9 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "rowDimensions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "row", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "rowDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "row", namespace = DxfNamespaces.DXF_2_0 )
     public List<String> getRowDimensions()
     {
         return rowDimensions;
@@ -288,9 +290,9 @@ public class EventReport
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "filter", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "filter", namespace = DxfNamespaces.DXF_2_0 )
     public List<String> getFilterDimensions()
     {
         return filterDimensions;

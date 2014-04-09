@@ -114,7 +114,11 @@
 
     <property name="displayDensity" />
 
-    <property name="fontSize" />	  
+    <property name="fontSize" />
+
+    <property name="sortOrder" />
+
+    <property name="topLimit" />
 
     <!-- Access properties -->
     <property name="externalAccess" />
