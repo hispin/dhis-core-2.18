@@ -70,8 +70,13 @@
   <bean id="org.hisp.dhis.settings.action.system.GetApprovalSettingsAction"
       class="org.hisp.dhis.settings.action.system.GetApprovalSettingsAction"
       scope="prototype">
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
   </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.SetApprovalSettingsAction"
+        class="org.hisp.dhis.settings.action.system.SetApprovalSettingsAction"
+        scope="prototype" />
 
   <bean id="org.hisp.dhis.settings.action.system.AddApprovalLevelAction"
       class="org.hisp.dhis.settings.action.system.AddApprovalLevelAction"
