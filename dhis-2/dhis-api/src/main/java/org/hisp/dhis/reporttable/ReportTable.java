@@ -101,10 +101,6 @@ public class ReportTable
     public static final String FONT_SIZE_LARGE = "large";
     public static final String FONT_SIZE_NORMAL = "normal";
     public static final String FONT_SIZE_SMALL = "small";
-    
-    public static final int ASC = -1;
-    public static final int DESC = 1;
-    public static final int NONE = 0;
 
     public static final NameableObject[] IRT = new NameableObject[0];
     public static final NameableObject[][] IRT2D = new NameableObject[0][];
@@ -153,16 +149,6 @@ public class ReportTable
      * The ReportParams of the ReportTable.
      */
     private ReportParams reportParams;
-
-    /**
-     * The sort order based on the last column of the table, 0 if none. 
-     */
-    private int sortOrder;
-
-    /**
-     * Indicates whether the table should be limited from top, 0 if none.
-     */
-    private int topLimit;
 
     /**
      * Indicates rendering of sub-totals for the table.

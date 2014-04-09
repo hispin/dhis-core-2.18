@@ -1738,6 +1738,11 @@ Ext.onReady( function() {
 				// hierarchy
 				paramString += view.showHierarchy ? '&hierarchyMeta=true' : '';
 
+                // limit
+                if (view.dataType === 'aggregated_values' && (view.sortOrder && view.topLimit)) {
+                    paramString += '&limit=' + view.topLimit + '&sortOrder=' + (view.sortOrder < 0 ? 'ASC' : 'DESC');
+                }
+
                 // sorting
                 if (view.dataType === 'individual_cases' && view.sorting) {
                     if (view.sorting.id && view.sorting.direction) {

@@ -152,5 +152,8 @@
 "sum",
 "by_data_element",
 "relative_periods",
-"start_end_dates"
+"start_end_dates",
+"top",
+"bottom",
+"limit"
 ]
