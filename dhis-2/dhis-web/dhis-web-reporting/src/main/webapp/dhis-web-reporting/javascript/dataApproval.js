@@ -54,13 +54,18 @@ dhis2.appr.displayCategoryOptionGroups = function( ou )
 	var url = "getCategoryOptionGroups.action";
 	
 	$.getJSON( url, {ou:ou}, function( json ) {
-		var html = "";
-		$.each( json.categoryOptionGroups, function( index, group ) {
-			html += "<option value=\"" + group.uid + "\" data-dimension=\"" + group.groupSet + "\">" + group.name + "</option>";
-		} );
-
-		$( "#categoryOptionGroupSection" ).show();
-		$( "#categoryOptionGroupId" ).html( html );
+		if ( json.categoryOptionGroups && json.categoryOptionGroups.length ) {
+			var html = "";
+			$.each( json.categoryOptionGroups, function( index, group ) {
+				html += "<option value=\"" + group.uid + "\" data-dimension=\"" + group.groupSet + "\">" + group.name + "</option>";
+			} );
+	
+			$( "#categoryOptionGroupSection" ).show();
+			$( "#categoryOptionGroupId" ).html( html );
+		}
+		else {
+			$( "#categoryOptionGroupSection" ).hide();			
+		}
 	} );
 }
 
