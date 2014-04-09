@@ -29,8 +29,9 @@
 			<th >$i18n.getString( "Tariff" )</th>			
 			<th >$i18n.getString( "amount" )</th>
 			<th >$i18n.getString( "amount_including_quality" )</th>
-			<th >$i18n.getString( "adjusted_per" )</th>
-			<th >$i18n.getString( "adjusted_per" )</th>
+			<th >$i18n.getString( "adjusted_tariff" )</th>
+			<th >$i18n.getString( "adjusted_amount" )</th>
+			<th >$i18n.getString( "adjusted_amount_including_quality" )</th>
         </tr>
 	</thead>
 	<tbody>
@@ -45,32 +46,25 @@
 			
             <tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8" #end>
 				<td>$!dataElement.name</td>
-				<td>$!pbfQtyMap.get( $dataElement.id )</td>
-				<td>$!pbfTariffMap.get( $dataElement.id )</td>
+				<td id="pbfQty_$dataElement.id" align="center">$!pbfQtyMap.get( $dataElement.id )</td>
+				<td id="pbfTariff_$dataElement.id" align="center">$!pbfTariffMap.get( $dataElement.id )</td>
 				#set( $tariffVal = $!pbfQtyMap.get( $dataElement.id ) * $!pbfTariffMap.get( $dataElement.id ) )
-				<td>$tariffVal</td>
-				<td>$!overAllQualityScore</td>
+				<td id="pbfAmt_$dataElement.id" align="center">$tariffVal</td>
+				#set( $pbfAmtIncQS = ( $!tariffVal * $!overAllQualityScore )/100 )
+				<td id="pbfAmtIncQS_$dataElement.id" align="center">$!pbfAmtIncQS</td>				
 				<td id="adjusted_$dataElement.uid">&nbsp;</td>
-	            <td>&nbsp;</td>		            		
-        </tr>
-        <script>
-        	function calValue()
-        	{
-        		var adjusted = $("#adjustment").val();
-        		var amount = '$!pbfTariffMap.get( $dataElement.id )';
-        		var adjustedPer = 0.0;
-        		adjustedPer = (parseFloat(amount)/parseFloat(adjusted))*100
-        		$('#adjusted_$dataElement.uid').text(adjustedPer.toFixed(2));
-        	}
-        	calValue();
-        </script>
+	            <td align="center">&nbsp;</td>
+	            <td align="center">&nbsp;</td>
+            </tr>        
 		#end
+		
 		<tr>
-			<td>&nbsp; </td>						
-			<td colspan="2" >Unadjusted Amount </td>
-			<td colspan="2"><input type="text" name="total" id="total" value="$!unAdjustedAmount"/></td>			
-			<td>&nbsp; </td>
-			<td>&nbsp; </td>
+			<td>$i18n.getString( "quality_score" ) : $!overAllQualityScore</td>						
+			<td colspan="2">$i18n.getString( "unadjusted_amount" )</td>
+			<td><input type="text" name="total" id="total" readonly value="$!unAdjustedAmount"/></td>			
+			<td>&nbsp;</td>
+			<td colspan="2">$i18n.getString("total_amt_to_pay")</td>
+			<td><input type="text" name="total_amt_to_pay" id="total_amt_to_pay" readonly /></td>
 		</tr>
     </tbody>
 </table>

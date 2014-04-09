@@ -13,78 +13,80 @@
 		var adjustmentPer = ( parseFloat( amountAvail ) / parseFloat (totalAvail) ) * 100 ;
 		$("#adjustment").val( adjustmentPer.toFixed(2) );
 	}
+	
     function saveDataValue()
     {
     	var period = document.getElementById("selectedPeriodId").value;
 		var valueId = "amountAvail";
 	
-	var fieldId = "#"+valueId;
-	var defaultValue = document.getElementById(valueId).defaultValue;
-	var value = document.getElementById(valueId).value;
+	   var fieldId = "#"+valueId;
+	   var defaultValue = document.getElementById(valueId).defaultValue;
+	   var value = document.getElementById(valueId).value;
 	
-	if(defaultValue != value)
-	{
-	var dataValue = {
-        'dataElementId' : $amountDEId,        
-        'organisationUnitId' : $("#selectedOrgunitID").val(),
-        'periodIso' : period,
-        'value' : value
-    };
-	    jQuery.ajax( {
+	   if(defaultValue != value)
+	   {
+	       var dataValue = {
+                'dataElementId' : $amountDEId,        
+                'organisationUnitId' : $("#selectedOrgunitID").val(),
+                'periodIso' : period,
+                'value' : value
+            };
+	    
+	       jQuery.ajax( {
 	            url: 'saveDataValue.action',
 	            data: dataValue,
 	            dataType: 'json',
 	            success: handleSuccess,
 	            error: handleError
 	        } );
-	}
+	   }
 	
-	function handleSuccess( json )
-	{
-	    var code = json.c;
-	    if ( code == '0' || code == 0) // Value successfully saved on server
-	    {
-	    	markValue( fieldId, COLOR_GREEN );
-	    	adjustPer();
-	    }
-	    else if ( code == 2 )
-	    {
-	        markValue( fieldId, COLOR_RED );
-	        window.alert( i18n_saving_value_failed_dataset_is_locked );
-	    }
-	    else // Server error during save
-	    {
-	        markValue( fieldId, COLOR_RED );
-	        window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
-	    }            
-	}
+	   function handleSuccess( json )
+	   {
+	       var code = json.c;
+	       if ( code == '0' || code == 0) // Value successfully saved on server
+	       {
+	    	  markValue( fieldId, COLOR_GREEN );
+	    	  adjustPer();
+	       }
+	       else if ( code == 2 )
+	       {
+	           markValue( fieldId, COLOR_RED );
+	           window.alert( i18n_saving_value_failed_dataset_is_locked );
+	       }
+	       else // Server error during save
+	       {
+	           markValue( fieldId, COLOR_RED );
+	           window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+	       }
+	   }
 
-	function handleError( jqXHR, textStatus, errorThrown )
-	{       
-	    markValue( fieldId, COLOR_RED );
-	}
+	   function handleError( jqXHR, textStatus, errorThrown )
+	   {       
+	       markValue( fieldId, COLOR_RED );
+	   }
 
-	function markValue( fieldId, color )
-	{
-	    document.getElementById(valueId).style.backgroundColor = color;	   
-	}
+	   function markValue( fieldId, color )
+	   {
+	       document.getElementById(valueId).style.backgroundColor = color;	   
+	   }
     }
 </script>
 <style >
 	#tariffSetting {
-   width: 280px;
-   height: 50px;
-   margin: 10px 10px 10px 10px;
-   float:right;
-   padding: 10px 10px 10px 10px ;
-   font: 1.6em bold;
-   background: #ccc;
-   box-shadow: 2px 2px 2px rgba(0,0,0,0.5),
-   inset 8px 10px 10px rgba(255,255,255,0.75);   
-   -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.5),
-   inset 8px 10px 10px rgba(255,255,255,0.75);
-   -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.5),
-   inset 8px 10px 10px rgba(255,255,255,0.75);
+        width: 280px;
+        height: 50px;
+        margin: 10px 10px 10px 10px;
+        float:right;
+        padding: 10px 10px 10px 10px ;
+        font: 1.6em bold;
+        background: #ccc;
+        box-shadow: 2px 2px 2px rgba(0,0,0,0.5),
+        inset 8px 10px 10px rgba(255,255,255,0.75);   
+        -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.5),
+        inset 8px 10px 10px rgba(255,255,255,0.75);
+        -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.5),
+        inset 8px 10px 10px rgba(255,255,255,0.75);
    }
 </style>
 
