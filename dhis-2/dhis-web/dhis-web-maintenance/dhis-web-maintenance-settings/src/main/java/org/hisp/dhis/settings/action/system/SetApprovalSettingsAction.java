@@ -1,6 +1,7 @@
 package org.hisp.dhis.settings.action.system;
+
 /*
- * Copyright (c) 2004-2013, University of Oslo
+ * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,61 +29,48 @@ package org.hisp.dhis.settings.action.system;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataapproval.DataApprovalLevel;
-import org.hisp.dhis.dataapproval.DataApprovalLevelService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hisp.dhis.setting.SystemSettingManager.*;
-
-import java.util.List;
 
 /**
  * @author Jim Grace
  */
-public class GetApprovalSettingsAction
+public class SetApprovalSettingsAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
+    @Autowired
     private SystemSettingManager systemSettingManager;
 
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
-    private DataApprovalLevelService dataApprovalLevelService;
+    private Boolean hideUnapprovedDataInAnalytics;
 
-    public void setDataApprovalLevelService( DataApprovalLevelService dataApprovalLevelService )
+    public void setHideUnapprovedDataInAnalytics( Boolean hideUnapprovedDataInAnalytics )
     {
-        this.dataApprovalLevelService = dataApprovalLevelService;
+        this.hideUnapprovedDataInAnalytics = hideUnapprovedDataInAnalytics;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private boolean keyHideUnapprovedDataInAnalytics;
+    private String message;
 
-    public boolean getKeyHideUnapprovedDataInAnalytics()
+    public String getMessage()
     {
-        return keyHideUnapprovedDataInAnalytics;
+        return message;
     }
 
-    private List<DataApprovalLevel> dataApprovalLevels;
+    private I18n i18n;
 
-    public List<DataApprovalLevel> getDataApprovalLevels()
+    public void setI18n( I18n i18n )
     {
-        return dataApprovalLevels;
-    }
-
-    private DataApprovalLevelService approvalLevelService;
-
-    public DataApprovalLevelService getApprovalLevelService()
-    {
-        return approvalLevelService;
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -91,11 +79,9 @@ public class GetApprovalSettingsAction
 
     public String execute()
     {
-        keyHideUnapprovedDataInAnalytics = (Boolean) systemSettingManager.getSystemSetting( KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
+        systemSettingManager.saveSystemSetting( KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, hideUnapprovedDataInAnalytics );
 
-        dataApprovalLevels = dataApprovalLevelService.getAllDataApprovalLevels();
-
-        approvalLevelService = dataApprovalLevelService;
+        message = i18n.getString( "settings_updated" );
 
         return SUCCESS;
     }

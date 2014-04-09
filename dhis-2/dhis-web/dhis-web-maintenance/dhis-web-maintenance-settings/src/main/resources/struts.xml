@@ -93,6 +93,13 @@
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 
+    <action name="setSystemApprovalSettings" class="org.hisp.dhis.settings.action.system.SetApprovalSettingsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+    </action>
+
     <action name="showAddApprovalLevelForm" class="org.hisp.dhis.settings.action.system.GetAddApprovalLevelFormParameters">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/addApprovalLevel.vm</param>

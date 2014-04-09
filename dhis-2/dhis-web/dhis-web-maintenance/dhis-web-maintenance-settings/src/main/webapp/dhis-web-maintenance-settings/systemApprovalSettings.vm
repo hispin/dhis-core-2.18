@@ -1,3 +1,16 @@
+<script type="text/javascript">
+    jQuery( document ).ready( function() {
+        jQuery( "input[type=button]" ).click( function() {
+            jQuery.postUTF8( "setSystemApprovalSettings.action", {
+                hideUnapprovedDataInAnalytics: jQuery( "#hideUnapprovedDataInAnalytics" ).is( ':checked' )
+            }, function( json ) {
+                if ( json.response == "success" ) {
+                    setHeaderDelayMessage( json.message );
+                }
+            } );
+        } );
+    } );
+</script>
 
 #sharingDialog()
 
@@ -13,6 +26,13 @@
 </script>
 
 <h3>$i18n.getString( "approval_settings" ) #openHelp( "systemApprovalSettings" )</h3>
+
+<div class="setting">
+    <input type="checkbox" id="hideUnapprovedDataInAnalytics" name="hideUnapprovedDataInAnalytics"#if( $keyHideUnapprovedDataInAnalytics ) checked="checked"#end>
+    <label for="hideUnapprovedDataInAnalytics">$i18n.getString( "hide_unapproved_data_in_analytics" )</label>
+</div>
+
+<div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
 
 <div id="contextMenu" class="contextMenu">
     <ul id="contextMenuItems" class="contextMenuItems">
