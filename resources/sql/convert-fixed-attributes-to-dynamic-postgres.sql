@@ -1,4 +1,4 @@
-
+﻿
 ------------------
 -- Gender
 ------------------
@@ -168,7 +168,7 @@ where pa."name"='Phone number' and p.phoneNumber is not null;
 INSERT INTO patientattribute ( patientattributeid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) 
 VALUES ( nextval('hibernate_sequence'), now(),'Full name', 'Full name','string', false, false, false);
 
--- Inserting data into birthdate
+-- Inserting data into full name
 
 INSERT INTO patientattributevalue (patientid, patientattributeid, value ) 
 select patientid, pa.patientattributeid, p.name
@@ -184,7 +184,7 @@ where pa."name"='Full name' and p.name is not null;
 INSERT INTO patientattribute ( patientattributeid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) 
 VALUES ( nextval('hibernate_sequence'), now(),'Staff', 'Staff','users', false, false, false);
 
--- Inserting data into birthdate
+-- Inserting data into staff / associate
 
 INSERT INTO patientattributevalue (patientid, patientattributeid, value ) 
 select patientid, pa.patientattributeid, p.healthworkerid
