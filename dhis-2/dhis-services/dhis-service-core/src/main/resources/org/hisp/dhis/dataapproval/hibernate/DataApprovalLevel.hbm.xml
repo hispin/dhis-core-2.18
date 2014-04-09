@@ -16,7 +16,7 @@
 
     <property name="name" column="name" not-null="true" unique="true" length="230" />
 
-    <property name="level" column="level" not-null="true" />
+    <property name="level" column="level" not-null="true" index="in_dataapprovallevel_level" />
 
     <properties name="dataapprovallevel_orgunitlevel_categoryoptiongroupset_unique_key" unique="true">
       <property name="orgUnitLevel" not-null="true" column="orgunitlevel" />
