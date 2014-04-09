@@ -131,6 +131,10 @@ public class JdbcResourceTableStore
         log.info( "Create organisation unit structure table SQL: " + sql );
         
         jdbcTemplate.execute( sql.toString() );
+        
+        final String uidInSql = "create unique index in_orgunitstructure_organisationunituid on _orgunitstructure(organisationunituid)";
+        
+        jdbcTemplate.execute( uidInSql );
     }
     
     // -------------------------------------------------------------------------
@@ -284,6 +288,16 @@ public class JdbcResourceTableStore
         log.info( "Create data element structure SQL: " + sql );
         
         jdbcTemplate.execute( sql );        
+
+        final String deUdInSql = "create unique index in_dataelementstructure_dataelementuid on _dataelementstructure(dataelementuid)";
+        final String dsIdInSql = "create index in_dataelementstructure_datasetid on _dataelementstructure(datasetid)";
+        final String dsUdInSql = "create index in_dataelementstructure_datasetuid on _dataelementstructure(datasetuid)";
+        final String ptIdInSql = "create index in_dataelementstructure_periodtypeid on _dataelementstructure(periodtypeid)";
+        
+        jdbcTemplate.execute( deUdInSql );
+        jdbcTemplate.execute( dsIdInSql );
+        jdbcTemplate.execute( dsUdInSql );
+        jdbcTemplate.execute( ptIdInSql );
     }
     
     // -------------------------------------------------------------------------
@@ -342,6 +356,10 @@ public class JdbcResourceTableStore
         log.info( "Create period structure SQL: " + sql );
         
         jdbcTemplate.execute( sql );
+
+        final String isoInSql = "create unique index in_periodstructure_iso on _periodstructure(iso)";
+        
+        jdbcTemplate.execute( isoInSql );
     }
 
     // -------------------------------------------------------------------------
