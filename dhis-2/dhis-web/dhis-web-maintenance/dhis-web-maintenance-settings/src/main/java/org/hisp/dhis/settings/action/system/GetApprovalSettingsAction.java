@@ -85,6 +85,13 @@ public class GetApprovalSettingsAction
         return approvalLevelService;
     }
 
+    private boolean categoryOptionGroupSetsPresent;
+
+    public boolean isCategoryOptionGroupSetsPresent()
+    {
+        return categoryOptionGroupSetsPresent;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -94,6 +101,17 @@ public class GetApprovalSettingsAction
         keyHideUnapprovedDataInAnalytics = (Boolean) systemSettingManager.getSystemSetting( KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
 
         dataApprovalLevels = dataApprovalLevelService.getAllDataApprovalLevels();
+
+        categoryOptionGroupSetsPresent = false;
+
+        for ( DataApprovalLevel level : dataApprovalLevels )
+        {
+            if ( level.getCategoryOptionGroupSet() != null )
+            {
+                categoryOptionGroupSetsPresent = true;
+                break;
+            }
+        }
 
         approvalLevelService = dataApprovalLevelService;
 
