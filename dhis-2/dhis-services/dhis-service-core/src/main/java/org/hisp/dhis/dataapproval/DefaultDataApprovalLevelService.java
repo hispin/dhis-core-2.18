@@ -92,20 +92,11 @@ public class DefaultDataApprovalLevelService
 
         for ( DataApprovalLevel dataApprovalLevel : dataApprovalLevels)
         {
-            String ouLevelName;
-
             int ouLevelNumber = dataApprovalLevel.getOrgUnitLevel();
 
             OrganisationUnitLevel ouLevel = organisationUnitService.getOrganisationUnitLevelByLevel( ouLevelNumber );
 
-            if ( ouLevel != null )
-            {
-                ouLevelName = ouLevel.getName();
-            }
-            else
-            {
-                ouLevelName = "Organization unit level " + ouLevelNumber;
-            }
+            String ouLevelName = ouLevel != null ? ouLevel.getName() : "Organisation unit level " + ouLevelNumber;
 
             dataApprovalLevel.setOrgUnitLevelName( ouLevelName );
         }
@@ -199,15 +190,8 @@ public class DefaultDataApprovalLevelService
         DataApprovalLevel test = dataApprovalLevels.get( index );
         DataApprovalLevel next = dataApprovalLevels.get( index + 1 );
 
-        if ( test.getOrgUnitLevel() == next.getOrgUnitLevel()
-            && test.getCategoryOptionGroupSet() != null )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return test.getOrgUnitLevel() == next.getOrgUnitLevel()
+            && test.getCategoryOptionGroupSet() != null;
     }
 
     public boolean canDataApprovalLevelMoveUp( int level )
@@ -224,15 +208,8 @@ public class DefaultDataApprovalLevelService
         DataApprovalLevel test = dataApprovalLevels.get( index );
         DataApprovalLevel previous = dataApprovalLevels.get( index - 1 );
 
-        if ( test.getOrgUnitLevel() == previous.getOrgUnitLevel()
-            && previous.getCategoryOptionGroupSet() != null )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return test.getOrgUnitLevel() == previous.getOrgUnitLevel()
+            && previous.getCategoryOptionGroupSet() != null;
     }
 
     public void moveDataApprovalLevelDown( int level )
