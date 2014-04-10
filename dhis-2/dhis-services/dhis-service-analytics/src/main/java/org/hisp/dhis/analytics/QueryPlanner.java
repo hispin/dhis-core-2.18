@@ -96,6 +96,14 @@ public interface QueryPlanner
     List<DataQueryParams> groupByOrgUnitLevel( DataQueryParams params );
 
     /**
+     * Groups the given query into sub queries based on its periods and which 
+     * partition it should be executed against. Sets the partition table name on
+     * each query. Queries are grouped based on periods if appearing as a 
+     * dimension.
+     */
+    List<DataQueryParams> groupByPartition( DataQueryParams params, String tableName, String tableSuffix );
+    
+    /**
      * If periods appear as dimensions in the given query; groups the query into 
      * sub queries based on the period type of the periods. Sets the period type 
      * name on each query. If periods appear as filters; replaces the period filter

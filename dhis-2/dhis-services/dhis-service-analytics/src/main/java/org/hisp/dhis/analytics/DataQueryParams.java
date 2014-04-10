@@ -1142,30 +1142,7 @@ public class DataQueryParams
     {
         return getDimensionOptions( key ) != null ? getDimensionOptions( key ) : getFilterOptions( key );
     }
-    
-    /**
-     * Replaces the items for the dimension or filter identified by the given key.
-     * No action is taken if no dimensions or filters exist.
-     */
-    public void replaceDimensionOrFilterOptions( String key, List<NameableObject> items )
-    {
-        int dimensionIndex = dimensions.indexOf( new BaseDimensionalObject( key ) );
         
-        if ( dimensionIndex != -1 )
-        {
-            DimensionalObject dim = dimensions.get( dimensionIndex );
-            dimensions.set( dimensionIndex, new BaseDimensionalObject( dim.getDimension(), dim.getDimensionType(), dim.getDimensionName(), items ) );            
-        }
-        
-        int filterIndex = filters.indexOf( new BaseDimensionalObject( key ) );
-        
-        if ( filterIndex != -1 )
-        {
-            DimensionalObject flt = filters.get( filterIndex );
-            filters.set( filterIndex, new BaseDimensionalObject( flt.getDimension(), flt.getDimensionType(), flt.getDimensionName(), items ) );
-        }
-    }
-    
     /**
      * Retrieves the options for the given dimension identifier. If the dx dimension
      * is specified, all concrete dimensions (in|de|dc|ds) are returned as a single
