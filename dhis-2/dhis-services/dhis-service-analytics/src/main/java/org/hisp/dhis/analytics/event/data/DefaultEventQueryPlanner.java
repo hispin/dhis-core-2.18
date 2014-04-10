@@ -204,7 +204,7 @@ public class DefaultEventQueryPlanner
             for ( Partitions partitions : partitionPeriodMap.keySet() )
             {
                 EventQueryParams query = params.instance();
-                query.setPeriods( partitionPeriodMap.get( partitions ) );
+                query.replaceDimensionOrFilterOptions( DimensionalObject.PERIOD_DIM_ID, partitionPeriodMap.get( partitions ) );
                 query.setPartitions( partitions );
                 queries.add( query );
             }
