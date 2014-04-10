@@ -6,7 +6,7 @@
             <th colspan="2">$i18n.getString( "details" )</th>
         </tr>
         <tr>
-            <td><label for="organisationUnitLevel">$i18n.getString( "organisation_unit_level" )<em title="$i18n.getString( "required" )" class="required">*</em></label> &nbsp; </td>
+            <td><label for="organisationUnitLevel">$i18n.getString( "organisation_unit_level" ) <em title="$i18n.getString( "required" )" class="required">*</em></label> &nbsp; </td>
             <td>
                 <select type="text" id="organisationUnitLevel" name="organisationUnitLevel">
                     <option value="">[ $encoder.htmlEncode( $i18n.getString( "select_level" ) ) ]</option>
@@ -17,7 +17,7 @@
             </td>
         </tr>
         <tr>
-            <td><label for="categoryOptionGroupSet">$i18n.getString( "category_option_group_set" )</label> &nbsp; </td>
+            <td><label for="categoryOptionGroupSet">$i18n.getString( "category_option_group_set" ) <span class="tipText">($i18n.getString( "optional" ))</label> &nbsp; </td>
             <td>
                 <select type="text" id="categoryOptionGroupSet" name="categoryOptionGroupSet">
                     <option value="0">[ $encoder.htmlEncode( $i18n.getString( "select_set" ) ) ]</option>

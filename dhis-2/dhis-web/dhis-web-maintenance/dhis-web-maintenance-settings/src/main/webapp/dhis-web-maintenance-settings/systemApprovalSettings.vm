@@ -63,7 +63,9 @@
                 <tr>
                     <th class="{sorter: false}">$i18n.getString( "approval_level" )</th>
                     <th class="{sorter: false}">$i18n.getString( "organisation_unit_level" )</th>
-                    <th class="{sorter: false}">$i18n.getString( "category_option_group_set" )</th>
+                    #if( $categoryOptionGroupSetsPresent )
+                        <th class="{sorter: false}">$i18n.getString( "category_option_group_set" )</th>
+                    #end
                 </tr>
                 </thead>
                 <tbody id="list">
@@ -74,7 +76,9 @@
                             data-can-manage="$security.canManage( $level )">
                         <td class="levelNumber">$encoder.htmlEncode( $!level.level )</td>
                         <td>$encoder.htmlEncode( $!level.orgUnitLevelName )</td>
-                        <td>$encoder.htmlEncode( $!level.getCategoryOptionGroupSetName() )</td>
+                        #if( $categoryOptionGroupSetsPresent )
+                            <td>$encoder.htmlEncode( $!level.getCategoryOptionGroupSetName() )</td>
+                        #end
                     </tr>
                     #end
                 </tbody>
