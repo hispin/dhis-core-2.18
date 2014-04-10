@@ -106,4 +106,14 @@ public class TextUtilsTest
         assertEquals( "and name='tom' and name='john' ", TextUtils.removeLastAnd( "and name='tom' and name='john' and " ) );
         assertEquals( "and name='tom' and name='john' ", TextUtils.removeLastAnd( "and name='tom' and name='john' and  " ) );
     }
+    
+    @Test
+    public void testRemoveLastComma()
+    {
+        assertEquals( null, TextUtils.removeLastComma( null ) );
+        assertEquals( "", TextUtils.removeLastComma( "" ) );
+        assertEquals( "tom,john", TextUtils.removeLastComma( "tom,john," ) );
+        assertEquals( "tom, john", TextUtils.removeLastComma( "tom, john, " ) );
+        assertEquals( "tom, john", TextUtils.removeLastComma( "tom, john,  " ) );
+    }
 }

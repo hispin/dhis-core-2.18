@@ -210,6 +210,20 @@ public class TextUtils
         
         return StringUtils.removeEndIgnoreCase( string, "and" );
     }
+
+    /**
+     * Removes the last occurence of comma (",") from the given string,
+     * including potential trailing spaces.
+     * 
+     * @param string the string.
+     * @return the chopped string.
+     */
+    public static String removeLastComma( String string )
+    {
+        string = StringUtils.stripEnd( string, " " );
+        
+        return StringUtils.removeEndIgnoreCase( string, "," );
+    }
     
     /**
      * Trims the given string from the end.

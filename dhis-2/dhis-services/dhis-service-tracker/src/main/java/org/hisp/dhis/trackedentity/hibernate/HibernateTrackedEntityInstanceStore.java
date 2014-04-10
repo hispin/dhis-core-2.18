@@ -30,6 +30,7 @@ package org.hisp.dhis.trackedentity.hibernate;
 
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+import static org.hisp.dhis.system.util.TextUtils.*;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM_EVENT_BY_STATUS;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstance.PREFIX_PROGRAM_INSTANCE;
@@ -77,7 +78,6 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.SqlHelper;
-import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
@@ -151,7 +151,7 @@ public class HibernateTrackedEntityInstanceStore
             sql += col + ".value as " + col + ", ";
         }
         
-        sql = sql.substring( 0, sql.length() - 2 ) + " "; // Remove last comma
+        sql = removeLastComma( sql ) + " ";
 
         // ---------------------------------------------------------------------
         // From and where clause
@@ -286,7 +286,7 @@ public class HibernateTrackedEntityInstanceStore
                 sql += hlp.whereAnd() + " ous.idlevel" + level + " in (" + getCommaDelimitedString( getIdentifiers( levelOuMap.get( level ) ) ) + ") or ";
             }
             
-            sql = sql.substring( 0, sql.length() - 3 ); // Remove last or
+            sql = removeLastOr( sql );
         }
         else if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.ALL ) )
         {
@@ -326,7 +326,7 @@ public class HibernateTrackedEntityInstanceStore
         {
             sql += hlp.whereAnd() + " (";
 
-            List<String> queryTokens = TextUtils.getTokens( params.getQuery() );
+            List<String> queryTokens = getTokens( params.getQuery() );
 
             for ( String queryToken : queryTokens )
             {  
@@ -341,10 +341,10 @@ public class HibernateTrackedEntityInstanceStore
                     sql += "lower(" + col + ".value) " + regexp + " '" + wordStart + StringUtils.lowerCase( query ) + wordEnd + "' or ";                    
                 }
                 
-                sql = sql.substring( 0, sql.length() - 3 ) + ") and "; // Remove last or
+                sql = removeLastOr( sql ) + ") and ";
             }
             
-            sql = sql.substring( 0, sql.length() - 4 ) + ") "; // Remove last and
+            sql = removeLastAnd( sql ) + ") ";
         }
 
         return sql;
@@ -819,7 +819,7 @@ public class HibernateTrackedEntityInstanceStore
                         if ( keys[4].equals( "-1" ) )
                         {
                             instanceWhere += " and psi.organisationunitid in( "
-                                + TextUtils.getCommaDelimitedString( orgunitChilrenIds ) + " )";
+                                + getCommaDelimitedString( orgunitChilrenIds ) + " )";
                         }
 
                         // get events by selected orgunit
@@ -841,7 +841,7 @@ public class HibernateTrackedEntityInstanceStore
                         if ( keys[4].equals( "-1" ) )
                         {
                             instanceWhere += " and psi.organisationunitid in( "
-                                + TextUtils.getCommaDelimitedString( orgunitChilrenIds ) + " )";
+                                + getCommaDelimitedString( orgunitChilrenIds ) + " )";
                         }
 
                         // get events by selected orgunit
@@ -863,7 +863,7 @@ public class HibernateTrackedEntityInstanceStore
                         if ( keys[4].equals( "-1" ) )
                         {
                             instanceWhere += " and p.organisationunitid in( "
-                                + TextUtils.getCommaDelimitedString( orgunitChilrenIds ) + " )";
+                                + getCommaDelimitedString( orgunitChilrenIds ) + " )";
                         }
 
                         // get events by selected orgunit
@@ -885,7 +885,7 @@ public class HibernateTrackedEntityInstanceStore
                         if ( keys[4].equals( "-1" ) )
                         {
                             instanceWhere += " and p.organisationunitid in( "
-                                + TextUtils.getCommaDelimitedString( orgunitChilrenIds ) + " )";
+                                + getCommaDelimitedString( orgunitChilrenIds ) + " )";
                         }
 
                         // get events by selected orgunit
@@ -906,7 +906,7 @@ public class HibernateTrackedEntityInstanceStore
                         if ( keys[4].equals( "-1" ) )
                         {
                             instanceWhere += " and psi.organisationunitid in( "
-                                + TextUtils.getCommaDelimitedString( orgunitChilrenIds ) + " )";
+                                + getCommaDelimitedString( orgunitChilrenIds ) + " )";
                         }
 
                         // get events by selected orgunit
@@ -965,9 +965,9 @@ public class HibernateTrackedEntityInstanceStore
         if ( orgunits != null && !isSearchEvent )
         {
             sql += "(select organisationunitid from trackedentityinstance where trackedentityinstanceid=p.trackedentityinstanceid and organisationunitid in ( "
-                + TextUtils.getCommaDelimitedString( getOrganisationUnitIds( orgunits ) ) + " ) ) as orgunitid,";
+                + getCommaDelimitedString( getOrganisationUnitIds( orgunits ) ) + " ) ) as orgunitid,";
             otherWhere += operator + "orgunitid in ( "
-                + TextUtils.getCommaDelimitedString( getOrganisationUnitIds( orgunits ) ) + " ) ";
+                + getCommaDelimitedString( getOrganisationUnitIds( orgunits ) ) + " ) ";
         }
 
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Removing last comma
