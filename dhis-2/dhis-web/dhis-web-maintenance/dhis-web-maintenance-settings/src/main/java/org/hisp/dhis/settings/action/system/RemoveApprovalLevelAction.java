@@ -28,10 +28,15 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.io.IOUtils;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.document.DocumentService;
+import org.hisp.dhis.external.location.LocationManagerException;
 
 /**
  * @author Jim Grace
@@ -63,14 +68,34 @@ public class RemoveApprovalLevelAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
         DataApprovalLevel approvalLevel = dataApprovalLevelService.getDataApprovalLevel( id );
-        
-        dataApprovalLevelService.deleteDataApprovalLevel( approvalLevel );
+
+        try
+        {
+            dataApprovalLevelService.deleteDataApprovalLevel( approvalLevel );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            message = ex.getMessage();
+
+            return ERROR;
+        }
 
         return SUCCESS;
     }

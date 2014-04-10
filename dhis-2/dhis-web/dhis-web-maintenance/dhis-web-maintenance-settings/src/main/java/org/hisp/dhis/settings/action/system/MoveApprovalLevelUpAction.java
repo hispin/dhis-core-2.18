@@ -56,7 +56,7 @@ public class MoveApprovalLevelUpAction
 
     private int id;
 
-    public void setLevel( int id )
+    public void setId( int id )
     {
         this.id = id;
     }
