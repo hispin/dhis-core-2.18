@@ -512,6 +512,10 @@ public abstract class AbstractEnrollmentService
             params.setOrganisationUnitMode( OrganisationUnitSelectionMode.ALL );
             params.setProgram( program );
         }
+        else
+        {
+            params.setOrganisationUnitMode( OrganisationUnitSelectionMode.ALL );
+        }
 
         Grid instances = teiService.getTrackedEntityInstances( params );
 
