@@ -28,15 +28,12 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.io.IOUtils;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
+import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.document.DocumentService;
-import org.hisp.dhis.external.location.LocationManagerException;
 
 /**
  * @author Jim Grace
@@ -54,6 +51,13 @@ public class RemoveApprovalLevelAction
     public void setDataApprovalLevelService( DataApprovalLevelService dataApprovalLevelService )
     {
         this.dataApprovalLevelService = dataApprovalLevelService;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -92,9 +96,12 @@ public class RemoveApprovalLevelAction
         }
         catch ( DeleteNotAllowedException ex )
         {
-            message = ex.getMessage();
-
-            return ERROR;
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
+                
+                return ERROR;
+            }
         }
 
         return SUCCESS;
