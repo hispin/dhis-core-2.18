@@ -100,7 +100,7 @@ public class DefaultDataApprovalLevelService
 
             if ( ouLevel != null )
             {
-                ouLevelName = ouLevelNumber + " " + ouLevel.getName();
+                ouLevelName = ouLevel.getName();
             }
             else
             {

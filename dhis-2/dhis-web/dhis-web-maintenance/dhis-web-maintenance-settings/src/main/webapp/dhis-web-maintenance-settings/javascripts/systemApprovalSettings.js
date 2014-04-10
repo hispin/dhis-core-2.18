@@ -5,8 +5,14 @@ $(function() {
   });
 });
 
+function renumberApprovalLevels( ) {
+    $( ".levelNumber" ).text( function( i ) {
+        return ( i + 1 );
+    });
+}
+
 function removeApprovalLevel( context ) {
-    removeItem( context.id, context.name, i18n_confirm_delete_data_approval_level, 'removeApprovalLevel.action' );
+    removeItem( context.id, context.name, i18n_confirm_delete_data_approval_level, 'removeApprovalLevel.action', renumberApprovalLevels );
 }
 
 function moveApprovalLevelUp( context ) {

@@ -61,16 +61,18 @@
                 <col width="120px">
                 <thead>
                 <tr>
+                    <th class="{sorter: false}">$i18n.getString( "approval_level" )</th>
                     <th class="{sorter: false}">$i18n.getString( "organisation_unit_level" )</th>
                     <th class="{sorter: false}">$i18n.getString( "category_option_group_set" )</th>
                 </tr>
                 </thead>
                 <tbody id="list">
                     #foreach( $level in $dataApprovalLevels )
-                    <tr id="tr${level.id}" data-id="$!level.id" data-uid="$!level.uid" data-type="DataApprovalLevel" data-name="$encoder.htmlEncode( $!level.displayName )"
+                    <tr id="tr${level.id}" data-id="$!level.id" data-uid="$!level.uid" data-level="$level.level" data-type="DataApprovalLevel" data-name="$encoder.htmlEncode( $!level.displayName )"
                             data-can-move-up="$approvalLevelService.canDataApprovalLevelMoveUp( $level.level )"
                             data-can-move-down="$approvalLevelService.canDataApprovalLevelMoveDown( $level.level )"
                             data-can-manage="$security.canManage( $level )">
+                        <td class="levelNumber">$encoder.htmlEncode( $!level.level )</td>
                         <td>$encoder.htmlEncode( $!level.orgUnitLevelName )</td>
                         <td>$encoder.htmlEncode( $!level.getCategoryOptionGroupSetName() )</td>
                     </tr>
