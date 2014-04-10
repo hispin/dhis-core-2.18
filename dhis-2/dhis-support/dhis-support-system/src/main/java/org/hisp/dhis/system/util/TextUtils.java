@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author Lars Helge Overland
  */
@@ -179,6 +181,34 @@ public class TextUtils
         }
         
         return string.substring( 0, string.length() - characters );
+    }
+    
+    /**
+     * Removes the last occurence of the word "or" from the given string,
+     * including potential trailing spaces, case-insentitive.
+     * 
+     * @param string the string.
+     * @return the chopped string.
+     */
+    public static String removeLastOr( String string )
+    {
+        string = StringUtils.stripEnd( string, " " );
+        
+        return StringUtils.removeEndIgnoreCase( string, "or" );
+    }
+
+    /**
+     * Removes the last occurence of the word "and" from the given string,
+     * including potential trailing spaces, case-insentitive.
+     * 
+     * @param string the string.
+     * @return the chopped string.
+     */
+    public static String removeLastAnd( String string )
+    {
+        string = StringUtils.stripEnd( string, " " );
+        
+        return StringUtils.removeEndIgnoreCase( string, "and" );
     }
     
     /**

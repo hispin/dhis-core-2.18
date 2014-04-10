@@ -86,4 +86,24 @@ public class TextUtilsTest
         assertEquals( new ArrayList<String>( Arrays.asList( "John", "Doe", "Main", "Road", "25" ) ), TextUtils.getTokens( "John Doe Main Road 25" ) );
         assertEquals( new ArrayList<String>( Arrays.asList( "Ted,Johnson", "Upper-Road", "45" ) ), TextUtils.getTokens( "Ted,Johnson Upper-Road 45" ) );        
     }
+
+    @Test
+    public void testRemoveLastOr()
+    {
+        assertEquals( null, TextUtils.removeLastOr( null ) );
+        assertEquals( "", TextUtils.removeLastOr( "" ) );
+        assertEquals( "or name='tom' or name='john' ", TextUtils.removeLastOr( "or name='tom' or name='john' or" ) );
+        assertEquals( "or name='tom' or name='john' ", TextUtils.removeLastOr( "or name='tom' or name='john' or " ) );
+        assertEquals( "or name='tom' or name='john' ", TextUtils.removeLastOr( "or name='tom' or name='john' or  " ) );
+    }
+    
+    @Test
+    public void testRemoveLastAnd()
+    {
+        assertEquals( null, TextUtils.removeLastAnd( null ) );
+        assertEquals( "", TextUtils.removeLastAnd( "" ) );
+        assertEquals( "and name='tom' and name='john' ", TextUtils.removeLastAnd( "and name='tom' and name='john' and" ) );
+        assertEquals( "and name='tom' and name='john' ", TextUtils.removeLastAnd( "and name='tom' and name='john' and " ) );
+        assertEquals( "and name='tom' and name='john' ", TextUtils.removeLastAnd( "and name='tom' and name='john' and  " ) );
+    }
 }
