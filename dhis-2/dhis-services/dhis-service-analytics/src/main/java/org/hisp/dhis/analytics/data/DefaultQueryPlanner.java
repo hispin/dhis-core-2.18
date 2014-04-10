@@ -212,7 +212,7 @@ public class DefaultQueryPlanner
         
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
         
-        List<DataQueryParams> groupedByPartition = groupByPartition( params, tableName );
+        List<DataQueryParams> groupedByPartition = groupByPartition( params, tableName, null );
         
         for ( DataQueryParams byPartition : groupedByPartition )
         {
@@ -388,13 +388,7 @@ public class DefaultQueryPlanner
     // Supportive - group by methods
     // -------------------------------------------------------------------------
     
-    /**
-     * Groups the given query into sub queries based on its periods and which 
-     * partition it should be executed against. Sets the partition table name on
-     * each query. Queries are grouped based on periods if appearing as a 
-     * dimension.
-     */
-    private List<DataQueryParams> groupByPartition( DataQueryParams params, String tableName )
+    public List<DataQueryParams> groupByPartition( DataQueryParams params, String tableName, String tableSuffix )
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
@@ -405,7 +399,7 @@ public class DefaultQueryPlanner
         }
         else if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
         {
-            ListMap<Partitions, NameableObject> partitionPeriodMap = PartitionUtils.getPartitionPeriodMap( params.getPeriods(), tableName, null );
+            ListMap<Partitions, NameableObject> partitionPeriodMap = PartitionUtils.getPartitionPeriodMap( params.getPeriods(), tableName, tableSuffix );
             
             for ( Partitions partitions : partitionPeriodMap.keySet() )
             {
@@ -418,7 +412,7 @@ public class DefaultQueryPlanner
         else if ( params.getFilterPeriods() != null && !params.getFilterPeriods().isEmpty() )
         {
             DataQueryParams query = params.instance();
-            query.setPartitions( PartitionUtils.getPartitions( params.getFilterPeriods(), tableName, null ) );
+            query.setPartitions( PartitionUtils.getPartitions( params.getFilterPeriods(), tableName, tableSuffix ) );
             queries.add( query );
         }
         else
