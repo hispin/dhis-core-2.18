@@ -299,14 +299,17 @@ public class UpdateUserAction
         userService.updateUser( user );
 
         // ---------------------------------------------------------------------
-        // Organisation unit trees
+        // Update organisation unit trees if current user is being updated
         // ---------------------------------------------------------------------
 
-        if ( user.equals( currentUserService.getCurrentUser() ) )
+        if ( user.equals( currentUserService.getCurrentUser() ) && !dataCaptureOrgUnits.isEmpty() )
         {
             selectionManager.setRootOrganisationUnits( dataCaptureOrgUnits );
             selectionManager.setSelectedOrganisationUnits( dataCaptureOrgUnits );
-
+        }
+        
+        if ( user.equals( currentUserService.getCurrentUser() ) && !dataViewOrgUnits.isEmpty() )
+        {
             selectionTreeManager.setRootOrganisationUnits( dataViewOrgUnits );
             selectionTreeManager.setSelectedOrganisationUnits( dataViewOrgUnits );
         }
