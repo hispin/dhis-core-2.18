@@ -94,12 +94,9 @@ public class DefaultEventQueryPlanner
             violation = "Start and end date or at least one period must be specified";
         }
         
-        if ( params.getStartDate() != null && params.getEndDate() != null )
+        if ( params.getStartDate() != null && params.getEndDate() != null && params.getStartDate().after( params.getEndDate() ) )
         {
-            if ( params.getStartDate().after( params.getEndDate() ) )
-            {
-                violation = "Start date is after end date: " + params.getStartDate() + " - " + params.getEndDate();
-            }            
+            violation = "Start date is after end date: " + params.getStartDate() + " - " + params.getEndDate();
         }
 
         if ( params.getPage() != null && params.getPage() <= 0 )
