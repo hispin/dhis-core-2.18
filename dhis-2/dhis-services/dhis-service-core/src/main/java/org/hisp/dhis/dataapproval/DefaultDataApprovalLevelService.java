@@ -90,7 +90,7 @@ public class DefaultDataApprovalLevelService
     {
         List<DataApprovalLevel> dataApprovalLevels = dataApprovalLevelStore.getAllDataApprovalLevels();
 
-        for ( DataApprovalLevel dataApprovalLevel : dataApprovalLevels)
+        for ( DataApprovalLevel dataApprovalLevel : dataApprovalLevels )
         {
             int ouLevelNumber = dataApprovalLevel.getOrgUnitLevel();
 

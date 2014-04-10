@@ -291,14 +291,63 @@ public class DefaultQueryPlanner
         return queryGroups;
     }
 
+    // -------------------------------------------------------------------------
+    // Dimension constraints methods
+    // -------------------------------------------------------------------------
+    
     public void applyDimensionConstraints( DataQueryParams params )
     {
+        applyOrganisationUnitConstraint( params );
+        applyUserConstraints( params );
+    }
+
+    private void applyOrganisationUnitConstraint( DataQueryParams params )
+    {
         User user = currentUserService.getCurrentUser();
-        
-        if ( params == null || user == null || 
-            user.getUserCredentials() == null || !user.getUserCredentials().hasDimensionConstraints() )
+
+        // ---------------------------------------------------------------------
+        // Check if current user has data view organisation units
+        // ---------------------------------------------------------------------
+
+        if ( params == null || user == null || !user.hasDataViewOrganisationUnit() )
         {
-            log.debug( "No dimension constraint applied" );
+            return;
+        }
+
+        // ---------------------------------------------------------------------
+        // Check if request already has organisation units specified
+        // ---------------------------------------------------------------------
+
+        if ( params.hasDimensionOrFilterWithItems( DimensionalObject.ORGUNIT_DIM_ID ) )
+        {
+            return;
+        }
+        
+        // -----------------------------------------------------------------
+        // Apply constraint as filter, and remove potential all-dimension
+        // -----------------------------------------------------------------
+
+        params.removeDimensionOrFilter( DimensionalObject.ORGUNIT_DIM_ID );
+
+        List<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>( user.getDataViewOrganisationUnits() );
+
+        DimensionalObject constraint = new BaseDimensionalObject( DimensionalObject.ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, orgUnits );
+        
+        params.getFilters().add( constraint );
+
+        log.info( "User: " + user.getUsername() + " constrained by data view organisation units" );        
+    }
+    
+    private void applyUserConstraints( DataQueryParams params )
+    {
+        User user = currentUserService.getCurrentUser();
+
+        // ---------------------------------------------------------------------
+        // Check if current user has dimension constraints
+        // ---------------------------------------------------------------------
+
+        if ( params == null || user == null || user.getUserCredentials() == null || !user.getUserCredentials().hasDimensionConstraints() )
+        {
             return;
         }
                 
@@ -307,7 +356,7 @@ public class DefaultQueryPlanner
         for ( DimensionalObject dimension : dimensionConstraints )
         {
             // -----------------------------------------------------------------
-            // Check if constraint is already specified with items
+            // Check if constraint already is specified with items
             // -----------------------------------------------------------------
 
             if ( params.hasDimensionOrFilterWithItems( dimension.getUid() ) )
