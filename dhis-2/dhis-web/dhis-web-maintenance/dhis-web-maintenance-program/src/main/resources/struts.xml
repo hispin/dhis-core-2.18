@@ -1207,7 +1207,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-program/updateTrackedEntity.vm</param>
       <param name="javascripts">javascript/trackedEntity.js</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_UPDATE</param>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_ADD</param>
     </action>
 
     <action name="updateTrackedEntity"
