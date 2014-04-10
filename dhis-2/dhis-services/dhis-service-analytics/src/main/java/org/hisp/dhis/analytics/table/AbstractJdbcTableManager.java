@@ -49,6 +49,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -78,6 +79,9 @@ public abstract class AbstractJdbcTableManager
     
     @Autowired
     protected DataElementCategoryService categoryService;
+    
+    @Autowired
+    protected SystemSettingManager systemSettingManager;
    
     @Autowired
     protected StatementBuilder statementBuilder;

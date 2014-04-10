@@ -47,8 +47,10 @@ import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MathUtils;
+import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -188,6 +190,23 @@ public class JdbcAnalyticsTableManager
         jdbcTemplate.execute( sql );
     }
 
+    private String getApprovalSubquery( Collection<OrganisationUnitLevel> levels )
+    {
+        String sql = "(" +
+            "select min(dal.level) " +
+            "from dataapproval da " +
+            "inner join dataapprovallevel dal on da.dataapprovallevelid = dal.dataapprovallevelid " +
+            "inner join _dataelementstructure des on da.datasetid = des.datasetid and des.dataelementid = dv.dataelementid " +
+            "where da.periodid = dv.periodid and (";
+        
+        for ( OrganisationUnitLevel level : levels )
+        {
+            sql += "ous.idlevel" + level.getLevel() + " = da.organisationunitid or ";
+        }
+        
+        return TextUtils.removeLastOr( sql ) + ") ) as approvallevel";        
+    }
+
     public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
         List<String[]> columns = new ArrayList<String[]>();
@@ -261,6 +280,12 @@ public class JdbcAnalyticsTableManager
         String[] level = { quote( "level" ), "integer", "ous.level" };
         
         columns.addAll( Arrays.asList( de, co, level ) );
+
+        if ( isApprovalEnabled() )
+        {            
+            String[] al = { quote( "approvallevel" ), "integer", getApprovalSubquery( levels ) };
+            columns.add( al );
+        }
         
         return columns;
     }
@@ -317,5 +342,14 @@ public class JdbcAnalyticsTableManager
         }
 
         return null;
+    }
+
+    /**
+     * Indicates whether the system should ignore data which has not been approved
+     * in analytics tables.
+     */
+    private boolean isApprovalEnabled()
+    {
+        return (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
     }
 }
