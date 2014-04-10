@@ -773,7 +773,7 @@ public abstract class BaseAnalyticalObject
         itemOrganisationUnitGroups.clear();
         rewindRelativePeriods = false;
         digitGroupSeparator = NUMBER_FORMATTING_SPACE;
-        sortOrder = 0;
+        sortOrder = NONE;
         topLimit = 0;
     }
     
