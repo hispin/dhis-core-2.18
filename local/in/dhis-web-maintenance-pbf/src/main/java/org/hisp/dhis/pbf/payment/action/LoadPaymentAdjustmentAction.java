@@ -11,13 +11,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -80,7 +83,21 @@ public class LoadPaymentAdjustmentAction
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
-    private Map<Integer, Double> pbfQtyMap = new HashMap<Integer, Double>();
+    private MathTool mathTool = new MathTool();
+    
+    public MathTool getMathTool() 
+    {
+		return mathTool;
+	}
+
+    private String availableAmount = "";
+
+    public String getAvailableAmount() 
+    {
+		return availableAmount;
+	}
+
+	private Map<Integer, Double> pbfQtyMap = new HashMap<Integer, Double>();
 
     public Map<Integer, Double> getPbfQtyMap()
     {
@@ -129,18 +146,21 @@ public class LoadPaymentAdjustmentAction
         this.periodIso = periodIso;
     }
 
+    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
+	public String execute()
         throws Exception
     {
-
         System.out.println( "Inside Adjustment screen" );
 
         if ( periodIso.equals( "-1" ) )
+        {
             return SUCCESS;
+        }
 
         OrganisationUnit selOrgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
 
@@ -150,8 +170,7 @@ public class LoadPaymentAdjustmentAction
 
         period = periodService.reloadPeriod( period );
 
-        Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriods( period.getStartDate(),
-            period.getEndDate() ) );
+        Set<Period> periods = new HashSet<Period>( periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ) );
         Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers( Period.class, periods ) );
         String periodIdsByComma = getCommaDelimitedString( periodIds );
 
@@ -160,8 +179,7 @@ public class LoadPaymentAdjustmentAction
         Set<OrganisationUnit> pbfQtyOrgUnits = new HashSet<OrganisationUnit>();
         pbfQtyOrgUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
         pbfQtyOrgUnits.retainAll( selDataSet.getSources() );
-        Collection<Integer> orgUnitIds = new ArrayList<Integer>(
-            getIdentifiers( OrganisationUnit.class, pbfQtyOrgUnits ) );
+        Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, pbfQtyOrgUnits ) );
         String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
 
         // --------------------------------------------------------
@@ -207,6 +225,18 @@ public class LoadPaymentAdjustmentAction
         if ( qualityScoreDataSet != null )
         {
             overAllQualityScore = defaultPBFAggregationService.calculateOverallQualityScore( period, qualityScoreDataSet.getSources(), qualityScoreDataSet.getId(), tariffOrgUnit.getId() );
+        }
+
+        //-------------------------------------------------------------
+        // Availbale Amount
+        //-------------------------------------------------------------
+        Constant paymentAmount = constantService.getConstantByName( Lookup.PAYMENT_ADJUSTMENT_AMOUNT_DE );
+        DataElement dataElement = dataElementService.getDataElement( (int) paymentAmount.getValue() );
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        DataValue dataValue = dataValueService.getDataValue( dataElement, period, selOrgUnit, optionCombo );
+        if ( dataValue != null )
+        {
+        	availableAmount = dataValue.getValue();
         }
 
         return SUCCESS;

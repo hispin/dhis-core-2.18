@@ -1,4 +1,5 @@
 <script>
+    var dataElementIdArray = new Array();
     
 	jQuery(document).ready( function(){
 	countryTags = $orgUnitList;
@@ -12,6 +13,8 @@
 		
 		var adjustmentPer = ( parseFloat( amountAvail ) / parseFloat (totalAvail) ) * 100 ;
 		$("#adjustment").val( adjustmentPer.toFixed(2) );
+		
+		calculateAdjustedTariffAmount();
 	}
 	
     function saveDataValue()
