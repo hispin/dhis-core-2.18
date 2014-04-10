@@ -33,7 +33,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -54,7 +53,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
@@ -92,8 +90,6 @@ public class DataApprovalServiceTest
     // -------------------------------------------------------------------------
     // Supporting data
     // -------------------------------------------------------------------------
-
-    private final static boolean ACCEPTED = true;
 
     private final static boolean NOT_ACCEPTED = false;
 
@@ -304,8 +300,6 @@ public class DataApprovalServiceTest
 
     private void setUpCategories() throws Exception
     {
-        Collection<CategoryOptionGroup> allGroups;
-
         optionA = new DataElementCategoryOption( "CategoryOptionA" );
         optionB = new DataElementCategoryOption( "CategoryOptionB" );
         optionC = new DataElementCategoryOption( "CategoryOptionC" );
