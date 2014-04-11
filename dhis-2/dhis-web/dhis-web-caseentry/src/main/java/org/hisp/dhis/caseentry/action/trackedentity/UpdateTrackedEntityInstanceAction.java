@@ -103,7 +103,7 @@ public class UpdateTrackedEntityInstanceAction implements Action {
 				.getTrackedEntityInstance(id);
 		TrackedEntity trackedEntity = null;
 
-		if (programId != null) {
+		if ( programId != null && !programId.isEmpty() ) {
 			Program program = programService.getProgram(programId);
 			trackedEntity = program.getTrackedEntity();
 		} else {
