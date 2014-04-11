@@ -165,9 +165,9 @@ public class ShowAddTrackedEntityInstanceFormAction
         return entityInstanceUid;
     }
 
-    private Integer relatedProgramId;
+    private String relatedProgramId;
 
-    public void setRelatedProgramId( Integer relatedProgramId )
+    public void setRelatedProgramId( String relatedProgramId )
     {
         this.relatedProgramId = relatedProgramId;
     }
@@ -318,7 +318,7 @@ public class ShowAddTrackedEntityInstanceFormAction
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
 
-        if ( programId == null )
+        if ( programId == null || programId.isEmpty() )
         {
             trackedEntityForm = trackedEntityFormService.getCommonTrackedEntityForm();
 
@@ -393,7 +393,7 @@ public class ShowAddTrackedEntityInstanceFormAction
 
         }
 
-        if ( relatedProgramId != null )
+        if ( relatedProgramId != null && !relatedProgramId.isEmpty() )
         {
             relatedProgram = programService.getProgram( relatedProgramId );
         }
