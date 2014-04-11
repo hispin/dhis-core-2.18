@@ -34,6 +34,7 @@ import org.hisp.dhis.api.utils.FormUtils;
 import org.hisp.dhis.api.view.ClassPathUriResolver;
 import org.hisp.dhis.api.webdomain.form.Form;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -211,7 +212,7 @@ public class DataSetController
             {
                 for ( DataElement dataElement : dataSet.getDataElements() )
                 {
-                    writeDataValue( dataElement, "", period, comment, staxWriter );
+                    writeDataValue( dataElement, dataElementIdScheme, null, orgUnitIdScheme, period, comment, staxWriter );
                 }
             }
             else
@@ -227,12 +228,20 @@ public class DataSetController
 
                     if ( comment )
                     {
-                        staxWriter.writeComment( "OrgUnit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getUid() + ")" );
+                        if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( orgUnitIdScheme.toLowerCase() ) )
+                        {
+                            staxWriter.writeComment( "OrgUnit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getCode() + ")" );
+                        }
+                        else
+                        {
+                            staxWriter.writeComment( "OrgUnit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getUid() + ")" );
+                        }
+
                     }
 
                     for ( DataElement dataElement : dataSet.getDataElements() )
                     {
-                        writeDataValue( dataElement, orgUnit, period, comment, staxWriter );
+                        writeDataValue( dataElement, dataElementIdScheme, organisationUnit, orgUnitIdScheme, period, comment, staxWriter );
                     }
                 }
             }
@@ -246,7 +255,7 @@ public class DataSetController
         }
     }
 
-    private void writeDataValue( DataElement dataElement, String orgUnit, String period, boolean comment, XMLStreamWriter staxWriter ) throws XMLStreamException
+    private void writeDataValue( DataElement dataElement, String deScheme, OrganisationUnit organisationUnit, String ouScheme, String period, boolean comment, XMLStreamWriter staxWriter ) throws XMLStreamException
     {
         for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getSortedOptionCombos() )
         {
@@ -263,10 +272,28 @@ public class DataSetController
             }
 
             staxWriter.writeStartElement( "", "dataValue", DxfNamespaces.DXF_2_0 );
-            staxWriter.writeAttribute( "dataElement", dataElement.getUid() );
+
+            if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( deScheme.toLowerCase() ) )
+            {
+                staxWriter.writeAttribute( "dataElement", dataElement.getCode() );
+            }
+            else
+            {
+                staxWriter.writeAttribute( "dataElement", dataElement.getUid() );
+            }
+
             staxWriter.writeAttribute( "categoryOptionCombo", categoryOptionCombo.getUid() );
             staxWriter.writeAttribute( "period", period );
-            staxWriter.writeAttribute( "orgUnit", orgUnit );
+
+            if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( ouScheme.toLowerCase() ) )
+            {
+                staxWriter.writeAttribute( "orgUnit", organisationUnit.getCode() == null ? "" : organisationUnit.getCode() );
+            }
+            else
+            {
+                staxWriter.writeAttribute( "orgUnit", organisationUnit.getUid() == null ? "" : organisationUnit.getUid() );
+            }
+
             staxWriter.writeAttribute( "value", "" );
             staxWriter.writeEndElement();
         }
