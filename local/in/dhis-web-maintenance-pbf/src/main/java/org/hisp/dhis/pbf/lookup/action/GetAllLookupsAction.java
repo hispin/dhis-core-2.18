@@ -1,6 +1,7 @@
 package org.hisp.dhis.pbf.lookup.action;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,9 +9,6 @@ import java.util.List;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.pbf.api.Lookup;
 import org.hisp.dhis.pbf.api.LookupService;
-import org.hisp.dhis.system.paging.Paging;
-
-import com.opensymphony.xwork2.Action;
 
 public class GetAllLookupsAction
     extends ActionPagingSupport<Lookup>
@@ -57,8 +55,16 @@ public class GetAllLookupsAction
     public String execute()
         throws Exception
     {
-        lookups = new ArrayList<Lookup>( lookupService.getAllLookups() );
-
+        //lookups = new ArrayList<Lookup>( lookupService.getAllLookups() );
+        lookups = new ArrayList<Lookup>( lookupService.getAllLookupsSortByType() );
+        
+        /*
+        for( Lookup lookup : lookups )
+        {
+            System.out.println( "Lookup : " + lookup .getDescription() );
+        }
+        */
+        
         if ( isNotBlank( key ) )
         {
             lookupService.searchLookupByName( lookups, key );

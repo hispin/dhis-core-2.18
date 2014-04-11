@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.pbf.api.Lookup;
@@ -102,4 +103,16 @@ public class HibernateLookupStore
 
         return criteria.list();        
     }
+    
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<Lookup> getAllLookupsSortByType()
+    {  
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Lookup.class );
+        criteria.addOrder( Order.asc( "description" ) );
+        return criteria.list();        
+    }
+    
 }

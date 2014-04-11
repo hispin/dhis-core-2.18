@@ -25,4 +25,6 @@ public interface LookupStore extends GenericNameableObjectStore<Lookup>
     Collection<Lookup> getAllLookupsByType( String type );
     
     Collection<Lookup> getAllLookups();
+    
+    Collection<Lookup> getAllLookupsSortByType();
 }

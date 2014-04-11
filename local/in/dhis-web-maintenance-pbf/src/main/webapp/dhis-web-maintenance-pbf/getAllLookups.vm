@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function(){	
-		tableSorter( 'listTable' );
+		tableSorter( 'lookupList' );
 
     dhis2.contextmenu.makeContextMenu({
       menuId: 'contextMenu',
@@ -25,7 +25,7 @@
 </div>
 	
 
-<table class="mainPageTable">
+<table class="mainPageTable" >
   <tr>
     <td style="vertical-align:top">    	
         <table width="100%">         
@@ -36,11 +36,12 @@
                 </td>
             </tr>
         </table>
-        <table class="listTable">
+        <table class="listTable" id="lookupList" >
             <col>
             <thead>
                 <tr>
                     <th>$i18n.getString( "name" )</th>
+					<th>$i18n.getString( "type" )</th>
                 </tr>
             </thead>
             <tbody id="list">
@@ -54,6 +55,7 @@
                         data-can-update="$security.canUpdate( $lookup )"
                         data-can-delete="$security.canDelete( $lookup )">
                         <td>$encoder.htmlEncode( $!lookup.name )</td>
+						<td>$encoder.htmlEncode( $!lookup.getDescription() )</td>
                     </tr>
                 #end
             </tbody>

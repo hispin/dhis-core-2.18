@@ -144,6 +144,13 @@ public class RunAggregationQueryAction
             orgUnitList.addAll( organisationUnitService.getOrganisationUnitWithChildren( org.getId() )  ) ;
         }
         
+        /*
+        List<OrganisationUnit> rootOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getRootOrganisationUnits() );
+
+        OrganisationUnit rootOrganisationUnit = rootOrganisationUnits.get( 0 );
+        */
+        
+        
         //Set<OrganisationUnitGroup> orgUnitGroups = new HashSet<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
 
         /*List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) );

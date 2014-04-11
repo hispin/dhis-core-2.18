@@ -24,6 +24,8 @@ public interface LookupService
     Collection<Lookup> getAllLookupsByType( String type );
     
     Collection<Lookup> getAllLookups();
-
+    
+    Collection<Lookup> getAllLookupsSortByType();
+    
     void searchLookupByName( List<Lookup> lookups, String key );
 }
