@@ -70,11 +70,11 @@ dhis2.appr.displayCategoryOptionGroups = function( ou )
 }
 
 dhis2.appr.getDataReport = function()
-{
+{	
     var dataReport = {
         ds: $( "#dataSetId" ).val(),
         pe: $( "#periodId" ).val(),
-        ou: selectionTreeSelection.getSelectedUid()[0]
+        ou: selection.getSelected()[0]
     };
     
     var cog = $( "#categoryOptionGroupId" ).val();
@@ -102,7 +102,7 @@ dhis2.appr.generateDataReport = function()
         setHeaderMessage( i18n_select_period );
         return false;
     }
-    if ( !selectionTreeSelection.isSelected() )
+    if ( !selection.isSelected() )
     {
         setHeaderMessage( i18n_select_organisation_unit );
         return false;
