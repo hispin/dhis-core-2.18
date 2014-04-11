@@ -123,10 +123,15 @@ function Selection()
         sessionStorage.removeItem( OU_SELECTED_KEY );
     };
 
+    this.isSelected = function() {
+    	var ou = selection.getSelected();    	
+    	return ou && ou.length > 0;
+    };
+    
     this.setSelected = function( selected ) {
         sessionStorage[ OU_SELECTED_KEY ] = JSON.stringify( selected );
     };
-
+    
     this.selectedExists = function() {
         return sessionStorage[ OU_SELECTED_KEY ] != null;
     };
