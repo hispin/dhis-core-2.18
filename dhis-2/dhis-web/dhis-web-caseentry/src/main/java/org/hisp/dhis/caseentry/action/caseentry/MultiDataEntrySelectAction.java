@@ -30,13 +30,19 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -68,6 +74,9 @@ public class MultiDataEntrySelectAction
         this.attributeService = attributeService;
     }
 
+    @Autowired
+    private TrackedEntityService trackedEntityService;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -98,11 +107,18 @@ public class MultiDataEntrySelectAction
         return programs;
     }
 
-    private Collection<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
 
-    public Collection<TrackedEntityAttribute> getAttributes()
+    public List<TrackedEntityAttribute> getAttributes()
     {
         return attributes;
+    }
+
+    private List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
+
+    public List<TrackedEntity> getTrackedEntities()
+    {
+        return trackedEntities;
     }
 
     // -------------------------------------------------------------------------
@@ -112,7 +128,11 @@ public class MultiDataEntrySelectAction
     public String execute()
         throws Exception
     {
-        attributes = attributeService.getAllTrackedEntityAttributes();
+        attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
+        
+        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+        Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 

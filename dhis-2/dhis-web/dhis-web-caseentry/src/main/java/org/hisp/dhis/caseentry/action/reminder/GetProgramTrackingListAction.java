@@ -78,7 +78,7 @@ public class GetProgramTrackingListAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer programStageInstanceId;
+    private String programStageInstanceId;
 
     private ProgramStageInstance programStageInstance;
 
@@ -107,7 +107,7 @@ public class GetProgramTrackingListAction
         return currentUsername;
     }
 
-    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    public void setProgramStageInstanceId( String programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
     }

@@ -50,97 +50,102 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class SelectAction implements Action {
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+public class SelectAction
+    implements Action
+{
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private OrganisationUnitSelectionManager selectionManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-	public void setSelectionManager(
-			OrganisationUnitSelectionManager selectionManager) {
-		this.selectionManager = selectionManager;
-	}
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
 
-	private TrackedEntityAttributeService attributeService;
+    private TrackedEntityAttributeService attributeService;
 
-	public void setAttributeService(
-			TrackedEntityAttributeService attributeService) {
-		this.attributeService = attributeService;
-	}
+    public void setAttributeService( TrackedEntityAttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
 
-	private ProgramService programService;
+    private ProgramService programService;
 
-	public void setProgramService(ProgramService programService) {
-		this.programService = programService;
-	}
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
 
-	@Autowired
-	private TrackedEntityService trackedEntityService;
+    @Autowired
+    private TrackedEntityService trackedEntityService;
 
-	// -------------------------------------------------------------------------
-	// Input/output
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input/output
+    // -------------------------------------------------------------------------
 
-	private List<TrackedEntityAttribute> attributes;
+    private List<TrackedEntityAttribute> attributes;
 
-	public List<TrackedEntityAttribute> getAttributes() {
-		return attributes;
-	}
+    public List<TrackedEntityAttribute> getAttributes()
+    {
+        return attributes;
+    }
 
-	private List<Program> programs;
+    private List<Program> programs;
 
-	public List<Program> getPrograms() {
-		return programs;
-	}
+    public List<Program> getPrograms()
+    {
+        return programs;
+    }
 
-	private OrganisationUnit organisationUnit;
+    private OrganisationUnit organisationUnit;
 
-	public OrganisationUnit getOrganisationUnit() {
-		return organisationUnit;
-	}
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
 
-	private int status;
+    private int status;
 
-	public int getStatus() {
-		return status;
-	}
+    public int getStatus()
+    {
+        return status;
+    }
 
-	private List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
+    private List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
-	public List<TrackedEntity> getTrackedEntities() {
-		return trackedEntities;
-	}
+    public List<TrackedEntity> getTrackedEntities()
+    {
+        return trackedEntities;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-		Collection<TrackedEntityAttribute> _attributes = attributeService
-				.getTrackedEntityAttributesWithoutProgram();
-		_attributes.addAll(attributeService
-				.getTrackedEntityAttributesDisplayInList(true));
-		attributes = new ArrayList<TrackedEntityAttribute>(_attributes);
-		Collections.sort(attributes, IdentifiableObjectNameComparator.INSTANCE);
+        Collection<TrackedEntityAttribute> _attributes = attributeService.getTrackedEntityAttributesWithoutProgram();
+        _attributes.addAll( attributeService.getTrackedEntityAttributesDisplayInList( true ) );
+        attributes = new ArrayList<TrackedEntityAttribute>( _attributes );
+        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
-		trackedEntities = new ArrayList<TrackedEntity>(
-				trackedEntityService.getAllTrackedEntity());
-		Collections.sort(trackedEntities, IdentifiableObjectNameComparator.INSTANCE);
+        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+        Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
 
-		if (organisationUnit != null) {
-			programs = new ArrayList<Program>(
-					programService.getProgramsByCurrentUser(organisationUnit));
-			programs.removeAll(programService
-					.getPrograms(Program.SINGLE_EVENT_WITHOUT_REGISTRATION));
+        if ( organisationUnit != null )
+        {
+            programs = new ArrayList<Program>( programService.getProgramsByCurrentUser( organisationUnit ) );
+            programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
 
-			Collections.sort(programs,
-					IdentifiableObjectNameComparator.INSTANCE);
-		}
+            Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
+        }
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }
