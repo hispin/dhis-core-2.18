@@ -83,4 +83,16 @@ public class CollectionUtils
     {
         return collection != null ? collection : new HashSet<T>();
     }
+    
+    public static <T> Set<T> asSet( T... items )
+    {
+        Set<T> set = new HashSet<T>();
+        
+        for ( T item : items )
+        {
+            set.add( item );
+        }
+        
+        return set;
+    }
 }

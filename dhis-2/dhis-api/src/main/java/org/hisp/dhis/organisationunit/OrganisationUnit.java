@@ -347,7 +347,29 @@ public class OrganisationUnit
 
         return false;
     }
-    
+
+    public boolean isEqualOrChildOf( Set<OrganisationUnit> ancestors )
+    {
+        if ( ancestors == null || ancestors.isEmpty() )
+        {
+            return false;
+        }
+        
+        OrganisationUnit unit = this;
+
+        while ( unit != null )
+        {
+            if ( ancestors.contains( unit ) )
+            {
+                return true;
+            }
+            
+            unit = unit.getParent();
+        }
+        
+        return false;        
+    }
+
     public boolean hasCoordinatesUp()
     {
         if ( parent != null )
@@ -524,7 +546,7 @@ public class OrganisationUnit
         Collections.reverse( units );
         return units;
     }
-
+    
     public Set<DataElement> getDataElementsInDataSets()
     {
         Set<DataElement> dataElements = new HashSet<DataElement>();
@@ -741,7 +763,6 @@ public class OrganisationUnit
     }
 
     @JsonProperty
-    //@JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonSerialize( contentUsing = JacksonOrganisationUnitChildrenSerializer.class)
     @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "children", namespace = DxfNamespaces.DXF_2_0 )

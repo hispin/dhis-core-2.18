@@ -203,6 +203,8 @@ public class DefaultAnalyticsService
     @Override
     public Grid getAggregatedDataValues( DataQueryParams params )
     {
+        queryPlanner.decideAccess( params );
+        
         queryPlanner.applyDimensionConstraints( params );
         
         queryPlanner.validate( params );

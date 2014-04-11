@@ -113,6 +113,15 @@ public interface QueryPlanner
     List<DataQueryParams> groupByPeriodType( DataQueryParams params );
     
     /**
+     * Decides whether the current user has privileges to execute the given query.
+     * 
+     * @param params the data query params.
+     * @throws IllegalQueryException if the current user does not have privileges
+     *         to execute the given query.
+     */
+    void decideAccess( DataQueryParams params );
+    
+    /**
      * Applies dimension constraints to the given params. Dimension constraints
      * with all accessible dimension items will be added as filters to this query.
      * If current user has no dimension constraints, no action is taken. If the 
