@@ -28,27 +28,15 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.FormUtils;
 import org.hisp.dhis.api.view.ClassPathUriResolver;
 import org.hisp.dhis.api.webdomain.form.Form;
+import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
@@ -64,6 +52,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,6 +60,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -165,6 +172,86 @@ public class DataSetController
         }
 
         JacksonUtils.toJson( response.getOutputStream(), form );
+    }
+
+    @RequestMapping( value = "/{uid}/dvs", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )
+    public void getDvs( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "orgUnitIdScheme", defaultValue = "ID", required = false ) String orgUnitIdScheme,
+        @RequestParam( value = "dataElementIdScheme", defaultValue = "ID", required = false ) String dataElementIdScheme,
+        @RequestParam( value = "period", defaultValue = "", required = false ) String period,
+        @RequestParam( value = "orgUnit", defaultValue = "", required = false ) List<String> orgUnits,
+        HttpServletResponse response ) throws IOException
+    {
+        DataSet dataSet = getEntity( uid );
+
+        if ( dataSet == null )
+        {
+            ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
+            return;
+        }
+
+        ToXmlGenerator generator = (ToXmlGenerator) JacksonUtils.getXmlMapper().getJsonFactory()
+            .createJsonGenerator( response.getOutputStream() );
+
+        response.setContentType( MediaType.APPLICATION_XML_VALUE );
+
+        try
+        {
+            XMLStreamWriter staxWriter = generator.getStaxWriter();
+            staxWriter.writeComment( "DataSet: " + dataSet.getDisplayName() + " (" + dataSet.getUid() + ")");
+            staxWriter.writeStartElement( "", "dataValueSet", DxfNamespaces.DXF_2_0 );
+
+            if ( orgUnits.isEmpty() )
+            {
+                for ( DataElement dataElement : dataSet.getDataElements() )
+                {
+                    writeDataValue( dataElement, "", period, staxWriter );
+                }
+            }
+            else
+            {
+                for ( String orgUnit : orgUnits )
+                {
+                    OrganisationUnit organisationUnit = manager.search( OrganisationUnit.class, orgUnit );
+
+                    if ( organisationUnit == null )
+                    {
+                        continue;
+                    }
+
+                    staxWriter.writeComment( "OrgUnit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getUid() + ")" );
+
+                    for ( DataElement dataElement : dataSet.getDataElements() )
+                    {
+                        writeDataValue( dataElement, orgUnit, period, staxWriter );
+                    }
+                }
+            }
+
+            staxWriter.writeEndElement();
+            staxWriter.flush();
+        }
+        catch ( XMLStreamException ignored )
+        {
+            ignored.printStackTrace();
+        }
+    }
+
+    private void writeDataValue( DataElement dataElement, String orgUnit, String period, XMLStreamWriter staxWriter ) throws XMLStreamException
+    {
+        for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getSortedOptionCombos() )
+        {
+            String label = dataElement.getDisplayName() + " " + categoryOptionCombo.getDisplayName();
+
+            staxWriter.writeComment( "DataElement: " + label );
+            staxWriter.writeStartElement( "", "dataValue", DxfNamespaces.DXF_2_0 );
+            staxWriter.writeAttribute( "dataElement", dataElement.getUid() );
+            staxWriter.writeAttribute( "categoryOptionCombo", categoryOptionCombo.getUid() );
+            staxWriter.writeAttribute( "period", period );
+            staxWriter.writeAttribute( "orgUnit", orgUnit );
+            staxWriter.writeAttribute( "value", "" );
+            staxWriter.writeEndElement();
+        }
     }
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )
