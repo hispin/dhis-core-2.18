@@ -34,24 +34,34 @@
 	    var reportFormat =  $('#selectedReportFormat').val();
 	    var orgunit = $('#treeSelectedId').val();
 
+        var startPeriod = "";
+        var endPeriod = "";
 	    if(quater=='Q1')
 	    {
 	        period = year+"-01-01";
+	        startPeriod = year+"-01-01";
+	        endPeriod = year+"-03-31";
 	    }
 	    else if(quater=='Q2')
 	    {
 	        period = year+"-04-01";
+            startPeriod = year+"-04-01";
+            endPeriod = year+"-06-30";	        
 	    }
 	    else if(quater=='Q3')
 	    {
 	        period = year+"-07-01";
+            startPeriod = year+"-07-01";
+            endPeriod = year+"-09-30";	        
 	    }
 	    else if(quater=='Q4')
 	    {
 	        period = year+"-10-01";
+            startPeriod = year+"-10-01";
+            endPeriod = year+"-12-31";	        
 	    }
     
-	    window.location.href = "http://192.168.0.21:8095/birt_punjab_213/run?__report=/home/hisp/tomcat_punjab_213/webapps/birt_punjab_213/report/District%20Level%20Reports/JSY%20District%20Report.rptdesign&__format="+reportFormat+"&Date="+period+"&District="+orgunit;
+	    window.location.href = "http://192.168.0.21:8098/birt_pbf/run?__report=/home/ccem/tomcat_pbf/webapps/birt_pbf/report/PBF_Payment_Voucher.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&District="+orgunit;
 	    
 	    return false;
     }
