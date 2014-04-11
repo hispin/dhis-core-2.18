@@ -168,6 +168,11 @@ public class DefaultEventQueryPlanner
         
         return params;
     }
+    
+    public void decideAccess( DataQueryParams params )
+    {
+        queryPlanner.decideAccess( params );
+    }
 
     // -------------------------------------------------------------------------
     // Supportive methods

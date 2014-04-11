@@ -30,6 +30,7 @@ package org.hisp.dhis.analytics.event;
 
 import java.util.List;
 
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.IllegalQueryException;
 
 /**
@@ -48,6 +49,20 @@ public interface EventQueryPlanner
      * @param params the query params.
      */
     List<EventQueryParams> planAggregateQuery( EventQueryParams params );
-    
+
+    /**
+     * Plans the given params and returns a list of params.
+     * 
+     * @param params the query params.
+     */
     EventQueryParams planEventQuery( EventQueryParams params );
+
+    /**
+     * Decides whether the current user has privileges to execute the given query.
+     * 
+     * @param params the data query params.
+     * @throws IllegalQueryException if the current user does not have privileges
+     *         to execute the given query.
+     */
+    void decideAccess( DataQueryParams params );
 }
