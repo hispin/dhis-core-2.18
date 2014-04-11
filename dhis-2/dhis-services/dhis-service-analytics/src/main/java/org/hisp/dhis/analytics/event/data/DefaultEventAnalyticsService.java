@@ -128,6 +128,8 @@ public class DefaultEventAnalyticsService
 
     public Grid getAggregatedEventData( EventQueryParams params )
     {
+        queryPlanner.decideAccess( params );
+        
         queryPlanner.validate( params );
         
         Grid grid = new ListGrid();
@@ -192,6 +194,8 @@ public class DefaultEventAnalyticsService
 
     public Grid getEvents( EventQueryParams params )
     {
+        queryPlanner.decideAccess( params );
+        
         queryPlanner.validate( params );
 
         params.replacePeriodsWithStartEndDates();
