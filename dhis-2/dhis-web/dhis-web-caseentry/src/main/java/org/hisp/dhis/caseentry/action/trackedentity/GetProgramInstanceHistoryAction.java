@@ -65,9 +65,9 @@ public class GetProgramInstanceHistoryAction
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    private Integer programInstanceId;
+    private String programInstanceId;
 
-    public void setProgramInstanceId( Integer programInstanceId )
+    public void setProgramInstanceId( String programInstanceId )
     {
         this.programInstanceId = programInstanceId;
     }

@@ -5,7 +5,7 @@
 </h3>
 
 <input type='hidden' id='currentUsername' name='currentUsername' value='$currentUsername'>
-<input type='hidden' id='programInstanceId' name='programInstanceId' value='$programStageInstance.programInstance.id'>
+<input type='hidden' id='programInstanceId' name='programInstanceId' value='$programStageInstance.programInstance.uid'>
 <input type='hidden' id='ps_$programStageInstance.id' name='ps_$programStageInstance.id' programStageName='$programStageInstance.programStage.displayName' >
 
 #set($programInstance = $programStageInstance.programInstance)
@@ -157,8 +157,8 @@
 	
 	<div id='tab-3'>
 		<p>
-			<input type="button" onclick="exportProgramReports( '$programInstance.id', 'xls' )" value="$i18n.getString('get_report_as_xls')" style='width:150px;'>
-			<input type="button" onclick="exportProgramReports( '$programInstance.id', 'pdf' )" value="$i18n.getString('get_report_as_pdf')" style='width:150px;'>
+			<input type="button" onclick="exportProgramReports( '$programInstance.uid', 'xls' )" value="$i18n.getString('get_report_as_xls')" style='width:150px;'>
+			<input type="button" onclick="exportProgramReports( '$programInstance.uid', 'pdf' )" value="$i18n.getString('get_report_as_pdf')" style='width:150px;'>
 		</p>
 		<div id='programReportDiv'></div>
 	</div>

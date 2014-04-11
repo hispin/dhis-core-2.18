@@ -134,15 +134,28 @@ function getSearchParams(page) {
 	}
 	else if (getFieldValue('program') != '') {
 		params += "&program=" + getFieldValue('program');
+		if( getFieldValue('programStatus')!=""){
+			params += "&programStatus=" + getFieldValue('programStatus');
+		}
 	}
 	
 	if(getFieldValue('programStatus') != ''){
 		params += "&programStatus=" + getFieldValue('programStatus');
 	}
 	
+	if( getFieldValue('startDate') != ''){
+		params += "&startDate=" + getFieldValue('startDate');
+		params += "&endDate=" + getFieldValue('endDate');
+	}
+	
+	if( getFieldValue('status')!= '' ){
+		params += "&status=" + getFieldValue('status');
+	}
+	
 	var flag = false;
 	$('#advancedSearchTB tr').each(
 		function(i, row) {
+			var isProgramDate = false;
 			var dateOperator = "";
 			var p = "";
 			jQuery(this).find(':input').each(
@@ -150,15 +163,18 @@ function getSearchParams(page) {
 					if (item.type != "button") {
 						if (idx == 0) {
 							if (item.value == 'programDate') {
-								p += "&programDate=";
+								isProgramDate = true;
 							} else {
-								p += "&filter=" + item.value;
+								p += "&attribute=" + item.value;
 							}
 						} else if (item.name == 'dateOperator') {
 							dateOperator = item.value;
 						} else if (item.name == 'searchText') {
 							if (item.value != '') {
-								if (dateOperator.length > 0) {
+								if( isProgramDate ){
+									p += "&programDate=EQ:" + item.value;
+								}
+								else if (dateOperator.length > 0) {
 									p += dateOperator + ":" + item.value.toLowerCase();
 								} else {
 									var key = item.value.toLowerCase()
@@ -174,7 +190,16 @@ function getSearchParams(page) {
 				});
 			params += p;
 		});
-			
+	
+	var p = params;
+	$('#searchingAttributeIdTD [id=searchObjectId] option').each(
+		function(i, item) {
+				if ($(item).attr('displayed')=="true" 
+					&& p.indexOf(item.value) < 0 ) {
+						params += "&attribute=" + item.value;
+			}
+		}); 
+		
 	params += '&ouMode=' + getFieldValue('ouMode');
 	
 	return params;
@@ -350,7 +375,7 @@ function enableBtn() {
 		clearListById('searchObjectId');
 		if (getFieldValue('program') != '') {
 			jQuery('#searchObjectId').append(
-				'<option value="programDate" displayed="true">' + i18n_enrollment_date
+				'<option value="programDate" >' + i18n_enrollment_date
 					+ '</option>');
 		}
 

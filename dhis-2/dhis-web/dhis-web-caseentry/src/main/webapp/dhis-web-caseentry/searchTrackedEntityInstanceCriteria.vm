@@ -47,6 +47,7 @@
 		<td>$i18n.getString('status')</td>
 		<td>
 			<select id="status" name="status">
+				<option value=''>$i18n.getString("all")</option>
 				<option value='LATE_VISIT'>$i18n.getString("overdue")</option>
 				<option value='ACTIVE'>$i18n.getString("active")</option>
 				<option value='VISITED'>$i18n.getString("incomplete")</option>
@@ -113,8 +114,8 @@
 		<tr id='dueDateTR' class='hidden'>
 			<td>$i18n.getString('due_date_from_to')</td>
 			<td>
-				<input type='text' id='startDueDate' name='startDueDate' style='width:127px;'>
-				<input type='text' id='endDueDate' name='endDueDate' style='width:127px;'>
+				<input type='text' id='startDate' name='startDate' style='width:127px;'>
+				<input type='text' id='endDate' name='endDate' style='width:127px;'>
 			</td>
 		</tr>
 		<tr>
