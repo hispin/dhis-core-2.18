@@ -67,6 +67,13 @@ public Collection<Lookup> getAllLookups()
     return lookupStore.getAllLookups();
 }
 
+
+@Override
+public Collection<Lookup> getAllLookupsSortByType()
+{
+    return lookupStore.getAllLookupsSortByType();
+}
+
 // Search lookup by name
 public void searchLookupByName( List<Lookup> lookups, String key )
 {
