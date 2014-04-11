@@ -28,9 +28,12 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisSpringTest;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.hisp.dhis.system.util.CollectionUtils.asSet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +42,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author Kristian Nordal
@@ -305,6 +310,32 @@ public class OrganisationUnitServiceTest
         assertTrue( organisationUnitService.getOrganisationUnit( unit4.getId() ).getOrganisationUnitLevel() == 3 );
         assertTrue( organisationUnitService.getOrganisationUnit( unit1.getId() ).getOrganisationUnitLevel() == 1 );
         assertTrue( organisationUnitService.getOrganisationUnit( unit6.getId() ).getOrganisationUnitLevel() == 4 );
+    }
+    
+    @Test
+    public void testIsEqualOrChildOf()
+    {
+        OrganisationUnit unit1 = createOrganisationUnit( '1' );
+        organisationUnitService.addOrganisationUnit( unit1 );
+
+        OrganisationUnit unit2 = createOrganisationUnit( '2', unit1 );
+        unit1.getChildren().add( unit2 );
+        organisationUnitService.addOrganisationUnit( unit2 );
+
+        OrganisationUnit unit3 = createOrganisationUnit( '3', unit2 );
+        unit2.getChildren().add( unit3 );
+        organisationUnitService.addOrganisationUnit( unit3 );
+
+        OrganisationUnit unit4 = createOrganisationUnit( '4' );
+        organisationUnitService.addOrganisationUnit( unit4 );
+        
+        assertTrue( unit1.isEqualOrChildOf( asSet( unit1 ) ) );
+        assertTrue( unit2.isEqualOrChildOf( asSet( unit1 ) ) );
+        assertTrue( unit3.isEqualOrChildOf( asSet( unit1 ) ) );
+        assertTrue( unit2.isEqualOrChildOf( asSet( unit1, unit3 ) ) );
+        
+        assertFalse( unit2.isEqualOrChildOf( asSet( unit3 ) ) );
+        assertFalse( unit4.isEqualOrChildOf( asSet( unit1 ) ) );
     }
 
     @Test

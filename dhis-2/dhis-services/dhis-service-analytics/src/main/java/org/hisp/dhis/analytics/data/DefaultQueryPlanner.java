@@ -295,6 +295,34 @@ public class DefaultQueryPlanner
     // Dimension constraints methods
     // -------------------------------------------------------------------------
     
+    public void decideAccess( DataQueryParams params )
+    {
+        // ---------------------------------------------------------------------
+        // Check current user data view access to org units
+        // ---------------------------------------------------------------------
+        
+        User user = currentUserService.getCurrentUser();
+        
+        List<NameableObject> queryOrgUnits = params.getDimensionOrFilter( DimensionalObject.ORGUNIT_DIM_ID );
+        
+        if ( queryOrgUnits == null || user == null || !user.hasDataViewOrganisationUnit() )
+        {
+            return;
+        }
+        
+        Set<OrganisationUnit> viewOrgUnits = user.getDataViewOrganisationUnits();
+        
+        for ( NameableObject object : queryOrgUnits )
+        {
+            OrganisationUnit queryOrgUnit = (OrganisationUnit) object;
+            
+            if ( !queryOrgUnit.isEqualOrChildOf( viewOrgUnits ) )
+            {
+                throw new IllegalQueryException( "Org unit is not viewable for current user: " + queryOrgUnit.getUid() );
+            }
+        }
+    }
+    
     public void applyDimensionConstraints( DataQueryParams params )
     {
         applyOrganisationUnitConstraint( params );
