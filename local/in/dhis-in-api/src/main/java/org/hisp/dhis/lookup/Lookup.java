@@ -4,6 +4,10 @@ import org.hisp.dhis.common.BaseNameableObject;
 
 public class Lookup extends BaseNameableObject
 {
+    public final static String PAYMENT_ADJUSTMENT_AMOUNT_DE = "PAYMENT_ADJUSTMENT_AMOUNT_DE";
+
+    public final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
+
     public static final String DS_PBF_TYPE = "DS_PBF_TYPE";
     
     public static final String BANK = "BANK";

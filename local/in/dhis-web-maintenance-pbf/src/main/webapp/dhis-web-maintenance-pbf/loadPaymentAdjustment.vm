@@ -2,7 +2,7 @@
 <script type="text/javascript" >
 	
 	jQuery(document).ready( function(){
-		
+		dataElementIdArray = new Array();
 		#foreach( $dataElement in $dataElements )
 			dataElementIdArray.push( $dataElement.id )
 		#end
@@ -29,20 +29,20 @@
 	    {
 			var tariffAmount = document.getElementById("pbfTariff_"+dataElementIdArray[i]).value;
 			var totalCalculatedValue =  ( parseFloat( tariffAmount ) * parseFloat (adjustmentPer) ) / 100;
-			document.getElementById( "adjusted_"+dataElementIdArray[i] ).value = Math.round(totalCalculatedValue*100)/100;
+			document.getElementById( "adjusted_"+dataElementIdArray[i] ).value = Math.round(totalCalculatedValue);
 			
 			var pbfAmount = document.getElementById("pbfQty_"+dataElementIdArray[i]).value;
 			
 			var adjustedAmount = parseFloat(totalCalculatedValue) * parseFloat (pbfAmount);
-			document.getElementById( "adjustedAmt_"+dataElementIdArray[i] ).value = Math.round(adjustedAmount*100)/100;
+			document.getElementById( "adjustedAmt_"+dataElementIdArray[i] ).value = Math.round(adjustedAmount);
 			
 			var adjAmtIncQS = ( parseFloat( adjustedAmount ) * parseFloat ( qualityScore ) ) / 100; 
-			document.getElementById( "adjAmtIncQS_"+dataElementIdArray[i] ).value = Math.round(adjAmtIncQS*100)/100;
+			document.getElementById( "adjAmtIncQS_"+dataElementIdArray[i] ).value = Math.round(adjAmtIncQS);
 			
 			totalAmtToPay += parseFloat( adjAmtIncQS );
 	    }
 	    
-	    document.getElementById( "total_amt_to_pay" ).value = Math.round(totalAmtToPay*100)/100;
+	    document.getElementById( "total_amt_to_pay" ).value = Math.round(totalAmtToPay);
 	}
 
 </script>
@@ -82,26 +82,26 @@
 			
             <tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8" #end>
 				<td>$!dataElement.name</td>
-				<td align="center"><input type="text" name="pbfQty_$dataElement.id" id="pbfQty_$dataElement.id" size="10" value="$!mathTool.round( $!pbfQtyMap.get( $dataElement.id ) )" readonly="readonly"/></td>
-				<td align="center"><input type="text" name="pbfTariff_$dataElement.id" id="pbfTariff_$dataElement.id" size="10" value="$!mathTool.roundTo(1, $!pbfTariffMap.get( $dataElement.id ) )" readonly="readonly"/></td>
+				<td align="center"><input type="text" name="pbfQty_$dataElement.id" id="pbfQty_$dataElement.id" style="text-align:center;" size="10" value="$!mathTool.round( $!pbfQtyMap.get( $dataElement.id ) )" readonly="readonly"/></td>
+				<td align="center"><input type="text" name="pbfTariff_$dataElement.id" id="pbfTariff_$dataElement.id" style="text-align:center;" size="10" value="$!mathTool.round( $!pbfTariffMap.get( $dataElement.id ) )" readonly="readonly"/></td>
 				#set( $tariffVal = $!pbfQtyMap.get( $dataElement.id ) * $!pbfTariffMap.get( $dataElement.id ) )
-				<td id="pbfAmt_$dataElement.id" align="center">$!mathTool.roundTo(2, $tariffVal )</td>
+				<td id="pbfAmt_$dataElement.id" align="center">$!mathTool.round( $tariffVal )</td>
 				#set( $pbfAmtIncQS = ( $!tariffVal * $!overAllQualityScore )/100 )
-				<td id="pbfAmtIncQS_$dataElement.id" align="center">$!mathTool.roundTo(2, $!pbfAmtIncQS )</td>
+				<td id="pbfAmtIncQS_$dataElement.id" align="center">$!mathTool.round( $!pbfAmtIncQS )</td>
 				#set( $pbfTotalUnadjustedAmount = $!pbfTotalUnadjustedAmount + $!pbfAmtIncQS )					
-				<td><input type="text" name="adjusted_$dataElement.id" id="adjusted_$dataElement.id" size="10" /></td>
-	            <td align="center"><input type="text" name="adjustedAmt_$dataElement.id" id="adjustedAmt_$dataElement.id"  size="15" /></td>
-	            <td align="center"><input type="text" name="adjAmtIncQS_$dataElement.id" id="adjAmtIncQS_$dataElement.id"  size="15" /></td>
+				<td><input type="text" name="adjusted_$dataElement.id" id="adjusted_$dataElement.id" style="text-align:center;" size="10" /></td>
+	            <td align="center"><input type="text" name="adjustedAmt_$dataElement.id" id="adjustedAmt_$dataElement.id" style="text-align:center;" size="15" /></td>
+	            <td align="center"><input type="text" name="adjAmtIncQS_$dataElement.id" id="adjAmtIncQS_$dataElement.id" style="text-align:center;" size="15" /></td>
             </tr>        
 		#end
 		
 		<tr>
-			<td>$i18n.getString( "quality_score" ) : <input type="text" name="quality_score" id="quality_score" size="10" value="$!mathTool.roundTo(2, $!overAllQualityScore )" readonly /></td>						
+			<td>$i18n.getString( "quality_score" ) : <input type="text" name="quality_score" id="quality_score" style="text-align:center;" size="10" value="$!mathTool.roundTo( 2, $!overAllQualityScore )" readonly /></td>						
 			<td colspan="2" align="right">$i18n.getString( "total_unadjusted_amount" )</td>
-			<td><input type="text" name="total" id="total" size="20" value="$!mathTool.roundTo(2, $pbfTotalUnadjustedAmount )" readonly /></td>			
+			<td><input type="text" name="total" id="total" style="text-align:center;" size="20" value="$!mathTool.round( $pbfTotalUnadjustedAmount )" readonly /></td>			
 			<td>&nbsp;</td>
 			<td colspan="2" align="right">$i18n.getString("total_amt_to_pay")</td>
-			<td><input type="text" name="total_amt_to_pay" id="total_amt_to_pay" size="20" readonly /></td>
+			<td><input type="text" name="total_amt_to_pay" id="total_amt_to_pay" style="text-align:center;" size="20" readonly /></td>
 		</tr>
     </tbody>
 </table>
