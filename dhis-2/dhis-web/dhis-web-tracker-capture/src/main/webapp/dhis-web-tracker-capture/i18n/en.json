@@ -60,5 +60,6 @@
     "like": "LIKE",
     "not_like": "NOT LIKE",
     "move_to_selected": "Move to selected",
-    "move_all_to_selected": "Move all to selected"
+    "move_all_to_selected": "Move all to selected",
+    "more": "More"
 }
