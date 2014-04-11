@@ -193,7 +193,7 @@ public class JdbcAnalyticsTableManager
     private String getApprovalSubquery( Collection<OrganisationUnitLevel> levels )
     {
         String sql = "(" +
-            "select min(dal.level) " +
+            "select coalesce(min(dal.level),999) " +
             "from dataapproval da " +
             "inner join dataapprovallevel dal on da.dataapprovallevelid = dal.dataapprovallevelid " +
             "inner join _dataelementstructure des on da.datasetid = des.datasetid and des.dataelementid = dv.dataelementid " +
