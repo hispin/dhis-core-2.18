@@ -134,7 +134,7 @@ DROP TABLE patientmobilesetting;
 
 -- form
 
-DROP TABLE program_patientidentifiertypes;
-DROP TABLE patientidentifiertype;
-DROP TABLE patientidentifier;
+-- DROP TABLE program_patientidentifiertypes;
+-- DROP TABLE patientidentifiertype;
+-- DROP TABLE patientidentifier;
 
