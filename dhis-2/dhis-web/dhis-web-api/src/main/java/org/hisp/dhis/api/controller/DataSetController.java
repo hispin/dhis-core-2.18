@@ -180,6 +180,7 @@ public class DataSetController
         @RequestParam( value = "dataElementIdScheme", defaultValue = "ID", required = false ) String dataElementIdScheme,
         @RequestParam( value = "period", defaultValue = "", required = false ) String period,
         @RequestParam( value = "orgUnit", defaultValue = "", required = false ) List<String> orgUnits,
+        @RequestParam( value = "comment", defaultValue = "true", required = false ) boolean comment,
         HttpServletResponse response ) throws IOException
     {
         DataSet dataSet = getEntity( uid );
@@ -198,14 +199,19 @@ public class DataSetController
         try
         {
             XMLStreamWriter staxWriter = generator.getStaxWriter();
-            staxWriter.writeComment( "DataSet: " + dataSet.getDisplayName() + " (" + dataSet.getUid() + ")");
+
+            if ( comment )
+            {
+                staxWriter.writeComment( "DataSet: " + dataSet.getDisplayName() + " (" + dataSet.getUid() + ")" );
+            }
+
             staxWriter.writeStartElement( "", "dataValueSet", DxfNamespaces.DXF_2_0 );
 
             if ( orgUnits.isEmpty() )
             {
                 for ( DataElement dataElement : dataSet.getDataElements() )
                 {
-                    writeDataValue( dataElement, "", period, staxWriter );
+                    writeDataValue( dataElement, "", period, comment, staxWriter );
                 }
             }
             else
@@ -219,11 +225,14 @@ public class DataSetController
                         continue;
                     }
 
-                    staxWriter.writeComment( "OrgUnit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getUid() + ")" );
+                    if ( comment )
+                    {
+                        staxWriter.writeComment( "OrgUnit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getUid() + ")" );
+                    }
 
                     for ( DataElement dataElement : dataSet.getDataElements() )
                     {
-                        writeDataValue( dataElement, orgUnit, period, staxWriter );
+                        writeDataValue( dataElement, orgUnit, period, comment, staxWriter );
                     }
                 }
             }
@@ -237,13 +246,22 @@ public class DataSetController
         }
     }
 
-    private void writeDataValue( DataElement dataElement, String orgUnit, String period, XMLStreamWriter staxWriter ) throws XMLStreamException
+    private void writeDataValue( DataElement dataElement, String orgUnit, String period, boolean comment, XMLStreamWriter staxWriter ) throws XMLStreamException
     {
         for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getSortedOptionCombos() )
         {
-            String label = dataElement.getDisplayName() + " " + categoryOptionCombo.getDisplayName();
+            String label = dataElement.getDisplayName();
 
-            staxWriter.writeComment( "DataElement: " + label );
+            if ( !categoryOptionCombo.isDefault() )
+            {
+                label += " " + categoryOptionCombo.getDisplayName();
+            }
+
+            if ( comment )
+            {
+                staxWriter.writeComment( "DataElement: " + label );
+            }
+
             staxWriter.writeStartElement( "", "dataValue", DxfNamespaces.DXF_2_0 );
             staxWriter.writeAttribute( "dataElement", dataElement.getUid() );
             staxWriter.writeAttribute( "categoryOptionCombo", categoryOptionCombo.getUid() );
