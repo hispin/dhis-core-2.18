@@ -941,10 +941,14 @@ function showUpdateTrackedEntityInstanceForm(entityInstanceId) {
 	hideById('migrationEntityInstanceDiv');
 	setInnerHTML('entityInstanceDashboard', '');
 	$('#loaderDiv').show();
+	var params = "";
+	if( getFieldValue('program')!='' ){
+		params += "?programId=" + getFieldValue('program');
+	}
+	
 	$('#editEntityInstanceDiv').load(
-			'showUpdateTrackedEntityInstanceForm.action', {
-				id : entityInstanceId,
-				programId : getFieldValue('program')
+			'showUpdateTrackedEntityInstanceForm.action' + params, {
+				id : entityInstanceId
 			}, function() {
 				$('#loaderDiv').hide();
 				showById('editEntityInstanceDiv');
@@ -1459,20 +1463,20 @@ function loadActiveProgramStageRecords(programInstanceId,
 						var type = $('#tb_' + programInstanceId).attr(
 								'programType');
 						var program = $('#tr1_' + programInstanceId);
+						var selectedProgram = program.attr('programId');
 						var relationshipText = program.attr('relationshipText');
 						var relatedProgramId = program.attr('relatedProgram');
 						var entityInstanceId = getFieldValue('entityInstanceId');
-						var selectedProgram = program.attr('programId');
 						if (relationshipText != "") {
 							setInnerHTML(
 									'entityInstanceRelatedStageSpan',
 									"&#8226; <a href='javascript:showAddTrackedEntityInstanceForm( "
 											+ entityInstanceId
-											+ ","
+											+ ",\""
 											+ relatedProgramId
-											+ ","
+											+ "\",\""
 											+ selectedProgram
-											+ " , false );' id='relatedEntityInstance_$!programStageInstance.id' >"
+											+ "\" , false );' id='relatedEntityInstance_$!programStageInstance.id' >"
 											+ relationshipText
 											+ "</a><br>&nbsp;");
 						} else {

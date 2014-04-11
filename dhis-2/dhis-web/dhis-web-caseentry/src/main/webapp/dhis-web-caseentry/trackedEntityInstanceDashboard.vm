@@ -92,8 +92,8 @@
 						relationshipText='$!programInstance.program.relationshipText'
 						relationshipType='$!programInstance.program.relationshipType.id'
 						relationshipSide='$!programInstance.program.relationshipSide'
-						relatedProgram='$!programInstance.program.relatedProgram.id'
-						programId='$programInstance.program.id'
+						relatedProgram='$!programInstance.program.relatedProgram.uid'
+						programId='$programInstance.program.uid'
 						style='cursor:pointer;'
 						onclick='javascript:setFieldValue("programIdAddTrackedEntityInstance",$programInstance.program.id);loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' >
 							<td id='td_$programInstance.id'>
@@ -112,11 +112,12 @@
 						#end
 					#else
 					<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
-						programStageInstanceId='$programStageInstance.id' style='cursor:pointer;'
+						programStageInstanceId='$programStageInstance.id' 
 						relationshipText='$!programInstance.program.relationshipText'
 						relationshipType='$!programInstance.program.relationshipType.id'
 						relationshipSide='$!programInstance.program.relationshipSide'
-						relatedProgram='$!programInstance.program.relatedProgram.id'
+						relatedProgram='$!programInstance.program.relatedProgram.uid'
+						programId='$programInstance.program.uid'
 						onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", false)' >
 						<td id='td_$programInstance.id'>
 							<a><span id='infor_$programInstance.id'>$programInstance.program.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>

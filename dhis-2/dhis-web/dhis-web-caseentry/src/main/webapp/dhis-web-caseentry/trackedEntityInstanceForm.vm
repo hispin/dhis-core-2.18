@@ -69,8 +69,11 @@
 																	 <option value="$option" #if("$value"=="$option") selected #end>$option</option>
 															 #end
 													 </select>
-											 #elseif( $attribute.valueType == "phoneNumber" ) 
-													 <input type='text' value='$value' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true,required:$mandatory }}"/>
+											 #elseif( $attribute.valueType == "phoneNumber" )
+													#if($value=='')
+														#set($value=$!phoneNumberAreaCode)
+													#end
+													 <input type='text' value='$!value' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true,required:$mandatory }}"/>
 											 #elseif( $attribute.valueType == "trackerAssociate" ) 
 													 <input type="checkbox" value='true' id="attr$attribute.id" name="attr$attribute.id" 
 															 inherit="$!attribute.inherit" #if($value=='true') checked #end
@@ -128,7 +131,10 @@
 							#end
 						</select>
 					#elseif( $attribute.valueType == "phoneNumber" ) 
-						<input type='text' value='$value' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true}}"/>
+						#if($attributeValue=='')
+							#set($attributeValue=$!phoneNumberAreaCode)
+						#end
+						<input type='text' value='$attributeValue' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true}}"/>
 					#elseif( $attribute.valueType == "trackerAssociate" ) 
 						<input type="checkbox" value='true' id="attr$attribute.id" name="attr$attribute.id" 
 							inherit="$!attribute.inherit" #if($value=='true') checked #end

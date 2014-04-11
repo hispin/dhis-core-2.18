@@ -49,7 +49,7 @@
 		<input type='hidden' name="relationshipTypeId" id="relationshipTypeId" value="$relatedProgram.relationshipType.id">
 		<input type='hidden' name="relationshipFromA" id="relationshipFromA" value="$relatedProgram.relationshipFromA" >
 		<input type='hidden' name="relationshipId" id="relationshipId" value="$entityInstanceId">
-		<input type='hidden' name="relatedProgramId" id="relatedProgramId" value="$program.id" >
+		<input type='hidden' name="relatedProgramId" id="relatedProgramId" value="$program.uid" >
 	#elseif( $!relationshipTypes)
 	<tr>
 		<td class='text-column'><label for="relationship_type">$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
