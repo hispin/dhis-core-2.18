@@ -805,12 +805,16 @@ Ext.onReady( function() {
 					name = '';
 
 				if (service.layout.isHierarchy(layout, response, id)) {
-					var a = Ext.Array.clean(metaData.ouHierarchy[id].split('/'));
+					var a = metaData.names[id].split('/');
 					a.shift();
 
-					for (var i = 0; i < a.length; i++) {
-						name += (isHtml ? '<span class="text-weak">' : '') + metaData.names[a[i]] + (isHtml ? '</span>' : '') + ' / ';
+					for (var i = 0, isLast; i < a.length; i++) {
+						isLast = !!(i === a.length - 1);
+
+						name += (isHtml && !isLast ? '<span class="text-weak">' : '') + a[i] + (isHtml && !isLast ? '</span>' : '') + (!isLast ? ' / ' : '');
 					}
+
+					return name;
 				}
 
 				name += metaData.names[id];
@@ -1561,9 +1565,13 @@ Ext.onReady( function() {
                                 parsedId = parseFloat(id);
                                 displayId = Ext.isNumber(parsedId) ? parsedId : (names[id] || id);
 
+								// update names
                                 names[fullId] = (isMeta ? '' : header.column + ' ') + displayId;
+
+								// update rows
                                 response.rows[j][i] = fullId;
 
+								// number sorting
                                 objects.push({
                                     id: fullId,
                                     sortingId: parsedId
@@ -1574,6 +1582,8 @@ Ext.onReady( function() {
                             header.ids = Ext.Array.pluck(objects, 'id');
                         }
                         else {
+							var objects = [];
+
                             for (var j = 0, id, fullId, name, isHierarchy; j < response.rows.length; j++) {
                                 id = response.rows[j][i] || emptyId;
                                 fullId = header.name + id;
@@ -1586,11 +1596,23 @@ Ext.onReady( function() {
                                 name = isHierarchy ? service.layout.getHierarchyName(ouHierarchy, names, id) : (names[id] || id);
 
                                 names[fullId] = name;
+
+                                // update rows
                                 response.rows[j][i] = fullId;
-                                header.ids.push(fullId);
+
+                                // update ou hierarchy
+                                if (isHierarchy) {
+									ouHierarchy[fullId] = ouHierarchy[id];
+								}
+
+								objects.push({
+									id: fullId,
+									sortingId: name
+								});
                             }
 
-                            header.ids.sort();
+                            support.prototype.array.sort(objects, 'ASC', 'sortingId');
+                            header.ids = Ext.Array.pluck(objects, 'id');
                         }
                     }
 
