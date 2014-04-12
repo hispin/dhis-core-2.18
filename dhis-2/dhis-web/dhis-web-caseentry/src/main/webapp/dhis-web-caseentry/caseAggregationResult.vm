@@ -8,7 +8,7 @@
 
 #set($divIdx=0)
 #set($hashValues=false)
-#foreach( $grid in $grids )
+#foreach( $grid in $grids )  
 	#if($grid.getRows().size() > 0)
 	#set($hashValues=true)
 	#set($divIdx=$divIdx+1)
@@ -24,9 +24,7 @@
 			<tr>
 				<th><input type='checkbox' onchange="toogleAllCheckBoxes( '$divIdx', this.checked );"></th>
 				#foreach( $header in $grid.getVisibleHeaders() )
-					#if($velocityCount!=2)
-						<th #if( $header.meta ) style="text-align:left" #end>$!encoder.htmlEncode( $header.name )</th>
-					#end
+					<th #if( $header.meta ) style="text-align:left" #end>$!encoder.htmlEncode( $header.name )</th>
 				#end
 				<th>$i18n.getString('operator')</th>
 			</tr>
@@ -46,21 +44,15 @@
 							#set($organisationunitid=$col)
 						#elseif($velocityCount==7)
 							#set($periodid=$col)
-						#elseif($velocityCount==$row.size())
-							#set($value=$col)
 						#end
-						#set($item=$dataelementid + '_' + $categoryoptioncomboid + '_' + $periodid + '_' + $organisationunitid + '_' + $value)
 					#end
+					#set($item=$dataelementid + '_' + $categoryoptioncomboid + '_' + $periodid + '_' + $organisationunitid + '_' + $value)
 					<td>
 						<input type='checkbox' name='aggregateValues' value='$item'>
 					</td>
 					
-					#foreach( $col in $row )
-						#if($velocityCount == 7)
-							<td>$col
-						#elseif($velocityCount==8) 
-							$col</td>
-						#elseif( $velocityCount > 8 )
+					#foreach( $col in $row )	
+						#if( $velocityCount > 7 )
 							<td>$col</td> 
 						#end
 					#end
