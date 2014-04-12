@@ -60,7 +60,6 @@
 				<option value="date" #if( $attribute.valueType == 'date' ) selected="selected" #end>$i18n.getString( "date" )</option>
                 <option value="phoneNumber" #if( $attribute.valueType == 'phoneNumber' ) selected="selected" #end>$i18n.getString( "phone_number" )</option>
 				<option value="trackerAssociate" #if( $attribute.valueType == 'trackerAssociate' ) selected="selected" #end>$i18n.getString( "tracker_associate" )</option>
-				<option value="age" #if( $attribute.valueType == 'age' ) selected="selected" #end>$i18n.getString( "age" )</option>
 				<option value="users" #if( $attribute.valueType == 'users' ) selected="selected" #end>$i18n.getString( "users" )</option>
 				<option value="combo" #if( $attribute.valueType == 'combo' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
 				<option value="localId" #if( $attribute.valueType == 'localId' ) selected="selected" #end>$i18n.getString( "local_identifier" )</option>

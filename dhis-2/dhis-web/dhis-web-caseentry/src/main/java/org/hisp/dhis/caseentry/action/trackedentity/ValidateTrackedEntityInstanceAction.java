@@ -76,7 +76,7 @@ public class ValidateTrackedEntityInstanceAction
 
     @Autowired
     private TrackedEntityAttributeService patientAttributeService;
-    
+
     @Autowired
     private ValidationCriteriaService validationCriteriaService;
 
@@ -155,12 +155,6 @@ public class ValidateTrackedEntityInstanceAction
                     TrackedEntityAttributeValue attributeValue = new TrackedEntityAttributeValue();
                     attributeValue.setEntityInstance( entityInstance );
                     attributeValue.setAttribute( attribute );
-
-                    if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
-                    {
-                        value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
-                    }
-
                     attributeValue.setValue( value );
                     attributeValues.add( attributeValue );
                 }
@@ -176,7 +170,7 @@ public class ValidateTrackedEntityInstanceAction
         String[] errorCode = entityInstanceService.validateTrackedEntityInstance( entityInstance, program, format )
             .split( "_" );
         int code = Integer.parseInt( errorCode[0] );
-        
+
         if ( code == TrackedEntityInstanceService.ERROR_DUPLICATE_IDENTIFIER )
         {
             message = i18n.getString( "duplicate_value_of" ) + " "

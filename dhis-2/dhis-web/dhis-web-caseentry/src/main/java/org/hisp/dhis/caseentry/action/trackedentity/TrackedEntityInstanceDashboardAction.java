@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramIndicatorService;
@@ -43,10 +42,10 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAudit;
 import org.hisp.dhis.trackedentity.TrackedEntityAuditService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
@@ -102,16 +101,9 @@ public class TrackedEntityInstanceDashboardAction
 
     private Map<String, String> programIndicatorsMap = new HashMap<String, String>();
 
-    private I18nFormat format;
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
 
     public Map<String, String> getProgramIndicatorsMap()
     {
@@ -225,18 +217,7 @@ public class TrackedEntityInstanceDashboardAction
 
         for ( TrackedEntityAttributeValue attributeValue : _attributeValues )
         {
-            String value = attributeValue.getValue();
-            if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
-            {
-                Date date = format.parseDate( value );
-                value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
-            }
-            
-            TrackedEntityAttributeValue av = new TrackedEntityAttributeValue();
-            av.setEntityInstance( entityInstance );
-            av.setAttribute( attributeValue.getAttribute() );
-            av.setValue( value );
-            attributeValues.add( av );
+            attributeValues.add( attributeValue );
         }
 
         // ---------------------------------------------------------------------

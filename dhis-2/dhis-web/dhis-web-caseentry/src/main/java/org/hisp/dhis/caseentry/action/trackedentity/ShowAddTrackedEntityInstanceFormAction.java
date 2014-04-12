@@ -31,7 +31,6 @@ package org.hisp.dhis.caseentry.action.trackedentity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -299,16 +298,8 @@ public class ShowAddTrackedEntityInstanceFormAction
             {
                 if ( attributeValue.getAttribute().getInherit() )
                 {
-                    String value = attributeValue.getValue();
-
-                    if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE )
-                        && value != null )
-                    {
-                        Date date = format.parseDate( value );
-                        value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
-                    }
-
-                    trackedEntityAttributeValueMap.put( attributeValue.getAttribute().getId(), value );
+                    trackedEntityAttributeValueMap.put( attributeValue.getAttribute().getId(),
+                        attributeValue.getValue() );
                 }
             }
         }
@@ -352,14 +343,15 @@ public class ShowAddTrackedEntityInstanceFormAction
 
             if ( program == null )
             {
-                attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesDisplayInList( true ) );
+                attributes = new ArrayList<TrackedEntityAttribute>(
+                    attributeService.getTrackedEntityAttributesDisplayInList( true ) );
                 Collection<Program> programs = programService.getAllPrograms();
 
                 for ( Program p : programs )
                 {
                     attributes.removeAll( p.getAttributes() );
                 }
-                
+
                 for ( TrackedEntityAttribute attribute : attributes )
                 {
                     mandatoryMap.put( attribute.getId(), false );

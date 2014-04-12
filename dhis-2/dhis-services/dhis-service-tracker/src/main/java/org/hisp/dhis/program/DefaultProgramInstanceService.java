@@ -279,7 +279,6 @@ public class DefaultProgramInstanceService
 
     public List<Grid> getProgramInstanceReport( TrackedEntityInstance instance, I18n i18n )
     {
-        I18nFormat format = i18nManager.getI18nFormat();
         
         List<Grid> grids = new ArrayList<Grid>();
 
@@ -317,14 +316,6 @@ public class DefaultProgramInstanceService
                 attrGrid.addRow();
                 attrGrid.addValue( attributeValue.getAttribute().getDisplayName() );
                 String value = attributeValue.getValue();
-
-                if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE )
-                    && value != null )
-                {
-                    Date date = format.parseDate( value );
-                    value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
-                }
-
                 attrGrid.addValue( value );
             }
 
