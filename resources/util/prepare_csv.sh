@@ -18,11 +18,11 @@ sed -i '/^\s*$/d' $1
 
 # Remove spaces/tabs at beginning of lines
 
-sed -i 's/^\s+//g' $1
+sed -i 's/^\s//g' $1
 
 # Remove spaces/tabs at end of lines
 
-sed -i 's/\s+$//g' $1
+sed -i 's/\s$//g' $1
 
 # Remove dots at end of lines
 
