@@ -17,7 +17,6 @@
         disable('listEntityInstanceBtn');
         hideById('addEntityInstanceBtn');
         hideById('searchBySelectedUnitTD');
-		hideById('trackedEntityTR');
         disable('advancedSearchBtn');
         setFieldValue('searchByProgramStage', 'true');
         setFieldValue('hideLink', 'true');
