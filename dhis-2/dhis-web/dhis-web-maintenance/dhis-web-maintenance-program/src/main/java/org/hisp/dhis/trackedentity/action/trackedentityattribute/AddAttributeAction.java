@@ -28,15 +28,13 @@ package org.hisp.dhis.trackedentity.action.trackedentityattribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -74,7 +72,7 @@ public class AddAttributeAction
     }
 
     private String shortName;
-    
+
     public void setShortName( String shortName )
     {
         this.shortName = shortName;
@@ -145,13 +143,6 @@ public class AddAttributeAction
         this.programScope = programScope;
     }
 
-    private String periodTypeName;
-
-    public void setPeriodTypeName( String periodTypeName )
-    {
-        this.periodTypeName = periodTypeName;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -168,7 +159,7 @@ public class AddAttributeAction
         attribute.setValueType( valueType );
         attribute.setExpression( expression );
         attribute.setDisplayOnVisitSchedule( false );
-        
+
         unique = (unique == null) ? false : true;
         attribute.setUnique( unique );
 
@@ -179,17 +170,6 @@ public class AddAttributeAction
         {
             orgunitScope = (orgunitScope == null) ? false : orgunitScope;
             programScope = (programScope == null) ? false : programScope;
-
-            if ( !StringUtils.isEmpty( periodTypeName ) )
-            {
-                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
-                periodType = periodService.reloadPeriodType( periodType );
-                attribute.setPeriodType( periodType );
-            }
-            else
-            {
-                attribute.setPeriodType( null );
-            }
 
             attribute.setOrgunitScope( orgunitScope );
             attribute.setProgramScope( programScope );

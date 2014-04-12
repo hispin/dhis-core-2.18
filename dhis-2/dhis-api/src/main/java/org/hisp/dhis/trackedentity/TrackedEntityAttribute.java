@@ -106,8 +106,6 @@ public class TrackedEntityAttribute
 
     private Boolean programScope = false;
 
-    private PeriodType periodType;
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -303,16 +301,6 @@ public class TrackedEntityAttribute
         this.programScope = programScope;
     }
 
-    public PeriodType getPeriodType()
-    {
-        return periodType;
-    }
-
-    public void setPeriodType( PeriodType periodType )
-    {
-        this.periodType = periodType;
-    }
-
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -352,7 +340,6 @@ public class TrackedEntityAttribute
             unique = trackedEntityAttribute.isUnique();
             orgunitScope = trackedEntityAttribute.getOrgunitScope();
             programScope = trackedEntityAttribute.getProgramScope();
-            periodType = trackedEntityAttribute.getPeriodType();
         }
     }
 }
