@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
@@ -88,8 +87,6 @@ public class AddTrackedEntityInstanceAction
 
     @Autowired
     private TrackedEntityAttributeValueService attributeValueService;
-
-    private I18nFormat format;
 
     // -------------------------------------------------------------------------
     // Input
@@ -162,11 +159,6 @@ public class AddTrackedEntityInstanceAction
                     attributeValue.setEntityInstance( entityInstance );
                     attributeValue.setAttribute( attribute );
 
-                    if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
-                    {
-                        value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
-                    }
-                    
                     attributeValue.setValue( value.trim() );
                     attributeValues.add( attributeValue );
                 }
@@ -270,11 +262,6 @@ public class AddTrackedEntityInstanceAction
     public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
     {
         this.entityInstanceService = entityInstanceService;
-    }
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     public void setAttributeService( TrackedEntityAttributeService attributeService )

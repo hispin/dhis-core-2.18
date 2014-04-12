@@ -24,9 +24,11 @@
                 <tr #alternate( $mark )>                
 					<td>
 						#set( $value="")
+						#set( $entityInstance = $programInstance.entityInstance )
 						#foreach( $programAttribute in $program.attributes)
 							#foreach( $attributeValue in $entityInstance.attributeValues)
-								#if($!attributeValue.attribute.id==$programAttribute.attribute.id)
+								#if($attributeValue.attribute.id==$programAttribute.attribute.id 
+									&& $programAttribute.displayInList=='true' )
 									#set( $value= $value + $attributeValue.value + '&#13;&#10;' )
 								#end
 							#end 

@@ -31,7 +31,6 @@ package org.hisp.dhis.caseentry.action.trackedentity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -380,13 +379,6 @@ public class GetTrackedEntityInstanceAction
         for ( TrackedEntityAttributeValue attributeValue : attributeValues )
         {
             String value = attributeValue.getValue();
-
-            if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_AGE ) )
-            {
-                Date date = format.parseDate( value );
-                value = TrackedEntityAttribute.getAgeFromDate( date ) + "";
-            }
-
             attributeValueMap.put( attributeValue.getAttribute().getId(), value );
         }
 
