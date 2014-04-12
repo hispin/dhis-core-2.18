@@ -80,7 +80,10 @@
 			<td>$i18n.getString('orgunit_search_type')</td>
 			<td>
 				<select id='ouMode' name='ouMode'>
-					<option value='SELECTED ' />$i18n.getString('selected')</option>
+					#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
+					<option value='ALL' />$i18n.getString('all')</option>
+					#end
+					<option value='SELECTED' selected />$i18n.getString('selected')</option>
 					<option value='CHILDREN' />$i18n.getString('children')</option>
 					<option value='DESCENDANTS' />$i18n.getString('selected_and_all_below')</option>
 				</select>

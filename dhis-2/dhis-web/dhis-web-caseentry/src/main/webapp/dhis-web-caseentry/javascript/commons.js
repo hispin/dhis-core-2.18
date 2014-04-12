@@ -194,13 +194,15 @@ function getSearchParams(page) {
 	var p = params;
 	$('#searchingAttributeIdTD [id=searchObjectId] option').each(
 		function(i, item) {
-				if ($(item).attr('displayed')=="true" 
-					&& p.indexOf(item.value) < 0 ) {
-						params += "&attribute=" + item.value;
-			}
-		}); 
+			if ($(item).attr('displayed')=="true" 
+				&& p.indexOf(item.value) < 0 ) {
+					params += "&attribute=" + item.value;
+		}
+	}); 
 		
-	params += '&ouMode=' + getFieldValue('ouMode');
+	if( getFieldValue('ouMode') != '' ){
+		params += '&ouMode=' + getFieldValue('ouMode');
+	}
 	
 	return params;
 }
