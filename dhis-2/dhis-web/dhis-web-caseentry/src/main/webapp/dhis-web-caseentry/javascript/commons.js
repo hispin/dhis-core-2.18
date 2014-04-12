@@ -372,17 +372,18 @@ function enableBtn() {
 		});
 
 		clearListById('searchObjectId');
-		if (getFieldValue('program') != '') {
-			jQuery('#searchObjectId').append(
-				'<option value="programDate" >' + i18n_enrollment_date
-					+ '</option>');
-		}
-
+		
 		for ( var i in json.attributes) {
 			jQuery('#searchObjectId').append(
 				'<option value="' + json.attributes[i].id 
 					+ '" displayed="' + json.attributes[i].displayed  + '">'
 					+ json.attributes[i].name + '</option>');
+		}
+		
+		if (getFieldValue('program') != '') {
+			jQuery('#searchObjectId').append(
+				'<option value="programDate" >' + i18n_enrollment_date
+					+ '</option>');
 		}
 
 		addAttributeOption();

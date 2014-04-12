@@ -8,24 +8,56 @@
 	#set( $size = $size + $program.attributes.size() ) 
 #end
 
+#if( $!size > 0 )
+	#set( $size = $size - 1 )
+#end
+
 { "attributes": [
+
+#set( $idx = 0 )
 #foreach( $attribute in $attributes )
- {
+ #if($attribute.unique=='true')
+  {
 	"id":  "${attribute.uid}",
 	"name": "$!encoder.jsonEncode( ${attribute.displayName} )",
 	"displayed": "true"
-  }#if( $velocityCount < $size ),#end
+  }#if( $idx < $size ),#end
+  #set( $idx = $idx + 1 ) 
+  #end
 #end
 
-#set( $idx = $attributes.size() + 1 )
+#foreach( $attribute in $attributes )
+ #if($attribute.unique!='true')
+  {
+	"id":  "${attribute.uid}",
+	"name": "$!encoder.jsonEncode( ${attribute.displayName} )",
+	"displayed": "true"
+  }#if( $idx < $size ),#end
+  #set( $idx = $idx + 1 ) 
+  #end
+#end
+
 #foreach( $programAttribute in $program.attributes )
- {
+ #if($programAttribute.attribute.unique=='true')
+  {
 	"id":  "${programAttribute.attribute.uid}",
 	"name": "$!encoder.jsonEncode( ${programAttribute.attribute.displayName} )",
 	"displayed": "$programAttribute.displayInList"
   }#if( $idx < $size ),#end
-  
   #set( $idx = $idx + 1 ) 
+ #end
+#end
+
+
+#foreach( $programAttribute in $program.attributes )
+ #if($programAttribute.attribute.unique!='true')
+  {
+	"id":  "${programAttribute.attribute.uid}",
+	"name": "$!encoder.jsonEncode( ${programAttribute.attribute.displayName} )",
+	"displayed": "$programAttribute.displayInList"
+  }#if( $idx < $size ),#end 
+  #set( $idx = $idx + 1 ) 
+ #end
 #end
 ]
 }
