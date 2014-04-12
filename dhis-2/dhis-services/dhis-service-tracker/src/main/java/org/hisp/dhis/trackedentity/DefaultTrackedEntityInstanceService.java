@@ -877,7 +877,7 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public int validateTrackedEntityInstance( TrackedEntityInstance instance, Program program, I18nFormat format )
+    public String validateTrackedEntityInstance( TrackedEntityInstance instance, Program program, I18nFormat format )
     {
         return trackedEntityInstanceStore.validate( instance, program, format );
     }

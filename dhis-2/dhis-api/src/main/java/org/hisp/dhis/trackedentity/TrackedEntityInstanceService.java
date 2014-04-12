@@ -53,6 +53,7 @@ public interface TrackedEntityInstanceService
     public static final int ERROR_NONE = 0;
     public static final int ERROR_DUPLICATE_IDENTIFIER = 1;
     public static final int ERROR_ENROLLMENT = 2;
+    public static final String SAPERATOR = "_";
 
     /**
      * Returns a grid with tracked entity instance values based on the given
@@ -428,10 +429,11 @@ public interface TrackedEntityInstanceService
      *        null, the system check unique attribute values of the
      *        entityInstance
      * @param format I18nFormat
-     * @return Error code 0 : Validation is OK 1 : The attribute is duplicated 2
-     *         : Violate validation criteria of the program
+     * @return Error code 0 : Validation is OK 
+     *                    1_<duplicate-value> : The attribute value is duplicated 
+     *                    2_<validation-criteria-id> : Violate validation criteria of the program
      */
-    int validateTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program, I18nFormat format );
+    String validateTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program, I18nFormat format );
 
     /**
      * Validate patient enrollment

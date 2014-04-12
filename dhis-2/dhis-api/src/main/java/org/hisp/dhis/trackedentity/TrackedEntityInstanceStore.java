@@ -235,10 +235,11 @@ public interface TrackedEntityInstanceStore
      *        null, the system check attribute values of the instances
      * @param format I18nFormat
      * 
-     * @return Error code 0 : Validation is OK 1 : The attribute value is
-     *         duplicated 2 : Violate validation criteria of the program
+     * @return Error code 0 : Validation is OK 
+     *                    1_<duplicate-value> : The attribute value is duplicated 
+     *                    2_<validation-criteria-id> : Violate validation criteria of the program
      */
-    int validate( TrackedEntityInstance entityinstance, Program program, I18nFormat format );
+    String validate( TrackedEntityInstance entityinstance, Program program, I18nFormat format );
 
     /**
      * Validate entity-instance enrollment

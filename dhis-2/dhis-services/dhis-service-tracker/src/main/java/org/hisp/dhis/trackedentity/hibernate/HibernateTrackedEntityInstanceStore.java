@@ -100,12 +100,15 @@ public class HibernateTrackedEntityInstanceStore
 {
     private static final Log log = LogFactory.getLog( HibernateTrackedEntityInstanceStore.class );
 
-    private static final Map<ProgramStatus, Integer> PROGRAM_STATUS_MAP = new HashMap<ProgramStatus, Integer>() { {
-        put( ProgramStatus.ACTIVE, ProgramInstance.STATUS_ACTIVE );
-        put( ProgramStatus.COMPLETED, ProgramInstance.STATUS_COMPLETED );
-        put( ProgramStatus.CANCELLED, ProgramInstance.STATUS_CANCELLED );
-    } };
-    
+    private static final Map<ProgramStatus, Integer> PROGRAM_STATUS_MAP = new HashMap<ProgramStatus, Integer>()
+    {
+        {
+            put( ProgramStatus.ACTIVE, ProgramInstance.STATUS_ACTIVE );
+            put( ProgramStatus.COMPLETED, ProgramInstance.STATUS_COMPLETED );
+            put( ProgramStatus.CANCELLED, ProgramInstance.STATUS_CANCELLED );
+        }
+    };
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -116,7 +119,7 @@ public class HibernateTrackedEntityInstanceStore
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private StatementBuilder statementBuilder;
 
     public void setStatementBuilder( StatementBuilder statementBuilder )
@@ -127,7 +130,7 @@ public class HibernateTrackedEntityInstanceStore
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-    
+
     @Override
     public List<Map<String, String>> getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
@@ -136,21 +139,18 @@ public class HibernateTrackedEntityInstanceStore
         // ---------------------------------------------------------------------
         // Select clause
         // ---------------------------------------------------------------------
-        
-        String sql = 
-            "select tei.uid as " + TRACKED_ENTITY_INSTANCE_ID + ", " +
-            "tei.created as " + CREATED_ID + ", " +
-            "tei.lastupdated as " + LAST_UPDATED_ID + ", " +
-            "ou.uid as " + ORG_UNIT_ID + ", " +
-            "te.uid as " + TRACKED_ENTITY_ID + ", ";
-        
+
+        String sql = "select tei.uid as " + TRACKED_ENTITY_INSTANCE_ID + ", " + "tei.created as " + CREATED_ID + ", "
+            + "tei.lastupdated as " + LAST_UPDATED_ID + ", " + "ou.uid as " + ORG_UNIT_ID + ", " + "te.uid as "
+            + TRACKED_ENTITY_ID + ", ";
+
         for ( QueryItem item : params.getAttributes() )
         {
             String col = statementBuilder.columnQuote( item.getItemId() );
-            
+
             sql += col + ".value as " + col + ", ";
         }
-        
+
         sql = removeLastComma( sql ) + " ";
 
         // ---------------------------------------------------------------------
@@ -158,7 +158,7 @@ public class HibernateTrackedEntityInstanceStore
         // ---------------------------------------------------------------------
 
         sql += getFromWhereClause( params, hlp );
-        
+
         // ---------------------------------------------------------------------
         // Paging clause
         // ---------------------------------------------------------------------
@@ -171,33 +171,33 @@ public class HibernateTrackedEntityInstanceStore
         // ---------------------------------------------------------------------
         // Query
         // ---------------------------------------------------------------------
-        
+
         Timer t = new Timer().start();
-        
+
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-        
+
         t.getTime( "Tracked entity instance query SQL: " + sql );
-        
-        List<Map<String, String>> list = new ArrayList<Map<String,String>>();
-        
+
+        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+
         while ( rowSet.next() )
         {
             final Map<String, String> map = new HashMap<String, String>();
-            
+
             map.put( TRACKED_ENTITY_INSTANCE_ID, rowSet.getString( TRACKED_ENTITY_INSTANCE_ID ) );
             map.put( CREATED_ID, rowSet.getString( CREATED_ID ) );
             map.put( LAST_UPDATED_ID, rowSet.getString( LAST_UPDATED_ID ) );
             map.put( ORG_UNIT_ID, rowSet.getString( ORG_UNIT_ID ) );
             map.put( TRACKED_ENTITY_ID, rowSet.getString( TRACKED_ENTITY_ID ) );
-            
+
             for ( QueryItem item : params.getAttributes() )
             {
                 map.put( item.getItemId(), rowSet.getString( item.getItemId() ) );
             }
-            
+
             list.add( map );
         }
-        
+
         return list;
     }
 
@@ -209,7 +209,7 @@ public class HibernateTrackedEntityInstanceStore
         // ---------------------------------------------------------------------
         // Select clause
         // ---------------------------------------------------------------------
-        
+
         String sql = "select count(tei.uid) as " + TRACKED_ENTITY_INSTANCE_ID + " ";
 
         // ---------------------------------------------------------------------
@@ -221,57 +221,56 @@ public class HibernateTrackedEntityInstanceStore
         // ---------------------------------------------------------------------
         // Query
         // ---------------------------------------------------------------------
-        
+
         Timer t = new Timer().start();
-        
+
         Integer count = jdbcTemplate.queryForObject( sql, Integer.class );
-        
+
         t.getTime( "Tracked entity instance count SQL: " + sql );
-        
-        return count;        
+
+        return count;
     }
-    
+
     /**
-     * From, join and where clause. For attribute params, restriction is set
-     * in inner join. For query params, restriction is set in where clause.
+     * From, join and where clause. For attribute params, restriction is set in
+     * inner join. For query params, restriction is set in where clause.
      */
     private String getFromWhereClause( TrackedEntityInstanceQueryParams params, SqlHelper hlp )
     {
         final String regexp = statementBuilder.getRegexpMatch();
         final String wordStart = statementBuilder.getRegexpWordStart();
         final String wordEnd = statementBuilder.getRegexpWordEnd();
-        
-        String sql =        
-            "from trackedentityinstance tei " +
-            "inner join trackedentity te on tei.trackedentityid = te.trackedentityid " +
-            "inner join organisationunit ou on tei.organisationunitid = ou.organisationunitid ";
-        
+
+        String sql = "from trackedentityinstance tei "
+            + "inner join trackedentity te on tei.trackedentityid = te.trackedentityid "
+            + "inner join organisationunit ou on tei.organisationunitid = ou.organisationunitid ";
+
         for ( QueryItem item : params.getAttributesAndFilters() )
         {
             final String col = statementBuilder.columnQuote( item.getItemId() );
-            
+
             final String joinClause = item.hasFilter() ? "inner join" : "left join";
-            
-            sql += 
-                joinClause + " trackedentityattributevalue as " + col + " " +
-                "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid " +
-                "and " + col + ".trackedentityattributeid = " + item.getItem().getId() + " ";
-            
+
+            sql += joinClause + " trackedentityattributevalue as " + col + " " + "on " + col
+                + ".trackedentityinstanceid = tei.trackedentityinstanceid " + "and " + col
+                + ".trackedentityattributeid = " + item.getItem().getId() + " ";
+
             final String filter = statementBuilder.encode( item.getFilter(), false );
-            
+
             if ( !params.isOrQuery() && item.hasFilter() )
             {
-                final String queryCol = item.isNumeric() ? ( col + ".value" ) : "lower(" + col + ".value)";
-                
-                sql += "and " + queryCol + " " + item.getSqlOperator() + " " + StringUtils.lowerCase( item.getSqlFilter( filter ) ) + " ";
+                final String queryCol = item.isNumeric() ? (col + ".value") : "lower(" + col + ".value)";
+
+                sql += "and " + queryCol + " " + item.getSqlOperator() + " "
+                    + StringUtils.lowerCase( item.getSqlFilter( filter ) ) + " ";
             }
         }
-        
+
         if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.DESCENDANTS ) )
         {
             sql += "left join _orgunitstructure ous on tei.organisationunitid = ous.organisationunitid ";
         }
-        
+
         if ( params.hasTrackedEntity() )
         {
             sql += hlp.whereAnd() + " tei.trackedentityid = " + params.getTrackedEntity().getId() + " ";
@@ -280,48 +279,49 @@ public class HibernateTrackedEntityInstanceStore
         if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.DESCENDANTS ) )
         {
             SetMap<Integer, OrganisationUnit> levelOuMap = params.getLevelOrgUnitMap();
-            
+
             for ( Integer level : levelOuMap.keySet() )
             {
-                sql += hlp.whereAnd() + " ous.idlevel" + level + " in (" + getCommaDelimitedString( getIdentifiers( levelOuMap.get( level ) ) ) + ") or ";
+                sql += hlp.whereAnd() + " ous.idlevel" + level + " in ("
+                    + getCommaDelimitedString( getIdentifiers( levelOuMap.get( level ) ) ) + ") or ";
             }
-            
+
             sql = removeLastOr( sql );
         }
         else if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.ALL ) )
         {
         }
-        else // SELECTED (default)
+        else
+        // SELECTED (default)
         {
-            sql += hlp.whereAnd() + " tei.organisationunitid in (" + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
+            sql += hlp.whereAnd() + " tei.organisationunitid in ("
+                + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
         }
-        
+
         if ( params.hasProgram() )
         {
-            sql += 
-                hlp.whereAnd() + " exists (" +
-                "select trackedentityinstanceid from programinstance pi " +
-                "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " +
-                "and pi.programid = " + params.getProgram().getId() + " ";
-            
+            sql += hlp.whereAnd() + " exists (" + "select trackedentityinstanceid from programinstance pi "
+                + "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " + "and pi.programid = "
+                + params.getProgram().getId() + " ";
+
             if ( params.hasProgramStatus() )
             {
                 sql += "and pi.status = " + PROGRAM_STATUS_MAP.get( params.getProgramStatus() + " " );
             }
-            
+
             if ( params.hasProgramDates() )
             {
                 for ( QueryFilter date : params.getProgramDates() )
                 {
                     String filter = statementBuilder.encode( date.getFilter(), false );
-                    
-                    sql += "and pi.enrollmentdate " + date.getSqlOperator() + " " + date.getSqlFilter( filter ) + " ";                    
+
+                    sql += "and pi.enrollmentdate " + date.getSqlOperator() + " " + date.getSqlFilter( filter ) + " ";
                 }
             }
-            
+
             sql += ") ";
         }
-        
+
         if ( params.isOrQuery() && params.hasAttributesOrFilters() )
         {
             sql += hlp.whereAnd() + " (";
@@ -329,27 +329,28 @@ public class HibernateTrackedEntityInstanceStore
             List<String> queryTokens = getTokens( params.getQuery() );
 
             for ( String queryToken : queryTokens )
-            {  
-                final String query = statementBuilder.encode( queryToken, false );                    
-                
+            {
+                final String query = statementBuilder.encode( queryToken, false );
+
                 sql += "(";
-                
+
                 for ( QueryItem item : params.getAttributesAndFilters() )
                 {
                     final String col = statementBuilder.columnQuote( item.getItemId() );
-                              
-                    sql += "lower(" + col + ".value) " + regexp + " '" + wordStart + StringUtils.lowerCase( query ) + wordEnd + "' or ";                    
+
+                    sql += "lower(" + col + ".value) " + regexp + " '" + wordStart + StringUtils.lowerCase( query )
+                        + wordEnd + "' or ";
                 }
-                
+
                 sql = removeLastOr( sql ) + ") and ";
             }
-            
+
             sql = removeLastAnd( sql ) + ") ";
         }
 
         return sql;
     }
-    
+
     @Override
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityInstance> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max )
@@ -414,8 +415,10 @@ public class HibernateTrackedEntityInstanceStore
     public int countGetTrackedEntityInstancesByOrgUnitProgram( OrganisationUnit organisationUnit, Program program )
     {
         String sql = "select count(p.trackedentityinstanceid) from trackedentityinstance p join programinstance pi on p.trackedentityinstanceid=pi.trackedentityinstanceid "
-            + "where p.organisationunitid=" + organisationUnit.getId()
-            + " and pi.programid=" + program.getId()
+            + "where p.organisationunitid="
+            + organisationUnit.getId()
+            + " and pi.programid="
+            + program.getId()
             + " and pi.status=" + ProgramInstance.STATUS_ACTIVE;
 
         return jdbcTemplate.queryForObject( sql, Integer.class );
@@ -449,7 +452,7 @@ public class HibernateTrackedEntityInstanceStore
         return criteria.list();
     }
 
-    public int validate( TrackedEntityInstance instance, Program program, I18nFormat format )
+    public String validate( TrackedEntityInstance instance, Program program, I18nFormat format )
     {
         if ( instance.getAttributeValues() != null && instance.getAttributeValues().size() > 0 )
         {
@@ -470,6 +473,7 @@ public class HibernateTrackedEntityInstanceStore
             {
                 Criteria criteria = getCriteria();
                 criteria.createAlias( "attributeValues", "attributeValue" );
+                criteria.createAlias( "attributeValue.attribute", "attribute" );
                 criteria.createAlias( "organisationUnit", "orgunit" );
                 criteria.createAlias( "programInstances", "programInstance" );
 
@@ -483,7 +487,7 @@ public class HibernateTrackedEntityInstanceStore
                     {
                         Conjunction conjunction = Restrictions.conjunction();
                         conjunction.add( Restrictions.eq( "attributeValue.value", attributeValue.getValue() ) );
-                        conjunction.add( Restrictions.eq( "attributeValue.attribute", attribute ) );
+                        conjunction.add( Restrictions.eq( "attribute", attribute ) );
 
                         if ( attribute.getId() != 0 )
                         {
@@ -518,11 +522,12 @@ public class HibernateTrackedEntityInstanceStore
 
                 criteria.add( disjunction );
 
-                Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
+                Number rs = (Number) criteria.setProjection(
+                    Projections.projectionList().add( Projections.property( "attribute.id" ) ) ).uniqueResult();
 
                 if ( rs != null && rs.intValue() > 0 )
                 {
-                    return TrackedEntityInstanceService.ERROR_DUPLICATE_IDENTIFIER;
+                    return TrackedEntityInstanceService.ERROR_DUPLICATE_IDENTIFIER + TrackedEntityInstanceService.SAPERATOR + rs.intValue();
                 }
             }
         }
@@ -533,11 +538,12 @@ public class HibernateTrackedEntityInstanceStore
 
             if ( validationCriteria != null )
             {
-                return TrackedEntityInstanceService.ERROR_ENROLLMENT;
+                return TrackedEntityInstanceService.ERROR_ENROLLMENT + TrackedEntityInstanceService.SAPERATOR
+                    + validationCriteria.getId();
             }
         }
 
-        return TrackedEntityInstanceService.ERROR_NONE;
+        return TrackedEntityInstanceService.ERROR_NONE + "";
     }
 
     public ValidationCriteria validateEnrollment( TrackedEntityInstance instance, Program program, I18nFormat format )
@@ -966,8 +972,8 @@ public class HibernateTrackedEntityInstanceStore
         {
             sql += "(select organisationunitid from trackedentityinstance where trackedentityinstanceid=p.trackedentityinstanceid and organisationunitid in ( "
                 + getCommaDelimitedString( getOrganisationUnitIds( orgunits ) ) + " ) ) as orgunitid,";
-            otherWhere += operator + "orgunitid in ( "
-                + getCommaDelimitedString( getOrganisationUnitIds( orgunits ) ) + " ) ";
+            otherWhere += operator + "orgunitid in ( " + getCommaDelimitedString( getOrganisationUnitIds( orgunits ) )
+                + " ) ";
         }
 
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Removing last comma
@@ -1077,9 +1083,10 @@ public class HibernateTrackedEntityInstanceStore
         return orgUnitIds;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<TrackedEntityInstance> getByAttributeValue( String searchText, int attributeId, Integer min, Integer max )
+    public Collection<TrackedEntityInstance> getByAttributeValue( String searchText, int attributeId, Integer min,
+        Integer max )
     {
         String hql = "FROM TrackedEntityAttributeValue pav WHERE lower (pav.value) LIKE lower ('%" + searchText
             + "%') AND pav.attribute.id =:attributeId order by pav.entityInstance";

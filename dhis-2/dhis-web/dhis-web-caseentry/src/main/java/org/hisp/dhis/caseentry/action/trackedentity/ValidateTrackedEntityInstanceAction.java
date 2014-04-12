@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -48,6 +49,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
+import org.hisp.dhis.validation.ValidationCriteriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -74,12 +76,22 @@ public class ValidateTrackedEntityInstanceAction
 
     @Autowired
     private TrackedEntityAttributeService patientAttributeService;
+    
+    @Autowired
+    private ValidationCriteriaService validationCriteriaService;
 
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
     {
         this.format = format;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -148,7 +160,7 @@ public class ValidateTrackedEntityInstanceAction
                     {
                         value = format.formatDate( TrackedEntityAttribute.getDateFromAge( Integer.parseInt( value ) ) );
                     }
-                    
+
                     attributeValue.setValue( value );
                     attributeValues.add( attributeValue );
                 }
@@ -161,9 +173,20 @@ public class ValidateTrackedEntityInstanceAction
         // Validate entityInstance
         // ---------------------------------------------------------------------
 
-        int errorCode = entityInstanceService.validateTrackedEntityInstance( entityInstance, program, format );
-
-        message = errorCode + "";
+        String[] errorCode = entityInstanceService.validateTrackedEntityInstance( entityInstance, program, format )
+            .split( "_" );
+        int code = Integer.parseInt( errorCode[0] );
+        
+        if ( code == TrackedEntityInstanceService.ERROR_DUPLICATE_IDENTIFIER )
+        {
+            message = i18n.getString( "duplicate_value_of" ) + " "
+                + attributeService.getTrackedEntityAttribute( Integer.parseInt( errorCode[1] ) ).getDisplayName();
+        }
+        else if ( code == TrackedEntityInstanceService.ERROR_ENROLLMENT )
+        {
+            message = i18n.getString( "violate_validation" ) + " "
+                + validationCriteriaService.getValidationCriteria( Integer.parseInt( errorCode[1] ) ).getDisplayName();
+        }
 
         return SUCCESS;
     }
