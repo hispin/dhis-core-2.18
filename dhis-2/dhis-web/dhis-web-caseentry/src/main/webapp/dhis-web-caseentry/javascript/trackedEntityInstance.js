@@ -100,15 +100,9 @@ function TrackedEntityInstance() {
 			if (message == 0) {
 				return true;
 			} else {
-				if (message == 1) {
-					setMessage(i18n_adding_tracked_entity_instance_failed + ':'
-							+ '\n' + i18n_duplicate_identifier);
-				} else if (message == 2) {
-					setMessage(i18n_adding_tracked_entity_instance_failed
-							+ ':'
-							+ '\n'
-							+ i18n_this_tracked_entity_instance_could_not_be_enrolled_please_check_validation_criteria);
-				}
+				if (message != "") {
+					setMessage(message);
+				} 
 				$("#entityInstanceForm :input").attr("disabled", false);
 				$("#entityInstanceForm").find("select").attr("disabled", false);
 				return false;
