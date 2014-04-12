@@ -129,10 +129,7 @@ var followup = false;
 function getSearchParams(page) {
 	var params = "ou=" + getFieldValue("orgunitId");
 	params += "&page=" + page;
-	if( getFieldValue('trackedEntity')!=''){
-		params += '&trackedEntity=' + getFieldValue('trackedEntity');
-	}
-	else if (getFieldValue('program') != '') {
+	if (getFieldValue('program') != '') {
 		params += "&program=" + getFieldValue('program');
 		if( getFieldValue('programStatus')!=""){
 			params += "&programStatus=" + getFieldValue('programStatus');
@@ -1969,12 +1966,3 @@ function showSearchCriteria() {
 	hideById('showSearchCriteriaDiv');
 }
 
-function trackedEntityOnChange()
-{
-	if( getFieldValue('trackedEntity')!=''){
-		disable('program');
-	}
-	else{
-		enable('program');
-	}
-}
