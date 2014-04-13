@@ -366,6 +366,11 @@ function displayTEIList(json, page) {
 // Paging
 
 function paging(json, page) {
+	var searchMethod = "listAllTrackedEntityInstance";
+	if( isAdvancedSearch ){
+		searchMethod = "validateAdvancedSearch";
+	}
+	
 	var table = "<table width='100%' style='background-color: #ebf0f6;'><tr><td colspan='"
 			+ json.width + "'>";
 	table += "<div class='paging'>";
@@ -377,7 +382,7 @@ function paging(json, page) {
 					+ i + "</span>";
 		} else {
 			table += "<a class='page' title='" + i18n_page + " " + i
-					+ "' href='javascript:listAllTrackedEntityInstance( " + i
+					+ "' href='javascript:" + searchMethod + "( " + i
 					+ ");'>" + i + "</a>";
 		}
 		table += "<span class='seperator'>|</span>";

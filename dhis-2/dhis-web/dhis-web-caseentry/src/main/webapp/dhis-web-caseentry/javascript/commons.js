@@ -90,7 +90,7 @@ function searchTrackedEntityInstancesOnKeyUp(event) {
 	var key = getKeyCode(event);
 	if (key == 13)// Enter
 	{
-		validateAdvancedSearch();
+		validateAdvancedSearch( 1 );
 	}
 }
 
@@ -101,11 +101,11 @@ function getKeyCode(e) {
 	return (e) ? e.which : null;
 }
 
-function validateAdvancedSearch() {
+function validateAdvancedSearch( page ) {
 	hideById('listEntityInstanceDiv');
 	var flag = true;
-	if (getFieldValue('startDueDate') == ''
-			&& getFieldValue('endDueDate') == '') {
+	if (getFieldValue('startDate') == ''
+			&& getFieldValue('endDate') == '') {
 		if (getFieldValue('searchByProgramStage') == "false"
 				|| (getFieldValue('searchByProgramStage') == "true" && jQuery('#advancedSearchTB tr').length > 1)) {
 			jQuery("#searchDiv :input").each(function(i, item) {
@@ -121,7 +121,7 @@ function validateAdvancedSearch() {
 	if (flag) {
 		contentDiv = 'listEntityInstanceDiv';
 		jQuery("#loaderDiv").show();
-		advancedSearch(getSearchParams(1), 1);
+		advancedSearch(getSearchParams(page), page);
 	}
 }
 

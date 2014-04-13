@@ -27,7 +27,7 @@
 			<span id="programLoader" style="display:none;" ><img src="../images/ajax-loader-bar.gif" /></span>
 		</td>
 		<td id='listEntityInstanceBtnTD'>
-			<input type="button" id='listEntityInstanceBtn' value="$i18n.getString( 'list_all_tracked_entity_instances' )" onclick="listAllTrackedEntityInstance(1);">
+			<input type="button" id='listEntityInstanceBtn' value="$i18n.getString( 'list_all_tracked_entity_instances' )" onclick="isAdvancedSearch=false;listAllTrackedEntityInstance(1);">
 			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
 		</td>
 	</tr>
@@ -141,7 +141,7 @@
 	</table>
 	<div style="padding: 10px 0 15px 3px">
 		<input type="button" class='large-button' value='$i18n.getString( "add_filter" )' onclick='addAttributeOption();'>
-        <input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchEntityInstanceBtn'>
+        <input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='isAdvancedSearch=true;validateAdvancedSearch(1);' id='searchEntityInstanceBtn'>
         <input type="button" class='large-button hidden' id='sendSmsToListBtn' value="$i18n.getString('sms')" onclick="setFieldValue('sendToList', true);showSendSmsForm();">
     </div>
 </div>
@@ -160,5 +160,6 @@
 	datePicker( 'startDueDate', true );
 	datePicker( 'endDueDate', true );
 	
+	var isAdvancedSearch = false;
 	var searchTextBox = '<input type="text" id="searchText" name="searchText" class="searchInput" onkeyup="searchTrackedEntityInstancesOnKeyUp( event );">';
 </script>
