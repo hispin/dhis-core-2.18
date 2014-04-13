@@ -41,18 +41,42 @@ public interface AclService
 {
     public static final List<String> ACL_OVERRIDE_AUTHORITIES = Arrays.asList( "ALL", "F_METADATA_IMPORT" );
 
+    /**
+     * Is type supported for acl?
+     *
+     * @param type Type to check
+     * @return true if type is supported
+     */
     boolean isSupported( String type );
 
+    /**
+     * Is class supported for acl?
+     *
+     * @param klass Class to check
+     * @return true if type is supported
+     */
     boolean isSupported( Class<?> klass );
 
+    /**
+     * Is type supported for sharing?
+     *
+     * @param type Type to check
+     * @return true if type is supported
+     */
     boolean isShareable( String type );
 
+    /**
+     * Is class supported for sharing?
+     *
+     * @param klass Class to check
+     * @return true if type is supported
+     */
     boolean isShareable( Class<?> klass );
 
     /**
      * Can user write to this object (create)
      * <p/>
-     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 1. Does user have ACL_OVERRIDE_AUTHORITIES authority?
      * 2. Is the user for the object null?
      * 3. Is the user of the object equal to current user?
      * 4. Is the object public write?
@@ -67,7 +91,7 @@ public interface AclService
     /**
      * Can user read this object
      * <p/>
-     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 1. Does user have ACL_OVERRIDE_AUTHORITIES authority?
      * 2. Is the user for the object null?
      * 3. Is the user of the object equal to current user?
      * 4. Is the object public read?
@@ -82,7 +106,7 @@ public interface AclService
     /**
      * Can user update this object
      * <p/>
-     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 1. Does user have ACL_OVERRIDE_AUTHORITIES authority?
      * 2. Can user write to this object?
      *
      * @param user   User to check against
@@ -94,7 +118,7 @@ public interface AclService
     /**
      * Can user delete this object
      * <p/>
-     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 1. Does user have ACL_OVERRIDE_AUTHORITIES authority?
      * 2. Can user write to this object?
      *
      * @param user   User to check against
@@ -106,7 +130,7 @@ public interface AclService
     /**
      * Can user manage (make public) this object
      * <p/>
-     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 1. Does user have ACL_OVERRIDE_AUTHORITIES authority?
      * 2. Can user write to this object?
      *
      * @param user   User to check against
@@ -117,6 +141,7 @@ public interface AclService
 
     /**
      * Can create
+     *
      * @param user
      * @param klass
      * @param <T>
@@ -127,7 +152,7 @@ public interface AclService
     /**
      * Checks if a user can create a public instance of a certain object.
      * <p/>
-     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 1. Does user have ACL_OVERRIDE_AUTHORITIES authority?
      * 2. Does user have the authority to create public instances of that object
      *
      * @param user  User to check against
@@ -139,7 +164,7 @@ public interface AclService
     /**
      * Checks if a user can create a private instance of a certain object.
      * <p/>
-     * 1. Does user have SHARING_OVERRIDE_AUTHORITY authority?
+     * 1. Does user have ACL_OVERRIDE_AUTHORITIES authority?
      * 2. Does user have the authority to create private instances of that object
      *
      * @param user  User to check against
