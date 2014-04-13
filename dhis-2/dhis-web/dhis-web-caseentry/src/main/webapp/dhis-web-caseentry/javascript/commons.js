@@ -337,7 +337,7 @@ function enableBtn() {
 	var program = getFieldValue('program');
 	if (registration == undefined || !registration) {
 		if (program != '') {
-			enable('statusEvent');
+			enable('status');
 			enable('listEntityInstanceBtn');
 			enable('addEntityInstanceBtn');
 			enable('advancedSearchBtn');
@@ -346,7 +346,7 @@ function enableBtn() {
 				enable(this.id);
 			});
 		} else {
-			disable('statusEvent');
+			disable('status');
 			disable('listEntityInstanceBtn');
 			disable('addEntityInstanceBtn');
 			disable('advancedSearchBtn');

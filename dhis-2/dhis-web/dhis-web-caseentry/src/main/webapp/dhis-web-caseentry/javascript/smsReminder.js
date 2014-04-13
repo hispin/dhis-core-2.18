@@ -33,7 +33,7 @@ function orgunitSelected( orgUnits, orgUnitNames )
 			for ( i in json.programs ) {
 				if(json.programs[i].type==1){
 					count++;
-					jQuery( '#program').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
+					jQuery( '#program').append( '<option value="' + json.programs[i].uid +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
 				}
 			}
 			if(count==0){
@@ -86,9 +86,7 @@ function listAllTrackedEntityInstance( page )
 	
 }
 
-
 function displayEventList(json, page) {
-
 	var table = "";
 	
 	// Header
@@ -113,6 +111,7 @@ function displayEventList(json, page) {
 		
 		table += "<thead><tr><th>#</th>";
 		table += "<th>" + i18n_event_date + "</th>";
+
 		for(var i in json.events[0].dataValues ){
 			table += "<th>" + json.events[0].dataValues[i].dataElement + "</th>";
 		}
@@ -162,6 +161,11 @@ function displayEventList(json, page) {
 // Paging
 
 function paging(json, page) {
+	var searchMethod = "listAllTrackedEntityInstance";
+	if( isAdvancedSearch ){
+		searchMethod = "validateAdvancedSearch";
+	}
+	
 	var table = "<table width='100%' style='background-color: #ebf0f6;'><tr><td colspan='"
 			+ json.width + "'>";
 	table += "<div class='paging'>";
@@ -173,7 +177,7 @@ function paging(json, page) {
 					+ i + "</span>";
 		} else {
 			table += "<a class='page' title='" + i18n_page + " " + i
-					+ "' href='javascript:listAllTrackedEntityInstance( " + i
+					+ "' href='javascript:" + searchMethod + "( " + i
 					+ ");'>" + i + "</a>";
 		}
 		table += "<span class='seperator'>|</span>";
