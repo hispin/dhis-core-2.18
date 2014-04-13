@@ -117,6 +117,11 @@ public class EventReport
     private boolean hideEmptyRows;
 
     /**
+     * Indicates rendering of empty rows for the table.
+     */
+    private boolean showHierarchy;
+
+    /**
      * The display density of the text in the table.
      */
     private String displayDensity;
@@ -178,6 +183,7 @@ public class EventReport
         {
             EventReport report = (EventReport) other;
 
+            dataType = report.getDataType();
             program = report.getProgram();
             programStage = report.getProgramStage();
             startDate = report.getStartDate();
@@ -185,6 +191,7 @@ public class EventReport
             totals = report.isTotals();
             subtotals = report.isSubtotals();
             hideEmptyRows = report.isHideEmptyRows();
+            showHierarchy = report.isShowHierarchy();
             displayDensity = report.getDisplayDensity();
             fontSize = report.getFontSize();
         }
@@ -340,6 +347,19 @@ public class EventReport
     public void setHideEmptyRows( boolean hideEmptyRows )
     {
         this.hideEmptyRows = hideEmptyRows;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isShowHierarchy()
+    {
+        return showHierarchy;
+    }
+
+    public void setShowHierarchy( boolean showHierarchy )
+    {
+        this.showHierarchy = showHierarchy;
     }
 
     @JsonProperty
