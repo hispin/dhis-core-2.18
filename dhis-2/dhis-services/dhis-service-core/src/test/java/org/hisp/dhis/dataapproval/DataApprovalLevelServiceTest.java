@@ -30,12 +30,16 @@ package org.hisp.dhis.dataapproval;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -96,10 +100,19 @@ public class DataApprovalLevelServiceTest
     private DataApprovalLevel level4C;
     private DataApprovalLevel level4D;
 
+    private DataApprovalLevel level5;
+
     private OrganisationUnit organisationUnitA;
     private OrganisationUnit organisationUnitB;
     private OrganisationUnit organisationUnitC;
     private OrganisationUnit organisationUnitD;
+    private OrganisationUnit organisationUnitE;
+    private OrganisationUnit organisationUnitF;
+    private OrganisationUnit organisationUnitG;
+    private OrganisationUnit organisationUnitH;
+    private OrganisationUnit organisationUnitI;
+    private OrganisationUnit organisationUnitJ;
+    private OrganisationUnit organisationUnitK;
 
     // -------------------------------------------------------------------------
     // Set up/tear down
@@ -149,10 +162,38 @@ public class DataApprovalLevelServiceTest
         level4C = new DataApprovalLevel( "4C", 4, setC );
         level4D = new DataApprovalLevel( "4D", 4, setD );
 
+        level5 = new DataApprovalLevel( "5", 5, null );
+
+        //
+        // Org       Organisation
+        // unit      unit
+        // level:    hierarchy:
+        //
+        //   1           A
+        //               |
+        //   2           B
+        //             / | \
+        //   3       C   F   I
+        //           |   |   |
+        //   4       D   G   J
+        //           |   |   |
+        //   5       E   H   K
+        //
+        // Note: E through K are optionally added by the test if desired.
+
         organisationUnitA = createOrganisationUnit( 'A' );
         organisationUnitB = createOrganisationUnit( 'B', organisationUnitA );
         organisationUnitC = createOrganisationUnit( 'C', organisationUnitB );
         organisationUnitD = createOrganisationUnit( 'D', organisationUnitC );
+        organisationUnitE = createOrganisationUnit( 'E', organisationUnitD );
+
+        organisationUnitF = createOrganisationUnit( 'F', organisationUnitB );
+        organisationUnitG = createOrganisationUnit( 'G', organisationUnitF );
+        organisationUnitH = createOrganisationUnit( 'H', organisationUnitG );
+
+        organisationUnitI = createOrganisationUnit( 'I', organisationUnitB );
+        organisationUnitJ = createOrganisationUnit( 'J', organisationUnitI );
+        organisationUnitK = createOrganisationUnit( 'K', organisationUnitJ );
 
         organisationUnitService.addOrganisationUnit( organisationUnitA );
         organisationUnitService.addOrganisationUnit( organisationUnitB );
@@ -435,27 +476,180 @@ public class DataApprovalLevelServiceTest
     }
 
     @Test
-    public void testGetUserDataApprovalLevelsNoAuthorities() throws Exception
+    public void testGetUserReadApprovalLevels_1A() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level4B );
-        dataApprovalLevelService.addDataApprovalLevel( level4A );
-        dataApprovalLevelService.addDataApprovalLevel( level4 );
-        dataApprovalLevelService.addDataApprovalLevel( level3B );
-        dataApprovalLevelService.addDataApprovalLevel( level3A );
-        dataApprovalLevelService.addDataApprovalLevel( level3 );
-        dataApprovalLevelService.addDataApprovalLevel( level2B );
-        dataApprovalLevelService.addDataApprovalLevel( level2A );
-        dataApprovalLevelService.addDataApprovalLevel( level2 );
-        dataApprovalLevelService.addDataApprovalLevel( level1B );
-        dataApprovalLevelService.addDataApprovalLevel( level1A );
+        //
+        // Test 1: Like when a user may capture data within their own district
+        // but view data in other districts within their province.
+        //
+        // Variation A: User does *not* have approval at lower levels authority.
+        //
+        organisationUnitService.addOrganisationUnit( organisationUnitE );
+        organisationUnitService.addOrganisationUnit( organisationUnitF );
+        organisationUnitService.addOrganisationUnit( organisationUnitG );
+        organisationUnitService.addOrganisationUnit( organisationUnitH );
+
         dataApprovalLevelService.addDataApprovalLevel( level1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level5 );
 
-        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
-        units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false );
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        assignedOrgUnits.add( organisationUnitC );
 
-        List<DataApprovalLevel> levels = dataApprovalLevelService.getUserDataApprovalLevels();
-        assertEquals( 0, levels.size() );
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        dataViewOrgUnits.add( organisationUnitB );
+
+        createUserAndInjectSecurityContext( assignedOrgUnits, dataViewOrgUnits, false );
+
+        Map<OrganisationUnit, Integer> readApprovalLevels = dataApprovalLevelService.getUserReadApprovalLevels();
+        assertEquals( 2, readApprovalLevels.size() );
+
+        assertEquals( 4, (int) readApprovalLevels.get( organisationUnitC ) );
+        assertEquals( 3, (int) readApprovalLevels.get( organisationUnitB ) );
+    }
+
+    @Test
+    public void testGetUserReadApprovalLevels_1B() throws Exception
+    {
+        //
+        // Test 1: Like when a user may capture data within their own district
+        // but view data in other districts within their province.
+        //
+        // Variation B: User *has* approval at lower levels authority.
+        //
+        organisationUnitService.addOrganisationUnit( organisationUnitE );
+        organisationUnitService.addOrganisationUnit( organisationUnitF );
+        organisationUnitService.addOrganisationUnit( organisationUnitG );
+        organisationUnitService.addOrganisationUnit( organisationUnitH );
+
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level5 );
+
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        assignedOrgUnits.add( organisationUnitC );
+
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        dataViewOrgUnits.add( organisationUnitB );
+
+        createUserAndInjectSecurityContext( assignedOrgUnits, dataViewOrgUnits, false, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+
+        Map<OrganisationUnit, Integer> readApprovalLevels = dataApprovalLevelService.getUserReadApprovalLevels();
+        assertEquals( 2, readApprovalLevels.size() );
+
+        assertEquals( APPROVAL_LEVEL_UNAPPROVED, (int) readApprovalLevels.get( organisationUnitC ) );
+        assertEquals( 3, (int) readApprovalLevels.get( organisationUnitB ) );
+    }
+
+    @Test
+    public void testGetUserReadApprovalLevels_1C() throws Exception
+    {
+        //
+        // Test 1: Like when a user may capture data within their own district
+        // but view data in other districts within their province.
+        //
+        // Variation C: No approval level for org unit level 4.
+        //
+        organisationUnitService.addOrganisationUnit( organisationUnitE );
+        organisationUnitService.addOrganisationUnit( organisationUnitF );
+        organisationUnitService.addOrganisationUnit( organisationUnitG );
+        organisationUnitService.addOrganisationUnit( organisationUnitH );
+
+        dataApprovalLevelService.addDataApprovalLevel( level1 ); // 1st approval level
+        dataApprovalLevelService.addDataApprovalLevel( level2 ); // 2nd approval level
+        dataApprovalLevelService.addDataApprovalLevel( level3 ); // 3rd approval level
+        dataApprovalLevelService.addDataApprovalLevel( level5 ); // 4th approval level
+
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        assignedOrgUnits.add( organisationUnitC );
+
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        dataViewOrgUnits.add( organisationUnitB );
+
+        createUserAndInjectSecurityContext( assignedOrgUnits, dataViewOrgUnits, false );
+
+        Map<OrganisationUnit, Integer> readApprovalLevels = dataApprovalLevelService.getUserReadApprovalLevels();
+        assertEquals( 2, readApprovalLevels.size() );
+
+        assertEquals( 4, (int) readApprovalLevels.get( organisationUnitC ) );
+        assertEquals( 3, (int) readApprovalLevels.get( organisationUnitB ) );
+    }
+
+    @Test
+    public void testGetUserReadApprovalLevels_1D() throws Exception
+    {
+        //
+        // Test 1: Like when a user may capture data within their own district
+        // but view data in other districts within their province.
+        //
+        // Variation D: User is assigned to two districts
+        //
+        organisationUnitService.addOrganisationUnit( organisationUnitE );
+        organisationUnitService.addOrganisationUnit( organisationUnitF );
+        organisationUnitService.addOrganisationUnit( organisationUnitG );
+        organisationUnitService.addOrganisationUnit( organisationUnitH );
+        organisationUnitService.addOrganisationUnit( organisationUnitI );
+        organisationUnitService.addOrganisationUnit( organisationUnitJ );
+        organisationUnitService.addOrganisationUnit( organisationUnitK );
+
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level5 );
+
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        assignedOrgUnits.add( organisationUnitC );
+        assignedOrgUnits.add( organisationUnitF );
+
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        dataViewOrgUnits.add( organisationUnitB );
+
+        createUserAndInjectSecurityContext( assignedOrgUnits, dataViewOrgUnits, false );
+
+        Map<OrganisationUnit, Integer> readApprovalLevels = dataApprovalLevelService.getUserReadApprovalLevels();
+        assertEquals( 3, readApprovalLevels.size() );
+
+        assertEquals( 4, (int) readApprovalLevels.get( organisationUnitC ) );
+        assertEquals( 4, (int) readApprovalLevels.get( organisationUnitF ) );
+        assertEquals( 3, (int) readApprovalLevels.get( organisationUnitB ) );
+    }
+
+    /*
+    @Test
+    public void testGetUserReadApprovalLevels_2A() throws Exception
+    {
+        //
+        // Test 2... TBD
+        //
+        organisationUnitService.addOrganisationUnit( organisationUnitE );
+        organisationUnitService.addOrganisationUnit( organisationUnitF );
+        organisationUnitService.addOrganisationUnit( organisationUnitG );
+        organisationUnitService.addOrganisationUnit( organisationUnitH );
+
+        dataApprovalLevelService.addDataApprovalLevel( level1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level5 );
+
+        Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
+        assignedOrgUnits.add( organisationUnitC );
+
+        Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
+        dataViewOrgUnits.add( organisationUnitB );
+
+        createUserAndInjectSecurityContext( assignedOrgUnits, dataViewOrgUnits, false );
+
+        Map<OrganisationUnit, Integer> readApprovalLevels = dataApprovalLevelService.getUserReadApprovalLevels();
+        assertEquals( 2, readApprovalLevels.size() );
+
+        assertEquals( 4, (int) readApprovalLevels.get( organisationUnitC ) );
+        assertEquals( 3, (int) readApprovalLevels.get( organisationUnitB ) );
     }
 
     @Test
@@ -581,4 +775,6 @@ public class DataApprovalLevelServiceTest
         assertEquals( "2B", levels.get( 1 ).getName() );
         assertEquals( "3", levels.get( 2 ).getName() );
     }
+    */
+
 }

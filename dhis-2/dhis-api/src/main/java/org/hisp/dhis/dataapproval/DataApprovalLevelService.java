@@ -28,7 +28,10 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jim Grace
@@ -38,20 +41,33 @@ public interface DataApprovalLevelService
     String ID = DataApprovalLevelService.class.getName();
 
     /**
+     * Integer that can be used in place of approval level
+     * for data that has not been approved at any level.
+     */
+    public static final int APPROVAL_LEVEL_UNAPPROVED = 999;
+
+    /**
+     * Gets the data approval level with the given id.
+     *
+     * @param id the id.
+     * @return a data approval level.
+     */
+    DataApprovalLevel getDataApprovalLevel( int id );
+
+    /**
+     * Gets the data approval level with the given name.
+     *
+     * @param name the name.
+     * @return a data approval level.
+     */
+    DataApprovalLevel getDataApprovalLevelByName( String name );
+
+    /**
      * Gets a list of all data approval levels.
      *
      * @return List of all data approval levels, ordered from 1 to n.
      */
     List<DataApprovalLevel> getAllDataApprovalLevels();
-
-    /**
-     * Gets a list of the data approval levels for which the user has
-     * permission to perform at least one operation (approve, unapprove,
-     * accept, unaccept) for some selection of data at this approval level.
-     *
-     * @return List of selected user data approval levels, in ascending order.
-     */
-    List<DataApprovalLevel> getUserDataApprovalLevels();
 
     /**
      * Gets data approval levels by org unit level.
@@ -123,33 +139,18 @@ public interface DataApprovalLevelService
     void deleteDataApprovalLevel( DataApprovalLevel dataApprovalLevel );
 
     /**
-     * Gets the lowest data approval level that the current user may view.
+     * By organisation unit subhierarchy, returns the lowest data approval
+     * level at which the user may see data within that subhierarchy, if
+     * data viewing is being restricted to approved data from lower levels.
+     * <p>
+     * Returns the value APPROVAL_LEVEL_UNAPPROVED for a subhierarchy if
+     * the user may see unapproved data.
+     * <p>
      * (Note that the "lowest" approval level means the "highest" approval
      * level number.)
-     * <p>
-     * Look at all the levels, starting from the lowest level (highest level
-     * number.) If the level has no category option group, or if it has a
-     * category option group where the user can see at least one category
-     * option within the group, then the user may see the level and all
-     * higher levels.
      *
-     * @return level number of the lowest level the user can view.
+     * @return For each organisation unit subhierarchy available to the user,
+     *         the minimum data approval level within that subhierarchy.
      */
-    int getLowestUserViewDataApprovalLevel();
-    
-    /**
-     * Gets the data approval level with the given id.
-     * 
-     * @param id the id.
-     * @return a data approval level.
-     */
-    DataApprovalLevel getDataApprovalLevel( int id );
-    
-    /**
-     * Gets the data approval level with the given name.
-     * 
-     * @param name the name.
-     * @return a data approval level.
-     */
-    DataApprovalLevel getDataApprovalLevelByName( String name );
+    Map<OrganisationUnit, Integer> getUserReadApprovalLevels();
 }
