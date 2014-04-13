@@ -29,6 +29,7 @@ package org.hisp.dhis.dataapproval;
  */
 
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -38,9 +39,12 @@ import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -86,6 +90,16 @@ public class DefaultDataApprovalLevelService
     // DataApprovalLevel
     // -------------------------------------------------------------------------
 
+    public DataApprovalLevel getDataApprovalLevel( int id )
+    {
+        return dataApprovalLevelStore.get( id );
+    }
+
+    public DataApprovalLevel getDataApprovalLevelByName( String name )
+    {
+        return dataApprovalLevelStore.getByName( name );
+    }
+
     public List<DataApprovalLevel> getAllDataApprovalLevels()
     {
         List<DataApprovalLevel> dataApprovalLevels = dataApprovalLevelStore.getAllDataApprovalLevels();
@@ -104,7 +118,7 @@ public class DefaultDataApprovalLevelService
         return dataApprovalLevels;
     }
 
-    public List<DataApprovalLevel> getUserDataApprovalLevels()
+    public List<DataApprovalLevel> getUserDataApprovalLevels_OLD()
     {
         List<DataApprovalLevel> userDataApprovalLevels = new ArrayList<DataApprovalLevel>();
 
@@ -296,39 +310,43 @@ public class DefaultDataApprovalLevelService
         }
     }
 
-    public int getLowestUserViewDataApprovalLevel()
+    public Map<OrganisationUnit, Integer> getUserReadApprovalLevels()
     {
-        List<DataApprovalLevel> levels = getAllDataApprovalLevels();
+        Map<OrganisationUnit, Integer> map = new HashMap<OrganisationUnit, Integer>();
 
-        for ( int i = levels.size() - 1; i <= 0; i-- )
+        User user = currentUserService.getCurrentUser();
+
+        if ( user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE_LOWER_LEVELS ) )
         {
-            DataApprovalLevel level = levels.get( i );
-
-            if ( level.getCategoryOptionGroupSet() == null || level.getCategoryOptionGroupSet().getMembers() == null )
+            for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
             {
-                return level.getLevel();
+                map.put( orgUnit, APPROVAL_LEVEL_UNAPPROVED );
             }
-
-            for ( CategoryOptionGroup group : level.getCategoryOptionGroupSet().getMembers() )
+        }
+        else
+        {
+            for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
             {
-                if ( securityService.canRead( group ) )
-                {
-                    return level.getLevel();
-                }
+                map.put( orgUnit, requiredApprovalLevel( orgUnit ) );
             }
         }
 
-        return 0;
-    }
-    
-    public DataApprovalLevel getDataApprovalLevel( int id )
-    {
-        return dataApprovalLevelStore.get( id );
-    }
-    
-    public DataApprovalLevel getDataApprovalLevelByName( String name )
-    {
-        return dataApprovalLevelStore.getByName( name );
+        Collection<OrganisationUnit> dataViewOrgUnits = user.getDataViewOrganisationUnits();
+
+        if ( dataViewOrgUnits == null || dataViewOrgUnits.isEmpty() )
+        {
+            dataViewOrgUnits = organisationUnitService.getRootOrganisationUnits();
+        }
+
+        for ( OrganisationUnit orgUnit : dataViewOrgUnits )
+        {
+            if ( !map.containsKey( orgUnit ) )
+            {
+                map.put(orgUnit, requiredApprovalLevel( orgUnit ) );
+            }
+        }
+
+        return map;
     }
 
     // -------------------------------------------------------------------------
@@ -414,4 +432,55 @@ public class DefaultDataApprovalLevelService
         }
         return i + 1;
     }
+
+    /**
+     * Get the approval level for an organisation unit that is required
+     * in order for the user to see the data -- if user is limited to seeing
+     * approved data only from lower approval levels.
+     *
+     * @param orgUnit organisation unit to test.
+     * @return required approval level for user to see the data.
+     */
+    private int requiredApprovalLevel( OrganisationUnit orgUnit )
+    {
+        int orgUnitLevel = orgUnit.getLevel() != 0 ?
+                orgUnit.getLevel() :
+                organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getUid() );
+
+        int required = APPROVAL_LEVEL_UNAPPROVED;
+
+        for ( DataApprovalLevel level : getAllDataApprovalLevels() )
+        {
+            if ( level.getOrgUnitLevel() >= orgUnitLevel
+                    && securityService.canRead( level )
+                    && ( level.getCategoryOptionGroupSet() == null || canReadSomeCategory( level.getCategoryOptionGroupSet() ) )
+                    && level.getLevel() < getAllDataApprovalLevels().size() )
+            {
+                required = level.getLevel() + 1;
+                break;
+            }
+        }
+
+        return required;
+    }
+
+    /**
+     * Can the user read at least one category from inside a category option
+     * group set?
+     *
+     * @param cogs The category option group set to test
+     * @return true if user can read at least one category option group.
+     */
+    private boolean canReadSomeCategory( CategoryOptionGroupSet cogs )
+    {
+        for ( CategoryOptionGroup cog : cogs.getMembers() )
+        {
+            if ( securityService.canRead(cog) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -1193,7 +1193,7 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param uniqueCharacter A unique character to identify the object.
+     * @param uniqueChar A unique character to identify the object.
      * @return TrackedEntityAttribute
      */
     public static TrackedEntityAttribute createTrackedEntityAttribute( char uniqueChar )
@@ -1208,7 +1208,7 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param uniqueCharacter A unique character to identify the object.
+     * @param uniqueChar A unique character to identify the object.
      * @return TrackedEntityAttribute
      */
     public static TrackedEntityAttribute createTrackedEntityAttribute( char uniqueChar, String type )
@@ -1223,7 +1223,7 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param uniqueCharacter A unique character to identify the object.
+     * @param uniqueChar A unique character to identify the object.
      * @return TrackedEntityAttributeGroup
      */
     public static TrackedEntityAttributeGroup createTrackedEntityAttributeGroup( char uniqueChar, List<TrackedEntityAttribute> attributes )
@@ -1256,7 +1256,7 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param uniqueCharacter A unique character to identify the object.
+     * @param uniqueChar A unique character to identify the object.
      * @return RelationshipType
      */
     public static RelationshipType createRelationshipType( char uniqueChar )
@@ -1440,6 +1440,22 @@ public abstract class DhisConvenienceTest
      */
     public User createUserAndInjectSecurityContext( Set<OrganisationUnit> organisationUnits, boolean allAuth, String... auths )
     {
+        return createUserAndInjectSecurityContext( organisationUnits, null, allAuth, auths );
+    }
+
+    /**
+     * Creates a user and injects into the security context with username
+     * "username". Requires <code>identifiableObjectManager</code> and
+     * <code>userService</code> to be injected into the test.
+     *
+     * @param organisationUnits         the organisation units of the user.
+     * @param dataViewOrganisationUnits user's data view organisation units.
+     * @param allAuth                   whether to grant the ALL authority.
+     * @param auths                     authorities to grant to user.
+     * @return the user.
+     */
+    public User createUserAndInjectSecurityContext( Set<OrganisationUnit> organisationUnits, Set<OrganisationUnit> dataViewOrganisationUnits, boolean allAuth, String... auths )
+    {
         Assert.notNull( identifiableObjectManager, "IdentifiableObjectManager must be injected in test" );
         Assert.notNull( userService, "UserService must be injected in test" );
 
@@ -1466,6 +1482,11 @@ public abstract class DhisConvenienceTest
         if ( organisationUnits != null )
         {
             user.setOrganisationUnits( organisationUnits );
+        }
+
+        if ( dataViewOrganisationUnits != null )
+        {
+            user.setDataViewOrganisationUnits( dataViewOrganisationUnits );
         }
 
         user.getUserCredentials().getUserAuthorityGroups().add( userAuthorityGroup );
