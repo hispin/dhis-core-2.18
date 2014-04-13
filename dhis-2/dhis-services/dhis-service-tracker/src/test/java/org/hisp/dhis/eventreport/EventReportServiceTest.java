@@ -44,19 +44,19 @@ public class EventReportServiceTest
 {
     @Autowired
     private EventReportService eventReportService;
-    
+
     @Autowired
     private ProgramService programService;
-    
+
     private Program prA;
-    
+
     @Override
     public void setUpTest()
-    {
-        prA = createProgram( 'A', null, null );
-        programService.addProgram( prA );
+    {System.out.println("\n\n === \n 1 ");
+        prA = createProgram( 'A', null, null );System.out.println("\n\n === \n 2 ");
+        programService.addProgram( prA );System.out.println("\n\n === \n 3 ");
     }
-    
+
     @Test
     public void testSaveGet()
     {
@@ -69,16 +69,16 @@ public class EventReportServiceTest
         EventReport erC = new EventReport( "erC" );
         erC.setProgram( prA );
         erC.setDataType( EventReport.DATA_TYPE_AGGREGATED_VALUES );
-        
+
         int idA = eventReportService.saveEventReport( erA );
         int idB = eventReportService.saveEventReport( erB );
         int idC = eventReportService.saveEventReport( erC );
-        
+
         assertEquals( "erA", eventReportService.getEventReport( idA ).getName() );
         assertEquals( "erB", eventReportService.getEventReport( idB ).getName() );
         assertEquals( "erC", eventReportService.getEventReport( idC ).getName() );
     }
-    
+
     @Test
     public void testDelete()
     {
@@ -91,15 +91,15 @@ public class EventReportServiceTest
         EventReport erC = new EventReport( "erC" );
         erC.setProgram( prA );
         erC.setDataType( EventReport.DATA_TYPE_AGGREGATED_VALUES );
-        
+
         int idA = eventReportService.saveEventReport( erA );
         int idB = eventReportService.saveEventReport( erB );
         int idC = eventReportService.saveEventReport( erC );
-        
+
         assertNotNull( eventReportService.getEventReport( idA ) );
         assertNotNull( eventReportService.getEventReport( idB ) );
         assertNotNull( eventReportService.getEventReport( idC ) );
-        
+
         eventReportService.deleteEventReport( erA );
 
         assertNull( eventReportService.getEventReport( idA ) );
@@ -116,6 +116,6 @@ public class EventReportServiceTest
 
         assertNull( eventReportService.getEventReport( idA ) );
         assertNull( eventReportService.getEventReport( idB ) );
-        assertNull( eventReportService.getEventReport( idC ) );        
+        assertNull( eventReportService.getEventReport( idC ) );
     }
 }

@@ -100,19 +100,6 @@
 			</td>
 			<td></td>
 		</tr>
-		
-		<tr name='localIdField' style='display:none;'>
-			<td><label for="type">$i18n.getString( "period_type" )</label></td>
-			<td>
-				<select type='checkbox' id="periodTypeName" name="periodTypeName" >
-					<option value="">[$i18n.getString( "please_select" )]</option>
-					#foreach ( $periodType in $periodTypes )
-					<option value="$periodType.name">$i18n.getString( $periodType.name )</option>
-					#end
-				</select>
-			</td>
-			<td></td>
-		</tr>
 
     </tbody>
 

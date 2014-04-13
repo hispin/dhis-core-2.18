@@ -36,7 +36,6 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 import org.hisp.dhis.option.OptionSet;
-import org.hisp.dhis.period.PeriodType;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;

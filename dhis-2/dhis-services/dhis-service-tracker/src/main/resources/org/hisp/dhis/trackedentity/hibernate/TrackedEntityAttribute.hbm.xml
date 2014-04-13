@@ -44,10 +44,7 @@
     <property name="orgunitScope" />
 
     <property name="programScope" />
-
-    <many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" 
-        column="periodtypeid" foreign-key="fk_trackedentityattribute_periodtypeid" />
-
+	
     <!-- Access properties -->
     <many-to-one name="user" class="org.hisp.dhis.user.User" 
         column="userid" foreign-key="fk_trackedentityattribute_userid" />
