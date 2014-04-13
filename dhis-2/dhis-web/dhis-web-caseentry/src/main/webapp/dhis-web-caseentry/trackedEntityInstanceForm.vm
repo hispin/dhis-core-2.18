@@ -13,7 +13,7 @@
 	<tr>
 		<td class='text-column'><label>$i18n.getString('tracked_entity')<em title="$i18n.getString( 'required' )" class="required">*</em> </label></td>
 		<td class="input-column">
-			<select type='hidden' id='trackedEntityId' name='trackedEntityId' value='$trackedEntityId'>
+			<select type='hidden' id='trackedEntityId' name='trackedEntityId' value='$trackedEntityId' class="{validate:{required:true }}">
 				<option value=''>[$i18n.getString('please_select')]</option>
 				#foreach($trackedEntity in $trackedEntities)
 				<option value='$trackedEntity.id' #if($entityInstance.trackedEntity.id==$trackedEntity.id) selected #end >$trackedEntity.displayName</option>
