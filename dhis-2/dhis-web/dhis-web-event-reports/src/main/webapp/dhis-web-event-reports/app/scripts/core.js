@@ -1655,15 +1655,26 @@ Ext.onReady( function() {
 
 			service.response.query.getExtendedResponse = function(layout, response) {
 				var xResponse = Ext.clone(response),
+					metaData = xResponse.metaData,
                     dimensionNames = Ext.Array.pluck(layout.columns, 'dimension'),
                     dimensionHeaders = [],
 					headers = xResponse.headers,
 					nameHeaderMap = {},
-                    nameMap = {};
+                    nameMap = {},
+                    ouIndex;
 
                 nameMap['pe'] = 'eventdate';
                 nameMap['ou'] = 'ouname';
 
+                // get ou index
+                for (var i = 0, header; i < headers.length; i++) {
+					if (headers[i].name === 'ou') {
+						ouIndex = i;
+						break;
+					}
+				}
+
+				// update rows
 				for (var i = 0, header; i < headers.length; i++) {
 					header = headers[i];
 					header.index = i;
@@ -1682,8 +1693,17 @@ Ext.onReady( function() {
 						}
 					}
 
+					// TODO, using descendants -> missing orgunits in ouHierarchy
+
+					//else if (header.name === 'ouname' && layout.showHierarchy && metaData.ouHierarchy) {
+						//for (var j = 0, ouId; j < xResponse.rows.length; j++) {
+							//ouId = xResponse.rows[j][ouIndex];
+							//xResponse.rows[j][i] = service.layout.getHierarchyName(metaData.ouHierarchy, metaData.names, ouId);
+						//}
+					//}
 				}
 
+				// dimension headers
                 for (var i = 0, name; i < dimensionNames.length; i++) {
                     name = nameMap[dimensionNames[i]] || dimensionNames[i];
 
@@ -2720,10 +2740,23 @@ Ext.onReady( function() {
 					row = rows[i];
 					html += '<tr>';
 
-					for (var j = 0, str, value; j < dimensionHeaders.length; j++) {
-						str = row[dimensionHeaders[j].index];
-						value = web.report.query.format(str);
-						html += '<td class="pivot-value align-left">' + value + '</td>';
+					for (var j = 0, str, header, name; j < dimensionHeaders.length; j++) {
+						header = dimensionHeaders[j];
+						str = row[header.index];
+						name = web.report.query.format(str);
+
+						//if (header.name === 'ouname' && layout.showHierarchy) {
+							//var a = Ext.Array.clean(name.split('/'));
+							//name = '';
+
+							//for (var k = 0, isLast; k < a.length; k++) {
+								//isLast = !!(i === a.length - 1);
+
+								//name += (!isLast ? '<span class="text-weak">' : '') + a[i] + (!isLast ? '</span>' : '') + (!isLast ? ' / ' : '');
+							//}
+						//}
+
+						html += '<td class="pivot-value align-left">' + name + '</td>';
 					}
 
 					html += '</tr>';

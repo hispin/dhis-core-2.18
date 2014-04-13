@@ -491,6 +491,7 @@ public class TableAlteror
 
         executeSql( "update eventreport set sortorder = 0 where sortorder is null" );
         executeSql( "update eventreport set toplimit = 0 where toplimit is null" );
+        executeSql( "update eventreport set showhierarchy = false where showhierarchy is null" );
 
         // Move chart filters to chart_filters table
 

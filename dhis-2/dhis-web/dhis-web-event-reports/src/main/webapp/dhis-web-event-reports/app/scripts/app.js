@@ -1814,10 +1814,10 @@ Ext.onReady( function() {
 			comboboxWidth = 262,
 			window;
 
-		showHierarchy = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_hierarchy,
-			style: 'margin-bottom:4px'
-		});
+		//showHierarchy = Ext.create('Ext.form.field.Checkbox', {
+			//boxLabel: NS.i18n.show_hierarchy,
+			//style: 'margin-bottom:4px'
+		//});
 
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
@@ -1895,13 +1895,13 @@ Ext.onReady( function() {
 			//store: ns.app.stores.legendSet
 		//});
 
-		organisationUnits = {
-			bodyStyle: 'border:0 none',
-			style: 'margin-left:14px',
-			items: [
-				showHierarchy
-			]
-		};
+		//organisationUnits = {
+			//bodyStyle: 'border:0 none',
+			//style: 'margin-left:14px',
+			//items: [
+				//showHierarchy
+			//]
+		//};
 
 		style = {
 			bodyStyle: 'border:0 none',
@@ -1929,7 +1929,7 @@ Ext.onReady( function() {
 					hideEmptyRows: false,
                     sortOrder: 0,
                     topLimit: 0,
-					showHierarchy: showHierarchy.getValue(),
+					showHierarchy: false,
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue(),
 					digitGroupSeparator: digitGroupSeparator.getValue()
@@ -1937,22 +1937,22 @@ Ext.onReady( function() {
 				};
 			},
 			setOptions: function(layout) {
-				showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
+				//showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
 				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
 				fontSize.setValue(Ext.isString(layout.fontSize) ? layout.fontSize : 'normal');
 				digitGroupSeparator.setValue(Ext.isString(layout.digitGroupSeparator) ? layout.digitGroupSeparator : 'space');
 				//legendSet.setValue(Ext.isObject(layout.legendSet) && Ext.isString(layout.legendSet.id) ? layout.legendSet.id : 0);
 			},
 			items: [
-				{
-					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:2px',
-					html: NS.i18n.organisation_units
-				},
-				organisationUnits,
-				{
-					bodyStyle: 'border:0 none; padding:5px'
-				},
+				//{
+					//bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
+					//style: 'margin-bottom:6px; margin-left:2px',
+					//html: NS.i18n.organisation_units
+				//},
+				//organisationUnits,
+				//{
+					//bodyStyle: 'border:0 none; padding:5px'
+				//},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
 					style: 'margin-bottom:6px; margin-left:2px',
@@ -2004,7 +2004,7 @@ Ext.onReady( function() {
 					//}
 
 					// cmp
-					w.showHierarchy = showHierarchy;
+					//w.showHierarchy = showHierarchy;
 					w.displayDensity = displayDensity;
 					w.fontSize = fontSize;
 					w.digitGroupSeparator = digitGroupSeparator;
@@ -3141,7 +3141,13 @@ Ext.onReady( function() {
 				isOuc = false,
 				isOugc = false,
 				levels = [],
-				groups = [];
+				groups = [],
+
+				winMap = {
+					'aggregated_values': ns.app.aggregateOptionsWindow,
+					'individual_cases': ns.app.queryOptionsWindow
+				},
+				optionsWindow = winMap[layout.dataType];
 
             reset();
 
@@ -3230,8 +3236,8 @@ Ext.onReady( function() {
 			}
 
 			// options
-			if (ns.app.aggregateOptionsWindow) {
-				ns.app.aggregateOptionsWindow.setOptions(layout);
+			if (optionsWindow) {
+				optionsWindow.setOptions(layout);
 			}
         };
 
@@ -3584,7 +3590,8 @@ Ext.onReady( function() {
             var dataElements = [],
                 aggWindow = ns.app.aggregateLayoutWindow,
                 queryWindow = ns.app.queryLayoutWindow,
-                includeKeys = ['int', 'number', 'boolean', 'bool'];
+                includeKeys = ['int', 'number', 'boolean', 'bool'],
+                dimensionStoreMap = {};
 
 			// data element objects
             for (var i = 0, item; i < items.length; i++) {
@@ -3612,6 +3619,11 @@ Ext.onReady( function() {
 
                 if (layout) {
                     ux.setRecord(element);
+
+                    if (layout.dataType === 'aggregated_values') {
+						aggWindow.addDimensionFromLayout(element, layout);
+
+
                 }
 
                 store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.rowStore : aggWindow.fixedFilterStore;
@@ -5501,6 +5513,11 @@ Ext.onReady( function() {
 						if (config.endDate) {
 							config.endDate = config.endDate.substr(0,10);
 						}
+
+						config.paging = {
+							page: 1,
+							pageSize: 100
+						};
 
 						web.report.getData(config, true);
 					}
