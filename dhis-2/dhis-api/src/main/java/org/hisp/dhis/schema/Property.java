@@ -55,7 +55,7 @@ public class Property
 
     private Class<?> klass;
 
-    private Method method;
+    private Method getterMethod;
 
     private boolean collection;
 
@@ -63,9 +63,9 @@ public class Property
 
     private boolean nameableObject;
 
-    public Property( Method method )
+    public Property( Method getterMethod )
     {
-        this.method = method;
+        this.getterMethod = getterMethod;
     }
 
     @JsonProperty
@@ -152,14 +152,14 @@ public class Property
         this.klass = klass;
     }
 
-    public Method getMethod()
+    public Method getGetterMethod()
     {
-        return method;
+        return getterMethod;
     }
 
-    public void setMethod( Method method )
+    public void setGetterMethod( Method getterMethod )
     {
-        this.method = method;
+        this.getterMethod = getterMethod;
     }
 
     @JsonProperty
@@ -208,7 +208,7 @@ public class Property
             ", xmlAttribute=" + xmlAttribute +
             ", xmlCollectionName='" + xmlCollectionName + '\'' +
             ", klass=" + klass +
-            ", method=" + method +
+            ", getter=" + getterMethod +
             ", collection=" + collection +
             ", identifiableObject=" + identifiableObject +
             '}';

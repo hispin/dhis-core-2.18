@@ -60,6 +60,7 @@ public class SchemaController
         MetaData metaData = new MetaData();
         metaData.setSchemas( schemas );
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), schemas );
     }
 
@@ -67,6 +68,8 @@ public class SchemaController
     public void getSchemaJson( @PathVariable String type, HttpServletResponse response ) throws IOException
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         JacksonUtils.toJson( response.getOutputStream(), schema );
     }
 
@@ -77,6 +80,7 @@ public class SchemaController
         MetaData metaData = new MetaData();
         metaData.setSchemas( schemas );
 
+        response.setContentType( MediaType.APPLICATION_XML_VALUE );
         JacksonUtils.toXml( response.getOutputStream(), metaData );
     }
 
@@ -84,6 +88,8 @@ public class SchemaController
     public void getSchemaXml( @PathVariable String type, HttpServletResponse response ) throws IOException
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
+
+        response.setContentType( MediaType.APPLICATION_XML_VALUE );
         JacksonUtils.toXml( response.getOutputStream(), schema );
     }
 }
