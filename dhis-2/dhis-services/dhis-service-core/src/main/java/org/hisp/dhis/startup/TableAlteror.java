@@ -489,10 +489,6 @@ public class TableAlteror
         executeSql( "update chart set userorganisationunitgrandchildren = false where userorganisationunitgrandchildren is null" );
         executeSql( "update chart set hidetitle = false where hidetitle is null" );
 
-        executeSql( "update eventreport set sortorder = 0 where sortorder is null" );
-        executeSql( "update eventreport set toplimit = 0 where toplimit is null" );
-        executeSql( "update eventreport set showhierarchy = false where showhierarchy is null" );
-
         // Move chart filters to chart_filters table
 
         executeSql( "insert into chart_filters (chartid, sort_order, filter) select chartid, 0, filter from chart" );
