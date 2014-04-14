@@ -153,7 +153,7 @@
 		<tr>
 			<td></td>
 			<td>
-				<input type="submit" value="$i18n.getString( 'update' )" style="width:10em" >
+				<input type="submit" value="$i18n.getString( 'update' )" style="width:10em">
 				<input type="button" value="$i18n.getString( 'cancel' )" style="width:10em" onclick="window.location.href='programStageReminder.action?id=$programStage.id'">
 			</td>
 		 </tr>

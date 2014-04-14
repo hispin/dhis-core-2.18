@@ -279,8 +279,8 @@
 <table>
 	<tr>
 		<td colspan='3'>
-			<input type="submit" value="$i18n.getString( 'add' )" >
-			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'" >
+			<input type="submit" value="$i18n.getString( 'add' )" style="width:10em">
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'" style="width:10em">
 		</td>
 	</tr>
 </table>

@@ -82,8 +82,8 @@ jQuery( document ).ready( function()
 #parse( "/dhis-web-maintenance-program/programIndicatorForm.vm" )
 
 <p>
-	<input type="submit" value="$i18n.getString( 'add' )" style="width:163px;" >
-	<input type="button" value="$i18n.getString( 'cancel' )" style="width:163px;"  onclick="window.location.href='programIndicator.action?programId=$program.id'" >
+	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em">
+	<input type="button" value="$i18n.getString( 'cancel' )" style="width:10em" onclick="window.location.href='programIndicator.action?programId=$program.id'" >
 </p>	
 	
 </form>

@@ -209,8 +209,8 @@
 </table>
 
 <p>
-	<input type="submit" value="$i18n.getString( 'add' )"/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action?id=$program.id'" />
+	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action?id=$program.id'" style="width:10em"/>
 </p>
 
 </form> 	
