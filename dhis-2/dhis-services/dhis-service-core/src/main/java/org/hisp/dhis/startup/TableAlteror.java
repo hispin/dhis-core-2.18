@@ -663,7 +663,8 @@ public class TableAlteror
         executeSql( "UPDATE dataset SET dataelementdecoration=false WHERE dataelementdecoration is null" );
 
         executeSql( "alter table validationrulegroup rename column validationgroupid to validationrulegroupid" );
-        executeSql( "alter table sqlview rename column viewid to sqlviewid" );
+        executeSql( "update sqlview set sqlviewid=viweid" );
+        executeSql( "alter table sqlview drop column viewid" );
 
         executeSql( "UPDATE dashboard SET publicaccess='--------' WHERE publicaccess is null" );
 
