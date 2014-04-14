@@ -3620,10 +3620,8 @@ Ext.onReady( function() {
                 if (layout) {
                     ux.setRecord(element);
 
-                    if (layout.dataType === 'aggregated_values') {
-						aggWindow.addDimensionFromLayout(element, layout);
-
-
+                    //if (layout.dataType === 'aggregated_values') {
+						//aggWindow.addDimensionFromLayout(element, layout);
                 }
 
                 store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.rowStore : aggWindow.fixedFilterStore;
