@@ -141,7 +141,6 @@
         }
 
         if( data[context.iterator] === undefined ) {
-          // $.warn('selected: Invalid iterator for source url: ' + context.iterator);
           return;
         }
 
