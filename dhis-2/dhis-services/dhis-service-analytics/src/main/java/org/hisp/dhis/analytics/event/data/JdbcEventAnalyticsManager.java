@@ -33,7 +33,8 @@ import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
-import static org.hisp.dhis.system.util.TextUtils.removeLast;
+import static org.hisp.dhis.system.util.TextUtils.removeLastComma;
+import static org.hisp.dhis.system.util.TextUtils.removeLastOr;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 
 import java.util.Arrays;
@@ -54,7 +55,6 @@ import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -211,7 +211,7 @@ public class JdbcEventAnalyticsManager
                 sql += statementBuilder.columnQuote( item ) + " desc,";
             }
             
-            sql = removeLast( sql, 1 ) + " ";
+            sql = removeLastComma( sql ) + " ";
         }
         
         // ---------------------------------------------------------------------
@@ -333,7 +333,7 @@ public class JdbcEventAnalyticsManager
             sql += statementBuilder.columnQuote( item.getUid() ) + ",";
         }
         
-        return removeLast( sql, 1 );
+        return removeLastComma( sql );
     }
 
     private String getFromWhereMultiplePartitionsClause( EventQueryParams params, List<String> fixedColumns )
@@ -388,7 +388,7 @@ public class JdbcEventAnalyticsManager
                 sql += "uidlevel" + unit.getLevel() + " = '" + unit.getUid() + "' or ";
             }
             
-            sql = TextUtils.removeLast( sql, 3 ) + ") ";
+            sql = removeLastOr( sql ) + ") ";
         }
         
         if ( params.getProgramStage() != null )
