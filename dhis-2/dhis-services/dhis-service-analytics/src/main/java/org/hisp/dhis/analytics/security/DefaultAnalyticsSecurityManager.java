@@ -123,7 +123,7 @@ public class DefaultAnalyticsSecurityManager
                     unit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( unit.getId() ) );
                 }
                 
-                params.setApprovalLevels( approvalLevels );
+                params.setDataApprovalLevels( approvalLevels );
             
                 log.info( "User: " + user.getUsername() + " constrained by data approval levels: " + approvalLevels.values() );
             }
