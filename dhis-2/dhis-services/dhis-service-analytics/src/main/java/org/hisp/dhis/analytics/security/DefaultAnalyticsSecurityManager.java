@@ -2,6 +2,7 @@ package org.hisp.dhis.analytics.security;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -14,7 +15,9 @@ import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,17 @@ public class DefaultAnalyticsSecurityManager
     private CurrentUserService currentUserService;
     
     @Autowired
+    private DataApprovalLevelService approvalLevelService;
+    
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+    
+    @Autowired
     private DimensionService dimensionService;
+
+    // -------------------------------------------------------------------------
+    // AnalyticsSecurityManager implementation
+    // -------------------------------------------------------------------------
 
     public void decideAccess( DataQueryParams params )
     {
@@ -54,6 +67,25 @@ public class DefaultAnalyticsSecurityManager
             if ( !queryOrgUnit.isEqualOrChildOf( viewOrgUnits ) )
             {
                 throw new IllegalQueryException( "Org unit is not viewable for current user: " + queryOrgUnit.getUid() );
+            }
+        }
+    }
+    
+    public void applyDataApprovalConstraints( DataQueryParams params )
+    {
+        boolean approval = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
+
+        User user = currentUserService.getCurrentUser();
+        
+        if ( approval && user != null )
+        {
+            Map<OrganisationUnit, Integer> approvalLevels = approvalLevelService.getUserReadApprovalLevels();
+            
+            if ( approvalLevels != null && !approvalLevels.isEmpty() )
+            {
+                params.setApprovalLevels( approvalLevels );
+            
+                log.info( "User: " + user.getUsername() + " constrained by data approval levels: " + approvalLevels.values() );
             }
         }
     }
@@ -152,6 +184,4 @@ public class DefaultAnalyticsSecurityManager
             log.info( "User: " + user.getUsername() + " constrained by dimension: " + constraint.getDimension() );
         }        
     }
-    
-
 }
