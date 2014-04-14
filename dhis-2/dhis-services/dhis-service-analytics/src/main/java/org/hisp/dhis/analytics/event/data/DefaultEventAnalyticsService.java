@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.analytics.AnalyticsSecurityManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
@@ -114,6 +115,9 @@ public class DefaultEventAnalyticsService
     private EventAnalyticsManager analyticsManager;
 
     @Autowired
+    private AnalyticsSecurityManager securityManager;
+    
+    @Autowired
     private EventQueryPlanner queryPlanner;
 
     @Autowired
@@ -128,7 +132,7 @@ public class DefaultEventAnalyticsService
 
     public Grid getAggregatedEventData( EventQueryParams params )
     {
-        queryPlanner.decideAccess( params );
+        securityManager.decideAccess( params );
         
         queryPlanner.validate( params );
         
@@ -194,7 +198,7 @@ public class DefaultEventAnalyticsService
 
     public Grid getEvents( EventQueryParams params )
     {
-        queryPlanner.decideAccess( params );
+        securityManager.decideAccess( params );
         
         queryPlanner.validate( params );
 

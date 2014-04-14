@@ -42,6 +42,8 @@
   
   <bean id="org.hisp.dhis.analytics.QueryPlanner" class="org.hisp.dhis.analytics.data.DefaultQueryPlanner" />
 
+  <bean id="org.hisp.dhis.analytics.AnalyticsSecurityManager" class="org.hisp.dhis.analytics.security.DefaultAnalyticsSecurityManager" />
+
   <!-- Event analytics -->
 
   <bean id="org.hisp.dhis.analytics.event.EventAnalyticsManager" class="org.hisp.dhis.analytics.event.data.JdbcEventAnalyticsManager"/>  
