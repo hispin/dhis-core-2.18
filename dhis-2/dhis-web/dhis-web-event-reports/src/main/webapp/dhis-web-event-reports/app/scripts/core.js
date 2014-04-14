@@ -1656,7 +1656,7 @@ Ext.onReady( function() {
 			service.response.query.getExtendedResponse = function(layout, response) {
 				var xResponse = Ext.clone(response),
 					metaData = xResponse.metaData,
-                    dimensionNames = Ext.Array.pluck(layout.columns, 'dimension'),
+                    dimensionNames = Ext.Array.unique(Ext.Array.pluck(layout.columns, 'dimension')),
                     dimensionHeaders = [],
 					headers = xResponse.headers,
 					nameHeaderMap = {},
