@@ -301,7 +301,7 @@ function uploadLocalData()
             },
             error: function( jqXHR, textStatus, errorThrown )
             {
-            	if ( 409 == xhr.status ) // Invalid value or locked
+            	if ( 409 == xhr.status || 500 == xhr.status ) // Invalid value or locked
             	{
             		// Ignore value for now TODO needs better handling for locking
             		
@@ -362,7 +362,7 @@ function uploadLocalData()
             },
             error: function( xhr, textStatus, errorThrown )
             {
-            	if ( 409 == xhr.status ) // Invalid value or locked
+            	if ( 409 == xhr.status || 500 == xhr.status ) // Invalid value or locked
             	{
             		// Ignore value for now TODO needs better handling for locking
             		
@@ -1604,7 +1604,7 @@ function registerCompleteDataSet()
 	        },
 		    error:  function( xhr, textStatus, errorThrown )
 		    {
-		    	if ( 409 == xhr.status ) // Invalid value or locked
+		    	if ( 409 == xhr.status || 500 == xhr.status ) // Invalid value or locked
 	        	{
 	        		setHeaderMessage( xhr.responseText );
 	        	}
@@ -1653,7 +1653,7 @@ function undoCompleteDataSet()
         },
         error: function( xhr, textStatus, errorThrown )
         {
-        	if ( 409 == xhr.status ) // Invalid value or locked
+        	if ( 409 == xhr.status || 500 == xhr.status ) // Invalid value or locked
         	{
         		setHeaderMessage( xhr.responseText );
         	}
