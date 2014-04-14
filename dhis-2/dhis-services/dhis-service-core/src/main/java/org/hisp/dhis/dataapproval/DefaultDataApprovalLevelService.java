@@ -118,7 +118,7 @@ public class DefaultDataApprovalLevelService
         return dataApprovalLevels;
     }
 
-    public List<DataApprovalLevel> getUserDataApprovalLevels_OLD()
+    public List<DataApprovalLevel> getUserDataApprovalLevels()
     {
         List<DataApprovalLevel> userDataApprovalLevels = new ArrayList<DataApprovalLevel>();
 
