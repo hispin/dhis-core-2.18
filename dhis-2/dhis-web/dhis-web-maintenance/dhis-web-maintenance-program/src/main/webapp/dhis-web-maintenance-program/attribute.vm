@@ -17,10 +17,10 @@
   <tr>
     <td style="vertical-align:top">
 		<table width="100%">
-			<tr>
+			<tr valign="bottom">
 				<td>
-					<td>#filterDiv( "attribute" )</td>
-					<span style="margin-left:15px"><a href="attributeInListNoProgram.action">$i18n.getString( "manage_attributes_with_no_program" )</a></span>
+					#filterDiv( "attribute" )</td>
+					<span style="margin-left:2px"><a href="attributeInListNoProgram.action">$i18n.getString( "manage_attributes_with_no_program" )</a></span>
 				</td>
 				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddAttributeForm.action'" style="width:70px"></td>				
 			</tr>
