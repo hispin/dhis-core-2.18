@@ -28,16 +28,17 @@ package org.hisp.dhis.trackedentity.action.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
@@ -45,7 +46,7 @@ import com.opensymphony.xwork2.Action;
  * @version $ AddTrackedEntityAction.java Feb 15, 2014 7:20:44 PM $
  */
 public class GetTrackedEntityListAction
-    implements Action
+extends ActionPagingSupport<TrackedEntity>
 {
     // -------------------------------------------------------------------------
     // Dependency
@@ -65,6 +66,18 @@ public class GetTrackedEntityListAction
         return trackedEntities;
     }
 
+    private String key;
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -73,7 +86,22 @@ public class GetTrackedEntityListAction
     public String execute()
         throws Exception
     {
-        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+        if ( isNotBlank( key ) )
+        {
+            this.paging = createPaging( trackedEntityService.getTrackedEntityCountByName( key ) );
+
+            trackedEntities = new ArrayList<TrackedEntity>(
+                trackedEntityService.getTrackedEntityBetweenByName( key, paging.getStartPos(),
+                    paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( trackedEntityService.getTrackedEntityCount() );
+
+            trackedEntities = new ArrayList<TrackedEntity>(
+                trackedEntityService.getTrackedEntitysBetween( paging.getStartPos(),
+                    paging.getPageSize() ) );
+        }
 
         Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
 

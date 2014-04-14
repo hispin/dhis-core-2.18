@@ -16,7 +16,7 @@
 		<table width="100%">
 			<tr>
 				<td>
-					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+					#filterDiv( "trackedEntity" )
 				</td>
 				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddTrackedEntityForm.action'" style="width:70px"></td>				
 			</tr>
@@ -42,6 +42,7 @@
           #end
       </tbody>
       </table>
+	  #parse( "/dhis-web-commons/paging/paging.vm" )
     </td>
 
 		<td id="detailsData">
