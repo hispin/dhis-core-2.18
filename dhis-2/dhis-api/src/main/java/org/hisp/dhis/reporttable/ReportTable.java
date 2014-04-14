@@ -681,7 +681,7 @@ public class ReportTable
         // Sort and limit
         // ---------------------------------------------------------------------
 
-        if ( sortOrder != ReportTable.NONE )
+        if ( sortOrder != BaseAnalyticalObject.NONE )
         {
             grid.sortGrid( grid.getWidth(), sortOrder );
         }
