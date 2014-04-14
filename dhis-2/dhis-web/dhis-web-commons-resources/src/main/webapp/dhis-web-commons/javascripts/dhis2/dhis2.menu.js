@@ -352,6 +352,8 @@
  * @see jQuery (http://jquery.com)
  * @see jQuery Template Plugin (http://github.com/jquery/jquery-tmpl)
  */
+
+/* Function used for checking dependencies for the menu
 (function (required_libs, undefined) {
     var libraries = [
         { name: "jQuery", variable: "jQuery", url: "http://jquery.com" },
@@ -370,6 +372,7 @@
         }
     });
 })();
+*/
 
 (function ($, menu, undefined) {
     var markup = '',
