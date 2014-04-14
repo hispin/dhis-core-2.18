@@ -2883,7 +2883,7 @@ Ext.onReady( function() {
 						html = '';
 
 					html += '<div><b>Report link: </b><span class="user-select"><a href="' + url + '" target="_blank">' + url + '</a></span></div>';
-					html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
+					//html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
 					return html;
 				}(),
 				style: 'padding:3px',
@@ -2915,25 +2915,25 @@ Ext.onReady( function() {
 			window = Ext.create('Ext.window.Window', {
 				title: ns.app.layout.name,
 				layout: 'fit',
-				width: 500,
-				bodyStyle: 'padding:1px; background-color:#fff',
+				//width: 500,
+				bodyStyle: 'padding:5px; background-color:#fff',
 				resizable: false,
 				destroyOnBlur: true,
 				modal: true,
 				items: [
-					textArea,
+					//textArea,
 					linkPanel
 				],
-				bbar: {
-					cls: 'ns-toolbar-bbar',
-					defaults: {
-						height: 24
-					},
-					items: [
-						'->',
-						shareButton
-					]
-				},
+				//bbar: {
+					//cls: 'ns-toolbar-bbar',
+					//defaults: {
+						//height: 24
+					//},
+					//items: [
+						//'->',
+						//shareButton
+					//]
+				//},
 				listeners: {
 					show: function(w) {
 						ns.core.web.window.setAnchorPosition(w, ns.app.shareButton);
@@ -6210,22 +6210,32 @@ Ext.onReady( function() {
 				interpretationItem.xable();
 				pluginItem.xable();
 			},
-			menu: {
-				cls: 'ns-menu',
-				shadow: false,
-				showSeparator: false,
-				items: [
-					interpretationItem,
-					pluginItem
-				],
-				listeners: {
-					afterrender: function() {
-						this.getEl().addCls('ns-toolbar-btn-menu');
-					},
-					show: function() {
-						shareButton.xableItems();
-					}
+			//menu: {
+				//cls: 'ns-menu',
+				//shadow: false,
+				//showSeparator: false,
+				//items: [
+					//interpretationItem,
+					//pluginItem
+				//],
+				//listeners: {
+					//afterrender: function() {
+						//this.getEl().addCls('ns-toolbar-btn-menu');
+					//},
+					//show: function() {
+						//shareButton.xableItems();
+					//}
+				//}
+			//},
+			menu: {},
+			handler: function() {
+				if (ns.app.interpretationWindow) {
+					ns.app.interpretationWindow.destroy();
+					ns.app.interpretationWindow = null;
 				}
+
+				ns.app.interpretationWindow = InterpretationWindow();
+				ns.app.interpretationWindow.show();
 			},
 			listeners: {
 				added: function() {
