@@ -179,7 +179,7 @@ public class DataQueryParams
     /**
      * Mapping of organisation unit sub-hierarchy roots and lowest available data approval levels.
      */
-    private Map<OrganisationUnit, Integer> approvalLevels = new HashMap<OrganisationUnit, Integer>();
+    private Map<OrganisationUnit, Integer> dataApprovalLevels = new HashMap<OrganisationUnit, Integer>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -207,7 +207,7 @@ public class DataQueryParams
         params.dataPeriodType = this.dataPeriodType;
         params.skipPartitioning = this.skipPartitioning;
         params.organisationUnits = new ArrayList<OrganisationUnit>( this.organisationUnits );
-        params.approvalLevels = new HashMap<OrganisationUnit, Integer>( this.approvalLevels );
+        params.dataApprovalLevels = new HashMap<OrganisationUnit, Integer>( this.dataApprovalLevels );
         
         return params;
     }
@@ -875,7 +875,15 @@ public class DataQueryParams
      */
     public boolean isDataApproval()
     {
-        return approvalLevels != null && !approvalLevels.isEmpty();
+        return dataApprovalLevels != null && !dataApprovalLevels.isEmpty();
+    }
+    
+    /**
+     * Ignore data approval constraints for this query.
+     */
+    public void ignoreDataApproval()
+    {
+        this.dataApprovalLevels = new HashMap<OrganisationUnit, Integer>();
     }
     
     // -------------------------------------------------------------------------
@@ -1144,14 +1152,14 @@ public class DataQueryParams
         this.skipPartitioning = skipPartitioning;
     }
 
-    public Map<OrganisationUnit, Integer> getApprovalLevels()
+    public Map<OrganisationUnit, Integer> getDataApprovalLevels()
     {
-        return approvalLevels;
+        return dataApprovalLevels;
     }
 
-    public void setApprovalLevels( Map<OrganisationUnit, Integer> approvalLevels )
+    public void setDataApprovalLevels( Map<OrganisationUnit, Integer> dataApprovalLevels )
     {
-        this.approvalLevels = approvalLevels;
+        this.dataApprovalLevels = dataApprovalLevels;
     }
 
     // -------------------------------------------------------------------------

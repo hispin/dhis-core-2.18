@@ -337,6 +337,7 @@ public class DefaultAnalyticsService
             // -----------------------------------------------------------------
 
             DataQueryParams dataSourceParams = params.instance();
+            dataSourceParams.ignoreDataApproval(); // No approval for reporting rates
             dataSourceParams.removeDimension( INDICATOR_DIM_ID );
             dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
             dataSourceParams.setAggregationType( AggregationType.COUNT );

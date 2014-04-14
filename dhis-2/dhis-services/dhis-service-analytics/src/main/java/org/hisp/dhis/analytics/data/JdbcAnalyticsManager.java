@@ -45,6 +45,7 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.removeLastOr;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
+import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -64,6 +65,7 @@ import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.jdbc.StatementBuilder;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.MathUtils;
@@ -92,6 +94,8 @@ public class JdbcAnalyticsManager
     
     private static final Log log = LogFactory.getLog( JdbcAnalyticsManager.class );
         
+    private static final String COL_APPROVALLEVEL = "approvallevel";
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
@@ -284,7 +288,7 @@ public class JdbcAnalyticsManager
             
             if ( DimensionalObjectUtils.anyDimensionHasItems( filters ) )
             {
-                sql += sqlHelper.whereAnd() + " (";
+                sql += sqlHelper.whereAnd() + " ( ";
                 
                 for ( DimensionalObject filter : filters )
                 {
@@ -298,6 +302,21 @@ public class JdbcAnalyticsManager
                 
                 sql = removeLastOr( sql ) + ") ";
             }
+        }
+        
+        if ( params.isDataApproval() )
+        {
+            sql += sqlHelper.whereAnd() + " ( ";
+            
+            for ( OrganisationUnit unit : params.getDataApprovalLevels().keySet() )
+            {
+                String ouCol = LEVEL_PREFIX + unit.getLevel();
+                Integer level = params.getDataApprovalLevels().get( unit );
+                
+                sql += "(" + ouCol + " = '" + unit.getUid() + "' and " + COL_APPROVALLEVEL + " <= " + level + ") or ";
+            }
+            
+            sql = removeLastOr( sql ) + ") ";
         }
         
         return sql;
