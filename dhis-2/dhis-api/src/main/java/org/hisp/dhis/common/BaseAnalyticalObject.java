@@ -751,7 +751,7 @@ public abstract class BaseAnalyticalObject
     }
     
     /**
-     * Clear or set to false all persistent properties for this object.
+     * Clear or set to false all persistent dimensional (not option) properties for this object.
      */
     public void clear()
     {
@@ -771,10 +771,6 @@ public abstract class BaseAnalyticalObject
         userOrganisationUnitGrandChildren = false;
         organisationUnitLevels.clear();
         itemOrganisationUnitGroups.clear();
-        rewindRelativePeriods = false;
-        digitGroupSeparator = NUMBER_FORMATTING_SPACE;
-        sortOrder = NONE;
-        topLimit = 0;
     }
     
     @Override
@@ -1058,7 +1054,7 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public boolean isRewindRelativePeriods()
     {
@@ -1071,7 +1067,7 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDigitGroupSeparator()
     {
@@ -1084,7 +1080,7 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getSortOrder()
     {
@@ -1097,7 +1093,7 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getTopLimit()
     {
