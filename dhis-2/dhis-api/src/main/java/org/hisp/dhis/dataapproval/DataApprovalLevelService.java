@@ -68,6 +68,8 @@ public interface DataApprovalLevelService
      * @return List of all data approval levels, ordered from 1 to n.
      */
     List<DataApprovalLevel> getAllDataApprovalLevels();
+    
+    List<DataApprovalLevel> getUserDataApprovalLevels();
 
     /**
      * Gets data approval levels by org unit level.
