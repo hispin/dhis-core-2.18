@@ -136,9 +136,10 @@ public class DefaultDataApprovalService
             for ( OrganisationUnit ancestor : dataApproval.getOrganisationUnit().getAncestors() )
             {
                 DataApproval ancestorApproval = dataApprovalStore.getDataApproval(
-                        dataApproval.getDataSet(), dataApproval.getPeriod(), ancestor, dataApproval.getCategoryOptionGroup() );
+                    dataApproval.getDataSet(), dataApproval.getPeriod(), ancestor, dataApproval.getCategoryOptionGroup() );
 
-                if ( ancestorApproval != null ) {
+                if ( ancestorApproval != null ) 
+                {
                     dataApprovalStore.deleteDataApproval ( ancestorApproval );
                 }
             }
@@ -151,9 +152,11 @@ public class DefaultDataApprovalService
 
     public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        return getDataApprovalStatus( dataSet, period, organisationUnit, null,
-            ( attributeOptionCombo == null || attributeOptionCombo.getId() == categoryService.getDefaultDataElementCategoryOptionCombo().getId() )
-                ? null : attributeOptionCombo.getCategoryOptions() );
+        Set<DataElementCategoryOption> categoryOptions = 
+            attributeOptionCombo == null || attributeOptionCombo.equals( categoryService.getDefaultDataElementCategoryOptionCombo() ) ? 
+                null : attributeOptionCombo.getCategoryOptions();
+        
+        return getDataApprovalStatus( dataSet, period, organisationUnit, null, categoryOptions );
     }
 
     public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period, OrganisationUnit organisationUnit,
@@ -170,9 +173,11 @@ public class DefaultDataApprovalService
     public DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period, 
         OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        return getDataApprovalPermissions( dataSet, period, organisationUnit, null,
-            ( attributeOptionCombo == null || attributeOptionCombo.getId() == categoryService.getDefaultDataElementCategoryOptionCombo().getId() )
-            ? null : attributeOptionCombo.getCategoryOptions() );
+        Set<DataElementCategoryOption> categoryOptions = 
+            attributeOptionCombo == null || attributeOptionCombo.equals( categoryService.getDefaultDataElementCategoryOptionCombo() ) ?
+                null : attributeOptionCombo.getCategoryOptions();
+        
+        return getDataApprovalPermissions( dataSet, period, organisationUnit, null, categoryOptions );
     }
 
     public DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period,
@@ -254,7 +259,7 @@ public class DefaultDataApprovalService
             warnNotPermitted( dataApproval, "unaccept", mayAcceptOrUnaccept( dataApproval.getOrganisationUnit() ) );
         }
     }
-
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
