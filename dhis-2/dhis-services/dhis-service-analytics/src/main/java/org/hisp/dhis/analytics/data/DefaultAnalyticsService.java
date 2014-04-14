@@ -209,6 +209,8 @@ public class DefaultAnalyticsService
     {
         securityManager.decideAccess( params );
         
+        securityManager.applyDataApprovalConstraints( params );
+        
         securityManager.applyDimensionConstraints( params );
         
         queryPlanner.validate( params );
