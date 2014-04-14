@@ -206,7 +206,11 @@ public class DefaultAnalyticsService
 
     @Override
     public Grid getAggregatedDataValues( DataQueryParams params )
-    {
+    {   
+        // ---------------------------------------------------------------------
+        // Security and validation
+        // ---------------------------------------------------------------------
+
         securityManager.decideAccess( params );
         
         securityManager.applyDataApprovalConstraints( params );

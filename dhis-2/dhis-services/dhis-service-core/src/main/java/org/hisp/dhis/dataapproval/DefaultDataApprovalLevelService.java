@@ -342,7 +342,7 @@ public class DefaultDataApprovalLevelService
         {
             if ( !map.containsKey( orgUnit ) )
             {
-                map.put(orgUnit, requiredApprovalLevel( orgUnit ) );
+                map.put( orgUnit, requiredApprovalLevel( orgUnit ) );
             }
         }
 
