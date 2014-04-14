@@ -2,7 +2,6 @@
 
 <ul class="introList">
     #introListImgItem( "attribute.action" "attribute" "patient" )
-    #introListImgItem( "attributeVisitSchedule.action" "attribute_visit_schedule" "patient" )
     #introListImgItem( "attributeGroup.action" "attribute_group" "patient" )
     #introListImgItem( "relationshipType.action" "relationship_type" "patient" )
     #introListImgItem( "trackedEntity.action" "tracked_entity" "patient" )
