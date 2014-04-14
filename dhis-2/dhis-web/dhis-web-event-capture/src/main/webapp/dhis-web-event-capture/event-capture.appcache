@@ -3,7 +3,9 @@ CACHE MANIFEST
 CACHE:
 ../dhis-web-commons/javascripts/jQuery/jquery.min.js
 ../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js
+../dhis-web-commons/javascripts/jQuery/jquery.tmpl.js
 ../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css
+
 
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.eot
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.woff
@@ -23,6 +25,7 @@ CACHE:
 
 ../dhis-web-commons/css/light_blue/light_blue.css
 ../dhis-web-commons/css/widgets.css
+../dhis-web-commons/css/menu.css
 styles/style.css
 
 ../dhis-web-commons/bootstrap/js/bootstrap.min.js
@@ -72,6 +75,8 @@ styles/style.css
 ../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js
 ../dhis-web-commons/ouwt/ouwt.js
+../dhis-web-commons/javascripts/dhis2/dhis2.translate.js
+../dhis-web-commons/javascripts/dhis2/dhis2.menu.js
 
 scripts/event-capture.js  
 scripts/app.js
