@@ -43,6 +43,7 @@ import static org.hisp.dhis.analytics.MeasureFilter.LT;
 import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
+import static org.hisp.dhis.system.util.TextUtils.removeLastOr;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 
 import java.util.Collection;
@@ -296,7 +297,7 @@ public class JdbcAnalyticsManager
                 }
             }
             
-            sql = trimEnd( sql, " or ".length() ) + ") ";
+            sql = removeLastOr( sql ) + ") ";
         }
         
         return sql;
