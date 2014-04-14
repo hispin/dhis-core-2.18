@@ -1038,6 +1038,7 @@ public class ReportTable
             totals = reportTable.isTotals();
             subtotals = reportTable.isSubtotals();
             hideEmptyRows = reportTable.isHideEmptyRows();
+            showHierarchy = reportTable.isShowHierarchy();
             aggregationType = reportTable.getAggregationType();
             displayDensity = reportTable.getDisplayDensity();
             fontSize = reportTable.getFontSize();
