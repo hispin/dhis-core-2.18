@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.events.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
@@ -39,12 +40,16 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -69,6 +74,9 @@ public abstract class AbstractTrackedEntityInstanceService
     private TrackedEntityAttributeValueService attributeValueService;
 
     @Autowired
+    private TrackedEntityAttributeService trackedEntityAttributeService;
+
+    @Autowired
     private RelationshipService relationshipService;
 
     @Autowired
@@ -82,6 +90,9 @@ public abstract class AbstractTrackedEntityInstanceService
 
     @Autowired
     private IdentifiableObjectManager manager;
+
+    @Autowired
+    private UserService userService;
 
     // -------------------------------------------------------------------------
     // READ
@@ -314,6 +325,8 @@ public abstract class AbstractTrackedEntityInstanceService
                     checkScope( tei, entityAttribute, attribute.getValue(), organisationUnit )
                 );
             }
+
+            importConflicts.addAll( validateAttributeType( attribute ) );
         }
 
         return importConflicts;
@@ -429,5 +442,53 @@ public abstract class AbstractTrackedEntityInstanceService
         }
 
         teiService.updateTrackedEntityInstance( entityInstance );
+    }
+
+
+    private List<ImportConflict> validateAttributeType( Attribute attribute )
+    {
+        List<ImportConflict> importConflicts = Lists.newArrayList();
+        TrackedEntityAttribute teAttribute = trackedEntityAttributeService.getTrackedEntityAttribute( attribute.getAttribute() );
+
+        if ( teAttribute == null )
+        {
+            importConflicts.add( new ImportConflict( "Attribute.attribute", "Does not point to a valid attribute." ) );
+            return importConflicts;
+        }
+
+        if ( attribute.getValue().length() > 255 )
+        {
+            importConflicts.add( new ImportConflict( "Attribute.value", "Value length is greater than 256 chars." ) );
+        }
+
+        if ( TrackedEntityAttribute.TYPE_INT.equals( teAttribute.getValueType() ) && !MathUtils.isInteger( attribute.getValue() ) )
+        {
+            importConflicts.add( new ImportConflict( "Attribute.value", "Value is not integer." ) );
+        }
+        else if ( TrackedEntityAttribute.TYPE_BOOL.equals( teAttribute.getValueType() ) && !MathUtils.isBool( attribute.getValue() ) )
+        {
+            importConflicts.add( new ImportConflict( "Attribute.value", "Value is not boolean." ) );
+        }
+        else if ( TrackedEntityAttribute.TYPE_DATE.equals( teAttribute.getValueType() ) && !DateUtils.dateIsValid( attribute.getValue() ) )
+        {
+            importConflicts.add( new ImportConflict( "Attribute.value", "Value is not date." ) );
+        }
+        else if ( TrackedEntityAttribute.TYPE_TRUE_ONLY.equals( teAttribute.getValueType() ) && "true".equals( attribute.getValue() ) )
+        {
+            importConflicts.add( new ImportConflict( "Attribute.value", "Value is not true (true-only value type)." ) );
+        }
+        else if ( TrackedEntityAttribute.TYPE_USERS.equals( teAttribute.getValueType() ) )
+        {
+            if ( userService.getUserCredentialsByUsername( attribute.getValue() ) == null )
+            {
+                importConflicts.add( new ImportConflict( "Attribute.value", "Value is not pointing to a valid username." ) );
+            }
+        }
+        else if ( TrackedEntityAttribute.TYPE_COMBO.equals( teAttribute.getValueType() ) && !teAttribute.getOptionSet().getOptions().contains( attribute.getValue() ) )
+        {
+            importConflicts.add( new ImportConflict( "Attribute.value", "Value is not pointing to a valid option." ) );
+        }
+
+        return importConflicts;
     }
 }
