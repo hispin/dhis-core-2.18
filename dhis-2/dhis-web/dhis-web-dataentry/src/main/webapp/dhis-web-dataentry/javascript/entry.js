@@ -324,7 +324,7 @@ function ValueSaver( de, pe, co, value, fieldId, resultColor )
 
     function handleError( xhr, textStatus, errorThrown )
     {
-    	if ( 409 == xhr.status ) // Invalid value or locked
+    	if ( 409 == xhr.status || 500 == xhr.status ) // Invalid value or locked
     	{
     		markValue( fieldId, COLOR_RED );
     		setHeaderMessage( xhr.responseText );
