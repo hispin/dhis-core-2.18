@@ -28,7 +28,9 @@ package org.hisp.dhis.trackedentity.action.trackedentityattribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
@@ -59,9 +61,9 @@ public class SaveAttributeVisitScheduleAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer[] selectedAttributeIds;
+    private List<Integer> selectedAttributeIds = new ArrayList<Integer>();
 
-    public void setSelectedAttributeIds( Integer[] selectedAttributeIds )
+    public void setSelectedAttributeIds( List<Integer> selectedAttributeIds )
     {
         this.selectedAttributeIds = selectedAttributeIds;
     }
@@ -76,6 +78,7 @@ public class SaveAttributeVisitScheduleAction
         Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
         
         int index = 1;
+        
         for ( Integer attributeId : selectedAttributeIds )
         {
             TrackedEntityAttribute attribute = attributeService.getTrackedEntityAttribute( attributeId );
