@@ -101,4 +101,42 @@ public interface TrackedEntityService
      *         collection if there are no TrackedEntitys.
      */
     Collection<TrackedEntity> getAllTrackedEntity();
+    
+    /**
+     * Returns The number of TrackedEntities with the key searched
+     * 
+     * @param name Keyword for searching by name
+     * 
+     * @return A number
+     * 
+     */
+    Integer getTrackedEntityCountByName( String name );
+
+    /**
+     * Returns {@link TrackedEntity} list with paging
+     * 
+     * @param name Keyword for searching by name
+     * @param min
+     * @param max
+     * @return a collection of all TrackedEntity, or an empty
+     *         collection if there are no TrackedEntity.
+     */
+    Collection<? extends TrackedEntity> getTrackedEntityBetweenByName( String name,
+        int min, int max );
+
+    /**
+     * Returns The number of all TrackedEntity available
+     * 
+     */
+    Integer getTrackedEntityCount();
+
+    /**
+     * Returns {@link TrackedEntity} list with paging
+     * 
+     * @param min
+     * @param max
+     * @return a collection of all TrackedEntity, or an empty
+     *         collection if there are no TrackedEntity.
+     */
+    Collection<TrackedEntity> getTrackedEntitysBetween( int min, int max );
 }
