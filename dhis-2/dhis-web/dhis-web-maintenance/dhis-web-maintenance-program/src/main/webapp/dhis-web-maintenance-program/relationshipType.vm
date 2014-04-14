@@ -16,7 +16,7 @@
     <table width="100%">
       <tr>
         <td>
-          $i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+			#filterDiv( "relationshipType" )
         </td>
         <td colspan="3" style="text-align:right">
           <input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddRelationshipTypeForm.action'" style="width:70px">
@@ -24,14 +24,20 @@
       </tr>
     </table>
 
-      <table class="listTable">
+	<table class="listTable">
+      <col>
+	   <col>
+      <thead>
         <tr>
           <th>$i18n.getString( "relationship_type" )</th>
           <th>$i18n.getString( "name" )</th>
         </tr>
+      </thead>
         <tbody id="list">
         #foreach( $relationshipType in $relationshipTypes )
-          <tr id="tr${relationshipType.id}" data-id="$!relationshipType.id" data-uid="$!relationshipType.uid" data-type="RelationshipType" data-name="$encoder.htmlEncode( $relationshipType.aIsToB )/$encoder.htmlEncode( $relationshipType.bIsToA )"
+          <tr id="tr${relationshipType.id}" data-id="$!relationshipType.id" 
+			  data-uid="$!relationshipType.uid" data-type="RelationshipType" 
+			  data-name="$encoder.htmlEncode( $relationshipType.aIsToB )/$encoder.htmlEncode( $relationshipType.bIsToA )"
               data-can-manage="$security.canManage( $relationshipType )"
               data-can-update="$security.canUpdate( $relationshipType )"
               data-can-delete="$security.canDelete( $relationshipType )">
@@ -41,6 +47,7 @@
         #end
         </tbody>
         </table>
+		#parse( "/dhis-web-commons/paging/paging.vm" )
     </td>
 
     <td id="detailsData">

@@ -13,14 +13,11 @@
   <tr>
     <td style="vertical-align:top">
 		<table width="100%">
-			<tr>
+			<tr valign="bottom">
 				<td>
-					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+					#filterDiv( "attributeGroup" )
 				</td>
-				<td colspan="3" style="text-align:right">
-          <input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddAttributeGroupForm.action'" style="width:75px">
-          <input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortAttributeGroup.action'" style="width:75px"><br>
-        </td>
+				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddAttributeForm.action'" style="width:70px"></td>				
 			</tr>
 		</table>
 
@@ -33,7 +30,9 @@
       </thead>
       <tbody id="list">
         #foreach( $attributeGroup in $attributeGroups )
-          <tr id="tr${attributeGroup.id}" data-id="$!attributeGroup.id" data-uid="$!attributeGroup.uid" data-type="TrackedEntityAttributeGroup" data-name="$encoder.htmlEncode( $!attributeGroup.displayName )"
+          <tr id="tr${attributeGroup.id}" data-id="$!attributeGroup.id" 
+			  data-uid="$!attributeGroup.uid" data-type="TrackedEntityAttributeGroup" 
+			  data-name="$encoder.htmlEncode( $!attributeGroup.displayName )"
               data-can-manage="$security.canManage( $attributeGroup )"
               data-can-update="$security.canUpdate( $attributeGroup )"
               data-can-delete="$security.canDelete( $attributeGroup )">
@@ -42,9 +41,8 @@
         #end
       </tbody>
       </table>
-
+		#parse( "/dhis-web-commons/paging/paging.vm" )
     </td>
-
 		<td id="detailsData">
       <div id="detailsArea">
         <div id="hideDetailsArea">
