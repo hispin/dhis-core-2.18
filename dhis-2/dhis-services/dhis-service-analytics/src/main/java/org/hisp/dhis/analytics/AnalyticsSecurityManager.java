@@ -47,7 +47,8 @@ public interface AnalyticsSecurityManager
     /**
      * Adds relevant data approval levels to the given query if system is configured
      * to hide unapproved data from analytics and if there are relevant approval
-     * levels for current user.
+     * levels for current user. Populates the approvalLevels property of the given
+     * query and sets the level poperty of each related organisation unit.
      * 
      * @param params the data query params.
      */
