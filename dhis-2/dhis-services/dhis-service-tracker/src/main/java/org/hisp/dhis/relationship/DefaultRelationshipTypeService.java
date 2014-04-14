@@ -28,12 +28,12 @@ package org.hisp.dhis.relationship;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.I18nService;
-import org.springframework.transaction.annotation.Transactional;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.Collection;
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import org.hisp.dhis.i18n.I18nService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Abyot Asalefew
@@ -99,5 +99,29 @@ public class DefaultRelationshipTypeService
     public RelationshipType getRelationshipType( String aIsToB, String bIsToA )
     {
         return i18n( i18nService, relationshipTypeStore.getRelationshipType( aIsToB, bIsToA ) );
+    }
+
+    @Override
+    public Integer getRelationshipTypeCountByName( String name )
+    {
+        return relationshipTypeStore.getCountLikeName( name );
+    }
+
+    @Override
+    public Collection<? extends RelationshipType> getRelationshipTypesBetweenByName( String name, int min, int max )
+    {
+        return relationshipTypeStore.getAllLikeNameOrderedName( name, min, max );
+    }
+
+    @Override
+    public Integer getRelationshipTypeCount()
+    {
+        return relationshipTypeStore.getCount();
+    }
+
+    @Override
+    public Collection<RelationshipType> getRelationshipTypesBetween( int min, int max )
+    {
+        return relationshipTypeStore.getAllOrderedName( min, max );
     }
 }

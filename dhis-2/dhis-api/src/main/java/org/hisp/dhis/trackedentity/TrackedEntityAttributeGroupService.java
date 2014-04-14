@@ -42,23 +42,27 @@ public interface TrackedEntityAttributeGroupService
     /**
      * Adds an {@link TrackedEntityAttributeGroup}
      * 
-     * @param TrackedEntityAttributeGroup The to TrackedEntityAttributeGroup add.
+     * @param TrackedEntityAttributeGroup The to TrackedEntityAttributeGroup
+     *        add.
      * 
-     * @return A generated unique id of the added {@link TrackedEntityAttributeGroup}.
+     * @return A generated unique id of the added
+     *         {@link TrackedEntityAttributeGroup}.
      */
     int addTrackedEntityAttributeGroup( TrackedEntityAttributeGroup TrackedEntityAttributeGroup );
 
     /**
      * Deletes a {@link TrackedEntityAttributeGroup}.
      * 
-     * @param TrackedEntityAttributeGroup the TrackedEntityAttributeGroup to delete.
+     * @param TrackedEntityAttributeGroup the TrackedEntityAttributeGroup to
+     *        delete.
      */
     void deleteTrackedEntityAttributeGroup( TrackedEntityAttributeGroup TrackedEntityAttributeGroup );
 
     /**
      * Updates a {@link TrackedEntityAttributeGroup}.
      * 
-     * @param TrackedEntityAttributeGroup the TrackedEntityAttributeGroup to update.
+     * @param TrackedEntityAttributeGroup the TrackedEntityAttributeGroup to
+     *        update.
      */
     void updateTrackedEntityAttributeGroup( TrackedEntityAttributeGroup TrackedEntityAttributeGroup );
 
@@ -73,9 +77,9 @@ public interface TrackedEntityAttributeGroupService
 
     /**
      * Returns a {@link TrackedEntityAttributeGroup}.
-     *
+     * 
      * @param uid the id of the TrackedEntityAttributeGroup to return.
-     *
+     * 
      * @return the TrackedEntityAttributeGroup with the given id
      */
     TrackedEntityAttributeGroup getTrackedEntityAttributeGroup( String uid );
@@ -85,24 +89,65 @@ public interface TrackedEntityAttributeGroupService
      * 
      * @param name the name of the TrackedEntityAttributeGroup to return.
      * 
-     * @return the TrackedEntityAttributeGroup with the given name, or null if no match.
+     * @return the TrackedEntityAttributeGroup with the given name, or null if
+     *         no match.
      */
     TrackedEntityAttributeGroup getTrackedEntityAttributeGroupByName( String name );
 
     /**
      * Returns all {@link TrackedEntityAttributeGroup}
      * 
-     * @return a collection of all TrackedEntityAttributeGroup, or an empty collection if there are
-     *         no TrackedEntityAttributeGroups.
+     * @return a collection of all TrackedEntityAttributeGroup, or an empty
+     *         collection if there are no TrackedEntityAttributeGroups.
      */
     Collection<TrackedEntityAttributeGroup> getAllTrackedEntityAttributeGroups();
 
     /**
-     * Get {@link TrackedEntityAttribute} by a {@link TrackedEntityAttributeGroup}
+     * Get {@link TrackedEntityAttribute} by a
+     * {@link TrackedEntityAttributeGroup}
      * 
      * @param TrackedEntityAttributeGroup {@link TrackedEntityAttributeGroup}
      * 
      * @return TrackedEntityAttribute list
      */
-    List<TrackedEntityAttribute> getTrackedEntityAttributes( TrackedEntityAttributeGroup TrackedEntityAttributeGroup );
+    List<TrackedEntityAttribute> getTrackedEntityAttributes(
+        TrackedEntityAttributeGroup TrackedEntityAttributeGroup );
+
+    /**
+     * Returns The number of TrackedEntityAttributeGroups with the key searched
+     * 
+     * @param name Keyword for searching by name
+     * 
+     * @return A number
+     * 
+     */
+    Integer getTrackedEntityAttributeGroupCountByName( String name );
+
+    /**
+     * Returns {@link TrackedEntityAttribute} list with paging
+     * 
+     * @param name Keyword for searching by name
+     * @param min
+     * @param max
+     * @return a collection of all TrackedEntityAttribute, or an empty
+     *         collection if there are no TrackedEntityAttributes.
+     */
+    Collection<? extends TrackedEntityAttributeGroup> getTrackedEntityAttributeGroupsBetweenByName( String name,
+        int min, int max );
+
+    /**
+     * Returns The number of all TrackedEntityAttribute available
+     * 
+     */
+    Integer getTrackedEntityAttributeGroupCount();
+
+    /**
+     * Returns {@link TrackedEntityAttribute} list with paging
+     * 
+     * @param min
+     * @param max
+     * @return a collection of all TrackedEntityAttribute, or an empty
+     *         collection if there are no TrackedEntityAttributes.
+     */
+    Collection<TrackedEntityAttributeGroup> getTrackedEntityAttributeGroupsBetween( int min, int max );
 }

@@ -28,22 +28,23 @@ package org.hisp.dhis.trackedentity.action.trackedentityattributegroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
-import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeGroupSortOrderComparator;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
 public class GetAttributeGroupListAction
-    implements Action
+    extends ActionPagingSupport<TrackedEntityAttributeGroup>
 {
     // -------------------------------------------------------------------------
     // Dependency
@@ -59,12 +60,24 @@ public class GetAttributeGroupListAction
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
-   
+
     private List<TrackedEntityAttributeGroup> attributeGroups = new ArrayList<TrackedEntityAttributeGroup>();
 
     public List<TrackedEntityAttributeGroup> getAttributeGroups()
     {
         return attributeGroups;
+    }
+
+    private String key;
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -74,10 +87,24 @@ public class GetAttributeGroupListAction
     public String execute()
         throws Exception
     {
-        attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
-            attributeGroupService.getAllTrackedEntityAttributeGroups() );
+        if ( isNotBlank( key ) )
+        {
+            this.paging = createPaging( attributeGroupService.getTrackedEntityAttributeGroupCountByName( key ) );
 
-        Collections.sort( attributeGroups, new TrackedEntityAttributeGroupSortOrderComparator() );
+            attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
+                attributeGroupService.getTrackedEntityAttributeGroupsBetweenByName( key, paging.getStartPos(),
+                    paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( attributeGroupService.getTrackedEntityAttributeGroupCount() );
+
+            attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
+                attributeGroupService.getTrackedEntityAttributeGroupsBetween( paging.getStartPos(),
+                    paging.getPageSize() ) );
+        }
+
+        Collections.sort( attributeGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
