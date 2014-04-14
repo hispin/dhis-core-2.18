@@ -37,7 +37,22 @@ import java.util.List;
  */
 public interface FilterService
 {
+    /**
+     * Filter a list of objects based on un-parsed filter string.
+     *
+     * @param objects List to filter
+     * @param filters Filter string
+     * @return Filtered object list
+     */
     <T extends IdentifiableObject> List<T> filterObjects( List<T> objects, List<String> filters );
 
+    /**
+     * Perform inclusion/exclusion on a list of objects.
+     *
+     * @param objects List to filter
+     * @param include Inclusion filter
+     * @param exclude Exclusion filter
+     * @return List of objects with only wanted properties
+     */
     <T extends IdentifiableObject> List<Object> filterProperties( List<T> objects, String include, String exclude );
 }
