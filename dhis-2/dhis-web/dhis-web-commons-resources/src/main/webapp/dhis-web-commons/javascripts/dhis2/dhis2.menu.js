@@ -27,9 +27,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Make sure that dhis2 object exists
-var dhis2 = dhis2 || {};
-
 /**
  * Created by Mark Polak on 28/01/14.
  */
@@ -44,7 +41,7 @@ var dhis2 = dhis2 || {};
          * Object that represents the list of menu items
          * and managers the order of the items to be saved.
          */
-        menuItemsList = (function () {
+            menuItemsList = (function () {
             var menuOrder = [],
                 menuItems = {};
 
@@ -127,7 +124,7 @@ var dhis2 = dhis2 || {};
                 onceCallBack(menuItems);
             }
             callBacks.forEach(function (callback, index, callBacks) {
-               callback.apply(dhis2.menu, [menuItems]);
+                callback.apply(dhis2.menu, [menuItems]);
             });
         }
 
@@ -345,7 +342,7 @@ var dhis2 = dhis2 || {};
 
         return that;
     }();
-})(dhis2);
+})(dhis2 = dhis2 || {});
 
 /**
  * Created by Mark Polak on 28/01/14.
@@ -353,7 +350,27 @@ var dhis2 = dhis2 || {};
  * @description jQuery part of the menu
  *
  * @see jQuery (http://jquery.com)
+ * @see jQuery Template Plugin (http://github.com/jquery/jquery-tmpl)
  */
+(function (required_libs, undefined) {
+    var libraries = [
+        { name: "jQuery", variable: "jQuery", url: "http://jquery.com" },
+        { name: "jQuery Template Plugin", variable: "jQuery.template", url: "http://github.com/jquery/jquery-tmpl" }
+    ];
+
+    //In IE 8 we can not use console
+    if (typeof console === "undefined") {
+        return;
+    }
+
+    //Throw error for the required libraries
+    libraries.forEach(function (library, index, libraries) {
+        if (window[library] === undefined) {
+            console.error("Missing required library: " + library.name + ". Please see (" + library.url + ")");
+        }
+    });
+})();
+
 (function ($, menu, undefined) {
     var markup = '',
         selector = 'appsMenu';
@@ -409,10 +426,10 @@ var dhis2 = dhis2 || {};
                 type:"POST",
                 url: "../api/menu/"
             }).success(function () {
-                //TODO: Give user feedback for successful save
-            }).error(function () {
-                //TODO: Give user feedback for failure to save
-            });
+                    //TODO: Give user feedback for successful save
+                }).error(function () {
+                    //TODO: Give user feedback for failure to save
+                });
         }
     }
 
@@ -444,24 +461,24 @@ var dhis2 = dhis2 || {};
     /**
      * Render the menumanager and the dropdown menu and attach the update handler
      */
-    //TODO: Rename this as the name is not very clear to what it does
+        //TODO: Rename this as the name is not very clear to what it does
     function renderMenu() {
         var options = {
-                placeholder: 'app-menu-placeholder',
-                connectWith: '.app-menu ul',
-                update: function (event, ui) {
-                    var reorderedApps = $("#" + selector + " ul"). sortable('toArray', {attribute: "data-id"});
+            placeholder: 'app-menu-placeholder',
+            connectWith: '.app-menu ul',
+            update: function (event, ui) {
+                var reorderedApps = $("#" + selector + " ul"). sortable('toArray', {attribute: "data-id"});
 
-                    dhis2.menu.updateOrder(reorderedApps);
-                    dhis2.menu.save(saveOrder);
+                dhis2.menu.updateOrder(reorderedApps);
+                dhis2.menu.save(saveOrder);
 
-                    //Render the dropdown menu
-                    renderDropDownFavorites();
-                },
-                sort: twoColumnRowFix,
-                tolerance: "pointer",
-                cursorAt: { left: 55, top: 30 }
-            };
+                //Render the dropdown menu
+                renderDropDownFavorites();
+            },
+            sort: twoColumnRowFix,
+            tolerance: "pointer",
+            cursorAt: { left: 55, top: 30 }
+        };
 
         renderAppManager(selector);
         renderDropDownFavorites();
@@ -485,12 +502,12 @@ var dhis2 = dhis2 || {};
                 menu.addMenuItems(data.modules);
             }
         }).error(function () {
-            //TODO: Give user feedback for failure to load items
-            //TODO: Translate this error message
-            var error_template = '<li class="app-menu-error"><a href="' + window.location.href +'">Unable to load your apps, click to refresh</a></li>';
-            $('#' + selector).addClass('app-menu').html('<ul>' + error_template + '</ul>');
-            $('#appsDropDown .menuDropDownBox').html(error_template);
-        });
+                //TODO: Give user feedback for failure to load items
+                //TODO: Translate this error message
+                var error_template = '<li class="app-menu-error"><a href="' + window.location.href +'">Unable to load your apps, click to refresh</a></li>';
+                $('#' + selector).addClass('app-menu').html('<ul>' + error_template + '</ul>');
+                $('#appsDropDown .menuDropDownBox').html(error_template);
+            });
 
         /**
          * Event handler for the sort order box

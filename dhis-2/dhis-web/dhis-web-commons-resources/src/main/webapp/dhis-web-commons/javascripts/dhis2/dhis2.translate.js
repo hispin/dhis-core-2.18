@@ -27,13 +27,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
+// Make sure that dhis2 object exists
+var dhis2 = dhis2 || {};
+dhis2.translate = dhis2.translate || {};
+
 /**
  * Created by Mark Polak on 28/01/14.
  *
+ * @see jQuery (http://jquery.com)
  * @see Underscore.js (http://underscorejs.org)
  */
-dhis2.util.namespace( 'dhis2.translate' );
-
 (function ($,  _, translate, undefined) {
     var translationCache = {
         get: function (key) {

@@ -6,7 +6,7 @@
 
         <meta name="description" content="DHIS 2">
         <meta name="keywords" content="DHIS 2">        
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">              
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js"></script>
@@ -21,7 +21,13 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/angular-animate.js"></script>        
         <script type="text/javascript" src="../dhis-web-commons/javascripts/angular/ui-bootstrap-tpls-0.10.0-draggable-modal.js"></script>
 
-        <script type="text/javascript" src="../dhis-web-commons/javascripts/moment/moment-with-langs.min.js"></script>          
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/moment/moment-with-langs.min.js"></script>
+
+        <!-- Menu dependencies -->
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tmpl.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js"></script>
+        <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/menu.css">
 
         <script type="text/javascript" src="../dhis-web-commons/javascripts/underscore.min.js"></script>
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
@@ -60,6 +66,10 @@
         <script type="text/javascript" src="scripts/controllers.js"></script>
         <script type="text/javascript" src="scripts/filters.js"></script>
 
+        <!-- Menu scripts -->
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
+        <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.menu.js"></script>
+
         <link type="text/css" rel="stylesheet" href="../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
         <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/light_blue/light_blue.css"/>
         <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/widgets.css"/>       
@@ -74,6 +84,76 @@
                 <img ng-click="home()" id="headerBanner" src="../dhis-web-commons/css/light_blue/logo_banner.png" style="cursor:pointer" title="{{'dhis2_home'| translate}}">                    
             </div>
             <div id="headerMessage" class="bold"></div>
+
+            <!-- Menu html -->
+            <ul id="menuLinkArea">
+                <li id="profileDropDown_button">
+                    <a id="profileMenuLink" class="menu-link drop-down-menu-link">
+                        <i class="fa fa-user"></i>{{'profile'| translate}}
+                    </a>
+                </li>
+                <li id="appsDropDown_button">
+                    <a id="appsMenuLink" class="menu-link drop-down-menu-link">
+                        <i class="fa fa-th"></i>{{'applications'| translate}}
+                    </a>
+                </li>
+            </ul>
+
+            <div id="appsDropDown" class="menuDropDownArea app-menu-dropdown appsMenuLink_menu" >
+                <div class="caret-up-border"></div>
+                <div class="caret-up-background"></div>
+                <div class="menu-drop-down-wrap">
+                    <div class="menu-drop-down-scroll">
+                        <ul class="menuDropDownBox"><li class="menu-placeholder"><img src="../images/ajax-loader-bar.gif"></li></ul>
+                    </div>
+                </div>
+                <div class="apps-menu-more"><a href="../dhis-web-commons-about/modules.action">{{'more_applications'| translate}}</a></div>
+            </div>
+
+            <div id="profileDropDown" class="menuDropDownArea app-menu-dropdown ui-helper-clearfix profileMenuLink_menu">
+                <div class="caret-up-border"></div>
+                <div class="caret-up-background"></div>
+                <ul class="menuDropDownBox">
+                    <li>
+                        <a class="app-menu-item" href="../dhis-web-commons-about/userSettings.action">
+                            <img src="../icons/usersettings.png" alt="{{'settings'| translate}}">
+                            <span>{{'settings'| translate}}&nbsp;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="app-menu-item" href="../dhis-web-commons-about/showUpdateUserProfileForm.action">
+                            <img src="../icons/function-profile.png" alt="{{'profile'| translate}}">
+                            <span>{{'settings'| translate}}&nbsp;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="app-menu-item" href="../dhis-web-commons-about/showUpdateUserAccountForm.action">
+                            <img src="../icons/function-account.png" alt="{{'account' | translate}}">
+                            <span>{{'account' | translate}}&nbsp;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="app-menu-item" href="../dhis-web-commons-about/help.action">
+                            <img src="../icons/function-help-center.png" alt="{{'help' | translate}}">
+                            <span>{{'help' | translate}}&nbsp;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="app-menu-item" href="../dhis-web-commons-security/logout.action">
+                            <img src="../icons/function-log-out.png" alt="{{'log_out' | translate}}">
+                            <span>{{'log_out' | translate}}&nbsp;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="app-menu-item" href="../dhis-web-commons-about/about.action">
+                            <img src="../icons/function-about-dhis2.png" alt="{{'about_dhis2' | translate}}">
+                            <span>{{'about_dhis2' | translate}}&nbsp;</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /Menu html -->
+
         </div>
 
         <div ng-controller="MainController">
