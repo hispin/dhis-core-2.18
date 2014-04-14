@@ -4903,7 +4903,8 @@ Ext.onReady( function() {
 				map = {},
 				columns = [],
 				rows = [],
-				filters = [];
+				filters = [],
+				a;
 
 			view.dataType = dataType;
             view.program = program.getRecord();
@@ -4924,56 +4925,66 @@ Ext.onReady( function() {
                 }
             }
             else if (periodMode.getValue() === 'periods') {
-				map['pe'] = periods.getDimension();
+				map['pe'] = [periods.getDimension()];
 			}
 
 			// ou
 
-			map['ou'] = treePanel.getDimension();
+			map['ou'] = [treePanel.getDimension()];
 
             // data items
 
             for (var i = 0, record; i < dataElementSelected.items.items.length; i++) {
                 record = dataElementSelected.items.items[i].getRecord();
 
-                map[record.dimension] = record;
+                map[record.dimension] = map[record.dimension] || [];
+
+                map[record.dimension].push(record);
             }
 
             // other
 
-            map['longitude'] = {dimension: 'longitude'};
-            map['latitude'] = {dimension: 'latitude'};
+            map['longitude'] = [{dimension: 'longitude'}];
+            map['latitude'] = [{dimension: 'latitude'}];
 
             // dimensions
 
             if (layoutWindow.colStore) {
 				layoutWindow.colStore.each(function(item) {
-					if (map[item.data.id]) {
-						columns.push(map[item.data.id]);
+					a = map[item.data.id] || [];
+
+					for (var i = 0; i < a.length; i++) {
+						columns.push(a[i]);
 					}
 				});
 			}
 
             if (layoutWindow.rowStore) {
 				layoutWindow.rowStore.each(function(item) {
-					if (map[item.data.id]) {
-						rows.push(map[item.data.id]);
+					a = map[item.data.id] || [];
+
+					for (var i = 0; i < a.length; i++) {
+						rows.push(a[i]);
 					}
 				});
 			}
 
             if (layoutWindow.filterStore) {
 				layoutWindow.filterStore.each(function(item) {
-					if (map[item.data.id]) {
-						filters.push(map[item.data.id]);
+					a = map[item.data.id] || [];
+
+					for (var i = 0; i < a.length; i++) {
+						filters.push(a[i]);
 					}
 				});
 			}
 
             if (layoutWindow.fixedFilterStore) {
 				layoutWindow.fixedFilterStore.each(function(item) {
-					if (map[item.data.id]) {
-						filters.push(map[item.data.id]);
+					a = map[item.data.id] || [];
+
+					for (var i = 0; i < a.length; i++) {
+						filters.push(a[i]);
 					}
 				});
 			}
@@ -5511,7 +5522,7 @@ Ext.onReady( function() {
                     if (view.sortOrder && view.topLimit) {
                         view.sorting = {
                             id: 1,
-                            direction: view.sortOrder > 0 ? 'DESC' : 'ASC'
+                            direction: view.sortOrder == 1 ? 'DESC' : 'ASC'
                         };
                     }
                 }
