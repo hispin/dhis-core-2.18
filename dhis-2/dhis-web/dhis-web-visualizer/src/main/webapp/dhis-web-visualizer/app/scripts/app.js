@@ -201,7 +201,8 @@ Ext.onReady( function() {
 						baseLineValue,
 						baseLineTitle
 					]
-				}
+				},
+				hideEmptyRows
 			]
 		};
 
@@ -210,7 +211,6 @@ Ext.onReady( function() {
 			style: 'margin-left:14px',
 			items: [
 				showValues,
-                hideEmptyRows,
 				hideLegend,
 				hideTitle,
 				title,
@@ -221,7 +221,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_options,
-			bodyStyle: 'background-color:#fff; padding:8px 8px 6px',
+			bodyStyle: 'background-color:#fff; padding:5px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
