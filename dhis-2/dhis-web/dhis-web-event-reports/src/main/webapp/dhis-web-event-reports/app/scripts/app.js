@@ -2048,19 +2048,23 @@ Ext.onReady( function() {
 			windowCmpWidth = windowWidth - 14;
 
 		ns.app.stores.eventReport.on('load', function(store, records) {
-			var pager = store.proxy.reader.jsonData.pager;
+			var pager;
 
-			info.setText('Page ' + pager.page + ' of ' + pager.pageCount);
+			if (store.proxy.reader && store.proxy.reader.jsonData && store.proxy.reader.jsonData.pager) {
+				pager = store.proxy.reader.jsonData.pager;
 
-			prevButton.enable();
-			nextButton.enable();
+				info.setText('Page ' + pager.page + ' of ' + pager.pageCount);
 
-			if (pager.page === 1) {
-				prevButton.disable();
-			}
+				prevButton.enable();
+				nextButton.enable();
 
-			if (pager.page === pager.pageCount) {
-				nextButton.disable();
+				if (pager.page === 1) {
+					prevButton.disable();
+				}
+
+				if (pager.page === pager.pageCount) {
+					nextButton.disable();
+				}
 			}
 		});
 
