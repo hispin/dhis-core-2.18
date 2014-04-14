@@ -28,12 +28,9 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.Weighted;
@@ -42,9 +39,12 @@ import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Kristian Nordal
@@ -60,8 +60,6 @@ public class Period
     private static final long serialVersionUID = -4445992494203466044L;
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-
-    private static final String SEPARATOR = "_";
 
     /**
      * Required.
@@ -100,16 +98,6 @@ public class Period
         this.periodType = periodType;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    @Deprecated
-    public Period( String externalId )
-    {
-        final String[] id = externalId.split( SEPARATOR );
-
-        this.periodType = PeriodType.getPeriodTypeByName( id[0] );
-        this.startDate = getMediumDate( id[1] );
-        this.endDate = getMediumDate( id[2] );
     }
 
     // -------------------------------------------------------------------------
@@ -215,28 +203,6 @@ public class Period
         format.applyPattern( DEFAULT_DATE_FORMAT );
 
         return date != null ? format.format( date ) : null;
-    }
-
-    /**
-     * Parses a date from a String on the format YYYY-MM-DD.
-     *
-     * @param dateString the String to parse.
-     * @return a Date based on the given String.
-     */
-    private Date getMediumDate( String dateString )
-    {
-        try
-        {
-            final SimpleDateFormat format = new SimpleDateFormat();
-
-            format.applyPattern( DEFAULT_DATE_FORMAT );
-
-            return dateString != null ? format.parse( dateString ) : null;
-        } 
-        catch ( ParseException ex )
-        {
-            throw new RuntimeException( "Failed to parse medium date", ex );
-        }
     }
 
     /**
