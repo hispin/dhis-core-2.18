@@ -295,9 +295,9 @@ public class JdbcAnalyticsManager
                         sql += col + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
                     }
                 }
+                
+                sql = removeLastOr( sql ) + ") ";
             }
-            
-            sql = removeLastOr( sql ) + ") ";
         }
         
         return sql;
