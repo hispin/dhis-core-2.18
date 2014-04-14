@@ -3384,7 +3384,7 @@ Ext.onReady( function() {
                 var attributes = attributeStorage[programId],
                     data = Ext.Array.clean([].concat(attributes || [], dataElements || []));
 
-				dataElementsByStageStore.loadData(data);
+				dataElementsByStageStore.loadData(dataElements);
 
                 if (layout) {
                     var dataDimensions = ns.core.service.layout.getDataDimensionsFromLayout(layout),
