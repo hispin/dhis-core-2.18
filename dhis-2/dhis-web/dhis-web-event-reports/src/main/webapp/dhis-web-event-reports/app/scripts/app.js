@@ -1140,14 +1140,16 @@ Ext.onReady( function() {
 			}
 		};
 
-		reset = function() {
+		reset = function(isAll) {
 			colStore.removeAll();
 			rowStore.removeAll();
 			fixedFilterStore.removeAll();
 			filterStore.removeAll();
 
-			colStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
-			colStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
+			if (!isAll) {
+				colStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
+				colStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
+			}
 
 			fixedFilterStore.setListHeight();
 		};
@@ -3163,8 +3165,6 @@ Ext.onReady( function() {
             stage.setValue(layout.programStage.id);
             stage.enable();
 
-            onStageSelect(null, layout);
-
             // periods
 			period.reset();
 
@@ -3239,6 +3239,9 @@ Ext.onReady( function() {
 			if (optionsWindow) {
 				optionsWindow.setOptions(layout);
 			}
+
+			// data items
+            onStageSelect(null, layout);
         };
 
 		program = Ext.create('Ext.form.field.ComboBox', {
@@ -3591,7 +3594,13 @@ Ext.onReady( function() {
                 aggWindow = ns.app.aggregateLayoutWindow,
                 queryWindow = ns.app.queryLayoutWindow,
                 includeKeys = ['int', 'number', 'boolean', 'bool'],
-                dimensionStoreMap = {};
+                ignoreKeys = ['pe', 'ou'],
+                recordMap = {
+					'pe': {id: 'pe', name: 'Periods'},
+					'ou': {id: 'ou', name: 'Organisation units'}
+				};
+
+                fixedFilterElementIds = [];
 
 			// data element objects
             for (var i = 0, item; i < items.length; i++) {
@@ -3614,21 +3623,55 @@ Ext.onReady( function() {
             for (var i = 0, element, ux, store; i < dataElements.length; i++) {
 				element = dataElements[i];
                 element.type = element.type || element.valueType;
+                element.name = element.name || element.displayName;
+                recordMap[element.id] = element;
 
 				ux = addUxFromDataElement(element);
 
                 if (layout) {
                     ux.setRecord(element);
-
-                    //if (layout.dataType === 'aggregated_values') {
-						//aggWindow.addDimensionFromLayout(element, layout);
                 }
 
                 store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.rowStore : aggWindow.fixedFilterStore;
 
+                if (store === aggWindow.fixedFilterStore) {
+					fixedFilterElementIds.push(element.id);
+				}
+
                 aggWindow.addDimension(element, store);
                 queryWindow.colStore.add(element);
 			}
+
+			if (layout && layout.dataType === 'aggregated_values') {
+				aggWindow.reset(true);
+
+				if (layout.startDate && layout.endDate) {
+					aggWindow.fixedFilterStore.add({id: dimConf.startEndDate.value, name: dimConf.startEndDate.name});
+				}
+
+				if (layout.columns) {
+					for (var i = 0; i < layout.columns.length; i++) {
+						aggWindow.colStore.add(recordMap[layout.columns[i].dimension]);
+					}
+				}
+
+				if (layout.rows) {
+					for (var i = 0; i < layout.rows.length; i++) {
+						aggWindow.rowStore.add(recordMap[layout.rows[i].dimension]);
+					}
+				}
+
+				if (layout.filters) {
+					for (var i = 0, store, record; i < layout.filters.length; i++) {
+						record = recordMap[layout.filters[i].dimension];
+						store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.filterStore : aggWindow.fixedFilterStore;
+
+						store.add(record);
+					}
+				}
+			}
+
+			console.log(recordMap);
         };
 
         dataElement = Ext.create('Ext.panel.Panel', {
