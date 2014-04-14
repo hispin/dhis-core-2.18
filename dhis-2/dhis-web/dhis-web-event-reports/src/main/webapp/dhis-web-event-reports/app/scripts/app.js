@@ -5564,6 +5564,13 @@ Ext.onReady( function() {
 							pageSize: 100
 						};
 
+						if (config.topLimit && config.sortOrder) {
+							config.sorting = {
+								id: 1,
+								direction: config.sortOrder == 1 ? 'DESC' : 'ASC'
+							};
+						}
+
 						web.report.getData(config, true);
 					}
 				});
