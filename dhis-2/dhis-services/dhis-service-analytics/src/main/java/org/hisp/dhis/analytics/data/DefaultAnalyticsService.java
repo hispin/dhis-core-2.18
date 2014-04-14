@@ -82,6 +82,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsManager;
+import org.hisp.dhis.analytics.AnalyticsSecurityManager;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryGroups;
 import org.hisp.dhis.analytics.DataQueryParams;
@@ -159,6 +160,9 @@ public class DefaultAnalyticsService
     private AnalyticsManager analyticsManager;
     
     @Autowired
+    private AnalyticsSecurityManager securityManager;
+    
+    @Autowired
     private QueryPlanner queryPlanner;
     
     @Autowired
@@ -203,9 +207,9 @@ public class DefaultAnalyticsService
     @Override
     public Grid getAggregatedDataValues( DataQueryParams params )
     {
-        queryPlanner.decideAccess( params );
+        securityManager.decideAccess( params );
         
-        queryPlanner.applyDimensionConstraints( params );
+        securityManager.applyDimensionConstraints( params );
         
         queryPlanner.validate( params );
         

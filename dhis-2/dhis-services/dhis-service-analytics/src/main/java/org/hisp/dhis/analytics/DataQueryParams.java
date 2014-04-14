@@ -175,6 +175,11 @@ public class DataQueryParams
      * Organisation units which were explicitly part of the original request.
      */
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+
+    /**
+     * Mapping of organisation unit sub-hierarchy roots and lowest available data approval levels.
+     */
+    private Map<OrganisationUnit, Integer> approvalLevels = new HashMap<OrganisationUnit, Integer>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -202,6 +207,7 @@ public class DataQueryParams
         params.dataPeriodType = this.dataPeriodType;
         params.skipPartitioning = this.skipPartitioning;
         params.organisationUnits = new ArrayList<OrganisationUnit>( this.organisationUnits );
+        params.approvalLevels = new HashMap<OrganisationUnit, Integer>( this.approvalLevels );
         
         return params;
     }
@@ -864,6 +870,14 @@ public class DataQueryParams
         return filterItems;
     }
     
+    /**
+     * Indicates whether this params specifies data approval levels.
+     */
+    public boolean isDataApproval()
+    {
+        return approvalLevels != null && !approvalLevels.isEmpty();
+    }
+    
     // -------------------------------------------------------------------------
     // Static methods
     // -------------------------------------------------------------------------
@@ -1128,6 +1142,16 @@ public class DataQueryParams
     public void setSkipPartitioning( boolean skipPartitioning )
     {
         this.skipPartitioning = skipPartitioning;
+    }
+
+    public Map<OrganisationUnit, Integer> getApprovalLevels()
+    {
+        return approvalLevels;
+    }
+
+    public void setApprovalLevels( Map<OrganisationUnit, Integer> approvalLevels )
+    {
+        this.approvalLevels = approvalLevels;
     }
 
     // -------------------------------------------------------------------------
