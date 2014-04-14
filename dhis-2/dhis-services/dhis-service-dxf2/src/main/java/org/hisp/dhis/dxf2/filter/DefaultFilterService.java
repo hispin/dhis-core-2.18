@@ -60,7 +60,7 @@ public class DefaultFilterService implements FilterService
             return Lists.newArrayList();
         }
 
-        Filters parsed = parserService.parserObjectFilter( filters );
+        Filters parsed = parserService.parseObjectFilter( filters );
 
         List<T> list = Lists.newArrayList();
 

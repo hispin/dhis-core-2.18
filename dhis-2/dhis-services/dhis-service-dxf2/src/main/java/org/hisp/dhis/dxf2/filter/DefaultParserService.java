@@ -41,7 +41,7 @@ import java.util.Map;
 public class DefaultParserService implements ParserService
 {
     @Override
-    public Filters parserObjectFilter( List<String> filters )
+    public Filters parseObjectFilter( List<String> filters )
     {
         Filters parsed = new Filters();
 

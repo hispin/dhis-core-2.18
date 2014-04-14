@@ -36,7 +36,19 @@ import java.util.Map;
  */
 public interface ParserService
 {
-    Filters parserObjectFilter( List<String> filters );
+    /**
+     * Parses and generates Ops based on filter string, used for object filtering.
+     *
+     * @param filters One or more filter strings to parse
+     * @return Filters object
+     */
+    Filters parseObjectFilter( List<String> filters );
 
-    Map<String,Map> parsePropertyFilter( String filter );
+    /**
+     * Parses and writes out map with included/excluded properties.
+     *
+     * @param filter String to parse, can be used for both inclusion/exclusion
+     * @return Map with property name as key, and another map as value (recursive)
+     */
+    Map<String, Map> parsePropertyFilter( String filter );
 }
