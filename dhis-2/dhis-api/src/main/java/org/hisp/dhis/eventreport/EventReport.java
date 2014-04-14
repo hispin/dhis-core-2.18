@@ -194,6 +194,15 @@ public class EventReport
             showHierarchy = report.isShowHierarchy();
             displayDensity = report.getDisplayDensity();
             fontSize = report.getFontSize();
+
+            columnDimensions.clear();
+            columnDimensions.addAll( report.getColumnDimensions() );
+            
+            rowDimensions.clear();
+            rowDimensions.addAll( report.getRowDimensions() );
+            
+            filterDimensions.clear();
+            filterDimensions.addAll( report.getFilterDimensions() );
         }
     }
 
