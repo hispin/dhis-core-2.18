@@ -186,7 +186,6 @@
 		class="org.hisp.dhis.trackedentity.action.program.GetProgramListAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
 	<bean

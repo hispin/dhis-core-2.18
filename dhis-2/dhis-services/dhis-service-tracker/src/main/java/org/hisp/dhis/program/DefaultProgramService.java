@@ -180,4 +180,28 @@ public class DefaultProgramService
     {
         return i18n( i18nService, programStore.getByTrackedEntity( trackedEntity ) );
     }
+
+    @Override
+    public Integer getProgramCountByName( String name )
+    {
+        return programStore.getCountLikeName( name );
+    }
+
+    @Override
+    public Collection<Program> getProgramBetweenByName( String name, int min, int max )
+    {
+        return programStore.getAllLikeNameOrderedName( name, min, max );
+    }
+
+    @Override
+    public Integer getProgramCount()
+    {
+        return programStore.getCount();
+    }
+
+    @Override
+    public Collection<Program> getProgramsBetween( int min, int max )
+    {
+        return programStore.getAllOrderedName( min, max );
+    }
 }

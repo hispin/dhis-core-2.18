@@ -105,7 +105,7 @@ public class DefaultTrackedEntityService
     }
 
     @Override
-    public Collection<? extends TrackedEntity> getTrackedEntityBetweenByName( String name, int min, int max )
+    public Collection<TrackedEntity> getTrackedEntityBetweenByName( String name, int min, int max )
     {
         return trackedEntityStore.getAllLikeNameOrderedName( name, min, max );
     }
