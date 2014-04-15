@@ -215,5 +215,7 @@
 "financial_april",
 "all_indicators",
 "all_data_elements",
-"hide_empty_category_items"
+"hide_empty_category_items",
+"axes",
+"general"
 ]
