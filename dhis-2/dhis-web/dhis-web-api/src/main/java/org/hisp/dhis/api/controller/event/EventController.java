@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
-import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
@@ -133,7 +132,7 @@ public class EventController
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam( required = false ) EventStatus status,
-        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
     {
         WebOptions options = new WebOptions( parameters );        
         WebMetaData metaData = new WebMetaData();
@@ -141,59 +140,34 @@ public class EventController
         Program pr = manager.get( Program.class, program );
         ProgramStage prs = manager.get( ProgramStage.class, programStage );
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-        OrganisationUnit rootOrganisationUnit;
         TrackedEntityInstance tei = null;
+        OrganisationUnit rootOrganisationUnit = null;
 
         if ( trackedEntityInstance != null )
         {
             tei = trackedEntityInstanceService.getTrackedEntityInstance( trackedEntityInstance );
+        }
 
-            if ( tei == null )
+        if ( orgUnit != null )
+        {
+            rootOrganisationUnit = manager.get( OrganisationUnit.class, orgUnit );
+        }
+
+        if ( rootOrganisationUnit != null )
+        {
+            if ( OrganisationUnitSelectionMode.DESCENDANTS.equals( ouMode ) )
             {
-                throw new NotFoundException( "TrackedEntityInstance", trackedEntityInstance );
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( rootOrganisationUnit.getUid() ) );
             }
-        }
-
-        rootOrganisationUnit = manager.get( OrganisationUnit.class, orgUnit );
-
-        if ( rootOrganisationUnit == null )
-        {
-            try
+            else if ( OrganisationUnitSelectionMode.CHILDREN.equals( ouMode ) )
             {
-                rootOrganisationUnit = manager.get( OrganisationUnit.class, Integer.parseInt( orgUnit ) );
+                organisationUnits.add( rootOrganisationUnit );
+                organisationUnits.addAll( rootOrganisationUnit.getChildren() );
             }
-            catch ( NumberFormatException ignored )
+            else // SELECTED
             {
+                organisationUnits.add( rootOrganisationUnit );
             }
-        }
-
-        if ( rootOrganisationUnit == null && tei != null )
-        {
-            Events events = eventService.getEvents( pr, prs, programStatus, followUp, null, tei, startDate, endDate, status );
-
-            model.addAttribute( "model", events );
-            model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
-
-            return "events";            
-        }        
-
-        if ( rootOrganisationUnit == null )
-        {
-            throw new NotFoundException( "OrganisationUnit", program );
-        }
-
-        if ( OrganisationUnitSelectionMode.DESCENDANTS.equals( ouMode ) )
-        {
-            organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( rootOrganisationUnit.getUid() ) );
-        }
-        else if ( OrganisationUnitSelectionMode.CHILDREN.equals( ouMode ) )
-        {
-            organisationUnits.add( rootOrganisationUnit );
-            organisationUnits.addAll( rootOrganisationUnit.getChildren() );
-        }
-        else // SELECTED
-        {
-            organisationUnits.add( rootOrganisationUnit );
         }
 
         Events events = eventService.getEvents( pr, prs, programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
