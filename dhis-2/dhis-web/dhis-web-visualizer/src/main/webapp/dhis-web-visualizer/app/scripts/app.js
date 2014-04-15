@@ -526,6 +526,7 @@ Ext.onReady( function() {
 				favorite.rangeAxisLabel = favorite.rangeAxisTitle;
 				delete favorite.rangeAxisTitle;
 
+				delete favorite.id;
 				delete favorite.parentGraphMap;
 
 				// Replace operand id characters
