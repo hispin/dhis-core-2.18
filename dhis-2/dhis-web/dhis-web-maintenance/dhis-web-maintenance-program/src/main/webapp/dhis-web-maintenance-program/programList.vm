@@ -21,16 +21,22 @@
 
 <table class="mainPageTable">
   <tr>
-	  <td align="right">
-      <input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddProgramForm.action'" style="width:70px">
-    </td>
-  </tr>
-
-  <tr>
-    <td style="vertical-align:top">
+	 <td style="vertical-align:top">
+		<table width="100%">
+			<tr valign="bottom">
+				<td>
+					#filterDiv( "program" )
+				</td>
+				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddAttributeGroupForm.action'" style="width:70px"></td>				
+		
+				<td align="right">
+					<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddProgramForm.action'" style="width:70px">
+				</td>
+			</tr>
+		</table>
 		
 		<table class="listTable" id="listTable">
-      <col>
+			<col>
 			<thead>
 			  <tr>            
 				<th>$i18n.getString( "name" )</th>
@@ -50,6 +56,7 @@
 
       </tbody>
       </table>
+		#parse( "/dhis-web-commons/paging/paging.vm" )
 		</td>
 
 		<td id="detailsData">

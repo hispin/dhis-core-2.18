@@ -28,25 +28,23 @@ package org.hisp.dhis.trackedentity.action.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
 public class GetProgramListAction
-    implements Action
+    extends ActionPagingSupport<Program>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -59,40 +57,9 @@ public class GetProgramListAction
         this.programService = programService;
     }
 
-    private ProgramStageService programStageService;
-
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
-
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    private Collection<ProgramStage> associations = new ArrayList<ProgramStage>();
-
-    public Collection<ProgramStage> getAssociations()
-    {
-        return associations;
-    }
-
-    public void setAssociations( Collection<ProgramStage> associations )
-    {
-        this.associations = associations;
-    }
 
     private List<Program> programs = new ArrayList<Program>();
 
@@ -101,9 +68,16 @@ public class GetProgramListAction
         return programs;
     }
 
-    public void setPrograms( List<Program> programs )
+    private String key;
+
+    public String getKey()
     {
-        this.programs = programs;
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -113,19 +87,22 @@ public class GetProgramListAction
     public String execute()
         throws Exception
     {
-        programs = new ArrayList<Program>( programService.getAllPrograms() );
-        Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
-        
-        if ( id == null )
+        if ( isNotBlank( key ) )
         {
-            associations = programStageService.getAllProgramStages();
+            this.paging = createPaging( programService.getProgramCountByName( key ) );
+
+            programs = new ArrayList<Program>( programService.getProgramBetweenByName( key, paging.getStartPos(),
+                paging.getPageSize() ) );
         }
         else
         {
-            Program program = programService.getProgram( id );
+            this.paging = createPaging( programService.getProgramCount() );
 
-            associations = program.getProgramStages();
+            programs = new ArrayList<Program>( programService.getProgramsBetween( paging.getStartPos(),
+                paging.getPageSize() ) );
         }
+
+        Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

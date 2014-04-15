@@ -121,7 +121,7 @@ public interface TrackedEntityService
      * @return a collection of all TrackedEntity, or an empty
      *         collection if there are no TrackedEntity.
      */
-    Collection<? extends TrackedEntity> getTrackedEntityBetweenByName( String name,
+    Collection<TrackedEntity> getTrackedEntityBetweenByName( String name,
         int min, int max );
 
     /**

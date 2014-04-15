@@ -179,12 +179,48 @@ public interface ProgramService
      * @param organisationUnit {@link OrganisationUnit}
      */
     Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit );
-    
+
     /**
-     * Get {@link Program} by TrackedEntity
+     * Get {@link TrackedEntity} by TrackedEntity
      * 
      * @param trackedEntity {@link TrackedEntity}
      */
     Collection<Program> getProgramsByTrackedEntity( TrackedEntity trackedEntity );
-    
+
+    /**
+     * Returns The number of Programs with the key searched
+     * 
+     * @param name Keyword for searching by name
+     * 
+     * @return A number
+     * 
+     */
+    Integer getProgramCountByName( String name );
+
+    /**
+     * Returns {@link Program} list with paging
+     * 
+     * @param name Keyword for searching by name
+     * @param min
+     * @param max
+     * @return a collection of all Program, or an empty collection if
+     *         there are no Program.
+     */
+    Collection<? extends Program> getProgramBetweenByName( String name, int min, int max );
+
+    /**
+     * Returns The number of all Program available
+     * 
+     */
+    Integer getProgramCount();
+
+    /**
+     * Returns {@link Program} list with paging
+     * 
+     * @param min
+     * @param max
+     * @return a collection of all Program, or an empty collection if
+     *         there are no Program.
+     */
+    Collection<Program> getProgramsBetween( int min, int max );
 }

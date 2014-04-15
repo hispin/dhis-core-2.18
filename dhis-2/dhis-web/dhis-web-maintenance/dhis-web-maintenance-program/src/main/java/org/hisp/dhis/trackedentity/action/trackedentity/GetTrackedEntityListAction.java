@@ -46,7 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version $ AddTrackedEntityAction.java Feb 15, 2014 7:20:44 PM $
  */
 public class GetTrackedEntityListAction
-extends ActionPagingSupport<TrackedEntity>
+    extends ActionPagingSupport<TrackedEntity>
 {
     // -------------------------------------------------------------------------
     // Dependency
@@ -90,17 +90,15 @@ extends ActionPagingSupport<TrackedEntity>
         {
             this.paging = createPaging( trackedEntityService.getTrackedEntityCountByName( key ) );
 
-            trackedEntities = new ArrayList<TrackedEntity>(
-                trackedEntityService.getTrackedEntityBetweenByName( key, paging.getStartPos(),
-                    paging.getPageSize() ) );
+            trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getTrackedEntityBetweenByName( key,
+                paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( trackedEntityService.getTrackedEntityCount() );
 
-            trackedEntities = new ArrayList<TrackedEntity>(
-                trackedEntityService.getTrackedEntitysBetween( paging.getStartPos(),
-                    paging.getPageSize() ) );
+            trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getTrackedEntitysBetween(
+                paging.getStartPos(), paging.getPageSize() ) );
         }
 
         Collections.sort( trackedEntities, IdentifiableObjectNameComparator.INSTANCE );
