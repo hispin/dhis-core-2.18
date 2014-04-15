@@ -627,7 +627,7 @@ public abstract class AbstractEnrollmentService
             importConflicts.add( new ImportConflict( "Attribute.value", "Value length is greater than 256 chars." ) );
         }
 
-        if ( TrackedEntityAttribute.TYPE_INT.equals( teAttribute.getValueType() ) && !MathUtils.isInteger( attribute.getValue() ) )
+        if ( TrackedEntityAttribute.TYPE_NUMBER.equals( teAttribute.getValueType() ) && !MathUtils.isNumeric( attribute.getValue() ) )
         {
             importConflicts.add( new ImportConflict( "Attribute.value", "Value is not integer." ) );
         }

@@ -68,7 +68,7 @@ public class TrackedEntityAttributeStoreTest
     {
         attributeA = createTrackedEntityAttribute( 'A' );
         attributeB = createTrackedEntityAttribute( 'B' );
-        attributeC = createTrackedEntityAttribute( 'C', TrackedEntityAttribute.TYPE_INT );
+        attributeC = createTrackedEntityAttribute( 'C', TrackedEntityAttribute.TYPE_NUMBER );
 
         List<TrackedEntityAttribute> attributesA = new ArrayList<TrackedEntityAttribute>();
         attributesA.add( attributeA );
@@ -169,7 +169,7 @@ public class TrackedEntityAttributeStoreTest
         assertTrue( attributes.contains( attributeA ) );
         assertTrue( attributes.contains( attributeB ) );
 
-        attributes = attributeService.getTrackedEntityAttributesByValueType( TrackedEntityAttribute.TYPE_INT );
+        attributes = attributeService.getTrackedEntityAttributesByValueType( TrackedEntityAttribute.TYPE_NUMBER );
         assertEquals( 1, attributes.size() );
         assertTrue( attributes.contains( attributeC ) );
 
