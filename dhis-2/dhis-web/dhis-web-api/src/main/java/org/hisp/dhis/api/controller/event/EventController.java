@@ -28,6 +28,16 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
@@ -36,6 +46,8 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
 import org.hisp.dhis.dxf2.events.event.EventStatus;
@@ -69,20 +81,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -171,7 +169,7 @@ public class EventController
 
         if ( rootOrganisationUnit == null && tei != null )
         {
-            Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), programStatus, followUp, null, tei, startDate, endDate, status );
+            Events events = eventService.getEvents( pr, prs, programStatus, followUp, null, tei, startDate, endDate, status );
 
             model.addAttribute( "model", events );
             model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
@@ -198,7 +196,7 @@ public class EventController
             organisationUnits.add( rootOrganisationUnit );
         }
 
-        Events events = eventService.getEvents( Arrays.asList( pr ), Arrays.asList( prs ), programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
+        Events events = eventService.getEvents( pr, prs, programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
         
         List<Event> eventList = new ArrayList<Event>( events.getEvents() );
 

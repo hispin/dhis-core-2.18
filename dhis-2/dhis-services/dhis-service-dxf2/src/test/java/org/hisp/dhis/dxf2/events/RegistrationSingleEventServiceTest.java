@@ -188,19 +188,19 @@ public class RegistrationSingleEventServiceTest
         importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        assertEquals( 1, eventService.getEvents( programA, null, organisationUnitA, null, null, null ).getEvents().size() );
+        assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        assertEquals( 1, eventService.getEvents( programA, null, organisationUnitA, null, null, null ).getEvents().size() );
+        assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), organisationUnitA.getUid(), trackedEntityInstanceMaleA.getTrackedEntityInstance() );
         importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        assertEquals( 1, eventService.getEvents( programA, null, organisationUnitA, null, null, null ).getEvents().size() );
+        assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
     }
 
     @Test
