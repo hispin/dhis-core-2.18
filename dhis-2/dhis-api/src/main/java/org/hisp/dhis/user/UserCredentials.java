@@ -39,12 +39,14 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataset.DataSet;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Date;
@@ -94,7 +96,7 @@ public class UserCredentials
      */
     @Scanned
     private Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
-    
+
     /**
      * Category option group set dimensions to constrain data analytics aggregation.
      */
@@ -363,7 +365,7 @@ public class UserCredentials
 
         return token.equals( this.restoreToken ) && code.equals( this.restoreCode );
     }
-    
+
     /**
      * Returns the dimensions to use as constrains (filters) in data analytics
      * aggregation.
@@ -371,16 +373,16 @@ public class UserCredentials
     public Set<DimensionalObject> getDimensionConstraints()
     {
         Set<DimensionalObject> constraints = new HashSet<DimensionalObject>();
-        
+
         for ( CategoryOptionGroupSet cogs : cogsDimensionConstraints )
         {
             cogs.setDimensionType( DimensionType.CATEGORYOPTION_GROUPSET );
             constraints.add( cogs );
         }
-        
+
         return constraints;
     }
-    
+
     /**
      * Indicates whether this user has dimension constraints.
      */
@@ -447,8 +449,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getPasswordLastUpdated()
     {
         return passwordLastUpdated;
@@ -460,10 +462,10 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "userAuthorityGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "userAuthorityGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "userAuthorityGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "userAuthorityGroup", namespace = DxfNamespaces.DXF_2_0 )
     public Set<UserAuthorityGroup> getUserAuthorityGroups()
     {
         return userAuthorityGroups;
@@ -475,10 +477,10 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "cogsDimensionConstraints", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "cogsDimensionConstraint", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "cogsDimensionConstraints", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "cogsDimensionConstraint", namespace = DxfNamespaces.DXF_2_0 )
     public Set<CategoryOptionGroupSet> getCogsDimensionConstraints()
     {
         return cogsDimensionConstraints;
@@ -490,8 +492,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getUsername()
     {
         return username;
@@ -503,8 +505,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getOpenId()
     {
         return openId;
@@ -516,8 +518,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getLastLogin()
     {
         return lastLogin;
@@ -559,8 +561,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isSelfRegistered()
     {
         return selfRegistered;
@@ -572,8 +574,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isDisabled()
     {
         return disabled;
@@ -582,6 +584,28 @@ public class UserCredentials
     public void setDisabled( boolean disabled )
     {
         this.disabled = disabled;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            UserCredentials userCredentials = (UserCredentials) other;
+
+            openId = userCredentials.getOpenId();
+            disabled = userCredentials.isDisabled();
+            selfRegistered = userCredentials.isSelfRegistered();
+            password = StringUtils.isEmpty( userCredentials.getPassword() ) ? password : userCredentials.getPassword();
+
+            cogsDimensionConstraints.clear();
+            cogsDimensionConstraints.addAll( userCredentials.getCogsDimensionConstraints() );
+
+            userAuthorityGroups.clear();
+            userAuthorityGroups.addAll( userCredentials.getUserAuthorityGroups() );
+        }
     }
 
     @Override
