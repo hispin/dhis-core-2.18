@@ -28,21 +28,20 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.Pager;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.Pager;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "events", namespace = DxfNamespaces.DXF_2_0 )
 public class Events
 {
     private String program;
@@ -83,8 +82,8 @@ public class Events
         this.programInstance = programInstance;
     }
 
-    @JsonProperty( "eventList" )
-    @JacksonXmlElementWrapper( localName = "eventList", namespace = DxfNamespaces.DXF_2_0 )
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "events", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
     public List<Event> getEvents()
     {
