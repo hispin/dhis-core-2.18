@@ -286,7 +286,7 @@ public class DefaultTrackedEntityFormService
             + "\" tabindex=\"" + index + "\" style=\"" + style + "\"";
 
         inputHtml += "\" class=\"" + hidden + " {validate:{required:" + mandatory;
-        if ( TrackedEntityAttribute.TYPE_INT.equals( attribute.getValueType() ) )
+        if ( TrackedEntityAttribute.TYPE_NUMBER.equals( attribute.getValueType() ) )
         {
             inputHtml += ",number:true";
         }

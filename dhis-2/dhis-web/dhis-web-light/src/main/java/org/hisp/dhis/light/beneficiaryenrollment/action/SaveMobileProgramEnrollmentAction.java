@@ -280,7 +280,7 @@ public class SaveMobileProgramEnrollmentAction
                     }
                     else */
                     if ( value.trim().length() > 0
-                        && patientAttribute.getValueType().equals( TrackedEntityAttribute.TYPE_INT )
+                        && patientAttribute.getValueType().equals( TrackedEntityAttribute.TYPE_NUMBER )
                         && !MathUtils.isInteger( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_number" );

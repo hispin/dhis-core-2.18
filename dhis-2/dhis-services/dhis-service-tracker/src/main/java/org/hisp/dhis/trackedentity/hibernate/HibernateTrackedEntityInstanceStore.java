@@ -543,7 +543,7 @@ public class HibernateTrackedEntityInstanceStore
 
                         String type = attributeValue.getAttribute().getValueType();
                         // For integer type
-                        if ( type.equals( TrackedEntityAttribute.TYPE_INT ) )
+                        if ( type.equals( TrackedEntityAttribute.TYPE_NUMBER ) )
                         {
                             int value1 = Integer.parseInt( value );
                             int value2 = Integer.parseInt( criteria.getValue() );

@@ -59,7 +59,7 @@ public class TrackedEntityAttribute
 
     public static final String TYPE_STRING = "string";
 
-    public static final String TYPE_INT = "number";
+    public static final String TYPE_NUMBER = "number";
 
     public static final String VALUE_TYPE_LETTER = "letter";
 
@@ -135,7 +135,7 @@ public class TrackedEntityAttribute
      */
     public boolean isNumericType()
     {
-        return TYPE_INT.equals( valueType );
+        return TYPE_NUMBER.equals( valueType );
     }
 
     // -------------------------------------------------------------------------
