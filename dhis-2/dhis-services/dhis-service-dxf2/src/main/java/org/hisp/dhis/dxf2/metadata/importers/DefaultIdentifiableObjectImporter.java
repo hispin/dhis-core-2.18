@@ -112,7 +112,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private AclService aclService;
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -582,7 +582,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
 
+            ((User) persistedObject).getUserCredentials().mergeWith( userCredentials );
             reattachCollectionFields( ((User) persistedObject).getUserCredentials(), collectionFieldsUserCredentials );
+
             sessionFactory.getCurrentSession().saveOrUpdate( ((User) persistedObject).getUserCredentials() );
         }
 
