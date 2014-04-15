@@ -16,6 +16,7 @@
 	</tr>
 	<tbody id='commentTB' name='commentTB'>
 		#set( $mark = false )
+		#if($programStageInstance.comment)
 		<tr id="comment_$programStageInstance.comment.id" #alternate( $mark )>
 			<td>$format.formatDateTime($programStageInstance.comment.createdDate)</td>
 			<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
@@ -27,6 +28,7 @@
 				<a href="javascript:removeComment( '$programStageInstance.id', '$programStageInstance.comment.id' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 			</td>
 		</tr>
+		#end
 		
 		#set( $mark = !$mark )
 		#foreach( $sms in $programStageInstance.outboundSms )
