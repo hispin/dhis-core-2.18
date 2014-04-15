@@ -65,6 +65,7 @@ import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -315,22 +316,16 @@ public abstract class AbstractEventService
     // READ
     // -------------------------------------------------------------------------
 
-    @Override
-    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
-        TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
+    public Events getEvents( Program program, OrganisationUnit organisationUnit )
     {
-        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, trackedEntityInstance, startDate, endDate );
-        Events events = new Events();
-        events.setEvents( eventList );
-
-        return events;
+        return getEvents( program, null, null, null, Arrays.asList( organisationUnit ), null, null, null, null );
     }
-
+    
     @Override
-    public Events getEvents( List<Program> programs, List<ProgramStage> programStages, ProgramStatus programStatus, Boolean followUp,
-        List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
+    public Events getEvents( Program program, ProgramStage programStage, ProgramStatus programStatus, Boolean followUp, List<OrganisationUnit> organisationUnits, 
+        TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
     {
-        List<Event> eventList = eventStore.getAll( programs, programStages, programStatus, followUp, organisationUnits, 
+        List<Event> eventList = eventStore.getAll( program, programStage, programStatus, followUp, organisationUnits, 
             trackedEntityInstance, startDate, endDate, status );
         Events events = new Events();
         events.setEvents( eventList );

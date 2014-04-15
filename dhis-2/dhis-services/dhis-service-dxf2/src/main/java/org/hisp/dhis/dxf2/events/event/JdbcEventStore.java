@@ -34,7 +34,6 @@ import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -72,15 +71,7 @@ public class JdbcEventStore
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
-        TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate )
-    {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), null, null, Arrays.asList( organisationUnit ),
-            trackedEntityInstance, startDate, endDate, null );
-    }
-
-    @Override
-    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, ProgramStatus programStatus, Boolean followUp,
+    public List<Event> getAll( Program program, ProgramStage programStage, ProgramStatus programStatus, Boolean followUp,
         List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
     {
         List<Event> events = new ArrayList<Event>();
@@ -97,7 +88,7 @@ public class JdbcEventStore
             }
         }
 
-        String sql = buildSql( getIdList( programs ), getIdList( programStages ), programStatus, followUp, getIdList( organisationUnits ),
+        String sql = buildSql( program, programStage, programStatus, followUp, getIdList( organisationUnits ),
             trackedEntityInstanceId, startDate, endDate, status );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -177,7 +168,7 @@ public class JdbcEventStore
         return events;
     }
 
-    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, ProgramStatus programStatus, Boolean followUp, List<Integer> orgUnitIds,
+    private String buildSql( Program program, ProgramStage programStage, ProgramStatus programStatus, Boolean followUp, List<Integer> orgUnitIds,
         Integer trackedEntityInstanceId, Date startDate, Date endDate, EventStatus status )
     {
         SqlHelper hlp = new SqlHelper();
@@ -199,14 +190,14 @@ public class JdbcEventStore
             sql += hlp.whereAnd() + " pa.trackedentityinstanceid=" + trackedEntityInstanceId + " ";
         }
 
-        if ( !programIds.isEmpty() )
+        if ( program != null )
         {
-            sql += hlp.whereAnd() + " p.programid in (" + getCommaDelimitedString( programIds ) + ") ";
+            sql += hlp.whereAnd() + " p.programid = " + program.getId() + " ";
         }
 
-        if ( !programStageIds.isEmpty() )
+        if ( programStage != null )
         {
-            sql += hlp.whereAnd() + " ps.programstageid in (" + getCommaDelimitedString( programStageIds ) + ") ";
+            sql += hlp.whereAnd() + " ps.programstageid = " + programStage.getId() + " ";
         }
         
         if ( programStatus != null )

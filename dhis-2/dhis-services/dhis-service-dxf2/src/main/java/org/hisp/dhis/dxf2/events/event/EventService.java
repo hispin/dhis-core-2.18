@@ -53,10 +53,9 @@ public interface EventService
     // READ
     // -------------------------------------------------------------------------
 
-    Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, 
-        TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate );
-
-    Events getEvents( List<Program> programs, List<ProgramStage> programStages, ProgramStatus programStatus, Boolean followUp, List<OrganisationUnit> organisationUnits, 
+    Events getEvents( Program program, OrganisationUnit organisationUnit );
+    
+    Events getEvents( Program program, ProgramStage programStage, ProgramStatus programStatus, Boolean followUp, List<OrganisationUnit> organisationUnit, 
         TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status );
 
     Event getEvent( String uid );
