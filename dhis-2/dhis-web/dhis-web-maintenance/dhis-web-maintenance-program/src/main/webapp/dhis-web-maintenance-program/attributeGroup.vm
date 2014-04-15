@@ -17,7 +17,7 @@
 				<td>
 					#filterDiv( "attributeGroup" )
 				</td>
-				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddAttributeForm.action'" style="width:70px"></td>				
+				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddAttributeGroupForm.action'" style="width:70px"></td>				
 			</tr>
 		</table>
 
