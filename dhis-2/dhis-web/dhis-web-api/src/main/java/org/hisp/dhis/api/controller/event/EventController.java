@@ -32,13 +32,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -89,6 +89,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
+    
+    private static final String META_DATA_KEY_DE = "de";
 
     //--------------------------------------------------------------------------
     // Dependencies
@@ -132,10 +134,10 @@ public class EventController
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
         @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam( required = false ) EventStatus status,
+        @RequestParam( required = false ) boolean skipMeta,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
     {
-        WebOptions options = new WebOptions( parameters );        
-        WebMetaData metaData = new WebMetaData();
+        WebOptions options = new WebOptions( parameters );
         
         Program pr = manager.get( Program.class, program );
         ProgramStage prs = manager.get( ProgramStage.class, programStage );
@@ -172,11 +174,9 @@ public class EventController
 
         Events events = eventService.getEvents( pr, prs, programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
         
-        List<Event> eventList = new ArrayList<Event>( events.getEvents() );
-
         if ( options.hasLinks() )
         {
-            for ( Event event : eventList )
+            for ( Event event : events.getEvents() )
             {
                 event.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + event.getEvent() );
             }
@@ -184,14 +184,17 @@ public class EventController
         
         if ( options.hasPaging() )
         {      	
-            Pager pager = new Pager( options.getPage(), eventList.size(), options.getPageSize() );
-            metaData.setPager( pager );
-            eventList = PagerUtils.pageCollection( eventList, pager );        	
+            Pager pager = new Pager( options.getPage(), events.getEvents().size(), options.getPageSize() );
+            events.setPager( pager );
+            events.setEvents( PagerUtils.pageCollection( events.getEvents(), pager ) );        	
         }        
         
-        metaData.setEvents( eventList );
-
-        model.addAttribute( "model", metaData );
+        if ( !skipMeta && pr != null )
+        {
+            events.setMetaData( getMetaData( pr ) );
+        }
+        
+        model.addAttribute( "model", events );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
         return "events";
@@ -222,6 +225,24 @@ public class EventController
         return "event";
     }
 
+    private Map<Object, Object> getMetaData( Program program )
+    {
+        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        
+        if ( program != null )
+        {
+            Map<String, String> dataElements = new HashMap<String, String>();
+            
+            for ( DataElement de : program.getAllDataElements() )
+            {
+                dataElements.put( de.getUid(), de.getDisplayName() );
+            }
+
+            metaData.put( META_DATA_KEY_DE, dataElements );
+        }
+        
+        return metaData;
+    }
     // -------------------------------------------------------------------------
     // CREATE
     // -------------------------------------------------------------------------
