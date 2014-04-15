@@ -614,9 +614,9 @@ public class Chart
             showData = chart.isShowData();
             hideEmptyRows = chart.isHideEmptyRows();
             rewindRelativePeriods = chart.isRewindRelativePeriods();
-            rangeAxisMaxValue = chart.getRangeAxisMaxValue() == null ? rangeAxisMaxValue : chart.getRangeAxisMaxValue();
-            rangeAxisSteps = chart.getRangeAxisSteps() == null ? rangeAxisSteps : chart.getRangeAxisSteps();
-            rangeAxisDecimals = chart.getRangeAxisDecimals() == null ? rangeAxisDecimals : chart.getRangeAxisDecimals();
+            rangeAxisMaxValue = chart.getRangeAxisMaxValue();
+            rangeAxisSteps = chart.getRangeAxisSteps();
+            rangeAxisDecimals = chart.getRangeAxisDecimals();
 
             filterDimensions.clear();
             filterDimensions.addAll( chart.getFilterDimensions() );
