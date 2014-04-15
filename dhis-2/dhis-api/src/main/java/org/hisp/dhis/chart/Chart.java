@@ -107,6 +107,12 @@ public class Chart
     private boolean showData;
     
     private boolean hideEmptyRows;
+    
+    private Double rangeAxisMaxValue;
+    
+    private Integer rangeAxisSteps; //min 1
+    
+    private Integer rangeAxisDecimals;
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -517,11 +523,44 @@ public class Chart
         this.rewindRelativePeriods = rewindRelativePeriods;
     }
 
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    public Double getRangeAxisMaxValue() {
+		return rangeAxisMaxValue;
+	}
+
+	public void setRangeAxisMaxValue(Double rangeAxisMaxValue) {
+		this.rangeAxisMaxValue = rangeAxisMaxValue;
+	}
+
+	@JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+	public Integer getRangeAxisSteps() {
+		return rangeAxisSteps;
+	}
+
+	public void setRangeAxisSteps(Integer rangeAxisSteps) {
+		this.rangeAxisSteps = rangeAxisSteps;
+	}
+
+	@JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+	public Integer getRangeAxisDecimals() {
+		return rangeAxisDecimals;
+	}
+
+	public void setRangeAxisDecimals(Integer rangeAxisDecimals) {
+		this.rangeAxisDecimals = rangeAxisDecimals;
+	}
+
     // -------------------------------------------------------------------------
     // Getters and setters for transient properties
     // -------------------------------------------------------------------------
 
-    @JsonIgnore
+	@JsonIgnore
     public I18nFormat getFormat()
     {
         return format;
@@ -575,6 +614,9 @@ public class Chart
             showData = chart.isShowData();
             hideEmptyRows = chart.isHideEmptyRows();
             rewindRelativePeriods = chart.isRewindRelativePeriods();
+            rangeAxisMaxValue = chart.getRangeAxisMaxValue() == null ? rangeAxisMaxValue : chart.getRangeAxisMaxValue();
+            rangeAxisSteps = chart.getRangeAxisSteps() == null ? rangeAxisSteps : chart.getRangeAxisSteps();
+            rangeAxisDecimals = chart.getRangeAxisDecimals() == null ? rangeAxisDecimals : chart.getRangeAxisDecimals();
 
             filterDimensions.clear();
             filterDimensions.addAll( chart.getFilterDimensions() );

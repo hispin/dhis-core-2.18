@@ -50,9 +50,13 @@ Ext.onReady( function() {
 			rangeAxisTitle,
 
 			data,
-			style,
+			axes,
+			general,
+			window,
 
-			window;
+			cmpWidth = 310,
+			labelWidth = 125,
+			numberWidth = 60;
 
 		showTrendLine = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.trend_line,
@@ -60,8 +64,7 @@ Ext.onReady( function() {
 		});
 
 		targetLineValue = Ext.create('Ext.form.field.Number', {
-			//cls: 'gis-numberfield',
-			width: 60,
+			width: numberWidth,
 			height: 18,
 			listeners: {
 				change: function(nf) {
@@ -71,11 +74,10 @@ Ext.onReady( function() {
 		});
 
 		targetLineTitle = Ext.create('Ext.form.field.Text', {
-			//cls: 'ns-textfield-alt1',
-			style: 'margin-left:2px; margin-bottom:2px',
+			style: 'margin-left:1px; margin-bottom:1px',
 			fieldStyle: 'padding-left:3px',
 			emptyText: NS.i18n.target,
-			width: 120,
+			width: cmpWidth - labelWidth - 5 - numberWidth - 1,
 			maxLength: 100,
 			enforceMaxLength: true,
 			disabled: true,
@@ -86,7 +88,7 @@ Ext.onReady( function() {
 
 		baseLineValue = Ext.create('Ext.form.field.Number', {
 			//cls: 'gis-numberfield',
-			width: 60,
+			width: numberWidth,
 			height: 18,
 			listeners: {
 				change: function(nf) {
@@ -97,10 +99,10 @@ Ext.onReady( function() {
 
 		baseLineTitle = Ext.create('Ext.form.field.Text', {
 			//cls: 'ns-textfield-alt1',
-			style: 'margin-left:2px',
+			style: 'margin-left:1px; margin-bottom:1px',
 			fieldStyle: 'padding-left:3px',
 			emptyText: NS.i18n.base,
-			width: 120,
+			width: cmpWidth - labelWidth - 5 - numberWidth - 1,
 			maxLength: 100,
 			enforceMaxLength: true,
 			disabled: true,
@@ -109,15 +111,38 @@ Ext.onReady( function() {
 			}
 		});
 
+		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.hide_empty_category_items,
+			style: 'margin-bottom:4px'
+		});
+
+		rangeAxisMaxValue = Ext.create('Ext.form.field.Number', {
+			width: 190,
+			height: 18,
+			fieldLabel: 'Range axis max value',
+			labelWidth: 125
+		});
+
+		rangeAxisSteps = Ext.create('Ext.form.field.Number', {
+			width: 190,
+			height: 18,
+			fieldLabel: 'Range axis tick steps',
+			labelWidth: 125,
+			minValue: 1
+		});
+
+		rangeAxisDecimals = Ext.create('Ext.form.field.Number', {
+			width: 190,
+			height: 18,
+			fieldLabel: 'Range axis decimals',
+			labelWidth: 125,
+			minValue: 0
+		});
+
 		showValues = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_values,
 			style: 'margin-bottom:4px',
 			checked: true
-		});
-
-		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.hide_empty_category_items,
-			style: 'margin-bottom:4px'
 		});
 
 		hideLegend = Ext.create('Ext.form.field.Checkbox', {
@@ -136,11 +161,11 @@ Ext.onReady( function() {
 		});
 
 		title = Ext.create('Ext.form.field.Text', {
-			style: 'margin-bottom:2px; margin-left:2px',
-			width: 310,
+			style: 'margin-bottom:2px',
+			width: cmpWidth,
 			fieldLabel: NS.i18n.chart_title,
-			labelStyle: 'color:#333',
-			labelWidth: 123,
+			labelStyle: 'color:#333; padding-left:2px',
+			labelWidth: 125,
 			maxLength: 100,
 			enforceMaxLength: true,
 			xable: function() {
@@ -148,24 +173,24 @@ Ext.onReady( function() {
 			}
 		});
 
+		rangeAxisTitle = Ext.create('Ext.form.field.Text', {
+			width: cmpWidth,
+			fieldLabel: NS.i18n.range_axis_label,
+			labelStyle: 'color:#333',
+			labelWidth: 125,
+			maxLength: 100,
+			enforceMaxLength: true,
+			style: 'margin-bottom:1px'
+		});
+		
 		domainAxisTitle = Ext.create('Ext.form.field.Text', {
-			style: 'margin-bottom:2px; margin-left:2px',
 			width: 310,
 			fieldLabel: NS.i18n.domain_axis_label,
 			labelStyle: 'color:#333',
-			labelWidth: 123,
+			labelWidth: 125,
 			maxLength: 100,
-			enforceMaxLength: true
-		});
-
-		rangeAxisTitle = Ext.create('Ext.form.field.Text', {
-			style: 'margin-bottom:0; margin-left:2px',
-			width: 310,
-			fieldLabel: NS.i18n.range_axis_label,
-			labelStyle: 'color:#333',
-			labelWidth: 123,
-			maxLength: 100,
-			enforceMaxLength: true
+			enforceMaxLength: true,
+			style: 'margin-bottom:1px'
 		});
 
         data = {
@@ -173,6 +198,8 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
+				showValues,
+				hideEmptyRows,
 				showTrendLine,
 				{
 					xtype: 'container',
@@ -201,27 +228,35 @@ Ext.onReady( function() {
 						baseLineValue,
 						baseLineTitle
 					]
-				},
-				hideEmptyRows
+				}
 			]
 		};
 
-		style = {
+		axes = {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-				showValues,
+				rangeAxisMaxValue,
+				rangeAxisSteps,
+				rangeAxisDecimals,
+				rangeAxisTitle,
+				domainAxisTitle
+			]
+		};			
+
+		general = {
+			bodyStyle: 'border:0 none',
+			style: 'margin-left:14px',
+			items: [
 				hideLegend,
 				hideTitle,
-				title,
-				domainAxisTitle,
-				rangeAxisTitle
+				title
 			]
 		};
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_options,
-			bodyStyle: 'background-color:#fff; padding:5px',
+			bodyStyle: 'background-color:#fff; padding:5px 5px 3px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
@@ -229,36 +264,29 @@ Ext.onReady( function() {
 			hideOnBlur: true,
 			getOptions: function() {
 				return {
+					showValues: showValues.getValue(),
+                    hideEmptyRows: hideEmptyRows.getValue(),
 					showTrendLine: showTrendLine.getValue(),
 					targetLineValue: targetLineValue.getValue(),
 					targetLineTitle: targetLineTitle.getValue(),
 					baseLineValue: baseLineValue.getValue(),
 					baseLineTitle: baseLineTitle.getValue(),
-					showValues: showValues.getValue(),
-                    hideEmptyRows: hideEmptyRows.getValue(),
+					rangeAxisMaxValue: rangeAxisMaxValue.getValue(),
+					rangeAxisSteps: rangeAxisSteps.getValue(),
+					rangeAxisDecimals: rangeAxisDecimals.getValue(),
+					rangeAxisTitle: rangeAxisTitle.getValue(),
+					domainAxisTitle: domainAxisTitle.getValue(),
 					hideLegend: hideLegend.getValue(),
 					hideTitle: hideTitle.getValue(),
-					title: title.getValue(),
-					domainAxisTitle: domainAxisTitle.getValue(),
-					rangeAxisTitle: rangeAxisTitle.getValue()
+					title: title.getValue()
 				};
 			},
 			setOptions: function(layout) {
-				showTrendLine.setValue(Ext.isBoolean(layout.showTrendLine) ? layout.showTrendLine : false);
 				showValues.setValue(Ext.isBoolean(layout.showValues) ? layout.showValues : false);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
-				hideLegend.setValue(Ext.isBoolean(layout.hideLegend) ? layout.hideLegend : false);
-				hideTitle.setValue(Ext.isBoolean(layout.hideTitle) ? layout.hideTitle : false);
+				showTrendLine.setValue(Ext.isBoolean(layout.showTrendLine) ? layout.showTrendLine : false);
 
-				// Title
-				if (Ext.isString(layout.title)) {
-					title.setValue(layout.title);
-				}
-				else {
-					title.reset();
-				}
-
-				// Target line
+				// target line
 				if (Ext.isNumber(layout.targetLineValue)) {
 					targetLineValue.setValue(layout.targetLineValue);
 				}
@@ -273,7 +301,7 @@ Ext.onReady( function() {
 					targetLineTitle.reset();
 				}
 
-				// Base line
+				// base line
 				if (Ext.isNumber(layout.baseLineValue)) {
 					baseLineValue.setValue(layout.baseLineValue);
 				}
@@ -288,38 +316,82 @@ Ext.onReady( function() {
 					baseLineTitle.reset();
 				}
 
-				// Domain axis
-				if (Ext.isString(layout.domainAxisTitle)) {
-					domainAxisTitle.setValue(layout.domainAxisTitle);
+				// rangeAxisMaxValue
+				if (Ext.isNumber(layout.rangeAxisMaxValue)) {
+					rangeAxisMaxValue.setValue(layout.rangeAxisMaxValue);
 				}
 				else {
-					domainAxisTitle.reset();
+					rangeAxisMaxValue.reset();
 				}
 
-				// Range axis
+				// rangeAxisSteps
+				if (Ext.isNumber(layout.rangeAxisSteps)) {
+					rangeAxisSteps.setValue(layout.rangeAxisSteps);
+				}
+				else {
+					rangeAxisSteps.reset();
+				}
+
+				// rangeAxisDecimals
+				if (Ext.isNumber(layout.rangeAxisDecimals)) {
+					rangeAxisDecimals.setValue(layout.rangeAxisDecimals);
+				}
+				else {
+					rangeAxisDecimals.reset();
+				}
+
+				// range axis title
 				if (Ext.isString(layout.rangeAxisTitle)) {
 					rangeAxisTitle.setValue(layout.rangeAxisTitle);
 				}
 				else {
 					rangeAxisTitle.reset();
 				}
+
+				// domain axis title
+				if (Ext.isString(layout.domainAxisTitle)) {
+					domainAxisTitle.setValue(layout.domainAxisTitle);
+				}
+				else {
+					domainAxisTitle.reset();
+				}
+				
+				hideLegend.setValue(Ext.isBoolean(layout.hideLegend) ? layout.hideLegend : false);
+				hideTitle.setValue(Ext.isBoolean(layout.hideTitle) ? layout.hideTitle : false);
+
+				// title
+				if (Ext.isString(layout.title)) {
+					title.setValue(layout.title);
+				}
+				else {
+					title.reset();
+				}
 			},
 			items: [
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px',
+					style: 'margin-bottom:6px; margin-left:2px',
 					html: NS.i18n.data
 				},
 				data,
 				{
-					bodyStyle: 'border:0 none; padding:7px'
+					bodyStyle: 'border:0 none; padding:5px'
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px',
-					html: NS.i18n.style
+					style: 'margin-bottom:6px; margin-left:2px',
+					html: NS.i18n.axes
 				},
-				style
+				axes,
+				{
+					bodyStyle: 'border:0 none; padding:5px'
+				},
+				{
+					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
+					style: 'margin-bottom:6px; margin-left:2px',
+					html: NS.i18n.general
+				},
+				general
 			],
 			bbar: [
 				'->',
@@ -356,18 +428,23 @@ Ext.onReady( function() {
 					}
 
 					// cmp
+					w.showValues = showValues;
+                    w.hideEmptyRows = hideEmptyRows;
 					w.showTrendLine = showTrendLine;
 					w.targetLineValue = targetLineValue;
 					w.targetLineTitle = targetLineTitle;
 					w.baseLineValue = baseLineValue;
 					w.baseLineTitle = baseLineTitle;
-					w.showValues = showValues;
-                    w.hideEmptyRows = hideEmptyRows;
+
+					w.rangeAxisMaxValue = rangeAxisMaxValue;
+					w.rangeAxisSteps = rangeAxisSteps;
+					w.rangeAxisDecimals = rangeAxisDecimals;
+					w.rangeAxisTitle = rangeAxisTitle;
+					w.domainAxisTitle = domainAxisTitle;
+					
 					w.hideLegend = hideLegend;
 					w.hideTitle = hideTitle;
 					w.title = title;
-					w.domainAxisTitle = domainAxisTitle;
-					w.rangeAxisTitle = rangeAxisTitle;
 				}
 			}
 		});
@@ -430,21 +507,24 @@ Ext.onReady( function() {
 				favorite = Ext.clone(ns.app.layout);
 				dimensions = [].concat(favorite.columns || [], favorite.rows || [], favorite.filters || []);
 
-				// Server sync
-				favorite.totals = favorite.showTotals;
-				delete favorite.showTotals;
+				// server sync
+				favorite.showData = favorite.showValues;
+				delete favorite.showValues;
 
-				favorite.subtotals = favorite.showSubTotals;
-				delete favorite.showSubTotals;
+				favorite.regression = favorite.showTrendLine;
+				delete favorite.showTrendLine;
 
-				favorite.reportParams = {
-					paramReportingPeriod: favorite.reportingPeriod,
-					paramOrganisationUnit: favorite.organisationUnit,
-					paramParentOrganisationUnit: favorite.parentOrganisationUnit
-				};
-				delete favorite.reportingPeriod;
-				delete favorite.organisationUnit;
-				delete favorite.parentOrganisationUnit;
+				favorite.targetLineLabel = favorite.targetLineTitle;
+				delete favorite.targetLineTitle;
+
+				favorite.baseLineLabel = favorite.baseLineTitle;
+				delete favorite.baseLineTitle;
+
+				favorite.domainAxisLabel = favorite.domainAxisTitle;
+				delete favorite.domainAxisTitle;
+
+				favorite.rangeAxisLabel = favorite.rangeAxisTitle;
+				delete favorite.rangeAxisTitle;
 
 				delete favorite.parentGraphMap;
 
