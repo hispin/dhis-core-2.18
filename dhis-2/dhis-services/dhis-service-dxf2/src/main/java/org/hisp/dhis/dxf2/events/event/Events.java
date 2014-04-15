@@ -33,9 +33,11 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.Pager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -48,7 +50,11 @@ public class Events
     private String programInstance;
 
     private List<Event> events = new ArrayList<Event>();
+    
+    private Map<Object, Object> metaData;
 
+    private Pager pager;
+    
     public Events()
     {
     }
@@ -88,6 +94,30 @@ public class Events
     public void setEvents( List<Event> events )
     {
         this.events = events;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty
+    public Map<Object, Object> getMetaData()
+    {
+        return metaData;
+    }
+
+    public void setMetaData( Map<Object, Object> metaData )
+    {
+        this.metaData = metaData;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty
+    public Pager getPager()
+    {
+        return pager;
+    }
+
+    public void setPager( Pager pager )
+    {
+        this.pager = pager;
     }
 
     @Override

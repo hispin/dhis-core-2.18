@@ -210,7 +210,7 @@ public class JdbcEventStore
             sql += hlp.whereAnd() + " pi.followup is " + ( followUp ? "true" : "false" ) + " ";
         }
 
-        if ( !orgUnitIds.isEmpty() )
+        if ( orgUnitIds != null && !orgUnitIds.isEmpty() )
         {
             sql += hlp.whereAnd() + " ou.organisationunitid in (" + getCommaDelimitedString( orgUnitIds ) + ") ";
         }
