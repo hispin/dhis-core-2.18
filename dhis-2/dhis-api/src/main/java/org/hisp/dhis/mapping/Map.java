@@ -145,10 +145,10 @@ public class Map
         {
             Map map = (Map) other;
             
-            user = map.getUser() == null ? user : map.getUser();
-            longitude = map.getLongitude() == null ? longitude : map.getLongitude();
-            latitude = map.getLatitude() == null ? latitude : map.getLatitude();
-            zoom = map.getZoom() == null ? zoom : map.getZoom();
+            user = map.getUser();
+            longitude = map.getLongitude();
+            latitude = map.getLatitude();
+            zoom = map.getZoom();
             
             mapViews.clear();
             mapViews.addAll( map.getMapViews() );

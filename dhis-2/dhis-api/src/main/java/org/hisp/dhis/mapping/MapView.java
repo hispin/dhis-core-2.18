@@ -392,18 +392,18 @@ public class MapView
         {
             MapView mapView = (MapView) other;
 
-            layer = mapView.getLayer() == null ? layer : mapView.getLayer();
-            method = mapView.getMethod() == null ? method : mapView.getMethod();
-            classes = mapView.getClasses() == null ? classes : mapView.getClasses();
-            colorLow = mapView.getColorLow() == null ? colorLow : mapView.getColorLow();
-            colorHigh = mapView.getColorHigh() == null ? colorHigh : mapView.getColorHigh();
-            legendSet = mapView.getLegendSet() == null ? legendSet : mapView.getLegendSet();
-            radiusLow = mapView.getRadiusLow() == null ? radiusLow : mapView.getRadiusLow();
-            radiusHigh = mapView.getRadiusHigh() == null ? radiusHigh : mapView.getRadiusHigh();
-            opacity = mapView.getOpacity() == null ? opacity : mapView.getOpacity();
-            organisationUnitGroupSet = mapView.getOrganisationUnitGroupSet() == null ? organisationUnitGroupSet : mapView.getOrganisationUnitGroupSet();
-            areaRadius = mapView.getAreaRadius() == null ? areaRadius : mapView.getAreaRadius();
-            hidden = mapView.getHidden() == null ? hidden : mapView.getHidden();
+            layer = mapView.getLayer();
+            method = mapView.getMethod();
+            classes = mapView.getClasses();
+            colorLow = mapView.getColorLow();
+            colorHigh = mapView.getColorHigh();
+            legendSet = mapView.getLegendSet();
+            radiusLow = mapView.getRadiusLow();
+            radiusHigh = mapView.getRadiusHigh();
+            opacity = mapView.getOpacity();
+            organisationUnitGroupSet = mapView.getOrganisationUnitGroupSet();
+            areaRadius = mapView.getAreaRadius();
+            hidden = mapView.getHidden();
         }
     }
 }
