@@ -597,20 +597,20 @@ public class Chart
         {
             Chart chart = (Chart) other;
 
-            domainAxisLabel = chart.getDomainAxisLabel() == null ? domainAxisLabel : chart.getDomainAxisLabel();
-            rangeAxisLabel = chart.getRangeAxisLabel() == null ? rangeAxisLabel : chart.getRangeAxisLabel();
-            type = chart.getType() == null ? type : chart.getType();
-            series = chart.getSeries() == null ? series : chart.getSeries();
-            category = chart.getCategory() == null ? category : chart.getCategory();
+            domainAxisLabel = chart.getDomainAxisLabel();
+            rangeAxisLabel = chart.getRangeAxisLabel();
+            type = chart.getType();
+            series = chart.getSeries();
+            category = chart.getCategory();
             hideLegend = chart.isHideLegend();
             regression = chart.isRegression();
             hideTitle = chart.isHideTitle();
             hideSubtitle = chart.isHideSubtitle();
-            title = chart.getTitle() == null ? title : chart.getTitle();
-            targetLineValue = chart.getTargetLineValue() == null ? targetLineValue : chart.getTargetLineValue();
-            targetLineLabel = chart.getTargetLineLabel() == null ? targetLineLabel : chart.getTargetLineLabel();
-            baseLineValue = chart.getBaseLineValue() == null ? baseLineValue : chart.getBaseLineValue();
-            baseLineLabel = chart.getBaseLineLabel() == null ? baseLineLabel : chart.getBaseLineLabel();
+            title = chart.getTitle();
+            targetLineValue = chart.getTargetLineValue();
+            targetLineLabel = chart.getTargetLineLabel();
+            baseLineValue = chart.getBaseLineValue();
+            baseLineLabel = chart.getBaseLineLabel();
             showData = chart.isShowData();
             hideEmptyRows = chart.isHideEmptyRows();
             rewindRelativePeriods = chart.isRewindRelativePeriods();
