@@ -12,7 +12,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="completenessService" ref="compulsoryDataCompletenessService" />
     <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
     <property name="dataMartManager" ref="org.hisp.dhis.datamart.DataMartManager" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>

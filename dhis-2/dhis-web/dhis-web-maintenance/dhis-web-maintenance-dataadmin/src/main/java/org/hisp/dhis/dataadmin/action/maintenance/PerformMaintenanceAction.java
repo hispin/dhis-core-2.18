@@ -34,13 +34,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.analytics.AnalyticsTableService;
-import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datamart.DataMartManager;
 import org.hisp.dhis.maintenance.MaintenanceService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -98,13 +95,6 @@ public class PerformMaintenanceAction
         this.dataMartManager = dataMartManager;
     }
 
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-    
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -231,7 +221,7 @@ public class PerformMaintenanceAction
         
         if ( prunePeriods )
         {
-            prunePeriods();
+            maintenanceService.prunePeriods();
             
             log.info( "'" + username + "': Pruned periods" );
         }
@@ -244,30 +234,5 @@ public class PerformMaintenanceAction
         }
         
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-    
-    private void prunePeriods()
-    {
-        for ( Period period : periodService.getAllPeriods() )
-        {
-            int periodId = period.getId();
-            
-            try
-            {
-                periodService.deletePeriod( period );
-                
-                log.info( "Deleted period with id: " + periodId );
-            }
-            catch ( DeleteNotAllowedException ex )
-            {
-                log.debug( "Period has associated objects and could not be deleted: " + periodId );
-            }
-        }
-        
-        log.info( "Period pruning done" );
     }
 }

@@ -1,5 +1,11 @@
 package org.hisp.dhis.maintenance;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -35,6 +41,8 @@ package org.hisp.dhis.maintenance;
 public class DefaultMaintenanceService
     implements MaintenanceService
 {
+    private static final Log log = LogFactory.getLog( DefaultMaintenanceService.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -45,6 +53,14 @@ public class DefaultMaintenanceService
     {
         this.maintenanceStore = maintenanceStore;
     }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     // -------------------------------------------------------------------------
     // MaintenanceService implementation
     // -------------------------------------------------------------------------
@@ -52,5 +68,24 @@ public class DefaultMaintenanceService
     public int deleteZeroDataValues()
     {
         return maintenanceStore.deleteZeroDataValues();
+    }
+    
+    public void prunePeriods()
+    {
+        for ( Period period : periodService.getAllPeriods() )
+        {
+            int periodId = period.getId();
+            
+            try
+            {
+                periodService.deletePeriod( period );
+                
+                log.info( "Deleted period with id: " + periodId );
+            }
+            catch ( DeleteNotAllowedException ex )
+            {
+                log.debug( "Period has associated objects and could not be deleted: " + periodId );
+            }
+        }
     }
 }
