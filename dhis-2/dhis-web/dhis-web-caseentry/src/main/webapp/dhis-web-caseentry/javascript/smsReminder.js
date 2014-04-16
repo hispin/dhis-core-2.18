@@ -77,7 +77,7 @@ function listAllTrackedEntityInstance( page )
 		data : params,
 		dataType : "json",
 		success : function(json) {
-			setInnerHTML('listEventDiv', displayEventList(json, page));
+			setInnerHTML('listEventDiv', displayevents(json, page));
 			showById('listEventDiv');
 			jQuery('#loaderDiv').hide();
 			setTableStyles();
@@ -86,7 +86,7 @@ function listAllTrackedEntityInstance( page )
 	
 }
 
-function displayEventList(json, page) {
+function displayevents(json, page) {
 	var table = "";
 	
 	// Header
@@ -113,8 +113,8 @@ function displayEventList(json, page) {
 		table += "</tr></thead>";
 		
 		table += "<tbody id='list'>";
-		for ( var i in json.eventList) {
-			var row = json.eventList[i];
+		for ( var i in json.events) {
+			var row = json.events[i];
 			var uid = row.event;
 			var teiUid = row.trackedEntityInstance;
 			var no = eval(json.pager.page);
@@ -196,7 +196,7 @@ function paging(json, page) {
 }
 
 // --------------------------------------------------------------------
-// Search eventList
+// Search events
 // --------------------------------------------------------------------
 
 followup = true;
@@ -210,11 +210,11 @@ function advancedSearch( params, page )
 	showLoader();
 	params += "&orgUnit=" + getFieldValue("orgunitId");
 	$.ajax({
-		url : '../api/eventList.json',
+		url : '../api/events.json',
 		type : "GET",
 		data : params,
 		success : function(json) {
-			setInnerHTML('listEventDiv', displayEventList(json, page));
+			setInnerHTML('listEventDiv', displayevents(json, page));
 			showById('listEventDiv');
 			jQuery('#loaderDiv').hide();
 			setTableStyles();
@@ -381,10 +381,10 @@ function onClickBackBtn()
 	hideById('smsManagementDiv');
 	hideById('entityInstanceDashboard');
 	
-	if( eventList == 1){
+	if( events == 1){
 		listAllTrackedEntityInstance();
 	}
-	else if( eventList == 2){
+	else if( events == 2){
 		validateAdvancedSearch();
 	}
 }
