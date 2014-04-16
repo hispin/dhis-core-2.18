@@ -43,4 +43,9 @@ public interface MaintenanceService
      * @return the number of affected rows.
      */
     int deleteZeroDataValues();
+    
+    /**
+     * Deletes periods which do not have data values associated with them.
+     */
+    void prunePeriods();
 }

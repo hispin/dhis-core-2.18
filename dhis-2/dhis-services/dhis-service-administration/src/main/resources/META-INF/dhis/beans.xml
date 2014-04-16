@@ -45,6 +45,7 @@
 
   <bean id="org.hisp.dhis.maintenance.MaintenanceService" class="org.hisp.dhis.maintenance.DefaultMaintenanceService">
     <property name="maintenanceStore" ref="org.hisp.dhis.maintenance.MaintenanceStore" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
   
   <!-- Statistics -->
