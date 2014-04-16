@@ -88,20 +88,20 @@ public class DefaultAnalyticsSecurityManager
         
         List<NameableObject> queryOrgUnits = params.getDimensionOrFilter( DimensionalObject.ORGUNIT_DIM_ID );
         
-        if ( queryOrgUnits == null || user == null || !user.hasDataViewOrganisationUnit() )
+        if ( queryOrgUnits == null || queryOrgUnits.isEmpty() || user == null || !user.hasDataViewOrganisationUnit() )
         {
-            return;
+            return; // Allow if no 
         }
         
         Set<OrganisationUnit> viewOrgUnits = user.getDataViewOrganisationUnits();
-        
+                
         for ( NameableObject object : queryOrgUnits )
         {
             OrganisationUnit queryOrgUnit = (OrganisationUnit) object;
             
             if ( !queryOrgUnit.isEqualOrChildOf( viewOrgUnits ) )
             {
-                throw new IllegalQueryException( "Org unit is not viewable for current user: " + queryOrgUnit.getUid() );
+                throw new IllegalQueryException( "User: " + user.getUsername() + " is not allowed to view org unit: " + queryOrgUnit.getUid() );
             }
         }
     }

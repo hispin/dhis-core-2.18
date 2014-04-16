@@ -909,17 +909,17 @@ public class DefaultAnalyticsService
             
             for ( String ou : items )
             {
-                if ( KEY_USER_ORGUNIT.equals( ou ) && user != null && user.getOrganisationUnit() != null )
+                if ( KEY_USER_ORGUNIT.equals( ou ) && user != null && user.hasDataViewOrganisationUnitWithFallback() )
                 {
-                    ous.add( user.getOrganisationUnit() );
+                    ous.add( user.getDataViewOrganisationUnitWithFallback() );
                 }
-                else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) && user != null && user.getOrganisationUnit() != null )
+                else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) && user != null && user.hasDataViewOrganisationUnitWithFallback() )
                 {
-                    ous.addAll( user.getOrganisationUnit().getSortedChildren() );
+                    ous.addAll( user.getDataViewOrganisationUnitWithFallback().getSortedChildren() );
                 }
-                else if ( KEY_USER_ORGUNIT_GRANDCHILDREN.equals( ou ) && user != null && user.getOrganisationUnit() != null )
+                else if ( KEY_USER_ORGUNIT_GRANDCHILDREN.equals( ou ) && user != null && user.hasDataViewOrganisationUnitWithFallback() )
                 {
-                    ous.addAll( user.getOrganisationUnit().getSortedGrandChildren() );
+                    ous.addAll( user.getDataViewOrganisationUnitWithFallback().getSortedGrandChildren() );
                 }
                 else if ( ou != null && ou.startsWith( KEY_LEVEL ) )
                 {
