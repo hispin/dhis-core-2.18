@@ -190,8 +190,6 @@ public class User
      * Null is returned if the user has no organisation units. Which
      * organisation unit to return is undefined if the user has multiple
      * organisation units.
-     *
-     * @return an organisation unit associated with the user.
      */
     public OrganisationUnit getOrganisationUnit()
     {
@@ -208,6 +206,27 @@ public class User
         return !CollectionUtils.isEmpty( dataViewOrganisationUnits );
     }
 
+    public OrganisationUnit getDataViewOrganisationUnit()
+    {
+        return CollectionUtils.isEmpty( dataViewOrganisationUnits ) ? null : dataViewOrganisationUnits.iterator().next();
+    }
+    
+    public boolean hasDataViewOrganisationUnitWithFallback()
+    {
+        return hasDataViewOrganisationUnit() || hasOrganisationUnit();
+    }
+    
+    /**
+     * Returns the first of the data view organisation units associated with the
+     * user. If none, returns the first of the data capture organisation units.
+     * If none, return nulls.
+     */
+    public OrganisationUnit getDataViewOrganisationUnitWithFallback()
+    {
+        OrganisationUnit dataViewOrgUnit = getDataViewOrganisationUnit();
+        return dataViewOrgUnit != null ? dataViewOrgUnit : getOrganisationUnit();
+    }
+    
     public String getOrganisationUnitsName()
     {
         return IdentifiableObjectUtils.join( organisationUnits );
