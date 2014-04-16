@@ -154,12 +154,12 @@ dhis2.appr.setApprovalState = function()
 		    case "APPROVED_HERE":
 		        $( "#approvalNotification" ).html( i18n_approved );
 		        
-		        if (json.mayUnapprove)  {
+		        if ( json.mayUnapprove )  {
 		            $( "#approvalDiv" ).show();
 		            $( "#unapproveButton" ).show();
 		        }
 		        
-		        if (json.mayAccept)  {
+		        if ( json.mayAccept )  {
 		            $( "#approvalDiv" ).show();
 		            $( "#acceptButton" ).show();
 		        }
@@ -167,14 +167,14 @@ dhis2.appr.setApprovalState = function()
 		        break;
 		
 		    case "ACCEPTED_HERE":
-		        $( "#approvalNotification" ).html( i18n_approved );
+		        $( "#approvalNotification" ).html( i18n_approved_and_accepted );
 		        
 		        if ( json.mayUnapprove )  {
 		            $( "#approvalDiv" ).show();
 		            $( "#unapproveButton" ).show();
 		        }
 		        
-		        if (json.mayUnccept)  {
+		        if ( json.mayUnccept )  {
 		            $( "#approvalDiv" ).show();
 		            $( "#unacceptButton" ).show();
 		        }

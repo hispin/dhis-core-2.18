@@ -267,7 +267,10 @@ public class DataApprovalController
 
         DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
 
-        if ( !DataApprovalState.APPROVED_HERE.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
+        DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
+
+        if ( !DataApprovalState.APPROVED_HERE.equals( state )
+            && !DataApprovalState.ACCEPTED_HERE.equals(state ) )
         {
             ContextUtils.conflictResponse( response, "Data is not approved here and cannot be unapproved" );
             return;
