@@ -484,14 +484,12 @@ public class HibernateTrackedEntityInstanceStore
                             conjunction.add( Restrictions.ne( "id", instance.getId() ) );
                         }
 
-                        if ( attribute.getValueType().equals( TrackedEntityAttribute.VALUE_TYPE_LOCAL_ID )
-                            && attribute.getOrgunitScope() )
+                        if ( attribute.getOrgunitScope() )
                         {
                             conjunction.add( Restrictions.eq( "orgunit.id", instance.getOrganisationUnit().getId() ) );
                         }
 
                         if ( program != null
-                            && attribute.getValueType().equals( TrackedEntityAttribute.VALUE_TYPE_LOCAL_ID )
                             && attribute.getProgramScope() )
                         {
                             conjunction.add( Restrictions.eq( "programInstance.program", program ) );

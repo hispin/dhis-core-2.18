@@ -75,8 +75,6 @@ public class TrackedEntityAttribute
 
     public static final String TYPE_USERS = "users";
 
-    public static final String VALUE_TYPE_LOCAL_ID = "localId";
-
     private String description;
 
     private String valueType;
