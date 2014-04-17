@@ -62,7 +62,6 @@
 				<option value="trackerAssociate" #if( $attribute.valueType == 'trackerAssociate' ) selected="selected" #end>$i18n.getString( "tracker_associate" )</option>
 				<option value="users" #if( $attribute.valueType == 'users' ) selected="selected" #end>$i18n.getString( "users" )</option>
 				<option value="combo" #if( $attribute.valueType == 'combo' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
-				<option value="localId" #if( $attribute.valueType == 'localId' ) selected="selected" #end>$i18n.getString( "local_identifier" )</option>
             </select>
         </td>
     </tr>
