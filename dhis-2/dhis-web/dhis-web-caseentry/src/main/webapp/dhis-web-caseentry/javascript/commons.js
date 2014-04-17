@@ -1196,7 +1196,7 @@ function saveEnrollment() {
 	});
 }
 function unenrollmentForm(programInstanceId, status) {
-	var comfirmMessage = i18n_complete_confirm_message;
+	var comfirmMessage = i18n_complete_program_confirm_message;
 	if (status == 2)
 		comfirmMessage = i18n_quit_confirm_message;
 	if ( confirm(comfirmMessage) ) {
