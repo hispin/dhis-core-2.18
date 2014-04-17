@@ -104,7 +104,7 @@ public class CaseAggregateConditionTask
 
         // Get datasets which are used in case-aggregate-query-builder formula
         
-        String datasetSQL = "select dm.datasetid as datasetid, pt.name as periodtypename, ds.name as datasetname";
+        String datasetSQL = "select distinct( dm.datasetid ) as datasetid, pt.name as periodtypename, ds.name as datasetname";
         datasetSQL += "      from caseaggregationcondition cagg inner join datasetmembers dm ";
         datasetSQL += "            on cagg.aggregationdataelementid=dm.dataelementid inner join dataset ds ";
         datasetSQL += "            on ds.datasetid = dm.datasetid inner join periodtype pt ";
