@@ -396,17 +396,20 @@ public class DefaultCaseAggregationConditionService
     }
 
     public void aggregate( List<CaseAggregateSchedule> caseAggregateSchedules, String taskStrategy )
-    {
+    {       
         ConcurrentLinkedQueue<CaseAggregateSchedule> datasetQ = new ConcurrentLinkedQueue<CaseAggregateSchedule>(
             caseAggregateSchedules );
-
         List<Future<?>> futures = new ArrayList<Future<?>>();
 
         for ( int i = 0; i < getProcessNo(); i++ )
-        {
-            futures.add( aggregateValueManager( datasetQ, taskStrategy ) );
+        { 
+            Future<?> future = aggregateValueManager( datasetQ, taskStrategy );
+            if ( future != null )
+            {
+                futures.add( future );
+            }
         }
-
+        
         ConcurrentUtils.waitForCompletion( futures );
     }
 
@@ -476,7 +479,6 @@ public class DefaultCaseAggregationConditionService
         taskLoop: while ( true )
         {
             CaseAggregateSchedule dataSet = caseAggregateSchedule.poll();
-
             if ( dataSet == null )
             {
                 break taskLoop;
@@ -484,7 +486,6 @@ public class DefaultCaseAggregationConditionService
 
             Collection<Period> periods = aggregationConditionStore.getPeriods( dataSet.getPeriodTypeName(),
                 taskStrategy );
-
             aggregationConditionStore.runAggregate( null, dataSet, periods );
         }
 
