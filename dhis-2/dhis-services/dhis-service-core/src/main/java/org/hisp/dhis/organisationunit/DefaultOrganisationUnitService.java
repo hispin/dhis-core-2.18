@@ -28,6 +28,7 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataset.DataSet;
@@ -553,8 +554,21 @@ public class DefaultOrganisationUnitService
 
     public OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet()
     {
-        Map<String, Set<String>> associationSet = organisationUnitStore.getOrganisationUnitDataSetAssocationMap();
-        associationSet.putAll( organisationUnitStore.getOrganisationUnitGroupDataSetAssocationMap() );
+        Map<String, Set<String>> associationSet = Maps.newHashMap( organisationUnitStore.getOrganisationUnitDataSetAssocationMap() );
+        Map<String, Set<String>> groupAssociationSet = organisationUnitStore.getOrganisationUnitGroupDataSetAssocationMap();
+
+        // merge maps
+        for ( String key : groupAssociationSet.keySet() )
+        {
+            if ( associationSet.containsKey( key ) )
+            {
+                associationSet.get( key ).addAll( groupAssociationSet.get( key ) );
+            }
+            else
+            {
+                associationSet.put( key, groupAssociationSet.get( key ) );
+            }
+        }
 
         filterUserDataSets( associationSet );
         filterChildOrganisationUnits( associationSet );
