@@ -90,6 +90,12 @@ public class TrackedEntityInstanceQueryParams
     private ProgramStatus programStatus;
     
     /**
+     * Indicates whether tracked entity instance is marked for follow up for the
+     * specified program.
+     */
+    private Boolean followUp;
+    
+    /**
      * Enrollment dates for the given program.
      */
     private List<QueryFilter> programDates = new ArrayList<QueryFilter>();
@@ -328,6 +334,15 @@ public class TrackedEntityInstanceQueryParams
     }
     
     /**
+     * Indicates whether this params specifies follow up for the given program.
+     * Follow up can be specified as true or false.
+     */
+    public boolean hasFollowUp()
+    {
+        return followUp != null;
+    }
+    
+    /**
      * Indicates whether this params specifies any program dates.
      * @return
      */
@@ -446,6 +461,16 @@ public class TrackedEntityInstanceQueryParams
     public void setProgramStatus( ProgramStatus programStatus )
     {
         this.programStatus = programStatus;
+    }
+
+    public Boolean getFollowUp()
+    {
+        return followUp;
+    }
+
+    public void setFollowUp( Boolean followUp )
+    {
+        this.followUp = followUp;
     }
 
     public List<QueryFilter> getProgramDates()

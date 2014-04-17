@@ -291,6 +291,11 @@ public class DefaultTrackedEntityInstanceService
             violation = "Program must be defined when program status is defined";
         }
         
+        if ( params.hasFollowUp() && !params.hasProgram() )
+        {
+            violation = "Program must be defined when follow up status is defined";
+        }
+        
         if ( params.hasProgramDates() && !params.hasProgram() )
         {
             violation = "Program must be defined when program dates are specified";
@@ -321,7 +326,8 @@ public class DefaultTrackedEntityInstanceService
     
     @Override
     public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, Set<String> ou, 
-        OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, Set<String> programDate, String trackedEntity, boolean skipMeta, Integer page, Integer pageSize )
+        OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, Boolean followUp, Set<String> programDate, 
+        String trackedEntity, boolean skipMeta, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
@@ -387,6 +393,7 @@ public class DefaultTrackedEntityInstanceService
         params.setQuery( query );
         params.setProgram( pr );
         params.setProgramStatus( programStatus );
+        params.setFollowUp( followUp );
         params.setTrackedEntity( te );
         params.setOrganisationUnitMode( ouMode );
         params.setSkipMeta( skipMeta );

@@ -281,8 +281,7 @@ public class HibernateTrackedEntityInstanceStore
         else if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.ALL ) )
         {
         }
-        else
-        // SELECTED (default)
+        else // SELECTED (default)
         {
             sql += hlp.whereAnd() + " tei.organisationunitid in ("
                 + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
@@ -290,13 +289,19 @@ public class HibernateTrackedEntityInstanceStore
 
         if ( params.hasProgram() )
         {
-            sql += hlp.whereAnd() + " exists (" + "select trackedentityinstanceid from programinstance pi "
-                + "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " + "and pi.programid = "
-                + params.getProgram().getId() + " ";
+            sql += hlp.whereAnd() + " exists (" + 
+                "select trackedentityinstanceid from programinstance pi " + 
+                "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " + 
+                "and pi.programid = " + params.getProgram().getId() + " ";
 
             if ( params.hasProgramStatus() )
             {
                 sql += "and pi.status = " + PROGRAM_STATUS_MAP.get( params.getProgramStatus() + " " );
+            }
+            
+            if ( params.hasFollowUp() )
+            {
+                sql += "and pi.followup = " + params.getFollowUp() + " ";
             }
 
             if ( params.hasProgramDates() )
