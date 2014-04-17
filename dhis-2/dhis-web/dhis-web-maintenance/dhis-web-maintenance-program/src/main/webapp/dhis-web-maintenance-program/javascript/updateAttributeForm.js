@@ -6,8 +6,10 @@ jQuery(document).ready(	function(){
 	checkValueIsExist( "name", "validateAttribute.action", {id:getFieldValue('id')});
 	checkValueIsExist( "shortName", "validateAttribute.action", {id:getFieldValue('id')});
 	checkValueIsExist( "code", "validateAttribute.action", {id:getFieldValue('id')});
-	
+
 	$('#unique').on('click', function() {
 		$("[name='localIdField']").toggle();
 	});
-});		
+
+  $('#unique').trigger('click');
+});
