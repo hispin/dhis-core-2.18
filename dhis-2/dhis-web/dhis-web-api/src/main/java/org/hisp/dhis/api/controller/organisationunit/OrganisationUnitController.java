@@ -58,6 +58,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -270,12 +271,12 @@ public class OrganisationUnitController
     }
 
     @RequestMapping(value = "/withinRange", method = RequestMethod.GET, produces = { "*/*", "application/json" })
-    public void getEntitiesWithinRange( @RequestParam Double longitude, @RequestParam Double latitude,
+    public void getEntitiesWithinRange( @RequestParam Double longitude, @RequestParam Double latitude, 
         @RequestParam Double distance, @RequestParam(required = false) String orgUnitGroupSetId,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        List<OrganisationUnit> entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getWithinCoordinateArea( longitude, latitude, distance ) );
-
+        List<OrganisationUnit> entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithinDistance( longitude, latitude, distance ) );
+                 
         for ( OrganisationUnit orgunit : entityList )
         {
             Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
@@ -311,4 +312,81 @@ public class OrganisationUnitController
 
         JacksonUtils.toJson( response.getOutputStream(), entityList );
     }
+
+    @RequestMapping( value = "/orgUnitByLocation", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
+    public void getParentByLocation( @RequestParam
+    Double longitude, @RequestParam
+    Double latitude, @RequestParam
+    Map<String, String> parameters, Model model, HttpServletRequest request, HttpServletResponse response )
+        throws Exception
+    {
+
+        // 1. Get parameters
+        WebOptions options = new WebOptions( parameters );
+
+        String topOrgUnit = null;
+        Integer targetLevel = null;
+
+        topOrgUnit = options.getOptions().get( "topOrgUnit" );
+
+        if ( options.getOptions().containsKey( "targetLevel" ) )
+        {
+            try
+            {
+                targetLevel = Integer.parseInt( options.getOptions().get( "targetLevel" ) );
+            }
+            catch ( NumberFormatException ignored )
+            {
+            }
+        }
+
+        // 2. Retrieve list - lowest level orgunit(s) containing the coordinate.
+        List<OrganisationUnit> entityList = new ArrayList<OrganisationUnit>(
+            organisationUnitService.getOrganisationUnitByCoordinate( longitude, latitude, topOrgUnit, targetLevel ) );
+
+        // 3. Remove unrelated details and output in JSON format.
+        for ( OrganisationUnit orgunit : entityList )
+        {
+            Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
+            attributeValues.clear();
+
+            // Clear out all data not needed for this task
+            orgunit.removeAllDataSets();
+            orgunit.removeAllUsers();
+            orgunit.removeAllOrganisationUnitGroups();
+        }
+
+        JacksonUtils.toJson( response.getOutputStream(), entityList );
+    }
+
+    @RequestMapping( value = "/locationWithinOrgUnitBoundary", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
+    public void checkLocationWithinOrgUnit( @RequestParam String orgUnitUid
+        , @RequestParam Double longitude, @RequestParam Double latitude
+        , Model model, HttpServletRequest request, HttpServletResponse response )
+        throws Exception
+    {
+
+        boolean withinOrgUnit = false;
+        
+        Collection<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>();
+       
+        // Reuse 'filterOrganisationUnitsByCoordinate' Method for this.
+        // Send orgUnit collection with one orgUnit to 'getOrganisationUnitByLocation'.
+        // If it returns orgUnit collection with one orgUnit, it means the orgUnit sent as collection
+        // has the coordinate within that orgUnit.
+        
+        orgUnits.add( organisationUnitService.getOrganisationUnit( orgUnitUid ) );
+
+        Collection<OrganisationUnit> orgUnits_found = organisationUnitService.filterOrganisationUnitsByCoordinate( orgUnits, longitude, latitude );
+        
+        if ( orgUnits_found.size() == 1 )
+        {
+            withinOrgUnit = true;
+        }
+                
+        JacksonUtils.toJson( response.getOutputStream(), withinOrgUnit );
+    }
+    
+    
+    
 }

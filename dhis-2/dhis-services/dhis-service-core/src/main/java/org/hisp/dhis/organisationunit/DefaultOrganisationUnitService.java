@@ -846,12 +846,12 @@ public class DefaultOrganisationUnitService
         return organisationUnitLevelStore.getMaxLevels();
     }
 
-    public Collection<OrganisationUnit> getWithinCoordinateArea( double longitude, double latitude, double distance )
+
+    public Collection<OrganisationUnit> getOrganisationUnitWithinDistance( double longitude, double latitude, double distance )
     {
         Collection<OrganisationUnit> objects = organisationUnitStore.getWithinCoordinateArea( GeoUtils.getBoxShape( longitude, latitude, distance ) );
 
-        // Go through the list and remove the ones located outside radius
-        
+        // Go through the list and remove the ones located farther than the distance.
         if ( objects != null && objects.size() > 0 )
         {
             Iterator<OrganisationUnit> iter = objects.iterator();
@@ -867,6 +867,8 @@ public class DefaultOrganisationUnitService
 
                 if ( distancebetween > distance )
                 {
+                    // Remove the orgUnits that is outside of the distance range 
+                    // - due to the 'getWithinCoordinateArea' looking at square area instead of circle.
                     iter.remove();
                 }
             }
@@ -875,6 +877,158 @@ public class DefaultOrganisationUnitService
         return objects;
     }
 
+
+    public Collection<OrganisationUnit> getOrganisationUnitByCoordinate( double longitude, double latitude, String topOrgUnitUid,
+        Integer targetLevel )
+    {
+        Collection<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>();
+
+        if ( GeoUtils.checkGeoJsonPointValid( longitude, latitude ) )
+        {
+
+            OrganisationUnit topOrgUnit = null;
+
+            // 1. Get top org unit of search.
+            if ( topOrgUnitUid != null && topOrgUnitUid != "" )
+            {
+                topOrgUnit = getOrganisationUnit( topOrgUnitUid );
+            }
+            else
+            {
+                // Get top orgunit that contains the coordinate - to get a top
+                // search point.
+                Collection<OrganisationUnit> orgUnits_TopLevel = getTopLevelOrgUnitWithPoint( longitude, latitude, 1,
+                    getNumberOfOrganisationalLevels() - 1 );
+
+                if ( orgUnits_TopLevel.size() == 1 )
+                {
+                    topOrgUnit = orgUnits_TopLevel.iterator().next();
+                }
+                else
+                {
+                    System.out.print( "Multiple Top Level Org Unit found with the coordinate: " );
+
+                    for ( OrganisationUnit ou : orgUnits_TopLevel )
+                    {
+                        System.out.print( " [" + ou.getLevel() + "] " + ou.getName() + " " + ou.getUid() + " " );
+                    }
+
+                    System.out.println( "" );
+                }
+
+            }
+
+            // 2. From the found top level orgunit, search children orgunits to
+            // get the lowest level orgunit that contains the coordinate
+            if ( topOrgUnit == null )
+            {
+                System.out.println( "Could not retrieve a top org Unit." );
+            }
+            else
+            {
+                Collection<OrganisationUnit> orgUnits_childrens = new ArrayList<OrganisationUnit>();
+
+                if ( targetLevel != null )
+                {
+                    orgUnits_childrens = getOrganisationUnitsAtLevel( targetLevel, topOrgUnit );
+                }
+                else
+                {
+                    orgUnits_childrens = getOrganisationUnitWithChildren( topOrgUnit.getId() );
+                }
+
+                Collection<OrganisationUnit> orgUnits_found = filterOrganisationUnitsByCoordinate( orgUnits_childrens,
+                    longitude, latitude );
+
+                // 3. for all the org units with polygon containing the coordinate
+                // , get polygon with highest level
+
+                int bottomLvl = topOrgUnit.getLevel();
+
+                for ( OrganisationUnit ou : orgUnits_found )
+                {
+
+                    if ( ou.getLevel() > bottomLvl )
+                    {
+                        bottomLvl = ou.getLevel();
+                    }
+                }
+
+                for ( OrganisationUnit ou : orgUnits_found )
+                {
+                    if ( ou.getLevel() == bottomLvl )
+                    {
+                        System.out.println( "Bottom Lvl OU Found: [" + ou.getLevel() + "], " + ou.getName() + ", "
+                            + ou.getUid() );
+
+                        orgUnits.add( ou );
+                    }
+                }
+            }
+
+        }
+        else
+        {
+            System.out.println( "Could not create a valid GeoJson Point from coordinate.  Longitude: " + longitude
+                + ", latitude: " + latitude );
+        }
+
+        return orgUnits;
+    }
+
+    
+    public Collection<OrganisationUnit> filterOrganisationUnitsByCoordinate( Collection<OrganisationUnit> orgUnits_source,
+        double longitude, double latitude )
+    {
+        Collection<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>();
+        
+        for ( OrganisationUnit ou : orgUnits_source )
+        {
+            String ou_featureType = ou.getFeatureType();
+            String ou_coordinate = ou.getCoordinates();
+
+            if ( ou_featureType != null
+                && ou_coordinate != null
+                && !ou_coordinate.isEmpty()
+                && (ou_featureType.compareTo( OrganisationUnit.FEATURETYPE_POLYGON ) == 0 || ou_featureType
+                    .compareTo( OrganisationUnit.FEATURETYPE_MULTIPOLYGON ) == 0) )
+            {
+                if ( GeoUtils.checkPointWithMultiPolygon( longitude, latitude, ou.getCoordinates(), ou_featureType ) )
+                {
+                    orgUnits.add( ou );
+                    System.out.println( "Location Match OU: [" + ou.getLevel() + "], " + ou.getName() + ", "
+                        + ou.getUid() );
+                }
+            }
+        }
+
+        return orgUnits;
+    }
+
+    private Collection<OrganisationUnit> getTopLevelOrgUnitWithPoint( double longitude, double latitude, int searchLvl,
+        int stopLvl )
+    {
+        Collection<OrganisationUnit> orgUnits = new ArrayList<OrganisationUnit>();
+
+        // Search down the level until it finds a orgunit with
+        // polygon/multipolygon that contains the point
+
+        for ( int i = searchLvl; i <= stopLvl; i++ )
+        {
+            Collection<OrganisationUnit> orgUnits_onLevel = filterOrganisationUnitsByCoordinate(
+                getOrganisationUnitsAtLevel( i ), longitude, latitude );
+
+            if ( orgUnits_onLevel.size() > 0 )
+            {
+                orgUnits = orgUnits_onLevel;
+                break;
+            }
+        }
+
+        return orgUnits;
+    }
+
+   
     // -------------------------------------------------------------------------
     // Version
     // -------------------------------------------------------------------------
