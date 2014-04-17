@@ -61,11 +61,14 @@ public interface DataValueService
     /**
      * Adds a DataValue. If both the value and the comment properties of the
      * specified DataValue object are null, then the object should not be
-     * persisted.
+     * persisted. The value will be validated and not be saved if not passing
+     * validation.
      * 
      * @param dataValue the DataValue to add.
+     * @return false whether the data value is null or invalid, true if value is
+     *         valid and attempted to be saved.
      */
-    void addDataValue( DataValue dataValue );
+    boolean addDataValue( DataValue dataValue );
 
     /**
      * Updates a DataValue. If both the value and the comment properties of the

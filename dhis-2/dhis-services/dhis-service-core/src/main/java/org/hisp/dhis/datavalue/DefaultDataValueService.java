@@ -35,6 +35,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -51,6 +53,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataValueService
     implements DataValueService
 {
+    private static final Log log = LogFactory.getLog( DefaultDataValueService.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -73,22 +77,35 @@ public class DefaultDataValueService
     // Basic DataValue
     // -------------------------------------------------------------------------
 
-    public void addDataValue( DataValue dataValue )
+    public boolean addDataValue( DataValue dataValue )
     {
-        if ( !dataValue.isNullValue() && dataValueIsValid( dataValue.getValue(), dataValue.getDataElement() ) == null )
+        if ( dataValue == null || dataValue.isNullValue() )
         {
-            if ( dataValue.getCategoryOptionCombo() == null )
-            {
-                dataValue.setCategoryOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
-            }
-            
-            if ( dataValue.getAttributeOptionCombo() == null )
-            {
-                dataValue.setAttributeOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
-            }
-            
-            dataValueStore.addDataValue( dataValue );
+            log.info( "Data value is null" );
+            return false;
         }
+        
+        String result = dataValueIsValid( dataValue.getValue(), dataValue.getDataElement() );
+        
+        if ( result != null )
+        {
+            log.info( "Data value is not valid: " +  result );
+            return false;
+        }
+        
+        if ( dataValue.getCategoryOptionCombo() == null )
+        {
+            dataValue.setCategoryOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
+        }
+        
+        if ( dataValue.getAttributeOptionCombo() == null )
+        {
+            dataValue.setAttributeOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
+        }
+        
+        dataValueStore.addDataValue( dataValue );
+        
+        return true;
     }
 
     public void updateDataValue( DataValue dataValue )
