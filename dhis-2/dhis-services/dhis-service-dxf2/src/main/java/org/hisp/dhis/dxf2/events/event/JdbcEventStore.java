@@ -62,7 +62,7 @@ public class JdbcEventStore
     implements EventStore
 {
     private static final Log log = LogFactory.getLog( JdbcEventStore.class );
-    
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -72,8 +72,9 @@ public class JdbcEventStore
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public List<Event> getAll( Program program, ProgramStage programStage, ProgramStatus programStatus, Boolean followUp,
-        List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
+    public List<Event> getAll( Program program, ProgramStage programStage, ProgramStatus programStatus,
+        Boolean followUp, List<OrganisationUnit> organisationUnits, TrackedEntityInstance trackedEntityInstance,
+        Date startDate, Date endDate, EventStatus status )
     {
         List<Event> events = new ArrayList<Event>();
 
@@ -81,7 +82,8 @@ public class JdbcEventStore
 
         if ( trackedEntityInstance != null )
         {
-            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = entityInstanceService
+                .getTrackedEntityInstance( trackedEntityInstance.getTrackedEntityInstance() );
 
             if ( entityInstance != null )
             {
@@ -93,7 +95,7 @@ public class JdbcEventStore
             trackedEntityInstanceId, startDate, endDate, status );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-        
+
         log.info( "Event query SQL: " + sql );
 
         Event event = new Event();
@@ -117,7 +119,14 @@ public class JdbcEventStore
                 event.setProgramStage( rowSet.getString( "ps_uid" ) );
                 event.setStoredBy( rowSet.getString( "psi_completeduser" ) );
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
-                event.setEventDate( rowSet.getString( "psi_executiondate" ) );
+                if ( rowSet.getString( "psi_executiondate" ) != null )
+                {
+                    event.setEventDate( rowSet.getString( "psi_executiondate" ) );
+                }
+                else
+                {
+                    event.setEventDate( rowSet.getString( "psi_duedate" ) );
+                }
 
                 if ( rowSet.getBoolean( "ps_capturecoordinates" ) )
                 {
@@ -127,7 +136,7 @@ public class JdbcEventStore
                     if ( !StringUtils.isEmpty( psi_longitude ) && !StringUtils.isEmpty( psi_latitude ) )
                     {
                         Coordinate coordinate = new Coordinate( psi_longitude, psi_latitude );
-                        
+
                         try
                         {
                             List<Double> list = objectMapper.readValue( coordinate.getCoordinateString(),
@@ -169,20 +178,30 @@ public class JdbcEventStore
         return events;
     }
 
-    private String buildSql( Program program, ProgramStage programStage, ProgramStatus programStatus, Boolean followUp, List<Integer> orgUnitIds,
-        Integer trackedEntityInstanceId, Date startDate, Date endDate, EventStatus status )
+    private String buildSql( Program program, ProgramStage programStage, ProgramStatus programStatus, Boolean followUp,
+        List<Integer> orgUnitIds, Integer trackedEntityInstanceId, Date startDate, Date endDate, EventStatus status )
     {
         SqlHelper hlp = new SqlHelper();
-        
+
         String sql = "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, "
-            + "psi.executiondate as psi_executiondate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude,"
+            + "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude,"
             + " pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid"
             + " from program p"
             + " left join programstage ps on ps.programid=p.programid"
             + " left join programstageinstance psi on ps.programstageid=psi.programstageid"
-            + " left join programinstance pi on pi.programinstanceid=psi.programinstanceid"
-            + " left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid)"
-            + " left join trackedentitydatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid"
+            + " left join programinstance pi on pi.programinstanceid=psi.programinstanceid";
+
+        if ( status == EventStatus.VISITED || status == EventStatus.COMPLETED )
+        {
+            sql += " left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid) ";
+        }
+        else
+        {
+            sql += " left join trackedentityinstance tei on tei.trackedentityinstanceid=pi.trackedentityinstanceid "
+                + " left join organisationunit ou on (tei.organisationunitid=ou.organisationunitid) ";
+        }
+
+        sql += " left join trackedentitydatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid"
             + " left join dataelement de on pdv.dataelementid=de.dataelementid "
             + " left join trackedentityinstance pa on pa.trackedentityinstanceid=pi.trackedentityinstanceid ";
 
@@ -200,15 +219,15 @@ public class JdbcEventStore
         {
             sql += hlp.whereAnd() + " ps.programstageid = " + programStage.getId() + " ";
         }
-        
+
         if ( programStatus != null )
         {
             sql += hlp.whereAnd() + " pi.status = " + programStatus.getValue() + " ";
         }
-        
+
         if ( followUp != null )
         {
-            sql += hlp.whereAnd() + " pi.followup is " + ( followUp ? "true" : "false" ) + " ";
+            sql += hlp.whereAnd() + " pi.followup is " + (followUp ? "true" : "false") + " ";
         }
 
         if ( orgUnitIds != null && !orgUnitIds.isEmpty() )
@@ -225,7 +244,7 @@ public class JdbcEventStore
         {
             sql += hlp.whereAnd() + " psi.executiondate <= '" + getMediumDateString( endDate ) + "' ";
         }
-        
+
         if ( status != null )
         {
             sql += hlp.whereAnd() + " psi.status = " + status.getValue() + " ";

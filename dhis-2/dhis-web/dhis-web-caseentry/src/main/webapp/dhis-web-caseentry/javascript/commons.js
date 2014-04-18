@@ -141,12 +141,16 @@ function getSearchParams(page) {
 	}
 	
 	if( getFieldValue('startDate') != ''){
-		params += "&startDate=" + getFieldValue('startDate');
-		params += "&endDate=" + getFieldValue('endDate');
+		params += "&eventStartDate=" + getFieldValue('startDate');
+		params += "&eventEndDate=" + getFieldValue('endDate');
 	}
 	
 	if( getFieldValue('status')!= '' ){
 		params += "&status=" + getFieldValue('status');
+	}
+	
+	if( $('#followup').attr('checked')=='checked'){
+		params += "followUp=true";
 	}
 	
 	var flag = false;
@@ -372,12 +376,17 @@ function enableBtn() {
 		});
 
 		clearListById('searchObjectId');
-		
+		clearListById('attributeIds');
 		for ( var i in json.attributes) {
 			jQuery('#searchObjectId').append(
 				'<option value="' + json.attributes[i].id 
 					+ '" displayed="' + json.attributes[i].displayed  + '">'
 					+ json.attributes[i].name + '</option>');
+			
+			if(json.attributes[i].displayed=='true'){
+				jQuery('#attributeIds').append(
+				'<option value="' + json.attributes[i].id + '"></option>');
+			}
 		}
 		
 		if (getFieldValue('program') != '') {

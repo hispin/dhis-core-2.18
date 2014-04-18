@@ -220,10 +220,13 @@ TrackedEntityInstance.listAll = function(page) {
 	contentDiv = 'listEntityInstanceDiv';
 	var params = "page=" + page;
 	if (getFieldValue('program') != '') {
-		params += "&program="
-				+ getFieldValue('program');
+		params += "&program=" + getFieldValue('program');
 	}
-
+	
+	$('#attributeIds option').each(function(i, item){
+		params += "&attribute=" + item.value;
+	});
+	
 	$.ajax({
 		type : "GET",
 		url : "../api/trackedEntityInstances.json?ou="

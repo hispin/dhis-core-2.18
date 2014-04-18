@@ -318,7 +318,7 @@ public class HibernateTrackedEntityInstanceStore
 
             if ( params.hasProgramStatus() )
             {
-                sql += "and pi.status = " + PROGRAM_STATUS_MAP.get( params.getProgramStatus() + " " );
+                sql += "and pi.status = " + PROGRAM_STATUS_MAP.get( params.getProgramStatus() ) + " ";
             }
 
             if ( params.hasFollowUp() )
