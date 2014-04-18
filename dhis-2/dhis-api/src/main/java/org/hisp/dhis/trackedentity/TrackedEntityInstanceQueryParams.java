@@ -38,6 +38,7 @@ import java.util.Set;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStatus;
@@ -114,6 +115,21 @@ public class TrackedEntityInstanceQueryParams
      * Selection mode for the specified organisation units.
      */
     private OrganisationUnitSelectionMode organisationUnitMode;
+    
+    /**
+     * Status of any events in the specified program.
+     */
+    private EventStatus eventStatus;
+    
+    /**
+     * Start date for event for the given program.
+     */
+    private Date eventStartDate;
+    
+    /**
+     * End date for event for the given program.
+     */
+    private Date eventEndDate;
 
     /**
      * Indicates whether not to include meta data in the response.
@@ -372,11 +388,44 @@ public class TrackedEntityInstanceQueryParams
     }
     
     /**
-     * Indicates whethert this params is of the given organisation unit mode.
+     * Indicates whether this params is of the given organisation unit mode.
      */
     public boolean isOrganisationUnitMode( OrganisationUnitSelectionMode mode )
     {
         return organisationUnitMode != null && organisationUnitMode.equals( mode );
+    }
+    
+    /**
+     * Indicates whether this params specifies an event status.
+     */
+    public boolean hasEventStatus()
+    {
+        return eventStatus != null;
+    }
+    
+    /**
+     * Indicates whether the event status specified for the params is equal to
+     * the given event status.
+     */
+    public boolean isEventStatus( EventStatus eventStatus )
+    {
+        return this.eventStatus != null && this.eventStatus.equals( eventStatus );
+    }
+    
+    /**
+     * Indicates whether this params specifies an event start date.
+     */
+    public boolean hasEventStartDate()
+    {
+        return eventStartDate != null;
+    }
+    
+    /**
+     * Indicates whether this params specifies an event end date.
+     */
+    public boolean hasEventEndDate()
+    {
+        return eventEndDate != null;
     }
     
     /**
@@ -445,14 +494,14 @@ public class TrackedEntityInstanceQueryParams
         this.filters = filters;
     }
 
-    public OrganisationUnitSelectionMode getOrganisationUnitMode()
+    public Set<OrganisationUnit> getOrganisationUnits()
     {
-        return organisationUnitMode;
+        return organisationUnits;
     }
 
-    public void setOrganisationUnitMode( OrganisationUnitSelectionMode organisationUnitMode )
+    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
     {
-        this.organisationUnitMode = organisationUnitMode;
+        this.organisationUnits = organisationUnits;
     }
 
     public Program getProgram()
@@ -515,14 +564,44 @@ public class TrackedEntityInstanceQueryParams
         this.trackedEntity = trackedEntity;
     }
 
-    public Set<OrganisationUnit> getOrganisationUnits()
+    public OrganisationUnitSelectionMode getOrganisationUnitMode()
     {
-        return organisationUnits;
+        return organisationUnitMode;
     }
 
-    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
+    public void setOrganisationUnitMode( OrganisationUnitSelectionMode organisationUnitMode )
     {
-        this.organisationUnits = organisationUnits;
+        this.organisationUnitMode = organisationUnitMode;
+    }
+
+    public EventStatus getEventStatus()
+    {
+        return eventStatus;
+    }
+
+    public void setEventStatus( EventStatus eventStatus )
+    {
+        this.eventStatus = eventStatus;
+    }
+
+    public Date getEventStartDate()
+    {
+        return eventStartDate;
+    }
+
+    public void setEventStartDate( Date eventStartDate )
+    {
+        this.eventStartDate = eventStartDate;
+    }
+
+    public Date getEventEndDate()
+    {
+        return eventEndDate;
+    }
+
+    public void setEventEndDate( Date eventEndDate )
+    {
+        this.eventEndDate = eventEndDate;
     }
 
     public boolean isSkipMeta()

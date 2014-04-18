@@ -52,9 +52,9 @@ public class EventReportServiceTest
 
     @Override
     public void setUpTest()
-    {System.out.println("\n\n === \n 1 ");
-        prA = createProgram( 'A', null, null );System.out.println("\n\n === \n 2 ");
-        programService.addProgram( prA );System.out.println("\n\n === \n 3 ");
+    {
+        prA = createProgram( 'A', null, null );
+        programService.addProgram( prA );
     }
 
     @Test

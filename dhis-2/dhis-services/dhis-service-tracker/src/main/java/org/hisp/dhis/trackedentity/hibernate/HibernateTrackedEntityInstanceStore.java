@@ -45,6 +45,7 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
+import static org.hisp.dhis.program.ProgramStageInstance.SKIPPED_STATUS;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,6 +69,7 @@ import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -251,8 +253,8 @@ public class HibernateTrackedEntityInstanceStore
 
             final String joinClause = item.hasFilter() ? "inner join" : "left join";
 
-            sql += joinClause + 
-                " trackedentityattributevalue as " + col + " " + "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid " + 
+            sql += joinClause + " " +
+                "trackedentityattributevalue as " + col + " " + "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid " + 
                 "and " + col + ".trackedentityattributeid = " + item.getItem().getId() + " ";
 
             final String filter = statementBuilder.encode( item.getFilter(), false );
@@ -300,8 +302,17 @@ public class HibernateTrackedEntityInstanceStore
         if ( params.hasProgram() )
         {
             sql += hlp.whereAnd() + " exists (" + 
-                "select trackedentityinstanceid " +
-                "from programinstance pi " + 
+                "select pi.trackedentityinstanceid " +
+                "from programinstance pi ";
+            
+            if ( params.hasEventStatus() )
+            {
+                sql += 
+                    "left join programstageinstance psi " +
+                    "on pi.programinstanceid = psi.programinstanceid ";                    
+            }
+            
+            sql +=
                 "where pi.trackedentityinstanceid = tei.trackedentityinstanceid " + 
                 "and pi.programid = " + params.getProgram().getId() + " ";
 
@@ -324,6 +335,11 @@ public class HibernateTrackedEntityInstanceStore
             {
                 sql += "and pi.enrollmentdate <= '" + getMediumDateString( params.getProgramEndDate() ) + "' ";
             }
+            
+            if ( params.hasEventStatus() )
+            {
+                sql += getEventStatusWhereClause( params );
+            }   
 
             sql += ") ";
         }
@@ -358,6 +374,37 @@ public class HibernateTrackedEntityInstanceStore
         return sql;
     }
 
+    private String getEventStatusWhereClause( TrackedEntityInstanceQueryParams params )
+    {
+        String start = getMediumDateString( params.getEventStartDate() );
+        String end = getMediumDateString( params.getEventEndDate() );
+        
+        String sql = StringUtils.EMPTY;
+        
+        if ( params.isEventStatus( EventStatus.COMPLETED ) )
+        {
+            sql = "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end + "' and psi.completed = true ";
+        }
+        else if ( params.isEventStatus( EventStatus.VISITED ) )
+        {
+            sql = "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end + "' and psi.completed = false ";
+        }
+        else if ( params.isEventStatus( EventStatus.FUTURE_VISIT ) )
+        {
+            sql = "and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' and psi.status is not null and date(now()) < date(psi.duedate) ";
+        }
+        else if ( params.isEventStatus( EventStatus.LATE_VISIT ) )
+        {
+            sql = "and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' and psi.status is not null and date(now()) > date(psi.duedate) ";
+        }
+        else if ( params.isEventStatus( EventStatus.SKIPPED ) )
+        {
+            sql = "and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' and psi.status = " + SKIPPED_STATUS + " "; 
+        }
+        
+        return sql;
+    }
+        
     @Override
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityInstance> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max )
