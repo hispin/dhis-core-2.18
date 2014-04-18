@@ -494,3 +494,6 @@ input[type=number] {
     border: 1px solid #aaa;
     padding: 4px 1px;
 }
+select {
+    padding: 3px;
+}
