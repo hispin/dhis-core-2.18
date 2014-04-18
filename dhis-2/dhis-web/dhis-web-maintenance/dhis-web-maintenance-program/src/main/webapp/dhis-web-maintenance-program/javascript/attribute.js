@@ -77,13 +77,21 @@ function removeAttribute( context )
 
 
 function typeOnChange() {
-	if( getFieldValue('valueType')=="combo"){
+	var type = getFieldValue('valueType');
+	if( type=="combo"){
 		showById("optionSetRow");
 		enable("optionSetId");
 	}
 	else{
 		hideById("optionSetRow");
 		disable("optionSetId");
+	}
+	
+	if( type=="number" || type=='string' || type=='letter' ){
+		enable("unique");
+	}
+	else{
+		disable("unique");
 	}
 }
 
