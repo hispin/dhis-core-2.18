@@ -29,6 +29,7 @@ package org.hisp.dhis.trackedentity;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -75,7 +76,8 @@ public interface TrackedEntityInstanceService
      * @param program the Program identifier.
      * @param programStatus the ProgramStatus in the given orogram.
      * @param followUp indicates follow up status in the given Program.
-     * @param programDate the set of filters for Program enrollment dates.
+     * @param programStartDate the start date for enrollment in the given Program.
+     * @param programEndDate the end date for enrollment in the given Program.
      * @param trackedEntity the TrackedEntity uid.
      * @param skipMeta indicates whether to include meta data in the response.
      * @param page the page number.
@@ -83,7 +85,7 @@ public interface TrackedEntityInstanceService
      * @return a TrackedEntityInstanceQueryParams.
      */
     TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, 
-        Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, Boolean followUp, Set<String> programDate,
+        Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, Boolean followUp, Date programStartDate, Date programEndDate,
         String trackedEntity, boolean skipMeta, Integer page, Integer pageSize );
     
     /**
