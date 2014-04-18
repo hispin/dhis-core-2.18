@@ -29,13 +29,13 @@ package org.hisp.dhis.trackedentity;
  */
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
-import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -96,9 +96,14 @@ public class TrackedEntityInstanceQueryParams
     private Boolean followUp;
     
     /**
-     * Enrollment dates for the given program.
+     * Start date for enrollment in the given program.
      */
-    private List<QueryFilter> programDates = new ArrayList<QueryFilter>();
+    private Date programStartDate;
+    
+    /**
+     * End date for enrollment in the given program.
+     */
+    private Date programEndDate;
     
     /**
      * Tracked entity of the instances in the response.
@@ -343,12 +348,19 @@ public class TrackedEntityInstanceQueryParams
     }
     
     /**
-     * Indicates whether this params specifies any program dates.
-     * @return
+     * Indicates whether this params specifies a program start date.
      */
-    public boolean hasProgramDates()
+    public boolean hasProgramStartDate()
     {
-        return programDates != null && !programDates.isEmpty();
+        return programStartDate != null;
+    }
+    
+    /**
+     * Indicates whether this params specifies a program end date.
+     */
+    public boolean hasProgramEndDate()
+    {
+        return programEndDate != null;
     }
     
     /**
@@ -473,14 +485,24 @@ public class TrackedEntityInstanceQueryParams
         this.followUp = followUp;
     }
 
-    public List<QueryFilter> getProgramDates()
+    public Date getProgramStartDate()
     {
-        return programDates;
+        return programStartDate;
     }
 
-    public void setProgramDates( List<QueryFilter> programDates )
+    public void setProgramStartDate( Date programStartDate )
     {
-        this.programDates = programDates;
+        this.programStartDate = programStartDate;
+    }
+
+    public Date getProgramEndDate()
+    {
+        return programEndDate;
+    }
+
+    public void setProgramEndDate( Date programEndDate )
+    {
+        this.programEndDate = programEndDate;
     }
 
     public TrackedEntity getTrackedEntity()

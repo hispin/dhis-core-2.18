@@ -29,6 +29,7 @@ package org.hisp.dhis.trackedentity.hibernate;
  */
 
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getTokens;
 import static org.hisp.dhis.system.util.TextUtils.removeLastAnd;
@@ -64,7 +65,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
-import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -241,9 +241,9 @@ public class HibernateTrackedEntityInstanceStore
         final String wordStart = statementBuilder.getRegexpWordStart();
         final String wordEnd = statementBuilder.getRegexpWordEnd();
 
-        String sql = "from trackedentityinstance tei "
-            + "inner join trackedentity te on tei.trackedentityid = te.trackedentityid "
-            + "inner join organisationunit ou on tei.organisationunitid = ou.organisationunitid ";
+        String sql = "from trackedentityinstance tei " + 
+            "inner join trackedentity te on tei.trackedentityid = te.trackedentityid " + 
+            "inner join organisationunit ou on tei.organisationunitid = ou.organisationunitid ";
 
         for ( QueryItem item : params.getAttributesAndFilters() )
         {
@@ -251,9 +251,9 @@ public class HibernateTrackedEntityInstanceStore
 
             final String joinClause = item.hasFilter() ? "inner join" : "left join";
 
-            sql += joinClause + " trackedentityattributevalue as " + col + " " + "on " + col
-                + ".trackedentityinstanceid = tei.trackedentityinstanceid " + "and " + col
-                + ".trackedentityattributeid = " + item.getItem().getId() + " ";
+            sql += joinClause + 
+                " trackedentityattributevalue as " + col + " " + "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid " + 
+                "and " + col + ".trackedentityattributeid = " + item.getItem().getId() + " ";
 
             final String filter = statementBuilder.encode( item.getFilter(), false );
 
@@ -291,8 +291,7 @@ public class HibernateTrackedEntityInstanceStore
         else if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.ALL ) )
         {
         }
-        else
-        // SELECTED (default)
+        else // SELECTED (default)
         {
             sql += hlp.whereAnd() + " tei.organisationunitid in ("
                 + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
@@ -300,9 +299,10 @@ public class HibernateTrackedEntityInstanceStore
 
         if ( params.hasProgram() )
         {
-            sql += hlp.whereAnd() + " exists (" + "select trackedentityinstanceid from programinstance pi "
-                + "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " + "and pi.programid = "
-                + params.getProgram().getId() + " ";
+            sql += hlp.whereAnd() + 
+                " exists (" + "select trackedentityinstanceid from programinstance pi " + 
+                "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " + 
+                "and pi.programid = " + params.getProgram().getId() + " ";
 
             if ( params.hasProgramStatus() )
             {
@@ -314,14 +314,14 @@ public class HibernateTrackedEntityInstanceStore
                 sql += "and pi.followup = " + params.getFollowUp() + " ";
             }
 
-            if ( params.hasProgramDates() )
+            if ( params.hasProgramStartDate() )
             {
-                for ( QueryFilter date : params.getProgramDates() )
-                {
-                    String filter = statementBuilder.encode( date.getFilter(), false );
-
-                    sql += "and pi.enrollmentdate " + date.getSqlOperator() + " " + date.getSqlFilter( filter ) + " ";
-                }
+                sql += "and pi.enrollmentdate >= '" + getMediumDateString( params.getProgramStartDate() ) + "' ";
+            }
+            
+            if ( params.hasProgramEndDate() )
+            {
+                sql += "and pi.enrollmentdate <= '" + getMediumDateString( params.getProgramEndDate() ) + "' ";
             }
 
             sql += ") ";
@@ -343,8 +343,9 @@ public class HibernateTrackedEntityInstanceStore
                 {
                     final String col = statementBuilder.columnQuote( item.getItemId() );
 
-                    sql += "lower(" + col + ".value) " + regexp + " '" + wordStart + StringUtils.lowerCase( query )
-                        + wordEnd + "' or ";
+                    sql += 
+                        "lower(" + col + ".value) " + regexp + " '" + wordStart + 
+                        StringUtils.lowerCase( query ) + wordEnd + "' or ";
                 }
 
                 sql = removeLastOr( sql ) + ") and ";
