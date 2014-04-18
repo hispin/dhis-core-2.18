@@ -87,7 +87,7 @@ function typeOnChange() {
 		disable("optionSetId");
 	}
 	
-	if( type=="number" || type=='string' || type=='letter' ){
+	if( type=="number" || type=='string' || type=='letter' || type=='phoneNumber' ){
 		enable("unique");
 	}
 	else{
@@ -101,7 +101,6 @@ function uniqueOnChange(){
 		jQuery('#valueType [value=bool]').hide();
 		jQuery('#valueType [value=trueOnly]').hide();
 		jQuery('#valueType [value=date]').hide();
-		jQuery('#valueType [value=phoneNumber]').hide();
 		jQuery('#valueType [value=trackerAssociate]').hide();
 		jQuery('#valueType [value=users]').hide();
 		jQuery('#valueType [value=combo]').hide();
@@ -111,7 +110,6 @@ function uniqueOnChange(){
 		jQuery('#valueType [value=bool]').show();
 		jQuery('#valueType [value=trueOnly]').show();
 		jQuery('#valueType [value=date]').show();
-		jQuery('#valueType [value=phoneNumber]').show();
 		jQuery('#valueType [value=trackerAssociate]').show();
 		jQuery('#valueType [value=users]').show();
 		jQuery('#valueType [value=combo]').show();
