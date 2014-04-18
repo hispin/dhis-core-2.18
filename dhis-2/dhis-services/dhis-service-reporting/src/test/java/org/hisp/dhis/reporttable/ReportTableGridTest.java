@@ -48,6 +48,7 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.data.MockAnalyticsService;
+import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
@@ -915,7 +916,7 @@ public class ReportTableGridTest
         ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, units, 
             false, false, true, null, null, "january_2000" );
-        reportTable.setSortOrder( ReportTable.DESC );
+        reportTable.setSortOrder( BaseAnalyticalObject.DESC );
         
         reportTableService.saveReportTable( reportTable );
 
