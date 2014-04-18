@@ -2,6 +2,7 @@
 <input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.uid' >
 <input type="hidden" id='hideLink' name='hideLink' value='false'>
 <input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
+	<select id='attributeIds' name='attributeIds' class='hidden'></select>
 
 <table style="margin-bottom:8px" id="commonSearchDiv" name="commonSearchDiv">    
 	<tr>
@@ -47,9 +48,8 @@
 		<td>$i18n.getString('status')</td>
 		<td>
 			<select id="status" name="status">
-				<option value=''>$i18n.getString("all")</option>
+				<option value='ACTIVE'>$i18n.getString("all")</option>
 				<option value='LATE_VISIT'>$i18n.getString("overdue")</option>
-				<option value='ACTIVE'>$i18n.getString("active")</option>
 				<option value='VISITED'>$i18n.getString("incomplete")</option>
 				<option value='COMPLETED'>$i18n.getString("completed")</option>
 				<option value='FUTURE_VISIT'>$i18n.getString("scheduled_in_future")</option> 
