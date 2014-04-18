@@ -36,6 +36,7 @@ import java.util.Set;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -79,6 +80,9 @@ public interface TrackedEntityInstanceService
      * @param programStartDate the start date for enrollment in the given Program.
      * @param programEndDate the end date for enrollment in the given Program.
      * @param trackedEntity the TrackedEntity uid.
+     * @param eventStatus the event status for the given Program.
+     * @param eventStartDate the event start date for the given Program.
+     * @param eventEndDate the event end date for the given Program.
      * @param skipMeta indicates whether to include meta data in the response.
      * @param page the page number.
      * @param pageSize the page size.
@@ -86,7 +90,7 @@ public interface TrackedEntityInstanceService
      */
     TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, 
         Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, Boolean followUp, Date programStartDate, Date programEndDate,
-        String trackedEntity, boolean skipMeta, Integer page, Integer pageSize );
+        String trackedEntity, EventStatus eventStatus, Date eventStartDate, Date eventEndDate, boolean skipMeta, Integer page, Integer pageSize );
     
     /**
      * Validates the given TrackedEntityInstanceQueryParams. The params is

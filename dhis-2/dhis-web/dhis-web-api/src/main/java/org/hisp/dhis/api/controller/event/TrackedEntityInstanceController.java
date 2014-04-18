@@ -52,6 +52,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
@@ -111,6 +112,9 @@ public class TrackedEntityInstanceController
         @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
         @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
         @RequestParam(required=false) String trackedEntity,
+        @RequestParam(required=false) EventStatus eventStatus,
+        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
+        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
         @RequestParam(required=false) boolean skipMeta,
         @RequestParam(required=false) Integer page,
         @RequestParam(required=false) Integer pageSize,
@@ -119,7 +123,8 @@ public class TrackedEntityInstanceController
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
         TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, 
-            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, skipMeta, page, pageSize );
+            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, 
+            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -142,6 +147,9 @@ public class TrackedEntityInstanceController
         @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
         @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
         @RequestParam(required=false) String trackedEntity,
+        @RequestParam(required=false) EventStatus eventStatus,
+        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
+        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
         @RequestParam(required=false) boolean skipMeta,
         @RequestParam(required=false) Integer page,
         @RequestParam(required=false) Integer pageSize,
@@ -150,7 +158,8 @@ public class TrackedEntityInstanceController
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
         TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, 
-            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, skipMeta, page, pageSize );
+            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, 
+            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -170,6 +179,9 @@ public class TrackedEntityInstanceController
         @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
         @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
         @RequestParam(required=false) String trackedEntity,
+        @RequestParam(required=false) EventStatus eventStatus,
+        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
+        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
         @RequestParam(required=false) boolean skipMeta,
         @RequestParam(required=false) Integer page,
         @RequestParam(required=false) Integer pageSize,
@@ -178,7 +190,8 @@ public class TrackedEntityInstanceController
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
         TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, 
-            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, skipMeta, page, pageSize );
+            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, 
+            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -198,6 +211,9 @@ public class TrackedEntityInstanceController
         @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
         @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
         @RequestParam(required=false) String trackedEntity,
+        @RequestParam(required=false) EventStatus eventStatus,
+        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
+        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
         @RequestParam(required=false) boolean skipMeta,
         @RequestParam(required=false) Integer page,
         @RequestParam(required=false) Integer pageSize,
@@ -206,7 +222,8 @@ public class TrackedEntityInstanceController
     {
         Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
         TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, 
-            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, skipMeta, page, pageSize );
+            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, 
+            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );

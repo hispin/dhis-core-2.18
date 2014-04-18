@@ -56,6 +56,7 @@ import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -305,6 +306,11 @@ public class DefaultTrackedEntityInstanceService
             violation = "Program must be defined when program end date is specified";
         }
 
+        if ( params.hasEventStatus() && ( !params.hasEventStartDate() || !params.hasEventEndDate() ) )
+        {
+            violation = "Event start and end date must be specified when event status is specified";
+        }
+        
         if ( params.isOrQuery() && params.hasFilters() )
         {
             violation = "Query cannot be specified together with filters";
@@ -331,7 +337,7 @@ public class DefaultTrackedEntityInstanceService
     @Override
     public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, Set<String> ou, 
         OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, Boolean followUp, Date programStartDate, Date programEndDate,
-        String trackedEntity, boolean skipMeta, Integer page, Integer pageSize )
+        String trackedEntity, EventStatus eventStatus, Date eventStartDate, Date eventEndDate, boolean skipMeta, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
@@ -392,6 +398,9 @@ public class DefaultTrackedEntityInstanceService
         params.setProgramEndDate( programEndDate );
         params.setTrackedEntity( te );
         params.setOrganisationUnitMode( ouMode );
+        params.setEventStatus( eventStatus );
+        params.setEventStartDate( eventStartDate );
+        params.setEventEndDate( eventEndDate );
         params.setSkipMeta( skipMeta );
         params.setPage( page );
         params.setPageSize( pageSize );
