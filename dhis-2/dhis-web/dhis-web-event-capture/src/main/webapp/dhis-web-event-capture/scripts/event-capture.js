@@ -282,16 +282,13 @@ function uploadLocalData()
     
     _.each( _.values( events ), function( event ) {
         
-        if( event.hasOwnProperty('src')){
-            if( event.src == 'local'){
-                delete event.event;
-            }
-            
-            delete event.src;
-        }        
+        if( event.hasOwnProperty('src')){ 
+            delete event.src;            
+        }       
+        delete event.event;
     });    
     
-    events = {eventList: events};
+    events = {events: events};
     
     //jackson insists for valid json, where properties are bounded with ""    
     events = JSON.stringify(events);  
@@ -470,7 +467,8 @@ function StorageManager()
             }
         }
         
-        return match;
+        var pager = {pageSize: 50, page: 1, toolBarDisplay: 5, pageCount: 1};  
+        return {events: match, pager: pager};
     };
     
     /**

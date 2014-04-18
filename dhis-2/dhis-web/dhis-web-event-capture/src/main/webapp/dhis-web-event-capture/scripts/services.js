@@ -93,7 +93,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             
             var promise = $http.get( url ).then(function(response){                        
                 return response.data;        
-            }, function(){                
+            }, function(){     
                 return dhis2.ec.storageManager.getEvents(orgUnit, programStage);                
             });            
             
@@ -136,6 +136,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             var promise = $http.put('../api/events/' + dhis2Event.event, dhis2Event).then(function(response){
                 dhis2.ec.storageManager.clearEvent(dhis2Event);
                 return response.data;
+            }, function(){
             });
             return promise;
         },
