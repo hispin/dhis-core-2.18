@@ -371,6 +371,52 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             }
         }); 
     }; 
+    
+    $scope.updateEvent = function(){
+        
+        //check for form validity
+        $scope.outerFormUpdate.submitted = true;        
+        if( $scope.outerFormUpdate.$invalid ){
+            return false;
+        }
+        
+        //the form is valid, get the values
+        var dataValues = [];        
+        for(var dataElement in $scope.programStageDataElements){
+            dataValues.push({dataElement: dataElement, value: $scope.currentEvent[dataElement]});
+        }
+        
+        var updatedEvent = {
+                            program: $scope.currentEvent.program,
+                            programStage: $scope.currentEvent.programStage,
+                            orgUnit: $scope.currentEvent.orgUnit,
+                            status: 'ACTIVE',                                        
+                            eventDate: $scope.currentEvent.eventDate,
+                            event: $scope.currentEvent.event, 
+                            dataValues: dataValues
+                        };
+                        
+        updatedEvent.eventDate = moment(updatedEvent.eventDate, 'YYYY-MM-DD')._d;       
+        updatedEvent.eventDate = Date.parse(updatedEvent.eventDate);
+        updatedEvent.eventDate = $filter('date')(updatedEvent.eventDate, 'yyyy-MM-dd'); 
+        
+        DHIS2EventFactory.update(updatedEvent).then(function(data){            
+            
+            //update original value
+            var continueLoop = true;
+            for(var i=0; i< $scope.dhis2Events.length && continueLoop; i++){
+                if($scope.dhis2Events[i].event === $scope.currentEvent.event ){
+                    $scope.dhis2Events[i] = $scope.currentEvent;
+                    continueLoop = false;
+                }
+            }
+                
+            $scope.currentEventOrginialValue = angular.copy($scope.currentEvent); 
+            $scope.outerFormUpdate.submitted = false;            
+            $scope.editingEventInFull = false;
+            $scope.currentEvent = {};
+        });       
+    };
        
     $scope.updateEventDataValue = function(currentEvent, dataElement){
 
