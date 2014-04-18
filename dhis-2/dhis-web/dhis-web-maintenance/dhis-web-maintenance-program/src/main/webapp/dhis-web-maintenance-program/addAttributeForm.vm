@@ -39,9 +39,17 @@
     <tr>
 		<td><label for="unique">$i18n.getString( "unique" )</label></td>
 		<td>
-			<input type='checkbox' id="unique" name="unique" value='true'>
-		</td>		
-		<td></td>				
+			<input type='checkbox' id="unique" name="unique" value='true' onchange='uniqueOnChange()'>
+			<span id='uniqueTR' name='uniqueTR' style='display:none;'> 
+				$i18n.getString('in')
+				<select id='scope' name='scope' style='width:275px;'>
+					<option value="">$i18n.getString("whole_system")</option>
+					<option value="1">$i18n.getString("orgunit")</option>
+					<option value="2">$i18n.getString("program")</option>
+					<option value="3">$i18n.getString("program_within_orgunit")</option>
+				</select>
+			</span>
+		</td>			
 	</tr>
 	
 	<tr>
@@ -80,26 +88,6 @@
 		</td>
 	</tr>
 	
-	<tr name='localIdField' style='display:none;'>
-			<th colspan='2'><label for="type">$i18n.getString( "scope" )</label></th>
-		</tr>
-			
-		<tr name='localIdField' style='display:none;'>
-			<td><label for="type">$i18n.getString( "orgunit" )</label></td>
-			<td>
-				<input type='checkbox' id="orgunitScope" name="orgunitScope" value='true' >
-			</td>
-			<td></td>
-		</tr>
-		
-		<tr name='localIdField' style='display:none;'>
-			<td><label for="type">$i18n.getString( "program" )</label></td>
-			<td>
-				<input type='checkbox' id="programScope" name="programScope" value='true' >
-			</td>
-			<td></td>
-		</tr>
-
     </tbody>
 
 	<tr>

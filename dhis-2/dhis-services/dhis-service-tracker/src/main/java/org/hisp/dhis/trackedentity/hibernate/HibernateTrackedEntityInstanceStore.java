@@ -482,8 +482,7 @@ public class HibernateTrackedEntityInstanceStore
 
                     if ( attribute.getOrgunitScope() )
                     {
-                        criteria.createAlias( "organisationUnit", "orgunit" );
-                        criteria.add( Restrictions.eq( "orgunit.id", instance.getOrganisationUnit().getId() ) );
+                        criteria.add( Restrictions.eq( "organisationUnit", instance.getOrganisationUnit() ) );
                     }
 
                     if ( program != null && attribute.getProgramScope() )
