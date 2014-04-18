@@ -35,7 +35,16 @@
     <tr>
 		<td><label for="unique">$i18n.getString( "unique" )</label></td>
 		<td>
-			<input type='checkbox' id="unique" name="unique" value='true' #if( $attribute.unique ) checked #end>
+			<input type='checkbox' id="unique" name="unique" value='true' #if( $attribute.unique=='true' ) checked #end onchange='uniqueOnChange()' />
+			<span id='uniqueTR' name='uniqueTR' style="#if( $attribute.unique=='false' ) display:none; #end" > 
+				$i18n.getString('in')
+				<select id='scope' name='scope' style='width:275px;'>
+					<option value=""  #if( $attribute.orgunitScope=='false' && $attribute.programScope=='false' ) selected #end >$i18n.getString("whole_system")</option>
+					<option value="1" #if( $attribute.orgunitScope=='true' && $attribute.programScope=='false' ) selected #end >$i18n.getString("orgunit")</option>
+					<option value="2" #if( $attribute.orgunitScope=='false' && $attribute.programScope=='true' ) selected #end >$i18n.getString("program")</option>
+					<option value="3" #if( $attribute.orgunitScope=='true' && $attribute.programScope=='true' ) selected #end>$i18n.getString("program_within_orgunit")</option>
+				</select>
+			</span>
 		</td>		
 		<td></td>				
 	</tr>
@@ -55,13 +64,13 @@
                 <option value="number" #if( $attribute.valueType == 'number' ) selected="selected" #end>$i18n.getString( "number" )</option>
                 <option value="string" #if( $attribute.valueType == 'string' ) selected="selected" #end>$i18n.getString( "text" )</option>
                 <option value="letter" #if( $attribute.valueType == 'letter' ) selected="selected" #end>$i18n.getString( "letter_only" )</option>
-				<option value="bool" #if( $attribute.valueType == 'bool' ) selected="selected" #end>$i18n.getString( "yes_no" )</option>
-                <option value="trueOnly" #if( $attribute.valueType == 'trueOnly' ) selected="selected" #end >$i18n.getString( "yes_only" )</option>
-				<option value="date" #if( $attribute.valueType == 'date' ) selected="selected" #end>$i18n.getString( "date" )</option>
-                <option value="phoneNumber" #if( $attribute.valueType == 'phoneNumber' ) selected="selected" #end>$i18n.getString( "phone_number" )</option>
-				<option value="trackerAssociate" #if( $attribute.valueType == 'trackerAssociate' ) selected="selected" #end>$i18n.getString( "tracker_associate" )</option>
-				<option value="users" #if( $attribute.valueType == 'users' ) selected="selected" #end>$i18n.getString( "users" )</option>
-				<option value="combo" #if( $attribute.valueType == 'combo' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
+				<option value="bool" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'bool' ) selected="selected" #end>$i18n.getString( "yes_no" )</option>
+                <option value="trueOnly" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'trueOnly' ) selected="selected" #end >$i18n.getString( "yes_only" )</option>
+				<option value="date" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'date' ) selected="selected" #end>$i18n.getString( "date" )</option>
+                <option value="phoneNumber" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'phoneNumber' ) selected="selected" #end>$i18n.getString( "phone_number" )</option>
+				<option value="trackerAssociate" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'trackerAssociate' ) selected="selected" #end>$i18n.getString( "tracker_associate" )</option>
+				<option value="users" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'users' ) selected="selected" #end>$i18n.getString( "users" )</option>
+				<option value="combo" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'combo' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
             </select>
         </td>
     </tr>
@@ -74,26 +83,6 @@
 				#end
 			</select>
 		</td>
-	</tr>
-
-	<tr name='localIdField' #if($attribute.valueType!='localId' ) style='display:none;' #end >
-		<th colspan='2'><label for="type">$i18n.getString( "scope" )</label></th>
-	</tr>
-		
-	<tr name='localIdField' #if($attribute.valueType!='localId' ) style='display:none;' #end >
-		<td><label for="type">$i18n.getString( "orgunit" )</label></td>
-		<td>
-			<input type='checkbox' id="orgunitScope" name="orgunitScope" value='true' #if( $attribute.orgunitScope=='true' ) checked #end >
-		</td>
-		<td></td>
-	</tr>
-	
-	<tr name='localIdField' #if($attribute.valueType!='localId' ) style='display:none;' #end>
-		<td><label for="type">$i18n.getString( "program" )</label></td>
-		<td>
-			<input type='checkbox' id="programScope" name="programScope" value='true'  #if( $attribute.programScope=='true' ) checked #end >
-		</td>
-		<td></td>
 	</tr>
 	
     </tbody>

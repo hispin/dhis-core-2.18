@@ -8,6 +8,8 @@
 	"valueType": "$!attribute.valueType",
 	"displayInListNoProgram": "$!attribute.displayInListNoProgram",
 	"inherit": "$!attribute.inherit",
-	"optionSet": "$!attribute.optionSet.name"
+	"optionSet": "$!attribute.optionSet.name",
+	"orgunitScope": "$!attribute.orgunitScope",
+	"programScope": "$!attribute.programScope"
   }
 }

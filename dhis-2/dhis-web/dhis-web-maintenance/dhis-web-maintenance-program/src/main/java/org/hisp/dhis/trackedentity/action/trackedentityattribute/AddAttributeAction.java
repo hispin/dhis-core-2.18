@@ -28,13 +28,14 @@ package org.hisp.dhis.trackedentity.action.trackedentityattribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -43,6 +44,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AddAttributeAction
     implements Action
 {
+    private final Integer SCOPE_ORGUNIT = 1;
+
+    private final Integer SCOPE_PROGRAM = 2;
+
+    private final Integer SCOPE_PROGRAM_IN_ORGUNIT = 3;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -127,20 +134,11 @@ public class AddAttributeAction
         this.optionSetId = optionSetId;
     }
 
-    // For Local ID type
+    private Integer scope;
 
-    private Boolean orgunitScope;
-
-    public void setOrgunitScope( Boolean orgunitScope )
+    public void setScope( Integer scope )
     {
-        this.orgunitScope = orgunitScope;
-    }
-
-    private Boolean programScope;
-
-    public void setProgramScope( Boolean programScope )
-    {
-        this.programScope = programScope;
+        this.scope = scope;
     }
 
     // -------------------------------------------------------------------------
@@ -168,9 +166,18 @@ public class AddAttributeAction
 
         if ( unique )
         {
-            orgunitScope = (orgunitScope == null) ? false : orgunitScope;
-            programScope = (programScope == null) ? false : programScope;
+            boolean orgunitScope = false;
+            boolean programScope = false;
+            if ( scope != null && (scope == SCOPE_ORGUNIT || scope == SCOPE_PROGRAM_IN_ORGUNIT) )
+            {
+                orgunitScope = true;
+            }
 
+            if ( scope != null && (scope == SCOPE_PROGRAM || scope == SCOPE_PROGRAM_IN_ORGUNIT) )
+            {
+                programScope = true;
+            }
+            
             attribute.setOrgunitScope( orgunitScope );
             attribute.setProgramScope( programScope );
         }

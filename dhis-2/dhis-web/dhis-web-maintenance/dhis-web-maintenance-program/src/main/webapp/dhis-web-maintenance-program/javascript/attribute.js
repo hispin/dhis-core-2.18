@@ -29,7 +29,24 @@ function showAttributeDetails( context ) {
 			
 			var valueType = json.attribute.valueType;
 			var typeMap = attributeTypeMap();
-			setInnerHTML( 'valueTypeField', typeMap[valueType] );    
+			setInnerHTML( 'valueTypeField', typeMap[valueType] );   
+
+			if(json.attribute.unique == 'true'){
+				var orgunitScope = json.attribute.orgunitScope;
+				var programScope = json.attribute.programScope;
+				if( orgunitScope=='false' && programScope=='false' ){
+					setInnerHTML( 'scopeField', i18n_whole_system);
+				}
+				else if(orgunitScope=='true' && programScope=='false' ){
+					setInnerHTML( 'scopeField', i18n_orgunit);
+				}
+				else if(orgunitScope=='false' && programScope=='true' ){
+					setInnerHTML( 'scopeField', i18n_program);
+				}	
+				else{
+					setInnerHTML( 'scopeField', i18n_program_within_orgunit);
+				}
+			}
 			
 			showDetails();
 	});
@@ -60,21 +77,36 @@ function removeAttribute( context )
 
 
 function typeOnChange() {
-	var type = getFieldValue('valueType');
-	if( type=="combo"){
+	if( getFieldValue('valueType')=="combo"){
 		showById("optionSetRow");
 		enable("optionSetId");
-		jQuery('[name=localIdField]').hide();
 	}
-	else if( type == 'localId' ) {
-		jQuery('[name=localIdField]').show();
+	else{
 		hideById("optionSetRow");
 		disable("optionSetId");
+	}
+}
+
+function uniqueOnChange(){
+	if( $('#unique').attr('checked')=="checked") {
+		jQuery('[name=uniqueTR]').show();
+		jQuery('#valueType [value=bool]').hide();
+		jQuery('#valueType [value=trueOnly]').hide();
+		jQuery('#valueType [value=date]').hide();
+		jQuery('#valueType [value=phoneNumber]').hide();
+		jQuery('#valueType [value=trackerAssociate]').hide();
+		jQuery('#valueType [value=users]').hide();
+		jQuery('#valueType [value=combo]').hide();
 	}
 	else {
-		jQuery('[name=localIdField]').hide();
-		hideById("optionSetRow");
-		disable("optionSetId");
+		jQuery('[name=uniqueTR]').hide();
+		jQuery('#valueType [value=bool]').show();
+		jQuery('#valueType [value=trueOnly]').show();
+		jQuery('#valueType [value=date]').show();
+		jQuery('#valueType [value=phoneNumber]').show();
+		jQuery('#valueType [value=trackerAssociate]').show();
+		jQuery('#valueType [value=users]').show();
+		jQuery('#valueType [value=combo]').show();
 	}
 }
 
