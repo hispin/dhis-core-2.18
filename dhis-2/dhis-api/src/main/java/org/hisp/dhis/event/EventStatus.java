@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.events.event;
+package org.hisp.dhis.event;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
