@@ -299,9 +299,10 @@ public class HibernateTrackedEntityInstanceStore
 
         if ( params.hasProgram() )
         {
-            sql += hlp.whereAnd() + 
-                " exists (" + "select trackedentityinstanceid from programinstance pi " + 
-                "where pi.trackedentityinstanceid=tei.trackedentityinstanceid " + 
+            sql += hlp.whereAnd() + " exists (" + 
+                "select trackedentityinstanceid " +
+                "from programinstance pi " + 
+                "where pi.trackedentityinstanceid = tei.trackedentityinstanceid " + 
                 "and pi.programid = " + params.getProgram().getId() + " ";
 
             if ( params.hasProgramStatus() )
