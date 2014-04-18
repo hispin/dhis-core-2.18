@@ -28,12 +28,7 @@ package org.hisp.dhis.caseentry.action.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -46,7 +41,11 @@ import org.hisp.dhis.program.comparator.ProgramStageInstanceVisitDateComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -110,9 +109,9 @@ public class SaveProgramEnrollmentAction
         this.entityInstanceId = entityInstanceId;
     }
 
-    private String programId;
+    private Integer programId;
 
-    public void setProgramId( String programId )
+    public void setProgramId( Integer programId )
     {
         this.programId = programId;
     }
@@ -156,7 +155,17 @@ public class SaveProgramEnrollmentAction
 
         Program program = programService.getProgram( programId );
 
+        if ( program == null )
+        {
+            return INPUT;
+        }
+
         OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
+
+        if ( orgunit == null )
+        {
+            return INPUT;
+        }
 
         Date enrollment = (enrollmentDate == null || enrollmentDate.isEmpty()) ? null : format
             .parseDate( enrollmentDate );
@@ -183,7 +192,7 @@ public class SaveProgramEnrollmentAction
         // ---------------------------------------------------------------------
         // Update enrollment-date and incident-date
         // ---------------------------------------------------------------------
-        
+
         else
         {
             programInstance.setEnrollmentDate( enrollment );

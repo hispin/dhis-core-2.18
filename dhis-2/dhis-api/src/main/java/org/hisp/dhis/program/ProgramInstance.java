@@ -41,6 +41,7 @@ import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,6 +119,9 @@ public class ProgramInstance
      */
     public void enrollTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program )
     {
+        Assert.notNull( entityInstance );
+        Assert.notNull( program );
+
         setEntityInstance( entityInstance );
         entityInstance.getProgramInstances().add( this );
 
