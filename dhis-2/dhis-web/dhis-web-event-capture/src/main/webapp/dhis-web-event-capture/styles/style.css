@@ -24,7 +24,6 @@ table
     font-size: 13px;
     line-height: 24px;
     table-layout: fixed;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +38,6 @@ table
 
 .container-heading {
     color: white;
-    /*padding: 12px;*/
 }
 
 .container-1-4 {
@@ -112,7 +110,7 @@ div.paging a.active
 {
     border: 1px solid #c2c2c2;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 12px;
     margin-bottom: 20px;
 }
 
@@ -155,7 +153,6 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     background-color: #ebf0f6;
 }
 
-
 .dhis2-table-striped-border tr th {
     border: 1px solid #cad5e5;
 }
@@ -188,7 +185,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 
 .dhis2-list-table-striped {
     width: 100%;
-    padding: 5px 10px;
+    padding-bottom: 6px;
 }
 
 .dhis2-list-table-striped>thead>tr, 
@@ -230,6 +227,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 /*----------------------------------------------------------------------------*/
 /* Bootstrap modal style
 /*----------------------------------------------------------------------------*/
+
 .modal-open {
     overflow: hidden
 }
@@ -488,7 +486,6 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .open > .dropdown-menu {
     display: block
 }
-
 .dropdown-menu li:hover {
     cursor: pointer;
 }

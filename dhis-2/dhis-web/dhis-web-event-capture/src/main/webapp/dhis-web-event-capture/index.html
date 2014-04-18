@@ -294,8 +294,7 @@
                                             <th style="width: 20px;"></th>
                                         </tr>                        
                                     </thead>
-                                    <tbody id="list">                                        
-                                        <!--<tr ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"      -->
+                                    <tbody id="list">
                                         <tr ng-repeat="dhis2Event in dhis2Events | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"                                        
                                             ng-click="showContextMenu(dhis2Event)">
 
@@ -605,9 +604,7 @@
                                 </tbody>        
                             </table>
                             <button ng-click="addEvent(true)" class="button">{{'save_and_add_new'| translate}}</button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <button ng-click="addEvent()" class="button">{{'save_and_back'| translate}}</button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <button ng-click="showEventList(null)" class="button">{{'go_back'| translate}}</button>                        
                         </div>
                     </div> 
