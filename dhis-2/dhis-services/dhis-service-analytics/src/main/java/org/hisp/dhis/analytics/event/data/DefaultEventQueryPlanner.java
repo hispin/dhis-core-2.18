@@ -40,6 +40,7 @@ import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
+import org.hisp.dhis.analytics.partition.PartitionManager;
 import org.hisp.dhis.analytics.table.PartitionUtils;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IllegalQueryException;
@@ -67,6 +68,9 @@ public class DefaultEventQueryPlanner
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private PartitionManager partitionManager;
 
     // -------------------------------------------------------------------------
     // EventQueryPlanner implementation
@@ -124,7 +128,7 @@ public class DefaultEventQueryPlanner
     @Override
     public List<EventQueryParams> planAggregateQuery( EventQueryParams params )
     {
-        Set<String> validPartitions = analyticsManager.getAnalyticsTables( params.getProgram() );
+        Set<String> validPartitions = partitionManager.getEventAnalyticsPartitions();
 
         List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
         
@@ -146,7 +150,7 @@ public class DefaultEventQueryPlanner
     @Override
     public EventQueryParams planEventQuery( EventQueryParams params )
     {
-        Set<String> validPartitions = analyticsManager.getAnalyticsTables( params.getProgram() );
+        Set<String> validPartitions = partitionManager.getEventAnalyticsPartitions();
 
         String tableSuffix = "_" + params.getProgram().getUid();
         

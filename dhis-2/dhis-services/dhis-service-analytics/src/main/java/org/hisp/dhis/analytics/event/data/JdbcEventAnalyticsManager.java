@@ -28,7 +28,6 @@ package org.hisp.dhis.analytics.event.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AnalyticsTableManager.EVENT_ANALYTICS_TABLE_NAME;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
@@ -39,9 +38,7 @@ import static org.hisp.dhis.system.util.TextUtils.removeLastOr;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -56,7 +53,6 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -298,19 +294,7 @@ public class JdbcEventAnalyticsManager
         
         return count;
     }
-    
-    public Set<String> getAnalyticsTables( Program program )
-    {
-        final String sql = 
-            "select table_name from information_schema.tables " +
-            "where table_name like '" + EVENT_ANALYTICS_TABLE_NAME + "_%_" + program.getUid().toLowerCase() + "' " +
-            "and table_type = 'BASE TABLE'";
         
-        log.info( "Information schema SQL: " + sql );
-        
-        return new HashSet<String>( jdbcTemplate.queryForList( sql, String.class ) );
-    }
-    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
