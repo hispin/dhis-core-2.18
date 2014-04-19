@@ -30,6 +30,7 @@ package org.hisp.dhis.analytics.event.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -123,7 +124,7 @@ public class DefaultEventQueryPlanner
     @Override
     public List<EventQueryParams> planAggregateQuery( EventQueryParams params )
     {
-        List<String> validPartitions = analyticsManager.getAnalyticsTables( params.getProgram() );
+        Set<String> validPartitions = analyticsManager.getAnalyticsTables( params.getProgram() );
 
         List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
         
@@ -145,7 +146,7 @@ public class DefaultEventQueryPlanner
     @Override
     public EventQueryParams planEventQuery( EventQueryParams params )
     {
-        List<String> validPartitions = analyticsManager.getAnalyticsTables( params.getProgram() );
+        Set<String> validPartitions = analyticsManager.getAnalyticsTables( params.getProgram() );
 
         String tableSuffix = "_" + params.getProgram().getUid();
         
@@ -175,7 +176,7 @@ public class DefaultEventQueryPlanner
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private List<EventQueryParams> groupByPartition( EventQueryParams params, List<String> validPartitions )
+    private List<EventQueryParams> groupByPartition( EventQueryParams params, Set<String> validPartitions )
     {
         String tableSuffix = "_" + params.getProgram().getUid();
         

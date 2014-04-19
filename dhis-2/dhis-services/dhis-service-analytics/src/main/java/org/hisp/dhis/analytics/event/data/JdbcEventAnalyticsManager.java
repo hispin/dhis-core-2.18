@@ -39,7 +39,9 @@ import static org.hisp.dhis.system.util.TextUtils.removeLastOr;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -297,7 +299,7 @@ public class JdbcEventAnalyticsManager
         return count;
     }
     
-    public List<String> getAnalyticsTables( Program program )
+    public Set<String> getAnalyticsTables( Program program )
     {
         final String sql = 
             "select table_name from information_schema.tables " +
@@ -306,7 +308,7 @@ public class JdbcEventAnalyticsManager
         
         log.info( "Information schema SQL: " + sql );
         
-        return jdbcTemplate.queryForList( sql, String.class );
+        return new HashSet<String>( jdbcTemplate.queryForList( sql, String.class ) );
     }
     
     // -------------------------------------------------------------------------

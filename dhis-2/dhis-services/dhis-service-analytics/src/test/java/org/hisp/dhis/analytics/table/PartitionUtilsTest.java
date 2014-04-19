@@ -35,7 +35,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.common.ListMap;
@@ -105,7 +107,7 @@ public class PartitionUtilsTest
         
         assertEquals( expected, PartitionUtils.getPartitions( period, TBL, null, null ) );
         
-        List<String> validPartitions = new ArrayList<String>();
+        Set<String> validPartitions = new HashSet<String>();
         validPartitions.add( TBL + "_2008" );
         validPartitions.add( TBL + "_2010" );
         
