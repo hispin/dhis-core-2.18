@@ -28,10 +28,7 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Set;
-
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.program.Program;
 
 /**
  * @author Lars Helge Overland
@@ -43,6 +40,4 @@ public interface EventAnalyticsManager
     Grid getEvents( EventQueryParams params, Grid grid );
     
     int getEventCount( EventQueryParams params );
-    
-    public Set<String> getAnalyticsTables( Program program );
 }
