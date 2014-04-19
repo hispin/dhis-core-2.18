@@ -48,6 +48,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.hisp.dhis.analytics.AnalyticsTableManager.EVENT_ANALYTICS_TABLE_NAME;
+
 /**
  * @author Lars Helge Overland
  */
@@ -152,7 +154,7 @@ public class DefaultEventQueryPlanner
             Period queryPeriod = new Period();
             queryPeriod.setStartDate( params.getStartDate() );
             queryPeriod.setEndDate( params.getEndDate() );            
-            params.setPartitions( PartitionUtils.getPartitions( queryPeriod, TABLE_PREFIX, tableSuffix, validPartitions ) );
+            params.setPartitions( PartitionUtils.getPartitions( queryPeriod, EVENT_ANALYTICS_TABLE_NAME, tableSuffix, validPartitions ) );
         }
         
         if ( params.hasDimensionOrFilter( DimensionalObject.ORGUNIT_DIM_ID ) )
@@ -186,7 +188,7 @@ public class DefaultEventQueryPlanner
             queryPeriod.setEndDate( params.getEndDate() );
             
             EventQueryParams query = params.instance();
-            query.setPartitions( PartitionUtils.getPartitions( queryPeriod, TABLE_PREFIX, tableSuffix, validPartitions ) );
+            query.setPartitions( PartitionUtils.getPartitions( queryPeriod, EVENT_ANALYTICS_TABLE_NAME, tableSuffix, validPartitions ) );
             
             if ( query.getPartitions().hasAny() )
             {
@@ -197,7 +199,7 @@ public class DefaultEventQueryPlanner
         }
         else // Aggregate only
         {
-            return convert( queryPlanner.groupByPartition( params, TABLE_PREFIX, tableSuffix ) );
+            return convert( queryPlanner.groupByPartition( params, EVENT_ANALYTICS_TABLE_NAME, tableSuffix ) );
         }
     }
         
