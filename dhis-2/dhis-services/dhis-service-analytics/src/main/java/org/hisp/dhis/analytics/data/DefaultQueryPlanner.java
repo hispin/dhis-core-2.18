@@ -47,6 +47,7 @@ import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,6 +56,7 @@ import org.hisp.dhis.analytics.DataQueryGroups;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.analytics.QueryPlanner;
+import org.hisp.dhis.analytics.partition.PartitionManager;
 import org.hisp.dhis.analytics.table.PartitionUtils;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.DimensionType;
@@ -79,15 +81,18 @@ public class DefaultQueryPlanner
 {
     private static final Log log = LogFactory.getLog( DefaultQueryPlanner.class );
     
-    //TODO shortcut group by methods when only 1 option?
-    
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private PartitionManager partitionManager;
     
     // -------------------------------------------------------------------------
     // DefaultQueryPlanner implementation
     // -------------------------------------------------------------------------
 
+    //TODO shortcut group by methods when only 1 option?
+    
     public void validate( DataQueryParams params )
         throws IllegalQueryException
     {
@@ -334,6 +339,8 @@ public class DefaultQueryPlanner
     
     public List<DataQueryParams> groupByPartition( DataQueryParams params, String tableName, String tableSuffix )
     {
+        Set<String> validPartitions = partitionManager.getAnalyticsPartitions();
+        
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
         if ( params.isSkipPartitioning() )
@@ -343,21 +350,29 @@ public class DefaultQueryPlanner
         }
         else if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
         {
-            ListMap<Partitions, NameableObject> partitionPeriodMap = PartitionUtils.getPartitionPeriodMap( params.getPeriods(), tableName, tableSuffix );
+            ListMap<Partitions, NameableObject> partitionPeriodMap = PartitionUtils.getPartitionPeriodMap( params.getPeriods(), tableName, tableSuffix, validPartitions );
             
             for ( Partitions partitions : partitionPeriodMap.keySet() )
             {
-                DataQueryParams query = params.instance();
-                query.setPeriods( partitionPeriodMap.get( partitions ) );
-                query.setPartitions( partitions );
-                queries.add( query );
+                if ( partitions.hasAny() )
+                {
+                    DataQueryParams query = params.instance();
+                    query.setPeriods( partitionPeriodMap.get( partitions ) );
+                    query.setPartitions( partitions );
+                    queries.add( query );
+                }
             }
         }
         else if ( params.getFilterPeriods() != null && !params.getFilterPeriods().isEmpty() )
         {
-            DataQueryParams query = params.instance();
-            query.setPartitions( PartitionUtils.getPartitions( params.getFilterPeriods(), tableName, tableSuffix ) );
-            queries.add( query );
+            Partitions partitions = PartitionUtils.getPartitions( params.getFilterPeriods(), tableName, tableSuffix, validPartitions );
+            
+            if ( partitions.hasAny() )
+            {
+                DataQueryParams query = params.instance();
+                query.setPartitions( partitions );
+                queries.add( query );
+            }
         }
         else
         {
