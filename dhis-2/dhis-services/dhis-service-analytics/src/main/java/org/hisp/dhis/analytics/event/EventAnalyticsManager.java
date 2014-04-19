@@ -28,7 +28,7 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.program.Program;
@@ -44,5 +44,5 @@ public interface EventAnalyticsManager
     
     int getEventCount( EventQueryParams params );
     
-    public List<String> getAnalyticsTables( Program program );
+    public Set<String> getAnalyticsTables( Program program );
 }

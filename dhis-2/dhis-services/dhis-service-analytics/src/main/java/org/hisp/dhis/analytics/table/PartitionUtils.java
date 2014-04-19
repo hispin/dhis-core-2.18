@@ -69,7 +69,7 @@ public class PartitionUtils
 
     //TODO optimize by including required filter periods only
     
-    public static Partitions getPartitions( Period period, String tablePrefix, String tableSuffix, List<String> validPartitions )
+    public static Partitions getPartitions( Period period, String tablePrefix, String tableSuffix, Set<String> validPartitions )
     {
         tablePrefix = StringUtils.trimToEmpty( tablePrefix );
         tableSuffix = StringUtils.trimToEmpty( tableSuffix );

@@ -30,6 +30,7 @@ package org.hisp.dhis.analytics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -95,11 +96,11 @@ public class Partitions
     
     /**
      * Prunes this instance so that it retains only the partitions included in 
-     * the given list. No operation takes place if the given list is null or empty.
+     * the given set. No operation takes place if the given set is null or empty.
      * 
-     * @param validPartitions list of valid partitions to retain.
+     * @param validPartitions set of valid partitions to retain.
      */
-    public Partitions prunePartitions( List<String> validPartitions )
+    public Partitions prunePartitions( Set<String> validPartitions )
     {
         if ( validPartitions != null && !validPartitions.isEmpty() )
         {
