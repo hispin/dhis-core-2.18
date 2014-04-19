@@ -255,14 +255,14 @@ public class RegistrationMultiEventsServiceTest
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         sessionFactory.getCurrentSession().flush();
-        assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
             trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
         importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        assertEquals( 4, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
     }
 
     @Test
@@ -283,7 +283,7 @@ public class RegistrationMultiEventsServiceTest
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         sessionFactory.getCurrentSession().flush();
-        assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
             trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
@@ -291,14 +291,14 @@ public class RegistrationMultiEventsServiceTest
         importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(),
             trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementA.getUid() );
         importSummary = eventService.addEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
     }
 
     private Enrollment createEnrollment( String program, String person )

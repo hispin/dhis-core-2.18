@@ -63,5 +63,15 @@ public enum EventStatus
 
         throw new IllegalArgumentException();
     }
+    
+    public static boolean isExistingEvent( EventStatus status )
+    {
+        if ( status == null )
+        {
+            return false;
+        }
+        
+        return ACTIVE.equals( status ) || COMPLETED.equals( status ) || VISITED.equals( status );
+    }
 }
 

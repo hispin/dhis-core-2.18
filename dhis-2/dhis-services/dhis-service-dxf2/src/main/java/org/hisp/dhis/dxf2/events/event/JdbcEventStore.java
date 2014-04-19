@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
@@ -50,7 +51,6 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -119,23 +119,16 @@ public class JdbcEventStore
                 event.setProgramStage( rowSet.getString( "ps_uid" ) );
                 event.setStoredBy( rowSet.getString( "psi_completeduser" ) );
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
-                if ( rowSet.getString( "psi_executiondate" ) != null )
-                {
-                    event.setEventDate( rowSet.getString( "psi_executiondate" ) );
-                }
-                else
-                {
-                    event.setEventDate( rowSet.getString( "psi_duedate" ) );
-                }
-
+                event.setEventDate( StringUtils.defaultIfEmpty( rowSet.getString( "psi_executiondate" ), rowSet.getString( "psi_duedate" ) ) );
+                
                 if ( rowSet.getBoolean( "ps_capturecoordinates" ) )
                 {
-                    Double psi_longitude = rowSet.getDouble( "psi_longitude" );
-                    Double psi_latitude = rowSet.getDouble( "psi_latitude" );
+                    Double longitude = rowSet.getDouble( "psi_longitude" );
+                    Double latitude = rowSet.getDouble( "psi_latitude" );
 
-                    if ( !StringUtils.isEmpty( psi_longitude ) && !StringUtils.isEmpty( psi_latitude ) )
+                    if ( longitude != null && latitude != null )
                     {
-                        Coordinate coordinate = new Coordinate( psi_longitude, psi_latitude );
+                        Coordinate coordinate = new Coordinate( longitude, latitude );
 
                         try
                         {
@@ -183,27 +176,30 @@ public class JdbcEventStore
     {
         SqlHelper hlp = new SqlHelper();
 
-        String sql = "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, "
-            + "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude,"
-            + " pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid"
-            + " from program p"
-            + " left join programstage ps on ps.programid=p.programid"
-            + " left join programstageinstance psi on ps.programstageid=psi.programstageid"
-            + " left join programinstance pi on pi.programinstanceid=psi.programinstanceid";
+        String sql = 
+            "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " +
+            "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude, " +
+            "pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid " +
+            "from program p " +
+            "left join programstage ps on ps.programid=p.programid " +
+            "left join programstageinstance psi on ps.programstageid=psi.programstageid " +
+            "left join programinstance pi on pi.programinstanceid=psi.programinstanceid ";
 
-        if ( status == EventStatus.VISITED || status == EventStatus.COMPLETED )
+        if ( status == null || EventStatus.isExistingEvent( status ) )
         {
-            sql += " left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid) ";
+            sql += "left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid) ";
         }
         else
         {
-            sql += " left join trackedentityinstance tei on tei.trackedentityinstanceid=pi.trackedentityinstanceid "
-                + " left join organisationunit ou on (tei.organisationunitid=ou.organisationunitid) ";
+            sql += 
+                "left join trackedentityinstance tei on tei.trackedentityinstanceid=pi.trackedentityinstanceid " +
+                "left join organisationunit ou on (tei.organisationunitid=ou.organisationunitid) ";
         }
 
-        sql += " left join trackedentitydatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid"
-            + " left join dataelement de on pdv.dataelementid=de.dataelementid "
-            + " left join trackedentityinstance pa on pa.trackedentityinstanceid=pi.trackedentityinstanceid ";
+        sql += 
+            "left join trackedentitydatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid " +
+            "left join dataelement de on pdv.dataelementid=de.dataelementid " +
+            "left join trackedentityinstance pa on pa.trackedentityinstanceid=pi.trackedentityinstanceid ";
 
         if ( trackedEntityInstanceId != null )
         {
