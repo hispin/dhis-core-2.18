@@ -255,7 +255,7 @@ public class RegistrationMultiEventsServiceTest
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         sessionFactory.getCurrentSession().flush();
-        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
             trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
@@ -283,7 +283,7 @@ public class RegistrationMultiEventsServiceTest
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         sessionFactory.getCurrentSession().flush();
-        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
 
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(),
             trackedEntityInstanceMaleA.getTrackedEntityInstance(), dataElementB.getUid() );
