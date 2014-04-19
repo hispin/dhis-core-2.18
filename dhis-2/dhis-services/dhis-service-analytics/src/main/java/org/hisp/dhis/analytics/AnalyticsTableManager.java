@@ -44,6 +44,7 @@ public interface AnalyticsTableManager
     public static final String COMPLETENESS_TABLE_NAME = "analytics_completeness";
     public static final String COMPLETENESS_TARGET_TABLE_NAME = "analytics_completenesstarget";
     public static final String ORGUNIT_TARGET_TABLE_NAME = "analytics_orgunittarget";
+    public static final String EVENT_ANALYTICS_TABLE_NAME = "analytics_event";
     
     /**
      * Returns analytics tables which yearly partitions. Yearly partitions will

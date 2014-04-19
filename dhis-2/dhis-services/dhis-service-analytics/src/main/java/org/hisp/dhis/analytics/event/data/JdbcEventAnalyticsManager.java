@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics.event.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AnalyticsTableManager.EVENT_ANALYTICS_TABLE_NAME;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
@@ -46,7 +47,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
-import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -301,7 +301,7 @@ public class JdbcEventAnalyticsManager
     {
         final String sql = 
             "select table_name from information_schema.tables " +
-            "where table_name like '" + EventQueryPlanner.TABLE_PREFIX + "_%_" + program.getUid().toLowerCase() + "' " +
+            "where table_name like '" + EVENT_ANALYTICS_TABLE_NAME + "_%_" + program.getUid().toLowerCase() + "' " +
             "and table_type = 'BASE TABLE'";
         
         log.info( "Information schema SQL: " + sql );

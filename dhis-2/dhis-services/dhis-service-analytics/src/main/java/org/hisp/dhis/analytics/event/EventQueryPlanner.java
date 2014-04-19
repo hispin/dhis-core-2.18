@@ -36,9 +36,7 @@ import org.hisp.dhis.common.IllegalQueryException;
  * @author Lars Helge Overland
  */
 public interface EventQueryPlanner
-{
-    final String TABLE_PREFIX = "analytics_event";
-    
+{    
     void validate( EventQueryParams params )
         throws IllegalQueryException;
     
