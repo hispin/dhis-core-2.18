@@ -41,6 +41,7 @@ import org.hisp.dhis.analytics.AnalyticsIndex;
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.analytics.AnalyticsTableService;
+import org.hisp.dhis.analytics.partition.PartitionManager;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -79,6 +80,9 @@ public class DefaultAnalyticsTableService
     
     @Autowired
     private SqlViewService sqlViewService;
+    
+    @Autowired
+    private PartitionManager partitionManager;
     
     @Autowired
     private Notifier notifier;
@@ -136,6 +140,8 @@ public class DefaultAnalyticsTableService
         notifier.notify( taskId, "Swapping analytics tables" );
         
         swapTables( tables );
+        
+        partitionManager.clearCaches();
         
         clock.logTime( "Table update done" );
         notifier.notify( taskId, "Table update done" );

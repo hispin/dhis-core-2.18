@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataadmin.action.cache;
+package org.hisp.dhis.analytics.partition;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,37 +28,25 @@ package org.hisp.dhis.dataadmin.action.cache;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.analytics.partition.PartitionManager;
-import org.hisp.dhis.cache.HibernateCacheManager;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Action;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
  */
-public class ClearCacheAction
-    implements Action
+public interface PartitionManager
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-    
-    @Autowired
-    private HibernateCacheManager cacheManager;
+    /**
+     * Returns a set of names of current analytics partitions.
+     */
+    Set<String> getAnalyticsPartitions();
 
-    @Autowired
-    private PartitionManager partitionManager;    
+    /**
+     * Returns a set of names of current event analytics partitions.
+     */
+    Set<String> getEventAnalyticsPartitions();
     
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-    
-    public String execute()
-    {
-        cacheManager.clearCache();
-        partitionManager.clearCaches();
-        
-        return SUCCESS;
-    }
+    /**
+     * Clears the partition name caches.
+     */
+    void clearCaches();
 }

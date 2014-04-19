@@ -27,7 +27,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dataadmin.action.cache.ClearCacheAction"
     class="org.hisp.dhis.dataadmin.action.cache.ClearCacheAction"
     scope="prototype">
-    <property name="cacheManager" ref="cacheManager" />
   </bean>
 
   <!-- Data integrity -->
