@@ -88,10 +88,10 @@ public interface DataApprovalService
      * @param dataElementCategoryOptions Selected category options (if any).
      * @return the data approval status.
      */
-    public DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period,
-                                                     OrganisationUnit organisationUnit,
-                                                     Set<CategoryOptionGroup> categoryOptionGroups,
-                                                     Set<DataElementCategoryOption> dataElementCategoryOptions );
+    DataApprovalStatus getDataApprovalStatus( DataSet dataSet, Period period,
+                                              OrganisationUnit organisationUnit,
+                                              Set<CategoryOptionGroup> categoryOptionGroups,
+                                              Set<DataElementCategoryOption> dataElementCategoryOptions );
 
     /**
      * Returns the data approval status for a given data set, period,
@@ -105,8 +105,8 @@ public interface DataApprovalService
      * @return the data approval status.
      */
     DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period,
-                                              OrganisationUnit organisationUnit,
-                                              DataElementCategoryOptionCombo attributeOptionCombo );
+                                                        OrganisationUnit organisationUnit,
+                                                        DataElementCategoryOptionCombo attributeOptionCombo );
 
     /**
      * Returns the data approval permissions and status for a given data set,
@@ -121,10 +121,10 @@ public interface DataApprovalService
      * @param dataElementCategoryOptions Selected category options (if any).
      * @return the data approval permissions (including status.)
      */
-    public DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period,
-                                                     OrganisationUnit organisationUnit,
-                                                     Set<CategoryOptionGroup> categoryOptionGroups,
-                                                     Set<DataElementCategoryOption> dataElementCategoryOptions );
+    DataApprovalPermissions getDataApprovalPermissions( DataSet dataSet, Period period,
+                                                        OrganisationUnit organisationUnit,
+                                                        Set<CategoryOptionGroup> categoryOptionGroups,
+                                                        Set<DataElementCategoryOption> dataElementCategoryOptions );
 
     /**
      * Accepts an approval. This action is optional, and is usually done
