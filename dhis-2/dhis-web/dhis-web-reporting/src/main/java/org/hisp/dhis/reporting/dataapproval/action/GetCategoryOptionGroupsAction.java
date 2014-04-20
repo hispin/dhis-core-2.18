@@ -39,6 +39,7 @@ import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -57,6 +58,13 @@ public class GetCategoryOptionGroupsAction
     
     @Autowired
     private DataElementCategoryService categoryService;
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -105,7 +113,9 @@ public class GetCategoryOptionGroupsAction
             
             categoryOptionGroups = new ArrayList<CategoryOptionGroup>( categoryService.getAllCategoryOptionGroups() );
             
-            FilterUtils.filter( categoryOptionGroups, new CategoryOptionGroupGroupSetFilter( groupSets ) );        
+            FilterUtils.filter( categoryOptionGroups, new CategoryOptionGroupGroupSetFilter( groupSets ) );
+            
+            addNoneGroupIfNoGroupSet( approvalLevels, categoryOptionGroups );
         }
         
         return SUCCESS;    
@@ -114,7 +124,31 @@ public class GetCategoryOptionGroupsAction
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
+    
+    /**
+     * Adds a category option group with name "none" if the given list of approval
+     * levels is not empty and contains at least one level without a category 
+     * option group set associated with it.
+     */
+    private void addNoneGroupIfNoGroupSet( List<DataApprovalLevel> approvalLevels, List<CategoryOptionGroup> categoryOptionGroups )
+    {
+        boolean hasNoGroupSet = false;
+        
+        for ( DataApprovalLevel level : approvalLevels )
+        {
+            if ( level != null && !level.hasCategoryOptionGroupSet() )
+            {
+                hasNoGroupSet = true;
+            }
+        }
+        
+        if ( !approvalLevels.isEmpty() && hasNoGroupSet )
+        {
+            CategoryOptionGroup cog = new CategoryOptionGroup( "[ " + i18n.getString( "none") + " ]" );
+            categoryOptionGroups.add( 0, cog );
+        }
+    }
+    
     /**
      * Returns the category option group sets associated with the given list of
      * data approval levels.
