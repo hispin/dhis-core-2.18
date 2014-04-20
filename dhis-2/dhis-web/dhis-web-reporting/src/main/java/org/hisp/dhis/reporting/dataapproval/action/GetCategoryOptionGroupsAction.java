@@ -132,17 +132,22 @@ public class GetCategoryOptionGroupsAction
      */
     private void addNoneGroupIfNoGroupSet( List<DataApprovalLevel> approvalLevels, List<CategoryOptionGroup> categoryOptionGroups )
     {
+        boolean hasGroupSet = false;
         boolean hasNoGroupSet = false;
         
         for ( DataApprovalLevel level : approvalLevels )
         {
-            if ( level != null && !level.hasCategoryOptionGroupSet() )
+            if ( level.hasCategoryOptionGroupSet() )
+            {
+                hasGroupSet = true;
+            }
+            else
             {
                 hasNoGroupSet = true;
             }
         }
         
-        if ( !approvalLevels.isEmpty() && hasNoGroupSet )
+        if ( hasGroupSet && hasNoGroupSet )
         {
             CategoryOptionGroup cog = new CategoryOptionGroup( "[ " + i18n.getString( "none") + " ]" );
             categoryOptionGroups.add( 0, cog );
