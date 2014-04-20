@@ -28,14 +28,18 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.scheduling.TaskId;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 public interface DataValueSetService
@@ -49,7 +53,10 @@ public interface DataValueSetService
     void writeDataValueSetJson( Set<String> dataSet, Date startDate, Date endDate, Set<String> ous, OutputStream outputStream );
 
     void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer );
-
+    
+    void writeDataValueSetTemplate( OutputStream out, DataSet dataSet, Period period, List<String> orgUnits,
+        boolean comment, String orgUnitIdScheme, String dataElementIdScheme ) throws IOException;
+    
     ImportSummary saveDataValueSet( InputStream in );
 
     ImportSummary saveDataValueSetJson( InputStream in );

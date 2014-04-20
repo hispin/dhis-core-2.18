@@ -28,28 +28,42 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.FormUtils;
 import org.hisp.dhis.api.view.ClassPathUriResolver;
 import org.hisp.dhis.api.webdomain.form.Form;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.metadata.ExportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -61,24 +75,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -106,6 +102,12 @@ public class DataSetController
 
     @Autowired
     private DataValueService dataValueService;
+    
+    @Autowired
+    private DataValueSetService dataValueSetService;
+    
+    @Autowired
+    private PeriodService periodService;
 
     @Autowired
     private I18nService i18nService;
@@ -175,7 +177,7 @@ public class DataSetController
         JacksonUtils.toJson( response.getOutputStream(), form );
     }
 
-    @RequestMapping( value = "/{uid}/dvs", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )
+    @RequestMapping( value = "/{uid}/dataValueSet", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )
     public void getDvs( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "orgUnitIdScheme", defaultValue = "ID", required = false ) String orgUnitIdScheme,
         @RequestParam( value = "dataElementIdScheme", defaultValue = "ID", required = false ) String dataElementIdScheme,
@@ -192,114 +194,11 @@ public class DataSetController
             return;
         }
 
-        ToXmlGenerator generator = (ToXmlGenerator) JacksonUtils.getXmlMapper().getJsonFactory()
-            .createJsonGenerator( response.getOutputStream() );
-
+        Period pe = periodService.getPeriod( period );
+        
         response.setContentType( MediaType.APPLICATION_XML_VALUE );
 
-        try
-        {
-            XMLStreamWriter staxWriter = generator.getStaxWriter();
-
-            if ( comment )
-            {
-                staxWriter.writeComment( "DataSet: " + dataSet.getDisplayName() + " (" + dataSet.getUid() + ")" );
-            }
-
-            staxWriter.writeStartElement( "", "dataValueSet", DxfNamespaces.DXF_2_0 );
-
-            if ( orgUnits.isEmpty() )
-            {
-                for ( DataElement dataElement : dataSet.getDataElements() )
-                {
-                    writeDataValue( dataElement, dataElementIdScheme, null, orgUnitIdScheme, period, comment, staxWriter );
-                }
-            }
-            else
-            {
-                for ( String orgUnit : orgUnits )
-                {
-                    OrganisationUnit organisationUnit = manager.search( OrganisationUnit.class, orgUnit );
-
-                    if ( organisationUnit == null )
-                    {
-                        continue;
-                    }
-
-                    if ( comment )
-                    {
-                        if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( orgUnitIdScheme.toLowerCase() ) )
-                        {
-                            staxWriter.writeComment( "OrgUnit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getCode() + ")" );
-                        }
-                        else
-                        {
-                            staxWriter.writeComment( "OrgUnit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getUid() + ")" );
-                        }
-
-                    }
-
-                    for ( DataElement dataElement : dataSet.getDataElements() )
-                    {
-                        writeDataValue( dataElement, dataElementIdScheme, organisationUnit, orgUnitIdScheme, period, comment, staxWriter );
-                    }
-                }
-            }
-
-            staxWriter.writeEndElement();
-            staxWriter.flush();
-        }
-        catch ( XMLStreamException ignored )
-        {
-            ignored.printStackTrace();
-        }
-    }
-
-    private void writeDataValue( DataElement dataElement, String deScheme, OrganisationUnit organisationUnit, String ouScheme, String period, boolean comment, XMLStreamWriter staxWriter ) throws XMLStreamException
-    {
-        for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getSortedOptionCombos() )
-        {
-            String label = dataElement.getDisplayName();
-
-            if ( !categoryOptionCombo.isDefault() )
-            {
-                label += " " + categoryOptionCombo.getDisplayName();
-            }
-
-            if ( comment )
-            {
-                staxWriter.writeComment( "DataElement: " + label );
-            }
-
-            staxWriter.writeStartElement( "", "dataValue", DxfNamespaces.DXF_2_0 );
-
-            if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( deScheme.toLowerCase() ) )
-            {
-                staxWriter.writeAttribute( "dataElement", dataElement.getCode() );
-            }
-            else
-            {
-                staxWriter.writeAttribute( "dataElement", dataElement.getUid() );
-            }
-
-            staxWriter.writeAttribute( "categoryOptionCombo", categoryOptionCombo.getUid() );
-            staxWriter.writeAttribute( "period", period );
-
-            if ( organisationUnit != null )
-            {
-                if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( ouScheme.toLowerCase() ) )
-                {
-                    staxWriter.writeAttribute( "orgUnit", organisationUnit.getCode() == null ? "" : organisationUnit.getCode() );
-                }
-                else
-                {
-                    staxWriter.writeAttribute( "orgUnit", organisationUnit.getUid() == null ? "" : organisationUnit.getUid() );
-                }
-            }
-
-            staxWriter.writeAttribute( "value", "" );
-            staxWriter.writeEndElement();
-        }
+        dataValueSetService.writeDataValueSetTemplate( response.getOutputStream(), dataSet, pe, orgUnits, comment, orgUnitIdScheme, dataElementIdScheme );
     }
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )

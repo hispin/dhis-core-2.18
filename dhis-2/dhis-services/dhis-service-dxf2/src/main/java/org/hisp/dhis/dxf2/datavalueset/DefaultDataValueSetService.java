@@ -28,13 +28,36 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.csvreader.CsvReader;
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+import static org.hisp.dhis.system.util.ConversionUtils.wrap;
+import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
@@ -67,22 +90,8 @@ import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
-import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
-import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
-import static org.hisp.dhis.system.util.ConversionUtils.wrap;
-import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
+import com.csvreader.CsvReader;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 
 /**
  * @author Lars Helge Overland
@@ -229,6 +238,116 @@ public class DefaultDataValueSetService
         dataValueSetStore.writeDataValueSetCsv( getDataElements( dataSets ), periods, getOrgUnits( orgUnits ), writer );
     }
 
+    public void writeDataValueSetTemplate( OutputStream out, DataSet dataSet, Period period, List<String> orgUnits,
+        boolean comment, String orgUnitIdScheme, String dataElementIdScheme ) throws IOException
+    {
+        ToXmlGenerator generator = (ToXmlGenerator) JacksonUtils.getXmlMapper().getJsonFactory().createJsonGenerator( out );
+            
+        try
+        {
+            XMLStreamWriter staxWriter = generator.getStaxWriter();
+    
+            if ( comment )
+            {
+                staxWriter.writeComment( "Data set: " + dataSet.getDisplayName() + " (" + dataSet.getUid() + ")" );
+            }
+    
+            staxWriter.writeStartElement( "", "dataValueSet", DxfNamespaces.DXF_2_0 );
+    
+            if ( orgUnits.isEmpty() )
+            {
+                for ( DataElement dataElement : dataSet.getDataElements() )
+                {
+                    writeDataValue( dataElement, dataElementIdScheme, null, orgUnitIdScheme, period, comment, staxWriter );
+                }
+            }
+            else
+            {
+                for ( String orgUnit : orgUnits )
+                {
+                    OrganisationUnit organisationUnit = identifiableObjectManager.search( OrganisationUnit.class, orgUnit );
+    
+                    if ( organisationUnit == null )
+                    {
+                        continue;
+                    }
+    
+                    if ( comment )
+                    {
+                        if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( orgUnitIdScheme.toLowerCase() ) )
+                        {
+                            staxWriter.writeComment( "Org unit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getCode() + ")" );
+                        }
+                        else
+                        {
+                            staxWriter.writeComment( "Org unit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getUid() + ")" );
+                        }    
+                    }
+    
+                    for ( DataElement dataElement : dataSet.getDataElements() )
+                    {
+                        writeDataValue( dataElement, dataElementIdScheme, organisationUnit, orgUnitIdScheme, period, comment, staxWriter );
+                    }
+                }
+            }
+    
+            staxWriter.writeEndElement();
+            staxWriter.flush();
+        }
+        catch ( XMLStreamException ignored )
+        {
+            ignored.printStackTrace();
+        }
+    }
+    
+    private void writeDataValue( DataElement dataElement, String deScheme, OrganisationUnit organisationUnit, String ouScheme, Period period, boolean comment, XMLStreamWriter staxWriter ) throws XMLStreamException
+    {
+        for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getSortedOptionCombos() )
+        {
+            String label = dataElement.getDisplayName();
+    
+            if ( !categoryOptionCombo.isDefault() )
+            {
+                label += " " + categoryOptionCombo.getDisplayName();
+            }
+    
+            if ( comment )
+            {
+                staxWriter.writeComment( "Data element: " + label );
+            }
+    
+            staxWriter.writeStartElement( "", "dataValue", DxfNamespaces.DXF_2_0 );
+    
+            if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( deScheme.toLowerCase() ) )
+            {
+                staxWriter.writeAttribute( "dataElement", dataElement.getCode() );
+            }
+            else
+            {
+                staxWriter.writeAttribute( "dataElement", dataElement.getUid() );
+            }
+    
+            staxWriter.writeAttribute( "categoryOptionCombo", categoryOptionCombo.getUid() );
+            
+            staxWriter.writeAttribute( "period", period != null ? period.getIsoDate() : "" );
+    
+            if ( organisationUnit != null )
+            {
+                if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( ouScheme.toLowerCase() ) )
+                {
+                    staxWriter.writeAttribute( "orgUnit", organisationUnit.getCode() == null ? "" : organisationUnit.getCode() );
+                }
+                else
+                {
+                    staxWriter.writeAttribute( "orgUnit", organisationUnit.getUid() == null ? "" : organisationUnit.getUid() );
+                }
+            }
+    
+            staxWriter.writeAttribute( "value", "" );
+            staxWriter.writeEndElement();
+        }
+    }
+    
     public ImportSummary saveDataValueSet( InputStream in )
     {
         return saveDataValueSet( in, ImportOptions.getDefaultImportOptions(), null );
