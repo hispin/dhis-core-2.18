@@ -32,21 +32,24 @@
 				</tr>
 				#end
 				
-				#foreach( $attributeValue in $attributeValues )
-				<tr>
-					<td>$attributeValue.attribute.displayName</td>
-					<td id='dashboard_attr$attributeValue.attribute.id'>
-						#if($attributeValue.attribute.valueType=='bool' 
-							|| $attributeValue.attribute.valueType=='trueOnly')
-							#if($attributeValue.value=='true')
+				#foreach( $attribute in $attributes )
+				<tr id='row_attr$attribute.id' class='hidden'>
+					<td>$attribute.displayName</td>
+						
+					<td id='value_attr$attribute.id' >
+						#set($value = "")
+						#set($value = $attributeValueMap.get($attribute.id) )
+						#if($value != "" && $attribute.valueType=='bool' 
+							|| $attribute.valueType=='trueOnly')
+							#if($value=='true')
 								$i18n.getString("yes")
 							#else
 								$i18n.getString("no")
 							#end
 						#else
-							$encoder.htmlEncode($attributeValue.value)
-						#end	
-					</td>
+							$encoder.htmlEncode($value)
+						#end
+						</td>
 				</tr>
 				#end
 			</table>

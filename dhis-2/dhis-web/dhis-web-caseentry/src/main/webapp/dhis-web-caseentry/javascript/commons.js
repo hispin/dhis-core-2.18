@@ -1340,12 +1340,14 @@ function saveIdentifierAndAttribute(entityInstanceId, programId, paramsDiv) {
 				var id = 'dashboard_' + input.attr('id');
 				setInnerHTML(id, input.val());
 			});
-			$('#identifierAndAttributeDiv :input').each(function() {
-				var input = $(this);
-				var id = 'dashboard_' + input.attr('id');
-				setInnerHTML(id, input.val());
+			$('#propertyForm :input').each(function() {
 				var input = $(this);
 				var id = input.attr('id');
+				if( input.val() != "" ){
+					setInnerHTML('value_' + id, input.val());
+					showById('row_' + id);
+				}
+				var input = $(this);
 				jQuery("#tab-2 [id=" + id + "]").val(input.val());
 			});
 			showSuccessMessage(i18n_save_success);
