@@ -285,13 +285,16 @@ public class DataSetController
             staxWriter.writeAttribute( "categoryOptionCombo", categoryOptionCombo.getUid() );
             staxWriter.writeAttribute( "period", period );
 
-            if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( ouScheme.toLowerCase() ) )
+            if ( organisationUnit != null )
             {
-                staxWriter.writeAttribute( "orgUnit", organisationUnit.getCode() == null ? "" : organisationUnit.getCode() );
-            }
-            else
-            {
-                staxWriter.writeAttribute( "orgUnit", organisationUnit.getUid() == null ? "" : organisationUnit.getUid() );
+                if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( ouScheme.toLowerCase() ) )
+                {
+                    staxWriter.writeAttribute( "orgUnit", organisationUnit.getCode() == null ? "" : organisationUnit.getCode() );
+                }
+                else
+                {
+                    staxWriter.writeAttribute( "orgUnit", organisationUnit.getUid() == null ? "" : organisationUnit.getUid() );
+                }
             }
 
             staxWriter.writeAttribute( "value", "" );
