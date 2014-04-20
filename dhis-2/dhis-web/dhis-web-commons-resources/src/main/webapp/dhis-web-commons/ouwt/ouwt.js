@@ -146,7 +146,7 @@ function Selection()
     };
 
     this.getVersion = function() {
-        if(dhis2.ou.memoryOnly) {
+        if ( dhis2.ou.memoryOnly ) {
             return -1;
         }
 
