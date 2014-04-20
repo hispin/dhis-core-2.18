@@ -180,5 +180,17 @@
 	if( jQuery('#tabs li').length == 1){
 		programReports(getFieldValue('programInstanceId'));
 	}
+	
+	// Only display the attribute-value which belong to the program selected
+	$("[id^='row_attr']").hide();
+	#foreach($programAttribute in $attributes )
+		var value = getInnerHTML('value_attr' + '$programAttribute.attribute.id')
+					.replace(/^\s*/, "")
+					.replace(/\s*$/, "");
+		if(value!=''){
+			$('#row_attr' + '$programAttribute.attribute.id').show();
+		}
+	#end
+	
 	resize();
 </script>
