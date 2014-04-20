@@ -188,7 +188,7 @@ public class DefaultDataApprovalService
 
         DataApprovalPermissions permissions = new DataApprovalPermissions();
 
-        log.info( "getDataApprovalPermissions() getting permissions." );
+        log.debug( "getDataApprovalPermissions() getting permissions." );
 
         permissions.setDataApprovalStatus( status );
 
@@ -214,7 +214,7 @@ public class DefaultDataApprovalService
             }
         }
 
-        log.info( "Returning permissions for " + organisationUnit.getName()
+        log.debug( "Returning permissions for " + organisationUnit.getName()
                 + " " + status.getDataApprovalState().name()
                 + " may approve = " + permissions.isMayApprove()
                 + " may unapprove = " + permissions.isMayUnapprove()
@@ -259,7 +259,7 @@ public class DefaultDataApprovalService
             warnNotPermitted( dataApproval, "unaccept", mayAcceptOrUnaccept( dataApproval.getOrganisationUnit() ) );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -303,7 +303,7 @@ public class DefaultDataApprovalService
 
             if ( mayApprove && user.getOrganisationUnits().contains( organisationUnit ) )
             {
-                log.info( "mayApprove = true because organisation unit " + organisationUnit.getName()
+                log.debug( "mayApprove = true because organisation unit " + organisationUnit.getName()
                         + " is assigned to user and user may approve at same level." );
 
                 return true;
@@ -314,14 +314,14 @@ public class DefaultDataApprovalService
             if ( mayApproveAtLowerLevels && CollectionUtils.containsAny( user.getOrganisationUnits(),
                 organisationUnit.getAncestors() ) )
             {
-                log.info( "mayApprove = true because organisation unit " + organisationUnit.getName()
+                log.debug( "mayApprove = true because organisation unit " + organisationUnit.getName()
                         + " is under user and user may approve at lower levels." );
 
                 return true;
             }
         }
 
-        log.info( "mayApprove = false for organisation unit " + organisationUnit.getName() );
+        log.debug( "mayApprove = false for organisation unit " + organisationUnit.getName() );
 
         return false;
     }
@@ -351,13 +351,13 @@ public class DefaultDataApprovalService
         {
             if ( !accepted || mayAcceptOrUnaccept( organisationUnit ) )
             {
-                log.info( "mayUnapprove = true for organisation unit " + organisationUnit.getName() );
+                log.debug( "mayUnapprove = true for organisation unit " + organisationUnit.getName() );
 
                 return true;
             }
         }
 
-        log.info( "mayUnapprove = false for organisation unit " + organisationUnit.getName() );
+        log.debug( "mayUnapprove = false for organisation unit " + organisationUnit.getName() );
 
         return false;
     }
@@ -380,16 +380,16 @@ public class DefaultDataApprovalService
             if ( mayAcceptAtLowerLevels && CollectionUtils.containsAny( user.getOrganisationUnits(),
                 organisationUnit.getAncestors() ) )
             {
-                log.info( "User may accept or unaccept for organisation unit " + organisationUnit.getName() );
+                log.debug( "User may accept or unaccept for organisation unit " + organisationUnit.getName() );
 
                 return true;
             }
         }
 
-        log.info( "User with AUTH_ACCEPT_LOWER_LEVELS " + user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS )
+        log.debug( "User with AUTH_ACCEPT_LOWER_LEVELS " + user.getUserCredentials().isAuthorized( DataApproval.AUTH_ACCEPT_LOWER_LEVELS )
                 + " with " + user.getOrganisationUnits().size() + " org units"
                 + " may not accept or unaccept for organisation unit " + organisationUnit.getName()
-                + " with " + organisationUnit.getAncestors().size() + " ancestors.");
+                + " with " + organisationUnit.getAncestors().size() + " ancestors." );
 
         return false;
     }
@@ -407,11 +407,11 @@ public class DefaultDataApprovalService
      */
     private boolean isAuthorizedToUnapprove( OrganisationUnit organisationUnit )
     {
-        log.info( "isAuthorizedToUnapprove( " + organisationUnit.getName() + ")" );
+        log.debug( "isAuthorizedToUnapprove( " + organisationUnit.getName() + ")" );
 
         if ( mayApprove( organisationUnit ) )
         {
-            log.info( "User may unapprove at " + organisationUnit.getName() );
+            log.debug( "User may unapprove at " + organisationUnit.getName() );
 
             return true;
         }
@@ -420,13 +420,13 @@ public class DefaultDataApprovalService
         {
             if ( mayApprove( ancestor ) )
             {
-                log.info( "User may unapprove at " + ancestor.getName() );
+                log.debug( "User may unapprove at " + ancestor.getName() );
 
                 return true;
             }
         }
 
-        log.info( "User may not unapprove at " + organisationUnit.getName() );
+        log.debug( "User may not unapprove at " + organisationUnit.getName() );
 
         return false;
     }
@@ -458,7 +458,7 @@ public class DefaultDataApprovalService
 
         if ( !mayOperate )
         {
-            warning += " but couldn't " + operation;
+            warning += " but couldn't " + operation  + " for " + dataApproval.getOrganisationUnit().getName();
         }
 
         log.warn( warning + "." );
