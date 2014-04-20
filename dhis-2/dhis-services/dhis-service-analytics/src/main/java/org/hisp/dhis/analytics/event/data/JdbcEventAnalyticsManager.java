@@ -162,7 +162,7 @@ public class JdbcEventAnalyticsManager
                 grid.addValue( dimensionValue );
             }
             
-            for ( QueryItem queryItem : params.getItems() )
+            for ( QueryItem queryItem : params.getUniqueItems() )
             {
                 String itemValue = rowSet.getString( queryItem.getItem().getUid() );                
                 grid.addValue( itemValue );
@@ -311,7 +311,7 @@ public class JdbcEventAnalyticsManager
         {
             sql += statementBuilder.columnQuote( dimension.getDimensionName() ) + ",";
         }
-        
+                
         for ( QueryItem queryItem : params.getUniqueItems() )
         {
             IdentifiableObject item = queryItem.getItem();

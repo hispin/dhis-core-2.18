@@ -146,9 +146,8 @@ public class EventQueryParams
         
         for ( QueryItem item : items )
         {
-            if ( !existingObjects.contains( item.getItem() ) )
+            if ( existingObjects.add( item.getItem() ) )
             {
-                existingObjects.add( item.getItem() );
                 uniqueItems.add( item );
             }
         }
