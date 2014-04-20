@@ -4,6 +4,10 @@ dhis2.util.namespace( 'dhis2.appr' );
 dhis2.appr.currentPeriodOffset = 0;
 dhis2.appr.permissions = null;
 
+$( function() {
+	dhis2.appr.displayCategoryOptionGroups();
+} );
+
 //------------------------------------------------------------------------------
 // Report
 //------------------------------------------------------------------------------
@@ -15,7 +19,7 @@ dhis2.appr.dataSetSelected = function()
 
 dhis2.appr.orgUnitSelected = function( orgUnits, orgUnitNames, children )
 {
-	dhis2.appr.displayCategoryOptionGroups( orgUnits[0] );
+	dhis2.appr.displayCategoryOptionGroups();
 }
 
 dhis2.appr.displayPeriods = function()
@@ -39,8 +43,10 @@ dhis2.appr.displayPreviousPeriods = function()
     dhis2.appr.displayPeriods();
 }
 
-dhis2.appr.displayCategoryOptionGroups = function( ou )
+dhis2.appr.displayCategoryOptionGroups = function()
 {
+	var ou = selection.getSelected()[0];
+	
 	if ( !ou ) {
 		return;
 	}
