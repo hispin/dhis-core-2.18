@@ -95,7 +95,6 @@ function listAllTrackedEntityInstance( page )
 			setTableStyles();
 		}
 	});
-	
 }
 
 function displayevents(json, page) {

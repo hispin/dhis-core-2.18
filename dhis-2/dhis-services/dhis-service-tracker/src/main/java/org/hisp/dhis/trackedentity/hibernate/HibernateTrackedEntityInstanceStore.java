@@ -29,6 +29,7 @@ package org.hisp.dhis.trackedentity.hibernate;
  */
 
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdentifiers;
+import static org.hisp.dhis.program.ProgramStageInstance.SKIPPED_STATUS;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getTokens;
@@ -45,7 +46,6 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
-import static org.hisp.dhis.program.ProgramStageInstance.SKIPPED_STATUS;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -633,38 +633,7 @@ public class HibernateTrackedEntityInstanceStore
             throw new RuntimeException( ex );
         }
     }
-
-    // -------------------------------------------------------------------------
-    // TODO Everything from here downwards must be replaced or removed!
-    // -------------------------------------------------------------------------
-
-    @Override
-    // TODO this method must be changed - cannot retrieve one by one
-    public Collection<TrackedEntityInstance> search( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Collection<TrackedEntityAttribute> attributes, Integer statusEnrollment, Integer min,
-        Integer max )
-    {
-        String sql = searchTrackedEntityInstanceSql( false, searchKeys, orgunits, followup, attributes,
-            statusEnrollment, min, max );
-        Collection<TrackedEntityInstance> instances = new HashSet<TrackedEntityInstance>();
-        try
-        {
-            instances = jdbcTemplate.query( sql, new RowMapper<TrackedEntityInstance>()
-            {
-                public TrackedEntityInstance mapRow( ResultSet rs, int rowNum )
-                    throws SQLException
-                {
-                    return get( rs.getInt( 1 ) );
-                }
-            } );
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-        return instances;
-    }
-
+    
     @Override
     public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Collection<TrackedEntityAttribute> attributes, Integer statusEnrollment, Integer min,
@@ -693,28 +662,28 @@ public class HibernateTrackedEntityInstanceStore
         return programStageInstanceIds;
     }
 
-    public int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
-        Integer statusEnrollment )
-    {
-        String sql = searchTrackedEntityInstanceSql( true, searchKeys, orgunits, followup, null, statusEnrollment,
-            null, null );
-        return jdbcTemplate.queryForObject( sql, Integer.class );
-    }
-
-    @Override
-    public Grid getTrackedEntityInstanceEventReport( Grid grid, List<String> searchKeys,
-        Collection<OrganisationUnit> orgunits, Boolean followup, Collection<TrackedEntityAttribute> attributes,
-        Integer statusEnrollment, Integer min, Integer max )
-    {
-        String sql = searchTrackedEntityInstanceSql( false, searchKeys, orgunits, followup, attributes,
-            statusEnrollment, min, max );
-
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-
-        GridUtils.addRows( grid, rowSet );
-
-        return grid;
-    }
+//    public int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
+//        Integer statusEnrollment )
+//    {
+//        String sql = searchTrackedEntityInstanceSql( true, searchKeys, orgunits, followup, null, statusEnrollment,
+//            null, null );
+//        return jdbcTemplate.queryForObject( sql, Integer.class );
+//    }
+//
+//    @Override
+//    public Grid getTrackedEntityInstanceEventReport( Grid grid, List<String> searchKeys,
+//        Collection<OrganisationUnit> orgunits, Boolean followup, Collection<TrackedEntityAttribute> attributes,
+//        Integer statusEnrollment, Integer min, Integer max )
+//    {
+//        String sql = searchTrackedEntityInstanceSql( false, searchKeys, orgunits, followup, attributes,
+//            statusEnrollment, min, max );
+//
+//        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+//
+//        GridUtils.addRows( grid, rowSet );
+//
+//        return grid;
+//    }
 
     private String searchTrackedEntityInstanceSql( boolean count, List<String> searchKeys,
         Collection<OrganisationUnit> orgunits, Boolean followup, Collection<TrackedEntityAttribute> attributes,

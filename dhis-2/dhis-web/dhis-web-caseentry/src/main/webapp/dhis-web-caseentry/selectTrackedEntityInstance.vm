@@ -134,7 +134,6 @@
 	
 	var canChangeLocation = $auth.hasAccess( "dhis-web-caseentry", "getTrackedEntityInstanceLocation" );
 	
-	var checkedDuplicate = false;
 	// -1: no search anything
 	//  0: show list all tracked_entity_instance
 	//  1: advanced-search

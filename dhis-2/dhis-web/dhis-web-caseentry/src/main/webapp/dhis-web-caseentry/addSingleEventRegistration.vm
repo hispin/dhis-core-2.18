@@ -1,7 +1,6 @@
 <script>
 	jQuery("#singleEventForm").ready(	function(){
 		currentDiv = 'entityInstanceForm';
-		checkedDuplicate = false;
 		
 		jQuery("#singleEventForm").validate({
 			 meta:"validate"

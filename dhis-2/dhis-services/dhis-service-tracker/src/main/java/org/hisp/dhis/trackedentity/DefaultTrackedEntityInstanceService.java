@@ -737,47 +737,6 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public Collection<TrackedEntityInstance> searchTrackedEntityInstances( List<String> searchKeys,
-        Collection<OrganisationUnit> orgunits, Boolean followup, Collection<TrackedEntityAttribute> attributes,
-        Integer statusEnrollment, Integer min, Integer max )
-    {
-        return trackedEntityInstanceStore.search( searchKeys, orgunits, followup, attributes, statusEnrollment, min, max );
-    }
-
-    @Override
-    public int countSearchTrackedEntityInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Integer statusEnrollment )
-    {
-        return trackedEntityInstanceStore.countSearch( searchKeys, orgunits, followup, statusEnrollment );
-    }
-
-    @Override
-    public Collection<String> getTrackedEntityInstancePhoneNumbers( List<String> searchKeys,
-        Collection<OrganisationUnit> orgunits, Boolean followup, Integer statusEnrollment, Integer min, Integer max )
-    {
-        Collection<TrackedEntityInstance> entityInstances = trackedEntityInstanceStore.search( searchKeys, orgunits, followup,
-            null, statusEnrollment, min, max );
-        Set<String> phoneNumbers = new HashSet<String>();
-
-        for ( TrackedEntityInstance instance : entityInstances )
-        {
-            Collection<TrackedEntityAttributeValue> attributeValues = instance.getAttributeValues();
-            if ( attributeValues != null )
-            {
-                for ( TrackedEntityAttributeValue attributeValue : attributeValues )
-                {
-                    if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_PHONE_NUMBER ) )
-                    {
-                        phoneNumbers.add( attributeValue.getValue() );
-                    }
-                }
-            }
-        }
-
-        return phoneNumbers;
-    }
-
-    @Override
     public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
@@ -792,96 +751,96 @@ public class DefaultTrackedEntityInstanceService
         return trackedEntityInstanceStore.getByPhoneNumber( phoneNumber, min, max );
     }
 
-    @Override
-    public Grid getScheduledEventsReport( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Integer statusEnrollment, Integer min, Integer max, I18n i18n )
-    {
-        String startDate = "";
-        String endDate = "";
-        for ( String searchKey : searchKeys )
-        {
-            String[] keys = searchKey.split( "_" );
-            if ( keys[0].equals( TrackedEntityInstance.PREFIX_PROGRAM_EVENT_BY_STATUS ) )
-            {
-                startDate = keys[2];
-                endDate = keys[3];
-            }
-        }
+//    @Override
+//    public Grid getScheduledEventsReport( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
+//        Boolean followup, Integer statusEnrollment, Integer min, Integer max, I18n i18n )
+//    {
+//        String startDate = "";
+//        String endDate = "";
+//        for ( String searchKey : searchKeys )
+//        {
+//            String[] keys = searchKey.split( "_" );
+//            if ( keys[0].equals( TrackedEntityInstance.PREFIX_PROGRAM_EVENT_BY_STATUS ) )
+//            {
+//                startDate = keys[2];
+//                endDate = keys[3];
+//            }
+//        }
+//
+//        Grid grid = new ListGrid();
+//        grid.setTitle( i18n.getString( "activity_plan" ) );
+//        if ( !startDate.isEmpty() && !endDate.isEmpty() )
+//        {
+//            grid.setSubtitle( i18n.getString( "from" ) + " " + startDate + " " + i18n.getString( "to" ) + " " + endDate );
+//        }
+//
+//        grid.addHeader( new GridHeader( "entityInstanceid", true, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "first_name" ), false, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "middle_name" ), false, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "last_name" ), false, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "gender" ), false, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, true ) );
+//
+//        Collection<TrackedEntityAttribute> attributes = attributeService
+//            .getTrackedEntityAttributesByDisplayOnVisitSchedule( true );
+//        for ( TrackedEntityAttribute attribute : attributes )
+//        {
+//            grid.addHeader( new GridHeader( attribute.getDisplayName(), false, true ) );
+//        }
+//
+//        grid.addHeader( new GridHeader( "programstageinstanceid", true, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "due_date" ), false, true ) );
+//
+//        return trackedEntityInstanceStore.getTrackedEntityInstanceEventReport( grid, searchKeys, orgunits, followup,
+//            attributes, statusEnrollment, min, max );
+//    }
 
-        Grid grid = new ListGrid();
-        grid.setTitle( i18n.getString( "activity_plan" ) );
-        if ( !startDate.isEmpty() && !endDate.isEmpty() )
-        {
-            grid.setSubtitle( i18n.getString( "from" ) + " " + startDate + " " + i18n.getString( "to" ) + " " + endDate );
-        }
-
-        grid.addHeader( new GridHeader( "entityInstanceid", true, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "first_name" ), false, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "middle_name" ), false, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "last_name" ), false, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "gender" ), false, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, true ) );
-
-        Collection<TrackedEntityAttribute> attributes = attributeService
-            .getTrackedEntityAttributesByDisplayOnVisitSchedule( true );
-        for ( TrackedEntityAttribute attribute : attributes )
-        {
-            grid.addHeader( new GridHeader( attribute.getDisplayName(), false, true ) );
-        }
-
-        grid.addHeader( new GridHeader( "programstageinstanceid", true, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "due_date" ), false, true ) );
-
-        return trackedEntityInstanceStore.getTrackedEntityInstanceEventReport( grid, searchKeys, orgunits, followup,
-            attributes, statusEnrollment, min, max );
-    }
-
-    @Override
-    public Grid getTrackingEventsReport( Program program, List<String> searchKeys,
-        Collection<OrganisationUnit> orgunits, Boolean followup, Integer statusEnrollment, I18n i18n )
-    {
-        String startDate = "";
-        String endDate = "";
-        for ( String searchKey : searchKeys )
-        {
-            String[] keys = searchKey.split( "_" );
-            if ( keys[0].equals( TrackedEntityInstance.PREFIX_PROGRAM_EVENT_BY_STATUS ) )
-            {
-                startDate = keys[2];
-                endDate = keys[3];
-            }
-        }
-
-        Grid grid = new ListGrid();
-        grid.setTitle( i18n.getString( "program_tracking" ) );
-        if ( !startDate.isEmpty() && !endDate.isEmpty() )
-        {
-            grid.setSubtitle( i18n.getString( "from" ) + " " + startDate + " " + i18n.getString( "to" ) + " " + endDate );
-        }
-
-        grid.addHeader( new GridHeader( "entityInstanceid", true, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "first_name" ), true, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "middle_name" ), true, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "last_name" ), true, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "gender" ), true, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, true ) );
-
-        Collection<TrackedEntityAttribute> attributes = program.getTrackedEntityAttributes();
-
-        for ( TrackedEntityAttribute attribute : attributes )
-        {
-            grid.addHeader( new GridHeader( attribute.getDisplayName(), false, true ) );
-        }
-
-        grid.addHeader( new GridHeader( "programstageinstanceid", true, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "due_date" ), false, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "risk" ), false, true ) );
-
-        return trackedEntityInstanceStore.getTrackedEntityInstanceEventReport( grid, searchKeys, orgunits, followup,
-            attributes, statusEnrollment, null, null );
-    }
+//    @Override
+//    public Grid getTrackingEventsReport( Program program, List<String> searchKeys,
+//        Collection<OrganisationUnit> orgunits, Boolean followup, Integer statusEnrollment, I18n i18n )
+//    {
+//        String startDate = "";
+//        String endDate = "";
+//        for ( String searchKey : searchKeys )
+//        {
+//            String[] keys = searchKey.split( "_" );
+//            if ( keys[0].equals( TrackedEntityInstance.PREFIX_PROGRAM_EVENT_BY_STATUS ) )
+//            {
+//                startDate = keys[2];
+//                endDate = keys[3];
+//            }
+//        }
+//
+//        Grid grid = new ListGrid();
+//        grid.setTitle( i18n.getString( "program_tracking" ) );
+//        if ( !startDate.isEmpty() && !endDate.isEmpty() )
+//        {
+//            grid.setSubtitle( i18n.getString( "from" ) + " " + startDate + " " + i18n.getString( "to" ) + " " + endDate );
+//        }
+//
+//        grid.addHeader( new GridHeader( "entityInstanceid", true, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "first_name" ), true, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "middle_name" ), true, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "last_name" ), true, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "gender" ), true, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, true ) );
+//
+//        Collection<TrackedEntityAttribute> attributes = program.getTrackedEntityAttributes();
+//
+//        for ( TrackedEntityAttribute attribute : attributes )
+//        {
+//            grid.addHeader( new GridHeader( attribute.getDisplayName(), false, true ) );
+//        }
+//
+//        grid.addHeader( new GridHeader( "programstageinstanceid", true, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "due_date" ), false, true ) );
+//        grid.addHeader( new GridHeader( i18n.getString( "risk" ), false, true ) );
+//
+//        return trackedEntityInstanceStore.getTrackedEntityInstanceEventReport( grid, searchKeys, orgunits, followup,
+//            attributes, statusEnrollment, null, null );
+//    }
 
     @Override
     public String validateTrackedEntityInstance( TrackedEntityInstance instance, Program program, I18nFormat format )
@@ -926,4 +885,5 @@ public class DefaultTrackedEntityInstanceService
     {
         return trackedEntityInstanceStore.getByAttributeValue( searchText, attributeId, min, max );
     }
+
 }
