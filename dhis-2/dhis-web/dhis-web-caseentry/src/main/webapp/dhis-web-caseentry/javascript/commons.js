@@ -1872,6 +1872,7 @@ function saveCoordinatesEvent() {
 // ---------------------------------------------------------------------------------
 // Followup program-instance
 // ---------------------------------------------------------------------------------
+
 function markForFollowup(programInstanceId, followup) {
 	$.postJSON("markForFollowup.action", {
 		programInstanceId : programInstanceId,
@@ -1903,49 +1904,11 @@ function saveComment(programInstanceId) {
 		}
 	});
 }
+
 // --------------------------------------------------------------------------
 // Advanced-search person
 // --------------------------------------------------------------------------
-function searchByIdsOnclick() {
-	if (getFieldValue("searchTrackedEntityInstanceByIds") == '') {
-		hideById('listEntityInstanceDiv');
-		return;
-	}
-	var params = "searchTexts=iden_"
-			+ getFieldValue("searchEntityInstanceByIds").toLowerCase() + "_"
-			+ getFieldValue("orgunitId");
-	params += "&listAll=false";
-	params += "&facilityLB=";
-	if (getFieldValue('program') != "") {
-		params += "&programId=" + getFieldValue('program');
-		params += "&searchTexts=prg_"
-				+ getFieldValue('program');
-	}
-	hideById('listEntityInstanceDiv');
-	$("#loaderDiv").show();
-	$.ajax({
-		url : 'searchTrackedEntityInstance.action',
-		type : "POST",
-		data : params,
-		success : function(html) {
-			setTableStyles();
-			statusSearching = 1;
-			setInnerHTML('listEntityInstanceDiv', html);
-			showById('listEntityInstanceDiv');
-			setFieldValue('listAll', false);
-			var value = getFieldValue('searchEntityInstanceByIds');
-			var searchObject = $("[name=searchObjectId]")[1];
-			if (searchObject.value == 'iden') {
-				$("[name=searchText]")[0].value = value;
-			} else {
-				addAttributeOption();
-				$("input[id=searchText]").last().val(value);
-			}
-			showById('hideSearchCriteriaDiv');
-			$("#loaderDiv").hide();
-		}
-	});
-}
+
 function advancedSearchOnclick() {
 	$('#advanced-search').toggle();
 	if ($('#advanced-search').is(':visible')) {
