@@ -8,31 +8,32 @@ function orgunitSelected( orgUnits, orgUnitNames )
 	showById( "programLoader" );
 	disable('program');
 	hideById('addNewDiv');
-	organisationUnitSelected( orgUnits, orgUnitNames );
+	setFieldValue("orgunitName", orgUnitNames[0]);
+	setFieldValue("orgunitId", orgUnits[0]);
 	clearListById('program');
 	$.postJSON( 'singleEventPrograms.action', {}, function( json )
-		{
-			var count = 0;
-			for ( i in json.programs ) {
-				if( json.programs[i].type==2){
-					jQuery( '#program').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
-					count++;
-				}
+	{
+		var count = 0;
+		for ( i in json.programs ) {
+			if( json.programs[i].type==2){
+				jQuery( '#program').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
+				count++;
 			}
-			
-			if(count==0){
-				jQuery( '#program').prepend( '<option value="" >' + i18n_none_program + '</option>' );
-			}
-			else if(count>1){
-				jQuery( '#program').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
-				enable('addEntityInstanceBtn');
-			}
-			
-			enableBtn();
-			hideById('programLoader');
-			jQuery('#program').width(width);
-			enable('program');
-		});
+		}
+		
+		if(count==0){
+			jQuery( '#program').prepend( '<option value="" >' + i18n_none_program + '</option>' );
+		}
+		else{
+			jQuery( '#program').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
+			enable('addEntityInstanceBtn');
+		}
+		
+		enableBtn();
+		hideById('programLoader');
+		jQuery('#program').width(width);
+		enable('program');
+	});
 }
 selection.setListenerFunction( orgunitSelected );
 

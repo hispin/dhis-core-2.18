@@ -20,7 +20,7 @@
 		<td>$i18n.getString('program')</td>
 		<td>
 			<select id='program' name='program' onchange='enableBtn();'>
-				<option value="">[$i18n.getString( "view_all" )]</option>
+				<option value="" type=''>[$i18n.getString( "view_all" )]</option>
 				#foreach($program in $programs)
 					<option value="$program.uid" type='$program.type'>$program.displayName</option>
 				#end
