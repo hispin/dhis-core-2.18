@@ -704,6 +704,9 @@ public class TableAlteror
         executeSql( "UPDATE attribute SET userattribute=false WHERE userattribute IS NULL" );
         executeSql( "UPDATE attribute SET usergroupattribute=false WHERE usergroupattribute IS NULL" );
         executeSql( "UPDATE attribute SET datasetattribute=false WHERE datasetattribute IS NULL" );
+        
+        executeSql( "ALTER TABLE trackedentityattributedimension DROP COLUMN operator" );
+        executeSql( "ALTER TABLE trackedentitydataelementdimension DROP COLUMN operator" );
 
         // update attribute.code, set to null if code=''
         executeSql( "UPDATE attribute SET code=NULL WHERE code=''" );
@@ -719,8 +722,6 @@ public class TableAlteror
         
         log.info( "Tables updated" );
     }
-
-  
 
     private void upgradeDataValuesWithAttributeOptionCombo()
     {

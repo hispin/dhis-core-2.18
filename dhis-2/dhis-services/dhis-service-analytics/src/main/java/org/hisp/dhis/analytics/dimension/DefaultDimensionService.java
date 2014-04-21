@@ -427,7 +427,6 @@ public class DefaultDimensionService
                 {
                     TrackedEntityAttributeDimension attributeDimension = new TrackedEntityAttributeDimension();
                     attributeDimension.setAttribute( identifiableObjectManager.get( TrackedEntityAttribute.class, dimensionId ) );
-                    attributeDimension.setOperator( dimension.getOperator() );
                     attributeDimension.setFilter( dimension.getFilter() );
                     
                     object.getAttributeDimensions().add( attributeDimension );
@@ -436,7 +435,6 @@ public class DefaultDimensionService
                 {
                     TrackedEntityDataElementDimension dataElementDimension = new TrackedEntityDataElementDimension();
                     dataElementDimension.setDataElement( identifiableObjectManager.get( DataElement.class, dimensionId ) );
-                    dataElementDimension.setOperator( dimension.getOperator() );
                     dataElementDimension.setFilter( dimension.getFilter() );
                     
                     object.getDataElementDimensions().add( dataElementDimension );

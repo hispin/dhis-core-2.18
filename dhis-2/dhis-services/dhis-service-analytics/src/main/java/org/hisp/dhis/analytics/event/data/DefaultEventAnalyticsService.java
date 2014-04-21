@@ -36,7 +36,6 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,6 +60,7 @@ import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -344,7 +344,7 @@ public class DefaultEventAnalyticsService
                 }
                 else
                 {
-                    params.getItems().addAll( getQueryItems( dim, pr ) );
+                    params.getItems().add( getQueryItem( dim, pr ) );
                 }
             }
         }
@@ -362,7 +362,7 @@ public class DefaultEventAnalyticsService
                 }
                 else
                 {
-                    params.getItemFilters().addAll( getQueryItems( dim, pr ) );
+                    params.getItemFilters().add( getQueryItem( dim, pr ) );
                 }
             }
         }
@@ -411,27 +411,26 @@ public class DefaultEventAnalyticsService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private List<QueryItem> getQueryItems( String dimension, Program program )
+    private QueryItem getQueryItem( String dimension, Program program )
     {
-        List<QueryItem> items = new ArrayList<QueryItem>();
-
-        if ( !dimension.contains( DimensionalObjectUtils.DIMENSION_NAME_SEP ) )
+        String[] split = dimension.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
+        
+        if ( split == null || ( split.length % 2 != 1 ) )
         {
-            items.add( getItem( program, dimension, null, null ) );
+            throw new IllegalQueryException( "Query item or filter is invalid: " + dimension );
         }
-        else // Filter
-        {
-            String[] split = dimension.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
-
-            if ( split == null || split.length != 3 )
+        
+        QueryItem queryItem = getQueryItem( program, split[0] );
+        
+        if ( split.length > 1 )
+        {   
+            for ( int i = 1; i < split.length; i += 2 )
             {
-                throw new IllegalQueryException( "Item filter has invalid format: " + dimension );
+                queryItem.getFilters().add( new QueryFilter( split[i], split[i+1] ) );
             }
-
-            items.add( getItem( program, split[0], split[1], split[2] ) );
         }
 
-        return items;
+        return queryItem;
     }
 
     private Map<String, String> getUidNameMap( EventQueryParams params )
@@ -497,7 +496,7 @@ public class DefaultEventAnalyticsService
 
     private String getSortItem( String item, Program program )
     {
-        if ( !SORTABLE_ITEMS.contains( item.toLowerCase() ) && getItem( program, item, null, null ) == null )
+        if ( !SORTABLE_ITEMS.contains( item.toLowerCase() ) && getQueryItem( program, item ) == null )
         {
             throw new IllegalQueryException( "Descending sort item is invalid: " + item );
         }
@@ -507,20 +506,20 @@ public class DefaultEventAnalyticsService
         return item;
     }
 
-    private QueryItem getItem( Program program, String item, String operator, String filter )
+    private QueryItem getQueryItem( Program program, String item )
     {
         DataElement de = dataElementService.getDataElement( item );
 
         if ( de != null && program.getAllDataElements().contains( de ) )
         {
-            return new QueryItem( de, operator, filter, de.isNumericType() );
+            return new QueryItem( de, de.isNumericType() );
         }
 
         TrackedEntityAttribute at = attributeService.getTrackedEntityAttribute( item );
 
         if ( at != null && program.getTrackedEntityAttributes().contains( at ) )
         {
-            return new QueryItem( at, operator, filter, at.isNumericType() );
+            return new QueryItem( at, at.isNumericType() );
         }
 
         throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );

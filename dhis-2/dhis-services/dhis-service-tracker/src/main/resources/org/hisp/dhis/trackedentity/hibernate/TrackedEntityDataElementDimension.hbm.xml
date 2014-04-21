@@ -13,8 +13,6 @@
     <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" 
         column="dataelementid" foreign-key="fk_dataelementdimension_dataelementid" />
 
-    <property name="operator" />
-    
     <property name="filter" />
 
   </class>

@@ -436,7 +436,14 @@ public class DefaultTrackedEntityInstanceService
             throw new IllegalQueryException( "Attribute does not exist: " + item );
         }
         
-        return new QueryItem( at, operator, filter, at.isNumericType() );
+        if ( operator != null && filter != null )
+        {
+            return new QueryItem( at, operator, filter, at.isNumericType() );
+        }
+        else
+        {
+            return new QueryItem( at, at.isNumericType() );
+        }        
     }
     
     @Override

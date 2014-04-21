@@ -36,12 +36,18 @@ public class TrackedEntityDataElementDimension
 {
     private int id;
     
+    /**
+     * Data element.
+     */
     private DataElement dataElement;
 
-    private String operator;
-    
+    /**
+     * Operator and filter on this format:
+     * <operator>:<filter>;<operator>:<filter>
+     * Operator and filter pairs can be repeated any number of times.
+     */
     private String filter;
-
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -86,16 +92,6 @@ public class TrackedEntityDataElementDimension
     public void setDataElement( DataElement dataElement )
     {
         this.dataElement = dataElement;
-    }
-
-    public String getOperator()
-    {
-        return operator;
-    }
-
-    public void setOperator( String operator )
-    {
-        this.operator = operator;
     }
 
     public String getFilter()

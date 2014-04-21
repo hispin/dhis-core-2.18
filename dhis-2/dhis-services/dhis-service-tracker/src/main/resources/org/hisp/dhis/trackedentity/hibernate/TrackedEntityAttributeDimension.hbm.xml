@@ -12,8 +12,6 @@
 
     <many-to-one name="attribute" class="org.hisp.dhis.trackedentity.TrackedEntityAttribute" 
         column="trackedentityattributeid" foreign-key="fk_attributedimension_attributeid" />
-
-    <property name="operator" />
     
     <property name="filter" />
 

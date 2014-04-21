@@ -106,12 +106,7 @@ public interface DimensionalObject
     boolean hasItems();
     
     /**
-     * Gets the operator. Applicable for events only.
-     */
-    String getOperator();
-
-    /**
-     * Gets the filter. Applicable for events only.
+     * Gets the filter. Contains operator and filter. Applicable for events.
      */
     String getFilter();
 }
