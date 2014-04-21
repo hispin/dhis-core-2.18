@@ -104,6 +104,8 @@ public class DataElement
     public static final String AGGREGATION_OPERATOR_SUM = "sum";
     public static final String AGGREGATION_OPERATOR_AVERAGE = "average";
     public static final String AGGREGATION_OPERATOR_COUNT = "count";
+    public static final String AGGREGATION_OPERATOR_STDDEV = "stddev";
+    public static final String AGGREGATION_OPERATOR_VARIANCE = "variance";
 
     /**
      * The name to appear in forms.
