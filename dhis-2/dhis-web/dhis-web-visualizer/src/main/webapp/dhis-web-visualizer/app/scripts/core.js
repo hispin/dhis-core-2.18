@@ -315,6 +315,8 @@ Ext.onReady( function() {
 
                 // rangeAxisMaxValue: number
 
+                // rangeAxisMinValue: number
+
                 // rangeAxisSteps: number
 
                 // rangeAxisDecimals: number
@@ -558,6 +560,7 @@ Ext.onReady( function() {
                         (Ext.isString(config.baseLineTitle) && !Ext.isEmpty(config.baseLineTitle) ? config.baseLineTitle : null);
 
 					layout.rangeAxisMaxValue = Ext.isNumber(config.rangeAxisMaxValue) ? config.rangeAxisMaxValue : null;
+					layout.rangeAxisMinValue = Ext.isNumber(config.rangeAxisMinValue) ? config.rangeAxisMinValue : null;
 					layout.rangeAxisSteps = Ext.isNumber(config.rangeAxisSteps) ? config.rangeAxisSteps : null;
 					layout.rangeAxisDecimals = Ext.isNumber(config.rangeAxisDecimals) ? config.rangeAxisDecimals : null;
 					layout.rangeAxisTitle = Ext.isString(config.rangeAxisLabel) && !Ext.isEmpty(config.rangeAxisLabel) ? config.rangeAxisLabel :
@@ -1929,6 +1932,10 @@ Ext.onReady( function() {
 
                     if (xLayout.rangeAxisMaxValue) {
 						axis.maximum = xLayout.rangeAxisMaxValue;
+					}
+
+                    if (xLayout.rangeAxisMinValue) {
+						axis.minimum = xLayout.rangeAxisMinValue;
 					}
 
 					if (xLayout.rangeAxisSteps) {
