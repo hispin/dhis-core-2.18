@@ -25,7 +25,7 @@ function organisationUnitSelected(orgUnits, orgUnitNames) {
 		jQuery('#program').append(
 				'<option value="">' + i18n_view_all + '</option>');
 		for (i in json.programs) {
-			if (json.programs[i].type == 1) {
+			if (json.programs[i].type == 1 || json.programs[i].type == 2) {
 				jQuery('#program').append(
 					'<option value="' + json.programs[i].uid + '" type="'
 						+ json.programs[i].type + '" >' + json.programs[i].name + '</option>');

@@ -28,7 +28,7 @@
 					<option value="">[$i18n.getString( "please_select" )]</option>
 					#end
 					#foreach( $program in $programs )
-					<option value="$program.id" programType='$program.type' 
+					<option value="$program.uid" programType='$program.type' 
 						displayIncidentDate='$!program.displayIncidentDate'
 						dateOfEnrollmentDescription='$!program.dateOfEnrollmentDescription'
 						dateOfIncidentDescription='$!program.dateOfIncidentDescription'

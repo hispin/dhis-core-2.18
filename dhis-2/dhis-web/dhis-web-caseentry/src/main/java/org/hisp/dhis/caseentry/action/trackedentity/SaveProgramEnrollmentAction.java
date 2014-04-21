@@ -109,9 +109,9 @@ public class SaveProgramEnrollmentAction
         this.entityInstanceId = entityInstanceId;
     }
 
-    private Integer programId;
+    private String programId;
 
-    public void setProgramId( Integer programId )
+    public void setProgramId( String programId )
     {
         this.programId = programId;
     }
