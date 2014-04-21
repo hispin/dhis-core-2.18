@@ -3674,8 +3674,6 @@ Ext.onReady( function() {
 					}
 				}
 			}
-
-			console.log(recordMap);
         };
 
         dataElement = Ext.create('Ext.panel.Panel', {
