@@ -6,7 +6,7 @@
     "executionDate": "$!format.formatDate( $programStageInstance.executionDate )",
     "status": "$!programStageInstance.getEventStatus()",
     "completed": "$!programStageInstance.completed",
-    "comment": "$!programStageInstance.comment.commentText",
+    "comment": "$!encoder.jsonEncode( $!programStageInstance.comment.commentText )",
     #if($programStageInstance.programStage.captureCoordinates)
     "latitude": "$!latitude",
     "longitude": "$!longitude",

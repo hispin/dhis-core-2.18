@@ -5,8 +5,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	setInnerHTML( 'contentDiv', '' );
 	setFieldValue( 'orgunitName', orgUnitNames[0] );
 	
-	hideById('dataEntryFormDiv');
-	hideById('dataRecordingSelectDiv');
+	hideById('singleDataEntryFormDiv');
 	showById('searchDiv');
 	
 	enable('searchObjectId');
@@ -20,9 +19,9 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
 function loadDataEntry( programStageInstanceId )
 {
-	setInnerHTML('dataEntryFormDiv', '');
+	setInnerHTML('singleDataEntryFormDiv', '');
 	showById('executionDateTB');
-	showById('dataEntryFormDiv');
+	showById('singleDataEntryFormDiv');
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
 	disableCompletedButton(true);
@@ -30,23 +29,16 @@ function loadDataEntry( programStageInstanceId )
 	jQuery( 'input[id=programStageInstanceId]').val(programStageInstanceId );
 			
 	showLoader();	
-	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
+	$( '#singleDataEntryFormDiv' ).load( "dataentryform.action", 
 		{ 
 			programStageInstanceId: programStageInstanceId
-		},function( )
+		},function( html )
 		{
-			var executionDate = jQuery('#dataRecordingSelectDiv input[id=executionDate]').val();
+			var programName = $('#program option:selected').text();
+			setInnerHTML( 'singleDataEntryFormDiv', '<h3>' + programName + '</h3><br>' + html);
 			var completed = jQuery('#entryFormContainer input[id=completed]').val();
 			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
 			showById('inputCriteriaDiv');
-			if( executionDate != '' && completed == 'false' )
-			{
-				disableCompletedButton(false);
-			}
-			else if( completed == 'true' )
-			{
-				disableCompletedButton(true);
-			}
 			showById('entryForm');
 			hideLoader();
 			hideById('listEntityInstanceDiv'); 
@@ -59,14 +51,11 @@ function loadDataEntry( programStageInstanceId )
 
 function showSearchForm()
 {
-	hideById('dataRecordingSelectDiv');
-	hideById('dataEntryFormDiv');
+	hideById('singleDataEntryFormDiv');
 	hideById('addNewDiv');
 	showById('searchDiv');
 	showById('listEntityInstanceDiv');
 	showById('mainLinkLbl');
-	jQuery('#createNewEncounterDiv').dialog('close');
-	jQuery('#resultSearchDiv').dialog('close');
 }
 
 //--------------------------------------------------------------------------------------------
@@ -100,6 +89,7 @@ function listAllTrackedEntityInstance(page)
 			setInnerHTML('listEntityInstanceDiv', displayTEIList(json, page));
 			showById('listEntityInstanceDiv');
 			jQuery('#loaderDiv').hide();
+			statusSearching = 1;
 			setTableStyles();
 		}
 	});
@@ -130,25 +120,38 @@ function getKeyCode(e)
 // Show selected data-recording
 //--------------------------------------------------------------------------------------------
 
-function showSelectedDataRecoding( entityInstanceId, programId )
-{
-	showLoader();
-	hideById('searchDiv');
-	hideById('dataEntryFormDiv');
-	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
-		{
-			entityInstanceId: entityInstanceId
-		},
-		function()
-		{
-			showById('dataRecordingSelectDiv');
-			hideLoader();
-			hideById('listEntityInstanceDiv');
-			hideById('listEntityInstanceDiv');
-			hideById('mainLinkLbl');
-			setInnerHTML('singleProgramName',jQuery('#program option:selected').text());
-			loadProgramStages( entityInstanceId, programId );
-		});
+
+function onClickBackBtn() {
+	showById('mainLinkLbl');
+	showById('selectDiv');
+	showById('searchDiv');
+	hideById('addNewDiv');
+	hideById('editEntityInstanceDiv');
+	hideById('enrollmentDiv');
+	hideById('listRelationshipDiv');
+	hideById('addRelationshipDiv');
+	hideById('migrationEntityInstanceDiv');
+	setInnerHTML('entityInstanceDashboard', '');
+	loadTrackedEntityInstanceList();
+}
+
+function loadTrackedEntityInstanceList() {
+	hideById('editEntityInstanceDiv');
+	hideById('enrollmentDiv');
+	hideById('listRelationshipDiv');
+	hideById('addRelationshipDiv');
+	hideById('singleDataEntryFormDiv');
+	hideById('migrationEntityInstanceDiv');
+	setInnerHTML('entityInstanceDashboard', '');
+	setInnerHTML('editEntityInstanceDiv', '');
+	showById('mainLinkLbl');
+	showById('selectDiv');
+	showById('searchDiv');
+	if (statusSearching == 0) {
+		return;
+	} else if (statusSearching == 1) {
+		showById('listTrackedEntityInstanceDiv');
+	}
 }
 
 function advancedSearch( params, page )
@@ -162,6 +165,7 @@ function advancedSearch( params, page )
 			setInnerHTML('listEntityInstanceDiv', displayTEIList(json, page));
 			showById('listEntityInstanceDiv');
 			jQuery('#loaderDiv').hide();
+			statusSearching = 1;
 			setTableStyles();
 		}
 	});
@@ -233,13 +237,6 @@ function displayTEIList(json, page) {
 		
 		// Operations column
 		table += "<td>";
-		table += "<a href=\"javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '"
-				+ uid
-				+ "' )\" title='"
-				+ i18n_dashboard
-				+ "'><img src='../images/enroll.png' alt='"
-				+ i18n_dashboard
-				+ "'></a>";
 		table += "<a href=\"javascript:isDashboard=false;showUpdateTrackedEntityInstanceForm( '"
 				+ uid
 				+ "' )\" title='"
@@ -247,21 +244,6 @@ function displayTEIList(json, page) {
 				+ "'><img src= '../images/edit.png' alt='"
 				+ i18n_data_entry
 				+ "'></a>";
-		table += "<a href=\"javascript:setFieldValue( 'isShowEntityInstanceList', 'false' ); showRelationshipList('"
-				+ uid
-				+ "' )\" title='"
-				+ i18n_manage_relationship
-				+ "'><img src='../images/relationship.png' alt='"
-				+ i18n_manage_relationship + "'></a>";
-		if (canChangeLocation) {
-			table += "<a href=\"javascript:isDashboard=false;getTrackedEntityInstanceLocation( '"
-					+ uid
-					+ "' );\" title='"
-					+ i18n_change_location
-					+ "'><img src='../icons/dataentry.png' alt='"
-					+ i18n_change_location
-					+ "' style='width:25px; height:25px'></a>";
-		}
 		table += "<a href=\"javascript:removeTrackedEntityInstance( '" + uid
 				+ "', '', '" + i18n_confirm_delete_tracked_entity_instance
 				+ "' )\" title='" + i18n_remove

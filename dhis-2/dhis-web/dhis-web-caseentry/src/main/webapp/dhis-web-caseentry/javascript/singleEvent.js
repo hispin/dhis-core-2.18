@@ -45,17 +45,17 @@ function showAddTrackedEntityInstanceForm()
 	hideById('contentDiv');
 	hideById('searchDiv');
 	hideById('advanced-search');
+	hideById('listRelationshipDiv');
+	showById('entityInstanceMamagementLink');
+	hideById('mainLinkLbl');
 	setInnerHTML('addNewDiv','');
-	setInnerHTML('dataRecordingSelectDiv','');
 	jQuery('#loaderDiv').show();
 	jQuery('#addNewDiv').load('showEventWithRegistrationForm.action',
 		{
 			programId: getFieldValue('program')
 		}, function()
 		{
-			setInnerHTML('singleProgramName',jQuery('#program option:selected').text());	
 			unSave = true;
-			showById('singleProgramName');
 			showById('addNewDiv');
 			jQuery('#loaderDiv').hide();
 		});
@@ -63,21 +63,18 @@ function showAddTrackedEntityInstanceForm()
 
 function showUpdateTrackedEntityInstanceForm( entityInstanceId )
 {
+	showLoader();
+	hideById('searchDiv');
+	hideById('singleDataEntryFormDiv');
 	hideById('dataEntryMenu');
 	showById('eventActionMenu');
 	hideById('nextEventLink');
-	setInnerHTML('singleProgramName',jQuery('#program option:selected').text());	
-	showById('singleProgramName');
 	setInnerHTML('addNewDiv','');
+	hideById('listEntityInstanceDiv');
+	hideById('mainLinkLbl');
+	
 	unSave = false;
-	showSelectedDataRecoding(entityInstanceId, getFieldValue('program'));
-}
-
-function addEventForEntityInstanceForm( divname )
-{
-	jQuery("#" + divname + " [id=checkDuplicateBtn]").click(function() {
-		checkDuplicate( divname );
-	});
+	loadProgramStages(entityInstanceId, getFieldValue('program'));
 }
 
 function validateData()
@@ -177,7 +174,6 @@ function addData( programId, entityInstanceId )
 			}
 			else
 			{
-				setInnerHTML('singleProgramName','');
 				hideById('addNewDiv');
 				if( getFieldValue('listAll')=='true'){
 					listAllTrackedEntityInstance();
@@ -197,14 +193,12 @@ function addData( programId, entityInstanceId )
 function showEntryFormDiv()
 {
 	hideById('singleEventForm');
-	jQuery("#resultSearchDiv").dialog("close");
 }
 
 function backEventList()
 {
 	showById('dataEntryMenu');
 	hideById('eventActionMenu');
-	hideById('singleProgramName');
 	showSearchForm();
 	if( getFieldValue('listAll')=='true'){
 		listAllTrackedEntityInstance();

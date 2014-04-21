@@ -4,19 +4,25 @@
 		checkedDuplicate = false;
 		
 		jQuery("#singleEventForm").validate({
-				 meta:"validate"
-				,errorElement:"span"
-				,submitHandler: function(form)
-					{
-						validateData();
-					}
-			});
-		
-		addEventForEntityInstanceForm( 'entityInstanceForm' );
+			 meta:"validate"
+			,errorElement:"span"
+			,submitHandler: function(form)
+				{
+					validateData();
+				}
+		});
 	});	
 	
 </script>
-	
+
+<h3 id='entityInstanceMamagementLink'>
+	<a href="javascript:onClickBackBtn();">$i18n.getString( 'tracked_entity_instance_management' )</a>
+	#if($!relatedProgram)
+		&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$!entityInstanceUid');">$i18n.getString( 'dashboard' )</a>
+	#end
+	&#8226; $i18n.getString( "add_new_tracked_entity_instance" )
+</h3>
+
 <form id='singleEventForm'>
 	<input type="hidden" id="representativeId" name="representativeId"/> 
 	<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
