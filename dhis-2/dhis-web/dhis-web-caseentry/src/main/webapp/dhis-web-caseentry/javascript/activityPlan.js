@@ -32,41 +32,240 @@ function displayCadendar()
 	}
 }
 
-function showActitityList()
+function showActitityList(page)
 {
 	setFieldValue('listAll', "true");
 	hideById('listEntityInstanceDiv');
 	$('#contentDataRecord').html('');
-	var facilityLB = $('input[name=facilityLB]:checked').val();
-	var programId = getFieldValue('program');
-    var searchTexts = "stat_" + programId
-        + "_" + getFieldValue('startDueDate')
-        + "_" + getFieldValue('endDueDate');
-
-    if( facilityLB == 'selected' ) {
-        searchTexts += "_" + getFieldValue('orgunitId');
-    }
-    else if( facilityLB == 'all' ) {
-        searchTexts += "_0";
-    }
-    else if( facilityLB == 'childrenOnly' ) {
-        searchTexts += "_-1";
-    }
-
-    searchTexts += "_false_" + getFieldValue('statusEvent');
-
+  
 	showLoader();
+	
+	var params = "ou=" + getFieldValue("orgunitId");
+	params += "&program=" + getFieldValue('program');
+	params += "&ouMode=" + $('input[name=ouMode]:checked').val();
+	params += "&programStatus=ACTIVE";
+	params += "&page=" + page;
+	params += "&eventStartDate=" + getFieldValue('startDueDate');
+	params += "&eventEndDate=" + getFieldValue('endDueDate');
+	
+	if(getFieldValue('status')!=''){
+		params += '&eventStatus=' + getFieldValue('status');
+	}
+	
+	$('#attributeIds option').each(function(i, item){
+		params += "&attribute=" + item.value;
+	});
+	
+	$.ajax({
+		type : "GET",
+		url : "../api/trackedEntityInstances.json",
+		data : params,
+		dataType : "json",
+		success : function(json) {
+			setInnerHTML('listEntityInstanceDiv', displayevents(json, page));
+			showById('listEntityInstanceDiv');
+			jQuery('#loaderDiv').hide();
+			hideLoader();
+		}
+	});
+}
 
-    jQuery('#listEntityInstanceDiv').load('getActivityPlanRecords.action', {
-        programId: programId,
-        listAll: false,
-        searchTexts: searchTexts
-    }, function() {
-        showById('colorHelpLink');
-        showById('listEntityInstanceDiv');
-        setTableStyles();
-        hideLoader();
-    });
+function displayevents(json, page) {
+	var table = "";
+	
+	// Header
+	if (json.metaData.pager.total > 0) {
+		table += "<p>" + i18n_total_result + " : " + json.metaData.pager.total
+				+ "</p>";
+	} else {
+		table += "<p>" + i18n_no_result_found + "</p>";
+	}
+	
+	// TEI list
+	table += "<table class='listTable' width='100%'>";
+	
+	var idx = 4;
+	table += "<col width='30' />";
+	for (var i = idx; i < json.width; i++) {
+		table += "<col />";
+	}
+	table += "<col width='200' />";
+	table += "<thead><tr><th>#</th>";
+	for (var i = idx; i < json.width; i++) {
+		table += "<th>" + json.headers[i].column + "</th>";
+	}
+	table += "<th>" + i18n_operations + "</th>";
+	table += "</tr></thead>";
+	
+	table += "<tbody id='list'>";
+	for ( var i in json.rows) {
+		var cols = json.rows[i];
+		var uid = cols[0];
+		var no = eval(json.metaData.pager.page);
+		no = (no - 1) * 50 + eval(i) + 1;
+		table += "<tr id='tr" + uid + "'>";
+		table += "<td>" + no + "</td>";
+		for (var j = idx; j < json.width; j++) {
+			var colVal = cols[j];
+			if (j == 4) {
+				colVal = json.metaData.names[colVal];
+			}
+			table += "<td onclick=\"javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '"
+				+ uid
+				+ "' )\" title='"
+				+ i18n_dashboard
+				+ "'>" + colVal + "</td>";
+		}
+		
+		// Operations column
+		table += "<td>";
+		table += "<a href=\"javascript:isDashboard=false;showEvents('"
+				+ uid
+				+ "' )\" title='"
+				+ i18n_events
+				+ "'><img src='../images/edit_sections.png' alt='"
+				+ i18n_events
+				+ "'></a>";
+		table += "<a href=\"javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '"
+				+ uid
+				+ "' )\" title='"
+				+ i18n_dashboard
+				+ "'><img src='../images/enroll.png' alt='"
+				+ i18n_dashboard
+				+ "'></a>";
+		table += "<a href=\"javascript:loadDataEntryDialog( '" + uid + "' ) \" "
+				+ " title='"
+				+ i18n_edit
+				+ "'><img src= '../images/edit.png' alt='"
+				+ i18n_edit
+				+ "'></a>";
+		table += "<a href=\"javascript:showTrackedEntityInstanceHistory( '" + uid + "' ) \" "
+				+ " title='"
+				+ i18n_edit
+				+ "'><img src= '../images/edit.png' alt='"
+				+ i18n_edit
+				+ "'></a>";
+		table += "</td>";
+		table += "</tr>";
+	}
+	table += "</tbody>";
+	table += "</table>";
+	
+	return table + paging(json, page);
+	
+	if( json.metaData.pager.total > 0 ){
+		// Event list
+		table += "<table class='listTable' width='100%'>";
+		
+		table += "<col width='30' />";// Ordered no.
+		table += "<col />"; // Event-date
+		table += "<col />"; // Data values
+		table += "<col width='200' />"; // Operations
+		
+		table += "<thead><tr><th>#</th>";
+		table += "<th>" + i18n_event_date + "</th>";
+		table += "<th>" + i18n_data_values + "</th>";
+		table += "<th>" + i18n_operations + "</th>";
+		table += "</tr></thead>";
+		
+		table += "<tbody id='list'>";
+		for ( var i in json.events) {
+			var row = json.events[i];
+			var uid = row.event;
+			var teiUid = row.trackedEntityInstance;
+			var no = eval(json.metaData.pager.page);
+			no = (no - 1) * json.metaData.pager.pageSize + eval(i) + 1;
+			table += "<tr id='tr" + uid + "'>";
+			table += "<td>" + no + "</td>";// No.
+			table += "<td>" + row.eventDate + "</td>";// Event-date
+			
+			// Data values
+			table += "<td>";
+			if( row.dataValues!=undefined ){
+				table += "<table>";
+				for (var j in row.dataValues) {
+					var colVal = row.dataValues[j].dataElement;
+					table += "<tr><td>" +  json.metaData.de[colVal] + ": </td>";
+					table += "<td>" +  row.dataValues[j].value + "</td></tr>";
+				}
+				table += "</table>";
+			}
+			else{
+				table += "</td>";
+			}
+			
+			
+		}
+		table += "</tbody>";
+		table += "</table>";
+	
+		table += paging(json, page);
+	}
+	return table;
+}
+
+// Paging
+
+function paging(json, page) {
+	var table = "<table width='100%' style='background-color: #ebf0f6;'><tr><td colspan='"
+			+ json.width + "'>";
+	table += "<div class='paging'>";
+	table += "<span class='first' title='" + i18n_first + "'>««</span>";
+	table += "<span class='prev' title='" + i18n_prev + "'>«</span>";
+	for (var i = 1; i <= json.metaData.pager.pageCount; i++) {
+		if (i == page) {
+			table += "<span class='page' title='" + i18n_page + " " + i + "'>"
+				+ i + "</span>";
+		} else {
+			table += "<a class='page' title='" + i18n_page + " " + i
+				+ "' href='javascript:showActitityList( " + i
+				+ ");'>" + i + "</a>";
+		}
+		table += "<span class='seperator'>|</span>";
+	}
+	table += "<span class='next' title='" + i18n_next + "'>» </span>";
+	table += "<span class='last' title='" + i18n_last + "'>»»</span>";
+	table += "</div>";
+	table += "</tr></table>";
+	return table;
+}
+
+function showEvents( teiUid){
+	var params = "orgUnit=" + getFieldValue("orgunitId");
+	params += "&program=" + getFieldValue('program');
+	params += "&programStatus=ACTIVE";
+	params += "&trackedEntityInstance=" + teiUid;
+	if(getFieldValue('status')!=''){
+		params += '&eventStatus=' + getFieldValue('status');
+	}
+	params += "&eventStartDate=" + getFieldValue('startDueDate');
+	params += "&eventEndDate=" + getFieldValue('endDueDate');
+	
+	$.ajax({
+		type : "GET",
+		url : "../api/events.json",
+		data : params,
+		dataType : "json",
+		success : function(json) {
+			var table = "<table>"
+			for ( var i in json.events) {
+				var row = json.events[i];
+				var uid = row.event;
+				var eventDate = row.eventDate;
+				table += "<tr><td><a href='javascript:programTrackingList( \"" + uid + "\") ' >" + eventDate + "</a></td></tr>";
+			}
+			table += "</table>";
+			$('#eventList').html(table);
+			$('#eventList').dialog({
+				title : i18n_events,
+				maximize : true,
+				closable : true,
+				modal : false,
+				width : 380,
+				height : 290
+			}).show('fast');
+		}
+	});
 }
 
 function exportActitityList( type )
@@ -89,7 +288,7 @@ function exportActitityList( type )
         params += "_-1";
     }
 
-    params += "_false_" + getFieldValue('statusEvent');
+    params += "_false_" + getFieldValue('status');
     window.location.href = "getActivityPlanRecords.action?" + params;
 }
 
@@ -126,16 +325,16 @@ function statusEventOnChange()
 {
 	if( !byId('useCalendar').checked )
 	{
-		var statusEvent = getFieldValue("statusEvent");
+		var status = getFieldValue("status");
 
-		if( statusEvent == '1_2_3_4'
-			|| statusEvent == '3_4'
-			|| statusEvent == '2_3_4' ){
+		if( status == '1_2_3_4'
+			|| status == '3_4'
+			|| status == '2_3_4' ){
 			enable('showEventSince');
 			enable('showEventUpTo');
 			setDateRange();
 		}
-		else if( statusEvent == '3' ){
+		else if( status == '3' ){
 			disable('showEventSince');
 			enable('showEventUpTo');
 			setDateRange();
@@ -150,7 +349,7 @@ function statusEventOnChange()
 
 function setDateRange()
 {
-	var statusEvent = getFieldValue("statusEvent");
+	var status = getFieldValue("status");
 	var date = new Date();
 	var d = date.getDate();
 	var m = date.getMonth();
@@ -187,13 +386,13 @@ function setDateRange()
 	}
 
 	// check status to get date-range
-    if( statusEvent == '1_2_3_4'
-        || statusEvent == '3_4'
-        || statusEvent == '2_3_4' ) {
+    if( status == '1_2_3_4'
+        || status == '3_4'
+        || status == '2_3_4' ) {
         startDate = startDateSince;
         endDate = endDateUpTo;
 
-    } else if( statusEvent == '3' ) {
+    } else if( status == '3' ) {
         startDate = startDateUpTo;
         endDate = endDateUpTo;
     }
