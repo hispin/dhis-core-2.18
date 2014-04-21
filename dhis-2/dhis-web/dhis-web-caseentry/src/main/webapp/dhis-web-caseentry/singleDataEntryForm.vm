@@ -176,20 +176,22 @@
 
 </div>
 #else
+
 <!-- DEFAULT -->
+#set($programStage = '')
+#foreach($ps in $program.programStages)
+	#set($programStage = $ps)
+#end
 
 <tbody id="entryForm">
 	<tr>
-		<th colspan='2'>$!programStage.program.displayName</th>
+		<th colspan='2'>$!program.displayName</th>
 	</tr>
-	<!-- Identifiers/Attributes belong to the selected single program -->
-	#set($program = $programStage.program)
-	#parse( "/dhis-web-caseentry/attributeFormDiv.vm" )
 	
 	<!-- Data elements -->
 #set( $dataElementRowCount = 0 )
 #set( $tabIndex = 1 )
-#foreach( $programStageDataElement in $programStageDataElements )
+#foreach( $programStageDataElement in $programStage.programStageDataElements )
 	#set( $dataElementRowCount = $dataElementRowCount + 1 )    
 	#set( $dataValue = false )
 	#set( $key = $programStageDataElement.dataElement.id )

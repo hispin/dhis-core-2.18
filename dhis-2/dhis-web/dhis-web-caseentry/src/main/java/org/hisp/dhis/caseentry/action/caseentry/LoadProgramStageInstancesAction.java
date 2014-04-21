@@ -86,9 +86,9 @@ public class LoadProgramStageInstancesAction
     // Input && Output
     // -------------------------------------------------------------------------
 
-    private Integer entityInstanceId;
+    private String entityInstanceId;
 
-    public void setEntityInstanceId( Integer entityInstanceId )
+    public void setEntityInstanceId( String entityInstanceId )
     {
         this.entityInstanceId = entityInstanceId;
     }

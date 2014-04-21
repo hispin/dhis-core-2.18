@@ -963,11 +963,7 @@ function showUpdateTrackedEntityInstanceForm(entityInstanceId) {
 				showById('editEntityInstanceDiv');
 			});
 }
-function addEventForEntityInstanceForm(divname) {
-	$("#" + divname + " [id=checkDuplicateBtn]").click(function() {
-		checkDuplicate(divname);
-	});
-}
+
 function showRepresentativeInfo(entityInstanceId) {
 	$('#representativeInfo').dialog({
 		title : i18n_representative_info,
@@ -1354,39 +1350,11 @@ function saveIdentifierAndAttribute(entityInstanceId, programId, paramsDiv) {
 		}
 	});
 }
-// ----------------------------------------------------------------
-// Show selected data-recording
-// ----------------------------------------------------------------
-function showSelectedDataRecoding(entityInstanceId) {
-	showLoader();
-	hideById('searchDiv');
-	hideById('dataEntryFormDiv');
-	hideById('migrationEntityInstanceDiv');
-	hideById('dataRecordingSelectDiv');
-	$('#dataRecordingSelectDiv')
-			.load(
-					'selectDataRecording.action',
-					{
-						entityInstanceId : entityInstanceId
-					},
-					function() {
-						$('#dataRecordingSelectDiv [id=backBtnFromEntry]')
-								.hide();
-						showById('dataRecordingSelectDiv');
-						var programId = $(
-								'#programEnrollmentSelectDiv [id=programId] option:selected')
-								.val();
-						$('#dataRecordingSelectDiv [id=programId]').val(
-								programId);
-						$('#dataRecordingSelectDiv [id=inputCriteria]').hide();
-						showById('dataRecordingSelectDiv');
-						hideLoader();
-						hideById('contentDiv');
-					});
-}
+
 // ----------------------------------------------------------------
 // EntityInstance Location
 // ----------------------------------------------------------------
+
 function getTrackedEntityInstanceLocation(entityInstanceId) {
 	hideById('listEntityInstanceDiv');
 	hideById('selectDiv');
@@ -1409,17 +1377,21 @@ function registerTrackedEntityInstanceLocation(entityInstanceId) {
 		showSuccessMessage(i18n_save_success);
 	});
 }
+
 // ----------------------------------------------------------------
 // List program-stage-instance of selected program
 // ----------------------------------------------------------------
+
 function getVisitSchedule(programInstanceId) {
 	$('#tab-3').load("getVisitSchedule.action", {
 		programInstanceId : programInstanceId
 	});
 }
+
 // ----------------------------------------------------------------
 // Dash board
 // ----------------------------------------------------------------
+
 function showTrackedEntityInstanceDashboardForm(entityInstanceId) {
 	hideById('selectDiv');
 	hideById('searchDiv');
@@ -1431,6 +1403,7 @@ function showTrackedEntityInstanceDashboardForm(entityInstanceId) {
 	hideById('smsManagementDiv');
 	hideById('dataEntryFormDiv');
 	setInnerHTML('listEventDiv', '');
+	
 	$('#loaderDiv').show();
 	$('#entityInstanceDashboard').load('trackedEntityInstanceDashboard.action',
 			{

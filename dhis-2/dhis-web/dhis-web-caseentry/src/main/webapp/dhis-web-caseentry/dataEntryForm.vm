@@ -50,20 +50,12 @@
 		</tr>
 		#end
 		
-		<tr>
-			<td colspan='3'>
-				<table>
-					<tbody></tbody>
-				</table>
-			</td>
-		</tr>
 		#foreach($key in $programIndicatorsMap.keySet())
 		<tr>
 			<td colspan='3' class='bold'>$key: $programIndicatorsMap.get($key)</td>
 		</tr>
 		#end
 		
-	</table>
 	</table>
 
 	<br>

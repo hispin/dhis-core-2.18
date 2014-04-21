@@ -1,23 +1,20 @@
 <script>
 	jQuery(document).ready(	function(){
 		currentDiv = 'entityInstanceForm';
-		checkedDuplicate = false;
 		jQuery("#entityInstanceForm").validate({
-				 meta:"validate"
-				,errorElement:"span"
-				,submitHandler: function(form)
-					{
-						#if($!relatedProgram)
-							var programId = getFieldValue("relatedProgramId");
-							addTrackedEntityInstance( programId, true, isContinue);
-						#else
-							var programId = getFieldValue('program');
-							addTrackedEntityInstance(programId, false, isContinue);
-						#end
-					}
-			});
-		
-		addEventForEntityInstanceForm( 'entityInstanceForm' );
+			 meta:"validate"
+			,errorElement:"span"
+			,submitHandler: function(form)
+				{
+					#if($!relatedProgram)
+						var programId = getFieldValue("relatedProgramId");
+						addTrackedEntityInstance( programId, true, isContinue);
+					#else
+						var programId = getFieldValue('program');
+						addTrackedEntityInstance(programId, false, isContinue);
+					#end
+				}
+		});
 	});	
 	
 	addRelationship = false;
@@ -25,7 +22,7 @@
 </script>
 
 <h3 id='entityInstanceMamagementLink'>
-	<a href="javascript:loadTrackedEntityInstanceList();">$i18n.getString( 'tracked_entity_instance_management' )</a>
+	<a href="javascript:onClickBackBtn();">$i18n.getString( 'tracked_entity_instance_management' )</a>
 	#if($!relatedProgram)
 		&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$!entityInstanceUid');">$i18n.getString( 'dashboard' )</a>
 	#end

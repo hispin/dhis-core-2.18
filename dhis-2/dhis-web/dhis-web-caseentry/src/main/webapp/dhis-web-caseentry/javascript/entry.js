@@ -847,67 +847,69 @@ function loadProgramStageFromServer( programStageInstanceId ) {
         type: 'GET',
         dataType: 'json'
     } ).done(function(data) {
-        $( "#programStageInstanceId" ).val( data.id );
-        $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
-        $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
-        $( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
-        $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
-        $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
-        $( "#entryFormContainer input[id='completed']" ).val( data.completed );
-        $( "#entryFormContainer input[id='programStageId']" ).val( data.programStage.id  );
-        $( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
-        $( "#entryFormContainer input[id='programId']" ).val( data.program.id );
-        $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
-        $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
-        $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.programStage.blockEntryForm );
-        $( "#entryFormContainer input[id='remindCompleted']" ).val( data.programStage.remindCompleted );
-        $( "#entryFormContainer input[id='displayOptionSetAsRadioButton']" ).val( data.displayOptionSetAsRadioButton );
-        $( "#entryFormContainer input[id='allowGenerateNextVisit']" ).val( data.programStage.allowGenerateNextVisit );
+		if( data.response=='undefined'){
+			$( "#programStageInstanceId" ).val( data.id );
+			$( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
+			$( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
+			$( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
+			$( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
+			$( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
+			$( "#entryFormContainer input[id='completed']" ).val( data.completed );
+			$( "#entryFormContainer input[id='programStageId']" ).val( data.programStage.id  );
+			$( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
+			$( "#entryFormContainer input[id='programId']" ).val( data.program.id );
+			$( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
+			$( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
+			$( "#entryFormContainer input[id='blockEntryForm']" ).val( data.programStage.blockEntryForm );
+			$( "#entryFormContainer input[id='remindCompleted']" ).val( data.programStage.remindCompleted );
+			$( "#entryFormContainer input[id='displayOptionSetAsRadioButton']" ).val( data.displayOptionSetAsRadioButton );
+			$( "#entryFormContainer input[id='allowGenerateNextVisit']" ).val( data.programStage.allowGenerateNextVisit );
 
-        $( "input[id='dueDate']" ).val( data.dueDate );
-        $( "input[id='executionDate']" ).val( data.executionDate );
-        $( "#commentInput" ).val( data.comment );
-        $( "#commentInput" ).height(data.comment.split('\n').length * 15  + 12);
+			$( "input[id='dueDate']" ).val( data.dueDate );
+			$( "input[id='executionDate']" ).val( data.executionDate );
+			$( "#commentInput" ).val( data.comment );
+			$( "#commentInput" ).height(data.comment.split('\n').length * 15  + 12);
 
-        if ( data.program.type != '1' ) {
-            hideById( 'newEncounterBtn' );
-        }
+			if ( data.program.type != '1' ) {
+				hideById( 'newEncounterBtn' );
+			}
 
-        if ( data.program.type == '1' && data.programInstance.status == '1' ) {
-            var blockEntry = getFieldValue('blockEntryForm');
-            if( blockEntry == 'true' ){
-                blockEntryForm();
-            }
-        }
+			if ( data.program.type == '1' && data.programInstance.status == '1' ) {
+				var blockEntry = getFieldValue('blockEntryForm');
+				if( blockEntry == 'true' ){
+					blockEntryForm();
+				}
+			}
 
-        if(data.executionDate) {
-            $( '#executionDate' ).val(data.executionDate);
-            $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
-            $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
-        }
+			if(data.executionDate) {
+				$( '#executionDate' ).val(data.executionDate);
+				$( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
+				$( '#inputCriteriaDiv' ).removeClass( 'hidden' );
+			}
 
-        if ( data.programStage.captureCoordinates ) {
-            $( '#longitude' ).val( data.longitude );
-            $( '#latitude' ).val( data.latitude );
-        }
+			if ( data.programStage.captureCoordinates ) {
+				$( '#longitude' ).val( data.longitude );
+				$( '#latitude' ).val( data.latitude );
+			}
 
-        _.each( data.dataValues, function ( value, key ) {
-            var fieldId = getProgramStageUid() + '-' + key + '-val';
-            var field = $('#' + fieldId);
+			_.each( data.dataValues, function ( value, key ) {
+				var fieldId = getProgramStageUid() + '-' + key + '-val';
+				var field = $('#' + fieldId);
 
-            if ( field ) {
-                var value = value.value;
+				if ( field ) {
+					var value = value.value;
 
-                if( !checkAndSetRadio(field, value) ) {
-                    field.val(decodeURI(value));
-                    checkAndSetCheckbox(field, value);
-                }
-            }
-        } );
+					if( !checkAndSetRadio(field, value) ) {
+						field.val(decodeURI(value));
+						checkAndSetCheckbox(field, value);
+					}
+				}
+			} );
 
-        $('#commentInput').removeAttr('disabled');
-        $('#commentButton').removeAttr('disabled');
-        $('#validateBtn').removeAttr('disabled');
+			$('#commentInput').removeAttr('disabled');
+			$('#commentButton').removeAttr('disabled');
+			$('#validateBtn').removeAttr('disabled');
+		}
     } );
 }
 

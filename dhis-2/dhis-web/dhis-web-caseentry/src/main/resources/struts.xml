@@ -58,14 +58,6 @@
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
 		</action>
 
-		<action name="selectDataRecording"
-			class="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/dataRecordingSelect.vm</param>
-			<param name="stylesheets">style/style.css</param>
-			<param name="requiredAuthorities">F_TRACKED_ENTITY_DATAVALUE_ADD,F_TRACKED_ENTITY_DATAVALUE_DELETE</param>
-		</action>
-
 		<action name="loadProgramStageInstances"
 			class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstancesAction">
 			<result name="success" type="velocity-json">
@@ -76,6 +68,8 @@
 		<action name="getProgramStageInstance"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageInstanceAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStageInstance.vm
+			</result>
+			<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm
 			</result>
 		</action>
 
