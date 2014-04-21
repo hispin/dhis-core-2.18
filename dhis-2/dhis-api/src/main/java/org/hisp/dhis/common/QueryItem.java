@@ -39,10 +39,11 @@ import java.util.List;
  * @author Lars Helge Overland
  */
 public class QueryItem
-    extends QueryFilter
 {
     private IdentifiableObject item;
 
+    private List<QueryFilter> filters = new ArrayList<QueryFilter>();
+    
     private boolean numeric;
 
     // -------------------------------------------------------------------------
@@ -53,15 +54,31 @@ public class QueryItem
     {
         this.item = item;
     }
+
+    public QueryItem( IdentifiableObject item, boolean numeric )
+    {
+        this.item = item;
+        this.numeric = numeric;
+    }
     
     public QueryItem( IdentifiableObject item, String operator, String filter, boolean numeric )
     {
         this.item = item;
-        this.operator = operator;
-        this.filter = filter;
+        this.numeric = numeric;
+        
+        if ( operator != null && filter != null )
+        {
+            this.filters.add( new QueryFilter( operator, filter ) );
+        }
+    }
+    
+    public QueryItem( IdentifiableObject item, List<QueryFilter> filters, boolean numeric )
+    {
+        this.item = item;
+        this.filters = filters;
         this.numeric = numeric;
     }
-
+    
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -75,6 +92,11 @@ public class QueryItem
     {
         return isNumeric() ? Double.class.getName() : String.class.getName();
     }
+    
+    public boolean hasFilter()
+    {
+        return filters != null && !filters.isEmpty();
+    }
 
     public static List<QueryItem> getQueryItems( Collection<? extends IdentifiableObject> objects )
     {
@@ -82,7 +104,7 @@ public class QueryItem
         
         for ( IdentifiableObject object : objects )
         {
-            queryItems.add( new QueryItem( object, null, null, false ) );
+            queryItems.add( new QueryItem( object, false ) );
         }
         
         return queryItems;
@@ -124,7 +146,7 @@ public class QueryItem
     @Override
     public String toString()
     {
-        return "[Item: " + item + ", operator: " + operator + ", filter: " + filter + "]";
+        return "[Item: " + item + ", filters: " + filters + "]";
     }
     
     // -------------------------------------------------------------------------
@@ -139,6 +161,16 @@ public class QueryItem
     public void setItem( IdentifiableObject item )
     {
         this.item = item;
+    }
+
+    public List<QueryFilter> getFilters()
+    {
+        return filters;
+    }
+
+    public void setFilters( List<QueryFilter> filters )
+    {
+        this.filters = filters;
     }
 
     public boolean isNumeric()

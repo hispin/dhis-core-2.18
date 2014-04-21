@@ -66,6 +66,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
+import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -257,14 +258,17 @@ public class HibernateTrackedEntityInstanceStore
                 "trackedentityattributevalue as " + col + " " + "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid " + 
                 "and " + col + ".trackedentityattributeid = " + item.getItem().getId() + " ";
 
-            final String filter = statementBuilder.encode( item.getFilter(), false );
-
             if ( !params.isOrQuery() && item.hasFilter() )
             {
-                final String queryCol = item.isNumeric() ? (col + ".value") : "lower(" + col + ".value)";
-
-                sql += "and " + queryCol + " " + item.getSqlOperator() + " "
-                    + StringUtils.lowerCase( item.getSqlFilter( filter ) ) + " ";
+                for ( QueryFilter filter : item.getFilters() )
+                {
+                    final String encodedFilter = statementBuilder.encode( filter.getFilter(), false );
+    
+                    final String queryCol = item.isNumeric() ? (col + ".value") : "lower(" + col + ".value)";
+    
+                    sql += "and " + queryCol + " " + filter.getSqlOperator() + " "
+                        + StringUtils.lowerCase( filter.getSqlFilter( encodedFilter ) ) + " ";
+                }
             }
         }
 

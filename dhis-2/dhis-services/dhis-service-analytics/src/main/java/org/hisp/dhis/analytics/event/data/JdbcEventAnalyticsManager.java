@@ -50,6 +50,7 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -386,15 +387,21 @@ public class JdbcEventAnalyticsManager
         {
             if ( item.hasFilter() )
             {
-                sql += "and " + getColumn( item ) + " " + item.getSqlOperator() + " " + getSqlFilter( item ) + " ";
+                for ( QueryFilter filter : item.getFilters() )
+                {
+                    sql += "and " + getColumn( item ) + " " + filter.getSqlOperator() + " " + getSqlFilter( filter, item.isNumeric() ) + " ";
+                }
             }
         }
         
-        for ( QueryItem filter : params.getItemFilters() )
+        for ( QueryItem item : params.getItemFilters() )
         {
-            if ( filter.hasFilter() )
+            if ( item.hasFilter() )
             {
-                sql += "and " + getColumn( filter ) + " " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
+                for ( QueryFilter filter : item.getFilters() )
+                {
+                    sql += "and " + getColumn( item ) + " " + filter.getSqlOperator() + " " + getSqlFilter( filter, item.isNumeric() ) + " ";
+                }
             }
         }
         
@@ -419,13 +426,13 @@ public class JdbcEventAnalyticsManager
     /**
      * Returns the filter value for the given query item.
      */
-    private String getSqlFilter( QueryItem item )
+    private String getSqlFilter( QueryFilter filter, boolean numeric )
     {
-        String encodedFilter = statementBuilder.encode( item.getFilter(), false );
+        String encodedFilter = statementBuilder.encode( filter.getFilter(), false );
         
-        String sqlFilter = item.getSqlFilter( encodedFilter );
+        String sqlFilter = filter.getSqlFilter( encodedFilter );
         
-        return item.isNumeric() ? sqlFilter : sqlFilter.toLowerCase();
+        return numeric ? sqlFilter : sqlFilter.toLowerCase();
     }
 
     /**

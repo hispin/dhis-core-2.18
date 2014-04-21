@@ -159,6 +159,8 @@ public class TrackedEntityInstanceQueryParams
     // -------------------------------------------------------------------------
     
     /**
+     * //TODO allow attributes only once and allow multiple filters per item
+     * 
      * Performs a set of operations on this params.
      * 
      * <ul>
@@ -166,7 +168,7 @@ public class TrackedEntityInstanceQueryParams
      * If a query item is specified as an attribute item as well as a filter 
      * item, the filter item will be removed. In that case, if the attribute 
      * item does not have a filter value and the filter item has a filter value, 
-     * it will be applied to the attribute item.
+     * it will be applied to the attribute item. 
      * </li>
      * </ul> 
      */
@@ -184,10 +186,9 @@ public class TrackedEntityInstanceQueryParams
             {
                 QueryItem attribute = attributes.get( index );
                 
-                if ( !attribute.hasFilter() )
+                if ( !attribute.hasFilter() && filter.hasFilter() )
                 {
-                    attribute.setOperator( filter.getOperator() );
-                    attribute.setFilter( filter.getFilter() );
+                    attribute.getFilters().add( filter.getFilters().iterator().next() );
                 }
                 
                 filterIter.remove();

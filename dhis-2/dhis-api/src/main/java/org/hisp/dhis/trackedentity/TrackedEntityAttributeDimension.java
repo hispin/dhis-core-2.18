@@ -35,10 +35,16 @@ public class TrackedEntityAttributeDimension
 {
     private int id;
     
+    /**
+     * Attribute.
+     */
     private TrackedEntityAttribute attribute;
     
-    private String operator;
-    
+    /**
+     * Operator and filter on this format:
+     * <operator>:<filter>;<operator>:<filter>
+     * Operator and filter pairs can be repeated any number of times.
+     */
     private String filter;
 
     // -------------------------------------------------------------------------
@@ -87,16 +93,6 @@ public class TrackedEntityAttributeDimension
         this.attribute = attribute;
     }
 
-    public String getOperator()
-    {
-        return operator;
-    }
-
-    public void setOperator( String operator )
-    {
-        this.operator = operator;
-    }
-
     public String getFilter()
     {
         return filter;
@@ -106,5 +102,4 @@ public class TrackedEntityAttributeDimension
     {
         this.filter = filter;
     }
-
 }

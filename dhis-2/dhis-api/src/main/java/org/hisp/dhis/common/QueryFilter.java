@@ -71,7 +71,7 @@ public class QueryFilter
     // Logic
     // -------------------------------------------------------------------------
     
-    public boolean hasFilter()
+    public boolean isFilter()
     {
         return operator != null && !operator.isEmpty() && filter != null && !filter.isEmpty();
     }
