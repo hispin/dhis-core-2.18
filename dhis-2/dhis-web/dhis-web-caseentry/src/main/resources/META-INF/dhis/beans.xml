@@ -785,8 +785,6 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programIndicatorService"
 			ref="org.hisp.dhis.program.ProgramIndicatorService" />
-		<property name="attributeValueService"
-			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
 	</bean>
 
 	<bean

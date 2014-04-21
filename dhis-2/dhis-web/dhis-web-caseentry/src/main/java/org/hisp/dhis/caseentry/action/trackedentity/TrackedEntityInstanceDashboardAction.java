@@ -53,7 +53,6 @@ import org.hisp.dhis.trackedentity.TrackedEntityAuditService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
-import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -82,9 +81,7 @@ public class TrackedEntityInstanceDashboardAction
     private ProgramService programService;
 
     private ProgramIndicatorService programIndicatorService;
-
-    private TrackedEntityAttributeValueService attributeValueService;
-
+    
     @Autowired
     private TrackedEntityAttributeService attributeService;
 
@@ -122,12 +119,7 @@ public class TrackedEntityInstanceDashboardAction
     public Map<Integer, String> getAttributeValueMap()
     {
         return attributeValueMap;
-    }
-
-    public void setAttributeValueService( TrackedEntityAttributeValueService attributeValueService )
-    {
-        this.attributeValueService = attributeValueService;
-    }
+    }  
 
     public void setAuditService( TrackedEntityAuditService auditService )
     {
