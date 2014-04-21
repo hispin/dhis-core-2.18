@@ -40,7 +40,6 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.common.DimensionalObject;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.common.QueryItem;
@@ -135,25 +134,6 @@ public class EventQueryParams
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
-
-    /**
-     * Returns a list of query items with distinct items / identifiable objects.
-     */
-    public List<QueryItem> getUniqueItems()
-    {
-        Set<IdentifiableObject> existingObjects = new HashSet<IdentifiableObject>();        
-        List<QueryItem> uniqueItems = new ArrayList<QueryItem>();
-        
-        for ( QueryItem item : items )
-        {
-            if ( existingObjects.add( item.getItem() ) )
-            {
-                uniqueItems.add( item );
-            }
-        }
-        
-        return uniqueItems;
-    }
     
     /**
      * Replaces periods with start and end dates, using the earliest start date
@@ -181,6 +161,25 @@ public class EventQueryParams
         }
         
         removeDimensionOrFilter( PERIOD_DIM_ID );
+    }
+
+    /**
+     * Returns a list of query items which occur more than once.
+     */
+    public List<QueryItem> getDuplicateQueryItems()
+    {
+        Set<QueryItem> dims = new HashSet<QueryItem>();
+        List<QueryItem> duplicates = new ArrayList<QueryItem>();
+        
+        for ( QueryItem dim : items )
+        {
+            if ( !dims.add( dim ) )
+            {
+                duplicates.add( dim );
+            }
+        }
+        
+        return duplicates;
     }
     
     public boolean isOrganisationUnitMode( String mode )

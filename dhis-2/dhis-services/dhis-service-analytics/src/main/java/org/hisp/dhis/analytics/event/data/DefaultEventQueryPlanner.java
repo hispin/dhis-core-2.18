@@ -91,6 +91,16 @@ public class DefaultEventQueryPlanner
         {
             violation = "At least one organisation unit must be specified";
         }
+
+        if ( !params.getDuplicateDimensions().isEmpty() )
+        {
+            violation = "Dimensions cannot be specified more than once: " + params.getDuplicateDimensions();
+        }
+        
+        if ( !params.getDuplicateQueryItems().isEmpty() )
+        {
+            violation = "Query items cannot be specified more than once: " + params.getDuplicateQueryItems();
+        }
         
         if ( !params.hasPeriods() && ( params.getStartDate() == null || params.getEndDate() == null ) )
         {

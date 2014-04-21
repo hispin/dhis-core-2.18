@@ -147,7 +147,7 @@ public class DefaultEventAnalyticsService
             grid.addHeader( new GridHeader( dimension.getDimension(), dimension.getDisplayName(), String.class.getName(), false, true ) );
         }
 
-        for ( QueryItem item : params.getUniqueItems() )
+        for ( QueryItem item : params.getItems() )
         {
             grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName(), item.getTypeAsString(), false, true ) );
         }
@@ -223,7 +223,7 @@ public class DefaultEventAnalyticsService
             grid.addHeader( new GridHeader( dimension.getDimension(), dimension.getDisplayName(), String.class.getName(), false, true ) );
         }
 
-        for ( QueryItem item : params.getUniqueItems() )
+        for ( QueryItem item : params.getItems() )
         {
             grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName(), item.getTypeAsString() ) );
         }
@@ -403,7 +403,7 @@ public class DefaultEventAnalyticsService
         params.setPage( page );
         params.setPageSize( pageSize );
         params.setAggregate( false );
-
+        
         return params;
     }
 
