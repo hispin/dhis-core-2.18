@@ -35,28 +35,33 @@ Ext.onReady( function() {
 
 	// constructors
 	OptionsWindow = function() {
-		var showTrendLine,
+		var showValues,
+            hideEmptyRows,
+            showTrendLine,
 			targetLineValue,
 			targetLineTitle,
 			baseLineValue,
 			baseLineTitle,
 
-			showValues,
-            hideEmptyRows,
+            rangeAxisMaxValue,
+            rangeAxisMinValue,
+            rangeAxisSteps,
+            rangeAxisDecimals,
+			rangeAxisTitle,
+			domainAxisTitle,
+            
 			hideLegend,
 			hideTitle,
 			title,
-			domainAxisTitle,
-			rangeAxisTitle,
 
 			data,
 			axes,
 			general,
 			window,
 
-			cmpWidth = 310,
+			cmpWidth = 340,
 			labelWidth = 125,
-			numberWidth = 60;
+			numberWidth = 80;
 
 		showTrendLine = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.trend_line,
@@ -117,14 +122,20 @@ Ext.onReady( function() {
 		});
 
 		rangeAxisMaxValue = Ext.create('Ext.form.field.Number', {
-			width: 190,
+			width: numberWidth,
 			height: 18,
-			fieldLabel: 'Range axis max value',
 			labelWidth: 125
 		});
 
+		rangeAxisMinValue = Ext.create('Ext.form.field.Number', {
+			width: numberWidth,
+			height: 18,
+			labelWidth: 125,
+            style: 'margin-left:1px'
+		});
+
 		rangeAxisSteps = Ext.create('Ext.form.field.Number', {
-			width: 190,
+			width: labelWidth + 5 + numberWidth,
 			height: 18,
 			fieldLabel: 'Range axis tick steps',
 			labelWidth: 125,
@@ -132,7 +143,7 @@ Ext.onReady( function() {
 		});
 
 		rangeAxisDecimals = Ext.create('Ext.form.field.Number', {
-			width: 190,
+			width: labelWidth + 5 + numberWidth,
 			height: 18,
 			fieldLabel: 'Range axis decimals',
 			labelWidth: 125,
@@ -164,7 +175,7 @@ Ext.onReady( function() {
 			style: 'margin-bottom:2px',
 			width: cmpWidth,
 			fieldLabel: NS.i18n.chart_title,
-			labelStyle: 'color:#333; padding-left:2px',
+			labelStyle: 'color:#333',
 			labelWidth: 125,
 			maxLength: 100,
 			enforceMaxLength: true,
@@ -184,7 +195,7 @@ Ext.onReady( function() {
 		});
 		
 		domainAxisTitle = Ext.create('Ext.form.field.Text', {
-			width: 310,
+			width: cmpWidth,
 			fieldLabel: NS.i18n.domain_axis_label,
 			labelStyle: 'color:#333',
 			labelWidth: 125,
@@ -207,7 +218,7 @@ Ext.onReady( function() {
 					bodyStyle: 'border:0 none',
 					items: [
 						{
-							bodyStyle: 'border:0 none; padding-top:3px; padding-left:2px; margin-right:5px; color:#333',
+							bodyStyle: 'border:0 none; padding-top:3px; margin-right:5px; color:#333',
 							width: 130,
 							html: 'Target value / title:'
 						},
@@ -221,7 +232,7 @@ Ext.onReady( function() {
 					bodyStyle: 'border:0 none',
 					items: [
 						{
-							bodyStyle: 'border:0 none; padding-top:3px; padding-left:2px; margin-right:5px; color:#333',
+							bodyStyle: 'border:0 none; padding-top:3px; margin-right:5px; color:#333',
 							width: 130,
 							html: 'Base value / title:'
 						},
@@ -236,7 +247,19 @@ Ext.onReady( function() {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-				rangeAxisMaxValue,
+				{
+					layout: 'column',
+					bodyStyle: 'border:0 none',
+					items: [
+						{
+							bodyStyle: 'border:0 none; padding-top:3px; margin-right:5px; color:#333',
+							width: 130,
+							html: 'Range axis max/min:'
+						},
+						rangeAxisMaxValue,
+						rangeAxisMinValue
+					]
+				},
 				rangeAxisSteps,
 				rangeAxisDecimals,
 				rangeAxisTitle,
@@ -272,6 +295,7 @@ Ext.onReady( function() {
 					baseLineValue: baseLineValue.getValue(),
 					baseLineTitle: baseLineTitle.getValue(),
 					rangeAxisMaxValue: rangeAxisMaxValue.getValue(),
+					rangeAxisMinValue: rangeAxisMinValue.getValue(),
 					rangeAxisSteps: rangeAxisSteps.getValue(),
 					rangeAxisDecimals: rangeAxisDecimals.getValue(),
 					rangeAxisTitle: rangeAxisTitle.getValue(),
@@ -322,6 +346,14 @@ Ext.onReady( function() {
 				}
 				else {
 					rangeAxisMaxValue.reset();
+				}
+
+				// rangeAxisMinValue
+				if (Ext.isNumber(layout.rangeAxisMinValue)) {
+					rangeAxisMinValue.setValue(layout.rangeAxisMinValue);
+				}
+				else {
+					rangeAxisMinValue.reset();
 				}
 
 				// rangeAxisSteps
@@ -437,6 +469,7 @@ Ext.onReady( function() {
 					w.baseLineTitle = baseLineTitle;
 
 					w.rangeAxisMaxValue = rangeAxisMaxValue;
+					w.rangeAxisMinValue = rangeAxisMinValue;
 					w.rangeAxisSteps = rangeAxisSteps;
 					w.rangeAxisDecimals = rangeAxisDecimals;
 					w.rangeAxisTitle = rangeAxisTitle;

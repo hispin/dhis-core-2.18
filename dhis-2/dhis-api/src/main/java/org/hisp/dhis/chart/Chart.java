@@ -55,23 +55,32 @@ import java.util.List;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement(localName = "chart", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "chart", namespace = DxfNamespaces.DXF_2_0 )
 public class Chart
     extends BaseAnalyticalObject
 {
     private static final long serialVersionUID = 2570074075484545534L;
 
     public static final String SIZE_NORMAL = "normal";
+
     public static final String SIZE_WIDE = "wide";
+
     public static final String SIZE_TALL = "tall";
 
     public static final String TYPE_COLUMN = "column";
+
     public static final String TYPE_STACKED_COLUMN = "stackedcolumn";
+
     public static final String TYPE_BAR = "bar";
+
     public static final String TYPE_STACKED_BAR = "stackedbar";
+
     public static final String TYPE_LINE = "line";
+
     public static final String TYPE_AREA = "area";
+
     public static final String TYPE_PIE = "pie";
+
     public static final String TYPE_RADAR = "radar"; // Spider web
 
     private String domainAxisLabel;
@@ -105,13 +114,15 @@ public class Chart
     private String baseLineLabel;
 
     private boolean showData;
-    
+
     private boolean hideEmptyRows;
-    
+
     private Double rangeAxisMaxValue;
-    
-    private Integer rangeAxisSteps; //min 1
-    
+
+    private Double rangeAxisMinValue;
+
+    private Integer rangeAxisSteps; // min 1
+
     private Integer rangeAxisDecimals;
 
     // -------------------------------------------------------------------------
@@ -147,7 +158,8 @@ public class Chart
 
     @Override
     public void init( User user, Date date, OrganisationUnit organisationUnit,
-        List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups, I18nFormat format )
+        List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups,
+        I18nFormat format )
     {
         this.user = user;
         this.relativePeriodDate = date;
@@ -163,14 +175,16 @@ public class Chart
 
     public List<NameableObject> series()
     {
-        DimensionalObject object = getDimensionalObject( series, relativePeriodDate, user, true, organisationUnitsAtLevel, organisationUnitsInGroups, format );
+        DimensionalObject object = getDimensionalObject( series, relativePeriodDate, user, true,
+            organisationUnitsAtLevel, organisationUnitsInGroups, format );
 
         return object != null ? object.getItems() : null;
     }
 
     public List<NameableObject> category()
     {
-        DimensionalObject object = getDimensionalObject( category, relativePeriodDate, user, true, organisationUnitsAtLevel, organisationUnitsInGroups, format );
+        DimensionalObject object = getDimensionalObject( category, relativePeriodDate, user, true,
+            organisationUnitsAtLevel, organisationUnitsInGroups, format );
 
         return object != null ? object.getItems() : null;
     }
@@ -181,7 +195,8 @@ public class Chart
 
         for ( String filter : filterDimensions )
         {
-            DimensionalObject object = getDimensionalObject( filter, relativePeriodDate, user, true, organisationUnitsAtLevel, organisationUnitsInGroups, format );
+            DimensionalObject object = getDimensionalObject( filter, relativePeriodDate, user, true,
+                organisationUnitsAtLevel, organisationUnitsInGroups, format );
 
             if ( object != null )
             {
@@ -246,10 +261,10 @@ public class Chart
 
     /**
      * Sets all dimensions for this chart.
-     *
-     * @param series   the series dimension.
+     * 
+     * @param series the series dimension.
      * @param category the category dimension.
-     * @param filter   the filter dimension.
+     * @param filter the filter dimension.
      */
     public void setDimensions( String series, String category, String filter )
     {
@@ -289,8 +304,8 @@ public class Chart
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDomainAxisLabel()
     {
         return domainAxisLabel;
@@ -302,8 +317,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getRangeAxisLabel()
     {
         return rangeAxisLabel;
@@ -315,8 +330,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getType()
     {
         return type;
@@ -328,8 +343,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getSeries()
     {
         return series;
@@ -341,8 +356,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCategory()
     {
         return category;
@@ -354,9 +369,9 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "filterDimension", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "filterDimension", namespace = DxfNamespaces.DXF_2_0 )
     public List<String> getFilterDimensions()
     {
         return filterDimensions;
@@ -368,8 +383,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isHideLegend()
     {
         return hideLegend;
@@ -381,8 +396,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRegression()
     {
         return regression;
@@ -394,8 +409,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Double getTargetLineValue()
     {
         return targetLineValue;
@@ -407,8 +422,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getTargetLineLabel()
     {
         return targetLineLabel;
@@ -420,8 +435,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Double getBaseLineValue()
     {
         return baseLineValue;
@@ -433,8 +448,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getBaseLineLabel()
     {
         return baseLineLabel;
@@ -446,8 +461,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isHideTitle()
     {
         return hideTitle;
@@ -459,8 +474,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isHideSubtitle()
     {
         return hideSubtitle;
@@ -472,8 +487,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getTitle()
     {
         return this.title;
@@ -485,8 +500,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isShowData()
     {
         return showData;
@@ -498,8 +513,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isHideEmptyRows()
     {
         return hideEmptyRows;
@@ -511,8 +526,8 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRewindRelativePeriods()
     {
         return rewindRelativePeriods;
@@ -524,43 +539,62 @@ public class Chart
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
-    public Double getRangeAxisMaxValue() {
-		return rangeAxisMaxValue;
-	}
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Double getRangeAxisMaxValue()
+    {
+        return rangeAxisMaxValue;
+    }
 
-	public void setRangeAxisMaxValue(Double rangeAxisMaxValue) {
-		this.rangeAxisMaxValue = rangeAxisMaxValue;
-	}
+    public void setRangeAxisMaxValue( Double rangeAxisMaxValue )
+    {
+        this.rangeAxisMaxValue = rangeAxisMaxValue;
+    }
 
-	@JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
-	public Integer getRangeAxisSteps() {
-		return rangeAxisSteps;
-	}
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Double getRangeAxisMinValue()
+    {
+        return rangeAxisMinValue;
+    }
 
-	public void setRangeAxisSteps(Integer rangeAxisSteps) {
-		this.rangeAxisSteps = rangeAxisSteps;
-	}
+    public void setRangeAxisMinValue( Double rangeAxisMinValue )
+    {
+        this.rangeAxisMinValue = rangeAxisMinValue;
+    }
 
-	@JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
-	public Integer getRangeAxisDecimals() {
-		return rangeAxisDecimals;
-	}
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Integer getRangeAxisSteps()
+    {
+        return rangeAxisSteps;
+    }
 
-	public void setRangeAxisDecimals(Integer rangeAxisDecimals) {
-		this.rangeAxisDecimals = rangeAxisDecimals;
-	}
+    public void setRangeAxisSteps( Integer rangeAxisSteps )
+    {
+        this.rangeAxisSteps = rangeAxisSteps;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Integer getRangeAxisDecimals()
+    {
+        return rangeAxisDecimals;
+    }
+
+    public void setRangeAxisDecimals( Integer rangeAxisDecimals )
+    {
+        this.rangeAxisDecimals = rangeAxisDecimals;
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters for transient properties
     // -------------------------------------------------------------------------
 
-	@JsonIgnore
+    @JsonIgnore
     public I18nFormat getFormat()
     {
         return format;
@@ -615,6 +649,7 @@ public class Chart
             hideEmptyRows = chart.isHideEmptyRows();
             rewindRelativePeriods = chart.isRewindRelativePeriods();
             rangeAxisMaxValue = chart.getRangeAxisMaxValue();
+            rangeAxisMinValue = chart.getRangeAxisMinValue();
             rangeAxisSteps = chart.getRangeAxisSteps();
             rangeAxisDecimals = chart.getRangeAxisDecimals();
 

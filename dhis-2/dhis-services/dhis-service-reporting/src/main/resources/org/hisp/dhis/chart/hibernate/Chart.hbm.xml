@@ -164,6 +164,8 @@
 
     <property name="rangeAxisMaxValue" />
 
+    <property name="rangeAxisMinValue" />
+
     <property name="rangeAxisSteps" />
 
     <property name="rangeAxisDecimals" />
