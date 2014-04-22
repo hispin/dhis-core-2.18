@@ -132,6 +132,7 @@
 
 <div id='contentDataRecord'></div>
 <div id='eventList'></div>
+<div id='detailsInfo'></div>
 
 #parse( "dhis-web-commons/loader/loader.vm" )
 	

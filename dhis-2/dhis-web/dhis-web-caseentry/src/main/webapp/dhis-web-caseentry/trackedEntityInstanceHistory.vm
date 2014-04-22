@@ -1,7 +1,7 @@
 <p></p>
 <div style="margin-bottom:15px">
-<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportTrackedEntityInstanceHistory( '$entityInstance.id', 'xls' )" >
-<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportTrackedEntityInstanceHistory( '$entityInstance.id', 'pdf' )" >
+<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportTrackedEntityInstanceHistory( '$entityInstance.uid', 'xls' )" >
+<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportTrackedEntityInstanceHistory( '$entityInstance.uid', 'pdf' )" >
 </div>
 <div>
 #foreach( $grid in $grids )
