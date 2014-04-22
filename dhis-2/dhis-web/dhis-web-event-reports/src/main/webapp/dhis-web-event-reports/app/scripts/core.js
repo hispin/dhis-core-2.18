@@ -894,7 +894,7 @@ Ext.onReady( function() {
 
 				// columns, rows, filters
 				if (layout.columns) {
-                    layout.columns = support.prototype.array.uniqueByProperty(layout.columns, 'dimension');
+                    //layout.columns = support.prototype.array.uniqueByProperty(layout.columns, 'dimension');
 
 					for (var i = 0, dim, items, xDim; i < layout.columns.length; i++) {
 						dim = layout.columns[i];
@@ -932,7 +932,7 @@ Ext.onReady( function() {
 				}
 
 				if (layout.rows) {
-                    layout.rows = support.prototype.array.uniqueByProperty(layout.rows, 'dimension');
+                    //layout.rows = support.prototype.array.uniqueByProperty(layout.rows, 'dimension');
 
 					for (var i = 0, dim, items, xDim; i < layout.rows.length; i++) {
 						dim = Ext.clone(layout.rows[i]);
@@ -970,7 +970,7 @@ Ext.onReady( function() {
 				}
 
 				if (layout.filters) {
-                    layout.filters = support.prototype.array.uniqueByProperty(layout.filters, 'dimension');
+                    //layout.filters = support.prototype.array.uniqueByProperty(layout.filters, 'dimension');
 
 					for (var i = 0, dim, items, xDim; i < layout.filters.length; i++) {
 						dim = layout.filters[i];
@@ -1809,8 +1809,6 @@ Ext.onReady( function() {
 
                 // dimensions
                 if (dimensions) {
-                    nameItemsMap = {};
-
 					for (var i = 0, dim; i < dimensions.length; i++) {
 						dim = dimensions[i];
 
@@ -1818,51 +1816,7 @@ Ext.onReady( function() {
 							continue;
 						}
 
-                        if (!nameItemsMap[dim.dimension]) {
-                            nameItemsMap[dim.dimension] = [];
-                        }
-
-                        nameItemsMap[dim.dimension].push(dim);
-                    }
-
-                    for (var key in nameItemsMap) {
-                        var dimArray;
-
-                        if (nameItemsMap.hasOwnProperty(key)) {
-                            dimArray = nameItemsMap[key];
-
-                            paramString += '&dimension=' + key;
-
-                            for (var i = 0, dim; i < dimArray.length; i++) {
-                                dim = dimArray[i];
-
-                                if (dim.items && dim.items.length) {
-                                    paramString += ':';
-
-                                    for (var j = 0, item; j < dim.items.length; j++) {
-                                        item = dim.items[j];
-
-                                        paramString += encodeURIComponent(item.id) + ((j < (dim.items.length - 1)) ? ';' : '');
-                                    }
-                                }
-                                else if (dim.operator && !Ext.isEmpty(dim.filter)) {
-                                    paramString += ':' + dim.operator + ':' + encodeURIComponent(dim.filter);
-                                }
-                            }
-                        }
-					}
-				}
-
-                // filters
-                if (view.filters) {
-					for (var i = 0, dim; i < view.filters.length; i++) {
-						dim = view.filters[i];
-
-						if (Ext.Array.contains(ignoreKeys, dim.dimension)) {
-							continue;
-						}
-
-						paramString += '&filter=' + dim.dimension;
+						paramString += '&dimension=' + dim.dimension;
 
 						if (dim.items && dim.items.length) {
 							paramString += ':';
@@ -1873,9 +1827,19 @@ Ext.onReady( function() {
 								paramString += encodeURIComponent(item.id) + ((j < (dim.items.length - 1)) ? ';' : '');
 							}
 						}
-						else if (dim.operator && !Ext.isEmpty(dim.filter)) {
-							paramString += ':' + dim.operator + ':' + encodeURIComponent(dim.filter);
+						else {
+							paramString += dim.filter ? ':' + encodeURIComponent(dim.filter) : '';
 						}
+					}
+				}
+
+                // filters
+                if (view.filters) {
+					for (var i = 0, dim; i < view.filters.length; i++) {
+						dim = view.filters[i];
+
+						paramString += '&filter=' + dim.dimension;
+						paramString += dim.filter ? ':' + encodeURIComponent(dim.filter) : '';
 					}
 				}
 
