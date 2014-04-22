@@ -64,7 +64,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
@@ -79,7 +78,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStatus;
-import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.Timer;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
@@ -661,29 +659,6 @@ public class HibernateTrackedEntityInstanceStore
 
         return programStageInstanceIds;
     }
-
-//    public int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
-//        Integer statusEnrollment )
-//    {
-//        String sql = searchTrackedEntityInstanceSql( true, searchKeys, orgunits, followup, null, statusEnrollment,
-//            null, null );
-//        return jdbcTemplate.queryForObject( sql, Integer.class );
-//    }
-//
-//    @Override
-//    public Grid getTrackedEntityInstanceEventReport( Grid grid, List<String> searchKeys,
-//        Collection<OrganisationUnit> orgunits, Boolean followup, Collection<TrackedEntityAttribute> attributes,
-//        Integer statusEnrollment, Integer min, Integer max )
-//    {
-//        String sql = searchTrackedEntityInstanceSql( false, searchKeys, orgunits, followup, attributes,
-//            statusEnrollment, min, max );
-//
-//        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-//
-//        GridUtils.addRows( grid, rowSet );
-//
-//        return grid;
-//    }
 
     private String searchTrackedEntityInstanceSql( boolean count, List<String> searchKeys,
         Collection<OrganisationUnit> orgunits, Boolean followup, Collection<TrackedEntityAttribute> attributes,
