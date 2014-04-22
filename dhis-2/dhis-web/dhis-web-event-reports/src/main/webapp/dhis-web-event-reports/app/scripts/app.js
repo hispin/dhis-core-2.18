@@ -54,17 +54,25 @@ Ext.onReady( function() {
             bodyStyle: 'border:0 none',
             style: 'margin: ' + margin,
             getRecord: function() {
-                return {
-                    dimension: this.dataElement.id,
-                    name: this.dataElement.name,
-                    operator: this.operatorCmp.getValue(),
-                    filter: this.valueCmp.getValue()
-                };
+                var record = {};
+
+                record.dimension = this.dataElement.id;
+                record.name = this.dataElement.name;
+
+                if (this.valueCmp.getValue()) {
+					record.filter = this.operatorCmp.getValue() + ':' + this.valueCmp.getValue();
+				}
+
+				return record;
             },
             setRecord: function(record) {
-                this.operatorCmp.setValue(record.operator);
-                this.valueCmp.setValue(record.filter);
-            },
+				if (record.filter) {
+					var a = record.filter.split(':');
+
+					this.operatorCmp.setValue(a[0]);
+					this.valueCmp.setValue(a[1]);
+				}
+			},
             initComponent: function() {
                 var container = this;
 
@@ -135,12 +143,16 @@ Ext.onReady( function() {
             bodyStyle: 'border:0 none',
             style: 'margin: ' + margin,
             getRecord: function() {
-                return {
-                    dimension: this.dataElement.id,
-                    name: this.dataElement.name,
-                    operator: this.operatorCmp.getValue(),
-                    value: this.valueCmp.getValue()
-                };
+                var record = {};
+
+                record.dimension = this.dataElement.id;
+                record.name = this.dataElement.name;
+
+                if (this.valueCmp.getValue()) {
+					record.filter = this.operatorCmp.getValue() + ':' + this.valueCmp.getValue();
+				}
+
+				return record;
             },
             setRecord: function(record) {
                 this.operatorCmp.setValue(record.operator);
@@ -212,16 +224,24 @@ Ext.onReady( function() {
             bodyStyle: 'border:0 none',
             style: 'margin: ' + margin,
             getRecord: function() {
-                return {
-                    dimension: this.dataElement.id,
-                    name: this.dataElement.name,
-                    operator: this.operatorCmp.getValue(),
-                    filter: this.valueCmp.getSubmitValue()
-                };
+                var record = {};
+
+                record.dimension = this.dataElement.id;
+                record.name = this.dataElement.name;
+
+                if (this.valueCmp.getValue()) {
+					record.filter = this.operatorCmp.getValue() + ':' + this.valueCmp.getSubmitValue();
+				}
+
+				return record;
             },
             setRecord: function(record) {
-                this.operatorCmp.setValue(record.operator);
-                this.valueCmp.setValue(record.filter);
+				if (record.filter && Ext.isString(record.filter)) {
+					var a = record.filter.split(':');
+
+					this.operatorCmp.setValue(a[0]);
+					this.valueCmp.setValue(a[1]);
+				}
             },
             initComponent: function() {
                 var container = this;
@@ -294,12 +314,16 @@ Ext.onReady( function() {
             bodyStyle: 'border:0 none',
             style: 'margin: ' + margin,
             getRecord: function() {
-                return {
-                    dimension: this.dataElement.id,
-                    name: this.dataElement.name,
-                    operator: 'EQ',
-                    filter: this.valueCmp.getValue()
-                };
+                var record = {};
+
+                record.dimension = this.dataElement.id;
+                record.name = this.dataElement.name;
+
+                if (this.valueCmp.getValue()) {
+					record.filter = 'EQ:' + this.valueCmp.getValue();
+				}
+
+				return record;
             },
             setRecord: function(record) {
                 this.valueCmp.setValue(record.filter);
@@ -364,22 +388,27 @@ Ext.onReady( function() {
             bodyStyle: 'border:0 none',
             style: 'margin: ' + margin,
             getRecord: function() {
-				var valueArray = this.valueCmp.getValue().split(';');
+				var valueArray = this.valueCmp.getValue().split(';'),
+					record = {};
 
 				for (var i = 0; i < valueArray.length; i++) {
 					valueArray[i] = Ext.String.trim(valueArray[i]);
 				}
 
-                return {
-                    dimension: this.dataElement.id,
-                    name: this.dataElement.name,
-                    operator: this.operatorCmp.getValue(),
-                    filter: valueArray.join(';')
-                };
+				record.dimension = this.dataElement.id;
+				record.name = this.dataElement.name;
+
+				if (Ext.Array.clean(valueArray).length) {
+					record.filter = this.operatorCmp.getValue() + ':' + valueArray.join(';');
+				}
+
+				return record;
             },
             setRecord: function(record) {
-                this.operatorCmp.setValue(record.operator);
-                this.valueCmp.setOptionValues(record.filter.split(';'));
+				if (Ext.isString(record.filter) && record.filter) {
+					var a = record.filter.split(':');
+					this.valueCmp.setOptionValues(a[1].split(';'));
+				}
             },
             initComponent: function() {
                 var container = this;
@@ -529,7 +558,7 @@ Ext.onReady( function() {
                 });
 
                 this.valueCmp = Ext.create('Ext.form.field.Text', {
-					width: 224,
+					width: 226,
                     style: 'margin-bottom:0',
 					addOptionValue: function(option) {
 						var value = this.getValue();
@@ -3595,6 +3624,7 @@ Ext.onReady( function() {
 
         selectDataElements = function(items, layout) {
             var dataElements = [],
+				allElements = [],
                 aggWindow = ns.app.aggregateLayoutWindow,
                 queryWindow = ns.app.queryLayoutWindow,
                 includeKeys = ['int', 'number', 'boolean', 'bool'],
@@ -3623,9 +3653,33 @@ Ext.onReady( function() {
                 }
             }
 
-			// panel, store
-            for (var i = 0, element, ux, store; i < dataElements.length; i++) {
+            // expand if multiple filter
+            for (var i = 0, element, a, numberOfElements; i < dataElements.length; i++) {
 				element = dataElements[i];
+				allElements.push(element);
+
+				if (element.type === 'int' && element.filter) {
+					a = element.filter.split(':');
+					numberOfElements = a.length / 2;
+
+					if (numberOfElements > 1) {
+						a.shift();
+						a.shift();
+
+						for (var j = 1, newElement; j < numberOfElements; j++) {
+							newElement = Ext.clone(element);
+							newElement.filter = a.shift();
+							newElement.filter += ':' + a.shift();
+
+							allElements.push(newElement);
+						}
+					}
+				}
+			}
+
+			// panel, store
+            for (var i = 0, element, ux, store; i < allElements.length; i++) {
+				element = allElements[i];
                 element.type = element.type || element.valueType;
                 element.name = element.name || element.displayName;
                 recordMap[element.id] = element;
@@ -4951,8 +5005,24 @@ Ext.onReady( function() {
 				layoutWindow.colStore.each(function(item) {
 					a = map[item.data.id] || [];
 
-					for (var i = 0; i < a.length; i++) {
-						columns.push(a[i]);
+					if (a.length) {
+						if (a.length === 1) {
+							columns.push(a[0]);
+						}
+						else {
+							var dim;
+
+							for (var i = 0; i < a.length; i++) {
+								if (!dim) {
+									dim = a[i];
+								}
+								else {
+									dim.filter += ':' + a[i].filter;
+								}
+							}
+
+							columns.push(dim);
+						}
 					}
 				});
 			}
@@ -4961,8 +5031,24 @@ Ext.onReady( function() {
 				layoutWindow.rowStore.each(function(item) {
 					a = map[item.data.id] || [];
 
-					for (var i = 0; i < a.length; i++) {
-						rows.push(a[i]);
+					if (a.length) {
+						if (a.length === 1) {
+							rows.push(a[0]);
+						}
+						else {
+							var dim;
+
+							for (var i = 0; i < a.length; i++) {
+								if (!dim) {
+									dim = a[i];
+								}
+								else {
+									dim.filter += ':' + a[i].filter;
+								}
+							}
+
+							rows.push(dim);
+						}
 					}
 				});
 			}
@@ -4971,8 +5057,24 @@ Ext.onReady( function() {
 				layoutWindow.filterStore.each(function(item) {
 					a = map[item.data.id] || [];
 
-					for (var i = 0; i < a.length; i++) {
-						filters.push(a[i]);
+					if (a.length) {
+						if (a.length === 1) {
+							filters.push(a[0]);
+						}
+						else {
+							var dim;
+
+							for (var i = 0; i < a.length; i++) {
+								if (!dim) {
+									dim = a[i];
+								}
+								else {
+									dim.filter += ':' + a[i].filter;
+								}
+							}
+
+							filters.push(dim);
+						}
 					}
 				});
 			}
@@ -4981,8 +5083,24 @@ Ext.onReady( function() {
 				layoutWindow.fixedFilterStore.each(function(item) {
 					a = map[item.data.id] || [];
 
-					for (var i = 0; i < a.length; i++) {
-						filters.push(a[i]);
+					if (a.length) {
+						if (a.length === 1) {
+							filters.push(a[0]);
+						}
+						else {
+							var dim;
+
+							for (var i = 0; i < a.length; i++) {
+								if (!dim) {
+									dim = a[i];
+								}
+								else {
+									dim.filter += ':' + a[i].filter;
+								}
+							}
+
+							filters.push(dim);
+						}
 					}
 				});
 			}
