@@ -37,7 +37,6 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.event.EventStatus;
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
@@ -318,26 +317,6 @@ public interface TrackedEntityInstanceService
     List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max );
 
-//    /**
-//     * Get visit schedule of person who meet the criteria for searching
-//     * 
-//     * @param searchKeys The key for searching entityInstances by attribute
-//     *        values and/or a program
-//     * @param orgunit Organisation unit where entityInstances registered
-//     * @param followup Only getting entityInstances with program risked if this
-//     *        property is true. And getting entityInstances without program
-//     *        risked if its value is false
-//     * @param statusEnrollment The status of program of entityInstances. There
-//     *        are three status, includes Active enrollments only, Completed
-//     *        enrollments only and Active and completed enrollments
-//     * @parma min
-//     * @param max
-//     * 
-//     * @return Grid
-//     */
-//    Grid getScheduledEventsReport( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
-//        Integer statusEnrollment, Integer min, Integer max, I18n i18n );
-
     /**
      * Search entityInstances by phone number (performs partial search)
      * 
@@ -348,28 +327,6 @@ public interface TrackedEntityInstanceService
      * @return List of entityInstance
      */
     Collection<TrackedEntityInstance> getTrackedEntityInstancesByPhone( String phoneNumber, Integer min, Integer max );
-
-//    /**
-//     * Get events of entityInstances who meet the criteria for searching
-//     * 
-//     * @param program Program. It's is used for getting attributes of this
-//     *        program and put attribute values of entityInstances into the
-//     *        result
-//     * @param searchKeys The key for searching entityInstances by attribute
-//     *        values and/or a program
-//     * @param orgunit Organisation unit where entityInstances registered
-//     * @param followup Only getting entityInstances with program risked if this
-//     *        property is true. And getting entityInstances without program
-//     *        risked if its value is false
-//     * @param statusEnrollment The status of program of entityInstances. There
-//     *        are three status, includes Active enrollments only, Completed
-//     *        enrollments only and Active and completed enrollments
-//     * @param i18n I18n
-//     * 
-//     * @return Grid
-//     */
-//    Grid getTrackingEventsReport( Program program, List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-//        Boolean followup, Integer statusEnrollment, I18n i18n );
 
     /**
      * Validate entityInstance attributes and validation criteria by program

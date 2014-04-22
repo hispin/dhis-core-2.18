@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
@@ -115,24 +114,6 @@ public interface TrackedEntityInstanceStore
      * @return The number of entityInstances
      */
     int countGetTrackedEntityInstancesByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
-//
-//    /**
-//     * Get number of entityInstances who meet the criteria for searching
-//     * 
-//     * @param searchKeys The key for searching entityInstances by attribute
-//     *        values and/or a program
-//     * @param orgunit Organisation unit where entityInstances registered
-//     * @param followup Only getting entityInstances with program risked if this
-//     *        property is true. And getting entityInstances without program
-//     *        risked if its value is false
-//     * @param statusEnrollment The status of program of entityInstances. There
-//     *        are three status, includes Active enrollments only, Completed
-//     *        enrollments only and Active and completed enrollments
-//     * 
-//     * @return The number of entityInstances
-//     */
-//    int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
-//        Integer statusEnrollment );
 
     /**
      * Search entityInstances by phone number (performs partial search)
@@ -178,30 +159,6 @@ public interface TrackedEntityInstanceStore
      *        return List of entityInstances
      */
     Collection<TrackedEntityInstance> getByProgram( Program program, Integer min, Integer max );
-
-//    /**
-//     * Search events of entityInstances who meet the criteria for searching
-//     * 
-//     * @param grid Grid with headers
-//     * @param searchKeys The key for searching entityInstances by attribute
-//     *        values and/or a program
-//     * @param orgunit Organisation unit where entityInstances registered
-//     * @param followup Only getting entityInstances with program risked if this
-//     *        property is true. And getting entityInstances without program
-//     *        risked if its value is false
-//     * @param attributes The attribute values of these attribute are displayed
-//     *        into result
-//     * @param statusEnrollment The status of program of entityInstances. There
-//     *        are three status, includes Active enrollments only, Completed
-//     *        enrollments only and Active and completed enrollments
-//     * @param min
-//     * @param max
-//     * 
-//     * @return Grid
-//     */
-//    Grid getTrackedEntityInstanceEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunit,
-//        Boolean followup, Collection<TrackedEntityAttribute> attributes, Integer statusEnrollment, Integer min,
-//        Integer max );
 
     /**
      * Validate entity-instances attribute values and validation criteria by program
