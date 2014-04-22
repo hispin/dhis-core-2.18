@@ -65,7 +65,7 @@
 		</td>
 	</tr>
     <tr>
-        <td>$i18n.getString( 'legend_set' )</td>            
+        <td><label>$i18n.getString( 'legend_set' )</label></td>            
         <td>
             <select id="selectedLegendSetId" name="selectedLegendSetId">
                 <option value="0">[$i18n.getString('please_select')]</option>
@@ -112,7 +112,7 @@
 
 	#foreach ( $groupSet in $groupSets )
     <tr>
-		<td>$encoder.htmlEncode( $groupSet.name )</td>
+		<td><label>$encoder.htmlEncode( $groupSet.name )</label></td>
 		<td>
 			<select id="indicatorGroups" name="indicatorGroups">
 				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>

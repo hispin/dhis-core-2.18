@@ -574,6 +574,11 @@ div.inputCriteria
   height: 8em;
 }
 
+.inputForm label
+{
+  color: #222;
+}
+
 .settingIndent
 {
   margin-left: 12px;
