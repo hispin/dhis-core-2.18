@@ -71,7 +71,7 @@ public enum EventStatus
             return false;
         }
         
-        return COMPLETED.equals( status ) || VISITED.equals( status );
+        return ACTIVE.equals( status ) || COMPLETED.equals( status ) || VISITED.equals( status );
     }
 }
 

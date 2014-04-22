@@ -272,15 +272,15 @@ function showEvents( isAdvancedSearch, teiUid){
 	var params = "orgUnit=" + getFieldValue("orgunitId");
 	params += "&program=" + getFieldValue('program');
 	params += "&trackedEntityInstance=" + teiUid;
-	params += '&status=' + getFieldValue('status');
+	params += '&eventStatus=' + getFieldValue('status');
 	if( isAdvancedSearch ){ // advanced-search
-		params += "&startDate=" + getFieldValue('startDate');
-		params += "&endDate=" + getFieldValue('endDate');
+		params += "&eventStartDate=" + getFieldValue('startDate');
+		params += "&eventEndDate=" + getFieldValue('endDate');
 	}
 	else // list
 	{
-		params += "&startDate=1900-01-01";
-		params += "&endDate=3000-01-01";
+		params += "&eventStartDate=1900-01-01";
+		params += "&eventEndDate=3000-01-01";
 	}
 	
 	$.ajax({
@@ -366,6 +366,49 @@ function programTrackingList( programStageInstanceId, isSendSMS )
 			showById('smsManagementDiv');
 			hideLoader();
 		});
+}
+
+// --------------------------------------------------------------------
+// Send SMS 
+// --------------------------------------------------------------------
+
+function showSendSmsForm()
+{
+	jQuery('#sendSmsToListForm').dialog({
+			title: i18n_send_message,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 420,
+			height: 200
+		});
+}
+
+function sendSmsToList()
+{
+	params = getSearchParams();
+	params += "&msg=" + getFieldValue( 'smsMessage' );
+	params += "&programStageInstanceId=" + getFieldValue('programStageInstanceId');
+	$.ajax({
+		url: 'sendSMSTotList.action',
+		type:"POST",
+		data: params,
+		success: function( json ){
+			if ( json.response == "success" ) {
+				var programStageName = getFieldValue('programStageName');
+				var currentTime = date.getHours() + ":" + date.getMinutes();
+				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + " " + currentTime + "</td>"
+						+ "<td>" + programStageName + "</td>"
+						+ "<td>" + getFieldValue( 'smsMessage' ) + "</td></tr>");
+				showSuccessMessage( json.message );
+			}
+			else {
+				showErrorMessage( json.message );
+			}
+			jQuery('#sendSmsFormDiv').dialog('close')
+		}
+	});
 }
 
 // --------------------------------------------------------------------

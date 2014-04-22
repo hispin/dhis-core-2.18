@@ -142,6 +142,7 @@
 	<div style="padding: 10px 0 15px 3px">
 		<input type="button" class='large-button' value='$i18n.getString( "add_filter" )' onclick='addAttributeOption();'>
         <input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='isAdvancedSearch=true;validateAdvancedSearch(1);' id='searchEntityInstanceBtn'>
+        <input type="button" class='large-button hidden' id='sendSmsToListBtn' value="$i18n.getString('sms')" onclick="setFieldValue('sendToList', true);showSendSmsForm();">
     </div>
 </div>
 

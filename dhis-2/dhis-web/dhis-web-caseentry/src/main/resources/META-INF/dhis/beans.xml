@@ -12,6 +12,19 @@
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.SearchTrackedEntityInstanceAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.SearchTrackedEntityInstanceAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+	</bean>
+
 	<bean
 		id="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction"
@@ -167,6 +180,17 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<!-- Single-event DataEntry -->
@@ -716,6 +740,18 @@
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="reminderService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.reminder.SendSmsToListAction"
+		class="org.hisp.dhis.caseentry.action.reminder.SendSmsToListAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.reminder.SetEventStatusAction"
