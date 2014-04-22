@@ -119,8 +119,9 @@ public class JdbcEventStore
                 event.setProgramStage( rowSet.getString( "ps_uid" ) );
                 event.setStoredBy( rowSet.getString( "psi_completeduser" ) );
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
-                event.setEventDate( StringUtils.defaultIfEmpty( rowSet.getString( "psi_executiondate" ), rowSet.getString( "psi_duedate" ) ) );
-                
+                event.setEventDate( StringUtils.defaultIfEmpty( rowSet.getString( "psi_executiondate" ),
+                    rowSet.getString( "psi_duedate" ) ) );
+
                 if ( rowSet.getBoolean( "ps_capturecoordinates" ) )
                 {
                     Double longitude = rowSet.getDouble( "psi_longitude" );
@@ -176,14 +177,13 @@ public class JdbcEventStore
     {
         SqlHelper hlp = new SqlHelper();
 
-        String sql = 
-            "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " +
-            "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude, " +
-            "pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid " +
-            "from program p " +
-            "left join programstage ps on ps.programid=p.programid " +
-            "left join programstageinstance psi on ps.programstageid=psi.programstageid " +
-            "left join programinstance pi on pi.programinstanceid=psi.programinstanceid ";
+        String sql = "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, "
+            + "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude, "
+            + "pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid "
+            + "from program p "
+            + "left join programstage ps on ps.programid=p.programid "
+            + "left join programstageinstance psi on ps.programstageid=psi.programstageid "
+            + "left join programinstance pi on pi.programinstanceid=psi.programinstanceid ";
 
         if ( status == null || EventStatus.isExistingEvent( status ) )
         {
@@ -191,15 +191,13 @@ public class JdbcEventStore
         }
         else
         {
-            sql += 
-                "left join trackedentityinstance tei on tei.trackedentityinstanceid=pi.trackedentityinstanceid " +
-                "left join organisationunit ou on (tei.organisationunitid=ou.organisationunitid) ";
+            sql += "left join trackedentityinstance tei on tei.trackedentityinstanceid=pi.trackedentityinstanceid "
+                + "left join organisationunit ou on (tei.organisationunitid=ou.organisationunitid) ";
         }
 
-        sql += 
-            "left join trackedentitydatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid " +
-            "left join dataelement de on pdv.dataelementid=de.dataelementid " +
-            "left join trackedentityinstance pa on pa.trackedentityinstanceid=pi.trackedentityinstanceid ";
+        sql += "left join trackedentitydatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid "
+            + "left join dataelement de on pdv.dataelementid=de.dataelementid "
+            + "left join trackedentityinstance pa on pa.trackedentityinstanceid=pi.trackedentityinstanceid ";
 
         if ( trackedEntityInstanceId != null )
         {
@@ -226,24 +224,60 @@ public class JdbcEventStore
             sql += hlp.whereAnd() + " pi.followup is " + (followUp ? "true" : "false") + " ";
         }
 
-        if ( orgUnitIds != null && !orgUnitIds.isEmpty() )
+        if ( status == null || EventStatus.isExistingEvent( status ) )
         {
-            sql += hlp.whereAnd() + " ou.organisationunitid in (" + getCommaDelimitedString( orgUnitIds ) + ") ";
-        }
+            if ( orgUnitIds != null && !orgUnitIds.isEmpty() )
+            {
+                sql += hlp.whereAnd() + " psi.organisationunitid in (" + getCommaDelimitedString( orgUnitIds ) + ") ";
+            }
 
-        if ( startDate != null )
-        {
-            sql += hlp.whereAnd() + " psi.executiondate >= '" + getMediumDateString( startDate ) + "' ";
-        }
+            if ( startDate != null )
+            {
+                sql += hlp.whereAnd() + " psi.executiondate >= '" + getMediumDateString( startDate ) + "' ";
+            }
 
-        if ( endDate != null )
-        {
-            sql += hlp.whereAnd() + " psi.executiondate <= '" + getMediumDateString( endDate ) + "' ";
+            if ( endDate != null )
+            {
+                sql += hlp.whereAnd() + " psi.executiondate <= '" + getMediumDateString( endDate ) + "' ";
+            }
         }
-
-        if ( status != null )
+        else
         {
-            sql += hlp.whereAnd() + " psi.status = " + status.getValue() + " ";
+            if ( orgUnitIds != null && !orgUnitIds.isEmpty() )
+            {
+                sql += hlp.whereAnd() + " tei.organisationunitid in (" + getCommaDelimitedString( orgUnitIds ) + ") ";
+            }
+
+            if ( startDate != null )
+            {
+                sql += hlp.whereAnd() + " psi.duedate >= '" + getMediumDateString( startDate ) + "' ";
+            }
+
+            if ( endDate != null )
+            {
+                sql += hlp.whereAnd() + " psi.duedate <= '" + getMediumDateString( endDate ) + "' ";
+            }
+            
+            if(  status == EventStatus.VISITED )
+            {
+                sql = "and psi.completed = false and psi.status = 0";
+            }
+            else if(  status == EventStatus.COMPLETED )
+            {
+                sql = "and psi.completed = true and psi.status = 0 ";
+            }
+            else if ( status == EventStatus.FUTURE_VISIT )
+            {
+                sql += "and psi.executiondate is null and date(now()) <= date(psi.duedate) and psi.status = 0 ";
+            }
+            else  if ( status == EventStatus.LATE_VISIT )
+            {
+                sql += "and psi.executiondate is null and date(now()) > date(psi.duedate) and psi.status = 0 ";
+            }
+            else
+            {
+                sql += "and psi.status = " + status.getValue() + " ";
+            }
         }
 
         sql += " order by psi_uid;";

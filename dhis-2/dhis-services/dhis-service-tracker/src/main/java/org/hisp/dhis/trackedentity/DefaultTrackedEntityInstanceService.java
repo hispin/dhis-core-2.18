@@ -81,7 +81,7 @@ public class DefaultTrackedEntityInstanceService
     implements TrackedEntityInstanceService
 {
     private static final Log log = LogFactory.getLog( DefaultTrackedEntityInstanceService.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -106,7 +106,7 @@ public class DefaultTrackedEntityInstanceService
     {
         this.attributeService = attributeService;
     }
-    
+
     private TrackedEntityService trackedEntityService;
 
     public void setTrackedEntityService( TrackedEntityService trackedEntityService )
@@ -127,27 +127,27 @@ public class DefaultTrackedEntityInstanceService
     {
         this.relationshipTypeService = relationshipTypeService;
     }
-    
+
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-        
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-    
-    //TODO lower index on attribute value?
-    
+
+    // TODO lower index on attribute value?
+
     @Override
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
@@ -161,13 +161,14 @@ public class DefaultTrackedEntityInstanceService
         {
             if ( !organisationUnit.hasLevel() )
             {
-                organisationUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
+                organisationUnit
+                    .setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
             }
         }
-        
+
         // ---------------------------------------------------------------------
         // If params of type query and no attributes or filters defined, use
-        // attributes from program if exists, if not, use display-in-list 
+        // attributes from program if exists, if not, use display-in-list
         // attributes.
         // ---------------------------------------------------------------------
 
@@ -175,14 +176,16 @@ public class DefaultTrackedEntityInstanceService
         {
             if ( params.hasProgram() )
             {
-                params.addAttributesIfNotExist( QueryItem.getQueryItems( params.getProgram().getTrackedEntityAttributes() ) );
+                params.addAttributesIfNotExist( QueryItem.getQueryItems( params.getProgram()
+                    .getTrackedEntityAttributes() ) );
             }
-            else 
+            else
             {
                 Collection<TrackedEntityAttribute> filters = attributeService.getAllTrackedEntityAttributes();
-                Collection<TrackedEntityAttribute> attributes = attributeService.getTrackedEntityAttributesDisplayInList( true );
+                Collection<TrackedEntityAttribute> attributes = attributeService
+                    .getTrackedEntityAttributesDisplayInList( true );
                 filters.removeAll( attributes );
-                
+
                 params.addAttributesIfNotExist( QueryItem.getQueryItems( attributes ) );
                 params.addFiltersIfNotExist( QueryItem.getQueryItems( filters ) );
             }
@@ -205,12 +208,12 @@ public class DefaultTrackedEntityInstanceService
         grid.addHeader( new GridHeader( LAST_UPDATED_ID, "Last updated" ) );
         grid.addHeader( new GridHeader( ORG_UNIT_ID, "Org unit" ) );
         grid.addHeader( new GridHeader( TRACKED_ENTITY_ID, "Tracked entity" ) );
-        
+
         for ( QueryItem item : params.getAttributes() )
         {
             grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName() ) );
         }
-        
+
         List<Map<String, String>> entities = trackedEntityInstanceStore.getTrackedEntityInstances( params );
 
         // ---------------------------------------------------------------------
@@ -218,49 +221,49 @@ public class DefaultTrackedEntityInstanceService
         // ---------------------------------------------------------------------
 
         Set<String> tes = new HashSet<String>();
-                
+
         for ( Map<String, String> entity : entities )
-        {            
+        {
             grid.addRow();
             grid.addValue( entity.get( TRACKED_ENTITY_INSTANCE_ID ) );
             grid.addValue( entity.get( CREATED_ID ) );
             grid.addValue( entity.get( LAST_UPDATED_ID ) );
             grid.addValue( entity.get( ORG_UNIT_ID ) );
             grid.addValue( entity.get( TRACKED_ENTITY_ID ) );
-            
+
             tes.add( entity.get( TRACKED_ENTITY_ID ) );
-            
+
             for ( QueryItem item : params.getAttributes() )
             {
                 grid.addValue( entity.get( item.getItemId() ) );
             }
         }
 
-        Map<Object, Object> metaData = new HashMap<Object, Object>();   
+        Map<Object, Object> metaData = new HashMap<Object, Object>();
 
         if ( params.isPaging() )
         {
             int count = trackedEntityInstanceStore.getTrackedEntityInstanceCount( params );
-            
+
             Pager pager = new Pager( params.getPageWithDefault(), count, params.getPageSizeWithDefault() );
             metaData.put( PAGER_META_KEY, pager );
         }
-        
+
         if ( !params.isSkipMeta() )
-        {         
+        {
             Map<String, String> names = new HashMap<String, String>();
-            
+
             for ( String te : tes )
             {
                 TrackedEntity entity = trackedEntityService.getTrackedEntity( te );
                 names.put( te, entity != null ? entity.getDisplayName() : null );
             }
-            
+
             metaData.put( META_DATA_NAMES_KEY, names );
         }
 
         grid.setMetaData( metaData );
-        
+
         return grid;
     }
 
@@ -269,7 +272,7 @@ public class DefaultTrackedEntityInstanceService
         throws IllegalQueryException
     {
         String violation = null;
-        
+
         if ( params == null )
         {
             throw new IllegalQueryException( "Params cannot be null" );
@@ -279,64 +282,65 @@ public class DefaultTrackedEntityInstanceService
         {
             violation = "At least one organisation unit must be specified";
         }
-        
+
         if ( params.hasProgram() && params.hasTrackedEntity() )
         {
             violation = "Program and tracked entity cannot be specified simultaneously";
         }
-        
+
         if ( params.hasProgramStatus() && !params.hasProgram() )
         {
             violation = "Program must be defined when program status is defined";
         }
-        
+
         if ( params.hasFollowUp() && !params.hasProgram() )
         {
             violation = "Program must be defined when follow up status is defined";
         }
-        
+
         if ( params.hasProgramStartDate() && !params.hasProgram() )
         {
             violation = "Program must be defined when program start date is specified";
         }
-        
+
         if ( params.hasProgramEndDate() && !params.hasProgram() )
         {
             violation = "Program must be defined when program end date is specified";
         }
 
-        if ( params.hasEventStatus() && ( !params.hasEventStartDate() || !params.hasEventEndDate() ) )
+        if ( params.hasEventStatus() && (!params.hasEventStartDate() || !params.hasEventEndDate()) )
         {
             violation = "Event start and end date must be specified when event status is specified";
         }
-        
+
         if ( params.isOrQuery() && params.hasFilters() )
         {
             violation = "Query cannot be specified together with filters";
         }
-        
+
         if ( !params.getDuplicateAttributes().isEmpty() )
         {
             violation = "Attributes cannot be specified more than once: " + params.getDuplicateAttributes();
         }
-        
+
         if ( !params.getDuplicateFilters().isEmpty() )
         {
             violation = "Filters cannot be specified more than once: " + params.getDuplicateFilters();
         }
-                
+
         if ( violation != null )
         {
             log.warn( "Validation failed: " + violation );
-            
+
             throw new IllegalQueryException( violation );
         }
     }
-    
+
     @Override
-    public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter, Set<String> ou, 
-        OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus, Boolean followUp, Date programStartDate, Date programEndDate,
-        String trackedEntity, EventStatus eventStatus, Date eventStartDate, Date eventEndDate, boolean skipMeta, Integer page, Integer pageSize )
+    public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter,
+        Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus,
+        Boolean followUp, Date programStartDate, Date programEndDate, String trackedEntity, EventStatus eventStatus,
+        Date eventStartDate, Date eventEndDate, boolean skipMeta, Integer page, Integer pageSize )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
@@ -345,17 +349,17 @@ public class DefaultTrackedEntityInstanceService
             for ( String attr : attribute )
             {
                 QueryItem it = getQueryItem( attr );
-                
+
                 params.getAttributes().add( it );
             }
         }
-        
+
         if ( filter != null )
         {
             for ( String filt : filter )
             {
                 QueryItem it = getQueryItem( filt );
-                
+
                 params.getFilters().add( it );
             }
         }
@@ -365,25 +369,25 @@ public class DefaultTrackedEntityInstanceService
             for ( String orgUnit : ou )
             {
                 OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnit );
-                
+
                 if ( organisationUnit == null )
                 {
                     throw new IllegalQueryException( "Organisation unit does not exist: " + orgUnit );
                 }
-                
+
                 params.getOrganisationUnits().add( organisationUnit );
             }
         }
-        
+
         Program pr = program != null ? programService.getProgram( program ) : null;
-        
+
         if ( program != null && pr == null )
         {
             throw new IllegalQueryException( "Program does not exist: " + program );
         }
-                
+
         TrackedEntity te = trackedEntity != null ? trackedEntityService.getTrackedEntity( trackedEntity ) : null;
-        
+
         if ( trackedEntity != null && te == null )
         {
             throw new IllegalQueryException( "Tracked entity does not exist: " + program );
@@ -403,17 +407,18 @@ public class DefaultTrackedEntityInstanceService
         params.setSkipMeta( skipMeta );
         params.setPage( page );
         params.setPageSize( pageSize );
-        
+
         return params;
     }
-    
+
     private QueryItem getQueryItem( String item )
     {
         if ( !item.contains( DimensionalObjectUtils.DIMENSION_NAME_SEP ) )
         {
             return getItem( item, null, null );
         }
-        else // Filter
+        else
+        // Filter
         {
             String[] split = item.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
 
@@ -434,7 +439,7 @@ public class DefaultTrackedEntityInstanceService
         {
             throw new IllegalQueryException( "Attribute does not exist: " + item );
         }
-        
+
         if ( operator != null && filter != null )
         {
             return new QueryItem( at, operator, filter, at.isNumericType() );
@@ -442,9 +447,9 @@ public class DefaultTrackedEntityInstanceService
         else
         {
             return new QueryItem( at, at.isNumericType() );
-        }        
+        }
     }
-    
+
     @Override
     public int addTrackedEntityInstance( TrackedEntityInstance instance )
     {
@@ -739,8 +744,8 @@ public class DefaultTrackedEntityInstanceService
     public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
-        return trackedEntityInstanceStore.getProgramStageInstances( searchKeys, orgunits, followup, null, statusEnrollment,
-            min, max );
+        return trackedEntityInstanceStore.getProgramStageInstances( searchKeys, orgunits, followup, null,
+            statusEnrollment, min, max );
     }
 
     @Override
@@ -763,11 +768,13 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public Collection<TrackedEntityInstance> searchTrackedEntityInstancesForMobile( String searchText, int orgUnitId, int attributeId )
+    public Collection<TrackedEntityInstance> searchTrackedEntityInstancesForMobile( String searchText, int orgUnitId,
+        int attributeId )
     {
         Set<TrackedEntityInstance> entityInstances = new HashSet<TrackedEntityInstance>();
 
-        entityInstances.addAll( getTrackedEntityInstancesByAttributeValue( searchText, attributeId, 0, Integer.MAX_VALUE ) );
+        entityInstances.addAll( getTrackedEntityInstancesByAttributeValue( searchText, attributeId, 0,
+            Integer.MAX_VALUE ) );
 
         if ( orgUnitId != 0 )
         {
@@ -783,7 +790,7 @@ public class DefaultTrackedEntityInstanceService
             }
             entityInstances.removeAll( toRemoveList );
         }
-        
+
         return entityInstances;
     }
 
@@ -792,6 +799,22 @@ public class DefaultTrackedEntityInstanceService
         int attributeId, Integer min, Integer max )
     {
         return trackedEntityInstanceStore.getByAttributeValue( searchText, attributeId, min, max );
+    }
+
+    @Override
+    public Collection<TrackedEntityInstance> searchTrackedEntityInstances( List<String> searchKeys,
+        Collection<OrganisationUnit> orgunits, Boolean followup, Collection<TrackedEntityAttribute> attributes,
+        Integer statusEnrollment, Integer min, Integer max )
+    {
+        return trackedEntityInstanceStore.search( searchKeys, orgunits, followup, attributes, statusEnrollment, min,
+            max );
+    }
+
+    @Override
+    public int countSearchTrackedEntityInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
+        Boolean followup, Integer statusEnrollment )
+    {
+        return trackedEntityInstanceStore.countSearch( searchKeys, orgunits, followup, statusEnrollment );
     }
 
 }
