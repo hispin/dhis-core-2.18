@@ -217,85 +217,85 @@ public class SearchTrackedEntityInstanceAction
     public String execute()
         throws Exception
     {
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
-        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
-
-        if ( programId != null )
-        {
-            program = programService.getProgram( programId );
-        }
-        else
-        {
-            attributes = new ArrayList<TrackedEntityAttribute>(
-                attributeService.getTrackedEntityAttributesDisplayInList( true ) );
-            Collections.sort( attributes, new TrackedEntityAttributeSortOrderInListNoProgramComparator() );
-        }
-
-        // List all entityInstances
-        if ( listAll )
-        {
-            total = entityInstanceService.countGetTrackedEntityInstancesByOrgUnit( organisationUnit );
-            this.paging = createPaging( total );
-
-            entityInstances = new ArrayList<TrackedEntityInstance>( entityInstanceService.getTrackedEntityInstances(
-                organisationUnit, paging.getStartPos(), paging.getPageSize() ) );
-        }
-        // search entityInstances
-        else if ( searchTexts.size() > 0 )
-        {
-            // selected orgunit
-            if ( facilityLB == null || facilityLB.isEmpty() )
-            {
-                orgunits.add( organisationUnit );
-            }
-            else if ( facilityLB.equals( SEARCH_IN_USER_ORGUNITS ) )
-            {
-                Collection<OrganisationUnit> userOrgunits = currentUserService.getCurrentUser().getOrganisationUnits();
-                orgunits.addAll( userOrgunits );
-            }
-            else if ( facilityLB.equals( SEARCH_IN_BELOW_SELECTED_ORGUNIT ) )
-            {
-                Collection<Integer> orgunitIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren(
-                    organisationUnit.getId() );
-                orgunits.add( organisationUnit );
-                orgunits.addAll( organisationUnitService.getOrganisationUnits( orgunitIds ) );
-            }
-            else if ( facilityLB.equals( SEARCH_IN_ALL_ORGUNITS ) )
-            {
-                orgunits = null;
-            }
-
-            // -----------------------------------------------------------------
-            // Users by orgunits for searching
-            // -----------------------------------------------------------------
-
-            Collection<User> users = userService.getAllUsers();
-            for ( User user : users )
-            {
-                mapUsers.put( user.getId() + "", user.getName() );
-            }
-
-            // -----------------------------------------------------------------
-            // Searching
-            // -----------------------------------------------------------------
-
-            total = entityInstanceService.countSearchTrackedEntityInstances( searchTexts, orgunits, null,
-                statusEnrollment );
-            this.paging = createPaging( total );
-            entityInstances = entityInstanceService.searchTrackedEntityInstances( searchTexts, orgunits, null, null,
-                statusEnrollment, paging.getStartPos(), paging.getPageSize() );
-
-            if ( facilityLB != null && !facilityLB.isEmpty() )
-            {
-                for ( TrackedEntityInstance entityInstance : entityInstances )
-                {
-                    mapEntityInstanceOrgunit.put( entityInstance.getId(),
-                        getHierarchyOrgunit( entityInstance.getOrganisationUnit() ) );
-                }
-            }
-
-        }
+//        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+//
+//        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
+//
+//        if ( programId != null )
+//        {
+//            program = programService.getProgram( programId );
+//        }
+//        else
+//        {
+//            attributes = new ArrayList<TrackedEntityAttribute>(
+//                attributeService.getTrackedEntityAttributesDisplayInList( true ) );
+//            Collections.sort( attributes, new TrackedEntityAttributeSortOrderInListNoProgramComparator() );
+//        }
+//
+//        // List all entityInstances
+//        if ( listAll )
+//        {
+//            total = entityInstanceService.countGetTrackedEntityInstancesByOrgUnit( organisationUnit );
+//            this.paging = createPaging( total );
+//
+//            entityInstances = new ArrayList<TrackedEntityInstance>( entityInstanceService.getTrackedEntityInstances(
+//                organisationUnit, paging.getStartPos(), paging.getPageSize() ) );
+//        }
+//        // search entityInstances
+//        else if ( searchTexts.size() > 0 )
+//        {
+//            // selected orgunit
+//            if ( facilityLB == null || facilityLB.isEmpty() )
+//            {
+//                orgunits.add( organisationUnit );
+//            }
+//            else if ( facilityLB.equals( SEARCH_IN_USER_ORGUNITS ) )
+//            {
+//                Collection<OrganisationUnit> userOrgunits = currentUserService.getCurrentUser().getOrganisationUnits();
+//                orgunits.addAll( userOrgunits );
+//            }
+//            else if ( facilityLB.equals( SEARCH_IN_BELOW_SELECTED_ORGUNIT ) )
+//            {
+//                Collection<Integer> orgunitIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren(
+//                    organisationUnit.getId() );
+//                orgunits.add( organisationUnit );
+//                orgunits.addAll( organisationUnitService.getOrganisationUnits( orgunitIds ) );
+//            }
+//            else if ( facilityLB.equals( SEARCH_IN_ALL_ORGUNITS ) )
+//            {
+//                orgunits = null;
+//            }
+//
+//            // -----------------------------------------------------------------
+//            // Users by orgunits for searching
+//            // -----------------------------------------------------------------
+//
+//            Collection<User> users = userService.getAllUsers();
+//            for ( User user : users )
+//            {
+//                mapUsers.put( user.getId() + "", user.getName() );
+//            }
+//
+//            // -----------------------------------------------------------------
+//            // Searching
+//            // -----------------------------------------------------------------
+//
+//            total = entityInstanceService.countSearchTrackedEntityInstances( searchTexts, orgunits, null,
+//                statusEnrollment );
+//            this.paging = createPaging( total );
+//            entityInstances = entityInstanceService.searchTrackedEntityInstances( searchTexts, orgunits, null, null,
+//                statusEnrollment, paging.getStartPos(), paging.getPageSize() );
+//
+//            if ( facilityLB != null && !facilityLB.isEmpty() )
+//            {
+//                for ( TrackedEntityInstance entityInstance : entityInstances )
+//                {
+//                    mapEntityInstanceOrgunit.put( entityInstance.getId(),
+//                        getHierarchyOrgunit( entityInstance.getOrganisationUnit() ) );
+//                }
+//            }
+//
+//        }
 
         return SUCCESS;
     }

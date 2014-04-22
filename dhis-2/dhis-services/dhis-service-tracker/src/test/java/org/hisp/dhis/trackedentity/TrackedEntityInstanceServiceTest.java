@@ -47,7 +47,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
@@ -395,112 +394,6 @@ public class TrackedEntityInstanceServiceTest
 
         assertEquals( 2, entityInstanceService.countGetTrackedEntityInstancesByOrgUnitProgram( organisationUnit, programA ) );
         assertEquals( 1, entityInstanceService.countGetTrackedEntityInstancesByOrgUnitProgram( organisationUnit, programB ) );
-    }
-
-    @Test
-    public void testSearchTrackedEntityInstances()
-    {
-        int idA = programService.addProgram( programA );
-        programService.addProgram( programB );
-
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
-
-        TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
-            entityInstanceAttribute );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
-        entityInstanceA3.getAttributeValues().add( attributeValue );
-
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
-
-        List<String> searchKeys = new ArrayList<String>();
-        searchKeys.add( TrackedEntityInstance.PREFIX_TRACKED_ENTITY_ATTRIBUTE + TrackedEntityInstance.SEARCH_SAPERATE
-            + attributeId + TrackedEntityInstance.SEARCH_SAPERATE + "a" );
-        searchKeys.add( TrackedEntityInstance.PREFIX_PROGRAM + TrackedEntityInstance.SEARCH_SAPERATE + idA );
-
-        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
-        orgunits.add( organisationUnit );
-
-        Collection<TrackedEntityInstance> entityInstances = entityInstanceService.searchTrackedEntityInstances( searchKeys, orgunits, null,
-            null, ProgramStageInstance.ACTIVE_STATUS, null, null );
-
-        assertEquals( 1, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceA3 ) );
-    }
-
-    @Test
-    public void testCountSearchEntityInstances()
-    {
-        int idA = programService.addProgram( programA );
-        programService.addProgram( programB );
-
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
-
-        TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
-            entityInstanceAttribute );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
-
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
-
-        List<String> searchKeys = new ArrayList<String>();
-        searchKeys.add( TrackedEntityInstance.PREFIX_TRACKED_ENTITY_ATTRIBUTE + TrackedEntityInstance.SEARCH_SAPERATE
-            + attributeId + TrackedEntityInstance.SEARCH_SAPERATE + "a" );
-        searchKeys.add( TrackedEntityInstance.PREFIX_PROGRAM + TrackedEntityInstance.SEARCH_SAPERATE + idA );
-
-        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
-        orgunits.add( organisationUnit );
-
-        assertEquals( 1,
-            entityInstanceService.countSearchTrackedEntityInstances( searchKeys, orgunits, null, ProgramStageInstance.ACTIVE_STATUS ) );
-    }
-
-    @Test
-    public void testGetTrackedEntityInstancePhoneNumbers()
-    {
-        int idA = programService.addProgram( programA );
-        programService.addProgram( programB );
-
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
-
-        TrackedEntityAttribute phoneAttribute = createTrackedEntityAttribute( 'B' );
-        phoneAttribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );
-        attributeService.addTrackedEntityAttribute( phoneAttribute );
-
-        Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
-        TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3, phoneAttribute );
-        attributeValue.setValue( "123456789" );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
-
-        attributeValues.add( attributeValue );
-        entityInstanceA3.addAttributeValue( attributeValue );
-        entityInstanceService.updateTrackedEntityInstance( entityInstanceA3 );
-
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
-
-        List<String> searchKeys = new ArrayList<String>();
-        searchKeys.add( TrackedEntityInstance.PREFIX_PROGRAM + TrackedEntityInstance.SEARCH_SAPERATE + idA );
-
-        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
-        orgunits.add( organisationUnit );
-
-        Collection<String> phoneNumbers = entityInstanceService.getTrackedEntityInstancePhoneNumbers( searchKeys, orgunits, null,
-            ProgramStageInstance.ACTIVE_STATUS, null, null );
-
-        assertEquals( 1, phoneNumbers.size() );
     }
 
     @Test

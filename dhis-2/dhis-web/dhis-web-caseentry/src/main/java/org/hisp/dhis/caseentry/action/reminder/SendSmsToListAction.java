@@ -179,25 +179,25 @@ public class SendSmsToListAction
         Collection<Integer> programStageInstanceIds = entityInstanceService.getProgramStageInstances( searchTexts, orgunits,
             followup, ProgramInstance.STATUS_ACTIVE, null, null );
 
-        Set<String> phoneNumberList = new HashSet<String>( entityInstanceService.getTrackedEntityInstancePhoneNumbers( searchTexts,
-            orgunits, followup, ProgramInstance.STATUS_ACTIVE, null, null ) );
-        try
-        {
-            OutboundSms outboundSms = new OutboundSms();
-            outboundSms.setMessage( msg );
-            outboundSms.setRecipients( phoneNumberList );
-            outboundSms.setSender( currentUserService.getCurrentUsername() );
-
-            smsSender.sendMessage( outboundSms, null );
-
-            programStageInstanceService.updateProgramStageInstances( programStageInstanceIds, outboundSms );
-
-            message = i18n.getString( "sent_message_success" );
-        }
-        catch ( SmsServiceException e )
-        {
-            message = e.getMessage();
-        }
+//        Set<String> phoneNumberList = new HashSet<String>( entityInstanceService.getTrackedEntityInstancePhoneNumbers( searchTexts,
+//            orgunits, followup, ProgramInstance.STATUS_ACTIVE, null, null ) );
+//        try
+//        {
+//            OutboundSms outboundSms = new OutboundSms();
+//            outboundSms.setMessage( msg );
+//            outboundSms.setRecipients( phoneNumberList );
+//            outboundSms.setSender( currentUserService.getCurrentUsername() );
+//
+//            smsSender.sendMessage( outboundSms, null );
+//
+//            programStageInstanceService.updateProgramStageInstances( programStageInstanceIds, outboundSms );
+//
+//            message = i18n.getString( "sent_message_success" );
+//        }
+//        catch ( SmsServiceException e )
+//        {
+//            message = e.getMessage();
+//        }
 
         return SUCCESS;
     }

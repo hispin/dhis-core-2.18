@@ -58,6 +58,7 @@
 <div id='addRelationshipDiv'></div> <!-- Add relationship -->
 <div id='migrationEntityInstanceDiv'></div> <!-- Migration TrackedEntityInstance -->
 <div id='programTrackingReportDiv'></div>
+<div id='detailsInfo'></div>
 
 #parse( "dhis-web-commons/loader/loader.vm" )
 

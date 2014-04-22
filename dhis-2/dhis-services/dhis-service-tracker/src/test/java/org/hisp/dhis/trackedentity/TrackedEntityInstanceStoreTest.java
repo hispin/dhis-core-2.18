@@ -33,11 +33,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -46,7 +44,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.hisp.dhis.validation.ValidationCriteriaService;
@@ -84,15 +81,9 @@ public class TrackedEntityInstanceStoreTest
 
     private TrackedEntityInstance entityInstanceA2;
 
-    private TrackedEntityInstance entityInstanceA3;
-
     private TrackedEntityInstance entityInstanceB1;
 
     private TrackedEntityInstance entityInstanceB2;
-
-    private TrackedEntityAttribute entityInstanceAttribute;
-
-    private int attributeId;
 
     private Program programA;
 
@@ -114,13 +105,9 @@ public class TrackedEntityInstanceStoreTest
         TrackedEntityAttribute entityInstanceAttributeB = createTrackedEntityAttribute( 'B' );
         entityInstanceAttributeB.setUnique( true );
         attributeService.addTrackedEntityAttribute( entityInstanceAttributeB );
-
-        entityInstanceAttribute = createTrackedEntityAttribute( 'A' );
-        attributeId = attributeService.addTrackedEntityAttribute( entityInstanceAttribute );
-
+      
         entityInstanceA1 = createTrackedEntityInstance( 'A', organisationUnit );
         entityInstanceA2 = createTrackedEntityInstance( 'A', organisationUnitB );
-        entityInstanceA3 = createTrackedEntityInstance( 'A', organisationUnit, entityInstanceAttributeB );
         entityInstanceB1 = createTrackedEntityInstance( 'B', organisationUnit );
         entityInstanceB2 = createTrackedEntityInstance( 'B', organisationUnit );
 
@@ -276,38 +263,4 @@ public class TrackedEntityInstanceStoreTest
         assertEquals( 2, entityInstanceStore.getByPhoneNumber( "123456789", null, null ).size() );
     }
 
-    @Test
-    public void testSearch()
-    {
-        int idA = programService.addProgram( programA );
-        programService.addProgram( programB );
-
-        entityInstanceStore.save( entityInstanceA1 );
-        entityInstanceStore.save( entityInstanceA2 );
-        entityInstanceStore.save( entityInstanceA3 );
-        entityInstanceStore.save( entityInstanceB1 );
-        entityInstanceStore.save( entityInstanceB2 );
-
-        TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA3,
-            entityInstanceAttribute );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
-
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA3, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
-
-        List<String> searchKeys = new ArrayList<String>();
-        searchKeys.add( TrackedEntityInstance.PREFIX_TRACKED_ENTITY_ATTRIBUTE + TrackedEntityInstance.SEARCH_SAPERATE
-            + attributeId + TrackedEntityInstance.SEARCH_SAPERATE + "a" + TrackedEntityInstance.SEARCH_SAPERATE
-            + organisationUnit.getId() );
-        searchKeys.add( TrackedEntityInstance.PREFIX_PROGRAM + TrackedEntityInstance.SEARCH_SAPERATE + idA );
-
-        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
-        orgunits.add( organisationUnit );
-
-        Collection<TrackedEntityInstance> entityInstances = entityInstanceStore.search( searchKeys, orgunits, null, null,
-            ProgramStageInstance.ACTIVE_STATUS, null, null );
-
-        assertEquals( 1, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceA3 ) );
-    }
 }
