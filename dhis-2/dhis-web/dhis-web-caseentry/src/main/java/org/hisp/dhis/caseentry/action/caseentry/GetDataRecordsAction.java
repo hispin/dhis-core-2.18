@@ -186,45 +186,45 @@ public class GetDataRecordsAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
-
-        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
-        orgunits.add( orgunit );
-
-        if ( programId != null )
-        {
-            program = programService.getProgram( programId );
-        }
-
-        if ( searchTexts.size() > 0 )
-        {
-            if ( type == null )
-            {
-                total = entityInstanceService.countSearchTrackedEntityInstances( searchTexts, orgunits, followup,
-                    ProgramInstance.STATUS_ACTIVE );
-                this.paging = createPaging( total );
-
-                List<Integer> stageInstanceIds = entityInstanceService.getProgramStageInstances( searchTexts, orgunits,
-                    followup, ProgramInstance.STATUS_ACTIVE, paging.getStartPos(), paging.getPageSize() );
-
-                for ( Integer stageInstanceId : stageInstanceIds )
-                {
-                    ProgramStageInstance programStageInstance = programStageInstanceService
-                        .getProgramStageInstance( stageInstanceId );
-                    programStageInstances.add( programStageInstance );
-                }
-            }
-            else if ( trackingReport != null && trackingReport )
-            {
-                grid = entityInstanceService.getTrackingEventsReport( program, searchTexts, orgunits, followup,
-                    ProgramInstance.STATUS_ACTIVE, i18n );
-            }
-            else
-            {
-                grid = entityInstanceService.getScheduledEventsReport( searchTexts, orgunits, followup,
-                    ProgramInstance.STATUS_ACTIVE, null, null, i18n );
-            }
-        }
+//        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
+//
+//        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
+//        orgunits.add( orgunit );
+//
+//        if ( programId != null )
+//        {
+//            program = programService.getProgram( programId );
+//        }
+//
+//        if ( searchTexts.size() > 0 )
+//        {
+//            if ( type == null )
+//            {
+//                total = entityInstanceService.countSearchTrackedEntityInstances( searchTexts, orgunits, followup,
+//                    ProgramInstance.STATUS_ACTIVE );
+//                this.paging = createPaging( total );
+//
+//                List<Integer> stageInstanceIds = entityInstanceService.getProgramStageInstances( searchTexts, orgunits,
+//                    followup, ProgramInstance.STATUS_ACTIVE, paging.getStartPos(), paging.getPageSize() );
+//
+//                for ( Integer stageInstanceId : stageInstanceIds )
+//                {
+//                    ProgramStageInstance programStageInstance = programStageInstanceService
+//                        .getProgramStageInstance( stageInstanceId );
+//                    programStageInstances.add( programStageInstance );
+//                }
+//            }
+//            else if ( trackingReport != null && trackingReport )
+//            {
+//                grid = entityInstanceService.getTrackingEventsReport( program, searchTexts, orgunits, followup,
+//                    ProgramInstance.STATUS_ACTIVE, i18n );
+//            }
+//            else
+//            {
+//                grid = entityInstanceService.getScheduledEventsReport( searchTexts, orgunits, followup,
+//                    ProgramInstance.STATUS_ACTIVE, null, null, i18n );
+//            }
+//        }
 
         return type == null ? SUCCESS : type;
     }
