@@ -159,7 +159,7 @@
     </tr>
 	#foreach ( $groupSet in $groupSets )
     <tr>
-		<td>$encoder.htmlEncode( $groupSet.name )</td>			
+		<td><label>$encoder.htmlEncode( $groupSet.name )</label></td>			
 		<td>
 			<select id="selectedGroups" name="selectedGroups">
 				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>

@@ -179,7 +179,7 @@
       </tr>
       </tr>
       <tr>
-        <td>$i18n.getString( 'legend_set' )</td>
+        <td><label>$i18n.getString( 'legend_set' )</label></td>
         <td>
           <select id="selectedLegendSetId" name="selectedLegendSetId">
             <option value="0">[$i18n.getString('please_select')]</option>

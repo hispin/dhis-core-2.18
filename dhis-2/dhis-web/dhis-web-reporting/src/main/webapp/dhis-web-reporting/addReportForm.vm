@@ -62,7 +62,7 @@
     </tr>
     #end
 	<tr class="jasperReportTableDataSource">
-		<td>$i18n.getString( "report_table" )</td>
+		<td><label for="reportTable">$i18n.getString( "report_table" )</label></td>
 		<td>
 			<select id="reportTableId" name="reportTableId">
 			<option value="0">[ $i18n.getString( "none" ) ]</option>
