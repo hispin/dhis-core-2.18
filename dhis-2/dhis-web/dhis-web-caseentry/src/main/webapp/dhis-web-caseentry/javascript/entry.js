@@ -847,7 +847,7 @@ function loadProgramStageFromServer( programStageInstanceId ) {
         type: 'GET',
         dataType: 'json'
     } ).done(function(data) {
-		if( data.response==undefined){
+		if( data.response=='undefined'){
 			$( "#programStageInstanceId" ).val( data.id );
 			$( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
 			$( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );

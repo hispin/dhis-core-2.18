@@ -242,9 +242,9 @@ public class HibernateTrackedEntityInstanceStore
         final String wordStart = statementBuilder.getRegexpWordStart();
         final String wordEnd = statementBuilder.getRegexpWordEnd();
 
-        String sql = "from trackedentityinstance tei "
-            + "inner join trackedentity te on tei.trackedentityid = te.trackedentityid "
-            + "inner join organisationunit ou on tei.organisationunitid = ou.organisationunitid ";
+        String sql = "from trackedentityinstance tei " + 
+            "inner join trackedentity te on tei.trackedentityid = te.trackedentityid " + 
+            "inner join organisationunit ou on tei.organisationunitid = ou.organisationunitid ";
 
         for ( QueryItem item : params.getAttributesAndFilters() )
         {
@@ -252,18 +252,18 @@ public class HibernateTrackedEntityInstanceStore
 
             final String joinClause = item.hasFilter() ? "inner join" : "left join";
 
-            sql += joinClause + " " + "trackedentityattributevalue as " + col + " " + "on " + col
-                + ".trackedentityinstanceid = tei.trackedentityinstanceid " + "and " + col
-                + ".trackedentityattributeid = " + item.getItem().getId() + " ";
+            sql += joinClause + " " +
+                "trackedentityattributevalue as " + col + " " + "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid " + 
+                "and " + col + ".trackedentityattributeid = " + item.getItem().getId() + " ";
 
             if ( !params.isOrQuery() && item.hasFilter() )
             {
                 for ( QueryFilter filter : item.getFilters() )
                 {
                     final String encodedFilter = statementBuilder.encode( filter.getFilter(), false );
-
+    
                     final String queryCol = item.isNumeric() ? (col + ".value") : "lower(" + col + ".value)";
-
+    
                     sql += "and " + queryCol + " " + filter.getSqlOperator() + " "
                         + StringUtils.lowerCase( filter.getSqlFilter( encodedFilter ) ) + " ";
                 }
@@ -295,8 +295,7 @@ public class HibernateTrackedEntityInstanceStore
         else if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.ALL ) )
         {
         }
-        else
-        // SELECTED (default)
+        else // SELECTED (default)
         {
             sql += hlp.whereAnd() + " tei.organisationunitid in ("
                 + getCommaDelimitedString( getIdentifiers( params.getOrganisationUnits() ) ) + ") ";
@@ -304,15 +303,20 @@ public class HibernateTrackedEntityInstanceStore
 
         if ( params.hasProgram() )
         {
-            sql += hlp.whereAnd() + " exists (" + "select pi.trackedentityinstanceid " + "from programinstance pi ";
-
+            sql += hlp.whereAnd() + " exists (" + 
+                "select pi.trackedentityinstanceid " +
+                "from programinstance pi ";
+            
             if ( params.hasEventStatus() )
             {
-                sql += "left join programstageinstance psi " + "on pi.programinstanceid = psi.programinstanceid ";
+                sql += 
+                    "left join programstageinstance psi " +
+                    "on pi.programinstanceid = psi.programinstanceid ";                    
             }
-
-            sql += "where pi.trackedentityinstanceid = tei.trackedentityinstanceid " + "and pi.programid = "
-                + params.getProgram().getId() + " ";
+            
+            sql +=
+                "where pi.trackedentityinstanceid = tei.trackedentityinstanceid " + 
+                "and pi.programid = " + params.getProgram().getId() + " ";
 
             if ( params.hasProgramStatus() )
             {
@@ -328,16 +332,16 @@ public class HibernateTrackedEntityInstanceStore
             {
                 sql += "and pi.enrollmentdate >= '" + getMediumDateString( params.getProgramStartDate() ) + "' ";
             }
-
+            
             if ( params.hasProgramEndDate() )
             {
                 sql += "and pi.enrollmentdate <= '" + getMediumDateString( params.getProgramEndDate() ) + "' ";
             }
-
+            
             if ( params.hasEventStatus() )
             {
                 sql += getEventStatusWhereClause( params );
-            }
+            }   
 
             sql += ") ";
         }
@@ -358,8 +362,9 @@ public class HibernateTrackedEntityInstanceStore
                 {
                     final String col = statementBuilder.columnQuote( item.getItemId() );
 
-                    sql += "lower(" + col + ".value) " + regexp + " '" + wordStart + StringUtils.lowerCase( query )
-                        + wordEnd + "' or ";
+                    sql += 
+                        "lower(" + col + ".value) " + regexp + " '" + wordStart + 
+                        StringUtils.lowerCase( query ) + wordEnd + "' or ";
                 }
 
                 sql = removeLastOr( sql ) + ") and ";
@@ -375,38 +380,33 @@ public class HibernateTrackedEntityInstanceStore
     {
         String start = getMediumDateString( params.getEventStartDate() );
         String end = getMediumDateString( params.getEventEndDate() );
-
+        
         String sql = StringUtils.EMPTY;
-
+        
         if ( params.isEventStatus( EventStatus.COMPLETED ) )
         {
-            sql = "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end
-                + "' and psi.completed = true ";
+            sql = "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end + "' and psi.completed = true ";
         }
         else if ( params.isEventStatus( EventStatus.VISITED ) )
         {
-            sql = "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end
-                + "' and psi.completed = false ";
+            sql = "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end + "' and psi.completed = false ";
         }
         else if ( params.isEventStatus( EventStatus.FUTURE_VISIT ) )
         {
-            sql = "and psi.executiondate is null and psi.duedate >= '" + start + "' and psi.duedate <= '" + end
-                + "' and psi.status is not null and date(now()) <= date(psi.duedate) ";
+            sql = "and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' and psi.status is not null and date(now()) < date(psi.duedate) ";
         }
         else if ( params.isEventStatus( EventStatus.LATE_VISIT ) )
         {
-            sql = "and psi.executiondate is null and psi.duedate >= '" + start + "' and psi.duedate <= '" + end
-                + "' and psi.status is not null and date(now()) > date(psi.duedate) ";
+            sql = "and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' and psi.status is not null and date(now()) > date(psi.duedate) ";
         }
         else if ( params.isEventStatus( EventStatus.SKIPPED ) )
         {
-            sql = "and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' and psi.status = "
-                + SKIPPED_STATUS + " ";
+            sql = "and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' and psi.status = " + SKIPPED_STATUS + " "; 
         }
-
+        
         return sql;
     }
-
+        
     @Override
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityInstance> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max )
@@ -631,7 +631,7 @@ public class HibernateTrackedEntityInstanceStore
             throw new RuntimeException( ex );
         }
     }
-
+    
     @Override
     public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Collection<TrackedEntityAttribute> attributes, Integer statusEnrollment, Integer min,
@@ -1067,40 +1067,5 @@ public class HibernateTrackedEntityInstanceStore
         }
 
         return entityInstances;
-    }
-
-    @Override
-    public Collection<TrackedEntityInstance> search( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Collection<TrackedEntityAttribute> attributes, Integer statusEnrollment, Integer min,
-        Integer max )
-    {
-        String sql = searchTrackedEntityInstanceSql( false, searchKeys, orgunits, followup, attributes,
-            statusEnrollment, min, max );
-        Collection<TrackedEntityInstance> instances = new HashSet<TrackedEntityInstance>();
-        try
-        {
-            instances = jdbcTemplate.query( sql, new RowMapper<TrackedEntityInstance>()
-            {
-                public TrackedEntityInstance mapRow( ResultSet rs, int rowNum )
-                    throws SQLException
-                {
-                    return get( rs.getInt( 1 ) );
-                }
-            } );
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-        return instances;
-    }
-
-    @Override
-    public int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
-        Integer statusEnrollment )
-    {
-        String sql = searchTrackedEntityInstanceSql( true, searchKeys, orgunits, followup, null, statusEnrollment,
-            null, null );
-        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 }
