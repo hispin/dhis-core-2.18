@@ -56,9 +56,9 @@ public class GetProgramStageInstanceByIdAction
     // Getter && Setter
     // -------------------------------------------------------------------------
 
-    private Integer programStageInstanceId;
+    private String programStageInstanceId;
 
-    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    public void setProgramStageInstanceId( String programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
     }
