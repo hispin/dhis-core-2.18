@@ -141,9 +141,9 @@ function displayevents(json, page) {
 				+ "'></a>";
 		table += "<a href=\"javascript:showTrackedEntityInstanceHistory( '" + uid + "' ) \" "
 				+ " title='"
-				+ i18n_edit
-				+ "'><img src= '../images/edit.png' alt='"
-				+ i18n_edit
+				+ i18n_tracked_entity_instance_details_and_history
+				+ "'><img src= '../images/information.png' alt='"
+				+ i18n_tracked_entity_instance_details_and_history
 				+ "'></a>";
 		table += "</td>";
 		table += "</tr>";
