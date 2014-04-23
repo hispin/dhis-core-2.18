@@ -139,18 +139,18 @@ public class SearchPatientAction
                 orgunits.add( organisationUnit );
             }
 
-//            total = patientService.countSearchTrackedEntityInstances( searchTexts, orgunits, null, ProgramInstance.STATUS_ACTIVE );
-//            this.paging = createPaging( total );
-//            patients = patientService.searchTrackedEntityInstances( searchTexts, orgunits, null, null, ProgramInstance.STATUS_ACTIVE,
-//                paging.getStartPos(), paging.getPageSize() );
-//
-//            if ( !searchBySelectedOrgunit )
-//            {
-//                for ( TrackedEntityInstance patient : patients )
-//                {
-//                    mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
-//                }
-//            }
+            total = patientService.countSearchTrackedEntityInstances( searchTexts, orgunits, null, ProgramInstance.STATUS_ACTIVE );
+            this.paging = createPaging( total );
+            patients = patientService.searchTrackedEntityInstances( searchTexts, orgunits, null, null, ProgramInstance.STATUS_ACTIVE,
+                paging.getStartPos(), paging.getPageSize() );
+
+            if ( !searchBySelectedOrgunit )
+            {
+                for ( TrackedEntityInstance patient : patients )
+                {
+                    mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+                }
+            }
         }
 
         return SUCCESS;

@@ -64,6 +64,7 @@ function showActitityList(page)
 		success : function(json) {
 			setInnerHTML('listEntityInstanceDiv', displayevents(json, page));
 			showById('listEntityInstanceDiv');
+			setTableStyles();
 			jQuery('#loaderDiv').hide();
 			hideLoader();
 		}
@@ -132,12 +133,6 @@ function displayevents(json, page) {
 				+ i18n_dashboard
 				+ "'><img src='../images/enroll.png' alt='"
 				+ i18n_dashboard
-				+ "'></a>";
-		table += "<a href=\"javascript:loadDataEntryDialog( '" + uid + "' ) \" "
-				+ " title='"
-				+ i18n_edit
-				+ "'><img src= '../images/edit.png' alt='"
-				+ i18n_edit
 				+ "'></a>";
 		table += "<a href=\"javascript:showTrackedEntityInstanceHistory( '" + uid + "' ) \" "
 				+ " title='"
@@ -236,10 +231,10 @@ function showEvents( teiUid){
 	params += "&programStatus=ACTIVE";
 	params += "&trackedEntityInstance=" + teiUid;
 	if(getFieldValue('status')!=''){
-		params += '&eventStatus=' + getFieldValue('status');
+		params += '&status=' + getFieldValue('status');
 	}
-	params += "&eventStartDate=" + getFieldValue('startDueDate');
-	params += "&eventEndDate=" + getFieldValue('endDueDate');
+	params += "&startDate=" + getFieldValue('startDueDate');
+	params += "&endDate=" + getFieldValue('endDueDate');
 	
 	$.ajax({
 		type : "GET",
@@ -252,7 +247,7 @@ function showEvents( teiUid){
 				var row = json.events[i];
 				var uid = row.event;
 				var eventDate = row.eventDate;
-				table += "<tr><td><a href='javascript:programTrackingList( \"" + uid + "\") ' >" + eventDate + "</a></td></tr>";
+				table += "<tr><td><a href='javascript:loadDataEntryDialog( \"" + uid + "\") ' >" + eventDate + "</a></td></tr>";
 			}
 			table += "</table>";
 			$('#eventList').html(table);
@@ -260,7 +255,7 @@ function showEvents( teiUid){
 				title : i18n_events,
 				maximize : true,
 				closable : true,
-				modal : false,
+				modal : true,
 				width : 380,
 				height : 290
 			}).show('fast');
@@ -296,28 +291,40 @@ function exportActitityList( type )
 // EntityInstance program tracking
 // --------------------------------------------------------------------
 
-function loadDataEntryDialog( programStageInstanceId, programStageUid )
+function loadDataEntryDialog( programStageInstanceId )
 {
-    jQuery('[id=programStageInstanceId]').val(programStageInstanceId);
-    jQuery('.stage-object-selected').attr('psuid', programStageUid);
-
-    $('#contentDataRecord' ).load("viewProgramStageRecords.action", {
-        programStageInstanceId: programStageInstanceId
-    }, function() {
-        jQuery('#programStageUid').val(programStageUid);
-        showById('reportDateDiv');
-        showById('entityInstanceInforTB');
-        showById('entryForm');
-        showById('inputCriteriaDiv');
-    }).dialog({
-        title:i18n_program_stage,
-        maximize:true,
-        closable:true,
-        modal:false,
-        overlay:{background:'#000000', opacity:0.1},
-        width:850,
-        height:500
-    });
+	$.ajax({
+		type : "GET",
+		url : "getProgramStageInstanceByUid.action?programStageInstanceId=" + programStageInstanceId,
+		dataType : "json",
+		success : function(json) {
+			var psiid = json.id;
+			jQuery('.stage-object-selected').attr('psuid', json.programStage.uid);
+			jQuery('[id=programStageInstanceId]').val(psiid);
+			jQuery('#programStageUid').val(json.programStage.uid);
+					
+			$('#contentDataRecord' ).load("viewProgramStageRecords.action", {
+					programStageInstanceId: psiid
+				}, function( html ) {
+					setInnerHTML('contentDataRecord',html);
+					showById('reportDateDiv');
+					showById('entityInstanceInforTB');
+					showById('entryForm');
+					showById('inputCriteriaDiv');
+					entryFormContainerOnReady();
+				}).dialog({
+					title:i18n_program_stage,
+					maximize:true,
+					closable:true,
+					modal:false,
+					overlay:{background:'#000000', opacity:0.1},
+					width:850,
+					height:500
+			});
+		}
+	});
+	
+	
 }
 
 
