@@ -56,7 +56,7 @@ public class AddValidationRuleGroupAction
 
     private UserGroupService userGroupService;
 
-    public void setUserService( UserGroupService userGroupService )
+    public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
     }
