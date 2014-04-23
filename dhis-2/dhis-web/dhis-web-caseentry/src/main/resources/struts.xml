@@ -43,21 +43,6 @@
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
 		</action>
 
-		<action name="searchTrackedEntityInstance"
-			class="org.hisp.dhis.caseentry.action.trackedentity.SearchTrackedEntityInstanceAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/listTrackedEntityInstance.vm</param>
-			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
-		</action>
-
-		<action name="listAllTrackedEntityInstances"
-			class="org.hisp.dhis.caseentry.action.trackedentity.SearchTrackedEntityInstanceAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="listAll">true</param>
-			<param name="page">/dhis-web-caseentry/listTrackedEntityInstance.vm</param>
-			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
-		</action>
-
 		<action name="loadProgramStageInstances"
 			class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstancesAction">
 			<result name="success" type="velocity-json">
@@ -464,13 +449,6 @@
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_MANAGEMENT</param>
 		</action>
 
-		<action name="searchRegistrationTrackedEntityInstance"
-			class="org.hisp.dhis.caseentry.action.trackedentity.SearchTrackedEntityInstanceAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/trackedEntityInstanceRegistrationList.vm</param>
-			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
-		</action>
-
 		<action name="removeTrackedEntityInstance"
 			class="org.hisp.dhis.caseentry.action.trackedentity.RemoveTrackedEntityInstanceAction">
 			<result name="success" type="velocity-json">
@@ -806,14 +784,6 @@
 			<param name="requiredAuthorities">F_PROGRAM_TRACKING_MANAGEMENT</param>
 		</action>
 
-		<action name="getSMSTrackedEntityInstanceRecords"
-			class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/programTrackingRecords.vm</param>
-			<param name="stylesheets">style/style.css</param>
-			<param name="requiredAuthorities">F_PROGRAM_TRACKING_SEARCH</param>
-		</action>
-
 		<action name="programTrackingList"
 			class="org.hisp.dhis.caseentry.action.reminder.GetProgramTrackingListAction">
 			<result name="success" type="velocity">/content.vm</result>
@@ -827,16 +797,6 @@
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 			<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm
-			</result>
-			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
-		</action>
-
-		<action name="sendSMSTotList"
-			class="org.hisp.dhis.caseentry.action.reminder.SendSmsToListAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm
 			</result>
@@ -858,6 +818,12 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/trackingEventMessage.vm</param>
 			<param name="stylesheets">style/style.css</param>
+		</action>
+		
+		<action name="getProgramStageInstanceByUid"
+			class="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStageInstance.vm
+			</result>
 		</action>
 
 		<!-- Dashboard -->
@@ -921,15 +887,6 @@
 				javascript/activityPlan.js
 			</param>
 			<param name="requiredAuthorities">F_ACTIVITY_PLAN</param>
-		</action>
-
-		<action name="getActivityPlanRecords"
-			class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/activityPlanRecords.vm</param>
-			<param name="stylesheets">style/style.css</param>
-			<result name="xls" type="gridXlsResult" />
-			<result name="pdf" type="gridPdfResult" />
 		</action>
 
 		<action name="accessAttributes" class="org.hisp.dhis.caseentry.action.NoAction">

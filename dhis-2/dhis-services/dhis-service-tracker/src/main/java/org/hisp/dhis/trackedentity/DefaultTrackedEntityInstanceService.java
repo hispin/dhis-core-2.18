@@ -161,7 +161,8 @@ public class DefaultTrackedEntityInstanceService
         {
             if ( !organisationUnit.hasLevel() )
             {
-                organisationUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
+                organisationUnit
+                    .setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
             }
         }
 
@@ -175,12 +176,14 @@ public class DefaultTrackedEntityInstanceService
         {
             if ( params.hasProgram() )
             {
-                params.addAttributesIfNotExist( QueryItem.getQueryItems( params.getProgram().getTrackedEntityAttributes() ) );
+                params.addAttributesIfNotExist( QueryItem.getQueryItems( params.getProgram()
+                    .getTrackedEntityAttributes() ) );
             }
             else
             {
                 Collection<TrackedEntityAttribute> filters = attributeService.getAllTrackedEntityAttributes();
-                Collection<TrackedEntityAttribute> attributes = attributeService.getTrackedEntityAttributesDisplayInList( true );
+                Collection<TrackedEntityAttribute> attributes = attributeService
+                    .getTrackedEntityAttributesDisplayInList( true );
                 filters.removeAll( attributes );
 
                 params.addAttributesIfNotExist( QueryItem.getQueryItems( attributes ) );
@@ -414,7 +417,8 @@ public class DefaultTrackedEntityInstanceService
         {
             return getItem( item, null, null );
         }
-        else // Filter
+        else
+        // Filter
         {
             String[] split = item.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
 
