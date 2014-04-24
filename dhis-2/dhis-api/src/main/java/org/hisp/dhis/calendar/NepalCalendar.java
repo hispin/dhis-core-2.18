@@ -57,23 +57,14 @@ public class NepalCalendar extends AbstractCalendar
 
         int totalDays = 0;
 
-        for ( int i = startNepal.getYear(); i < dateUnit.getYear(); i++ )
+        for ( int year = startNepal.getYear(); year < dateUnit.getYear(); year++ )
         {
-            // if year total index is uninitialized, calculate and set in array
-            if ( conversionMap.get( i )[0] == 0 )
-            {
-                for ( int j = 1; j <= 12; j++ )
-                {
-                    conversionMap.get( i )[0] += conversionMap.get( i )[j];
-                }
-            }
-
-            totalDays += conversionMap.get( i )[0];
+            totalDays += getYearTotal( year );
         }
 
-        for ( int i = startNepal.getMonth(); i < dateUnit.getMonth(); i++ )
+        for ( int month = startNepal.getMonth(); month < dateUnit.getMonth(); month++ )
         {
-            totalDays += conversionMap.get( dateUnit.getYear() )[i];
+            totalDays += conversionMap.get( dateUnit.getYear() )[month];
         }
 
         totalDays += dateUnit.getDay() - startNepal.getDay();
@@ -126,6 +117,32 @@ public class NepalCalendar extends AbstractCalendar
         }
 
         return new DateUnit( curYear, curMonth, curDay, dayOfWeek );
+    }
+
+    @Override
+    public int getDaysInYear( int year )
+    {
+        return getYearTotal( year );
+    }
+
+    @Override
+    public int getDaysInMonth( int year, int month )
+    {
+        return conversionMap.get( year )[month];
+    }
+
+    private int getYearTotal( int year )
+    {
+        // if year total index is uninitialized, calculate and set in array
+        if ( conversionMap.get( year )[0] == 0 )
+        {
+            for ( int j = 1; j <= 12; j++ )
+            {
+                conversionMap.get( year )[0] += conversionMap.get( year )[j];
+            }
+        }
+
+        return conversionMap.get( year )[0];
     }
 
     //------------------------------------------------------------------------------------------------------------
