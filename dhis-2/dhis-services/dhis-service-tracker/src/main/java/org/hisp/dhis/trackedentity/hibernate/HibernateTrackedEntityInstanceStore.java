@@ -529,8 +529,8 @@ public class HibernateTrackedEntityInstanceStore
 
                 if ( attribute.isUnique() )
                 {
-
                     Criteria criteria = getCriteria();
+                    criteria.add( Restrictions.ne( "id", instance.getId() ) );
                     criteria.createAlias( "attributeValues", "attributeValue" );
                     criteria.createAlias( "attributeValue.attribute", "attribute" );
                     criteria.add( Restrictions.eq( "attributeValue.value", attributeValue.getValue() ) );
