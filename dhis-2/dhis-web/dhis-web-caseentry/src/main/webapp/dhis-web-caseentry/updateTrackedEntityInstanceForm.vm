@@ -38,7 +38,7 @@
 	&#8226; $i18n.getString( "update_tracked_entity_instance" )
 </h3>
 <p>
-<form id="entityInstanceForm" name="entityInstanceForm" action="updateTrackedEntityInstance.action" method="post" class="inputForm">
+<form id="entityInstanceForm" name="entityInstanceForm" action="updateTrackedEntityInstance.action" method="get" class="inputForm">
 <input type="hidden" id="representativeId" name="representativeId" value='$!entityInstance.representative.id' /> 
 <input type="hidden" id="relationshipTypeId" name='relationshipTypeId' value="$!relationship.relationshipType.id"/>
 <input type="hidden" id="id" name="id" value="$entityInstance.id">
@@ -52,7 +52,7 @@
 		<td></td>
 		<td>
 			<input type="submit" class='button' value="$i18n.getString( 'update' )" />
-			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="backPreviousPage( $entityInstance.id )" />
+			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="backPreviousPage( '$entityInstance.uid' )" />
 		</td>
 	</tr>
 </table>
