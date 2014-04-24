@@ -207,11 +207,9 @@ function getSearchParams(page) {
 		});
 	
 	var p = params;
-	$('#searchingAttributeIdTD [id=searchObjectId] option').each(
-		function(i, item) {
-			if ($(item).attr('displayed')=="true" 
-				&& p.indexOf(item.value) < 0 ) {
-					params += "&attribute=" + item.value;
+	$('#attributeIds option').each(function(i, item) {
+		if ( p.indexOf(item.value) < 0 ) {
+				params += "&attribute=" + item.value;
 		}
 	}); 
 		
@@ -393,13 +391,13 @@ function enableBtn() {
 		clearListById('attributeIds');
 		for ( var i in json.attributes) {
 			jQuery('#searchObjectId').append(
-				'<option value="' + json.attributes[i].id 
-					+ '" displayed="' + json.attributes[i].displayed  + '">'
+				'<option value="' + json.attributes[i].id + '" >'
 					+ json.attributes[i].name + '</option>');
 			
 			if(json.attributes[i].displayed=='true'){
 				jQuery('#attributeIds').append(
-				'<option value="' + json.attributes[i].id + '"></option>');
+				'<option value="' + json.attributes[i].id 
+				+ '" valueType="' + json.attributes[i].valueType  + '"></option>');
 			}
 		}
 		

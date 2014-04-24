@@ -21,6 +21,7 @@
   {
 	"id":  "${attribute.uid}",
 	"name": "$!encoder.jsonEncode( ${attribute.displayName} )",
+	"valueType": "$!attribute.valueType",
 	"displayed": "true"
   }#if( $idx < $size ),#end
   #set( $idx = $idx + 1 ) 
@@ -32,6 +33,7 @@
   {
 	"id":  "${attribute.uid}",
 	"name": "$!encoder.jsonEncode( ${attribute.displayName} )",
+	"valueType": "$!attribute.valueType",
 	"displayed": "true"
   }#if( $idx < $size ),#end
   #set( $idx = $idx + 1 ) 
@@ -43,6 +45,7 @@
   {
 	"id":  "${programAttribute.attribute.uid}",
 	"name": "$!encoder.jsonEncode( ${programAttribute.attribute.displayName} )",
+	"valueType": "$!programAttribute.attribute.valueType",
 	"displayed": "$programAttribute.displayInList"
   }#if( $idx < $size ),#end
   #set( $idx = $idx + 1 ) 
@@ -55,6 +58,7 @@
   {
 	"id":  "${programAttribute.attribute.uid}",
 	"name": "$!encoder.jsonEncode( ${programAttribute.attribute.displayName} )",
+	"valueType": "$!programAttribute.attribute.valueType",
 	"displayed": "$programAttribute.displayInList"
   }#if( $idx < $size ),#end 
   #set( $idx = $idx + 1 ) 

@@ -203,6 +203,24 @@ function displayTEIList(json, page) {
 	else if(getFieldValue('program') != '') {
 		idx = 5;
 	}
+	
+	// Yes/No and Yes Only attributes in result
+	
+	var attList = new Array();
+	$('#attributeIds option').each(function(i, item) {
+		var valueType = $(item).attr('valueType');
+		var value = $(item).val();
+		if ( valueType == 'bool' || valueType == 'trueOnly' ) {
+			for (var i = idx; i < json.width; i++) {
+				if( value==json.headers[i].name ){
+					attList.push(i);
+				}
+			}
+		}
+	});
+	
+	// TEI List
+	
 	table += "<col width='30' />";
 	for (var i = idx; i < json.width; i++) {
 		table += "<col />";
@@ -228,6 +246,11 @@ function displayTEIList(json, page) {
 			if (j == 4) {
 				colVal = json.metaData.names[colVal];
 			}
+			
+			if( jQuery.inArray( j, attList )>=0 && colVal!="" ){
+				colVal = (colVal=='true')? i18n_yes : i18n_no;
+			}
+			
 			table += "<td onclick=\"javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '"
 				+ uid
 				+ "' )\" title='"

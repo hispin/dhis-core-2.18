@@ -89,7 +89,7 @@ function listAllTrackedEntityInstance( page )
 		data : params,
 		dataType : "json",
 		success : function(json) {
-			setInnerHTML('listEventDiv', displayevents(json, page));
+			setInnerHTML('listEventDiv', displayEvents(json, page));
 			showById('listEventDiv');
 			jQuery('#loaderDiv').hide();
 			setTableStyles();
@@ -97,7 +97,7 @@ function listAllTrackedEntityInstance( page )
 	});
 }
 
-function displayevents(json, page) {
+function displayEvents(json, page) {
 	var table = "";
 	
 	// Header
@@ -108,7 +108,7 @@ function displayevents(json, page) {
 		table += "<p>" + i18n_no_result_found + "</p>";
 	}
 	
-	// TEI list
+	
 	table += "<table class='listTable' width='100%'>";
 	
 	var idx = 4;
@@ -118,6 +118,24 @@ function displayevents(json, page) {
 	else if(getFieldValue('program') != '') {
 		idx = 5;
 	}
+	
+	// Yes/No and Yes Only attributes in result
+	
+	var attList = new Array();
+	$('#attributeIds option').each(function(i, item) {
+		var valueType = $(item).attr('valueType');
+		var value = $(item).val();
+		if ( valueType == 'bool' || valueType == 'trueOnly' ) {
+			for (var i = idx; i < json.width; i++) {
+				if( value==json.headers[i].name ){
+					attList.push(i);
+				}
+			}
+		}
+	});
+	
+	// TEI list
+	
 	table += "<col width='30' />";
 	for (var i = idx; i < json.width; i++) {
 		table += "<col />";
@@ -143,6 +161,11 @@ function displayevents(json, page) {
 			if (j == 4) {
 				colVal = json.metaData.names[colVal];
 			}
+			
+			if( jQuery.inArray( j, attList )>=0 && colVal!="" ){
+				colVal = (colVal=='true')? i18n_yes : i18n_no;
+			}
+			
 			table += "<td onclick=\"javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '"
 				+ uid
 				+ "' )\" title='"
@@ -328,7 +351,7 @@ function advancedSearch( params, page )
 		type : "GET",
 		data : params,
 		success : function(json) {
-			setInnerHTML('listEventDiv', displayevents(json, page));
+			setInnerHTML('listEventDiv', displayEvents(json, page));
 			showById('listEventDiv');
 			jQuery('#loaderDiv').hide();
 			setTableStyles();
