@@ -58,9 +58,7 @@ public class DateUnit
 
     public DateUnit( int year, int month, int day, int dayOfWeek )
     {
-        this.year = year;
-        this.month = month;
-        this.day = day;
+        this( year, month, day );
         this.dayOfWeek = dayOfWeek;
     }
 

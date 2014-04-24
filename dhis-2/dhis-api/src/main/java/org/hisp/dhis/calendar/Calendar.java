@@ -33,7 +33,11 @@ package org.hisp.dhis.calendar;
  */
 public interface Calendar
 {
+    DateUnit toIso( int year, int month, int day );
+
     DateUnit toIso( DateUnit dateUnit );
+
+    DateUnit fromIso( int year, int month, int day );
 
     DateUnit fromIso( DateUnit dateUnit );
 }

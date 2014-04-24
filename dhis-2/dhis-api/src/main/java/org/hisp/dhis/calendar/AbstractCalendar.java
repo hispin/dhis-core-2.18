@@ -33,4 +33,15 @@ package org.hisp.dhis.calendar;
  */
 public abstract class AbstractCalendar implements Calendar
 {
+    @Override
+    public DateUnit toIso( int year, int month, int day )
+    {
+        return toIso( new DateUnit( year, month, day ) );
+    }
+
+    @Override
+    public DateUnit fromIso( int year, int month, int day )
+    {
+        return fromIso( new DateUnit( year, month, day ) );
+    }
 }
