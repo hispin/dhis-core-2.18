@@ -422,32 +422,12 @@ function addEventListeners()
             keyPress( event, this );
         } );
 
-		if ( formType != FORMTYPE_CUSTOM )
-		{
-        	$( this ).css( 'width', '100%' );
-		}
-
         if ( type == 'date' )
         {
-            $( this ).css( 'width', '100%' );
             datePicker( id );
         }
     } );
     
-    $( '.entryfield' ).not( '.entryarea' ).each( function( i )
-    {
-		if ( formType != FORMTYPE_CUSTOM )
-		{
-        	$( this ).css( 'text-align', 'center' );
-		}
-    } );
-
-    $( '.entryarea' ).each( function( i )
-    {
-    	$( this ).css( 'min-width', '264px' );
-    	$( this ).css( 'min-height', '45px' );
-    } );
-
     $( '.entryselect' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
@@ -467,9 +447,6 @@ function addEventListeners()
         {
             saveBoolean( dataElementId, optionComboId, id );
         } );
-
-        $( this ).css( 'width', '88%' );
-        $( this ).css( 'margin-right', '2px' );
     } );
 
     $( '.entrytrueonly' ).each( function( i )
@@ -490,8 +467,6 @@ function addEventListeners()
         {
             saveTrueOnly( dataElementId, optionComboId, id );
         } );
-
-        $( this ).css( 'width', '60%' );
     } );
 
     $( '.entryoptionset' ).each( function( i )
@@ -512,12 +487,6 @@ function addEventListeners()
         {
             saveVal( dataElementId, optionComboId, id );
         } );
-
-        if ( formType != FORMTYPE_CUSTOM ) 
-        {
-            $( this ).css( 'width', '85%' );
-            $( this ).css( 'text-align', 'center' );
-        }
     } );
 
     $( '.commentlink' ).each( function( i )
