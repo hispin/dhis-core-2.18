@@ -326,7 +326,6 @@ public class DefaultDataElementService
         return getCountByName( i18nService, dataElementStore, name );
     }
 
-    @Override
     public int getDataElementCountByDomainType( String domainType )
     {
         return dataElementStore.getCountByDomainType( domainType );
