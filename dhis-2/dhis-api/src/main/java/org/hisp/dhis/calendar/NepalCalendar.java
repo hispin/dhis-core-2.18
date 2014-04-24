@@ -59,7 +59,7 @@ public class NepalCalendar extends AbstractCalendar
 
         for ( int i = startNepal.getYear(); i < dateUnit.getYear(); i++ )
         {
-            // if year total index is uninitialized, calculate and set in map
+            // if year total index is uninitialized, calculate and set in array
             if ( conversionMap.get( i )[0] == 0 )
             {
                 for ( int j = 1; j <= 12; j++ )
