@@ -82,14 +82,32 @@ function displayevents(json, page) {
 		table += "<p>" + i18n_no_result_found + "</p>";
 	}
 	
+	var idx = 4;
+	
+	// Yes/No and Yes Only attributes in result
+	
+	var attList = new Array();
+	$('#attributeIds option').each(function(i, item) {
+		var valueType = $(item).attr('valueType');
+		var value = $(item).val();
+		if ( valueType == 'bool' || valueType == 'trueOnly' ) {
+			for (var i = idx; i < json.width; i++) {
+				if( value==json.headers[i].name ){
+					attList.push(i);
+				}
+			}
+		}
+	});
+	
 	// TEI list
 	table += "<table class='listTable' width='100%'>";
 	
-	var idx = 4;
 	table += "<col width='30' />";
 	for (var i = idx; i < json.width; i++) {
 		table += "<col />";
-	}
+	}	
+	
+	
 	table += "<col width='200' />";
 	table += "<thead><tr><th>#</th>";
 	for (var i = idx; i < json.width; i++) {
@@ -110,6 +128,9 @@ function displayevents(json, page) {
 			var colVal = cols[j];
 			if (j == 4) {
 				colVal = json.metaData.names[colVal];
+			}
+			if( jQuery.inArray( j, attList )>=0 && colVal!="" ){
+				colVal = (colVal=='true')? i18n_yes : i18n_no;
 			}
 			table += "<td onclick=\"javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '"
 				+ uid
@@ -444,4 +465,23 @@ function setDateRangeAll()
 	var d = date.getDate();
 	var m = date.getMonth();
 	var y= date.getFullYear();
+}
+
+
+function programOnChange() {
+	var program = getFieldValue('program');
+	if( program != '' ){
+		$.postJSON("getVisitScheduleAttributes.action", {
+			id : program
+		}, function(json) {
+			clearListById('attributeIds');
+			for ( var i in json.attributes) {
+				if(json.attributes[i].displayed=='true'){
+					jQuery('#attributeIds').append(
+					'<option value="' + json.attributes[i].id 
+					+ '" valueType="' + json.attributes[i].valueType  + '"></option>');
+				}
+			}
+		});
+	}
 }
