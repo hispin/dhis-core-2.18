@@ -28,6 +28,9 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -46,13 +49,20 @@ public abstract class AbstractCalendar implements Calendar
     }
 
     @Override
-    public int getMonthsInYear()
+    public DateUnit today()
+    {
+        DateTime dateTime = new DateTime( ISOChronology.getInstance() );
+        return fromIso( DateUnit.fromDateTime( dateTime ) );
+    }
+
+    @Override
+    public int monthsInYear()
     {
         return 12;
     }
 
     @Override
-    public int getDaysInWeek()
+    public int daysInWeek()
     {
         return 7;
     }

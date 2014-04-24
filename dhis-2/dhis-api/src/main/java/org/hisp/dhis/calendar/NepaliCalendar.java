@@ -37,13 +37,13 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class NepalCalendar extends AbstractCalendar
+public class NepaliCalendar extends AbstractCalendar
 {
     private final DateUnit startNepal = new DateUnit( 2000, 1, 1, java.util.Calendar.WEDNESDAY );
 
     private final DateUnit startIso = new DateUnit( 1943, 4, 14, java.util.Calendar.WEDNESDAY );
 
-    private static final Calendar self = new NepalCalendar();
+    private static final Calendar self = new NepaliCalendar();
 
     public static Calendar getInstance()
     {
@@ -120,13 +120,13 @@ public class NepalCalendar extends AbstractCalendar
     }
 
     @Override
-    public int getDaysInYear( int year )
+    public int daysInYear( int year )
     {
         return getYearTotal( year );
     }
 
     @Override
-    public int getDaysInMonth( int year, int month )
+    public int daysInMonth( int year, int month )
     {
         return conversionMap.get( year )[month];
     }

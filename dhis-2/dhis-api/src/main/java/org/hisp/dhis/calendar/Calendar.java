@@ -41,11 +41,13 @@ public interface Calendar
 
     DateUnit fromIso( DateUnit dateUnit );
 
-    int getMonthsInYear();
+    DateUnit today();
 
-    int getDaysInWeek();
+    int monthsInYear();
 
-    int getDaysInYear( int year );
+    int daysInWeek();
 
-    int getDaysInMonth( int year, int month );
+    int daysInYear( int year );
+
+    int daysInMonth( int year, int month );
 }
