@@ -33,6 +33,7 @@ import java.util.Collection;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.trackedentity.TrackedEntity;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
@@ -109,6 +110,25 @@ public class ProgramDeletionHandler
     {
         Collection<Program> programs = programService.getProgramsByTrackedEntity( trackedEntity );
 
-        return (programs!=null && programs.size() > 0) ? ERROR : null;
+        return (programs != null && programs.size() > 0) ? ERROR : null;
+    }
+
+    @Override
+    public void deleteTrackedEntityAttribute( TrackedEntityAttribute trackedEntityAttribute )
+    {
+        Collection<Program> programs = programService.getAllPrograms();
+
+        for ( Program program : programs )
+        {
+            for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
+            {
+                if ( programAttribute.getAttribute().equals( trackedEntityAttribute ) )
+                {
+                    program.getAttributes().remove( programAttribute );
+                    programService.updateProgram( program );
+                    break;
+                }
+            }
+        }
     }
 }
