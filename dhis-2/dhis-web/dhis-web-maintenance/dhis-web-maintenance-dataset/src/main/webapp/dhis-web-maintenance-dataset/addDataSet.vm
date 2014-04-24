@@ -84,7 +84,7 @@
       	<td>
       	  <select id="categoryComboId" name="categoryComboId">
       	  	#foreach( $categoryCombo in $categoryCombos )
-      	  	  <option value="$categoryCombo.id">$encoder.htmlEncode( $categoryCombo.displayName )</option>
+      	  	  <option value="$categoryCombo.id" #if( $categoryCombo.isDefault() ) selected="selected"#end>$encoder.htmlEncode( $categoryCombo.displayName )</option>
 	  	    #end
   	      </select>
 	    </td>
