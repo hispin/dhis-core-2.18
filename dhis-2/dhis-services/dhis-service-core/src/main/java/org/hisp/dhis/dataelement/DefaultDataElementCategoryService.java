@@ -639,21 +639,23 @@ public class DefaultDataElementCategoryService
 
         for ( DataElement dataElement : dataElements )
         {
-            if ( !dataElement.getCategoryCombo().isDefault() && includeTotals )
+            if ( dataElement.getCategoryCombo() != null )
             {
-                DataElementOperand operand = new DataElementOperand();
-                operand.updateProperties( dataElement );
-
-                operands.add( operand );
-            }
-
-            for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo()
-                .getSortedOptionCombos() )
-            {
-                DataElementOperand operand = new DataElementOperand();
-                operand.updateProperties( dataElement, categoryOptionCombo );
-
-                operands.add( operand );
+                if ( !dataElement.getCategoryCombo().isDefault() && includeTotals )
+                {
+                    DataElementOperand operand = new DataElementOperand();
+                    operand.updateProperties( dataElement );
+    
+                    operands.add( operand );
+                }
+    
+                for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getSortedOptionCombos() )
+                {
+                    DataElementOperand operand = new DataElementOperand();
+                    operand.updateProperties( dataElement, categoryOptionCombo );
+    
+                    operands.add( operand );
+                }
             }
         }
 
@@ -673,12 +675,15 @@ public class DefaultDataElementCategoryService
 
         for ( DataElement dataElement : dataElements )
         {
-            for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
+            if ( dataElement.getCategoryCombo() != null )
             {
-                DataElementOperand operand = new DataElementOperand( dataElement, categoryOptionCombo );
-                operand.updateProperties( dataElement, categoryOptionCombo );
-
-                operands.add( operand );
+                for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
+                {
+                    DataElementOperand operand = new DataElementOperand( dataElement, categoryOptionCombo );
+                    operand.updateProperties( dataElement, categoryOptionCombo );
+    
+                    operands.add( operand );
+                }
             }
         }
 
