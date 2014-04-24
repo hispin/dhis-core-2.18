@@ -72,6 +72,7 @@ public class OrgUnitTest
         unit.setFindLostToFollowUpUrl( "findLostToFollowUpUrl" );
         unit.setHandleLostToFollowUpUrl( "handleLostToFollowUpUrl" );
         unit.setGenerateRepeatableEventUrl( "generateRepeatableEventUrl" );
+        unit.setUploadSingleEventWithoutRegistration( "uploadSingleEventWithoutRegistration" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );
