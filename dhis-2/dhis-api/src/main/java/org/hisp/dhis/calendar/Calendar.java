@@ -40,4 +40,12 @@ public interface Calendar
     DateUnit fromIso( int year, int month, int day );
 
     DateUnit fromIso( DateUnit dateUnit );
+
+    int getMonthsInYear();
+
+    int getDaysInWeek();
+
+    int getDaysInYear( int year );
+
+    int getDaysInMonth( int year, int month );
 }

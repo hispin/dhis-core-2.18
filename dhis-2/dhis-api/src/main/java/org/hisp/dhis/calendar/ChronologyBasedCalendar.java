@@ -61,4 +61,32 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
 
         return DateUnit.fromDateTime( dateTime );
     }
+
+    @Override
+    public int getMonthsInYear()
+    {
+        DateTime dateTime = new DateTime( 1, 1, 1, 0, 0, chronology );
+        return dateTime.monthOfYear().getMaximumValue();
+    }
+
+    @Override
+    public int getDaysInWeek()
+    {
+        DateTime dateTime = new DateTime( 1, 1, 1, 0, 0, chronology );
+        return dateTime.dayOfWeek().getMaximumValue();
+    }
+
+    @Override
+    public int getDaysInYear( int year )
+    {
+        DateTime dateTime = new DateTime( year, 1, 1, 0, 0, chronology );
+        return (int) dateTime.year().toInterval().toDuration().getStandardDays();
+    }
+
+    @Override
+    public int getDaysInMonth( int year, int month )
+    {
+        DateTime dateTime = new DateTime( year, month, 1, 0, 0, chronology );
+        return (int) dateTime.monthOfYear().toInterval().toDuration().getStandardDays();
+    }
 }

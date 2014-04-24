@@ -44,4 +44,16 @@ public abstract class AbstractCalendar implements Calendar
     {
         return fromIso( new DateUnit( year, month, day ) );
     }
+
+    @Override
+    public int getMonthsInYear()
+    {
+        return 12;
+    }
+
+    @Override
+    public int getDaysInWeek()
+    {
+        return 7;
+    }
 }
