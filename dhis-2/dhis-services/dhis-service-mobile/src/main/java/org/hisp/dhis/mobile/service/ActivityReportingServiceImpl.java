@@ -106,6 +106,8 @@ public class ActivityReportingServiceImpl
     private static final String PROGRAM_STAGE_SECTION_UPLOADED = "program_stage_section_uploaded";
 
     private static final String SINGLE_EVENT_UPLOADED = "single_event_uploaded";
+    
+    private static final String SINGLE_EVENT_WITHOUT_REGISTRATION_UPLOADED = "single_event_without_registration_uploaded";
 
     private ActivityComparator activityComparator = new ActivityComparator();
 
@@ -1456,7 +1458,8 @@ public class ActivityReportingServiceImpl
             for ( org.hisp.dhis.api.mobile.model.PatientAttribute paAtt : attributesMobile )
             {
 
-                TrackedEntityAttribute patientAttribute = attributeService.getTrackedEntityAttributeByName( paAtt.getName() );
+                TrackedEntityAttribute patientAttribute = attributeService.getTrackedEntityAttributeByName( paAtt
+                    .getName() );
 
                 patientAttributeSet.add( patientAttribute );
 
@@ -1512,7 +1515,8 @@ public class ActivityReportingServiceImpl
 
         for ( TrackedEntityAttribute displayAttribute : attributes )
         {
-            Collection<TrackedEntityInstance> resultPatients = attValueService.getTrackedEntityInstance( displayAttribute, keyword );
+            Collection<TrackedEntityInstance> resultPatients = attValueService.getTrackedEntityInstance(
+                displayAttribute, keyword );
             // Search in specific OrgUnit
             if ( orgUnitId != 0 )
             {
@@ -1539,14 +1543,16 @@ public class ActivityReportingServiceImpl
 
         String resultSet = "";
 
-        Collection<TrackedEntityAttribute> displayAttributes = attributeService.getTrackedEntityAttributesDisplayInList( true );
+        Collection<TrackedEntityAttribute> displayAttributes = attributeService
+            .getTrackedEntityAttributesDisplayInList( true );
         for ( TrackedEntityInstance patient : patients )
         {
             resultSet += patient.getId() + "/";
             String attText = "";
             for ( TrackedEntityAttribute displayAttribute : displayAttributes )
             {
-                TrackedEntityAttributeValue value = attValueService.getTrackedEntityAttributeValue( patient, displayAttribute );
+                TrackedEntityAttributeValue value = attValueService.getTrackedEntityAttributeValue( patient,
+                    displayAttribute );
                 if ( value != null )
                 {
                     attText += value.getValue() + " ";
@@ -1756,5 +1762,70 @@ public class ActivityReportingServiceImpl
     public void setPatientMobile( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile )
     {
         this.patientMobile = patientMobile;
+    }
+
+    @Override
+    public String saveSingleEventWithoutRegistration(
+        org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage, int orgUnitId )
+        throws NotAllowedException
+    {
+        ProgramStage programStage = programStageService.getProgramStage( mobileProgramStage.getId() );
+
+        Program program = programStage.getProgram();
+
+        ProgramInstance programInstance = new ProgramInstance();
+
+        programInstance.setEnrollmentDate( new Date() );
+
+        programInstance.setDateOfIncident( new Date() );
+
+        programInstance.setProgram( program );
+
+        programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
+
+        programInstanceService.addProgramInstance( programInstance );
+
+        ProgramStageInstance programStageInstance = new ProgramStageInstance();
+
+        programStageInstance.setProgramInstance( programInstance );
+
+        programStageInstance.setProgramStage( programStage );
+
+        programStageInstance.setDueDate( new Date() );
+
+        programStageInstance.setExecutionDate( new Date() );
+
+        programStageInstance.setCompleted( true );
+
+        programStageInstance.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
+
+        programStageInstanceService.addProgramStageInstance( programStageInstance );
+
+        for ( org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement mobileDataElement : mobileProgramStage
+            .getDataElements() )
+        {
+
+            TrackedEntityDataValue trackedEntityDataValue = new TrackedEntityDataValue();
+
+            trackedEntityDataValue.setDataElement( dataElementService.getDataElement( mobileDataElement.getId() ) );
+
+            String value = mobileDataElement.getValue();
+
+            if ( value != null && !value.trim().equals( "" ) )
+            {
+
+                trackedEntityDataValue.setValue( value );
+
+                trackedEntityDataValue.setProgramStageInstance( programStageInstance );
+
+                trackedEntityDataValue.setProvidedElsewhere( false );
+
+                trackedEntityDataValue.setTimestamp( new Date() );
+
+                dataValueService.saveTrackedEntityDataValue( trackedEntityDataValue );
+            }
+
+        }
+        return SINGLE_EVENT_WITHOUT_REGISTRATION_UPLOADED;
     }
 }

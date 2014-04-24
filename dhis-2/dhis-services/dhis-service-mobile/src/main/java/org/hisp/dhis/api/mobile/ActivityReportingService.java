@@ -98,5 +98,8 @@ public interface ActivityReportingService
 
     public Patient generateRepeatableEvent( int orgUnitId, String eventInfo )
         throws NotAllowedException;
+    
+    public String saveSingleEventWithoutRegistration( ProgramStage programStage, int orgUnitId )
+        throws NotAllowedException;
 
 }

@@ -160,6 +160,7 @@ public class MobileClientController
         orgUnit.setFindLostToFollowUpUrl( getUrl( request, unit.getId(), "findLostToFollowUp" ) );
         orgUnit.setHandleLostToFollowUpUrl( getUrl( request, unit.getId(), "handleLostToFollowUp" ) );
         orgUnit.setGenerateRepeatableEventUrl( getUrl( request, unit.getId(), "generateRepeatableEvent" ) );
+        orgUnit.setUploadSingleEventWithoutRegistration(getUrl( request, unit.getId(), "uploadSingleEventWithoutRegistration" ));
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );

@@ -90,6 +90,8 @@ public class MobileOrgUnitLinks
     private String handleLostToFollowUpUrl;
 
     private String generateRepeatableEventUrl;
+    
+    private String uploadSingleEventWithoutRegistration;
 
     @XmlAttribute
     public int getId()
@@ -342,6 +344,16 @@ public class MobileOrgUnitLinks
     {
         this.generateRepeatableEventUrl = generateRepeatableEventUrl;
     }
+    
+    public String getUploadSingleEventWithoutRegistration()
+    {
+        return uploadSingleEventWithoutRegistration;
+    }
+
+    public void setUploadSingleEventWithoutRegistration( String uploadSingleEventWithoutRegistration )
+    {
+        this.uploadSingleEventWithoutRegistration = uploadSingleEventWithoutRegistration;
+    }
 
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
@@ -370,6 +382,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( findLostToFollowUpUrl );
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
         dataOutputStream.writeUTF( generateRepeatableEventUrl );
+        dataOutputStream.writeUTF( uploadSingleEventWithoutRegistration);
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -399,6 +412,7 @@ public class MobileOrgUnitLinks
         findLostToFollowUpUrl = dataInputStream.readUTF();
         handleLostToFollowUpUrl = dataInputStream.readUTF();
         generateRepeatableEventUrl = dataInputStream.readUTF();
+        uploadSingleEventWithoutRegistration = dataInputStream.readUTF();
     }
 
     @Override
@@ -463,5 +477,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( findLostToFollowUpUrl );
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
         dataOutputStream.writeUTF( generateRepeatableEventUrl );
+        dataOutputStream.writeUTF( uploadSingleEventWithoutRegistration );
     }
 }

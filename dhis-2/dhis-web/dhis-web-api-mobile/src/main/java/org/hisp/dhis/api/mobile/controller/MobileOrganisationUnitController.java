@@ -348,6 +348,15 @@ public class MobileOrganisationUnitController
     {
         return activityReportingService.saveProgramStage( programStage, patientId, id );
     }
+    
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/uploadSingleEventWithoutRegistration" )
+    @ResponseBody
+    public String saveSingleEventWithoutRegistration( @PathVariable int id,
+        @RequestBody ProgramStage programStage )
+        throws NotAllowedException
+    {
+        return activityReportingService.saveSingleEventWithoutRegistration( programStage, id );
+    }
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/enrollProgram" )
     @ResponseBody
