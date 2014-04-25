@@ -61,6 +61,30 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     }
 
     @Override
+    public DateInterval toIsoInterval( int year )
+    {
+        DateUnit from = new DateUnit( year, 1, 1 );
+        DateUnit to = new DateUnit( year, monthsInYear(), daysInMonth( year, monthsInYear() ) );
+
+        from.setDayOfWeek( isoWeekday( from ) );
+        to.setDayOfWeek( isoWeekday( to ) );
+
+        return new DateInterval( from, to );
+    }
+
+    @Override
+    public DateInterval toIsoInterval( int year, int month )
+    {
+        DateUnit from = new DateUnit( year, month, 1 );
+        DateUnit to = new DateUnit( year, month, daysInMonth( year, month ) );
+
+        from.setDayOfWeek( isoWeekday( from ) );
+        to.setDayOfWeek( isoWeekday( to ) );
+
+        return new DateInterval( from, to );
+    }
+
+    @Override
     public int monthsInYear()
     {
         DateTime dateTime = new DateTime( 1, 1, 1, 0, 0, chronology );

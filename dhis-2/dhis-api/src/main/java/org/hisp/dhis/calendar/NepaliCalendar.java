@@ -121,6 +121,30 @@ public class NepaliCalendar extends AbstractCalendar
     }
 
     @Override
+    public DateInterval toIsoInterval( int year )
+    {
+        DateUnit from = new DateUnit( year, 1, 1 );
+        DateUnit to = new DateUnit( year, monthsInYear(), daysInMonth( year, monthsInYear() ) );
+
+        from = toIso( from );
+        to = toIso( to );
+
+        return new DateInterval( from, to );
+    }
+
+    @Override
+    public DateInterval toIsoInterval( int year, int month )
+    {
+        DateUnit from = new DateUnit( year, month, 1 );
+        DateUnit to = new DateUnit( year, month, daysInMonth( year, month ) );
+
+        from = toIso( from );
+        to = toIso( to );
+
+        return new DateInterval( from, to );
+    }
+
+    @Override
     public int daysInYear( int year )
     {
         return getYearTotal( year );

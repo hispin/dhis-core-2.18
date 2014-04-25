@@ -41,6 +41,10 @@ public interface Calendar
 
     DateUnit fromIso( DateUnit dateUnit );
 
+    DateInterval toIsoInterval( int year );
+
+    DateInterval toIsoInterval( int year, int month );
+
     DateUnit today();
 
     int monthsInYear();
