@@ -6,7 +6,7 @@ var timeout;
 jQuery(function(){
 	dataElementSelector = jQuery("#dataElementDiv").dialog({
 		title: i18n_dataelement,
-		height: 420,
+		height: 360,
 		width: 480,
 		position: [$("body").width()- 50, 0],
 		autoOpen: false,
