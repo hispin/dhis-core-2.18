@@ -109,6 +109,7 @@ public class DataElementOperand
 
     public DataElementOperand()
     {
+        setAutoFields();
     }
 
     public DataElementOperand( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )

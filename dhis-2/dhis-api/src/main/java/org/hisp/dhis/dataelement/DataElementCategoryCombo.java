@@ -61,7 +61,7 @@ public class DataElementCategoryCombo
     private static final long serialVersionUID = 1549406078091077760L;
 
     public static final String DEFAULT_CATEGORY_COMBO_NAME = "default";
-    
+
     public static final String DIMENSION_TYPE_DISAGGREGATION = "disaggregation";
     public static final String DIMENSION_TYPE_ATTTRIBUTE = "attribute";
 
@@ -80,23 +80,25 @@ public class DataElementCategoryCombo
     private String dimensionType;
 
     private boolean skipTotal;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
     public DataElementCategoryCombo()
     {
+        setAutoFields();
     }
 
     public DataElementCategoryCombo( String name )
     {
+        this();
         this.name = name;
     }
 
     public DataElementCategoryCombo( String name, List<DataElementCategory> categories )
     {
-        this.name = name;
+        this( name );
         this.categories = categories;
     }
 
@@ -171,7 +173,8 @@ public class DataElementCategoryCombo
         CombinationGenerator<DataElementCategoryOption> generator =
             new CombinationGenerator<DataElementCategoryOption>( getCategoryOptionsAsArray() );
 
-        sortLoop: while ( generator.hasNext() )
+        sortLoop:
+        while ( generator.hasNext() )
         {
             List<DataElementCategoryOption> categoryOptions = generator.getNext();
 

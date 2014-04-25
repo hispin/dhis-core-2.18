@@ -54,7 +54,7 @@ import java.util.List;
  *
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "indicatorGroupSet", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement(localName = "indicatorGroupSet", namespace = DxfNamespaces.DXF_2_0)
 public class IndicatorGroupSet
     extends BaseIdentifiableObject
 {
@@ -76,25 +76,26 @@ public class IndicatorGroupSet
 
     public IndicatorGroupSet()
     {
+        setAutoFields();
     }
 
     public IndicatorGroupSet( String name )
     {
+        this();
         this.name = name;
         this.compulsory = false;
     }
 
     public IndicatorGroupSet( String name, Boolean compulsory )
     {
-        this.name = name;
+        this( name );
         this.compulsory = compulsory;
     }
 
     public IndicatorGroupSet( String name, String description, Boolean compulsory )
     {
-        this.name = name;
+        this( name, compulsory );
         this.description = description;
-        this.compulsory = compulsory;
     }
 
     // -------------------------------------------------------------------------
@@ -167,7 +168,7 @@ public class IndicatorGroupSet
         members.add( indicatorGroup );
         indicatorGroup.setGroupSet( this );
     }
-    
+
     public void removeIndicatorGroup( IndicatorGroup indicatorGroup )
     {
         members.remove( indicatorGroup );
@@ -185,8 +186,8 @@ public class IndicatorGroupSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getDescription()
     {
         return description;
@@ -198,8 +199,8 @@ public class IndicatorGroupSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Boolean isCompulsory()
     {
         if ( compulsory == null )
@@ -215,11 +216,11 @@ public class IndicatorGroupSet
         this.compulsory = compulsory;
     }
 
-    @JsonProperty( value = "indicatorGroups" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "indicatorGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "indicatorGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty(value = "indicatorGroups")
+    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "indicatorGroups", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "indicatorGroup", namespace = DxfNamespaces.DXF_2_0)
     public List<IndicatorGroup> getMembers()
     {
         return members;

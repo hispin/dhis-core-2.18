@@ -93,7 +93,12 @@ public class Indicator
      * The legend set for this indicator.
      */
     private MapLegendSet legendSet;
-    
+
+    public Indicator()
+    {
+        setAutoFields();
+    }
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------

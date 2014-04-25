@@ -156,6 +156,7 @@ public class OrganisationUnit
     public OrganisationUnit()
     {
         this.uuid = UUID.randomUUID().toString();
+        setAutoFields();
     }
 
     public OrganisationUnit( String name )

@@ -75,10 +75,12 @@ public class DataElementGroup
 
     public DataElementGroup()
     {
+        setAutoFields();
     }
 
     public DataElementGroup( String name )
     {
+        this();
         this.name = name;
     }
 

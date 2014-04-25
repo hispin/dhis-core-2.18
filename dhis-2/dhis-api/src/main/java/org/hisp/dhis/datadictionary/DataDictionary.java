@@ -74,10 +74,12 @@ public class DataDictionary
 
     public DataDictionary()
     {
+        setAutoFields();
     }
 
     public DataDictionary( String name, String description, String region )
     {
+        this();
         this.name = name;
         this.description = description;
         this.region = region;

@@ -73,10 +73,12 @@ public class IndicatorGroup
 
     public IndicatorGroup()
     {
+        setAutoFields();
     }
 
     public IndicatorGroup( String name )
     {
+        this();
         this.name = name;
     }
 
