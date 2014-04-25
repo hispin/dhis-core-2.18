@@ -126,7 +126,7 @@ public class DataElementGroupSet
     {
         for ( DataElementGroup dataElementGroup : members )
         {
-            if ( dataElementGroup.getGroupSet().equals( this ) )
+            if ( dataElementGroup.getGroupSet() != null && dataElementGroup.getGroupSet().equals( this ) )
             {
                 dataElementGroup.setGroupSet( null );
             }
