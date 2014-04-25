@@ -28,42 +28,14 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.joda.time.DateTime;
-import org.joda.time.chrono.ISOChronology;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractCalendar implements Calendar
+public interface CalendarService
 {
-    @Override
-    public DateUnit toIso( int year, int month, int day )
-    {
-        return toIso( new DateUnit( year, month, day ) );
-    }
+    List<Calendar> getAll();
 
-    @Override
-    public DateUnit fromIso( int year, int month, int day )
-    {
-        return fromIso( new DateUnit( year, month, day ) );
-    }
-
-    @Override
-    public DateUnit today()
-    {
-        DateTime dateTime = new DateTime( ISOChronology.getInstance() );
-        return fromIso( DateUnit.fromDateTime( dateTime ) );
-    }
-
-    @Override
-    public int monthsInYear()
-    {
-        return 12;
-    }
-
-    @Override
-    public int daysInWeek()
-    {
-        return 7;
-    }
+    Calendar getSystemCalendar();
 }

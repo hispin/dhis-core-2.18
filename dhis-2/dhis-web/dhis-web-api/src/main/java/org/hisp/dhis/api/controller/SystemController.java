@@ -28,15 +28,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dxf2.metadata.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -57,11 +49,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = SystemController.RESOURCE_PATH)
+@RequestMapping( value = SystemController.RESOURCE_PATH )
 public class SystemController
 {
     public static final String RESOURCE_PATH = "/system";
@@ -74,7 +72,7 @@ public class SystemController
 
     @Autowired
     private SystemService systemService;
-    
+
     @Autowired
     private Notifier notifier;
 
@@ -83,7 +81,7 @@ public class SystemController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = { "/uid", "/id" }, method = RequestMethod.GET )
-    public void getUid( @RequestParam(required = false) Integer n, HttpServletResponse response ) throws IOException
+    public void getUid( @RequestParam( required = false ) Integer n, HttpServletResponse response ) throws IOException
     {
         response.setContentType( ContextUtils.CONTENT_TYPE_JSON );
 
@@ -110,8 +108,8 @@ public class SystemController
     }
 
     @RequestMapping( value = "/tasks/{category}", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
-    public void getTaskJson( @PathVariable("category") String category, 
-        @RequestParam(required=false) String lastId, HttpServletResponse response ) throws IOException
+    public void getTaskJson( @PathVariable( "category" ) String category,
+        @RequestParam( required = false ) String lastId, HttpServletResponse response ) throws IOException
     {
         List<Notification> notifications = new ArrayList<Notification>();
 
@@ -128,7 +126,7 @@ public class SystemController
     }
 
     @RequestMapping( value = "/taskSummaries/{category}", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
-    public void getTaskSummaryJson( HttpServletResponse response, @PathVariable("category") String category ) throws IOException
+    public void getTaskSummaryJson( HttpServletResponse response, @PathVariable( "category" ) String category ) throws IOException
     {
         ImportSummary importSummary = new ImportSummary();
 
@@ -145,25 +143,25 @@ public class SystemController
 
         JacksonUtils.toJson( response.getOutputStream(), importSummary );
     }
-    
+
     @RequestMapping( value = "/info", method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
     public String getSystemInfo( Model model, HttpServletRequest request, HttpServletResponse response )
     {
         SystemInfo info = systemService.getSystemInfo();
-        
+
         info.setContextPath( ContextUtils.getContextPath( request ) );
         info.setUserAgent( request.getHeader( ContextUtils.HEADER_USER_AGENT ) );
-        
+
         if ( !currentUserService.currentUserIsSuper() )
         {
             info.clearSensitiveInfo();
         }
 
         model.addAttribute( "model", info );
-        
+
         return "info";
     }
-    
+
     @RequestMapping( value = "/context", method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
     public String getContextInfo( Model model, HttpServletRequest request, HttpServletResponse response )
     {
@@ -173,10 +171,10 @@ public class SystemController
         info.setUserAgent( request.getHeader( ContextUtils.HEADER_USER_AGENT ) );
 
         model.addAttribute( "model", info );
-        
+
         return "info";
     }
-    
+
     @RequestMapping( value = "/ping", method = RequestMethod.GET, produces = "text/plain" )
     public @ResponseBody String ping( Model model )
     {

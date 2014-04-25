@@ -56,7 +56,8 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     @Override
     public DateUnit fromIso( DateUnit dateUnit )
     {
-        DateTime dateTime = dateUnit.toDateTime( chronology );
+        DateTime dateTime = dateUnit.toDateTime( ISOChronology.getInstance() );
+        dateTime = dateTime.withChronology( chronology );
         return DateUnit.fromDateTime( dateTime );
     }
 

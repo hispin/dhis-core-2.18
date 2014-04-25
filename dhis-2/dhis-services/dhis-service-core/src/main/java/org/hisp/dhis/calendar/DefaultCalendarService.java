@@ -29,24 +29,36 @@ package org.hisp.dhis.calendar;
  */
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.hisp.dhis.calendar.impl.Iso8601Calendar;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class CalendarFactory
+public class DefaultCalendarService implements CalendarService
 {
     @Autowired
     private SystemSettingManager settingManager;
 
     @Autowired
-    private List<AbstractCalendar> calendars = Lists.newArrayList();
+    private Set<Calendar> calendars = Sets.newHashSet();
 
-    public Calendar createCalendar()
+    @Override
+    public List<Calendar> getAll()
+    {
+        List<Calendar> sortedCalendars = Lists.newArrayList( calendars );
+        Collections.sort( sortedCalendars, CalendarComparator.INSTANCE );
+        return sortedCalendars;
+    }
+
+    @Override
+    public Calendar getSystemCalendar()
     {
         String setting = (String) settingManager.getSystemSetting( SystemSettingManager.KEY_CALENDAR, SystemSettingManager.DEFAULT_CALENDAR );
 

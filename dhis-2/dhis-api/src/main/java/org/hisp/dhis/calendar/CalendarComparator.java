@@ -28,42 +28,18 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.joda.time.DateTime;
-import org.joda.time.chrono.ISOChronology;
+import java.util.Comparator;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractCalendar implements Calendar
+public class CalendarComparator implements Comparator<Calendar>
 {
-    @Override
-    public DateUnit toIso( int year, int month, int day )
-    {
-        return toIso( new DateUnit( year, month, day ) );
-    }
+    public static final CalendarComparator INSTANCE = new CalendarComparator();
 
     @Override
-    public DateUnit fromIso( int year, int month, int day )
+    public int compare( Calendar o1, Calendar o2 )
     {
-        return fromIso( new DateUnit( year, month, day ) );
-    }
-
-    @Override
-    public DateUnit today()
-    {
-        DateTime dateTime = new DateTime( ISOChronology.getInstance() );
-        return fromIso( DateUnit.fromDateTime( dateTime ) );
-    }
-
-    @Override
-    public int monthsInYear()
-    {
-        return 12;
-    }
-
-    @Override
-    public int daysInWeek()
-    {
-        return 7;
+        return o1.name().compareTo( o2.name() );
     }
 }
