@@ -131,10 +131,12 @@ public class TrackedEntityDataValueStoreTest
         Program program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( program );
 
-        ProgramStage stageA = new ProgramStage( "A", program );
+        ProgramStage stageA = createProgramStage( 'A', 0 );
+        stageA.setProgram( program );
         programStageService.saveProgramStage( stageA );
 
-        ProgramStage stageB = new ProgramStage( "B", program );
+        ProgramStage stageB = createProgramStage( 'B', 0 );
+        stageB.setProgram( program );
         programStageService.saveProgramStage( stageB );
 
         Set<ProgramStage> programStages = new HashSet<ProgramStage>();

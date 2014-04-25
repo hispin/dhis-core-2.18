@@ -28,17 +28,6 @@ package org.hisp.dhis.trackedentitydatavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -57,9 +46,16 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.*;
+
 /**
  * @author Chau Thu Tran
- * 
  * @version $ TrackedEntityDataValueServiceTest.java Nov 5, 2013 3:11:48 PM $
  */
 public class TrackedEntityDataValueServiceTest
@@ -125,16 +121,18 @@ public class TrackedEntityDataValueServiceTest
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
 
-        entityInstance = createTrackedEntityInstance(  'A', organisationUnit );
+        entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
         entityInstanceService.addTrackedEntityInstance( entityInstance );
 
         Program program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programService.addProgram( program );
 
-        ProgramStage stageA = new ProgramStage( "A", program );
+        ProgramStage stageA = createProgramStage( 'A', 0 );
+        stageA.setProgram( program );
         programStageService.saveProgramStage( stageA );
 
-        ProgramStage stageB = new ProgramStage( "B", program );
+        ProgramStage stageB = createProgramStage( 'B', 0 );
+        stageB.setProgram( program );
         programStageService.saveProgramStage( stageB );
 
         Set<ProgramStage> programStages = new HashSet<ProgramStage>();
@@ -305,7 +303,7 @@ public class TrackedEntityDataValueServiceTest
     @Test
     public void testGetDataValuesByDataElement()
     {
-        dataValueService.saveTrackedEntityDataValue(  dataValueA );
+        dataValueService.saveTrackedEntityDataValue( dataValueA );
         dataValueService.saveTrackedEntityDataValue( dataValueB );
         dataValueService.saveTrackedEntityDataValue( dataValueC );
         dataValueService.saveTrackedEntityDataValue( dataValueD );

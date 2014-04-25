@@ -121,6 +121,7 @@ public class TrackedEntityInstanceReminderServiceTest
         orgUnits.add( organisationUnit );
 
         user = new User();
+        user.setAutoFields();
         user.setSurname( "A" );
         user.setFirstName( "B" );
         user.setPhoneNumber( "111-222-333" );
