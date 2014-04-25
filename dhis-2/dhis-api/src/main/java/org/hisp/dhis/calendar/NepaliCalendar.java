@@ -30,6 +30,7 @@ package org.hisp.dhis.calendar;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.chrono.ISOChronology;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -129,6 +130,39 @@ public class NepaliCalendar extends AbstractCalendar
     public int daysInMonth( int year, int month )
     {
         return conversionMap.get( year )[month];
+    }
+
+    @Override
+    public int isoWeek( DateUnit dateUnit )
+    {
+        DateTime dateTime = toIso( dateUnit ).toDateTime( ISOChronology.getInstance() );
+        return dateTime.getWeekyear();
+    }
+
+    @Override
+    public int week( DateUnit dateUnit )
+    {
+        return isoWeek( dateUnit );
+    }
+
+    @Override
+    public int isoWeekday( DateUnit dateUnit )
+    {
+        DateTime dateTime = toIso( dateUnit ).toDateTime( ISOChronology.getInstance() );
+        return dateTime.getDayOfWeek();
+    }
+
+    @Override
+    public int weekday( DateUnit dateUnit )
+    {
+        int dayOfWeek = (isoWeekday( dateUnit ) + 1);
+
+        if ( dayOfWeek > 7 )
+        {
+            return 1;
+        }
+
+        return dayOfWeek;
     }
 
     private int getYearTotal( int year )

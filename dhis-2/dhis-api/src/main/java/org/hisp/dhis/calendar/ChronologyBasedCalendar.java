@@ -56,9 +56,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     @Override
     public DateUnit fromIso( DateUnit dateUnit )
     {
-        DateTime dateTime = dateUnit.toDateTime();
-        dateTime = dateTime.withChronology( chronology );
-
+        DateTime dateTime = dateUnit.toDateTime( chronology );
         return DateUnit.fromDateTime( dateTime );
     }
 
@@ -88,5 +86,31 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     {
         DateTime dateTime = new DateTime( year, month, 1, 0, 0, chronology );
         return (int) dateTime.monthOfYear().toInterval().toDuration().getStandardDays();
+    }
+
+    @Override
+    public int isoWeek( DateUnit dateUnit )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return dateTime.getWeekOfWeekyear();
+    }
+
+    @Override
+    public int week( DateUnit dateUnit )
+    {
+        return isoWeek( dateUnit );
+    }
+
+    @Override
+    public int isoWeekday( DateUnit dateUnit )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return dateTime.getDayOfWeek();
+    }
+
+    @Override
+    public int weekday( DateUnit dateUnit )
+    {
+        return isoWeekday( dateUnit );
     }
 }
