@@ -105,12 +105,14 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     public int isoWeekday( DateUnit dateUnit )
     {
         DateTime dateTime = dateUnit.toDateTime( chronology );
+        dateTime = dateTime.withChronology( ISOChronology.getInstance() );
         return dateTime.getDayOfWeek();
     }
 
     @Override
     public int weekday( DateUnit dateUnit )
     {
-        return isoWeekday( dateUnit );
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return dateTime.getDayOfWeek();
     }
 }
