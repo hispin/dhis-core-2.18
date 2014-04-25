@@ -287,6 +287,7 @@
       class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-program/programStage.vm</param>
+      <param name="menu">/dhis-web-maintenance-program/menu.vm</param>
       <param name="javascripts">javascript/programStage.js</param>
     </action>
 
@@ -383,6 +384,7 @@
       <param name="page">
         /dhis-web-maintenance-program/programStageSection.vm
       </param>
+      <param name="menu">/dhis-web-maintenance-program/menu.vm</param>
       <param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
       <param name="stylesheets">style/basic.css</param>
       <param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_MANAGEMENT</param>
