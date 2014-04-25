@@ -123,10 +123,10 @@ public class DataApprovalStoreTest
         // Add supporting data
         // ---------------------------------------------------------------------
 
-        level1 = new DataApprovalLevel( "1", 1, null );
-        level2 = new DataApprovalLevel( "2", 2, null );
-        level3 = new DataApprovalLevel( "3", 3, null );
-        level4 = new DataApprovalLevel( "4", 4, null );
+        level1 = new DataApprovalLevel( "01", 1, null );
+        level2 = new DataApprovalLevel( "02", 2, null );
+        level3 = new DataApprovalLevel( "03", 3, null );
+        level4 = new DataApprovalLevel( "04", 4, null );
 
         PeriodType periodType = PeriodType.getPeriodTypeByName( "Monthly" );
 
