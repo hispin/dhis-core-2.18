@@ -1,4 +1,4 @@
-package org.hisp.dhis.calendar;
+package org.hisp.dhis.calendar.impl;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,22 +28,32 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.joda.time.chrono.ISOChronology;
+import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.chrono.BuddhistChronology;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class Iso8601Calendar extends ChronologyBasedCalendar
+@Component
+public class BuddhistCalendar extends ChronologyBasedCalendar
 {
-    private static final Calendar self = new Iso8601Calendar();
+    private static final Calendar self = new BuddhistCalendar();
 
     public static Calendar getInstance()
     {
         return self;
     }
 
-    protected Iso8601Calendar()
+    protected BuddhistCalendar()
     {
-        super( ISOChronology.getInstance() );
+        super( BuddhistChronology.getInstance() );
+    }
+
+    @Override
+    public String name()
+    {
+        return "buddhist";
     }
 }

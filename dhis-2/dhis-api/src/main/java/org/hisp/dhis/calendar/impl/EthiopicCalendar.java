@@ -1,4 +1,4 @@
-package org.hisp.dhis.calendar;
+package org.hisp.dhis.calendar.impl;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,22 +28,32 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.joda.time.chrono.JulianChronology;
+import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.chrono.EthiopicChronology;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JulianCalendar extends ChronologyBasedCalendar
+@Component
+public class EthiopicCalendar extends ChronologyBasedCalendar
 {
-    private static final Calendar self = new JulianCalendar();
+    private static final Calendar self = new EthiopicCalendar();
 
     public static Calendar getInstance()
     {
         return self;
     }
 
-    protected JulianCalendar()
+    protected EthiopicCalendar()
     {
-        super( JulianChronology.getInstance() );
+        super( EthiopicChronology.getInstance() );
+    }
+
+    @Override
+    public String name()
+    {
+        return "ethiopic";
     }
 }

@@ -37,6 +37,12 @@ import org.joda.time.chrono.ISOChronology;
 public abstract class AbstractCalendar implements Calendar
 {
     @Override
+    public String name()
+    {
+        return getClass().getSimpleName();
+    }
+
+    @Override
     public DateUnit toIso( int year, int month, int day )
     {
         return toIso( new DateUnit( year, month, day ) );

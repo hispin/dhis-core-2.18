@@ -3,6 +3,7 @@
     jQuery("input[type=button]").click(function() {
       jQuery.postUTF8('setSystemGeneralSettings.action', {
         cacheStrategy: getFieldValue('cacheStrategy'),
+        calendar: getFieldValue('calendar'),
         infrastructuralDataElements: getFieldValue('infrastructuralDataElements'),
         infrastructuralPeriodType: getFieldValue('infrastructuralPeriodType'),
         feedbackRecipients: getFieldValue('feedbackRecipients'),
@@ -30,6 +31,16 @@
 	<option value="NO_CACHE" #if( $keyCacheStrategy == "NO_CACHE" )selected="selected"#end>$i18n.getString( "no_cache" )</option>
 	<option value="CACHE_6AM_TOMORROW" #if( $keyCacheStrategy == "CACHE_6AM_TOMORROW" )selected="selected"#end>$i18n.getString( "cache_until_6am_tomorrow" )</option>
 	<option value="CACHE_TWO_WEEKS" #if( $keyCacheStrategy == "CACHE_TWO_WEEKS" )selected="selected"#end>$i18n.getString( "cache_for_two_weeks" )</option>
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "calendar" )</div>
+
+<div class="setting">
+<select id="calendar" name="calendar">
+#foreach( $calendar in $calendars )
+  <option value="$calendar.name()" #if( $keyCalendar == $calendar.name() )selected="selected"#end>$i18n.getString( $calendar.name() )</option>
+#end
 </select>
 </div>
 

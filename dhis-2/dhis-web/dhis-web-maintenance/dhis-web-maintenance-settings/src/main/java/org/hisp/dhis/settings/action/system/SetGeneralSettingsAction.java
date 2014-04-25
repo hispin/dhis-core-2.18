@@ -148,7 +148,7 @@ public class SetGeneralSettingsAction
     }
 
     private String phoneNumberAreaCode;
-    
+
     public void setPhoneNumberAreaCode( String phoneNumberAreaCode )
     {
         this.phoneNumberAreaCode = phoneNumberAreaCode;
@@ -166,6 +166,13 @@ public class SetGeneralSettingsAction
     public void setMultiOrganisationUnitForms( boolean multiOrganisationUnitForms )
     {
         this.multiOrganisationUnitForms = multiOrganisationUnitForms;
+    }
+
+    private String calendar;
+
+    public void setCalendar( String calendar )
+    {
+        this.calendar = calendar;
     }
 
     private String message;
@@ -188,6 +195,7 @@ public class SetGeneralSettingsAction
 
     public String execute()
     {
+        systemSettingManager.saveSystemSetting( KEY_CALENDAR, calendar );
         systemSettingManager.saveSystemSetting( KEY_CACHE_STRATEGY, cacheStrategy );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
