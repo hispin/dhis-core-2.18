@@ -84,9 +84,9 @@ public class DataElementCategoryServiceTest
     @Test
     public void testAddGet()
     {
-        categoryA = createDataElementCategory( 'A' );
-        categoryB = createDataElementCategory( 'B' );
-        categoryC = createDataElementCategory( 'C' );
+        categoryA = createDataElementCategory( 'A', categoryOptionA, categoryOptionB, categoryOptionC );
+        categoryB = createDataElementCategory( 'B', categoryOptionA, categoryOptionB, categoryOptionC );
+        categoryC = createDataElementCategory( 'C', categoryOptionA, categoryOptionB, categoryOptionC );
 
         int idA = categoryService.addDataElementCategory( categoryA );
         int idB = categoryService.addDataElementCategory( categoryB );
