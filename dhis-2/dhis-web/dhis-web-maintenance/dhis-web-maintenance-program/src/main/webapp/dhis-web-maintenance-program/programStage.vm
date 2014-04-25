@@ -2,7 +2,7 @@
 
 <h4>$program.displayName</h4>
 
-<div id="contextMenu" class="contextMenu">
+<div id="contextMenu" class="contextMenu" style="width: 230px;">
   <ul id="contextMenuItems" class="contextMenuItems">
     <li data-enabled="canManageTemplateMessage"><a data-target-fn="programStageReminder"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "view_template_reminder_message" )</a></li>
     <li><a data-target-fn="showUpdateProgramStageForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
