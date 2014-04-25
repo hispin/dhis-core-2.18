@@ -41,6 +41,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import javax.validation.ConstraintViolationException;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -56,7 +58,7 @@ public class CrudControllerAdvice
         return new ResponseEntity<String>( ex.getMessage(), headers, HttpStatus.UNAUTHORIZED );
     }
 
-    @ExceptionHandler({ NotFoundException.class, NotFoundForQueryException.class })
+    @ExceptionHandler( { NotFoundException.class, NotFoundForQueryException.class } )
     public ResponseEntity<String> notFoundExceptionHandler( Exception ex )
     {
         HttpHeaders headers = new HttpHeaders();
@@ -72,5 +74,14 @@ public class CrudControllerAdvice
         headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
 
         return new ResponseEntity<String>( ex.getStatusText(), headers, ex.getStatusCode() );
+    }
+
+    @ExceptionHandler( ConstraintViolationException.class )
+    public ResponseEntity<String> constraintViolationException( ConstraintViolationException ex )
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
+
+        return new ResponseEntity<String>( ex.getMessage(), headers, HttpStatus.UNPROCESSABLE_ENTITY );
     }
 }

@@ -40,7 +40,17 @@ import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.dataelement.*;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -462,16 +472,16 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param categoryComboUniqueIdentifier A unique character to identify the
-     *        category option combo.
-     * @param categories the categories
-     *        category options.
+     *                                      category option combo.
+     * @param categories                    the categories
+     *                                      category options.
      * @return DataElementCategoryOptionCombo
      */
     public static DataElementCategoryCombo createCategoryCombo( char categoryComboUniqueIdentifier,
-                                                                            DataElementCategory... categories )
+        DataElementCategory... categories )
     {
         DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo( "CategoryCombo" + categoryComboUniqueIdentifier,
-                new ArrayList<DataElementCategory>() );
+            new ArrayList<DataElementCategory>() );
 
         for ( DataElementCategory category : categories )
         {
@@ -489,17 +499,17 @@ public abstract class DhisConvenienceTest
      * @return DataElementCategoryOptionCombo
      */
     public static DataElementCategoryOptionCombo createCategoryOptionCombo( char categoryComboUniqueIdentifier,
-                                                                            char... categoryOptionUniqueIdentifiers )
+        char... categoryOptionUniqueIdentifiers )
     {
         DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
 
         categoryOptionCombo.setCategoryCombo( new DataElementCategoryCombo( "CategoryCombo"
-                + categoryComboUniqueIdentifier ) );
+            + categoryComboUniqueIdentifier ) );
 
         for ( char identifier : categoryOptionUniqueIdentifiers )
         {
             categoryOptionCombo.getCategoryOptions()
-                    .add( new DataElementCategoryOption( "CategoryOption" + identifier ) );
+                .add( new DataElementCategoryOption( "CategoryOption" + identifier ) );
         }
 
         return categoryOptionCombo;
@@ -507,14 +517,14 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param categoryComboUniqueIdentifier A unique character to identify the
-     *        category option combo.
-     * @param dataElementCategoryCombo The associated category combination.
-     * @param categoryOptions the category options.
+     *                                      category option combo.
+     * @param dataElementCategoryCombo      The associated category combination.
+     * @param categoryOptions               the category options.
      * @return DataElementCategoryOptionCombo
      */
     public static DataElementCategoryOptionCombo createCategoryOptionCombo( char categoryComboUniqueIdentifier,
-                                                                            DataElementCategoryCombo dataElementCategoryCombo,
-                                                                            DataElementCategoryOption... categoryOptions )
+        DataElementCategoryCombo dataElementCategoryCombo,
+        DataElementCategoryOption... categoryOptions )
     {
         DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
 
@@ -553,16 +563,17 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param categoryUniqueIdentifier  A unique character to identify the
-     *        category.
-     * @param categoryOptions the category options.
+     * @param categoryUniqueIdentifier A unique character to identify the
+     *                                 category.
+     * @param categoryOptions          the category options.
      * @return DataElementCategory
      */
-    public static DataElementCategory createDataElementCategory(  char categoryUniqueIdentifier,
-                                                                  DataElementCategoryOption... categoryOptions )
+    public static DataElementCategory createDataElementCategory( char categoryUniqueIdentifier,
+        DataElementCategoryOption... categoryOptions )
     {
         DataElementCategory dataElementCategory = new DataElementCategory( "DataElementCategory" + categoryUniqueIdentifier,
-                new ArrayList<DataElementCategoryOption>() );
+            new ArrayList<DataElementCategoryOption>() );
+        dataElementCategory.setAutoFields();
 
         for ( DataElementCategoryOption categoryOption : categoryOptions )
         {
@@ -572,16 +583,25 @@ public abstract class DhisConvenienceTest
         return dataElementCategory;
     }
 
+    public static DataElementCategoryOption createCategoryOption( char uniqueIdentifier )
+    {
+        DataElementCategoryOption categoryOption = new DataElementCategoryOption( "CategoryOption" + uniqueIdentifier );
+        categoryOption.setAutoFields();
+
+        return categoryOption;
+    }
+
     /**
-     * @param categoryGroupUniqueIdentifier  A unique character to identify the
-     *        category option group.
-     * @param categoryOptions the category options.
+     * @param categoryGroupUniqueIdentifier A unique character to identify the
+     *                                      category option group.
+     * @param categoryOptions               the category options.
      * @return CategoryOptionGroup
      */
-    public static CategoryOptionGroup createCategoryOptionGroup(  char categoryGroupUniqueIdentifier,
-                                                                  DataElementCategoryOption... categoryOptions )
+    public static CategoryOptionGroup createCategoryOptionGroup( char categoryGroupUniqueIdentifier,
+        DataElementCategoryOption... categoryOptions )
     {
         CategoryOptionGroup categoryOptionGroup = new CategoryOptionGroup( "CategoryOptionGroup" + categoryGroupUniqueIdentifier );
+        categoryOptionGroup.setAutoFields();
 
         categoryOptionGroup.setMembers( new HashSet<DataElementCategoryOption>() );
 
@@ -594,15 +614,16 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param categoryGroupSetUniqueIdentifier  A unique character to identify the
-     *        category option group set.
-     * @param categoryOptionGroups the category option groups.
+     * @param categoryGroupSetUniqueIdentifier A unique character to identify the
+     *                                         category option group set.
+     * @param categoryOptionGroups             the category option groups.
      * @return CategoryOptionGroupSet
      */
-    public static CategoryOptionGroupSet createCategoryOptionGroupSet(  char categoryGroupSetUniqueIdentifier,
-                                                                     CategoryOptionGroup... categoryOptionGroups )
+    public static CategoryOptionGroupSet createCategoryOptionGroupSet( char categoryGroupSetUniqueIdentifier,
+        CategoryOptionGroup... categoryOptionGroups )
     {
         CategoryOptionGroupSet categoryOptionGroupSet = new CategoryOptionGroupSet( "CategoryOptionGroupSet" + categoryGroupSetUniqueIdentifier );
+        categoryOptionGroupSet.setAutoFields();
 
         // categoryOptionGroupSet.setMembers( new ArrayList<CategoryOptionGroup>() );
 
@@ -1079,6 +1100,7 @@ public abstract class DhisConvenienceTest
     public static User createUser( char uniqueCharacter )
     {
         User user = new User();
+        user.setAutoFields();
 
         user.setFirstName( "FirstName" + uniqueCharacter );
         user.setSurname( "Surname" + uniqueCharacter );
