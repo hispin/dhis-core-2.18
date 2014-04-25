@@ -31,31 +31,33 @@ package org.hisp.dhis.calendar;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface Calendar
+public class DateInterval
 {
-    DateUnit toIso( int year, int month, int day );
+    private final DateUnit from;
 
-    DateUnit toIso( DateUnit dateUnit );
+    private final DateUnit to;
 
-    DateUnit fromIso( int year, int month, int day );
+    public DateInterval( DateUnit from, DateUnit to )
+    {
+        this.from = from;
+        this.to = to;
+    }
 
-    DateUnit fromIso( DateUnit dateUnit );
+    public DateUnit getFrom()
+    {
+        return from;
+    }
 
-    DateUnit today();
+    public DateUnit getTo()
+    {
+        return to;
+    }
 
-    int monthsInYear();
-
-    int daysInWeek();
-
-    int daysInYear( int year );
-
-    int daysInMonth( int year, int month );
-
-    int isoWeek( DateUnit dateUnit );
-
-    int week( DateUnit dateUnit );
-
-    int isoWeekday( DateUnit dateUnit );
-
-    int weekday( DateUnit dateUnit );
+    @Override public String toString()
+    {
+        return "DateInterval{" +
+            "from=" + from +
+            ", to=" + to +
+            '}';
+    }
 }
