@@ -73,6 +73,7 @@ public class TrackedEntityAttributeStoreTest
         List<TrackedEntityAttribute> attributesA = new ArrayList<TrackedEntityAttribute>();
         attributesA.add( attributeA );
         attributesA.add( attributeB );
+
         attributeGroup = createTrackedEntityAttributeGroup( 'A', attributesA );
     }
 
