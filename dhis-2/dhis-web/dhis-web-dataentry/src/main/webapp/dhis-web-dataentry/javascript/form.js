@@ -1292,6 +1292,7 @@ function getAndInsertDataValues()
       complete: function()
       {
         $( '.indicator' ).attr( 'readonly', 'readonly' );
+        $( '.dataelementtotal' ).attr( 'readonly', 'readonly' );
         $( document ).trigger('dhis2.de.event.dataValuesLoaded');
       }
 	} );
