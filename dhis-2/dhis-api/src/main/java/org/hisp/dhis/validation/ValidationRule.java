@@ -159,11 +159,13 @@ public class ValidationRule
 
     public ValidationRule()
     {
+        setAutoFields();
     }
 
     public ValidationRule( String name, String description, String type,
         Operator operator, Expression leftSide, Expression rightSide )
     {
+        this();
         this.name = name;
         this.description = description;
         this.type = type;
