@@ -29,6 +29,7 @@ package org.hisp.dhis.settings.action.system;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.calendar.AbstractCalendar;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
@@ -42,6 +43,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.comparator.UserGroupComparator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -157,6 +159,14 @@ public class GetGeneralSettingsAction
     public Configuration getConfiguration()
     {
         return configuration;
+    }
+
+    @Autowired
+    private List<AbstractCalendar> calendars;
+
+    public List<AbstractCalendar> getCalendars()
+    {
+        return calendars;
     }
 
     // -------------------------------------------------------------------------

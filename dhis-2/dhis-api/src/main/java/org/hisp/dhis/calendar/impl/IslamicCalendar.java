@@ -1,4 +1,4 @@
-package org.hisp.dhis.calendar;
+package org.hisp.dhis.calendar.impl;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,40 +28,32 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.chrono.IslamicChronology;
+import org.springframework.stereotype.Component;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface Calendar
+@Component
+public class IslamicCalendar extends ChronologyBasedCalendar
 {
-    String name();
+    private static final Calendar self = new IslamicCalendar();
 
-    DateUnit toIso( int year, int month, int day );
+    public static Calendar getInstance()
+    {
+        return self;
+    }
 
-    DateUnit toIso( DateUnit dateUnit );
+    protected IslamicCalendar()
+    {
+        super( IslamicChronology.getInstance() );
+    }
 
-    DateUnit fromIso( int year, int month, int day );
-
-    DateUnit fromIso( DateUnit dateUnit );
-
-    DateInterval toIsoInterval( int year );
-
-    DateInterval toIsoInterval( int year, int month );
-
-    DateUnit today();
-
-    int monthsInYear();
-
-    int daysInWeek();
-
-    int daysInYear( int year );
-
-    int daysInMonth( int year, int month );
-
-    int isoWeek( DateUnit dateUnit );
-
-    int week( DateUnit dateUnit );
-
-    int isoWeekday( DateUnit dateUnit );
-
-    int weekday( DateUnit dateUnit );
+    @Override
+    public String name()
+    {
+        return "islamic";
+    }
 }

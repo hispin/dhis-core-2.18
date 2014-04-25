@@ -28,22 +28,36 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.joda.time.chrono.EthiopicChronology;
+import com.google.common.collect.Lists;
+import org.hisp.dhis.calendar.impl.Iso8601Calendar;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class EthiopicCalendar extends ChronologyBasedCalendar
+public class CalendarFactory
 {
-    private static final Calendar self = new EthiopicCalendar();
+    @Autowired
+    private SystemSettingManager settingManager;
 
-    public static Calendar getInstance()
-    {
-        return self;
-    }
+    @Autowired
+    private List<AbstractCalendar> calendars = Lists.newArrayList();
 
-    protected EthiopicCalendar()
+    public Calendar createCalendar()
     {
-        super( EthiopicChronology.getInstance() );
+        String setting = (String) settingManager.getSystemSetting( SystemSettingManager.KEY_CALENDAR, SystemSettingManager.DEFAULT_CALENDAR );
+
+        for ( Calendar calendar : calendars )
+        {
+            if ( setting.equals( calendar.name() ) )
+            {
+                return calendar;
+            }
+        }
+
+        return Iso8601Calendar.getInstance();
     }
 }

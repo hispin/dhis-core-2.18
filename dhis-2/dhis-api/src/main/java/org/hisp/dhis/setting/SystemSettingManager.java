@@ -49,6 +49,7 @@ public interface SystemSettingManager
     final String KEY_APPLICATION_INTRO = "keyApplicationIntro";
     final String KEY_APPLICATION_NOTIFICATION = "keyApplicationNotification";
     final String KEY_APPLICATION_FOOTER = "keyApplicationFooter";
+    final String KEY_CALENDAR = "keyCalendar";
     final String KEY_FLAG = "keyFlag";
     final String KEY_FLAG_IMAGE = "keyFlagImage";
     final String KEY_START_MODULE = "startModule";
@@ -91,6 +92,7 @@ public interface SystemSettingManager
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";
+    final String DEFAULT_CALENDAR = "iso8601";
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
     final double DEFAULT_FACTOR_OF_DEVIATION = 2.0;

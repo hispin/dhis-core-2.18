@@ -1,4 +1,4 @@
-package org.hisp.dhis.calendar;
+package org.hisp.dhis.calendar.impl;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,9 +28,14 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.calendar.AbstractCalendar;
+import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.DateInterval;
+import org.hisp.dhis.calendar.DateUnit;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.chrono.ISOChronology;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +43,7 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@Component
 public class NepaliCalendar extends AbstractCalendar
 {
     private final DateUnit startNepal = new DateUnit( 2000, 1, 1, java.util.Calendar.WEDNESDAY );
@@ -187,6 +193,12 @@ public class NepaliCalendar extends AbstractCalendar
         }
 
         return dayOfWeek;
+    }
+
+    @Override
+    public String name()
+    {
+        return "nepali";
     }
 
     private int getYearTotal( int year )

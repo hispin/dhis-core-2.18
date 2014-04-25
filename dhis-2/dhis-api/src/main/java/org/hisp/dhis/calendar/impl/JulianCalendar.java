@@ -1,4 +1,4 @@
-package org.hisp.dhis.calendar;
+package org.hisp.dhis.calendar.impl;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,22 +28,32 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.joda.time.chrono.IslamicChronology;
+import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.chrono.JulianChronology;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class IslamicCalendar extends ChronologyBasedCalendar
+@Component
+public class JulianCalendar extends ChronologyBasedCalendar
 {
-    private static final Calendar self = new IslamicCalendar();
+    private static final Calendar self = new JulianCalendar();
 
     public static Calendar getInstance()
     {
         return self;
     }
 
-    protected IslamicCalendar()
+    protected JulianCalendar()
     {
-        super( IslamicChronology.getInstance() );
+        super( JulianChronology.getInstance() );
+    }
+
+    @Override
+    public String name()
+    {
+        return "julian";
     }
 }

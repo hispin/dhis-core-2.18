@@ -1,4 +1,4 @@
-package org.hisp.dhis.calendar;
+package org.hisp.dhis.calendar.impl;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,22 +28,32 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.joda.time.chrono.GregorianChronology;
+import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.ChronologyBasedCalendar;
+import org.joda.time.chrono.CopticChronology;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GregorianCalendar extends ChronologyBasedCalendar
+@Component
+public class CopticCalendar extends ChronologyBasedCalendar
 {
-    private static final Calendar self = new GregorianCalendar();
+    private static final Calendar self = new CopticCalendar();
 
     public static Calendar getInstance()
     {
         return self;
     }
 
-    protected GregorianCalendar()
+    protected CopticCalendar()
     {
-        super( GregorianChronology.getInstance() );
+        super( CopticChronology.getInstance() );
+    }
+
+    @Override
+    public String name()
+    {
+        return "coptic";
     }
 }
