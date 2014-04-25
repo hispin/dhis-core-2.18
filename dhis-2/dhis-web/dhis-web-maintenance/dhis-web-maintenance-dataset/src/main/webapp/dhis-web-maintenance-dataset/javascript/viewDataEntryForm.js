@@ -291,13 +291,12 @@ function insertDataElement() {
 	
 		if (dataElementType == "bool") {
 			html = "<input title=\"" + titleValue
-					+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId
-					+ "\" style=\"width:7em;text-align:center\"/>";
+					+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId + "\" />";
 		} 
 		else {
 			html = "<input title=\"" + titleValue
 					+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId
-					+ "\" style=\"width:7em;text-align:center\"" + greyedField + "/>";
+					+ "\" " + greyedField + "/>";
 		}
 	
 		if (!checkExisted(dataEntryId)) {
@@ -319,7 +318,7 @@ function insertTotal() {
 		var id = $option.data("id");
 		var title = $option.val();
 		var dataEntryId = 'total' + id;		
-		var template = '<input id="' + dataEntryId + '" name="total" value="[' + title + ']" title="' + title + '" dataelementid="' + id + '" style="width:7em;text-align:center;" readonly="readonly" />';
+		var template = '<input id="' + dataEntryId + '" name="total" value="[' + title + ']" title="' + title + '" dataelementid="' + id + '" readonly="readonly" />';
 		
 		if(!checkExisted(dataEntryId)) {
 			oEditor.insertHtml( template );
@@ -338,7 +337,7 @@ function insertIndicator() {
 	if( $option.length !== 0 ) {
 		var id = $option.data("id");
 		var title = $option.val();
-		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorid="' + id + '" style="width:7em;text-align:center;" readonly="readonly" />';
+		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorid="' + id + '" readonly="readonly" />';
 
 		if(!checkExisted("indicator" + id)) {
 			oEditor.insertHtml( template );
