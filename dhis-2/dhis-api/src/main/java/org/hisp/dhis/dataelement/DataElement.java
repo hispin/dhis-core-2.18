@@ -212,10 +212,12 @@ public class DataElement
 
     public DataElement()
     {
+        setAutoFields();
     }
 
     public DataElement( String name )
     {
+        this();
         this.name = name;
     }
 

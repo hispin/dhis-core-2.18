@@ -89,6 +89,7 @@ public class DataElementCategoryOptionCombo
 
     public DataElementCategoryOptionCombo()
     {
+        setAutoFields();
     }
 
     // -------------------------------------------------------------------------

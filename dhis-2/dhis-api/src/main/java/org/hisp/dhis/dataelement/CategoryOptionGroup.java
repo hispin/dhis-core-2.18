@@ -63,10 +63,12 @@ public class CategoryOptionGroup
 
     public CategoryOptionGroup()
     {
+        setAutoFields();
     }
 
     public CategoryOptionGroup( String name )
     {
+        this();
         this.name = name;
     }
 

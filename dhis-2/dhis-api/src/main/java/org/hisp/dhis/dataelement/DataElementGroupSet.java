@@ -79,25 +79,26 @@ public class DataElementGroupSet
 
     public DataElementGroupSet()
     {
+        setAutoFields();
     }
 
     public DataElementGroupSet( String name )
     {
+        this();
         this.name = name;
         this.compulsory = false;
     }
 
     public DataElementGroupSet( String name, Boolean compulsory )
     {
-        this.name = name;
+        this( name );
         this.compulsory = compulsory;
     }
 
     public DataElementGroupSet( String name, String description, Boolean compulsory )
     {
-        this.name = name;
+        this( name, compulsory );
         this.description = description;
-        this.compulsory = compulsory;
     }
 
     public DataElementGroupSet( String name, String description, boolean compulsory, boolean dataDimension )
@@ -115,7 +116,7 @@ public class DataElementGroupSet
         members.add( dataElementGroup );
         dataElementGroup.setGroupSet( this );
     }
-    
+
     public void removeDataElementGroup( DataElementGroup dataElementGroup )
     {
         members.remove( dataElementGroup );
@@ -254,8 +255,8 @@ public class DataElementGroupSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isDataDimension()
     {
         return dataDimension;
