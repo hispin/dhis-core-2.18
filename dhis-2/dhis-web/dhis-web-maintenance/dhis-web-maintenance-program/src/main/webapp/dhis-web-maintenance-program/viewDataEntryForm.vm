@@ -130,7 +130,7 @@
 	<table id='dataElementSelection'>
 		<tr>
 			<td>
-				$i18n.getString( "dataelement" )
+				$i18n.getString( "filter" )&nbsp;
 				<input type="text" id='dataElementFilter' style="width:240px;" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
 			</td>
 			<td>	
@@ -154,7 +154,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan='2' style="background-color:#DFEFEC;">
+			<td colspan='2'>
 				<table>
 					<tr>
 						<td>$i18n.getString("display_name")</td>
@@ -177,7 +177,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan='2'><hr/>
+			<td colspan='2'>
 				#if(!$programStages.isEmpty())
 				<input type="button" value="$i18n.getString('other_program_stages')" onclick="hideById('dataElementSelection');showById('otherProgramStageDataElements');" >
 				#end
@@ -243,7 +243,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan='2'><hr/>
+			<td colspan='2'>
 				<input type="button" value="$i18n.getString('selected_program_stages')" onclick="hideById('otherProgramStageDataElements');showById('dataElementSelection');" >
 				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#otherProgramStageDataElements', byId('programStageIds').value )"/>
 			</td>
