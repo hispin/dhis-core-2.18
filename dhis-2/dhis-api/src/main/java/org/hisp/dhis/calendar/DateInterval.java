@@ -28,13 +28,26 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.validation.constraints.NotNull;
+
 /**
+ * Class representing a date interval.
  * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @see DateUnit
+ * @see Calendar
  */
 public class DateInterval
 {
+    /**
+     * Start of interval. Required.
+     */
+    @NotNull
     private final DateUnit from;
 
+    /**
+     * End of interval. Required.
+     */
+    @NotNull
     private final DateUnit to;
 
     public DateInterval( DateUnit from, DateUnit to )

@@ -79,7 +79,7 @@ public interface Calendar
     DateUnit fromIso( DateUnit dateUnit );
 
     /**
-     * Returns this local year as a ISO 8601 interval
+     * Gets this local year as a ISO 8601 interval
      * @param year Local year
      * @return ISO 8601 interval for year
      * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
@@ -87,7 +87,7 @@ public interface Calendar
     DateInterval toIsoInterval( int year );
 
     /**
-     * Returns this local year/month as a ISO 8601 interval
+     * Gets this local year/month as a ISO 8601 interval
      * @param year  Local year
      * @param month Local month
      * @return ISO 8601 interval for year/month
@@ -96,37 +96,37 @@ public interface Calendar
     DateInterval toIsoInterval( int year, int month );
 
     /**
-     * Returns current date as local DateUnit
+     * Gets current date as local DateUnit
      * @return Today date as local DateUnit
      */
     DateUnit today();
 
     /**
-     * Returns the number of months in a calendar year.
+     * Gets the number of months in a calendar year.
      * @return Number of months in a year
      */
     int monthsInYear();
 
     /**
-     * Returns the number of days in a calendar week.
+     * Gets the number of days in a calendar week.
      * @return Number of days in a week
      */
     int daysInWeek();
 
     /**
-     * Returns the number of days in a calendar year.
+     * Gets the number of days in a calendar year.
      * @return Number of days in this calendar year
      */
     int daysInYear( int year );
 
     /**
-     * Returns the number of days in a calendar year/month.
+     * Gets the number of days in a calendar year/month.
      * @return Number of days in this calendar year/month
      */
     int daysInMonth( int year, int month );
 
     /**
-     * Returns week number using local DateUnit, week number is calculated based on
+     * Gets week number using local DateUnit, week number is calculated based on
      * ISO 8601 week numbers
      * @param dateUnit DateUnit representing local year, month, day
      * @return Week number
@@ -143,7 +143,7 @@ public interface Calendar
     int week( DateUnit dateUnit );
 
     /**
-     * Returns the ISO 8601 weekday for this local DateUnit, using ISO 8601 day numbering,
+     * Gets the ISO 8601 weekday for this local DateUnit, using ISO 8601 day numbering,
      * 1=Monday => 7=Sunday.
      * @param dateUnit DateUnit representing local year, month, day
      * @return Weekday number
@@ -153,10 +153,12 @@ public interface Calendar
     int isoWeekday( DateUnit dateUnit );
 
     /**
-     * Returns the local weekday for this local DateUnit, using ISO 8601 day numbering,
+     * Gets the local weekday for this local DateUnit, using ISO 8601 day numbering,
      * 1=Monday => 7=Sunday.
      * @param dateUnit DateUnit representing local year, month, day
      * @return Weekday number
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_week_date">http://en.wikipedia.org/wiki/ISO_week_date</a>
      */
     int weekday( DateUnit dateUnit );
 }
