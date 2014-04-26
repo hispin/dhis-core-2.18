@@ -7,12 +7,13 @@
 	#end
 #end
 
-#if( $customDataEntryFormCode )
-	$customDataEntryFormCode
+<tr><th colspan="2">$i18n.getString("data_entry")</th></tr>
+#if( $customDataEntryFormCode ) 
+	<tr><td colspan="4">$customDataEntryFormCode<td></td>
 #elseif( $sections && $sections.size() > 0 )
 	
 	<tr>
-		<th colspan='2'>$programStage.program.displayName</th>
+		<th colspan="2">$programStage.program.displayName</th>
 	</tr>
 	<!-- Identifiers/Attributes belong to the selected single program -->
 	#set($program = $programStage.program)

@@ -46,6 +46,7 @@ function showAddTrackedEntityInstanceForm()
 	hideById('searchDiv');
 	hideById('advanced-search');
 	hideById('listRelationshipDiv');
+	hideById('listEntityInstanceDiv');
 	showById('entityInstanceMamagementLink');
 	hideById('mainLinkLbl');
 	setInnerHTML('addNewDiv','');
