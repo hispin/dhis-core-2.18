@@ -20,35 +20,35 @@
 	</thead>
 		
 	<tr>
-		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="name" name="name" class="{validate:{required:true,rangelength:[4,160]}}"/></td>
 	</tr>	
 	
 	<tr>
-		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:4}}"/></td>
 	</tr>
 	
 	#if( $program.type == 1 )
 	<tr>
-		<td><label>$i18n.getString( "scheduled_days_from_start" )</label></td>
+		<td><label for="minDaysFromStart">$i18n.getString( "scheduled_days_from_start" )</label></td>
 		<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" class="{validate:{number:true,min:0}}"/></td>
 	</tr>
 	
 	<tr><th colspan="2">$i18n.getString( "repeatable_program_stage_details" )</th></tr>
 	
 	<tr>
-		<td><label>$i18n.getString( "repeatable" )</label></td>
+		<td><label for="irregular">$i18n.getString( "repeatable" )</label></td>
 		<td><input type="checkbox" id="irregular" name="irregular" value='true' onchange='repeatableOnChange();' /></td>
 	</tr>
 	
 	<tr>
-		<td><label>$i18n.getString( "display_generate_event_box_after_completed" )</label></td>
+		<td><label for="displayGenerateEventBox">$i18n.getString( "display_generate_event_box_after_completed" )</label></td>
 		<td><input type="checkbox" id="displayGenerateEventBox" name="displayGenerateEventBox" value='true' checked disabled /></td>
 	</tr>
 	
 	<tr>
-		<td><label>$i18n.getString( "standard_interval_days" )</label></td>
+		<td><label for="standardInterval">$i18n.getString( "standard_interval_days" )</label></td>
 		<td><input type="text" id="standardInterval" name="standardInterval" class="{validate:{number:true}}" disabled /></td>
 	</tr>
 	
@@ -64,7 +64,7 @@
 	#end
 	
 	<tr>
-		<td><label>$i18n.getString( "auto_generate_event" )</label></td>
+		<td><label for="autoGenerateEvent">$i18n.getString( "auto_generate_event" )</label></td>
 		<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' checked onchange='autoGenerateEventOnChange("$openAfterEnrollment")' /></td>
 	</tr>
 	
@@ -78,7 +78,7 @@
 		#end
 		
 		<tr>
-			<td><label>$i18n.getString( "open_data_entry_form_after_enrolment" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="openAfterEnrollment">$i18n.getString( "open_data_entry_form_after_enrolment" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><input type="checkbox" id="openAfterEnrollment" name="openAfterEnrollment" value='true' 
 				onchange="openAfterEnrollmentOnchange();" 
 				#if($openAfterEnrollment!='') disabled #end>
@@ -87,7 +87,7 @@
 		</tr>
 		
 		<tr>
-			<td><label>$i18n.getString( "report_date_to_use" )</label></td>
+			<td><label for="reportDateToUse">$i18n.getString( "report_date_to_use" )</label></td>
 			<td>
 				<select id="reportDateToUse" name="reportDateToUse" class="{validate:{required:true}}" disabled>
 					<option value=''>[$i18n.getString('please_select')]</option>
@@ -100,43 +100,43 @@
 	#end
 	
 	<tr>
-		<td><label>$i18n.getString( "block_entry_form_after_completed" )</label></td>
+		<td><label for="blockEntryForm">$i18n.getString( "block_entry_form_after_completed" )</label></td>
 		<td><input type="checkbox" id="blockEntryForm" name="blockEntryForm" value='true'></td>
 		<td></td>
 	</tr>
 	
 	<tr>
-		<td><label>$i18n.getString( "remind_completing_program_after_program_stage_completed" )</label></td>
+		<td><label for="remindCompleted">$i18n.getString( "remind_completing_program_after_program_stage_completed" )</label></td>
 		<td><input type="checkbox" id="remindCompleted" name="remindCompleted" value='true' ></td>
 		<td></td>
 	</tr>
 	
 	<tr>
-		<td><label>$i18n.getString( "remind_creating_next_event_on_this_event_completed" )</label></td>
+		<td><label for="allowGenerateNextVisit">$i18n.getString( "remind_creating_next_event_on_this_event_completed" )</label></td>
 		<td><input type="checkbox" id="allowGenerateNextVisit" name="allowGenerateNextVisit" value='true' ></td>
 		<td></td>
 	</tr>
 	
 	#if($program.type==1)
 	<tr>
-		<td><label>$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
+		<td><label for="generatedByEnrollmentDate">$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
 		<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true'></td>
 		<td></td>
 	</tr>
 	#end
 	
 	<tr>
-		<td><label>$i18n.getString( "capture_coordinates" )</label></td>
+		<td><label for="captureCoordinates">$i18n.getString( "capture_coordinates" )</label></td>
 		<td><input type="checkbox" id="captureCoordinates" name="captureCoordinates" value="true" /></td>
 	</tr>
 	
 	<tr>
-		<td><label>$i18n.getString( "complete_allowed_only_if_validation_passes" )</label></td>
+		<td><label for="validCompleteOnly">$i18n.getString( "complete_allowed_only_if_validation_passes" )</label></td>
 		<td><input type="checkbox" id="validCompleteOnly" name="validCompleteOnly" value="true" /></td>
 	</tr>
 	
 	<tr>
-		<td><label>$i18n.getString( "report_date_description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="reportDateDescription">$i18n.getString( "report_date_description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="reportDateDescription" name="reportDateDescription" class="{validate:{required:true}}" value="$i18n.getString( 'report_date' )" /></td>
 	</tr>
 	

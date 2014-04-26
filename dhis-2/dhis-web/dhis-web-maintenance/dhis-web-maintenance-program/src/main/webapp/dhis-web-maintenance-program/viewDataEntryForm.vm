@@ -80,7 +80,7 @@
 		</tr>	
 		<tr>
 			<td>
-				<label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
+				<label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
 				<input type="text" id="name" value="$!dataEntryForm.name" name="name" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}" style="margin-left:15px;width:30em;">
 			</td>				
 		</tr>	

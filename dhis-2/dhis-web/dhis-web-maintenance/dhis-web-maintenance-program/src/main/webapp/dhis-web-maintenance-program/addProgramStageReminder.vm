@@ -27,12 +27,12 @@
     </thead>
     <tbody>
 		<tr>
-			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="name" name="name" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "send_base_on" )</label></td>
+			<td><label for="whenToSend">$i18n.getString( "send_base_on" )</label></td>
 			<td>
 				<select type="text" id="whenToSend" name="whenToSend" onchange='whenToSendOnChange()'>
 					<option value="" >$i18n.getString("days_scheduled")</option>
@@ -41,7 +41,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "send_message" )</label></td>
+			<td><label for="daysAllowedSendMessage">$i18n.getString( "send_message" )</label></td>
 			<td><input type="text" id="daysAllowedSendMessage" name="daysAllowedSendMessage" 
 				class="{validate:{required:true,number:true}}"
 				onkeyup='setRealDays();' style="width:100px;"
@@ -55,7 +55,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "recipients" )</label></td>
+			<td><label for="sendTo">$i18n.getString( "recipients" )</label></td>
 			<td>
 				<select type="text" id="sendTo" name="sendTo" class="{validate:{required:true,number:true}}" onchange="onchangeUserGroup(  )">
 					<option value="1" >$i18n.getString("tracked_entity_sms_only")</option>
@@ -67,7 +67,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "user_group" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="userGroup">$i18n.getString( "user_group" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
 				<select type="text" id="userGroup" name="userGroup" disabled class="{validate:{required:true}}">
 					<option value="">[$i18n.getString("please_select")]</option>
@@ -78,7 +78,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "message_type" )</label></td>
+			<td><label for="messageType">$i18n.getString( "message_type" )</label></td>
 			<td>
 				<select type="text" id="messageType" name="messageType" disabled class="messageType {validate:{required:true,number:true}}" >
 					<option value="1">$i18n.getString("direct_sms")</option>
@@ -103,7 +103,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "message" )</label></td>
+			<td><label for="optionSetId">$i18n.getString( "message" )</label></td>
 			<td><textarea onkeyup="getMessageLength()" id="templateMessage" name="templateMessage" style="width:320px" class="templateMessage {validate:{required:true}}"></textarea></td>
 		</tr>
 		<tr>

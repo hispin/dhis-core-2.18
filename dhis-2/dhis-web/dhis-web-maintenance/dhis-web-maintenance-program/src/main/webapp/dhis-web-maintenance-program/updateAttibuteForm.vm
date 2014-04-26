@@ -16,19 +16,19 @@
     </thead>
     <tbody>
       <tr>
-        <td>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
+        <td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $attribute.name )" class="{validate:{required:true,rangelength:[2,160]}}"></td>
       </tr>     
       <tr>
-        <td>$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
+        <td><label for="name">$i18n.getString( "shortName" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="shortName" name="shortName" value="$!encoder.htmlEncode( $attribute.shortName )" class="{validate:{required:true,rangelength:[2,50]}}"></td>
       </tr>     
       <tr>
-        <td>$i18n.getString( "code" )</td>
-        <td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $attribute.code )"></td>
+        <td><label for="code">$i18n.getString( "code" )</td>
+        <td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $attribute.code )"></label></td>
       </tr>      
       <tr>
-        <td>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
+        <td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $attribute.description )" class="{validate:{required:true,minlength:2}}"></td>
       </tr>
       
@@ -58,7 +58,7 @@
 	</tr>
 	
     <tr>
-        <td>$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
+        <td><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td>
             <select id="valueType" name="valueType" onchange="typeOnChange();">
                 <option value="number" #if( $attribute.valueType == 'number' ) selected="selected" #end>$i18n.getString( "number" )</option>
@@ -76,7 +76,7 @@
     </tr>
       
 	<tr id="optionSetRow" #if($attribute.optionSet) #else class="hidden" #end> 
-		<td><label>$i18n.getString( "option_set" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="optionSetId">$i18n.getString( "option_set" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><select id="optionSetId" name="optionSetId" class="{validate:{required:true}}">
 				#foreach($optionSet in $optionSets)
 					<option value="$optionSet.id" #if($attribute.optionSet.id==$optionSet.id) selected #end>$optionSet.name</option>
