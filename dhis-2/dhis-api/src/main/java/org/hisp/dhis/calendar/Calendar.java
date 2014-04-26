@@ -46,7 +46,7 @@ public interface Calendar
      * Convert local calendar to an ISO 8601 DateUnit.
      * @param year  Local year
      * @param month Local month
-     * @param day   Local month
+     * @param day   Local day
      * @return DateUnit representing local date in ISO 8601
      * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
      */
@@ -64,7 +64,7 @@ public interface Calendar
      * Convert from local to ISO 8601 DateUnit.
      * @param year  ISO 8601 year
      * @param month ISO 8601 month
-     * @param day   ISO 8601 month
+     * @param day   ISO 8601 day
      * @return DateUnit representing ISO 8601 in local
      * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
      */
