@@ -32,17 +32,37 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 
+import javax.validation.constraints.NotNull;
+
 /**
+ * Class representing a specific calendar date.
  * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @see DateInterval
+ * @see Calendar
  */
 public class DateUnit
 {
+    /**
+     * Year of date. Required.
+     */
+    @NotNull
     int year;
 
+    /**
+     * Month of date. Required.
+     */
+    @NotNull
     int month;
 
+    /**
+     * Day of date. Required.
+     */
+    @NotNull
     int day;
 
+    /**
+     * Day of week, numbering is unspecified and left up to user.
+     */
     int dayOfWeek;
 
     public DateUnit()
