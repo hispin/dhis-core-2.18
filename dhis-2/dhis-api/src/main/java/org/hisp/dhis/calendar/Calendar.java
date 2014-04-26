@@ -29,39 +29,134 @@ package org.hisp.dhis.calendar;
  */
 
 /**
+ * Generic interface for representing a Calendar.
  * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @see DateUnit
+ * @see DateInterval
  */
 public interface Calendar
 {
+    /**
+     * Name of this calendar.
+     * @return Name of calendar.
+     */
     String name();
 
+    /**
+     * Convert local calendar to an ISO 8601 DateUnit.
+     * @param year  Local year
+     * @param month Local month
+     * @param day   Local month
+     * @return DateUnit representing local date in ISO 8601
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     */
     DateUnit toIso( int year, int month, int day );
 
+    /**
+     * Convert local calendar to an ISO 8601 DateUnit.
+     * @param dateUnit DateUnit representing local year, month, day
+     * @return DateUnit representing local date in ISO 8601
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     */
     DateUnit toIso( DateUnit dateUnit );
 
+    /**
+     * Convert from local to ISO 8601 DateUnit.
+     * @param year  ISO 8601 year
+     * @param month ISO 8601 month
+     * @param day   ISO 8601 month
+     * @return DateUnit representing ISO 8601 in local
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     */
     DateUnit fromIso( int year, int month, int day );
 
+    /**
+     * Convert from local to ISO 8601 DateUnit.
+     * @param dateUnit DateUnit representing ISO 8601 year, month, day
+     * @return DateUnit representing ISO 8601 in local
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     */
     DateUnit fromIso( DateUnit dateUnit );
 
+    /**
+     * Returns this local year as a ISO 8601 interval
+     * @param year Local year
+     * @return ISO 8601 interval for year
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     */
     DateInterval toIsoInterval( int year );
 
+    /**
+     * Returns this local year/month as a ISO 8601 interval
+     * @param year  Local year
+     * @param month Local month
+     * @return ISO 8601 interval for year/month
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     */
     DateInterval toIsoInterval( int year, int month );
 
+    /**
+     * Returns current date as local DateUnit
+     * @return Today date as local DateUnit
+     */
     DateUnit today();
 
+    /**
+     * Returns the number of months in a calendar year.
+     * @return Number of months in a year
+     */
     int monthsInYear();
 
+    /**
+     * Returns the number of days in a calendar week.
+     * @return Number of days in a week
+     */
     int daysInWeek();
 
+    /**
+     * Returns the number of days in a calendar year.
+     * @return Number of days in this calendar year
+     */
     int daysInYear( int year );
 
+    /**
+     * Returns the number of days in a calendar year/month.
+     * @return Number of days in this calendar year/month
+     */
     int daysInMonth( int year, int month );
 
+    /**
+     * Returns week number using local DateUnit, week number is calculated based on
+     * ISO 8601 week numbers
+     * @param dateUnit DateUnit representing local year, month, day
+     * @return Week number
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_week_date">http://en.wikipedia.org/wiki/ISO_week_date</a>
+     */
     int isoWeek( DateUnit dateUnit );
 
+    /**
+     * Returns week number using local DateUnit, week number is calculated based on local calendar.
+     * @param dateUnit DateUnit representing local year, month, day
+     * @return Week number
+     */
     int week( DateUnit dateUnit );
 
+    /**
+     * Returns the ISO 8601 weekday for this local DateUnit, using ISO 8601 day numbering,
+     * 1=Monday => 7=Sunday.
+     * @param dateUnit DateUnit representing local year, month, day
+     * @return Weekday number
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_week_date">http://en.wikipedia.org/wiki/ISO_week_date</a>
+     */
     int isoWeekday( DateUnit dateUnit );
 
+    /**
+     * Returns the local weekday for this local DateUnit, using ISO 8601 day numbering,
+     * 1=Monday => 7=Sunday.
+     * @param dateUnit DateUnit representing local year, month, day
+     * @return Weekday number
+     */
     int weekday( DateUnit dateUnit );
 }
