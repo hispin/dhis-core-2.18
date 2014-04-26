@@ -98,7 +98,7 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label for="dataEntryMethod">$i18n.getString( "tracked_entity" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="trackedEntityId">$i18n.getString( "tracked_entity" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
 				<select id='trackedEntityId' name='trackedEntityId' style="width: 335px;" class="{validate:{required:true}}">
 					<option value=''>[$i18n.getString('please_select')]</option>

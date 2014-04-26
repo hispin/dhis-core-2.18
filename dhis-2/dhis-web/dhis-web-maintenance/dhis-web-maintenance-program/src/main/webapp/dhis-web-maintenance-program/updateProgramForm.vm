@@ -94,7 +94,7 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label for="dataEntryMethod">$i18n.getString( "tracked_entity" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="trackedEntityId">$i18n.getString( "tracked_entity" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
 				<select id='trackedEntityId' name='trackedEntityId' style="width: 335px;" class="{validate:{required:true}}">
 					<option value=''>[$i18n.getString('please_select')]</option>
@@ -164,7 +164,7 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td>$i18n.getString("shortcut_link_label_eg_add_child")</td>
+			<td><label for="relationshipText">$i18n.getString("shortcut_link_label_eg_add_child")</label></td>
 			<td><input type='text' id='relationshipText' name='relationshipText' value='$!program.relationshipText' ></td>
 		</tr>
 		

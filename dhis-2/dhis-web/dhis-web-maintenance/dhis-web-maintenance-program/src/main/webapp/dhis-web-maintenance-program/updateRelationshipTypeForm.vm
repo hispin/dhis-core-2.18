@@ -13,15 +13,15 @@
 	
     <tbody>
 		<tr>
-			<td>$i18n.getString( "a_is_to_b" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+			<td><label for="aIsToB">$i18n.getString( "a_is_to_b" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><input type="text" id="aIsToB" name="aIsToB" value="$encoder.htmlEncode( $relationshipType.aIsToB )" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
 		</tr>   
 		<tr>
-			<td>$i18n.getString( "b_is_to_a" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+			<td><label for="bIsToA">$i18n.getString( "b_is_to_a" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><input type="text" id="bIsToA" name="bIsToA" value="$encoder.htmlEncode( $relationshipType.bIsToA )" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="name">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $relationshipType.name )" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
 		</tr>
     </tbody>
