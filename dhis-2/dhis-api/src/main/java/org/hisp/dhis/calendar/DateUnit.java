@@ -137,6 +137,12 @@ public class DateUnit
         return new DateUnit( dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), dateTime.getDayOfWeek() );
     }
 
+    public static DateUnit fromJdkCalendar( java.util.Calendar calendar )
+    {
+        return new DateUnit( calendar.get( java.util.Calendar.YEAR ), calendar.get( java.util.Calendar.MONTH ),
+            calendar.get( java.util.Calendar.DAY_OF_MONTH ), calendar.get( java.util.Calendar.DAY_OF_WEEK ) );
+    }
+
     @Override
     public String toString()
     {
