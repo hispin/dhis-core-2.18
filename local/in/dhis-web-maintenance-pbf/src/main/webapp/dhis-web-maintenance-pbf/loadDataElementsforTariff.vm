@@ -42,8 +42,9 @@ Ext.onReady(function() {
 		fieldLabel: 'Select DataElement',
         renderTo: 'simpleCombo',
         displayField: 'name',
-        width: 380,
-        labelWidth: 120,
+        labelWidth: 115,
+        width: 680,
+        size:58,
         store: createStore(),
         queryMode: 'local',
         typeAhead: true,
@@ -137,13 +138,13 @@ function loadExtTariff()
 		Tariff Setting Authority : $!tariff_setting_authority
     </div>
 </div>
-<h3>Data Element Tariff Management</h3>
+<h3>$i18n.getString( "dataelement_tariff_target_management" )</h3>
 <br/>
 <input type="hidden" name="orgUnitUid" id="orgUnitUid">
 <input type="hidden" name="dataElementName" id="dataElementName" value="">
-<table width="50%">
+<table width="60%">
 	<tr>
-		<td >Orgainsation Unit: &nbsp;&nbsp;&nbsp; <input type="text" id="orgUnit" name="orgUnit" readonly size="38"/></td>
+		<td >Orgainsation Unit: &nbsp;&nbsp;&nbsp; <input type="text" id="orgUnit" name="orgUnit" readonly size="55"/></td>
 		<td >&nbsp;</td>
 	</tr>
 	<tr >
