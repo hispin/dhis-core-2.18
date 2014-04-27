@@ -59,10 +59,22 @@ public class DateInterval
     @NotNull
     private final DateUnit to;
 
+    /**
+     * Interval type this interval represents.
+     */
+    private DateIntervalType type;
+
     public DateInterval( DateUnit from, DateUnit to )
     {
         this.from = from;
         this.to = to;
+    }
+
+    public DateInterval( DateUnit from, DateUnit to, DateIntervalType type )
+    {
+        this.from = from;
+        this.to = to;
+        this.type = type;
     }
 
     public DateUnit getFrom()
@@ -75,11 +87,18 @@ public class DateInterval
         return to;
     }
 
-    @Override public String toString()
+    public DateIntervalType getType()
+    {
+        return type;
+    }
+
+    @Override
+    public String toString()
     {
         return "DateInterval{" +
             "from=" + from +
             ", to=" + to +
+            ", type=" + type +
             '}';
     }
 }
