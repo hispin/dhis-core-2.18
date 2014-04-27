@@ -39,12 +39,43 @@ dhis2.period.generateMonthlyPeriods = function( cal, offset ) {
     var startDate = cal.newDate(year, month, 1);
     var endDate = cal.newDate(startDate).set(startDate.daysInMonth(month), 'd');
 
+    if( startDate.year() != endDate.year() ) {
+      break;
+    }
+
     var period = {};
     period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
     period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
     period['name'] = startDate.formatDate("MM yyyy");
     period['id'] = 'Monthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyymm");
+
+    periods.push(period);
+  }
+
+  return periods;
+};
+
+dhis2.period.generateBiMonthlyPeriods = function( cal, offset ) {
+  var year = cal.today().year() - offset;
+
+  var periods = [];
+
+  for( var month = 1; month <= cal.monthsInYear(year); month += 2 ) {
+    var startDate = cal.newDate(year, month, 1);
+    var endDate = cal.newDate(startDate).set(month + 1, 'm');
+    endDate.set(endDate.daysInMonth(month + 1), 'd');
+
+    if( startDate.year() != endDate.year() ) {
+      break;
+    }
+
+    var period = {};
+    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
+    period['id'] = 'Monthly_' + period['startDate'];
+    period['iso'] = startDate.formatDate("yyyymm") + 'B';
 
     periods.push(period);
   }
