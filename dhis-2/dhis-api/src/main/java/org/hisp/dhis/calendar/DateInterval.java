@@ -38,6 +38,11 @@ import javax.validation.constraints.NotNull;
  */
 public class DateInterval
 {
+    public enum DateIntervalType
+    {
+        YEAR, MONTH, WEEK
+    }
+
     /**
      * Start of interval. Required.
      */
