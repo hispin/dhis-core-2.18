@@ -56,11 +56,11 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.select.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.min.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.plus.min.js?_rev=$!{buildRevision}"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.coptic.min.js?_rev=$!{buildRevision}"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.ethiopian.min.js?_rev=$!{buildRevision}"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.islamic.min.js?_rev=$!{buildRevision}"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.julian.min.js?_rev=$!{buildRevision}"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.nepali.min.js?_rev=$!{buildRevision}"></script>
+
+    #if( $keyCalendar == "coptic" || $keyCalendar == "ethiopian" || $keyCalendar == "islamic"  || $keyCalendar == "julian" || $keyCalendar == "nepali" || $keyCalendar == "thai" )
+      <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.${keyCalendar}.min.js?_rev=$!{buildRevision}"></script>
+    #end
+
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.period.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.selected.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js?_rev=$!{buildRevision}"></script>
@@ -83,6 +83,14 @@
     #foreach( $javascript in $javascripts )
     <script type="text/javascript" src="${javascript}?_rev=$!{buildRevision}"></script>
     #end
+    <!-- Create global system calendar -->
+    <script>
+      #if( $keyCalendar == 'iso8601')
+      dhis2.period.calendar = $.calendars.instance('gregorian');
+      #else
+      dhis2.period.calendar = $.calendars.instance('$keyCalendar');
+      #end
+    </script>
   </head>
 
   <body>
