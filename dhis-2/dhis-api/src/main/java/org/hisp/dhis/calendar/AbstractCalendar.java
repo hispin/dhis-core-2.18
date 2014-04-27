@@ -99,10 +99,10 @@ public abstract class AbstractCalendar implements Calendar
     @Override
     public String formattedDate( DateUnit dateUnit )
     {
-        DateTime dateTime = dateUnit.toDateTime();
-        DateTimeFormatter format = DateTimeFormat.forPattern( defaultDateFormat() );
-
-        return format.print( dateTime );
+        return defaultDateFormat()
+            .replace( "yyyy", String.format( "%04d", dateUnit.getYear() ) )
+            .replace( "MM", String.format( "%02d", dateUnit.getMonth() ) )
+            .replace( "dd", String.format( "%02d", dateUnit.getDay() ) );
     }
 
     @Override

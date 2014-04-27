@@ -64,13 +64,6 @@ public class NepaliCalendar extends AbstractCalendar
         return "nepali";
     }
 
-    // TODO Add proper local date format for Nepali, can't use default.. since the month numbers are outside the valid ISO 8601 range
-    @Override
-    public String formattedDate( DateUnit dateUnit )
-    {
-        return super.formattedDate( dateUnit );
-    }
-
     @Override
     public DateUnit toIso( DateUnit dateUnit )
     {
