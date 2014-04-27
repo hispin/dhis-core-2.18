@@ -33,6 +33,7 @@ package org.hisp.dhis.calendar;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  * @see DateUnit
  * @see DateInterval
+ * @see DateIntervalType
  */
 public interface Calendar
 {
@@ -52,6 +53,7 @@ public interface Calendar
      * Formats dateUnit using defaultDateFormat
      * @param dateUnit DateUnit representing local year, month, day
      * @return Default date format
+     * @see #defaultDateFormat()
      */
     String formattedDate( DateUnit dateUnit );
 
@@ -59,6 +61,7 @@ public interface Calendar
      * Formats dateUnit using defaultDateFormat and ISO 8601
      * @param dateUnit DateUnit representing local year, month, day
      * @return Default date format
+     * @see #defaultDateFormat()
      */
     String formattedIsoDate( DateUnit dateUnit );
 
