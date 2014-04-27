@@ -28,68 +28,14 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.validation.constraints.NotNull;
-
 /**
- * Class representing a date interval.
  * @author Morten Olav Hansen <mortenoh@gmail.com>
- * @see DateUnit
- * @see Calendar
  */
-public class DateInterval
+public enum DateIntervalType
 {
     /**
-     * Start of interval. Required.
-     */
-    @NotNull
-    private final DateUnit from;
-
-    /**
-     * End of interval. Required.
-     */
-    @NotNull
-    private final DateUnit to;
-
-    /**
-     * Interval type this interval represents.
-     */
-    private DateIntervalType type;
-
-    public DateInterval( DateUnit from, DateUnit to )
-    {
-        this.from = from;
-        this.to = to;
-    }
-
-    public DateInterval( DateUnit from, DateUnit to, DateIntervalType type )
-    {
-        this.from = from;
-        this.to = to;
-        this.type = type;
-    }
-
-    public DateUnit getFrom()
-    {
-        return from;
-    }
-
-    public DateUnit getTo()
-    {
-        return to;
-    }
-
-    public DateIntervalType getType()
-    {
-        return type;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "DateInterval{" +
-            "from=" + from +
-            ", to=" + to +
-            ", type=" + type +
-            '}';
-    }
+      * Gives interval for a year, month or week based on ISO 8601.
+      * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+      */
+     ISO8601_YEAR, ISO8601_MONTH, ISO8601_WEEK
 }
