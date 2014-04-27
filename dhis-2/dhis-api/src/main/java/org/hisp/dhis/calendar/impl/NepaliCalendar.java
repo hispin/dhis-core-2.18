@@ -47,15 +47,36 @@ import java.util.Map;
 @Component
 public class NepaliCalendar extends AbstractCalendar
 {
-    private final DateUnit startNepal = new DateUnit( 2000, 1, 1, java.util.Calendar.WEDNESDAY );
+    private static final DateUnit startNepal = new DateUnit( 2000, 1, 1, java.util.Calendar.WEDNESDAY );
 
-    private final DateUnit startIso = new DateUnit( 1943, 4, 14, java.util.Calendar.WEDNESDAY );
+    private static final DateUnit startIso = new DateUnit( 1943, 4, 14, java.util.Calendar.WEDNESDAY );
+
+    private static final String DEFAULT_NEPALI_DATE_FORMAT = "dd-MM-yyyy";
 
     private static final Calendar self = new NepaliCalendar();
 
     public static Calendar getInstance()
     {
         return self;
+    }
+
+    @Override
+    public String name()
+    {
+        return "nepali";
+    }
+
+    @Override
+    public String defaultDateFormat()
+    {
+        return DEFAULT_NEPALI_DATE_FORMAT;
+    }
+
+    // TODO Add proper local date format for Nepali, can't use default.. since the month numbers are outside the valid ISO 8601 range
+    @Override
+    public String formattedDate( DateUnit dateUnit )
+    {
+        return super.formattedDate( dateUnit );
     }
 
     @Override
@@ -218,12 +239,6 @@ public class NepaliCalendar extends AbstractCalendar
         }
 
         return dayOfWeek;
-    }
-
-    @Override
-    public String name()
-    {
-        return "nepali";
     }
 
     @Override
