@@ -30,6 +30,34 @@ dhis2.util.namespace('dhis2.period');
 
 dhis2.period.DATE_FORMAT = "yyyy-mm-dd";
 
+dhis2.period.generateYearlyPeriods = function( cal, offset ) {
+  var year = cal.today().year() - offset;
+
+  var periods = [];
+
+  // generate 11 years, thisYear +/- 5 years
+  for( var i = -5; i < 6; i++ ) {
+    var startDate = cal.newDate(year + i, 1, 1);
+    var endDate = cal.newDate(startDate).set(cal.monthsInYear(year + i), 'm');
+    endDate.set(endDate.daysInMonth(endDate.month()), 'd');
+
+    if( startDate.year() != endDate.year() ) {
+      break;
+    }
+
+    var period = {};
+    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['name'] = startDate.formatDate("yyyy");
+    period['id'] = 'Yearly_' + period['startDate'];
+    period['iso'] = startDate.formatDate("yyyy");
+
+    periods.push(period);
+  }
+
+  return periods;
+};
+
 dhis2.period.generateMonthlyPeriods = function( cal, offset ) {
   var year = cal.today().year() - offset;
 
