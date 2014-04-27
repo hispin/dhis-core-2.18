@@ -58,7 +58,7 @@ public interface OrganisationUnitService
      * @param organisationUnit the OrganisationUnit to add.
      * @return a generated unique id of the added OrganisationUnit.
      */
-    public int addOrganisationUnit( OrganisationUnit organisationUnit );
+    int addOrganisationUnit( OrganisationUnit organisationUnit );
 
     /**
      * Updates an OrganisationUnit.

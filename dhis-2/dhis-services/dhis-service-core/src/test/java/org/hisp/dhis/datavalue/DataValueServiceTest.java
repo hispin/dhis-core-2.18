@@ -36,7 +36,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -52,7 +52,7 @@ import org.junit.Test;
  * @version $Id: DataValueServiceTest.java 5715 2008-09-17 14:05:28Z larshelg $
  */
 public class DataValueServiceTest
-    extends DhisSpringTest
+    extends DhisTest
 {
     // -------------------------------------------------------------------------
     // Supporting data
@@ -132,6 +132,12 @@ public class DataValueServiceTest
         organisationUnitService.addOrganisationUnit( sourceD );
 
         optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+    }
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     // -------------------------------------------------------------------------

@@ -85,10 +85,13 @@ public class HibernateDbmsManager
         emptyTable( "datavalue" );
         emptyTable( "completedatasetregistration" );
 
+        emptyTable( "reporttable_categorydimensions" );
+        emptyTable( "reporttable_categoryoptiongroups" );
         emptyTable( "reporttable_dataelements" );
         emptyTable( "reporttable_datasets" );
         emptyTable( "reporttable_indicators" );
         emptyTable( "reporttable_periods" );
+        emptyTable( "reporttable_itemorgunitgroups" );
         emptyTable( "reporttable_organisationunits" );
         emptyTable( "reporttable_dataelementgroups" );
         emptyTable( "reporttable_orgunitgroups" );
@@ -96,6 +99,21 @@ public class HibernateDbmsManager
         emptyTable( "reporttable_rows" );
         emptyTable( "reporttable_filters" );
         emptyTable( "reporttable" );
+        
+        emptyTable( "chart_periods" );
+        emptyTable( "chart_orgunitlevels" );
+        emptyTable( "chart_orgunitgroups" );
+        emptyTable( "chart_organisationunits" );
+        emptyTable( "chart_itemorgunitgroups" );
+        emptyTable( "chart_indicators" );
+        emptyTable( "chart_filters" );
+        emptyTable( "chart_datasets" );
+        emptyTable( "chart_dataelements" );
+        emptyTable( "chart_dataelementoperands" );
+        emptyTable( "chart_dataelementgroups" );
+        emptyTable( "chart_categoryoptiongroups" );
+        emptyTable( "chart_categorydimensions" );
+        emptyTable( "chart" );
 
         emptyTable( "userrolemembers" );
         emptyTable( "userroledataset" );

@@ -108,8 +108,7 @@ public class MinMaxDataElementStoreTest
         dataElementService.addDataElement( dataElement2 );
         dataElementService.addDataElement( dataElement3 );
         dataElementService.addDataElement( dataElement4 );
-        
-        
+                
         DataElementCategoryOptionCombo optionCombo1 = new DataElementCategoryOptionCombo();        
         categoryService.addDataElementCategoryOptionCombo( optionCombo1 );
         
@@ -136,10 +135,6 @@ public class MinMaxDataElementStoreTest
         assertNotNull( minMaxDataElementStore.get( mmdeid1 ) );
 
         assertTrue( minMaxDataElementStore.get( mmdeid1 ).getMax() == 100 );
-
-        minMaxDataElement1.setMax( 200 );
-        minMaxDataElementStore.update( minMaxDataElement1 );
-        assertTrue( minMaxDataElementStore.get( mmdeid1 ).getMax() == 200 );
 
         Collection<DataElement> dataElements1 = new HashSet<DataElement>();
         dataElements1.add( dataElement1 );
