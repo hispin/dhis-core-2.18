@@ -37,16 +37,16 @@ import org.springframework.stereotype.Component;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-public class BuddhistCalendar extends ChronologyBasedCalendar
+public class ThaiCalendar extends ChronologyBasedCalendar
 {
-    private static final Calendar self = new BuddhistCalendar();
+    private static final Calendar self = new ThaiCalendar();
 
     public static Calendar getInstance()
     {
         return self;
     }
 
-    protected BuddhistCalendar()
+    protected ThaiCalendar()
     {
         super( BuddhistChronology.getInstance() );
     }
@@ -54,6 +54,6 @@ public class BuddhistCalendar extends ChronologyBasedCalendar
     @Override
     public String name()
     {
-        return "buddhist";
+        return "thai";
     }
 }
