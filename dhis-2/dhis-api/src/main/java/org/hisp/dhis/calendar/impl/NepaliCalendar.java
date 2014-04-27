@@ -31,6 +31,7 @@ package org.hisp.dhis.calendar.impl;
 import org.hisp.dhis.calendar.AbstractCalendar;
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.DateInterval;
+import org.hisp.dhis.calendar.DateIntervalType;
 import org.hisp.dhis.calendar.DateUnit;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -127,7 +128,7 @@ public class NepaliCalendar extends AbstractCalendar
     }
 
     @Override
-    public DateInterval toInterval( DateUnit dateUnit, DateInterval.DateIntervalType type )
+    public DateInterval toInterval( DateUnit dateUnit, DateIntervalType type )
     {
         switch ( type )
         {
@@ -150,7 +151,7 @@ public class NepaliCalendar extends AbstractCalendar
         from = toIso( from );
         to = toIso( to );
 
-        return new DateInterval( from, to );
+        return new DateInterval( from, to, DateIntervalType.ISO8601_YEAR );
     }
 
     private DateInterval toMonthIsoInterval( DateUnit dateUnit )
@@ -161,7 +162,7 @@ public class NepaliCalendar extends AbstractCalendar
         from = toIso( from );
         to = toIso( to );
 
-        return new DateInterval( from, to );
+        return new DateInterval( from, to, DateIntervalType.ISO8601_MONTH );
     }
 
     private DateInterval toWeekIsoInterval( DateUnit dateUnit )
@@ -171,7 +172,7 @@ public class NepaliCalendar extends AbstractCalendar
         DateTime from = dateTime.weekOfWeekyear().toInterval().getStart();
         DateTime to = dateTime.weekOfWeekyear().toInterval().getEnd().minusDays( 1 );
 
-        return new DateInterval( DateUnit.fromDateTime( from ), DateUnit.fromDateTime( to ) );
+        return new DateInterval( DateUnit.fromDateTime( from ), DateUnit.fromDateTime( to ), DateIntervalType.ISO8601_WEEK );
     }
 
     @Override

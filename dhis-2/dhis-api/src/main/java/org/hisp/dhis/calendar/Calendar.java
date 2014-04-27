@@ -82,9 +82,9 @@ public interface Calendar
      * Gets interval of type based on DateUnit
      * @param dateUnit DateUnit representing local year, month, day
      * @return Interval for interval type based on dateUnit
-     * @see DateInterval.DateIntervalType
+     * @see DateIntervalType
      */
-    DateInterval toInterval( DateUnit dateUnit, DateInterval.DateIntervalType type );
+    DateInterval toInterval( DateUnit dateUnit, DateIntervalType type );
 
     /**
      * Gets current date as local DateUnit
