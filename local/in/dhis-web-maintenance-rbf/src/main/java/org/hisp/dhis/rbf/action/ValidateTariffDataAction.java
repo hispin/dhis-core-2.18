@@ -10,10 +10,13 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.rbf.api.TariffDataValue;
 import org.hisp.dhis.rbf.api.TariffDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,6 +62,9 @@ public class ValidateTariffDataAction
         this.dataSetService = dataSetService;
     }
     
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -73,7 +79,14 @@ public class ValidateTariffDataAction
 
     private String orgUnitUid;
 
-    public void setDataElementId( String dataElementId )
+    private Integer orgUnitGroupId;
+    
+    public void setOrgUnitGroupId(Integer orgUnitGroupId) 
+    {
+		this.orgUnitGroupId = orgUnitGroupId;
+	}
+
+	public void setDataElementId( String dataElementId )
     {
         this.dataElementId = dataElementId;
     }
@@ -133,11 +146,13 @@ public class ValidateTariffDataAction
 
         DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+        //OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
 
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
+        
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( pbfType ) );        
         
-        List<TariffDataValue> tariffDataValues = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues(organisationUnit, dataElement));
+        List<TariffDataValue> tariffDataValues = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues(orgUnitGroup, dataElement));
         //boolean status = false;
         for(TariffDataValue tdv : tariffDataValues)
         {        	

@@ -52,27 +52,39 @@ Ext.onReady(function() {
     });	
 	
 });
-var changeOwner = function(combo, record, index) {						
+
+var changeOwner = function(combo, record, index) {
 						var dataElementName = combo.getValue();
 						$('#dataElementName').val(dataElementName);
         				$('#loadTariffDetails').load("loadTariffDetails.action", 
             				{
             					dataElementName:dataElementName,
-								orgUnitUid:$("#orgUnitUid").val()
+								orgUnitGroupId : $( "#orgUnitGroupId" ).val()
             				}
             				, function( ){            										
         				});
 	};
+	
 function getTariffData()
 {
   $('#loadTariffDetails').load("loadTariffDetails.action", 
             				{
-            					dataElementName : $('#dataElementName').val(),
-								orgUnitUid : $("#orgUnitUid").val()
+            					dataElementName : $('#dataElementName').val(),								
+								orgUnitGroupId : $( "#orgUnitGroupId" ).val()
             				}
             				, function( ){  
 							loadExtTariff();
         				});  	
+}
+
+function orgUnitGroupChange()
+{
+	document.getElementById('simpleCombo').style.display = 'block';
+	document.getElementById('loadTariffDetails').style.display = 'block';
+	if($('#dataElementName').val() != '')
+	{
+		getTariffData();	
+	}
 }
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
@@ -145,7 +157,7 @@ function loadExtTariff()
 <table width="60%">
 	<tr>
 		<td >Orgainsation Unit: &nbsp;&nbsp;&nbsp; 
-		    <select id="orgUnitGroupId" name="orgUnitGroupId" >
+		    <select id="orgUnitGroupId" name="orgUnitGroupId" onchange="javascript:orgUnitGroupChange()">
                 #foreach( $orgUnitGroup in $orgUnitGroups )
                 	<option value="$!orgUnitGroup.id">$!orgUnitGroup.name</option>
                 #end

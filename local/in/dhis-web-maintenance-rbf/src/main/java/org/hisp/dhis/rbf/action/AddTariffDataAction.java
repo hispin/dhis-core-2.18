@@ -7,11 +7,13 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.rbf.api.TariffDataValue;
 import org.hisp.dhis.rbf.api.TariffDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,6 +59,9 @@ public class AddTariffDataAction
         this.dataSetService = dataSetService;
     }
     
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -77,7 +82,13 @@ public class AddTariffDataAction
     
     private String targetPercentage;     
     
-    public void setTarget(String target) {
+    private Integer orgUnitGroupId;
+    
+    public void setOrgUnitGroupId(Integer orgUnitGroupId) {
+		this.orgUnitGroupId = orgUnitGroupId;
+	}
+
+	public void setTarget(String target) {
 		this.target = target;
 	}
 
@@ -129,11 +140,13 @@ public class AddTariffDataAction
 
         DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+        //OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+        
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
 
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( pbfType ) );
         
-        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( organisationUnit, dataElement, dataSet, sDate, eDate );
+        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( orgUnitGroup, dataElement, dataSet, sDate, eDate );
 
         if ( tariffDataValue == null )
         {
@@ -154,7 +167,8 @@ public class AddTariffDataAction
             tariffDataValue.setStoredBy( currentUserService.getCurrentUsername() );
             tariffDataValue.setDataElement( dataElement );
             tariffDataValue.setDataSet( dataSet );
-            tariffDataValue.setOrganisationUnit( organisationUnit );
+            //tariffDataValue.setOrganisationUnit( organisationUnit );
+            tariffDataValue.setOrgUnitGroup( orgUnitGroup );
             
             tariffDataValueService.addTariffDataValue( tariffDataValue );
             System.out.println("Tariff Data Added");

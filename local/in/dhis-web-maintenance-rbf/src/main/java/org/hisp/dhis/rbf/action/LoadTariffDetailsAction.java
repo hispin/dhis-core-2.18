@@ -9,6 +9,8 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.rbf.api.Lookup;
 import org.hisp.dhis.rbf.api.LookupService;
@@ -17,6 +19,7 @@ import org.hisp.dhis.rbf.api.TariffDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -70,9 +73,19 @@ public class LoadTariffDetailsAction
         this.dataSetService = dataSetService;
     }
 
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
+
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
+    private Integer orgUnitGroupId;
+    
+    public void setOrgUnitGroupId(Integer orgUnitGroupId) 
+    {
+		this.orgUnitGroupId = orgUnitGroupId;
+	}
+
     private String dataElementName;
 
     public void setDataElementName( String dataElementName )
@@ -146,11 +159,15 @@ public class LoadTariffDetailsAction
 
         selecteddataElement = dataElementService.getDataElementByName( dataElementName );
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+        //OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+        
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
         
         //organisationUnit.getParent()
         
-        tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( organisationUnit, selecteddataElement ) );
+        //tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( organisationUnit, selecteddataElement ) );
+        
+        tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( orgUnitGroup, selecteddataElement ) );
 
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
         
