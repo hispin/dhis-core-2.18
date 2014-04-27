@@ -14,6 +14,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,13 +50,9 @@ public class GetDataElementforTariffAction
         this.organisationUnitService = organisationUnitService;
     }
     
+    @Autowired
     private OrganisationUnitGroupService orgUnitGroupService;
-    
-    public void setOrgUnitGroupService( OrganisationUnitGroupService orgUnitGroupService )
-    {
-        this.orgUnitGroupService = orgUnitGroupService;
-    }
-    
+        
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------

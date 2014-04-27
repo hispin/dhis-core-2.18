@@ -124,8 +124,8 @@ $( "#addTariff" ).dialog({
 
 	function deleteTariffDataValue( organisationUnitId, dataElementId, dataSetId, startDate, endDate)
 	{
-		var dataValue = {
-		        		'organisationUnitId' : organisationUnitId ,
+		var dataValue = {		        		
+		        		'orgUnitGroupId' : $( "#orgUnitGroupId" ).val(),
 						'dataElementId' : dataElementId,								
 						'dataSetId' : dataSetId,
 						'startDate' : startDate,
@@ -181,7 +181,7 @@ $( "#addTariff" ).dialog({
         		        			'pbfType' : $("#pbfType").val(),        		        			
         		        			'startDate' : $("#startDate").val(),
         							'endDate' : $("#endDate").val(),
-									'orgUnitUid': $("#orgUnitUid").val(),
+									'orgUnitGroupId': $( "#orgUnitGroupId" ).val(),
 									'dataElementId' : $("#dataElementId").val()
         		    			};
 								jQuery.ajax( {
@@ -209,8 +209,8 @@ $( "#addTariff" ).dialog({
         		        			'pbfType' : $("#pbfType").val(),
         		        			'tariff' : $("#tariff").val(),
         		        			'startDate' : $("#startDate").val(),
-        							'endDate' : $("#endDate").val(),
-									'orgUnitUid': $("#orgUnitUid").val(),
+        							'endDate' : $("#endDate").val(),									
+									'orgUnitGroupId': $( "#orgUnitGroupId" ).val(),
 									'dataElementId' : $("#dataElementId").val(),									
 									'target' : $("#target").val(),
 									'targetPercentage' : $("#targetPercentage").val(),
@@ -310,10 +310,10 @@ $( "#addTariff" ).dialog({
 				<td data-sorter="shortDate" data-date-format="yyyymmdd">$simpleDateFormat.format($!tariff.endDate)</td>
 			##if($updateAuthority == 'Yes')
 	            <td>
-					<a href="javascript:deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate')">
+					<a href="javascript:deleteTariffDataValue('$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate')">
 						<img src="images/delete.png" width="17px"/>
 					</a>
-					<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate','$tariff.value','$!tariff.target','$!tariff.targetPercentage')">
+					<a href="javascript:editTariffDataValue('$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate','$tariff.value','$!tariff.target','$!tariff.targetPercentage')">
 						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )" width="17px"/>
 					</a>				
 				</td>
