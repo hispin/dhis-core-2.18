@@ -630,40 +630,6 @@ public class PeriodStoreTest
     // -------------------------------------------------------------------------
 
     @Test
-    public void testAddPeriodType()
-        throws Exception
-    {
-        Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
-        Iterator<PeriodType> it = periodTypes.iterator();
-        PeriodType refA = it.next();
-        PeriodType refB = it.next();
-        PeriodType refC = it.next();
-
-        periodStore.deletePeriodType( refA );
-        periodStore.deletePeriodType( refB );
-        periodStore.deletePeriodType( refC );
-
-        int idA = periodStore.addPeriodType( refA );
-        int idB = periodStore.addPeriodType( refB );
-        int idC = periodStore.addPeriodType( refC );
-
-        PeriodType periodTypeA = periodStore.getPeriodType( idA );
-        assertNotNull( periodTypeA );
-        assertEquals( idA, periodTypeA.getId() );
-        assertEquals( refA.getName(), periodTypeA.getName() );
-
-        PeriodType periodTypeB = periodStore.getPeriodType( idB );
-        assertNotNull( periodTypeB );
-        assertEquals( idB, periodTypeB.getId() );
-        assertEquals( refB.getName(), periodTypeB.getName() );
-
-        PeriodType periodTypeC = periodStore.getPeriodType( idC );
-        assertNotNull( periodTypeC );
-        assertEquals( idC, periodTypeC.getId() );
-        assertEquals( refC.getName(), periodTypeC.getName() );
-    }
-
-    @Test
     public void testDeleteAndGetPeriodType()
         throws Exception
     {

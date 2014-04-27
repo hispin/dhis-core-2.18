@@ -52,7 +52,6 @@ import static org.junit.Assert.*;
 public class DataApprovalLevelServiceTest
     extends DhisSpringTest
 {
-
     @Autowired
     private DataApprovalLevelService dataApprovalLevelService;
 
@@ -190,10 +189,10 @@ public class DataApprovalLevelServiceTest
         organisationUnitJ = createOrganisationUnit( 'J', organisationUnitI );
         organisationUnitK = createOrganisationUnit( 'K', organisationUnitJ );
 
-        organisationUnitService.addOrganisationUnit( organisationUnitA );
-        organisationUnitService.addOrganisationUnit( organisationUnitB );
-        organisationUnitService.addOrganisationUnit( organisationUnitC );
-        organisationUnitService.addOrganisationUnit( organisationUnitD );
+        organisationUnitService.addOrganisationUnit( organisationUnitA, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitB, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitC, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitD, false );
     }
 
     // -------------------------------------------------------------------------
