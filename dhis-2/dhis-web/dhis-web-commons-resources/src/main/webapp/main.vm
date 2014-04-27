@@ -54,11 +54,11 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/validationRules.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.array.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.select.js?_rev=$!{buildRevision}"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.min.js?_rev=$!{buildRevision}"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.plus.min.js?_rev=$!{buildRevision}"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.min.js?_rev=$!{buildRevision}"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.plus.min.js?_rev=$!{buildRevision}"></script>
 
     #if( $keyCalendar == "coptic" || $keyCalendar == "ethiopian" || $keyCalendar == "islamic"  || $keyCalendar == "julian" || $keyCalendar == "nepali" || $keyCalendar == "thai" )
-      <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendar/jquery.calendars.${keyCalendar}.min.js?_rev=$!{buildRevision}"></script>
+      <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.${keyCalendar}.min.js?_rev=$!{buildRevision}"></script>
     #end
 
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.period.js?_rev=$!{buildRevision}"></script>
