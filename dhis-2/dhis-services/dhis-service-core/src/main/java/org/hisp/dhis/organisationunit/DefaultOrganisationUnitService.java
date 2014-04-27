@@ -114,6 +114,12 @@ public class DefaultOrganisationUnitService
     @Override
     public int addOrganisationUnit( OrganisationUnit organisationUnit )
     {
+        return addOrganisationUnit( organisationUnit, true );
+    }
+    
+    @Override
+    public int addOrganisationUnit( OrganisationUnit organisationUnit, boolean updateVersion )
+    {
         int id = organisationUnitStore.save( organisationUnit );
 
         if ( organisationUnit.getParent() == null && currentUserService.getCurrentUser() != null )
@@ -123,8 +129,11 @@ public class DefaultOrganisationUnitService
             currentUserService.getCurrentUser().getOrganisationUnits().add( organisationUnit );
         }
 
-        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION );
-
+        if ( updateVersion )
+        {
+            versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION );
+        }
+        
         return id;
     }
 
