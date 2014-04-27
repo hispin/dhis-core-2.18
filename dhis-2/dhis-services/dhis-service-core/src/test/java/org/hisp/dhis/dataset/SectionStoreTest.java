@@ -82,12 +82,12 @@ public class SectionStoreTest
         dataElements.add( dataElementA );
         dataElements.add( dataElementB );
 
-        Set<DataElementOperand> operands = new HashSet<DataElementOperand>( categoryService.getOperands( dataElements ) );
-        
+        Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
+        operands.add( new DataElementOperand( dataElementA, categoryCombo.getOptionCombos().iterator().next() ) );
+                
         sectionA = new Section( "SectionA", dataSet, dataElements, operands );
         sectionB = new Section( "SectionB", dataSet, dataElements, operands );
-        sectionC = new Section( "SectionC", dataSet, dataElements, operands );
-        
+        sectionC = new Section( "SectionC", dataSet, dataElements, operands );        
     }
     
     @Test
@@ -105,7 +105,7 @@ public class SectionStoreTest
         assertNotNull( sectionStore.get( idA ).getDataElements() );
         assertEquals( 2, sectionStore.get( idA ).getDataElements().size() );
         assertNotNull( sectionStore.get( idA ).getGreyedFields() );
-        assertEquals( 2, sectionStore.get( idA ).getGreyedFields().size() );
+        assertEquals( 1, sectionStore.get( idA ).getGreyedFields().size() );
     }
     
     @Test
