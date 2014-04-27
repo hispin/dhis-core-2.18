@@ -30,29 +30,31 @@ var dhis2 = dhis2 || {};
 dhis2['appcache'] = dhis2['appcache'] || {};
 
 function applicationCacheSupported() {
-    return typeof window.applicationCache !== 'undefined';
+  return typeof window.applicationCache !== 'undefined';
 }
 
 $(function() {
-    if(!applicationCacheSupported()) {
-        return;
+  if( !applicationCacheSupported() ) {
+    return;
+  }
+
+  $(window.applicationCache).on('updateready', function( e ) {
+    if( window.applicationCache.status == window.applicationCache.UPDATEREADY ) {
+      // Browser downloaded a new app cache.
+      if( confirm('An update is available. Refresh to update?') ) {
+        window.location.reload();
+      }
     }
+  });
 
-    $(window.applicationCache).on('updateready', function( e ) {
-        if( window.applicationCache.status == window.applicationCache.UPDATEREADY ) {
-            // Browser downloaded a new app cache.
-            if( confirm('An update is available. Refresh to update?') ) {
-                window.location.reload();
-            }
-        }
-    });
-
+  if( window.applicationCache.status > 0 ) {
     $(document).on('dhis2.online', function() {
-        dhis2.appcache.updateAppCache();
+      dhis2.appcache.updateAppCache();
     });
+  }
 });
 
 dhis2.appcache.updateAppCache = function() {
-    // check and download updated appcache, will fire of updateready
-    window.applicationCache.update();
+  // check and download updated appcache, will fire of updateready
+  window.applicationCache.update();
 };
