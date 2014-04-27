@@ -136,7 +136,7 @@ dhis2.period.generateSixMonthlyPeriods = function( cal, offset ) {
   period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
   period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
   period['id'] = 'SixMonthly_' + period['startDate'];
-  period['iso'] = startDate.formatDate("yyyy") + 'S' + 1;
+  period['iso'] = startDate.formatDate("yyyy") + 'S1';
 
   periods.push(period);
 
@@ -149,7 +149,41 @@ dhis2.period.generateSixMonthlyPeriods = function( cal, offset ) {
   period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
   period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
   period['id'] = 'SixMonthly_' + period['startDate'];
-  period['iso'] = startDate.formatDate("yyyy") + 'S' + 2;
+  period['iso'] = startDate.formatDate("yyyy") + 'S2';
+
+  periods.push(period);
+
+  return periods;
+};
+
+dhis2.period.generateSixMonthlyAprilPeriods = function( cal, offset ) {
+  var year = cal.today().year() - offset;
+
+  var periods = [];
+
+  var startDate = cal.newDate(year, 4, 1);
+  var endDate = cal.newDate(startDate).set(9, 'm');
+  endDate.set(endDate.daysInMonth(9), 'd');
+
+  var period = {};
+  period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+  period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+  period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
+  period['id'] = 'SixMonthlyApril_' + period['startDate'];
+  period['iso'] = startDate.formatDate("yyyy") + 'AprilS1';
+
+  periods.push(period);
+
+  startDate = cal.newDate(year, 10, 1);
+  endDate = cal.newDate(startDate).set(startDate.year() + 1, 'y').set(2, 'm');
+  endDate.set(endDate.daysInMonth(endDate.month()), 'd');
+
+  period = {};
+  period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+  period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+  period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate('MM yyyy');
+  period['id'] = 'SixMonthlyApril_' + period['startDate'];
+  period['iso'] = startDate.formatDate("yyyy") + 'AprilS2';
 
   periods.push(period);
 
