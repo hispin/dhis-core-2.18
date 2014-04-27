@@ -82,7 +82,6 @@ public interface Calendar
      * Gets interval of type based on DateUnit
      * @param dateUnit DateUnit representing local year, month, day
      * @return Interval for interval type based on dateUnit
-     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
      * @see DateInterval.DateIntervalType
      */
     DateInterval toInterval( DateUnit dateUnit, DateInterval.DateIntervalType type );
