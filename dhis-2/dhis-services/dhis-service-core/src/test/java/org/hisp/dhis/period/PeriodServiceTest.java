@@ -701,4 +701,31 @@ public class PeriodServiceTest
         assertNotNull( periodTypeB );
         assertEquals( refB.getName(), periodTypeB.getName() );
     }
+
+    @Test
+    public void testDeleteAndGetPeriodType()
+        throws Exception
+    {
+        Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
+        Iterator<PeriodType> it = periodTypes.iterator();
+        PeriodType periodTypeA = it.next();
+        PeriodType periodTypeB = it.next();
+        PeriodType periodTypeC = it.next();
+        PeriodType periodTypeD = it.next();
+
+        int idA = periodTypeA.getId();
+        int idB = periodTypeB.getId();
+        int idC = periodTypeC.getId();
+        int idD = periodTypeD.getId();
+
+        assertNotNull( periodService.getPeriodType( idA ) );
+        assertNotNull( periodService.getPeriodType( idB ) );
+        assertNotNull( periodService.getPeriodType( idC ) );
+        assertNotNull( periodService.getPeriodType( idD ) );
+
+        assertNotNull( periodService.getPeriodType( periodTypeA.getId() ) );
+        assertNotNull( periodService.getPeriodType( periodTypeB.getId() ) );
+        assertNotNull( periodService.getPeriodType( periodTypeC.getId() ) );
+        assertNotNull( periodService.getPeriodType( periodTypeD.getId() ) );
+    }
 }

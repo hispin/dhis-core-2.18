@@ -83,7 +83,7 @@ public class PeriodStoreTest
 
         optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
     }
-
+    
     // -------------------------------------------------------------------------
     // Period
     // -------------------------------------------------------------------------
@@ -623,80 +623,5 @@ public class PeriodStoreTest
         assertEquals( periods.size(), 0 );
         
         periods = periodStore.getPeriods( mar, dataElements2, sources2 );
-    }
-    
-    // -------------------------------------------------------------------------
-    // PeriodType
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testDeleteAndGetPeriodType()
-        throws Exception
-    {
-        Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
-        Iterator<PeriodType> it = periodTypes.iterator();
-        PeriodType periodTypeA = it.next();
-        PeriodType periodTypeB = it.next();
-        PeriodType periodTypeC = it.next();
-        PeriodType periodTypeD = it.next();
-
-        int idA = periodTypeA.getId();
-        int idB = periodTypeB.getId();
-        int idC = periodTypeC.getId();
-        int idD = periodTypeD.getId();
-
-        assertNotNull( periodStore.getPeriodType( idA ) );
-        assertNotNull( periodStore.getPeriodType( idB ) );
-        assertNotNull( periodStore.getPeriodType( idC ) );
-        assertNotNull( periodStore.getPeriodType( idD ) );
-
-        assertNotNull( periodStore.getPeriodType( periodTypeA.getClass() ) );
-        assertNotNull( periodStore.getPeriodType( periodTypeB.getClass() ) );
-        assertNotNull( periodStore.getPeriodType( periodTypeC.getClass() ) );
-        assertNotNull( periodStore.getPeriodType( periodTypeD.getClass() ) );
-
-        periodStore.deletePeriodType( periodTypeA );
-        assertNull( periodStore.getPeriodType( idA ) );
-        assertNotNull( periodStore.getPeriodType( idB ) );
-        assertNotNull( periodStore.getPeriodType( idC ) );
-        assertNotNull( periodStore.getPeriodType( idD ) );
-        
-        assertNull( periodStore.getPeriodType( periodTypeA.getClass() ) );
-        assertNotNull( periodStore.getPeriodType( periodTypeB.getClass() ) );
-        assertNotNull( periodStore.getPeriodType( periodTypeC.getClass() ) );
-        assertNotNull( periodStore.getPeriodType( periodTypeD.getClass() ) );
-
-        periodStore.deletePeriodType( periodTypeB );
-        assertNull( periodStore.getPeriodType( idA ) );
-        assertNull( periodStore.getPeriodType( idB ) );
-        assertNotNull( periodStore.getPeriodType( idC ) );
-        assertNotNull( periodStore.getPeriodType( idD ) );
-        
-        assertNull( periodStore.getPeriodType( periodTypeA.getClass() ) );
-        assertNull( periodStore.getPeriodType( periodTypeB.getClass() ) );
-        assertNotNull( periodStore.getPeriodType( periodTypeC.getClass() ) );
-        assertNotNull( periodStore.getPeriodType( periodTypeD.getClass() ) );
-
-        periodStore.deletePeriodType( periodTypeC );
-        assertNull( periodStore.getPeriodType( idA ) );
-        assertNull( periodStore.getPeriodType( idB ) );
-        assertNull( periodStore.getPeriodType( idC ) );
-        assertNotNull( periodStore.getPeriodType( idD ) );
-        
-        assertNull( periodStore.getPeriodType( periodTypeA.getClass() ) );
-        assertNull( periodStore.getPeriodType( periodTypeB.getClass() ) );
-        assertNull( periodStore.getPeriodType( periodTypeC.getClass() ) );
-        assertNotNull( periodStore.getPeriodType( periodTypeD.getClass() ) );
-
-        periodStore.deletePeriodType( periodTypeD );
-        assertNull( periodStore.getPeriodType( idA ) );
-        assertNull( periodStore.getPeriodType( idB ) );
-        assertNull( periodStore.getPeriodType( idC ) );
-        assertNull( periodStore.getPeriodType( idD ) );
-        
-        assertNull( periodStore.getPeriodType( periodTypeA.getClass() ) );
-        assertNull( periodStore.getPeriodType( periodTypeB.getClass() ) );
-        assertNull( periodStore.getPeriodType( periodTypeC.getClass() ) );
-        assertNull( periodStore.getPeriodType( periodTypeD.getClass() ) );
     }
 }
