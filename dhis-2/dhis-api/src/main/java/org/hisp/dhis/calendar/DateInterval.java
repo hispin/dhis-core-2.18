@@ -40,7 +40,14 @@ public class DateInterval
 {
     public enum DateIntervalType
     {
-        YEAR, MONTH, WEEK
+        // Gives interval as ISO 8601 year
+        ISO8601_YEAR,
+
+        // Gives interval as ISO 8601 month
+        ISO8601_MONTH,
+
+        // Gives interval as ISO 8601 week
+        ISO8601_WEEK
     }
 
     /**
