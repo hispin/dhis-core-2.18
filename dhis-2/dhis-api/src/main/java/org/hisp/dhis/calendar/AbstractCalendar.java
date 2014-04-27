@@ -30,6 +30,8 @@ package org.hisp.dhis.calendar;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -85,6 +87,33 @@ public abstract class AbstractCalendar implements Calendar
         "weekday.short.saturday",
         "weekday.short.sunday"
     };
+
+    protected static final String DEFAULT_ISO8601_DATE_FORMAT = "yyyy-MM-dd";
+
+    @Override
+    public String defaultDateFormat()
+    {
+        return DEFAULT_ISO8601_DATE_FORMAT;
+    }
+
+    @Override
+    public String formattedDate( DateUnit dateUnit )
+    {
+        DateTime dateTime = dateUnit.toDateTime();
+        DateTimeFormatter format = DateTimeFormat.forPattern( defaultDateFormat() );
+
+        return format.print( dateTime );
+    }
+
+    @Override
+    public String formattedIsoDate( DateUnit dateUnit )
+    {
+        dateUnit = toIso( dateUnit );
+        DateTime dateTime = dateUnit.toDateTime();
+        DateTimeFormatter format = DateTimeFormat.forPattern( defaultDateFormat() );
+
+        return format.print( dateTime );
+    }
 
     @Override
     public DateUnit toIso( int year, int month, int day )

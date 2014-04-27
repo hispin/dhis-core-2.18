@@ -43,6 +43,26 @@ public interface Calendar
     String name();
 
     /**
+     * Default date format for this calendar
+     * @return Default date format
+     */
+    String defaultDateFormat();
+
+    /**
+     * Formats dateUnit using defaultDateFormat
+     * @param dateUnit DateUnit representing local year, month, day
+     * @return Default date format
+     */
+    String formattedDate( DateUnit dateUnit );
+
+    /**
+     * Formats dateUnit using defaultDateFormat and ISO 8601
+     * @param dateUnit DateUnit representing local year, month, day
+     * @return Default date format
+     */
+    String formattedIsoDate( DateUnit dateUnit );
+
+    /**
      * Convert local calendar to an ISO 8601 DateUnit.
      * @param year  Local year
      * @param month Local month
