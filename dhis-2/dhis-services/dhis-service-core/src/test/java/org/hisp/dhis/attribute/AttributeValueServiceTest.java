@@ -120,10 +120,4 @@ public class AttributeValueServiceTest
         assertNotNull( attributeValue1 );
         assertNotNull( attributeValue2 );
     }
-
-    @Test
-    public void testGetAllAttributeValues()
-    {
-        assertEquals( 2, attributeService.getAllAttributeValues().size() );
-    }
 }
