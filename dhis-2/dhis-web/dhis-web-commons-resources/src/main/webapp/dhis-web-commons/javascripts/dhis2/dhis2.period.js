@@ -30,25 +30,58 @@ dhis2.util.namespace('dhis2.period');
 
 dhis2.period.DATE_FORMAT = "yyyy-mm-dd";
 
-dhis2.period.generateYearlyPeriods = function( cal, offset ) {
+dhis2.period.generateDailyPeriods = function( cal, offset ) {
   var year = cal.today().year() - offset;
 
   var periods = [];
 
-  // generate 11 years, thisYear +/- 5 years
-  for( var i = -5; i < 6; i++ ) {
-    var startDate = cal.newDate(year + i, 1, 1);
-    var endDate = cal.newDate(startDate).set(cal.monthsInYear(year + i), 'm');
-    endDate.set(endDate.daysInMonth(endDate.month()), 'd');
+  var startDate = cal.newDate(year, 1, 1);
 
+  for( var day = 1; day <= cal.daysInYear(year); day++ ) {
     var period = {};
     period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-    period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
-    period['name'] = startDate.formatDate("yyyy");
-    period['id'] = 'Yearly_' + period['startDate'];
-    period['iso'] = startDate.formatDate("yyyy");
+    period['endDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['name'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['id'] = 'Daily_' + period['startDate'];
+    period['iso'] = startDate.formatDate("yyyymmdd");
 
     periods.push(period);
+
+    startDate.add(1, 'd');
+  }
+
+  return periods;
+};
+
+dhis2.period.generateWeeklyPeriods = function( cal, offset ) {
+  var year = cal.today().year() - offset;
+
+  var periods = [];
+
+  var startDate = cal.newDate(year, 1, 1);
+  startDate.add(-(startDate.dayOfWeek() - 1), 'd'); // rewind to start of week, might cross year boundary
+
+  // no reliable way to figure out number of weeks in a year (can differ in different calendars)
+  // goes up to 200, but break when week is back to 1
+  for( var week = 1; week < 200; week++ ) {
+    var period = {};
+    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+
+    // not very elegant, but seems to be best way to get week end, adds a week, then minus 1 day
+    var endDate = cal.newDate(startDate).add(1, 'w').add(-1, 'd');
+
+    period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['name'] = 'W' + week + ' - ' + period['startDate'] + ' - ' + period['endDate'];
+    period['id'] = 'Weekly_' + period['startDate'];
+    period['iso'] = year + 'W' + week;
+
+    periods.push(period);
+
+    startDate.add(1, 'w');
+
+    if( startDate.weekOfYear() == 1 ) {
+      break;
+    }
   }
 
   return periods;
@@ -71,29 +104,6 @@ dhis2.period.generateMonthlyPeriods = function( cal, offset ) {
     period['iso'] = startDate.formatDate("yyyymm");
 
     periods.push(period);
-  }
-
-  return periods;
-};
-
-dhis2.period.generateDailyPeriods = function( cal, offset ) {
-  var year = cal.today().year() - offset;
-
-  var periods = [];
-
-  var startDate = cal.newDate(year, 1, 1);
-
-  for( var day = 1; day <= cal.daysInYear(year); day++ ) {
-    var period = {};
-    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-    period['endDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-    period['name'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-    period['id'] = 'Daily_' + period['startDate'];
-    period['iso'] = startDate.formatDate("yyyymmdd");
-
-    periods.push(period);
-
-    startDate.add(1, 'd');
   }
 
   return periods;
@@ -209,6 +219,30 @@ dhis2.period.generateSixMonthlyAprilPeriods = function( cal, offset ) {
   period['iso'] = startDate.formatDate("yyyy") + 'AprilS2';
 
   periods.push(period);
+
+  return periods;
+};
+
+dhis2.period.generateYearlyPeriods = function( cal, offset ) {
+  var year = cal.today().year() - offset;
+
+  var periods = [];
+
+  // generate 11 years, thisYear +/- 5 years
+  for( var i = -5; i < 6; i++ ) {
+    var startDate = cal.newDate(year + i, 1, 1);
+    var endDate = cal.newDate(startDate).set(cal.monthsInYear(year + i), 'm');
+    endDate.set(endDate.daysInMonth(endDate.month()), 'd');
+
+    var period = {};
+    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['name'] = startDate.formatDate("yyyy");
+    period['id'] = 'Yearly_' + period['startDate'];
+    period['iso'] = startDate.formatDate("yyyy");
+
+    periods.push(period);
+  }
 
   return periods;
 };
