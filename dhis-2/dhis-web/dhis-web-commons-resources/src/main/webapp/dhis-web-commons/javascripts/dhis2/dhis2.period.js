@@ -41,10 +41,6 @@ dhis2.period.generateYearlyPeriods = function( cal, offset ) {
     var endDate = cal.newDate(startDate).set(cal.monthsInYear(year + i), 'm');
     endDate.set(endDate.daysInMonth(endDate.month()), 'd');
 
-    if( startDate.year() != endDate.year() ) {
-      break;
-    }
-
     var period = {};
     period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
     period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
@@ -66,10 +62,6 @@ dhis2.period.generateMonthlyPeriods = function( cal, offset ) {
   for( var month = 1; month <= cal.monthsInYear(year); month++ ) {
     var startDate = cal.newDate(year, month, 1);
     var endDate = cal.newDate(startDate).set(startDate.daysInMonth(month), 'd');
-
-    if( startDate.year() != endDate.year() ) {
-      break;
-    }
 
     var period = {};
     period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
@@ -94,10 +86,6 @@ dhis2.period.generateBiMonthlyPeriods = function( cal, offset ) {
     var endDate = cal.newDate(startDate).set(month + 1, 'm');
     endDate.set(endDate.daysInMonth(month + 1), 'd');
 
-    if( startDate.year() != endDate.year() ) {
-      break;
-    }
-
     var period = {};
     period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
     period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
@@ -120,10 +108,6 @@ dhis2.period.generateQuarterlyPeriods = function( cal, offset ) {
     var startDate = cal.newDate(year, month, 1);
     var endDate = cal.newDate(startDate).set(month + 2, 'm');
     endDate.set(endDate.daysInMonth(month + 2), 'd');
-
-    if( startDate.year() != endDate.year() ) {
-      break;
-    }
 
     var period = {};
     period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
