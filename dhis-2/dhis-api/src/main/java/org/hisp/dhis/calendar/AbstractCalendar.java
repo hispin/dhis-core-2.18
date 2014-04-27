@@ -36,6 +36,56 @@ import org.joda.time.chrono.ISOChronology;
  */
 public abstract class AbstractCalendar implements Calendar
 {
+    protected static final String[] DEFAULT_I18N_MONTH_NAMES = new String[]{
+        "month.january",
+        "month.february",
+        "month.march",
+        "month.april",
+        "month.may",
+        "month.june",
+        "month.july",
+        "month.august",
+        "month.september",
+        "month.october",
+        "month.november",
+        "month.december"
+    };
+
+    protected static final String[] DEFAULT_I18N_MONTH_SHORT_NAMES = new String[]{
+        "month.short.january",
+        "month.short.february",
+        "month.short.march",
+        "month.short.april",
+        "month.short.may",
+        "month.short.june",
+        "month.short.july",
+        "month.short.august",
+        "month.short.september",
+        "month.short.october",
+        "month.short.november",
+        "month.short.december"
+    };
+
+    protected static final String[] DEFAULT_I18N_DAY_NAMES = new String[]{
+        "weekday.monday",
+        "weekday.tuesday",
+        "weekday.wednesday",
+        "weekday.thursday",
+        "weekday.friday",
+        "weekday.saturday",
+        "weekday.sunday"
+    };
+
+    protected static final String[] DEFAULT_I18N_DAY_SHORT_NAMES = new String[]{
+        "weekday.short.monday",
+        "weekday.short.tuesday",
+        "weekday.short.wednesday",
+        "weekday.short.thursday",
+        "weekday.short.friday",
+        "weekday.short.saturday",
+        "weekday.short.sunday"
+    };
+
     @Override
     public DateUnit toIso( int year, int month, int day )
     {
@@ -65,5 +115,49 @@ public abstract class AbstractCalendar implements Calendar
     public int daysInWeek()
     {
         return 7;
+    }
+
+    @Override
+    public String nameOfMonth( int month )
+    {
+        if ( month > DEFAULT_I18N_MONTH_NAMES.length || month <= 0 )
+        {
+            return null;
+        }
+
+        return DEFAULT_I18N_MONTH_NAMES[month - 1];
+    }
+
+    @Override
+    public String shortNameOfMonth( int month )
+    {
+        if ( month > DEFAULT_I18N_MONTH_SHORT_NAMES.length || month <= 0 )
+        {
+            return null;
+        }
+
+        return DEFAULT_I18N_MONTH_SHORT_NAMES[month - 1];
+    }
+
+    @Override
+    public String nameOfDay( int day )
+    {
+        if ( day > DEFAULT_I18N_DAY_NAMES.length || day <= 0 )
+        {
+            return null;
+        }
+
+        return DEFAULT_I18N_DAY_NAMES[day - 1];
+    }
+
+    @Override
+    public String shortNameOfDay( int day )
+    {
+        if ( day > DEFAULT_I18N_DAY_SHORT_NAMES.length || day <= 0 )
+        {
+            return null;
+        }
+
+        return DEFAULT_I18N_DAY_SHORT_NAMES[day - 1];
     }
 }

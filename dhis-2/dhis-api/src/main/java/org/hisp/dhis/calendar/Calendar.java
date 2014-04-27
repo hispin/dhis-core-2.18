@@ -152,4 +152,36 @@ public interface Calendar
      * @see <a href="http://en.wikipedia.org/wiki/ISO_week_date">http://en.wikipedia.org/wiki/ISO_week_date</a>
      */
     int weekday( DateUnit dateUnit );
+
+    /**
+     * Gets the (untranslated) I18n key for local month
+     * @param month Month to fetch key for
+     * @return I18n Key for this month
+     * @see <a href="http://en.wikipedia.org/wiki/Internationalization_and_localization">http://en.wikipedia.org/wiki/Internationalization_and_localization</a>
+     */
+    String nameOfMonth( int month );
+
+    /**
+     * Gets the (untranslated) I18n short key for local month
+     * @param month Month to fetch key for
+     * @return I18n Key for this month
+     * @see <a href="http://en.wikipedia.org/wiki/Internationalization_and_localization">http://en.wikipedia.org/wiki/Internationalization_and_localization</a>
+     */
+    String shortNameOfMonth( int month );
+
+    /**
+     * Gets the (untranslated) I18n key for local day
+     * @param day Day to fetch key for
+     * @return I18n Key for this day
+     * @see <a href="http://en.wikipedia.org/wiki/Internationalization_and_localization">http://en.wikipedia.org/wiki/Internationalization_and_localization</a>
+     */
+    String nameOfDay( int day );
+
+    /**
+     * Gets the (untranslated) I18n short key for local day
+     * @param day Day to fetch key for
+     * @return I18n Key for this day
+     * @see <a href="http://en.wikipedia.org/wiki/Internationalization_and_localization">http://en.wikipedia.org/wiki/Internationalization_and_localization</a>
+     */
+    String shortNameOfDay( int day );
 }
