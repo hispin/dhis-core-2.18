@@ -127,15 +127,15 @@ public class NepaliCalendar extends AbstractCalendar
     }
 
     @Override
-    public DateInterval toIsoInterval( DateUnit dateUnit, DateInterval.DateIntervalType type )
+    public DateInterval toInterval( DateUnit dateUnit, DateInterval.DateIntervalType type )
     {
         switch ( type )
         {
-            case YEAR:
+            case ISO8601_YEAR:
                 return toYearIsoInterval( dateUnit );
-            case MONTH:
+            case ISO8601_MONTH:
                 return toMonthIsoInterval( dateUnit );
-            case WEEK:
+            case ISO8601_WEEK:
                 return toWeekIsoInterval( dateUnit );
         }
 
