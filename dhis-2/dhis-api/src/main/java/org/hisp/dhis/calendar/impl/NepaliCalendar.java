@@ -226,6 +226,50 @@ public class NepaliCalendar extends AbstractCalendar
         return "nepali";
     }
 
+    @Override
+    public String nameOfMonth( int month )
+    {
+        if ( month > DEFAULT_I18N_MONTH_NAMES.length || month <= 0 )
+        {
+            return null;
+        }
+
+        return "nepali." + DEFAULT_I18N_MONTH_NAMES[month - 1];
+    }
+
+    @Override
+    public String shortNameOfMonth( int month )
+    {
+        if ( month > DEFAULT_I18N_MONTH_SHORT_NAMES.length || month <= 0 )
+        {
+            return null;
+        }
+
+        return "nepali." + DEFAULT_I18N_MONTH_SHORT_NAMES[month - 1];
+    }
+
+    @Override
+    public String nameOfDay( int day )
+    {
+        if ( day > DEFAULT_I18N_DAY_NAMES.length || day <= 0 )
+        {
+            return null;
+        }
+
+        return "nepali." + DEFAULT_I18N_DAY_NAMES[day - 1];
+    }
+
+    @Override
+    public String shortNameOfDay( int day )
+    {
+        if ( day > DEFAULT_I18N_DAY_SHORT_NAMES.length || day <= 0 )
+        {
+            return null;
+        }
+
+        return "nepali." + DEFAULT_I18N_DAY_SHORT_NAMES[day - 1];
+    }
+
     private int getYearTotal( int year )
     {
         // if year total index is uninitialized, calculate and set in array
