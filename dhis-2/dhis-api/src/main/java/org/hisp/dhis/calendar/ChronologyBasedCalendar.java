@@ -62,10 +62,25 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     }
 
     @Override
-    public DateInterval toIsoInterval( int year )
+    public DateInterval toIsoInterval( DateUnit dateUnit, DateInterval.DateIntervalType type )
     {
-        DateUnit from = new DateUnit( year, 1, 1 );
-        DateUnit to = new DateUnit( year, monthsInYear(), daysInMonth( year, monthsInYear() ) );
+        switch ( type )
+        {
+            case YEAR:
+                return toYearIsoInterval( dateUnit );
+            case MONTH:
+                return toMonthIsoInterval( dateUnit );
+            case WEEK:
+                return toWeekIsoInterval( dateUnit );
+        }
+
+        return null;
+    }
+
+    private DateInterval toYearIsoInterval( DateUnit dateUnit )
+    {
+        DateUnit from = new DateUnit( dateUnit.getYear(), 1, 1 );
+        DateUnit to = new DateUnit( dateUnit.getYear(), monthsInYear(), daysInMonth( dateUnit.getYear(), monthsInYear() ) );
 
         from.setDayOfWeek( isoWeekday( from ) );
         to.setDayOfWeek( isoWeekday( to ) );
@@ -73,16 +88,25 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         return new DateInterval( from, to );
     }
 
-    @Override
-    public DateInterval toIsoInterval( int year, int month )
+    private DateInterval toMonthIsoInterval( DateUnit dateUnit )
     {
-        DateUnit from = new DateUnit( year, month, 1 );
-        DateUnit to = new DateUnit( year, month, daysInMonth( year, month ) );
+        DateUnit from = new DateUnit( dateUnit.getYear(), dateUnit.getMonth(), 1 );
+        DateUnit to = new DateUnit( dateUnit.getYear(), dateUnit.getMonth(), daysInMonth( dateUnit.getYear(), dateUnit.getMonth() ) );
 
         from.setDayOfWeek( isoWeekday( from ) );
         to.setDayOfWeek( isoWeekday( to ) );
 
         return new DateInterval( from, to );
+    }
+
+    private DateInterval toWeekIsoInterval( DateUnit dateUnit )
+    {
+        DateTime dateTime = new DateTime( dateUnit.getYear(), dateUnit.getMonth(), dateUnit.getDay(), 0, 0, chronology );
+
+        DateTime from = dateTime.weekOfWeekyear().toInterval().getStart();
+        DateTime to = dateTime.weekOfWeekyear().toInterval().getEnd().minusDays( 1 );
+
+        return new DateInterval( DateUnit.fromDateTime( from ), DateUnit.fromDateTime( to ) );
     }
 
     @Override

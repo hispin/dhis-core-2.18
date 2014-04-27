@@ -79,21 +79,13 @@ public interface Calendar
     DateUnit fromIso( DateUnit dateUnit );
 
     /**
-     * Gets this local year as a ISO 8601 interval
-     * @param year Local year
+     * Gets interval of type based on DateUnit
+     * @param dateUnit DateUnit representing local year, month, day
      * @return ISO 8601 interval for year
      * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     * @see DateInterval.DateIntervalType
      */
-    DateInterval toIsoInterval( int year );
-
-    /**
-     * Gets this local year/month as a ISO 8601 interval
-     * @param year  Local year
-     * @param month Local month
-     * @return ISO 8601 interval for year/month
-     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
-     */
-    DateInterval toIsoInterval( int year, int month );
+    DateInterval toIsoInterval( DateUnit dateUnit, DateInterval.DateIntervalType type );
 
     /**
      * Gets current date as local DateUnit
