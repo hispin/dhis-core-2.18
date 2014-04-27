@@ -33,9 +33,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.SortedMap;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -48,7 +47,6 @@ import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
@@ -59,7 +57,7 @@ import org.junit.Test;
  * @version $Id$
  */
 public class DataIntegrityServiceTest
-    extends DhisSpringTest
+    extends DhisTest
 {
     private DataIntegrityService dataIntegrityService;
     
@@ -91,9 +89,7 @@ public class DataIntegrityServiceTest
     private OrganisationUnitGroup unitGroupB;
     private OrganisationUnitGroup unitGroupC;
     private OrganisationUnitGroup unitGroupD;
-    
-    private OrganisationUnitGroupSet unitGroupSetA;
-    private OrganisationUnitGroupSet unitGroupSetB;    
+      
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -222,29 +218,14 @@ public class DataIntegrityServiceTest
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupB );
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupC );
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupD );
-
-        // ---------------------------------------------------------------------
-        // Group sets
-        // ---------------------------------------------------------------------
-
-        unitGroupSetA = createOrganisationUnitGroupSet( 'A' );
-        unitGroupSetB = createOrganisationUnitGroupSet( 'B' );
-        
-        unitGroupSetA.setCompulsory( true );        
-        unitGroupSetB.setCompulsory( false );
-        
-        unitGroupSetA.getOrganisationUnitGroups().add( unitGroupA );
-        unitGroupA.setGroupSet( unitGroupSetA );
-        
-        unitGroupSetB.getOrganisationUnitGroups().add( unitGroupB );
-        unitGroupSetB.getOrganisationUnitGroups().add( unitGroupC );
-        unitGroupB.setGroupSet( unitGroupSetB );
-        unitGroupC.setGroupSet( unitGroupSetB );
-                
-        organisationUnitGroupService.addOrganisationUnitGroupSet( unitGroupSetA );
-        organisationUnitGroupService.addOrganisationUnitGroupSet( unitGroupSetB );
     }
 
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
@@ -326,22 +307,5 @@ public class DataIntegrityServiceTest
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsWithoutGroups();
         
         assertTrue( message( expected ), equals( expected, unitD, unitE ) );
-    }
-
-    @Test
-    public void testGetOrganisationUnitsViolatingExclusiveGroupSets()
-    {
-        SortedMap<OrganisationUnit, Collection<OrganisationUnitGroup>> expected = dataIntegrityService.getOrganisationUnitsViolatingExclusiveGroupSets();
-        
-        assertEquals( 1, expected.size() );
-        assertEquals( expected.keySet().iterator().next(), unitA );
-    }
-
-    @Test
-    public void testGetOrganisationUnitGroupsWithoutGroupSets()
-    {
-        Collection<OrganisationUnitGroup> expected = dataIntegrityService.getOrganisationUnitGroupsWithoutGroupSets();
-        
-        assertTrue( message( expected ), equals( expected, unitGroupD ) );
     }
 }
