@@ -169,7 +169,12 @@ public class HibernateDbmsManager
         emptyTable( "categorycombos_categories" );
         emptyTable( "categories_categoryoptions" );
 
+        emptyTable( "orgunitgroupsetmembers" );
+        emptyTable( "orgunitgroupmembers" );
+        emptyTable( "orgunitgroupset" );
+        emptyTable( "orgunitgroup" );
         emptyTable( "organisationunit" );
+        
         emptyTable( "version" );
         emptyTable( "mocksource" );
         emptyTable( "period" );
