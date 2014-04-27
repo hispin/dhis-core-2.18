@@ -76,6 +76,29 @@ dhis2.period.generateMonthlyPeriods = function( cal, offset ) {
   return periods;
 };
 
+dhis2.period.generateDailyPeriods = function( cal, offset ) {
+  var year = cal.today().year() - offset;
+
+  var periods = [];
+
+  var startDate = cal.newDate(year, 1, 1);
+
+  for( var day = 1; day <= cal.daysInYear(year); day++ ) {
+    var period = {};
+    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['endDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['name'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['id'] = 'Daily_' + period['startDate'];
+    period['iso'] = startDate.formatDate("yyyymmdd");
+
+    periods.push(period);
+
+    startDate.add(1, 'd');
+  }
+
+  return periods;
+};
+
 dhis2.period.generateBiMonthlyPeriods = function( cal, offset ) {
   var year = cal.today().year() - offset;
 
