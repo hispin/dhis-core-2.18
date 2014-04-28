@@ -510,9 +510,9 @@ public class PeriodServiceTest
         dataElementService.addDataElement( dataElementB );
         dataElementService.addDataElement( dataElementC );
      
-        organisationUnitService.addOrganisationUnit( sourceA );
-        organisationUnitService.addOrganisationUnit( sourceB );
-        organisationUnitService.addOrganisationUnit( sourceC );
+        organisationUnitService.addOrganisationUnit( sourceA, false );
+        organisationUnitService.addOrganisationUnit( sourceB, false );
+        organisationUnitService.addOrganisationUnit( sourceC, false );
         
         dataValueService.addDataValue( dataValueA );
         dataValueService.addDataValue( dataValueB );
