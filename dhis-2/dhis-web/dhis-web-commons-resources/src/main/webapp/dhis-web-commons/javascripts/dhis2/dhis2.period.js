@@ -34,6 +34,16 @@ dhis2.util.namespace('dhis2.period');
 
 dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
 
+/**
+ * A period generator that uses a specified calendar chronology to generate DHIS 2 periods.
+ *
+ * There is probably not a reason to use this directly, on startup, two global variables have been made available:
+ *  - dhis2.period.calendar   The currently selected system calendar
+ *  - dhis2.period.generator  An instance of this class using the system calendar
+ *
+ * @param calendar Calendar to use, this must coming from $.calendars.instance(chronology).
+ * @constructor
+ */
 dhis2.period.PeriodGenerator = function( calendar ) {
   if( typeof calendar === 'undefined' ) {
     calendar = dhis2.period.calendar;
@@ -56,66 +66,119 @@ dhis2.period.PeriodGenerator = function( calendar ) {
   };
 };
 
+/**
+ * @returns All available period generators
+ */
 dhis2.period.PeriodGenerator.prototype.getAll = function() {
   return this.periodTypes;
 };
 
+/**
+ * @returns The calendar chronology used for this period generator
+ */
 dhis2.period.PeriodGenerator.prototype.getCalendar = function() {
   return this.calendar;
 };
 
+/**
+ * @param generator Generator to find
+ * @returns Wanted generator if it exists
+ */
 dhis2.period.PeriodGenerator.prototype.get = function( generator ) {
   return this.periodTypes[generator];
 };
 
+/**
+ * Convenience method to get Daily generator
+ */
 dhis2.period.PeriodGenerator.prototype.daily = function( offset ) {
   return this.get('Daily').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get Weekly generator
+ */
 dhis2.period.PeriodGenerator.prototype.weekly = function( offset ) {
   return this.get('Weekly').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get Monthly generator
+ */
 dhis2.period.PeriodGenerator.prototype.monthly = function( offset ) {
   return this.get('Monthly').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get BiMonthly generator
+ */
 dhis2.period.PeriodGenerator.prototype.biMonthly = function( offset ) {
   return this.get('BiMonthly').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get Quarterly generator
+ */
 dhis2.period.PeriodGenerator.prototype.quarterly = function( offset ) {
   return this.get('Quarterly').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get SixMonthly generator
+ */
 dhis2.period.PeriodGenerator.prototype.sixMonthly = function( offset ) {
   return this.get('SixMonthly').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get SixMonthlyApril generator
+ */
 dhis2.period.PeriodGenerator.prototype.sixMonthlyApril = function( offset ) {
   return this.get('SixMonthlyApril').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get Yearly generator
+ */
 dhis2.period.PeriodGenerator.prototype.yearly = function( offset ) {
   return this.get('Yearly').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get FinancialOct generator
+ */
 dhis2.period.PeriodGenerator.prototype.financialOct = function( offset ) {
   return this.get('FinancialOct').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get FinancialJuly generator
+ */
 dhis2.period.PeriodGenerator.prototype.financialJuly = function( offset ) {
   return this.get('FinancialJuly').generatePeriods(offset);
 };
 
+/**
+ * Convenience method to get FinancialApril generator
+ */
 dhis2.period.PeriodGenerator.prototype.financialApril = function( offset ) {
   return this.get('FinancialApril').generatePeriods(offset);
 };
 
+/**
+ * Does out-of-place reversal of a list of periods
+ * @param periods List of periods to reverse
+ * @returns Array Reversed list
+ */
 dhis2.period.PeriodGenerator.prototype.reverse = function( periods ) {
   return periods.slice(0).reverse();
 };
 
+/**
+ * Out-of-place filtering of current + future periods
+ * @param periods List of periods to filter
+ * @return Array Filtered list
+ */
 dhis2.period.PeriodGenerator.prototype.filterFuturePeriods = function( periods ) {
   var array = [];
   var today = this.calendar.today();
@@ -129,6 +192,11 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriods = function( periods )
   return array;
 };
 
+/**
+ * Out-of-place filtering of future periods
+ * @param periods List of periods to filter
+ * @return Array Filtered list
+ */
 dhis2.period.PeriodGenerator.prototype.filterFuturePeriodsExceptCurrent = function( periods ) {
   var array = [];
   var today = this.calendar.today();
