@@ -202,49 +202,12 @@ public class DataApprovalLevelServiceTest
     @Test
     public void testAddDataApprovalLevel() throws Exception
     {
-        List<DataApprovalLevel> levels;
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 0, levels.size() );
-
         dataApprovalLevelService.addDataApprovalLevel( level3B );
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 1, levels.size() );
-
-        assertEquals( 3, levels.get( 0 ).getOrgUnitLevel() );
-        assertEquals( "Set B", levels.get( 0 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "3B", levels.get( 0 ).getName() );
-
         dataApprovalLevelService.addDataApprovalLevel( level2C );
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 2, levels.size() );
-
-        assertEquals( 2, levels.get( 0 ).getOrgUnitLevel() );
-        assertEquals( "Set C", levels.get( 0 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "2C", levels.get( 0 ).getName() );
-
-        assertEquals( 3, levels.get( 1 ).getOrgUnitLevel() );
-        assertEquals( "Set B", levels.get( 1 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "3B", levels.get( 1 ).getName() );
-
         dataApprovalLevelService.addDataApprovalLevel( level3 );
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 3, levels.size() );
-
-        assertEquals( 2, levels.get( 0 ).getOrgUnitLevel() );
-        assertEquals( "Set C", levels.get( 0 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "2C", levels.get( 0 ).getName() );
-
-        assertEquals( 3, levels.get( 1 ).getOrgUnitLevel() );
-        assertNull( levels.get( 1 ).getCategoryOptionGroupSet() );
-        assertEquals( "03", levels.get( 1 ).getName() );
-
-        assertEquals( 3, levels.get( 2 ).getOrgUnitLevel() );
-        assertEquals( "Set B", levels.get( 2 ).getCategoryOptionGroupSet().getName() );
-        assertEquals( "3B", levels.get( 2 ).getName() );
-
         dataApprovalLevelService.addDataApprovalLevel( level4A );
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
+        
+        List<DataApprovalLevel> levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 4, levels.size() );
 
         assertEquals( 2, levels.get( 0 ).getOrgUnitLevel() );
