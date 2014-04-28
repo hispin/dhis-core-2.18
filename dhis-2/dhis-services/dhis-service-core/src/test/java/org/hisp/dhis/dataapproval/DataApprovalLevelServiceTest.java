@@ -33,6 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.HashSet;
 import java.util.List;
@@ -230,45 +231,27 @@ public class DataApprovalLevelServiceTest
     @Test
     public void testDeleteDataApprovalLevel() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1A, 1 );
-        dataApprovalLevelService.addDataApprovalLevel( level2B, 2 );
-        dataApprovalLevelService.addDataApprovalLevel( level3C, 3 );
-        dataApprovalLevelService.addDataApprovalLevel( level4D, 4 );
+        int id1 = dataApprovalLevelService.addDataApprovalLevel( level1A, 1 );
+        int id2 = dataApprovalLevelService.addDataApprovalLevel( level2B, 2 );
+        int id3 = dataApprovalLevelService.addDataApprovalLevel( level3C, 3 );
+        int id4 = dataApprovalLevelService.addDataApprovalLevel( level4D, 4 );
 
-        List<DataApprovalLevel> levels = null;
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 4, levels.size() );
-        assertEquals( "1A", levels.get( 0 ).getName() );
-        assertEquals( "2B", levels.get( 1 ).getName() );
-        assertEquals( "3C", levels.get( 2 ).getName() );
-        assertEquals( "4D", levels.get( 3 ).getName() );
+        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id1 ) );
+        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id2 ) );
+        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id3 ) );
+        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id4 ) );
 
         dataApprovalLevelService.deleteDataApprovalLevel( level2B );
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 3, levels.size() );
-        assertEquals( "1A", levels.get( 0 ).getName() );
-        assertEquals( "3C", levels.get( 1 ).getName() );
-        assertEquals( "4D", levels.get( 2 ).getName() );
+        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id1 ) );
+        assertNull( dataApprovalLevelService.getDataApprovalLevel( id2 ) );
+        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id3 ) );
+        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id4 ) );
 
         dataApprovalLevelService.deleteDataApprovalLevel( level4D );
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 2, levels.size() );
-        assertEquals( "1A", levels.get( 0 ).getName() );
-        assertEquals( "3C", levels.get( 1 ).getName() );
-
-        dataApprovalLevelService.deleteDataApprovalLevel( level1A );
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 1, levels.size() );
-        assertEquals( "3C", levels.get( 0 ).getName() );
-
-        dataApprovalLevelService.deleteDataApprovalLevel( level3C );
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 0, levels.size() );
+        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id1 ) );
+        assertNull( dataApprovalLevelService.getDataApprovalLevel( id2 ) );
+        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id3 ) );
+        assertNull( dataApprovalLevelService.getDataApprovalLevel( id4 ) );
     }
 
     @Test
