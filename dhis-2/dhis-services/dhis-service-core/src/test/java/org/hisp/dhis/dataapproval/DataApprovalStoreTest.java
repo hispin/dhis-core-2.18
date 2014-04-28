@@ -147,10 +147,10 @@ public class DataApprovalStoreTest
         sourceC = createOrganisationUnit( 'C', sourceB );
         sourceD = createOrganisationUnit( 'D', sourceC );
 
-        organisationUnitService.addOrganisationUnit( sourceA );
-        organisationUnitService.addOrganisationUnit( sourceB );
-        organisationUnitService.addOrganisationUnit( sourceC );
-        organisationUnitService.addOrganisationUnit( sourceD );
+        organisationUnitService.addOrganisationUnit( sourceA, false );
+        organisationUnitService.addOrganisationUnit( sourceB, false );
+        organisationUnitService.addOrganisationUnit( sourceC, false );
+        organisationUnitService.addOrganisationUnit( sourceD, false );
 
         userA = createUser( 'A' );
         userB = createUser( 'B' );

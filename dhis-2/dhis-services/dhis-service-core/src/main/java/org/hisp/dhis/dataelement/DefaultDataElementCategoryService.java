@@ -611,7 +611,7 @@ public class DefaultDataElementCategoryService
     {
         DataElementCategoryCombo categoryCombo = getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
-        return categoryCombo.getOptionCombos().iterator().next();
+        return categoryCombo != null && categoryCombo.hasOptionCombos() ? categoryCombo.getOptionCombos().iterator().next() : null;
     }
 
     public Collection<DataElementOperand> populateOperands( Collection<DataElementOperand> operands )

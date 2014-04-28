@@ -220,6 +220,11 @@ public class DataElementCategoryCombo
     {
         this.optionCombos = new HashSet<DataElementCategoryOptionCombo>( generateOptionCombosList() );
     }
+    
+    public boolean hasOptionCombos()
+    {
+        return optionCombos != null && !optionCombos.isEmpty();
+    }
 
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

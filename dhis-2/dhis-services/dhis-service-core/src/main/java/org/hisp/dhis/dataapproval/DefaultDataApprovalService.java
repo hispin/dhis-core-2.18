@@ -129,7 +129,7 @@ public class DefaultDataApprovalService
     public void deleteDataApproval( DataApproval dataApproval )
     {
         if ( ( dataApproval.getCategoryOptionGroup() == null || securityService.canRead( dataApproval.getCategoryOptionGroup() ) )
-            && mayUnapprove( dataApproval.getOrganisationUnit(), dataApproval.isAccepted() ))
+            && mayUnapprove( dataApproval.getOrganisationUnit(), dataApproval.isAccepted() ) )
         {
             dataApprovalStore.deleteDataApproval( dataApproval );
 
