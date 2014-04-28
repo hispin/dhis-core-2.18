@@ -122,6 +122,31 @@ public class DataApprovalLevel
         return categoryOptionGroupSet != null;
     }
 
+    /**
+     * Indicates whether the given approval level represents the same level as this.
+     */
+    public boolean levelEquals( DataApprovalLevel other )
+    {
+        if ( other == null )
+        {
+            return false;
+        }
+
+        if ( level != other.getLevel() )
+        {
+            return false;
+        }
+        
+        if ( categoryOptionGroupSet != null ? 
+            !categoryOptionGroupSet.equals( other.getCategoryOptionGroupSet() ) : 
+            other.getCategoryOptionGroupSet() != null )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and Setters
     // -------------------------------------------------------------------------

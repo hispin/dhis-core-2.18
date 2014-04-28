@@ -248,8 +248,7 @@ public class DefaultDataApprovalLevelService
 
         for ( DataApprovalLevel dataApprovalLevel : dataApprovalLevels )
         {
-            if ( level.getOrgUnitLevel() == dataApprovalLevel.getOrgUnitLevel()
-                && level.getCategoryOptionGroupSet() == dataApprovalLevel.getCategoryOptionGroupSet() )
+            if ( level.levelEquals( dataApprovalLevel ) )
             {
                 return true;
             }
@@ -417,7 +416,7 @@ public class DefaultDataApprovalLevelService
 
             if ( orgLevelDifference == 0 )
             {
-                if ( newLevel.getCategoryOptionGroupSet() == test.getCategoryOptionGroupSet() )
+                if ( newLevel.levelEquals( test ) )
                 {
                     return -1;
                 }
