@@ -31,12 +31,14 @@ package org.hisp.dhis.user;
 import static org.junit.Assert.assertEquals;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kiran Prakash
  */
+@Ignore
 public class UserSettingServiceTest
     extends DhisSpringTest
 {
