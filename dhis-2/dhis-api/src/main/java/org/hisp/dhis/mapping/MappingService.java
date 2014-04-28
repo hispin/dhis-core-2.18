@@ -31,6 +31,7 @@ package org.hisp.dhis.mapping;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import java.util.Collection;
 import java.util.List;
@@ -167,11 +168,13 @@ public interface MappingService
 
     int countMapViewMaps( MapView mapView );
 
-    int countDataSetCharts( DataSet dataSet );
+    int countDataSetMapViews( DataSet dataSet );
 
-    int countIndicatorCharts( Indicator indicator );
+    int countIndicatorMapViews( Indicator indicator );
 
-    int countDataElementCharts( DataElement dataElement );
+    int countDataElementMapViews( DataElement dataElement );
+    
+    int countOrganisationUnitMapViews( OrganisationUnit organisationUnit );
 
     int countMapLegendSetMapViews( MapLegendSet mapLegendSet );
 }

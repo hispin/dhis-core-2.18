@@ -34,6 +34,7 @@ import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -64,6 +65,15 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     {
         Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where :dataElement in elements(c.dataElements)" );
         query.setEntity( "dataElement", dataElement );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int countOrganisationUnitAnalyticalObject( OrganisationUnit organisationUnit )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where :organisationUnit in elements(c.organisationUnits)" );
+        query.setEntity( "organisationUnit", organisationUnit );
 
         return ((Long) query.uniqueResult()).intValue();
     }

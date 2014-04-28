@@ -459,21 +459,27 @@ public class DefaultMappingService
     }
 
     @Override
-    public int countDataSetCharts( DataSet dataSet )
+    public int countDataSetMapViews( DataSet dataSet )
     {
         return mapViewStore.countDataSetAnalyticalObject( dataSet );
     }
 
     @Override
-    public int countIndicatorCharts( Indicator indicator )
+    public int countIndicatorMapViews( Indicator indicator )
     {
         return mapViewStore.countIndicatorAnalyticalObject( indicator );
     }
 
     @Override
-    public int countDataElementCharts( DataElement dataElement )
+    public int countDataElementMapViews( DataElement dataElement )
     {
         return mapViewStore.countDataElementAnalyticalObject( dataElement );
+    }
+    
+    @Override
+    public int countOrganisationUnitMapViews( OrganisationUnit organisationUnit )
+    {
+        return mapViewStore.countOrganisationUnitAnalyticalObject( organisationUnit );
     }
 
     @Override

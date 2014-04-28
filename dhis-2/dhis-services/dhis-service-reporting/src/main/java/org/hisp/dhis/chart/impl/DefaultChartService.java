@@ -871,4 +871,10 @@ public class DefaultChartService
     {
         return chartStore.countDataElementAnalyticalObject( dataElement );
     }
+    
+    @Override
+    public int countOrganisationUnitCharts( OrganisationUnit organisationUnit )
+    {
+        return chartStore.countOrganisationUnitAnalyticalObject( organisationUnit );
+    }
 }

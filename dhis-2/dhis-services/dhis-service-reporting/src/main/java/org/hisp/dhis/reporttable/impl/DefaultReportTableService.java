@@ -37,9 +37,12 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsService;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.AnalyticalObjectStore;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.report.ReportService;
@@ -71,9 +74,9 @@ public class DefaultReportTableService
         this.analyticsService = analyticsService;
     }
 
-    private GenericIdentifiableObjectStore<ReportTable> reportTableStore;
+    private AnalyticalObjectStore<ReportTable> reportTableStore;
 
-    public void setReportTableStore( GenericIdentifiableObjectStore<ReportTable> reportTableStore )
+    public void setReportTableStore( AnalyticalObjectStore<ReportTable> reportTableStore )
     {
         this.reportTableStore = reportTableStore;
     }
@@ -227,5 +230,25 @@ public class DefaultReportTableService
     public List<ReportTable> getReportTablesBetween( int first, int max )
     {
         return reportTableStore.getAllOrderedName( first, max );
-    } 
+    }
+    
+    public int countDataSetReportTables( DataSet dataSet )
+    {
+        return reportTableStore.countDataSetAnalyticalObject( dataSet );
+    }
+    
+    public int countIndicatorReportTables( Indicator indicator )
+    {
+        return reportTableStore.countIndicatorAnalyticalObject( indicator );
+    }
+    
+    public int countDataElementReportTables( DataElement dataElement )
+    {
+        return reportTableStore.countDataElementAnalyticalObject( dataElement );
+    }
+    
+    public int countOrganisationUnitReportTables( OrganisationUnit organisationUnit )
+    {
+        return reportTableStore.countOrganisationUnitAnalyticalObject( organisationUnit );
+    }
 }

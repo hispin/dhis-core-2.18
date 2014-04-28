@@ -29,7 +29,11 @@ package org.hisp.dhis.reporttable;
  */
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import java.util.Collection;
 import java.util.Date;
@@ -144,4 +148,12 @@ public interface ReportTableService
     int getReportTableCount();
 
     int getReportTableCountByName( String name );
+    
+    int countDataSetReportTables( DataSet dataSet );
+    
+    int countIndicatorReportTables( Indicator indicator );
+    
+    int countDataElementReportTables( DataElement dataElement );
+    
+    int countOrganisationUnitReportTables( OrganisationUnit organisationUnit );
 }

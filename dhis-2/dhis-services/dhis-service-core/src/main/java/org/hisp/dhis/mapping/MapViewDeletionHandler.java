@@ -32,10 +32,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-
-import java.util.Iterator;
 
 /**
  * @author Lars Helge Overland
@@ -66,88 +63,6 @@ public class MapViewDeletionHandler
     }
 
     @Override
-    public String allowDeletePeriod( Period period )
-    {
-        for ( MapView mapView : mappingService.getAllMapViews() )
-        {
-            if ( mapView.getPeriods().contains( period ) )
-            {
-                return mapView.getName();
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public void deleteIndicator( Indicator indicator )
-    {
-        Iterator<MapView> mapViews = mappingService.getAllMapViews().iterator();
-
-        while ( mapViews.hasNext() )
-        {
-            MapView mapView = mapViews.next();
-
-            if ( mapView.getIndicators() != null && mapView.getIndicators().contains( indicator ) )
-            {
-                mapViews.remove();
-                mappingService.deleteMapView( mapView );
-            }
-        }
-    }
-
-    @Override
-    public void deleteDataElement( DataElement dataElement )
-    {
-        Iterator<MapView> mapViews = mappingService.getAllMapViews().iterator();
-
-        while ( mapViews.hasNext() )
-        {
-            MapView mapView = mapViews.next();
-
-            if ( mapView.getDataElements() != null && mapView.getDataElements().contains( dataElement ) )
-            {
-                mapViews.remove();
-                mappingService.deleteMapView( mapView );
-            }
-        }
-    }
-
-    @Override
-    public void deleteOrganisationUnit( OrganisationUnit organisationUnit )
-    {
-        Iterator<MapView> mapViews = mappingService.getAllMapViews().iterator();
-
-        while ( mapViews.hasNext() )
-        {
-            MapView mapView = mapViews.next();
-
-            if ( mapView.getOrganisationUnits() != null && mapView.getOrganisationUnits().contains( organisationUnit ) )
-            {
-                mapViews.remove();
-                mappingService.deleteMapView( mapView );
-            }
-        }
-    }
-
-    @Override
-    public void deleteMapLegendSet( MapLegendSet mapLegendSet )
-    {
-        Iterator<MapView> mapViews = mappingService.getAllMapViews().iterator();
-
-        while ( mapViews.hasNext() )
-        {
-            MapView mapView = mapViews.next();
-
-            if ( mapView.getLegendSet() != null && mapView.getLegendSet().equals( mapLegendSet ) )
-            {
-                mapViews.remove();
-                mappingService.deleteMapView( mapView );
-            }
-        }
-    }
-
-    @Override
     public String allowDeleteMapView( MapView mapView )
     {
         return mappingService.countMapViewMaps( mapView ) == 0 ? null : ERROR;
@@ -156,19 +71,25 @@ public class MapViewDeletionHandler
     @Override
     public String allowDeleteDataSet( DataSet dataSet )
     {
-        return mappingService.countDataSetCharts( dataSet ) == 0 ? null : ERROR;
+        return mappingService.countDataSetMapViews( dataSet ) == 0 ? null : ERROR;
     }
 
     @Override
     public String allowDeleteIndicator( Indicator indicator )
     {
-        return mappingService.countIndicatorCharts( indicator ) == 0 ? null : ERROR;
+        return mappingService.countIndicatorMapViews( indicator ) == 0 ? null : ERROR;
     }
 
     @Override
     public String allowDeleteDataElement( DataElement dataElement )
     {
-        return mappingService.countDataElementCharts( dataElement ) == 0 ? null : ERROR;
+        return mappingService.countDataElementMapViews( dataElement ) == 0 ? null : ERROR;
+    }
+    
+    @Override
+    public String allowDeleteOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        return mappingService.countOrganisationUnitMapViews( organisationUnit ) == 0 ? null : ERROR;
     }
 
     @Override
