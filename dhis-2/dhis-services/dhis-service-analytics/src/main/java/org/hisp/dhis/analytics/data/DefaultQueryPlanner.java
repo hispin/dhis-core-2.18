@@ -619,7 +619,7 @@ public class DefaultQueryPlanner
         {
             OrganisationUnit ou = (OrganisationUnit) orgUnit;
             
-            int level = ou.getLevel() != 0 ? ou.getLevel() : organisationUnitService.getLevelOfOrganisationUnit( ou.getUid() );
+            int level = ou.getLevel() != 0 ? ou.getLevel() : organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             map.putValue( level, orgUnit );
         }

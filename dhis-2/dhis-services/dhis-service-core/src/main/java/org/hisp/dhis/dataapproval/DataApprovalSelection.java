@@ -163,7 +163,7 @@ class DataApprovalSelection
     {
         organisationUnitLevel = organisationUnit.getLevel() != 0 ?
             organisationUnit.getLevel() :
-            organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getUid() );
+            organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
 
         log.debug( logSelection() + " starting." );
 
