@@ -39,7 +39,9 @@ dhis2.period.PeriodGenerator = function( calendar ) {
     calendar = dhis2.period.calendar;
   }
 
-  var periodTypes = {
+  this.calendar = calendar;
+
+  this.periodTypes = {
     "Daily": dhis2.period.makeDailyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
     "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
     "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
@@ -52,88 +54,92 @@ dhis2.period.PeriodGenerator = function( calendar ) {
     "FinancialJuly": dhis2.period.makeFinancialJulyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
     "FinancialOct": dhis2.period.makeFinancialOctoberPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT)
   };
+};
 
-  this.getAll = function() {
-    return periodTypes;
-  };
+dhis2.period.PeriodGenerator.prototype.getAll = function() {
+  return this.periodTypes;
+};
 
-  this.getCalendar = function() {
-    return calendar;
-  };
+dhis2.period.PeriodGenerator.prototype.getCalendar = function() {
+  return this.calendar;
+};
 
-  this.get = function( generator ) {
-    return periodTypes[generator];
-  };
+dhis2.period.PeriodGenerator.prototype.get = function( generator ) {
+  return this.periodTypes[generator];
+};
 
-  this.daily = function( offset ) {
-    return this.get('Daily').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.daily = function( offset ) {
+  return this.get('Daily').generatePeriods(offset);
+};
 
-  this.weekly = function( offset ) {
-    return this.get('Weekly').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.weekly = function( offset ) {
+  return this.get('Weekly').generatePeriods(offset);
+};
 
-  this.monthly = function( offset ) {
-    return this.get('Monthly').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.monthly = function( offset ) {
+  return this.get('Monthly').generatePeriods(offset);
+};
 
-  this.biMonthly = function( offset ) {
-    return this.get('BiMonthly').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.biMonthly = function( offset ) {
+  return this.get('BiMonthly').generatePeriods(offset);
+};
 
-  this.quarterly = function( offset ) {
-    return this.get('Quarterly').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.quarterly = function( offset ) {
+  return this.get('Quarterly').generatePeriods(offset);
+};
 
-  this.sixMonthly = function( offset ) {
-    return this.get('SixMonthly').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.sixMonthly = function( offset ) {
+  return this.get('SixMonthly').generatePeriods(offset);
+};
 
-  this.sixMonthlyApril = function( offset ) {
-    return this.get('SixMonthlyApril').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.sixMonthlyApril = function( offset ) {
+  return this.get('SixMonthlyApril').generatePeriods(offset);
+};
 
-  this.financialOct = function( offset ) {
-    return this.get('FinancialOct').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.yearly = function( offset ) {
+  return this.get('Yearly').generatePeriods(offset);
+};
 
-  this.financialJuly = function( offset ) {
-    return this.get('FinancialJuly').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.financialOct = function( offset ) {
+  return this.get('FinancialOct').generatePeriods(offset);
+};
 
-  this.financialApril = function( offset ) {
-    return this.get('FinancialApril').generatePeriods(offset);
-  };
+dhis2.period.PeriodGenerator.prototype.financialJuly = function( offset ) {
+  return this.get('FinancialJuly').generatePeriods(offset);
+};
 
-  this.reverse = function( periods ) {
-    return periods.slice(0).reverse();
-  };
+dhis2.period.PeriodGenerator.prototype.financialApril = function( offset ) {
+  return this.get('FinancialApril').generatePeriods(offset);
+};
 
-  this.filterFuturePeriods = function( periods ) {
-    var array = [];
-    var today = calendar.today();
+dhis2.period.PeriodGenerator.prototype.reverse = function( periods ) {
+  return periods.slice(0).reverse();
+};
 
-    $.each(periods, function( idx ) {
-      if( this['_endDate'].compareTo(today) <= 0 ) {
-        array.push(this);
-      }
-    });
+dhis2.period.PeriodGenerator.prototype.filterFuturePeriods = function( periods ) {
+  var array = [];
+  var today = this.calendar.today();
 
-    return array;
-  };
+  $.each(periods, function( idx ) {
+    if( this['_endDate'].compareTo(today) <= 0 ) {
+      array.push(this);
+    }
+  });
 
-  this.filterFuturePeriodsExceptCurrent = function( periods ) {
-    var array = [];
-    var today = calendar.today();
+  return array;
+};
 
-    $.each(periods, function( idx ) {
-      if( this['_startDate'].compareTo(today) <= 0 ) {
-        array.push(this);
-      }
-    });
+dhis2.period.PeriodGenerator.prototype.filterFuturePeriodsExceptCurrent = function( periods ) {
+  var array = [];
+  var today = this.calendar.today();
 
-    return array;
-  }
+  $.each(periods, function( idx ) {
+    if( this['_startDate'].compareTo(today) <= 0 ) {
+      array.push(this);
+    }
+  });
+
+  return array;
 };
 
 dhis2.period.makeDailyPeriodGenerator = function( cal, format ) {
