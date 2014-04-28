@@ -42,27 +42,36 @@ dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
  *  - dhis2.period.generator  An instance of this class using the system calendar
  *
  * @param calendar Calendar to use, this must coming from $.calendars.instance(chronology).
+ * @param format Date format to use for formatting, will default to ISO 8601
  * @constructor
  */
-dhis2.period.PeriodGenerator = function( calendar ) {
+dhis2.period.PeriodGenerator = function( calendar, format ) {
   if( typeof calendar === 'undefined' ) {
     calendar = dhis2.period.calendar;
   }
 
+  if( typeof format === 'undefined' ) {
+    format = dhis2.period.DEFAULT_DATE_FORMAT;
+  }
+
+  // $.calendars date formatter uses a different format than joda-time/JdkCalendar, for the most common cases we can get away
+  // with just doing lower case on the string, but special handling might be needed in the future.
+  format = format.toLowerCase();
+
   this.calendar = calendar;
 
   this.periodTypes = {
-    "Daily": dhis2.period.makeDailyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "BiMonthly": dhis2.period.makeBiMonthlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "Yearly": dhis2.period.makeYearlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "FinancialApril": dhis2.period.makeFinancialAprilPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "FinancialJuly": dhis2.period.makeFinancialJulyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
-    "FinancialOct": dhis2.period.makeFinancialOctoberPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT)
+    "Daily": dhis2.period.makeDailyPeriodGenerator(calendar, format),
+    "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar, format),
+    "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar, format),
+    "BiMonthly": dhis2.period.makeBiMonthlyPeriodGenerator(calendar, format),
+    "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(calendar, format),
+    "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar, format),
+    "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar, format),
+    "Yearly": dhis2.period.makeYearlyPeriodGenerator(calendar, format),
+    "FinancialApril": dhis2.period.makeFinancialAprilPeriodGenerator(calendar, format),
+    "FinancialJuly": dhis2.period.makeFinancialJulyPeriodGenerator(calendar, format),
+    "FinancialOct": dhis2.period.makeFinancialOctoberPeriodGenerator(calendar, format)
   };
 };
 
