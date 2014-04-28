@@ -361,34 +361,14 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1C, 4 );
         dataApprovalLevelService.addDataApprovalLevel( level1D, 5 );
 
-        List<DataApprovalLevel> levels;
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 5, levels.size() );
-        assertEquals( "01", levels.get( 0 ).getName() );
-        assertEquals( "1A", levels.get( 1 ).getName() );
-        assertEquals( "1B", levels.get( 2 ).getName() );
-        assertEquals( "1C", levels.get( 3 ).getName() );
-        assertEquals( "1D", levels.get( 4 ).getName() );
-
         dataApprovalLevelService.moveDataApprovalLevelDown( 2 );
 
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
+        List<DataApprovalLevel> levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 5, levels.size() );
         assertEquals( "01", levels.get( 0 ).getName() );
         assertEquals( "1B", levels.get( 1 ).getName() );
         assertEquals( "1A", levels.get( 2 ).getName() );
         assertEquals( "1C", levels.get( 3 ).getName() );
-        assertEquals( "1D", levels.get( 4 ).getName() );
-
-        dataApprovalLevelService.moveDataApprovalLevelDown( 3 );
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 5, levels.size() );
-        assertEquals( "01", levels.get( 0 ).getName() );
-        assertEquals( "1B", levels.get( 1 ).getName() );
-        assertEquals( "1C", levels.get( 2 ).getName() );
-        assertEquals( "1A", levels.get( 3 ).getName() );
         assertEquals( "1D", levels.get( 4 ).getName() );
     }
 
@@ -401,34 +381,14 @@ public class DataApprovalLevelServiceTest
         dataApprovalLevelService.addDataApprovalLevel( level1C, 4 );
         dataApprovalLevelService.addDataApprovalLevel( level1D, 5 );
 
-        List<DataApprovalLevel> levels;
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 5, levels.size() );
-        assertEquals( "01", levels.get( 0 ).getName() );
-        assertEquals( "1A", levels.get( 1 ).getName() );
-        assertEquals( "1B", levels.get( 2 ).getName() );
-        assertEquals( "1C", levels.get( 3 ).getName() );
-        assertEquals( "1D", levels.get( 4 ).getName() );
-
         dataApprovalLevelService.moveDataApprovalLevelUp( 5 );
 
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
+        List<DataApprovalLevel> levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 5, levels.size() );
         assertEquals( "01", levels.get( 0 ).getName() );
         assertEquals( "1A", levels.get( 1 ).getName() );
         assertEquals( "1B", levels.get( 2 ).getName() );
         assertEquals( "1D", levels.get( 3 ).getName() );
-        assertEquals( "1C", levels.get( 4 ).getName() );
-
-        dataApprovalLevelService.moveDataApprovalLevelUp( 4 );
-
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 5, levels.size() );
-        assertEquals( "01", levels.get( 0 ).getName() );
-        assertEquals( "1A", levels.get( 1 ).getName() );
-        assertEquals( "1D", levels.get( 2 ).getName() );
-        assertEquals( "1B", levels.get( 3 ).getName() );
         assertEquals( "1C", levels.get( 4 ).getName() );
     }
 
@@ -441,10 +401,10 @@ public class DataApprovalLevelServiceTest
         //
         // Variation A: User does *not* have approval at lower levels authority.
         //
-        organisationUnitService.addOrganisationUnit( organisationUnitE );
-        organisationUnitService.addOrganisationUnit( organisationUnitF );
-        organisationUnitService.addOrganisationUnit( organisationUnitG );
-        organisationUnitService.addOrganisationUnit( organisationUnitH );
+        organisationUnitService.addOrganisationUnit( organisationUnitE, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitF, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitG, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitH, false );
 
         dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
         dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
@@ -476,10 +436,10 @@ public class DataApprovalLevelServiceTest
         //
         // Variation B: User *has* approval at lower levels authority.
         //
-        organisationUnitService.addOrganisationUnit( organisationUnitE );
-        organisationUnitService.addOrganisationUnit( organisationUnitF );
-        organisationUnitService.addOrganisationUnit( organisationUnitG );
-        organisationUnitService.addOrganisationUnit( organisationUnitH );
+        organisationUnitService.addOrganisationUnit( organisationUnitE, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitF, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitG, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitH, false );
 
         dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
         dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
@@ -511,10 +471,10 @@ public class DataApprovalLevelServiceTest
         //
         // Variation C: No approval level for org unit level 4.
         //
-        organisationUnitService.addOrganisationUnit( organisationUnitE );
-        organisationUnitService.addOrganisationUnit( organisationUnitF );
-        organisationUnitService.addOrganisationUnit( organisationUnitG );
-        organisationUnitService.addOrganisationUnit( organisationUnitH );
+        organisationUnitService.addOrganisationUnit( organisationUnitE, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitF, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitG, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitH, false );
 
         dataApprovalLevelService.addDataApprovalLevel( level1, 1 ); // 1st approval level
         dataApprovalLevelService.addDataApprovalLevel( level2, 2 ); // 2nd approval level
@@ -545,13 +505,13 @@ public class DataApprovalLevelServiceTest
         //
         // Variation D: User is assigned to two districts
         //
-        organisationUnitService.addOrganisationUnit( organisationUnitE );
-        organisationUnitService.addOrganisationUnit( organisationUnitF );
-        organisationUnitService.addOrganisationUnit( organisationUnitG );
-        organisationUnitService.addOrganisationUnit( organisationUnitH );
-        organisationUnitService.addOrganisationUnit( organisationUnitI );
-        organisationUnitService.addOrganisationUnit( organisationUnitJ );
-        organisationUnitService.addOrganisationUnit( organisationUnitK );
+        organisationUnitService.addOrganisationUnit( organisationUnitE, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitF, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitG, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitH, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitI, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitJ, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitK, false );
 
         dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
         dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
@@ -583,10 +543,10 @@ public class DataApprovalLevelServiceTest
         //
         // Test 2... TBD
         //
-        organisationUnitService.addOrganisationUnit( organisationUnitE );
-        organisationUnitService.addOrganisationUnit( organisationUnitF );
-        organisationUnitService.addOrganisationUnit( organisationUnitG );
-        organisationUnitService.addOrganisationUnit( organisationUnitH );
+        organisationUnitService.addOrganisationUnit( organisationUnitE, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitF, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitG, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitH, false );
 
         dataApprovalLevelService.addDataApprovalLevel( level1 );
         dataApprovalLevelService.addDataApprovalLevel( level2 );
