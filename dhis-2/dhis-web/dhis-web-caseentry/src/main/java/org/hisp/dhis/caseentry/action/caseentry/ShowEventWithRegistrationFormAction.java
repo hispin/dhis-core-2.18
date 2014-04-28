@@ -46,14 +46,17 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityForm;
 import org.hisp.dhis.trackedentity.TrackedEntityFormService;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeGroupSortOrderComparator;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -109,6 +112,9 @@ public class ShowEventWithRegistrationFormAction
         this.attributeGroupService = attributeGroupService;
     }
 
+    @Autowired
+    private TrackedEntityService trackedEntityService;
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -145,9 +151,42 @@ public class ShowEventWithRegistrationFormAction
 
     private List<TrackedEntityAttributeGroup> attributeGroups;
 
-    private Map<Integer, Collection<TrackedEntityAttribute>> attributeGroupsMap = new HashMap<Integer, Collection<TrackedEntityAttribute>>();
-
     private Program program;
+
+    private TrackedEntityForm trackedEntityForm;
+
+    public TrackedEntityForm getTrackedEntityForm()
+    {
+        return trackedEntityForm;
+    }
+
+    private List<TrackedEntity> trackedEntities;
+
+    public List<TrackedEntity> getTrackedEntities()
+    {
+        return trackedEntities;
+    }
+
+    private Map<Integer, String> trackedEntityAttributeValueMap = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getTrackedEntityAttributeValueMap()
+    {
+        return trackedEntityAttributeValueMap;
+    }
+
+    private Map<Integer, Boolean> mandatoryMap = new HashMap<Integer, Boolean>();
+
+    public Map<Integer, Boolean> getMandatoryMap()
+    {
+        return mandatoryMap;
+    }
+
+    private Map<String, List<TrackedEntityAttribute>> attributesMap = new HashMap<String, List<TrackedEntityAttribute>>();
+
+    public Map<String, List<TrackedEntityAttribute>> getAttributesMap()
+    {
+        return attributesMap;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -155,53 +194,95 @@ public class ShowEventWithRegistrationFormAction
 
     public String execute()
     {
-        // Get health workers
+        // ---------------------------------------------------------------------
+        // Get registration form
+        // ---------------------------------------------------------------------
+
+        trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
+
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
 
-        program = programService.getProgram( programId );
-        TrackedEntityForm trackedEntityForm = trackedEntityFormService.getTrackedEntityForm( program );
-
-        if ( trackedEntityForm != null )
+        if ( programId == null || programId.isEmpty() )
         {
-            customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
-                .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, null, null, i18n,
-                format );
+            trackedEntityForm = trackedEntityFormService.getCommonTrackedEntityForm();
+
+            if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
+            {
+                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
+                    .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, null, null, i18n,
+                    format );
+            }
         }
+        else
+        {
+            program = programService.getProgram( programId );
+            trackedEntityForm = trackedEntityFormService.getTrackedEntityForm( program );
+
+            if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
+            {
+                customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
+                    .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, null, null, i18n,
+                    format );
+            }
+        }
+
+        List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
 
         if ( customRegistrationForm == null )
         {
-            Collection<TrackedEntityAttribute> attributesInProgram = new HashSet<TrackedEntityAttribute>();
-            Collection<Program> programs = programService.getAllPrograms();
-            programs.remove( program );
-            for ( Program p : programs )
-            {
-                for ( ProgramTrackedEntityAttribute programAttribute : p.getAttributes() )
-                {
-                    attributesInProgram.add( programAttribute.getAttribute() );
-                }
-            }
-
             attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
                 attributeGroupService.getAllTrackedEntityAttributeGroups() );
             Collections.sort( attributeGroups, new TrackedEntityAttributeGroupSortOrderComparator() );
-            for ( TrackedEntityAttributeGroup attributeGroup : attributeGroups )
-            {
-                List<TrackedEntityAttribute> attributes = attributeGroupService
-                    .getTrackedEntityAttributes( attributeGroup );
-                attributes.removeAll( attributesInProgram );
 
-                if ( attributes.size() > 0 )
+            if ( program == null )
+            {
+                attributes = new ArrayList<TrackedEntityAttribute>(
+                    attributeService.getTrackedEntityAttributesDisplayInList( true ) );
+                Collection<Program> programs = programService.getAllPrograms();
+
+                for ( Program p : programs )
                 {
-                    attributeGroupsMap.put( attributeGroup.getId(), attributes );
+                    attributes.removeAll( p.getAttributes() );
+                }
+
+                for ( TrackedEntityAttribute attribute : attributes )
+                {
+                    mandatoryMap.put( attribute.getId(), false );
+                }
+            }
+            else
+            {
+                attributes = program.getTrackedEntityAttributes();
+                for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
+                {
+                    mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
                 }
             }
 
-            noGroupAttributes = attributeService.getTrackedEntityAttributesWithoutGroup();
-            noGroupAttributes.removeAll( attributesInProgram );
+            for ( TrackedEntityAttribute attribute : attributes )
+            {
+                TrackedEntityAttributeGroup attributeGroup = attribute.getAttributeGroup();
+                String groupName = (attributeGroup == null) ? "" : attributeGroup.getDisplayName();
+                if ( attributesMap.containsKey( groupName ) )
+                {
+                    List<TrackedEntityAttribute> attrs = attributesMap.get( groupName );
+                    attrs.add( attribute );
+                }
+                else
+                {
+                    List<TrackedEntityAttribute> attrs = new ArrayList<TrackedEntityAttribute>();
+                    attrs.add( attribute );
+                    attributesMap.put( groupName, attrs );
+                }
+            }
+
         }
 
+        // ---------------------------------------------------------------------
         // Get data entry form
+        // ---------------------------------------------------------------------
+
         programStage = program.getProgramStages().iterator().next();
         if ( programStage.getDataEntryForm() != null )
         {
@@ -220,7 +301,7 @@ public class ShowEventWithRegistrationFormAction
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
-    
+
     public Program getProgram()
     {
         return program;
@@ -271,8 +352,4 @@ public class ShowEventWithRegistrationFormAction
         return attributeGroups;
     }
 
-    public Map<Integer, Collection<TrackedEntityAttribute>> getAttributeGroupsMap()
-    {
-        return attributeGroupsMap;
-    }
 }
