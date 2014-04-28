@@ -260,12 +260,12 @@ public class DefaultDataApprovalLevelService
 
     public int addDataApprovalLevel( DataApprovalLevel newLevel )
     {
-        List<DataApprovalLevel> dataApprovalLevels = getAllDataApprovalLevels();
-
         if ( newLevel.getOrgUnitLevel() <= 0 )
         {
             return -1;
         }
+
+        List<DataApprovalLevel> dataApprovalLevels = getAllDataApprovalLevels();
 
         int index = getInsertIndex( dataApprovalLevels, newLevel );
 
@@ -430,6 +430,7 @@ public class DefaultDataApprovalLevelService
 
             i--;
         }
+        
         return i + 1;
     }
 

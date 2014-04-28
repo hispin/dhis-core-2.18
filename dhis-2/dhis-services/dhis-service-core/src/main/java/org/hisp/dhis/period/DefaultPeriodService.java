@@ -202,12 +202,6 @@ public class DefaultPeriodService
         return immutablePeriods;
     }
 
-    public Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements,
-                                          Collection<OrganisationUnit> sources )
-    {
-        return periodStore.getPeriods( period, dataElements, sources );
-    }
-
     public List<Period> reloadPeriods( List<Period> periods )
     {
         List<Period> reloaded = new ArrayList<Period>();

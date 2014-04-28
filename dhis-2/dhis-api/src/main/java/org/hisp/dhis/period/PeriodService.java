@@ -213,18 +213,6 @@ public interface PeriodService
     Collection<Period> getPeriodsByPeriodType( PeriodType periodType );
 
     /**
-     * Returns all intersecting Periods for the given Period which have associated DataValues for
-     * the given collection of DataElements and Sources.
-     * 
-     * @param period the Period.
-     * @param dataElements the collection of DataElements.
-     * @param sources the collection of Sources.
-     * @return all intersecting Periods for the given Period which have associated DataValues for
-     *         the given collection of DataElements and Sources.
-     */
-    Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<OrganisationUnit> sources );
-    
-    /**
      * Enforces that each Period in the given collection is loaded in the current
      * session. Persists the Period if it does not exist.
      * 

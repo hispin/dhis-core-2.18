@@ -33,21 +33,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
 
 /**
@@ -59,10 +50,6 @@ public class PeriodStoreTest
 {
     private PeriodStore periodStore;
     
-    private DataValueStore dataValueStore;
-
-    private DataElementCategoryOptionCombo optionCombo;
-    
     // -------------------------------------------------------------------------
     // Set up/tear down
     // -------------------------------------------------------------------------
@@ -72,16 +59,6 @@ public class PeriodStoreTest
         throws Exception
     {
         periodStore = (PeriodStore) getBean( PeriodStore.ID );
-        
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
-        dataValueStore = (DataValueStore) getBean( DataValueStore.ID );
-
-        optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
     }
     
     // -------------------------------------------------------------------------
@@ -507,121 +484,5 @@ public class PeriodStoreTest
         Collection<Period> periodsC = periodStore.getPeriodsByPeriodType( periodTypeC );
         assertNotNull( periodsC );
         assertEquals( 0, periodsC.size() );
-    }
-
-    @Test
-    public void testGetPeriodsWithAssociatedDataValues()
-        throws Exception
-    {
-        DataElement dataElementA = createDataElement( 'A' );   
-        DataElement dataElementB = createDataElement( 'B' );
-        DataElement dataElementC = createDataElement( 'C' );
-    
-        PeriodType quarterly = PeriodType.getPeriodTypeByName( QuarterlyPeriodType.NAME );
-        PeriodType monthly = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
-        PeriodType weekly = PeriodType.getPeriodTypeByName( WeeklyPeriodType.NAME );
-        
-        Period qu1 = new Period( quarterly, getDate( 2008, 1, 1 ), getDate( 2008, 3, 31 ) );
-        
-        Period jan = new Period( monthly, getDate( 2008, 1, 1 ), getDate( 2008, 1, 31 ) );
-        Period feb = new Period( monthly, getDate( 2008, 2, 1 ), getDate( 2008, 2, 29 ) );
-        Period mar = new Period( monthly, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
-        Period apr = new Period( monthly, getDate( 2008, 4, 1 ), getDate( 2008, 4, 30 ) );
-        Period may = new Period( monthly, getDate( 2008, 5, 1 ), getDate( 2008, 5, 31 ) );
-        
-        Period w01 = new Period( weekly, getDate( 2007, 12, 31 ), getDate( 2008, 1, 6 ) );
-        Period w02 = new Period( weekly, getDate( 2008, 1, 7 ), getDate( 2008, 1, 13 ) );
-        Period w03 = new Period( weekly, getDate( 2008, 1, 14 ), getDate( 2008, 1, 20 ) );
-        Period w04 = new Period( weekly, getDate( 2008, 1, 21 ), getDate( 2008, 1, 27 ) );
-        Period w05 = new Period( weekly, getDate( 2008, 1, 28 ), getDate( 2008, 2, 3 ) );
-                
-        OrganisationUnit sourceA = createOrganisationUnit( 'A' );
-        OrganisationUnit sourceB = createOrganisationUnit( 'B' );
-        OrganisationUnit sourceC = createOrganisationUnit( 'C' );
-        
-        DataValue dataValueA = new DataValue( dataElementA, jan, sourceA, optionCombo, optionCombo );
-        dataValueA.setValue( "1" );
-        DataValue dataValueB = new DataValue( dataElementA, feb, sourceB, optionCombo, optionCombo );
-        dataValueB.setValue( "2" );
-        DataValue dataValueC = new DataValue( dataElementA, apr, sourceB, optionCombo, optionCombo );
-        dataValueC.setValue( "3" );
-        DataValue dataValueD = new DataValue( dataElementA, qu1, sourceA, optionCombo, optionCombo );
-        dataValueD.setValue( "4" );
-        DataValue dataValueE = new DataValue( dataElementB, w01, sourceA, optionCombo, optionCombo );
-        dataValueE.setValue( "5" );
-        DataValue dataValueF = new DataValue( dataElementB, w02, sourceB, optionCombo, optionCombo );
-        dataValueF.setValue( "6" );
-        DataValue dataValueG = new DataValue( dataElementB, w03, sourceA, optionCombo, optionCombo );
-        dataValueG.setValue( "7" );
-        DataValue dataValueH = new DataValue( dataElementB, w04, sourceB, optionCombo, optionCombo );
-        dataValueH.setValue( "8" );
-        DataValue dataValueI = new DataValue( dataElementB, w05, sourceA, optionCombo, optionCombo );
-        dataValueI.setValue( "9" );
-        
-        dataElementService.addDataElement( dataElementA );
-        dataElementService.addDataElement( dataElementB );
-        dataElementService.addDataElement( dataElementC );
-     
-        organisationUnitService.addOrganisationUnit( sourceA, false );
-        organisationUnitService.addOrganisationUnit( sourceB, false );
-        organisationUnitService.addOrganisationUnit( sourceC, false );
-        
-        dataValueStore.addDataValue( dataValueA );
-        dataValueStore.addDataValue( dataValueB );
-        dataValueStore.addDataValue( dataValueC );
-        dataValueStore.addDataValue( dataValueD );
-        dataValueStore.addDataValue( dataValueE );
-        dataValueStore.addDataValue( dataValueF );
-        dataValueStore.addDataValue( dataValueG );
-        dataValueStore.addDataValue( dataValueH );
-        dataValueStore.addDataValue( dataValueI );
-        
-        Collection<DataElement> dataElements1 = new ArrayList<DataElement>();
-        
-        dataElements1.add( dataElementA );
-        dataElements1.add( dataElementB );
-        
-        Collection<DataElement> dataElements2 = new ArrayList<DataElement>();
-        
-        dataElements2.add( dataElementC );
-        
-        Collection<OrganisationUnit> sources1 = new ArrayList<OrganisationUnit>();
-        
-        sources1.add( sourceA );
-        sources1.add( sourceB );
-        
-        Collection<OrganisationUnit> sources2 = new ArrayList<OrganisationUnit>();
-        
-        sources2.add( sourceC );
-        
-        Collection<Period> periods = periodStore.getPeriods( jan, dataElements1, sources1 );
-        
-        assertEquals( periods.size(), 7 );
-
-        periods = periodStore.getPeriods( feb, dataElements1, sources1 );
-        
-        assertEquals( periods.size(), 3 );
-        
-        periods = periodStore.getPeriods( mar, dataElements1, sources1 );
-
-        assertEquals( periods.size(), 1 );
-        
-        periods = periodStore.getPeriods( apr, dataElements1, sources1 );
-
-        assertEquals( periods.size(), 1 );
-        
-        periods = periodStore.getPeriods( may, dataElements1, sources1 );
-
-        assertEquals( periods.size(), 0 );
-        
-        periods = periodStore.getPeriods( jan, dataElements1, sources2 );
-        
-        assertEquals( periods.size(), 0 );
-        
-        periods = periodStore.getPeriods( feb, dataElements2, sources1 );
-
-        assertEquals( periods.size(), 0 );
-        
-        periods = periodStore.getPeriods( mar, dataElements2, sources2 );
     }
 }
