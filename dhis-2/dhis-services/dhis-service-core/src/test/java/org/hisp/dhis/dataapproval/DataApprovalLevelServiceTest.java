@@ -202,10 +202,10 @@ public class DataApprovalLevelServiceTest
     @Test
     public void testAddDataApprovalLevel() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level3B );
-        dataApprovalLevelService.addDataApprovalLevel( level2C );
-        dataApprovalLevelService.addDataApprovalLevel( level3 );
-        dataApprovalLevelService.addDataApprovalLevel( level4A );
+        dataApprovalLevelService.addDataApprovalLevel( level2C, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level3, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3B, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4A, 4 );
         
         List<DataApprovalLevel> levels = dataApprovalLevelService.getAllDataApprovalLevels();
         assertEquals( 4, levels.size() );
@@ -230,10 +230,10 @@ public class DataApprovalLevelServiceTest
     @Test
     public void testDeleteDataApprovalLevel() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1A );
-        dataApprovalLevelService.addDataApprovalLevel( level2B );
-        dataApprovalLevelService.addDataApprovalLevel( level3C );
-        dataApprovalLevelService.addDataApprovalLevel( level4D );
+        dataApprovalLevelService.addDataApprovalLevel( level1A, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2B, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3C, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4D, 4 );
 
         List<DataApprovalLevel> levels = null;
 
@@ -274,12 +274,12 @@ public class DataApprovalLevelServiceTest
     @Test
     public void testExists() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1 );
-        dataApprovalLevelService.addDataApprovalLevel( level2 );
-        dataApprovalLevelService.addDataApprovalLevel( level1A );
-        dataApprovalLevelService.addDataApprovalLevel( level1B );
-        dataApprovalLevelService.addDataApprovalLevel( level2A );
-        dataApprovalLevelService.addDataApprovalLevel( level2B );
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1A, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B, 4 );
+        dataApprovalLevelService.addDataApprovalLevel( level2A, 5 );
+        dataApprovalLevelService.addDataApprovalLevel( level2B, 6 );
 
         assertTrue( dataApprovalLevelService.dataApprovalLevelExists( level1A ) );
         assertTrue( dataApprovalLevelService.dataApprovalLevelExists( level1A ) );
@@ -299,15 +299,15 @@ public class DataApprovalLevelServiceTest
     @Test
     public void testCanMoveDown() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1 );
-        dataApprovalLevelService.addDataApprovalLevel( level1A );
-        dataApprovalLevelService.addDataApprovalLevel( level1B );
-        dataApprovalLevelService.addDataApprovalLevel( level2 );
-        dataApprovalLevelService.addDataApprovalLevel( level2A );
-        dataApprovalLevelService.addDataApprovalLevel( level2B );
-        dataApprovalLevelService.addDataApprovalLevel( level3 );
-        dataApprovalLevelService.addDataApprovalLevel( level3A );
-        dataApprovalLevelService.addDataApprovalLevel( level3B );
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level1A, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level2, 4 );
+        dataApprovalLevelService.addDataApprovalLevel( level2A, 5 );
+        dataApprovalLevelService.addDataApprovalLevel( level2B, 6 );
+        dataApprovalLevelService.addDataApprovalLevel( level3, 7 );
+        dataApprovalLevelService.addDataApprovalLevel( level3A, 8 );
+        dataApprovalLevelService.addDataApprovalLevel( level3B, 9 );
 
         assertFalse( dataApprovalLevelService.canDataApprovalLevelMoveDown( -1 ) );
         assertFalse( dataApprovalLevelService.canDataApprovalLevelMoveDown( 0 ) );
@@ -327,15 +327,15 @@ public class DataApprovalLevelServiceTest
     @Test
     public void testCanMoveUp() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1 );
-        dataApprovalLevelService.addDataApprovalLevel( level1A );
-        dataApprovalLevelService.addDataApprovalLevel( level1B );
-        dataApprovalLevelService.addDataApprovalLevel( level2 );
-        dataApprovalLevelService.addDataApprovalLevel( level2A );
-        dataApprovalLevelService.addDataApprovalLevel( level2B );
-        dataApprovalLevelService.addDataApprovalLevel( level3 );
-        dataApprovalLevelService.addDataApprovalLevel( level3A );
-        dataApprovalLevelService.addDataApprovalLevel( level3B );
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level1A, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level2, 4 );
+        dataApprovalLevelService.addDataApprovalLevel( level2A, 5 );
+        dataApprovalLevelService.addDataApprovalLevel( level2B, 6 );
+        dataApprovalLevelService.addDataApprovalLevel( level3, 7 );
+        dataApprovalLevelService.addDataApprovalLevel( level3A, 8 );
+        dataApprovalLevelService.addDataApprovalLevel( level3B, 9 );
 
         assertFalse( dataApprovalLevelService.canDataApprovalLevelMoveUp( -1 ) );
         assertFalse( dataApprovalLevelService.canDataApprovalLevelMoveUp( 0 ) );
@@ -355,11 +355,11 @@ public class DataApprovalLevelServiceTest
     @Test
     public void testMoveDown() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1D );
-        dataApprovalLevelService.addDataApprovalLevel( level1C );
-        dataApprovalLevelService.addDataApprovalLevel( level1B );
-        dataApprovalLevelService.addDataApprovalLevel( level1A );
-        dataApprovalLevelService.addDataApprovalLevel( level1 );
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level1A, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level1C, 4 );
+        dataApprovalLevelService.addDataApprovalLevel( level1D, 5 );
 
         List<DataApprovalLevel> levels;
 
@@ -395,11 +395,11 @@ public class DataApprovalLevelServiceTest
     @Test
     public void testMoveUp() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1D );
-        dataApprovalLevelService.addDataApprovalLevel( level1C );
-        dataApprovalLevelService.addDataApprovalLevel( level1B );
-        dataApprovalLevelService.addDataApprovalLevel( level1A );
-        dataApprovalLevelService.addDataApprovalLevel( level1 );
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level1A, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level1B, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level1C, 4 );
+        dataApprovalLevelService.addDataApprovalLevel( level1D, 5 );
 
         List<DataApprovalLevel> levels;
 
@@ -446,11 +446,11 @@ public class DataApprovalLevelServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitG );
         organisationUnitService.addOrganisationUnit( organisationUnitH );
 
-        dataApprovalLevelService.addDataApprovalLevel( level1 );
-        dataApprovalLevelService.addDataApprovalLevel( level2 );
-        dataApprovalLevelService.addDataApprovalLevel( level3 );
-        dataApprovalLevelService.addDataApprovalLevel( level4 );
-        dataApprovalLevelService.addDataApprovalLevel( level5 );
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4, 4 );
+        dataApprovalLevelService.addDataApprovalLevel( level5, 5 );
 
         Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
         assignedOrgUnits.add( organisationUnitC );
@@ -481,11 +481,11 @@ public class DataApprovalLevelServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitG );
         organisationUnitService.addOrganisationUnit( organisationUnitH );
 
-        dataApprovalLevelService.addDataApprovalLevel( level1 );
-        dataApprovalLevelService.addDataApprovalLevel( level2 );
-        dataApprovalLevelService.addDataApprovalLevel( level3 );
-        dataApprovalLevelService.addDataApprovalLevel( level4 );
-        dataApprovalLevelService.addDataApprovalLevel( level5 );
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4, 4 );
+        dataApprovalLevelService.addDataApprovalLevel( level5, 5 );
 
         Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
         assignedOrgUnits.add( organisationUnitC );
@@ -516,10 +516,10 @@ public class DataApprovalLevelServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitG );
         organisationUnitService.addOrganisationUnit( organisationUnitH );
 
-        dataApprovalLevelService.addDataApprovalLevel( level1 ); // 1st approval level
-        dataApprovalLevelService.addDataApprovalLevel( level2 ); // 2nd approval level
-        dataApprovalLevelService.addDataApprovalLevel( level3 ); // 3rd approval level
-        dataApprovalLevelService.addDataApprovalLevel( level5 ); // 4th approval level
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 ); // 1st approval level
+        dataApprovalLevelService.addDataApprovalLevel( level2, 2 ); // 2nd approval level
+        dataApprovalLevelService.addDataApprovalLevel( level3, 3 ); // 3rd approval level
+        dataApprovalLevelService.addDataApprovalLevel( level5, 4 ); // 4th approval level
 
         Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
         assignedOrgUnits.add( organisationUnitC );
@@ -553,11 +553,11 @@ public class DataApprovalLevelServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitJ );
         organisationUnitService.addOrganisationUnit( organisationUnitK );
 
-        dataApprovalLevelService.addDataApprovalLevel( level1 );
-        dataApprovalLevelService.addDataApprovalLevel( level2 );
-        dataApprovalLevelService.addDataApprovalLevel( level3 );
-        dataApprovalLevelService.addDataApprovalLevel( level4 );
-        dataApprovalLevelService.addDataApprovalLevel( level5 );
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4, 4 );
+        dataApprovalLevelService.addDataApprovalLevel( level5, 5 );
 
         Set<OrganisationUnit> assignedOrgUnits = new HashSet<OrganisationUnit>();
         assignedOrgUnits.add( organisationUnitC );
