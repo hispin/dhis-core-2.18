@@ -34,9 +34,7 @@ package org.hisp.dhis.dataapproval;
  * selection, the approval object.
  *
  * @author Jim Grace
- * @version $Id$
  */
-
 public class DataApprovalStatus
 {
     /**
@@ -66,9 +64,8 @@ public class DataApprovalStatus
     {
     }
 
-    public DataApprovalStatus( DataApprovalState dataApprovalState,
-                               DataApproval dataApproval,
-                               DataApprovalLevel dataApprovalLevel )
+    public DataApprovalStatus( DataApprovalState dataApprovalState, DataApproval dataApproval,
+        DataApprovalLevel dataApprovalLevel )
     {
         this.dataApprovalState = dataApprovalState;
         this.dataApproval = dataApproval;
