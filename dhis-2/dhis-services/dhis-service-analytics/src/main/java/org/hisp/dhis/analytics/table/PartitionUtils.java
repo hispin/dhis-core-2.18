@@ -31,7 +31,6 @@ package org.hisp.dhis.analytics.table;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +41,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.system.util.UniqueArrayList;
 
 /**
  * @author Lars Helge Overland
@@ -91,7 +91,7 @@ public class PartitionUtils
     
     public static Partitions getPartitions( List<NameableObject> periods, String tablePrefix, String tableSuffix, Set<String> validPartitions )
     {
-        Set<String> partitions = new HashSet<String>();
+        UniqueArrayList<String> partitions = new UniqueArrayList<String>();
         
         for ( NameableObject period : periods )
         {
