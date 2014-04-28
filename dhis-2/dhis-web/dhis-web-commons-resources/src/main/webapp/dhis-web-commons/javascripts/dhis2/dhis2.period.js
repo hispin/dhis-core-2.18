@@ -26,6 +26,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+
 dhis2.util.namespace('dhis2.period');
 
 dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
@@ -44,9 +48,9 @@ dhis2.period.PeriodGenerator = function( calendar ) {
     "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar),
     "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar),
     "Yearly": dhis2.period.makeYearlyPeriodGenerator(calendar),
-    "FinancialOct": dhis2.period.makeMonthlyPeriodGenerator(calendar),
-    "FinancialJuly": dhis2.period.makeMonthlyPeriodGenerator(calendar),
-    "FinancialApril": dhis2.period.makeMonthlyPeriodGenerator(calendar)
+    "FinancialApril": dhis2.period.makeFinancialAprilPeriodGenerator(calendar),
+    "FinancialJuly": dhis2.period.makeFinancialJulyPeriodGenerator(calendar),
+    "FinancialOct": dhis2.period.makeFinancialOctoberPeriodGenerator(calendar)
   };
 
   this.getAll = function() {
@@ -171,7 +175,6 @@ dhis2.period.makeWeeklyPeriodGenerator = function( cal ) {
     }
 
     var year = cal.today().year() - offset;
-
     var periods = [];
 
     var startDate = cal.newDate(year, 1, 1);
@@ -217,7 +220,6 @@ dhis2.period.makeMonthlyPeriodGenerator = function( cal ) {
     }
 
     var year = cal.today().year() - offset;
-
     var periods = [];
 
     for( var month = 1; month <= cal.monthsInYear(year); month++ ) {
@@ -435,6 +437,54 @@ dhis2.period.makeYearlyPeriodGenerator = function( cal ) {
       period['_endDate'] = endDate;
 
       periods.push(period);
+    }
+
+    return periods;
+  };
+
+  return self;
+};
+
+dhis2.period.makeFinancialAprilPeriodGenerator = function( cal ) {
+  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 4, 'April');
+};
+
+dhis2.period.makeFinancialJulyPeriodGenerator = function( cal ) {
+  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 7, 'July');
+};
+
+dhis2.period.makeFinancialOctoberPeriodGenerator = function( cal ) {
+  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 10, 'Oct');
+};
+
+dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( cal, monthStart, monthShortName ) {
+  var self = {};
+  self.generatePeriods = function( offset ) {
+    if( typeof offset === 'undefined' ) {
+      offset = 0;
+    }
+
+    var year = cal.today().year() - offset;
+    var periods = [];
+
+    var startDate = cal.newDate(year - 5, monthStart, 1);
+
+    // generate 11 years, thisYear +/- 5 years
+    for( var i = 1; i < 12; i++ ) {
+      var endDate = cal.newDate(startDate).add(1, 'y').add(-1, 'd');
+
+      var period = {};
+      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate("MM yyyy");
+      period['id'] = 'Financial' + monthShortName + '_' + period['startDate'];
+      period['iso'] = startDate.formatDate("yyyy") + monthShortName;
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
+      periods.push(period);
+      startDate.add(1, 'y');
     }
 
     return periods;
