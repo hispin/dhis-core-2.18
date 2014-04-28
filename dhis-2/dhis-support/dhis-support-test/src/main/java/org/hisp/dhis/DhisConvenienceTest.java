@@ -28,6 +28,27 @@ package org.hisp.dhis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
@@ -113,24 +134,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 import org.xml.sax.InputSource;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.File;
-import java.io.StringReader;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -357,7 +360,7 @@ public abstract class DhisConvenienceTest
      * @param targetService the target service.
      * @param fieldName     the name of the dependency field in the target service.
      * @param dependency    the dependency.
-     * @param clazz         the class type of the dependency.
+     * @param clazz         the interface type of the dependency.
      */
     protected void setDependency( Object targetService, String fieldName, Object dependency, Class<?> clazz )
     {
@@ -376,7 +379,7 @@ public abstract class DhisConvenienceTest
         }
         catch ( Exception ex )
         {
-            throw new RuntimeException( "Failed to set dependency '" + fieldName + "' on service", ex );
+            throw new RuntimeException( "Failed to set dependency '" + fieldName + "' on service: " + getStackTrace( ex ), ex );
         }
     }
 
@@ -1466,11 +1469,7 @@ public abstract class DhisConvenienceTest
             return null;
         }
     }
-
-    // -------------------------------------------------------------------------
-    // Allow xpath testing of DXF2
-    // -------------------------------------------------------------------------
-
+    
     /**
      * Creates a user and injects into the security context with username
      * "username". Requires <code>identifiableObjectManager</code> and
@@ -1480,7 +1479,7 @@ public abstract class DhisConvenienceTest
      * @param auths   authorities to grant to user.
      * @return the user.
      */
-    public User createUserAndInjectSecurityContext( boolean allAuth, String... auths )
+    protected User createUserAndInjectSecurityContext( boolean allAuth, String... auths )
     {
         return createUserAndInjectSecurityContext( null, allAuth, auths );
     }
@@ -1495,7 +1494,7 @@ public abstract class DhisConvenienceTest
      * @param auths             authorities to grant to user.
      * @return the user.
      */
-    public User createUserAndInjectSecurityContext( Set<OrganisationUnit> organisationUnits, boolean allAuth, String... auths )
+    protected User createUserAndInjectSecurityContext( Set<OrganisationUnit> organisationUnits, boolean allAuth, String... auths )
     {
         return createUserAndInjectSecurityContext( organisationUnits, null, allAuth, auths );
     }
@@ -1511,7 +1510,7 @@ public abstract class DhisConvenienceTest
      * @param auths                     authorities to grant to user.
      * @return the user.
      */
-    public User createUserAndInjectSecurityContext( Set<OrganisationUnit> organisationUnits, Set<OrganisationUnit> dataViewOrganisationUnits, boolean allAuth, String... auths )
+    protected User createUserAndInjectSecurityContext( Set<OrganisationUnit> organisationUnits, Set<OrganisationUnit> dataViewOrganisationUnits, boolean allAuth, String... auths )
     {
         Assert.notNull( identifiableObjectManager, "IdentifiableObjectManager must be injected in test" );
         Assert.notNull( userService, "UserService must be injected in test" );
@@ -1560,5 +1559,16 @@ public abstract class DhisConvenienceTest
         SecurityContextHolder.getContext().setAuthentication( authentication );
 
         return user;
+    }
+
+    protected static String getStackTrace( Throwable t )
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter( sw, true );
+        t.printStackTrace( pw );
+        pw.flush();
+        sw.flush();
+        
+        return sw.toString();
     }
 }
