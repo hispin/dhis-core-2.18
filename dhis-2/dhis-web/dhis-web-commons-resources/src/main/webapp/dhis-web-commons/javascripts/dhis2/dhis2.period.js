@@ -28,7 +28,7 @@
 
 dhis2.util.namespace('dhis2.period');
 
-dhis2.period.DATE_FORMAT = "yyyy-mm-dd";
+dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
 
 dhis2.period.PeriodGenerator = function( calendar ) {
   if( typeof calendar === 'undefined' ) {
@@ -114,9 +114,9 @@ dhis2.period.makeDailyPeriodGenerator = function( cal ) {
 
     for( var day = 1; day <= cal.daysInYear(year); day++ ) {
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-      period['endDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-      period['name'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['endDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['name'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
       period['id'] = 'Daily_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymmdd");
 
@@ -149,12 +149,12 @@ dhis2.period.makeWeeklyPeriodGenerator = function( cal ) {
     // goes up to 200, but break when week is back to 1
     for( var week = 1; week < 200; week++ ) {
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
 
       // not very elegant, but seems to be best way to get week end, adds a week, then minus 1 day
       var endDate = cal.newDate(startDate).add(1, 'w').add(-1, 'd');
 
-      period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
       period['name'] = 'W' + week + ' - ' + period['startDate'] + ' - ' + period['endDate'];
       period['id'] = 'Weekly_' + period['startDate'];
       period['iso'] = year + 'W' + week;
@@ -190,8 +190,8 @@ dhis2.period.makeMonthlyPeriodGenerator = function( cal ) {
       var endDate = cal.newDate(startDate).set(startDate.daysInMonth(month), 'd');
 
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-      period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
       period['name'] = startDate.formatDate("MM yyyy");
       period['id'] = 'Monthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm");
@@ -221,8 +221,8 @@ dhis2.period.makeBiMonthlyPeriodGenerator = function( cal ) {
       endDate.set(endDate.daysInMonth(month + 1), 'd');
 
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-      period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
       period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
       period['id'] = 'BiMonthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm") + 'B';
@@ -252,8 +252,8 @@ dhis2.period.makeQuarterlyPeriodGenerator = function( cal ) {
       endDate.set(endDate.daysInMonth(month + 2), 'd');
 
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-      period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
       period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
       period['id'] = 'Quarterly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy") + 'Q' + idx;
@@ -283,8 +283,8 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
     endDate.set(endDate.daysInMonth(6), 'd');
 
     var period = {};
-    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-    period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+    period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
     period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S1';
@@ -296,8 +296,8 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
     endDate.set(endDate.daysInMonth(12), 'd');
 
     period = {};
-    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-    period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+    period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
     period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S2';
@@ -325,8 +325,8 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal ) {
     endDate.set(endDate.daysInMonth(9), 'd');
 
     var period = {};
-    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-    period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+    period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
     period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
     period['id'] = 'SixMonthlyApril_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'AprilS1';
@@ -338,8 +338,8 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal ) {
     endDate.set(endDate.daysInMonth(endDate.month()), 'd');
 
     period = {};
-    period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-    period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+    period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+    period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
     period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate('MM yyyy');
     period['id'] = 'SixMonthlyApril_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'AprilS2';
@@ -369,8 +369,8 @@ dhis2.period.makeYearlyPeriodGenerator = function( cal ) {
       endDate.set(endDate.daysInMonth(endDate.month()), 'd');
 
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DATE_FORMAT);
-      period['endDate'] = endDate.formatDate(dhis2.period.DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
       period['name'] = startDate.formatDate("yyyy");
       period['id'] = 'Yearly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy");
