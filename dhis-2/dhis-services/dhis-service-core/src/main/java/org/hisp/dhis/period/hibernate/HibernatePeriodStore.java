@@ -30,16 +30,11 @@ package org.hisp.dhis.period.hibernate;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
@@ -134,34 +129,6 @@ public class HibernatePeriodStore
         criteria.add( Restrictions.eq( "periodType", reloadPeriodType( periodType ) ) );
 
         return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements,
-        Collection<OrganisationUnit> sources )
-    {
-        Set<Period> periods = new HashSet<Period>();
-
-        Session session = sessionFactory.getCurrentSession();
-
-        Collection<Period> intersectingPeriods = getIntersectingPeriods( period.getStartDate(), period.getEndDate() );
-
-        if ( intersectingPeriods != null && intersectingPeriods.size() > 0 )
-        {
-            Criteria criteria = session.createCriteria( DataValue.class );
-            criteria.add( Restrictions.in( "dataElement", dataElements ) );
-            criteria.add( Restrictions.in( "source", sources ) );
-            criteria.add( Restrictions.in( "period", intersectingPeriods ) );
-
-            Collection<DataValue> dataValues = criteria.list();
-
-            for ( DataValue dataValue : dataValues )
-            {
-                periods.add( dataValue.getPeriod() );
-            }
-        }
-
-        return periods;
     }
 
     public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )

@@ -28,12 +28,10 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericStore;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-
 import java.util.Collection;
 import java.util.Date;
+
+import org.hisp.dhis.common.GenericStore;
 
 /**
  * Defines the functionality for persisting Periods and PeriodTypes.
@@ -135,18 +133,6 @@ public interface PeriodStore
      *         no Periods match.
      */
     Collection<Period> getPeriodsByPeriodType( PeriodType periodType );
-
-    /**
-     * Returns all intersecting Periods for the given Period which have associated DataValues for
-     * the given collection of DataElements and Sources.
-     *
-     * @param period       the Period.
-     * @param dataElements the collection of DataElements.
-     * @param sources      the collection of Sources.
-     * @return all intersecting Periods for the given Period which have associated DataValues for
-     *         the given collection of DataElements and Sources.
-     */
-    Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<OrganisationUnit> sources );
 
     /**
      * Checks if the given period is associated with the current session and loads
