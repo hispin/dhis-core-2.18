@@ -562,9 +562,9 @@ public class PeriodStoreTest
         dataElementService.addDataElement( dataElementB );
         dataElementService.addDataElement( dataElementC );
      
-        organisationUnitService.addOrganisationUnit( sourceA );
-        organisationUnitService.addOrganisationUnit( sourceB );
-        organisationUnitService.addOrganisationUnit( sourceC );
+        organisationUnitService.addOrganisationUnit( sourceA, false );
+        organisationUnitService.addOrganisationUnit( sourceB, false );
+        organisationUnitService.addOrganisationUnit( sourceC, false );
         
         dataValueStore.addDataValue( dataValueA );
         dataValueStore.addDataValue( dataValueB );
