@@ -40,6 +40,7 @@ import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -103,7 +104,9 @@ public class GetCategoryOptionGroupsAction
     {
         if ( ou != null )
         {
-            int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( ou );
+            
+            int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() );
             
             List<DataApprovalLevel> approvalLevels = approvalLevelService.getUserDataApprovalLevels();
 

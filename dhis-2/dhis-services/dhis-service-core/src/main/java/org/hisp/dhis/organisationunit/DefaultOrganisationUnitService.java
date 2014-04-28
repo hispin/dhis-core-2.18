@@ -257,11 +257,6 @@ public class DefaultOrganisationUnitService
         return getOrganisationUnit( id ).getOrganisationUnitLevel();
     }
 
-    public int getLevelOfOrganisationUnit( String uid )
-    {
-        return getOrganisationUnit( uid ).getOrganisationUnitLevel();
-    }
-
     public Collection<OrganisationUnit> getLeafOrganisationUnits( int id )
     {
         Collection<OrganisationUnit> units = getOrganisationUnitWithChildren( id );

@@ -372,7 +372,7 @@ public class DefaultEventAnalyticsService
             for ( NameableObject object : params.getDimensionOrFilter( ORGUNIT_DIM_ID ) )
             {
                 OrganisationUnit unit = (OrganisationUnit) object;
-                unit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( unit.getUid() ) );
+                unit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( unit.getId() ) );
             }
         }
 
