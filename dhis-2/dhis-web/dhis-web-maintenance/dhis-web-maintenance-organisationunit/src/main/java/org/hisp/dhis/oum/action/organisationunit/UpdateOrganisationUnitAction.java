@@ -370,6 +370,8 @@ public class UpdateOrganisationUnitAction
                 manager.updateNoAcl( newGroup );
             }
         }
+        
+        organisationUnitService.updateOrganisationUnitVersion();
 
         return SUCCESS;
     }

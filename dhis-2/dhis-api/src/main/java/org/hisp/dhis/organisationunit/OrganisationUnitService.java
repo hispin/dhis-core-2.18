@@ -61,21 +61,17 @@ public interface OrganisationUnitService
     int addOrganisationUnit( OrganisationUnit organisationUnit );
 
     /**
-     * Adds an OrganisationUnit to the hierarchy.
-     *
-     * @param organisationUnit the OrganisationUnit to add.
-     * @param indicates whether to update hierarchy version.
-     * @return a generated unique id of the added OrganisationUnit.
-     */
-    int addOrganisationUnit( OrganisationUnit organisationUnit, boolean updateVersion );
-
-    /**
      * Updates an OrganisationUnit.
      *
      * @param organisationUnit the OrganisationUnit to update.
      */
     void updateOrganisationUnit( OrganisationUnit organisationUnit );
 
+    /**
+     * Updates the version of the organisation unit hierarchy.
+     */
+    void updateOrganisationUnitVersion();
+    
     /**
      * Updates an OrganisationUnit.
      *

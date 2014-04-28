@@ -265,12 +265,12 @@ public class DataApprovalServiceTest
         organisationUnitE.setLevel( 3 );
         organisationUnitF.setLevel( 4 );
 
-        organisationUnitService.addOrganisationUnit( organisationUnitA, false );
-        organisationUnitService.addOrganisationUnit( organisationUnitB, false );
-        organisationUnitService.addOrganisationUnit( organisationUnitC, false );
-        organisationUnitService.addOrganisationUnit( organisationUnitD, false );
-        organisationUnitService.addOrganisationUnit( organisationUnitE, false );
-        organisationUnitService.addOrganisationUnit( organisationUnitF, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitA );
+        organisationUnitService.addOrganisationUnit( organisationUnitB );
+        organisationUnitService.addOrganisationUnit( organisationUnitC );
+        organisationUnitService.addOrganisationUnit( organisationUnitD );
+        organisationUnitService.addOrganisationUnit( organisationUnitE );
+        organisationUnitService.addOrganisationUnit( organisationUnitF );
 
         level1 = new DataApprovalLevel( "level1", 1, null );
         level2 = new DataApprovalLevel( "level2", 2, null );
