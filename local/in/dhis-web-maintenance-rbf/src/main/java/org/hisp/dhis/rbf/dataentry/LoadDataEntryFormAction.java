@@ -18,6 +18,9 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -26,6 +29,7 @@ import org.hisp.dhis.rbf.api.PBFDataValue;
 import org.hisp.dhis.rbf.api.PBFDataValueService;
 import org.hisp.dhis.rbf.api.TariffDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -104,6 +108,8 @@ public class LoadDataEntryFormAction
         this.constantService = constantService;
     }
 
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
@@ -246,12 +252,22 @@ public class LoadDataEntryFormAction
 
         }
 
+        OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit );
+        
+        if( orgUnitGroup != null )
+        {
+        	tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( orgUnitGroup, dataSet, period ) );
+        }
+        
+        /*
         OrganisationUnit parentOrgunit = findParentOrgunitforTariff( organisationUnit, tariff_setting_authority );
 
         if ( parentOrgunit != null )
         {
             tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( parentOrgunit, dataSet, period ) );
         }
+        */
+        
 
         pbfDataValueMap = new HashMap<DataElement, PBFDataValue>();
 
@@ -349,6 +365,17 @@ public class LoadDataEntryFormAction
         return SUCCESS;
     }
 
+    public OrganisationUnitGroup findPBFOrgUnitGroupforTariff( OrganisationUnit organisationUnit )
+    {
+    	Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+    	
+    	OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
+    	
+    	OrganisationUnitGroup orgUnitGroup = organisationUnit.getGroupInGroupSet( orgUnitGroupSet );
+    	
+    	return orgUnitGroup;
+    }
+    
     public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
     {
         Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );

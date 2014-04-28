@@ -18,7 +18,7 @@
 		<action name="dataElementTariffManagement" class="org.hisp.dhis.rbf.action.GetDataElementforTariffAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-rbf/loadDataElementsforTariff.vm</param>
-			<param name="menu">/dhis-web-maintenance-rbf/tariffMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/javascripts/ext/ext-all.js,javascript/TransformGrid.js,javascript/dataElement_combo.js</param>
 			<param name="stylesheets">../dhis-web-commons/javascripts/ext/resources/css/ext-all-gray.css</param>
 		</action>

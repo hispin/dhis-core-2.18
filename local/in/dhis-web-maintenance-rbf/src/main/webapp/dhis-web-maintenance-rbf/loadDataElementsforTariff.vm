@@ -79,13 +79,22 @@ function getTariffData()
 
 function orgUnitGroupChange()
 {
-	document.getElementById('simpleCombo').style.display = 'block';
-	document.getElementById('loadTariffDetails').style.display = 'block';
-	if($('#dataElementName').val() != '')
-	{
-		getTariffData();	
+    if( $('#orgUnitGroupId').val() == "-1" )
+    {
+        document.getElementById('simpleCombo').style.display = 'none';
+        document.getElementById('loadTariffDetails').style.display = 'none';
+    }
+    else
+    {
+        document.getElementById('simpleCombo').style.display = 'block';
+        document.getElementById('loadTariffDetails').style.display = 'block';
+        if( $('#dataElementName').val() != '' )
+        {
+            getTariffData();
+        }	
 	}
 }
+
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
 	var countryTags = $levelOrgUnitIds;
@@ -145,24 +154,30 @@ function loadExtTariff()
    inset 8px 10px 10px rgba(255,255,255,0.75);
    }
 </style>
+
+<!--
 <div width="100%">
 	<div id="tariffSetting">
 		Tariff Setting Authority : $!tariff_setting_authority
     </div>
 </div>
+-->
+
 <h3>$i18n.getString( "dataelement_tariff_target_management" )</h3>
 <br/>
-<input type="hidden" name="orgUnitUid" id="orgUnitUid">
-<input type="hidden" name="dataElementName" id="dataElementName" value="">
+<input type="hidden" name="orgUnitUid" id="orgUnitUid" />
+<input type="hidden" name="dataElementName" id="dataElementName" value="" />
 <table width="60%">
 	<tr>
-		<td >Orgainsation Unit: &nbsp;&nbsp;&nbsp; 
+		<td >Orgainsation Unit Group: &nbsp;&nbsp;&nbsp; 
 		    <select id="orgUnitGroupId" name="orgUnitGroupId" onchange="javascript:orgUnitGroupChange()">
+                <option value="-1">[Please select]</option>		    	
                 #foreach( $orgUnitGroup in $orgUnitGroups )
                 	<option value="$!orgUnitGroup.id">$!orgUnitGroup.name</option>
                 #end
       		</select>
-      		<input type="text" id="orgUnit" name="orgUnit" readonly size="55"/></td>
+      		<input type="hidden" id="orgUnit" name="orgUnit" readonly size="55" style="display:none" />
+      	</td>
 		<td >&nbsp;</td>
 	</tr>
 	<tr >
