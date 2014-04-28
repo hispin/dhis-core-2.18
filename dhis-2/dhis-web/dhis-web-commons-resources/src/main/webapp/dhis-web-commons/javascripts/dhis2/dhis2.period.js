@@ -40,17 +40,17 @@ dhis2.period.PeriodGenerator = function( calendar ) {
   }
 
   var periodTypes = {
-    "Daily": dhis2.period.makeDailyPeriodGenerator(calendar),
-    "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar),
-    "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar),
-    "BiMonthly": dhis2.period.makeBiMonthlyPeriodGenerator(calendar),
-    "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(calendar),
-    "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar),
-    "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar),
-    "Yearly": dhis2.period.makeYearlyPeriodGenerator(calendar),
-    "FinancialApril": dhis2.period.makeFinancialAprilPeriodGenerator(calendar),
-    "FinancialJuly": dhis2.period.makeFinancialJulyPeriodGenerator(calendar),
-    "FinancialOct": dhis2.period.makeFinancialOctoberPeriodGenerator(calendar)
+    "Daily": dhis2.period.makeDailyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "BiMonthly": dhis2.period.makeBiMonthlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "Yearly": dhis2.period.makeYearlyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "FinancialApril": dhis2.period.makeFinancialAprilPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "FinancialJuly": dhis2.period.makeFinancialJulyPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT),
+    "FinancialOct": dhis2.period.makeFinancialOctoberPeriodGenerator(calendar, dhis2.period.DEFAULT_DATE_FORMAT)
   };
 
   this.getAll = function() {
@@ -136,7 +136,7 @@ dhis2.period.PeriodGenerator = function( calendar ) {
   }
 };
 
-dhis2.period.makeDailyPeriodGenerator = function( cal ) {
+dhis2.period.makeDailyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     if( typeof offset === 'undefined' ) {
@@ -150,9 +150,9 @@ dhis2.period.makeDailyPeriodGenerator = function( cal ) {
 
     for( var day = 1; day <= cal.daysInYear(year); day++ ) {
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-      period['endDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-      period['name'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(format);
+      period['endDate'] = startDate.formatDate(format);
+      period['name'] = startDate.formatDate(format);
       period['id'] = 'Daily_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymmdd");
 
@@ -167,7 +167,7 @@ dhis2.period.makeDailyPeriodGenerator = function( cal ) {
   return self;
 };
 
-dhis2.period.makeWeeklyPeriodGenerator = function( cal ) {
+dhis2.period.makeWeeklyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     if( typeof offset === 'undefined' ) {
@@ -184,12 +184,12 @@ dhis2.period.makeWeeklyPeriodGenerator = function( cal ) {
     // goes up to 200, but break when week is back to 1
     for( var week = 1; week < 200; week++ ) {
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(format);
 
       // not very elegant, but seems to be best way to get week end, adds a week, then minus 1 day
       var endDate = cal.newDate(startDate).add(1, 'w').add(-1, 'd');
 
-      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['endDate'] = endDate.formatDate(format);
       period['name'] = 'W' + week + ' - ' + period['startDate'] + ' - ' + period['endDate'];
       period['id'] = 'Weekly_' + period['startDate'];
       period['iso'] = year + 'W' + week;
@@ -212,7 +212,7 @@ dhis2.period.makeWeeklyPeriodGenerator = function( cal ) {
   return self;
 };
 
-dhis2.period.makeMonthlyPeriodGenerator = function( cal ) {
+dhis2.period.makeMonthlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     if( typeof offset === 'undefined' ) {
@@ -227,8 +227,8 @@ dhis2.period.makeMonthlyPeriodGenerator = function( cal ) {
       var endDate = cal.newDate(startDate).set(startDate.daysInMonth(month), 'd');
 
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(format);
+      period['endDate'] = endDate.formatDate(format);
       period['name'] = startDate.formatDate("MM yyyy");
       period['id'] = 'Monthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm");
@@ -245,7 +245,7 @@ dhis2.period.makeMonthlyPeriodGenerator = function( cal ) {
   return self;
 };
 
-dhis2.period.makeBiMonthlyPeriodGenerator = function( cal ) {
+dhis2.period.makeBiMonthlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     if( typeof offset === 'undefined' ) {
@@ -261,8 +261,8 @@ dhis2.period.makeBiMonthlyPeriodGenerator = function( cal ) {
       endDate.set(endDate.daysInMonth(month + 1), 'd');
 
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(format);
+      period['endDate'] = endDate.formatDate(format);
       period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
       period['id'] = 'BiMonthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm") + 'B';
@@ -279,7 +279,7 @@ dhis2.period.makeBiMonthlyPeriodGenerator = function( cal ) {
   return self;
 };
 
-dhis2.period.makeQuarterlyPeriodGenerator = function( cal ) {
+dhis2.period.makeQuarterlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     if( typeof offset === 'undefined' ) {
@@ -295,8 +295,8 @@ dhis2.period.makeQuarterlyPeriodGenerator = function( cal ) {
       endDate.set(endDate.daysInMonth(month + 2), 'd');
 
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(format);
+      period['endDate'] = endDate.formatDate(format);
       period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
       period['id'] = 'Quarterly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy") + 'Q' + idx;
@@ -313,7 +313,7 @@ dhis2.period.makeQuarterlyPeriodGenerator = function( cal ) {
   return self;
 };
 
-dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
+dhis2.period.makeSixMonthlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     if( typeof offset === 'undefined' ) {
@@ -329,8 +329,8 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
     endDate.set(endDate.daysInMonth(6), 'd');
 
     var period = {};
-    period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-    period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+    period['startDate'] = startDate.formatDate(format);
+    period['endDate'] = endDate.formatDate(format);
     period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S1';
@@ -345,8 +345,8 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
     endDate.set(endDate.daysInMonth(12), 'd');
 
     period = {};
-    period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-    period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+    period['startDate'] = startDate.formatDate(format);
+    period['endDate'] = endDate.formatDate(format);
     period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S2';
@@ -362,7 +362,7 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
   return self;
 };
 
-dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal ) {
+dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     if( typeof offset === 'undefined' ) {
@@ -377,8 +377,8 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal ) {
     endDate.set(endDate.daysInMonth(9), 'd');
 
     var period = {};
-    period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-    period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+    period['startDate'] = startDate.formatDate(format);
+    period['endDate'] = endDate.formatDate(format);
     period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
     period['id'] = 'SixMonthlyApril_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'AprilS1';
@@ -393,8 +393,8 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal ) {
     endDate.set(endDate.daysInMonth(endDate.month()), 'd');
 
     period = {};
-    period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-    period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+    period['startDate'] = startDate.formatDate(format);
+    period['endDate'] = endDate.formatDate(format);
     period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate('MM yyyy');
     period['id'] = 'SixMonthlyApril_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'AprilS2';
@@ -410,7 +410,7 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal ) {
   return self;
 };
 
-dhis2.period.makeYearlyPeriodGenerator = function( cal ) {
+dhis2.period.makeYearlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     if( typeof offset === 'undefined' ) {
@@ -427,8 +427,8 @@ dhis2.period.makeYearlyPeriodGenerator = function( cal ) {
       endDate.set(endDate.daysInMonth(endDate.month()), 'd');
 
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(format);
+      period['endDate'] = endDate.formatDate(format);
       period['name'] = startDate.formatDate("yyyy");
       period['id'] = 'Yearly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy");
@@ -445,19 +445,19 @@ dhis2.period.makeYearlyPeriodGenerator = function( cal ) {
   return self;
 };
 
-dhis2.period.makeFinancialAprilPeriodGenerator = function( cal ) {
-  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 4, 'April');
+dhis2.period.makeFinancialAprilPeriodGenerator = function( cal, format ) {
+  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 4, 'April', format);
 };
 
-dhis2.period.makeFinancialJulyPeriodGenerator = function( cal ) {
-  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 7, 'July');
+dhis2.period.makeFinancialJulyPeriodGenerator = function( cal, format ) {
+  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 7, 'July', format);
 };
 
-dhis2.period.makeFinancialOctoberPeriodGenerator = function( cal ) {
-  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 10, 'Oct');
+dhis2.period.makeFinancialOctoberPeriodGenerator = function( cal, format ) {
+  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 10, 'Oct', format);
 };
 
-dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( cal, monthStart, monthShortName ) {
+dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( cal, monthStart, monthShortName, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     if( typeof offset === 'undefined' ) {
@@ -474,8 +474,8 @@ dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( cal, monthStar
       var endDate = cal.newDate(startDate).add(1, 'y').add(-1, 'd');
 
       var period = {};
-      period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-      period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
+      period['startDate'] = startDate.formatDate(format);
+      period['endDate'] = endDate.formatDate(format);
       period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate("MM yyyy");
       period['id'] = 'Financial' + monthShortName + '_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy") + monthShortName;
