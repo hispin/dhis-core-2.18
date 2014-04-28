@@ -37,7 +37,7 @@ dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
 /**
  * A period generator that uses a specified calendar chronology to generate DHIS 2 periods.
  *
- * There is probably not a reason to use this directly, on startup, two global variables have been made available:
+ * There is probably no reason to use this directly, since on startup, two global variables have been made available:
  *  - dhis2.period.calendar   The currently selected system calendar
  *  - dhis2.period.generator  An instance of this class using the system calendar
  *
@@ -226,7 +226,7 @@ dhis2.period.makeDailyPeriodGenerator = function( cal, format ) {
       offset = 0;
     }
 
-    var year = cal.today().year() - offset;
+    var year = offset + cal.today().year();
     var periods = [];
 
     var startDate = cal.newDate(year, 1, 1);
@@ -257,7 +257,7 @@ dhis2.period.makeWeeklyPeriodGenerator = function( cal, format ) {
       offset = 0;
     }
 
-    var year = cal.today().year() - offset;
+    var year = offset + cal.today().year();
     var periods = [];
 
     var startDate = cal.newDate(year, 1, 1);
@@ -302,7 +302,7 @@ dhis2.period.makeMonthlyPeriodGenerator = function( cal, format ) {
       offset = 0;
     }
 
-    var year = cal.today().year() - offset;
+    var year = offset + cal.today().year();
     var periods = [];
 
     for( var month = 1; month <= cal.monthsInYear(year); month++ ) {
@@ -335,7 +335,7 @@ dhis2.period.makeBiMonthlyPeriodGenerator = function( cal, format ) {
       offset = 0;
     }
 
-    var year = cal.today().year() - offset;
+    var year = offset + cal.today().year();
     var periods = [];
 
     for( var month = 1; month <= cal.monthsInYear(year); month += 2 ) {
@@ -369,7 +369,7 @@ dhis2.period.makeQuarterlyPeriodGenerator = function( cal, format ) {
       offset = 0;
     }
 
-    var year = cal.today().year() - offset;
+    var year = offset + cal.today().year();
     var periods = [];
 
     for( var month = 1, idx = 1; month <= cal.monthsInYear(year); month += 3, idx++ ) {
@@ -403,8 +403,7 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal, format ) {
       offset = 0;
     }
 
-    var year = cal.today().year() - offset;
-
+    var year = offset + cal.today().year();
     var periods = [];
 
     var startDate = cal.newDate(year, 1, 1);
@@ -452,7 +451,7 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal, format ) {
       offset = 0;
     }
 
-    var year = cal.today().year() - offset;
+    var year = offset + cal.today().year();
     var periods = [];
 
     var startDate = cal.newDate(year, 4, 1);
@@ -500,7 +499,7 @@ dhis2.period.makeYearlyPeriodGenerator = function( cal, format ) {
       offset = 0;
     }
 
-    var year = cal.today().year() - offset;
+    var year = offset + cal.today().year();
     var periods = [];
 
     // generate 11 years, thisYear +/- 5 years
@@ -547,7 +546,7 @@ dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( cal, monthStar
       offset = 0;
     }
 
-    var year = cal.today().year() - offset;
+    var year = offset + cal.today().year();
     var periods = [];
 
     var startDate = cal.newDate(year - 5, monthStart, 1);
