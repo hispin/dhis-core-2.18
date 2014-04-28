@@ -48,11 +48,13 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.mock.MockCurrentUserService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.junit.Ignore;
@@ -393,7 +395,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitA );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
         DataApproval dataApprovalA = new DataApproval( level1, dataSetA, periodA, organisationUnitA, NO_GROUP, NOT_ACCEPTED, date, userA );
@@ -481,7 +484,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitA );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
         DataApproval dataApprovalA = new DataApproval( level1, dataSetA, periodA, organisationUnitA, NO_GROUP, NOT_ACCEPTED, date, userA );
@@ -510,7 +514,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitA );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
         DataApproval dataApprovalA = new DataApproval( level1, dataSetA, periodA, organisationUnitA, NO_GROUP, NOT_ACCEPTED, date, userA );
@@ -557,7 +562,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitA );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         // Not enabled.
         assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatus( dataSetA, periodA, organisationUnitA, NO_GROUPS, NO_OPTIONS ).getDataApprovalState() );
@@ -647,7 +653,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitA );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         dataSetA.setApproveData( true );
 
@@ -705,7 +712,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitA );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         dataSetA.setApproveData( true );
 
@@ -737,7 +745,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
 
@@ -771,7 +780,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
 
@@ -805,7 +815,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
 
@@ -839,7 +850,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
 
@@ -868,7 +880,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
 
@@ -916,7 +929,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
 
@@ -964,7 +978,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
 
@@ -1012,7 +1027,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitB );
-        createUserAndInjectSecurityContext( units, false, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
 
@@ -1059,7 +1075,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitA );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Set<CategoryOptionGroup> groupABSet = new HashSet<CategoryOptionGroup>();
         groupABSet.add( groupAB );
@@ -1134,7 +1151,6 @@ public class DataApprovalServiceTest
     }
 
     @Test
-    @Ignore
     public void testApprovalLevelWithCategories() throws Exception
     {
         setUpCategories();
@@ -1159,7 +1175,8 @@ public class DataApprovalServiceTest
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitA );
-        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS, AUTH_APPR_LEVEL );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
 
         Date date = new Date();
 
