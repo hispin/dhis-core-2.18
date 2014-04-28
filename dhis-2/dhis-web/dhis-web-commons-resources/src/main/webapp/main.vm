@@ -62,6 +62,11 @@
     #end
 
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.period.js?_rev=$!{buildRevision}"></script>
+
+    #if( $keyCalendar == "nepali" )
+      <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.period.${keyCalendar}.js?_rev=$!{buildRevision}"></script>
+    #end
+
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.selected.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.availability.js?_rev=$!{buildRevision}"></script>
