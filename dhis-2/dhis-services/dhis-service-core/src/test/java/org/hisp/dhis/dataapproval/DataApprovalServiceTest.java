@@ -265,12 +265,12 @@ public class DataApprovalServiceTest
         organisationUnitE.setLevel( 3 );
         organisationUnitF.setLevel( 4 );
 
-        organisationUnitService.addOrganisationUnit( organisationUnitA );
-        organisationUnitService.addOrganisationUnit( organisationUnitB );
-        organisationUnitService.addOrganisationUnit( organisationUnitC );
-        organisationUnitService.addOrganisationUnit( organisationUnitD );
-        organisationUnitService.addOrganisationUnit( organisationUnitE );
-        organisationUnitService.addOrganisationUnit( organisationUnitF );
+        organisationUnitService.addOrganisationUnit( organisationUnitA, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitB, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitC, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitD, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitE, false );
+        organisationUnitService.addOrganisationUnit( organisationUnitF, false );
 
         level1 = new DataApprovalLevel( "level1", 1, null );
         level2 = new DataApprovalLevel( "level2", 2, null );
@@ -385,10 +385,10 @@ public class DataApprovalServiceTest
     @Test
     public void testAddAndGetDataApproval() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1 );
-        dataApprovalLevelService.addDataApprovalLevel( level2 );
-        dataApprovalLevelService.addDataApprovalLevel( level3 );
-        dataApprovalLevelService.addDataApprovalLevel( level4 );
+        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        dataApprovalLevelService.addDataApprovalLevel( level2, 2 );
+        dataApprovalLevelService.addDataApprovalLevel( level3, 3 );
+        dataApprovalLevelService.addDataApprovalLevel( level4, 4 );
 
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
         units.add( organisationUnitA );
