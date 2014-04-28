@@ -40,12 +40,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.mock.MockCurrentUserService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.CurrentUserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -118,9 +118,6 @@ public class DataApprovalLevelServiceTest
     @Override
     public void setUpTest() throws Exception
     {
-        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
-        userService = (UserService) getBean( UserService.ID );
-
         // ---------------------------------------------------------------------
         // Add supporting data
         // ---------------------------------------------------------------------
@@ -445,8 +442,9 @@ public class DataApprovalLevelServiceTest
         Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
         dataViewOrgUnits.add( organisationUnitB );
 
-        createUserAndInjectSecurityContext( assignedOrgUnits, dataViewOrgUnits, false );
-
+        CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits );
+        setDependency( dataApprovalLevelService, "currentUserService", currentUserService, CurrentUserService.class );
+        
         Map<OrganisationUnit, Integer> readApprovalLevels = dataApprovalLevelService.getUserReadApprovalLevels();
         assertEquals( 2, readApprovalLevels.size() );
 
@@ -480,8 +478,9 @@ public class DataApprovalLevelServiceTest
         Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
         dataViewOrgUnits.add( organisationUnitB );
 
-        createUserAndInjectSecurityContext( assignedOrgUnits, dataViewOrgUnits, false, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
-
+        CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        setDependency( dataApprovalLevelService, "currentUserService", currentUserService, CurrentUserService.class );
+        
         Map<OrganisationUnit, Integer> readApprovalLevels = dataApprovalLevelService.getUserReadApprovalLevels();
         assertEquals( 2, readApprovalLevels.size() );
 
@@ -514,8 +513,9 @@ public class DataApprovalLevelServiceTest
         Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
         dataViewOrgUnits.add( organisationUnitB );
 
-        createUserAndInjectSecurityContext( assignedOrgUnits, dataViewOrgUnits, false );
-
+        CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits );
+        setDependency( dataApprovalLevelService, "currentUserService", currentUserService, CurrentUserService.class );
+        
         Map<OrganisationUnit, Integer> readApprovalLevels = dataApprovalLevelService.getUserReadApprovalLevels();
         assertEquals( 2, readApprovalLevels.size() );
 
@@ -553,8 +553,9 @@ public class DataApprovalLevelServiceTest
         Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>();
         dataViewOrgUnits.add( organisationUnitB );
 
-        createUserAndInjectSecurityContext( assignedOrgUnits, dataViewOrgUnits, false );
-
+        CurrentUserService currentUserService = new MockCurrentUserService( assignedOrgUnits, dataViewOrgUnits );
+        setDependency( dataApprovalLevelService, "currentUserService", currentUserService, CurrentUserService.class );
+        
         Map<OrganisationUnit, Integer> readApprovalLevels = dataApprovalLevelService.getUserReadApprovalLevels();
         assertEquals( 3, readApprovalLevels.size() );
 

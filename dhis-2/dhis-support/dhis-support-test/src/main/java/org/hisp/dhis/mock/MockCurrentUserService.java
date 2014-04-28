@@ -28,8 +28,14 @@ package org.hisp.dhis.mock;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Arrays;
+import java.util.Set;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
 
 /**
  * @author Lars Helge Overland
@@ -42,6 +48,24 @@ public class MockCurrentUserService
     public MockCurrentUserService( User currentUser )
     {
         this.currentUser = currentUser;
+    }
+    
+    public MockCurrentUserService( Set<OrganisationUnit> organisationUnits, Set<OrganisationUnit> dataViewOrganisationUnits, String... auths )
+    {
+        UserAuthorityGroup userRole = new UserAuthorityGroup();
+        userRole.getAuthorities().addAll( Arrays.asList( auths ) );
+
+        UserCredentials credentials = new UserCredentials();
+        credentials.setUsername( "currentUser" );
+        credentials.getUserAuthorityGroups().add( userRole );
+        
+        User user = new User();
+        user.setOrganisationUnits( organisationUnits );
+        user.setDataViewOrganisationUnits( dataViewOrganisationUnits );
+        user.setUserCredentials( credentials );
+        credentials.setUser( user );
+        
+        this.currentUser = user;
     }
     
     @Override
