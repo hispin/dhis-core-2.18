@@ -340,6 +340,8 @@ public class AddOrganisationUnitAction
         }
 
         organisationUnitService.updateOrganisationUnit( organisationUnit );
+        
+        organisationUnitService.updateOrganisationUnitVersion();
 
         return SUCCESS;
     }

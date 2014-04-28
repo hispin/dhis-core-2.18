@@ -94,6 +94,8 @@ public class RemoveOrganisationUnitAction
         try
         {
             organisationUnitService.deleteOrganisationUnit( unit );
+            
+            organisationUnitService.updateOrganisationUnitVersion();
         }
         catch ( DeleteNotAllowedException ex )
         {
@@ -103,7 +105,7 @@ public class RemoveOrganisationUnitAction
                 
                 return ERROR;
             }
-        }        
+        }
         
         return SUCCESS;
     }
