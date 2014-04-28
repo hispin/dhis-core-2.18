@@ -31,6 +31,7 @@ package org.hisp.dhis.common;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -43,4 +44,6 @@ public interface AnalyticalObjectStore<T extends BaseAnalyticalObject>
     int countIndicatorAnalyticalObject( Indicator indicator );
 
     int countDataElementAnalyticalObject( DataElement dataElement );
+    
+    int countOrganisationUnitAnalyticalObject( OrganisationUnit organisationUnit );
 }

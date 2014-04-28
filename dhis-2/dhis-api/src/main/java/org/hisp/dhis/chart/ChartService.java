@@ -119,4 +119,6 @@ public interface ChartService
     int countIndicatorCharts( Indicator indicator );
 
     int countDataElementCharts( DataElement dataElement );
+    
+    int countOrganisationUnitCharts( OrganisationUnit organisationUnit );
 }

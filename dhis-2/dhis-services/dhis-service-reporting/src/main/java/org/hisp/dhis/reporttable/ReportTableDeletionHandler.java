@@ -29,18 +29,13 @@ package org.hisp.dhis.reporttable;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class ReportTableDeletionHandler
     extends DeletionHandler
@@ -67,101 +62,26 @@ public class ReportTableDeletionHandler
     }
     
     @Override
-    public void deleteUser( User user )
+    public String allowDeleteDataSet( DataSet dataSet )
     {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getUser() != null && reportTable.getUser().equals( reportTable ) )
-            {
-                reportTable.setUser( user );
-                reportTableService.updateReportTable( reportTable );
-            }
-        }
-    }
-
-    @Override
-    public void deleteDataElement( DataElement dataElement )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getDataElements().remove( dataElement ) )
-            {
-                reportTableService.updateReportTable( reportTable );
-            }
-        }
-    }
-
-    @Override
-    public void deleteIndicator( Indicator indicator )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getIndicators().remove( indicator ) )
-            {
-                reportTableService.updateReportTable( reportTable );
-            }
-        }
-    }
-
-    @Override
-    public void deleteDataSet( DataSet dataSet )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getDataSets().remove( dataSet ) )
-            {
-                reportTableService.updateReportTable( reportTable );
-            }
-        }
-    }
-
-    @Override
-    public String allowDeletePeriod( Period period )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getPeriods().contains( period ) )
-            {
-                return reportTable.getName();
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public void deleteOrganisationUnit( OrganisationUnit unit )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getOrganisationUnits().remove( unit ) )
-            {
-                reportTableService.updateReportTable( reportTable );
-            }
-        }
-    }
-
-    @Override
-    public void deleteDataElementGroup( DataElementGroup group )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getDataElementGroups().remove( group ) )
-            {
-                reportTableService.updateReportTable( reportTable );
-            }
-        }
+        return reportTableService.countDataSetReportTables( dataSet ) == 0 ? null : ERROR;
     }
     
     @Override
-    public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
+    public String allowDeleteIndicator( Indicator indicator )
     {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( reportTable.getOrganisationUnitGroups().remove( group ) )
-            {
-                reportTableService.updateReportTable( reportTable );
-            }
-        }
+        return reportTableService.countIndicatorReportTables( indicator ) == 0 ? null : ERROR;
+    }
+    
+    @Override
+    public String allowDeleteDataElement( DataElement dataElement )
+    {
+        return reportTableService.countDataElementReportTables( dataElement ) == 0 ? null : ERROR;
+    }
+    
+    @Override
+    public String allowDeleteOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        return reportTableService.countOrganisationUnitReportTables( organisationUnit ) == 0 ? null : ERROR;
     }
 }
