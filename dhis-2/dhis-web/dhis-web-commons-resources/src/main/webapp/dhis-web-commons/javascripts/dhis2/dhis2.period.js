@@ -100,6 +100,36 @@ dhis2.period.PeriodGenerator = function( calendar ) {
   this.financialApril = function( offset ) {
     return this.get('FinancialApril').generatePeriods(offset);
   };
+
+  this.reverse = function( periods ) {
+    return periods.slice(0).reverse();
+  };
+
+  this.filterFuturePeriods = function( periods ) {
+    var array = [];
+    var today = calendar.today();
+
+    $.each(periods, function( idx ) {
+      if( this['_endDate'].compareTo(today) <= 0 ) {
+        array.push(this);
+      }
+    });
+
+    return array;
+  };
+
+  this.filterFuturePeriodsExceptCurrent = function( periods ) {
+    var array = [];
+    var today = calendar.today();
+
+    $.each(periods, function( idx ) {
+      if( this['_startDate'].compareTo(today) <= 0 ) {
+        array.push(this);
+      }
+    });
+
+    return array;
+  }
 };
 
 dhis2.period.makeDailyPeriodGenerator = function( cal ) {
@@ -161,6 +191,9 @@ dhis2.period.makeWeeklyPeriodGenerator = function( cal ) {
       period['id'] = 'Weekly_' + period['startDate'];
       period['iso'] = year + 'W' + week;
 
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
       periods.push(period);
 
       startDate.add(1, 'w');
@@ -198,6 +231,9 @@ dhis2.period.makeMonthlyPeriodGenerator = function( cal ) {
       period['id'] = 'Monthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm");
 
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
       periods.push(period);
     }
 
@@ -228,6 +264,9 @@ dhis2.period.makeBiMonthlyPeriodGenerator = function( cal ) {
       period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
       period['id'] = 'BiMonthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm") + 'B';
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
 
       periods.push(period);
     }
@@ -260,6 +299,9 @@ dhis2.period.makeQuarterlyPeriodGenerator = function( cal ) {
       period['id'] = 'Quarterly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy") + 'Q' + idx;
 
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
       periods.push(period);
     }
 
@@ -291,6 +333,9 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S1';
 
+    period['_startDate'] = startDate;
+    period['_endDate'] = endDate;
+
     periods.push(period);
 
     startDate = cal.newDate(year, 7, 1);
@@ -303,6 +348,9 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
     period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S2';
+
+    period['_startDate'] = startDate;
+    period['_endDate'] = endDate;
 
     periods.push(period);
 
@@ -333,6 +381,9 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal ) {
     period['id'] = 'SixMonthlyApril_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'AprilS1';
 
+    period['_startDate'] = startDate;
+    period['_endDate'] = endDate;
+
     periods.push(period);
 
     startDate = cal.newDate(year, 10, 1);
@@ -345,6 +396,9 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal ) {
     period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate('MM yyyy');
     period['id'] = 'SixMonthlyApril_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'AprilS2';
+
+    period['_startDate'] = startDate;
+    period['_endDate'] = endDate;
 
     periods.push(period);
 
@@ -376,6 +430,9 @@ dhis2.period.makeYearlyPeriodGenerator = function( cal ) {
       period['name'] = startDate.formatDate("yyyy");
       period['id'] = 'Yearly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy");
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
 
       periods.push(period);
     }
