@@ -246,12 +246,6 @@ public class DataApprovalLevelServiceTest
         assertNull( dataApprovalLevelService.getDataApprovalLevel( id2 ) );
         assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id3 ) );
         assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id4 ) );
-
-        dataApprovalLevelService.deleteDataApprovalLevel( level4D );
-        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id1 ) );
-        assertNull( dataApprovalLevelService.getDataApprovalLevel( id2 ) );
-        assertNotNull( dataApprovalLevelService.getDataApprovalLevel( id3 ) );
-        assertNull( dataApprovalLevelService.getDataApprovalLevel( id4 ) );
     }
 
     @Test
