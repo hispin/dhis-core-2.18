@@ -374,14 +374,6 @@ public class DataApprovalLevelServiceTest
         assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id2 ).getLevel() );
         assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );
         assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
-        
-        dataApprovalLevelService.moveDataApprovalLevelDown( 3 );
-
-        assertEquals( 1, dataApprovalLevelService.getDataApprovalLevel( id1 ).getLevel() );
-        assertEquals( 2, dataApprovalLevelService.getDataApprovalLevel( id3 ).getLevel() );
-        assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );
-        assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id2 ).getLevel() );
-        assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
     }
 
     @Test
@@ -406,14 +398,6 @@ public class DataApprovalLevelServiceTest
         assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id3 ).getLevel() );
         assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
         assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );
-        
-        dataApprovalLevelService.moveDataApprovalLevelUp( 4 );
-        
-        assertEquals( 1, dataApprovalLevelService.getDataApprovalLevel( id1 ).getLevel() );
-        assertEquals( 2, dataApprovalLevelService.getDataApprovalLevel( id2 ).getLevel() );
-        assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
-        assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id3 ).getLevel() );
-        assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );        
     }
 
     @Test
