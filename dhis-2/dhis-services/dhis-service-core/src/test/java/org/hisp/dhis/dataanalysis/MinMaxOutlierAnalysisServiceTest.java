@@ -121,7 +121,9 @@ public class MinMaxOutlierAnalysisServiceTest
 
         periodService = (PeriodService) getBean( PeriodService.ID );
 
-        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
+        
+        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         dataElementA = createDataElement( 'A', categoryCombo );
         dataElementB = createDataElement( 'B', categoryCombo );
@@ -138,8 +140,6 @@ public class MinMaxOutlierAnalysisServiceTest
         dataElementsB.add( dataElementC );
         dataElementsB.add( dataElementD );
         dataElementsC.add( dataElementB );
-
-        categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
 
         periodA = createPeriod( new MonthlyPeriodType(), getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );
         periodB = createPeriod( new MonthlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) );
