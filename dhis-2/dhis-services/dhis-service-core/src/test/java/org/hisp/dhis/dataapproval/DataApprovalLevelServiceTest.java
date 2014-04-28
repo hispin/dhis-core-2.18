@@ -28,6 +28,17 @@ package org.hisp.dhis.dataapproval;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -35,17 +46,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.UserService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
-import static org.junit.Assert.*;
 
 /**
  * @author Jim Grace
@@ -195,7 +197,7 @@ public class DataApprovalLevelServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitC, false );
         organisationUnitService.addOrganisationUnit( organisationUnitD, false );
     }
-
+    
     // -------------------------------------------------------------------------
     // Basic DataApprovalLevel
     // -------------------------------------------------------------------------
@@ -354,64 +356,67 @@ public class DataApprovalLevelServiceTest
     }
 
     @Test
-    @Ignore //TODO
     public void testMoveDown() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
-        dataApprovalLevelService.addDataApprovalLevel( level1A, 2 );
-        dataApprovalLevelService.addDataApprovalLevel( level1B, 3 );
-        dataApprovalLevelService.addDataApprovalLevel( level1C, 4 );
-        dataApprovalLevelService.addDataApprovalLevel( level1D, 5 );
+        int id1 = dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        int id2 = dataApprovalLevelService.addDataApprovalLevel( level1A, 2 );
+        int id3 = dataApprovalLevelService.addDataApprovalLevel( level1B, 3 );
+        int id4 = dataApprovalLevelService.addDataApprovalLevel( level1C, 4 );
+        int id5 = dataApprovalLevelService.addDataApprovalLevel( level1D, 5 );
 
+        assertEquals( 1, dataApprovalLevelService.getDataApprovalLevel( id1 ).getLevel() );
+        assertEquals( 2, dataApprovalLevelService.getDataApprovalLevel( id2 ).getLevel() );
+        assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id3 ).getLevel() );
+        assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );
+        assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
+        
         dataApprovalLevelService.moveDataApprovalLevelDown( 2 );
 
-        List<DataApprovalLevel> levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 5, levels.size() );
-        assertEquals( "01", levels.get( 0 ).getName() );
-        assertEquals( "1B", levels.get( 1 ).getName() );
-        assertEquals( "1A", levels.get( 2 ).getName() );
-        assertEquals( "1C", levels.get( 3 ).getName() );
-        assertEquals( "1D", levels.get( 4 ).getName() );
+        assertEquals( 1, dataApprovalLevelService.getDataApprovalLevel( id1 ).getLevel() );
+        assertEquals( 2, dataApprovalLevelService.getDataApprovalLevel( id3 ).getLevel() );
+        assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id2 ).getLevel() );
+        assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );
+        assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
         
         dataApprovalLevelService.moveDataApprovalLevelDown( 3 );
-        
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 5, levels.size() );
-        assertEquals( "01", levels.get( 0 ).getName() );
-        assertEquals( "1B", levels.get( 1 ).getName() );
-        assertEquals( "1C", levels.get( 2 ).getName() );
-        assertEquals( "1A", levels.get( 3 ).getName() );
-        assertEquals( "1D", levels.get( 4 ).getName() );
+
+        assertEquals( 1, dataApprovalLevelService.getDataApprovalLevel( id1 ).getLevel() );
+        assertEquals( 2, dataApprovalLevelService.getDataApprovalLevel( id3 ).getLevel() );
+        assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );
+        assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id2 ).getLevel() );
+        assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
     }
 
     @Test
-    @Ignore //TODO
     public void testMoveUp() throws Exception
     {
-        dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
-        dataApprovalLevelService.addDataApprovalLevel( level1A, 2 );
-        dataApprovalLevelService.addDataApprovalLevel( level1B, 3 );
-        dataApprovalLevelService.addDataApprovalLevel( level1C, 4 );
-        dataApprovalLevelService.addDataApprovalLevel( level1D, 5 );
+        int id1 = dataApprovalLevelService.addDataApprovalLevel( level1, 1 );
+        int id2 = dataApprovalLevelService.addDataApprovalLevel( level1A, 2 );
+        int id3 = dataApprovalLevelService.addDataApprovalLevel( level1B, 3 );
+        int id4 = dataApprovalLevelService.addDataApprovalLevel( level1C, 4 );
+        int id5 = dataApprovalLevelService.addDataApprovalLevel( level1D, 5 );
 
+        assertEquals( 1, dataApprovalLevelService.getDataApprovalLevel( id1 ).getLevel() );
+        assertEquals( 2, dataApprovalLevelService.getDataApprovalLevel( id2 ).getLevel() );
+        assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id3 ).getLevel() );
+        assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );
+        assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
+        
         dataApprovalLevelService.moveDataApprovalLevelUp( 5 );
 
-        List<DataApprovalLevel> levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 5, levels.size() );
-        assertEquals( "01", levels.get( 0 ).getName() );
-        assertEquals( "1A", levels.get( 1 ).getName() );
-        assertEquals( "1B", levels.get( 2 ).getName() );
-        assertEquals( "1D", levels.get( 3 ).getName() );
-        assertEquals( "1C", levels.get( 4 ).getName() );
+        assertEquals( 1, dataApprovalLevelService.getDataApprovalLevel( id1 ).getLevel() );
+        assertEquals( 2, dataApprovalLevelService.getDataApprovalLevel( id2 ).getLevel() );
+        assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id3 ).getLevel() );
+        assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
+        assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );
         
         dataApprovalLevelService.moveDataApprovalLevelUp( 4 );
-        levels = dataApprovalLevelService.getAllDataApprovalLevels();
-        assertEquals( 5, levels.size() );
-        assertEquals( "01", levels.get( 0 ).getName() );
-        assertEquals( "1A", levels.get( 1 ).getName() );
-        assertEquals( "1D", levels.get( 2 ).getName() );
-        assertEquals( "1B", levels.get( 3 ).getName() );
-        assertEquals( "1C", levels.get( 4 ).getName() );
+        
+        assertEquals( 1, dataApprovalLevelService.getDataApprovalLevel( id1 ).getLevel() );
+        assertEquals( 2, dataApprovalLevelService.getDataApprovalLevel( id2 ).getLevel() );
+        assertEquals( 3, dataApprovalLevelService.getDataApprovalLevel( id5 ).getLevel() );
+        assertEquals( 4, dataApprovalLevelService.getDataApprovalLevel( id3 ).getLevel() );
+        assertEquals( 5, dataApprovalLevelService.getDataApprovalLevel( id4 ).getLevel() );        
     }
 
     @Test
