@@ -35,24 +35,26 @@ dhis2.period.PeriodGenerator = function( calendar ) {
     calendar = dhis2.period.calendar;
   }
 
-  this.calendar = calendar;
-
   var periodTypes = {
-    "Daily": dhis2.period.makeDailyPeriodGenerator(this.calendar),
-    "Weekly": dhis2.period.makeWeeklyPeriodGenerator(this.calendar),
-    "Monthly": dhis2.period.makeMonthlyPeriodGenerator(this.calendar),
-    "BiMonthly": dhis2.period.makeBiMonthlyPeriodGenerator(this.calendar),
-    "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(this.calendar),
-    "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(this.calendar),
-    "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(this.calendar),
-    "Yearly": dhis2.period.makeYearlyPeriodGenerator(this.calendar),
-    "FinancialOct": dhis2.period.makeMonthlyPeriodGenerator(this.calendar),
-    "FinancialJuly": dhis2.period.makeMonthlyPeriodGenerator(this.calendar),
-    "FinancialApril": dhis2.period.makeMonthlyPeriodGenerator(this.calendar)
+    "Daily": dhis2.period.makeDailyPeriodGenerator(calendar),
+    "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar),
+    "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar),
+    "BiMonthly": dhis2.period.makeBiMonthlyPeriodGenerator(calendar),
+    "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(calendar),
+    "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar),
+    "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar),
+    "Yearly": dhis2.period.makeYearlyPeriodGenerator(calendar),
+    "FinancialOct": dhis2.period.makeMonthlyPeriodGenerator(calendar),
+    "FinancialJuly": dhis2.period.makeMonthlyPeriodGenerator(calendar),
+    "FinancialApril": dhis2.period.makeMonthlyPeriodGenerator(calendar)
   };
 
   this.getAll = function() {
     return periodTypes;
+  };
+
+  this.getCalendar = function() {
+    return calendar;
   };
 
   this.get = function( generator ) {
@@ -223,7 +225,7 @@ dhis2.period.makeBiMonthlyPeriodGenerator = function( cal ) {
       var period = {};
       period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
       period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-      period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
+      period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
       period['id'] = 'BiMonthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm") + 'B';
 
@@ -254,7 +256,7 @@ dhis2.period.makeQuarterlyPeriodGenerator = function( cal ) {
       var period = {};
       period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
       period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-      period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
+      period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
       period['id'] = 'Quarterly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyy") + 'Q' + idx;
 
@@ -285,7 +287,7 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
     var period = {};
     period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
     period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-    period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
+    period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S1';
 
@@ -298,7 +300,7 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal ) {
     period = {};
     period['startDate'] = startDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
     period['endDate'] = endDate.formatDate(dhis2.period.DEFAULT_DATE_FORMAT);
-    period['name'] = startDate.formatDate("MM") + '-' + endDate.formatDate('MM') + ' ' + year;
+    period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
     period['id'] = 'SixMonthly_' + period['startDate'];
     period['iso'] = startDate.formatDate("yyyy") + 'S2';
 
