@@ -134,7 +134,7 @@ public class DefaultDataApprovalLevelService
             for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
             {
                 int orgUnitLevel = orgUnit.hasLevel() ?
-                    orgUnit.getLevel() : organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getUid() );
+                    orgUnit.getLevel() : organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
 
                 userOrgUnitLevels.add( orgUnitLevel );
             }
@@ -443,7 +443,7 @@ public class DefaultDataApprovalLevelService
     {
         int orgUnitLevel = orgUnit.getLevel() != 0 ?
             orgUnit.getLevel() :
-            organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getUid() );
+            organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
 
         int required = APPROVAL_LEVEL_UNAPPROVED;
 
