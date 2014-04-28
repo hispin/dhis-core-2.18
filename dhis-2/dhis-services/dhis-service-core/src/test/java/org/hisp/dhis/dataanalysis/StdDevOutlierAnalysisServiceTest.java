@@ -111,7 +111,7 @@ public class StdDevOutlierAnalysisServiceTest
 
         periodService = (PeriodService) getBean( PeriodService.ID );
 
-        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
 
         dataElementA = createDataElement( 'A', categoryCombo );
         dataElementB = createDataElement( 'B', categoryCombo );
