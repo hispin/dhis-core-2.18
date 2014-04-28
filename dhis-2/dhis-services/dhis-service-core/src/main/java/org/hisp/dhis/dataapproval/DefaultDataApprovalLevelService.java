@@ -385,8 +385,6 @@ public class DefaultDataApprovalLevelService
     {
         dataApprovalLevel.setLevel( index + 1 );
 
-        dataApprovalLevel.setCreated( new Date() );
-
         dataApprovalLevelStore.update( dataApprovalLevel );
     }
 
@@ -444,17 +442,17 @@ public class DefaultDataApprovalLevelService
     private int requiredApprovalLevel( OrganisationUnit orgUnit )
     {
         int orgUnitLevel = orgUnit.getLevel() != 0 ?
-                orgUnit.getLevel() :
-                organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getUid() );
+            orgUnit.getLevel() :
+            organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getUid() );
 
         int required = APPROVAL_LEVEL_UNAPPROVED;
 
         for ( DataApprovalLevel level : getAllDataApprovalLevels() )
         {
             if ( level.getOrgUnitLevel() >= orgUnitLevel
-                    && securityService.canRead( level )
-                    && ( level.getCategoryOptionGroupSet() == null || canReadSomeCategory( level.getCategoryOptionGroupSet() ) )
-                    && level.getLevel() < getAllDataApprovalLevels().size() )
+                && securityService.canRead( level )
+                && ( level.getCategoryOptionGroupSet() == null || canReadSomeCategory( level.getCategoryOptionGroupSet() ) )
+                && level.getLevel() < getAllDataApprovalLevels().size() )
             {
                 required = level.getLevel() + 1;
                 break;
@@ -480,7 +478,7 @@ public class DefaultDataApprovalLevelService
                 return true;
             }
         }
+        
         return false;
     }
-
 }
