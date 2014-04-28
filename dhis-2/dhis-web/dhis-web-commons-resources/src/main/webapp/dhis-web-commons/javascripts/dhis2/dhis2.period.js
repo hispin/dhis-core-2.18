@@ -98,6 +98,24 @@ dhis2.period.PeriodGenerator.prototype.get = function( generator ) {
 };
 
 /**
+ * @param generator Generator to use (String)
+ * @param offset Offset for generatePeriods
+ * @returns Array of periods
+ */
+dhis2.period.PeriodGenerator.prototype.generatePeriods = function( generator, offset ) {
+  return this.periodTypes[generator].generatePeriods(offset);
+};
+
+/**
+ * @param generator Generator to use (String)
+ * @param offset Offset for generatePeriods
+ * @returns Array of periods
+ */
+dhis2.period.PeriodGenerator.prototype.generateReversedPeriods = function( generator, offset ) {
+  return this.reverse(this.periodTypes[generator].generatePeriods(offset));
+};
+
+/**
  * Convenience method to get Daily generator
  */
 dhis2.period.PeriodGenerator.prototype.daily = function( offset ) {
