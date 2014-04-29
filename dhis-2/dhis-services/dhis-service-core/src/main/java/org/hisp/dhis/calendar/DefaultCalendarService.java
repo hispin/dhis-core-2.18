@@ -103,4 +103,20 @@ public class DefaultCalendarService implements CalendarService
 
         return calendar;
     }
+
+    @Override
+    public DateFormat getSystemDateFormat()
+    {
+        String dateFormatKey = (String) settingManager.getSystemSetting( SystemSettingManager.KEY_DATE_FORMAT, SystemSettingManager.DEFAULT_DATE_FORMAT );
+
+        for ( DateFormat dateFormat : dateFormats )
+        {
+            if ( dateFormat.name().equals( dateFormatKey ) )
+            {
+                return dateFormat;
+            }
+        }
+
+        return dateFormats.get( 0 );
+    }
 }

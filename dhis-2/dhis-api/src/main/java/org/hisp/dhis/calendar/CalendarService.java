@@ -54,4 +54,11 @@ public interface CalendarService
      * @return System calendar
      */
     Calendar getSystemCalendar();
+
+    /**
+     * Gets the currently selected date format.
+     * @return Date format
+     * @see DateFormat
+     */
+    DateFormat getSystemDateFormat();
 }
