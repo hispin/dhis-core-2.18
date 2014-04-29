@@ -89,7 +89,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
-    
+
     private static final String META_DATA_KEY_DE = "de";
 
     //--------------------------------------------------------------------------
@@ -113,7 +113,7 @@ public class EventController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
+
     @Autowired
     private DataElementService dataElementService;
 
@@ -138,7 +138,7 @@ public class EventController
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
     {
         WebOptions options = new WebOptions( parameters );
-        
+
         Program pr = manager.get( Program.class, program );
         ProgramStage prs = manager.get( ProgramStage.class, programStage );
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
@@ -173,7 +173,7 @@ public class EventController
         }
 
         Events events = eventService.getEvents( pr, prs, programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
-        
+
         if ( options.hasLinks() )
         {
             for ( Event event : events.getEvents() )
@@ -181,19 +181,19 @@ public class EventController
                 event.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + event.getEvent() );
             }
         }
-        
+
         if ( options.hasPaging() )
-        {      	
+        {
             Pager pager = new Pager( options.getPage(), events.getEvents().size(), options.getPageSize() );
             events.setPager( pager );
-            events.setEvents( PagerUtils.pageCollection( events.getEvents(), pager ) );        	
-        }        
-        
+            events.setEvents( PagerUtils.pageCollection( events.getEvents(), pager ) );
+        }
+
         if ( !skipMeta && pr != null )
         {
             events.setMetaData( getMetaData( pr ) );
         }
-        
+
         model.addAttribute( "model", events );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
@@ -228,11 +228,11 @@ public class EventController
     private Map<Object, Object> getMetaData( Program program )
     {
         Map<Object, Object> metaData = new HashMap<Object, Object>();
-        
+
         if ( program != null )
         {
             Map<String, String> dataElements = new HashMap<String, String>();
-            
+
             for ( DataElement de : program.getAllDataElements() )
             {
                 dataElements.put( de.getUid(), de.getDisplayName() );
@@ -240,10 +240,10 @@ public class EventController
 
             metaData.put( META_DATA_KEY_DE, dataElements );
         }
-        
+
         return metaData;
     }
-    
+
     // -------------------------------------------------------------------------
     // CREATE
     // -------------------------------------------------------------------------
@@ -344,7 +344,7 @@ public class EventController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_DATAVALUE_ADD')" )
-    public void putXmlEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws IOException
+    public void putXmlEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, ImportOptions importOptions ) throws IOException
     {
         Event event = eventService.getEvent( uid );
 
@@ -357,13 +357,13 @@ public class EventController
         Event updatedEvent = JacksonUtils.fromXml( request.getInputStream(), Event.class );
         updatedEvent.setEvent( uid );
 
-        eventService.updateEvent( updatedEvent, false );
+        eventService.updateEvent( updatedEvent, false, importOptions );
         ContextUtils.okResponse( response, "Event updated: " + uid );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_DATAVALUE_ADD')" )
-    public void putJsonEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws IOException
+    public void putJsonEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, ImportOptions importOptions ) throws IOException
     {
         Event event = eventService.getEvent( uid );
 
@@ -376,10 +376,10 @@ public class EventController
         Event updatedEvent = JacksonUtils.fromJson( request.getInputStream(), Event.class );
         updatedEvent.setEvent( uid );
 
-        eventService.updateEvent( updatedEvent, false );
+        eventService.updateEvent( updatedEvent, false, importOptions );
         ContextUtils.okResponse( response, "Event updated: " + uid );
     }
-    
+
     @RequestMapping( value = "/{uid}/{dataElementUid}", method = RequestMethod.PUT, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_DATAVALUE_ADD')" )
     public void putJsonEventSingleValue( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, @PathVariable( "dataElementUid" ) String dataElementUid ) throws IOException
@@ -391,9 +391,9 @@ public class EventController
             ContextUtils.notFoundResponse( response, "Event not found for uid: " + uid );
             return;
         }
-        
+
         DataElement dataElement = dataElementService.getDataElement( dataElementUid );
-        
+
         if( dataElement == null )
         {
             ContextUtils.notFoundResponse( response, "DataElement not found for uid: " + dataElementUid );
@@ -404,8 +404,8 @@ public class EventController
         updatedEvent.setEvent( uid );
 
         eventService.updateEvent( updatedEvent, true );
-        ContextUtils.okResponse( response, "Event updated: " + uid );        
-        
+        ContextUtils.okResponse( response, "Event updated: " + uid );
+
     }
 
     // -------------------------------------------------------------------------

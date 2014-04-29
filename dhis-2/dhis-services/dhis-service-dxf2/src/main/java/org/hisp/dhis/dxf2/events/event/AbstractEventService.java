@@ -275,29 +275,7 @@ public abstract class AbstractEventService
             }
         }
 
-        OrganisationUnit organisationUnit = null;
-
-        if ( IdentifiableObject.IdentifiableProperty.UUID.equals( importOptions.getOrgUnitIdScheme() ) )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( event.getOrgUnit() );
-        }
-        else if ( IdentifiableObject.IdentifiableProperty.CODE.equals( importOptions.getOrgUnitIdScheme() ) )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnitByCode( event.getOrgUnit() );
-        }
-        else if ( IdentifiableObject.IdentifiableProperty.NAME.equals( importOptions.getOrgUnitIdScheme() ) )
-        {
-            List<OrganisationUnit> organisationUnitByName = organisationUnitService.getOrganisationUnitByName( event.getOrgUnit() );
-
-            if ( organisationUnitByName.size() == 1 )
-            {
-                organisationUnit = organisationUnitByName.get( 0 );
-            }
-        }
-        else
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
-        }
+        OrganisationUnit organisationUnit = getOrganisationUnit( importOptions.getOrgUnitIdScheme(), event.getOrgUnit() );
 
         if ( organisationUnit == null )
         {
@@ -321,12 +299,12 @@ public abstract class AbstractEventService
     {
         return getEvents( program, null, null, null, Arrays.asList( organisationUnit ), null, null, null, null );
     }
-    
+
     @Override
-    public Events getEvents( Program program, ProgramStage programStage, ProgramStatus programStatus, Boolean followUp, List<OrganisationUnit> organisationUnits, 
+    public Events getEvents( Program program, ProgramStage programStage, ProgramStatus programStatus, Boolean followUp, List<OrganisationUnit> organisationUnits,
         TrackedEntityInstance trackedEntityInstance, Date startDate, Date endDate, EventStatus status )
     {
-        List<Event> eventList = eventStore.getAll( program, programStage, programStatus, followUp, organisationUnits, 
+        List<Event> eventList = eventStore.getAll( program, programStage, programStatus, followUp, organisationUnits,
             trackedEntityInstance, startDate, endDate, status );
         Events events = new Events();
         events.setEvents( eventList );
@@ -355,21 +333,27 @@ public abstract class AbstractEventService
     @Override
     public void updateEvent( Event event, boolean singleValue )
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
-            .getEvent() );
+        updateEvent( event, singleValue, null );
+    }
+
+    @Override
+    public void updateEvent( Event event, boolean singleValue, ImportOptions importOptions )
+    {
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
 
         if ( programStageInstance == null )
         {
             return;
         }
 
-        OrganisationUnit organisationUnit;
-
-        if ( event.getOrgUnit() != null )
+        if ( importOptions == null )
         {
-            organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
+            importOptions = new ImportOptions();
         }
-        else
+
+        OrganisationUnit organisationUnit = getOrganisationUnit( importOptions.getOrgUnitIdScheme(), event.getOrgUnit() );
+
+        if ( organisationUnit == null )
         {
             organisationUnit = programStageInstance.getOrganisationUnit();
         }
@@ -792,5 +776,34 @@ public abstract class AbstractEventService
 
             programInstanceService.updateProgramInstance( programInstance );
         }
+    }
+
+    private OrganisationUnit getOrganisationUnit( IdentifiableObject.IdentifiableProperty scheme, String value )
+    {
+        OrganisationUnit organisationUnit = null;
+
+        if ( IdentifiableObject.IdentifiableProperty.UUID.equals( scheme ) )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( value );
+        }
+        else if ( IdentifiableObject.IdentifiableProperty.CODE.equals( scheme ) )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnitByCode( value );
+        }
+        else if ( IdentifiableObject.IdentifiableProperty.NAME.equals( scheme ) )
+        {
+            List<OrganisationUnit> organisationUnitByName = organisationUnitService.getOrganisationUnitByName( value );
+
+            if ( organisationUnitByName.size() == 1 )
+            {
+                organisationUnit = organisationUnitByName.get( 0 );
+            }
+        }
+        else
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( value );
+        }
+
+        return organisationUnit;
     }
 }
