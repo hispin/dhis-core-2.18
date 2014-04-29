@@ -499,7 +499,7 @@
     </action>
 
     <action name="delDataEntryForm"
-      class="org.hisp.dhis.trackedentity.action.dataentryform.DelDataEntryFormAction">
+      class="org.hisp.dhis.trackedentity.action.dataentryform.RemoveDataEntryFormAction">
       <result name="success" type="redirect">
         programStage.action?id=${programId}
       </result>
