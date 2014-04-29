@@ -431,7 +431,9 @@ Ext.onReady( function() {
 				data: [
 					{id: 'default', text: NS.i18n.by_data_element},
 					{id: 'count', text: NS.i18n.count},
-					{id: 'sum', text: NS.i18n.sum}
+					{id: 'sum', text: NS.i18n.sum},
+					{id: 'stddev', text: NS.i18n.stddev},
+					{id: 'variance', text: NS.i18n.variance}
 				]
 			})
 		});
