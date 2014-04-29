@@ -54,10 +54,6 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
     format = dhis2.period.DEFAULT_DATE_FORMAT;
   }
 
-  // $.calendars date formatter uses a different format than joda-time/JdkCalendar, for the most common cases we can get away
-  // with just doing lower case on the string, but special handling might be needed in the future.
-  format = format.toLowerCase();
-
   this.calendar = calendar;
 
   this.periodTypes = {
