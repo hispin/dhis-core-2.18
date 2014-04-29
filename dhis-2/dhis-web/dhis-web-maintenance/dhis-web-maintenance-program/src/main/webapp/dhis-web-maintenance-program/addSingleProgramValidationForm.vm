@@ -37,13 +37,13 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="$i18n.getString( 'edit_left_side' )" onclick="editLeftExpression();">
+			<input type="button" value="$i18n.getString( 'edit_left_side' )" onclick="editLeftExpression();" style="width:10em">
 			<input type="hidden" id="leftSideDescription" name="leftSideDescription" class="{validate:{required:true}}">
 			<input type="hidden" id="leftSideExpression" name="leftSideExpression">
 			<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression">
 			<input type="hidden" id="leftSideNullIfBlank" name="leftSideNullIfBlank">
 			
-			<input type="button" value="$i18n.getString( 'edit_right_side' )" onclick="editRightExpression();"></td>
+			<input type="button" value="$i18n.getString( 'edit_right_side' )" onclick="editRightExpression();" style="width:10em"></td>
 			<input type="hidden" id="rightSideDescription" name="rightSideDescription" class="{validate:{required:true}}">
 			<input type="hidden" id="rightSideExpression" name="rightSideExpression">
 			<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression">

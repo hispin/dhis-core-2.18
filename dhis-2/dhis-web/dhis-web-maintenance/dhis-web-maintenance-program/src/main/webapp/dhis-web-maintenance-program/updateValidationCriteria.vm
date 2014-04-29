@@ -12,11 +12,11 @@
 		</tr>
 		<tr>
 			<td><label for="name">$i18n.getString('name') <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td colspan="2"><input type='text' id='name' name='name' style='width: 40em' value="$validationCriteria.name" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+			<td colspan="2"><input type='text' id='name' name='name' value="$validationCriteria.name" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
 		</tr>
 		<tr>
 			<td><label for="description">$i18n.getString('description') <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td colspan="2"><input type='text' id='description' name='description' style='width: 40em' value="$validationCriteria.description" class="{validate:{required:true,rangelength:[2,160]}}" /></td>
+			<td colspan="2"><input type='text' id='description' name='description' value="$validationCriteria.description" class="{validate:{required:true,rangelength:[2,160]}}" /></td>
 		</tr>
 		<tr>
 			<td><label for="property">$i18n.getString('criteria')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -24,7 +24,7 @@
 				<table>
 					<tr>
 						<td>
-							<select id='property' name='property' style='width:16em' onChange="showDivValue();">
+							<select id='property' name='property' style='width:120px' onChange="showDivValue();">
 								<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 								#set($attribute = '')
 								#foreach($programAttribute in $program.attributes)
@@ -37,7 +37,7 @@
 							</select>
 						</td>
 						<td>
-							<select id='operator' name='operator' style='width: 7em'>
+							<select id='operator' name='operator' style='width: 39px'>
 								<option value='-1' #if( "$validationCriteria.operator"=='-1') selected #end>$i18n.getString('operator_less_then')</option>
 								<option value='0'  #if( "$validationCriteria.operator"=='0') selected #end>$i18n.getString('operator_equal_to')</option>
 								<option value='1'  #if( "$validationCriteria.operator"=='1') selected #end>$i18n.getString('operator_greater_then')</option>
@@ -45,13 +45,13 @@
 						</td>
 						<td id='valueTD'>
 							#if($attribute.optionSet.options)
-								<select id='value' name='value' class="{validate:{required:true}}" style="width:200px;">
+								<select id='value' name='value' class="{validate:{required:true}}" style="width:130px">
 									#foreach($option in $attribute.optionSet.options)
 									<option value="$option" #if($validationCriteria.value==$option.name) selected #end>$option</option>
 									#end
 								</select>
 							#else
-								<input id='value' name='value' class="{validate:{required:true}}" style="width:200px;" value='$validationCriteria.value' />
+								<input type='text' id='value' name='value' class="{validate:{required:true}}" style="width:200px;" value='$validationCriteria.value' />
 							#end
 						</td>
 					</tr>
