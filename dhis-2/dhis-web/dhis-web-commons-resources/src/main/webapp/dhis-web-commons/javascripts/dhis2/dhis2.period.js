@@ -83,8 +83,12 @@ dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl,
   var $toEl = $(toEl);
 
   mergedOptions.onSelect = function( dates ) {
-    $fromEl.calendarsPicker("option", "maxDate", dates[0] || null);
-    $toEl.calendarsPicker("option", "minDate", dates[0] || null);
+    if( this.id === $fromEl.attr('id') ) {
+      $toEl.calendarsPicker("option", "minDate", dates[0] || null);
+    }
+    else if( this.id === $toEl.attr('id') ) {
+      $fromEl.calendarsPicker("option", "maxDate", dates[0] || null);
+    }
   };
 
   $fromEl.calendarsPicker(mergedOptions);
@@ -94,6 +98,9 @@ dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl,
   });
 
   $toEl.calendarsPicker(toOptions);
+
+  $fromEl.calendarsPicker("setDate", $fromEl.calendarsPicker("getDate"));
+  $toEl.calendarsPicker("setDate", $toEl.calendarsPicker("getDate"));
 };
 
 /**
