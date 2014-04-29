@@ -29,8 +29,16 @@ package org.hisp.dhis.system.util;
  */
 
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.io.StringReader;
 
+import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.referencing.GeodeticCalculator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * @author Lars Helge Overland
@@ -93,5 +101,76 @@ public class GeoUtils
         calc.setDestinationGeographicPoint( to);
         
         return calc.getOrthodromicDistance();
-    }    
+    }
+
+    /**
+     * Get GeometryJSON point.
+     */
+    public static Point getGeoJsonPoint( double longitude, double latitude )
+        throws IOException
+    {
+        Point point = null;
+
+        GeometryJSON gtjson = new GeometryJSON();
+
+        point = gtjson.readPoint( new StringReader( "{\"type\":\"Point\", \"coordinates\":[" + longitude + ","
+            + latitude + "]}" ) );
+
+        return point;
+    }
+
+    /**
+     * Check if GeometryJSON point created with this coordinate is valid.
+     */
+    public static boolean checkGeoJsonPointValid( double longitude, double latitude )
+    {
+        try
+        {
+            return getGeoJsonPoint( longitude, latitude ).isValid();
+        }
+        catch ( Exception ex )
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Check if the point coordinate falls within the polygon/MultiPolygon Shape
+     */
+    public static boolean checkPointWithMultiPolygon( double longitude, double latitude, 
+        String multiPolygonJson, String featureType )
+    {
+        try
+        {
+            boolean contains = false;
+
+            GeometryJSON gtjson = new GeometryJSON();
+
+            Point point = getGeoJsonPoint( longitude, latitude );
+
+            if ( point != null && point.isValid() )
+            {
+                if ( featureType.compareTo( OrganisationUnit.FEATURETYPE_POLYGON ) == 0 )
+                {
+                    Polygon polygon = gtjson.readPolygon( new StringReader( 
+                        "{\"type\":\"Polygon\", \"coordinates\":" + multiPolygonJson + "}" ) );
+
+                    contains = polygon.contains( point );
+                }
+                else if ( featureType.compareTo( OrganisationUnit.FEATURETYPE_MULTIPOLYGON ) == 0 )
+                {
+                    MultiPolygon multiPolygon = gtjson.readMultiPolygon( new StringReader(
+                        "{\"type\":\"MultiPolygon\", \"coordinates\":" + multiPolygonJson + "}" ) );
+
+                    contains = multiPolygon.contains( point );
+                }
+            }
+
+            return contains;
+        }
+        catch ( Exception ex )
+        {
+            return false;
+        }
+    }
 }

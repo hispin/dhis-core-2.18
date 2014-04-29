@@ -388,7 +388,21 @@ public interface OrganisationUnitService
      * 
      * @return collection of objects.
      */
-    Collection<OrganisationUnit> getWithinCoordinateArea( double longitude, double latitude, double distance );
+    Collection<OrganisationUnit> getOrganisationUnitWithinDistance( double longitude, double latitude, double distance );
+
+    /**
+     * Retrieves the orgunit(s) by coordinate.
+     * 
+     * @param longitude The longitude of the location.
+     * @param latitude The latitude of the location.
+     * @param topOrgUnitUid Optional. Uid of the search top level org unit (ex.
+     *        Country level orgunit)
+     * @param targetLevel Optional. The level being searched.
+     * 
+     * @return collection of objects.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitByCoordinate( double longitude, double latitude, String topOrgUnitUid,
+        Integer targetLevel );
     
     boolean isInUserHierarchy( OrganisationUnit organisationUnit );
     
