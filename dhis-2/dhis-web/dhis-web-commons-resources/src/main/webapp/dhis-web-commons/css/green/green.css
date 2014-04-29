@@ -211,7 +211,7 @@ input[type=text],input[type=password],textarea
   width: 235px;
   position: fixed;
   top: 46px;
-  left: 0px;
+  left: 0;
   padding-top: 6px;
   border-right: 1px solid #ddd;
   box-shadow: #ddd 0 0 2px 0;
@@ -227,7 +227,7 @@ input[type=text],input[type=password],textarea
   color: #333;
   font-size: 9pt;
   margin: 16px 20px 1px 20px;
-  padding: 7px 0 7px 0;
+  padding: 8px 0 8px 0;
   font-weight: normal;
   font-family: LiberationSansBold, arial;
 }
@@ -242,17 +242,17 @@ input[type=text],input[type=password],textarea
 #leftBarContents ul a
 {
   display: block;
-  color: #303030;
+  color: #333;
   text-decoration: none;
   padding: 8px 12px;
   cursor: pointer;
-  border-bottom: 1px solid #ddd;
 }
 
 #leftBarContents a:hover
 {
   text-decoration: none;
   background-color: #eee;
+  border-radius: 4px;
 }
 
 /*----------------------------------------------------------------------------*/
