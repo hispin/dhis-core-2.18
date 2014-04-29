@@ -34,24 +34,68 @@ dhis2.util.namespace('dhis2.period');
 
 dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
 
+/**
+ * A date picker class that allows for creating both simple date pickers, and ranged date pickers.
+ *
+ * There is probably no reason to use this directly, since on startup, a global variable have been made available:
+ *  - dhis2.period.picker   DatePicker object created with system calendar and system date format
+ *
+ * @param calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @see <a href="http://keith-wood.name/datepick.html">http://keith-wood.name/datepick.html</a>
+ */
 dhis2.period.DatePicker = function( calendar, format ) {
   this.calendar = calendar;
   this.format = format;
-};
 
-dhis2.period.DatePicker.prototype.createInstance = function( el, options ) {
-  var $el = $(el);
-
-  var defaults = {
+  this.defaults = {
     calendar: this.calendar,
     dateFormat: this.format,
     showAnim: '',
     maxDate: this.calendar.today(),
     yearRange: 'c-100:c+100'
   };
+};
 
-  $.extend(defaults, options);
-  $el.calendarsPicker(defaults);
+/**
+ * Creates a date picker.
+ *
+ * @param el Element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param options Additional options, will be merged with the defaults
+ */
+dhis2.period.DatePicker.prototype.createInstance = function( el, options ) {
+  var mergedOptions = $.extend({}, this.defaults, options);
+  $(el).calendarsPicker(mergedOptions);
+};
+
+/**
+ * Creates a ranged date picker, keeping to fields in sync.
+ *
+ * @param fromEl From element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param toEl To element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param options Additional options, will be merged with the defaults
+ */
+dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl, options ) {
+  var mergedOptions = $.extend({}, this.defaults, options);
+
+  var $fromEl = $(fromEl);
+  var $toEl = $(toEl);
+
+  console.log($fromEl, $toEl);
+
+  mergedOptions.onSelect = function( dates ) {
+    $fromEl.calendarsPicker("option", "maxDate", dates[0] || null);
+    $toEl.calendarsPicker("option", "minDate", dates[0] || null);
+  };
+
+  $fromEl.calendarsPicker(mergedOptions);
+
+  var toOptions = $.extend({}, mergedOptions, {
+    maxDate: null
+  });
+
+  $toEl.calendarsPicker(toOptions);
 };
 
 /**
