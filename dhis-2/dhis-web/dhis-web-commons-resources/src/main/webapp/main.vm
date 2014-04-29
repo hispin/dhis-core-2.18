@@ -95,7 +95,7 @@
       #else
       dhis2.period.calendar = $.calendars.instance('$keyCalendar');
       #end
-      dhis2.period.generator = new dhis2.period.PeriodGenerator( dhis2.period.calendar );
+      dhis2.period.generator = new dhis2.period.PeriodGenerator( dhis2.period.calendar, '$keyDateFormat' );
     </script>
   </head>
 
