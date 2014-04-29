@@ -31,7 +31,7 @@
 		<tbody id='entityInstanceForm'>
 			#parse( "/dhis-web-caseentry/trackedEntityInstanceForm.vm" )
 		</tbody>
-		<tbody>
+		<tbody id='entryForm'>
 			#parse( "/dhis-web-caseentry/singleDataEntryForm.vm" )
 		</tbody>
 		<tr>
