@@ -122,6 +122,15 @@ public abstract class AbstractCalendar implements Calendar
     }
 
     @Override
+    public DateUnit toIso( String date )
+    {
+        DateTimeFormatter format = DateTimeFormat.forPattern( defaultDateFormat() );
+        DateTime dateTime = format.parseDateTime( date );
+
+        return toIso( DateUnit.fromDateTime( dateTime ) );
+    }
+
+    @Override
     public DateUnit fromIso( int year, int month, int day )
     {
         return fromIso( new DateUnit( year, month, day ) );
@@ -130,7 +139,7 @@ public abstract class AbstractCalendar implements Calendar
     @Override
     public DateUnit today()
     {
-        DateTime dateTime = new DateTime( ISOChronology.getInstance() );
+        DateTime dateTime = DateTime.now( ISOChronology.getInstance() );
         return fromIso( DateUnit.fromDateTime( dateTime ) );
     }
 

@@ -33,8 +33,6 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 
 import javax.validation.constraints.NotNull;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Class representing a specific calendar date.

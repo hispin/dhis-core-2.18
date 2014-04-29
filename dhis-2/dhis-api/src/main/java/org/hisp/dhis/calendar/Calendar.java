@@ -77,6 +77,14 @@ public interface Calendar
 
     /**
      * Convert local calendar to an ISO 8601 DateUnit.
+     * @param date  Date formatted using default date format
+     * @return DateUnit representing local date in ISO 8601
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
+     */
+    DateUnit toIso( String date);
+
+    /**
+     * Convert local calendar to an ISO 8601 DateUnit.
      * @param dateUnit DateUnit representing local year, month, day
      * @return DateUnit representing local date in ISO 8601
      * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
