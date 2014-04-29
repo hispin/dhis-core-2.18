@@ -34,14 +34,19 @@ import org.hisp.dhis.common.DxfNamespaces;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The superclass of all PeriodTypes.
- *
  * @author Kristian Nordal
  */
-@JacksonXmlRootElement( localName = "periodType", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement(localName = "periodType", namespace = DxfNamespaces.DXF_2_0)
 public abstract class PeriodType
     implements Serializable
 {
@@ -86,7 +91,6 @@ public abstract class PeriodType
 
     /**
      * Returns an immutable list of all available PeriodTypes in their natural order.
-     *
      * @return all available PeriodTypes in their natural order.
      */
     public static List<PeriodType> getAvailablePeriodTypes()
@@ -96,10 +100,9 @@ public abstract class PeriodType
 
     /**
      * Returns a PeriodType with a given name.
-     *
      * @param name the name of the PeriodType to return.
      * @return the PeriodType with the given name or null if no such PeriodType
-     *         exists.
+     * exists.
      */
     public static PeriodType getPeriodTypeByName( String name )
     {
@@ -121,10 +124,9 @@ public abstract class PeriodType
 
     /**
      * Get period type according to natural order order.
-     *
      * @param index the index of the period type with base 1
      * @return period type according to index order or null if no match
-     *         TODO: Consider manual ordering, since relying on natural order might create problems if new periods are introduced.
+     * TODO: Consider manual ordering, since relying on natural order might create problems if new periods are introduced.
      */
     public static PeriodType getByIndex( int index )
     {
@@ -160,7 +162,6 @@ public abstract class PeriodType
 
     /**
      * Returns a unique name for the PeriodType.
-     *
      * @return a unique name for the PeriodType. E.g. "Monthly".
      */
     public abstract String getName();
@@ -168,7 +169,6 @@ public abstract class PeriodType
     /**
      * Creates a valid Period based on the current date. E.g. if today is
      * January 5. 2007, a monthly PeriodType should return January 2007.
-     *
      * @return a valid Period based on the current date.
      */
     public abstract Period createPeriod();
@@ -176,7 +176,6 @@ public abstract class PeriodType
     /**
      * Creates a valid Period based on the given date. E.g. the given date is
      * February 10. 2007, a monthly PeriodType should return February 2007.
-     *
      * @param date the date which is contained by the created period.
      * @return the valid Period based on the given date
      */
@@ -187,16 +186,14 @@ public abstract class PeriodType
     /**
      * Returns a comparable value for the frequency length of this PeriodType.
      * Shortest is 0.
-     *
      * @return the frequency order.
      */
     public abstract int getFrequencyOrder();
 
     /**
      * Returns a new date rewinded from now.
-     *
      * @return the Date.
-     */    
+     */
     public abstract Date getRewindedDate( Date date, Integer rewindedPeriods );
 
     // -------------------------------------------------------------------------
@@ -206,10 +203,9 @@ public abstract class PeriodType
     /**
      * Returns an instance of a Calendar without any time of day, with the
      * current date.
-     *
      * @return an instance of a Calendar without any time of day.
      */
-    public static final Calendar createCalendarInstance()
+    public static Calendar createCalendarInstance()
     {
         Calendar calendar = new GregorianCalendar();
 
@@ -221,11 +217,10 @@ public abstract class PeriodType
     /**
      * Returns an instance of a Calendar without any time of day, with the given
      * date.
-     *
      * @param date the date of the Calendar.
      * @return an instance of a Calendar without any time of day.
      */
-    public static final Calendar createCalendarInstance( Date date )
+    public static Calendar createCalendarInstance( Date date )
     {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime( date );
@@ -237,10 +232,9 @@ public abstract class PeriodType
 
     /**
      * Clears the time of day in a Calendar instance.
-     *
      * @param calendar the Calendar to fix.
      */
-    public static final void clearTimeOfDay( Calendar calendar )
+    public static void clearTimeOfDay( Calendar calendar )
     {
         calendar.set( Calendar.MILLISECOND, 0 );
         calendar.set( Calendar.SECOND, 0 );
@@ -250,7 +244,6 @@ public abstract class PeriodType
 
     /**
      * Parses a date from a String on the format YYYY-MM-DD.
-     * 
      * @param dateString the String to parse.
      * @return a Date based on the given String.
      */
@@ -272,7 +265,6 @@ public abstract class PeriodType
      * Returns a PeriodType corresponding to the provided string The test is
      * quite rudimentary, testing for string format rather than invalid periods.
      * Currently only recognizes the basic subset of common period types.
-     *
      * @param isoPeriod String formatted period (2011, 201101, 2011W34, 2011Q1
      *                  etc
      * @return the PeriodType or null if unrecognized
@@ -326,11 +318,10 @@ public abstract class PeriodType
 
         return null;
     }
-    
+
     /**
      * Returns a period type based on the given date string in ISO format. Returns
      * null if the date string cannot be parsed to a date.
-     * 
      * @param isoPeriod the date string in ISO format.
      * @return a period.
      */
@@ -339,7 +330,7 @@ public abstract class PeriodType
         if ( isoPeriod != null )
         {
             PeriodType periodType = getPeriodTypeFromIsoString( isoPeriod );
-            
+
             try
             {
                 return periodType != null ? periodType.createPeriod( isoPeriod ) : null;
@@ -349,17 +340,16 @@ public abstract class PeriodType
                 // Do nothing and return null
             }
         }
-        
+
         return null;
     }
 
     /**
      * Return the potential number of periods of the given period type which is
      * spanned by this period.
-     *
      * @param type the period type.
      * @return the potential number of periods of the given period type spanned
-     *         by this period.
+     * by this period.
      */
     public int getPeriodSpan( PeriodType type )
     {
@@ -367,22 +357,20 @@ public abstract class PeriodType
 
         return (int) Math.floor( no );
     }
-    
+
     // -------------------------------------------------------------------------
     // ISO format methods
     // -------------------------------------------------------------------------
 
     /**
      * Returns an iso8601 formatted string representation of the period
-     *
-     * @param period
+     * @param period Period
      * @return the period as string
      */
     public abstract String getIsoDate( Period period );
 
     /**
      * Generates a period based on the given iso8601 formatted string.
-     *
      * @param isoDate the iso8601 string.
      * @return the period.
      */
@@ -390,7 +378,6 @@ public abstract class PeriodType
 
     /**
      * Returns the iso8601 format as a string for this period type.
-     * 
      * @return the iso8601 format.
      */
     public abstract String getIsoFormat();
