@@ -1,7 +1,7 @@
 CACHE MANIFEST
 # 2.16 $!systemInfo.revision
 # appcache for user: $username
-
+# system calendar: $keyCalendar
 NETWORK:
 *
 CACHE:

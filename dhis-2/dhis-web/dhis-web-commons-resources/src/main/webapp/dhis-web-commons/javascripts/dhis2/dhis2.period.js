@@ -41,7 +41,7 @@ dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
  *  - dhis2.period.calendar   The currently selected system calendar
  *  - dhis2.period.generator  An instance of this class using the system calendar
  *
- * @param calendar Calendar to use, this must coming from $.calendars.instance(chronology).
+ * @param calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param format Date format to use for formatting, will default to ISO 8601
  * @constructor
  */
@@ -76,7 +76,7 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
 };
 
 /**
- * @returns All available period generators
+ * @returns Object All available period generators
  */
 dhis2.period.PeriodGenerator.prototype.getAll = function() {
   return this.periodTypes;
