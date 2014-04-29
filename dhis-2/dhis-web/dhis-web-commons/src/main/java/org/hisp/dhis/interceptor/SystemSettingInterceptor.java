@@ -82,6 +82,7 @@ public class SystemSettingInterceptor
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put( KEY_CALENDAR, systemSettingManager.getSystemSetting( KEY_CALENDAR, DEFAULT_CALENDAR ) );
+        map.put( KEY_DATE_FORMAT, systemSettingManager.getSystemSetting( KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT ) );
         map.put( KEY_CACHE_STRATEGY, systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY, DEFAULT_CACHE_STRATEGY ) );
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE, DEFAULT_APPLICATION_TITLE ) );
         map.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO ) );
