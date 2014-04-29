@@ -56,7 +56,7 @@ Ext.onReady( function() {
 			selectPanel,
 			window,
 
-			margin = 2,
+			margin = 1,
 			defaultWidth = 160,
 			defaultHeight = 158,
 			maxHeight = (ns.app.viewport.getHeight() - 100) / 2;
@@ -311,7 +311,7 @@ Ext.onReady( function() {
 
 		window = Ext.create('Ext.window.Window', {
 			title: NS.i18n.table_layout,
-			bodyStyle: 'background-color:#fff; padding:2px',
+			bodyStyle: 'background-color:#fff; padding:' + margin + 'px',
 			closeAction: 'hide',
 			autoShow: true,
 			modal: true,
