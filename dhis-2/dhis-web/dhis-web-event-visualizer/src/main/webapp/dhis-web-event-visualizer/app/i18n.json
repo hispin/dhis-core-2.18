@@ -141,7 +141,6 @@
 "bimonthly",
 "quarterly",
 "sixmonthly",
-"sixmonthly_april",
 "yearly",
 "financial_oct",
 "financial_july",
@@ -152,6 +151,9 @@
 "count",
 "sum",
 "by_data_element",
-"stddev",
-"variance"
+"relative_periods",
+"start_end_dates",
+"top",
+"bottom",
+"limit"
 ]
