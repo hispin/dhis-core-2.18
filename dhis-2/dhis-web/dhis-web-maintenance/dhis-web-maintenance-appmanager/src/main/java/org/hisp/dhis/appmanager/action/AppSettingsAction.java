@@ -125,8 +125,6 @@ public class AppSettingsAction
         appManager.setAppBaseUrl( appBaseUrl );
     }
 
-    private List<App> appList;
-
     public List<App> getAppList()
     {
         return appManager.getApps();

@@ -152,7 +152,7 @@ public class InternalMapObject
         try
         {
             // Create a parser for the json and parse it into root
-            JsonParser parser = new ObjectMapper().getJsonFactory().createJsonParser( coords );
+            JsonParser parser = new ObjectMapper().getFactory().createParser( coords );
             root = parser.readValueAsTree();
         }
         catch ( IOException ex )
