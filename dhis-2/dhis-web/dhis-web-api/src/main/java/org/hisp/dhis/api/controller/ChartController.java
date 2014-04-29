@@ -43,7 +43,6 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -66,7 +65,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -301,16 +299,6 @@ public class ChartController
         }
     }
 
-    //--------------------------------------------------------------------------
-    // Error handlers
-    //--------------------------------------------------------------------------
-
-    @ExceptionHandler(DeleteNotAllowedException.class)
-    public void handleError( DeleteNotAllowedException ex, HttpServletResponse response )
-    {
-        ContextUtils.conflictResponse( response, ex.getMessage() );
-    }
-    
     //--------------------------------------------------------------------------
     // Supportive methods
     //--------------------------------------------------------------------------
