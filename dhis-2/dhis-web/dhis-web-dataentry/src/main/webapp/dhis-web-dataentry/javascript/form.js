@@ -61,9 +61,6 @@ dhis2.de.currentPeriodOffset = 0;
 // Username of user who marked the current data set as complete if any
 dhis2.de.currentCompletedByUser = null;
 
-// Period type object
-dhis2.de.periodTypeFactory = new PeriodType();
-
 // Instance of the StorageManager
 dhis2.de.storageManager = new StorageManager();
 
@@ -909,13 +906,12 @@ function dataSetSelected()
     {
 	    var periodType = dhis2.de.dataSets[dataSetId].periodType;
 	    var allowFuturePeriods = dhis2.de.dataSets[dataSetId].allowFuturePeriods;
-	    var periods = dhis2.de.periodTypeFactory.get( periodType ).generatePeriods( dhis2.de.currentPeriodOffset );
-	    periods = dhis2.de.periodTypeFactory.reverse( periods );
-	    
-	    if ( allowFuturePeriods == false )
-	    {
-	    	periods = dhis2.de.periodTypeFactory.filterFuturePeriods( periods );
-	    }
+      var periods = dhis2.period.generator.generateReversedPeriods(periodType, dhis2.de.currentPeriodOffset);
+
+      if( allowFuturePeriods == false )
+      {
+        periods = dhis2.period.generator.filterFuturePeriods(periods);
+      }
 
         clearListById( 'selectedPeriodId' );
         clearSectionFilters();
@@ -1007,12 +1003,11 @@ function displayPeriodsInternal()
     var dataSetId = $( '#selectedDataSetId' ).val();
     var periodType = dhis2.de.dataSets[dataSetId].periodType;
     var allowFuturePeriods = dhis2.de.dataSets[dataSetId].allowFuturePeriods;
-    var periods = dhis2.de.periodTypeFactory.get( periodType ).generatePeriods( dhis2.de.currentPeriodOffset );
-    periods = dhis2.de.periodTypeFactory.reverse( periods );
-    
+    var periods = dhis2.period.generator.generateReversedPeriods(periodType, dhis2.de.currentPeriodOffset);
+
     if ( allowFuturePeriods == false )
     {
-    	periods = dhis2.de.periodTypeFactory.filterFuturePeriods( periods );
+      periods = dhis2.period.generator.filterFuturePeriods(periods);
     }
 
     clearListById( 'selectedPeriodId' );
