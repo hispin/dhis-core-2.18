@@ -34,6 +34,7 @@ import org.hisp.dhis.api.controller.exception.NotAuthenticatedException;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.controller.exception.NotFoundForQueryException;
 import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.common.IllegalQueryException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -93,5 +94,23 @@ public class CrudControllerAdvice
         headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
         
         return new ResponseEntity<String>( ex.getMessage(), headers, HttpStatus.CONFLICT );
-    }    
+    }
+
+    @ExceptionHandler(IllegalQueryException.class)
+    public ResponseEntity<String> handleError( IllegalQueryException ex )
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
+        
+        return new ResponseEntity<String>( ex.getMessage(), headers, HttpStatus.CONFLICT );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleError( IllegalArgumentException ex )
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
+        
+        return new ResponseEntity<String>( ex.getMessage(), headers, HttpStatus.CONFLICT );
+    }
 }
