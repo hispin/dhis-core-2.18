@@ -90,16 +90,23 @@ public abstract class AbstractCalendar implements Calendar
 
     protected static final String DEFAULT_ISO8601_DATE_FORMAT = "yyyy-MM-dd";
 
+    protected String dateFormat = DEFAULT_ISO8601_DATE_FORMAT;
+
     @Override
-    public String defaultDateFormat()
+    public String getDateFormat()
     {
-        return DEFAULT_ISO8601_DATE_FORMAT;
+        return dateFormat;
+    }
+
+    public void setDateFormat( String dateFormat )
+    {
+        this.dateFormat = dateFormat;
     }
 
     @Override
     public String formattedDate( DateUnit dateUnit )
     {
-        return defaultDateFormat()
+        return getDateFormat()
             .replace( "yyyy", String.format( "%04d", dateUnit.getYear() ) )
             .replace( "MM", String.format( "%02d", dateUnit.getMonth() ) )
             .replace( "dd", String.format( "%02d", dateUnit.getDay() ) );
@@ -110,7 +117,7 @@ public abstract class AbstractCalendar implements Calendar
     {
         dateUnit = toIso( dateUnit );
         DateTime dateTime = dateUnit.toDateTime();
-        DateTimeFormatter format = DateTimeFormat.forPattern( defaultDateFormat() );
+        DateTimeFormatter format = DateTimeFormat.forPattern( getDateFormat() );
 
         return format.print( dateTime );
     }
@@ -124,7 +131,7 @@ public abstract class AbstractCalendar implements Calendar
     @Override
     public DateUnit toIso( String date )
     {
-        DateTimeFormatter format = DateTimeFormat.forPattern( defaultDateFormat() );
+        DateTimeFormatter format = DateTimeFormat.forPattern( getDateFormat() );
         DateTime dateTime = format.parseDateTime( date );
 
         return toIso( DateUnit.fromDateTime( dateTime ) );

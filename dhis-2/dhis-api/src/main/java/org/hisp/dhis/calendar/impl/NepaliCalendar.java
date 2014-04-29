@@ -51,8 +51,6 @@ public class NepaliCalendar extends AbstractCalendar
 
     private static final DateUnit startIso = new DateUnit( 1943, 4, 14, java.util.Calendar.WEDNESDAY );
 
-    private static final String DEFAULT_NEPALI_DATE_FORMAT = "dd-MM-yyyy";
-
     private static final Calendar self = new NepaliCalendar();
 
     public static Calendar getInstance()
@@ -64,12 +62,6 @@ public class NepaliCalendar extends AbstractCalendar
     public String name()
     {
         return "nepali";
-    }
-
-    @Override
-    public String defaultDateFormat()
-    {
-        return DEFAULT_NEPALI_DATE_FORMAT;
     }
 
     @Override
