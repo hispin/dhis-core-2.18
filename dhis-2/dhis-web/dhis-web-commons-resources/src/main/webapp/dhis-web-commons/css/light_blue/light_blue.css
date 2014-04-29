@@ -251,7 +251,7 @@ input[type=text],input[type=password],textarea
 #leftBarContents a:hover
 {
   text-decoration: none;
-  background-color: #eee;
+  background-color: #ededed;
   border-radius: 4px;
 }
 
@@ -437,13 +437,13 @@ input[type=text],input[type=password],textarea
   padding: 15px;
   cursor: pointer;
   min-height: 44px;
-  border-bottom: 1px solid #e0e0e0;
   float: left;
 }
 
 .introItem:hover
 {
   background-color: #edf2f2;
+  border-radius: 4px;
 }
 
 .introItemHeader
