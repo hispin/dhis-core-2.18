@@ -28,19 +28,22 @@ package org.hisp.dhis.api.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.WebUtils;
-import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
 import org.hisp.dhis.user.CurrentUserService;
@@ -53,14 +56,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -269,46 +264,4 @@ public class OrganisationUnitController
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    @RequestMapping(value = "/withinRange", method = RequestMethod.GET, produces = { "*/*", "application/json" })
-    public void getEntitiesWithinRange( @RequestParam Double longitude, @RequestParam Double latitude,
-        @RequestParam Double distance, @RequestParam(required = false) String orgUnitGroupSetId,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
-    {
-        List<OrganisationUnit> entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getWithinCoordinateArea( longitude, latitude, distance ) );
-
-        for ( OrganisationUnit orgunit : entityList )
-        {
-            Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
-            attributeValues.clear();
-
-            if ( orgUnitGroupSetId != null ) // Add org unit group symbol into attr
-            {
-                for ( OrganisationUnitGroup orgunitGroup : orgunit.getGroups() )
-                {
-                    if ( orgunitGroup.getGroupSet() != null )
-                    {
-                        OrganisationUnitGroupSet orgunitGroupSet = orgunitGroup.getGroupSet();
-
-                        if ( orgunitGroupSet.getUid().compareTo( orgUnitGroupSetId ) == 0 )
-                        {
-                            AttributeValue attributeValue = new AttributeValue();
-                            attributeValue.setAttribute( new Attribute( "OrgUnitGroupSymbol", "OrgUnitGroupSymbol" ) );
-                            attributeValue.setValue( orgunitGroup.getSymbol() );
-
-                            attributeValues.add( attributeValue );
-                        }
-                    }
-                }
-            }
-
-            orgunit.setAttributeValues( attributeValues );
-
-            // Clear out all data not needed for this task
-            orgunit.removeAllDataSets();
-            orgunit.removeAllUsers();
-            orgunit.removeAllOrganisationUnitGroups();
-        }
-
-        JacksonUtils.toJson( response.getOutputStream(), entityList );
-    }
 }
