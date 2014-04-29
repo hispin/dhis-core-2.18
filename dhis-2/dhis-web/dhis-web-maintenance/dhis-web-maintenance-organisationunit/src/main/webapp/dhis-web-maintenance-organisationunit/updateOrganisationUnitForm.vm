@@ -15,14 +15,10 @@
         checkValueIsExistWarning( "name", "validateOrganisationUnit.action", { id : $organisationUnit.id } );
         checkValueIsExist( "code", "validateOrganisationUnit.action", { id : $organisationUnit.id } );
 
-		#if ( $numberOfChildren == 0 )
-		datePickerInRange( 'openingDate', 'closedDate', false, false );
-		#else
-		datePickerValid( 'openingDate', false );
-		#end
+      dhis2.period.picker.createRangedInstance('#openingDate', '#closedDate');
 
-		jQuery( "div[id=dynamicAttributesContainer] table tr td:first-child" ).attr( "style", "width: 120px" );
-		jQuery( "div[id=dynamicAttributesContainer] table tr td:last-child *" ).attr( "style", "" );
+      jQuery( "div[id=dynamicAttributesContainer] table tr td:first-child" ).attr( "style", "width: 120px" );
+      jQuery( "div[id=dynamicAttributesContainer] table tr td:last-child *" ).attr( "style", "" );
 	});
 	
 	var previousName = '$encoder.jsEscape( $organisationUnit.name, "'" )';
@@ -62,12 +58,10 @@
 		<td><input type="text" id="openingDate" name="openingDate" value="$!format.formatDate( $organisationUnit.openingDate )"></td>
 		<td></td>
 	</tr>
-	#if( $numberOfChildren == 0 )
 	<tr>
 		<td><label for="closedDate">$i18n.getString( "closed_date" )</label></td>
 		<td><input type="text" id="closedDate" name="closedDate" value="$!format.formatDate( $organisationUnit.closedDate )"></td>
 	</tr>
-	#end
 	<tr>
 		<td><label for="active">$i18n.getString( "registers_data" )</label></td>
 		<td>
