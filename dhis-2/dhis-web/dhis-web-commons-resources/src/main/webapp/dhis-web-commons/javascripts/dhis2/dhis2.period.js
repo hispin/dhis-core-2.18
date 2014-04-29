@@ -70,7 +70,7 @@ dhis2.period.DatePicker.prototype.createInstance = function( el, options ) {
 };
 
 /**
- * Creates a ranged date picker, keeping to fields in sync.
+ * Creates a ranged date picker, keeping two fields in sync.
  *
  * @param fromEl From element to select on, can be any kind of jQuery selector, or a jqEl
  * @param toEl To element to select on, can be any kind of jQuery selector, or a jqEl
