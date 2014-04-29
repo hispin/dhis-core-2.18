@@ -21,8 +21,8 @@
 					</td>
 					
 					<td style="text-align:right" >			
-						<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddValidationCriteriaForm.action?id=$program.id'" style="width:100px">
-						<br><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='program.action'" style="width:100px">
+						<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddValidationCriteriaForm.action?id=$program.id'" style="width:100px"><br>
+						<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='program.action'" style="width:100px">
 					</td>
 				</tr>
 			</table>

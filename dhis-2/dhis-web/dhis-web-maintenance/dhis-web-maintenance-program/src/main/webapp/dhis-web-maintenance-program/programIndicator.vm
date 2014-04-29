@@ -16,8 +16,8 @@
 <table class="mainPageTable">
 	<tr>
 		<td style="text-align:right">
-			<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddProgramIndicator.action?id=$program.id'" style="width:150px"><br>
-			<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='program.action'" style="width:150px">
+			<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddProgramIndicator.action?id=$program.id'" style="width:100px"><br>
+			<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='program.action'" style="width:100px">
 		</td>
 	</tr>
 	<tr>
