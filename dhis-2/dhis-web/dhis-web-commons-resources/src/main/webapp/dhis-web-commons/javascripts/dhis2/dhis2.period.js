@@ -257,6 +257,9 @@ dhis2.period.makeDailyPeriodGenerator = function( cal, format ) {
       period['id'] = 'Daily_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymmdd");
 
+      period['_startDate'] = startDate;
+      period['_endDate'] = startDate;
+
       periods.push(period);
 
       startDate.add(1, 'd');
