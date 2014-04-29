@@ -28,7 +28,7 @@
     <tbody>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input style="width: 330px;" type="text" id="name" name="name" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input type="text" id="name" name="name" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>
 		<tr>
@@ -104,7 +104,7 @@
 		</tr>
 		<tr>
 			<td><label for="optionSetId">$i18n.getString( "message" )</label></td>
-			<td><textarea onkeyup="getMessageLength()" id="templateMessage" name="templateMessage" style="width:320px" class="templateMessage {validate:{required:true}}"></textarea></td>
+			<td><textarea onkeyup="getMessageLength()" id="templateMessage" name="templateMessage" class="templateMessage {validate:{required:true}}"></textarea></td>
 		</tr>
 		<tr>
 			<td></td>
