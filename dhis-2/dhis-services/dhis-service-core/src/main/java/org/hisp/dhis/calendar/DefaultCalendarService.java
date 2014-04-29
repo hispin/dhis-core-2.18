@@ -54,6 +54,11 @@ public class DefaultCalendarService implements CalendarService
 
     private Map<String, Calendar> calendarMap = Maps.newHashMap();
 
+    private List<DateFormat> dateFormats = Lists.newArrayList(
+        new DateFormat( "yyyy-MM-dd", "yyyy-MM-dd", "yyyy-MM-dd", "yyyy-mm-dd" ),
+        new DateFormat( "dd-MM-yyyy", "dd-MM-yyyy", "dd-MM-yyyy", "dd-mm-yyyy" )
+    );
+
     @PostConstruct
     public void init()
     {
@@ -69,6 +74,12 @@ public class DefaultCalendarService implements CalendarService
         List<Calendar> sortedCalendars = Lists.newArrayList( calendarMap.values() );
         Collections.sort( sortedCalendars, CalendarComparator.INSTANCE );
         return sortedCalendars;
+    }
+
+    @Override
+    public List<DateFormat> getAllDateFormats()
+    {
+        return dateFormats;
     }
 
     @Override

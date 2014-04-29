@@ -31,6 +31,7 @@ package org.hisp.dhis.settings.action.system;
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.CalendarService;
+import org.hisp.dhis.calendar.DateFormat;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
@@ -168,6 +169,11 @@ public class GetGeneralSettingsAction
     public List<Calendar> getCalendars()
     {
         return calendarService.getAllCalendars();
+    }
+
+    public List<DateFormat> getDateFormats()
+    {
+        return calendarService.getAllDateFormats();
     }
 
     // -------------------------------------------------------------------------
