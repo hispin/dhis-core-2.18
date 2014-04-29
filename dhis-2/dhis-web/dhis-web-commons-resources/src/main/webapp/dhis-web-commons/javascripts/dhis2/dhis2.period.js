@@ -34,6 +34,26 @@ dhis2.util.namespace('dhis2.period');
 
 dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
 
+dhis2.period.DatePicker = function( calendar, format ) {
+  this.calendar = calendar;
+  this.format = format;
+};
+
+dhis2.period.DatePicker.prototype.createInstance = function( el, options ) {
+  var $el = $(el);
+
+  var defaults = {
+    calendar: this.calendar,
+    dateFormat: this.format,
+    showAnim: '',
+    maxDate: this.calendar.today(),
+    yearRange: 'c-100:c+100'
+  };
+
+  $.extend(defaults, options);
+  $el.calendarsPicker(defaults);
+};
+
 /**
  * A period generator that uses a specified calendar chronology to generate DHIS 2 periods.
  *
@@ -55,6 +75,8 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
   }
 
   this.calendar = calendar;
+
+  this.format = format;
 
   this.periodTypes = {
     "Daily": dhis2.period.makeDailyPeriodGenerator(calendar, format),
@@ -83,6 +105,13 @@ dhis2.period.PeriodGenerator.prototype.getAll = function() {
  */
 dhis2.period.PeriodGenerator.prototype.getCalendar = function() {
   return this.calendar;
+};
+
+/**
+ * @returns Object The date format used for this period generator
+ */
+dhis2.period.PeriodGenerator.prototype.getDateFormat = function() {
+  return this.format;
 };
 
 /**
