@@ -1763,7 +1763,9 @@ Ext.onReady( function() {
 					co = dimConf.category.dimensionName,
                     aggTypes = {
                         'count': 'COUNT',
-                        'sum': 'SUM'
+                        'sum': 'SUM',
+                        'stddev': 'STDDEV',
+                        'variance': 'VARIANCE'
                     };
 
 				for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
