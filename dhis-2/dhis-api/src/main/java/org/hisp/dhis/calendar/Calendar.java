@@ -44,24 +44,30 @@ public interface Calendar
     String name();
 
     /**
-     * Default date format for this calendar
+     * Date format for this calendar
      * @return Default date format
      */
-    String defaultDateFormat();
+    String getDateFormat();
 
     /**
-     * Formats dateUnit using defaultDateFormat
+     * Set date format for this calendar
+     * @param dateFormat Date format to use for this calendar
+     */
+    void setDateFormat( String dateFormat );
+
+    /**
+     * Formats dateUnit using dateFormat
      * @param dateUnit DateUnit representing local year, month, day
      * @return Default date format
-     * @see #defaultDateFormat()
+     * @see #getDateFormat()
      */
     String formattedDate( DateUnit dateUnit );
 
     /**
-     * Formats dateUnit using defaultDateFormat and ISO 8601
+     * Formats dateUnit using dateFormat and ISO 8601
      * @param dateUnit DateUnit representing local year, month, day
      * @return Default date format
-     * @see #defaultDateFormat()
+     * @see #getDateFormat()
      */
     String formattedIsoDate( DateUnit dateUnit );
 
@@ -77,11 +83,11 @@ public interface Calendar
 
     /**
      * Convert local calendar to an ISO 8601 DateUnit.
-     * @param date  Date formatted using default date format
+     * @param date Date formatted using default date format
      * @return DateUnit representing local date in ISO 8601
      * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
      */
-    DateUnit toIso( String date);
+    DateUnit toIso( String date );
 
     /**
      * Convert local calendar to an ISO 8601 DateUnit.

@@ -41,7 +41,7 @@ public interface CalendarService
      * Gets all available calendars as a sorted list.
      * @return All available calendars
      */
-    List<Calendar> getAll();
+    List<Calendar> getAllCalendars();
 
     /**
      * Gets the currently selected system calendar.

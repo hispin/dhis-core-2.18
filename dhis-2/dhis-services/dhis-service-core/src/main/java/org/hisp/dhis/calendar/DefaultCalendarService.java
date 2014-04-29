@@ -64,7 +64,7 @@ public class DefaultCalendarService implements CalendarService
     }
 
     @Override
-    public List<Calendar> getAll()
+    public List<Calendar> getAllCalendars()
     {
         List<Calendar> sortedCalendars = Lists.newArrayList( calendarMap.values() );
         Collections.sort( sortedCalendars, CalendarComparator.INSTANCE );
@@ -74,13 +74,22 @@ public class DefaultCalendarService implements CalendarService
     @Override
     public Calendar getSystemCalendar()
     {
-        String calendar = (String) settingManager.getSystemSetting( SystemSettingManager.KEY_CALENDAR, SystemSettingManager.DEFAULT_CALENDAR );
+        String calendarKey = (String) settingManager.getSystemSetting( SystemSettingManager.KEY_CALENDAR, SystemSettingManager.DEFAULT_CALENDAR );
+        String dateFormat = (String) settingManager.getSystemSetting( SystemSettingManager.KEY_DATE_FORMAT, SystemSettingManager.DEFAULT_DATE_FORMAT );
 
-        if ( calendarMap.containsKey( calendar ) )
+        Calendar calendar;
+
+        if ( calendarMap.containsKey( calendarKey ) )
         {
-            return calendarMap.get( calendar );
+            calendar = calendarMap.get( calendarKey );
+        }
+        else
+        {
+            calendar = Iso8601Calendar.getInstance();
         }
 
-        return Iso8601Calendar.getInstance();
+        calendar.setDateFormat( dateFormat );
+
+        return calendar;
     }
 }
