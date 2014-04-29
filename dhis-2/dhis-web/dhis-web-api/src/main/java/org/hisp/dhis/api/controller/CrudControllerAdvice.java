@@ -28,9 +28,12 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.validation.ConstraintViolationException;
+
 import org.hisp.dhis.api.controller.exception.NotAuthenticatedException;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.controller.exception.NotFoundForQueryException;
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,8 +43,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
-
-import javax.validation.ConstraintViolationException;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -77,11 +78,20 @@ public class CrudControllerAdvice
     }
 
     @ExceptionHandler( ConstraintViolationException.class )
-    public ResponseEntity<String> constraintViolationException( ConstraintViolationException ex )
+    public ResponseEntity<String> constraintViolationExceptionHandler( ConstraintViolationException ex )
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
 
         return new ResponseEntity<String>( ex.getMessage(), headers, HttpStatus.UNPROCESSABLE_ENTITY );
     }
+
+    @ExceptionHandler(DeleteNotAllowedException.class)
+    public ResponseEntity<String> deleteNotAllowedExceptionHandler( DeleteNotAllowedException ex )
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
+        
+        return new ResponseEntity<String>( ex.getMessage(), headers, HttpStatus.CONFLICT );
+    }    
 }
