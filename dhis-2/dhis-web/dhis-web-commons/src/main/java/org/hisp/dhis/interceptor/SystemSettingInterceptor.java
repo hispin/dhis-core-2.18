@@ -30,8 +30,10 @@ package org.hisp.dhis.interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
+import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +66,9 @@ public class SystemSettingInterceptor
         this.configurationService = configurationService;
     }
 
+    @Autowired
+    private CalendarService calendarService;
+
     // -------------------------------------------------------------------------
     // AroundInterceptor implementation
     // -------------------------------------------------------------------------
@@ -83,6 +88,7 @@ public class SystemSettingInterceptor
 
         map.put( KEY_CALENDAR, systemSettingManager.getSystemSetting( KEY_CALENDAR, DEFAULT_CALENDAR ) );
         map.put( KEY_DATE_FORMAT, systemSettingManager.getSystemSetting( KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT ) );
+        map.put( "dateFormat", calendarService.getSystemDateFormat() );
         map.put( KEY_CACHE_STRATEGY, systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY, DEFAULT_CACHE_STRATEGY ) );
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE, DEFAULT_APPLICATION_TITLE ) );
         map.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO ) );
