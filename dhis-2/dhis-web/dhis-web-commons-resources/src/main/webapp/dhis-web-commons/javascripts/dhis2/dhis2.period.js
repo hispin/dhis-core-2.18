@@ -82,8 +82,6 @@ dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl,
   var $fromEl = $(fromEl);
   var $toEl = $(toEl);
 
-  console.log($fromEl, $toEl);
-
   mergedOptions.onSelect = function( dates ) {
     $fromEl.calendarsPicker("option", "maxDate", dates[0] || null);
     $toEl.calendarsPicker("option", "minDate", dates[0] || null);

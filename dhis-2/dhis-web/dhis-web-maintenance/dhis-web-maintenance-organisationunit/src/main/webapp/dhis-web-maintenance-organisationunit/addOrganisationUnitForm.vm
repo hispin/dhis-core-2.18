@@ -29,12 +29,13 @@
 
     checkValueIsExistWarning("name", "validateOrganisationUnit.action");
     checkValueIsExist("code", "validateOrganisationUnit.action");
-    datePickerValid('openingDate', false);
 
-		jQuery( "div[id=dynamicAttributesContainer] table tr td:first-child" ).attr( "style", "width: 120px" );
-		jQuery( "div[id=dynamicAttributesContainer] table tr td:last-child *" ).attr( "style", "" );
+    jQuery( "div[id=dynamicAttributesContainer] table tr td:first-child" ).attr( "style", "width: 120px" );
+    jQuery( "div[id=dynamicAttributesContainer] table tr td:last-child *" ).attr( "style", "" );
 
     jQuery("#name").focus();
+
+    dhis2.period.picker.createInstance('#openingDate');
 	});
 </script>
 
@@ -90,7 +91,7 @@
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url"></td>
-    </tr>	
+    </tr>
 </table>
 
 #tblDynamicAttributes( { "attributes": $attributes } )
@@ -118,7 +119,7 @@
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
         <td><input type="text" id="phoneNumber" name="phoneNumber"></td>
-    </tr>	
+    </tr>
 
 	<tr>
 		<td style="height:15px" colspan="2">
@@ -159,7 +160,7 @@
     </tr>
 	#foreach ( $groupSet in $groupSets )
     <tr>
-		<td><label>$encoder.htmlEncode( $groupSet.name )</label></td>			
+		<td><label>$encoder.htmlEncode( $groupSet.name )</label></td>
 		<td>
 			<select id="selectedGroups" name="selectedGroups">
 				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>
