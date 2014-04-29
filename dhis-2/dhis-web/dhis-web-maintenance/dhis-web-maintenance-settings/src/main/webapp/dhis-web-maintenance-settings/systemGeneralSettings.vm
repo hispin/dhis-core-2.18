@@ -4,6 +4,7 @@
       jQuery.postUTF8('setSystemGeneralSettings.action', {
         cacheStrategy: getFieldValue('cacheStrategy'),
         calendar: getFieldValue('calendar'),
+        dateFormat: getFieldValue('dateFormat'),
         infrastructuralDataElements: getFieldValue('infrastructuralDataElements'),
         infrastructuralPeriodType: getFieldValue('infrastructuralPeriodType'),
         feedbackRecipients: getFieldValue('feedbackRecipients'),
@@ -40,6 +41,16 @@
 <select id="calendar" name="calendar">
 #foreach( $calendar in $calendars )
   <option value="$calendar.name()" #if( $keyCalendar == $calendar.name() )selected="selected"#end>$i18n.getString( $calendar.name() )</option>
+#end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "date_format" )</div>
+
+<div class="setting">
+<select id="dateFormat" name="dateFormat">
+#foreach( $dateFormat in $dateFormats )
+  <option value="$dateFormat.name()" #if( $keyDateFormat == $dateFormat.name() )selected="selected"#end>$i18n.getString( $dateFormat.name() )</option>
 #end
 </select>
 </div>
@@ -90,7 +101,7 @@
 
 <div class="settingLabel">$i18n.getString( "data_analysis_factor" )</div>
 <div class="setting">
-	<input type="text" id="factorDeviation" name="factorDeviation" value="$!factorDeviation"/>	
+	<input type="text" id="factorDeviation" name="factorDeviation" value="$!factorDeviation"/>
 </div>
 
 <div class="settingLabel">$i18n.getString( "phone_number_area_code" )</div>

@@ -175,6 +175,13 @@ public class SetGeneralSettingsAction
         this.calendar = calendar;
     }
 
+    private String dateFormat;
+
+    public void setDateFormat( String dateFormat )
+    {
+        this.dateFormat = dateFormat;
+    }
+
     private String message;
 
     public String getMessage()
@@ -196,6 +203,7 @@ public class SetGeneralSettingsAction
     public String execute()
     {
         systemSettingManager.saveSystemSetting( KEY_CALENDAR, calendar );
+        systemSettingManager.saveSystemSetting( KEY_DATE_FORMAT, dateFormat );
         systemSettingManager.saveSystemSetting( KEY_CACHE_STRATEGY, cacheStrategy );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );

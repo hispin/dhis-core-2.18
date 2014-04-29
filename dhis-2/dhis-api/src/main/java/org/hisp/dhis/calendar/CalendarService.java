@@ -44,6 +44,12 @@ public interface CalendarService
     List<Calendar> getAllCalendars();
 
     /**
+     * Gets all available date formats as list.
+     * @return All available date formats
+     */
+    List<DateFormat> getAllDateFormats();
+
+    /**
      * Gets the currently selected system calendar.
      * @return System calendar
      */
