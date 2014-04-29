@@ -28,13 +28,6 @@ package org.hisp.dhis.dxf2.events;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.util.Date;
-import java.util.HashSet;
-
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
@@ -55,6 +48,11 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
+import java.util.HashSet;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -84,7 +82,7 @@ public class NoRegistrationSingleEventServiceTest
     {
         identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
         userService = (UserService) getBean( UserService.ID );
-        
+
         organisationUnitA = createOrganisationUnit( 'A' );
         identifiableObjectManager.save( organisationUnitA );
 
@@ -183,7 +181,7 @@ public class NoRegistrationSingleEventServiceTest
 
         event = eventService.getEvent( importSummary.getReference() );
         event.getDataValues().get( 0 ).setValue( "254" );
-        eventService.updateEvent( event, false, importOptions );
+        eventService.updateEvent( event, false );
 
         event = eventService.getEvent( importSummary.getReference() );
         assertEquals( "254", event.getDataValues().get( 0 ).getValue() );
