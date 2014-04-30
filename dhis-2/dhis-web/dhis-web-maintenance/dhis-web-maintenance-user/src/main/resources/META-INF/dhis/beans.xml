@@ -92,11 +92,6 @@
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 
-  <bean id="org.hisp.dhis.user.action.SetupRoleAction" class="org.hisp.dhis.user.action.SetupRoleAction" scope="prototype">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="authoritiesProvider" ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
-  </bean>
-
   <bean id="org.hisp.dhis.user.action.ValidateRoleAction" class="org.hisp.dhis.user.action.ValidateRoleAction"
     scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />

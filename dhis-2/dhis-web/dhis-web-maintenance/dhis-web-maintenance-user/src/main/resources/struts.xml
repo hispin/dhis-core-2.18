@@ -108,7 +108,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="showAddRoleForm" class="org.hisp.dhis.user.action.SetupRoleAction">
+    <action name="showAddRoleForm" class="org.hisp.dhis.user.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/addRoleForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/role.js</param>
