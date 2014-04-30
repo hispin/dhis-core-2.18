@@ -3,6 +3,7 @@
     jQuery("input[type=button]").click(function() {
       jQuery.postUTF8('setSystemGeneralSettings.action', {
         cacheStrategy: getFieldValue('cacheStrategy'),
+        analyticsMaxLimit: getFieldValue('analyticsMaxLimit'),
         calendar: getFieldValue('calendar'),
         dateFormat: getFieldValue('dateFormat'),
         infrastructuralDataElements: getFieldValue('infrastructuralDataElements'),
@@ -32,6 +33,17 @@
 	<option value="NO_CACHE" #if( $keyCacheStrategy == "NO_CACHE" )selected="selected"#end>$i18n.getString( "no_cache" )</option>
 	<option value="CACHE_6AM_TOMORROW" #if( $keyCacheStrategy == "CACHE_6AM_TOMORROW" )selected="selected"#end>$i18n.getString( "cache_until_6am_tomorrow" )</option>
 	<option value="CACHE_TWO_WEEKS" #if( $keyCacheStrategy == "CACHE_TWO_WEEKS" )selected="selected"#end>$i18n.getString( "cache_for_two_weeks" )</option>
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "analytics_max_limit" )</div>
+
+<div class="setting">
+<select id="analyticsMaxLimit" name="analyticsMaxLimit">
+	<option value="50000" #if( $keyAnalyticsMaxLimit == "50000" )selected="selected"#end>50 000</option>
+	<option value="100000" #if( $keyAnalyticsMaxLimit == "100000" )selected="selected"#end>100 000</option>
+	<option value="200000" #if( $keyAnalyticsMaxLimit == "200000" )selected="selected"#end>200 000</option>
+	<option value="0" #if( $keyAnalyticsMaxLimit == "0" )selected="selected"#end>$i18n.getString( "unlimited" )</option>
 </select>
 </div>
 
