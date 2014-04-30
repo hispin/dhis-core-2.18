@@ -301,16 +301,18 @@ public class GetTrackedEntityInstanceAction
 
             Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( entityInstance,
                 program, ProgramInstance.STATUS_ACTIVE );
-            ProgramInstance programIntance = null;
-            if ( programInstances != null )
+            
+            ProgramInstance programInstance = null;
+            
+            if ( programInstances != null && !programInstances.isEmpty() )
             {
-                programIntance = programInstances.iterator().next();
+                programInstance = programInstances.iterator().next();
             }
             if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
             {
                 customRegistrationForm = trackedEntityFormService.prepareDataEntryFormForAdd( trackedEntityForm
                     .getDataEntryForm().getHtmlCode(), trackedEntityForm.getProgram(), healthWorkers, entityInstance,
-                    programIntance, i18n, format );
+                    programInstance, i18n, format );
             }
         }
 
