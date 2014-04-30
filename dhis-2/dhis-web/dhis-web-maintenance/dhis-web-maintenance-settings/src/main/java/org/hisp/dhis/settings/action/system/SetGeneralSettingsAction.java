@@ -104,6 +104,13 @@ public class SetGeneralSettingsAction
     {
         this.cacheStrategy = cacheStrategy;
     }
+    
+    private Integer analyticsMaxLimit;
+    
+    public void setAnalyticsMaxLimit( Integer analyticsMaxLimit )
+    {
+        this.analyticsMaxLimit = analyticsMaxLimit;
+    }
 
     private Integer infrastructuralDataElements;
 
@@ -205,6 +212,7 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_CALENDAR, calendar );
         systemSettingManager.saveSystemSetting( KEY_DATE_FORMAT, dateFormat );
         systemSettingManager.saveSystemSetting( KEY_CACHE_STRATEGY, cacheStrategy );
+        systemSettingManager.saveSystemSetting( KEY_ANALYTICS_MAX_LIMIT, analyticsMaxLimit );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );

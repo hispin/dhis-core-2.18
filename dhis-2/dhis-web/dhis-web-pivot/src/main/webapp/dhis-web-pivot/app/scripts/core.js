@@ -860,10 +860,12 @@ Ext.onReady( function() {
 					dimensionNameIdsMap: {},
 
 						// for param string
-					dimensionNameSortedIdsMap: {}
+					dimensionNameSortedIdsMap: {},
 
 					// sort table by column
 					//sortableIdObjects: []
+
+                    dimensionNameAxisMap: {}
 				};
 
 				Ext.applyIf(xLayout, layout);
@@ -900,6 +902,8 @@ Ext.onReady( function() {
 						xLayout.objectNameDimensionsMap[xDim.objectName] = xDim;
 						xLayout.objectNameItemsMap[xDim.objectName] = xDim.items;
 						xLayout.objectNameIdsMap[xDim.objectName] = xDim.ids;
+
+                        xLayout.dimensionNameAxisMap[xDim.dimensionName] = xLayout.columns;
 					}
 				}
 
@@ -934,6 +938,8 @@ Ext.onReady( function() {
 						xLayout.objectNameDimensionsMap[xDim.objectName] = xDim;
 						xLayout.objectNameItemsMap[xDim.objectName] = xDim.items;
 						xLayout.objectNameIdsMap[xDim.objectName] = xDim.ids;
+
+                        xLayout.dimensionNameAxisMap[xDim.dimensionName] = xLayout.rows;
 					}
 				}
 
@@ -965,6 +971,8 @@ Ext.onReady( function() {
 						xLayout.objectNameDimensionsMap[xDim.objectName] = xDim;
 						xLayout.objectNameItemsMap[xDim.objectName] = xDim.items;
 						xLayout.objectNameIdsMap[xDim.objectName] = xDim.ids;
+
+                        xLayout.dimensionNameAxisMap[xDim.dimensionName] = xLayout.filters;
 					}
 				}
 
@@ -1025,8 +1033,46 @@ Ext.onReady( function() {
 
 			service.layout.getSyncronizedXLayout = function(xLayout, response) {
 				var removeDimensionFromXLayout,
-					getHeaderNames,
-					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || []));
+                    addOuHierarchyDimensions,
+					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || [])),
+                    xOuDimension = xLayout.objectNameDimensionsMap[dimConf.organisationUnit.objectName],
+                    isUserOrgunit = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT'),
+                    isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_CHILDREN'),
+                    isUserOrgunitGrandChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_GRANDCHILDREN'),
+                    isLevel = function() {
+                        if (xOuDimension && Ext.isArray(xOuDimension.ids)) {
+                            for (var i = 0; i < xOuDimension.ids.length; i++) {
+                                if (xOuDimension.ids[i].substr(0,5) === 'LEVEL') {
+                                    return true;
+                                }
+                            }
+                        }
+
+                        return false;
+                    }(),
+                    isGroup = function() {
+                        if (xOuDimension && Ext.isArray(xOuDimension.ids)) {
+                            for (var i = 0; i < xOuDimension.ids.length; i++) {
+                                if (xOuDimension.ids[i].substr(0,8) === 'OU_GROUP') {
+                                    return true;
+                                }
+                            }
+                        }
+
+                        return false;
+                    }(),
+                    co = dimConf.category.objectName,
+                    ou = dimConf.organisationUnit.objectName,
+                    headerNames = function() {
+                        var headerNames = [];
+
+                        for (var i = 0; i < response.headers.length; i++) {
+                            headerNames.push(response.headers[i].name);
+                        }
+
+                        return headerNames;
+                    }(),
+                    layout;
 
 				removeDimensionFromXLayout = function(objectName) {
 					var getUpdatedAxis;
@@ -1059,173 +1105,171 @@ Ext.onReady( function() {
 					}
 				};
 
-				getHeaderNames = function() {
-					var headerNames = [];
+                addOuHierarchyDimensions = function() {
+                    var axis = xLayout.dimensionNameAxisMap[ou],
+                        ouHierarchy = response.metaData.ouHierarchy,
+                        levels = [],
+                        ouIndex,
+                        a;
 
-					for (var i = 0; i < response.headers.length; i++) {
-						headerNames.push(response.headers[i].name);
-					}
+                    // get ou index
+                    for (var i = 0; i < axis.length; i++) {
+                        if (axis[i].dimensionName === ou) {
+                            ouIndex = i;
+                            break;
+                        }
+                    }
 
-					return headerNames;
-				};
+                    // get levels
+                    for (var key in ouHierarchy) {
+                        if (ouHierarchy.hasOwnProperty(key)) {
+                            a = Ext.Array.clean(ouHierarchy[key].split('/'));
 
-				return function() {
-					var headerNames = getHeaderNames(),
-						xOuDimension = xLayout.objectNameDimensionsMap[dimConf.organisationUnit.objectName],
-						isUserOrgunit = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT'),
-						isUserOrgunitChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_CHILDREN'),
-						isUserOrgunitGrandChildren = xOuDimension && Ext.Array.contains(xOuDimension.ids, 'USER_ORGUNIT_GRANDCHILDREN'),
-						isLevel = function() {
-							if (xOuDimension && Ext.isArray(xOuDimension.ids)) {
-								for (var i = 0; i < xOuDimension.ids.length; i++) {
-									if (xOuDimension.ids[i].substr(0,5) === 'LEVEL') {
-										return true;
-									}
-								}
-							}
+                            if (!levels[a.length]) {
+                                levels[a.length] = [];
+                            }
 
-							return false;
-						}(),
-						isGroup = function() {
-							if (xOuDimension && Ext.isArray(xOuDimension.ids)) {
-								for (var i = 0; i < xOuDimension.ids.length; i++) {
-									if (xOuDimension.ids[i].substr(0,8) === 'OU_GROUP') {
-										return true;
-									}
-								}
-							}
+                            levels[a.length].push({
+                                id: key,
+                                name: response.metaData.names[key]
+                            });
+                        }
+                    }
 
-							return false;
-						}(),
-						co = dimConf.category.objectName,
-						ou = dimConf.organisationUnit.objectName,
-						layout;
+                    levels = Ext.Array.clean(levels);
 
-					// Set items from init/metaData/xLayout
-					for (var i = 0, dim, metaDataDim, items; i < dimensions.length; i++) {
-						dim = dimensions[i];
-						dim.items = [];
-						metaDataDim = response.metaData[dim.objectName];
+                    console.log("levels", levels);
+                };
 
-						// If ou and children
-						if (dim.dimensionName === ou) {
-							if (isUserOrgunit || isUserOrgunitChildren || isUserOrgunitGrandChildren) {
-								var userOu,
-									userOuc,
-									userOugc;
+                // Set items from init/metaData/xLayout
+                for (var i = 0, dim, metaDataDim, items; i < dimensions.length; i++) {
+                    dim = dimensions[i];
+                    dim.items = [];
+                    metaDataDim = response.metaData[dim.objectName];
 
-								if (init.user && isUserOrgunit) {
-									userOu = [];
+                    // If ou and children
+                    if (dim.dimensionName === ou) {
+                        if (isUserOrgunit || isUserOrgunitChildren || isUserOrgunitGrandChildren) {
+                            var userOu,
+                                userOuc,
+                                userOugc;
 
-									for (var j = 0; j < init.user.ou.length; j++) {
-										userOu.push({
-											id: init.user.ou[j],
-											name: service.layout.getItemName(xLayout, response, init.user.ou[j], false)
-										});
-									}
-								}
-								if (init.user && init.user.ouc && isUserOrgunitChildren) {
-									userOuc = [];
+                            if (init.user && isUserOrgunit) {
+                                userOu = [];
 
-									for (var j = 0; j < init.user.ouc.length; j++) {
-										userOuc.push({
-											id: init.user.ouc[j],
-											name: service.layout.getItemName(xLayout, response, init.user.ouc[j], false)
-										});
-									}
+                                for (var j = 0; j < init.user.ou.length; j++) {
+                                    userOu.push({
+                                        id: init.user.ou[j],
+                                        name: service.layout.getItemName(xLayout, response, init.user.ou[j], false)
+                                    });
+                                }
+                            }
+                            if (init.user && init.user.ouc && isUserOrgunitChildren) {
+                                userOuc = [];
 
-									support.prototype.array.sort(userOuc);
-								}
-								if (init.user && init.user.ouc && isUserOrgunitGrandChildren) {
-									var userOuOuc = [].concat(init.user.ou, init.user.ouc),
-										responseOu = response.metaData[ou];
+                                for (var j = 0; j < init.user.ouc.length; j++) {
+                                    userOuc.push({
+                                        id: init.user.ouc[j],
+                                        name: service.layout.getItemName(xLayout, response, init.user.ouc[j], false)
+                                    });
+                                }
 
-									userOugc = [];
+                                support.prototype.array.sort(userOuc);
+                            }
+                            if (init.user && init.user.ouc && isUserOrgunitGrandChildren) {
+                                var userOuOuc = [].concat(init.user.ou, init.user.ouc),
+                                    responseOu = response.metaData[ou];
 
-									for (var j = 0, id; j < responseOu.length; j++) {
-										id = responseOu[j];
+                                userOugc = [];
 
-										if (!Ext.Array.contains(userOuOuc, id)) {
-											userOugc.push({
-												id: id,
-												name: service.layout.getItemName(xLayout, response, id, false)
-											});
-										}
-									}
+                                for (var j = 0, id; j < responseOu.length; j++) {
+                                    id = responseOu[j];
 
-									support.prototype.array.sort(userOugc);
-								}
+                                    if (!Ext.Array.contains(userOuOuc, id)) {
+                                        userOugc.push({
+                                            id: id,
+                                            name: service.layout.getItemName(xLayout, response, id, false)
+                                        });
+                                    }
+                                }
 
-								dim.items = [].concat(userOu || [], userOuc || [], userOugc || []);
-							}
-							else if (isLevel || isGroup) {
-								for (var j = 0, responseOu = response.metaData[ou], id; j < responseOu.length; j++) {
-									id = responseOu[j];
+                                support.prototype.array.sort(userOugc);
+                            }
 
-									dim.items.push({
-										id: id,
-										name: service.layout.getItemName(xLayout, response, id, false)
-									});
-								}
+                            dim.items = [].concat(userOu || [], userOuc || [], userOugc || []);
+                        }
+                        else if (isLevel || isGroup) {
+                            for (var j = 0, responseOu = response.metaData[ou], id; j < responseOu.length; j++) {
+                                id = responseOu[j];
 
-								support.prototype.array.sort(dim.items);
-							}
-							else {
-								dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
-							}
-						}
-						else {
-							// Items: get ids from metadata -> items
-							if (Ext.isArray(metaDataDim) && metaDataDim.length) {
-								var ids = Ext.clone(response.metaData[dim.dimensionName]);
-								for (var j = 0; j < ids.length; j++) {
-									dim.items.push({
-										id: ids[j],
-										name: response.metaData.names[ids[j]]
-									});
-								}
-							}
-							// Items: get items from xLayout
-							else {
-								dim.items = Ext.clone(xLayout.objectNameItemsMap[dim.objectName]);
-							}
-						}
-					}
+                                dim.items.push({
+                                    id: id,
+                                    name: service.layout.getItemName(xLayout, response, id, false)
+                                });
+                            }
 
-					// Add missing names
-					dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || []));
+                            support.prototype.array.sort(dim.items);
+                        }
+                        else {
+                            dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
+                        }
+                    }
+                    else {
+                        // Items: get ids from metadata -> items
+                        if (Ext.isArray(metaDataDim) && metaDataDim.length) {
+                            var ids = Ext.clone(response.metaData[dim.dimensionName]);
+                            for (var j = 0; j < ids.length; j++) {
+                                dim.items.push({
+                                    id: ids[j],
+                                    name: response.metaData.names[ids[j]]
+                                });
+                            }
+                        }
+                        // Items: get items from xLayout
+                        else {
+                            dim.items = Ext.clone(xLayout.objectNameItemsMap[dim.objectName]);
+                        }
+                    }
+                }
 
-					for (var i = 0, idNameMap = response.metaData.names, dimItems; i < dimensions.length; i++) {
-						dimItems = dimensions[i].items;
+                // Add missing names
+                dimensions = Ext.Array.clean([].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || []));
 
-						if (Ext.isArray(dimItems) && dimItems.length) {
-							for (var j = 0, item; j < dimItems.length; j++) {
-								item = dimItems[j];
+                for (var i = 0, idNameMap = response.metaData.names, dimItems; i < dimensions.length; i++) {
+                    dimItems = dimensions[i].items;
 
-								if (Ext.isObject(item) && Ext.isString(idNameMap[item.id]) && !Ext.isString(item.name)) {
-									item.name = idNameMap[item.id] || '';
-								}
-							}
-						}
-					}
+                    if (Ext.isArray(dimItems) && dimItems.length) {
+                        for (var j = 0, item; j < dimItems.length; j++) {
+                            item = dimItems[j];
 
-					// Remove dimensions from layout that do not exist in response
-					for (var i = 0, dimensionName; i < xLayout.axisDimensionNames.length; i++) {
-						dimensionName = xLayout.axisDimensionNames[i];
-						if (!Ext.Array.contains(headerNames, dimensionName)) {
-							removeDimensionFromXLayout(dimensionName);
-						}
-					}
+                            if (Ext.isObject(item) && Ext.isString(idNameMap[item.id]) && !Ext.isString(item.name)) {
+                                item.name = idNameMap[item.id] || '';
+                            }
+                        }
+                    }
+                }
 
-					// Re-layout
-					layout = api.layout.Layout(xLayout);
+                // Remove dimensions from layout that do not exist in response
+                for (var i = 0, dimensionName; i < xLayout.axisDimensionNames.length; i++) {
+                    dimensionName = xLayout.axisDimensionNames[i];
+                    if (!Ext.Array.contains(headerNames, dimensionName)) {
+                        removeDimensionFromXLayout(dimensionName);
+                    }
+                }
 
-					if (layout) {
-						return service.layout.getExtendedLayout(layout);
-					}
+                // Add ou hierarchy dimensions
+                if (xOuDimension && xLayout.showHierarchy) {
+                    addOuHierarchyDimensions();
+                }
 
-					return null;
-				}();
+                // Re-layout
+                layout = api.layout.Layout(xLayout);
+
+                if (layout) {
+                    return service.layout.getExtendedLayout(layout);
+                }
+
+                return null;
 			};
 
 			service.layout.getExtendedAxis = function(xLayout, type) {
@@ -1922,7 +1966,8 @@ Ext.onReady( function() {
 					totalColObjects = [],
 					uuidDimUuidsMap = {},
 					isLegendSet = Ext.isObject(xLayout.legendSet) && Ext.isArray(xLayout.legendSet.mapLegends) && xLayout.legendSet.mapLegends.length,
-					htmlArray;
+                    tdCount = 0,
+                    htmlArray;
 
 				xResponse.sortableIdObjects = [];
 
@@ -1951,6 +1996,9 @@ Ext.onReady( function() {
                     if (config.hidden || config.collapsed) {
                         return '';
                     }
+
+                    // number of cells
+                    tdCount = tdCount + 1;
 
 					// Background color from legend set
 					if (isNumeric && xLayout.legendSet) {
@@ -2604,7 +2652,10 @@ Ext.onReady( function() {
 
 					return {
 						html: getHtml(htmlArray),
-						uuidDimUuidsMap: uuidDimUuidsMap
+						uuidDimUuidsMap: uuidDimUuidsMap,
+						xColAxis: xColAxis,
+						xRowAxis: xRowAxis,
+                        tdCount: tdCount
 					};
 				}();
 			};

@@ -90,6 +90,7 @@ public interface SystemSettingManager
     final String KEY_OPENID_PROVIDER_LABEL = "keyOpenIdProviderLabel";
     final String KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS = "keyCanGrantOwnUserAuthorityGroups";
     final String KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS = "keyHideUnapprovedDataInAnalytics";
+    final String KEY_ANALYTICS_MAX_LIMIT = "keyAnalyticsMaxLimit";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";
@@ -106,6 +107,7 @@ public interface SystemSettingManager
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
     final String DEFAULT_TIME_FOR_SENDING_MESSAGE = "08:00";
     final String DEFAULT_CACHE_STRATEGY = "CACHE_6AM_TOMORROW";
+    final int DEFAULT_ANALYTICS_MAX_LIMIT = 50000;
 
     final String SYSPROP_PORTAL = "runningAsPortal";
 

@@ -67,7 +67,7 @@ public class DefaultSystemSettingManager
     // -------------------------------------------------------------------------
 
     public void saveSystemSetting( String name, Serializable value )
-    {
+    {        
         SystemSetting setting = systemSettingStore.getByName( name );
 
         if ( setting == null )
