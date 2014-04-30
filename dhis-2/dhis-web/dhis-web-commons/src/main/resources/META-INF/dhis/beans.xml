@@ -396,7 +396,6 @@
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <bean id="org.hisp.dhis.commons.action.GetExpressionTextAction" class="org.hisp.dhis.commons.action.GetExpressionTextAction"

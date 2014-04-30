@@ -30,9 +30,7 @@ package org.hisp.dhis.commons.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -42,8 +40,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.util.ContextUtils;
 
 /**
@@ -75,13 +71,6 @@ public class GetDataSetsAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
-    }
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -139,18 +128,11 @@ public class GetDataSetsAction
 
         if ( !currentUserService.currentUserIsSuper() )
         {
-            Set<DataSet> accessibleDataSets = new HashSet<DataSet>();
-
             User user = currentUserService.getCurrentUser();
             
-            if ( user != null )
+            if ( user != null && user.getUserCredentials() != null )
             {
-                for ( UserAuthorityGroup u : userService.getUserCredentials( user ).getUserAuthorityGroups() )
-                {
-                    accessibleDataSets.addAll( u.getDataSets() );
-                }
-                
-                dataSets.retainAll( accessibleDataSets );
+                dataSets.retainAll( user.getUserCredentials().getAllDataSets() );
             }            
         }
 
