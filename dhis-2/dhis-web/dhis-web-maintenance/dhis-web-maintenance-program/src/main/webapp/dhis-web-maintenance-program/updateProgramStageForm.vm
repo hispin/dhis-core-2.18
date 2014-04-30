@@ -114,13 +114,13 @@
 			</tr>
 			
 			<tr>
-				<td><label for="remindCompleted">$i18n.getString( "remind_completing_program_after_program_stage_completed" )</label></td>
+				<td><label for="remindCompleted">$i18n.getString( "ask_user_to_complete_program_when_stage_complete" )</label></td>
 				<td><input type="checkbox" id="remindCompleted" name="remindCompleted" value='true' #if( $programStage.remindCompleted=='true' ) checked #end ></td>
 				<td></td>
 			</tr>
 			
 			<tr>
-				<td><label for="allowGenerateNextVisit">$i18n.getString( "remind_creating_next_event_on_this_event_completed" )</label></td>
+				<td><label for="allowGenerateNextVisit">$i18n.getString( "ask_user_to_create_new_event_when_stage_complete" )</label></td>
 				<td><input type="checkbox" id="allowGenerateNextVisit" name="allowGenerateNextVisit" value='true' #if( $programStage.allowGenerateNextVisit=='true' ) checked #end ></td>
 				<td></td>
 			</tr>
