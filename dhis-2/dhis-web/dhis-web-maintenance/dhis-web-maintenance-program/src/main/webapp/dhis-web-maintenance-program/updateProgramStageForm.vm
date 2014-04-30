@@ -94,7 +94,7 @@
 				</tr>
 			
 				<tr>
-					<td><label for="reportDateToUse">$i18n.getString( "report_date_to_use" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+					<td><label for="reportDateToUse">$i18n.getString( "report_date_to_use" )</label></td>
 					<td>
 						<select id="reportDateToUse" name="reportDateToUse" class="{validate:{required:true}}" 
 							#if($openAfterEnrollment!='' || $programStage.autoGenerateEvent=='false' ) disabled #elseif($programStage.openAfterEnrollment=='false') disabled #end >
@@ -127,7 +127,7 @@
 			
 			#if($programStage.program.type==1)
 			<tr>
-				<td><label for="generatedByEnrollmentDate">$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
+				<td><label for="generatedByEnrollmentDate">$i18n.getString( "generate_events_based_on_enrollment_date" ) <span class="tipText">($i18n.getString( "not_incident_date" ))</span></label></td>
 				<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($programStage.generatedByEnrollmentDate=='true') checked #end #if( $programStage.program.type!='1' ) disabled #end ></td>
 				<td></td>
 			</tr>

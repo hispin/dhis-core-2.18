@@ -119,7 +119,7 @@
 	
 	#if($program.type==1)
 	<tr>
-		<td><label for="generatedByEnrollmentDate">$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
+		<td><label for="generatedByEnrollmentDate">$i18n.getString( "generate_events_based_on_enrollment_date" ) <span class="tipText">($i18n.getString( "not_incident_date" ))</label></td>
 		<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true'></td>
 		<td></td>
 	</tr>
