@@ -31,7 +31,7 @@
 #otherProgramStageDataElements{ 
 	z-index:999999;
 	font-size:10pt;
-	
+	width:100%;
 }
 
 .ui-dialog-titlebar
@@ -130,16 +130,16 @@
 	<table id='dataElementSelection'>
 		<tr>
 			<td>
-				$i18n.getString( "filter" )&nbsp;
-				<input type="text" id='dataElementFilter' style="width:240px;" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
+				<input type="text" placeholder="$i18n.getString('filter')" id='dataElementFilter' style="width:380px;;" onchange="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
 			</td>
 			<td>	
+				<input type='button' value="$i18n.getString('filter')" style="width:80px;" onclick="filterDataElements( getFieldValue('dataElementFilter'), '#dataElementSelection', '#dataElementIds')" onclick="filterDataElements( getFieldValue('deKey'), '#dataElementSelection', '#dataElementIds')">
 				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('dataElementFilter','');filterDataElements( '', '#dataElementSelection', '#dataElementIds')">
 			</td>
 		</tr>
 		<tr>
 			<td colspan='2'>	
-				<select id="dataElementIds" name="dataElementIds" style="width:430px;"  multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.uid')">
+				<select id="dataElementIds" name="dataElementIds" style="height:200px; width:100%;"  multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.uid')">
 					#foreach( $de in $dataElements)
 					#set($deJSON = '{' + '"uid"' + ':"' + "$de.uid" + '",' + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.getDetailedTextType()"  + '"}' )
 					<option value='$deJSON' decode="$!de.code" dename="$de.name" title="$de.name">$encoder.htmlEncode( $de.name )</option>
@@ -165,8 +165,7 @@
 								<option value='3'>$i18n.getString("code_and_name")</option>
 							</select>
 						</td>
-					</tr>
-					<tr>
+						<td style="padding-left:190px;"><td>
 						<td>$i18n.getString("sort_by")</td>
 						<td>
 							<input type='radio' name='sortBy' value='1' onchange="sortByOnChange('dataElementSelection', '1')" checked >$i18n.getString("name")
@@ -193,7 +192,7 @@
 					<tr>
 						<td>$i18n.getString( "program_stage" )</td>
 						<td>
-							<select id="programStageIds" style="width:320px" onchange="getProgramStageDataElements( this.value )" >
+							<select id="programStageIds" style="height:200px;width:100%;" onchange="getProgramStageDataElements( this.value )" >
 								<option value=''>[$i18n.getString( "please_select" )]</option>
 								#foreach( $p in $programStages)
 								<option value='$p.id' uid='$p.uid'>$encoder.htmlEncode( $p.name )</option>

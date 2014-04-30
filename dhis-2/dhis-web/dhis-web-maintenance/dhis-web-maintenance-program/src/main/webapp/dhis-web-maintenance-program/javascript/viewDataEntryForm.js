@@ -6,9 +6,9 @@ var timeout;
 jQuery(function(){
 	dataElementSelector = jQuery("#dataElementDiv").dialog({
 		title: i18n_dataelement,
-		height: 360,
-		width: 480,
-		position: [$("body").width()- 50, 0],
+		minWidth: 595,
+		minHeight: 263,
+		position: [($("body").width() - 555) - 50, 50],
 		autoOpen: false,
 		zIndex:99999
 	});
