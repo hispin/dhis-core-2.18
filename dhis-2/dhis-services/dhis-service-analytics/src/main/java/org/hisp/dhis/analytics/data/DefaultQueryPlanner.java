@@ -36,7 +36,7 @@ import static org.hisp.dhis.analytics.AggregationType.COUNT;
 import static org.hisp.dhis.analytics.AggregationType.STDDEV;
 import static org.hisp.dhis.analytics.AggregationType.VARIANCE;
 import static org.hisp.dhis.analytics.DataQueryParams.LEVEL_PREFIX;
-import static org.hisp.dhis.analytics.DataQueryParams.MAX_DIM_OPT_PERM;
+import static org.hisp.dhis.analytics.DataQueryParams.DEFAULT_MAX_DIM_OPT_PERM;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
@@ -75,6 +75,7 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.PaginatedList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +93,9 @@ public class DefaultQueryPlanner
     
     @Autowired
     private PartitionManager partitionManager;
+    
+    @Autowired
+    private SystemSettingManager systemSettingManager;
     
     // -------------------------------------------------------------------------
     // DefaultQueryPlanner implementation
@@ -139,9 +143,9 @@ public class DefaultQueryPlanner
             violation = "Category option combos cannot be specified as filter";
         }
         
-        if ( !params.isIgnoreLimit() && params.getNumberOfDimensionOptionPermutations() > MAX_DIM_OPT_PERM )
+        if ( !params.isIgnoreLimit() && params.getNumberOfDimensionOptionPermutations() > getMaxLimit() )
         {
-            violation = "Table exceeds max number of cells: " + MAX_DIM_OPT_PERM + " (" + params.getNumberOfDimensionOptionPermutations() + ")";
+            violation = "Table exceeds max number of cells: " + getMaxLimit() + " (" + params.getNumberOfDimensionOptionPermutations() + ")";
         }
         
         if ( !params.getDuplicateDimensions().isEmpty() )
@@ -710,5 +714,13 @@ public class DefaultQueryPlanner
         }
         
         return map;
+    }
+    
+    /**
+     * Returns the max records limit.
+     */
+    private int getMaxLimit()
+    {
+        return (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_ANALYTICS_MAX_LIMIT, DEFAULT_MAX_DIM_OPT_PERM );
     }
 }
