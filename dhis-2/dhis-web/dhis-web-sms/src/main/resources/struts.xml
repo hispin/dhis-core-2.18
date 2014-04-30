@@ -48,13 +48,13 @@
       <param name="menu">/dhis-web-sms/menuWithTree.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
       <param name="stylesheets">../dhis-web-sms/css/patient.css</param>
-      <param name="requiredAuthorities">F_MOBILE_SENDSMS,F_PATIENT_SEARCH</param>
+      <param name="requiredAuthorities">F_MOBILE_SENDSMS,F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
     </action>
 
     <action name="searchRegistrationPatient" class="org.hisp.dhis.sms.outcoming.SearchPatientAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-sms/patientRegistrationList.vm</param>
-      <param name="requiredAuthorities">F_PATIENT_SEARCH</param>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
     </action>
 
     <action name="sendSMS"
@@ -67,7 +67,7 @@
     <action name="searchAllFacilities" class="org.hisp.dhis.sms.action.NoAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
-      <param name="requiredAuthorities">F_SEARCH_PATIENT_IN_ALL_FACILITIES</param>
+      <param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH_IN_ALL_ORGUNITS</param>
     </action>
 
   </package>
