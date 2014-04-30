@@ -46,6 +46,10 @@
 #attributesSelector, #programSelector {
 	padding: 2px;
 }
+
+#attributeTab,programAttrTab {
+	width: 100%;
+}
 </style>
 
 <form id="saveDataEntryForm" name="saveDataEntryForm" action="saveTrackedEntityForm.action" method="get" class="inputForm">
@@ -114,13 +118,14 @@
     <table id="attributeTab">
    		<tr>
    			<td>
-   				<input type='text' id='attributeFilter' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'attributesSelector' )">
-   				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('attributeFilter','');filterList( '', 'attributesSelector' )">
+   				<input type='text' id='attributeFilter' placeholder="$i18n.getString('filter')" style="width:400px;" onchange="filterList( this.value, 'attributesSelector' )">
+   				<input type='button' value="$i18n.getString('filter')" style="width:80px;" onclick="filterList( getFieldValue('attributeFilter'), 'attributesSelector' )">
+				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('attributeFilter','');filterList( '', 'attributesSelector' )">
    			</td>
    		</tr>
    		<tr>
    			<td>
-   				<select id="attributesSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'attr' )">
+   				<select id="attributesSelector" multiple="multiple" style="height:200px;width:100%;" ondblclick="insertElement( 'attr' )">
    				#foreach( $attribute in $attributes )
    					<option value="$attribute.uid" mandatory='false'>$encoder.htmlEncode($attribute.displayName)</option>
    				#end
@@ -136,13 +141,14 @@
 	<table id="programAttrTab" class='hidden'>
 		<tr>
 			<td>
-				<input type='text' id='programAttrKey' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'programAttrSelector' )">
+				<input type='text' id='programAttrKey' placeholder="$i18n.getString('filter')" style="width:400px;" onchange="filterList( this.value, 'programAttrSelector' )">
+				<input type='button' value="$i18n.getString('filter')" style="width:80px;" onclick="filterList( getFieldValue('programAttrKey'), 'programAttrSelector' )">
 				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('programAttrKey','');filterList( '', 'programAttrSelector' )">
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<select id="programAttrSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'prg' )">
+				<select id="programAttrSelector" multiple="multiple" style="height:200px;width:100%;" ondblclick="insertElement( 'prg' )">
 					<option value="enrollmentDate" >$encoder.htmlEncode($program.dateOfEnrollmentDescription)</option>
 					#if($program.displayIncidentDate=='true')
 					<option value="dateOfIncident" >$encoder.htmlEncode($program.dateOfIncidentDescription)</option>
@@ -171,7 +177,7 @@
 <div id="imageDialog" title="$i18n.getString( 'insert_images' )" class='hidden'>
 	<div style="margin:4px">
 		<div>
-			<select id="imageSelector" multiple="multiple" style="height: 200px; width:100%;" ondblclick='insertImage();'>
+			<select id="imageSelector" multiple="multiple" style="height:200px;width:100%;" ondblclick='insertImage();'>
 			#foreach( $flag in $flags )
 			<option value="../dhis-web-commons/flags/${flag}.png">$i18n.getString( ${flag} )</option>
 			#end

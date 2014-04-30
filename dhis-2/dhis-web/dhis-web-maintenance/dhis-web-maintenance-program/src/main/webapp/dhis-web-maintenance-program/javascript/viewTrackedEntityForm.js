@@ -23,9 +23,9 @@ $( document ).ready( function()
 	$("#insertImagesButton").click(function() {
 		$("#imageDialog").dialog({
 			overlay:{background:'#000000', opacity:0.1},
-			width:400,
-			height:300,
-			position: [$("body").width()- 50, 0],
+			minWidth: 595,
+			minHeight: 263,
+			position: [($("body").width() - 555) - 50, 50],
 		});
 	});
 	
@@ -45,9 +45,9 @@ function openPropertiesSelector()
 			closable:true,
 			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
-			width:485,
-			height:400,
-			position: [$("body").width()- 50, 0],
+			minWidth: 595,
+			minHeight: 263,
+			position: [($("body").width() - 555) - 50, 50],
 			close: function(ev, ui) { 
 				$("#propertiesButton").removeClass("ui-state-active2"); 
 			}
