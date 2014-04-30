@@ -78,7 +78,7 @@
 		#end
 		
 		<tr>
-			<td><label for="openAfterEnrollment">$i18n.getString( "open_data_entry_form_after_enrolment" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="openAfterEnrollment">$i18n.getString( "open_data_entry_form_after_enrolment" )</label></td>
 			<td><input type="checkbox" id="openAfterEnrollment" name="openAfterEnrollment" value='true' 
 				onchange="openAfterEnrollmentOnchange();" 
 				#if($openAfterEnrollment!='') disabled #end>
