@@ -102,4 +102,10 @@ public class DefaultTariffDataValueService implements TariffDataValueService
         return tariffDataValueStore.getTariffDataValues( orgUnitGroup, dataSet, period );
     }
 
+    public String getTariffDataValue( Integer orgunitgroupId, Integer dataSetId, Integer dataElementId, String date )
+    {
+        return tariffDataValueStore.getTariffDataValue( orgunitgroupId, dataSetId, dataElementId, date );
+    }
+    
+    
 }

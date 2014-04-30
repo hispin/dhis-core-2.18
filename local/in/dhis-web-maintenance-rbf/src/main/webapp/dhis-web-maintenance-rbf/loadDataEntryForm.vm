@@ -28,9 +28,13 @@
 	<tr bgcolor="#CBDDEB">
 		<th style="width:35%;">$i18n.getString( "dataelement" )</th>
 		<th style="text-align: center;width:15%;">$i18n.getString( "qty_reported" )</th>
-		<th style="text-align: center;width:15%;">$i18n.getString( "qty_validated" )</th>
-		<th style="text-align: center;width:15%;">$i18n.getString( "tariff_amount" )</th>
-		<th style="text-align: center;width:15%;">$i18n.getString( "total" )</th>
+		
+		#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") )
+			<th style="text-align: center;width:15%;">$i18n.getString( "qty_validated" )</th>
+			<th style="text-align: center;width:15%;">$i18n.getString( "tariff_amount" )</th>
+			<th style="text-align: center;width:15%;">$i18n.getString( "total" )</th>
+		#end
+			
 	</tr>
 	<script>
 		var allTotal = 0.0;
@@ -45,51 +49,53 @@
 		<tr #if( $mark1 ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8" #end>
 			<td><label>$dataElement.getFormNameFallback()</label></td>
 			#set( $count = 0)
-			#set( $pbfDataValue = $!pbfDataValueMap.get( $dataElement ) )
-			<td>
-				<input onblur="savePBFDataValue('$dataElement.id', 1 )" type="text" name="pbfdv_qty_reported_$dataElement.id" id="pbfdv_qty_reported_$dataElement.id" 
-						value="$!pbfDataValue.quantityReported" tabindex="$tabIndex" style="text-align: center;" 
-						#if($dataElement.type =='number') class="{validate:{number:true}}" 
-						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
-						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
-						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
-						#end  />
-			</td>
+				#set( $pbfDataValue = $!pbfDataValueMap.get( $dataElement ) )
+    			<td>
+    				<input onblur="savePBFDataValue('$dataElement.id', 1 )" type="text" name="pbfdv_qty_reported_$dataElement.id" id="pbfdv_qty_reported_$dataElement.id" 
+    						value="$!pbfDataValue.quantityReported" tabindex="$tabIndex" style="text-align: center;" 
+    						#if($dataElement.type =='number') class="{validate:{number:true}}" 
+    						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
+    						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
+    						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
+    						#end  />
+    			</td>
+    			#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") )
+        			<td>
+        				<input onblur="savePBFDataValue('$dataElement.id', 2 )" onkeyup="calTariffVal('$dataElement.id')" type="text" name="pbfdv_qty_validated_$dataElement.id" id="pbfdv_qty_validated_$dataElement.id" 
+        						value="$!pbfDataValue.quantityValidated" tabindex="$tabIndex" style="text-align: center;" 
+        						#if($dataElement.type =='number') class="{validate:{number:true}}" 
+        						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
+        						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
+        						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
+        						#end class="quantity$count"  />
+        				</td>
+        				<script>
+        					function changeInt()
+        					{
+        						var tariff = 0.0;
+        					if('$!pbfDataValue.tariffAmount' != '' )
+        					{
+        						tariff = parseFloat($pbfDataValue.tariffAmount);
+        						$('#pbfdv_tariff_amt_'+$dataElement.id).val(tariff);
+        					}					
+        											
+        					}
+        					changeInt();
+        				</script>
+        			<td>
+        				<input type="text" name="pbfdv_tariff_amt_$dataElement.id" id="pbfdv_tariff_amt_$dataElement.id" 
+        						value="$!pbfDataValue.tariffAmount" tabindex="$tabIndex" style="text-align: center;" 
+        						#if($dataElement.type =='number') class="{validate:{number:true}}" 
+        						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
+        						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
+        						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
+        						#end class="tariff$count" readonly/>
+        			</td>
+        			<td >
+        				<input type="text" id="total_$dataElement.id" style="text-align: center;" readonly/>
+                    </td>
+				#end			
 			
-			<td>
-				<input onblur="savePBFDataValue('$dataElement.id', 2 )" onkeyup="calTariffVal('$dataElement.id')" type="text" name="pbfdv_qty_validated_$dataElement.id" id="pbfdv_qty_validated_$dataElement.id" 
-						value="$!pbfDataValue.quantityValidated" tabindex="$tabIndex" style="text-align: center;" 
-						#if($dataElement.type =='number') class="{validate:{number:true}}" 
-						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
-						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
-						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
-						#end class="quantity$count"  />
-				</td>
-				<script>
-					function changeInt()
-					{
-						var tariff = 0.0;
-					if('$!pbfDataValue.tariffAmount' != '' )
-					{
-						tariff = parseFloat($pbfDataValue.tariffAmount);
-						$('#pbfdv_tariff_amt_'+$dataElement.id).val(tariff);
-					}					
-											
-					}
-					changeInt();
-				</script>
-			<td>
-				<input type="text" name="pbfdv_tariff_amt_$dataElement.id" id="pbfdv_tariff_amt_$dataElement.id" 
-						value="$!pbfDataValue.tariffAmount" tabindex="$tabIndex" style="text-align: center;" 
-						#if($dataElement.type =='number') class="{validate:{number:true}}" 
-						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
-						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
-						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
-						#end class="tariff$count" readonly/>
-			</td>
-			<td >
-				<input type="text" id="total_$dataElement.id" style="text-align: center;" readonly/>
-            </td>
 			<script >				
                 function calVal( ) {
 					var total = 0.0;
@@ -129,14 +135,16 @@
                   calVal();
                 });
             </script>	
-			
-			#end			
+			#end
+					
 			
 			#set( $count = $count + 1)
 		</tr>
 		#set( $tabIndex = $tabIndex + 1 )
 		#set( $mark = !$mark)	
-	#end
+#end
+
+	#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") )
 		<tr>
 			<td >&nbsp;</td>
 			<td >&nbsp;</td>
@@ -146,6 +154,7 @@
 				<input type="text" id="all-total" style="text-align: center;" readonly/>
             </td>
 		</tr>
+	#end
 		<script>
 			function calTariffVal( dataElementId ) {
 					var total = 0.0;

@@ -38,6 +38,7 @@
 		
 		<action name="validateTariffData" class="org.hisp.dhis.rbf.action.ValidateTariffDataAction">
 			<result name="success" type="velocity-json">/dhis-web-maintenance-rbf/tariffStatus.vm</result>
+			<result name="error" type="velocity-json">/dhis-web-maintenance-rbf/responseTariffStatusInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>								
 		</action>
 		
@@ -100,6 +101,19 @@
 		<result name="success" type="velocity">/content.vm</result>
 		<param name="page">/dhis-web-maintenance-rbf/loadDataEntryForm.vm</param>
 	</action>	
+	
+	<!-- for PBF DataEntry Role -->	 
+	<action name="quanitityValidated" class="org.hisp.dhis.rbf.action.NoAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-maintenance-rbf/loadDataEntryForm.vm</param>		
+	 	<param name="requiredAuthorities">F_QUANTITY_VALIDATED</param>		
+	</action>	
+	
+	
+	
+	
+	
+	
 	
 	<!-- Save Value -->
 	<action name="saveValue"

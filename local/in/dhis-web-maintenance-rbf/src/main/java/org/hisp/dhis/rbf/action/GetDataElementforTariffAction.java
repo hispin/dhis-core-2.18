@@ -10,6 +10,7 @@ import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -90,6 +91,14 @@ public class GetDataElementforTariffAction
         return orgUnitGroups;
     }
     
+    private Integer orgUnitGroupId;
+
+    public void setOrgUnitGroupId( Integer orgUnitGroupId )
+    {
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
+    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -121,21 +130,63 @@ public class GetDataElementforTariffAction
         
         orgUnitGroups = new ArrayList<OrganisationUnitGroup>( orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() ).getOrganisationUnitGroups() );
         
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-
-        for ( DataElement de : dataElements )
+        /*
+        if ( orgUnitGroupId != null )
         {
-            Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
-            for ( AttributeValue attValue : attrValueSet )
+            List<DataElement> dataElements = new ArrayList<DataElement>();
+            
+            OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
+            List<DataSet> dataSets = new ArrayList<DataSet>( orgUnitGroup.getDataSets() );
+            for ( DataSet ds : dataSets )
             {
-                if ( dataElementList != null && !( dataElementList.contains( "{\"name\" : \"" + de.getName() + "\"}" ) )
-                    && attValue.getAttribute().getId() == tariffDataElement.getValue() )
+                dataElements.addAll( ds.getDataElements() );
+            }
+            
+            for ( DataElement de : dataElements )
+            {
+                Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
+                for ( AttributeValue attValue : attrValueSet )
                 {
-                    dataElementList.add( "{\"name\" : \"" + de.getName() + "\"}" );
+                    if ( dataElementList != null && !( dataElementList.contains( "{\"name\" : \"" + de.getName() + "\"}" ) )
+                        && attValue.getAttribute().getId() == tariffDataElement.getValue() )
+                    {
+                        dataElementList.add( "{\"name\" : \"" + de.getName() + "\"}" );
+                    }
                 }
             }
+            
         }
+        */
+        
+        //else
+        //{
+            List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
 
+            for ( DataElement de : dataElements )
+            {
+                Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
+                for ( AttributeValue attValue : attrValueSet )
+                {
+                    if ( dataElementList != null && !( dataElementList.contains( "{\"name\" : \"" + de.getName() + "\"}" ) )
+                        && attValue.getAttribute().getId() == tariffDataElement.getValue() )
+                    {
+                        dataElementList.add( "{\"name\" : \"" + de.getName() + "\"}" );
+                    }
+                }
+            }
+        //}
+        
+        /*
+        System.out.println( "dataElementList Size : " + dataElementList.size() );
+        
+        for( String dataElement : dataElementList )
+        {
+            System.out.println("  --- dataElement" + dataElement );
+        }
+        */
+            
+        
+        
         return SUCCESS;
     }
 }
