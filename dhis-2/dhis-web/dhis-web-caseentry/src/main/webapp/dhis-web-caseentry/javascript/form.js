@@ -5,6 +5,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	setInnerHTML( 'contentDiv', '' );
 	setFieldValue( 'orgunitName', orgUnitNames[0] );
 	
+	hideById('programNameDiv');
 	hideById('singleDataEntryFormDiv');
 	showById('searchDiv');
 	
@@ -22,6 +23,7 @@ function loadDataEntry( programStageInstanceId )
 	setInnerHTML('singleDataEntryFormDiv', '');
 	showById('executionDateTB');
 	showById('singleDataEntryFormDiv');
+	showById('programNameDiv');
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
 	disableCompletedButton(true);
@@ -32,10 +34,10 @@ function loadDataEntry( programStageInstanceId )
 	$( '#singleDataEntryFormDiv' ).load( "dataentryform.action", 
 		{ 
 			programStageInstanceId: programStageInstanceId
-		},function( html )
+		},function()
 		{
 			var programName = $('#program option:selected').text();
-			setInnerHTML( 'singleDataEntryFormDiv', '<h3>' + programName + '</h3><br>' + html);
+			setInnerHTML( 'programNameDiv', '<h3>' + programName + '</h3>');
 			var completed = jQuery('#entryFormContainer input[id=completed]').val();
 			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
 			showById('inputCriteriaDiv');
@@ -51,6 +53,7 @@ function loadDataEntry( programStageInstanceId )
 
 function showSearchForm()
 {
+	hideById('programNameDiv');
 	hideById('singleDataEntryFormDiv');
 	hideById('addNewDiv');
 	showById('searchDiv');
@@ -140,6 +143,7 @@ function loadTrackedEntityInstanceList() {
 	hideById('enrollmentDiv');
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
+	hideById('programNameDiv');
 	hideById('singleDataEntryFormDiv');
 	hideById('migrationEntityInstanceDiv');
 	setInnerHTML('entityInstanceDashboard', '');
@@ -251,24 +255,23 @@ function displayTEIList(json, page) {
 				colVal = (colVal=='true')? i18n_yes : i18n_no;
 			}
 			
-			table += "<td onclick=\"javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '"
+			table += "<td onclick=\"javascript:isDashboard=true;showUpdateEventForm( '"
 				+ uid
 				+ "' )\" title='"
-				+ i18n_dashboard
-				+ "'>" + colVal + "</td>";
+				+ i18n_data_entry
+				+ "'><a>" + colVal + "</a></td>";
 		}
 		
 		// Operations column
 		table += "<td>";
-		table += "<a href=\"javascript:isDashboard=false;showUpdateTrackedEntityInstanceForm( '"
+		table += "<a href=\"javascript:isDashboard=false;showUpdateEventForm( '"
 				+ uid
 				+ "' )\" title='"
 				+ i18n_data_entry
 				+ "'><img src= '../images/edit.png' alt='"
 				+ i18n_data_entry
 				+ "'></a>";
-		table += "<a href=\"javascript:removeTrackedEntityInstance( '" + uid
-				+ "', '', '" + i18n_confirm_delete_tracked_entity_instance
+		table += "<a href=\"javascript:removeSingleEvent( '" + uid
 				+ "' )\" title='" + i18n_remove
 				+ "'><img src='../images/delete.png' alt='" + i18n_remove
 				+ "'></a>";
@@ -357,3 +360,34 @@ function createProgramInstance( entityInstanceId, programId )
 			loadDataEntry( json.activeProgramStageInstanceId );
 		});
 };		
+
+function removeSingleEvent(uid)
+{
+	var result = window.confirm( i18n_comfirm_delete_event );
+					
+    if ( result )
+    {
+		jQuery.getJSON( "removeSingleEvent.action",
+			{
+				entityInstanceId: uid,
+				programId: getFieldValue('program')
+			}, 
+			function( json ) 
+			{    
+				if ( json.response == "success" )
+    	    	{
+                    $( "tr#tr" + uid ).remove();
+	                
+                    $( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+                    $( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+                    $( "table.listTable tbody tr:even" ).addClass( "listRow" );
+                    $( "table.listTable tbody" ).trigger("update");
+					showSuccessMessage( i18n_delete_success );
+    	    	}
+    	    	else if ( json.response == "error" )
+    	    	{ 
+					showWarningMessage( json.message );
+    	    	}
+			});
+	}
+}

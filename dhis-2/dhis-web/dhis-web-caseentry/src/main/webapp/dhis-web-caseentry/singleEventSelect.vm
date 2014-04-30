@@ -50,6 +50,7 @@
 <div id='listEntityInstanceDiv'></div>
 <div id='addNewDiv'></div>
 <div id='entityInstanceDashboard'></div> <!-- TrackedEntityInstance dashboard -->
+<div id='programNameDiv'></div>
 <div id='singleDataEntryFormDiv'></div>
 <div id='editEntityInstanceDiv'></div> <!-- Add TrackedEntityInstance Form -->
 <div id='resultSearchDiv' style='font-size:13px'></div> <!-- List searching entityInstances -->

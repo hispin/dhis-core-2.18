@@ -751,6 +751,12 @@
 		scope="prototype">
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.RemoveSingleEventAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.RemoveSingleEventAction"
+		scope="prototype">
+	</bean>
 
 	<!-- Comment && Message -->
 

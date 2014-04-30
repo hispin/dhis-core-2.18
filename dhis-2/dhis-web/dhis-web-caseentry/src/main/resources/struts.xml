@@ -842,7 +842,7 @@
 			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_DASHBOARD</param>
 		</action>
-
+		
 		<action name="removeProgramInstance"
 			class="org.hisp.dhis.caseentry.action.caseentry.RemoveProgramInstanceAction">
 			<result name="success" type="velocity-json">
@@ -854,6 +854,17 @@
 			<param name="requiredAuthorities">F_PROGRAM_INSTANCE_DELETE</param>
 		</action>
 
+		<action name="removeSingleEvent"
+			class="org.hisp.dhis.caseentry.action.caseentry.RemoveSingleEventAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
+			<param name="requiredAuthorities">F_PROGRAM_INSTANCE_DELETE</param>
+		</action>
+		
 		<!-- Comment && Message -->
 
 		<action name="saveTrackedEntityInstanceComment"

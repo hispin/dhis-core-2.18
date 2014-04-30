@@ -62,10 +62,11 @@ function showAddTrackedEntityInstanceForm()
 		});
 }
 
-function showUpdateTrackedEntityInstanceForm( entityInstanceId )
+function showUpdateEventForm( entityInstanceId )
 {
 	showLoader();
 	hideById('searchDiv');
+	hideById('programNameDiv');
 	hideById('singleDataEntryFormDiv');
 	hideById('dataEntryMenu');
 	showById('eventActionMenu');
