@@ -60,14 +60,14 @@ public class LoadTariffDetailsAction
     }
 
     private LookupService lookupService;
-    
+
     public void setLookupService( LookupService lookupService )
     {
         this.lookupService = lookupService;
     }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -80,11 +80,11 @@ public class LoadTariffDetailsAction
     // Input / Output
     // -------------------------------------------------------------------------
     private Integer orgUnitGroupId;
-    
-    public void setOrgUnitGroupId(Integer orgUnitGroupId) 
+
+    public void setOrgUnitGroupId( Integer orgUnitGroupId )
     {
-		this.orgUnitGroupId = orgUnitGroupId;
-	}
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
 
     private String dataElementName;
 
@@ -122,28 +122,30 @@ public class LoadTariffDetailsAction
     }
 
     private List<DataSet> dataSets = new ArrayList<DataSet>();
-    
+
     public List<DataSet> getDataSets()
     {
         return dataSets;
     }
-    
+
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );;
-    
-    public SimpleDateFormat getSimpleDateFormat() {
-		return simpleDateFormat;
-	}
-    
+
+    public SimpleDateFormat getSimpleDateFormat()
+    {
+        return simpleDateFormat;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-	public String execute()
+    public String execute()
     {
         User curUser = currentUserService.getCurrentUser();
-        
-        List<UserAuthorityGroup> userAuthorityGroups = new ArrayList<UserAuthorityGroup>( curUser.getUserCredentials().getUserAuthorityGroups() );
-        
+
+        List<UserAuthorityGroup> userAuthorityGroups = new ArrayList<UserAuthorityGroup>( curUser.getUserCredentials()
+            .getUserAuthorityGroups() );
+
         for ( UserAuthorityGroup userAuthorityGroup : userAuthorityGroups )
         {
             userAuthorityGroup.getUserGroupAccesses();
@@ -159,26 +161,50 @@ public class LoadTariffDetailsAction
 
         selecteddataElement = dataElementService.getDataElementByName( dataElementName );
 
-        //OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
-        
+        // OrganisationUnit organisationUnit =
+        // organisationUnitService.getOrganisationUnit( orgUnitUid );
+
         OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
-        
-        //organisationUnit.getParent()
-        
-        //tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( organisationUnit, selecteddataElement ) );
-        
-        tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( orgUnitGroup, selecteddataElement ) );
+
+        // organisationUnit.getParent()
+
+        // tariffList = new ArrayList<TariffDataValue>(
+        // tariffDataValueService.getTariffDataValues( organisationUnit,
+        // selecteddataElement ) );
+
+        tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( orgUnitGroup,
+            selecteddataElement ) );
 
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
-        
-        for( Lookup lookup : lookups )
+
+        for ( Lookup lookup : lookups )
         {
             Integer dataSetId = Integer.parseInt( lookup.getValue() );
-            
+
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
-            
+
             dataSets.add( dataSet );
         }
+        
+        dataSets.retainAll( orgUnitGroup.getDataSets() );
+        
+        /*
+        System.out.println( "Lookup DataSet Size : " + dataSets.size() );
+        
+        for( DataSet dataSet : dataSets )
+        {
+            System.out.println(" Lookup dataSet ---" + dataSet.getId() +" -- " + dataSet.getName() );
+        }
+        
+        System.out.println( " OrgUnit DataSet Size : " + orgUnitGroup.getDataSets().size() );
+        
+        for( DataSet dataSet : orgUnitGroup.getDataSets() )
+        {
+            System.out.println(" Group dataSet ---" + dataSet.getId() +" -- " + dataSet.getName() );
+        }
+        
+        System.out.println( "Final DataSet Size : " + dataSets.size() );
+        */
         
         return SUCCESS;
     }

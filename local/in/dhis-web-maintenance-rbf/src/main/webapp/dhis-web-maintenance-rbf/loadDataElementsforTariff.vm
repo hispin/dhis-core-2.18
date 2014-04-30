@@ -88,6 +88,17 @@ function orgUnitGroupChange()
     {
         document.getElementById('simpleCombo').style.display = 'block';
         document.getElementById('loadTariffDetails').style.display = 'block';
+		
+		/*
+		$('#simpleCombo').load("dataElementTariffManagement.action",
+		{
+			orgUnitGroupId : $( "#orgUnitGroupId" ).val()
+        }
+            				, function( ){  
+							
+        				});  	
+		
+		*/
         if( $('#dataElementName').val() != '' )
         {
             getTariffData();
@@ -169,8 +180,8 @@ function loadExtTariff()
 <input type="hidden" name="dataElementName" id="dataElementName" value="" />
 <table width="60%">
 	<tr>
-		<td >Orgainsation Unit Group: &nbsp;&nbsp;&nbsp; 
-		    <select id="orgUnitGroupId" name="orgUnitGroupId" onchange="javascript:orgUnitGroupChange()">
+		<td>Orgainsation Unit Group: &nbsp;&nbsp;&nbsp; 
+		    <select id="orgUnitGroupId" name="orgUnitGroupId" onchange="javascript:orgUnitGroupChange()" style="width:52%">
                 <option value="-1">[Please select]</option>		    	
                 #foreach( $orgUnitGroup in $orgUnitGroups )
                 	<option value="$!orgUnitGroup.id">$!orgUnitGroup.name</option>

@@ -56,21 +56,21 @@ public class ValidateTariffDataAction
     }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     @Autowired
     private OrganisationUnitGroupService orgUnitGroupService;
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private String pbfType;
-    
+
     private String startDate;
 
     private String endDate;
@@ -80,13 +80,13 @@ public class ValidateTariffDataAction
     private String orgUnitUid;
 
     private Integer orgUnitGroupId;
-    
-    public void setOrgUnitGroupId(Integer orgUnitGroupId) 
-    {
-		this.orgUnitGroupId = orgUnitGroupId;
-	}
 
-	public void setDataElementId( String dataElementId )
+    public void setOrgUnitGroupId( Integer orgUnitGroupId )
+    {
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
+
+    public void setDataElementId( String dataElementId )
     {
         this.dataElementId = dataElementId;
     }
@@ -110,62 +110,108 @@ public class ValidateTariffDataAction
     {
         this.endDate = endDate;
     }
-    public String getPbfType() {
-		return pbfType;
-	}
 
-	public String getStartDate() {
-		return startDate;
-	}
+    public String getPbfType()
+    {
+        return pbfType;
+    }
 
-	public String getEndDate() {
-		return endDate;
-	}
+    public String getStartDate()
+    {
+        return startDate;
+    }
 
-	public String getOrgUnitUid() {
-		return orgUnitUid;
-	}
+    public String getEndDate()
+    {
+        return endDate;
+    }
 
-	private String message;
-    
-        public String getMessage() {
-		return message;
-	}
+    public String getOrgUnitUid()
+    {
+        return orgUnitUid;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-	public String execute()
+    public String execute()
         throws Exception
-    {	
-		System.out.println(startDate);
+    {
+        System.out.println( startDate );
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        
         Date sDate = dateFormat.parse( startDate );
         Date eDate = dateFormat.parse( endDate );
 
         DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
 
-        //OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+        // OrganisationUnit organisationUnit =
+        // organisationUnitService.getOrganisationUnit( orgUnitUid );
 
         OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
-        
-        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( pbfType ) );        
-        
-        List<TariffDataValue> tariffDataValues = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues(orgUnitGroup, dataElement));
-        //boolean status = false;
-        for(TariffDataValue tdv : tariffDataValues)
-        {        	
-        	if(tdv.getDataSet().getId() == dataSet.getId() && tdv.getStartDate().before(sDate) && tdv.getEndDate().after(eDate) )
-        	{
-        		message = "true";
-        		break;
-        	}
-        	else
-        	{
-        		message = "false";
-        	}
+
+        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( pbfType ) );
+
+        List<TariffDataValue> tariffDataValues = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( orgUnitGroup, dataElement ) );
+        // boolean status = false;
+        for ( TariffDataValue tdv : tariffDataValues )
+        {
+            if ( tdv.getDataSet().getId() == dataSet.getId() && tdv.getStartDate().before( sDate )
+                && tdv.getEndDate().after( eDate ) )
+            {
+                message = "true";
+                break;
+            }
+            else
+            {
+                message = "false";
+            }
         }
+
+        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( orgUnitGroup, dataElement, dataSet, sDate, eDate );
+        
+        if ( tariffDataValue == null )
+        {
+            String value = tariffDataValueService.getTariffDataValue( orgUnitGroup.getId(), dataSet.getId(), dataElement.getId(), startDate );
+            
+            if ( value == null  )
+            {
+                String enddateValue = tariffDataValueService.getTariffDataValue( orgUnitGroup.getId(), dataSet.getId(), dataElement.getId(), endDate );
+                
+                if ( enddateValue != null  )
+                {
+                    message = "Data Already Exists for the period " + enddateValue + " , Please Specify Another Date";
+
+                    return ERROR;
+                }
+            }
+            
+            else
+            {
+                message = "Data Already Exists for the period " + value + " , Please Specify Another Date";
+
+                return ERROR;
+            }
+        }
+        
+        else
+        {
+            message = "Data Already Exists, Please Specify Another Date";
+            
+            return ERROR;
+        }
+       
+        
+        message = "ok";
         
         return SUCCESS;
     }

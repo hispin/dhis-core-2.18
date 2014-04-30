@@ -36,6 +36,8 @@ public interface TariffDataValueStore
     
     Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit, DataElement dataElement );
     
-    Collection<TariffDataValue> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, DataElement dataElement );    
+    Collection<TariffDataValue> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, DataElement dataElement );
+    
+    String getTariffDataValue( Integer orgunitgroupId, Integer dataSetId, Integer dataElementId, String date );
     
 }

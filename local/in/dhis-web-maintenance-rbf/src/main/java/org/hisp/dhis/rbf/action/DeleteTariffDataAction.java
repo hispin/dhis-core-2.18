@@ -8,9 +8,12 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.rbf.api.TariffDataValue;
 import org.hisp.dhis.rbf.api.TariffDataValueService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,7 +51,9 @@ public class DeleteTariffDataAction
     {
         this.dataSetService = dataSetService;
     }
-
+    
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -88,6 +93,14 @@ public class DeleteTariffDataAction
         this.endDate = endDate;
     }
 
+    private Integer orgUnitGroupId;
+
+    public void setOrgUnitGroupId( Integer orgUnitGroupId )
+    {
+        this.orgUnitGroupId = orgUnitGroupId;
+    }
+    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -102,10 +115,15 @@ public class DeleteTariffDataAction
         
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
-        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( organisationUnit, dataElement, dataSet, sDate, eDate );
-
+        
+        //OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
+        
+        //TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( organisationUnit, dataElement, dataSet, sDate, eDate );
+        
+        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( orgUnitGroup, dataElement, dataSet, sDate, eDate );
+        
         tariffDataValueService.deleteTariffDataValue( tariffDataValue );
 
         return SUCCESS;

@@ -207,12 +207,14 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
                                 " startdate <= '" + curPeriod + "' AND "+ 
                                 " enddate >= '" + curPeriod +"'";
             
+            //System.out.println("Query: " + query );
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
                 Integer dataElementId = rs.getInt( 1 );
                 Double value = rs.getDouble( 2 );
                 tariffDataValueMap.put( dataElementId, value );
+                //System.out.println( dataElementId + " : " + value );
             }
         }
         catch( Exception e )
@@ -222,4 +224,48 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         
         return tariffDataValueMap;
     }
+    
+    
+    public String getTariffDataValue( Integer orgunitgroupId, Integer dataSetId, Integer dataElementId, String date )
+    {
+        String value = null;
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        
+        try
+        {
+            String query = "select startdate, enddate from tariffdatavalue " + 
+                " WHERE " +
+                " orgunitgroupid = " + orgunitgroupId + " AND " +
+                " datasetid = " + dataSetId + " AND " +
+                " dataelementid = " + dataElementId + " AND " +
+                " startdate <= '" + date + "' AND "+ 
+                " enddate >= '" + date +"'";
+            
+            //System.out.println( " query is --: " + query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+
+            if ( rs.next() )
+            {
+                Date sDate = rs.getDate( 1 );
+                
+                Date eDate = rs.getDate( 2 );
+                
+                if ( sDate != null && eDate != null  )
+                {
+                    value  = simpleDateFormat.format( sDate ) + " To " + simpleDateFormat.format( eDate ) ;
+                }
+            }
+
+        }
+        catch ( Exception e )
+        {
+            System.out.println("In getTariffDataValues Exception :"+ e.getMessage() );
+        }
+        
+        return value; 
+    }
+    
+   
 }

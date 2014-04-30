@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.velocity.tools.generic.NumberTool;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -208,6 +209,13 @@ public class LoadDataEntryFormAction
         return qValOptCombo;
     }
 
+    private NumberTool nullTool;
+    
+    public NumberTool getNullTool()
+    {
+        return nullTool;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -311,6 +319,18 @@ public class LoadDataEntryFormAction
                 pbfDataValue.setTimestamp( new Date() );
 
                 pbfDataValueService.addPBFDataValue( pbfDataValue );
+                pbfDataValueMap.put( de, pbfDataValue );
+            }
+            else
+            {
+                PBFDataValue pbfDataValue = new PBFDataValue();
+
+                pbfDataValue.setDataSet( dataSet );
+                pbfDataValue.setDataElement( de );
+                pbfDataValue.setPeriod( period );
+                pbfDataValue.setOrganisationUnit( organisationUnit );
+                pbfDataValue.setTariffAmount( null );
+
                 pbfDataValueMap.put( de, pbfDataValue );
             }
         }

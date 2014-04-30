@@ -197,13 +197,16 @@ $( "#addTariff" ).dialog({
 		return bValue;
 	}	
 		function handleSuccess( json )
-	    {		
+	    {	
+			//alert( json.message );
+		
 			if(json.message == "true")	
 			{
 				alert("Tariff value of this pbf type exist between this range");
 				bValue = true;				
 			}
-			else
+			
+			else if(json.message == "ok")
 			{
 				 var dataValue = {
         		        			'pbfType' : $("#pbfType").val(),
@@ -223,10 +226,18 @@ $( "#addTariff" ).dialog({
                                 error: addTariffError
                             } );
 			}
-	    }
-	    function handleError( json )
-	    {	
 			
+			else
+			{
+				alert( json.message );
+				bValue = true;
+			}
+	
+	    }
+	    
+		function handleError( json )
+	    {	
+			alert( "Inside Error " + json.message );
 	    }
 		
 		 function addTariffSuccess( json )
