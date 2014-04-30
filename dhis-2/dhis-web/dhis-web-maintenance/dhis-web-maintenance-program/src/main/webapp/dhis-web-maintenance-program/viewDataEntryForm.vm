@@ -134,7 +134,7 @@
 				<input type="text" id='dataElementFilter' style="width:240px;" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
 			</td>
 			<td>	
-				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('dataElementFilter','');">
+				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('dataElementFilter','');filterDataElements( '', '#dataElementSelection', '#dataElementIds')">
 			</td>
 		</tr>
 		<tr>

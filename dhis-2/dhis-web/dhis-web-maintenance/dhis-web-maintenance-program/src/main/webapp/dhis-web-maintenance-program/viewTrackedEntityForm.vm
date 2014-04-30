@@ -115,7 +115,7 @@
    		<tr>
    			<td>
    				<input type='text' id='attributeFilter' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'attributesSelector' )">
-   				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('attributeFilter','');">
+   				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('attributeFilter','');filterList( '', 'attributesSelector' )">
    			</td>
    		</tr>
    		<tr>
@@ -136,8 +136,8 @@
 	<table id="programAttrTab" class='hidden'>
 		<tr>
 			<td>
-				<input type='text' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'programAttrSelector' )">
-				<input type='button' value="$i18n.getString('clear')" style="width:80px;">
+				<input type='text' id='programAttrKey' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'programAttrSelector' )">
+				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('programAttrKey','');filterList( '', 'programAttrSelector' )">
 			</td>
 		</tr>
 		<tr>
