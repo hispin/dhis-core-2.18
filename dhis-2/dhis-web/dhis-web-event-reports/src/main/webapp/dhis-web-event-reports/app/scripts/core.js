@@ -2656,7 +2656,7 @@ Ext.onReady( function() {
 
 				// get html
 				return function() {
-					var htmlArray = Ext.Array.clean([].concat(getColAxisHtmlArray() || [], getRowHtmlArray() || [], getTotalHtmlArray() || []));
+					htmlArray = Ext.Array.clean([].concat(getColAxisHtmlArray() || [], getRowHtmlArray() || [], getTotalHtmlArray() || []));
 
 					return {
 						html: getHtml(htmlArray),
