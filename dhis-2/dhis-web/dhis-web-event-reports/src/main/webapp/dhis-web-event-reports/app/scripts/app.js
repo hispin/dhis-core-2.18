@@ -5816,6 +5816,9 @@ Ext.onReady( function() {
 					web.mask.hide(ns.app.centerRegion);
 
 					if (NS.isDebug) {
+                        var res = response || xResponse;
+
+                        console.log("Number of records", res.rows.length);
                         console.log("Number of cells", table.tdCount);
                         console.log("DATA", (ns.app.dateCreate - ns.app.dateData) / 1000);
                         console.log("CREATE", (ns.app.dateRender - ns.app.dateCreate) / 1000);

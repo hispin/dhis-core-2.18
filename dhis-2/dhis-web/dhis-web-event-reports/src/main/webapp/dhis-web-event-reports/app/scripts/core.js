@@ -1349,12 +1349,12 @@ Ext.onReady( function() {
 
 				// add parents if more than 1 floor
 				if (nAxisHeight > 1) {
-					for (var i = 1, allFloor; i < nAxisHeight; i++) {
-						allFloor = aaAllFloorObjects[i];
+					for (var i = 1, aAllFloor; i < nAxisHeight; i++) {
+						aAllFloor = aaAllFloorObjects[i];
 
-						//for (var j = 0, obj, doorCount = 0, span = aFloorSpan[i - 1], parentObj = aaAllFloorObjects[i - 1][0]; j < allFloor.length; j++) {
-						for (var j = 0, doorCount = 0, span = aFloorSpan[i - 1]; j < allFloor.length; j++) {
-							allFloor[j].parent = aaAllFloorObjects[i - 1][j];
+						//for (var j = 0, obj, doorCount = 0, span = aFloorSpan[i - 1], parentObj = aaAllFloorObjects[i - 1][0]; j < aAllFloor.length; j++) {
+						for (var j = 0, doorCount = 0, span = aFloorSpan[i - 1]; j < aAllFloor.length; j++) {
+							aAllFloor[j].parent = aaAllFloorObjects[i - 1][j];
 
 							//doorCount++;
 
@@ -1370,11 +1370,11 @@ Ext.onReady( function() {
 				if (aaAllFloorObjects.length) {
 
 					// set span to second lowest span number: if aFloorSpan == [15,3,15,1], set span to 3
-					var span = nAxisHeight > 1 ? support.prototype.array.sort(Ext.clone(aFloorSpan))[1] : nAxisWidth,
-						allFloorObjectsLast = aaAllFloorObjects[aaAllFloorObjects.length - 1];
+					var nSpan = nAxisHeight > 1 ? support.prototype.array.sort(Ext.clone(aFloorSpan))[1] : nAxisWidth,
+						aAllFloorObjectsLast = aaAllFloorObjects[aaAllFloorObjects.length - 1];
 
-					for (var i = 0, leaf, parentUuids, obj, leafUuids = []; i < allFloorObjectsLast.length; i++) {
-						leaf = allFloorObjectsLast[i];
+					for (var i = 0, leaf, parentUuids, obj, leafUuids = []; i < aAllFloorObjectsLast.length; i++) {
+						leaf = aAllFloorObjectsLast[i];
 						leafUuids.push(leaf.uuid);
 						parentUuids = [];
 						obj = leaf;
@@ -1389,9 +1389,9 @@ Ext.onReady( function() {
 						leaf.uuids = Ext.clone(parentUuids);
 
 						// add uuid for all leaves
-						if (leafUuids.length === span) {
-							for (var j = (i - span) + 1, leaf; j <= i; j++) {
-								leaf = allFloorObjectsLast[j];
+						if (leafUuids.length === nSpan) {
+							for (var j = (i - nSpan) + 1, leaf; j <= i; j++) {
+								leaf = aAllFloorObjectsLast[j];
 								leaf.uuids = leaf.uuids.concat(Ext.clone(leafUuids));
 							}
 
@@ -2072,23 +2072,6 @@ Ext.onReady( function() {
 
 				doSubTotals = function(xAxis) {
 					return !!xLayout.showSubTotals && xAxis && xAxis.dims > 1;
-
-					//var multiItemDimension = 0,
-						//unique;
-
-					//if (!(xLayout.showSubTotals && xAxis && xAxis.dims > 1)) {
-						//return false;
-					//}
-
-					//unique = xAxis.xItems.unique;
-
-					//for (var i = 0; i < unique.length; i++) {
-						//if (unique[i].length > 1) {
-							//multiItemDimension++;
-						//}
-					//}
-
-					//return (multiItemDimension > 1);
 				};
 
 				doTotals = function() {
@@ -2245,7 +2228,7 @@ Ext.onReady( function() {
 	//				     [ dim, dim ] ];
 
 					// value
-					for (var i = 0, valueItemsRow, valueObjectsRow, idValueMap = Ext.clone(xResponse.idValueMap); i < rowAxisSize; i++) {
+					for (var i = 0, valueItemsRow, valueObjectsRow, idValueMap = xResponse.idValueMap; i < rowAxisSize; i++) {
 						valueItemsRow = [];
 						valueObjectsRow = [];
 
@@ -2357,7 +2340,7 @@ Ext.onReady( function() {
 						}
 					}
 
-					xValueObjects = Ext.clone(valueObjects);
+					xValueObjects = valueObjects;
 
 					// col subtotals
 					if (doSubTotals(xColAxis)) {
@@ -2571,7 +2554,7 @@ Ext.onReady( function() {
 							empty = [];
 						}
 
-						xTotalColObjects = Ext.clone(totalColObjects);
+						xTotalColObjects = totalColObjects;
 
 						if (xColAxis && doSubTotals(xColAxis)) {
 							var tmp = [];
@@ -2653,7 +2636,7 @@ Ext.onReady( function() {
 							})];
 						}
 
-						row = [].concat(dimTotalArray || [], Ext.clone(colTotal) || [], Ext.clone(grandTotal) || []);
+						row = [].concat(dimTotalArray || [], colTotal || [], grandTotal || []);
 
 						a.push(row);
 					}
@@ -2673,8 +2656,7 @@ Ext.onReady( function() {
 
 				// get html
 				return function() {
-                    var rows = xResponse.rows;
-					htmlArray = Ext.Array.clean([].concat(getColAxisHtmlArray() || [], getRowHtmlArray() || [], getTotalHtmlArray() || []));
+					var htmlArray = Ext.Array.clean([].concat(getColAxisHtmlArray() || [], getRowHtmlArray() || [], getTotalHtmlArray() || []));
 
 					return {
 						html: getHtml(htmlArray),
