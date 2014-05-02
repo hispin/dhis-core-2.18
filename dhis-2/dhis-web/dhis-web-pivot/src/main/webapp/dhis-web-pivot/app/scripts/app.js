@@ -1673,7 +1673,7 @@ Ext.onReady( function() {
 				handler: function() {
 					if (textArea.getValue()) {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/interpretations/reportTables/' + ns.app.layout.id,
+							url: ns.core.init.contextPath + '/api/interpretations/reportTable/' + ns.app.layout.id,
 							method: 'POST',
 							params: textArea.getValue(),
 							headers: {'Content-Type': 'text/html'},
