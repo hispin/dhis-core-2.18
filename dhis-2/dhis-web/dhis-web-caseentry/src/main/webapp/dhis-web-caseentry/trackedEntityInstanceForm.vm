@@ -68,7 +68,14 @@
 															 #foreach ($option in $attribute.optionSet.options )
 																	 <option value="$option" #if("$value"=="$option") selected #end>$option</option>
 															 #end
-													 </select>
+													 </select>	
+											#elseif( $attribute.valueType == "users" )
+													<select inherit="$!attribute.inherit" class=' #validate( "default"  $mandatory  )' >
+														<option value="">[$i18n.getString("please_select")]</option>
+														#foreach( $user in $healthWorkers)
+															<option value="$user.id" #if($attributeValue == $user.id) selected="selected" #end >$user.name</option>
+														#end
+													</select>
 											 #elseif( $attribute.valueType == "phoneNumber" )
 													#if($value=='')
 														#set($value=$!phoneNumberAreaCode)
