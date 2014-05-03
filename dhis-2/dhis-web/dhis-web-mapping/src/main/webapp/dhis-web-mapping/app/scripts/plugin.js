@@ -1088,7 +1088,7 @@ Ext.onReady( function() {
 		if (labelConfig) {
 			defaults.label = '\${label}';
 			defaults.fontFamily = 'arial,sans-serif,ubuntu,consolas';
-			defaults.fontSize = labelConfig.fontSize ? labelConfig.fontSize + 'px' : '13px';
+			defaults.fontSize = (labelConfig.fontSize || 13) + 'px';
 			defaults.fontWeight = labelConfig.strong ? 'bold' : 'normal';
 			defaults.fontStyle = labelConfig.italic ? 'italic' : 'normal';
 			defaults.fontColor = labelConfig.color ? (labelConfig.color.split('').shift() !== '#' ? '#' + labelConfig.color : labelConfig.color) : '#000000';
@@ -4696,7 +4696,7 @@ e = gis.layer.event;
 
 	applyCss = function() {
 		var css = '.gis-plugin, .gis-plugin * { font-family: arial, sans-serif, liberation sans, consolas; } \n';
-		css += '.x-panel-body { font-size: 11px; } \n';
+		css += '.x-panel-body, .x-window-body * { font-size: 11px; } \n';
 		css += '.x-panel-header { height: 30px; padding: 7px 4px 4px 7px; border: 0 none; } \n';
 		css += '.gis-container-default .x-window-body { padding: 5px; background: #fff; } \n';
 		css += '.olControlPanel { position: absolute; top: 0; right: 0; border: 0 none; } \n';
