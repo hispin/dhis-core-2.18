@@ -749,7 +749,7 @@ Ext.onReady( function() {
 		if (labelConfig) {
 			defaults.label = '\${label}';
 			defaults.fontFamily = 'arial,sans-serif,ubuntu,consolas';
-			defaults.fontSize = labelConfig.fontSize ? labelConfig.fontSize + 'px' : '13px';
+			defaults.fontSize = (labelConfig.fontSize || 13) + 'px';
 			defaults.fontWeight = labelConfig.strong ? 'bold' : 'normal';
 			defaults.fontStyle = labelConfig.italic ? 'italic' : 'normal';
 			defaults.fontColor = labelConfig.color ? (labelConfig.color.split('').shift() !== '#' ? '#' + labelConfig.color : labelConfig.color) : '#000000';
@@ -2451,6 +2451,81 @@ Ext.onReady( function() {
 				});
 
 				return array;
+			};
+
+            util.layout = {};
+
+			util.layout.getAnalytical = function(map) {
+				var layout,
+					layer;
+
+				if (Ext.isObject(map) && Ext.isArray(map.mapViews) && map.mapViews.length) {
+					for (var i = 0, view, id; i < map.mapViews.length; i++) {
+						view = map.mapViews[i];
+						id = view.layer;
+
+						if (gis.layer.hasOwnProperty(id) && gis.layer[id].layerCategory === gis.conf.finals.layer.category_thematic) {
+							layout = gis.api.layout.Layout(view);
+
+							if (layout) {
+								return layout;
+							}
+						}
+					}
+				}
+				else {
+					for (var key in gis.layer) {
+						if (gis.layer.hasOwnProperty(key) && gis.layer[key].layerCategory === gis.conf.finals.layer.category_thematic && gis.layer[key].core.view) {
+							layer = gis.layer[key];
+							layout = gis.api.layout.Layout(layer.core.view);
+
+							if (layout) {
+								if (!layout.parentGraphMap && layer.widget) {
+									layout.parentGraphMap = layer.widget.getParentGraphMap();
+								}
+
+								return layout;
+							}
+						}
+					}
+				}
+
+				return;
+			};
+
+			util.layout.getPluginConfig = function() {
+				var layers = gis.util.map.getVisibleVectorLayers(),
+					map = {};
+
+				if (gis.map) {
+					return gis.map;
+				}
+
+				map.mapViews = [];
+
+				for (var i = 0, layer; i < layers.length; i++) {
+					layer = layers[i];
+
+					if (layer.core.view) {
+						layer.core.view.layer = layer.id;
+
+						map.mapViews.push(layer.core.view);
+					}
+				}
+
+				return map;
+			};
+
+			util.layout.setSessionStorage = function(session, obj, url) {
+				if (GIS.isSessionStorage) {
+					var dhis2 = JSON.parse(sessionStorage.getItem('dhis2')) || {};
+					dhis2[session] = obj;
+					sessionStorage.setItem('dhis2', JSON.stringify(dhis2));
+
+					if (Ext.isString(url)) {
+						window.location.href = url;
+					}
+				}
 			};
 		}());
 
