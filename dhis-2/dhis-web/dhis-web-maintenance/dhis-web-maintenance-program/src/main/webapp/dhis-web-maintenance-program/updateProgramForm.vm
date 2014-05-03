@@ -152,7 +152,7 @@
 			<td></td>
 		</tr>
 		
-        <tr>
+        <tr name='nonAnonymous'>
             <td><label for="displayOnAllOrgunit">$i18n.getString( "allow_enrollment_at_all_orgunits" )</label></td>
             <td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true' #if($program.displayOnAllOrgunit) checked #end></td>
             <td></td>
