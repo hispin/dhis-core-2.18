@@ -436,7 +436,7 @@ Ext.onReady( function() {
 		olmap = new OpenLayers.Map({
 			controls: [
 				new OpenLayers.Control.Navigation({
-					zoomWheelEnabled: true,
+					zoomWheelEnabled: false,
 					documentDrag: true
 				}),
 				new OpenLayers.Control.MousePosition({
