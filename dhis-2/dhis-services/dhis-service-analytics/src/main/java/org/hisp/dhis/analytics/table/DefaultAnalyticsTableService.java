@@ -91,7 +91,7 @@ public class DefaultAnalyticsTableService
     // Implementation
     // -------------------------------------------------------------------------
     
-    public void update( boolean last3YearsOnly, TaskId taskId )
+    public void update( Integer lastYears, TaskId taskId )
     {
         Clock clock = new Clock().startClock().logTime( "Starting update, no of processes: " + getProcessNo() );
         
@@ -103,9 +103,9 @@ public class DefaultAnalyticsTableService
             return;
         }
         
-        final List<AnalyticsTable> tables = tableManager.getTables( last3YearsOnly );
+        final List<AnalyticsTable> tables = tableManager.getTables( lastYears );
         
-        clock.logTime( "Partition tables: " + tables + ", last 3 years: " + last3YearsOnly );
+        clock.logTime( "Partition tables: " + tables + ", last 3 years: " + lastYears );
         
         notifier.notify( taskId, "Creating analytics tables" );
         
@@ -149,7 +149,7 @@ public class DefaultAnalyticsTableService
 
     public void dropTables()
     {
-        List<AnalyticsTable> tables = tableManager.getTables( false );
+        List<AnalyticsTable> tables = tableManager.getTables( null );
         
         for ( AnalyticsTable table : tables )   
         {

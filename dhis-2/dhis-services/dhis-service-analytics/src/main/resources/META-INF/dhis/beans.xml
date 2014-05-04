@@ -60,12 +60,14 @@
 
   <!-- Scheduled tasks -->
   
-  <bean id="analyticsAllTask" class="org.hisp.dhis.analytics.scheduling.AnalyticsTableTask">
-    <property name="last3Years" value="false" />
-  </bean>
+  <bean id="analyticsAllTask" class="org.hisp.dhis.analytics.scheduling.AnalyticsTableTask"/>
   
+  <bean id="analyticsLast2YearsTask" class="org.hisp.dhis.analytics.scheduling.AnalyticsTableTask">
+    <property name="lastYears" value="2" />
+  </bean>
+
   <bean id="analyticsLast3YearsTask" class="org.hisp.dhis.analytics.scheduling.AnalyticsTableTask">
-    <property name="last3Years" value="true" />
+    <property name="lastYears" value="3" />
   </bean>
 
 </beans>

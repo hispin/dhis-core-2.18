@@ -28,6 +28,7 @@
 <select id="analyticsStrategy" name="analyticsStrategy" class="scheduling">
     <option value="never">$i18n.getString( "never" )</option>
     <option value="allDaily"#if( $analyticsStrategy && $analyticsStrategy == "allDaily" ) selected="selected"#end>$i18n.getString( "all_daily" )</option>
+    <option value="last2YearsDaily"#if( $analyticsStrategy && $analyticsStrategy == "last2YearsDaily" ) selected="selected"#end>$i18n.getString( "last_2_years_daily" )</option>
     <option value="last3YearsDaily"#if( $analyticsStrategy && $analyticsStrategy == "last3YearsDaily" ) selected="selected"#end>$i18n.getString( "last_3_years_daily" )</option>
 </select>
 </div>
