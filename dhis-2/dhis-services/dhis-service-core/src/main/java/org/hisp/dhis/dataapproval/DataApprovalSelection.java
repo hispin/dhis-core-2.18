@@ -708,6 +708,14 @@ class DataApprovalSelection
     /**
      * Is this data selection approved at the given level index, for the
      * given organisation unit?
+     * <p>
+     * If we are testing for approval at the same or higher level and
+     * there are selected category options, then the data is approved if
+     * *any selected* category option is approved.
+     * <p>
+     * If we are testing for approval at a lower level and
+     * there are selected category options, then the data is approved if
+     * *all category option group member category options* are approved.
      *
      * @param index (matching) approval level index at which to test.
      * @param orgUnit organisation unit to test.
@@ -715,11 +723,22 @@ class DataApprovalSelection
      */
     private DataApproval getDataApproval( int index, OrganisationUnit orgUnit )
     {
-        Set<CategoryOptionGroup> groups = categoryOptionGroupsByLevel.get( index );
+        DataApproval da = null;
 
-        if ( groups == null )
+        Set<CategoryOptionGroup> groups = null;
+
+        if ( index < lowerIndex )
         {
-            DataApproval da = dataApprovalStore.getDataApproval( dataSet, period, orgUnit, null );
+            groups = categoryOptionGroupsByLevel.get( index );
+        }
+        else if ( allApprovalLevels.get( index ).getCategoryOptionGroupSet() != null )
+        {
+            groups = new HashSet<CategoryOptionGroup>( allApprovalLevels.get( index ).getCategoryOptionGroupSet().getMembers() );
+        }
+
+        if ( groups == null || groups.isEmpty() )
+        {
+            da = dataApprovalStore.getDataApproval( dataSet, period, orgUnit, null );
 
             log.debug( "getDataApproval( " + orgUnit.getName() + " ) = " + ( da != null ) + " (no groups)" );
 
@@ -728,19 +747,26 @@ class DataApprovalSelection
 
         for ( CategoryOptionGroup group : groups )
         {
-            DataApproval da = dataApprovalStore.getDataApproval( dataSet, period, orgUnit, group );
+            da = dataApprovalStore.getDataApproval( dataSet, period, orgUnit, group );
 
             log.debug( "getDataApproval( " + orgUnit.getName() + " ) = " + ( da != null ) + " (group: " + group.getName() + ")" );
 
-            if ( da != null )
+            if ( index < lowerIndex )
             {
-                return da;
+                if ( da != null )
+                {
+                    return da;
+                }
+            }
+            else if ( da == null )
+            {
+                return null;
             }
         }
 
-        log.debug( "getDataApproval( " + orgUnit.getName() + " ) = false (none of " + groups.size() + " groups matched)" );
+        log.debug( "getDataApproval( " + orgUnit.getName() + " ) = " + ( da != null ) + " (after testing all " + groups.size() + " groups)" );
 
-        return null;
+        return da;
     }
 
     /**
@@ -771,7 +797,7 @@ class DataApprovalSelection
 
         if ( lowerIndex < allApprovalLevels.size() )
         {
-            if ( orgUnitLevel == allApprovalLevels.get( lowerIndex ).getLevel() )
+            if ( orgUnitLevel == allApprovalLevels.get( lowerIndex ).getOrgUnitLevel() )
             {
                 log.debug( "isUnapprovedBelow() orgUnit level " + orgUnitLevel + " matches approval level." );
 
