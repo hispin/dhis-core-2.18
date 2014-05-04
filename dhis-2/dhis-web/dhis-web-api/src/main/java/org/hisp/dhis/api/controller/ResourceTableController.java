@@ -82,11 +82,13 @@ public class ResourceTableController
         @RequestParam(required=false) boolean skipResourceTables, 
         @RequestParam(required=false) boolean skipAggregate,
         @RequestParam(required=false) boolean skipEvents,
+        @RequestParam(required=false) boolean last3Years,
         HttpServletResponse response )
     {
         analyticsTableTask.setSkipResourceTables( skipResourceTables );
         analyticsTableTask.setSkipAggregate( skipAggregate );
         analyticsTableTask.setSkipEvents( skipEvents );
+        analyticsTableTask.setLast3Years( last3Years );
         analyticsTableTask.setTaskId( new TaskId( TaskCategory.DATAMART, currentUserService.getCurrentUser() ) );
         
         scheduler.executeTask( analyticsTableTask );

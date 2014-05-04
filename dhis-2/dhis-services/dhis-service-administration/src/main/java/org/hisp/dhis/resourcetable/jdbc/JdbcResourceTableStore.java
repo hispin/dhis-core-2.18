@@ -46,6 +46,7 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
+import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -200,6 +201,35 @@ public class JdbcResourceTableStore
         jdbcTemplate.execute( statement.getStatement() );
     }
 
+    public void populateDataElementGroupSetStructure( List<DataElementGroupSet> groupSets )
+    {
+        String sql = 
+            "insert into " + CreateDataElementGroupSetTableStatement.TABLE_NAME + " " +
+            "select d.dataelementid as dataelementid, d.name as dataelementname, ";
+        
+        for ( DataElementGroupSet groupSet : groupSets )
+        {
+            sql += "(" +
+                "select deg.name from dataelementgroup deg " +
+                "inner join dataelementgroupmembers degm on degm.dataelementgroupid = deg.dataelementgroupid and degm.dataelementid = d.dataelementid " +
+                "inner join dataelementgroupsetmembers degsm on degsm.dataelementgroupid = degm.dataelementgroupid and degsm.dataelementgroupsetid = " + groupSet.getId() + " " +
+                "limit 1) as " + statementBuilder.columnQuote( groupSet.getName() ) + ", ";
+            
+            sql += "(" +
+                "select deg.uid from dataelementgroup deg " +
+                "inner join dataelementgroupmembers degm on degm.dataelementgroupid = deg.dataelementgroupid and degm.dataelementid = d.dataelementid " +
+                "inner join dataelementgroupsetmembers degsm on degsm.dataelementgroupid = degm.dataelementgroupid and degsm.dataelementgroupsetid = " + groupSet.getId() + " " +
+                "limit 1) as " + statementBuilder.columnQuote( groupSet.getUid() ) + ", ";            
+        }
+
+        sql = TextUtils.removeLastComma( sql ) + " ";
+        sql += "from dataelement d";
+
+        log.info( "Populate data element group set structure SQL: " + sql );
+        
+        jdbcTemplate.execute( sql );
+    }
+    
     // -------------------------------------------------------------------------
     // DataElementGroupSetTable
     // -------------------------------------------------------------------------
@@ -218,6 +248,35 @@ public class JdbcResourceTableStore
         Statement statement = new CreateIndicatorGroupSetTableStatement( groupSets, statementBuilder.getColumnQuote() );
         
         jdbcTemplate.execute( statement.getStatement() );
+    }
+
+    public void populateIndicatorGroupSetStructure( List<IndicatorGroupSet> groupSets )
+    {
+        String sql =
+            "insert into " + CreateIndicatorGroupSetTableStatement.TABLE_NAME + " " +
+             "select i.indicatorid as indicatorid, i.name as indicatorname, ";
+        
+        for ( IndicatorGroupSet groupSet : groupSets )
+        {
+            sql += "(" +
+                "select ig.name from indicatorgroup ig " +
+                "inner join indicatorgroupmembers igm on igm.indicatorgroupid = ig.indicatorgroupid and igm.indicatorid = i.indicatorid " +
+                "inner join indicatorgroupsetmembers igsm on igsm.indicatorgroupid = igm.indicatorgroupid and igsm.indicatorgroupsetid = " + groupSet.getId() + " " +
+                "limit 1) as " + statementBuilder.columnQuote( groupSet.getName() ) + ", ";
+
+            sql += "(" +
+                "select ig.uid from indicatorgroup ig " +
+                "inner join indicatorgroupmembers igm on igm.indicatorgroupid = ig.indicatorgroupid and igm.indicatorid = i.indicatorid " +
+                "inner join indicatorgroupsetmembers igsm on igsm.indicatorgroupid = igm.indicatorgroupid and igsm.indicatorgroupsetid = " + groupSet.getId() + " " +
+                "limit 1) as " + statementBuilder.columnQuote( groupSet.getUid() ) + ", ";            
+        }
+
+        sql = TextUtils.removeLastComma( sql ) + " ";
+        sql += "from indicator i";
+
+        log.info( "Populate indicator group set structure SQL: " + sql );
+        
+        jdbcTemplate.execute( sql );
     }
     
     // -------------------------------------------------------------------------
@@ -238,6 +297,35 @@ public class JdbcResourceTableStore
         Statement statement = new CreateOrganisationUnitGroupSetTableStatement( groupSets, statementBuilder.getColumnQuote() );
         
         jdbcTemplate.execute( statement.getStatement() );
+    }
+        
+    public void populateOrganisationUnitGroupSetStructure( List<OrganisationUnitGroupSet> groupSets )
+    {
+        String sql = 
+            "insert into " + CreateOrganisationUnitGroupSetTableStatement.TABLE_NAME + " " +
+            "select ou.organisationunitid as organisationunitid, ou.name as organisationunitname, ";            
+        
+        for ( OrganisationUnitGroupSet groupSet : groupSets )
+        {
+            sql += "(" + 
+                "select oug.name from orgunitgroup oug " +
+                "inner join orgunitgroupmembers ougm on ougm.orgunitgroupid = oug.orgunitgroupid and ougm.organisationunitid = ou.organisationunitid " +
+                "inner join orgunitgroupsetmembers ougsm on ougsm.orgunitgroupid = ougm.orgunitgroupid and ougsm.orgunitgroupsetid = " + groupSet.getId() + " " +
+                "limit 1) as " + statementBuilder.columnQuote( groupSet.getName() ) + ", ";
+            
+            sql += "(" +
+                "select oug.uid from orgunitgroup oug " +
+                "inner join orgunitgroupmembers ougm on ougm.orgunitgroupid = oug.orgunitgroupid and ougm.organisationunitid = ou.organisationunitid " +
+                "inner join orgunitgroupsetmembers ougsm on ougsm.orgunitgroupid = ougm.orgunitgroupid and ougsm.orgunitgroupsetid = " + groupSet.getId() + " " +
+                "limit 1) as " + statementBuilder.columnQuote( groupSet.getUid() ) + ", ";
+        }
+        
+        sql = TextUtils.removeLastComma( sql ) + " ";
+        sql += "from organisationunit ou";
+        
+        log.info( "Populate organisation unit group set structure SQL: " + sql );
+        
+        jdbcTemplate.execute( sql );
     }
     
     // -------------------------------------------------------------------------
