@@ -82,6 +82,8 @@ public interface ResourceTableStore
      * @param groupSets the group sets.
      */
     void createDataElementGroupSetStructure( List<DataElementGroupSet> groupSets );
+    
+    void populateDataElementGroupSetStructure( List<DataElementGroupSet> groupSets );
 
     /**
      * Creates table.
@@ -90,12 +92,16 @@ public interface ResourceTableStore
      */
     void createIndicatorGroupSetStructure( List<IndicatorGroupSet> groupSets );
     
+    void populateIndicatorGroupSetStructure( List<IndicatorGroupSet> groupSets );
+    
     /**
      * Creates table.
      * 
      * @param groupSets the group sets.
      */
     void createOrganisationUnitGroupSetStructure( List<OrganisationUnitGroupSet> groupSets );
+    
+    void populateOrganisationUnitGroupSetStructure( List<OrganisationUnitGroupSet> groupSets );
     
     /**
      * Creates table.

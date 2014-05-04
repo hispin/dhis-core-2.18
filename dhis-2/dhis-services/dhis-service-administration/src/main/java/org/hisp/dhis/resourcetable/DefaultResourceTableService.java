@@ -53,16 +53,12 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -73,9 +69,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryOptionGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
-import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
-import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
-import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 import org.springframework.transaction.annotation.Transactional;
@@ -284,45 +277,13 @@ public class DefaultResourceTableService
     @Transactional
     public void generateDataElementGroupSetTable()
     {
-        // ---------------------------------------------------------------------
-        // Create table
-        // ---------------------------------------------------------------------
-
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-        
-        Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
-        
         List<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
         
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         
         resourceTableStore.createDataElementGroupSetStructure( groupSets );
 
-        // ---------------------------------------------------------------------
-        // Populate table
-        // ---------------------------------------------------------------------
-
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
-        
-        for ( DataElement dataElement : dataElements )
-        {
-            List<Object> values = new ArrayList<Object>();
-
-            values.add( dataElement.getId() );
-            values.add( dataElement.getName() );
-            
-            for ( DataElementGroupSet groupSet : groupSets )
-            {
-                DataElementGroup group = groupSet.getGroup( dataElement );
-                
-                values.add( group != null ? group.getName() : null );
-                values.add( group != null ? group.getUid() : null );
-            }
-            
-            batchArgs.add( values.toArray() );
-        }
-        
-        resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateDataElementGroupSetTableStatement.TABLE_NAME, batchArgs );
+        resourceTableStore.populateDataElementGroupSetStructure( groupSets );
         
         log.info( "Data element group set table generated" );
     }
@@ -334,45 +295,13 @@ public class DefaultResourceTableService
     @Transactional
     public void generateIndicatorGroupSetTable()
     {
-        // ---------------------------------------------------------------------
-        // Create table
-        // ---------------------------------------------------------------------
-
-        List<Indicator> indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-        
-        Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );
-        
         List<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() );
         
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         
         resourceTableStore.createIndicatorGroupSetStructure( groupSets );
 
-        // ---------------------------------------------------------------------
-        // Populate table
-        // ---------------------------------------------------------------------
-
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
-        
-        for ( Indicator indicator : indicators )
-        {
-            List<Object> values = new ArrayList<Object>();
-
-            values.add( indicator.getId() );
-            values.add( indicator.getName() );
-            
-            for ( IndicatorGroupSet groupSet : groupSets )
-            {
-                IndicatorGroup group = groupSet.getGroup( indicator );
-                
-                values.add( group != null ? group.getName() : null );
-                values.add( group != null ? group.getUid() : null );
-            }
-            
-            batchArgs.add( values.toArray() );
-        }
-        
-        resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateIndicatorGroupSetTableStatement.TABLE_NAME, batchArgs );
+        resourceTableStore.populateIndicatorGroupSetStructure( groupSets );
         
         log.info( "Indicator group set table generated" );
     }
@@ -384,15 +313,6 @@ public class DefaultResourceTableService
     @Transactional
     public void generateOrganisationUnitGroupSetTable()
     {
-        // ---------------------------------------------------------------------
-        // Create table
-        // ---------------------------------------------------------------------
-
-        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( organisationUnitService
-            .getAllOrganisationUnits() );
-
-        Collections.sort( units, IdentifiableObjectNameComparator.INSTANCE );
-
         List<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>(
             organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
 
@@ -400,31 +320,7 @@ public class DefaultResourceTableService
 
         resourceTableStore.createOrganisationUnitGroupSetStructure( groupSets );
 
-        // ---------------------------------------------------------------------
-        // Populate table
-        // ---------------------------------------------------------------------
-
-        List<Object[]> batchArgs = new ArrayList<Object[]>();
-        
-        for ( OrganisationUnit unit : units )
-        {
-            List<Object> values = new ArrayList<Object>();
-
-            values.add( unit.getId() );
-            values.add( unit.getName() );
-
-            for ( OrganisationUnitGroupSet groupSet : groupSets )
-            {
-                OrganisationUnitGroup group = groupSet.getGroup( unit );
-                
-                values.add( group != null ? group.getName() : null );
-                values.add( group != null ? group.getUid() : null );
-            }
-
-            batchArgs.add( values.toArray() );
-        }
-
-        resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateOrganisationUnitGroupSetTableStatement.TABLE_NAME, batchArgs );
+        resourceTableStore.populateOrganisationUnitGroupSetStructure( groupSets );
         
         log.info( "Organisation unit group set table generated" );
     }
