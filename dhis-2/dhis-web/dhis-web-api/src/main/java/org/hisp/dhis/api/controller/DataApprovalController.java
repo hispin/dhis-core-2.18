@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -105,7 +106,9 @@ public class DataApprovalController
         @RequestParam( required = false ) Set<String> cog,
         @RequestParam( required = false ) String cp, HttpServletResponse response ) throws IOException
     {
-        log.info( "getApprovalState called." );
+        log.info( "GET " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
+                + ( cog == null || cog.isEmpty() ? "" : ( "&cog=" + Arrays.toString( cog.toArray() ) ) )
+                + ( cp == null ? "" : ( "&cp=" + cp ) ) );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
         
@@ -131,11 +134,16 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroups( response, cog );
+        Set<CategoryOptionGroup> categoryOptionGroups = null;
 
-        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
+        if ( cog != null && !cog.isEmpty() )
         {
-            return;
+            categoryOptionGroups = inputUtils.getAttributeOptionGroups( response, cog );
+
+            if ( categoryOptionGroups == null )
+            {
+                return;
+            }
         }
 
         Set<DataElementCategoryOption> categoryOptions = inputUtils.getAttributeOptions( response, cp );
@@ -165,7 +173,8 @@ public class DataApprovalController
         @RequestParam String ou,
         @RequestParam( required = false ) String cog, HttpServletResponse response )
     {
-        log.info( "saveApproval called." );
+        log.info( "POST " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
+                + ( cog == null ? "" : ( "&cog=" + cog ) ) );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
         
@@ -191,11 +200,16 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+        Set<CategoryOptionGroup> categoryOptionGroups = null;
 
-        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
+        if ( cog != null )
         {
-            return;
+            categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+
+            if ( categoryOptionGroups == null )
+            {
+                return;
+            }
         }
 
         DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
@@ -215,7 +229,7 @@ public class DataApprovalController
 
         User user = currentUserService.getCurrentUser();
 
-        CategoryOptionGroup categoryOptionGroup = categoryOptionGroups == null ? null : (CategoryOptionGroup) categoryOptionGroups.toArray() [0];
+        CategoryOptionGroup categoryOptionGroup = categoryOptionGroups == null || categoryOptionGroups.isEmpty() ? null : (CategoryOptionGroup) categoryOptionGroups.iterator().next();
 
         DataApproval approval = new DataApproval( permissions.getDataApprovalStatus().getDataApprovalLevel(),
                 dataSet, period, organisationUnit, categoryOptionGroup, false, new Date(), user );
@@ -232,7 +246,8 @@ public class DataApprovalController
         @RequestParam String ou,
         @RequestParam( required = false ) String cog, HttpServletResponse response )
     {
-        log.info( "removeApproval called." );
+        log.info( "DELETE " + RESOURCE_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
+                + ( cog == null ? "" : ( "&cog=" + cog ) ) );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
         
@@ -258,11 +273,16 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+        Set<CategoryOptionGroup> categoryOptionGroups = null;
 
-        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
+        if ( cog != null )
         {
-            return;
+            categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+
+            if ( categoryOptionGroups == null )
+            {
+                return;
+            }
         }
 
         DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
@@ -294,7 +314,8 @@ public class DataApprovalController
             @RequestParam String ou,
             @RequestParam( required = false ) String cog, HttpServletResponse response )
     {
-        log.info( "acceptApproval called." );
+        log.info( "POST " + RESOURCE_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
+                + ( cog == null ? "" : ( "&cog=" + cog ) ) );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -320,11 +341,16 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+        Set<CategoryOptionGroup> categoryOptionGroups = null;
 
-        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
+        if ( cog != null )
         {
-            return;
+            categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+
+            if ( categoryOptionGroups == null )
+            {
+                return;
+            }
         }
 
         DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
@@ -354,7 +380,8 @@ public class DataApprovalController
             @RequestParam String ou,
             @RequestParam( required = false ) String cog, HttpServletResponse response )
     {
-        log.info( "unacceptApproval called." );
+        log.info( "DELETE " + RESOURCE_PATH + ACCEPTANCES_PATH + "?ds=" + ds + "&pe=" + pe + "&ou=" + ou
+                + ( cog == null ? "" : ( "&cog=" + cog ) ) );
 
         DataSet dataSet = dataSetService.getDataSet( ds );
 
@@ -380,11 +407,16 @@ public class DataApprovalController
             return;
         }
 
-        Set<CategoryOptionGroup> categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+        Set<CategoryOptionGroup> categoryOptionGroups = null;
 
-        if ( categoryOptionGroups != null && categoryOptionGroups.isEmpty() )
+        if ( cog != null )
         {
-            return;
+            categoryOptionGroups = inputUtils.getAttributeOptionGroup( response, cog );
+
+            if ( categoryOptionGroups == null )
+            {
+                return;
+            }
         }
 
         DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
