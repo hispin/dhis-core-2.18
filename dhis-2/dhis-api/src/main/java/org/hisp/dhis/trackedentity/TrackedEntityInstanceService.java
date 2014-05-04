@@ -422,5 +422,13 @@ public interface TrackedEntityInstanceService
      */
     int countSearchTrackedEntityInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
         Boolean followup, Integer statusEnrollment );
+    /**
+     * Get entityInstances by {@link TrackedEntity}
+     * 
+     * @param trackedEntity {@link TrackedEntity}
+     * 
+     * @return List of entityInstance
+     */
+    Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntity trackedEntity );
 
 }

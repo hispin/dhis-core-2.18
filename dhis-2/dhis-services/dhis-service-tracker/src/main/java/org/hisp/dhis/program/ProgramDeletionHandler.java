@@ -106,7 +106,7 @@ public class ProgramDeletionHandler
     }
 
     @Override
-    public String allowTrackedEntity( TrackedEntity trackedEntity )
+    public String allowDeleteTrackedEntity( TrackedEntity trackedEntity )
     {
         Collection<Program> programs = programService.getProgramsByTrackedEntity( trackedEntity );
 

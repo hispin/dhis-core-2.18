@@ -239,4 +239,13 @@ public interface TrackedEntityInstanceStore
      */
     int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
         Integer statusEnrollment );
+
+     /**
+     * Get entityInstances by {@link TrackedEntity}
+     * 
+     * @param trackedEntity {@link TrackedEntity}
+     * 
+     * @return List of entityInstance
+     */
+    Collection<TrackedEntityInstance> get( TrackedEntity trackedEntity );
 }
