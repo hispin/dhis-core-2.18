@@ -38,10 +38,10 @@ public interface AnalyticsTableService
     /**
      * Rebuilds the analytics tables.
      * 
-     * @param last3Years whether to update last 3 years of data only or all.
+     * @param lastYears the number of last years of data to include, null if all.
      * @param taskId the TaskId.
      */
-    void update( boolean last3Years, TaskId id );
+    void update( Integer lastYears, TaskId id );
     
     /**
      * Drops analytics and and temporary analytics tables between 1900 and 2100.

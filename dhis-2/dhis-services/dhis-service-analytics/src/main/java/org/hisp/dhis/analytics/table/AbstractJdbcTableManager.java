@@ -111,13 +111,20 @@ public abstract class AbstractJdbcTableManager
     // -------------------------------------------------------------------------
 
     @Transactional
-    public List<AnalyticsTable> getTables( boolean last3YearsOnly )
+    public List<AnalyticsTable> getTables( Integer lastYears )
     {
-        Date threeYrsAgo = new Cal().subtract( Calendar.YEAR, 2 ).set( 1, 1 ).time();
-        Date earliest = last3YearsOnly ? threeYrsAgo : getEarliestData();
-        Date latest = getLatestData();
+        Date earliest = null;
         
-        return getTables( earliest, latest );
+        if ( lastYears != null )
+        {
+            earliest = new Cal().now().subtract( Calendar.YEAR, ( lastYears - 1 ) ).set( 1, 1 ).time();
+        }
+        else
+        {
+            earliest = getEarliestData();
+        }
+        
+        return getTables( earliest, getLatestData() );
     }
 
     @Transactional

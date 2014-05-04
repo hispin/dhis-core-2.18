@@ -66,11 +66,11 @@ public class AnalyticsTableTask
     @Autowired
     private MessageService messageService;
 
-    private boolean last3Years = false;
+    private Integer lastYears;
 
-    public void setLast3Years( boolean last3Years )
+    public void setLastYears( Integer lastYears )
     {
-        this.last3Years = last3Years;
+        this.lastYears = lastYears;
     }
     
     private boolean skipResourceTables = false;
@@ -121,22 +121,22 @@ public class AnalyticsTableTask
             if ( !skipAggregate )
             {
                 notifier.notify( taskId, "Updating analytics tables" );
-                analyticsTableService.update( last3Years, taskId );
+                analyticsTableService.update( lastYears, taskId );
 
                 notifier.notify( taskId, "Updating completeness table" );
-                completenessTableService.update( last3Years, taskId );    
+                completenessTableService.update( lastYears, taskId );    
 
                 notifier.notify( taskId, "Updating completeness target table" );
-                completenessTargetTableService.update( last3Years, taskId );      
+                completenessTargetTableService.update( lastYears, taskId );      
 
                 notifier.notify( taskId, "Updating organisation unit target table" );                
-                orgUnitTargetTableService.update( last3Years, taskId );        
+                orgUnitTargetTableService.update( lastYears, taskId );        
             }
             
             if ( !skipEvents )
             {
                 notifier.notify( taskId, "Updating event analytics table" );  
-                eventAnalyticsTableService.update( last3Years, taskId );
+                eventAnalyticsTableService.update( lastYears, taskId );
             }
             
             notifier.notify( taskId, INFO, "Analytics tables updated", true );

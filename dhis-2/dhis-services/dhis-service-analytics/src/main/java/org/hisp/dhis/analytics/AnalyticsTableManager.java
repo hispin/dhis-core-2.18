@@ -51,9 +51,9 @@ public interface AnalyticsTableManager
      * be generated starting from the earliest existing data value until the
      * latest existing data value.
      * 
-     * @param last3YearsOnly whether to generate for last 3 years only.
+     * @param lastYears the number of last years of data to include, null if all years.
      */
-    List<AnalyticsTable> getTables( boolean last3YearsOnly );
+    List<AnalyticsTable> getTables( Integer lastYears );
     
     /**
      * Returns analytics tables which yearly partitions.

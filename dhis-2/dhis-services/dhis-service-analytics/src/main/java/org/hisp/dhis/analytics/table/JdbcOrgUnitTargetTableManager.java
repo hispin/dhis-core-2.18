@@ -48,7 +48,7 @@ public class JdbcOrgUnitTargetTableManager
 {
     @Override
     @Transactional
-    public List<AnalyticsTable> getTables( boolean last3YearsOnly )
+    public List<AnalyticsTable> getTables( Integer lastYears )
     {
         List<AnalyticsTable> tables = new ArrayList<AnalyticsTable>();
         tables.add( new AnalyticsTable( getTableName(), getDimensionColumns( null ) ) );
