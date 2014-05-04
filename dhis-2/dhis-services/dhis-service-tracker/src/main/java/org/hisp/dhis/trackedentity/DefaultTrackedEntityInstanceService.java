@@ -816,5 +816,11 @@ public class DefaultTrackedEntityInstanceService
     {
         return trackedEntityInstanceStore.countSearch( searchKeys, orgunits, followup, statusEnrollment );
     }
+    
+    @Override
+    public Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntity trackedEntity )
+    {
+        return trackedEntityInstanceStore.get( trackedEntity );
+    }
 
 }

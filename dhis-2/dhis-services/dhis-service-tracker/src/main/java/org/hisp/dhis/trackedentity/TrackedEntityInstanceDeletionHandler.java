@@ -32,8 +32,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
-import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 public class TrackedEntityInstanceDeletionHandler
     extends DeletionHandler
@@ -76,5 +74,14 @@ public class TrackedEntityInstanceDeletionHandler
     {
         return instanceService.getTrackedEntityInstances( unit, 0, Integer.MAX_VALUE ).size() == 0 ? null : ERROR;
     }
+    
+    @Override
+    public String allowDeleteTrackedEntity( TrackedEntity trackedEntity )
+    {
+        Collection<TrackedEntityInstance> entityInstances = instanceService.getTrackedEntityInstances( trackedEntity );
+
+        return (entityInstances != null && entityInstances.size() > 0) ? ERROR : null;
+    }
+
 
 }

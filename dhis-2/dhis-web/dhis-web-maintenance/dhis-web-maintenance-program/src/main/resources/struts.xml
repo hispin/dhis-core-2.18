@@ -1224,6 +1224,9 @@
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="requiredAuthorities">F_TRACKED_ENTITY_DELETE</param>
     </action>
 

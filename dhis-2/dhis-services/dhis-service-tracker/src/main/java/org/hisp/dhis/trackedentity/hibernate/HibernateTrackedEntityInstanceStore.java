@@ -80,6 +80,7 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.Timer;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
@@ -1112,5 +1113,12 @@ public class HibernateTrackedEntityInstanceStore
         String sql = searchTrackedEntityInstanceSql( true, searchKeys, orgunits, followup, null, statusEnrollment,
             null, null );
         return jdbcTemplate.queryForObject( sql, Integer.class );
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<TrackedEntityInstance> get( TrackedEntity trackedEntity )
+    {
+        return getCriteria( Restrictions.eq( "trackedEntity", trackedEntity ) ).list();
     }
 }

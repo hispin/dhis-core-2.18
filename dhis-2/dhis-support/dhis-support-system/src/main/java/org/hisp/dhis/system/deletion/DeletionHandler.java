@@ -770,7 +770,7 @@ public abstract class DeletionHandler
     {
     }
     
-    public String allowTrackedEntity( TrackedEntity trackedEntity )
+    public String allowDeleteTrackedEntity( TrackedEntity trackedEntity )
     {
         return null;
     }
