@@ -228,10 +228,9 @@ public class SetGeneralSettingsAction
 
         if ( offlineOrganisationUnitLevel != null )
         {
-            configuration.setOfflineOrganisationUnitLevel( organisationUnitService
-                .getOrganisationUnitLevel( offlineOrganisationUnitLevel ) );
+            configuration.setOfflineOrganisationUnitLevel( 
+                organisationUnitService.getOrganisationUnitLevel( offlineOrganisationUnitLevel ) );
 
-            // When level is changed, make sure that the version is updated
             organisationUnitService.updateVersion();
         }
 
