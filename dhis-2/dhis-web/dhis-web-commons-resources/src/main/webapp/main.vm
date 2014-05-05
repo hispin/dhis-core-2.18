@@ -9,7 +9,7 @@
     <meta name="keywords" content="DHIS 2">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link type="text/css" rel="stylesheet" href="../dhis-web-commons/font-awesome/css/font-awesome.min.css?_rev=$!{buildRevision}" />
-    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css?_rev=$!{buildRevision}" />
+    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css?_rev=$!{buildRevision}" />
     <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/${stylesheet}?_rev=$!{buildRevision}" />
     <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/widgets.css?_rev=$!{buildRevision}" />
     <link type="text/css" rel="stylesheet" media="print" href="../dhis-web-commons/css/print.css?_rev=$!{buildRevision}" />
@@ -35,7 +35,7 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.min.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.upload-1.0.2.min.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.dhisAjaxSelect.js?_rev=$!{buildRevision}"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js?_rev=$!{buildRevision}"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.blockUI.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js?_rev=$!{buildRevision}"></script>
