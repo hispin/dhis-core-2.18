@@ -30,6 +30,8 @@ package org.hisp.dhis.oum.action.organisationunit;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.calendar.CalendarService;
+import org.hisp.dhis.calendar.DateUnit;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -105,6 +107,9 @@ public class UpdateOrganisationUnitAction
     {
         this.manager = manager;
     }
+
+    @Autowired
+    private CalendarService calendarService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -274,13 +279,15 @@ public class UpdateOrganisationUnitAction
         email = nullIfEmpty( email );
         phoneNumber = nullIfEmpty( phoneNumber );
 
-        Date oDate = format.parseDate( openingDate );
+        DateUnit isoOpeningDate = calendarService.getSystemCalendar().toIso( openingDate );
+        Date oDate = isoOpeningDate.toJdkCalendar().getTime();
 
         Date cDate = null;
 
         if ( closedDate != null && closedDate.trim().length() != 0 )
         {
-            cDate = format.parseDate( closedDate );
+            DateUnit isoClosingDate = calendarService.getSystemCalendar().toIso( closedDate );
+            cDate = isoClosingDate.toJdkCalendar().getTime();
         }
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
@@ -370,7 +377,7 @@ public class UpdateOrganisationUnitAction
                 manager.updateNoAcl( newGroup );
             }
         }
-        
+
         organisationUnitService.updateOrganisationUnitVersion();
 
         return SUCCESS;

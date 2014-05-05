@@ -33,6 +33,7 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 
 import javax.validation.constraints.NotNull;
+import java.util.GregorianCalendar;
 
 /**
  * Class representing a specific calendar date.
@@ -130,6 +131,11 @@ public class DateUnit
     public DateTime toDateTime( Chronology chronology )
     {
         return new DateTime( year, month, day, 0, 0, chronology );
+    }
+
+    public java.util.Calendar toJdkCalendar()
+    {
+        return new GregorianCalendar( year, month - 1, day );
     }
 
     public static DateUnit fromDateTime( DateTime dateTime )
