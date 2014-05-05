@@ -32,9 +32,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Kristian Nordal

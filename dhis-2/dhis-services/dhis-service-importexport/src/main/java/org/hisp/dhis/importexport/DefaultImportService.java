@@ -60,7 +60,6 @@ import org.hisp.dhis.system.util.StreamUtils;
 public class DefaultImportService
     implements ImportService
 {
-
     private final Log log = LogFactory.getLog( DefaultImportService.class );
 
     static public final String DXF1URI = "http://dhis2.org/schema/dxf/1.0";

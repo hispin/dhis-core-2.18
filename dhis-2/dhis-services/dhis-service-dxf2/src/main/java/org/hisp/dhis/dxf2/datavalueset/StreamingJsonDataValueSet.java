@@ -48,7 +48,7 @@ public class StreamingJsonDataValueSet extends DataValueSet
     {
         try
         {
-            generator = JacksonUtils.getJsonMapper().getJsonFactory().createJsonGenerator( out );
+            generator = JacksonUtils.getJsonMapper().getFactory().createGenerator( out );
             generator.writeStartObject();
         }
         catch ( IOException ignored )

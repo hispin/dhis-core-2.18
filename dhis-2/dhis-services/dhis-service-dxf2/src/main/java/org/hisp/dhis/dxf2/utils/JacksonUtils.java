@@ -89,7 +89,7 @@ public class JacksonUtils
             objectMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
         }
 
-        jsonMapper.getJsonFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
+        jsonMapper.getFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
         xmlMapper.configure( ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true );
 
         // Register view classes

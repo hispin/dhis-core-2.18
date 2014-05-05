@@ -43,15 +43,14 @@ public class NeqOp extends Op
         op.setValue( getValue() );
         OpStatus status = op.evaluate( object );
 
-        // switch status from EqOp
         switch ( status )
         {
             case INCLUDE:
                 return OpStatus.EXCLUDE;
             case EXCLUDE:
                 return OpStatus.INCLUDE;
+            default:
+                return OpStatus.IGNORE;
         }
-
-        return OpStatus.IGNORE;
     }
 }
