@@ -62,10 +62,20 @@ dhis2.period.DatePicker = function( calendar, format ) {
  * Creates a date picker.
  *
  * @param el Element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param fromIso Convert field from ISO 8601 to local calendar
  * @param options Additional options, will be merged with the defaults
  */
-dhis2.period.DatePicker.prototype.createInstance = function( el, options ) {
-  $(el).calendarsPicker($.extend({}, this.defaults, options));
+dhis2.period.DatePicker.prototype.createInstance = function( el, fromIso, options ) {
+  var $el = $(el);
+
+  if( fromIso ) {
+    var iso8601 = $.calendars.instance('gregorian');
+    var isoDate = iso8601.parseDate(this.format, $el.val());
+    var cDateIsoDate = this.calendar.fromJD(isoDate.toJD());
+    $el.val(this.calendar.formatDate(this.format, cDateIsoDate));
+  }
+
+  $el.calendarsPicker($.extend({}, this.defaults, options));
 };
 
 /**
@@ -73,13 +83,26 @@ dhis2.period.DatePicker.prototype.createInstance = function( el, options ) {
  *
  * @param fromEl From element to select on, can be any kind of jQuery selector, or a jqEl
  * @param toEl To element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param fromIso Convert fields from ISO 8601 to local calendar
  * @param options Additional options, will be merged with the defaults
  */
-dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl, options ) {
+dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl, fromIso, options ) {
   var mergedOptions = $.extend({}, this.defaults, options);
 
   var $fromEl = $(fromEl);
   var $toEl = $(toEl);
+
+  if( fromIso ) {
+    var iso8601 = $.calendars.instance('gregorian');
+    var from = iso8601.parseDate(this.format, $fromEl.val());
+    var to = iso8601.parseDate(this.format, $toEl.val());
+
+    var cDateFrom = this.calendar.fromJD(from.toJD());
+    var cDateTo = this.calendar.fromJD(to.toJD());
+
+    $fromEl.val(this.calendar.formatDate(this.format, cDateFrom));
+    $toEl.val(this.calendar.formatDate(this.format, cDateTo));
+  }
 
   mergedOptions.onSelect = function( dates ) {
     if( this.id === $fromEl.attr('id') ) {
