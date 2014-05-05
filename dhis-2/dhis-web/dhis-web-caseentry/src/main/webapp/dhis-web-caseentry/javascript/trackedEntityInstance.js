@@ -254,9 +254,6 @@ function listAllTrackedEntityInstance(page) {
 
 function displayTEIList(json, page) {
 
-	
-	
-	
 	// Header
 	var title = "";
 	
@@ -291,6 +288,7 @@ function displayTEIList(json, page) {
 	// Yes/No and Yes Only attributes in result
 	
 	var attList = new Array();
+	var attDate = new Array();
 	$('#attributeIds option').each(function(i, item) {
 		var valueType = $(item).attr('valueType');
 		var value = $(item).val();
@@ -299,10 +297,20 @@ function displayTEIList(json, page) {
 				if( value==json.headers[i].name ){
 					attList.push(i);
 				}
+				else if( valueType=='date'){
+					attDate.push(i);
+				}
+			}
+		}
+		else if ( valueType == 'date' ) {
+			for (var i = idx; i < json.width; i++) {
+				if( value==json.headers[i].name ){
+					attDate.push(i);
+				}
 			}
 		}
 	});
-	
+
 	// TEI List
 	
 	table += "<col width='30' />";
@@ -330,8 +338,12 @@ function displayTEIList(json, page) {
 			if (j == 4) {
 				colVal = json.metaData.names[colVal];
 			}
+			
 			if( jQuery.inArray( j, attList )>=0 && colVal!="" ){
 				colVal = (colVal=='true')? i18n_yes : i18n_no;
+			}
+			else if( jQuery.inArray( j, attDate )>=0 && colVal!="" ){
+				colVal = colVal.split(' ')[0];
 			}
 			
 			table += "<td onclick=\"javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '"
