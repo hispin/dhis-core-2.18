@@ -84,6 +84,7 @@ import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
@@ -106,7 +107,7 @@ public class ActivityReportingServiceImpl
     private static final String PROGRAM_STAGE_SECTION_UPLOADED = "program_stage_section_uploaded";
 
     private static final String SINGLE_EVENT_UPLOADED = "single_event_uploaded";
-    
+
     private static final String SINGLE_EVENT_WITHOUT_REGISTRATION_UPLOADED = "single_event_without_registration_uploaded";
 
     private ActivityComparator activityComparator = new ActivityComparator();
@@ -408,10 +409,18 @@ public class ActivityReportingServiceImpl
 
         for ( TrackedEntityInstance patient : patients )
         {
+            System.out.println( "----------------------------------------------------------------------------" );
+            System.out.println( "Display Name: " + patient.getDisplayName() );
+            System.out.println( "Name: " + patient.getName() );
+            System.out.println( "Tracked Entity Display Name: " + patient.getTrackedEntity().getDisplayName() );
+            System.out.println( "Tracked Entity Name: " + patient.getTrackedEntity().getName() );
+            System.out.println( "----------------------------------------------------------------------------" );
+
             resultSet += patient.getId() + "/";
             String attText = "";
             for ( TrackedEntityAttribute displayAttribute : displayAttributes )
             {
+
                 TrackedEntityAttributeValue value = attValueService.getTrackedEntityAttributeValue( patient,
                     displayAttribute );
                 attText += value + " ";
@@ -1533,7 +1542,6 @@ public class ActivityReportingServiceImpl
             {
                 patients.addAll( resultPatients );
             }
-
         }
 
         if ( patients.size() == 0 )
@@ -1541,25 +1549,40 @@ public class ActivityReportingServiceImpl
             throw NotAllowedException.NO_BENEFICIARY_FOUND;
         }
 
+        Set<TrackedEntity> trackedentities = new HashSet<TrackedEntity>();
+        for ( TrackedEntityInstance patient : patients)
+        {
+            if (patient.getTrackedEntity() != null)
+            {
+                trackedentities.add( patient.getTrackedEntity() );
+            }
+        }
+        
         String resultSet = "";
 
         Collection<TrackedEntityAttribute> displayAttributes = attributeService
             .getTrackedEntityAttributesDisplayInList( true );
-        for ( TrackedEntityInstance patient : patients )
+        for ( TrackedEntity trackedentity : trackedentities)
         {
-            resultSet += patient.getId() + "/";
-            String attText = "";
-            for ( TrackedEntityAttribute displayAttribute : displayAttributes )
+            resultSet += trackedentity.getDisplayName() + "$";
+            for ( TrackedEntityInstance patient : patients )
             {
-                TrackedEntityAttributeValue value = attValueService.getTrackedEntityAttributeValue( patient,
-                    displayAttribute );
-                if ( value != null )
-                {
-                    attText += value.getValue() + " ";
+                if(patient.getTrackedEntity()!=null && patient.getTrackedEntity().getId()==trackedentity.getId()) {
+                    resultSet += patient.getId() + "/";
+                    String attText = "";
+                    for ( TrackedEntityAttribute displayAttribute : displayAttributes )
+                    {
+                        TrackedEntityAttributeValue value = attValueService.getTrackedEntityAttributeValue( patient,
+                            displayAttribute );
+                        if ( value != null )
+                        {
+                            attText += value.getValue() + " ";
+                        }
+                    }
+                    attText = attText.trim();
+                    resultSet += attText + "$";
                 }
             }
-            attText = attText.trim();
-            resultSet += attText + "$";
         }
         return resultSet;
     }
