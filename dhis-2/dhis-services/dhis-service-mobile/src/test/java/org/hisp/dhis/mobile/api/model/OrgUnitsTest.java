@@ -76,7 +76,6 @@ public class OrgUnitsTest
 
         orgUnit.setId( 1 );
         orgUnit.setName( "name" );
-
         orgUnit.setDownloadAllUrl( "all" );
         orgUnit.setUpdateActivityPlanUrl( "activitiyplan" );
         orgUnit.setUploadFacilityReportUrl( "dataSets" );
@@ -86,6 +85,7 @@ public class OrgUnitsTest
         orgUnit.setChangeUpdateDataSetLangUrl( "changeLanguageDataSet" );
         orgUnit.setSearchUrl( "search" );
         orgUnit.setUpdateNewVersionUrl( "updateNewVersionUrl" );
+        orgUnit.setSendFeedbackUrl( "sendFeedback" );
         orgUnit.setUpdateContactUrl( "updateContactForMobile" );
         orgUnit.setFindPatientUrl( "findPatient" );
         orgUnit.setRegisterPersonUrl( "registerPerson" );
@@ -100,30 +100,7 @@ public class OrgUnitsTest
         orgUnit.setHandleLostToFollowUpUrl( "handleLostToFollowUp" );
         orgUnit.setGenerateRepeatableEventUrl( "generateRepeatableEvent" );
         orgUnit.setUploadSingleEventWithoutRegistration( "uploadSingleEventWithoutRegistration" );
-        // unit.setDownloadAllUrl( "downloadAllUrl" );
-        // unit.setDownloadFacilityReportUrl( "downloadFacilityReportUrl" );
-        // unit.setUpdateActivityPlanUrl( "updateActivityPlanUrl" );
-        // unit.setUploadFacilityReportUrl( "uploadFacilityReportUrl" );
-        // unit.setUploadActivityReportUrl( "uploadActivityReportUrl" );
-        // unit.setUpdateDataSetUrl( "updateDataSetUrl" );
-        // unit.setChangeUpdateDataSetLangUrl( "changeUpdateDataSetLangUrl" );
-        // unit.setSearchUrl( "search" );
-        // unit.setUpdateNewVersionUrl( "" );
-        // unit.setUpdateContactUrl( "updateContactUrl" );
-        // unit.setFindPatientUrl( "findPatientUrl" );
-        // unit.setUploadProgramStageUrl( "uploadProgramStageUrl" );
-        // unit.setEnrollProgramUrl( "enrollProgramUrl" );
-        // unit.setRegisterPersonUrl( "registerPersonUrl" );
-        // unit.setGetVariesInfoUrl( "getVariesInfoUrl" );
-        // unit.setAddRelationshipUrl( "addRelationshipUrl" );
-        // unit.setDownloadAnonymousProgramUrl( "downloadAnonymousProgramUrl" );
-        // unit.setFindProgramUrl( "findProgramUrl" );
-        // unit.setFindPatientInAdvancedUrl( "findPatientInAdvancedUrl" );
-        // unit.setFindLostToFollowUpUrl( "findLostToFollowUpUrl" );
-        // unit.setHandleLostToFollowUpUrl( "handleLostToFollowUpUrl" );
-        // unit.setGenerateRepeatableEventUrl( "generateRepeatableEventUrl" );
-        // unit.setUploadSingleEventWithoutRegistration(
-        // "uploadSingleEventWithoutRegistration" );
+
         return orgUnit;
     }
 }
