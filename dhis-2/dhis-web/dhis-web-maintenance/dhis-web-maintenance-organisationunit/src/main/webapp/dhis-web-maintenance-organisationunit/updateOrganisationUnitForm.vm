@@ -15,7 +15,7 @@
         checkValueIsExistWarning( "name", "validateOrganisationUnit.action", { id : $organisationUnit.id } );
         checkValueIsExist( "code", "validateOrganisationUnit.action", { id : $organisationUnit.id } );
 
-      dhis2.period.picker.createRangedInstance('#openingDate', '#closedDate');
+      dhis2.period.picker.createRangedInstance('#openingDate', '#closedDate', true);
 
       jQuery( "div[id=dynamicAttributesContainer] table tr td:first-child" ).attr( "style", "width: 120px" );
       jQuery( "div[id=dynamicAttributesContainer] table tr td:last-child *" ).attr( "style", "" );
