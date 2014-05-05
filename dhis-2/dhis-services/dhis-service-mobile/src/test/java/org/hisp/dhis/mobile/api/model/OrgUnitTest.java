@@ -59,6 +59,7 @@ public class OrgUnitTest
         unit.setChangeUpdateDataSetLangUrl( "changeUpdateDataSetLangUrl" );
         unit.setSearchUrl( "search" );
         unit.setUpdateNewVersionUrl( "" );
+        unit.setSendFeedbackUrl( "sendFeedbackUrl" );
         unit.setUpdateContactUrl( "updateContactUrl" );
         unit.setFindPatientUrl( "findPatientUrl" );
         unit.setUploadProgramStageUrl( "uploadProgramStageUrl" );

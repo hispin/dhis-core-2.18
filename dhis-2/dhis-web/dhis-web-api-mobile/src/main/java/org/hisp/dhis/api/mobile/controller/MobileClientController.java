@@ -147,6 +147,7 @@ public class MobileClientController
         orgUnit.setChangeUpdateDataSetLangUrl( getUrl( request, unit.getId(), "changeLanguageDataSet" ) );
         orgUnit.setSearchUrl( getUrl( request, unit.getId(), "search" ) );
         orgUnit.setUpdateNewVersionUrl( getUrl( request, unit.getId(), "updateNewVersionUrl" ) );
+        orgUnit.setSendFeedbackUrl( getUrl(request, unit.getId(), "sendFeedback") );
         orgUnit.setUpdateContactUrl( getUrl( request, unit.getId(), "updateContactForMobile" ) );
         orgUnit.setFindPatientUrl( getUrl( request, unit.getId(), "findPatient" ) );
         orgUnit.setRegisterPersonUrl( getUrl( request, unit.getId(), "registerPerson" ) );

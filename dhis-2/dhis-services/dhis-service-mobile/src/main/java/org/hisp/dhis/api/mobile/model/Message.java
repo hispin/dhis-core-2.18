@@ -109,7 +109,8 @@ public class Message
     public void serializeVersion2_8( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
+        dataOutputStream.writeUTF( this.subject );
+        dataOutputStream.writeUTF( this.text );
 
     }
 
@@ -117,7 +118,8 @@ public class Message
     public void serializeVersion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
+        dataOutputStream.writeUTF( this.subject );
+        dataOutputStream.writeUTF( this.text );
 
     }
 
@@ -125,7 +127,8 @@ public class Message
     public void serializeVersion2_10( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
+        dataOutputStream.writeUTF( this.subject );
+        dataOutputStream.writeUTF( this.text );
 
     }
 

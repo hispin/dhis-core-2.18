@@ -110,6 +110,8 @@ public class ActivityReportingServiceImpl
 
     private static final String SINGLE_EVENT_WITHOUT_REGISTRATION_UPLOADED = "single_event_without_registration_uploaded";
 
+    private static final String FEEDBACK_SENT = "feedback_sent";
+
     private ActivityComparator activityComparator = new ActivityComparator();
 
     // -------------------------------------------------------------------------
@@ -1850,5 +1852,19 @@ public class ActivityReportingServiceImpl
 
         }
         return SINGLE_EVENT_WITHOUT_REGISTRATION_UPLOADED;
+    }
+
+    @Override
+    public String sendFeedback( org.hisp.dhis.api.mobile.model.Message message )
+        throws NotAllowedException
+    {
+
+        String subject = message.getSubject();
+        String text = message.getText();
+        String metaData = MessageService.META_USER_AGENT;
+
+        messageService.sendFeedback( subject, text, metaData );
+
+        return FEEDBACK_SENT;
     }
 }
