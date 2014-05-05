@@ -241,7 +241,7 @@ public class DefaultDataValueSetService
     public void writeDataValueSetTemplate( OutputStream out, DataSet dataSet, Period period, List<String> orgUnits,
         boolean comment, String orgUnitIdScheme, String dataElementIdScheme ) throws IOException
     {
-        ToXmlGenerator generator = (ToXmlGenerator) JacksonUtils.getXmlMapper().getJsonFactory().createJsonGenerator( out );
+        ToXmlGenerator generator = (ToXmlGenerator) JacksonUtils.getXmlMapper().getFactory().createGenerator( out );
             
         try
         {
