@@ -46,7 +46,20 @@ dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
  * @see <a href="http://keith-wood.name/datepick.html">http://keith-wood.name/datepick.html</a>
  */
 dhis2.period.DatePicker = function( calendar, format ) {
+  if( typeof calendar === 'undefined' ) {
+    if( typeof dhis2.period.calendar !== 'undefined' ) {
+      calendar = dhis2.period.calendar;
+    } else {
+      throw new Error('calendar parameter is required');
+    }
+  }
+
   this.calendar = calendar;
+
+  if( typeof format === 'undefined' ) {
+    format = dhis2.period.DEFAULT_DATE_FORMAT;
+  }
+
   this.format = format;
 
   this.defaults = {
