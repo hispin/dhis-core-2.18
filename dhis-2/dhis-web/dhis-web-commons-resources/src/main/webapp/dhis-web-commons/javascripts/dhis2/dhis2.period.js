@@ -65,8 +65,7 @@ dhis2.period.DatePicker = function( calendar, format ) {
  * @param options Additional options, will be merged with the defaults
  */
 dhis2.period.DatePicker.prototype.createInstance = function( el, options ) {
-  var mergedOptions = $.extend({}, this.defaults, options);
-  $(el).calendarsPicker(mergedOptions);
+  $(el).calendarsPicker($.extend({}, this.defaults, options));
 };
 
 /**
@@ -93,11 +92,9 @@ dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl,
 
   $fromEl.calendarsPicker(mergedOptions);
 
-  var toOptions = $.extend({}, mergedOptions, {
+  $toEl.calendarsPicker($.extend({}, mergedOptions, {
     maxDate: null
-  });
-
-  $toEl.calendarsPicker(toOptions);
+  }));
 
   $fromEl.calendarsPicker("setDate", $fromEl.calendarsPicker("getDate"));
   $toEl.calendarsPicker("setDate", $toEl.calendarsPicker("getDate"));
@@ -127,7 +124,7 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
 
   this.format = format;
 
-  this.periodTypes = {
+  this.generators = {
     "Daily": dhis2.period.makeDailyPeriodGenerator(calendar, format),
     "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar, format),
     "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar, format),
@@ -146,7 +143,7 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
  * @returns Object All available period generators
  */
 dhis2.period.PeriodGenerator.prototype.getAll = function() {
-  return this.periodTypes;
+  return this.generators;
 };
 
 /**
@@ -168,7 +165,7 @@ dhis2.period.PeriodGenerator.prototype.getDateFormat = function() {
  * @returns Wanted generator if it exists
  */
 dhis2.period.PeriodGenerator.prototype.get = function( generator ) {
-  return this.periodTypes[generator];
+  return this.generators[generator];
 };
 
 /**
@@ -177,7 +174,7 @@ dhis2.period.PeriodGenerator.prototype.get = function( generator ) {
  * @returns Array of periods
  */
 dhis2.period.PeriodGenerator.prototype.generatePeriods = function( generator, offset ) {
-  return this.periodTypes[generator].generatePeriods(offset);
+  return this.generators[generator].generatePeriods(offset);
 };
 
 /**
@@ -186,7 +183,7 @@ dhis2.period.PeriodGenerator.prototype.generatePeriods = function( generator, of
  * @returns Array of periods
  */
 dhis2.period.PeriodGenerator.prototype.generateReversedPeriods = function( generator, offset ) {
-  return this.reverse(this.periodTypes[generator].generatePeriods(offset));
+  return this.reverse(this.generators[generator].generatePeriods(offset));
 };
 
 /**
