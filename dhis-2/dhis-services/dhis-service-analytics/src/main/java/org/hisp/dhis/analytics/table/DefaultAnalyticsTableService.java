@@ -105,7 +105,7 @@ public class DefaultAnalyticsTableService
         
         final List<AnalyticsTable> tables = tableManager.getTables( lastYears );
         
-        clock.logTime( "Partition tables: " + tables + ", last 3 years: " + lastYears );
+        clock.logTime( "Partition tables: " + tables + ", last years: " + lastYears );
         
         notifier.notify( taskId, "Creating analytics tables" );
         
