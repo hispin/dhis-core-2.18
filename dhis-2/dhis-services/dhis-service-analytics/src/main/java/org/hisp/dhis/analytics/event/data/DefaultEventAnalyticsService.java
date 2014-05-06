@@ -173,15 +173,15 @@ public class DefaultEventAnalyticsService
         // ---------------------------------------------------------------------
         // Limit and sort - done again due to potential multiple partitions
         // ---------------------------------------------------------------------
+
+        if ( params.hasSortOrder() )
+        {            
+            grid.sortGrid( 1, params.getSortOrderAsInt() );
+        }
         
         if ( params.hasLimit() && grid.getHeight() > params.getLimit() )
         {
             grid.limitGrid( params.getLimit() );
-        }
-        
-        if ( params.hasSortOrder() )
-        {            
-            grid.sortGrid( 1, params.getSortOrderAsInt() );
         }
         
         // ---------------------------------------------------------------------
