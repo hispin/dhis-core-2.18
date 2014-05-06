@@ -165,12 +165,28 @@ if( !Object.keys ) {
   };
 }
 
-/**
- * Define a window.log object, and output to console.log if it exists. (this is
- * a fix for IE8 and FF 3.6).
- */
-window.log = function( str ) {
-  if( window.console ) {
-    console.log(str);
+// http://stackoverflow.com/questions/3326650/console-is-undefined-error-for-internet-explorer
+(function() {
+  var method;
+  var noop = function() {
+  };
+
+  var methods = [
+    'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+    'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+    'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+    'timeStamp', 'trace', 'warn'
+  ];
+
+  var length = methods.length;
+  var console = (window.console = window.console || {});
+
+  while( length-- ) {
+    method = methods[length];
+
+    // Only stub undefined methods.
+    if( !console[method] ) {
+      console[method] = noop;
+    }
   }
-};
+}());
