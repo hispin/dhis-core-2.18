@@ -169,6 +169,20 @@ public class DefaultEventAnalyticsService
         {
             throw new IllegalQueryException( "Number of rows produced by query is larger than the max limit: " + MAX_ROWS_LIMIT );
         }
+
+        // ---------------------------------------------------------------------
+        // Limit and sort - done again due to potential multiple partitions
+        // ---------------------------------------------------------------------
+        
+        if ( params.hasLimit() && grid.getHeight() > params.getLimit() )
+        {
+            grid.limitGrid( params.getLimit() );
+        }
+        
+        if ( params.hasSortOrder() )
+        {            
+            grid.sortGrid( 1, params.getSortOrderAsInt() );
+        }
         
         // ---------------------------------------------------------------------
         // Meta-data

@@ -240,6 +240,15 @@ public class EventQueryParams
         return limit != null && limit > 0;
     }
     
+    /**
+     * Returns a negative integer in case of ascending sort order, a positive in
+     * case of descending sort order and 0 in case of no sort order.
+     */
+    public int getSortOrderAsInt()
+    {
+        return SortOrder.ASC.equals( sortOrder ) ? -1 : SortOrder.DESC.equals( sortOrder ) ? 1 : 0;
+    }
+    
     public String toString()
     {
         return "[" +
