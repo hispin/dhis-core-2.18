@@ -1,5 +1,7 @@
+"use strict";
+
 /*
- * Copyright (c) 2004-2013, University of Oslo
+ * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,12 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+
 dhis2.util.namespace('dhis2.contextmenu');
 dhis2.util.namespace('dhis2.contextmenu.utils');
 
 /**
  * Creates a resolver to search within a certain scope
- *
  * @param scope Scope to search within
  * @returns Function
  */
@@ -129,7 +134,7 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
       pageY -= menuHeight;
 
       if( pageY < 0 ) {
-          pageY = e.pageY;
+        pageY = e.pageY;
       }
     }
 

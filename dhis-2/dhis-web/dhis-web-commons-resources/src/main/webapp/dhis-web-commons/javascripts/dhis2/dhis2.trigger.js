@@ -1,3 +1,5 @@
+"use strict";
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -27,43 +29,37 @@
  */
 
 
-dhis2.util.namespace( 'dhis2.trigger.funcs' );
+dhis2.util.namespace('dhis2.trigger.funcs');
 
 /**
  * Binds a function to be invoked for a given key. Any number of functions can
  * be set for a key. A function should return true or false.
  */
-dhis2.trigger.bind = function( key, func )
-{
-	var funcs = dhis2.trigger.funcs[key] || [];
-	funcs.push( func );	
-	dhis2.trigger.funcs[key] = funcs;
-}
+dhis2.trigger.bind = function( key, func ) {
+  var funcs = dhis2.trigger.funcs[key] || [];
+  funcs.push(func);
+  dhis2.trigger.funcs[key] = funcs;
+};
 
 /**
  * Invokes functions bound to the given key. A function can short-circuit the
  * invocations by returning false.
  */
-dhis2.trigger.invoke = function( key, args )
-{
-	var funcs = dhis2.trigger.funcs[key];
-	var result = true;
-	
-	if ( funcs !== undefined )
-	{
-		$.each( funcs, function( index, func )
-		{
-			if ( $.isFunction( func ) )
-			{
-				result = func( args );
-				
-				if ( result === false )
-				{
-					return false; // Break loop
-				}
-			}
-		} );
-	}
-	
-	return result;
-}
+dhis2.trigger.invoke = function( key, args ) {
+  var funcs = dhis2.trigger.funcs[key];
+  var result = true;
+
+  if( funcs !== undefined ) {
+    $.each(funcs, function( index, func ) {
+      if( $.isFunction(func) ) {
+        result = func(args);
+
+        if( result === false ) {
+          return false; // Break loop
+        }
+      }
+    });
+  }
+
+  return result;
+};

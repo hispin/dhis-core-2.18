@@ -1,3 +1,5 @@
+"use strict";
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -37,24 +39,24 @@ dhis2['util'] = dhis2['util'] || {};
  * @returns {object} Namespace object
  */
 dhis2.util.namespace = function( path ) {
-    var parts = path.split('.');
-    var parent = window;
-    var currentPart = '';
+  var parts = path.split('.');
+  var parent = window;
+  var currentPart = '';
 
-    for( var i = 0, length = parts.length; i < length; i++ ) {
-        currentPart = parts[i];
-        parent[currentPart] = parent[currentPart] || {};
-        parent = parent[currentPart];
-    }
+  for( var i = 0, length = parts.length; i < length; i++ ) {
+    currentPart = parts[i];
+    parent[currentPart] = parent[currentPart] || {};
+    parent = parent[currentPart];
+  }
 
-    return parent;
+  return parent;
 };
 
 /**
  * Escape function for regular expressions.
  */
 dhis2.util.escape = function( text ) {
-    return text.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/g, "\\$&");
+  return text.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/g, "\\$&");
 };
 
 /**
@@ -62,107 +64,105 @@ dhis2.util.escape = function( text ) {
  * until jQuery gets updated.
  */
 dhis2.util.jqTextFilterCaseSensitive = function( key, not ) {
-    key = dhis2.util.escape(key);
-    not = not || false;
+  key = dhis2.util.escape(key);
+  not = not || false;
 
-    if( not ) {
-        return function( i, el ) {
-            return !!!$(el).text().match("" + key);
-        };
-    }
-    else {
-        return function( i, el ) {
-            return !!$(el).text().match("" + key);
-        };
-    }
+  if( not ) {
+    return function( i, el ) {
+      return !!!$(el).text().match("" + key);
+    };
+  }
+  else {
+    return function( i, el ) {
+      return !!$(el).text().match("" + key);
+    };
+  }
 };
 
 dhis2.util.jqTextFilter = function( key, not ) {
-    key = dhis2.util.escape(key).toLowerCase();
-    not = not || false;
+  key = dhis2.util.escape(key).toLowerCase();
+  not = not || false;
 
-    if( not ) {
-        return function( i, el ) {
-            return !!!$(el).text().toLowerCase().match("" + key);
-        };
-    }
-    else {
-        return function( i, el ) {
-            return !!$(el).text().toLowerCase().match("" + key);
-        };
-    }
+  if( not ) {
+    return function( i, el ) {
+      return !!!$(el).text().toLowerCase().match("" + key);
+    };
+  }
+  else {
+    return function( i, el ) {
+      return !!$(el).text().toLowerCase().match("" + key);
+    };
+  }
 };
 
 dhis2.util.uuid = function() {
-    var S4 = function() {
-        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    };
+  var S4 = function() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  };
 
-    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-}
+  return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+};
 
 /**
  * Normalizes an argument object returned from a jQuery promise. If the argument
- * is undefined, not an array or an empty array, undefined is returned. If the 
+ * is undefined, not an array or an empty array, undefined is returned. If the
  * argument is a single promise object, the object is wrapped in an array. If the
  * argument is an array of promise objects, the array is returned unmodified.
  */
 dhis2.util.normalizeArguments = function( args ) {
-	if ( !args || !args.length || !args[0] ) {
-		return undefined;
-	}
-	
-	if ( $.isArray( args[0] ) ) {
-		return args;
-	}
-	else {
-		var arr = [];
-		arr[0] = args;
-		return arr;
-	}
-}
+  if( !args || !args.length || !args[0] ) {
+    return undefined;
+  }
+
+  if( $.isArray(args[0]) ) {
+    return args;
+  }
+  else {
+    var arr = [];
+    arr[0] = args;
+    return arr;
+  }
+};
 
 /**
  * adds ':containsNC' to filtering.
  * $(sel).find(':containsNC(key)').doSomething();
  */
 $.expr[":"].containsNC = function( a, i, m, r ) {
-    var search = dhis2.util.escape(m[3]);
-    return jQuery(a).text().toUpperCase().indexOf(m[search].toUpperCase()) >= 0;
+  var search = dhis2.util.escape(m[3]);
+  return jQuery(a).text().toUpperCase().indexOf(m[search].toUpperCase()) >= 0;
 };
 
 /**
  * adds ':regex' to filtering, use to filter by regular expression
  */
 $.expr[":"].regex = function( a, i, m, r ) {
-    var re = new RegExp(m[3], 'i');
-    return re.test(jQuery(a).text());
+  var re = new RegExp(m[3], 'i');
+  return re.test(jQuery(a).text());
 };
 
 /**
  * adds ':regex' to filtering, use to filter by regular expression
- *
  * (this is the case sensitive version)
  */
 $.expr[":"].regexCS = function( a, i, m, r ) {
-    var re = new RegExp(m[3]);
-    return re.test(jQuery(a).text());
+  var re = new RegExp(m[3]);
+  return re.test(jQuery(a).text());
 };
 
 /**
  * Returns an array of the keys in a given object. Will use ES5 Object.keys() if
  * available, if not it will provide a pure javascript implementation.
- *
  * @returns array of keys
  */
 if( !Object.keys ) {
-    Object.keys = function( obj ) {
-        var keys = new Array();
-        for( k in obj )
-            if( obj.hasOwnProperty(k) )
-                keys.push(k);
-        return keys;
-    };
+  Object.keys = function( obj ) {
+    var keys = [];
+    for( var k in obj )
+      if( obj.hasOwnProperty(k) )
+        keys.push(k);
+    return keys;
+  };
 }
 
 /**
@@ -170,7 +170,7 @@ if( !Object.keys ) {
  * a fix for IE8 and FF 3.6).
  */
 window.log = function( str ) {
-    if( this.console ) {
-        console.log(str);
-    }
+  if( this.console ) {
+    console.log(str);
+  }
 };
