@@ -269,7 +269,14 @@ public class JdbcEventAnalyticsManager
     {
         String sql = "select count(psi) ";
         
-        sql += getFromWhereClause( params, params.getPartitions().getSinglePartition() );
+        if ( params.spansMultiplePartitions() )
+        {
+            sql += getFromWhereMultiplePartitionsClause( params, Arrays.asList( "psi" ) );
+        }
+        else
+        {
+            sql += getFromWhereClause( params, params.getPartitions().getSinglePartition() );
+        }
         
         int count = 0;
         
@@ -325,13 +332,11 @@ public class JdbcEventAnalyticsManager
 
     private String getFromWhereMultiplePartitionsClause( EventQueryParams params, List<String> fixedColumns )
     {
-        String fixedCols = getSelectString( fixedColumns );
-        
         String sql = "from (";
         
         for ( String partition : params.getPartitions().getPartitions() )
         {
-            sql += "select " + fixedCols + getSelectColumns( params );
+            sql += "select " + getSelectString( fixedColumns ) + getSelectColumns( params );
             
             sql += " " + getFromWhereClause( params, partition );
             
@@ -441,6 +446,11 @@ public class JdbcEventAnalyticsManager
      */
     private String getSelectString( List<String> columns )
     {
+        if ( columns == null || columns.isEmpty() )
+        {
+            return "";
+        }
+        
         String fixedCols = StringUtils.join( columns, ", " );
         
         return StringUtils.defaultIfEmpty( fixedCols + ", ", fixedCols );
