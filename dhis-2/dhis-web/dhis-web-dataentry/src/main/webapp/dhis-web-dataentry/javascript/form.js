@@ -138,7 +138,7 @@ $( document ).ready( function()
 
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
     {
-        log( 'Ouwt loaded' );
+        console.log( 'Ouwt loaded' );
         loadMetaData();
     } );
 
@@ -247,7 +247,7 @@ function loadMetaData()
 	        dhis2.de.metaDataIsLoaded = true;
 	        selection.responseReceived(); // Notify that meta data is loaded
 	        $( '#loaderSpan' ).hide();
-	        log( 'Meta-data loaded' );
+	        console.log( 'Meta-data loaded' );
 
 	        updateForms();
 	    }
@@ -279,7 +279,7 @@ function uploadLocalData()
         var key = array[0];
         var value = completeDataSets[key];
 
-        log( 'Uploaded complete data set: ' + key + ', with value: ' + value );
+        console.log( 'Uploaded complete data set: ' + key + ', with value: ' + value );
 
         $.ajax( {
             url: '../api/completeDataSetRegistrations',
@@ -288,7 +288,7 @@ function uploadLocalData()
             success: function( data, textStatus, jqXHR )
             {
             	dhis2.de.storageManager.clearCompleteDataSet( value );
-                log( 'Successfully saved complete dataset with value: ' + value );
+                console.log( 'Successfully saved complete dataset with value: ' + value );
                 ( array = array.slice( 1 ) ).length && pushCompleteDataSets( array );
 
                 if ( array.length < 1 )
@@ -335,7 +335,7 @@ function uploadLocalData()
             value.value = value.value.slice(0, 254);
         }
 
-        log( 'Uploading data value: ' + key + ', with value: ' + value );
+        console.log( 'Uploading data value: ' + key + ', with value: ' + value );
 
         $.ajax( {
             url: '../api/dataValues',
@@ -345,7 +345,7 @@ function uploadLocalData()
             success: function( data, textStatus, xhr )
             {
             	dhis2.de.storageManager.clearDataValueJSON( value );
-                log( 'Successfully saved data value with value: ' + value );
+                console.log( 'Successfully saved data value with value: ' + value );
                 ( array = array.slice( 1 ) ).length && pushDataValues( array );
 
                 if ( array.length < 1 && completeDataSetsArray.length > 0 )
@@ -546,7 +546,7 @@ function loadForm()
 
     if ( !dhis2.de.multiOrganisationUnit && dhis2.de.storageManager.formExists( dataSetId ) )
     {
-        log( 'Loading form locally: ' + dataSetId );
+        console.log( 'Loading form locally: ' + dataSetId );
 
         var html = dhis2.de.storageManager.getForm( dataSetId );
 
@@ -563,7 +563,7 @@ function loadForm()
     }
     else
     {
-        log( 'Loading form remotely: ' + dataSetId );
+        console.log( 'Loading form remotely: ' + dataSetId );
 
         $( '#contentDiv' ).load( 'loadForm.action', 
         {
@@ -705,7 +705,7 @@ function getDataElementType( dataElementId )
 		return dhis2.de.dataElements[dataElementId];
 	}
 
-	log( 'Data element not present in data set, falling back to default type: ' + dataElementId );
+	console.log( 'Data element not present in data set, falling back to default type: ' + dataElementId );
 	return DEFAULT_TYPE;
 }
 
@@ -718,7 +718,7 @@ function getDataElementName( dataElementId )
 		return span.text();
 	}
 
-	log( 'Data element not present in form, falling back to default name: ' + dataElementId );
+  console.log( 'Data element not present in form, falling back to default name: ' + dataElementId );
 	return DEFAULT_NAME;
 }
 
@@ -731,7 +731,7 @@ function getOptionComboName( optionComboId )
 		return span.text();
 	}
 
-	log( 'Category option combo not present in form, falling back to default name: ' + optionComboId );
+  console.log( 'Category option combo not present in form, falling back to default name: ' + optionComboId );
 	return DEFAULT_NAME;
 }
 
@@ -1870,11 +1870,11 @@ function purgeLocalForms()
         {
         	dhis2.de.storageManager.deleteForm( item );
         	dhis2.de.storageManager.deleteFormVersion( item );
-            log( 'Deleted locally stored form: ' + item );
+          console.log( 'Deleted locally stored form: ' + item );
         }
     } );
 
-    log( 'Purged local forms' );
+    console.log( 'Purged local forms' );
 }
 
 function updateExistingLocalForms()
@@ -1999,11 +1999,11 @@ function StorageManager()
         {
             localStorage[id] = html;
 
-            log( 'Successfully stored form: ' + dataSetId );
+          console.log( 'Successfully stored form: ' + dataSetId );
         } 
         catch ( e )
         {
-            log( 'Max local storage quota reached, ignored form: ' + dataSetId );
+          console.log( 'Max local storage quota reached, ignored form: ' + dataSetId );
             return false;
         }
 
@@ -2011,7 +2011,7 @@ function StorageManager()
         {
             this.deleteForm( dataSetId );
 
-            log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
+          console.log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
             return false;
         }
 
@@ -2130,11 +2130,11 @@ function StorageManager()
         {
             localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
 
-            log( 'Successfully stored form version: ' + dataSetId );
+          console.log( 'Successfully stored form version: ' + dataSetId );
         } 
         catch ( e )
         {
-            log( 'Max local storage quota reached, ignored form version: ' + dataSetId );
+          console.log( 'Max local storage quota reached, ignored form version: ' + dataSetId );
         }
     };
 
@@ -2204,11 +2204,11 @@ function StorageManager()
         {
             localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
 
-            log( 'Successfully stored data value' );
+          console.log( 'Successfully stored data value' );
         } 
         catch ( e )
         {
-            log( 'Max local storage quota reached, not storing data value locally' );
+          console.log( 'Max local storage quota reached, not storing data value locally' );
         }
     };
 
@@ -2583,7 +2583,7 @@ dhis2.de.loadOptionSets = function()
                             type: 'GET',
                             cache: false
                         } ).done( function ( data ) {
-                            log( 'Successfully stored optionSet: ' + item.uid );
+                          console.log( 'Successfully stored optionSet: ' + item.uid );
 
                             var obj = {};
                             obj.id = item.uid;
