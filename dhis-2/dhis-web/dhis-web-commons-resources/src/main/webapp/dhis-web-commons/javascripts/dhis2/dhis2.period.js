@@ -54,21 +54,21 @@ dhis2.period.DatePicker = function( calendar, format ) {
     }
   }
 
-  this.calendar = calendar;
-
   if( typeof format === 'undefined' ) {
     format = dhis2.period.DEFAULT_DATE_FORMAT;
   }
 
-  this.format = format;
-
-  this.defaults = {
-    calendar: this.calendar,
-    dateFormat: this.format,
-    showAnim: '',
-    maxDate: this.calendar.today(),
-    yearRange: 'c-100:c+100'
-  };
+  $.extend(this, {
+    calendar: calendar,
+    format: format,
+    defaults: {
+      calendar: calendar,
+      dateFormat: format,
+      showAnim: '',
+      maxDate: calendar.today(),
+      yearRange: 'c-100:c+100'
+    }
+  });
 };
 
 /**
@@ -156,23 +156,23 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
     format = dhis2.period.DEFAULT_DATE_FORMAT;
   }
 
-  this.calendar = calendar;
-
-  this.format = format;
-
-  this.generators = {
-    "Daily": dhis2.period.makeDailyPeriodGenerator(calendar, format),
-    "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar, format),
-    "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar, format),
-    "BiMonthly": dhis2.period.makeBiMonthlyPeriodGenerator(calendar, format),
-    "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(calendar, format),
-    "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar, format),
-    "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar, format),
-    "Yearly": dhis2.period.makeYearlyPeriodGenerator(calendar, format),
-    "FinancialApril": dhis2.period.makeFinancialAprilPeriodGenerator(calendar, format),
-    "FinancialJuly": dhis2.period.makeFinancialJulyPeriodGenerator(calendar, format),
-    "FinancialOct": dhis2.period.makeFinancialOctoberPeriodGenerator(calendar, format)
-  };
+  $.extend(this, {
+    calendar: calendar,
+    format: format,
+    generators: {
+      "Daily": dhis2.period.makeDailyPeriodGenerator(calendar, format),
+      "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar, format),
+      "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar, format),
+      "BiMonthly": dhis2.period.makeBiMonthlyPeriodGenerator(calendar, format),
+      "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(calendar, format),
+      "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar, format),
+      "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar, format),
+      "Yearly": dhis2.period.makeYearlyPeriodGenerator(calendar, format),
+      "FinancialApril": dhis2.period.makeFinancialAprilPeriodGenerator(calendar, format),
+      "FinancialJuly": dhis2.period.makeFinancialJulyPeriodGenerator(calendar, format),
+      "FinancialOct": dhis2.period.makeFinancialOctoberPeriodGenerator(calendar, format)
+    }
+  });
 };
 
 /**
