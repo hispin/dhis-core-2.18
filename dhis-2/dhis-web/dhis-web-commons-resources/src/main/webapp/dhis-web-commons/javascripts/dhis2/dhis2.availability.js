@@ -1,5 +1,7 @@
+"use strict";
+
 /*
- * Copyright (c) 2004-2013, University of Oslo
+ * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-dhis2.util.namespace( 'dhis2.availability' );
+dhis2.util.namespace('dhis2.availability');
 
 dhis2.availability._isAvailable = -1;
 dhis2.availability._isLoggedIn = -1;
@@ -35,110 +37,96 @@ dhis2.availability._availableTimeoutHandler = -1;
 /**
  * Start availability check, will trigger dhis2.online / dhis2.offline events
  * when availability changes.
- * 
+ *
  * @param onlineInterval How often to check for availability when online,
  *            default is 10000.
  * @param offlineInterval How often to check for availability when offline,
  *            default is 1000.
  */
-dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInterval )
-{
-    onlineInterval = onlineInterval ? onlineInterval : 10000;
-    offlineInterval = offlineInterval ? offlineInterval : 1000;
+dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInterval ) {
+  onlineInterval = onlineInterval ? onlineInterval : 10000;
+  offlineInterval = offlineInterval ? offlineInterval : 1000;
 
-    function _checkAvailability()
-    {
-        $.ajax( {
-            url : "../dhis-web-commons-stream/ping.action",
-            cache : false,
-            timeout: 10000,
-    		dataType : "text",
-            success : function( data, textStatus, jqXHR )
-            {
-                try {
-                    data = JSON.parse(data);
-                } catch(e) {}
+  function _checkAvailability() {
+    $.ajax({
+      url: "../dhis-web-commons-stream/ping.action",
+      cache: false,
+      timeout: 10000,
+      dataType: "text",
+      success: function( data, textStatus, jqXHR ) {
+        try {
+          data = JSON.parse(data);
+        } catch( e ) {
+        }
 
-                dhis2.availability._isAvailable = true;
-                var loggedIn = data.loggedIn ? true : false;
+        dhis2.availability._isAvailable = true;
+        var loggedIn = data.loggedIn ? true : false;
 
-                if ( loggedIn != dhis2.availability._isLoggedIn )
-                {
-                    dhis2.availability._isLoggedIn = loggedIn;
-                    $( document ).trigger( "dhis2.online", [ loggedIn ] );
-                }
-            },
-            error : function( jqXHR, textStatus, errorThrown )
-            {
-                if ( dhis2.availability._isAvailable )
-                {
-                    dhis2.availability._isAvailable = false;
-                    dhis2.availability._isLoggedIn = -1;
-                    $( document ).trigger( "dhis2.offline" );
-                }
-            },
-	        complete : function()
-	        {
-	            if ( dhis2.availability._isAvailable )
-	            {
-	                dhis2.availability._availableTimeoutHandler = setTimeout( _checkAvailability, onlineInterval );
-	            }
-	            else
-	            {
-	                dhis2.availability._availableTimeoutHandler = setTimeout( _checkAvailability, offlineInterval );
-	            }
-	        }
-        } );
-    }
+        if( loggedIn != dhis2.availability._isLoggedIn ) {
+          dhis2.availability._isLoggedIn = loggedIn;
+          $(document).trigger("dhis2.online", [ loggedIn ]);
+        }
+      },
+      error: function( jqXHR, textStatus, errorThrown ) {
+        if( dhis2.availability._isAvailable ) {
+          dhis2.availability._isAvailable = false;
+          dhis2.availability._isLoggedIn = -1;
+          $(document).trigger("dhis2.offline");
+        }
+      },
+      complete: function() {
+        if( dhis2.availability._isAvailable ) {
+          dhis2.availability._availableTimeoutHandler = setTimeout(_checkAvailability, onlineInterval);
+        }
+        else {
+          dhis2.availability._availableTimeoutHandler = setTimeout(_checkAvailability, offlineInterval);
+        }
+      }
+    });
+  }
 
-    // use 500ms for initial check
-    _availableTimeoutHandler = setTimeout( _checkAvailability, 500 );
+  // use 500ms for initial check
+  setTimeout(_checkAvailability, 500);
 };
 
 /**
  * Stop checking for availability.
  */
-dhis2.availability.stopAvailabilityCheck = function()
-{
-    clearTimeout( dhis2.availability._availableTimeoutHandler );
+dhis2.availability.stopAvailabilityCheck = function() {
+  clearTimeout(dhis2.availability._availableTimeoutHandler);
 };
 
 /**
  * Synchronized one-off check of availability.
  */
-dhis2.availability.syncCheckAvailability = function()
-{
-    var isLoggedIn = false;
+dhis2.availability.syncCheckAvailability = function() {
+  var isLoggedIn = false;
 
-    $.ajax( {
-        url : "../dhis-web-commons-stream/ping.action",
-        async : false,
-        cache : false,
-        timeout: 10000,
-    	dataType : "json",
-        success : function( data, textStatus, jqXHR )
-        {
-            dhis2.availability._isAvailable = true;
-            var loggedIn = data.loggedIn ? true : false;
+  $.ajax({
+    url: "../dhis-web-commons-stream/ping.action",
+    async: false,
+    cache: false,
+    timeout: 10000,
+    dataType: "json",
+    success: function( data, textStatus, jqXHR ) {
+      dhis2.availability._isAvailable = true;
+      var loggedIn = data.loggedIn ? true : false;
 
-            if ( loggedIn != dhis2.availability._isLoggedIn )
-            {
-                dhis2.availability._isLoggedIn = loggedIn;
-                $( document ).trigger( "dhis2.online", [ loggedIn ] );
-            }
+      if( loggedIn != dhis2.availability._isLoggedIn ) {
+        dhis2.availability._isLoggedIn = loggedIn;
+        $(document).trigger("dhis2.online", [ loggedIn ]);
+      }
 
-            isLoggedIn = loggedIn;
-        },
-        error : function( jqXHR, textStatus, errorThrown )
-        {
-            if ( dhis2.availability._isAvailable )
-            {
-                dhis2.availability._isAvailable = false;
-                dhis2.availability._isLoggedIn = -1;
-                $( document ).trigger( "dhis2.offline" );
-            }
-        }
-    } );
+      isLoggedIn = loggedIn;
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      if( dhis2.availability._isAvailable ) {
+        dhis2.availability._isAvailable = false;
+        dhis2.availability._isLoggedIn = -1;
+        $(document).trigger("dhis2.offline");
+      }
+    }
+  });
 
-    return isLoggedIn;
+  return isLoggedIn;
 };

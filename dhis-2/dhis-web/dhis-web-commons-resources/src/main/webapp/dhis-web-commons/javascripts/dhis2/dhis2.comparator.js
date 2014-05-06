@@ -1,5 +1,7 @@
+"use strict";
+
 /*
- * Copyright (c) 2004-2013, University of Oslo
+ * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,54 +29,50 @@
  */
 
 
-dhis2.util.namespace( 'dhis2.comparator' );
+dhis2.util.namespace('dhis2.comparator');
 
 /**
  * Compares two objects and returns result.
- * 
+ *
  * @param a {object} Object A
  * @param b {object} Object B
- * 
+ *
  * @returns {Number} 1 if a>b, -1 if a>b, 0 if equal
  */
-dhis2.comparator.defaultComparator = function( a, b )
-{
-    if ( a === b )
-    {
-        return 0;
-    }
+dhis2.comparator.defaultComparator = function( a, b ) {
+  if( a === b ) {
+    return 0;
+  }
 
-    return ( a > b ) ? 1 : -1;
+  return ( a > b ) ? 1 : -1;
 };
 
 /**
  * Case sensitive compare of two jQuery objects (based on their innerHTML).
- * 
+ *
  * @param a {jQuery} Object A
  * @param b {jQuery} Object B
- * 
+ *
  * @returns {Number} 1 if a>b, -1 if a>b, 0 if equal
  */
-dhis2.comparator.htmlComparator = function( a, b )
-{
-    return dhis2.comparator.defaultComparator( a.html(), b.html() );
+dhis2.comparator.htmlComparator = function( a, b ) {
+  return dhis2.comparator.defaultComparator(a.html(), b.html());
 };
 
 /**
  * Case insensitive compare of two jQuery objects (based on their innerHTML).
- * 
+ *
  * @param a {jQuery} Object A
  * @param b {jQuery} Object B
- * 
+ *
  * @returns {Number} 1 if a>b, -1 if a>=b
  */
-dhis2.comparator.htmlNoCaseComparator = function( a, b )
-{
-    a = !!a ? a.html() : a;
-    b = !!b ? b.html() : b;
+dhis2.comparator.htmlNoCaseComparator = function( a, b ) {
+  a = !!a ? a.html() : a;
+  b = !!b ? b.html() : b;
 
-    a = !!a ? a.toLowerCase() : a;
-    b = !!b ? b.toLowerCase() : b;
+  a = !!a ? a.toLowerCase() : a;
+  b = !!b ? b.toLowerCase() : b;
 
-    return dhis2.comparator.defaultComparator( a, b );
+  return dhis2.comparator.defaultComparator(a, b);
 };

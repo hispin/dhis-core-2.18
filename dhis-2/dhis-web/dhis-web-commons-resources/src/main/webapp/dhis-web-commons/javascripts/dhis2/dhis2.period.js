@@ -1,3 +1,5 @@
+"use strict";
+
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -317,7 +319,7 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriods = function( periods )
   var array = [];
   var today = this.calendar.today();
 
-  $.each(periods, function( idx ) {
+  $.each(periods, function() {
     if( this['_endDate'].compareTo(today) <= 0 ) {
       array.push(this);
     }
@@ -335,7 +337,7 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriodsExceptCurrent = functi
   var array = [];
   var today = this.calendar.today();
 
-  $.each(periods, function( idx ) {
+  $.each(periods, function() {
     if( this['_startDate'].compareTo(today) <= 0 ) {
       array.push(this);
     }
