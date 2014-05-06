@@ -362,7 +362,7 @@ function displayTEIList(json, page) {
 				+ "'><img src='../images/enroll.png' alt='"
 				+ i18n_dashboard
 				+ "'></a>";
-		table += "<a href=\"javascript:isDashboard=false;showUpdateTrackedEntityInstanceForm( '"
+		table += "<a href=\"javascript:isDashboard=false;statusSearching=3;showUpdateTrackedEntityInstanceForm( '"
 				+ uid
 				+ "' )\" title='"
 				+ i18n_edit_profile
@@ -535,7 +535,7 @@ function loadTrackedEntityInstanceList() {
 	} else if (statusSearching == 1) {
 		validateAdvancedSearch();
 	} else if (statusSearching == 3) {
-		showById('listTrackedEntityInstanceDiv');
+		showById('listEntityInstanceDiv');
 	}
 }
 

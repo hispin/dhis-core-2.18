@@ -154,7 +154,7 @@ function loadTrackedEntityInstanceList() {
 	if (statusSearching == 0) {
 		return;
 	} else if (statusSearching == 1) {
-		showById('listTrackedEntityInstanceDiv');
+		showById('listEntityInstanceDiv');
 	}
 }
 
