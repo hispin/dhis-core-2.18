@@ -2,8 +2,8 @@ CACHE MANIFEST
 
 CACHE:
 ../dhis-web-commons/javascripts/jQuery/jquery.min.js
-../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js
-../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css
+../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css
 
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.eot
 ../dhis-web-commons/fonts/LiberationSans-Regular-webfont.woff
