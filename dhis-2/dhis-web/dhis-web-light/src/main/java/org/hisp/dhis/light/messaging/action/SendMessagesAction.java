@@ -31,6 +31,8 @@ package org.hisp.dhis.light.messaging.action;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.user.User;
@@ -43,6 +45,8 @@ import com.opensymphony.xwork2.Action;
 public class SendMessagesAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( SendMessagesAction.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -59,12 +63,12 @@ public class SendMessagesAction
 
     private User user;
 
-    private Integer userId;
-
-    public void setUserId( Integer userId )
-    {
-        this.userId = userId;
-    }
+//    private Integer userId;
+//
+//    public void setUserId( Integer userId )
+//    {
+//        this.userId = userId;
+//    }
 
     public User getUser()
     {
@@ -90,21 +94,71 @@ public class SendMessagesAction
         this.text = text;
     }
 
+    private String recipientCheckBox;
+    public String getRecipientCheckBox()
+    {
+        return recipientCheckBox;
+    }
+
+    public void setRecipientCheckBox( String recipientCheckBox )
+    {
+        this.recipientCheckBox = recipientCheckBox;
+    }
+
+    private Set<User> recipient;
+    public Set<User> getRecipient()
+    {
+        return recipient;
+    }
+
+    public void setRecipients( Set<User> recipient )
+    {
+        this.recipient = recipient;
+    }    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        user = userService.getUser( userId );
+        log.info( "SendMessagesAction.execute() called" );        
+        
+        updateRecipients(recipientCheckBox);
+        
+//        user = userService.getUser( userId );
         String metaData = MessageService.META_USER_AGENT
             + ServletActionContext.getRequest().getHeader( ContextUtils.HEADER_USER_AGENT );
 
-        Set<User> users = new HashSet<User>();
-        users.add( user );
+//        Set<User> users = new HashSet<User>();
+//        users.add( user );
 
-        messageService.sendMessage( subject, text, metaData, users );
+//        messageService.sendMessage( subject, text, metaData, users );
+        messageService.sendMessage( subject, text, metaData, recipient );
 
+        log.debug( "SendMessagesAction.execute() exit: " + SUCCESS);
+                
         return SUCCESS;
     }
+    
+    /**
+     * 
+     * @param recipientCheckBox
+     */
+    private void updateRecipients(String recipientCheckBox)
+    {
+        recipient = new HashSet<User>();
+        
+        if ( recipientCheckBox != null )
+        {
+            String rcbArray[] = recipientCheckBox.split( "," );
+
+            for ( int i = 0; i < rcbArray.length; i++ )
+            {
+                rcbArray[i] = rcbArray[i].trim();
+                User u = userService.getUser( Integer.parseInt( rcbArray[i] ) );
+                recipient.add( u );
+            }
+        }
+    }    
 }

@@ -13,35 +13,50 @@
 </ul>
 </p>
 
-<p>
+#*
+	<p>
 
-<form method="POST" action="searchUser.action">
-<div class="header-box" align="center">
-	<h3 style="text-align: left;">$i18n.getString("search_user")</h3>
+	<form method="POST" action="searchUser.action">
+	<div class="header-box" align="center">
+		<h3 style="text-align: left;">$i18n.getString("search_user")</h3>
+		
+		<p style="text-align: left;">
+			<input type="text" name="keyword"/>
+		</p>
+		<p style="text-align: left;">
+			 <input type="submit" style="width: 100%;" value="$i18n.getString("search")" />
+		</p>
+	</div>
 	
-	<p style="text-align: left;">
-		<input type="text" name="keyword"/>
+	</form>
+
+	<p>
+			<form>
+			
+			#foreach( $user in $users)
+			<ul>		
+				<li><a href="showUserList.action?userId=$user.getId()">$!encoder.htmlEncode( ${user.getName()} )</a></li>
+			</ul>
+			#end
+			
+			</form>
 	</p>
-	<p style="text-align: left;">
-		 <input type="submit" style="width: 100%;" value="$i18n.getString("search")" />
-	</p>
-</div>
+*#
 
-</form>
-
-<p>
-<ul>
-#foreach( $user in $users)
-	<li><a href="showUserList.action?userId=$user.getId()">$!encoder.htmlEncode( ${user.getName()} )</a></li>
-#end
-</ul>
-</p>
+<h2>$i18n.getString( "write" )</h2>
 
 <ul>
-<li>
-<a href="feedback.action">$i18n.getString("feedback")</a>
-</li>
+	<li>
+	<a href="message.action">$i18n.getString( "write_message" )</a>
+	</li>
 </ul>
+
+<ul>
+	<li>
+	<a href="feedback.action">$i18n.getString( "write_feedback" )</a>
+	</li>
+</ul>
+
 <h2>$i18n.getString( "last_recipients" )</h2>
 
 <p>

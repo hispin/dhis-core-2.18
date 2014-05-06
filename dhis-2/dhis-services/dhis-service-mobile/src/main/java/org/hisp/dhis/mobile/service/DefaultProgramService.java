@@ -190,6 +190,10 @@ public class DefaultProgramService
         pr.setVersion( program.getVersion() );
         pr.setDateOfEnrollmentDescription( program.getDateOfEnrollmentDescription() );
         pr.setDateOfIncidentDescription( program.getDateOfIncidentDescription() );
+        if( program.getTrackedEntity() != null && program.getTrackedEntity().getName() != null)
+        {
+            pr.setTrackedEntityName( program.getTrackedEntity().getName() );
+        }
 
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> prStgs = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
 
