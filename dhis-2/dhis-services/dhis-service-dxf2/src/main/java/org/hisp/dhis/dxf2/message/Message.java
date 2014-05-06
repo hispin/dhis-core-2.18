@@ -71,7 +71,6 @@ public class Message
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getSubject()
     {
@@ -84,7 +83,6 @@ public class Message
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getText()
     {
@@ -98,6 +96,7 @@ public class Message
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnit> getOrganisationUnits()
@@ -112,6 +111,7 @@ public class Message
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "users", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "user", namespace = DxfNamespaces.DXF_2_0 )
     public Set<User> getUsers()
@@ -126,6 +126,7 @@ public class Message
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "userGroups", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "userGroup", namespace = DxfNamespaces.DXF_2_0 )
     public Set<UserGroup> getUserGroups()
