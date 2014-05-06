@@ -121,11 +121,15 @@
           </li>
       </ul>
 
-      <div id="appsDropDown" class="menuDropDownArea app-menu-dropdown appsMenuLink_menu" >
+      <div id="appsDropDown" class="menuDropDownArea app-menu-dropdown appsMenuLink_menu ui-front" >
         <div class="caret-up-border"></div>
         <div class="caret-up-background"></div>
         <div class="menu-drop-down-wrap">
             <div class="menu-drop-down-scroll">
+                <div class="apps-search-wrap">
+                  <input id="apps-search" class="apps-search" type="text" placeholder="$i18n.getString( "app_search_placeholder" )">
+                  <span id="apps-search-clear" class="fa fa-times-circle"></span>
+                </div>
               <ul class="menuDropDownBox"><li class="menu-placeholder"><img src="../images/ajax-loader-bar.gif"></li></ul>
             </div>
         </div>
