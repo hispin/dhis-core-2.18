@@ -37,6 +37,7 @@ import org.hisp.dhis.dxf2.filter.ops.LikeOp;
 import org.hisp.dhis.dxf2.filter.ops.LtOp;
 import org.hisp.dhis.dxf2.filter.ops.LteOp;
 import org.hisp.dhis.dxf2.filter.ops.NeqOp;
+import org.hisp.dhis.dxf2.filter.ops.NnullOp;
 import org.hisp.dhis.dxf2.filter.ops.NullOp;
 import org.hisp.dhis.dxf2.filter.ops.Op;
 
@@ -59,6 +60,7 @@ public class OpFactory
         register( "lt", LtOp.class );
         register( "lte", LteOp.class );
         register( "null", NullOp.class );
+        register( "nnull", NnullOp.class );
         register( "empty", EmptyCollectionOp.class );
     }
 
