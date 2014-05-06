@@ -1,6 +1,7 @@
 #set($noGroup = $attributeGroups.size() )
 #if( $programInstance || $hasDataEntry=='true' )
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programInstance.id' />
+<input type='hidden' id='programInstanceUid' name='programInstanceUid' value='$programInstance.uid' />
 <input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='0'>
 <input type='hidden' id='entityInstanceId' name='entityInstanceId' value='$programInstance.entityInstance.id' />
 <input type='hidden' id='entityInstanceUid' name='entityInstanceUid' value='$programInstance.entityInstance.uid' />
@@ -167,7 +168,7 @@
 			getVisitSchedule(getFieldValue('programInstanceId'));
 		}
 		else if( ui.tab.hash == '#tab-5' ){
-			programReports(getFieldValue('programInstanceId'));
+			programReports(getFieldValue('programInstanceUid'));
 		}
 		else if( ui.tab.hash == '#tab-4' ){
 			getEventMessages(getFieldValue('programInstanceId'));
