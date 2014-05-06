@@ -153,6 +153,10 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
   calendar = calendar || dhis2.period.calendar;
   format = format || dhis2.period.DEFAULT_DATE_FORMAT;
 
+  if( typeof calendar === 'undefined' ) {
+    throw new Error('calendar parameter was not provided or is undefined, and no global dhis2.period.calendar instance exists.')
+  }
+
   $.extend(this, {
     calendar: calendar,
     format: format,
