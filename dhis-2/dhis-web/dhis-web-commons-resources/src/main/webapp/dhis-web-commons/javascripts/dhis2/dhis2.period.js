@@ -56,8 +56,10 @@ dhis2.period.DatePicker = function( calendar, format ) {
     }
   }
 
-  if( typeof format === 'undefined' ) {
-    format = dhis2.period.DEFAULT_DATE_FORMAT;
+  format = format || dhis2.period.DEFAULT_DATE_FORMAT;
+
+  if( !(calendar instanceof $.calendars.baseCalendar) ) {
+    throw new Error('calendar must be instance of $.calendars.baseCalendar')
   }
 
   $.extend(this, {
@@ -153,27 +155,42 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
   calendar = calendar || dhis2.period.calendar;
   format = format || dhis2.period.DEFAULT_DATE_FORMAT;
 
-  if( typeof calendar === 'undefined' ) {
-    throw new Error('calendar parameter was not provided or is undefined, and no global dhis2.period.calendar instance exists.')
+  if( !(calendar instanceof $.calendars.baseCalendar) ) {
+    throw new Error('calendar must be instance of $.calendars.baseCalendar')
   }
 
   $.extend(this, {
     calendar: calendar,
-    format: format,
-    generators: {
-      "Daily": new dhis2.period.DailyGenerator(calendar, format),
-      "Weekly": new dhis2.period.WeeklyGenerator(calendar, format),
-      "Monthly": new dhis2.period.MonthlyGenerator(calendar, format),
-      "BiMonthly": new dhis2.period.BiMonthlyGenerator(calendar, format),
-      "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(calendar, format),
-      "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar, format),
-      "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar, format),
-      "Yearly": dhis2.period.makeYearlyPeriodGenerator(calendar, format),
-      "FinancialApril": dhis2.period.makeFinancialAprilPeriodGenerator(calendar, format),
-      "FinancialJuly": dhis2.period.makeFinancialJulyPeriodGenerator(calendar, format),
-      "FinancialOct": dhis2.period.makeFinancialOctoberPeriodGenerator(calendar, format)
-    }
+    format: format
   });
+
+  this.registerGenerator(dhis2.period.DailyGenerator);
+  this.registerGenerator(dhis2.period.WeeklyGenerator);
+  this.registerGenerator(dhis2.period.MonthlyGenerator);
+  this.registerGenerator(dhis2.period.BiMonthlyGenerator);
+  this.registerGenerator(dhis2.period.QuarterlyGenerator);
+  this.registerGenerator(dhis2.period.SixMonthlyGenerator);
+  this.registerGenerator(dhis2.period.SixMonthlyAprilGenerator);
+  this.registerGenerator(dhis2.period.YearlyGenerator);
+  this.registerGenerator(dhis2.period.FinancialAprilGenerator);
+  this.registerGenerator(dhis2.period.FinancialJulyGenerator);
+  this.registerGenerator(dhis2.period.FinancialOctoberGenerator);
+};
+
+/**
+ * Registers a new generator, must be of instance of dhis2.period.BaseGenerator
+ * @param {*} klass Class to register, will be checked for type
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.PeriodGenerator.prototype.registerGenerator = function( klass ) {
+  this.generators = this.generators || {};
+  var o = new klass(this.calendar, this.format);
+
+  if( !(o instanceof dhis2.period.BaseGenerator) ) {
+    throw new Error('Failed to register new generator class, must be instance of dhis2.period.BaseGenerator.');
+  }
+
+  this.generators[o.name] = o;
 };
 
 /**
@@ -345,240 +362,6 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriodsExceptCurrent = functi
   return array;
 };
 
-dhis2.period.makeMonthlyPeriodGenerator = function( calendar, format ) {
-  var self = {};
-  self.generatePeriods = function( offset ) {
-    offset = offset || 0;
-
-    var year = offset + calendar.today().year();
-    var periods = [];
-
-    for( var month = 1; month <= calendar.monthsInYear(year); month++ ) {
-      var startDate = calendar.newDate(year, month, 1);
-      var endDate = calendar.newDate(startDate).set(startDate.daysInMonth(month), 'd');
-
-      var period = {};
-      period['startDate'] = startDate.formatDate(format);
-      period['endDate'] = endDate.formatDate(format);
-      period['name'] = startDate.formatDate("MM yyyy");
-      period['id'] = 'Monthly_' + period['startDate'];
-      period['iso'] = startDate.formatDate("yyyymm");
-
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
-
-      periods.push(period);
-    }
-
-    return periods;
-  };
-
-  return self;
-};
-
-dhis2.period.makeQuarterlyPeriodGenerator = function( calendar, format ) {
-  var self = {};
-  self.generatePeriods = function( offset ) {
-    offset = offset || 0;
-
-    var year = offset + calendar.today().year();
-    var periods = [];
-
-    for( var month = 1, idx = 1; month <= calendar.monthsInYear(year); month += 3, idx++ ) {
-      var startDate = calendar.newDate(year, month, 1);
-      var endDate = calendar.newDate(startDate).set(month + 2, 'm');
-      endDate.set(endDate.daysInMonth(month + 2), 'd');
-
-      var period = {};
-      period['startDate'] = startDate.formatDate(format);
-      period['endDate'] = endDate.formatDate(format);
-      period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
-      period['id'] = 'Quarterly_' + period['startDate'];
-      period['iso'] = startDate.formatDate("yyyy") + 'Q' + idx;
-
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
-
-      periods.push(period);
-    }
-
-    return periods;
-  };
-
-  return self;
-};
-
-dhis2.period.makeSixMonthlyPeriodGenerator = function( calendar, format ) {
-  var self = {};
-  self.generatePeriods = function( offset ) {
-    offset = offset || 0;
-
-    var year = offset + calendar.today().year();
-    var periods = [];
-
-    var startDate = calendar.newDate(year, 1, 1);
-    var endDate = calendar.newDate(startDate).set(6, 'm');
-    endDate.set(endDate.daysInMonth(6), 'd');
-
-    var period = {};
-    period['startDate'] = startDate.formatDate(format);
-    period['endDate'] = endDate.formatDate(format);
-    period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
-    period['id'] = 'SixMonthly_' + period['startDate'];
-    period['iso'] = startDate.formatDate("yyyy") + 'S1';
-
-    period['_startDate'] = startDate;
-    period['_endDate'] = endDate;
-
-    periods.push(period);
-
-    startDate = calendar.newDate(year, 7, 1);
-    endDate = calendar.newDate(startDate).set(calendar.monthsInYear(year), 'm');
-    endDate.set(endDate.daysInMonth(12), 'd');
-
-    period = {};
-    period['startDate'] = startDate.formatDate(format);
-    period['endDate'] = endDate.formatDate(format);
-    period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
-    period['id'] = 'SixMonthly_' + period['startDate'];
-    period['iso'] = startDate.formatDate("yyyy") + 'S2';
-
-    period['_startDate'] = startDate;
-    period['_endDate'] = endDate;
-
-    periods.push(period);
-
-    return periods;
-  };
-
-  return self;
-};
-
-dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( calendar, format ) {
-  var self = {};
-  self.generatePeriods = function( offset ) {
-    offset = offset || 0;
-
-    var year = offset + calendar.today().year();
-    var periods = [];
-
-    var startDate = calendar.newDate(year, 4, 1);
-    var endDate = calendar.newDate(startDate).set(9, 'm');
-    endDate.set(endDate.daysInMonth(9), 'd');
-
-    var period = {};
-    period['startDate'] = startDate.formatDate(format);
-    period['endDate'] = endDate.formatDate(format);
-    period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
-    period['id'] = 'SixMonthlyApril_' + period['startDate'];
-    period['iso'] = startDate.formatDate("yyyy") + 'AprilS1';
-
-    period['_startDate'] = startDate;
-    period['_endDate'] = endDate;
-
-    periods.push(period);
-
-    startDate = calendar.newDate(year, 10, 1);
-    endDate = calendar.newDate(startDate).set(startDate.year() + 1, 'y').set(2, 'm');
-    endDate.set(endDate.daysInMonth(endDate.month()), 'd');
-
-    period = {};
-    period['startDate'] = startDate.formatDate(format);
-    period['endDate'] = endDate.formatDate(format);
-    period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate('MM yyyy');
-    period['id'] = 'SixMonthlyApril_' + period['startDate'];
-    period['iso'] = startDate.formatDate("yyyy") + 'AprilS2';
-
-    period['_startDate'] = startDate;
-    period['_endDate'] = endDate;
-
-    periods.push(period);
-
-    return periods;
-  };
-
-  return self;
-};
-
-dhis2.period.makeYearlyPeriodGenerator = function( calendar, format ) {
-  var self = {};
-  self.generatePeriods = function( offset ) {
-    offset = offset || 0;
-
-    var year = offset + calendar.today().year();
-    var periods = [];
-
-    // generate 11 years, thisYear +/- 5 years
-    for( var i = -5; i < 6; i++ ) {
-      var startDate = calendar.newDate(year + i, 1, 1);
-      var endDate = calendar.newDate(startDate).set(calendar.monthsInYear(year + i), 'm');
-      endDate.set(endDate.daysInMonth(endDate.month()), 'd');
-
-      var period = {};
-      period['startDate'] = startDate.formatDate(format);
-      period['endDate'] = endDate.formatDate(format);
-      period['name'] = startDate.formatDate("yyyy");
-      period['id'] = 'Yearly_' + period['startDate'];
-      period['iso'] = startDate.formatDate("yyyy");
-
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
-
-      periods.push(period);
-    }
-
-    return periods;
-  };
-
-  return self;
-};
-
-dhis2.period.makeFinancialAprilPeriodGenerator = function( calendar, format ) {
-  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(calendar, 4, 'April', format);
-};
-
-dhis2.period.makeFinancialJulyPeriodGenerator = function( calendar, format ) {
-  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(calendar, 7, 'July', format);
-};
-
-dhis2.period.makeFinancialOctoberPeriodGenerator = function( calendar, format ) {
-  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(calendar, 10, 'Oct', format);
-};
-
-dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( calendar, monthStart, monthShortName, format ) {
-  var self = {};
-  self.generatePeriods = function( offset ) {
-    offset = offset || 0;
-
-    var year = offset + calendar.today().year();
-    var periods = [];
-
-    var startDate = calendar.newDate(year - 5, monthStart, 1);
-
-    // generate 11 years, thisYear +/- 5 years
-    for( var i = 1; i < 12; i++ ) {
-      var endDate = calendar.newDate(startDate).add(1, 'y').add(-1, 'd');
-
-      var period = {};
-      period['startDate'] = startDate.formatDate(format);
-      period['endDate'] = endDate.formatDate(format);
-      period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate("MM yyyy");
-      period['id'] = 'Financial' + monthShortName + '_' + period['startDate'];
-      period['iso'] = startDate.formatDate("yyyy") + monthShortName;
-
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
-
-      periods.push(period);
-      startDate.add(1, 'y');
-    }
-
-    return periods;
-  };
-
-  return self;
-};
-
 /**
  * Base class for generator classes, should not be instantiated directly.
  * @param {String} name Name of generator
@@ -591,6 +374,8 @@ dhis2.period.BaseGenerator = function( name, calendar, format ) {
     throw new Error('calendar must be instance of $.calendars.baseCalendar')
   }
 
+  format = format || dhis2.period.DEFAULT_DATE_FORMAT;
+
   $.extend(this, {
     name: name,
     calendar: calendar,
@@ -599,10 +384,22 @@ dhis2.period.BaseGenerator = function( name, calendar, format ) {
 };
 
 $.extend(dhis2.period.BaseGenerator.prototype, {
+  /**
+   * Generate periods from a year offset (offset from current year)
+   * @param {int=} offset Year to generate from, offset from current year (default 0)
+   * @return {Array} Generated periods using selected offset
+   * @access public
+   */
   generatePeriods: function( offset ) {
     offset = offset || 0;
     return this.$generate(offset);
   },
+  /**
+   * @param {int=} offset Year to generate from, offset from current year (default 0)
+   * @return {Array} Generated periods using selected offset
+   * @abstract
+   * @access protected
+   */
   $generate: function( offset ) {
     throw new Error('$generate method not implemented on ' + this.name + ' generator.');
   }
@@ -613,6 +410,7 @@ $.extend(dhis2.period.BaseGenerator.prototype, {
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
+ * @augments dhis2.period.BaseGenerator
  * @see dhis2.period.BaseGenerator
  */
 dhis2.period.DailyGenerator = function( calendar, format ) {
@@ -653,6 +451,7 @@ $.extend(dhis2.period.DailyGenerator.prototype, {
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
+ * @augments dhis2.period.BaseGenerator
  * @see dhis2.period.BaseGenerator
  */
 dhis2.period.WeeklyGenerator = function( calendar, format ) {
@@ -704,6 +503,7 @@ $.extend(dhis2.period.WeeklyGenerator.prototype, {
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
+ * @augments dhis2.period.BaseGenerator
  * @see dhis2.period.BaseGenerator
  */
 dhis2.period.MonthlyGenerator = function( calendar, format ) {
@@ -743,6 +543,7 @@ $.extend(dhis2.period.MonthlyGenerator.prototype, {
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
+ * @augments dhis2.period.BaseGenerator
  * @see dhis2.period.BaseGenerator
  */
 dhis2.period.BiMonthlyGenerator = function( calendar, format ) {
@@ -777,3 +578,292 @@ $.extend(dhis2.period.BiMonthlyGenerator.prototype, {
     return periods;
   }
 });
+
+/**
+ * Implementation of dhis2.period.BaseGenerator that generates Quarterly periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @augments dhis2.period.BaseGenerator
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.QuarterlyGenerator = function( calendar, format ) {
+  dhis2.period.BaseGenerator.call(this, 'Quarterly', calendar, format);
+};
+
+dhis2.period.QuarterlyGenerator.prototype = Object.create(dhis2.period.BaseGenerator.prototype);
+
+$.extend(dhis2.period.QuarterlyGenerator.prototype, {
+  $generate: function( offset ) {
+    var year = offset + this.calendar.today().year();
+    var periods = [];
+
+    for( var month = 1, idx = 1; month <= this.calendar.monthsInYear(year); month += 3, idx++ ) {
+      var startDate = this.calendar.newDate(year, month, 1);
+      var endDate = this.calendar.newDate(startDate).set(month + 2, 'm');
+      endDate.set(endDate.daysInMonth(month + 2), 'd');
+
+      var period = {};
+      period['startDate'] = startDate.formatDate(this.format);
+      period['endDate'] = endDate.formatDate(this.format);
+      period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
+      period['id'] = 'Quarterly_' + period['startDate'];
+      period['iso'] = startDate.formatDate("yyyy") + 'Q' + idx;
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
+      periods.push(period);
+    }
+
+    return periods;
+  }
+});
+
+/**
+ * Implementation of dhis2.period.BaseGenerator that generates SixMonthly periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @augments dhis2.period.BaseGenerator
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.SixMonthlyGenerator = function( calendar, format ) {
+  dhis2.period.BaseGenerator.call(this, 'SixMonthly', calendar, format);
+};
+
+dhis2.period.SixMonthlyGenerator.prototype = Object.create(dhis2.period.BaseGenerator.prototype);
+
+$.extend(dhis2.period.SixMonthlyGenerator.prototype, {
+  $generate: function( offset ) {
+    var year = offset + this.calendar.today().year();
+    var periods = [];
+
+    var startDate = this.calendar.newDate(year, 1, 1);
+    var endDate = this.calendar.newDate(startDate).set(6, 'm');
+    endDate.set(endDate.daysInMonth(6), 'd');
+
+    var period = {};
+    period['startDate'] = startDate.formatDate(this.format);
+    period['endDate'] = endDate.formatDate(this.format);
+    period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
+    period['id'] = 'SixMonthly_' + period['startDate'];
+    period['iso'] = startDate.formatDate("yyyy") + 'S1';
+
+    period['_startDate'] = startDate;
+    period['_endDate'] = endDate;
+
+    periods.push(period);
+
+    startDate = this.calendar.newDate(year, 7, 1);
+    endDate = this.calendar.newDate(startDate).set(this.calendar.monthsInYear(year), 'm');
+    endDate.set(endDate.daysInMonth(12), 'd');
+
+    period = {};
+    period['startDate'] = startDate.formatDate(this.format);
+    period['endDate'] = endDate.formatDate(this.format);
+    period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
+    period['id'] = 'SixMonthly_' + period['startDate'];
+    period['iso'] = startDate.formatDate("yyyy") + 'S2';
+
+    period['_startDate'] = startDate;
+    period['_endDate'] = endDate;
+
+    periods.push(period);
+
+    return periods;
+  }
+});
+
+/**
+ * Implementation of dhis2.period.BaseGenerator that generates SixMonthlyApril periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @augments dhis2.period.BaseGenerator
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.SixMonthlyAprilGenerator = function( calendar, format ) {
+  dhis2.period.BaseGenerator.call(this, 'SixMonthlyApril', calendar, format);
+};
+
+dhis2.period.SixMonthlyAprilGenerator.prototype = Object.create(dhis2.period.BaseGenerator.prototype);
+
+$.extend(dhis2.period.SixMonthlyAprilGenerator.prototype, {
+  $generate: function( offset ) {
+    var year = offset + this.calendar.today().year();
+    var periods = [];
+
+    var startDate = this.calendar.newDate(year, 4, 1);
+    var endDate = this.calendar.newDate(startDate).set(9, 'm');
+    endDate.set(endDate.daysInMonth(9), 'd');
+
+    var period = {};
+    period['startDate'] = startDate.formatDate(this.format);
+    period['endDate'] = endDate.formatDate(this.format);
+    period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
+    period['id'] = 'SixMonthlyApril_' + period['startDate'];
+    period['iso'] = startDate.formatDate("yyyy") + 'AprilS1';
+
+    period['_startDate'] = startDate;
+    period['_endDate'] = endDate;
+
+    periods.push(period);
+
+    startDate = this.calendar.newDate(year, 10, 1);
+    endDate = this.calendar.newDate(startDate).set(startDate.year() + 1, 'y').set(2, 'm');
+    endDate.set(endDate.daysInMonth(endDate.month()), 'd');
+
+    period = {};
+    period['startDate'] = startDate.formatDate(this.format);
+    period['endDate'] = endDate.formatDate(this.format);
+    period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate('MM yyyy');
+    period['id'] = 'SixMonthlyApril_' + period['startDate'];
+    period['iso'] = startDate.formatDate("yyyy") + 'AprilS2';
+
+    period['_startDate'] = startDate;
+    period['_endDate'] = endDate;
+
+    periods.push(period);
+
+    return periods;
+  }
+});
+
+/**
+ * Implementation of dhis2.period.BaseGenerator that generates Yearly periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @augments dhis2.period.BaseGenerator
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.YearlyGenerator = function( calendar, format ) {
+  dhis2.period.BaseGenerator.call(this, 'Yearly', calendar, format);
+};
+
+dhis2.period.YearlyGenerator.prototype = Object.create(dhis2.period.BaseGenerator.prototype);
+
+$.extend(dhis2.period.YearlyGenerator.prototype, {
+  $generate: function( offset ) {
+    var year = offset + this.calendar.today().year();
+    var periods = [];
+
+    // generate 11 years, thisYear +/- 5 years
+    for( var i = -5; i < 6; i++ ) {
+      var startDate = this.calendar.newDate(year + i, 1, 1);
+      var endDate = this.calendar.newDate(startDate).set(this.calendar.monthsInYear(year + i), 'm');
+      endDate.set(endDate.daysInMonth(endDate.month()), 'd');
+
+      var period = {};
+      period['startDate'] = startDate.formatDate(this.format);
+      period['endDate'] = endDate.formatDate(this.format);
+      period['name'] = startDate.formatDate("yyyy");
+      period['id'] = 'Yearly_' + period['startDate'];
+      period['iso'] = startDate.formatDate("yyyy");
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
+      periods.push(period);
+    }
+
+    return periods;
+  }
+});
+
+/**
+ * Base class for financial monthly offset generator classes, should not be instantiated directly.
+ * @param {String} name Name of generator
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @param {int} monthOffset Month offset to use as base for generating financial periods, 1 - 12
+ * @param {String} monthShortName Short name to use for generated period names
+ * @constructor
+ * @augments dhis2.period.BaseGenerator
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.FinancialBaseGenerator = function( name, calendar, format, monthOffset, monthShortName ) {
+  dhis2.period.BaseGenerator.call(this, name, calendar, format);
+
+  $.extend(this, {
+    monthOffset: monthOffset,
+    monthShortName: monthShortName
+  });
+};
+
+dhis2.period.FinancialBaseGenerator.prototype = Object.create(dhis2.period.BaseGenerator.prototype);
+
+$.extend(dhis2.period.FinancialBaseGenerator.prototype, {
+  $generate: function( offset ) {
+    var year = offset + this.calendar.today().year();
+    var periods = [];
+
+    var startDate = this.calendar.newDate(year - 5, this.monthOffset, 1);
+
+    // generate 11 years, thisYear +/- 5 years
+    for( var i = 1; i < 12; i++ ) {
+      var endDate = this.calendar.newDate(startDate).add(1, 'y').add(-1, 'd');
+
+      var period = {};
+      period['startDate'] = startDate.formatDate(this.format);
+      period['endDate'] = endDate.formatDate(this.format);
+      period['name'] = startDate.formatDate("MM yyyy") + ' - ' + endDate.formatDate("MM yyyy");
+      period['id'] = 'Financial' + this.monthShortName + '_' + period['startDate'];
+      period['iso'] = startDate.formatDate("yyyy") + this.monthShortName;
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
+      periods.push(period);
+      startDate.add(1, 'y');
+    }
+
+    return periods;
+  }
+});
+
+/**
+ * Implementation of dhis2.period.FinancialBaseGenerator that generates FinancialApril periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @augments dhis2.period.FinancialBaseGenerator
+ * @see dhis2.period.BaseGenerator
+ * @see dhis2.period.FinancialBaseGenerator
+ */
+dhis2.period.FinancialAprilGenerator = function( calendar, format ) {
+  dhis2.period.FinancialBaseGenerator.call(this, 'FinancialApril', calendar, format, 4, 'April');
+};
+
+dhis2.period.FinancialAprilGenerator.prototype = Object.create(dhis2.period.FinancialBaseGenerator.prototype);
+
+/**
+ * Implementation of dhis2.period.FinancialBaseGenerator that generates FinancialJuly periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @augments dhis2.period.FinancialBaseGenerator
+ * @see dhis2.period.BaseGenerator
+ * @see dhis2.period.FinancialBaseGenerator
+ */
+dhis2.period.FinancialJulyGenerator = function( calendar, format ) {
+  dhis2.period.FinancialBaseGenerator.call(this, 'FinancialJuly', calendar, format, 7, 'July');
+};
+
+dhis2.period.FinancialJulyGenerator.prototype = Object.create(dhis2.period.FinancialBaseGenerator.prototype);
+
+/**
+ * Implementation of dhis2.period.FinancialBaseGenerator that generates FinancialOctober periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @augments dhis2.period.FinancialBaseGenerator
+ * @see dhis2.period.BaseGenerator
+ * @see dhis2.period.FinancialBaseGenerator
+ */
+dhis2.period.FinancialOctoberGenerator = function( calendar, format ) {
+  dhis2.period.FinancialBaseGenerator.call(this, 'FinancialOct', calendar, format, 10, 'Oct');
+};
+
+dhis2.period.FinancialOctoberGenerator.prototype = Object.create(dhis2.period.FinancialBaseGenerator.prototype);
