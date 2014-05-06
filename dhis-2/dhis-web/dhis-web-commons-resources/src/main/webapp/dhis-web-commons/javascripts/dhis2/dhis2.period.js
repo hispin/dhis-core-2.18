@@ -161,10 +161,10 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
     calendar: calendar,
     format: format,
     generators: {
-      "Daily": dhis2.period.makeDailyPeriodGenerator(calendar, format),
-      "Weekly": dhis2.period.makeWeeklyPeriodGenerator(calendar, format),
-      "Monthly": dhis2.period.makeMonthlyPeriodGenerator(calendar, format),
-      "BiMonthly": dhis2.period.makeBiMonthlyPeriodGenerator(calendar, format),
+      "Daily": new dhis2.period.DailyGenerator(calendar, format),
+      "Weekly": new dhis2.period.WeeklyGenerator(calendar, format),
+      "Monthly": new dhis2.period.MonthlyGenerator(calendar, format),
+      "BiMonthly": new dhis2.period.BiMonthlyGenerator(calendar, format),
       "Quarterly": dhis2.period.makeQuarterlyPeriodGenerator(calendar, format),
       "SixMonthly": dhis2.period.makeSixMonthlyPeriodGenerator(calendar, format),
       "SixMonthlyApril": dhis2.period.makeSixMonthlyAprilPeriodGenerator(calendar, format),
@@ -345,81 +345,6 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriodsExceptCurrent = functi
   return array;
 };
 
-dhis2.period.makeDailyPeriodGenerator = function( calendar, format ) {
-  var self = {};
-  self.generatePeriods = function( offset ) {
-    offset = offset || 0;
-
-    var year = offset + calendar.today().year();
-    var periods = [];
-
-    var startDate = calendar.newDate(year, 1, 1);
-
-    for( var day = 1; day <= calendar.daysInYear(year); day++ ) {
-      var period = {};
-      period['startDate'] = startDate.formatDate(format);
-      period['endDate'] = startDate.formatDate(format);
-      period['name'] = startDate.formatDate(format);
-      period['id'] = 'Daily_' + period['startDate'];
-      period['iso'] = startDate.formatDate("yyyymmdd");
-
-      period['_startDate'] = startDate;
-      period['_endDate'] = startDate;
-
-      periods.push(period);
-
-      startDate.add(1, 'd');
-    }
-
-    return periods;
-  };
-
-  return self;
-};
-
-dhis2.period.makeWeeklyPeriodGenerator = function( calendar, format ) {
-  var self = {};
-  self.generatePeriods = function( offset ) {
-    offset = offset || 0;
-
-    var year = offset + calendar.today().year();
-    var periods = [];
-
-    var startDate = calendar.newDate(year, 1, 1);
-    startDate.add(-(startDate.dayOfWeek() - 1), 'd'); // rewind to start of week, might cross year boundary
-
-    // no reliable way to figure out number of weeks in a year (can differ in different calendars)
-    // goes up to 200, but break when week is back to 1
-    for( var week = 1; week < 200; week++ ) {
-      var period = {};
-      period['startDate'] = startDate.formatDate(format);
-
-      // not very elegant, but seems to be best way to get week end, adds a week, then minus 1 day
-      var endDate = calendar.newDate(startDate).add(1, 'w').add(-1, 'd');
-
-      period['endDate'] = endDate.formatDate(format);
-      period['name'] = 'W' + week + ' - ' + period['startDate'] + ' - ' + period['endDate'];
-      period['id'] = 'Weekly_' + period['startDate'];
-      period['iso'] = year + 'W' + week;
-
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
-
-      periods.push(period);
-
-      startDate.add(1, 'w');
-
-      if( startDate.weekOfYear() == 1 ) {
-        break;
-      }
-    }
-
-    return periods;
-  };
-
-  return self;
-};
-
 dhis2.period.makeMonthlyPeriodGenerator = function( calendar, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
@@ -438,38 +363,6 @@ dhis2.period.makeMonthlyPeriodGenerator = function( calendar, format ) {
       period['name'] = startDate.formatDate("MM yyyy");
       period['id'] = 'Monthly_' + period['startDate'];
       period['iso'] = startDate.formatDate("yyyymm");
-
-      period['_startDate'] = startDate;
-      period['_endDate'] = endDate;
-
-      periods.push(period);
-    }
-
-    return periods;
-  };
-
-  return self;
-};
-
-dhis2.period.makeBiMonthlyPeriodGenerator = function( calendar, format ) {
-  var self = {};
-  self.generatePeriods = function( offset ) {
-    offset = offset || 0;
-
-    var year = offset + calendar.today().year();
-    var periods = [];
-
-    for( var month = 1; month <= calendar.monthsInYear(year); month += 2 ) {
-      var startDate = calendar.newDate(year, month, 1);
-      var endDate = calendar.newDate(startDate).set(month + 1, 'm');
-      endDate.set(endDate.daysInMonth(month + 1), 'd');
-
-      var period = {};
-      period['startDate'] = startDate.formatDate(format);
-      period['endDate'] = endDate.formatDate(format);
-      period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
-      period['id'] = 'BiMonthly_' + period['startDate'];
-      period['iso'] = startDate.formatDate("yyyymm") + 'B';
 
       period['_startDate'] = startDate;
       period['_endDate'] = endDate;
@@ -685,3 +578,202 @@ dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( calendar, mont
 
   return self;
 };
+
+/**
+ * Base class for generator classes, should not be instantiated directly.
+ * @param {String} name Name of generator
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ */
+dhis2.period.BaseGenerator = function( name, calendar, format ) {
+  if( !(calendar instanceof $.calendars.baseCalendar) ) {
+    throw new Error('calendar must be instance of $.calendars.baseCalendar')
+  }
+
+  $.extend(this, {
+    name: name,
+    calendar: calendar,
+    format: format
+  });
+};
+
+$.extend(dhis2.period.BaseGenerator.prototype, {
+  generatePeriods: function( offset ) {
+    offset = offset || 0;
+    return this.$generate(offset);
+  },
+  $generate: function( offset ) {
+    throw new Error('$generate method not implemented on ' + this.name + ' generator.');
+  }
+});
+
+/**
+ * Implementation of dhis2.period.BaseGenerator that generates Daily periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.DailyGenerator = function( calendar, format ) {
+  dhis2.period.BaseGenerator.call(this, 'Daily', calendar, format);
+};
+
+dhis2.period.DailyGenerator.prototype = Object.create(dhis2.period.BaseGenerator.prototype);
+
+$.extend(dhis2.period.DailyGenerator.prototype, {
+  $generate: function( offset ) {
+    var year = offset + this.calendar.today().year();
+    var periods = [];
+
+    var startDate = this.calendar.newDate(year, 1, 1);
+
+    for( var day = 1; day <= this.calendar.daysInYear(year); day++ ) {
+      var period = {};
+      period['startDate'] = startDate.formatDate(this.format);
+      period['endDate'] = startDate.formatDate(this.format);
+      period['name'] = startDate.formatDate(this.format);
+      period['id'] = 'Daily_' + period['startDate'];
+      period['iso'] = startDate.formatDate("yyyymmdd");
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = startDate;
+
+      periods.push(period);
+
+      startDate.add(1, 'd');
+    }
+
+    return periods;
+  }
+});
+
+/**
+ * Implementation of dhis2.period.BaseGenerator that generates Weekly periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.WeeklyGenerator = function( calendar, format ) {
+  dhis2.period.BaseGenerator.call(this, 'Weekly', calendar, format);
+};
+
+dhis2.period.WeeklyGenerator.prototype = Object.create(dhis2.period.BaseGenerator.prototype);
+
+$.extend(dhis2.period.WeeklyGenerator.prototype, {
+  $generate: function( offset ) {
+    var year = offset + this.calendar.today().year();
+    var periods = [];
+
+    var startDate = this.calendar.newDate(year, 1, 1);
+    startDate.add(-(startDate.dayOfWeek() - 1), 'd'); // rewind to start of week, might cross year boundary
+
+    // no reliable way to figure out number of weeks in a year (can differ in different calendars)
+    // goes up to 200, but break when week is back to 1
+    for( var week = 1; week < 200; week++ ) {
+      var period = {};
+      period['startDate'] = startDate.formatDate(this.format);
+
+      // not very elegant, but seems to be best way to get week end, adds a week, then minus 1 day
+      var endDate = this.calendar.newDate(startDate).add(1, 'w').add(-1, 'd');
+
+      period['endDate'] = endDate.formatDate(this.format);
+      period['name'] = 'W' + week + ' - ' + period['startDate'] + ' - ' + period['endDate'];
+      period['id'] = 'Weekly_' + period['startDate'];
+      period['iso'] = year + 'W' + week;
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
+      periods.push(period);
+
+      startDate.add(1, 'w');
+
+      if( startDate.weekOfYear() == 1 ) {
+        break;
+      }
+    }
+
+    return periods;
+  }
+});
+
+/**
+ * Implementation of dhis2.period.BaseGenerator that generates Monthly periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.MonthlyGenerator = function( calendar, format ) {
+  dhis2.period.BaseGenerator.call(this, 'Monthly', calendar, format);
+};
+
+dhis2.period.MonthlyGenerator.prototype = Object.create(dhis2.period.BaseGenerator.prototype);
+
+$.extend(dhis2.period.MonthlyGenerator.prototype, {
+  $generate: function( offset ) {
+    var year = offset + this.calendar.today().year();
+    var periods = [];
+
+    for( var month = 1; month <= this.calendar.monthsInYear(year); month++ ) {
+      var startDate = this.calendar.newDate(year, month, 1);
+      var endDate = this.calendar.newDate(startDate).set(startDate.daysInMonth(month), 'd');
+
+      var period = {};
+      period['startDate'] = startDate.formatDate(this.format);
+      period['endDate'] = endDate.formatDate(this.format);
+      period['name'] = startDate.formatDate("MM yyyy");
+      period['id'] = 'Monthly_' + period['startDate'];
+      period['iso'] = startDate.formatDate("yyyymm");
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
+      periods.push(period);
+    }
+
+    return periods;
+  }
+});
+
+/**
+ * Implementation of dhis2.period.BaseGenerator that generates BiMonthly periods
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
+ * @constructor
+ * @see dhis2.period.BaseGenerator
+ */
+dhis2.period.BiMonthlyGenerator = function( calendar, format ) {
+  dhis2.period.BaseGenerator.call(this, 'BiMonthly', calendar, format);
+};
+
+dhis2.period.BiMonthlyGenerator.prototype = Object.create(dhis2.period.BaseGenerator.prototype);
+
+$.extend(dhis2.period.BiMonthlyGenerator.prototype, {
+  $generate: function( offset ) {
+    var year = offset + this.calendar.today().year();
+    var periods = [];
+
+    for( var month = 1; month <= this.calendar.monthsInYear(year); month += 2 ) {
+      var startDate = this.calendar.newDate(year, month, 1);
+      var endDate = this.calendar.newDate(startDate).set(month + 1, 'm');
+      endDate.set(endDate.daysInMonth(month + 1), 'd');
+
+      var period = {};
+      period['startDate'] = startDate.formatDate(this.format);
+      period['endDate'] = endDate.formatDate(this.format);
+      period['name'] = startDate.formatDate("MM") + ' - ' + endDate.formatDate('MM') + ' ' + year;
+      period['id'] = 'BiMonthly_' + period['startDate'];
+      period['iso'] = startDate.formatDate("yyyymm") + 'B';
+
+      period['_startDate'] = startDate;
+      period['_endDate'] = endDate;
+
+      periods.push(period);
+    }
+
+    return periods;
+  }
+});
