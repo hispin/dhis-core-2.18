@@ -42,7 +42,7 @@ dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
  * There is probably no reason to use this directly, since on startup, a global variable have been made available:
  *  - dhis2.period.picker   DatePicker object created with system calendar and system date format
  *
- * @param {Object} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
  * @see <a href="http://keith-wood.name/datepick.html">http://keith-wood.name/datepick.html</a>
@@ -145,7 +145,7 @@ dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl,
  *  - dhis2.period.calendar   The currently selected system calendar
  *  - dhis2.period.generator  An instance of this class using the system calendar
  *
- * @param {Object} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
  */
@@ -345,17 +345,17 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriodsExceptCurrent = functi
   return array;
 };
 
-dhis2.period.makeDailyPeriodGenerator = function( cal, format ) {
+dhis2.period.makeDailyPeriodGenerator = function( calendar, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     offset = offset || 0;
 
-    var year = offset + cal.today().year();
+    var year = offset + calendar.today().year();
     var periods = [];
 
-    var startDate = cal.newDate(year, 1, 1);
+    var startDate = calendar.newDate(year, 1, 1);
 
-    for( var day = 1; day <= cal.daysInYear(year); day++ ) {
+    for( var day = 1; day <= calendar.daysInYear(year); day++ ) {
       var period = {};
       period['startDate'] = startDate.formatDate(format);
       period['endDate'] = startDate.formatDate(format);
@@ -377,15 +377,15 @@ dhis2.period.makeDailyPeriodGenerator = function( cal, format ) {
   return self;
 };
 
-dhis2.period.makeWeeklyPeriodGenerator = function( cal, format ) {
+dhis2.period.makeWeeklyPeriodGenerator = function( calendar, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     offset = offset || 0;
 
-    var year = offset + cal.today().year();
+    var year = offset + calendar.today().year();
     var periods = [];
 
-    var startDate = cal.newDate(year, 1, 1);
+    var startDate = calendar.newDate(year, 1, 1);
     startDate.add(-(startDate.dayOfWeek() - 1), 'd'); // rewind to start of week, might cross year boundary
 
     // no reliable way to figure out number of weeks in a year (can differ in different calendars)
@@ -395,7 +395,7 @@ dhis2.period.makeWeeklyPeriodGenerator = function( cal, format ) {
       period['startDate'] = startDate.formatDate(format);
 
       // not very elegant, but seems to be best way to get week end, adds a week, then minus 1 day
-      var endDate = cal.newDate(startDate).add(1, 'w').add(-1, 'd');
+      var endDate = calendar.newDate(startDate).add(1, 'w').add(-1, 'd');
 
       period['endDate'] = endDate.formatDate(format);
       period['name'] = 'W' + week + ' - ' + period['startDate'] + ' - ' + period['endDate'];
@@ -420,17 +420,17 @@ dhis2.period.makeWeeklyPeriodGenerator = function( cal, format ) {
   return self;
 };
 
-dhis2.period.makeMonthlyPeriodGenerator = function( cal, format ) {
+dhis2.period.makeMonthlyPeriodGenerator = function( calendar, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     offset = offset || 0;
 
-    var year = offset + cal.today().year();
+    var year = offset + calendar.today().year();
     var periods = [];
 
-    for( var month = 1; month <= cal.monthsInYear(year); month++ ) {
-      var startDate = cal.newDate(year, month, 1);
-      var endDate = cal.newDate(startDate).set(startDate.daysInMonth(month), 'd');
+    for( var month = 1; month <= calendar.monthsInYear(year); month++ ) {
+      var startDate = calendar.newDate(year, month, 1);
+      var endDate = calendar.newDate(startDate).set(startDate.daysInMonth(month), 'd');
 
       var period = {};
       period['startDate'] = startDate.formatDate(format);
@@ -451,17 +451,17 @@ dhis2.period.makeMonthlyPeriodGenerator = function( cal, format ) {
   return self;
 };
 
-dhis2.period.makeBiMonthlyPeriodGenerator = function( cal, format ) {
+dhis2.period.makeBiMonthlyPeriodGenerator = function( calendar, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     offset = offset || 0;
 
-    var year = offset + cal.today().year();
+    var year = offset + calendar.today().year();
     var periods = [];
 
-    for( var month = 1; month <= cal.monthsInYear(year); month += 2 ) {
-      var startDate = cal.newDate(year, month, 1);
-      var endDate = cal.newDate(startDate).set(month + 1, 'm');
+    for( var month = 1; month <= calendar.monthsInYear(year); month += 2 ) {
+      var startDate = calendar.newDate(year, month, 1);
+      var endDate = calendar.newDate(startDate).set(month + 1, 'm');
       endDate.set(endDate.daysInMonth(month + 1), 'd');
 
       var period = {};
@@ -483,17 +483,17 @@ dhis2.period.makeBiMonthlyPeriodGenerator = function( cal, format ) {
   return self;
 };
 
-dhis2.period.makeQuarterlyPeriodGenerator = function( cal, format ) {
+dhis2.period.makeQuarterlyPeriodGenerator = function( calendar, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     offset = offset || 0;
 
-    var year = offset + cal.today().year();
+    var year = offset + calendar.today().year();
     var periods = [];
 
-    for( var month = 1, idx = 1; month <= cal.monthsInYear(year); month += 3, idx++ ) {
-      var startDate = cal.newDate(year, month, 1);
-      var endDate = cal.newDate(startDate).set(month + 2, 'm');
+    for( var month = 1, idx = 1; month <= calendar.monthsInYear(year); month += 3, idx++ ) {
+      var startDate = calendar.newDate(year, month, 1);
+      var endDate = calendar.newDate(startDate).set(month + 2, 'm');
       endDate.set(endDate.daysInMonth(month + 2), 'd');
 
       var period = {};
@@ -515,16 +515,16 @@ dhis2.period.makeQuarterlyPeriodGenerator = function( cal, format ) {
   return self;
 };
 
-dhis2.period.makeSixMonthlyPeriodGenerator = function( cal, format ) {
+dhis2.period.makeSixMonthlyPeriodGenerator = function( calendar, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     offset = offset || 0;
 
-    var year = offset + cal.today().year();
+    var year = offset + calendar.today().year();
     var periods = [];
 
-    var startDate = cal.newDate(year, 1, 1);
-    var endDate = cal.newDate(startDate).set(6, 'm');
+    var startDate = calendar.newDate(year, 1, 1);
+    var endDate = calendar.newDate(startDate).set(6, 'm');
     endDate.set(endDate.daysInMonth(6), 'd');
 
     var period = {};
@@ -539,8 +539,8 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal, format ) {
 
     periods.push(period);
 
-    startDate = cal.newDate(year, 7, 1);
-    endDate = cal.newDate(startDate).set(cal.monthsInYear(year), 'm');
+    startDate = calendar.newDate(year, 7, 1);
+    endDate = calendar.newDate(startDate).set(calendar.monthsInYear(year), 'm');
     endDate.set(endDate.daysInMonth(12), 'd');
 
     period = {};
@@ -561,16 +561,16 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal, format ) {
   return self;
 };
 
-dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal, format ) {
+dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( calendar, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     offset = offset || 0;
 
-    var year = offset + cal.today().year();
+    var year = offset + calendar.today().year();
     var periods = [];
 
-    var startDate = cal.newDate(year, 4, 1);
-    var endDate = cal.newDate(startDate).set(9, 'm');
+    var startDate = calendar.newDate(year, 4, 1);
+    var endDate = calendar.newDate(startDate).set(9, 'm');
     endDate.set(endDate.daysInMonth(9), 'd');
 
     var period = {};
@@ -585,8 +585,8 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal, format ) {
 
     periods.push(period);
 
-    startDate = cal.newDate(year, 10, 1);
-    endDate = cal.newDate(startDate).set(startDate.year() + 1, 'y').set(2, 'm');
+    startDate = calendar.newDate(year, 10, 1);
+    endDate = calendar.newDate(startDate).set(startDate.year() + 1, 'y').set(2, 'm');
     endDate.set(endDate.daysInMonth(endDate.month()), 'd');
 
     period = {};
@@ -607,18 +607,18 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal, format ) {
   return self;
 };
 
-dhis2.period.makeYearlyPeriodGenerator = function( cal, format ) {
+dhis2.period.makeYearlyPeriodGenerator = function( calendar, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     offset = offset || 0;
 
-    var year = offset + cal.today().year();
+    var year = offset + calendar.today().year();
     var periods = [];
 
     // generate 11 years, thisYear +/- 5 years
     for( var i = -5; i < 6; i++ ) {
-      var startDate = cal.newDate(year + i, 1, 1);
-      var endDate = cal.newDate(startDate).set(cal.monthsInYear(year + i), 'm');
+      var startDate = calendar.newDate(year + i, 1, 1);
+      var endDate = calendar.newDate(startDate).set(calendar.monthsInYear(year + i), 'm');
       endDate.set(endDate.daysInMonth(endDate.month()), 'd');
 
       var period = {};
@@ -640,31 +640,31 @@ dhis2.period.makeYearlyPeriodGenerator = function( cal, format ) {
   return self;
 };
 
-dhis2.period.makeFinancialAprilPeriodGenerator = function( cal, format ) {
-  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 4, 'April', format);
+dhis2.period.makeFinancialAprilPeriodGenerator = function( calendar, format ) {
+  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(calendar, 4, 'April', format);
 };
 
-dhis2.period.makeFinancialJulyPeriodGenerator = function( cal, format ) {
-  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 7, 'July', format);
+dhis2.period.makeFinancialJulyPeriodGenerator = function( calendar, format ) {
+  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(calendar, 7, 'July', format);
 };
 
-dhis2.period.makeFinancialOctoberPeriodGenerator = function( cal, format ) {
-  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(cal, 10, 'Oct', format);
+dhis2.period.makeFinancialOctoberPeriodGenerator = function( calendar, format ) {
+  return dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset(calendar, 10, 'Oct', format);
 };
 
-dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( cal, monthStart, monthShortName, format ) {
+dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( calendar, monthStart, monthShortName, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
     offset = offset || 0;
 
-    var year = offset + cal.today().year();
+    var year = offset + calendar.today().year();
     var periods = [];
 
-    var startDate = cal.newDate(year - 5, monthStart, 1);
+    var startDate = calendar.newDate(year - 5, monthStart, 1);
 
     // generate 11 years, thisYear +/- 5 years
     for( var i = 1; i < 12; i++ ) {
-      var endDate = cal.newDate(startDate).add(1, 'y').add(-1, 'd');
+      var endDate = calendar.newDate(startDate).add(1, 'y').add(-1, 'd');
 
       var period = {};
       period['startDate'] = startDate.formatDate(format);
