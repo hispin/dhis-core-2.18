@@ -160,6 +160,12 @@ public class Section
         return dataElements != null && !dataElements.isEmpty();
     }
 
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
