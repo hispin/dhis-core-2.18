@@ -115,18 +115,14 @@ public class GetAttributesByProgramAction
     public String execute()
         throws Exception
     {
-        if ( id != null )
+        if ( id != null && !id.isEmpty() )
         {
             program = programService.getProgram( id );
         }
         else
         {
             attributes = new ArrayList<TrackedEntityAttribute>(
-                attributeService.getTrackedEntityAttributesWithoutProgram() );
-            Collection<TrackedEntityAttribute> attribuesInList = attributeService
-                .getTrackedEntityAttributesDisplayInList( true );
-            attributes.removeAll( attribuesInList );
-            attributes.addAll( attribuesInList );
+                attributeService.getTrackedEntityAttributesDisplayInList( true ) );
         }
 
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );

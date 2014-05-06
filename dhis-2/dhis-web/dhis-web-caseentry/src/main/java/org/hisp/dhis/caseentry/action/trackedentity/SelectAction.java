@@ -127,12 +127,9 @@ public class SelectAction
     public String execute()
         throws Exception
     {
-
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        Collection<TrackedEntityAttribute> _attributes = attributeService.getTrackedEntityAttributesWithoutProgram();
-        _attributes.addAll( attributeService.getTrackedEntityAttributesDisplayInList( true ) );
-        attributes = new ArrayList<TrackedEntityAttribute>( _attributes );
+        attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesDisplayInList( true )  );
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );
