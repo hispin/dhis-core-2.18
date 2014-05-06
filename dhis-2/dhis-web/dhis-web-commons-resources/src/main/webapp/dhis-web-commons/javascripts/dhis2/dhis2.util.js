@@ -189,4 +189,7 @@ if( !Object.keys ) {
       console[method] = noop;
     }
   }
+
+  // this shouldn't really be used anymore, but leaving it in for legacy reasons
+  window.log = console.log;
 }());
