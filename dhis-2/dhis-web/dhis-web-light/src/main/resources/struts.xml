@@ -456,6 +456,11 @@
 		</action>
 
 		<!-- Messages -->
+		
+		<action name="message" class="org.hisp.dhis.light.action.NoAction">
+			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/sendMessageOnMobile2.vm</param>
+		</action>
 
 		<action name="messages"
 			class="org.hisp.dhis.light.message.action.GetMessagesAction">
@@ -489,19 +494,25 @@
 			<result name="redirect" type="redirect">showUserList.action?userId=${userId}
 			</result>
 			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/messages.vm</param>
+			<param name="page">/dhis-web-light/sendMessageOnMobile2.vm</param>
 		</action>
 
+		<action name="addRecipient"
+			class="org.hisp.dhis.light.message.action.AddRecipientAction">
+			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/sendMessageOnMobile2.vm</param>
+		</action>
 
 		<action name="showUserList"
 			class="org.hisp.dhis.light.messaging.action.GetMessageRecipientsAction">
 			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/sendMessageOnMobile.vm</param>
+			<param name="page">/dhis-web-light/sendMessageOnMobile2.vm</param>
 		</action>
 
 		<action name="sendMessage"
 			class="org.hisp.dhis.light.messaging.action.SendMessagesAction">
-			<result name="success" type="redirect">/light/messages.action</result>
+			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/menu.vm</param>
 		</action>
 
 		<action name="recipients"

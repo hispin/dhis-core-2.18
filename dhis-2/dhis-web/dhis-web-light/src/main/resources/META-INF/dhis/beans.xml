@@ -600,4 +600,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.messaging.action.FindUserAction" scope="prototype">
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.light.message.action.AddRecipientAction"
+		class="org.hisp.dhis.light.message.action.AddRecipientAction" scope="prototype">
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+	</bean>	
 </beans>

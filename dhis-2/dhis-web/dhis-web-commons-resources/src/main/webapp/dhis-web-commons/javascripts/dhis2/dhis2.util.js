@@ -170,7 +170,7 @@ if( !Object.keys ) {
  * a fix for IE8 and FF 3.6).
  */
 window.log = function( str ) {
-  if( this.console ) {
+  if( window.console ) {
     console.log(str);
   }
 };

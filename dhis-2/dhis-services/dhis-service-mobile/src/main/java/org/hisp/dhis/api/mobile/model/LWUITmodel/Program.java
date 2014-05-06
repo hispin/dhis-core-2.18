@@ -57,6 +57,8 @@ public class Program
     private String dateOfEnrollmentDescription = "Date of Enrollment";
 
     private String dateOfIncidentDescription = "Date of Incident";
+    
+    private String trackedEntityName = "Tracked Entity";
 
     private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
 
@@ -121,6 +123,16 @@ public class Program
     {
         this.dateOfIncidentDescription = dateOfIncidentDescription;
     }
+    
+    public String getTrackedEntityName()
+    {
+        return trackedEntityName;
+    }
+    
+    public void setTrackedEntityName( String trackedEntityName )
+    {
+        this.trackedEntityName = trackedEntityName;
+    }
 
     public List<PatientAttribute> getProgramAttributes()
     {
@@ -141,6 +153,7 @@ public class Program
         dout.writeInt( this.getType() );
         dout.writeUTF( getDateOfEnrollmentDescription() );
         dout.writeUTF( getDateOfIncidentDescription() );
+        dout.writeUTF( getTrackedEntityName() );
 
         // Write program stage
         dout.writeInt( programStages.size() );
@@ -169,6 +182,7 @@ public class Program
         this.setType( dataInputStream.readInt() );
         this.setDateOfEnrollmentDescription( dataInputStream.readUTF() );
         this.setDateOfIncidentDescription( dataInputStream.readUTF() );
+        this.setTrackedEntityName( dataInputStream.readUTF() );
 
         // Read program stage
         int programStageNumber = dataInputStream.readInt();

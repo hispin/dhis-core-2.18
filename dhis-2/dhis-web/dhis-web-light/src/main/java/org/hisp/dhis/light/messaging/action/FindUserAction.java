@@ -29,7 +29,11 @@ package org.hisp.dhis.light.messaging.action;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 
@@ -38,10 +42,15 @@ import com.opensymphony.xwork2.Action;
 public class FindUserAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( FindUserAction.class );
 
     private static final String REDIRECT = "redirect";
 
     private UserService userService;
+
+    public FindUserAction()
+    {
+    }
 
     public UserService getUserService()
     {
@@ -101,10 +110,46 @@ public class FindUserAction
         this.userId = userId;
     }
 
+    private String recipientCheckBox;
+    public String getRecipientCheckBox()
+    {
+        return recipientCheckBox;
+    }
+
+    public void setRecipientCheckBox( String recipientCheckBox )
+    {
+        this.recipientCheckBox = recipientCheckBox;
+    }
+
+    private Set<User> recipient;
+    public Set<User> getRecipient()
+    {
+        return recipient;
+    }
+
+    public void setRecipients( Set<User> recipient )
+    {
+        this.recipient = recipient;
+    }
+
+    private int foundUsers;
+    public int getFoundUsers()
+    {
+        return foundUsers;
+    }
+
+    public void setFoundUsers( int foundUsers )
+    {
+        this.foundUsers = foundUsers;
+    }
+    
+    
     @Override
     public String execute()
         throws Exception
     {
+        updateRecipients(recipientCheckBox);
+
         if ( keyword != null )
         {
             int index = keyword.indexOf( ' ' );
@@ -115,7 +160,7 @@ public class FindUserAction
                 keyword = keys[0] + "  " + keys[1];
             }
         }
-        
+
         users = userService.getUsersByName( keyword );
 
         if ( users.size() == 1 )
@@ -125,6 +170,29 @@ public class FindUserAction
             return REDIRECT;
         }
 
+        foundUsers = users.size();
+        
         return SUCCESS;
     }
+    
+    /**
+     * 
+     * @param recipientCheckBox
+     */
+    private void updateRecipients(String recipientCheckBox)
+    {
+        recipient = new HashSet<User>();
+        
+        if ( recipientCheckBox != null )
+        {
+            String rcbArray[] = recipientCheckBox.split( "," );
+
+            for ( int i = 0; i < rcbArray.length; i++ )
+            {
+                rcbArray[i] = rcbArray[i].trim();
+                User u = userService.getUser( Integer.parseInt( rcbArray[i] ) );
+                recipient.add( u );
+            }
+        }
+    } 
 }
