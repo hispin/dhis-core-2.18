@@ -34,7 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Stian Strandli
@@ -188,5 +190,18 @@ public class DefaultSystemSettingManager
     public Integer credentialsExpires()
     {
         return (Integer) (getSystemSetting( KEY_CREDENTIALS_EXPIRES ) == null ? 0 : getSystemSetting( KEY_CREDENTIALS_EXPIRES ));
+    }
+
+    public Map<String, Serializable> getSystemSettingsAsMap()
+    {
+        Map<String, Serializable> settingsMap = new HashMap<String, Serializable>();
+        Collection<SystemSetting> systemSettings = getAllSystemSettings();
+
+        for ( SystemSetting systemSetting : systemSettings )
+        {
+            settingsMap.put( systemSetting.getName(), systemSetting.getValue() );
+        }
+
+        return settingsMap;
     }
 }
