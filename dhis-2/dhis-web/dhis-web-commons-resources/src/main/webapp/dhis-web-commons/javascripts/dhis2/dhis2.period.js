@@ -78,7 +78,7 @@ dhis2.period.DatePicker = function( calendar, format ) {
 /**
  * Creates a date picker.
  *
- * @param el Element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param {jQuery|String|Object} el Element to select on, can be any kind of jQuery selector, or a jqEl
  * @param fromIso Convert field from ISO 8601 to local calendar
  * @param options Additional options, will be merged with the defaults
  */
@@ -98,8 +98,8 @@ dhis2.period.DatePicker.prototype.createInstance = function( el, fromIso, option
 /**
  * Creates a ranged date picker, keeping two fields in sync.
  *
- * @param {*} fromEl From element to select on, can be any kind of jQuery selector, or a jqEl
- * @param {*} toEl To element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param {jQuery|String|Object} fromEl From element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param {jQuery|String|Object} toEl To element to select on, can be any kind of jQuery selector, or a jqEl
  * @param {Boolean} fromIso Convert fields from ISO 8601 to local calendar
  * @param {Object} options Additional options, will be merged with the defaults
  */
@@ -179,6 +179,7 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
 
 /**
  * Registers a new generator, must be of instance of dhis2.period.BaseGenerator
+ *
  * @param {*} klass Class to register, will be checked for type
  * @see dhis2.period.BaseGenerator
  */
@@ -318,7 +319,8 @@ dhis2.period.PeriodGenerator.prototype.financialApril = function( offset ) {
 };
 
 /**
- * Does out-of-place reversal of a list of periods
+ * Out-of-place reversal of a list of periods
+ *
  * @param {Array} periods Periods to reverse
  * @returns {Array} Reversed array
  */
@@ -328,6 +330,7 @@ dhis2.period.PeriodGenerator.prototype.reverse = function( periods ) {
 
 /**
  * Out-of-place filtering of current + future periods
+ *
  * @param {Array} periods Periods to filter
  * @return {Array} Filtered periods array
  */
@@ -346,6 +349,7 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriods = function( periods )
 
 /**
  * Out-of-place filtering of future periods
+ *
  * @param {Array} periods Periods to filter
  * @return {Array} Filtered periods array
  */
@@ -364,6 +368,7 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriodsExceptCurrent = functi
 
 /**
  * Base class for generator classes, should not be instantiated directly.
+ *
  * @param {String} name Name of generator
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
@@ -386,6 +391,7 @@ dhis2.period.BaseGenerator = function( name, calendar, format ) {
 $.extend(dhis2.period.BaseGenerator.prototype, {
   /**
    * Generate periods from a year offset (offset from current year)
+   *
    * @param {int=} offset Year to generate from, offset from current year (default 0)
    * @return {Array} Generated periods using selected offset
    * @access public
@@ -395,7 +401,8 @@ $.extend(dhis2.period.BaseGenerator.prototype, {
     return this.$generate(offset);
   },
   /**
-   * @param {int=} offset Year to generate from, offset from current year (default 0)
+   * @param {int} offset Year to generate from, offset from current year (default 0)
+   *
    * @return {Array} Generated periods using selected offset
    * @abstract
    * @access protected
@@ -407,6 +414,7 @@ $.extend(dhis2.period.BaseGenerator.prototype, {
 
 /**
  * Implementation of dhis2.period.BaseGenerator that generates Daily periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -448,6 +456,7 @@ $.extend(dhis2.period.DailyGenerator.prototype, {
 
 /**
  * Implementation of dhis2.period.BaseGenerator that generates Weekly periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -500,6 +509,7 @@ $.extend(dhis2.period.WeeklyGenerator.prototype, {
 
 /**
  * Implementation of dhis2.period.BaseGenerator that generates Monthly periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -540,6 +550,7 @@ $.extend(dhis2.period.MonthlyGenerator.prototype, {
 
 /**
  * Implementation of dhis2.period.BaseGenerator that generates BiMonthly periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -581,6 +592,7 @@ $.extend(dhis2.period.BiMonthlyGenerator.prototype, {
 
 /**
  * Implementation of dhis2.period.BaseGenerator that generates Quarterly periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -622,6 +634,7 @@ $.extend(dhis2.period.QuarterlyGenerator.prototype, {
 
 /**
  * Implementation of dhis2.period.BaseGenerator that generates SixMonthly periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -677,6 +690,7 @@ $.extend(dhis2.period.SixMonthlyGenerator.prototype, {
 
 /**
  * Implementation of dhis2.period.BaseGenerator that generates SixMonthlyApril periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -732,6 +746,7 @@ $.extend(dhis2.period.SixMonthlyAprilGenerator.prototype, {
 
 /**
  * Implementation of dhis2.period.BaseGenerator that generates Yearly periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -774,6 +789,7 @@ $.extend(dhis2.period.YearlyGenerator.prototype, {
 
 /**
  * Base class for financial monthly offset generator classes, should not be instantiated directly.
+ *
  * @param {String} name Name of generator
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
@@ -825,6 +841,7 @@ $.extend(dhis2.period.FinancialBaseGenerator.prototype, {
 
 /**
  * Implementation of dhis2.period.FinancialBaseGenerator that generates FinancialApril periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -840,6 +857,7 @@ dhis2.period.FinancialAprilGenerator.prototype = Object.create(dhis2.period.Fina
 
 /**
  * Implementation of dhis2.period.FinancialBaseGenerator that generates FinancialJuly periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
@@ -855,6 +873,7 @@ dhis2.period.FinancialJulyGenerator.prototype = Object.create(dhis2.period.Finan
 
 /**
  * Implementation of dhis2.period.FinancialBaseGenerator that generates FinancialOctober periods
+ *
  * @param {$.calendars.baseCalendar} calendar Calendar to use, this must come from $.calendars.instance(chronology).
  * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
