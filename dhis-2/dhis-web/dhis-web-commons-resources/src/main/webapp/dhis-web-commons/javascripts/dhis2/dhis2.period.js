@@ -42,8 +42,8 @@ dhis2.period.DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
  * There is probably no reason to use this directly, since on startup, a global variable have been made available:
  *  - dhis2.period.picker   DatePicker object created with system calendar and system date format
  *
- * @param calendar Calendar to use, this must come from $.calendars.instance(chronology).
- * @param format Date format to use for formatting, will default to ISO 8601
+ * @param {Object} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
  * @see <a href="http://keith-wood.name/datepick.html">http://keith-wood.name/datepick.html</a>
  */
@@ -96,10 +96,10 @@ dhis2.period.DatePicker.prototype.createInstance = function( el, fromIso, option
 /**
  * Creates a ranged date picker, keeping two fields in sync.
  *
- * @param fromEl From element to select on, can be any kind of jQuery selector, or a jqEl
- * @param toEl To element to select on, can be any kind of jQuery selector, or a jqEl
- * @param fromIso Convert fields from ISO 8601 to local calendar
- * @param options Additional options, will be merged with the defaults
+ * @param {*} fromEl From element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param {*} toEl To element to select on, can be any kind of jQuery selector, or a jqEl
+ * @param {Boolean} fromIso Convert fields from ISO 8601 to local calendar
+ * @param {Object} options Additional options, will be merged with the defaults
  */
 dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl, fromIso, options ) {
   var mergedOptions = $.extend({}, this.defaults, options || {});
@@ -145,8 +145,8 @@ dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl,
  *  - dhis2.period.calendar   The currently selected system calendar
  *  - dhis2.period.generator  An instance of this class using the system calendar
  *
- * @param calendar Calendar to use, this must come from $.calendars.instance(chronology).
- * @param format Date format to use for formatting, will default to ISO 8601
+ * @param {Object} calendar Calendar to use, this must come from $.calendars.instance(chronology).
+ * @param {String} format Date format to use for formatting, will default to ISO 8601
  * @constructor
  */
 dhis2.period.PeriodGenerator = function( calendar, format ) {
@@ -177,47 +177,47 @@ dhis2.period.PeriodGenerator = function( calendar, format ) {
 };
 
 /**
- * @returns Object All available period generators
+ * @returns {Array} All available period generators
  */
 dhis2.period.PeriodGenerator.prototype.getAll = function() {
   return this.generators;
 };
 
 /**
- * @returns The calendar chronology used for this period generator
+ * @returns {Object} The calendar chronology used for this period generator
  */
 dhis2.period.PeriodGenerator.prototype.getCalendar = function() {
   return this.calendar;
 };
 
 /**
- * @returns Object The date format used for this period generator
+ * @returns {Object} The date format used for this period generator
  */
 dhis2.period.PeriodGenerator.prototype.getDateFormat = function() {
   return this.format;
 };
 
 /**
- * @param generator Generator to find
- * @returns Wanted generator if it exists
+ * @param {String} generator Generator to find
+ * @returns {*} Wanted generator if it exists
  */
 dhis2.period.PeriodGenerator.prototype.get = function( generator ) {
   return this.generators[generator];
 };
 
 /**
- * @param generator Generator to use (String)
- * @param offset Offset for generatePeriods
- * @returns Array of periods
+ * @param {String} generator Generator to use (String)
+ * @param {int} offset Offset for generatePeriods
+ * @returns {Array} Generated periods as array
  */
 dhis2.period.PeriodGenerator.prototype.generatePeriods = function( generator, offset ) {
   return this.generators[generator].generatePeriods(offset);
 };
 
 /**
- * @param generator Generator to use (String)
- * @param offset Offset for generatePeriods
- * @returns Array of periods
+ * @param {String} generator Generator to use (String)
+ * @param {int} offset Offset for generatePeriods
+ * @returns {Array} Generated periods as array
  */
 dhis2.period.PeriodGenerator.prototype.generateReversedPeriods = function( generator, offset ) {
   return this.reverse(this.generators[generator].generatePeriods(offset));
@@ -302,8 +302,8 @@ dhis2.period.PeriodGenerator.prototype.financialApril = function( offset ) {
 
 /**
  * Does out-of-place reversal of a list of periods
- * @param periods List of periods to reverse
- * @returns Array Reversed list
+ * @param {Array} periods Periods to reverse
+ * @returns {Array} Reversed array
  */
 dhis2.period.PeriodGenerator.prototype.reverse = function( periods ) {
   return periods.slice(0).reverse();
@@ -311,8 +311,8 @@ dhis2.period.PeriodGenerator.prototype.reverse = function( periods ) {
 
 /**
  * Out-of-place filtering of current + future periods
- * @param periods List of periods to filter
- * @return Array Filtered list
+ * @param {Array} periods Periods to filter
+ * @return {Array} Filtered periods array
  */
 dhis2.period.PeriodGenerator.prototype.filterFuturePeriods = function( periods ) {
   var array = [];
@@ -329,8 +329,8 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriods = function( periods )
 
 /**
  * Out-of-place filtering of future periods
- * @param periods List of periods to filter
- * @return Array Filtered list
+ * @param {Array} periods Periods to filter
+ * @return {Array} Filtered periods array
  */
 dhis2.period.PeriodGenerator.prototype.filterFuturePeriodsExceptCurrent = function( periods ) {
   var array = [];
@@ -348,9 +348,7 @@ dhis2.period.PeriodGenerator.prototype.filterFuturePeriodsExceptCurrent = functi
 dhis2.period.makeDailyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
-    if( typeof offset === 'undefined' ) {
-      offset = 0;
-    }
+    offset = offset || 0;
 
     var year = offset + cal.today().year();
     var periods = [];
@@ -382,9 +380,7 @@ dhis2.period.makeDailyPeriodGenerator = function( cal, format ) {
 dhis2.period.makeWeeklyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
-    if( typeof offset === 'undefined' ) {
-      offset = 0;
-    }
+    offset = offset || 0;
 
     var year = offset + cal.today().year();
     var periods = [];
@@ -427,9 +423,7 @@ dhis2.period.makeWeeklyPeriodGenerator = function( cal, format ) {
 dhis2.period.makeMonthlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
-    if( typeof offset === 'undefined' ) {
-      offset = 0;
-    }
+    offset = offset || 0;
 
     var year = offset + cal.today().year();
     var periods = [];
@@ -460,9 +454,7 @@ dhis2.period.makeMonthlyPeriodGenerator = function( cal, format ) {
 dhis2.period.makeBiMonthlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
-    if( typeof offset === 'undefined' ) {
-      offset = 0;
-    }
+    offset = offset || 0;
 
     var year = offset + cal.today().year();
     var periods = [];
@@ -494,9 +486,7 @@ dhis2.period.makeBiMonthlyPeriodGenerator = function( cal, format ) {
 dhis2.period.makeQuarterlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
-    if( typeof offset === 'undefined' ) {
-      offset = 0;
-    }
+    offset = offset || 0;
 
     var year = offset + cal.today().year();
     var periods = [];
@@ -528,9 +518,7 @@ dhis2.period.makeQuarterlyPeriodGenerator = function( cal, format ) {
 dhis2.period.makeSixMonthlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
-    if( typeof offset === 'undefined' ) {
-      offset = 0;
-    }
+    offset = offset || 0;
 
     var year = offset + cal.today().year();
     var periods = [];
@@ -576,9 +564,7 @@ dhis2.period.makeSixMonthlyPeriodGenerator = function( cal, format ) {
 dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
-    if( typeof offset === 'undefined' ) {
-      offset = 0;
-    }
+    offset = offset || 0;
 
     var year = offset + cal.today().year();
     var periods = [];
@@ -624,9 +610,7 @@ dhis2.period.makeSixMonthlyAprilPeriodGenerator = function( cal, format ) {
 dhis2.period.makeYearlyPeriodGenerator = function( cal, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
-    if( typeof offset === 'undefined' ) {
-      offset = 0;
-    }
+    offset = offset || 0;
 
     var year = offset + cal.today().year();
     var periods = [];
@@ -671,9 +655,7 @@ dhis2.period.makeFinancialOctoberPeriodGenerator = function( cal, format ) {
 dhis2.period.makeYearlyPeriodGeneratorWithMonthOffset = function( cal, monthStart, monthShortName, format ) {
   var self = {};
   self.generatePeriods = function( offset ) {
-    if( typeof offset === 'undefined' ) {
-      offset = 0;
-    }
+    offset = offset || 0;
 
     var year = offset + cal.today().year();
     var periods = [];
