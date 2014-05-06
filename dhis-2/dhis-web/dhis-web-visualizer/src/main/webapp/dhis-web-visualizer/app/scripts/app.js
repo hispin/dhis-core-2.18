@@ -1892,6 +1892,10 @@ Ext.onReady( function() {
 				web.mask.hide(ns.app.centerRegion);
 
 				if (NS.isDebug) {
+                    console.log("layout", ns.app.layout);
+                    console.log("xLayout", ns.app.xLayout);
+                    console.log("response", ns.app.response);
+                    console.log("xResponse", ns.app.xResponse);
 					console.log("core", ns.core);
 					console.log("app", ns.app);
 				}

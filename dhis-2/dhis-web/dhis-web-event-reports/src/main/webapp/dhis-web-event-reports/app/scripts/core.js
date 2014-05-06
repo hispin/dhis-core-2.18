@@ -1790,7 +1790,7 @@ Ext.onReady( function() {
 			// analytics
 			web.analytics = {};
 
-			web.analytics.getParamString = function(view, format) {
+			web.analytics.getParamString = function(view, format, skipPaging) {
                 var paramString,
                     dimensions = Ext.Array.clean([].concat(view.columns || [], view.rows || [])),
                     ignoreKeys = ['longitude', 'latitude'],
@@ -1864,7 +1864,7 @@ Ext.onReady( function() {
                 }
 
                 // paging
-                if (view.dataType === 'individual_cases' && view.paging) {
+                if (view.dataType === 'individual_cases' && view.paging && !skipPaging) {
                     paramString += view.paging.pageSize ? '&pageSize=' + view.paging.pageSize : '';
                     paramString += view.paging.page ? '&page=' + view.paging.page : '';
                 }

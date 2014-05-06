@@ -175,7 +175,7 @@ Ext.onReady( function() {
 				},
 				displayDensity: {
 					'compact': '3px',
-					'normal': '5px',
+					'normal': '6px',
 					'comfortable': '10px',
 				},
 				fontSize: {
@@ -1996,7 +1996,7 @@ Ext.onReady( function() {
                     tdCount = tdCount + 1;
 
 					// background color from legend set
-					if (isNumeric && xLayout.legendSet) {
+					if (isValue && xLayout.legendSet) {
 						var value = parseFloat(config.value);
 						mapLegends = xLayout.legendSet.mapLegends;
 
@@ -2017,7 +2017,8 @@ Ext.onReady( function() {
 					cls += config.hidden ? ' td-hidden' : '';
 					cls += config.collapsed ? ' td-collapsed' : '';
 					cls += isValue ? ' pointer' : '';
-					cls += bgColor ? ' legend' : (config.cls ? ' ' + config.cls : '');
+					//cls += bgColor ? ' legend' : (config.cls ? ' ' + config.cls : '');
+                    cls += config.cls ? ' ' + config.cls : '';
 
 					// if sorting
 					if (Ext.isString(metaDataId)) {
@@ -2030,19 +2031,20 @@ Ext.onReady( function() {
 					}
 
 					html += '<td ' + (config.uuid ? ('id="' + config.uuid + '" ') : '');
-					html += ' class="' + cls + '" ' + colSpan + rowSpan
+					html += ' class="' + cls + '" ' + colSpan + rowSpan;
 
-					if (bgColor) {
-						html += '>';
-						html += '<div class="legendCt">';
-						html += '<div class="number ' + config.cls + '" style="padding:' + displayDensity + '; padding-right:3px; font-size:' + fontSize + '">' + htmlValue + '</div>';
-						html += '<div class="arrowCt ' + config.cls + '">';
-						html += '<div class="arrow" style="border-bottom:8px solid transparent; border-right:8px solid ' + bgColor + '">&nbsp;</div>';
-						html += '</div></div></div></td>';
-					}
-					else {
-						html += 'style="padding:' + displayDensity + '; font-size:' + fontSize + ';"' + '>' + htmlValue + '</td>';
-					}
+					//if (bgColor && isValue) {
+                        //html += 'style="color:' + bgColor + ';padding:' + displayDensity + '; font-size:' + fontSize + ';"' + '>' + htmlValue + '</td>';
+						//html += '>';
+						//html += '<div class="legendCt">';
+						//html += '<div class="number ' + config.cls + '" style="padding:' + displayDensity + '; padding-right:3px; font-size:' + fontSize + '">' + htmlValue + '</div>';
+						//html += '<div class="arrowCt ' + config.cls + '">';
+						//html += '<div class="arrow" style="border-bottom:8px solid transparent; border-right:8px solid ' + bgColor + '">&nbsp;</div>';
+						//html += '</div></div></div></td>';
+					//}
+					//else {
+						html += 'style="' + (bgColor && isValue ? 'color:' + bgColor + '; ' : '') + 'padding:' + displayDensity + '; font-size:' + fontSize + ';"' + '>' + htmlValue + '</td>';
+					//}
 
 					return html;
 				};

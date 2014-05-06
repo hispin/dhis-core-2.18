@@ -8114,7 +8114,7 @@ Ext.onReady( function() {
 							viewport.favoriteWindow.show();
 						}
 					});
-					if (gis.init.user.isAdmin) {
+					//if (gis.init.user.isAdmin) {
 						a.push({
 							text: GIS.i18n.legend,
 							menu: {},
@@ -8127,7 +8127,7 @@ Ext.onReady( function() {
 								viewport.legendSetWindow.show();
 							}
 						});
-					}
+					//}
 					a.push({
 						xtype: 'tbseparator',
 						height: 18,
