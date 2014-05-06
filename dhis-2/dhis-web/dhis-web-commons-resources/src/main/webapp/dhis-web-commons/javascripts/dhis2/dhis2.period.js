@@ -102,7 +102,7 @@ dhis2.period.DatePicker.prototype.createInstance = function( el, fromIso, option
  * @param options Additional options, will be merged with the defaults
  */
 dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl, fromIso, options ) {
-  var mergedOptions = $.extend({}, this.defaults, options);
+  var mergedOptions = $.extend({}, this.defaults, options || {});
 
   var $fromEl = $(fromEl);
   var $toEl = $(toEl);
@@ -150,13 +150,8 @@ dhis2.period.DatePicker.prototype.createRangedInstance = function( fromEl, toEl,
  * @constructor
  */
 dhis2.period.PeriodGenerator = function( calendar, format ) {
-  if( typeof calendar === 'undefined' ) {
-    calendar = dhis2.period.calendar;
-  }
-
-  if( typeof format === 'undefined' ) {
-    format = dhis2.period.DEFAULT_DATE_FORMAT;
-  }
+  calendar = calendar || dhis2.period.calendar;
+  format = format || dhis2.period.DEFAULT_DATE_FORMAT;
 
   $.extend(this, {
     calendar: calendar,
