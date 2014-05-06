@@ -30,8 +30,11 @@ package org.hisp.dhis.setting;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.setting.SystemSetting;
@@ -83,5 +86,22 @@ public class SystemSettingManagerTest
         
         assertNotNull( settings );
         assertEquals( 3, settings.size() );
+    }
+
+    @Test
+    public void testGetSystemSettingsAsMap()
+    {
+        systemSettingManager.saveSystemSetting( "settingA", new String( "valueA" ) );
+        systemSettingManager.saveSystemSetting( "settingB", new String( "valueB" ) );
+        systemSettingManager.saveSystemSetting( "settingC", new String( "valueC" ) );
+
+        Map<String, Serializable> settingsMap = systemSettingManager.getSystemSettingsAsMap();
+
+        assertTrue( settingsMap.containsKey( "settingA" ) );
+        assertTrue( settingsMap.containsKey( "settingB" ) );
+        assertTrue( settingsMap.containsKey( "settingC" ) );
+        assertEquals( "valueA", settingsMap.get( "settingA" ) );
+        assertEquals( "valueB", settingsMap.get( "settingB" ) );
+        assertEquals( "valueC", settingsMap.get( "settingC" ) );
     }
 }

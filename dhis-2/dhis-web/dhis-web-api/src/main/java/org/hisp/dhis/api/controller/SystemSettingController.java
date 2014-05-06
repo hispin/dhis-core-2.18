@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -84,6 +85,12 @@ public class SystemSettingController
         Serializable setting = systemSettingManager.getSystemSetting( key );
 
         return setting != null ? String.valueOf( setting ) : null;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON)
+    public @ResponseBody Map<String, Serializable> getSystemSetting()
+    {
+        return systemSettingManager.getSystemSettingsAsMap();
     }
 
     @RequestMapping(value = "/{key}", method = RequestMethod.DELETE)
