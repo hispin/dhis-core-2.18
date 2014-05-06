@@ -283,7 +283,6 @@ function Selection()
                     subtree.reloadTree();
 
                     $( "#ouwt_loader" ).hide();
-                    selection.scrollToSelected();
                     $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
                 } );
             } );
