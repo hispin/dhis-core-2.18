@@ -3153,7 +3153,6 @@ Ext.onReady( function() {
 		gis.olmap.addLayers(layers);
 
 		GIS.core.instances.push(gis);
-e = gis.layer.event;
 
 		return gis;
 	};

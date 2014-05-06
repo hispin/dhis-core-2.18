@@ -1079,7 +1079,6 @@ Ext.onReady( function() {
 
 					getUpdatedAxis = function(axis) {
 						var dimension;
-						axis = Ext.clone(axis);
 
 						for (var i = 0; i < axis.length; i++) {
 							if (axis[i].dimension === objectName) {
