@@ -498,7 +498,96 @@
     $(function () {
         var menuTimeout = 500,
             closeTimer = null,
-            dropDownId = null;
+            dropDownId = null,
+            dropDownHooks = (function () {
+                var hook_library = {};
+
+                return {
+                  get: function (id) {
+                      if (hook_library[id] && hook_library[id].length > 0) {
+                        return hook_library[id];
+                      } else {
+                        return [];
+                      }
+                  },
+                  addHook: function (id, hook) {
+                      hook_library[id] = hook_library[id] || [];
+                      hook_library[id].push(hook);
+                  }
+                };
+            })();
+
+        function performSearch() {
+            var menuItems = [],
+                searchFor = $('#apps-search').val().toLowerCase(),
+                searchMatches = [];
+
+            //Re-render all the apps
+            renderDropDownFavorites();
+
+            if (searchFor === '') {
+                $('#apps-search-clear').hide();
+                $('#apps-search').focus();
+                return;
+            }
+            $('#apps-search-clear').show();
+
+            //Get all the apps
+            menuItems = menu.getApps();
+
+            //Find the matches
+            menuItems.forEach(function (menuItem) {
+                var menuItemName = menuItem.name.toLowerCase(),
+                    searchScore = menuItemName.indexOf(searchFor);
+
+                if (searchScore !== -1) {
+                    menuItem.searchScore = searchScore;
+                    searchMatches.push(menuItem);
+                }
+            });
+
+            //Order the search matches on occurance
+            searchMatches.sort(function (a, b) {
+                if (a.searchScore < b.searchScore)
+                    return -1;
+                if (a.searchScore > b.searchScore)
+                    return 1;
+                return 0;
+            });
+
+            //Remove all the apps
+            $(dropDownId).find('ul').find('li').remove();
+
+            //Add the apps that match the search back to the menu
+            $.tmpl( "appMenuItemTemplate", searchMatches).appendTo(dropDownId + ' ul');
+        }
+
+        function goToFirstMenuItem() {
+            var menuItemUrl = $(dropDownId).find('ul li').first().find('a').attr('href');
+            if (menuItemUrl) {
+                window.location = menuItemUrl;
+            }
+        }
+
+        dropDownHooks.addHook('appsDropDown', function () {
+            var dropDownId = this;
+            $(dropDownId).find('#apps-search').focus();
+
+            $('#apps-search').keyup(function (event) {
+                if ( event.which == 13 ) {
+                    event.preventDefault();
+                    goToFirstMenuItem();
+                } else {
+                    performSearch();
+                }
+
+            });
+
+            $('#apps-search-clear').click(function () {
+                $('#apps-search').val("");
+                performSearch();
+            });
+        });
 
         $.ajax('../dhis-web-commons/menu/getModules.action').success(function (data) {
             if (typeof data.modules === 'object') {
@@ -540,7 +629,7 @@
                 self.parent().css('width', '360px');
                 self.parent().parent().css('width', '360px');
             } else {
-                if (self.innerHeight() === 330 ) {
+                if (self.innerHeight() === 340 ) {
                     moreAppsElement.hide();
                     self.parent().css('width', '384px');
                     self.parent().parent().css('width', '384px');
@@ -548,6 +637,13 @@
             }
 
         });
+
+        function executeDropDownHooks(dropDownId) {
+            var hooks = dropDownHooks.get(dropDownId);
+            hooks.forEach(function (hook) {
+                hook.call('#' + dropDownId);
+            });
+        }
 
         function showDropDown( id )
         {
@@ -560,7 +656,6 @@
             $(newDropDownId).css('top', '55px');
             $(newDropDownId).css('left', Math.ceil(position.left - Math.ceil(parseInt($(newDropDownId).innerWidth(), 10) - 108)) + 'px');
 
-
             if ( dropDownId != newDropDownId ) {
                 hideDropDown();
 
@@ -568,6 +663,8 @@
 
                 $( dropDownId ).show();
             }
+
+            executeDropDownHooks(id);
         }
 
         function hideDropDown() {
