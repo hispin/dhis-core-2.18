@@ -629,7 +629,7 @@
                 self.parent().css('width', '360px');
                 self.parent().parent().css('width', '360px');
             } else {
-                if (self.innerHeight() === 340 ) {
+                if (self.innerHeight() === 370 ) {
                     moreAppsElement.hide();
                     self.parent().css('width', '384px');
                     self.parent().parent().css('width', '384px');
