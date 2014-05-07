@@ -1641,8 +1641,11 @@ public class ActivityReportingServiceImpl
 
         searchTextList.add( searchText );
         orgUnitList.add( organisationUnitService.getOrganisationUnit( orgUnitId ) );
-        List<Integer> stageInstanceIds = entityInstanceService.getProgramStageInstances( searchTextList, orgUnitList,
-            followUp, ProgramInstance.STATUS_ACTIVE, null, null );
+        
+        List<Integer> stageInstanceIds = new ArrayList<Integer>();
+        
+//        List<Integer> stageInstanceIds = entityInstanceService.getProgramStageInstances( searchTextList, orgUnitList,
+//            followUp, ProgramInstance.STATUS_ACTIVE, null, null );
 
         if ( stageInstanceIds.size() == 0 )
         {
