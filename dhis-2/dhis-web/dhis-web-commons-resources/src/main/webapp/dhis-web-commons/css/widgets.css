@@ -104,7 +104,7 @@ div#rightBar
 
 #detailsArea label 
 {
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
   font-size: 13px;
 }
 
@@ -181,7 +181,7 @@ div.thingy
   position: absolute;
   left: 22px;
   top: 50px;
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
   font-size: 9pt;
   cursor: pointer;
 }
@@ -190,7 +190,7 @@ div.thingy
 {
   position: absolute;
   right: 2px;
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
   font-size: 9pt;
   cursor: pointer;
 }
@@ -271,7 +271,7 @@ div#orgUnitTree a:hover
 div#orgUnitTree a.selected 
 {
   color: #000;
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,7 +604,7 @@ div.paging
 
 div.paging span, div.paging a 
 {
-	font-family: LiberationSansBold, arial;
+    font-weight: bold;
 	padding: 0 5px;
 	font-size: 12px;
 }
@@ -705,7 +705,7 @@ ul.pageSizeSelection input
   border: 1px solid #bbb;
   border-radius: 3px;
   margin-right: 4px;
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
   font-size: 13px;
   background-color: #f3f3f3;
   color: #606060 !important;
@@ -725,7 +725,7 @@ ul.pageSizeSelection input
   border: 1px solid #3D77B3;
   border-radius: 3px;
   margin-right: 4px;
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
   font-size: 13px;
   background-color: #3581CE;
   color: #fff !important;
@@ -778,35 +778,27 @@ input:-moz-placeholder
 
 .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button
 {
-  font-family: LiberationSansRegular, arial, sans-serif !important;
+  font-family: LiberationSans, arial, sans-serif !important;
   font-size: 9pt !important;
 }
 
 .ui-datepicker th 
 {
-  font-family: LiberationSansBold, arial, sans-serif !important;
-  font-weight: normal !important;
+  font-family: LiberationSans, arial, sans-serif !important;
   padding: 0.5em 0 !important;
   font-size: 9pt !important;
 }
 
 .ui-widget-header, .ui-widget-header a
 {
-  font-family: LiberationSansBold, arial, sans-serif !important;
-  font-weight: normal !important;
+  font-family: LiberationSans, arial, sans-serif !important;
   font-size: 10pt !important;
 }
 
 .ui-button-text
 {
-  font-family: LiberationSansBold, arial, sans-serif !important;
-  font-weight: normal !important;
+  font-family: LiberationSans, arial, sans-serif !important;
   font-size: 9pt !important;
-}
-
-.ui-state-default
-{
-  font-weight: normal !important;
 }
 
 /*----------------------------------------------------------------------------*/

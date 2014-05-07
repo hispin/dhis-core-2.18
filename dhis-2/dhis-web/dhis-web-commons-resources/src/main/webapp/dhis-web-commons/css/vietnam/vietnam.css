@@ -5,7 +5,7 @@
 
 * 
 {
-  font-family: LiberationSansRegular, arial, sans-serif;
+  font-family: LiberationSans, arial, sans-serif;
   line-height: 140%;
 }
 
@@ -76,7 +76,7 @@ input[type=text],input[type=password],textarea
   position: absolute;
   top: 12px;
   left: 175px;
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
   color: #fff;
   font-size: 16px;
 }
@@ -228,7 +228,7 @@ input[type=text],input[type=password],textarea
   margin: 16px 20px 2px 20px;
   padding: 7px 0 7px 0;
   font-weight: normal;
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
 }
 
 #leftBarContents ul
@@ -325,9 +325,8 @@ input[type=text],input[type=password],textarea
   border-style: solid;
   border-width: 1px;
   border-color: #c8dbea;
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
   font-size: 13px;
-  font-weight: normal;
 }
 
 #mainPage 
@@ -381,12 +380,12 @@ input[type=text],input[type=password],textarea
 
 .bold, .bold td
 {
-  font-family: LiberationSansBold, arial, sans-serif;
+  font-weight: bold;
 }
 
 .normal
 {
-  font-family: LiberationSansRegular, arial, sans-serif;
+  font-weight: normal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -446,7 +445,7 @@ input[type=text],input[type=password],textarea
 
 .introItemHeader
 {
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
   color: #3F693F;
   font-size: 13px;
 }
@@ -461,7 +460,7 @@ input[type=text],input[type=password],textarea
 /*----------------------------------------------------------------------------*/
 
 @font-face {
-    font-family: 'LiberationSansRegular';
+    font-family: 'LiberationSans';
     src: url('../../fonts/LiberationSans-Regular-webfont.eot');
     src: url('../../fonts/LiberationSans-Regular-webfont.eot?#iefix') format('eot'),
          url('../../fonts/LiberationSans-Regular-webfont.woff') format('woff'),
@@ -472,12 +471,12 @@ input[type=text],input[type=password],textarea
 }
 
 @font-face {
-    font-family: 'LiberationSansBold';
+    font-family: 'LiberationSans';
     src: url('../../fonts/LiberationSans-Bold-webfont.eot');
     src: url('../../fonts/LiberationSans-Bold-webfont.eot?#iefix') format('eot'),
          url('../../fonts/LiberationSans-Bold-webfont.woff') format('woff'),
          url('../../fonts/LiberationSans-Bold-webfont.ttf') format('truetype'),
          url('../../fonts/LiberationSans-Bold-webfont.svg#webfontHyWb8e07') format('svg');
-    font-weight: normal;
+    font-weight: bold;
     font-style: normal;
 }
