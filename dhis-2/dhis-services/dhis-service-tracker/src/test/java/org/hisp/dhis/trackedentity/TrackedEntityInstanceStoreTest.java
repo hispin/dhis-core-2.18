@@ -194,35 +194,6 @@ public class TrackedEntityInstanceStoreTest
     }
 
     @Test
-    public void testGetByProgram()
-    {
-        programService.addProgram( programA );
-        programService.addProgram( programB );
-
-        entityInstanceStore.save( entityInstanceA1 );
-        entityInstanceStore.save( entityInstanceB1 );
-        entityInstanceStore.save( entityInstanceA2 );
-        entityInstanceStore.save( entityInstanceB2 );
-
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA2, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB2, programB, date, date, organisationUnit );
-
-        Collection<TrackedEntityInstance> entityInstances = entityInstanceStore.getByProgram( programA, 0, 100 );
-
-        assertEquals( 3, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceA1 ) );
-        assertTrue( entityInstances.contains( entityInstanceA2 ) );
-        assertTrue( entityInstances.contains( entityInstanceB1 ) );
-
-        entityInstances = entityInstanceStore.getByOrgUnitProgram( organisationUnit, programB, 0, 100 );
-
-        assertEquals( 1, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceB2 ) );
-    }
-
-    @Test
     public void testGetRepresentatives()
     {
         entityInstanceStore.save( entityInstanceB1 );

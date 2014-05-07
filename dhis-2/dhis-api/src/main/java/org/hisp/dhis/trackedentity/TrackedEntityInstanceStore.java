@@ -79,8 +79,7 @@ public interface TrackedEntityInstanceStore
      * 
      * @return List of entityInstances
      */
-    Collection<TrackedEntityInstance> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program,
-        Integer min, Integer max );
+    Collection<TrackedEntityInstance> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min, Integer max );
 
     /**
      * Search instances who has the same representative
@@ -99,7 +98,7 @@ public interface TrackedEntityInstanceStore
      * 
      * @return The number of entityInstances
      */
-    int countListTrackedEntityInstanceByOrgunit( OrganisationUnit organisationUnit );
+    //int countListTrackedEntityInstanceByOrgunit( OrganisationUnit organisationUnit );
 
     /**
      * Get the number of entityInstances who registered into a certain
@@ -113,7 +112,7 @@ public interface TrackedEntityInstanceStore
      * 
      * @return The number of entityInstances
      */
-    int countGetTrackedEntityInstancesByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
+    //int countGetTrackedEntityInstancesByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
 
     /**
      * Search entityInstances by phone number (performs partial search)
@@ -135,7 +134,7 @@ public interface TrackedEntityInstanceStore
      * 
      *        return List of entityInstances
      */
-    Collection<TrackedEntityInstance> getByProgram( Program program, Integer min, Integer max );
+    //Collection<TrackedEntityInstance> getByProgram( Program program, Integer min, Integer max );
 
     /**
      * Validate entity-instances attribute values and validation criteria by

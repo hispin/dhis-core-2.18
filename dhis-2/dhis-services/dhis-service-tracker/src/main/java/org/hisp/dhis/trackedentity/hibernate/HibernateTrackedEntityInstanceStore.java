@@ -432,45 +432,6 @@ public class HibernateTrackedEntityInstanceStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<TrackedEntityInstance> getByProgram( Program program, Integer min, Integer max )
-    {
-        String hql = "select pt from TrackedEntityInstance pt inner join pt.programInstances pi "
-            + "where pi.program = :program and pi.status = :status";
-
-        Query query = getQuery( hql );
-        query.setEntity( "program", program );
-        query.setInteger( "status", ProgramInstance.STATUS_ACTIVE );
-
-        return query.list();
-    }
-
-    @Override
-    public int countListTrackedEntityInstanceByOrgunit( OrganisationUnit organisationUnit )
-    {
-        Query query = getQuery( "select count(p.id) from TrackedEntityInstance p where p.organisationUnit.id=:orgUnitId " );
-
-        query.setParameter( "orgUnitId", organisationUnit.getId() );
-
-        Number rs = (Number) query.uniqueResult();
-
-        return rs != null ? rs.intValue() : 0;
-    }
-
-    @Override
-    public int countGetTrackedEntityInstancesByOrgUnitProgram( OrganisationUnit organisationUnit, Program program )
-    {
-        String sql = "select count(p.trackedentityinstanceid) from trackedentityinstance p join programinstance pi on p.trackedentityinstanceid=pi.trackedentityinstanceid "
-            + "where p.organisationunitid="
-            + organisationUnit.getId()
-            + " and pi.programid="
-            + program.getId()
-            + " and pi.status=" + ProgramInstance.STATUS_ACTIVE;
-
-        return jdbcTemplate.queryForObject( sql, Integer.class );
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityInstance> getRepresentatives( TrackedEntityInstance instance )
     {
         String hql = "select distinct p from TrackedEntityInstance p where p.representative = :representative order by p.id DESC";
