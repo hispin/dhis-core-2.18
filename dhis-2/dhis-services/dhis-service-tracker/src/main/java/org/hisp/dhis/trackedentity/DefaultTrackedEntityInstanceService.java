@@ -741,14 +741,6 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Integer statusEnrollment, Integer min, Integer max )
-    {
-        return trackedEntityInstanceStore.getProgramStageInstances( searchKeys, orgunits, followup, null,
-            statusEnrollment, min, max );
-    }
-
-    @Override
     public Collection<TrackedEntityInstance> getTrackedEntityInstancesByPhone( String phoneNumber, Integer min,
         Integer max )
     {
@@ -800,27 +792,10 @@ public class DefaultTrackedEntityInstanceService
     {
         return trackedEntityInstanceStore.getByAttributeValue( searchText, attributeId, min, max );
     }
-
-    @Override
-    public Collection<TrackedEntityInstance> searchTrackedEntityInstances( List<String> searchKeys,
-        Collection<OrganisationUnit> orgunits, Boolean followup, Collection<TrackedEntityAttribute> attributes,
-        Integer statusEnrollment, Integer min, Integer max )
-    {
-        return trackedEntityInstanceStore.search( searchKeys, orgunits, followup, attributes, statusEnrollment, min,
-            max );
-    }
-
-    @Override
-    public int countSearchTrackedEntityInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Integer statusEnrollment )
-    {
-        return trackedEntityInstanceStore.countSearch( searchKeys, orgunits, followup, statusEnrollment );
-    }
     
     @Override
     public Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntity trackedEntity )
     {
         return trackedEntityInstanceStore.get( trackedEntity );
     }
-
 }
