@@ -337,11 +337,4 @@ public interface ProgramStageInstanceService
      */
     ProgramStageInstance createProgramStageInstance( TrackedEntityInstance entityInstance, Program program, Date executionDate,
         OrganisationUnit organisationUnit );
-
-    Grid searchEvents( ProgramStage programStage, List<TabularEventColumn> columns,
-        Collection<Integer> organisationUnits, Date startDate, Date endDate, Boolean completed, Integer min,
-        Integer max, I18n i18n );
-
-    int searchEventsCount( ProgramStage programStage, List<TabularEventColumn> columns,
-        Collection<Integer> organisationUnits, Boolean completed, Date startDate, Date endDate );
 }

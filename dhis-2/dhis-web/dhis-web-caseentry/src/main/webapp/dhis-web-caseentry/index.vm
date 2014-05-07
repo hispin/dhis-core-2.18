@@ -18,10 +18,6 @@
 		#introListImgItem( "singleEventSelect.action" "single_event_with_registration" "attribute" )
 	#end
 	
-	#if( $auth.hasAccess( "dhis-web-caseentry", "anonymousRegistration" ) )
-		#introListImgItem( "anonymousRegistration.action" "anonymous_events" "attribute" )
-	#end
-	
 	#if( $auth.hasAccess( "dhis-web-caseentry", "reportSelect" ) )
 		#introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
 	#end
