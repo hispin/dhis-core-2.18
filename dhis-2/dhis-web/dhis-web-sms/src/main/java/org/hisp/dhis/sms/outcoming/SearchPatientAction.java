@@ -38,10 +38,8 @@ import java.util.Map;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
-import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -124,11 +122,12 @@ public class SearchPatientAction
         // List all patients
         if ( listAll )
         {
-            total = patientService.countGetTrackedEntityInstancesByOrgUnit( organisationUnit );
+            //TODO re-implement using TrackedEntityInstanceService.getTrackedEntityInstances( TrackedEntityInstanceQueryParams )
+            
+            //total = patientService.countGetTrackedEntityInstancesByOrgUnit( organisationUnit );
             this.paging = createPaging( total );
 
-            patients = new ArrayList<TrackedEntityInstance>( patientService.getTrackedEntityInstances( organisationUnit, paging.getStartPos(),
-                paging.getPageSize() ) );
+            //patients = new ArrayList<TrackedEntityInstance>( patientService.getTrackedEntityInstances( organisationUnit, paging.getStartPos(), paging.getPageSize() ) );
 
         }
         // search patients
