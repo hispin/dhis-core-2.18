@@ -12,11 +12,16 @@
 }
 
 #apps-search {
-    width: 330px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    outline: none;
     padding-right: 25px;
+    padding-left: 5px;
+    width: 328px;
 }
 
 .apps-search-wrap {
+    padding-bottom: 10px;
     position: relative;
     width: 360px;
 }
@@ -31,7 +36,7 @@
     padding: 0;
     position: absolute;
     right: 5px;
-    top: 24%;
+    top: 18%;
     width: 20px;
 }
 
@@ -327,7 +332,7 @@ a.menu-link:hover
 {
     display: table;
     height: 34px;
-    padding-top: 12px;
+    padding-top: 8px;
     text-align: center;
     width: 360px;
 	margin-top: 5px;
@@ -375,15 +380,15 @@ hr.app-separator
 .menu-drop-down-wrap
 {
     overflow: hidden;
-    height: 340px;
+    height: 370px;
 }
 
 .menu-drop-down-scroll
 {
-    height: 340px;
-    width: 384px;
+    height: 370px;
     overflow-y: auto;
     overflow-x: hidden;
+    width: 384px;
 }
 
 #appsDropDown ul.menuDropDownBox {
