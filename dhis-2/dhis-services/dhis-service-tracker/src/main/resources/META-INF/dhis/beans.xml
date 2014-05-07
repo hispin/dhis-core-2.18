@@ -77,8 +77,6 @@
 		<property name="clazz"
 			value="org.hisp.dhis.trackedentity.TrackedEntityInstance" />
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="statementBuilder" ref="statementBuilder" />
 	</bean>

@@ -41,6 +41,7 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -139,10 +140,12 @@ public class SearchPatientAction
                 orgunits.add( organisationUnit );
             }
 
-            total = patientService.countSearchTrackedEntityInstances( searchTexts, orgunits, null, ProgramInstance.STATUS_ACTIVE );
+            //TODO re-implement using TrackedEntityInstanceService.getTrackedEntityInstances( TrackedEntityInstanceQueryParams )
+            
+            //total = patientService.countSearchTrackedEntityInstances( searchTexts, orgunits, null, ProgramInstance.STATUS_ACTIVE );
             this.paging = createPaging( total );
-            patients = patientService.searchTrackedEntityInstances( searchTexts, orgunits, null, null, ProgramInstance.STATUS_ACTIVE,
-                paging.getStartPos(), paging.getPageSize() );
+            //patients = patientService.searchTrackedEntityInstances( searchTexts, orgunits, null, null, ProgramInstance.STATUS_ACTIVE,
+            //    paging.getStartPos(), paging.getPageSize() );
 
             if ( !searchBySelectedOrgunit )
             {
