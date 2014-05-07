@@ -66,13 +66,28 @@ input[type=text],input[type=password],textarea
   color: #333;
 }
 
+/*----------------------------------------------------------------------------*/
+/* @font-face                                                                 */
+/*----------------------------------------------------------------------------*/
+
 @font-face {
-    font-family: 'LiberationSansRegular';
-    src: url('../fonts/LiberationSans-Regular-webfont.eot');
-    src: url('../fonts/LiberationSans-Regular-webfont.eot?#iefix') format('eot'),
-         url('../fonts/LiberationSans-Regular-webfont.woff') format('woff'),
-         url('../fonts/LiberationSans-Regular-webfont.ttf') format('truetype'),
-         url('../fonts/LiberationSans-Regular-webfont.svg#webfontc8rbNdBe') format('svg');
+    font-family: 'LiberationSans';
+    src: url('../../fonts/LiberationSans-Regular-webfont.eot');
+    src: url('../../fonts/LiberationSans-Regular-webfont.eot?#iefix') format('eot'),
+         url('../../fonts/LiberationSans-Regular-webfont.woff') format('woff'),
+         url('../../fonts/LiberationSans-Regular-webfont.ttf') format('truetype'),
+         url('../../fonts/LiberationSans-Regular-webfont.svg#webfontc8rbNdBe') format('svg');
     font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'LiberationSans';
+    src: url('../../fonts/LiberationSans-Bold-webfont.eot');
+    src: url('../../fonts/LiberationSans-Bold-webfont.eot?#iefix') format('eot'),
+         url('../../fonts/LiberationSans-Bold-webfont.woff') format('woff'),
+         url('../../fonts/LiberationSans-Bold-webfont.ttf') format('truetype'),
+         url('../../fonts/LiberationSans-Bold-webfont.svg#webfontHyWb8e07') format('svg');
+    font-weight: bold;
     font-style: normal;
 }
