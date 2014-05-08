@@ -380,12 +380,12 @@ hr.app-separator
 .menu-drop-down-wrap
 {
     overflow: hidden;
-    height: 370px;
+    height: 375px;
 }
 
 .menu-drop-down-scroll
 {
-    height: 370px;
+    height: 375px;
     overflow-y: auto;
     overflow-x: hidden;
     width: 384px;
