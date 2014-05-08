@@ -30,10 +30,12 @@ package org.hisp.dhis.dxf2.events.enrollment;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.common.QueryOperator;
 import org.hisp.dhis.dxf2.events.trackedentity.Attribute;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.dxf2.events.trackedentity.TrackedEntityInstanceService;
@@ -218,9 +220,6 @@ public abstract class AbstractEnrollmentService
 
         for ( ProgramInstance programInstance : programInstances )
         {
-            // check for null, both for pi, and for pi.entityInstance, there are DBs
-            // out there where trackedentityinstanceid == null
-            // even if the program is of type 1/2.
             if ( programInstance != null && programInstance.getEntityInstance() != null )
             {
                 enrollments.getEnrollments().add( getEnrollment( programInstance ) );
@@ -503,17 +502,17 @@ public abstract class AbstractEnrollmentService
 
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
-        QueryItem queryItem = new QueryItem( attribute, "eq", value, false );
-        params.getAttributes().add( queryItem );
+        QueryItem queryItem = new QueryItem( attribute, QueryOperator.EQ, value, false );
+        params.addAttribute( queryItem );
 
         if ( attribute.getOrgunitScope() && attribute.getProgramScope() )
         {
             params.setProgram( program );
-            params.getOrganisationUnits().add( organisationUnit );
+            params.addOrganisationUnit( organisationUnit );
         }
         else if ( attribute.getOrgunitScope() )
         {
-            params.getOrganisationUnits().add( organisationUnit );
+            params.addOrganisationUnit( organisationUnit );
         }
         else if ( attribute.getProgramScope() )
         {

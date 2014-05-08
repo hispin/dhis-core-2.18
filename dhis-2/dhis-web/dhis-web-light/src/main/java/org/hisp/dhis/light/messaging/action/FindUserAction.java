@@ -32,8 +32,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 
@@ -42,8 +40,6 @@ import com.opensymphony.xwork2.Action;
 public class FindUserAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( FindUserAction.class );
-
     private static final String REDIRECT = "redirect";
 
     private UserService userService;

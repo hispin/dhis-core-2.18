@@ -1,8 +1,5 @@
 package org.hisp.dhis.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.
@@ -31,6 +28,9 @@ import java.util.Map;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Lars Helge Overland
  */
@@ -38,18 +38,18 @@ public class QueryFilter
 {
     public static final String OPTION_SEP = ";";
     
-    public static final Map<String, String> OPERATOR_MAP = new HashMap<String, String>() { {
-        put( "eq", "=" );
-        put( "gt", ">" );
-        put( "ge", ">=" );
-        put( "lt", "<" );
-        put( "le", "<=" );
-        put( "ne", "!=" );
-        put( "like", "like" );
-        put( "in", "in" );
+    public static final Map<QueryOperator, String> OPERATOR_MAP = new HashMap<QueryOperator, String>() { {
+        put( QueryOperator.EQ, "=" );
+        put( QueryOperator.GT, ">" );
+        put( QueryOperator.GE, ">=" );
+        put( QueryOperator.LT, "<" );
+        put( QueryOperator.LE, "<=" );
+        put( QueryOperator.NE, "!=" );
+        put( QueryOperator.LIKE, "like" );
+        put( QueryOperator.IN, "in" );
     } };
     
-    protected String operator;
+    protected QueryOperator operator;
 
     protected String filter;
 
@@ -61,7 +61,7 @@ public class QueryFilter
     {
     }
     
-    public QueryFilter( String operator, String filter )
+    public QueryFilter( QueryOperator operator, String filter )
     {
         this.operator = operator;
         this.filter = filter;
@@ -73,7 +73,7 @@ public class QueryFilter
     
     public boolean isFilter()
     {
-        return operator != null && !operator.isEmpty() && filter != null && !filter.isEmpty();
+        return operator != null && filter != null && !filter.isEmpty();
     }
     
     public String getSqlOperator()
@@ -83,7 +83,7 @@ public class QueryFilter
             return null;
         }
         
-        return OPERATOR_MAP.get( operator.toLowerCase() );
+        return OPERATOR_MAP.get( operator );
     }
     
     public String getSqlFilter( String encodedFilter )
@@ -92,12 +92,12 @@ public class QueryFilter
         {
             return null;
         }
-                
-        if ( operator.equalsIgnoreCase( "like" ) )
+
+        if ( QueryOperator.LIKE.equals( operator ) )
         {
             return "'%" + encodedFilter + "%'";
         }
-        else if ( operator.equalsIgnoreCase( "in" ) )
+        else if ( QueryOperator.IN.equals( operator ) )
         {
             String[] split = encodedFilter.split( OPTION_SEP );
             
@@ -185,12 +185,12 @@ public class QueryFilter
     // Getters and setters
     // -------------------------------------------------------------------------
     
-    public String getOperator()
+    public QueryOperator getOperator()
     {
         return operator;
     }
 
-    public void setOperator( String operator )
+    public void setOperator( QueryOperator operator )
     {
         this.operator = operator;
     }
