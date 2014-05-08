@@ -456,7 +456,7 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public int createTrackedEntityInstance( TrackedEntityInstance instance, Integer representativeId,
+    public int createTrackedEntityInstance( TrackedEntityInstance instance, String representativeId,
         Integer relationshipTypeId, Set<TrackedEntityAttributeValue> attributeValues )
     {
         int id = addTrackedEntityInstance( instance );
@@ -473,7 +473,7 @@ public class DefaultTrackedEntityInstanceService
 
         if ( representativeId != null )
         {
-            TrackedEntityInstance representative = trackedEntityInstanceStore.get( representativeId );
+            TrackedEntityInstance representative = trackedEntityInstanceStore.getByUid( representativeId );
             if ( representative != null )
             {
                 instance.setRepresentative( representative );
@@ -556,19 +556,7 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public Collection<TrackedEntityInstance> getTrackedEntityInstance( Integer attributeId, String value )
-    {
-        TrackedEntityAttribute attribute = attributeService.getTrackedEntityAttribute( attributeId );
-        if ( attribute != null )
-        {
-            return attributeValueService.getTrackedEntityInstance( attribute, value );
-        }
-
-        return null;
-    }
-
-    @Override
-    public void updateTrackedEntityInstance( TrackedEntityInstance instance, Integer representativeId,
+    public void updateTrackedEntityInstance( TrackedEntityInstance instance, String representativeId,
         Integer relationshipTypeId, List<TrackedEntityAttributeValue> valuesForSave,
         List<TrackedEntityAttributeValue> valuesForUpdate, Collection<TrackedEntityAttributeValue> valuesForDelete )
     {
@@ -591,7 +579,7 @@ public class DefaultTrackedEntityInstanceService
 
         if ( shouldSaveRepresentativeInformation( instance, representativeId ) )
         {
-            TrackedEntityInstance representative = trackedEntityInstanceStore.get( representativeId );
+            TrackedEntityInstance representative = trackedEntityInstanceStore.getByUid( representativeId );
 
             if ( representative != null )
             {
@@ -614,14 +602,14 @@ public class DefaultTrackedEntityInstanceService
         }
     }
 
-    private boolean shouldSaveRepresentativeInformation( TrackedEntityInstance instance, Integer representativeId )
+    private boolean shouldSaveRepresentativeInformation( TrackedEntityInstance instance, String representativeId )
     {
-        if ( representativeId == null )
+        if ( representativeId == null || representativeId.isEmpty() )
         {
             return false;
         }
 
-        return instance.getRepresentative() == null || !(instance.getRepresentative().getId() == representativeId);
+        return instance.getRepresentative() == null || !(instance.getRepresentative().getUid() == representativeId);
     }
 
     @Override

@@ -515,13 +515,6 @@
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_ADD</param>
 		</action>
 
-		<action name="searchPerson"
-			class="org.hisp.dhis.caseentry.action.trackedentity.SearchPersonAction">
-			<result name="success" type="velocity-xml">responseTrackedEntityInstances.vm
-			</result>
-			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
-		</action>
-
 		<action name="addRepresentative"
 			class="org.hisp.dhis.caseentry.action.trackedentity.AddRepresentativeAction">
 			<result name="success" type="velocity-xml">responseRepresentative.vm

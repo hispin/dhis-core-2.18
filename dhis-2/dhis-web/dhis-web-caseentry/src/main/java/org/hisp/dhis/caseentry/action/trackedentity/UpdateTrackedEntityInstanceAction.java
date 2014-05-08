@@ -79,7 +79,7 @@ public class UpdateTrackedEntityInstanceAction
 
     private Integer id;
 
-    private Integer representativeId;
+    private String representativeId;
 
     private Integer relationshipTypeId;
 
@@ -207,7 +207,7 @@ public class UpdateTrackedEntityInstanceAction
         return entityInstance;
     }
 
-    public void setRepresentativeId( Integer representativeId )
+    public void setRepresentativeId( String representativeId )
     {
         this.representativeId = representativeId;
     }

@@ -92,7 +92,7 @@ public class AddTrackedEntityInstanceAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer representativeId;
+    private String representativeId;
 
     private Integer relationshipTypeId;
 
@@ -269,7 +269,7 @@ public class AddTrackedEntityInstanceAction
         this.attributeService = attributeService;
     }
 
-    public void setRepresentativeId( Integer representativeId )
+    public void setRepresentativeId( String representativeId )
     {
         this.representativeId = representativeId;
     }
