@@ -122,10 +122,11 @@ $( "#addTariff" ).dialog({
 		
 });
 
-	function deleteTariffDataValue( organisationUnitId, dataElementId, dataSetId, startDate, endDate)
+	function deleteTariffDataValue( organisationUnitId, orgUnitGroupId, dataElementId, dataSetId, startDate, endDate)
 	{
 		var dataValue = {		        		
-		        		'orgUnitGroupId' : $( "#orgUnitGroupId" ).val(),
+		        		'orgUnitGroupId' : orgUnitGroupId,
+		        		'orgUnitUid' : organisationUnitId,
 						'dataElementId' : dataElementId,								
 						'dataSetId' : dataSetId,
 						'startDate' : startDate,
@@ -149,9 +150,10 @@ $( "#addTariff" ).dialog({
 	    }
 	}
 
-	function editTariffDataValue( organisationUnitId, dataElementId, dataSetId, startDate, endDate, value, target, targetPercentage )
+	function editTariffDataValue( organisationUnitId, orgUnitGroupId, dataElementId, dataSetId, startDate, endDate, value, target, targetPercentage )
 	{	
 		validateAddTariff();
+		
 		$( "#addTariff" ).dialog('option', 'title', 'Edit Tariff');
 		$('#pbfType option[value='+dataSetId+']').attr('selected','selected');
 		$('#pbfType').attr('disabled','disabled');
@@ -182,6 +184,7 @@ $( "#addTariff" ).dialog({
         		        			'startDate' : $("#startDate").val(),
         							'endDate' : $("#endDate").val(),
 									'orgUnitGroupId': $( "#orgUnitGroupId" ).val(),
+									'orgUnitUid' : $("#orgUnitUid").val(),
 									'dataElementId' : $("#dataElementId").val()
         		    			};
 								jQuery.ajax( {
@@ -214,6 +217,7 @@ $( "#addTariff" ).dialog({
         		        			'startDate' : $("#startDate").val(),
         							'endDate' : $("#endDate").val(),									
 									'orgUnitGroupId': $( "#orgUnitGroupId" ).val(),
+									'orgUnitUid' : $("#orgUnitUid").val(),
 									'dataElementId' : $("#dataElementId").val(),									
 									'target' : $("#target").val(),
 									'targetPercentage' : $("#targetPercentage").val(),
@@ -240,7 +244,7 @@ $( "#addTariff" ).dialog({
 			alert( "Inside Error " + json.message );
 	    }
 		
-		 function addTariffSuccess( json )
+		function addTariffSuccess( json )
 	    {	
 			$('#pbfType option[value=-1]').attr('selected','selected');
 			$("#pbfType ").removeAttr('disabled');
@@ -321,10 +325,10 @@ $( "#addTariff" ).dialog({
 				<td data-sorter="shortDate" data-date-format="yyyymmdd">$simpleDateFormat.format($!tariff.endDate)</td>
 			##if($updateAuthority == 'Yes')
 	            <td>
-					<a href="javascript:deleteTariffDataValue('$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate')">
+					<a href="javascript:deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate')">
 						<img src="images/delete.png" width="17px"/>
 					</a>
-					<a href="javascript:editTariffDataValue('$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate','$tariff.value','$!tariff.target','$!tariff.targetPercentage')">
+					<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.orgUnitGroup.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate','$tariff.value','$!tariff.target','$!tariff.targetPercentage')">
 						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )" width="17px"/>
 					</a>				
 				</td>
@@ -334,6 +338,7 @@ $( "#addTariff" ).dialog({
     </tbody>
 </table>
 </div>
+
 <div id="addTariff" title="Add New Tariff">
 	<table style="width:100%;table-layout:fixed;">
 		<tr >
@@ -381,8 +386,6 @@ $( "#addTariff" ).dialog({
 		<tr >
 			<td style="width:40%;">Target % </td>
 			<td style="width:60%;"><input type="text" id="targetPercentage" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
-        </tr>
-		
-		
+        </tr>				
     </table>
 </div>

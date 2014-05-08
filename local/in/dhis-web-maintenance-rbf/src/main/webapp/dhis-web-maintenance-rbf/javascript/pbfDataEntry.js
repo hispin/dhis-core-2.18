@@ -96,7 +96,7 @@ function loadDataEntryForm()
 
 }
 
-function saveValue(dataElementId,optionComboId)
+function saveValue( dataElementId,optionComboId )
 {
 	var period = document.getElementById("selectedPeriodId").value;
 	var valueId = "dataelement"+dataElementId+":"+optionComboId;
@@ -168,6 +168,9 @@ function savePBFDataValue( dataElementId, valueType )
 		valueId = "pbfdv_qty_validated_"+dataElementId;
 	}
 	
+	var tariffValueId = "pbfdv_tariff_amt_"+dataElementId;
+	var tariffAmt = document.getElementById( tariffValueId ).value;
+	
 	var fieldId = "#"+valueId;
 	var defaultValue = document.getElementById(valueId).defaultValue;
 	var value = document.getElementById( valueId ).value;
@@ -180,6 +183,7 @@ function savePBFDataValue( dataElementId, valueType )
 				'dataSetId' : dataSetId,
 				'organisationUnitId' : $("#selectedOrgunitID").val(),
 				'periodIso' : period,
+				'tariffAmt' : tariffAmt,
 				'value' : value
     };
     jQuery.ajax( {

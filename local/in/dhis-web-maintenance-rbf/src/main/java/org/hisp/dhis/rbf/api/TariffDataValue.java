@@ -7,6 +7,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 public class TariffDataValue
     implements Serializable
@@ -15,6 +16,8 @@ public class TariffDataValue
     private OrganisationUnitGroup orgUnitGroup;
 
     private OrganisationUnit organisationUnit;
+    
+    private Integer orgUnitLevel;
 
     private DataElement dataElement;
 
@@ -70,6 +73,21 @@ public class TariffDataValue
         this.targetPercentage = targetPercentage;
     }
 
+    public TariffDataValue( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, Integer orgUnitLevel, DataElement dataElement, DataSet dataSet,
+        Date startDate, Date endDate, Double value, Integer target, Double targetPercentage )
+    {
+        this.orgUnitGroup = orgUnitGroup;
+        this.organisationUnit = organisationUnit;
+        this.orgUnitLevel = orgUnitLevel;
+        this.dataElement = dataElement;
+        this.dataSet = dataSet;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.value = value;
+        this.target = target;
+        this.targetPercentage = targetPercentage;
+    }
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -95,7 +113,7 @@ public class TariffDataValue
         final TariffDataValue other = (TariffDataValue) o;
 
         return dataElement.equals( other.getDataElement() ) && dataSet.equals( other.getDataSet() )
-            && organisationUnit.equals( other.getOrganisationUnit() );
+            && organisationUnit.equals( other.getOrganisationUnit() ) && orgUnitGroup.equals( other.getOrgUnitGroup() );
     }
 
     @Override
@@ -107,6 +125,7 @@ public class TariffDataValue
         result = result * prime + dataSet.hashCode();
         result = result * prime + dataElement.hashCode();
         result = result * prime + orgUnitGroup.hashCode();
+        result = result * prime + organisationUnit.hashCode();
 
         return result;
     }
@@ -115,9 +134,20 @@ public class TariffDataValue
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
+    }
+
+    public Integer getOrgUnitLevel()
+    {
+        return orgUnitLevel;
+    }
+
+    public void setOrgUnitLevel( Integer orgUnitLevel )
+    {
+        this.orgUnitLevel = orgUnitLevel;
     }
 
     public void setOrganisationUnit( OrganisationUnit organisationUnit )

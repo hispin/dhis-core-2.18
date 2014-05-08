@@ -257,14 +257,13 @@ public class LoadDataEntryFormAction
         else
         {
             tariff_setting_authority = (int) tariff_authority.getValue();
-
         }
 
         OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit );
         
         if( orgUnitGroup != null )
         {
-        	tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( orgUnitGroup, dataSet, period ) );
+            tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( orgUnitGroup, dataSet, period ) );
         }
         
         /*
@@ -279,8 +278,7 @@ public class LoadDataEntryFormAction
 
         pbfDataValueMap = new HashMap<DataElement, PBFDataValue>();
 
-        Set<PBFDataValue> pbfDataValues = new HashSet<PBFDataValue>( pbfDataValueService.getPBFDataValues(
-            organisationUnit, dataSet, period ) );
+        Set<PBFDataValue> pbfDataValues = new HashSet<PBFDataValue>( pbfDataValueService.getPBFDataValues( organisationUnit, dataSet, period ) );
         for ( PBFDataValue pbfDataValue : pbfDataValues )
         {
             DataElement de = pbfDataValue.getDataElement();
@@ -318,7 +316,7 @@ public class LoadDataEntryFormAction
                 pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
                 pbfDataValue.setTimestamp( new Date() );
 
-                pbfDataValueService.addPBFDataValue( pbfDataValue );
+                //pbfDataValueService.addPBFDataValue( pbfDataValue );
                 pbfDataValueMap.put( de, pbfDataValue );
             }
             else

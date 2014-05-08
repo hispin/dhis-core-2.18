@@ -39,7 +39,7 @@ Ext.onReady(function() {
     Ext.tip.QuickTipManager.init();
     // Simple ComboBox using the data store
     var simpleCombo = Ext.create('Ext.form.field.ComboBox', {
-		fieldLabel: 'Select DataElement',
+		fieldLabel: '',
         renderTo: 'simpleCombo',
         displayField: 'name',
         labelWidth: 115,
@@ -59,7 +59,8 @@ var changeOwner = function(combo, record, index) {
         				$('#loadTariffDetails').load("loadTariffDetails.action", 
             				{
             					dataElementName:dataElementName,
-								orgUnitGroupId : $( "#orgUnitGroupId" ).val()
+								orgUnitGroupId : $( "#orgUnitGroupId" ).val(),
+								orgUnitUid:$("#orgUnitUid").val()
             				}
             				, function( ){            										
         				});
@@ -70,7 +71,8 @@ function getTariffData()
   $('#loadTariffDetails').load("loadTariffDetails.action", 
             				{
             					dataElementName : $('#dataElementName').val(),								
-								orgUnitGroupId : $( "#orgUnitGroupId" ).val()
+								orgUnitGroupId : $( "#orgUnitGroupId" ).val(),
+								orgUnitUid : $("#orgUnitUid").val()
             				}
             				, function( ){  
 							loadExtTariff();
@@ -108,36 +110,15 @@ function orgUnitGroupChange()
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
-	var countryTags = $levelOrgUnitIds;
-	var bValue = false;
-	for(var i=0;i<=countryTags.length-1;i++)
-	{
-    	if(countryTags[i] == orgUnits[0] )
-    	{
-    		bValue = true;
-    	}
-	}
-	if(bValue == false)
-	{
-		document.getElementById('simpleCombo').style.display = 'none';
-		setFieldValue("orgUnit", orgUnitNames[0]);
-        disable('orgUnit');
-		document.getElementById('loadTariffDetails').style.display = 'none';
-		alert('Please Select Correct level OrgUnit');
-	}
-	else
-	{
 		document.getElementById('simpleCombo').style.display = 'block';
         enable('orgUnit'); 
 		setFieldValue("orgUnit", orgUnitNames[0]);
 		setFieldValue("orgUnitUid", orgUnits[0]);
 		document.getElementById('loadTariffDetails').style.display = 'block';
-		if($('#dataElementName').val() != '')
+		if( $('#dataElementName').val() != '' && $( "#orgUnitGroupId" ).val() != "-1" )
 		{
 			getTariffData();	
-		}		
-	}
-	
+		}
 }
 
 selection.setListenerFunction( organisationUnitSelected );
@@ -178,16 +159,29 @@ function loadExtTariff()
 <br/>
 <input type="hidden" name="orgUnitUid" id="orgUnitUid" />
 <input type="hidden" name="dataElementName" id="dataElementName" value="" />
-<table width="60%">
+<div class="inputCriteria" style="height:130px;">
+<table >	
+    <tr>
+        <td>Orgainsation Unit: </td>
+        <td>
+        	<input type="text" id="orgUnit" name="orgUnit" readonly size="55" />
+        	<input type="hidden" id="orgUnit" name="orgUnit" readonly size="55" style="display:none" />
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+    </tr>
 	<tr>
-		<td>Orgainsation Unit Group: &nbsp;&nbsp;&nbsp; 
+		<td>Orgainsation Unit Group: </td>
+		<td> 
 		    <select id="orgUnitGroupId" name="orgUnitGroupId" onchange="javascript:orgUnitGroupChange()" style="width:52%">
                 <option value="-1">[Please select]</option>		    	
                 #foreach( $orgUnitGroup in $orgUnitGroups )
                 	<option value="$!orgUnitGroup.id">$!orgUnitGroup.name</option>
                 #end
-      		</select>
-      		<input type="hidden" id="orgUnit" name="orgUnit" readonly size="55" style="display:none" />
+      		</select>      		
       	</td>
 		<td >&nbsp;</td>
 	</tr>
@@ -196,10 +190,12 @@ function loadExtTariff()
 		<td >&nbsp;</td>
     </tr>
 	<tr>
-		<td ><div id="simpleCombo" style="display:none;"></div></td>
+		<td>Select DataElement: </td>
+		<td><div id="simpleCombo" style="display:none;"></div></td>
 		<td ><input type="button" id="addDataElement" value="Add DataElement" disabled style="display:none;"/></td>
 	</tr>
 </table>
+</div>
 <br/><br/><br/>
 <div id="loadTariffDetails" style="width:85%"></div>
 	

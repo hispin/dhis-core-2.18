@@ -39,4 +39,16 @@ public interface TariffDataValueService
     Collection<TariffDataValue> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, DataElement dataElement );
     
     String getTariffDataValue( Integer orgunitgroupId, Integer dataSetId, Integer dataElementId, String date );
+    
+    
+    TariffDataValue getTariffDataValue( OrganisationUnit organisationUnit, OrganisationUnitGroup orgUnitGroup, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate );
+    
+    Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit, OrganisationUnitGroup orgUnitGroup, DataSet dataSet );
+    
+    Collection<TariffDataValue> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataElement dataElement );
+    
+    Map<Integer, Double> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataSet dataSet, Period period );
+    
+    String getTariffDataValue( Integer orgunitgroupId, Integer organisationUnitId, Integer dataSetId, Integer dataElementId, String date );
+
 }
