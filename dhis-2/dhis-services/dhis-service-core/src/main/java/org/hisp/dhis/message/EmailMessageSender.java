@@ -30,8 +30,6 @@ package org.hisp.dhis.message;
 
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 
-import java.io.Serializable;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -104,8 +102,6 @@ public class EmailMessageSender
             ( sender.getEmail() != null ? ( sender.getEmail() + LB ) : StringUtils.EMPTY ) +
             ( sender.getPhoneNumber() != null ? ( sender.getPhoneNumber() + LB ) : StringUtils.EMPTY ) );
         
-        Map<User, Serializable> settings = userService.getUserSettings( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
-
         try
         {
             Email email = getEmail( hostName, port, username, password, tls );
@@ -116,7 +112,7 @@ public class EmailMessageSender
             
             for ( User user : users )
             {
-                boolean emailNotification = settings.get( user ) != null && (Boolean) settings.get( user ) == true;
+                boolean emailNotification = (Boolean) userService.getUserSettingValue( user, KEY_MESSAGE_EMAIL_NOTIFICATION, false );
                 
                 boolean doSend = forceSend || emailNotification;
     
@@ -124,7 +120,7 @@ public class EmailMessageSender
                 {
                     email.addBcc( user.getEmail() );
                     
-                    log.info( "Sending email to user: " + user + " with email address: " + user.getEmail() );
+                    log.info( "Sending email to user: " + user.getUsername() + " with email address: " + user.getEmail() );
                     
                     hasRecipients = true;
                 }
