@@ -59,8 +59,10 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
@@ -88,6 +90,7 @@ import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.TrackedEntityMobileSetting;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
@@ -1552,24 +1555,25 @@ public class ActivityReportingServiceImpl
         }
 
         Set<TrackedEntity> trackedentities = new HashSet<TrackedEntity>();
-        for ( TrackedEntityInstance patient : patients)
+        for ( TrackedEntityInstance patient : patients )
         {
-            if (patient.getTrackedEntity() != null)
+            if ( patient.getTrackedEntity() != null )
             {
                 trackedentities.add( patient.getTrackedEntity() );
             }
         }
-        
+
         String resultSet = "";
 
         Collection<TrackedEntityAttribute> displayAttributes = attributeService
             .getTrackedEntityAttributesDisplayInList( true );
-        for ( TrackedEntity trackedentity : trackedentities)
+        for ( TrackedEntity trackedentity : trackedentities )
         {
             resultSet += trackedentity.getDisplayName() + "$";
             for ( TrackedEntityInstance patient : patients )
             {
-                if(patient.getTrackedEntity()!=null && patient.getTrackedEntity().getId()==trackedentity.getId()) {
+                if ( patient.getTrackedEntity() != null && patient.getTrackedEntity().getId() == trackedentity.getId() )
+                {
                     resultSet += patient.getId() + "/";
                     String attText = "";
                     for ( TrackedEntityAttribute displayAttribute : displayAttributes )
@@ -1641,26 +1645,30 @@ public class ActivityReportingServiceImpl
 
         searchTextList.add( searchText );
         orgUnitList.add( organisationUnitService.getOrganisationUnit( orgUnitId ) );
-        
-        List<Integer> stageInstanceIds = new ArrayList<Integer>();
-        
-//        List<Integer> stageInstanceIds = entityInstanceService.getProgramStageInstances( searchTextList, orgUnitList,
-//            followUp, ProgramInstance.STATUS_ACTIVE, null, null );
 
-        if ( stageInstanceIds.size() == 0 )
+        TrackedEntityInstanceQueryParams param = new TrackedEntityInstanceQueryParams();
+        param.setOrganisationUnits( new HashSet<OrganisationUnit>( orgUnitList ) );
+        param.setEventStatus( EventStatus.ACTIVE );
+
+        Grid programStageInstanceGrid = entityInstanceService.getTrackedEntityInstances( param );
+        List<List<Object>> listOfListProgramStageInstance = programStageInstanceGrid.getRows();
+
+        if ( listOfListProgramStageInstance.size() == 0 )
         {
             throw NotAllowedException.NO_EVENT_FOUND;
         }
-        else if ( stageInstanceIds.size() > 0 )
+        else if ( listOfListProgramStageInstance.size() > 0 )
         {
-            for ( Integer stageInstanceId : stageInstanceIds )
+            for ( List<Object> listProgramStageInstance : listOfListProgramStageInstance )
             {
-                ProgramStageInstance programStageInstance = programStageInstanceService
-                    .getProgramStageInstance( stageInstanceId );
-                TrackedEntityInstance patient = programStageInstance.getProgramInstance().getEntityInstance();
-                eventsInfo += programStageInstance.getId() + "/" + patient.getName() + ", "
-                    + programStageInstance.getProgramStage().getName() + "("
-                    + formatter.format( programStageInstance.getDueDate() ) + ")" + "$";
+                for ( Object obj : listProgramStageInstance )
+                {
+                    ProgramStageInstance programStageInstance = (ProgramStageInstance) obj;
+                    TrackedEntityInstance patient = programStageInstance.getProgramInstance().getEntityInstance();
+                    eventsInfo += programStageInstance.getId() + "/" + patient.getName() + ", "
+                        + programStageInstance.getProgramStage().getName() + "("
+                        + formatter.format( programStageInstance.getDueDate() ) + ")" + "$";
+                }
             }
 
             throw new NotAllowedException( eventsInfo );
@@ -1669,6 +1677,7 @@ public class ActivityReportingServiceImpl
         {
             return "";
         }
+
     }
 
     @SuppressWarnings( "finally" )

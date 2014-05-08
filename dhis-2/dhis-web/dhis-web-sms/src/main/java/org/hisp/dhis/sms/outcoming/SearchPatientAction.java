@@ -54,7 +54,7 @@ public class SearchPatientAction
     private OrganisationUnitSelectionManager selectionManager;
 
     @Autowired
-    private TrackedEntityInstanceService patientService;
+    private TrackedEntityInstanceService trackedEntityInstanceService;
 
     @Autowired
     private ProgramService programService;
