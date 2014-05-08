@@ -417,8 +417,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     }
                 }); 
             
-                $scope.programStages = [];
-
+                $scope.programStages = [];        
                 angular.forEach($scope.selectedProgram.programStages, function(stage){
                    $scope.programStages.push(storage.get(stage.id)); 
                 });
@@ -432,6 +431,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                                     selectedEnrollment: $scope.selectedEnrollment});
             });            
         }        
+    };
+    
+    $scope.enroll = function(){        
+        console.log('Enrollment', $scope.selectedEntity, ' ', $scope.selectedProgram);
     };
 })
 
