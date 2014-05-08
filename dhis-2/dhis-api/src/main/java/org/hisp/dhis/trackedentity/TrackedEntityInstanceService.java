@@ -197,15 +197,6 @@ public interface TrackedEntityInstanceService
     //Collection<TrackedEntityInstance> getTrackedEntityInstances( OrganisationUnit organisationUnit, Program program );
 
     /**
-     * Retrieve entityInstances base on Attribute
-     * 
-     * @param attributeId
-     * @param value
-     * @return
-     */
-    Collection<TrackedEntityInstance> getTrackedEntityInstance( Integer attributeId, String value );
-
-    /**
      * Search entityInstances base on OrganisationUnit and Program with result
      * limited name
      * 
@@ -240,13 +231,13 @@ public interface TrackedEntityInstanceService
      * Register a new entityInstance
      * 
      * @param entityInstance TrackedEntityInstance
-     * @param representativeId The id of entityInstance who is representative
+     * @param representativeId The uid of entityInstance who is representative
      * @param relationshipTypeId The id of relationship type defined
      * @param attributeValues Set of attribute values
      * 
      * @return The error code after registering entityInstance
      */
-    int createTrackedEntityInstance( TrackedEntityInstance entityInstance, Integer representativeId,
+    int createTrackedEntityInstance( TrackedEntityInstance entityInstance, String representativeId,
         Integer relationshipTypeId, Set<TrackedEntityAttributeValue> attributeValues );
 
     /**
@@ -260,7 +251,7 @@ public interface TrackedEntityInstanceService
      * @param valuesForDelete The entityInstance attribute values for deleting
      * 
      */
-    void updateTrackedEntityInstance( TrackedEntityInstance entityInstance, Integer representativeId,
+    void updateTrackedEntityInstance( TrackedEntityInstance entityInstance, String representativeId,
         Integer relationshipTypeId, List<TrackedEntityAttributeValue> valuesForSave,
         List<TrackedEntityAttributeValue> valuesForUpdate, Collection<TrackedEntityAttributeValue> valuesForDelete );
 

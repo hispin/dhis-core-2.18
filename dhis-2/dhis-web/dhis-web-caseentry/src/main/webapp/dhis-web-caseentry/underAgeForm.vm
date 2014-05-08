@@ -1,14 +1,13 @@
 <script type="text/javascript">
 	jQuery("#representativeDiv").ready(function() {
-		addEventForTrackedEntityInstanceForm('addRepresentativeForm');
-				
+	
 		jQuery("#searchForm").validate({
 			meta:"validate"
 			,errorElement:"span"
-			,submitHandler: function(form) { searchPerson(); }
+			,submitHandler: function(form) { searchTEI(); }
 			,rules : {
 				relationshipTypeId  : { required: true },
-				searchType			: { required: true },
+				attributeId			: { required: true },
 				searchValue			: { required: true }
 			}
 		});
@@ -35,7 +34,7 @@
 
 	<!-- Search Person TAB -->
 	<div id="tab-1">
-		<form id="searchForm" name="searchForm" action="searchPerson.action" method="post" >
+		<form id="searchForm" name="searchForm" method="post" >
 			<table>
 				<tr>
 					<td >$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></td>
@@ -48,24 +47,14 @@
 						</select>
 					</td>
 				</tr>
-				<tr>
-					<td>$i18n.getString("search_by")<em title="$i18n.getString( "required" )" class="required">*</em></td>
-					<td>
-						<select id="searchType" name="searchType" onclick="toggleSearchType(this)" style='width:18em'>
-							<option value="">[$i18n.getString( "please_select" )]</option>        
-							<option value="attribute">$i18n.getString("attribute")</option>
-							<option value="name">$i18n.getString("name")</option>		
-						</select>
-					</td>
-				</tr>
 				<tr><td colspan="2"></td></tr>
-				<tr id="rowAttribute" style="display: none">
-					<td>$i18n.getString("attribute")</td>
+				<tr id="rowAttribute">
+					<td>$i18n.getString("attribute")<em title="$i18n.getString( "required" )" class="required">*</em></td>
 					<td>
 						<select name="attributeId" id="attributeId" style='width:18em'>
 							<option value="">[$i18n.getString( "please_select" )]</option>       
 							#foreach($attribute in $attributes)
-								<option value="$attribute.id">$attribute.displayName</option>
+								<option value="$attribute.uid">$attribute.displayName</option>
 							#end
 						</select>
 					</td>
@@ -119,6 +108,9 @@
 </div>
 
 <script>
-	var i18n_no_result = '$encoder.jsEscape( $i18n.getString( "no_result" ) , "'")';
+	var i18n_no_result_found = '$encoder.jsEscape( $i18n.getString( "no_result_found" ) , "'")';
+	var i18n_duplicate_warning = '$encoder.jsEscape( $i18n.getString( "duplicate_warning" ) , "'")';
+	var i18n_choose_this_tracked_entity_instance = '$encoder.jsEscape( $i18n.getString( "choose_this_tracked_entity_instance" ) , "'")';
+	var i18n_please_select_relationshipType = '$encoder.jsEscape( $i18n.getString( "please_select_relationshipType" ) , "'")';
 </script>
 

@@ -23,7 +23,7 @@ function addValidationRepresentativeCompleted( messageElement )
 				,data: jQuery("#addRepresentativeForm").serialize()
 				,dataType : "xml"
 				,success: function(xml){ 
-					autoChoosePerson( xml );
+					autoChooseTEI( xml );
 				}
 				,error: function()
 				{
@@ -49,7 +49,7 @@ function addValidationRepresentativeCompleted( messageElement )
 	 else if( type == 'duplicate' )
 	 {
 		 jQuery("#formContainer").hide();
-		 showPersons("listPersonsDuplicate", messageElement);
+		 showTEIs("listPersonsDuplicate", messageElement);
 	 }
 }
 
@@ -68,55 +68,98 @@ function getIdentifierTypeIdParams()
 	return params;
 }
 
-function searchPerson()
+function searchTEI()
 {
-	jQuery.ajax({
-		   type: "POST"
-		   ,url: "searchPerson.action"
-		   ,data: jQuery("#searchForm").serialize()
-		   ,dataType : "xml"
-		   ,success: function(xmlObject){
-				showPersons( "searchForm div[id=listPersons]", xmlObject );
-			}
-		   ,error: function(request,status,errorThrown)
-		   {
-				alert(i18n_error_connect_to_server);
-		   }
-		 });
+	contentDiv = 'listEntityInstanceDiv';
+	var params  = "ou=" + getFieldValue("orgunitId");
+		params += "&ouMode=ALL";
+		params += "&attribute=" + getFieldValue("attributeId") + ":LIKE:" + getFieldValue('searchValue');
+	
+	var p = params;
+	$('#attributeIds option').each(function(i, item){
+		if ( p.indexOf(item.value) < 0 ) {
+			params += "&attribute=" + item.value;
+		}
+	});
+	
+	$.ajax({
+		type : "GET",
+		url : "../api/trackedEntityInstances.json",
+		data : params,
+		dataType : "json",
+		success : function(json) {
+			showTEIs( "searchForm div[id=listPersons]", json );
+		}
+	});
 }
 
-function showPersons( divContainer, xmlElement )
+function showTEIs( divContainer, json )
 {
-	var container = jQuery("#"+divContainer);
+	var container = jQuery( "#" + divContainer );
 	container.html("");
-	var entityInstances = $(xmlElement).find('entityInstance');
-	var sEntityInstance = "";
-	
-	if ( entityInstances.length == 0 )
-	{
-		var message = "<p>" + i18n_no_result + "</p>";
+	if ( json.rows.length == 0 ){
+		var message = "<p>" + i18n_no_result_found + "</p>";
 		container.html(message);
 	}
-	
-	$( entityInstances ).each( function( i, entityInstance )
-    {
-		sEntityInstance += "<hr style='margin:5px 0px;'><table>";
-		var attributes = $( entityInstance ).find('attribute');
-		$( attributes ).each( function( i, attribute )
-		{
-				sEntityInstance += "<tr class='attributeRow'>"
-					+ "<td class='bold'>" + $(attribute).find('name').text() + "</td>"
-					+ "<td>" + $(attribute).find('value').text() + "</td>	"	
-					+ "</tr>";
+	else{
+		var attList = new Array();
+		var attDate = new Array();
+		$('#attributeIds option').each(function(i, item) {
+			var valueType = $(item).attr('valueType');
+			var value = $(item).val();
+			if ( valueType == 'bool' || valueType == 'trueOnly' ) {
+				for (var i = idx; i < json.width; i++) {
+					if( value==json.headers[i].name ){
+						attList.push(i);
+					}
+					else if( valueType=='date'){
+						attDate.push(i);
+					}
+				}
+			}
+			else if ( valueType == 'date' ) {
+				for (var i = idx; i < json.width; i++) {
+					if( value==json.headers[i].name ){
+						attDate.push(i);
+					}
+				}
+			}
 		});
-		sEntityInstance += "<tr><td colspan='2'><input type='button' id='" + $(entityInstance).find('id' ).first().text() +"' value='" + i18n_choose_this_tracked_entity_instance + "' onclick='choosePerson(this)'/></td></tr>";
-		sEntityInstance += "</table>";
-		container.append(i18n_duplicate_warning + "<br>" + sEntityInstance);
-	 } );
+		
+		var result = "";
+		var idx = 4;
+		for ( var i in json.rows) {
+			result += "<hr style='margin:5px 0px;'><table>";
+			var cols = json.rows[i];
+			var uid = cols[0];
+			for (var j = idx; j < json.width; j++) {
+				var colVal = cols[j];
+				if( colVal!=''){
+					if (j == 4) {
+						colVal = json.metaData.names[colVal];
+					}
+					
+					if( jQuery.inArray( j, attList )>=0 && colVal!="" ){
+						colVal = (colVal=='true')? i18n_yes : i18n_no;
+					}
+					else if( jQuery.inArray( j, attDate )>=0 && colVal!="" ){
+						colVal = colVal.split(' ')[0];
+					}
+					result += "<tr class='attributeRow'>"
+							+ "<td class='bold'>" + json.headers[j].column + "</td>"
+							+ "<td>" + colVal + "</td>	"	
+							+ "</tr>";
+				}
+			}
+			result += "<tr><td colspan='2'><input type='button' id='" + uid +"' value='" + i18n_choose_this_tracked_entity_instance + "' onclick='chooseTEI(this)'/></td></tr>";
+			result += "</table>";
+		}
+		container.append(i18n_duplicate_warning + "<br>" + result);
+	}		
 }
 
-// Will be call after save new person successfully
-function autoChoosePerson( xmlElement )
+// Will be call after save new TEI successfully
+function autoChooseTEI( xmlElement )
 {
 	jQuery("#tab-2").html("<center><span class='bold'>" + i18n_add_person_successfully + "</span></center>");
 	var root = jQuery(xmlElement);
@@ -135,7 +178,7 @@ function autoChoosePerson( xmlElement )
 // Set Representative information to parent page.
 //------------------------------------------------------------------------------
 
-function choosePerson(this_)
+function chooseTEI(this_)
 {
 	var relationshipTypeId = jQuery("#searchForm [id=relationshipTypeId]").val();
 	if( isBlank( relationshipTypeId ))

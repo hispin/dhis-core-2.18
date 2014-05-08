@@ -364,13 +364,6 @@
 
 	<!-- Tracked Entity Instance -->
 
-	<bean id="org.hisp.dhis.caseentry.action.trackedentity.SearchPersonAction"
-		class="org.hisp.dhis.caseentry.action.trackedentity.SearchPersonAction">
-		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
-		<property name="attributeValueService"
-			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.caseentry.action.trackedentity.SelectAction"
 		class="org.hisp.dhis.caseentry.action.trackedentity.SelectAction" scope="prototype">
 		<property name="selectionManager"
