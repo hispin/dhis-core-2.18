@@ -161,8 +161,7 @@ public class LoadTariffDetailsAction
 
         selecteddataElement = dataElementService.getDataElementByName( dataElementName );
 
-        // OrganisationUnit organisationUnit =
-        // organisationUnitService.getOrganisationUnit( orgUnitUid );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
 
         OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
 
@@ -172,9 +171,10 @@ public class LoadTariffDetailsAction
         // tariffDataValueService.getTariffDataValues( organisationUnit,
         // selecteddataElement ) );
 
-        tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( orgUnitGroup,
-            selecteddataElement ) );
+        tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( orgUnitGroup, organisationUnit, selecteddataElement ) );
 
+        System.out.println( tariffList.size() + " : " + orgUnitGroup.getId() + " : " + organisationUnit.getId() + " : " + selecteddataElement.getId() );
+        
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
 
         for ( Lookup lookup : lookups )

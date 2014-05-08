@@ -154,14 +154,13 @@ public class ValidateTariffDataAction
 
         DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
 
-        // OrganisationUnit organisationUnit =
-        // organisationUnitService.getOrganisationUnit( orgUnitUid );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
 
         OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
 
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( pbfType ) );
 
-        List<TariffDataValue> tariffDataValues = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( orgUnitGroup, dataElement ) );
+        List<TariffDataValue> tariffDataValues = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( orgUnitGroup, organisationUnit, dataElement ) );
         // boolean status = false;
         for ( TariffDataValue tdv : tariffDataValues )
         {
@@ -177,15 +176,15 @@ public class ValidateTariffDataAction
             }
         }
 
-        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( orgUnitGroup, dataElement, dataSet, sDate, eDate );
+        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( organisationUnit, orgUnitGroup, dataElement, dataSet, sDate, eDate );
         
         if ( tariffDataValue == null )
         {
-            String value = tariffDataValueService.getTariffDataValue( orgUnitGroup.getId(), dataSet.getId(), dataElement.getId(), startDate );
+            String value = tariffDataValueService.getTariffDataValue(  orgUnitGroup.getId(), organisationUnit.getId(), dataSet.getId(), dataElement.getId(), startDate );
             
             if ( value == null  )
             {
-                String enddateValue = tariffDataValueService.getTariffDataValue( orgUnitGroup.getId(), dataSet.getId(), dataElement.getId(), endDate );
+                String enddateValue = tariffDataValueService.getTariffDataValue( orgUnitGroup.getId(), organisationUnit.getId(), dataSet.getId(), dataElement.getId(), endDate );
                 
                 if ( enddateValue != null  )
                 {
@@ -201,8 +200,7 @@ public class ValidateTariffDataAction
 
                 return ERROR;
             }
-        }
-        
+        }        
         else
         {
             message = "Data Already Exists, Please Specify Another Date";

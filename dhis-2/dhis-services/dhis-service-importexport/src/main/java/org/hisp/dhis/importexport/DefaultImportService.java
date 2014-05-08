@@ -123,7 +123,7 @@ public class DefaultImportService
                 log.info( "Saved zipstream to file: " + tempZipFile.getAbsolutePath() );
 
                 zipFile = new ZipFile( tempZipFile );
-
+                
                 xmlDataStream = new BufferedInputStream( ZipAnalyzer.getTransformableStream( zipFile ) );
 
             }

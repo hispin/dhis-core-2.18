@@ -83,6 +83,22 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
 
         return (TariffDataValue) criteria.uniqueResult();
     }
+    
+    @Override
+    public TariffDataValue getTariffDataValue( OrganisationUnit organisationUnit, OrganisationUnitGroup orgUnitGroup, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( TariffDataValue.class );
+        criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
+        criteria.add( Restrictions.eq( "orgUnitGroup", orgUnitGroup ) );
+        criteria.add( Restrictions.eq( "dataElement", dataElement ) );
+        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
+        criteria.add( Restrictions.eq( "startDate", startDate ) );
+        criteria.add( Restrictions.eq( "endDate", endDate ) );
+
+        return (TariffDataValue) criteria.uniqueResult();
+    }
 
     @Override
     public TariffDataValue getTariffDataValue( OrganisationUnitGroup orgUnitGroup, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate )
@@ -116,7 +132,20 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
 
         Criteria criteria = session.createCriteria( TariffDataValue.class );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
-        criteria.add( Restrictions.eq( "organisationUnitGroup", dataSet ) );
+        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
+
+        return criteria.list();
+    }
+
+    @Override
+    public Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit, OrganisationUnitGroup orgUnitGroup, DataSet dataSet )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( TariffDataValue.class );
+        criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
+        criteria.add( Restrictions.eq( "orgUnitGroup", orgUnitGroup ) );
+        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
 
         return criteria.list();
     }
@@ -128,7 +157,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
 
         Criteria criteria = session.createCriteria( TariffDataValue.class );
         criteria.add( Restrictions.eq( "orgUnitGroup", orgUnitGroup ) );
-        criteria.add( Restrictions.eq( "organisationUnitGroup", dataSet ) );
+        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
 
         return criteria.list();
     }
@@ -140,6 +169,20 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
 
         Criteria criteria = session.createCriteria( TariffDataValue.class );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
+        criteria.add( Restrictions.eq( "dataElement", dataElement ) );
+        criteria.addOrder(Order.asc("dataSet"));
+
+        return criteria.list();
+    }
+    
+    @Override
+    public Collection<TariffDataValue> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataElement dataElement )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( TariffDataValue.class );
+        criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
+        criteria.add( Restrictions.eq( "orgUnitGroup", orgUnitGroup ) );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
         criteria.addOrder(Order.asc("dataSet"));
 
@@ -225,6 +268,60 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         return tariffDataValueMap;
     }
     
+    public Map<Integer, Double> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    {
+        Map<Integer, Double> tariffDataValueMap = new HashMap<Integer, Double>();
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String curPeriod = simpleDateFormat.format( period.getEndDate() );
+        
+        try
+        {
+            /*String query = "SELECT dataelementid, value FROM tariffdatavalue " +
+                            " WHERE " +
+                                " orgunitgroupid = " + orgUnitGroup.getId() + " AND " +
+                                " organisationunitid = " + organisationUnit.getId() + " AND " +
+                                " datasetid = " + dataSet.getId() + " AND " +
+                                " startdate <= '" + curPeriod + "' AND "+ 
+                                " enddate >= '" + curPeriod +"'";
+            */
+            
+            String query = "select td.value,td.dataelementid from "+
+                            "( " +
+                                "select max(asd.orgunitlevelid) as level,asd.dataelementid,asd.orgunitgroupid,datasetid " +
+                                " from " +
+                                    "( "+
+                                        " select td.orgunitgroupid,td.organisationunitid,td.datasetid,td.dataelementid,td.orgunitlevelid,td.value " +
+                                            " from tariffdatavalue td "+
+                                            " where '" + curPeriod + "'  between date(td.startdate) and date(td.enddate) " +
+                                                " and orgunitgroupid in ( " + orgUnitGroup.getId() + ") " +
+                                                " and datasetid in ( " +dataSet.getId() + ") "+
+                                                " )asd "+
+                                                " group by asd.dataelementid,asd.orgunitgroupid,datasetid " +
+                                                " )sag1 " +
+                                                " inner join tariffdatavalue td on td.dataelementid=sag1.dataelementid " +
+                                                " where td.orgunitgroupid=sag1.orgunitgroupid " + 
+                                                " and td.datasetid=sag1.datasetid " +
+                                                " and sag1.level=td.orgunitlevelid " +
+                                                " and td.organisationunitid in ("+ organisationUnit.getId() +") ";
+            
+            //System.out.println("Query: " + query );
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer dataElementId = rs.getInt( 1 );
+                Double value = rs.getDouble( 2 );
+                tariffDataValueMap.put( dataElementId, value );
+                //System.out.println( dataElementId + " : " + value );
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("In getTariffDataValues Exception :"+ e.getMessage() );
+        }
+        
+        return tariffDataValueMap;
+    }
     
     public String getTariffDataValue( Integer orgunitgroupId, Integer dataSetId, Integer dataElementId, String date )
     {
@@ -267,5 +364,46 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         return value; 
     }
     
+    public String getTariffDataValue( Integer orgunitgroupId, Integer organisationUnitId, Integer dataSetId, Integer dataElementId, String date )
+    {
+        String value = null;
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        
+        try
+        {
+            String query = "select startdate, enddate from tariffdatavalue " + 
+                " WHERE " +
+                " orgunitgroupid = " + orgunitgroupId + " AND " +
+                " organisationunitid = " + organisationUnitId + " AND " +
+                " datasetid = " + dataSetId + " AND " +
+                " dataelementid = " + dataElementId + " AND " +
+                " startdate <= '" + date + "' AND "+ 
+                " enddate >= '" + date +"'";
+            
+            //System.out.println( " query is --: " + query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+
+            if ( rs.next() )
+            {
+                Date sDate = rs.getDate( 1 );
+                
+                Date eDate = rs.getDate( 2 );
+                
+                if ( sDate != null && eDate != null  )
+                {
+                    value  = simpleDateFormat.format( sDate ) + " To " + simpleDateFormat.format( eDate ) ;
+                }
+            }
+
+        }
+        catch ( Exception e )
+        {
+            System.out.println("In getTariffDataValues Exception :"+ e.getMessage() );
+        }
+        
+        return value; 
+    }
    
 }

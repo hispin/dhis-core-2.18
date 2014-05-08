@@ -116,13 +116,13 @@ public class DeleteTariffDataAction
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
         
-        //OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         
         OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
         
         //TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( organisationUnit, dataElement, dataSet, sDate, eDate );
         
-        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( orgUnitGroup, dataElement, dataSet, sDate, eDate );
+        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( organisationUnit, orgUnitGroup, dataElement, dataSet, sDate, eDate );
         
         tariffDataValueService.deleteTariffDataValue( tariffDataValue );
 

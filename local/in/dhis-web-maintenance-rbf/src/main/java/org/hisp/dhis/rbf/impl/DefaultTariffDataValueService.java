@@ -107,5 +107,28 @@ public class DefaultTariffDataValueService implements TariffDataValueService
         return tariffDataValueStore.getTariffDataValue( orgunitgroupId, dataSetId, dataElementId, date );
     }
     
+    public TariffDataValue getTariffDataValue( OrganisationUnit organisationUnit, OrganisationUnitGroup orgUnitGroup, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate )
+    {
+        return tariffDataValueStore.getTariffDataValue( organisationUnit, orgUnitGroup, dataElement, dataSet, startDate, endDate );
+    }
     
+    public Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit, OrganisationUnitGroup orgUnitGroup, DataSet dataSet )
+    {
+        return tariffDataValueStore.getTariffDataValues( organisationUnit, orgUnitGroup, dataSet );
+    }
+    
+    public Collection<TariffDataValue> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataElement dataElement )
+    {
+        return tariffDataValueStore.getTariffDataValues( orgUnitGroup, organisationUnit, dataElement );
+    }
+    
+    public Map<Integer, Double> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    {
+        return tariffDataValueStore.getTariffDataValues( orgUnitGroup, organisationUnit, dataSet, period );
+    }
+    
+    public String getTariffDataValue( Integer orgunitgroupId, Integer organisationUnitId, Integer dataSetId, Integer dataElementId, String date )
+    {
+        return tariffDataValueStore.getTariffDataValue( orgunitgroupId, organisationUnitId, dataSetId, dataElementId, date );
+    }
 }

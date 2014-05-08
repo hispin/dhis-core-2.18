@@ -106,14 +106,21 @@ public class SaveValueAction
     
     public void setPbfDataValueService(PBFDataValueService pbfDataValueService) 
     {
-		this.pbfDataValueService = pbfDataValueService;
-	}
+	this.pbfDataValueService = pbfDataValueService;
+    }
     
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-	private String value;
+    private String tariffAmt;
+    
+    public void setTariffAmt( String tariffAmt )
+    {
+        this.tariffAmt = tariffAmt;
+    }
+
+    private String value;
 
     public void setValue( String value )
     {
@@ -124,10 +131,10 @@ public class SaveValueAction
     
     public void setValueType(String valueType) 
     {
-		this.valueType = valueType;
-	}
+	this.valueType = valueType;
+    }
 
-	private String dataElementId;
+    private String dataElementId;
 
     public void setDataElementId( String dataElementId )
     {
@@ -161,15 +168,15 @@ public class SaveValueAction
     
     public void setPeriodIso(String periodIso) 
     {
-		this.periodIso = periodIso;
-	}
+	this.periodIso = periodIso;
+    }
     
     private String dataSetId;
     
-	public void setDataSetId(String dataSetId) 
-	{
-		this.dataSetId = dataSetId;
-	}
+    public void setDataSetId(String dataSetId) 
+    {
+	this.dataSetId = dataSetId;
+    }
     
     
     // -------------------------------------------------------------------------
@@ -177,7 +184,7 @@ public class SaveValueAction
     // -------------------------------------------------------------------------
 
 
-	private int statusCode = 0;
+    private int statusCode = 0;
 
     public int getStatusCode()
     {
@@ -317,12 +324,20 @@ public class SaveValueAction
                 
             	if( valueType.equals("1") )
             	{
-            		pbfDataValue.setQuantityReported( Integer.parseInt( value ) );
+            	    pbfDataValue.setQuantityReported( Integer.parseInt( value ) );
+            	    try
+            	    {
+            	        pbfDataValue.setTariffAmount( Double.parseDouble( tariffAmt ) );
+            	    }
+            	    catch( Exception e )
+            	    {
+            	    }
             	}
             	else if( valueType.equals("2") )
             	{
-            		pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
+            	    pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
             	}
+            	
             	pbfDataValue.setStoredBy(storedBy);
             	pbfDataValue.setTimestamp(now);
                 pbfDataValueService.addPBFDataValue(pbfDataValue);
@@ -332,24 +347,23 @@ public class SaveValueAction
         }
         else
         {
-        	if( valueType.equals("1") )
-        	{
-        		pbfDataValue.setQuantityReported( Integer.parseInt( value ) );
-        	}
-        	else if( valueType.equals("2") )
-        	{
-        		pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
-        	}
+            if( valueType.equals("1") )
+            {
+        	pbfDataValue.setQuantityReported( Integer.parseInt( value ) );
+            }
+            else if( valueType.equals("2") )
+            {
+        	pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
+            }
         	
-        	pbfDataValue.setStoredBy(storedBy);
+            pbfDataValue.setStoredBy(storedBy);
         	
-        	pbfDataValue.setTimestamp(now);
+            pbfDataValue.setTimestamp(now);
 
-        	pbfDataValueService.updatePBFDataValue( pbfDataValue );
+            pbfDataValueService.updatePBFDataValue( pbfDataValue );
         	
             System.out.println("Value Updated");
         }
-
 
         return SUCCESS;
     }

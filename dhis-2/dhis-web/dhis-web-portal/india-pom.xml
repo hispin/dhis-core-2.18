@@ -2,21 +2,21 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-web</artifactId>
     <version>2.16-SNAPSHOT</version>
   </parent>
-  
+
   <artifactId>dhis-web-india-portal</artifactId>
   <packaging>war</packaging>
   <name>DHIS Web Portal</name>
-  
+
   <build>
     <finalName>dhis</finalName>
   </build>
-  
+
   <dependencies>
 
     <dependency>
@@ -28,12 +28,20 @@
 
     <dependency>
       <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-commons</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-core</artifactId>
     </dependency>
 
     <!-- Web-API modules -->
@@ -176,26 +184,43 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
-    
-	
-	<!-- India modules -->    
-	<dependency>
+    <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-maintenance-ccem</artifactId>
+      <artifactId>dhis-web-event-capture</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-coldchain</artifactId>
+      <artifactId>dhis-web-event-reports</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-tracker-capture</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-maintenance-appmanager</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+	
+	
+	<!-- India Modules -->
+	
+	<dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-maintenance-pbf</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
 	
   </dependencies>
-  
   <properties>
     <rootDir>../../</rootDir>
   </properties>
-
 </project>
