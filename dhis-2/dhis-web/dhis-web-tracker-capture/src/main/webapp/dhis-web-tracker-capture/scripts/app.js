@@ -21,7 +21,7 @@ var trackerCapture = angular.module('trackerCapture',
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     
     $routeProvider.when('/', {
-        templateUrl:'views/selection.html',
+        templateUrl:'views/home.html',
         controller: 'SelectionController'
     }).when('/dashboard',{
         templateUrl:'views/dashboard.html',
