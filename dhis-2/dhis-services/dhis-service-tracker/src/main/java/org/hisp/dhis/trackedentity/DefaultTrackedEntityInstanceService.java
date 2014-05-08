@@ -55,6 +55,7 @@ import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.common.QueryOperator;
 import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -441,7 +442,9 @@ public class DefaultTrackedEntityInstanceService
 
         if ( operator != null && filter != null )
         {
-            return new QueryItem( at, operator, filter, at.isNumericType() );
+            QueryOperator op = QueryOperator.fromString( operator );
+            
+            return new QueryItem( at, op, filter, at.isNumericType() );
         }
         else
         {

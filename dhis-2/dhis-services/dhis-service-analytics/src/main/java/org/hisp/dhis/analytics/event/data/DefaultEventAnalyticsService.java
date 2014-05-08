@@ -62,6 +62,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.common.QueryOperator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -440,7 +441,8 @@ public class DefaultEventAnalyticsService
         {   
             for ( int i = 1; i < split.length; i += 2 )
             {
-                queryItem.getFilters().add( new QueryFilter( split[i], split[i+1] ) );
+                QueryOperator operator = QueryOperator.fromString( split[i] );
+                queryItem.getFilters().add( new QueryFilter( operator, split[i+1] ) );
             }
         }
 

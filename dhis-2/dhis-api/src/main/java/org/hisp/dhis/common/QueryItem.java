@@ -61,7 +61,7 @@ public class QueryItem
         this.numeric = numeric;
     }
     
-    public QueryItem( IdentifiableObject item, String operator, String filter, boolean numeric )
+    public QueryItem( IdentifiableObject item, QueryOperator operator, String filter, boolean numeric )
     {
         this.item = item;
         this.numeric = numeric;

@@ -159,8 +159,30 @@ public class TrackedEntityInstanceQueryParams
     // -------------------------------------------------------------------------
     
     /**
-     * //TODO allow attributes only once and allow multiple filters per item
-     * 
+     * Adds a query item as attribute to the parameters.
+     */
+    public void addAttribute( QueryItem attribute )
+    {
+        this.attributes.add( attribute );
+    }
+    
+    /**
+     * Adds a query item as filter to the parameters.
+     */
+    public void addFilter( QueryItem filter )
+    {
+        this.filters.add( filter );
+    }
+    
+    /**
+     * Adds an organisation unit to the parameters.
+     */
+    public void addOrganisationUnit( OrganisationUnit unit )
+    {
+        this.organisationUnits.add( unit );
+    }
+
+    /**
      * Performs a set of operations on this params.
      * 
      * <ul>
@@ -210,7 +232,34 @@ public class TrackedEntityInstanceQueryParams
         
         return setMap;
     }
+
+    /**
+     * Add the given attributes to this params if they are not already present.
+     */
+    public void addAttributesIfNotExist( List<QueryItem> attrs )
+    {
+        for ( QueryItem attr : attrs )
+        {
+            if ( attributes != null && !attributes.contains( attr ) )
+            {
+                attributes.add( attr );            
+            }
+        }
+    }
     
+    /**
+     * Adds the given filters to this params if they are not already present.
+     */
+    public void addFiltersIfNotExist( List<QueryItem> filtrs )
+    {
+        for ( QueryItem filter : filtrs )
+        {
+            if ( filters != null && !filters.contains( filter ) )
+            {
+                filters.add( filter );
+            }
+        }
+    }
     /**
      * Indicates whether this is a logical OR query, meaning that a query string
      * is specified and instances which matches this query on one or more attributes
@@ -278,35 +327,7 @@ public class TrackedEntityInstanceQueryParams
         
         return duplicates;
     }
-        
-    /**
-     * Add the given attributes to this params if they are not already present.
-     */
-    public void addAttributesIfNotExist( List<QueryItem> attrs )
-    {
-        for ( QueryItem attr : attrs )
-        {
-            if ( attributes != null && !attributes.contains( attr ) )
-            {
-                attributes.add( attr );            
-            }
-        }
-    }
-    
-    /**
-     * Adds the given filters to this params if they are not already present.
-     */
-    public void addFiltersIfNotExist( List<QueryItem> filtrs )
-    {
-        for ( QueryItem filter : filtrs )
-        {
-            if ( filters != null && !filters.contains( filter ) )
-            {
-                filters.add( filter );
-            }
-        }
-    }
-    
+           
     /**
      * Indicates whether this params specifies any attributes and/or filters.
      */

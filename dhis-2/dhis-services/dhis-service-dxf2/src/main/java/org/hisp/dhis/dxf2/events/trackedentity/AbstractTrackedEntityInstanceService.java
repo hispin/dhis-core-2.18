@@ -29,10 +29,12 @@ package org.hisp.dhis.dxf2.events.trackedentity;
  */
 
 import com.google.common.collect.Lists;
+
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.common.QueryOperator;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -338,8 +340,8 @@ public abstract class AbstractTrackedEntityInstanceService
 
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
-        QueryItem queryItem = new QueryItem( attribute, "eq", value, false );
-        params.getAttributes().add( queryItem );
+        QueryItem queryItem = new QueryItem( attribute, QueryOperator.EQ, value, false );
+        params.addAttribute( queryItem );
 
         if ( attribute.getOrgunitScope() )
         {
