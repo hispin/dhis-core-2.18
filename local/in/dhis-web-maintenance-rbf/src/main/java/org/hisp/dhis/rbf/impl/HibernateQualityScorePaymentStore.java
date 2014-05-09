@@ -66,6 +66,7 @@ public class HibernateQualityScorePaymentStore implements QualityScorePaymentSto
         return (QualityScorePayment) criteria.uniqueResult();
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<QualityScorePayment> getAllQualityScorePayments()
     {
