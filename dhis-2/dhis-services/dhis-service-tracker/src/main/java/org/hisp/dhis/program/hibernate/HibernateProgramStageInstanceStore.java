@@ -43,7 +43,6 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -131,15 +130,6 @@ public class HibernateProgramStageInstanceStore
 
     // TODO this class must be re-written from here
     
-    @Override
-    public void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit )
-    {
-        String sql = "delete from programstageinstance where programstageid=" + programStage.getId()
-            + " and organisationunitid=" + organisationUnit.getId() + " and programstageinstanceid not in "
-            + "(select pdv.programstageinstanceid from trackedentitydatavalue pdv )";
-        jdbcTemplate.execute( sql );
-    }
-
     @Override
     public void update( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms )
     {
