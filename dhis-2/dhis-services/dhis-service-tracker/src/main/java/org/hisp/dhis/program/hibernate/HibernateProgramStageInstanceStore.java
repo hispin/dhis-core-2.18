@@ -86,9 +86,10 @@ public class HibernateProgramStageInstanceStore
     @SuppressWarnings( "unchecked" )
     public ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage )
     {
-        List<ProgramStageInstance> list = new ArrayList<ProgramStageInstance>( getCriteria(
-            Restrictions.eq( "programInstance", programInstance ), Restrictions.eq( "programStage", programStage ) )
-            .addOrder( Order.asc( "id" ) ).list() );
+        List<ProgramStageInstance> list = getCriteria(
+            Restrictions.eq( "programInstance", programInstance ), 
+            Restrictions.eq( "programStage", programStage ) ).
+            addOrder( Order.asc( "id" ) ).list();
 
         return list.isEmpty() ? null : list.get( list.size() - 1 );
     }
@@ -97,10 +98,10 @@ public class HibernateProgramStageInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> getAll( ProgramInstance programInstance, ProgramStage programStage )
     {
-        Criteria criteria = getCriteria( Restrictions.eq( "programInstance", programInstance ),
-            Restrictions.eq( "programStage", programStage ) ).addOrder( Order.asc( "id" ) );
-
-        return criteria.list();
+        return getCriteria( 
+            Restrictions.eq( "programInstance", programInstance ),
+            Restrictions.eq( "programStage", programStage ) )
+            .addOrder( Order.asc( "id" ) ).list();
     }
 
     @Override
@@ -114,7 +115,8 @@ public class HibernateProgramStageInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, boolean completed )
     {
-        return getCriteria( Restrictions.in( "programInstance", programInstances ),
+        return getCriteria( 
+            Restrictions.in( "programInstance", programInstances ), 
             Restrictions.eq( "completed", completed ) ).list();
     }
 
@@ -127,6 +129,8 @@ public class HibernateProgramStageInstanceStore
         return getQuery( hql ).setEntity( "entityInstance", entityInstance ).setBoolean( "completed", completed ).list();
     }
 
+    // TODO this class must be re-written from here
+    
     @Override
     public void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit )
     {

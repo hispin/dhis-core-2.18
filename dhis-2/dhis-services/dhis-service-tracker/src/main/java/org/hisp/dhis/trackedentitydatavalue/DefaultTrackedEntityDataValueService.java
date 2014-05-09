@@ -41,7 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Abyot Asalefew Gizaw
- * @version $Id$
  */
 @Transactional
 public class DefaultTrackedEntityDataValueService
@@ -108,8 +107,7 @@ public class DefaultTrackedEntityDataValueService
         return dataValueStore.get( programStageInstance, dataElements );
     }
 
-    public Collection<TrackedEntityDataValue> getTrackedEntityDataValues(
-        Collection<ProgramStageInstance> programStageInstances )
+    public Collection<TrackedEntityDataValue> getTrackedEntityDataValues( Collection<ProgramStageInstance> programStageInstances )
     {
         return dataValueStore.get( programStageInstances );
     }

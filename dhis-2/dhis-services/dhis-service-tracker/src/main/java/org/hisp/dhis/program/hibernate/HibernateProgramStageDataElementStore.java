@@ -42,7 +42,6 @@ import java.util.Collection;
 
 /**
  * @author Viet Nguyen
- * @version $Id$
  */
 public class HibernateProgramStageDataElementStore
     implements ProgramStageDataElementStore

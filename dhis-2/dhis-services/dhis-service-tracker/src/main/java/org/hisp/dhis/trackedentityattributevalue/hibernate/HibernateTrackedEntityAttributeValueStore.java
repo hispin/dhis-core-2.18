@@ -28,6 +28,7 @@ package org.hisp.dhis.trackedentityattributevalue.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hibernate.Query;
@@ -77,7 +78,8 @@ public class HibernateTrackedEntityAttributeValueStore
     @Override
     public TrackedEntityAttributeValue get( TrackedEntityInstance entityInstance, TrackedEntityAttribute attribute )
     {
-        return (TrackedEntityAttributeValue) getCriteria( Restrictions.eq( "entityInstance", entityInstance ),
+        return (TrackedEntityAttributeValue) getCriteria( 
+            Restrictions.eq( "entityInstance", entityInstance ),
             Restrictions.eq( "attribute", attribute ) ).uniqueResult();
     }
 
@@ -99,6 +101,11 @@ public class HibernateTrackedEntityAttributeValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityAttributeValue> get( Collection<TrackedEntityInstance> entityInstances )
     {
+        if ( entityInstances == null || entityInstances.isEmpty() )
+        {
+            return new ArrayList<TrackedEntityAttributeValue>();
+        }
+        
         return getCriteria( Restrictions.in( "entityInstance", entityInstances ) ).list();
     }
 
@@ -106,7 +113,8 @@ public class HibernateTrackedEntityAttributeValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityAttributeValue> searchByValue( TrackedEntityAttribute attribute, String searchText )
     {
-        return getCriteria( Restrictions.eq( "attribute", attribute ),
+        return getCriteria( 
+            Restrictions.eq( "attribute", attribute ),
             Restrictions.ilike( "value", "%" + searchText + "%" ) ).list();
     }
 
@@ -115,8 +123,9 @@ public class HibernateTrackedEntityAttributeValueStore
     public Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntityAttribute attribute, String value )
     {
         return getCriteria(
-            Restrictions.and( Restrictions.eq( "attribute", attribute ), Restrictions.eq( "value", value ) ) )
-            .setProjection( Projections.property( "entityInstance" ) ).list();
+            Restrictions.and( Restrictions.eq( "attribute", attribute ), 
+            Restrictions.eq( "value", value ) ) ).
+            setProjection( Projections.property( "entityInstance" ) ).list();
     }
 
     @Override

@@ -94,6 +94,7 @@ public class HibernateProgramStore
         criteria2.add( Restrictions.eq( "orgunitMember.id", organisationUnit.getId() ) );
 
         Collection<Program> programs = new HashSet<Program>();
+        
         if ( criteria1.list() != null )
         {
             programs.addAll( criteria1.list() );

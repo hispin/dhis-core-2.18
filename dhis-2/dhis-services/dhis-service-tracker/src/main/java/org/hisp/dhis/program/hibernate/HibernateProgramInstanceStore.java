@@ -90,8 +90,10 @@ public class HibernateProgramInstanceStore
             return new ArrayList<ProgramInstance>();
         }
 
-        return getCriteria( Restrictions.in( "program", programs ) ).createAlias( "entityInstance", "entityInstance" )
-            .add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) ).list();
+        return getCriteria( 
+            Restrictions.in( "program", programs ) ).
+            createAlias( "entityInstance", "entityInstance" ).
+            add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) ).list();
     }
 
     @Override
@@ -103,9 +105,11 @@ public class HibernateProgramInstanceStore
             return new ArrayList<ProgramInstance>();
         }
 
-        return getCriteria( Restrictions.eq( "status", status ), Restrictions.in( "program", programs ) )
-            .createAlias( "entityInstance", "entityInstance" ).add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) )
-            .list();
+        return getCriteria( 
+            Restrictions.eq( "status", status ), 
+            Restrictions.in( "program", programs ) ).
+            createAlias( "entityInstance", "entityInstance" ).
+            add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -147,14 +151,22 @@ public class HibernateProgramInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Integer min, Integer max )
     {
-        Criteria criteria = getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) )
-            .add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) ).createAlias( "entityInstance", "entityInstance" )
-            .addOrder( Order.asc( "entityInstance.id" ) );
+        Criteria criteria = getCriteria( 
+            Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) ).
+            add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) ).
+            createAlias( "entityInstance", "entityInstance" ).
+            addOrder( Order.asc( "entityInstance.id" ) );
 
-        if ( min != null && max != null )
+        if ( min != null )
         {
-            criteria.setFirstResult( min ).setMaxResults( max );
+            criteria.setFirstResult( min );
         }
+        
+        if ( max != null )
+        {
+            criteria.setMaxResults( max );
+        }
+        
         return criteria.list();
     }
 
@@ -162,10 +174,14 @@ public class HibernateProgramInstanceStore
     public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Date startDate,
         Date endDate )
     {
-        return getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ),
-            Restrictions.ge( "enrollmentDate", startDate ), Restrictions.le( "enrollmentDate", endDate ) )
-            .createAlias( "entityInstance", "entityInstance" ).add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) )
-            .addOrder( Order.asc( "entityInstance.id" ) ).list();
+        return getCriteria( 
+            Restrictions.eq( "program", program ), 
+            Restrictions.isNull( "endDate" ),
+            Restrictions.ge( "enrollmentDate", startDate ), 
+            Restrictions.le( "enrollmentDate", endDate ) ).
+            createAlias( "entityInstance", "entityInstance" ).
+            add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) ).
+            addOrder( Order.asc( "entityInstance.id" ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -177,41 +193,54 @@ public class HibernateProgramInstanceStore
             .createAlias( "entityInstance", "entityInstance" ).createAlias( "entityInstance.organisationUnit", "organisationUnit" )
             .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).addOrder( Order.asc( "entityInstance.id" ) );
 
-        if ( min != null && max != null )
+        if ( min != null )
         {
-            criteria.setFirstResult( min ).setMaxResults( max );
+            criteria.setFirstResult( min );
         }
-
+        
+        if ( max != null )
+        {
+            criteria.setMaxResults( max );
+        }
+        
         return criteria.list();
     }
 
     public int count( Program program, OrganisationUnit organisationUnit )
     {
-        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) )
-            .createAlias( "entityInstance", "entityInstance" ).add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) )
-            .setProjection( Projections.rowCount() ).uniqueResult();
+        Number rs = (Number) getCriteria( 
+            Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) ).
+            createAlias( "entityInstance", "entityInstance" ).
+            add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) ).
+            setProjection( Projections.rowCount() ).uniqueResult();
+        
         return rs != null ? rs.intValue() : 0;
     }
 
     public int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
-        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ),
-            Restrictions.ge( "enrollmentDate", startDate ), Restrictions.le( "enrollmentDate", endDate ) )
-            .createAlias( "entityInstance", "entityInstance" ).createAlias( "entityInstance.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).setProjection( Projections.rowCount() )
-            .uniqueResult();
+        Number rs = (Number) getCriteria( 
+            Restrictions.eq( "program", program ),
+            Restrictions.ge( "enrollmentDate", startDate ), 
+            Restrictions.le( "enrollmentDate", endDate ) ).
+            createAlias( "entityInstance", "entityInstance" ).
+            createAlias( "entityInstance.organisationUnit", "organisationUnit" ).
+            add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).
+            setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
     }
 
-    public int countByStatus( Integer status, Program program, Collection<Integer> orgunitIds, Date startDate,
-        Date endDate )
+    public int countByStatus( Integer status, Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
-        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ),
-            Restrictions.between( "enrollmentDate", startDate, endDate ) ).createAlias( "entityInstance", "entityInstance" )
-            .createAlias( "entityInstance.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add( Restrictions.eq( "status", status ) )
-            .setProjection( Projections.rowCount() ).uniqueResult();
+        Number rs = (Number) getCriteria( 
+            Restrictions.eq( "program", program ),
+            Restrictions.between( "enrollmentDate", startDate, endDate ) ).
+            createAlias( "entityInstance", "entityInstance" ).
+            createAlias( "entityInstance.organisationUnit", "organisationUnit" ).
+            add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).
+            add( Restrictions.eq( "status", status ) ).
+            setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
     }
@@ -220,12 +249,16 @@ public class HibernateProgramInstanceStore
     public Collection<ProgramInstance> getByStatus( Integer status, Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate )
     {
-        return getCriteria( Restrictions.eq( "program", program ),
-            Restrictions.between( "enrollmentDate", startDate, endDate ) ).createAlias( "entityInstance", "entityInstance" )
-            .createAlias( "entityInstance.organisationUnit", "organisationUnit" )
-            .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).add( Restrictions.eq( "status", status ) )
-            .list();
+        return getCriteria( 
+            Restrictions.eq( "program", program ),
+            Restrictions.between( "enrollmentDate", startDate, endDate ) ).
+            createAlias( "entityInstance", "entityInstance" ).
+            createAlias( "entityInstance.organisationUnit", "organisationUnit" ).
+            add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).
+            add( Restrictions.eq( "status", status ) ).list();
     }
+    
+    //TODO from here this class must be rewritten
 
     public Collection<SchedulingProgramObject> getSendMesssageEvents( String dateToCompare )
     {

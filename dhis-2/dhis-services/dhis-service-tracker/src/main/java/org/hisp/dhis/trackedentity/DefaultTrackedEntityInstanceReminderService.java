@@ -141,7 +141,6 @@ public class DefaultTrackedEntityInstanceReminderService
                         value = attributeValue.getValue();
                     }
                 }
-
             }
 
             templateMessage = templateMessage.replace( match, value );

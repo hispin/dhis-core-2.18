@@ -71,6 +71,11 @@ public class HibernateTrackedEntityDataValueStore
     public Collection<TrackedEntityDataValue> get( ProgramStageInstance programStageInstance,
         Collection<DataElement> dataElements )
     {
+        if ( dataElements == null || dataElements.isEmpty() )
+        {
+            return new ArrayList<TrackedEntityDataValue>();
+        }
+        
         String hql = "from TrackedEntityDataValue pdv where pdv.dataElement in ( :dataElements ) "
             + "and pdv.programStageInstance = :programStageInstance";
 
@@ -99,6 +104,11 @@ public class HibernateTrackedEntityDataValueStore
     public Collection<TrackedEntityDataValue> get( TrackedEntityInstance entityInstance, Collection<DataElement> dataElements, Date startDate,
         Date endDate )
     {
+        if ( dataElements == null || dataElements.isEmpty() )
+        {
+            return new ArrayList<TrackedEntityDataValue>();
+        }
+        
         String hql = "from TrackedEntityDataValue pdv where pdv.dataElement in ( :dataElements ) "
             + "and pdv.programStageInstance.programInstance.entityInstance = :entityInstance "
             + "and pdv.programStageInstance.executionDate >= :startDate and pdv.programStageInstance.executionDate <= :endDate ";
