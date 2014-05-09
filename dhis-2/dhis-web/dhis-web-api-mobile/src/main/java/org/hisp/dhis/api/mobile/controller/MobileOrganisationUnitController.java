@@ -44,11 +44,12 @@ import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
 import org.hisp.dhis.api.mobile.model.DataSetValueList;
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
+import org.hisp.dhis.api.mobile.model.Message;
 import org.hisp.dhis.api.mobile.model.MobileModel;
 import org.hisp.dhis.api.mobile.model.ModelList;
+import org.hisp.dhis.api.mobile.model.Recipient;
 import org.hisp.dhis.api.mobile.model.SMSCode;
 import org.hisp.dhis.api.mobile.model.SMSCommand;
-import org.hisp.dhis.api.mobile.model.Message;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
@@ -558,6 +559,19 @@ public class MobileOrganisationUnitController
     {
         return activityReportingService.sendFeedback( message );
 
+    }
+
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/findUser" )
+    @ResponseBody
+    public Recipient findUser( String clientVersion, @PathVariable
+    int id, @RequestHeader( "name" )
+    String keyword )
+        throws NotAllowedException
+    {
+        Recipient recipient = new Recipient();
+        recipient.setClientVersion( clientVersion );
+        recipient.setUsers( activityReportingService.findUser( keyword ) );
+        return recipient;
     }
 
 }

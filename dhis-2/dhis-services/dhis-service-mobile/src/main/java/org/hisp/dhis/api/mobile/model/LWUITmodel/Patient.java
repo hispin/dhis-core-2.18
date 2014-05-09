@@ -49,6 +49,8 @@ public class Patient
     private int id;
     
     private String organisationUnitName;
+    
+    private String trackedEntityName;
 
     private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
@@ -113,6 +115,16 @@ public class Patient
         this.organisationUnitName = organisationUnitName;
     }
     
+    public String getTrackedEntityName()
+    {
+        return trackedEntityName;
+    }
+    
+    public void setTrackedEntityName( String trackedEntityName )
+    {
+        this.trackedEntityName = trackedEntityName;
+    }
+    
     public List<ProgramInstance> getEnrollmentPrograms()
     {
         return enrollmentPrograms;
@@ -146,6 +158,7 @@ public class Patient
 
         dout.writeInt( this.getId() );
         dout.writeUTF( this.getOrganisationUnitName() );
+        dout.writeUTF( this.getTrackedEntityName() );
 
         // Write Patient Attribute
         dout.writeInt( attributes.size() );
@@ -185,6 +198,7 @@ public class Patient
     {
         this.setId( din.readInt() );
         this.setOrganisationUnitName( din.readUTF() );
+        this.setTrackedEntityName( din.readUTF() );
 
         // Read Attribute
         int attsNumb = din.readInt();

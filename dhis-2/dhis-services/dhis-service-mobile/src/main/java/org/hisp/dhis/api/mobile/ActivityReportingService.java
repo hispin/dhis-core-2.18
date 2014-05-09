@@ -35,6 +35,7 @@ import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.Message;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
+import org.hisp.dhis.api.mobile.model.User;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
@@ -104,6 +105,9 @@ public interface ActivityReportingService
         throws NotAllowedException;
 
     public String sendFeedback( Message message )
+        throws NotAllowedException;
+
+    public Collection<User> findUser( String keyword )
         throws NotAllowedException;
 
 }

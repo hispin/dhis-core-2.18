@@ -99,6 +99,7 @@ import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -152,6 +153,8 @@ public class ActivityReportingServiceImpl
     private SmsSender smsSender;
 
     private TrackedEntityAttributeService attributeService;
+
+    private UserService userService;
 
     private Integer patientId;
 
@@ -251,6 +254,12 @@ public class ActivityReportingServiceImpl
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    @Required
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -414,13 +423,6 @@ public class ActivityReportingServiceImpl
 
         for ( TrackedEntityInstance patient : patients )
         {
-            System.out.println( "----------------------------------------------------------------------------" );
-            System.out.println( "Display Name: " + patient.getDisplayName() );
-            System.out.println( "Name: " + patient.getName() );
-            System.out.println( "Tracked Entity Display Name: " + patient.getTrackedEntity().getDisplayName() );
-            System.out.println( "Tracked Entity Name: " + patient.getTrackedEntity().getName() );
-            System.out.println( "----------------------------------------------------------------------------" );
-
             resultSet += patient.getId() + "/";
             String attText = "";
             for ( TrackedEntityAttribute displayAttribute : displayAttributes )
@@ -764,6 +766,11 @@ public class ActivityReportingServiceImpl
         if ( patient.getOrganisationUnit() != null )
         {
             patientModel.setOrganisationUnitName( patient.getOrganisationUnit().getName() );
+        }
+        
+        if ( patient.getTrackedEntity() != null )
+        {
+            patientModel.setTrackedEntityName( patient.getTrackedEntity().getName() );
         }
 
         this.setSetting( getSettings() );
@@ -1878,5 +1885,38 @@ public class ActivityReportingServiceImpl
         messageService.sendFeedback( subject, text, metaData );
 
         return FEEDBACK_SENT;
+    }
+
+    @Override
+    public Collection<org.hisp.dhis.api.mobile.model.User> findUser( String keyword )
+        throws NotAllowedException
+    {
+        Collection<User> users = new HashSet<User>();
+
+        Collection<org.hisp.dhis.api.mobile.model.User> userList = new HashSet<org.hisp.dhis.api.mobile.model.User>();
+
+        if ( keyword != null )
+        {
+            int index = keyword.indexOf( ' ' );
+
+            if ( index != -1 && index == keyword.lastIndexOf( ' ' ) )
+            {
+                String[] keys = keyword.split( " " );
+                keyword = keys[0] + "  " + keys[1];
+            }
+        }
+
+        users = userService.getUsersByName( keyword );
+
+        for ( User userCore : users )
+        {
+            org.hisp.dhis.api.mobile.model.User user = new org.hisp.dhis.api.mobile.model.User();
+            user.setSurname( userCore.getSurname() );
+            user.setFirstName( userCore.getFirstName() );
+            userList.add( user );
+
+        }
+
+        return userList;
     }
 }
