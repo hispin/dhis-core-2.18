@@ -118,6 +118,18 @@ public interface Calendar
     /**
      * Gets interval of type based on DateUnit
      * @param dateUnit DateUnit representing local year, month, day
+     * @param type     Interval type to get
+     * @param offset   Offset to start at, can be negative of positive
+     * @param length   How many periods to asks for, i.e. type = MONTH, length = 2, two months
+     * @return Interval for interval type based on dateUnit
+     * @see DateIntervalType
+     */
+    DateInterval toInterval( DateUnit dateUnit, DateIntervalType type, int offset, int length );
+
+    /**
+     * Gets interval of type based on DateUnit using default options, 0 for offset, 1 for length
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param type     Interval type to get
      * @return Interval for interval type based on dateUnit
      * @see DateIntervalType
      */
@@ -125,10 +137,21 @@ public interface Calendar
 
     /**
      * Gets interval of type based on todays date
+     * @param type     Interval type to get
      * @return Interval for interval type based on dateUnit
      * @see DateIntervalType
      */
     DateInterval toInterval( DateIntervalType type );
+
+    /**
+     * Gets interval of type based on today's date
+     * @param type     Interval type to get
+     * @param offset Offset to start at, can be negative of positive
+     * @param length How many periods to asks for, i.e. type = MONTH, length = 2, two months
+     * @return Interval for interval type based on dateUnit
+     * @see DateIntervalType
+     */
+    DateInterval toInterval( DateIntervalType type, int offset, int length );
 
     /**
      * Gets current date as local DateUnit

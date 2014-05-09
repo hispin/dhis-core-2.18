@@ -62,51 +62,121 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     }
 
     @Override
-    public DateInterval toInterval( DateUnit dateUnit, DateIntervalType type )
+    public DateInterval toInterval( DateUnit dateUnit, DateIntervalType type, int offset, int length )
     {
         switch ( type )
         {
             case ISO8601_YEAR:
-                return toYearIsoInterval( dateUnit );
+                return toYearIsoInterval( dateUnit, offset, length );
             case ISO8601_MONTH:
-                return toMonthIsoInterval( dateUnit );
+                return toMonthIsoInterval( dateUnit, offset, length );
             case ISO8601_WEEK:
-                return toWeekIsoInterval( dateUnit );
+                return toWeekIsoInterval( dateUnit, offset, length );
+            case ISO8601_DAY:
+                return toDayIsoInterval( dateUnit, offset, length );
         }
 
         return null;
     }
 
-    private DateInterval toYearIsoInterval( DateUnit dateUnit )
+    private DateInterval toYearIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        DateUnit from = new DateUnit( dateUnit.getYear(), 1, 1 );
-        DateUnit to = new DateUnit( dateUnit.getYear(), monthsInYear(), daysInMonth( dateUnit.getYear(), monthsInYear() ) );
+        DateTime from = dateUnit.toDateTime( chronology ).withMonthOfYear( 1 ).withDayOfMonth( 1 );
 
-        from.setDayOfWeek( isoWeekday( from ) );
-        to.setDayOfWeek( isoWeekday( to ) );
+        if ( offset > 0 )
+        {
+            from = from.plusYears( offset );
+        }
+        else if ( offset < 0 )
+        {
+            from = from.minusYears( -offset );
+        }
 
-        return new DateInterval( toIso( from ), toIso( to ), DateIntervalType.ISO8601_YEAR );
+        DateTime to = new DateTime( from ).plusYears( length ).minusDays( 1 );
+
+        DateUnit fromDateUnit = DateUnit.fromDateTime( from );
+        DateUnit toDateUnit = DateUnit.fromDateTime( to );
+
+        fromDateUnit.setDayOfWeek( isoWeekday( fromDateUnit ) );
+        toDateUnit.setDayOfWeek( isoWeekday( toDateUnit ) );
+
+        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ),
+            DateIntervalType.ISO8601_YEAR );
     }
 
-    private DateInterval toMonthIsoInterval( DateUnit dateUnit )
+    private DateInterval toMonthIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        DateUnit from = new DateUnit( dateUnit.getYear(), dateUnit.getMonth(), 1 );
-        DateUnit to = new DateUnit( dateUnit.getYear(), dateUnit.getMonth(), daysInMonth( dateUnit.getYear(), dateUnit.getMonth() ) );
+        DateTime from = dateUnit.toDateTime( chronology ).withDayOfMonth( 1 );
 
-        from.setDayOfWeek( isoWeekday( from ) );
-        to.setDayOfWeek( isoWeekday( to ) );
+        if ( offset > 0 )
+        {
+            from = from.plusMonths( offset );
+        }
+        else if ( offset < 0 )
+        {
+            from = from.minusMonths( -offset );
+        }
 
-        return new DateInterval( toIso( from ), toIso( to ), DateIntervalType.ISO8601_MONTH );
+        DateTime to = new DateTime( from ).plusMonths( length ).minusDays( 1 );
+
+        DateUnit fromDateUnit = DateUnit.fromDateTime( from );
+        DateUnit toDateUnit = DateUnit.fromDateTime( to );
+
+        fromDateUnit.setDayOfWeek( isoWeekday( fromDateUnit ) );
+        toDateUnit.setDayOfWeek( isoWeekday( toDateUnit ) );
+
+        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ),
+            DateIntervalType.ISO8601_MONTH );
     }
 
-    private DateInterval toWeekIsoInterval( DateUnit dateUnit )
+    private DateInterval toWeekIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        DateTime dateTime = new DateTime( dateUnit.getYear(), dateUnit.getMonth(), dateUnit.getDay(), 0, 0, chronology );
+        DateTime from = dateUnit.toDateTime( chronology ).withDayOfWeek( 1 );
 
-        DateTime from = dateTime.weekOfWeekyear().toInterval().getStart();
-        DateTime to = dateTime.weekOfWeekyear().toInterval().getEnd().minusDays( 1 );
+        if ( offset > 0 )
+        {
+            from = from.plusWeeks( offset );
+        }
+        else if ( offset < 0 )
+        {
+            from = from.minusWeeks( -offset );
+        }
 
-        return new DateInterval( DateUnit.fromDateTime( from ), DateUnit.fromDateTime( to ), DateIntervalType.ISO8601_WEEK );
+        DateTime to = new DateTime( from ).plusWeeks( length ).minusDays( 1 );
+
+        DateUnit fromDateUnit = DateUnit.fromDateTime( from );
+        DateUnit toDateUnit = DateUnit.fromDateTime( to );
+
+        fromDateUnit.setDayOfWeek( isoWeekday( fromDateUnit ) );
+        toDateUnit.setDayOfWeek( isoWeekday( toDateUnit ) );
+
+        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ),
+            DateIntervalType.ISO8601_WEEK );
+    }
+
+    private DateInterval toDayIsoInterval( DateUnit dateUnit, int offset, int length )
+    {
+        DateTime from = dateUnit.toDateTime( chronology );
+
+        if ( offset > 0 )
+        {
+            from = from.plusDays( offset );
+        }
+        else if ( offset < 0 )
+        {
+            from = from.minusDays( -offset );
+        }
+
+        DateTime to = new DateTime( from ).plusDays( length );
+
+        DateUnit fromDateUnit = DateUnit.fromDateTime( from );
+        DateUnit toDateUnit = DateUnit.fromDateTime( to );
+
+        fromDateUnit.setDayOfWeek( isoWeekday( fromDateUnit ) );
+        toDateUnit.setDayOfWeek( isoWeekday( toDateUnit ) );
+
+        return new DateInterval( toIso( fromDateUnit ), toIso( toDateUnit ),
+            DateIntervalType.ISO8601_DAY );
     }
 
     @Override

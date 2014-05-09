@@ -134,22 +134,24 @@ public class NepaliCalendar extends AbstractCalendar
     }
 
     @Override
-    public DateInterval toInterval( DateUnit dateUnit, DateIntervalType type )
+    public DateInterval toInterval( DateUnit dateUnit, DateIntervalType type, int offset, int length )
     {
         switch ( type )
         {
             case ISO8601_YEAR:
-                return toYearIsoInterval( dateUnit );
+                return toYearIsoInterval( dateUnit, offset, length );
             case ISO8601_MONTH:
-                return toMonthIsoInterval( dateUnit );
+                return toMonthIsoInterval( dateUnit, offset, length );
             case ISO8601_WEEK:
-                return toWeekIsoInterval( dateUnit );
+                return toWeekIsoInterval( dateUnit, offset, length );
+            case ISO8601_DAY:
+                return toDayIsoInterval( dateUnit, offset, length );
         }
 
         return null;
     }
 
-    private DateInterval toYearIsoInterval( DateUnit dateUnit )
+    private DateInterval toYearIsoInterval( DateUnit dateUnit, int offset, int length )
     {
         DateUnit from = new DateUnit( dateUnit.getYear(), 1, 1 );
         DateUnit to = new DateUnit( dateUnit.getYear(), monthsInYear(), daysInMonth( dateUnit.getYear(), monthsInYear() ) );
@@ -160,7 +162,7 @@ public class NepaliCalendar extends AbstractCalendar
         return new DateInterval( from, to, DateIntervalType.ISO8601_YEAR );
     }
 
-    private DateInterval toMonthIsoInterval( DateUnit dateUnit )
+    private DateInterval toMonthIsoInterval( DateUnit dateUnit, int offset, int length )
     {
         DateUnit from = new DateUnit( dateUnit.getYear(), dateUnit.getMonth(), 1 );
         DateUnit to = new DateUnit( dateUnit.getYear(), dateUnit.getMonth(), daysInMonth( dateUnit.getYear(), dateUnit.getMonth() ) );
@@ -171,7 +173,7 @@ public class NepaliCalendar extends AbstractCalendar
         return new DateInterval( from, to, DateIntervalType.ISO8601_MONTH );
     }
 
-    private DateInterval toWeekIsoInterval( DateUnit dateUnit )
+    private DateInterval toWeekIsoInterval( DateUnit dateUnit, int offset, int length )
     {
         DateTime dateTime = toIso( dateUnit ).toDateTime();
 
@@ -179,6 +181,11 @@ public class NepaliCalendar extends AbstractCalendar
         DateTime to = dateTime.weekOfWeekyear().toInterval().getEnd().minusDays( 1 );
 
         return new DateInterval( DateUnit.fromDateTime( from ), DateUnit.fromDateTime( to ), DateIntervalType.ISO8601_WEEK );
+    }
+
+    private DateInterval toDayIsoInterval( DateUnit dateUnit, int offset, int length )
+    {
+        return null;
     }
 
     @Override
