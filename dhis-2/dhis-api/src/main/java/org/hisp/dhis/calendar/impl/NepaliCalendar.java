@@ -94,43 +94,7 @@ public class NepaliCalendar extends AbstractCalendar
         DateTime start = startIso.toDateTime();
         DateTime end = dateUnit.toDateTime();
 
-        int days = Days.daysBetween( start, end ).getDays();
-
-        int curYear = startNepal.getYear();
-        int curMonth = startNepal.getMonth();
-        int curDay = startNepal.getDay();
-        int dayOfWeek = startNepal.getDayOfWeek();
-
-        while ( days != 0 )
-        {
-            // days in month
-            int dm = conversionMap.get( curYear )[curMonth];
-
-            curDay++;
-
-            if ( curDay > dm )
-            {
-                curMonth++;
-                curDay = 1;
-            }
-
-            if ( curMonth > 12 )
-            {
-                curYear++;
-                curMonth = 1;
-            }
-
-            dayOfWeek++;
-
-            if ( dayOfWeek > 7 )
-            {
-                dayOfWeek = 1;
-            }
-
-            days--;
-        }
-
-        return new DateUnit( curYear, curMonth, curDay, dayOfWeek );
+        return plusDays( startNepal, Days.daysBetween( start, end ).getDays() );
     }
 
     @Override
@@ -153,8 +117,20 @@ public class NepaliCalendar extends AbstractCalendar
 
     private DateInterval toYearIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        DateUnit from = new DateUnit( dateUnit.getYear(), 1, 1 );
-        DateUnit to = new DateUnit( dateUnit.getYear(), monthsInYear(), daysInMonth( dateUnit.getYear(), monthsInYear() ) );
+        DateUnit from = new DateUnit( dateUnit );
+
+        if ( offset > 0 )
+        {
+            from = plusYears( from, offset );
+        }
+        else if ( offset < 0 )
+        {
+            from = minusYears( from, -offset );
+        }
+
+        DateUnit to = new DateUnit( from );
+        to = plusYears( to, length );
+        to = minusDays( to, length );
 
         from = toIso( from );
         to = toIso( to );
@@ -164,8 +140,20 @@ public class NepaliCalendar extends AbstractCalendar
 
     private DateInterval toMonthIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        DateUnit from = new DateUnit( dateUnit.getYear(), dateUnit.getMonth(), 1 );
-        DateUnit to = new DateUnit( dateUnit.getYear(), dateUnit.getMonth(), daysInMonth( dateUnit.getYear(), dateUnit.getMonth() ) );
+        DateUnit from = new DateUnit( dateUnit );
+
+        if ( offset > 0 )
+        {
+            from = plusMonths( from, offset );
+        }
+        else if ( offset < 0 )
+        {
+            from = minusMonths( from, -offset );
+        }
+
+        DateUnit to = new DateUnit( from );
+        to = plusMonths( to, length );
+        to = minusDays( to, 1 );
 
         from = toIso( from );
         to = toIso( to );
@@ -175,17 +163,29 @@ public class NepaliCalendar extends AbstractCalendar
 
     private DateInterval toWeekIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        DateTime dateTime = toIso( dateUnit ).toDateTime();
-
-        DateTime from = dateTime.weekOfWeekyear().toInterval().getStart();
-        DateTime to = dateTime.weekOfWeekyear().toInterval().getEnd().minusDays( 1 );
-
-        return new DateInterval( DateUnit.fromDateTime( from ), DateUnit.fromDateTime( to ), DateIntervalType.ISO8601_WEEK );
+        return null;
     }
 
     private DateInterval toDayIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        return null;
+        DateUnit from = new DateUnit( dateUnit );
+
+        if ( offset > 0 )
+        {
+            from = plusDays( from, offset );
+        }
+        else if ( offset < 0 )
+        {
+            from = minusDays( from, -offset );
+        }
+
+        DateUnit to = new DateUnit( from );
+        to = plusDays( to, length );
+
+        from = toIso( from );
+        to = toIso( to );
+
+        return new DateInterval( from, to, DateIntervalType.ISO8601_DAY );
     }
 
     @Override
@@ -289,6 +289,156 @@ public class NepaliCalendar extends AbstractCalendar
         }
 
         return conversionMap.get( year )[0];
+    }
+
+    private DateUnit minusYears( DateUnit dateUnit, int years )
+    {
+        DateUnit result = new DateUnit( dateUnit.getYear() - years, dateUnit.getMonth(), dateUnit.getDay(), dateUnit.getDayOfWeek() );
+        updateDateUnit( result );
+
+        return result;
+    }
+
+    private DateUnit minusMonths( DateUnit dateUnit, int months )
+    {
+        DateUnit result = new DateUnit( dateUnit );
+
+        while ( months != 0 )
+        {
+            result.setMonth( result.getMonth() - 1 );
+
+            if ( result.getMonth() < 1 )
+            {
+                result.setMonth( monthsInYear() );
+                result.setYear( result.getYear() - 1 );
+            }
+
+            months--;
+        }
+
+        updateDateUnit( result );
+
+        return result;
+    }
+
+    private DateUnit minusDays( DateUnit dateUnit, int days )
+    {
+        int curYear = dateUnit.getYear();
+        int curMonth = dateUnit.getMonth();
+        int curDay = dateUnit.getDay();
+        int dayOfWeek = dateUnit.getDayOfWeek();
+
+        while ( days != 0 )
+        {
+            curDay--;
+
+            if ( curDay == 0 )
+            {
+                curMonth--;
+
+                if ( curMonth == 0 )
+                {
+                    curYear--;
+                    curMonth = 12;
+                }
+
+                curDay = conversionMap.get( curYear )[curMonth];
+            }
+
+            dayOfWeek--;
+
+            if ( dayOfWeek == 0 )
+            {
+                dayOfWeek = 7;
+            }
+
+            days--;
+        }
+
+        return new DateUnit( curYear, curMonth, curDay, dayOfWeek );
+    }
+
+    private DateUnit plusYears( DateUnit dateUnit, int years )
+    {
+        DateUnit result = new DateUnit( dateUnit.getYear() + years, dateUnit.getMonth(), dateUnit.getDay(), dateUnit.getDayOfWeek() );
+        updateDateUnit( result );
+
+        return result;
+    }
+
+    private DateUnit plusMonths( DateUnit dateUnit, int months )
+    {
+        DateUnit result = new DateUnit( dateUnit );
+
+        while ( months != 0 )
+        {
+            result.setMonth( result.getMonth() + 1 );
+
+            if ( result.getMonth() > monthsInYear() )
+            {
+                result.setMonth( 1 );
+                result.setYear( result.getYear() + 1 );
+            }
+
+            months--;
+        }
+
+        updateDateUnit( result );
+
+        return result;
+    }
+
+    private DateUnit plusDays( DateUnit dateUnit, int days )
+    {
+        int curYear = dateUnit.getYear();
+        int curMonth = dateUnit.getMonth();
+        int curDay = dateUnit.getDay();
+        int dayOfWeek = dateUnit.getDayOfWeek();
+
+        while ( days != 0 )
+        {
+            // days in month
+            int dm = conversionMap.get( curYear )[curMonth];
+
+            curDay++;
+
+            if ( curDay > dm )
+            {
+                curMonth++;
+                curDay = 1;
+            }
+
+            if ( curMonth > 12 )
+            {
+                curYear++;
+                curMonth = 1;
+            }
+
+            dayOfWeek++;
+
+            if ( dayOfWeek > 7 )
+            {
+                dayOfWeek = 1;
+            }
+
+            days--;
+        }
+
+        return new DateUnit( curYear, curMonth, curDay, dayOfWeek );
+    }
+
+    // check if day is more than current maximum for month, don't overflow, just set to maximum
+    // set day of week
+    private void updateDateUnit( DateUnit result )
+    {
+        int dm = conversionMap.get( result.getYear() )[result.getMonth()];
+
+        if ( result.getDay() > dm )
+        {
+            result.setDay( dm );
+        }
+
+        result.setDayOfWeek( weekday( result ) );
     }
 
     //------------------------------------------------------------------------------------------------------------

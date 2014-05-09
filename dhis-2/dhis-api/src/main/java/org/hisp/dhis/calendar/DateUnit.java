@@ -70,6 +70,14 @@ public class DateUnit
     {
     }
 
+    public DateUnit( DateUnit dateUnit )
+    {
+        this.year = dateUnit.getYear();
+        this.month = dateUnit.getMonth();
+        this.day = dateUnit.getDay();
+        this.dayOfWeek = dateUnit.getDayOfWeek();
+    }
+
     public DateUnit( int year, int month, int day )
     {
         this.year = year;
