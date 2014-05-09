@@ -13,7 +13,6 @@ Ext.onReady( function() {
 		isSessionStorage: 'sessionStorage' in window && window['sessionStorage'] !== null,
 		logg: []
 	};
-inst = GIS.core.instances;
 
 	GIS.core.getOLMap = function(gis) {
 		var olmap,
@@ -186,9 +185,26 @@ inst = GIS.core.instances;
             selectHandlers,
 			dimConf = gis.conf.finals.dimension,
             defaultHoverWindow,
-            eventWindow;
+            eventWindow,
+            isBoundary = layer.id === 'boundary',
+            isEvent = layer.id === 'event';
 
 		defaultHoverSelect = function fn(feature) {
+            if (isBoundary) {
+                var style = layer.core.getDefaultFeatureStyle();
+
+                style.fillOpacity = 0.15;
+                style.strokeColor = feature.style.strokeColor;
+                style.strokeWidth = feature.style.strokeWidth;
+                style.label = feature.style.label;
+                style.fontFamily = feature.style.fontFamily;
+                style.fontWeight = feature.style.strokeWidth > 1 ? 'bold' : 'normal';
+                style.labelAlign = feature.style.labelAlign;
+                style.labelYOffset = feature.style.labelYOffset;
+
+                layer.drawFeature(feature, style);
+            }
+
 			if (defaultHoverWindow) {
 				defaultHoverWindow.destroy();
 			}
@@ -626,7 +642,7 @@ inst = GIS.core.instances;
             onClickSelect: defaultClickSelect
         };
 
-		if (layer.id === 'event') {
+		if (isEvent) {
 			options.onClickSelect = function fn(feature) {
                 var ignoreKeys = ['label', 'value', 'nameColumnMap', 'psi', 'ps', 'longitude', 'latitude', 'eventdate', 'ou', 'oucode', 'ouname'],
                     attributes = feature.attributes,
@@ -682,13 +698,6 @@ inst = GIS.core.instances;
 
 		selectHandlers = new OpenLayers.Control.newSelectFeature(layer, options);
 
-        // workaround
-        //selectHandlers.selectStyle = {
-            //fillOpacity: 0.5,
-            //strokeWidth: 1,
-            //strokeColor: '#444'
-        //};
-
 		gis.olmap.addControl(selectHandlers);
 		selectHandlers.activate();
 	};
@@ -734,29 +743,24 @@ inst = GIS.core.instances;
 		var defaults = {
 				fillOpacity: 1,
 				strokeColor: '#fff',
-				strokeWidth: 1
+				strokeWidth: 1,
+                pointRadius: 5,
+                labelAlign: 'cr',
+                labelYOffset: 13
 			},
 			select = {
 				fillOpacity: 0.9,
 				strokeColor: '#fff',
 				strokeWidth: 1,
-				cursor: 'pointer'
+                pointRadius: 5,
+				cursor: 'pointer',
+                labelAlign: 'cr',
+                labelYOffset: 13
 			};
 
-		if (id === 'boundary') {
-			defaults.fillOpacity = 0;
-			defaults.strokeColor = '#000';
-			defaults.strokeWidth = 1;
-
-			select.fillColor = '#000';
-			select.fillOpacity = 0.15;
-			select.strokeColor = '#000';
-			select.strokeWidth = 1;
-		}
-
 		if (labelConfig) {
-			defaults.label = '\${label}';
-			defaults.fontFamily = 'arial,sans-serif,ubuntu,consolas';
+            defaults.label = labelConfig.label;
+            defaults.fontFamily = labelConfig.fontFamily;
 			defaults.fontSize = (labelConfig.fontSize || 13) + 'px';
 			defaults.fontWeight = labelConfig.strong ? 'bold' : 'normal';
 			defaults.fontStyle = labelConfig.italic ? 'italic' : 'normal';
@@ -1518,7 +1522,7 @@ inst = GIS.core.instances;
 				scope: this,
 				disableCaching: false,
 				success: function(r) {
-					var geojson = gis.util.geojson.decode(r),
+					var geojson = gis.util.geojson.decode(r, 'DESC'),
 						format = new OpenLayers.Format.GeoJSON(),
 						features = gis.util.map.getTransformedFeatureArray(format.read(geojson)),
                         colors = ['black', 'blue', 'red', 'green', 'yellow'],
@@ -1537,43 +1541,34 @@ inst = GIS.core.instances;
 						return;
 					}
 
-                    //// get levels, colors, map
-                    //for (var i = 0; i < features.length; i++) {
-                        //levels.push(parseFloat(features[i].attributes.level));
-                    //}
+                    // get levels, colors, map
+                    for (var i = 0; i < features.length; i++) {
+                        levels.push(parseFloat(features[i].attributes.level));
+                    }
 
-                    //levels = Ext.Array.unique(levels).sort();
+                    levels = Ext.Array.unique(levels).sort();
 
-                    //for (var i = 0; i < levels.length; i++) {
-                        //levelObjectMap[levels[i]] = {
-                            //strokeColor: colors[i],
-                            //strokeWidth: levels.length - i
-                        //};
-//console.log(levels.length - i);
-                    //}
+                    for (var i = 0; i < levels.length; i++) {
+                        levelObjectMap[levels[i]] = {
+                            strokeColor: colors[i]
+                        };
+                    }
 
-                    //// style
-                    //for (var i = 0, feature, obj; i < features.length; i++) {
-                        //feature = features[i];
-                        //obj = levelObjectMap[feature.attributes.level];
+                    // style
+                    for (var i = 0, feature, obj, strokeWidth; i < features.length; i++) {
+                        feature = features[i];
+                        obj = levelObjectMap[feature.attributes.level];
+                        strokeWidth = levels.length === 1 ? 1 : feature.attributes.level == 2 ? 2 : 1;
 
-                        //feature.style = {
-                            //strokeColor: obj.strokeColor || 'black',
-                            //strokeWidth: obj.strokeWidth || 1,
-                            //fillOpacity: 0
-                        //};
-                    //}
-
-
-
-
-
-
-
-
-
-
-
+                        feature.style = {
+                            strokeColor: obj.strokeColor || 'black',
+                            strokeWidth: strokeWidth,
+                            fillOpacity: 0,
+                            pointRadius: 5,
+                            labelAlign: 'cr',
+                            labelYOffset: 13
+                        };
+                    }
 
 					layer.core.featureStore.loadFeatures(features.slice(0));
 
@@ -1597,6 +1592,11 @@ inst = GIS.core.instances;
 
 			layer.removeFeatures(layer.features);
 			layer.addFeatures(features);
+
+            // labels
+            if (layer.hasLabels) {
+                layer.core.setFeatureLabelStyle(true, true);
+            }
 
 			loadLegend(view);
 		};
@@ -2400,7 +2400,7 @@ inst = GIS.core.instances;
 
 			util.geojson = {};
 
-			util.geojson.decode = function(doc) {
+			util.geojson.decode = function(doc, levelOrder) {
 				var geojson = {};
 				geojson.type = 'FeatureCollection';
 				geojson.crs = {
@@ -2410,6 +2410,11 @@ inst = GIS.core.instances;
 					}
 				};
 				geojson.features = [];
+
+                levelOrder = levelOrder || 'ASC';
+
+                // sort
+                doc.geojson = util.array.sort(doc.geojson, levelOrder, 'le');
 
 				for (var i = 0; i < doc.geojson.length; i++) {
 					geojson.features.push({
