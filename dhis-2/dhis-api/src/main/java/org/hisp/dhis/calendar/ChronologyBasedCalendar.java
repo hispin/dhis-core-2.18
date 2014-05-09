@@ -81,7 +81,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
 
     private DateInterval toYearIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        DateTime from = dateUnit.toDateTime( chronology ).withMonthOfYear( 1 ).withDayOfMonth( 1 );
+        DateTime from = dateUnit.toDateTime( chronology );
 
         if ( offset > 0 )
         {
@@ -106,7 +106,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
 
     private DateInterval toMonthIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        DateTime from = dateUnit.toDateTime( chronology ).withDayOfMonth( 1 );
+        DateTime from = dateUnit.toDateTime( chronology );
 
         if ( offset > 0 )
         {
@@ -131,7 +131,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
 
     private DateInterval toWeekIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        DateTime from = dateUnit.toDateTime( chronology ).withDayOfWeek( 1 );
+        DateTime from = dateUnit.toDateTime( chronology );
 
         if ( offset > 0 )
         {
