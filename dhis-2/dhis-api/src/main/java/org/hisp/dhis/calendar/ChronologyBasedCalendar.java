@@ -85,7 +85,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         from.setDayOfWeek( isoWeekday( from ) );
         to.setDayOfWeek( isoWeekday( to ) );
 
-        return new DateInterval( from, to, DateIntervalType.ISO8601_YEAR );
+        return new DateInterval( toIso( from ), toIso( to ), DateIntervalType.ISO8601_YEAR );
     }
 
     private DateInterval toMonthIsoInterval( DateUnit dateUnit )
@@ -96,7 +96,7 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         from.setDayOfWeek( isoWeekday( from ) );
         to.setDayOfWeek( isoWeekday( to ) );
 
-        return new DateInterval( from, to, DateIntervalType.ISO8601_MONTH );
+        return new DateInterval( toIso( from ), toIso( to ), DateIntervalType.ISO8601_MONTH );
     }
 
     private DateInterval toWeekIsoInterval( DateUnit dateUnit )
