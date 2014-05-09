@@ -5,7 +5,9 @@ import java.util.Collection;
 import org.hisp.dhis.rbf.api.QualityScorePayment;
 import org.hisp.dhis.rbf.api.QualityScorePaymentService;
 import org.hisp.dhis.rbf.api.QualityScorePaymentStore;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class DefaultQualityScorePaymentService implements QualityScorePaymentService
 {
 

@@ -279,6 +279,49 @@
 		<param name="onExceptionReturn">plainTextError</param>
 	</action>
 
+	<!-- Quality Score Payment -->
+
+   <!-- Get All Quality Score Payment -->
+   <action name="qualityScorePaymentList" class="org.hisp.dhis.rbf.qualityscorepayment.action.GetQualityScorePaymentList">
+   		<result name="success" type="velocity">/main.vm</result>
+   		<param name="page">/dhis-web-maintenance-rbf/qualityScorePaymentList.vm</param>
+   		<param name="javascripts">javascript/qualityScorePayment.js</param>
+   		<param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+   </action>
+
+
+   <!-- Add Quality Score Payment Form -->
+   <action name="addQualityScorePaymentForm" class="org.hisp.dhis.rbf.qualityscorepayment.action.AddQualityScorePaymentFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-rbf/addqualityScorePaymentForm.vm</param>
+      <param name="javascripts">javascript/qualityScorePayment.js</param>
+      <param name="anyAuthorities">F_QUALITY_SCORE_PAYMENT_ADD</param>
+    </action>
+
+    <!-- Add Quality Score Payment -->
+    <action name="addQualityScorePayment" class="org.hisp.dhis.rbf.qualityscorepayment.action.AddQualityScorePaymentAction">
+      <result name="success" type="redirect">qualityScorePaymentList.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
+      <param name="anyAuthorities">F_QUALITY_SCORE_PAYMENT_ADD</param>
+    </action>
+
+	<!-- Delete Quality Score Payment --> 
+    <action name="delQualityScorePayment" class="org.hisp.dhis.rbf.qualityscorepayment.action.DeleteQualityScorePaymentAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_QUALITY_SCORE_PAYMENT_DELETE</param>
+    </action>
+
+    <!-- Show Details -->   
+ 	<action name="getQualityScorePayment" class="org.hisp.dhis.rbf.qualityscorepayment.action.GetQualityScorePaymentAction">
+      <result name="success" type="velocity-json"> /dhis-web-maintenance-rbf/jsonQualityScorePaymentDetails.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+
+
+	
+
 	<!-- Lookup -->
     
     <!-- Get All Lookups -->
@@ -337,6 +380,23 @@
       <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     <!-- Reports -->
