@@ -163,7 +163,25 @@ public class NepaliCalendar extends AbstractCalendar
 
     private DateInterval toWeekIsoInterval( DateUnit dateUnit, int offset, int length )
     {
-        return null;
+        DateUnit from = new DateUnit( dateUnit );
+
+        if ( offset > 0 )
+        {
+            from = plusWeeks( from, offset );
+        }
+        else if ( offset < 0 )
+        {
+            from = minusWeeks( from, -offset );
+        }
+
+        DateUnit to = new DateUnit( from );
+        to = plusWeeks( to, length );
+        to = minusDays( to, 1 );
+
+        from = toIso( from );
+        to = toIso( to );
+
+        return new DateInterval( from, to, DateIntervalType.ISO8601_WEEK );
     }
 
     private DateInterval toDayIsoInterval( DateUnit dateUnit, int offset, int length )
@@ -321,6 +339,11 @@ public class NepaliCalendar extends AbstractCalendar
         return result;
     }
 
+    private DateUnit minusWeeks( DateUnit dateUnit, int weeks )
+    {
+        return minusDays( dateUnit, weeks * daysInWeek() );
+    }
+
     private DateUnit minusDays( DateUnit dateUnit, int days )
     {
         int curYear = dateUnit.getYear();
@@ -386,6 +409,11 @@ public class NepaliCalendar extends AbstractCalendar
         updateDateUnit( result );
 
         return result;
+    }
+
+    private DateUnit plusWeeks( DateUnit dateUnit, int weeks )
+    {
+        return plusDays( dateUnit, weeks * daysInWeek() );
     }
 
     private DateUnit plusDays( DateUnit dateUnit, int days )
