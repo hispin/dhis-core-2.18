@@ -157,14 +157,6 @@ public interface ProgramStageInstanceService
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
 
     /**
-     * Remove events without any data values
-     * 
-     * @param programStage Empty events belong to this program stage are removed
-     * @param organisationUnit Specify an orgunit where empty events belong to
-     */
-    void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
-
-    /**
      * Create relationship between an OutboundSms with many events.
      * 
      * @param programStageInstances Event list

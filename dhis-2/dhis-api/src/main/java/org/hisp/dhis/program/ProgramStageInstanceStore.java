@@ -35,7 +35,6 @@ import java.util.List;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
@@ -100,14 +99,6 @@ public interface ProgramStageInstanceStore
      * @return ProgramStageInstance list
      */
     List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, Boolean completed );
-
-    /**
-     * Remove events without any data values
-     * 
-     * @param programStage Empty events belong to this program stage are removed
-     * @param organisationUnit Specify an orgunit where empty events belong to
-     */
-    void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
 
     /**
      * Create relationship between an OutboundSms with many events.

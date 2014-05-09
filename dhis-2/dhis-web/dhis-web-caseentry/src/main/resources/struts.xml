@@ -212,13 +212,6 @@
 			</result>
 		</action>
 
-		<action name="removeEmptyEvents"
-			class="org.hisp.dhis.caseentry.action.caseentry.RemoveEmptyEventsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-		</action>
-
 		<action name="getUsernameList"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetUsernameListAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonUsernames.vm
