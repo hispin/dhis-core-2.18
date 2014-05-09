@@ -67,6 +67,8 @@ public class MobileOrgUnitLinks
 
     private String sendFeedbackUrl;
 
+    private String findUserUrl;
+
     private String updateContactUrl;
 
     private String findPatientUrl;
@@ -227,6 +229,16 @@ public class MobileOrgUnitLinks
         this.sendFeedbackUrl = sendFeedbackUrl;
     }
 
+    public String getFindUserUrl()
+    {
+        return findUserUrl;
+    }
+
+    public void setFindUserUrl( String findUserUrl )
+    {
+        this.findUserUrl = findUserUrl;
+    }
+
     public String getUpdateContactUrl()
     {
         return updateContactUrl;
@@ -382,6 +394,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( searchUrl );
         dataOutputStream.writeUTF( updateNewVersionUrl );
         dataOutputStream.writeUTF( sendFeedbackUrl );
+        dataOutputStream.writeUTF( findUserUrl );
         dataOutputStream.writeUTF( updateContactUrl );
         dataOutputStream.writeUTF( findPatientUrl );
         dataOutputStream.writeUTF( registerPersonUrl );
@@ -396,7 +409,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
         dataOutputStream.writeUTF( generateRepeatableEventUrl );
         dataOutputStream.writeUTF( uploadSingleEventWithoutRegistration );
-   
 
     }
 
@@ -415,6 +427,7 @@ public class MobileOrgUnitLinks
         searchUrl = dataInputStream.readUTF();
         updateNewVersionUrl = dataInputStream.readUTF();
         sendFeedbackUrl = dataInputStream.readUTF();
+        findUserUrl = dataInputStream.readUTF();
         updateContactUrl = dataInputStream.readUTF();
         findPatientUrl = dataInputStream.readUTF();
         registerPersonUrl = dataInputStream.readUTF();
@@ -464,6 +477,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.searchUrl );
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
         dataOutputStream.writeUTF( this.sendFeedbackUrl );
+        dataOutputStream.writeUTF( this.findUserUrl );
         // dataOutputStream.writeUTF( this.updateContactUrl );
     }
 
@@ -483,6 +497,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( searchUrl );
         dataOutputStream.writeUTF( updateNewVersionUrl );
         dataOutputStream.writeUTF( sendFeedbackUrl );
+        dataOutputStream.writeUTF( findUserUrl );
         dataOutputStream.writeUTF( updateContactUrl );
         dataOutputStream.writeUTF( findPatientUrl );
         dataOutputStream.writeUTF( registerPersonUrl );

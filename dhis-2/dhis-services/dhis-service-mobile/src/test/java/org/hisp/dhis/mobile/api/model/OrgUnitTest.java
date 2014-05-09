@@ -60,6 +60,7 @@ public class OrgUnitTest
         unit.setSearchUrl( "search" );
         unit.setUpdateNewVersionUrl( "" );
         unit.setSendFeedbackUrl( "sendFeedbackUrl" );
+        unit.setFindUserUrl( "findUserUrl" );
         unit.setUpdateContactUrl( "updateContactUrl" );
         unit.setFindPatientUrl( "findPatientUrl" );
         unit.setUploadProgramStageUrl( "uploadProgramStageUrl" );
