@@ -48,7 +48,9 @@ public class HibernateRelationshipStore
     @SuppressWarnings( "unchecked" )
     public Collection<Relationship> getForTrackedEntityInstance( TrackedEntityInstance instance )
     {
-        return getCriteria( Restrictions.disjunction().add( Restrictions.eq( "entityInstanceA", instance ) ).add(
+        return getCriteria( 
+            Restrictions.disjunction().add( 
+            Restrictions.eq( "entityInstanceA", instance ) ).add(
             Restrictions.eq( "entityInstanceB", instance ) ) ).list();
     }
 
@@ -61,15 +63,17 @@ public class HibernateRelationshipStore
     @SuppressWarnings( "unchecked" )
     public Collection<Relationship> get( TrackedEntityInstance entityInstanceA, RelationshipType relationshipType )
     {
-        return getCriteria( Restrictions.eq( "entityInstanceA", entityInstanceA ),
+        return getCriteria( 
+            Restrictions.eq( "entityInstanceA", entityInstanceA ),
             Restrictions.eq( "relationshipType", relationshipType ) ).list();
     }
 
     public Relationship get( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB, RelationshipType relationshipType )
     {
-        return (Relationship) getCriteria( Restrictions.eq( "entityInstanceA", entityInstanceA ),
-            Restrictions.eq( "entityInstanceB", entityInstanceB ), Restrictions.eq( "relationshipType", relationshipType ) )
-            .uniqueResult();
+        return (Relationship) getCriteria( 
+            Restrictions.eq( "entityInstanceA", entityInstanceA ),
+            Restrictions.eq( "entityInstanceB", entityInstanceB ), 
+            Restrictions.eq( "relationshipType", relationshipType ) ).uniqueResult();
     }
     
     public Relationship get( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB )

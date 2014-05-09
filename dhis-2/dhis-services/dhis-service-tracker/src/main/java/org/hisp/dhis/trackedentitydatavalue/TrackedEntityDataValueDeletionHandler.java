@@ -38,8 +38,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Chau Thu Tran
- * @version $ TrackedEntityDataValueDeletionHandler.java Jun 24, 2011 1:10:46 PM $
- * 
  */
 public class TrackedEntityDataValueDeletionHandler
     extends DeletionHandler

@@ -48,7 +48,8 @@ public class HibernateProgramStageStore
 
     public ProgramStage getByNameAndProgram( String name, Program program )
     {
-        return (ProgramStage) getCriteria( Restrictions.eq( "name", name ), Restrictions.eq( "program", program ) )
-            .uniqueResult();
+        return (ProgramStage) getCriteria( 
+            Restrictions.eq( "name", name ), 
+            Restrictions.eq( "program", program ) ).uniqueResult();
     }
 }

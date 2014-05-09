@@ -57,8 +57,10 @@ public class HibernateTrackedEntityAuditStore
     @Override
     public TrackedEntityAudit get( Integer entityInstanceId, String visitor, Date date, String accessedModule )
     {
-        return (TrackedEntityAudit) getCriteria( Restrictions.eq( "entityInstance.id", entityInstanceId ),
-            Restrictions.eq( "visitor", visitor ), Restrictions.eq( "date", date ),
+        return (TrackedEntityAudit) getCriteria( 
+            Restrictions.eq( "entityInstance.id", entityInstanceId ),
+            Restrictions.eq( "visitor", visitor ), 
+            Restrictions.eq( "date", date ),
             Restrictions.eq( "accessedModule", accessedModule ) ).uniqueResult();
     }
 }
