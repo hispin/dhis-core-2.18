@@ -124,6 +124,13 @@ public interface Calendar
     DateInterval toInterval( DateUnit dateUnit, DateIntervalType type );
 
     /**
+     * Gets interval of type based on todays date
+     * @return Interval for interval type based on dateUnit
+     * @see DateIntervalType
+     */
+    DateInterval toInterval( DateIntervalType type );
+
+    /**
      * Gets current date as local DateUnit
      * @return Today date as local DateUnit
      */
