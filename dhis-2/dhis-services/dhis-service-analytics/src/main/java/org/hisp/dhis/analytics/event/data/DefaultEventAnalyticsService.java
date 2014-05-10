@@ -295,14 +295,15 @@ public class DefaultEventAnalyticsService
     }
 
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate,
-        Set<String> dimension, Set<String> filter, boolean skipMeta, boolean hierarchyMeta, SortOrder sortOrder, Integer limit,
-        I18nFormat format )
+        Set<String> dimension, Set<String> filter, boolean skipMeta, boolean hierarchyMeta, SortOrder sortOrder, 
+        Integer limit, boolean uniqueInstances, I18nFormat format )
     {
         EventQueryParams params = getFromUrl( program, stage, startDate, endDate, dimension, filter, null, null, null,
             skipMeta, hierarchyMeta, false, null, null, format );
         
         params.setSortOrder( sortOrder );
         params.setLimit( limit );
+        params.setUniqueInstances( uniqueInstances );
         params.setAggregate( true );
 
         return params;

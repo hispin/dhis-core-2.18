@@ -45,7 +45,11 @@ public class AnalyticsTable
     private Period period;
     
     private Program program;
-    
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public AnalyticsTable()
     {
     }
@@ -70,7 +74,11 @@ public class AnalyticsTable
         this.period = period;
         this.program = program;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
     public String getTableName()
     {
         String name = baseName;
@@ -104,13 +112,27 @@ public class AnalyticsTable
         
         return name;
     }
+
+    public boolean hasPeriod()
+    {
+        return period != null;
+    }
+    
+    public boolean hasProgram()
+    {
+        return program != null;
+    }
     
     @Override
     public String toString()
     {
         return getTableName();
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
     public String getBaseName()
     {
         return baseName;

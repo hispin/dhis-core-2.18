@@ -80,6 +80,8 @@ public class EventQueryParams
     
     private Integer limit;
     
+    private boolean uniqueInstances;
+    
     private boolean coordinatesOnly;
     
     // -------------------------------------------------------------------------
@@ -123,6 +125,7 @@ public class EventQueryParams
         params.pageSize = this.pageSize;
         params.sortOrder = this.sortOrder;
         params.limit = this.limit;
+        params.uniqueInstances = this.uniqueInstances;
         params.coordinatesOnly = this.coordinatesOnly;
         
         params.periodType = this.periodType;
@@ -238,6 +241,15 @@ public class EventQueryParams
     public boolean hasLimit()
     {
         return limit != null && limit > 0;
+    }
+    
+    /**
+     * Indicates whether the program of this query requires registration of
+     * tracked entity instances.
+     */
+    public boolean isProgramRegistration()
+    {
+        return program != null && program.isRegistration();
     }
     
     /**
@@ -403,6 +415,16 @@ public class EventQueryParams
     public void setLimit( Integer limit )
     {
         this.limit = limit;
+    }
+    
+    public boolean isUniqueInstances()
+    {
+        return uniqueInstances;
+    }
+
+    public void setUniqueInstances( boolean uniqueInstances )
+    {
+        this.uniqueInstances = uniqueInstances;
     }
 
     public boolean isCoordinatesOnly()

@@ -49,7 +49,8 @@ public interface EventAnalyticsService
      * Used for aggregate query.
      */
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, boolean skipMeta, boolean hierarchyMeta, SortOrder sortOrder, Integer limit, I18nFormat format );
+        Set<String> dimension, Set<String> filter, boolean skipMeta, boolean hierarchyMeta, SortOrder sortOrder, 
+        Integer limit, boolean uniqueInstances, I18nFormat format );
 
     /**
      * Used for event query.

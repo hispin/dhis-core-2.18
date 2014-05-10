@@ -160,17 +160,19 @@ public class JdbcEventAnalyticsTableManager
 
             sql = removeLast( sql, 1 ) + " ";
 
-            sql += "from programstageinstance psi "
-                + "left join programinstance pi on psi.programinstanceid=pi.programinstanceid "
-                + "left join programstage ps on psi.programstageid=ps.programstageid "
-                + "left join program pr on pi.programid=pr.programid "
-                + "left join trackedentityinstance pa on pi.trackedentityinstanceid=pa.trackedentityinstanceid "
-                + "left join organisationunit ou on psi.organisationunitid=ou.organisationunitid "
-                + "left join _orgunitstructure ous on psi.organisationunitid=ous.organisationunitid "
-                + "left join _dateperiodstructure dps on psi.executiondate=dps.dateperiod "
-                + "where psi.executiondate >= '" + start + "' " + "and psi.executiondate <= '" + end + "' "
-                + "and pr.programid=" + table.getProgram().getId() + " " + "and psi.organisationunitid is not null "
-                + "and psi.executiondate is not null";
+            sql += "from programstageinstance psi " +
+                "left join programinstance pi on psi.programinstanceid=pi.programinstanceid " +
+                "left join programstage ps on psi.programstageid=ps.programstageid " +
+                "left join program pr on pi.programid=pr.programid " +
+                "left join trackedentityinstance tei on pi.trackedentityinstanceid=tei.trackedentityinstanceid " +
+                "left join organisationunit ou on psi.organisationunitid=ou.organisationunitid " +
+                "left join _orgunitstructure ous on psi.organisationunitid=ous.organisationunitid " +
+                "left join _dateperiodstructure dps on psi.executiondate=dps.dateperiod " +
+                "where psi.executiondate >= '" + start + "' " + 
+                "and psi.executiondate <= '" + end + "' " +
+                "and pr.programid=" + table.getProgram().getId() + " " + 
+                "and psi.organisationunitid is not null " +
+                "and psi.executiondate is not null";
 
             log.info( "Populate SQL: " + sql );
 
@@ -246,6 +248,12 @@ public class JdbcEventAnalyticsTableManager
 
         columns.addAll( Arrays.asList( psi, ps, ed, longitude, latitude, ou, oun, ouc ) );
 
+        if ( table.hasProgram() && table.getProgram().isRegistration() )
+        {
+            String[] tei = { quote( "tei" ), "character(11)", "tei.uid" };
+            columns.add( tei );
+        }
+        
         return columns;
     }
 
