@@ -40,7 +40,6 @@ import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
@@ -54,8 +53,6 @@ import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService;
-import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
-import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,13 +79,6 @@ public class DefaultProgramStageInstanceService
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
-    }
-
-    private TrackedEntityDataValueService dataValueService;
-
-    public void setDataValueService( TrackedEntityDataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
     }
 
     private SmsSender smsSender;
@@ -195,76 +185,6 @@ public class DefaultProgramStageInstanceService
     }
 
     @Override
-    public List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n )
-    {
-        List<Grid> grids = new ArrayList<Grid>();
-
-        Collection<ProgramStageInstance> programStageInstances = programInstance.getProgramStageInstances();
-
-        for ( ProgramStageInstance programStageInstance : programStageInstances )
-        {
-            Grid grid = new ListGrid();
-
-            // -----------------------------------------------------------------
-            // Title
-            // -----------------------------------------------------------------
-
-            Date executionDate = programStageInstance.getExecutionDate();
-            String executionDateValue = (executionDate != null) ? format.formatDate( programStageInstance
-                .getExecutionDate() ) : "[" + i18n.getString( "none" ) + "]";
-
-            grid.setTitle( programStageInstance.getProgramStage().getName() );
-            grid.setSubtitle( i18n.getString( "due_date" ) + ": "
-                + format.formatDate( programStageInstance.getDueDate() ) + " - " + i18n.getString( "report_date" )
-                + ": " + executionDateValue );
-
-            // -----------------------------------------------------------------
-            // Headers
-            // -----------------------------------------------------------------
-
-            grid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
-            grid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
-
-            // -----------------------------------------------------------------
-            // Values
-            // -----------------------------------------------------------------
-
-            Collection<TrackedEntityDataValue> entityDataValues = dataValueService
-                .getTrackedEntityDataValues( programStageInstance );
-
-            if ( executionDate == null || entityDataValues == null || entityDataValues.size() == 0 )
-            {
-                grid.addRow();
-                grid.addValue( "[" + i18n.getString( "none" ) + "]" );
-                grid.addValue( "" );
-            }
-            else
-            {
-                for ( TrackedEntityDataValue entityDataValue : entityDataValues )
-                {
-                    DataElement dataElement = entityDataValue.getDataElement();
-
-                    grid.addRow();
-                    grid.addValue( dataElement.getName() );
-
-                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
-                    {
-                        grid.addValue( i18n.getString( entityDataValue.getValue() ) );
-                    }
-                    else
-                    {
-                        grid.addValue( entityDataValue.getValue() );
-                    }
-                }
-            }
-
-            grids.add( grid );
-        }
-
-        return grids;
-    }
-
-    @Override
     public void updateProgramStageInstances( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms )
     {
         programStageInstanceStore.update( programStageInstanceIds, outboundSms );
@@ -306,13 +226,7 @@ public class DefaultProgramStageInstanceService
         int total = programInstanceService.countProgramInstances( program, orgunitIds, startDate, endDate );
         grid.addRow();
         grid.addValue( i18n.getString( "total_new_enrollments_in_this_period" ) );
-        grid.addValue( total );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
+        grid.addValue( total ).addEmptyValues( 6 );
 
         // Total programs completed in this period
 
@@ -320,13 +234,7 @@ public class DefaultProgramStageInstanceService
             program, orgunitIds, startDate, endDate );
         grid.addRow();
         grid.addValue( i18n.getString( "total_programs_completed_in_this_period" ) );
-        grid.addValue( totalCompleted );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
+        grid.addValue( totalCompleted ).addEmptyValues( 6 );
 
         // Total programs discontinued (un-enrollments)
 
@@ -334,13 +242,7 @@ public class DefaultProgramStageInstanceService
             program, orgunitIds, startDate, endDate );
         grid.addRow();
         grid.addValue( i18n.getString( "total_programs_discontinued_unenrollments" ) );
-        grid.addValue( totalDiscontinued );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
+        grid.addValue( totalDiscontinued ).addEmptyValues( 6 );
 
         // Average number of stages for complete programs
 
@@ -353,37 +255,16 @@ public class DefaultProgramStageInstanceService
                 ProgramInstance.STATUS_ACTIVE );
             percent = (stageCompleted + 0.0) / totalCompleted;
         }
-        grid.addValue( format.formatValue( percent ) );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
+        grid.addValue( format.formatValue( percent ) ).addEmptyValues( 6 );
 
         // Add empty row
 
-        grid.addRow();
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
+        grid.addRow().addEmptyValues( 8 );
 
         // Summary by stage
 
         grid.addRow();
-        grid.addValue( i18n.getString( "summary_by_stage" ) );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
-        grid.addValue( "" );
+        grid.addValue( i18n.getString( "summary_by_stage" ) ).addEmptyValues( 7 );
 
         // Add titles for stage details
 
@@ -628,7 +509,7 @@ public class DefaultProgramStageInstanceService
 
         if ( type == Program.SINGLE_EVENT_WITH_REGISTRATION )
         {
-            // Add a new program-instance
+            // Add a new program instance
             programInstance = new ProgramInstance();
             programInstance.setEnrollmentDate( executionDate );
             programInstance.setDateOfIncident( executionDate );
@@ -643,7 +524,7 @@ public class DefaultProgramStageInstanceService
             Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( program );
             if ( programInstances == null || programInstances.size() == 0 )
             {
-                // Add a new program-instance if it doesn't exist
+                // Add a new program instance if it doesn't exist
                 programInstance = new ProgramInstance();
                 programInstance.setEnrollmentDate( executionDate );
                 programInstance.setDateOfIncident( executionDate );
@@ -657,7 +538,7 @@ public class DefaultProgramStageInstanceService
             }
         }
 
-        // Add a new program-stage-instance
+        // Add a new program stage instance
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
         programStageInstance.setProgramInstance( programInstance );
         programStageInstance.setProgramStage( programStage );
@@ -699,5 +580,4 @@ public class DefaultProgramStageInstanceService
 
         return outboundSms;
     }
-
 }
