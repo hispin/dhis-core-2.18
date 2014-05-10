@@ -66,7 +66,7 @@ Ext.onReady(function() {
 
 	DV.instances = [];
 	DV.i18n = {};
-	DV.isDebug = true;
+	DV.isDebug = false;
 	DV.isSessionStorage = ('sessionStorage' in window && window['sessionStorage'] !== null);
 
 	DV.getCore = function(init) {
@@ -2731,9 +2731,10 @@ Ext.onReady(function() {
 	css += '.dv-chart-tips .x-tip-body div { font-family: arial,sans-serif,ubuntu,consolas !important; } \n';
 
 	// load mask css
-	css += '.x-mask-msg { padding: 0; \n border: 0 none; background-image: none; background-color: transparent; } \n';
+	css += '.x-mask-msg { padding: 0; border: 0 none; background-image: none; background-color: transparent; } \n';
 	css += '.x-mask-msg div { background-position: 11px center; } \n';
 	css += '.x-mask-msg .x-mask-loading { border: 0 none; \n background-color: #000; color: #fff; border-radius: 2px; padding: 12px 14px 12px 30px; opacity: 0.65; } \n';
+    css += '.x-mask { opacity: 0; } \n';
 
 	Ext.util.CSS.createStyleSheet(css);
 
@@ -2864,6 +2865,7 @@ Ext.onReady(function() {
 				web = ns.core.web;
 
 			init.el = config.el;
+            Ext.get(init.el).setStyle('opacity', 0);
 
 			web.chart = web.chart || {};
 
@@ -2967,15 +2969,23 @@ Ext.onReady(function() {
 				// create chart
 				ns.app.chart = ns.core.web.chart.createChart(ns);
 
+                ns.app.chart.on('afterrender', function() {
+                    Ext.defer( function() {
+                        Ext.get(ns.core.init.el).fadeIn({
+                            duration: 400
+                        });
+                    }, 300 );
+                });
+
 				// update viewport
 				ns.app.centerRegion.removeAll();
 				ns.app.centerRegion.add(ns.app.chart);
-
+                
 				web.mask.hide(ns.app.centerRegion);
 			};
 		};
 
-		createViewport = function() {			
+		createViewport = function() {
 			var el = Ext.get(ns.core.init.el),
 				setFavorite,
 				centerRegion,
