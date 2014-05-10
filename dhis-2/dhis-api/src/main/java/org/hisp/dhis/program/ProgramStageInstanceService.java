@@ -146,17 +146,6 @@ public interface ProgramStageInstanceService
     List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, Boolean completed );
 
     /**
-     * Get an event report of program instance
-     * 
-     * @param programInstance ProgramInstance
-     * @param format I18nFormat object
-     * @param i18n I18n object
-     * 
-     * @return List of grids. Each grid is included all information of a event
-     */
-    List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
-
-    /**
      * Create relationship between an OutboundSms with many events.
      * 
      * @param programStageInstances Event list

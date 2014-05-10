@@ -181,8 +181,6 @@
 		<property name="programStageInstanceStore"
 			ref="org.hisp.dhis.program.ProgramStageInstanceStore" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="dataValueService"
-			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="reminderService"
