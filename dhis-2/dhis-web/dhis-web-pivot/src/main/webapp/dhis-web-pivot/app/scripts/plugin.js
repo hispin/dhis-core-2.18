@@ -2692,6 +2692,7 @@ Ext.onReady( function() {
 	css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
 	css += '.x-mask-msg div { \n background-position: 11px center; \n } \n';
 	css += '.x-mask-msg .x-mask-loading { \n border: 0 none; \n	background-color: #000; \n color: #fff; \n border-radius: 2px; \n padding: 12px 14px 12px 30px; \n opacity: 0.65; \n } \n';
+    css += '.x-mask { opacity: 0 } \n';
 
 	css += '.pivot td.legend { \n padding: 0; \n } \n';
 	css += '.pivot div.legendCt { \n display: table; \n float: right; \n width: 100%; \n } \n';
@@ -2966,6 +2967,12 @@ Ext.onReady( function() {
 				config = web.pivot.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
 				ns.app.centerRegion.update(config.html);
 
+                Ext.defer( function() {
+                    Ext.get(ns.core.init.el).fadeIn({
+                        duration: 400
+                    });
+                }, 300 );
+
 				// after render
 				ns.app.layout = layout;
 				ns.app.xLayout = xLayout;
@@ -3027,6 +3034,8 @@ Ext.onReady( function() {
 			}
 
 			ns.core = PT.getCore(Ext.clone(init));
+            ns.core.init.el = config.el;
+            Ext.get(ns.core.init.el).setStyle('opacity', 0);
 			extendInstance(ns);
 
 			ns.app.viewport = createViewport();

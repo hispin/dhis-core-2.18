@@ -1838,8 +1838,19 @@ Ext.onReady( function() {
 					for (var i = 0, dim; i < view.filters.length; i++) {
 						dim = view.filters[i];
 
-						paramString += '&filter=' + dim.dimension;
-						paramString += dim.filter ? ':' + encodeURIComponent(dim.filter) : '';
+                        paramString += '&filter=' + dim.dimension;
+
+                        if (dim.items) {
+                            paramString += ':';
+
+                            for (var i = 0; i < dim.items.length; i++) {
+                                paramString += encodeURIComponent(dim.items[i].id);
+                                paramString += i < dim.items.length - 1 ? ';' : '';
+                            }
+                        }
+                        else {
+                            paramString += dim.filter ? ':' + encodeURIComponent(dim.filter) : '';
+                        }
 					}
 				}
 

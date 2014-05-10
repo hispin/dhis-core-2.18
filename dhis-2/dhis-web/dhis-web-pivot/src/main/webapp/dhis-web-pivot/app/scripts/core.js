@@ -1980,7 +1980,7 @@ Ext.onReady( function() {
 						displayDensity,
 						fontSize,
 						isNumeric = Ext.isObject(config) && Ext.isString(config.type) && config.type.substr(0,5) === 'value' && !config.empty,
-						isValue = Ext.isObject(config) && Ext.isString(config.type) && config.type === 'value' && !config.empty,
+						isValue = isNumeric && config.type === 'value',
 						cls = '',
 						html = '';
 
