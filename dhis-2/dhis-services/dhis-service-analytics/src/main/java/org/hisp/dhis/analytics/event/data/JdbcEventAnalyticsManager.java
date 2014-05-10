@@ -84,7 +84,9 @@ public class JdbcEventAnalyticsManager
 
     public Grid getAggregatedEventData( EventQueryParams params, Grid grid )
     {
-        String sql = "select count(psi) as value," + getSelectColumns( params ) + " ";
+        String countClause = ( params.isProgramRegistration() && params.isUniqueInstances() ) ? "count(distinct tei)" : "count(psi)";
+        
+        String sql = "select " + countClause + " as value," + getSelectColumns( params ) + " ";
 
         // ---------------------------------------------------------------------
         // Criteria

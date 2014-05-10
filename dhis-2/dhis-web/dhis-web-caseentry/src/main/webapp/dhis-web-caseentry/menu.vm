@@ -1,6 +1,4 @@
-#if( $auth.hasAccess( "dhis-web-caseentry", "trackedEntityInstance" ) 
-	|| $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) 
-	|| $auth.hasAccess( "dhis-web-caseentry", "smsReminderSelect" ) )
+#if( $auth.hasAccess( "dhis-web-caseentry", "trackedEntityInstance" ) || $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) || $auth.hasAccess( "dhis-web-caseentry", "smsReminderSelect" ) )
 <h2>$i18n.getString( "tracked_entity_instance" )&nbsp;</h2>
 #end
 <ul>
@@ -14,8 +12,7 @@
 		<li><a href="smsReminderSelect.action">$i18n.getString( "program_tracking" )</a></li>     
 	#end
 </ul>
-#if( $auth.hasAccess( "dhis-web-caseentry", "singleEventSelect" ) 
-	|| $auth.hasAccess( "dhis-web-caseentry", "anonymousRegistration" ) )
+#if( $auth.hasAccess( "dhis-web-caseentry", "singleEventSelect" ) )
 <h2>$i18n.getString( "data_entry" )&nbsp;</h2>
 #end
 <ul>
@@ -24,9 +21,7 @@
 	#end
 </ul>
 
-#if( $auth.hasAccess( "dhis-web-caseentry", "reportSelect" ) 
-	|| $auth.hasAccess( "dhis-web-caseentry", "statisticalProgramReportSelect" ) 
-	|| $auth.hasAccess( "dhis-web-caseentry", "programStageCompletenessSelect" ) )	
+#if( $auth.hasAccess( "dhis-web-caseentry", "reportSelect" ) || $auth.hasAccess( "dhis-web-caseentry", "statisticalProgramReportSelect" ) || $auth.hasAccess( "dhis-web-caseentry", "programStageCompletenessSelect" ) )	
 <h2>$i18n.getString( "reports" )&nbsp;</h2>
 #end
 <ul>
