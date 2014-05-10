@@ -1445,10 +1445,13 @@ Ext.onReady( function() {
 				}
 
 				// add span and children
-				for (var i = 0; i < aaAllFloorObjects.length; i++) {
+				for (var i = 0, aAboveFloorObjects, doorIds, uniqueDoorIds; i < aaAllFloorObjects.length; i++) {
+                    doorIds = [];
+
 					for (var j = 0, obj, doorCount = 0, oldestObj; j < aaAllFloorObjects[i].length; j++) {
 
 						obj = aaAllFloorObjects[i][j];
+                        doorIds.push(obj.id);
 
 						if (doorCount === 0) {
 
@@ -1456,7 +1459,9 @@ Ext.onReady( function() {
 							obj[spanType] = aFloorSpan[i];
 
 							// children
-							obj.children = obj.leaf ? 0 : aFloorSpan[i];
+                            if (obj.leaf) {
+                                obj.children = 0;
+                            }
 
 							// first sibling
 							obj.oldest = true;
@@ -1476,6 +1481,16 @@ Ext.onReady( function() {
 							doorCount = 0;
 						}
 					}
+
+                    // set above floor door children to number of unique door ids on this floor
+                    if (i > 0) {
+                        aAboveFloorObjects = aaAllFloorObjects[i-1];
+                        uniqueDoorIds = Ext.Array.unique(doorIds);
+
+                        for (var j = 0; j < aAboveFloorObjects.length; j++) {
+                            aAboveFloorObjects[j].children = uniqueDoorIds.length;
+                        }
+                    }
 				}
 
 				// add parents if more than 1 floor
