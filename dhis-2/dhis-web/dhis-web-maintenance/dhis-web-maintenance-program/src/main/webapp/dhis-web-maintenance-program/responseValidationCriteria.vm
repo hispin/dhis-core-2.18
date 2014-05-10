@@ -5,9 +5,4 @@
   <description>$encoder.xmlEncode($validationCriteria.description )</description>
   <property>$i18n.getString($validationCriteria.property)</property>
   <operator>$validationCriteria.operator</operator>
-  #if($validationCriteria.property == 'birthDate')
-	<value>$format.formatDate($validationCriteria.value)</value>
-  #else
-	<value>$validationCriteria.value</value>
-  #end
 </validationCriteria>
