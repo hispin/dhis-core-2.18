@@ -236,6 +236,11 @@ public class User
     {
         return userCredentials != null ? userCredentials.getUsername() : null;
     }
+    
+    public boolean isSuper()
+    {
+        return userCredentials != null && userCredentials.isSuper();
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
