@@ -819,11 +819,14 @@ Ext.onReady( function() {
                 this.activateCmp.setValue(!!(sortOrder > 0 && topLimit > 0));
             },
             initComponent: function() {
-                var container = this;
+                var container = this,
+                    activateWidth = 135,
+                    sortWidth = (this.comboboxWidth - activateWidth) / 2;
+
 
                 this.activateCmp = Ext.create('Ext.form.field.Checkbox', {
                     boxLabel: container.boxLabel,
-                    width: 135,
+                    width: activateWidth,
                     style: 'margin-bottom:4px',
                     listeners: {
                         change: function(cmp, newValue) {
@@ -835,7 +838,7 @@ Ext.onReady( function() {
                 this.sortOrderCmp = Ext.create('Ext.form.field.ComboBox', {
                     cls: 'ns-combo',
                     style: 'margin-bottom:2px',
-                    width: 70,
+                    width: sortWidth,
                     queryMode: 'local',
                     valueField: 'id',
                     editable: false,
@@ -850,7 +853,7 @@ Ext.onReady( function() {
                 });
 
                 this.topLimitCmp = Ext.create('Ext.form.field.Number', {
-                    width: 56,
+                    width: sortWidth - 1,
                     style: 'margin-bottom:2px; margin-left:1px',
                     minValue: 1,
                     maxValue: 10000,
@@ -1556,6 +1559,8 @@ Ext.onReady( function() {
 		var showTotals,
 			showSubTotals,
 			hideEmptyRows,
+            limit,
+            countType,
             aggregationType,
 			showHierarchy,
 			digitGroupSeparator,
@@ -1569,7 +1574,7 @@ Ext.onReady( function() {
 			style,
 			parameters,
 
-			comboboxWidth = 262,
+			comboboxWidth = 280,
 			window;
 
 		showTotals = Ext.create('Ext.form.field.Checkbox', {
@@ -1593,8 +1598,29 @@ Ext.onReady( function() {
         limit = Ext.create('Ext.ux.container.LimitContainer', {
             boxLabel: NS.i18n.limit,
             sortOrder: 1,
-            topLimit: 10
+            topLimit: 10,
+            comboboxWidth: comboboxWidth
         });
+
+        countType = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'ns-combo',
+			style: 'margin-bottom:2px',
+			width: comboboxWidth,
+			labelWidth: 130,
+			fieldLabel: NS.i18n.count_type,
+			labelStyle: 'color:#333',
+			queryMode: 'local',
+			valueField: 'id',
+			editable: false,
+			value: 'events',
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'text'],
+				data: [
+					{id: 'events', text: NS.i18n.events},
+					{id: 'tracked_entity_instances', text: NS.i18n.tracked_entity_instances}
+				]
+			})
+		});
 
 		showHierarchy = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_hierarchy,
@@ -1684,7 +1710,8 @@ Ext.onReady( function() {
 				showTotals,
 				showSubTotals,
 				hideEmptyRows,
-                limit
+                limit,
+                countType
                 //aggregationType
 			]
 		};
@@ -1723,6 +1750,7 @@ Ext.onReady( function() {
 					hideEmptyRows: hideEmptyRows.getValue(),
                     sortOrder: limit.getSortOrder(),
                     topLimit: limit.getTopLimit(),
+					countType: countType.getValue(),
 					showHierarchy: showHierarchy.getValue(),
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue(),
@@ -1735,6 +1763,7 @@ Ext.onReady( function() {
 				showSubTotals.setValue(Ext.isBoolean(layout.showSubTotals) ? layout.showSubTotals : true);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
 				limit.setValues(layout.sortOrder, layout.topLimit);
+				countType.setValue(Ext.isString(layout.countType) ? layout.countType : 'events');
                 //aggregationType.setValue(Ext.isString(layout.aggregationType) ? layout.aggregationType : 'default');
 				showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
 				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
@@ -1818,6 +1847,7 @@ Ext.onReady( function() {
 					w.showSubTotals = showSubTotals;
 					w.hideEmptyRows = hideEmptyRows;
                     w.limit = limit;
+					w.countType = countType;
 					w.showHierarchy = showHierarchy;
 					w.displayDensity = displayDensity;
 					w.fontSize = fontSize;
@@ -1842,7 +1872,7 @@ Ext.onReady( function() {
 			style,
 			parameters,
 
-			comboboxWidth = 262,
+			comboboxWidth = 280,
 			window;
 
 		//showHierarchy = Ext.create('Ext.form.field.Checkbox', {

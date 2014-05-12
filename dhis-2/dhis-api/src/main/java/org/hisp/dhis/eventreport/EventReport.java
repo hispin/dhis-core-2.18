@@ -61,6 +61,10 @@ public class EventReport
 
     public static final String DATA_TYPE_INDIVIDUAL_CASES = "individual_cases";
 
+    public static final String COUNT_TYPE_EVENTS = "events";
+
+    public static final String COUNT_TYPE_TRACKED_ENTITY_INSTANCES = "tracked_entity_instances";
+
     /**
      * Program. Required.
      */
@@ -110,6 +114,11 @@ public class EventReport
      * Indicates rendering of sub-totals for the table.
      */
     private boolean subtotals;
+
+    /**
+     * Indicates count type.
+     */
+    private String countType;
 
     /**
      * Indicates rendering of empty rows for the table.
@@ -191,6 +200,7 @@ public class EventReport
             totals = report.isTotals();
             subtotals = report.isSubtotals();
             hideEmptyRows = report.isHideEmptyRows();
+            countType = report.getCountType();
             showHierarchy = report.isShowHierarchy();
             displayDensity = report.getDisplayDensity();
             fontSize = report.getFontSize();
@@ -356,6 +366,19 @@ public class EventReport
     public void setHideEmptyRows( boolean hideEmptyRows )
     {
         this.hideEmptyRows = hideEmptyRows;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getCountType()
+    {
+        return countType;
+    }
+
+    public void setCountType( String countType )
+    {
+        this.countType = countType;
     }
 
     @JsonProperty

@@ -270,6 +270,8 @@ Ext.onReady( function() {
 
 				// hideEmptyRows: boolean (false)
 
+                // countType: string ('events') - 'events', 'tracked_entity_instance'
+
                 // aggregationType: string ('default') - 'default', 'count', 'sum'
 
 				// showHierarchy: boolean (false)
@@ -434,6 +436,7 @@ Ext.onReady( function() {
 					layout.showTotals = Ext.isBoolean(config.totals) ? config.totals : (Ext.isBoolean(config.showTotals) ? config.showTotals : true);
 					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
+					layout.countType = Ext.isString(config.countType) && !Ext.isEmpty(config.countType) ? config.countType : 'events';
                     layout.aggregationType = Ext.isString(config.aggregationType) ? config.aggregationType : 'default';
 
 					layout.showHierarchy = Ext.isBoolean(config.showHierarchy) ? config.showHierarchy : false;
@@ -1879,6 +1882,13 @@ Ext.onReady( function() {
                 // limit
                 if (view.dataType === 'aggregated_values' && (view.sortOrder && view.topLimit)) {
                     paramString += '&limit=' + view.topLimit + '&sortOrder=' + (view.sortOrder < 0 ? 'ASC' : 'DESC');
+                }
+
+                // count type
+                if (view.dataType === 'aggregated_values' && view.countType) {
+                    if (view.countType === 'tracked_entity_instances') {
+                        paramString += '&uniqueInstances=true';
+                    }
                 }
 
                 // sorting

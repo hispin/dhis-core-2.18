@@ -155,5 +155,8 @@
 "start_end_dates",
 "top",
 "bottom",
-"limit"
+"limit",
+"events",
+"tracked_entity_instances",
+"count_type"
 ]

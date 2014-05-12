@@ -490,6 +490,7 @@ public class TableAlteror
         executeSql( "update chart set hidetitle = false where hidetitle is null" );
         
         executeSql( "update eventreport set showhierarchy = false where showhierarchy is null" );
+        executeSql( "update eventreport set counttype = 'events' where counttype is null" );
 
         // Move chart filters to chart_filters table
 
