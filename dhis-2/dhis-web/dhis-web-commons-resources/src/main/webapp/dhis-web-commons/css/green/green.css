@@ -228,8 +228,7 @@ input[type=text],input[type=password],textarea
   font-size: 9pt;
   margin: 16px 20px 1px 20px;
   padding: 8px 0 8px 0;
-  font-weight: normal;
-  font-family: LiberationSan, arial;
+  font-weight: bold;
 }
 
 #leftBarContents ul
