@@ -772,6 +772,10 @@ public class ActivityReportingServiceImpl
         {
             patientModel.setTrackedEntityName( patient.getTrackedEntity().getName() );
         }
+        else
+        {
+            patientModel.setTrackedEntityName( "" );
+        }
 
         this.setSetting( getSettings() );
 
@@ -1595,6 +1599,28 @@ public class ActivityReportingServiceImpl
                     attText = attText.trim();
                     resultSet += attText + "$";
                 }
+            }
+        }
+        
+        //get tracked entity with no tracked entity name
+        resultSet += "Others$";
+        for ( TrackedEntityInstance patient : patients )
+        {
+            if ( patient.getTrackedEntity() == null)
+            {
+                resultSet += patient.getId() + "/";
+                String attText = "";
+                for ( TrackedEntityAttribute displayAttribute : displayAttributes )
+                {
+                    TrackedEntityAttributeValue value = attValueService.getTrackedEntityAttributeValue( patient,
+                        displayAttribute );
+                    if ( value != null )
+                    {
+                        attText += value.getValue() + " ";
+                    }
+                }
+                attText = attText.trim();
+                resultSet += attText + "$";
             }
         }
         return resultSet;
