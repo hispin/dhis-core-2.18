@@ -37,7 +37,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.SessionFactory;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
@@ -89,9 +88,6 @@ public class TrackedEntityInstanceController
     @Autowired
     private IdentifiableObjectManager manager;
 
-    @Autowired
-    private SessionFactory sessionFactory;
-    
     @Autowired
     private ContextUtils contextUtils;
 
