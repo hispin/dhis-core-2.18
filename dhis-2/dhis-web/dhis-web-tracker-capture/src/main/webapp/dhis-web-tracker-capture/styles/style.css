@@ -558,7 +558,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     margin-left: 20px;    
 }
 
-.vertial-spacing {
+.search-container{
     margin-top: 20px;
     margin-bottom: 20px;
 }
