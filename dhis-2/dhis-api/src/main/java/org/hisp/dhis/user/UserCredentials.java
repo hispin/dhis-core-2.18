@@ -213,7 +213,7 @@ public class UserCredentials
     {
         for ( UserAuthorityGroup group : userAuthorityGroups )
         {
-            if ( group.getAuthorities().contains( UserAuthorityGroup.AUTHORITY_ALL ) )
+            if ( group.isSuper() )
             {
                 return true;
             }

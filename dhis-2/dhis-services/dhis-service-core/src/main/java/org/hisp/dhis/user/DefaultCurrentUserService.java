@@ -39,8 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultCurrentUserService
     extends AbstractSpringSecurityCurrentUserService
 {
-    private static final String SUPERUSER_AUTHORITY = "ALL";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -91,14 +89,6 @@ public class DefaultCurrentUserService
             return false;
         }
 
-        for ( UserAuthorityGroup group : userCredentials.getUserAuthorityGroups() )
-        {
-            if ( group.getAuthorities().contains( SUPERUSER_AUTHORITY ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return userCredentials.isSuper();
     }
 }
