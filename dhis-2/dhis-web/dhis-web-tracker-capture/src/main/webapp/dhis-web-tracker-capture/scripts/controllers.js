@@ -29,10 +29,16 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.rowsPerPage = 50;
     $scope.currentPage = Paginator.getPage() + 1;   
     
+    //EntityList
+    $scope.showTrackedEntityDiv = false;
+    
     //Searching
     $scope.showSearchDiv = false;
     $scope.searchField = {title: 'search', isOpen: false};  
     $scope.attributes = [];
+    
+    //Registration
+    $scope.showRegistrationDiv = false;
     
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function() {
@@ -85,7 +91,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //get events for the selected program (and org unit)
     $scope.loadTrackedEntities = function(){
         
+        $scope.showTrackedEntityDiv = !$scope.showTrackedEntityDiv;
+        
         $scope.showSearchDiv = false;
+        $scope.showRegistrationDiv = false;        
         
         $scope.trackedEntityList = null;
         
@@ -111,11 +120,15 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };
     
     $scope.showRegistration = function(){
-        
+        $scope.showRegistrationDiv = !$scope.showRegistrationDiv;
+        $scope.showTrackedEntityDiv = false;
+        $scope.showSearchDiv = false;
     };  
     
     $scope.showSearch = function(){        
         $scope.showSearchDiv = !$scope.showSearchDiv;
+        $scope.showRegistrationDiv = false;
+        $scope.showTrackedEntityDiv = false;       
     };
     
     $scope.hideSearch = function(){        
@@ -314,10 +327,29 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.test = function(){
         console.log('the mode is:  ', $scope.ouMode);
-    };                
-    
+    };   
 })
 
+.controller('RegistrationController', 
+        function($scope,
+                AttributesFactory,
+                TranslationService) {
+    
+    //do translation of the registration page
+    TranslationService.translate();   
+    
+    $scope.attributes = AttributesFactory.getAll();
+    
+    $scope.getProgramAttributes = function(program){        
+        if(program){
+            $scope.attributes = AttributesFactory.getByProgram(program);
+        }
+        else{
+            $scope.attributes = AttributesFactory.getAll();
+        }
+    };
+    
+})
 //Controller for dashboard
 .controller('DashboardController',
         function($rootScope,

@@ -163,7 +163,6 @@
                 <tr>
                     <td>
                         {{'program'| translate}}
-                        {{attributes.size}}
                     </td>
                     <td>
                         <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">

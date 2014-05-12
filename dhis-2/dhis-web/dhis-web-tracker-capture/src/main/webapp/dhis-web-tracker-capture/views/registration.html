@@ -1,0 +1,63 @@
+<div class="bordered-div col-md-12">
+    <div class="registration-container">
+        <form name="outerForm" novalidate>
+
+            <table class="dhis2-list-table-striped dhis2-table-hover">
+                <tr>
+                    <td>
+                        {{'program'| translate}}
+                    </td>
+                    <td>
+                        <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
+                            <option value="">{{'please_select'| translate}}</option>
+                        </select>
+                    </td>
+                </tr>      
+
+                <tr ng-repeat="attribute in attributes">
+                    <td>
+                        {{attribute.name}}
+                    </td>
+                    <td>
+                        <div ng-switch="attribute.valueType">
+                            <div ng-switch-when="date">
+                                <input type="text" class="form-control" ng-date ng-model="attribute.value" />
+                            </div>
+                            <div ng-switch-when="trueOnly">
+                                <input type="checkbox" class="form-control" ng-model="attribute.value" />
+                            </div>
+                            <div ng-switch-when="bool">
+                                <select ng-model="attribute.value" class="form-control">
+                                    <option value="">{{'please_select'| translate}}</option>                        
+                                    <option value="0">{{'no'| translate}}</option>
+                                    <option value="1">{{'yes'| translate}}</option>
+                                </select>
+                            </div>
+                            <div ng-switch-when="combo">
+                                <input type="text" 
+                                       class="form-control"
+                                       ng-model="attribute.value"                                                 
+                                       typeahead="option for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
+                                       typeahead-open-on-focus 
+                                       />
+                            </div>
+                            <div ng-switch-when="number">
+                                <input type="number" class="form-control" ng-model="attribute.value"/>
+                            </div>
+                            <div ng-switch-default>
+                                <input type="text" class="form-control" ng-model="attribute.value" />                                        
+                            </div>
+                        </div>                                                                                                    
+                    </td>
+                </tr>                        
+            </table>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default">{{'save_and_add_new'| translate}}</button>
+                <button type="button" class="btn btn-default" ng-click="loadTrackedEntities()">{{'save_and_go_back'| translate}}</button>
+                <button type="button" class="btn btn-default" ng-click="showRegistration()">{{'go_back'| translate}}</button>
+            </div>
+
+        </form>
+    </div>
+</div>
