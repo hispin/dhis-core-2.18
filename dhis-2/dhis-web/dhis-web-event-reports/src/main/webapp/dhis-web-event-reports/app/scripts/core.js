@@ -1721,8 +1721,9 @@ Ext.onReady( function() {
 					nameHeaderMap[header.name] = header;
 
 					if (header.type === 'java.lang.Double') {
-						for (var j = 0; j < xResponse.rows.length; j++) {
-							xResponse.rows[j][i] = parseFloat(xResponse.rows[j][i]);
+						for (var j = 0, value; j < xResponse.rows.length; j++) {
+                            value = xResponse.rows[j][i];
+							xResponse.rows[j][i] = value ? parseFloat(value) : value;
 						}
 					}
 
