@@ -309,7 +309,8 @@ public class NepaliCalendar extends AbstractCalendar
         return conversionMap.get( year )[0];
     }
 
-    private DateUnit minusYears( DateUnit dateUnit, int years )
+    @Override
+    public DateUnit minusYears( DateUnit dateUnit, int years )
     {
         DateUnit result = new DateUnit( dateUnit.getYear() - years, dateUnit.getMonth(), dateUnit.getDay(), dateUnit.getDayOfWeek() );
         updateDateUnit( result );
@@ -317,7 +318,8 @@ public class NepaliCalendar extends AbstractCalendar
         return result;
     }
 
-    private DateUnit minusMonths( DateUnit dateUnit, int months )
+    @Override
+    public DateUnit minusMonths( DateUnit dateUnit, int months )
     {
         DateUnit result = new DateUnit( dateUnit );
 
@@ -339,12 +341,14 @@ public class NepaliCalendar extends AbstractCalendar
         return result;
     }
 
-    private DateUnit minusWeeks( DateUnit dateUnit, int weeks )
+    @Override
+    public DateUnit minusWeeks( DateUnit dateUnit, int weeks )
     {
         return minusDays( dateUnit, weeks * daysInWeek() );
     }
 
-    private DateUnit minusDays( DateUnit dateUnit, int days )
+    @Override
+    public DateUnit minusDays( DateUnit dateUnit, int days )
     {
         int curYear = dateUnit.getYear();
         int curMonth = dateUnit.getMonth();
@@ -381,7 +385,8 @@ public class NepaliCalendar extends AbstractCalendar
         return new DateUnit( curYear, curMonth, curDay, dayOfWeek );
     }
 
-    private DateUnit plusYears( DateUnit dateUnit, int years )
+    @Override
+    public DateUnit plusYears( DateUnit dateUnit, int years )
     {
         DateUnit result = new DateUnit( dateUnit.getYear() + years, dateUnit.getMonth(), dateUnit.getDay(), dateUnit.getDayOfWeek() );
         updateDateUnit( result );
@@ -389,7 +394,8 @@ public class NepaliCalendar extends AbstractCalendar
         return result;
     }
 
-    private DateUnit plusMonths( DateUnit dateUnit, int months )
+    @Override
+    public DateUnit plusMonths( DateUnit dateUnit, int months )
     {
         DateUnit result = new DateUnit( dateUnit );
 
@@ -411,12 +417,14 @@ public class NepaliCalendar extends AbstractCalendar
         return result;
     }
 
-    private DateUnit plusWeeks( DateUnit dateUnit, int weeks )
+    @Override
+    public DateUnit plusWeeks( DateUnit dateUnit, int weeks )
     {
         return plusDays( dateUnit, weeks * daysInWeek() );
     }
 
-    private DateUnit plusDays( DateUnit dateUnit, int days )
+    @Override
+    public DateUnit plusDays( DateUnit dateUnit, int days )
     {
         int curYear = dateUnit.getYear();
         int curMonth = dateUnit.getMonth();
