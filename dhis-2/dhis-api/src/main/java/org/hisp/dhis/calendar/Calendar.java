@@ -251,4 +251,68 @@ public interface Calendar
      * @see <a href="http://en.wikipedia.org/wiki/Internationalization_and_localization">http://en.wikipedia.org/wiki/Internationalization_and_localization</a>
      */
     String shortNameOfDay( int day );
+
+    /**
+     * Returns a new dateUnit with specified number of days added
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param days     Days to add
+     * @return dateUnit + days
+     */
+    DateUnit plusDays( DateUnit dateUnit, int days );
+
+    /**
+     * Returns a new dateUnit with specified number of days subtracted
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param days     Days to subtract
+     * @return dateUnit - days
+     */
+    DateUnit minusDays( DateUnit dateUnit, int days );
+
+    /**
+     * Returns a new dateUnit with specified number of weeks added
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param weeks    Weeks to add
+     * @return dateUnit + weeks
+     */
+    DateUnit plusWeeks( DateUnit dateUnit, int weeks );
+
+    /**
+     * Returns a new dateUnit with specified number of weeks subtracted
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param weeks    Weeks to subtract
+     * @return dateUnit - weeks
+     */
+    DateUnit minusWeeks( DateUnit dateUnit, int weeks );
+
+    /**
+     * Returns a new dateUnit with specified number of months added
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param months   Months to add
+     * @return dateUnit + months
+     */
+    DateUnit plusMonths( DateUnit dateUnit, int months );
+
+    /**
+     * Returns a new dateUnit with specified number of months subtracted
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param months   Months to subtract
+     * @return dateUnit - months
+     */
+    DateUnit minusMonths( DateUnit dateUnit, int months );
+
+    /**
+     * Returns a new dateUnit with specified number of years added
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param years    Years to add
+     * @return dateUnit + years
+     */
+    DateUnit plusYears( DateUnit dateUnit, int years );
+
+    /**
+     * Returns a new dateUnit with specified number of years subtracted
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param years    Years to subtract
+     * @return dateUnit - years
+     */
+    DateUnit minusYears( DateUnit dateUnit, int years );
 }

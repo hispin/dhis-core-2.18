@@ -234,4 +234,60 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
         DateTime dateTime = dateUnit.toDateTime( chronology );
         return dateTime.getDayOfWeek();
     }
+
+    @Override
+    public DateUnit plusDays( DateUnit dateUnit, int days )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return DateUnit.fromDateTime( dateTime.plusDays( days ) );
+    }
+
+    @Override
+    public DateUnit minusDays( DateUnit dateUnit, int days )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return DateUnit.fromDateTime( dateTime.minusDays( days ) );
+    }
+
+    @Override
+    public DateUnit plusWeeks( DateUnit dateUnit, int weeks )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return DateUnit.fromDateTime( dateTime.plusWeeks( weeks ) );
+    }
+
+    @Override
+    public DateUnit minusWeeks( DateUnit dateUnit, int weeks )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return DateUnit.fromDateTime( dateTime.minusWeeks( weeks ) );
+    }
+
+    @Override
+    public DateUnit plusMonths( DateUnit dateUnit, int months )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return DateUnit.fromDateTime( dateTime.plusMonths( months ) );
+    }
+
+    @Override
+    public DateUnit minusMonths( DateUnit dateUnit, int months )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return DateUnit.fromDateTime( dateTime.minusMonths( months ) );
+    }
+
+    @Override
+    public DateUnit plusYears( DateUnit dateUnit, int years )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return DateUnit.fromDateTime( dateTime.plusYears( years ) );
+    }
+
+    @Override
+    public DateUnit minusYears( DateUnit dateUnit, int years )
+    {
+        DateTime dateTime = dateUnit.toDateTime( chronology );
+        return DateUnit.fromDateTime( dateTime.minusYears( years ) );
+    }
 }
