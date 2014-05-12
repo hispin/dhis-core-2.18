@@ -89,7 +89,9 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
     
     return {
         getByStage: function(orgUnit, programStage, pager){
-            var url = '../api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&pageSize=' + pager.pageSize + '&page=' + pager.page;            
+        	var pgSize = pager ? pager.pageSize : 50;
+        	var pg = pager ? pager.page : 1;
+            var url = '../api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&pageSize=' + pgSize + '&page=' + pg;            
             
             var promise = $http.get( url ).then(function(response){                        
                 return response.data;        
