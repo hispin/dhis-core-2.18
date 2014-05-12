@@ -29,6 +29,20 @@
         <hr>
         <div ng-show="currentEvent">
             <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            {{'data_element' | translate}}
+                        </th>
+                        <th>
+                            {{'value' | translate}}
+                        </th>
+                        <th>
+                            {{'provided_elsewhere' | translate}}
+                        </th>
+                    </tr>
+                </thead>
+                    
                 <tr ng-repeat="prStDe in currentStage.programStageDataElements">
                     <td>
                         {{prStDe.dataElement.name}}
@@ -73,8 +87,16 @@
                             </div>
                         </div>
                     </td>
+                    <td>                        
+                        <span ng-if="prStDe.allowProvidedElsewhere">
+                            <input type="checkbox" ng-model="currentEvent[prStDe.dataElement.id].providedElsewhere"/>
+                        </span>
+                    </td>
                 </tr>
-            </table>                
+            </table>    
+            
+            <hr>
+
         </div>
     </div>
 

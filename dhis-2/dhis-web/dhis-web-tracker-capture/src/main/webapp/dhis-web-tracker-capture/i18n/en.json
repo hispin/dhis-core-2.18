@@ -50,6 +50,7 @@
     "use_all_children": "Use all children",
     "data_element": "Data element",
     "value": "Value",
+    "provided_elsewhere": "Provided elsewhere",
     "show_hide_widgets": "Show/Hide widgets",
     "select_widgets_to_show": "Select widgets to show",
     "close": "Close",

@@ -31,7 +31,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     //Searching
     $scope.showSearchDiv = false;
-    $scope.searchField = {title: 'search', isOpen: false};     
+    $scope.searchField = {title: 'search', isOpen: false};  
+    $scope.attributes = [];
     
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function() {
@@ -39,12 +40,47 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         if( angular.isObject($scope.selectedOrgUnit)){                  
             
             $scope.trackedEntityList = [];
+            $scope.selectedProgram = '';
             
             //apply translation - by now user's profile is fetched from server.
             TranslationService.translate();
+            $scope.loadPrograms($scope.selectedOrgUnit);
             $scope.attributes = storage.get('ATTRIBUTES');            
         }
     });
+    
+    //load programs associated with the selected org unit.
+    $scope.loadPrograms = function(orgUnit) {        
+                
+        $scope.selectedOrgUnit = orgUnit;
+        $scope.selectedProgram = null;
+        $scope.selectedProgramStage = null;
+        
+        if (angular.isObject($scope.selectedOrgUnit)) {   
+
+            $scope.programs = [];
+            
+            var programs = storage.get('TRACKER_PROGRAMS');
+            
+            if( programs && programs != 'undefined' ){
+                for(var i=0; i<programs.length; i++){
+                    var program = storage.get(programs[i].id);   
+                    if(angular.isObject(program)){
+                        if(program.organisationUnits.hasOwnProperty(orgUnit.id)){
+                            $scope.programs.push(program);
+                        }
+                    }                    
+                }
+                
+                if( !angular.isUndefined($scope.programs)){                    
+                    if($scope.programs.length === 1){
+                        $scope.selectedProgram = $scope.programs[0];
+                        $scope.pr = $scope.selectedProgram;                        
+                    }                    
+                }
+            }
+        }        
+    };        
     
     //get events for the selected program (and org unit)
     $scope.loadTrackedEntities = function(){
@@ -136,22 +172,29 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 //Controller for the search section
 .controller('SearchController',
         function($rootScope,
-                $scope,                
-                storage,
+                $scope,       
+                AttributesFactory,
                 TranslationService) {
 
     TranslationService.translate();
     
     //search attibutes
-    $scope.attributes = storage.get('ATTRIBUTES');     
-    $scope.availableAttributes = [];
+    $scope.attributes = AttributesFactory.getAll();
+    $scope.availableAttributes = $scope.attributes;
     $scope.selectedAttributes = [];
     $rootScope.showAdvancedSearchDiv = false;
     $scope.ouMode = 'SELECTED';
     
-    angular.forEach($scope.attributes, function(attribute){
-        $scope.availableAttributes.push(attribute);
-    });
+    $scope.getProgramAttributes = function(program){        
+        if(program){
+            $scope.attributes = AttributesFactory.getByProgram(program);
+            $scope.availableAttributes = $scope.attributes;
+        }
+        else{
+            $scope.attributes = AttributesFactory.getAll();
+            $scope.availableAttributes = $scope.attributes;
+        }
+    };
     
     $scope.moveToSelected = function(attribute, fromView){  
         
@@ -172,20 +215,20 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     }
 
                     else if(attribute.valueType === 'bool'){
-                        filter.operands = ['One of'];
+                        filter.operands = ['IS'];
                         filter.operand = filter.operands[0];
                         filter.values = ['No', 'Yes'];
                         filter.value = filter.values[0];
                     }
 
                     else if(attribute.valueType === 'combo'){
-                        filter.operands = ['One of'];
+                        filter.operands = ['IS'];
                         filter.operand = filter.operands[0];
                         filter.values = attribute.optionSet.options;
                         filter.value = filter.values[0];
                     }
                     else{
-                        filter.operands = ['like', 'not_like' ];
+                        filter.operands = ['LIKE', 'NOT LIKE' ];
                         filter.operand = filter.operands[0];
                     }
 
@@ -198,8 +241,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }         
     };
     
-    $scope.moveAllToSelected = function(){     
-        for(var i=0; i<$scope.availableAttributes.length;)
+    $scope.moveAllToSelected = function(){             
         angular.forEach($scope.availableAttributes, function(attribute){
             //$scope.selectedAttributes.push(attribute);            
             $scope.moveToSelected(attribute, false);
@@ -218,20 +260,20 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }
 
         else if(attribute.valueType === 'bool'){
-            filter.operands = ['One of'];
+            filter.operands = ['IS'];
             filter.operand = filter.operands[0];
             filter.values = ['No', 'Yes'];
             filter.value = filter.values[0];
         }
 
         else if(attribute.valueType === 'combo'){
-            filter.operands = ['One of'];
+            filter.operands = ['IS'];
             filter.operand = filter.operands[0];
             filter.values = attribute.optionSet.options;
             filter.value = filter.values[0];
         }
         else{
-            filter.operands = ['like', 'not_like' ];
+            filter.operands = ['LIKE', 'NOT LIKE' ];
             filter.operand = filter.operands[0];
         }
 
@@ -419,8 +461,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
                 $scope.programStages = [];        
                 angular.forEach($scope.selectedProgram.programStages, function(stage){
-                   $scope.programStages.push(storage.get(stage.id)); 
+                   $scope.programStages.push(storage.get(stage.id));               
                 });
+                
+                console.log('the stages are:  ', $scope.programStages);
 
                 if($scope.selectedEnrollment){
                     $scope.selectedEnrollment.dateOfIncident = $filter('date')($scope.selectedEnrollment.dateOfIncident, 'yyyy-MM-dd');
@@ -553,10 +597,12 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         if(event){
             
             $scope.currentEvent = event;   
+            $scope.currentEvent.dataValues = [];
             $scope.currentStage = storage.get($scope.currentEvent.programStage); 
             
             angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){                
                 $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
+                //$scope.currentEvent.dataValues.push({value: '', dataElement: prStDe.dataElement.id, providedElsewhere: ''});
             });
             
             angular.forEach($scope.currentEvent.dataValues, function(dataValue){
@@ -564,9 +610,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
                 if( de && de.type == 'int' && val){
                     val = parseInt(val);
+                    dataValue.value = val;
                 }
         
-                $scope.currentEvent[dataValue.dataElement] = val;
+                //$scope.currentEvent[dataValue.dataElement] = val;                
             });                   
         }     
     };    
