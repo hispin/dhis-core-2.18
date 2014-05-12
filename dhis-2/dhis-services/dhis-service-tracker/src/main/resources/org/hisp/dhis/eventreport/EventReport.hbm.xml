@@ -112,6 +112,8 @@
 
     <property name="showHierarchy" />
 
+    <property name="countType" />
+
     <property name="digitGroupSeparator" />
 
     <property name="displayDensity" />
