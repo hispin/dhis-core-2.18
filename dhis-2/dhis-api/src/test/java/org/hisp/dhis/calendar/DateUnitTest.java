@@ -28,9 +28,12 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.joda.time.DateTime;
 import org.junit.Test;
+import sun.util.resources.cldr.ar.CalendarData_ar_YE;
 
 import java.util.*;
+import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
 
@@ -40,12 +43,23 @@ import static org.junit.Assert.assertEquals;
 public class DateUnitTest
 {
     @Test
+    public void fromDateTimeTest()
+    {
+        DateTime dateTime = new DateTime( 2014, 3, 20, 0, 0 );
+        DateUnit dateUnit = DateUnit.fromDateTime( dateTime );
+
+        assertEquals( 2014, dateUnit.getYear() );
+        assertEquals( 3, dateUnit.getMonth() );
+        assertEquals( 20, dateUnit.getDay() );
+    }
+
+    @Test
     public void fromJdkDateTest()
     {
         java.util.Calendar cal = new GregorianCalendar( 2014, 2, 20 );
         Date date = cal.getTime();
-
         DateUnit dateUnit = DateUnit.fromJdkDate( date );
+
         assertEquals( 2014, dateUnit.getYear() );
         assertEquals( 3, dateUnit.getMonth() );
         assertEquals( 20, dateUnit.getDay() );
@@ -55,8 +69,44 @@ public class DateUnitTest
     public void fromJdkCalendarTest()
     {
         java.util.Calendar cal = new GregorianCalendar( 2014, 2, 20 );
-
         DateUnit dateUnit = DateUnit.fromJdkCalendar( cal );
+
+        assertEquals( 2014, dateUnit.getYear() );
+        assertEquals( 3, dateUnit.getMonth() );
+        assertEquals( 20, dateUnit.getDay() );
+    }
+
+    @Test
+    public void toDateTimeTest()
+    {
+        DateUnit dateUnit = new DateUnit( 2014, 3, 20 );
+        DateTime dateTime = dateUnit.toDateTime();
+
+        assertEquals( 2014, dateTime.getYear() );
+        assertEquals( 3, dateTime.getMonthOfYear() );
+        assertEquals( 20, dateTime.getDayOfMonth() );
+    }
+
+    @Test
+    public void toJdkCalendarTest()
+    {
+        DateUnit dateUnit = new DateUnit( 2014, 3, 20 );
+        Calendar calendar = dateUnit.toJdkCalendar();
+
+        assertEquals( 2014, calendar.get( Calendar.YEAR ) );
+        assertEquals( 2, calendar.get( Calendar.MONTH ) );
+        assertEquals( 20, calendar.get( Calendar.DAY_OF_MONTH ) );
+    }
+
+    @Test
+    public void toJdkDateTest()
+    {
+        DateUnit dateUnit = new DateUnit( 2014, 3, 20 );
+        Date date = dateUnit.toJdkDate();
+
+        // use dateTime for testing
+        DateTime dateTime = new DateTime( date.getTime() );
+
         assertEquals( 2014, dateUnit.getYear() );
         assertEquals( 3, dateUnit.getMonth() );
         assertEquals( 20, dateUnit.getDay() );

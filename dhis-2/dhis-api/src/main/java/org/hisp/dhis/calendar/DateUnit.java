@@ -147,6 +147,11 @@ public class DateUnit
         return new GregorianCalendar( year, month - 1, day );
     }
 
+    public Date toJdkDate()
+    {
+        return toJdkCalendar().getTime();
+    }
+
     public static DateUnit fromDateTime( DateTime dateTime )
     {
         return new DateUnit( dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), dateTime.getDayOfWeek() );
