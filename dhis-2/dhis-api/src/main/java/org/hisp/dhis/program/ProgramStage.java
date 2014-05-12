@@ -180,6 +180,9 @@ public class ProgramStage
         this.reminders = reminders;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataEntryForm getDataEntryForm()
     {
         return dataEntryForm;
