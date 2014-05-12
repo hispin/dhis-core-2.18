@@ -22,6 +22,10 @@
       <artifactId>dhis-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.amplecode</groupId>
       <artifactId>quick</artifactId>
     </dependency>
