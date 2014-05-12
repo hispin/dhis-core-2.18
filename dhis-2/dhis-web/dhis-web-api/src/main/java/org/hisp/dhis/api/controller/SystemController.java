@@ -79,9 +79,6 @@ public class SystemController
     @Autowired
     private Notifier notifier;
 
-    @Autowired
-    private CalendarService calendarService;
-
     //--------------------------------------------------------------------------
     // UID Generator
     //--------------------------------------------------------------------------
@@ -109,15 +106,6 @@ public class SystemController
                 codes.add( CodeGenerator.generateCode() );
             }
         }
-
-        Calendar calendar = calendarService.getSystemCalendar();
-        System.err.println( "Current Calendar: " + calendar.name() );
-        System.err.println( "Today: " + calendar.today() );
-
-        System.err.println( "Year: " + calendar.toInterval( DateIntervalType.ISO8601_YEAR, 0, 1 ) );
-        System.err.println( "Month: " + calendar.toInterval( DateIntervalType.ISO8601_MONTH, 0, 1 ) );
-        System.err.println( "Week: " + calendar.toInterval( DateIntervalType.ISO8601_WEEK, 0, 1 ) );
-        System.err.println( "Day: " + calendar.toInterval( DateIntervalType.ISO8601_DAY, 0, 1 ) );
 
         JacksonUtils.toJson( response.getOutputStream(), codes );
     }
