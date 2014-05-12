@@ -30,10 +30,10 @@ package org.hisp.dhis.calendar;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
-import sun.util.resources.cldr.ar.CalendarData_ar_YE;
 
-import java.util.*;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
 
