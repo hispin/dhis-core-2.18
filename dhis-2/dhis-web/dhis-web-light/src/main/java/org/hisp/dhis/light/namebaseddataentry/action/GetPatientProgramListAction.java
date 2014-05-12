@@ -126,16 +126,16 @@ public class GetPatientProgramListAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
+    private String patientUID;
 
-    public Integer getPatientId()
+    public String getPatientUID()
     {
-        return patientId;
+        return patientUID;
     }
 
-    public void setPatientId( Integer patientId )
+    public void setPatientUID( String patientUID )
     {
-        this.patientId = patientId;
+        this.patientUID = patientUID;
     }
 
     private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
@@ -249,7 +249,7 @@ public class GetPatientProgramListAction
         programInstances.clear();
         relatedPeople = new HashMap<Relationship, TrackedEntityInstance>();
 
-        patient = patientService.getTrackedEntityInstance( patientId );
+        patient = patientService.getTrackedEntityInstance( patientUID );
         Collection<Program> programByCurrentUser = programService.getProgramsByCurrentUser();
         for ( ProgramInstance programInstance : patient.getProgramInstances() )
         {

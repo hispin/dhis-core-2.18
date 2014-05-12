@@ -60,6 +60,7 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.event.EventStatus;
@@ -313,15 +314,23 @@ public class ActivityReportingServiceImpl
     {
 
         List<Activity> items = new ArrayList<Activity>();
-        Collection<TrackedEntityInstance> patients = entityInstanceService.getTrackedEntityInstances( unit, 0,
-            Integer.MAX_VALUE );
 
-        for ( TrackedEntityInstance patient : patients )
+        TrackedEntityInstanceQueryParams param = new TrackedEntityInstanceQueryParams();
+        param.addOrganisationUnit( unit );
+
+        Grid trackedEntityDrid = entityInstanceService.getTrackedEntityInstances( param );
+        List<List<Object>> listOfListProgramStageInstance = trackedEntityDrid.getRows();
+
+        for ( List<Object> listProgramStageInstance : listOfListProgramStageInstance )
         {
-            for ( ProgramStageInstance programStageInstance : programStageInstanceService.getProgramStageInstances(
-                patient, false ) )
+            for ( Object obj : listProgramStageInstance )
             {
-                items.add( getActivity( programStageInstance, false ) );
+                TrackedEntityInstance patient = (TrackedEntityInstance) obj;
+                for ( ProgramStageInstance programStageInstance : programStageInstanceService.getProgramStageInstances(
+                    patient, false ) )
+                {
+                    items.add( getActivity( programStageInstance, false ) );
+                }
             }
         }
 
@@ -767,7 +776,7 @@ public class ActivityReportingServiceImpl
         {
             patientModel.setOrganisationUnitName( patient.getOrganisationUnit().getName() );
         }
-        
+
         if ( patient.getTrackedEntity() != null )
         {
             patientModel.setTrackedEntityName( patient.getTrackedEntity().getName() );
@@ -1632,34 +1641,18 @@ public class ActivityReportingServiceImpl
     {
         String[] searchEventInfosArray = searchEventInfos.split( "-" );
 
-        int programStageStatus = 0;
+        EventStatus eventStatus = EventStatus.ACTIVE;
 
         if ( searchEventInfosArray[1].equalsIgnoreCase( "Scheduled in future" ) )
         {
-            programStageStatus = ProgramStageInstance.FUTURE_VISIT_STATUS;
+            eventStatus = EventStatus.FUTURE_VISIT;
         }
         else if ( searchEventInfosArray[1].equalsIgnoreCase( "Overdue" ) )
         {
-            programStageStatus = ProgramStageInstance.LATE_VISIT_STATUS;
-        }
-
-        boolean followUp;
-
-        if ( searchEventInfosArray[2].equalsIgnoreCase( "true" ) )
-        {
-            followUp = true;
-        }
-        else
-        {
-            followUp = false;
+            eventStatus = EventStatus.LATE_VISIT;
         }
 
         String eventsInfo = "";
-
-        DateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd" );
-
-        List<String> searchTextList = new ArrayList<String>();
-        Collection<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>();
 
         Calendar toCalendar = new GregorianCalendar();
         toCalendar.add( Calendar.DATE, -1 );
@@ -1672,36 +1665,41 @@ public class ActivityReportingServiceImpl
 
         Date fromDate = fromCalendar.getTime();
 
-        String searchText = TrackedEntityInstance.PREFIX_PROGRAM_EVENT_BY_STATUS + "_" + searchEventInfosArray[0] + "_"
-            + formatter.format( fromDate ) + "_" + formatter.format( toDate ) + "_" + orgUnitId + "_" + true + "_"
-            + programStageStatus;
-
-        searchTextList.add( searchText );
-        orgUnitList.add( organisationUnitService.getOrganisationUnit( orgUnitId ) );
-
         TrackedEntityInstanceQueryParams param = new TrackedEntityInstanceQueryParams();
-        param.setOrganisationUnits( new HashSet<OrganisationUnit>( orgUnitList ) );
-        param.setEventStatus( EventStatus.ACTIVE );
+        List<TrackedEntityAttribute> trackedEntityAttributeList = new ArrayList<TrackedEntityAttribute>(
+            attributeService.getTrackedEntityAttributesByDisplayOnVisitSchedule( true ) );
+
+        for ( TrackedEntityAttribute trackedEntityAttribute : trackedEntityAttributeList )
+        {
+            QueryItem queryItem = new QueryItem( trackedEntityAttribute );
+            param.addAttribute( queryItem );
+        }
+
+        param.addOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
+        param.setEventStatus( eventStatus );
+        param.setEventStartDate( fromDate );
+        param.setEventEndDate( toDate );
 
         Grid programStageInstanceGrid = entityInstanceService.getTrackedEntityInstances( param );
-        List<List<Object>> listOfListProgramStageInstance = programStageInstanceGrid.getRows();
+        List<List<Object>> rows = programStageInstanceGrid.getRows();
 
-        if ( listOfListProgramStageInstance.size() == 0 )
+        if ( rows.size() == 0 )
         {
             throw NotAllowedException.NO_EVENT_FOUND;
         }
-        else if ( listOfListProgramStageInstance.size() > 0 )
+        else if ( rows.size() > 0 )
         {
-            for ( List<Object> listProgramStageInstance : listOfListProgramStageInstance )
+            for ( List<Object> row : rows )
             {
-                for ( Object obj : listProgramStageInstance )
+                for ( int i = 5; i < row.size(); i++ )
                 {
-                    ProgramStageInstance programStageInstance = (ProgramStageInstance) obj;
-                    TrackedEntityInstance patient = programStageInstance.getProgramInstance().getEntityInstance();
-                    eventsInfo += programStageInstance.getId() + "/" + patient.getName() + ", "
-                        + programStageInstance.getProgramStage().getName() + "("
-                        + formatter.format( programStageInstance.getDueDate() ) + ")" + "$";
+                    eventsInfo += row.get( i ) + "/";
+                    if ( i == row.size() - 1 )
+                    {
+                        eventsInfo += "$";
+                    }
                 }
+
             }
 
             throw new NotAllowedException( eventsInfo );

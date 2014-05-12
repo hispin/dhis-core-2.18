@@ -28,11 +28,17 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
+
+import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.OrganisationUnitSelectionMode;
+import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.common.QueryOperator;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 
@@ -54,32 +60,34 @@ public class FindBeneficiarytAction
         this.patientService = patientService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private TrackedEntityAttributeService trackedEntityAttributeService;
+
+    public void setTrackedEntityAttributeService( TrackedEntityAttributeService trackedEntityAttributeService )
+    {
+        this.trackedEntityAttributeService = trackedEntityAttributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Collection<TrackedEntityInstance> patients;
+    private List<List<Object>> trackedEntityList;
 
-    public Collection<TrackedEntityInstance> getPatients()
+    public List<List<Object>> getTrackedEntityList()
     {
-        return patients;
+        return trackedEntityList;
     }
 
-    public void setPatients( Collection<TrackedEntityInstance> patients )
+    public void setTrackedEntityList( List<List<Object>> trackedEntityList )
     {
-        this.patients = patients;
-    }
-
-    private Set<TrackedEntityAttributeValue> pavSet;
-
-    public Set<TrackedEntityAttributeValue> getPavSet()
-    {
-        return pavSet;
-    }
-
-    public void setPavSet( Set<TrackedEntityAttributeValue> pavSet )
-    {
-        this.pavSet = pavSet;
+        this.trackedEntityList = trackedEntityList;
     }
 
     private Set<TrackedEntityAttributeValue> patientAttributes;
@@ -130,16 +138,16 @@ public class FindBeneficiarytAction
         this.patientAttributeId = patientAttributeId;
     }
 
-    private Integer patientId;
+    private String patientUID;
 
-    public Integer getPatientId()
+    public String getPatientUID()
     {
-        return patientId;
+        return patientUID;
     }
 
-    public void setPatientId( Integer patientId )
+    public void setPatientUID( String patientUID )
     {
-        this.patientId = patientId;
+        this.patientUID = patientUID;
     }
 
     // Use in search related patient
@@ -172,21 +180,30 @@ public class FindBeneficiarytAction
     public String execute()
         throws Exception
     {
+        TrackedEntityInstanceQueryParams param = new TrackedEntityInstanceQueryParams();
+        QueryItem queryItem = new QueryItem(
+            trackedEntityAttributeService.getTrackedEntityAttribute( patientAttributeId ), QueryOperator.EQ, keyword,
+            false );
 
-        patients = patientService.searchTrackedEntityInstancesForMobile( keyword, organisationUnitId,
-            patientAttributeId );
-
-        pavSet = new HashSet<TrackedEntityAttributeValue>();
-
-        for ( TrackedEntityInstance p : patients )
+        if ( organisationUnitId == null || organisationUnitId == 0 )
         {
-            pavSet.addAll( p.getAttributeValues() );
+            param.setOrganisationUnitMode( OrganisationUnitSelectionMode.ALL );
+        }
+        else
+        {
+            param.addOrganisationUnit( organisationUnitService.getOrganisationUnit( organisationUnitId ) );
         }
 
-        if ( patients.size() == 1 )
+        param.addAttribute( queryItem );
+
+        Grid trackedEntityGrid = patientService.getTrackedEntityInstances( param );
+        trackedEntityList = trackedEntityGrid.getRows();
+
+
+        if ( trackedEntityList.size() == 1 )
         {
-            TrackedEntityInstance patient = patients.iterator().next();
-            patientId = patient.getId();
+            List<Object> firstRow = trackedEntityList.iterator().next();
+            patientUID = firstRow.get( 0 ).toString();
 
             return REDIRECT;
         }
