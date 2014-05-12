@@ -28,14 +28,37 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public enum DateIntervalType
+public class DateUnitTest
 {
-    /**
-      * Gives interval for a year, month, week or day based on ISO 8601.
-      * @see <a href="http://en.wikipedia.org/wiki/ISO_8601">http://en.wikipedia.org/wiki/ISO_8601</a>
-      */
-     ISO8601_YEAR, ISO8601_MONTH, ISO8601_WEEK, ISO8601_DAY
+    @Test
+    public void fromJdkDateTest()
+    {
+        java.util.Calendar cal = new GregorianCalendar( 2014, 2, 20 );
+        Date date = cal.getTime();
+
+        DateUnit dateUnit = DateUnit.fromJdkDate( date );
+        assertEquals( 2014, dateUnit.getYear() );
+        assertEquals( 3, dateUnit.getMonth() );
+        assertEquals( 20, dateUnit.getDay() );
+    }
+
+    @Test
+    public void fromJdkCalendarTest()
+    {
+        java.util.Calendar cal = new GregorianCalendar( 2014, 2, 20 );
+
+        DateUnit dateUnit = DateUnit.fromJdkCalendar( cal );
+        assertEquals( 2014, dateUnit.getYear() );
+        assertEquals( 3, dateUnit.getMonth() );
+        assertEquals( 20, dateUnit.getDay() );
+    }
 }
