@@ -81,7 +81,9 @@
 						#foreach($attribute in $attributes)
 							#if($attribute.valueType=='age')
 								#set($attId=$attribute.id + ".age")
-								<option suggested="" title="$attribute.displayName" value="[CA:$attId]">$attribute.displayName</option>
+								#set($attVisitId=$attribute.id + ".visit")
+								<option suggested="" title="$attribute.displayName" value="[CA:$attId]">$attribute.displayName ($i18n.getString('ages'))</option>
+								<option value="[PS:*] AND [CA:$attVisitId]" name="multiProgram">$attribute.displayName ($i18n.getString( "age_at_visit_days_since_birth" ))</option>
 							#else
 								<option suggested="" title="$attribute.displayName" value="[CA:$attribute.id]">$attribute.displayName</option>
 							#end

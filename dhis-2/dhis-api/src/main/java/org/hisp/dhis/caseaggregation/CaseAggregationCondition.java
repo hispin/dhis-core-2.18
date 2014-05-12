@@ -77,7 +77,11 @@ public class CaseAggregationCondition
     public static String OBJECT_TRACKED_ENTITY_PROGRAM_STAGE_PROPERTY = "PC";
 
     public static String OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE = "PSIC";
-
+   
+    public static String FORMULA_AGE = "age";
+    
+    public static String FORMULA_VISIT = "visit";
+    
     public static String OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE = "dateOfIncident";
 
     public static String OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE = "enrollmentDate";
