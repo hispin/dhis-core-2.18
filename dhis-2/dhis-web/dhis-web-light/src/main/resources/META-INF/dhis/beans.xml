@@ -245,6 +245,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction"
 		scope="prototype">
 		  <property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		  <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		  <property name="trackedEntityAttributeService" ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 	</bean>
 
 

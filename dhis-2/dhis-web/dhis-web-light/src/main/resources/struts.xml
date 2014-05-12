@@ -200,7 +200,7 @@
 
 		<action name="findBeneficiary"
 			class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction">
-			<result name="redirect" type="redirect">showPatientProgramList.action?patientId=${patientId}
+			<result name="redirect" type="redirect">showPatientProgramList.action?patientUID=${patientUID}
 			</result>
 			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/namebased/beneficiaryList.vm</param>
