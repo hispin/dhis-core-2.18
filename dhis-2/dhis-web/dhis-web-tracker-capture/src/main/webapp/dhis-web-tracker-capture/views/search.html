@@ -22,6 +22,16 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    {{'program'| translate}}
+                </div>
+                <div>
+                    <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
+                        <option value="">{{'please_select'| translate}}</option>
+                    </select>      
+                </div>                                
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
                     {{'available_search_attributes'| translate}} |
                     <span ng-show="availableAttributes.length > 0">                                        
                         <a href ng-click="moveToSelected(selectedAttribute, true)" title="{{'move_to_selected'| translate}}"><span class="black"><i class="fa fa-angle-down"></i></span></a>                                        
@@ -31,6 +41,7 @@
                 <select class="form-control" multiple ng-model="selectedAttribute" ng-options="attribute as attribute.name for attribute in availableAttributes | orderBy:'name'" ng-dblclick="moveToSelected(selectedAttribute, true)">                                        
                 </select>
             </div>
+            
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{'selected_search_attributes'| translate}}                                   
@@ -139,6 +150,26 @@
 
         <div ng-if="!showAdvancedSearchDiv">
             <table class="dhis2-list-table-striped dhis2-table-hover">
+                <tr>
+                    <td>{{'org_unit_mode'| translate}}</td>
+                    <td>
+                        <input type='radio' ng-model='ouMode' value='SELECTED'>{{'use_selected'| translate}}<br/>
+                        <input type='radio' ng-model='ouMode' value='CHILDREN'>{{'use_immediate_children'| translate}}<br/>
+                        <input type='radio' ng-model='ouMode' value='DESCENDANTS'>{{'use_all_children'| translate}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{'program'| translate}}
+                        {{attributes.size}}
+                    </td>
+                    <td>
+                        <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
+                            <option value="">{{'please_select'| translate}}</option>
+                        </select>
+                    </td>
+                </tr>      
+                
                 <tr ng-repeat="attribute in attributes">
                     <td>
                         {{attribute.name}}
@@ -174,15 +205,7 @@
                             </div>
                         </div>                                                                                                    
                     </td>
-                </tr>
-                <tr>
-                    <td>{{'org_unit_mode'| translate}}</td>
-                    <td>
-                        <input type='radio' ng-model='ouMode' value='SELECTED'>{{'use_selected'| translate}}<br/>
-                        <input type='radio' ng-model='ouMode' value='CHILDREN'>{{'use_immediate_children'| translate}}<br/>
-                        <input type='radio' ng-model='ouMode' value='DESCENDANTS'>{{'use_all_children'| translate}}
-                    </td>
-                </tr>        
+                </tr>                        
             </table>
         </div>
 

@@ -165,12 +165,10 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         },
         
         getByOrgUnitAndProgram: function(orgUnitUid, programUid) {
-            
-            //var attributes = AttributesFactory.convertListingForToQuery();
+
             var url = '../api/trackedEntityInstances.json?ou=' + orgUnitUid + '&program=' + programUid;
             
-            promise = $http.get( url ).then(function(response){
-               
+            promise = $http.get( url ).then(function(response){               
                 return entityFormatter(response.data);
             });            
             return promise;
@@ -201,7 +199,21 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 return attributes;
             }                
             return; 
-        },        
+        }, 
+        getByProgram: function(program){
+            var attributes = [];
+            var programAttributes = [];
+            
+            angular.forEach(this.getAll(), function(attribute){
+                attributes[attribute.id] = attribute;
+            });
+           
+            angular.forEach(program.programTrackedEntityAttributes, function(pAttribute){
+               programAttributes.push(attributes[pAttribute.attribute.id]);                
+            });            
+            
+            return programAttributes;            
+        },
         getForListing: function(){
             
             var attributes = [];
@@ -308,6 +320,10 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             return promise;
         }
     };    
+})
+
+.service('ProgramAttributes', function(){
+    
 })
 
 /* Modal service for user interaction */
