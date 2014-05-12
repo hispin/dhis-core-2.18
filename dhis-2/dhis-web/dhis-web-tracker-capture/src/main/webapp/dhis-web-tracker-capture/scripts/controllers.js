@@ -340,8 +340,11 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.attributes = AttributesFactory.getAll();
     
+    $scope.selectedProgram = null;
+    
     $scope.getProgramAttributes = function(program){        
         if(program){
+            $scope.selectedProgram = program;
             $scope.attributes = AttributesFactory.getByProgram(program);
         }
         else{
@@ -349,6 +352,12 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }
     };
     
+    $scope.showDashboard = function(){        
+        $scope.registerEntity();
+    };
+    
+    $scope.registerEntity = function(){        
+    };
 })
 //Controller for dashboard
 .controller('DashboardController',
