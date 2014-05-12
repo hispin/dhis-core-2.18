@@ -33,6 +33,7 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -153,8 +154,13 @@ public class DateUnit
 
     public static DateUnit fromJdkCalendar( java.util.Calendar calendar )
     {
-        return new DateUnit( calendar.get( java.util.Calendar.YEAR ), calendar.get( java.util.Calendar.MONTH ),
+        return new DateUnit( calendar.get( java.util.Calendar.YEAR ), calendar.get( java.util.Calendar.MONTH ) + 1,
             calendar.get( java.util.Calendar.DAY_OF_MONTH ), calendar.get( java.util.Calendar.DAY_OF_WEEK ) );
+    }
+
+    public static DateUnit fromJdkDate( Date date )
+    {
+        return fromDateTime( new DateTime( date.getTime() ) );
     }
 
     @Override

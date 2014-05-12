@@ -29,7 +29,9 @@ package org.hisp.dhis.period;
  */
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -54,6 +56,14 @@ public abstract class PeriodType
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = 2402122626196305083L;
+
+    private CalendarService calendarService;
+
+    @Autowired
+    public void setCalendarService( CalendarService calendarService )
+    {
+        this.calendarService = calendarService;
+    }
 
     // -------------------------------------------------------------------------
     // Available PeriodTypes
