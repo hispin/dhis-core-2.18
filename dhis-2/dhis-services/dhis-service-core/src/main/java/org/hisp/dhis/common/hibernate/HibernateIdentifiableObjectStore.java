@@ -52,7 +52,30 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     extends HibernateGenericStore<T> implements GenericNameableObjectStore<T>
 {
     private static final Log log = LogFactory.getLog( HibernateIdentifiableObjectStore.class );
-    
+
+    private boolean transientIdentifiableProperties = false;
+
+    /**
+     * Indicates whether the object represented by the implementation does not
+     * have persisted identifiable object properties.
+     */
+    public boolean isTransientIdentifiableProperties()
+    {
+        return transientIdentifiableProperties;
+    }
+
+    /**
+     * Can be overridden programmatically or injected through container.
+     */
+    public void setTransientIdentifiableProperties( boolean transientIdentifiableProperties )
+    {
+        this.transientIdentifiableProperties = transientIdentifiableProperties;
+    }
+
+    // -------------------------------------------------------------------------
+    // IdentifiableObjectStore implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public int save( T object )
     {
@@ -70,6 +93,11 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @Override
     public final T getByUid( String uid )
     {
+        if ( isTransientIdentifiableProperties() )
+        {
+            return null;
+        }
+        
         T object = getObject( Restrictions.eq( "uid", uid ) );
 
         if ( !isReadAllowed( object ) )
@@ -84,6 +112,11 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @Override
     public final T getByUidNoAcl( String uid )
     {
+        if ( isTransientIdentifiableProperties() )
+        {
+            return null;
+        }
+        
         return getObject( Restrictions.eq( "uid", uid ) );
     }
 
@@ -126,6 +159,11 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @Override
     public final T getByCode( String code )
     {
+        if ( isTransientIdentifiableProperties() )
+        {
+            return null;
+        }
+        
         T object = getObject( Restrictions.eq( "code", code ) );
 
         if ( !isReadAllowed( object ) )

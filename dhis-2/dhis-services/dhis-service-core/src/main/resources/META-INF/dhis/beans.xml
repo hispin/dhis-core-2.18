@@ -43,6 +43,7 @@
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="cacheable" value="true" />
+    <property name="transientIdentifiableProperties" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementGroupStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
@@ -116,6 +117,7 @@
     <property name="clazz" value="org.hisp.dhis.period.Period" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
+    <property name="transientIdentifiableProperties" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.DataSetStore" class="org.hisp.dhis.dataset.hibernate.HibernateDataSetStore">
