@@ -20,6 +20,7 @@
         <option value="categoryoptiongroup">$i18n.getString( "category_option_group" )</option>
         <option value="organisationunit">$i18n.getString( "organisation_unit" )</option>
         <option value="organisationunitgroup">$i18n.getString( "organisation_unit_group" )</option>
+        <option value="optionset">$i18n.getString( "option_set" )</option>
     </select></td>
 </tr>
 #end

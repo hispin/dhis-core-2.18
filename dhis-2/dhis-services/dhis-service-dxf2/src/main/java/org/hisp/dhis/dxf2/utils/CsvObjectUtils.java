@@ -28,6 +28,8 @@ package org.hisp.dhis.dxf2.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -37,17 +39,17 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 
 import com.csvreader.CsvReader;
-
-import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
 
 /**
  * @author Lars Helge Overland
@@ -85,6 +87,10 @@ public class CsvObjectUtils
         else if ( OrganisationUnitGroup.class.equals( clazz ) )
         {
             metaData.setOrganisationUnitGroups( organisationUnitGroupsFromCsv( reader, input ) );
+        }
+        else if ( OptionSet.class.equals( clazz ) )
+        {
+            metaData.setOptionSets( getOptionSetsFromCsv( reader, input ) );
         }
         
         return metaData;
@@ -235,6 +241,37 @@ public class CsvObjectUtils
         }
         
         return list;
+    }
+    
+    private static List<OptionSet> getOptionSetsFromCsv( CsvReader reader, InputStream input )
+        throws IOException
+    {
+        ListMap<OptionSet, String> listMap = new ListMap<OptionSet, String>();
+        
+        while ( reader.readRecord() )
+        {
+            String[] values = reader.getValues();
+            
+            if ( values != null && values.length > 0 )
+            {
+                OptionSet object = new OptionSet();
+                setIdentifiableObject( object, values );
+                String option = getSafe( values, 3, null, 2000000 );
+                
+                listMap.putValue( object, option );
+            }
+        }
+        
+        List<OptionSet> optionSets = new ArrayList<OptionSet>();
+        
+        for ( OptionSet optionSet : listMap.keySet() )
+        {
+            List<String> options = new ArrayList<String>( listMap.get( optionSet ) );
+            optionSet.setOptions( options );
+            optionSets.add( optionSet );
+        }
+        
+        return optionSets;
     }
 
     // -------------------------------------------------------------------------
