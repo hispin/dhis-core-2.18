@@ -39,7 +39,6 @@ import java.util.List;
  * PeriodType for monthly Periods. A valid monthly Period has startDate set to
  * the first day of a calendar month, and endDate set to the last day of the
  * same month.
- * 
  * @author Torgeir Lorange Ostby
  * @version $Id: MonthlyPeriodType.java 2971 2007-03-03 18:54:56Z torgeilo $
  */
@@ -65,7 +64,7 @@ public class MonthlyPeriodType
     // -------------------------------------------------------------------------
     // PeriodType functionality
     // -------------------------------------------------------------------------
-    
+
     @Override
     public String getName()
     {
@@ -90,7 +89,7 @@ public class MonthlyPeriodType
         cal.set( Calendar.DAY_OF_MONTH, 1 );
         Date startDate = cal.getTime();
         cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-        
+
         return new Period( this, startDate, cal.getTime() );
     }
 
@@ -103,7 +102,7 @@ public class MonthlyPeriodType
     // -------------------------------------------------------------------------
     // CalendarPeriodType functionality
     // -------------------------------------------------------------------------
-    
+
     @Override
     public Period getNextPeriod( Period period )
     {
@@ -130,7 +129,7 @@ public class MonthlyPeriodType
         Calendar cal = createCalendarInstance( date );
         cal.set( Calendar.DAY_OF_YEAR, 1 );
 
-        int year = cal.get( Calendar.YEAR );        
+        int year = cal.get( Calendar.YEAR );
         ArrayList<Period> periods = new ArrayList<Period>();
 
         while ( cal.get( Calendar.YEAR ) == year )
@@ -143,7 +142,7 @@ public class MonthlyPeriodType
     }
 
     /**
-     * Generates the last 12 months where the last one is the month which the 
+     * Generates the last 12 months where the last one is the month which the
      * given date is inside.
      */
     @Override
@@ -154,16 +153,16 @@ public class MonthlyPeriodType
         cal.add( Calendar.MONTH, -11 );
 
         ArrayList<Period> periods = new ArrayList<Period>();
-        
+
         for ( int i = 0; i < 12; i++ )
         {
             periods.add( createPeriod( cal ) );
             cal.add( Calendar.MONTH, 1 );
         }
-        
+
         return periods;
     }
-    
+
     @Override
     public String getIsoDate( Period period )
     {
@@ -182,7 +181,7 @@ public class MonthlyPeriodType
         {
             // Ignore and try alternative format
         }
-        
+
         try
         {
             Date date = new SimpleDateFormat( ALTERNATIVE_ISO_FORMAT ).parse( isoDate );
@@ -199,14 +198,14 @@ public class MonthlyPeriodType
     {
         return ISO_FORMAT;
     }
-    
+
     @Override
     public Date getRewindedDate( Date date, Integer rewindedPeriods )
     {
-        date = date != null ? date : new Date();        
+        date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 
-        Calendar cal = createCalendarInstance( date );        
+        Calendar cal = createCalendarInstance( date );
         cal.add( Calendar.MONTH, (rewindedPeriods * -1) );
 
         return cal.getTime();

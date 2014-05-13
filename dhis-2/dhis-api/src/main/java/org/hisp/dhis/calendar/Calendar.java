@@ -28,6 +28,8 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 /**
  * Generic interface for representing a Calendar.
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -152,6 +154,18 @@ public interface Calendar
      * @see DateIntervalType
      */
     DateInterval toInterval( DateIntervalType type, int offset, int length );
+
+    /**
+     * Gets interval of type based on DateUnit
+     * @param dateUnit DateUnit representing local year, month, day
+     * @param type     Interval type to get
+     * @param offset   Offset to start at, can be negative of positive
+     * @param length   How many periods to asks for, i.e. type = MONTH, length = 2, two months
+     * @param periods  How many periods to generate
+     * @return Interval for interval type based on dateUnit
+     * @see DateIntervalType
+     */
+    List<DateInterval> toIntervals( DateUnit dateUnit, DateIntervalType type, int offset, int length, int periods );
 
     /**
      * Gets current date as local DateUnit
