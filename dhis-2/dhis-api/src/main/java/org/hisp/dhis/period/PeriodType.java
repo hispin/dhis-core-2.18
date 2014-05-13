@@ -30,6 +30,7 @@ package org.hisp.dhis.period;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.calendar.CalendarService;
+import org.hisp.dhis.calendar.impl.Iso8601Calendar;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -63,6 +64,16 @@ public abstract class PeriodType
     public void setCalendarService( CalendarService calendarService )
     {
         this.calendarService = calendarService;
+    }
+
+    public org.hisp.dhis.calendar.Calendar getCalendar()
+    {
+        if ( calendarService != null )
+        {
+            return calendarService.getSystemCalendar();
+        }
+
+        return Iso8601Calendar.getInstance();
     }
 
     // -------------------------------------------------------------------------

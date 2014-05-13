@@ -28,10 +28,13 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -159,6 +162,19 @@ public abstract class AbstractCalendar implements Calendar
     public DateInterval toInterval( DateIntervalType type, int offset, int length )
     {
         return toInterval( today(), type, offset, length );
+    }
+
+    @Override
+    public List<DateInterval> toIntervals( DateUnit dateUnit, DateIntervalType type, int offset, int length, int periods )
+    {
+        List<DateInterval> dateIntervals = Lists.newArrayList();
+
+        for ( int i = offset; i <= (offset + periods - 1); i++ )
+        {
+            dateIntervals.add( toInterval( dateUnit, type, i, length ) );
+        }
+
+        return dateIntervals;
     }
 
     @Override
