@@ -384,6 +384,7 @@
 		<property name="clazz"
 			value="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="transientIdentifiableProperties" value="true" />
 	</bean>
 	
 	<!-- EventReport -->
