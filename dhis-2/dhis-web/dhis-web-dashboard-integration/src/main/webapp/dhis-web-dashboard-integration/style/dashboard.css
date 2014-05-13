@@ -108,7 +108,7 @@
 .item h3
 {
   font-size: 12px;
-  font-family: LiberationSansBold, sans-serif;
+  font-weight: bold;
   color: #39547d;
   margin: 2px 5px;
 }
@@ -116,7 +116,7 @@
 .item h4
 {
   font-size: 12px;
-  font-family: LiberationSansBold, sans-serif;
+  font-weight: bold;
   color: #39547d;
   margin: 1px 5px;
 }
@@ -179,7 +179,7 @@
 
 .itemTitle
 {
-  font-family: 'LiberationSansBold';
+  font-weight: bold;
   color: #336C8B;
 }
 
@@ -266,7 +266,7 @@
   margin: 2px 0;
   border-bottom: 1px solid #ddd;
   color: #336C8B;
-  font-family: LiberationSansBold;
+  font-weight: bold;
 }
 
 .hitHeader a:hover

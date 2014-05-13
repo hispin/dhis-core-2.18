@@ -268,7 +268,7 @@ p.header
   color:#39547D;
   padding:6px;
   margin:0px;
-  font-family: LiberationSansBold,arial;
+  font-weight: bold;
 }
 
 table.link-area
@@ -362,7 +362,7 @@ div.event-flow-dashboard
   border: 1px solid #aaa;
   border-radius: 3px;
   margin-right: 4px;
-  font-family: LiberationSansBold, arial;
+  font-weight: bold;
   font-size: 13px;
   color: #606060;
   background-color: #f3f3f3;
