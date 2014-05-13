@@ -274,10 +274,6 @@ public class Program
         this.organisationUnits = organisationUnits;
     }
 
-    @JsonProperty( value = "programInstances" )
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlElementWrapper( localName = "programInstances", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "programInstance", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ProgramInstance> getProgramInstances()
     {
         return programInstances;
