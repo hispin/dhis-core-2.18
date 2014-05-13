@@ -28,19 +28,7 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.AuditLogUtil;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
-import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
-import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.system.util.Filter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.springframework.transaction.annotation.Transactional;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,7 +39,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.AuditLogUtil;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
+import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.FilterUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Chau Thu Tran
@@ -226,25 +225,6 @@ public class DefaultUserService
     public User getUser( String uid )
     {
         return userStore.getByUid( uid );
-    }
-
-    public Collection<UserCredentials> getUsers( final Collection<Integer> identifiers, User user )
-    {
-        boolean canGrantOwnUserAuthorityGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
-
-        Collection<UserCredentials> userCredentials = getAllUserCredentials();
-
-        FilterUtils.filter( userCredentials, new UserCredentialsCanUpdateFilter( user, canGrantOwnUserAuthorityGroups ) );
-
-        return identifiers == null ? userCredentials : FilterUtils.filter( userCredentials,
-            new Filter<UserCredentials>()
-            {
-                public boolean retain( UserCredentials object )
-                {
-                    return identifiers.contains( object.getId() );
-                }
-            }
-        );
     }
 
     public List<User> getUsersByUid( List<String> uids )

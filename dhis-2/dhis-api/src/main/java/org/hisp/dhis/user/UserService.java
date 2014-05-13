@@ -210,14 +210,6 @@ public interface UserService
      */
     void setLastLogin( String username );
 
-    /**
-     * Get the UserCredentials with the corresponding identifiers.
-     *
-     * @param identifiers the collection of identifiers.
-     * @return a collection of users.
-     */
-    Collection<UserCredentials> getUsers( Collection<Integer> identifiers, User user );
-
     Collection<UserCredentials> searchUsersByName( String key );
 
     Collection<UserCredentials> searchUsersByName( String name, int first, int max );
