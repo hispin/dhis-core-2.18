@@ -600,15 +600,16 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param categoryGroupUniqueIdentifier A unique character to identify the
+     * @param uniqueIdentifier A unique character to identify the
      *                                      category option group.
      * @param categoryOptions               the category options.
      * @return CategoryOptionGroup
      */
-    public static CategoryOptionGroup createCategoryOptionGroup( char categoryGroupUniqueIdentifier,
+    public static CategoryOptionGroup createCategoryOptionGroup( char uniqueIdentifier,
         DataElementCategoryOption... categoryOptions )
     {
-        CategoryOptionGroup categoryOptionGroup = new CategoryOptionGroup( "CategoryOptionGroup" + categoryGroupUniqueIdentifier );
+        CategoryOptionGroup categoryOptionGroup = new CategoryOptionGroup( "CategoryOptionGroup" + uniqueIdentifier );
+        categoryOptionGroup.setShortName( "ShortName" + uniqueIdentifier );
         categoryOptionGroup.setAutoFields();
 
         categoryOptionGroup.setMembers( new HashSet<DataElementCategoryOption>() );
