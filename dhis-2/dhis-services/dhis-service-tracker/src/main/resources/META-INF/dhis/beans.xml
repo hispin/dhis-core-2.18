@@ -113,6 +113,8 @@
 
 	<bean id="org.hisp.dhis.program.ProgramStageDataElementStore"
 		class="org.hisp.dhis.program.hibernate.HibernateProgramStageDataElementStore">
+		<property name="clazz"
+			value="org.hisp.dhis.program.ProgramStageDataElement" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
