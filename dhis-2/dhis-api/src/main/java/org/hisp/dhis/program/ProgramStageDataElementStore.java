@@ -30,7 +30,6 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 
 /**
@@ -39,9 +38,32 @@ import org.hisp.dhis.dataelement.DataElement;
  * @version $Id$
  */
 public interface ProgramStageDataElementStore
-    extends GenericStore<ProgramStageDataElement>
 {
     String ID = ProgramStageInstanceStore.class.getName();
+
+    /**
+     * Adds an {@link ProgramStageDataElement}
+     * 
+     * @param programStageDataElement The to ProgramStageDataElement add.
+     * 
+     * @return A generated unique id of the added
+     *         {@link ProgramStageDataElement}.
+     */
+    void save( ProgramStageDataElement programStageDataElement );
+
+    /**
+     * Updates an {@link ProgramStageDataElement}.
+     * 
+     * @param programStageDataElement the ProgramStageDataElement to update.
+     */
+    void update( ProgramStageDataElement programStageDataElement );
+
+    /**
+     * Deletes a {@link ProgramStageDataElement}.
+     * 
+     * @param programStageDataElement the ProgramStageDataElement to delete.
+     */
+    void delete( ProgramStageDataElement programStageDataElement );
 
     /**
      * Retrieve ProgramStageDataElement list on a program stage and a data
@@ -53,6 +75,14 @@ public interface ProgramStageDataElementStore
      * @return ProgramStageDataElement
      */
     ProgramStageDataElement get( ProgramStage programStage, DataElement dataElement );
+
+    /**
+     * Returns all {@link ProgramStageDataElement}
+     * 
+     * @return a collection of all ProgramStageDataElement, or an empty
+     *         collection if there are no ProgramStageDataElements.
+     */
+    Collection<ProgramStageDataElement> getAll();
 
     /**
      * Retrieve ProgramStageDataElement list on a program stage
