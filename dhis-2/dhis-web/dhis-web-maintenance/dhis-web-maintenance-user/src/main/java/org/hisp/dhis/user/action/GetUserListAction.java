@@ -106,7 +106,7 @@ public class GetUserListAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implemantation
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

@@ -174,6 +174,11 @@ public class GetReportParamsAction
                 reportParams = report.getReportParams();                
                 relatives = report.getRelatives();
             }
+            
+            if ( type == null && report != null )
+            {
+                type = report.getType(); // Set type based on report
+            }
         }
         
         if ( reportParams != null && reportParams.isParamReportingMonth() && relatives != null )
