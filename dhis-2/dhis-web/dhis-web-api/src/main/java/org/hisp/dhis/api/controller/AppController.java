@@ -135,13 +135,8 @@ public class AppController
 
         if ( resource == null )
         {
-            resource = findResource( locations, application.getLaunchPath() );
-
-            if ( resource == null )
-            {
-                response.sendError( HttpServletResponse.SC_NOT_FOUND );
-                return;
-            }
+            response.sendError( HttpServletResponse.SC_NOT_FOUND );
+            return;
         }
 
         if ( new ServletWebRequest( request ).checkNotModified( resource.lastModified() ) )
