@@ -4,8 +4,6 @@
       jQuery.postUTF8('setSystemGeneralSettings.action', {
         cacheStrategy: getFieldValue('cacheStrategy'),
         analyticsMaxLimit: getFieldValue('analyticsMaxLimit'),
-        calendar: getFieldValue('calendar'),
-        dateFormat: getFieldValue('dateFormat'),
         infrastructuralDataElements: getFieldValue('infrastructuralDataElements'),
         infrastructuralPeriodType: getFieldValue('infrastructuralPeriodType'),
         feedbackRecipients: getFieldValue('feedbackRecipients'),
@@ -44,26 +42,6 @@
 	<option value="100000" #if( $keyAnalyticsMaxLimit == "100000" )selected="selected"#end>100 000</option>
 	<option value="200000" #if( $keyAnalyticsMaxLimit == "200000" )selected="selected"#end>200 000</option>
 	<option value="0" #if( $keyAnalyticsMaxLimit == "0" )selected="selected"#end>$i18n.getString( "unlimited" )</option>
-</select>
-</div>
-
-<div class="settingLabel">$i18n.getString( "calendar" )</div>
-
-<div class="setting">
-<select id="calendar" name="calendar">
-#foreach( $calendar in $calendars )
-  <option value="$calendar.name()" #if( $keyCalendar == $calendar.name() )selected="selected"#end>$i18n.getString( $calendar.name() )</option>
-#end
-</select>
-</div>
-
-<div class="settingLabel">$i18n.getString( "date_format" )</div>
-
-<div class="setting">
-<select id="dateFormat" name="dateFormat">
-#foreach( $dateFormat in $dateFormats )
-  <option value="$dateFormat.name()" #if( $keyDateFormat == $dateFormat.name() )selected="selected"#end>$i18n.getString( $dateFormat.name() )</option>
-#end
 </select>
 </div>
 

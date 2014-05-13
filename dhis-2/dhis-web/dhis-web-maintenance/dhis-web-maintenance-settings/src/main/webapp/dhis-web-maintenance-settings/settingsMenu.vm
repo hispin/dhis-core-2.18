@@ -5,4 +5,5 @@
     <li><a href="systemEmailSettings.action">$i18n.getString( "email" )&nbsp;</a></li>
     <li><a href="systemAccessSettings.action">$i18n.getString( "access" )&nbsp;</a></li>
     <li><a href="systemApprovalSettings.action">$i18n.getString( "approval" )&nbsp;</a></li>
+    <li><a href="systemCalendarSettings.action">$i18n.getString( "calendar" )&nbsp;</a></li>
 </ul>
