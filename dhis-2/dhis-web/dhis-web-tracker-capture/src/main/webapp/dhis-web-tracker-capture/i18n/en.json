@@ -42,6 +42,7 @@
     "profile": "Profile",
     "enrollment": "Enrollment",
     "notes": "Notes",
+    "relationship": "Relationship",
     "dataentry": "Data Entry",
     "current_selections": "Current selections",
     "org_unit_mode": "Searching org unit",
