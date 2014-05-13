@@ -379,12 +379,14 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $rootScope.dataentryWidget = {title: 'dataentry', view: "views/dataentry.html", show: true};
     $rootScope.selectedWidget = {title: 'current_selections', view: "views/selected.html", show: false};
     $rootScope.profileWidget = {title: 'profile', view: "views/profile.html", show: true};
+    $rootScope.relationshipWidget = {title: 'relationship', view: "views/relationship.html", show: true};
     $rootScope.notesWidget = {title: 'notes', view: "views/notes.html", show: true};    
    
     $rootScope.dashboardWidgets.bigger.push($rootScope.enrollmentWidget);
     $rootScope.dashboardWidgets.bigger.push($rootScope.dataentryWidget);
     $rootScope.dashboardWidgets.smaller.push($rootScope.selectedWidget);
     $rootScope.dashboardWidgets.smaller.push($rootScope.profileWidget);
+    $rootScope.dashboardWidgets.smaller.push($rootScope.relationshipWidget);
     $rootScope.dashboardWidgets.smaller.push($rootScope.notesWidget);
     
     //selections
@@ -671,6 +673,18 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.close = function () {
         $modalInstance.close($scope.eventGridColumns);
     };       
+})
+
+//Controller for the relationship section
+.controller('RelationshipController',
+        function($scope,                
+                storage,
+                TranslationService) {
+
+    TranslationService.translate();
+    
+    $scope.attributes = storage.get('ATTRIBUTES');
+    
 })
 
 //Controller for the notes section
