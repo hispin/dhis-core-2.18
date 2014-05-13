@@ -427,5 +427,11 @@
 "relative",
 "reporting_rates",
 "event_layer",
-"coordinate"
+"coordinate",
+"go_to_pivot_tables",
+"open_this_map_as_table",
+"open_last_table",
+"go_to_charts",
+"open_this_map_as_chart",
+"open_last_chart"
 ]

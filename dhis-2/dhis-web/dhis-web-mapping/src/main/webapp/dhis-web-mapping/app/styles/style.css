@@ -592,6 +592,10 @@ gis-combo .x-form-item-label {
  * GIS Menu
  *--------------------------------------------------------------------------*/
 
+.gis-menu-item-noicon .x-menu-item-link {
+	padding-left: 10px;
+}
+
 .gis-toolbar-btn-menu-first { /* Boundary layer menu spacing from viewport */
 	left: 2px !important;
 }
