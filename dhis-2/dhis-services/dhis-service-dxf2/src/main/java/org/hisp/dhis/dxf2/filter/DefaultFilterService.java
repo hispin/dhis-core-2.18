@@ -263,7 +263,7 @@ public class DefaultFilterService implements FilterService
     }
 
     @SuppressWarnings( "unchecked" )
-    private <T extends IdentifiableObject> boolean evaluateWithFilters( T object, Filters filters )
+    private <T> boolean evaluateWithFilters( T object, Filters filters )
     {
         Map<String, Property> propertiesMap = propertyIntrospectorService.getPropertiesMap( object.getClass() );
 
@@ -309,27 +309,27 @@ public class DefaultFilterService implements FilterService
                     map.remove( "__self__" );
                 }
 
-                if ( descriptor.isIdentifiableObject() && !descriptor.isCollection() )
+                if ( !descriptor.isCollection() )
                 {
-                    if ( !evaluateWithFilters( (IdentifiableObject) value, f ) )
+                    if ( !evaluateWithFilters( value, f ) )
                     {
                         return false;
                     }
                 }
-                else if ( descriptor.isIdentifiableObject() )
+                else
                 {
-                    Collection<?> idObjectCollection = (Collection<?>) value;
+                    Collection<?> objectCollection = (Collection<?>) value;
 
-                    if ( idObjectCollection.isEmpty() )
+                    if ( objectCollection.isEmpty() )
                     {
                         return false;
                     }
 
                     boolean include = false;
 
-                    for ( Object idObject : idObjectCollection )
+                    for ( Object idObject : objectCollection )
                     {
-                        if ( evaluateWithFilters( (IdentifiableObject) idObject, f ) )
+                        if ( evaluateWithFilters( idObject, f ) )
                         {
                             include = true;
                         }
