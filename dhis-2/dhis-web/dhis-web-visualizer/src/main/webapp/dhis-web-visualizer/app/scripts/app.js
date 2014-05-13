@@ -5061,7 +5061,7 @@ Ext.onReady( function() {
 								showSeparator: false,
 								items: [
 									{
-										text: 'Go to pivot tables' + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.go_to_pivot_tables + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
 										handler: function() {
 											window.location.href = ns.core.init.contextPath + '/dhis-web-pivot/app/index.html';
@@ -5069,7 +5069,7 @@ Ext.onReady( function() {
 									},
 									'-',
 									{
-										text: 'Open this chart as pivot table' + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_this_chart_as_pivot_table + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && ns.app.layout),
 										handler: function() {
@@ -5080,7 +5080,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										text: 'Open last pivot table' + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_last_pivot_table + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['table']),
 										handler: function() {
@@ -5118,7 +5118,7 @@ Ext.onReady( function() {
 								showSeparator: false,
 								items: [
 									{
-										text: 'Go to maps' + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.go_to_maps + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
 										handler: function() {
 											window.location.href = ns.core.init.contextPath + '/dhis-web-mapping/app/index.html';
@@ -5126,7 +5126,7 @@ Ext.onReady( function() {
 									},
 									'-',
 									{
-										text: 'Open this chart as map' + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_this_chart_as_map + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && ns.app.layout),
 										handler: function() {
@@ -5137,7 +5137,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										text: 'Open last map' + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_last_map + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['map']),
 										handler: function() {

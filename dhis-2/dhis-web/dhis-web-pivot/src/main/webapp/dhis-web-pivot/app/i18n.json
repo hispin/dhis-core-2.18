@@ -153,5 +153,11 @@
 "sum",
 "by_data_element",
 "stddev",
-"variance"
+"variance",
+"go_to_charts",
+"open_this_table_as_chart",
+"open_last_chart",
+"go_to_maps",
+"open_this_table_as_map",
+"open_last_map"
 ]

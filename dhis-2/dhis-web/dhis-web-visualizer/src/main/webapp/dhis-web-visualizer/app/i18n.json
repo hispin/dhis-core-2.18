@@ -217,5 +217,11 @@
 "all_data_elements",
 "hide_empty_category_items",
 "axes",
-"general"
+"general",
+"go_to_pivot_tables",
+"open_this_chart_as_pivot_table",
+"open_last_pivot_table",
+"go_to_maps",
+"open_this_chart_as_map",
+"open_last_map"
 ]

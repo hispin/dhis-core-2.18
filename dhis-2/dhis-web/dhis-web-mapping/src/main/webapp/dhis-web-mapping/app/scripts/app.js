@@ -8191,7 +8191,7 @@ Ext.onReady( function() {
 								showSeparator: false,
 								items: [
 									{
-										text: 'Go to pivot tables' + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.go_to_pivot_tables + '&nbsp;&nbsp;', //i18n
 										cls: 'gis-menu-item-noicon',
 										handler: function() {
 											window.location.href = gis.init.contextPath + '/dhis-web-pivot/app/index.html';
@@ -8199,7 +8199,7 @@ Ext.onReady( function() {
 									},
 									'-',
 									{
-										text: 'Open this map as table' + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.open_this_map_as_table + '&nbsp;&nbsp;', //i18n
 										cls: 'gis-menu-item-noicon',
 										disabled: !(GIS.isSessionStorage && gis.util.layout.getAnalytical()),
 										handler: function() {
@@ -8209,7 +8209,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										text: 'Open last table' + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.open_last_table + '&nbsp;&nbsp;', //i18n
 										cls: 'gis-menu-item-noicon',
 										disabled: !(GIS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['table']),
 										handler: function() {
@@ -8247,7 +8247,7 @@ Ext.onReady( function() {
 								showSeparator: false,
 								items: [
 									{
-										text: 'Go to charts' + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.go_to_charts + '&nbsp;&nbsp;', //i18n
 										cls: 'gis-menu-item-noicon',
 										handler: function() {
 											window.location.href = gis.init.contextPath + '/dhis-web-visualizer/app/index.html';
@@ -8255,7 +8255,7 @@ Ext.onReady( function() {
 									},
 									'-',
 									{
-										text: 'Open this map as chart' + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.open_this_map_as_chart + '&nbsp;&nbsp;', //i18n
 										cls: 'gis-menu-item-noicon',
 										disabled: !GIS.isSessionStorage || !gis.util.layout.getAnalytical(),
 										handler: function() {
@@ -8265,7 +8265,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										text: 'Open last chart' + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.open_last_chart + '&nbsp;&nbsp;', //i18n
 										cls: 'gis-menu-item-noicon',
 										disabled: !(GIS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['chart']),
 										handler: function() {
