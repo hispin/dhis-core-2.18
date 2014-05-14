@@ -167,7 +167,7 @@ public interface TrackedEntityAttributeService
      * 
      * @return List of attributes
      */
-    Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayInList( boolean displayInListNoProgram );
+    Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayInList();
 
     /**
      * Returns {@link TrackedEntityAttribute} list with paging

@@ -128,7 +128,7 @@ public class SelectAction
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesDisplayInList( true )  );
+        attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesDisplayInList()  );
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         trackedEntities = new ArrayList<TrackedEntity>( trackedEntityService.getAllTrackedEntity() );

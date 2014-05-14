@@ -238,7 +238,7 @@ public class ShowEventWithRegistrationFormAction
             if ( program == null )
             {
                 attributes = new ArrayList<TrackedEntityAttribute>(
-                    attributeService.getTrackedEntityAttributesDisplayInList( true ) );
+                    attributeService.getTrackedEntityAttributesDisplayInList() );
                 Collection<Program> programs = programService.getAllPrograms();
 
                 for ( Program p : programs )

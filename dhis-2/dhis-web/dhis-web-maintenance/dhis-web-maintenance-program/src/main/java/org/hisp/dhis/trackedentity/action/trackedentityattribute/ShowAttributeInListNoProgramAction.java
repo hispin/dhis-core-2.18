@@ -84,13 +84,14 @@ public class ShowAttributeInListNoProgramAction
     public String execute()
         throws Exception
     {
-        availableAttributes = new ArrayList<TrackedEntityAttribute>(
-            attributeService.getTrackedEntityAttributesDisplayInList( false ) );
-        Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
-
         selectedAttributes = new ArrayList<TrackedEntityAttribute>(
-            attributeService.getTrackedEntityAttributesDisplayInList( true ) );
+            attributeService.getTrackedEntityAttributesDisplayInList() );
         Collections.sort( selectedAttributes, new TrackedEntityAttributeSortOrderInListNoProgramComparator() );
+
+        availableAttributes = new ArrayList<TrackedEntityAttribute>(
+            attributeService.getAllTrackedEntityAttributes() );
+        availableAttributes.removeAll( selectedAttributes );
+        Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
