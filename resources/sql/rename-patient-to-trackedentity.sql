@@ -15,10 +15,6 @@ DROP TABLE patienttabularreportmembers;
 DROP TABLE patienttabularreportusergroupaccesses;
 DROP TABLE patienttabularreport;
 
--- program attributes - must be recreated
-
-DROP TABLE program_patientattributes;
-
 -- attribute option
 
 ALTER TABLE patientattributevalue DROP COLUMN patientattributeoptionid;
