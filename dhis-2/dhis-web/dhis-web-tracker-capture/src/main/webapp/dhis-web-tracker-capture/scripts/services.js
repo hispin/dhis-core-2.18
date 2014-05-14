@@ -182,9 +182,19 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });            
             return promise;
         },        
-        search: function(ouId, ouMode, query) {           
+        search: function(ouId, ouMode, queryUrl, programUrl, attributeUrl) {           
             
             var url =  '../api/trackedEntityInstances.json?ou=' + ouId + '&ouMode='+ ouMode;
+            
+            if(queryUrl){
+                url = url + '&'+ queryUrl;
+            }
+            if(programUrl){
+                url = url + '&' + programUrl;
+            }
+            if(attributeUrl){
+                url = url + '&' + attributeUrl;
+            }
             
             promise = $http.get( url ).then(function(response){                                
                 return entityFormatter(response.data);
