@@ -551,18 +551,7 @@ public abstract class AbstractEventService
         {
             assignedToOrganisationUnit = true;
         }
-        else
-        {
-            for ( OrganisationUnitGroup organisationUnitGroup : program.getOrganisationUnitGroups() )
-            {
-                if ( organisationUnitGroup.getMembers().contains( organisationUnit ) )
-                {
-                    assignedToOrganisationUnit = true;
-                    break;
-                }
-            }
-        }
-
+        
         return !assignedToOrganisationUnit;
     }
 

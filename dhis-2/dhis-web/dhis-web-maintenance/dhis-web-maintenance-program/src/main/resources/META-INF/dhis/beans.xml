@@ -198,8 +198,6 @@
 	<bean id="org.hisp.dhis.trackedentity.action.program.GetProgramAction"
 		class="org.hisp.dhis.trackedentity.action.program.GetProgramAction"
 		scope="prototype">
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
@@ -275,8 +273,6 @@
 		id="org.hisp.dhis.trackedentity.action.program.DefineProgramAssociationsAction"
 		class="org.hisp.dhis.trackedentity.action.program.DefineProgramAssociationsAction"
 		scope="prototype">
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />

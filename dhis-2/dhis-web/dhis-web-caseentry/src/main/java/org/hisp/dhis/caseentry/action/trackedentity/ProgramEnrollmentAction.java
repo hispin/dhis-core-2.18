@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -199,15 +198,6 @@ public class ProgramEnrollmentAction
     private boolean showDataEntry( OrganisationUnit orgunit, Program program, ProgramInstance programInstance )
     {
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
-
-        if ( program.getOrganisationUnitGroups().size() > 0 )
-        {
-            for ( OrganisationUnitGroup orgunitGroup : program.getOrganisationUnitGroups() )
-            {
-                orgunits.addAll( orgunitGroup.getMembers() );
-            }
-
-        }
 
         if ( !orgunits.contains( orgunit ) && !program.getOrganisationUnits().contains( orgunit ) )
         {

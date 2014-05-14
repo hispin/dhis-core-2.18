@@ -293,6 +293,8 @@ public class TableAlteror
 
         executeSql( "UPDATE trackedentityattribute SET valuetype='string' WHERE valuetype='localId';" );
         executeSql( "UPDATE trackedentityattribute SET valuetype='number' WHERE valuetype='age'" );
+        
+        executeSql( "DROP TABLE orgunitgroupprograms" );
     }
 
     // -------------------------------------------------------------------------
