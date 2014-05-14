@@ -183,7 +183,7 @@ public class DefaultTrackedEntityInstanceService
             {
                 Collection<TrackedEntityAttribute> filters = attributeService.getAllTrackedEntityAttributes();
                 Collection<TrackedEntityAttribute> attributes = attributeService
-                    .getTrackedEntityAttributesDisplayInList( true );
+                    .getTrackedEntityAttributesDisplayInList();
                 filters.removeAll( attributes );
 
                 params.addAttributesIfNotExist( QueryItem.getQueryItems( attributes ) );
