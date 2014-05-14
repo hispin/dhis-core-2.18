@@ -60,7 +60,7 @@ public interface TrackedEntityDataValueStore
      * 
      * @param programStageInstance ProgramStageInstance.
      */
-    int delete( ProgramStageInstance programStageInstance );
+    int detele( ProgramStageInstance programStageInstance );
 
     /**
      * Retrieve data values of a event

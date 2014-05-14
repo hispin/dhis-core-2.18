@@ -187,7 +187,7 @@ public class TrackedEntityDataValueStoreTest
         assertNotNull( dataValueStore.get( stageInstanceB, dataElementA ) );
         assertNotNull( dataValueStore.get( stageInstanceB, dataElementB ) );
 
-        dataValueStore.delete( stageInstanceA );
+        dataValueStore.detele( stageInstanceA );
         assertNull( dataValueStore.get( stageInstanceA, dataElementA ) );
         assertNull( dataValueStore.get( stageInstanceA, dataElementB ) );
         assertNotNull( dataValueStore.get( stageInstanceB, dataElementA ) );

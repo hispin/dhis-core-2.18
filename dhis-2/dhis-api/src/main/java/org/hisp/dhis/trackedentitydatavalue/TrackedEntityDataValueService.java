@@ -73,7 +73,7 @@ public interface TrackedEntityDataValueService
      * 
      * @return Error code. If this code is 0, deleting succeed.
      */
-    int deleteTrackedEntityDataValue( ProgramStageInstance programStageInstance );
+    void deleteTrackedEntityDataValue( ProgramStageInstance programStageInstance );
 
     /**
      * Retrieve data values of a event
