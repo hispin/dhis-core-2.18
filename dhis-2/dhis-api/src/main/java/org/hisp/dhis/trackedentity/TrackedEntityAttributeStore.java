@@ -75,10 +75,8 @@ public interface TrackedEntityAttributeStore
     /**
      * Get attributes which are displayed in visit schedule
      * 
-     * @param displayInList True/False value
-     * 
      * @return List of attributes
      */
-    Collection<TrackedEntityAttribute> getDisplayInList( boolean displayInList );
+    Collection<TrackedEntityAttribute> getDisplayInList();
 
 }

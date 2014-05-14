@@ -149,9 +149,9 @@ public class DefaultTrackedEntityAttributeService
         return new HashSet<TrackedEntityAttribute>();
     }
 
-    public Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayInList( boolean displayInList )
+    public Collection<TrackedEntityAttribute> getTrackedEntityAttributesDisplayInList()
     {
-        return attributeStore.getDisplayInList( displayInList );
+        return attributeStore.getDisplayInList();
     }
 
     public Collection<TrackedEntityAttribute> getTrackedEntityAttributesBetweenByName( String name, int min, int max )
