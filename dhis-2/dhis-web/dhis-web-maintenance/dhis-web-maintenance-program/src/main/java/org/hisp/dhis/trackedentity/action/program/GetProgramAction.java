@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.program.Program;
@@ -52,13 +51,6 @@ public class GetProgramAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
 
     private ProgramService programService;
 
@@ -129,25 +121,6 @@ public class GetProgramAction
     {
         this.level = level;
     }
-
-    private Integer organisationUnitGroupId;
-
-    public Integer getOrganisationUnitGroupId()
-    {
-        return organisationUnitGroupId;
-    }
-
-    public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
-    {
-        this.organisationUnitGroupId = organisationUnitGroupId;
-    }
-
-    private List<OrganisationUnitGroup> availableOrgunitGroups = new ArrayList<OrganisationUnitGroup>();
-
-    public List<OrganisationUnitGroup> getAvailableOrgunitGroups()
-    {
-        return availableOrgunitGroups;
-    }
     
     private List<UserGroup> userGroups;
     
@@ -165,9 +138,6 @@ public class GetProgramAction
     {
         program = programService.getProgram( id );
         
-        availableOrgunitGroups = new ArrayList<OrganisationUnitGroup>(organisationUnitGroupService.getAllOrganisationUnitGroups());
-        availableOrgunitGroups.removeAll( program.getOrganisationUnitGroups() );
-
         selectionTreeManager.setSelectedOrganisationUnits( program.getOrganisationUnits() );
         
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );

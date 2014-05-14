@@ -84,28 +84,10 @@ public class HibernateProgramStore
     @Override
     public Collection<Program> get( OrganisationUnit organisationUnit )
     {
-        Criteria criteria1 = getCriteria();
-        criteria1.createAlias( "organisationUnits", "orgunit" );
-        criteria1.add( Restrictions.eq( "orgunit.id", organisationUnit.getId() ) );
-
-        Criteria criteria2 = getCriteria();
-        criteria2.createAlias( "organisationUnitGroups", "orgunitGroup" );
-        criteria2.createAlias( "orgunitGroup.members", "orgunitMember" );
-        criteria2.add( Restrictions.eq( "orgunitMember.id", organisationUnit.getId() ) );
-
-        Collection<Program> programs = new HashSet<Program>();
-        
-        if ( criteria1.list() != null )
-        {
-            programs.addAll( criteria1.list() );
-        }
-
-        if ( criteria2.list() != null )
-        {
-            programs.addAll( criteria2.list() );
-        }
-
-        return programs;
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "organisationUnits", "orgunit" );
+        criteria.add( Restrictions.eq( "orgunit.id", organisationUnit.getId() ) );
+        return  criteria.list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -116,25 +98,7 @@ public class HibernateProgramStore
         criteria1.createAlias( "organisationUnits", "orgunit" );
         criteria1.add( Restrictions.eq( "type", type ) );
         criteria1.add( Restrictions.eq( "orgunit.id", organisationUnit.getId() ) );
-
-        Criteria criteria2 = getCriteria();
-        criteria2.createAlias( "organisationUnitGroups", "orgunitGroup" );
-        criteria2.createAlias( "orgunitGroup.members", "orgunitMember" );
-        criteria2.add( Restrictions.eq( "type", type ) );
-        criteria2.add( Restrictions.eq( "orgunitMember.id", organisationUnit.getId() ) );
-
-        Collection<Program> programs = new HashSet<Program>();
-        if ( criteria1.list() != null )
-        {
-            programs.addAll( criteria1.list() );
-        }
-
-        if ( criteria2.list() != null )
-        {
-            programs.addAll( criteria2.list() );
-        }
-
-        return programs;
+        return criteria1.list();
     }
 
     @Override
@@ -193,40 +157,15 @@ public class HibernateProgramStore
     @SuppressWarnings( "unchecked" )
     public Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
     {
-        Collection<Program> programs = new HashSet<Program>();
-
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
         if ( orgunit != null )
         {
-            Criteria criteria1 = getCriteria();
-            criteria1.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
-            criteria1.createAlias( "organisationUnits", "orgunit" );
-            criteria1.add( Restrictions.eq( "orgunit.id", orgunit.getId() ) );
-
-            Criteria criteria2 = getCriteria();
-            criteria1.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
-            criteria2.createAlias( "organisationUnitGroups", "orgunitGroup" );
-            criteria2.createAlias( "orgunitGroup.members", "orgunitMember" );
-            criteria2.add( Restrictions.eq( "orgunitMember.id", orgunit.getId() ) );
-
-            if ( criteria1.list() != null )
-            {
-                programs.addAll( criteria1.list() );
-            }
-
-            if ( criteria2.list() != null )
-            {
-                programs.addAll( criteria2.list() );
-            }
-        }
-        else
-        {
-            Criteria criteria = getCriteria();
-            criteria.add( Restrictions.eq( "displayOnAllOrgunit", displayOnAllOrgunit ) );
-
-            programs = criteria.list();
+            criteria.createAlias( "organisationUnits", "orgunit" );
+            criteria.add( Restrictions.eq( "orgunit.id", orgunit.getId() ) );
         }
 
-        return programs;
+        return criteria.list();
     }
 
     @Override
