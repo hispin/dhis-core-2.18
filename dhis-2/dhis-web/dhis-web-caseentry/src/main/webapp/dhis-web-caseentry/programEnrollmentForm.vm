@@ -115,8 +115,8 @@
 
 	<div id='tab-5'>
 		<p>
-			<input type="button" onclick="exportProgramReports( '$programInstance.id', 'xls' )" value="$i18n.getString('get_report_as_xls')" style='width:150px;'>
-			<input type="button" onclick="exportProgramReports( '$programInstance.id', 'pdf' )" value="$i18n.getString('get_report_as_pdf')" style='width:150px;'>
+			<input type="button" onclick="exportProgramReports( '$programInstance.uid', 'xls' )" value="$i18n.getString('get_report_as_xls')" style='width:150px;'>
+			<input type="button" onclick="exportProgramReports( '$programInstance.uid', 'pdf' )" value="$i18n.getString('get_report_as_pdf')" style='width:150px;'>
 		</p>
 		<div id='programReportDiv'></div>
 	</div>
@@ -179,7 +179,7 @@
 	jQuery('#tb_$!programInstance.id').css('margin-top',-25);
 	
 	if( jQuery('#tabs li').length == 1){
-		programReports(getFieldValue('programInstanceId'));
+		programReports(getFieldValue('programInstanceUid'));
 	}
 	
 	// Only display the attribute-value which belong to the program selected
