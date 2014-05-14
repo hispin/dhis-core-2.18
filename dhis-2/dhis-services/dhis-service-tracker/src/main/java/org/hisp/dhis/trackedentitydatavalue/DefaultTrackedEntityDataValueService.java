@@ -74,9 +74,9 @@ public class DefaultTrackedEntityDataValueService
         dataValueStore.delete( dataValue );
     }
 
-    public int deleteTrackedEntityDataValue( ProgramStageInstance programStageInstance )
+    public void deleteTrackedEntityDataValue( ProgramStageInstance programStageInstance )
     {
-        return dataValueStore.delete( programStageInstance );
+        dataValueStore.detele( programStageInstance );
     }
 
     public void updateTrackedEntityDataValue( TrackedEntityDataValue dataValue )

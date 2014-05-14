@@ -132,11 +132,8 @@ public class HibernateTrackedEntityAttributeValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityAttributeValue> get( TrackedEntityInstance entityInstance, Program program )
     {
-        String hql = "SELECT pav FROM TrackedEntityAttributeValue as pav WHERE pav.entityInstance=:entityInstance and pav.attribute.program=:program";
-        Query query = getQuery( hql );
-        query.setEntity( "entityInstance", entityInstance );
-        query.setEntity( "program", program );
-
-        return query.list();
+        return getCriteria(
+            Restrictions.and( Restrictions.eq( "entityInstance", entityInstance ),
+            Restrictions.eq( "attribute.program", program ) ) ).list();
     }
 }

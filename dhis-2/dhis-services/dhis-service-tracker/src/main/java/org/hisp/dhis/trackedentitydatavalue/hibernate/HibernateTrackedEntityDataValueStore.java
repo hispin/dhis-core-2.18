@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
@@ -53,8 +54,8 @@ public class HibernateTrackedEntityDataValueStore
     {
         sessionFactory.getCurrentSession().save( dataValue );
     }
-
-    public int delete( ProgramStageInstance programStageInstance )
+   
+    public int detele( ProgramStageInstance programStageInstance )
     {
         Query query = getQuery( "delete from TrackedEntityDataValue where programStageInstance = :programStageInstance" );
         query.setEntity( "programStageInstance", programStageInstance );
@@ -76,11 +77,7 @@ public class HibernateTrackedEntityDataValueStore
             return new ArrayList<TrackedEntityDataValue>();
         }
         
-        String hql = "from TrackedEntityDataValue pdv where pdv.dataElement in ( :dataElements ) "
-            + "and pdv.programStageInstance = :programStageInstance";
-
-        return getQuery( hql ).setParameterList( "dataElements", dataElements )
-            .setEntity( "programStageInstance", programStageInstance ).list();
+        return getCriteria( Restrictions.in( "dataElement", dataElements ), Restrictions.eq( "programStageInstance", programStageInstance ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -103,18 +100,19 @@ public class HibernateTrackedEntityDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityDataValue> get( TrackedEntityInstance entityInstance, Collection<DataElement> dataElements, Date startDate,
         Date endDate )
-    {
+     {
         if ( dataElements == null || dataElements.isEmpty() )
         {
             return new ArrayList<TrackedEntityDataValue>();
         }
         
-        String hql = "from TrackedEntityDataValue pdv where pdv.dataElement in ( :dataElements ) "
-            + "and pdv.programStageInstance.programInstance.entityInstance = :entityInstance "
-            + "and pdv.programStageInstance.executionDate >= :startDate and pdv.programStageInstance.executionDate <= :endDate ";
-
-        return getQuery( hql ).setParameterList( "dataElements", dataElements ).setEntity( "entityInstance", entityInstance )
-            .setDate( "startDate", startDate ).setDate( "endDate", endDate ).list();
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "programStageInstance", "programStageInstance" );
+        criteria.createAlias( "programStageInstance.programInstance", "programInstance" );
+        criteria.add( Restrictions.in( "dataElement", dataElements ) );
+        criteria.add( Restrictions.eq( "programInstance.entityInstance", entityInstance ) );
+        criteria.add( Restrictions.between( "programStageInstance.executionDate", startDate, endDate ) );
+        return criteria.list();
     }
 
     public TrackedEntityDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement )
@@ -122,4 +120,5 @@ public class HibernateTrackedEntityDataValueStore
         return (TrackedEntityDataValue) getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ),
             Restrictions.eq( "dataElement", dataElement ) ).uniqueResult();
     }
+
 }

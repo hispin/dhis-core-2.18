@@ -123,9 +123,12 @@ public class HibernateProgramStageInstanceStore
     @SuppressWarnings( "unchecked" )
     public List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, Boolean completed )
     {
-        String hql = "from ProgramStageInstance where programInstance.entityInstance = :entityInstance and completed = :completed";
-
-        return getQuery( hql ).setEntity( "entityInstance", entityInstance ).setBoolean( "completed", completed ).list();
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "programInstance", "programInstance" );
+        criteria.add( Restrictions.eq( "programInstance.entityInstance", entityInstance));
+        criteria.add(  Restrictions.eq( "completed", completed ));
+        
+        return criteria.list();
     }
 
     // TODO this class must be re-written from here
