@@ -28,8 +28,6 @@ package org.hisp.dhis.mobile.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -427,7 +425,7 @@ public class ActivityReportingServiceImpl
         }
 
         Collection<TrackedEntityAttribute> displayAttributes = attributeService
-            .getTrackedEntityAttributesDisplayInList( true );
+            .getTrackedEntityAttributesDisplayInList();
         String resultSet = "";
 
         for ( TrackedEntityInstance patient : patients )
@@ -1586,7 +1584,7 @@ public class ActivityReportingServiceImpl
         String resultSet = "";
 
         Collection<TrackedEntityAttribute> displayAttributes = attributeService
-            .getTrackedEntityAttributesDisplayInList( true );
+            .getTrackedEntityAttributesDisplayInList();
         for ( TrackedEntity trackedentity : trackedentities )
         {
             resultSet += trackedentity.getDisplayName() + "$";
