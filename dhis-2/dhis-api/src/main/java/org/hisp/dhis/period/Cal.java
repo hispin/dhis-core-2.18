@@ -80,7 +80,7 @@ public class Cal
      * Adds the given amount of time to the given calendar field.
      * 
      * @param field the calendar field.
-     * @param value the amount of time.
+     * @param amount the amount of time.
      */
     public Cal add( int field, int amount )
     {
@@ -92,7 +92,7 @@ public class Cal
      * Subtracts the given amount of time to the given calendar field.
      * 
      * @param field the calendar field.
-     * @param value the amount of time.
+     * @param amount the amount of time.
      */
     public Cal subtract( int field, int amount )
     {
@@ -112,7 +112,7 @@ public class Cal
     
     /**
      * Returns the current year.
-     * @return
+     * @return current year
      */
     public int getYear()
     {
