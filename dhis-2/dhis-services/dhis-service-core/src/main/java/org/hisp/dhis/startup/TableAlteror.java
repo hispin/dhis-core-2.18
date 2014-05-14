@@ -96,6 +96,11 @@ public class TableAlteror
         executeSql( "DROP TABLE reporttable_dataelementgroupsets" );
         executeSql( "DROP TABLE dashboardcontent_datamartexports" );
         executeSql( "DROP TABLE dashboardcontent_mapviews" );
+        executeSql( "DROP TABLE dashboardcontent_documents" );
+        executeSql( "DROP TABLE dashboardcontent_maps" );
+        executeSql( "DROP TABLE dashboardcontent_reports" );
+        executeSql( "DROP TABLE dashboardcontent_reporttables" );
+        executeSql( "DROP TABLE dashboardcontent" );
         executeSql( "DROP TABLE customvalue" );
         executeSql( "DROP TABLE reporttable_displaycolumns" );
         executeSql( "DROP TABLE reportreporttables" );
