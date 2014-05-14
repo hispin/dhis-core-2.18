@@ -10,7 +10,8 @@ var trackerCapture = angular.module('trackerCapture',
 		  'trackerCaptureFilters',
                   'trackerCaptureDirectives', 
                   'trackerCaptureControllers',
-		  'angularLocalStorage', 
+		  'angularLocalStorage',
+                  'ui.select2',
 		  'pascalprecht.translate'])
               
 .value('DHIS2URL', '..')

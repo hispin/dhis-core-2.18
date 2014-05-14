@@ -22,7 +22,7 @@
     <div class="row">
         <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
         <div class="input-group col-md-6">
-            <input type="text" class="form-control" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
+            <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" title="{{'more' | translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
             </span>                
@@ -30,13 +30,14 @@
         <div class="btn-group col-md-6">
             <button type="button" 
                     class="btn btn-default"
-                    ng-disabled="showRegistrationDiv">
+                    ng-disabled="showRegistrationDiv"
+                    ng-click="search(searchMode.freeText)">
                 {{'search'| translate}}
             </button>
             <button type="button" 
                     class="btn btn-default" 
-                    ng-click="loadTrackedEntities()">
-                {{'list_all_entities'| translate}}
+                    ng-click="search(searchMode.listAll)">
+                {{'list_all'| translate}}
             </button>
             <button type="button" 
                     class="btn btn-default" 
@@ -49,7 +50,7 @@
     <!-- search begins -->
     <div class="row" ng-if="showSearchDiv">
         <div class="col-md-6">
-            <div ng-include="'views/search.html'" ng-controller='SearchController'></div>             
+            <div ng-include="'views/search.html'"></div>             
         </div>
     </div>
     <!-- search ends -->
