@@ -34,8 +34,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     //Searching
     $scope.showSearchDiv = false;
-    $scope.searchField = {title: 'search', isOpen: false};  
-    $scope.attributes = [];
+    $scope.searchText = null;
+    $scope.attributes = AttributesFactory.getWithoutProgram();    
+    $scope.searchMode = {listAll: 'LIST_ALL', freeText: 'FREE_TEXT', attributeBased: 'ATTRIBUTE_BASED'};
     
     //Registration
     $scope.showRegistrationDiv = false;
@@ -50,8 +51,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
             //apply translation - by now user's profile is fetched from server.
             TranslationService.translate();
-            $scope.loadPrograms($scope.selectedOrgUnit);
-            $scope.attributes = storage.get('ATTRIBUTES');            
+            $scope.loadPrograms($scope.selectedOrgUnit);   
         }
     });
     
@@ -88,17 +88,74 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }        
     };        
     
+    $scope.getProgramAttributes = function(program){        
+        if(program){
+            $scope.attributes = AttributesFactory.getByProgram(program);
+        }
+        else{
+            $scope.attributes = AttributesFactory.getWithoutProgram();
+        }
+    };
+    
+    $scope.search = function(mode){               
+            
+        $scope.gridColumns = $scope.attributes;        
+
+        //generate grid column for the selected program
+        angular.forEach($scope.gridColumns, function(gridColumn){
+            gridColumn.showFilter =  false;
+            gridColumn.hide = false;                   
+            if(gridColumn.type === 'date'){
+                 $scope.filterText[gridColumn.id]= {start: '', end: ''};
+            }
+        });
+        
+        if( mode === $scope.searchMode.freeText ){            
+            console.log('the search mode is:  ', mode);
+            $scope.trackedEntityList = null;
+            
+            if(!$scope.searchText){
+                console.log('empty search query');
+                return;
+            }            
+            
+            $scope.showTrackedEntityDiv = true;            
+            
+            //Load entities for the selected orgunit            
+            TrackedEntityInstanceService.getByOrgUnit($scope.selectedOrgUnit.id).then(function(data){
+                $scope.trackedEntityList = data;                
+            });            
+        }
+        else if( mode === $scope.searchMode.attributeBased ){
+            $scope.showTrackedEntityDiv = true;
+            console.log('the search mode is:  ', mode);
+            //Load entities for the selected orgunit
+            TrackedEntityInstanceService.getByOrgUnit($scope.selectedOrgUnit.id).then(function(data){
+                $scope.trackedEntityList = data;                
+            });
+        }
+       else if( mode === $scope.searchMode.listAll ){
+            console.log('the search mode is:  ', mode);
+            $scope.showTrackedEntityDiv = true; 
+            $scope.trackedEntityList = null;
+            //Load entities for the selected orgunit
+            TrackedEntityInstanceService.getByOrgUnit($scope.selectedOrgUnit.id).then(function(data){
+                $scope.trackedEntityList = data;                
+            });
+        }      
+    };
+    
     //get events for the selected program (and org unit)
     $scope.loadTrackedEntities = function(){
         
-        $scope.showTrackedEntityDiv = !$scope.showTrackedEntityDiv;
+        console.log('am I called...');
         
+        $scope.showTrackedEntityDiv = !$scope.showTrackedEntityDiv;        
         $scope.showSearchDiv = false;
-        $scope.showRegistrationDiv = false;        
-        
+        $scope.showRegistrationDiv = false;      
         $scope.trackedEntityList = null;
         
-        $scope.gridColumns = AttributesFactory.getForListing();
+        $scope.gridColumns = $scope.attributes;
 
         //generate grid column for the selected program
         angular.forEach($scope.gridColumns, function(gridColumn){
@@ -170,164 +227,11 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         SelectedEntity.setSelectedEntity(currentEntity);
         storage.set('SELECTED_OU', $scope.selectedOrgUnit);        
         $location.path('/dashboard').search({selectedEntityId: currentEntity.id});                                    
-    };   
-    
-    $scope.search = function(){       
-        console.log('the search is:  ', $scope.attributes);
-        console.log('the mode is:  ', $scope.ouMode);
-    };
+    };  
        
     $scope.getHelpContent = function(){
         console.log('I will get help content');
     };    
-})
-
-//Controller for the search section
-.controller('SearchController',
-        function($rootScope,
-                $scope,       
-                AttributesFactory,
-                TranslationService) {
-
-    TranslationService.translate();
-    
-    //search attibutes
-    $scope.attributes = AttributesFactory.getAll();
-    $scope.availableAttributes = $scope.attributes;
-    $scope.selectedAttributes = [];
-    $rootScope.showAdvancedSearchDiv = false;
-    $scope.ouMode = 'SELECTED';
-    
-    $scope.getProgramAttributes = function(program){        
-        if(program){
-            $scope.attributes = AttributesFactory.getByProgram(program);
-            $scope.availableAttributes = $scope.attributes;
-        }
-        else{
-            $scope.attributes = AttributesFactory.getAll();
-            $scope.availableAttributes = $scope.attributes;
-        }
-    };
-    
-    $scope.moveToSelected = function(attribute, fromView){  
-        
-        if(attribute){
-            
-            if(fromView){
-                attribute = attribute[0];
-            }
-
-            if(angular.isObject(attribute)) {            
-                if($scope.selectedAttributes.indexOf(attribute) === -1){       
-
-                    var filter = {operands: [], operand: '', values: [], value: ''};
-
-                    if(attribute.valueType === 'number' || attribute.valueType === 'date'){
-                        filter.operands = ['=', '>','>=', '<', '<=', '!=' ];
-                        filter.operand = filter.operands[0];
-                    }
-
-                    else if(attribute.valueType === 'bool'){
-                        filter.operands = ['IS'];
-                        filter.operand = filter.operands[0];
-                        filter.values = ['No', 'Yes'];
-                        filter.value = filter.values[0];
-                    }
-
-                    else if(attribute.valueType === 'combo'){
-                        filter.operands = ['IS'];
-                        filter.operand = filter.operands[0];
-                        filter.values = attribute.optionSet.options;
-                        filter.value = filter.values[0];
-                    }
-                    else{
-                        filter.operands = ['LIKE', 'NOT LIKE' ];
-                        filter.operand = filter.operands[0];
-                    }
-
-                    attribute.filters = [filter];
-                    $scope.selectedAttributes.push(attribute);
-                    var index = $scope.availableAttributes.indexOf(attribute);
-                    $scope.availableAttributes.splice(index, 1);
-                }
-            }            
-        }         
-    };
-    
-    $scope.moveAllToSelected = function(){             
-        angular.forEach($scope.availableAttributes, function(attribute){
-            //$scope.selectedAttributes.push(attribute);            
-            $scope.moveToSelected(attribute, false);
-        });        
-        
-        $scope.availableAttributes = [];
-    };
-    
-    $scope.addFilter = function(attribute){
-        
-        var filter = {operands: [], operand: '', values: [], value: ''};
-                    
-        if(attribute.valueType === 'number' || attribute.valueType === 'date'){
-            filter.operands = ['=', '>','>=', '<', '<=', '!=' ];
-            filter.operand = filter.operands[0];
-        }
-
-        else if(attribute.valueType === 'bool'){
-            filter.operands = ['IS'];
-            filter.operand = filter.operands[0];
-            filter.values = ['No', 'Yes'];
-            filter.value = filter.values[0];
-        }
-
-        else if(attribute.valueType === 'combo'){
-            filter.operands = ['IS'];
-            filter.operand = filter.operands[0];
-            filter.values = attribute.optionSet.options;
-            filter.value = filter.values[0];
-        }
-        else{
-            filter.operands = ['LIKE', 'NOT LIKE' ];
-            filter.operand = filter.operands[0];
-        }
-
-        attribute.filters.push(filter);
-
-        //console.log('I am going to add filter for dataElement:  ', dataElement);  
-    };
-    
-    $scope.removeFilter = function(filter, attribute){
-        
-        var index = attribute.filters.indexOf(filter);        
-        attribute.filters.splice(index, 1);
-
-        if(attribute.filters.length === 0 || angular.isUndefined(attribute.filters.length)){
-            index = $scope.selectedAttributes.indexOf(attribute);
-            $scope.selectedAttributes.splice(index, 1);
-            $scope.availableAttributes.push(attribute);
-        }
-        
-    };
-    
-    $scope.showAdvancedSearch = function(){        
-        $rootScope.showAdvancedSearchDiv = !$rootScope.showAdvancedSearchDiv;
-    };
-    
-    $scope.hideAdvancedSearch = function(){        
-        $rootScope.showAdvancedSearchDiv = false;
-    };
-    
-    $scope.closeAdvancedSearch = function(){
-        $rootScope.showAdvancedSearchDiv = !$rootScope.showAdvancedSearchDiv;
-    }; 
-    
-    $scope.search = function(){
-        console.log($scope.attributes);
-        console.log($scope.ouMode);
-    };
-    
-    $scope.test = function(){
-        console.log('the mode is:  ', $scope.ouMode);
-    };   
 })
 
 .controller('RegistrationController', 
@@ -338,7 +242,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //do translation of the registration page
     TranslationService.translate();   
     
-    $scope.attributes = AttributesFactory.getAll();
+    $scope.attributes = AttributesFactory.getWithoutProgram();
     
     $scope.selectedProgram = null;
     
@@ -348,7 +252,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             $scope.attributes = AttributesFactory.getByProgram(program);
         }
         else{
-            $scope.attributes = AttributesFactory.getAll();
+            $scope.attributes = AttributesFactory.getWithoutProgram();
         }
     };
     
@@ -441,6 +345,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     //attributes for profile    
     $scope.attributes = {};    
+    
     angular.forEach(storage.get('ATTRIBUTES'), function(attribute){
         $scope.attributes[attribute.id] = attribute;
     }); 
@@ -537,7 +442,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
     TranslationService.translate();
     
-    $scope.attributes = storage.get('ATTRIBUTES');
+    //$scope.attributes = storage.get('ATTRIBUTES');
     
     //selected org unit
     $scope.selectedOrgUnit = storage.get('SELECTED_OU'); 
