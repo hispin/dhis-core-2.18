@@ -35,6 +35,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //Searching
     $scope.showSearchDiv = false;
     $scope.searchText = null;
+    $scope.searchFilterExists = false;
     $scope.attributes = AttributesFactory.getWithoutProgram();    
     $scope.searchMode = {listAll: 'LIST_ALL', freeText: 'FREE_TEXT', attributeBased: 'ATTRIBUTE_BASED'};
     
@@ -88,16 +89,27 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }        
     };        
     
-    $scope.getProgramAttributes = function(program){        
-        if(program){
-            $scope.attributes = AttributesFactory.getByProgram(program);
+    $scope.getProgramAttributes = function(program){ 
+        $scope.selectedProgram = program;
+        if($scope.selectedProgram){
+            $scope.attributes = AttributesFactory.getByProgram($scope.selectedProgram);
         }
         else{
             $scope.attributes = AttributesFactory.getWithoutProgram();
         }
     };
     
-    $scope.search = function(mode){               
+    $scope.search = function(mode){     
+        var queryUrl = null, 
+            programUrl = null, 
+            attributeUrl = null;
+    
+        if($scope.selectedProgram){
+            programUrl = 'program=' + $scope.selectedProgram.id;
+        }
+    
+        $scope.showSearchDiv = false;
+        $scope.showRegistrationDiv = false;    
             
         $scope.gridColumns = $scope.attributes;        
 
@@ -111,38 +123,72 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         });
         
         if( mode === $scope.searchMode.freeText ){            
-            console.log('the search mode is:  ', mode);
             $scope.trackedEntityList = null;
             
             if(!$scope.searchText){
                 console.log('empty search query');
                 return;
-            }            
+            }       
             
-            $scope.showTrackedEntityDiv = true;            
-            
-            //Load entities for the selected orgunit            
-            TrackedEntityInstanceService.getByOrgUnit($scope.selectedOrgUnit.id).then(function(data){
-                $scope.trackedEntityList = data;                
-            });            
+            $scope.showTrackedEntityDiv = true;      
+            queryUrl = 'query=' + $scope.searchText;
+                     
         }
         else if( mode === $scope.searchMode.attributeBased ){
-            $scope.showTrackedEntityDiv = true;
-            console.log('the search mode is:  ', mode);
-            //Load entities for the selected orgunit
-            TrackedEntityInstanceService.getByOrgUnit($scope.selectedOrgUnit.id).then(function(data){
-                $scope.trackedEntityList = data;                
+            $scope.showTrackedEntityDiv = true;      
+            
+            angular.forEach($scope.attributes, function(attribute){
+               
+                if(attribute.value && attribute.value !== ""){                    
+                    $scope.searchFilterExists = true;
+                    if(angular.isArray(attribute.value)){
+                        angular.forEach(attribute.value, function(val){                            
+                            if(attributeUrl){
+                                attributeUrl = attributeUrl + '&attribute=' + attribute.id + ':EQ:' + val;
+                            }
+                            else{
+                                attributeUrl = 'attribute=' + attribute.id + ':EQ:' + val;
+                            }
+                        });
+                    }
+                    else{                        
+                        if(attributeUrl){
+                            attributeUrl = attributeUrl + '&attribute=' + attribute.id + ':EQ:' + attribute.value;
+                        }
+                        else{
+                            attributeUrl = 'attribute=' + attribute.id + ':EQ:' + attribute.value;
+                        }
+                    }
+                }
+                else{
+                    if(attributeUrl){
+                        attributeUrl = attributeUrl + '&attribute=' + attribute.id;
+                    }
+                    else{
+                        attributeUrl = 'attribute=' + attribute.id;
+                    }
+                }
             });
+            
+            if(!$scope.searchFilterExists){
+                console.log('empty search filter');
+                return;
+            }
         }
-       else if( mode === $scope.searchMode.listAll ){
-            console.log('the search mode is:  ', mode);
+       else if( mode === $scope.searchMode.listAll ){   
             $scope.showTrackedEntityDiv = true; 
-            $scope.trackedEntityList = null;
-            //Load entities for the selected orgunit
-            TrackedEntityInstanceService.getByOrgUnit($scope.selectedOrgUnit.id).then(function(data){
-                $scope.trackedEntityList = data;                
-            });
+            $scope.trackedEntityList = null;            
         }      
+
+        //(ouId, ouMode, queryUrl, programUrl, attributeUrl)
+        $scope.trackedEntityList = null; 
+        TrackedEntityInstanceService.search($scope.selectedOrgUnit.id, 
+                                            $scope.ouMode,
+                                            queryUrl,
+                                            programUrl,
+                                            attributeUrl).then(function(data){
+            $scope.trackedEntityList = data;
+        });
     };
     
     //get events for the selected program (and org unit)
