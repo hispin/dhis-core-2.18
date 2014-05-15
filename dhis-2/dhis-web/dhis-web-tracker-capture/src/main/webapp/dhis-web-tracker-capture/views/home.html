@@ -8,7 +8,7 @@
     </div>
     <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
 </div>
-<div class="page" id="mainPage">
+<div class="page" id="mainPage" ng-show="selectedOrgUnit">
     <h1>
         <span ng-show="!selectedProgram">
             {{'search'| translate}} {{selectedProgram.trackedEntity.name}}
@@ -22,36 +22,48 @@
     <div class="row">
         <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
         <div class="input-group col-md-6">
-            <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-class="{true: 'invalid-input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
+            <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" title="{{'more' | translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
+                <button class="btn btn-default" type="button" title="{{'more'| translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-cog"></i></button>
             </span>                
         </div>        
-        <div class="btn-group col-md-6">
-            <button type="button" 
-                    class="btn btn-default"
-                    ng-disabled="showRegistrationDiv"
-                    ng-click="search(searchMode.freeText)">
-                {{'search'| translate}}
-            </button>
-            <button type="button" 
-                    class="btn btn-default" 
-                    ng-click="search(searchMode.listAll)">
-                {{'list_all'| translate}}
-            </button>
-            <button type="button" 
-                    class="btn btn-default" 
-                    ng-click="showRegistration()">
-                {{'add_new'| translate}}
-            </button>
+        <div class="col-md-6">
+            <div class="btn-group">
+                <button type="button" 
+                        class="btn btn-default"
+                        ng-disabled="showRegistrationDiv"
+                        ng-click="search(searchMode.freeText)">
+                    {{'search'| translate}}
+                </button>
+                <button type="button" 
+                        class="btn btn-default" 
+                        ng-click="search(searchMode.listAll)">
+                    {{'list_all'| translate}}
+                </button>
+            </div>
+            <span class="horizonal-spacing">
+                <button type="button" 
+                        class="btn btn-default" 
+                        ng-click="showRegistration()">
+                    {{'add_new'| translate}}
+                </button>
+            </span>
         </div>        
     </div>
     <div class="row" ng-if="!searchText && emptySearchText">
         <div class="col-md-6">
-            <div class="alert alert-danger">{{'search_input_required' | translate}}</div>         
+            <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
         </div>
     </div>
-    
+
+    <div class="row">
+        <div class="col-md-6">
+            <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
+                <option value="">{{'please_select_a_program'| translate}}</option>
+            </select>
+        </div>        
+    </div>
+
     <!-- search begins -->
     <div class="row" ng-if="showSearchDiv">
         <div class="col-md-6">
@@ -59,7 +71,7 @@
         </div>
     </div>
     <!-- search ends -->
-    
+
     <!--registration begins -->
     <div class="row" ng-if="showRegistrationDiv">
         <div class="col-md-6">
@@ -67,7 +79,7 @@
         </div>
     </div>
     <!-- registration ends -->
-    
+
     <!-- entity grid begins -->
     <div ng-if="showTrackedEntityDiv">
         <div ng-include="'views/trackedEntityList.html'"></div>  
