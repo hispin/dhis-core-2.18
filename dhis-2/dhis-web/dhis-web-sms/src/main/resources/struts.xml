@@ -51,12 +51,6 @@
       <param name="requiredAuthorities">F_MOBILE_SENDSMS,F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
     </action>
 
-    <action name="searchRegistrationPatient" class="org.hisp.dhis.sms.outcoming.SearchPatientAction">
-      <result name="success" type="velocity">/content.vm</result>
-      <param name="page">/dhis-web-sms/patientRegistrationList.vm</param>
-      <param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
-    </action>
-
     <action name="sendSMS"
       class="org.hisp.dhis.sms.outcoming.ProcessingSendSMSAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
