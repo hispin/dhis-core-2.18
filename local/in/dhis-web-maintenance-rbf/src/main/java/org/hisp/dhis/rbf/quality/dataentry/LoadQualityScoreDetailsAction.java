@@ -32,7 +32,7 @@ import com.opensymphony.xwork2.Action;
 public class LoadQualityScoreDetailsAction
     implements Action
 {
-    private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
+    private final static String TARIFF_SETTING_AUTHORITY = "MAXSCORE_SETTING_AUTHORITY";
 
     private final static String QUALITY_MAX_DATAELEMENT = "QUALITY_MAX_DATAELEMENT";
 

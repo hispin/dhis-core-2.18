@@ -1,9 +1,11 @@
 package org.hisp.dhis.rbf.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.constant.Constant;
@@ -98,6 +100,10 @@ public class GetDataElementforTariffAction
         this.orgUnitGroupId = orgUnitGroupId;
     }
     
+    public Integer getOrgUnitGroupId()
+    {
+        return orgUnitGroupId;
+    }
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -130,63 +136,38 @@ public class GetDataElementforTariffAction
         
         orgUnitGroups = new ArrayList<OrganisationUnitGroup>( orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() ).getOrganisationUnitGroups() );
         
-        /*
-        if ( orgUnitGroupId != null )
+        Set<DataElement> dataElements = new TreeSet<DataElement>();
+        for( OrganisationUnitGroup orgUnitGroup : orgUnitGroups )
         {
-            List<DataElement> dataElements = new ArrayList<DataElement>();
-            
-            OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
-            List<DataSet> dataSets = new ArrayList<DataSet>( orgUnitGroup.getDataSets() );
-            for ( DataSet ds : dataSets )
+            for( DataSet dataSet : orgUnitGroup.getDataSets() )
             {
-                dataElements.addAll( ds.getDataElements() );
+                dataElements.addAll( dataSet.getDataElements() );
             }
+        }
             
-            for ( DataElement de : dataElements )
+        for( DataElement de : dataElements )
+        {
+            if( dataElementList != null && !( dataElementList.contains( "{\"name\" : \"" + de.getName() + "\"}" ) ) )
             {
-                Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
-                for ( AttributeValue attValue : attrValueSet )
+                dataElementList.add( "{\"name\" : \"" + de.getName() + "\"}" );
+            }
+        }
+            
+        /*
+        for ( DataElement de : dataElements )
+        {
+            Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
+            for ( AttributeValue attValue : attrValueSet )
+            {
+                if ( dataElementList != null && !( dataElementList.contains( "{\"name\" : \"" + de.getName() + "\"}" ) )
+                    && attValue.getAttribute().getId() == tariffDataElement.getValue() )
                 {
-                    if ( dataElementList != null && !( dataElementList.contains( "{\"name\" : \"" + de.getName() + "\"}" ) )
-                        && attValue.getAttribute().getId() == tariffDataElement.getValue() )
-                    {
-                        dataElementList.add( "{\"name\" : \"" + de.getName() + "\"}" );
-                    }
+                    dataElementList.add( "{\"name\" : \"" + de.getName() + "\"}" );
                 }
             }
-            
         }
         */
-        
-        //else
-        //{
-            List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
 
-            for ( DataElement de : dataElements )
-            {
-                Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
-                for ( AttributeValue attValue : attrValueSet )
-                {
-                    if ( dataElementList != null && !( dataElementList.contains( "{\"name\" : \"" + de.getName() + "\"}" ) )
-                        && attValue.getAttribute().getId() == tariffDataElement.getValue() )
-                    {
-                        dataElementList.add( "{\"name\" : \"" + de.getName() + "\"}" );
-                    }
-                }
-            }
-        //}
-        
-        /*
-        System.out.println( "dataElementList Size : " + dataElementList.size() );
-        
-        for( String dataElement : dataElementList )
-        {
-            System.out.println("  --- dataElement" + dataElement );
-        }
-        */
-            
-        
-        
         return SUCCESS;
     }
 }

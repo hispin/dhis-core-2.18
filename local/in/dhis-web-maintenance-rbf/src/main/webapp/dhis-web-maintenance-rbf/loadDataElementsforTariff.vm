@@ -110,15 +110,15 @@ function orgUnitGroupChange()
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
-		document.getElementById('simpleCombo').style.display = 'block';
-        enable('orgUnit'); 
-		setFieldValue("orgUnit", orgUnitNames[0]);
-		setFieldValue("orgUnitUid", orgUnits[0]);
-		document.getElementById('loadTariffDetails').style.display = 'block';
-		if( $('#dataElementName').val() != '' && $( "#orgUnitGroupId" ).val() != "-1" )
-		{
-			getTariffData();	
-		}
+	document.getElementById('simpleCombo').style.display = 'block';
+    enable('orgUnit'); 
+    setFieldValue("orgUnit", orgUnitNames[0]);
+	setFieldValue("orgUnitUid", orgUnits[0]);
+	document.getElementById('loadTariffDetails').style.display = 'block';
+	if( $('#dataElementName').val() != '' && $( "#orgUnitGroupId" ).val() != "-1" )
+	{
+		getTariffData();	
+	}
 }
 
 selection.setListenerFunction( organisationUnitSelected );
