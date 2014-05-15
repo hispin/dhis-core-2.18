@@ -338,8 +338,52 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };    
 })
 
-.service('ProgramAttributes', function(){
+.service('EntityQueryFactory', function(){
     
+    var query = {url: null, hasValue: false};
+    
+    this.getQueryForAttributes = function(attributes){
+        
+        angular.forEach(attributes, function(attribute){
+                
+            //console.log('attribute', attribute.valueType);
+
+            if(attribute.value && attribute.value !== ""){                    
+                query.hasValue = true;
+                if(angular.isArray(attribute.value)){
+                    var index = 0;
+
+                    angular.forEach(attribute.value, function(val){                            
+                        if(query.url){
+                            query.url = query.url + '&attribute=' + attribute.id + ':LIKE:' + val;
+                        }
+                        else{
+                            query.url = 'attribute=' + attribute.id + ':LIKE:' + val;
+                        }
+                        index++;
+                    });
+                }
+                else{                        
+                    if(query.url){
+                        query.url = query.url + '&attribute=' + attribute.id + ':LIKE:' + attribute.value;
+                    }
+                    else{
+                        query.url = 'attribute=' + attribute.id + ':LIKE:' + attribute.value;
+                    }
+                }
+            }
+            else{
+                if(query.url){
+                    query.url = query.url + '&attribute=' + attribute.id;
+                }
+                else{
+                    query.url = 'attribute=' + attribute.id;
+                }
+            }
+        });
+            
+        return query;
+    };    
 })
 
 /* Modal service for user interaction */

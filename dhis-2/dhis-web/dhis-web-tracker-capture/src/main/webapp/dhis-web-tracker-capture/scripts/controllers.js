@@ -13,6 +13,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 SelectedEntity,
                 storage,
                 AttributesFactory,
+                EntityQueryFactory,
                 TrackedEntityInstanceService) {   
    
     //Selection
@@ -35,6 +36,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //Searching
     $scope.showSearchDiv = false;
     $scope.searchText = null;
+    $scope.emptySearchText = false;
     $scope.searchFilterExists = false;
     $scope.attributes = AttributesFactory.getWithoutProgram();    
     $scope.searchMode = {listAll: 'LIST_ALL', freeText: 'FREE_TEXT', attributeBased: 'ATTRIBUTE_BASED'};
@@ -99,7 +101,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }
     };
     
-    $scope.search = function(mode){     
+    $scope.search = function(mode){ 
+        
+        $scope.emptySearchText = false;
         var queryUrl = null, 
             programUrl = null, 
             attributeUrl = null;
@@ -125,52 +129,20 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         if( mode === $scope.searchMode.freeText ){            
             $scope.trackedEntityList = null;
             
-            if(!$scope.searchText){
-                console.log('empty search query');
+            if(!$scope.searchText){                
+                $scope.emptySearchText = true;
                 return;
             }       
             
             $scope.showTrackedEntityDiv = true;      
-            queryUrl = 'query=' + $scope.searchText;
-                     
+            queryUrl = 'query=' + $scope.searchText;                     
         }
         else if( mode === $scope.searchMode.attributeBased ){
             $scope.showTrackedEntityDiv = true;      
             
-            angular.forEach($scope.attributes, function(attribute){
-               
-                if(attribute.value && attribute.value !== ""){                    
-                    $scope.searchFilterExists = true;
-                    if(angular.isArray(attribute.value)){
-                        angular.forEach(attribute.value, function(val){                            
-                            if(attributeUrl){
-                                attributeUrl = attributeUrl + '&attribute=' + attribute.id + ':EQ:' + val;
-                            }
-                            else{
-                                attributeUrl = 'attribute=' + attribute.id + ':EQ:' + val;
-                            }
-                        });
-                    }
-                    else{                        
-                        if(attributeUrl){
-                            attributeUrl = attributeUrl + '&attribute=' + attribute.id + ':EQ:' + attribute.value;
-                        }
-                        else{
-                            attributeUrl = 'attribute=' + attribute.id + ':EQ:' + attribute.value;
-                        }
-                    }
-                }
-                else{
-                    if(attributeUrl){
-                        attributeUrl = attributeUrl + '&attribute=' + attribute.id;
-                    }
-                    else{
-                        attributeUrl = 'attribute=' + attribute.id;
-                    }
-                }
-            });
-            
-            if(!$scope.searchFilterExists){
+            attributeUrl = EntityQueryFactory.getQueryForAttributes($scope.attributes);
+          
+            if(!attributeUrl.hasValue){
                 console.log('empty search filter');
                 return;
             }
@@ -186,7 +158,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                             $scope.ouMode,
                                             queryUrl,
                                             programUrl,
-                                            attributeUrl).then(function(data){
+                                            attributeUrl.url).then(function(data){
             $scope.trackedEntityList = data;
         });
     };
