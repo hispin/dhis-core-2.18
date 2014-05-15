@@ -1047,8 +1047,7 @@ public class TableAlteror
             {
                 List<Integer> foreignIds = new ArrayList<Integer>();
 
-                ResultSet resultSet = stat
-                    alter table translation modify column locale varchar(45) null;ement.executeQuery( "SELECT " + col2 + " FROM " + table + " WHERE " + col1
+                ResultSet resultSet = statement.executeQuery( "SELECT " + col2 + " FROM " + table + " WHERE " + col1
                     + "=" + distinctId );
 
                 while ( resultSet.next() )
