@@ -498,7 +498,7 @@ public class DefaultIdentifiableObjectManager
     {
         for ( GenericIdentifiableObjectStore<IdentifiableObject> objectStore : identifiableObjectStores )
         {
-            if ( simpleClassName.equals( objectStore.getClass().getSimpleName() ) )
+            if ( simpleClassName.equals( objectStore.getClazz().getSimpleName() ) )
             {
                 return objectStore.getByUid( uid );
             }

@@ -91,6 +91,16 @@ public interface UserSettingService
     Serializable getUserSetting( String name );
 
     /**
+     * Returns the value of the user setting specified by the given name.
+     * 
+     * @param name the name of the user setting.
+     * @return the value corresponding to the named user setting, or null if
+     *         there is no match.
+     * @throws NoCurrentUserException if there is no current user.
+     */
+    Serializable getUserSetting( String name, String username );
+
+    /**
      * Returns the value of the user setting specified by the given name. If
      * there is no current user or the user setting doesn't exist, the specified
      * default value is returned.

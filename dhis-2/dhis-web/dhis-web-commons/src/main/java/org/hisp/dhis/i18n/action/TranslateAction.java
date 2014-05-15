@@ -56,7 +56,7 @@ public class TranslateAction
 
     private String className;
 
-    private String objectId;
+    private String uid;
 
     private String loc;
 
@@ -91,9 +91,9 @@ public class TranslateAction
         this.className = className;
     }
 
-    public void setObjectId( String objectId )
+    public void setUid( String uid )
     {
-        this.objectId = objectId;
+        this.uid = uid;
     }
 
     public void setLoc( String locale )
@@ -115,9 +115,9 @@ public class TranslateAction
         return className;
     }
 
-    public String getObjectId()
+    public String getUid()
     {
-        return objectId;
+        return uid;
     }
 
     public String getLocale()
@@ -142,9 +142,9 @@ public class TranslateAction
     public String execute()
         throws Exception
     {
-        log.info( "Classname: " + className + ", id: " + objectId + ", loc: " + loc );
+        log.info( "Classname: " + className + ", uid: " + uid + ", loc: " + loc );
 
-        IdentifiableObject object = identifiableObjectManager.getObject( Integer.parseInt( objectId ), className );
+        IdentifiableObject object = identifiableObjectManager.getObject( uid , className );
 
         List<String> propertyNames = i18nService.getObjectPropertyNames( object );
         
@@ -168,7 +168,7 @@ public class TranslateAction
 
         if ( thisLocale != null && !loc.equals( "NONE" ) )
         {
-            i18nService.updateTranslation( className, Integer.parseInt( objectId ), thisLocale, translations );
+            i18nService.updateTranslation( className, thisLocale, translations,object.getUid() );
         }
 
         return SUCCESS;

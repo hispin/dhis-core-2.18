@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class HsqlStatementBuilder
     extends AbstractStatementBuilder
-{    
+{
     @Override
     public String getDoubleColumnType()
     {

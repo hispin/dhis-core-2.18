@@ -6,7 +6,7 @@
 <h3>$i18n.getString( "translation_translate" ) #openHelp( "translation" )</h3>
 
 <div>
-	<input type="hidden" id="objectId" name="objectId" value="$objectId"/>
+	<input type="hidden" id="uid" name="uid" value="$uid"/>
 	<input type="hidden" id="className" name="className" value="$className"/>
 	<input type="hidden" id="returnUrl" name="returnUrl" value="$returnUrl"/>
 </div>

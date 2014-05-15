@@ -194,4 +194,22 @@ public abstract class AbstractStatementBuilder
             "where tc.constraint_type='PRIMARY KEY' " +
             "and cu.table_name='" + table + "';";
     }
+
+    @Override
+    public String getDropPrimaryKey( String table )
+    {
+        return "alter table " + table + " drop primary key;";
+    }
+
+    @Override
+    public String getAddPrimaryKeyToExistingTable( String table, String column )
+    {
+        return "alter table " + table + " add column " + column + " integer auto_increment primary key not null;";
+    }
+    
+    @Override
+    public String getDropNotNullConstraint( String table, String column, String type )
+    {
+        return "alter table " + table + " modify column " + column + " " + type + " null;";
+    }
 }

@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class PostgreSQLStatementBuilder
     extends AbstractStatementBuilder
-{    
+{
     @Override
     public String getDoubleColumnType()
     {
@@ -238,5 +238,27 @@ public class PostgreSQLStatementBuilder
         }
         
         return sqlsb.toString();
+    }
+
+    @Override
+    public String getDropPrimaryKey( String table )
+    {
+        return "alter table " + table + " drop constraint " + table + "_pkey;";
+    }
+
+    @Override
+    public String getAddPrimaryKeyToExistingTable( String table, String column )
+    {
+        return
+            "alter table " + table + " add column " + column + " integer;" +
+            "update " + table + " set " + column + " = nextval('hibernate_sequence') where " + column + " is null;" +
+            "alter table " + table + " alter column " + column + " set not null;" +
+            "alter table " + table + " add primary key(" + column + ");";
+    }
+
+    @Override
+    public String getDropNotNullConstraint( String table, String column, String type )
+    {
+        return "alter table " + table + " alter column " + column + " drop not null;";
     }
 }

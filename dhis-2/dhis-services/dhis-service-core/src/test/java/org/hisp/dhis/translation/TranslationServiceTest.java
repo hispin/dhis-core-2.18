@@ -28,23 +28,16 @@ package org.hisp.dhis.translation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 import java.util.Locale;
 
-import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland
  */
-@Ignore //TODO fails on ci
 public class TranslationServiceTest
     extends DhisSpringTest
 {
@@ -54,15 +47,15 @@ public class TranslationServiceTest
     // Testdata
     // -------------------------------------------------------------------------
 
-    private int id1 = 0;
-    private int id2 = 1;
+    private String uid1 = "uid1";
+    private String uid2 = "uid2";
 
     private String locale1 = Locale.UK.toString();
     private String locale2 = Locale.US.toString();
     private String locale3 = Locale.FRANCE.toString();
 
-    private String className1 = OrganisationUnit.class.getName();
-    private String className2 = DataElement.class.getName();
+    private String className1 = "class1";
+    private String className2 = "class2";
 
     private Translation translation1a;
     private Translation translation1b;
@@ -78,14 +71,14 @@ public class TranslationServiceTest
     public void setUpTest()
     {
         translationService = (TranslationService) getBean( TranslationService.ID );
-        
-        translation1a = new Translation( className1, id1, locale1, "name", "cheers" );
-        translation1b = new Translation( className1, id1, locale1, "shortName", "goodbye" );
-        translation2a = new Translation( className1, id1, locale2, "name", "hello" );
-        translation2b = new Translation( className2, id1, locale2, "name", "hey" );
-        translation2c = new Translation( className2, id2, locale3, "name", "bonjour" );
+
+        translation1a = new Translation( className1, locale1, "name", "cheers", uid1 );
+        translation1b = new Translation( className1, locale1, "shortName", "goodbye", uid1 );
+        translation2a = new Translation( className1, locale2, "name", "hello", uid1 );
+        translation2b = new Translation( className2, locale2, "name", "hey", uid1 );
+        translation2c = new Translation( className2, locale3, "name", "bonjour", uid2 );
     }
-    
+
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
@@ -95,46 +88,46 @@ public class TranslationServiceTest
     {
         translationService.addTranslation( translation1a );
         translationService.addTranslation( translation1b );
-        
-        assertEquals( translation1a, translationService.getTranslation( className1, id1, Locale.UK, "name" ) );
-        assertEquals( translation1b, translationService.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+
+        assertEquals( translation1a, translationService.getTranslationNoFallback( className1, Locale.UK, "name", uid1 ) );
+        assertEquals( translation1b, translationService.getTranslationNoFallback( className1, Locale.UK, "shortName", uid1 ) );
     }
-    
+
     @Test
     public void delete()
     {
-        Translation translation1a = new Translation( className1, id1, locale1, "name", "habari" );
-        Translation translation1b = new Translation( className1, id1, locale1, "shortName", "kesho" );
-        
+        Translation translation1a = new Translation( className1, locale1, "name", "habari",  uid1 );
+        Translation translation1b = new Translation( className1, locale1, "shortName", "kesho",  uid1 );
+
         translationService.addTranslation( translation1a );
         translationService.addTranslation( translation1b );
-        
-        assertNotNull( translationService.getTranslation( className1, id1, Locale.UK, "name" ) );
-        assertNotNull( translationService.getTranslation( className1, id1, Locale.UK, "shortName" ) );
-        
+
+        assertNotNull( translationService.getTranslationNoFallback( className1, Locale.UK, "name", uid1 ) );
+        assertNotNull( translationService.getTranslationNoFallback( className1, Locale.UK, "shortName", uid1 ) );
+
         translationService.deleteTranslation( translation1a );
-        
-        assertNull( translationService.getTranslation( className1, id1, Locale.UK, "name" ) );
-        assertNotNull( translationService.getTranslation( className1, id1, Locale.UK, "shortName" ) );
 
-        translationService.deleteTranslation( translation1b );
+        assertNull( translationService.getTranslationNoFallback( className1, Locale.UK, "name", uid1 ) );
+        assertNotNull( translationService.getTranslationNoFallback( className1, Locale.UK, "shortName", uid1 ) );
 
-        assertNull( translationService.getTranslation( className1, id1, Locale.UK, "name" ) );
-        assertNull( translationService.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+        translationService.deleteTranslations( translation1b.getClassName(),translation1b.getObjectUid() );
+
+        assertNull( translationService.getTranslationNoFallback( className1, Locale.UK, "name", uid1 ) );
+        assertNull( translationService.getTranslationNoFallback( className1, Locale.UK, "shortName", uid1 ) );
     }
 
     @Test
     public void testUpdateTranslation()
     {
         translationService.addTranslation( translation1a );
-        
-        assertEquals( translation1a, translationService.getTranslation( className1, id1, Locale.UK, "name" ) );
-        
+
+        assertEquals( translation1a, translationService.getTranslationNoFallback( className1, Locale.UK, "name",  uid1 ) );
+
         translation1a.setValue( "regards" );
-        
+
         translationService.updateTranslation( translation1a );
 
-        assertEquals( "regards", translationService.getTranslation( className1, id1, Locale.UK, "name" ).getValue() );
+        assertEquals( "regards", translationService.getTranslationNoFallback( className1, Locale.UK, "name",  uid1 ).getValue() );
     }
 
     @Test
@@ -145,12 +138,12 @@ public class TranslationServiceTest
         translationService.addTranslation( translation2a );
         translationService.addTranslation( translation2b );
         translationService.addTranslation( translation2c );
-        
+
         assertEquals( 2, translationService.getTranslations( className1, Locale.UK ).size() );
-        assertTrue( translationService.getTranslations( className1, id1, Locale.UK ).contains( translation1a ) );
-        assertTrue( translationService.getTranslations( className1, id1, Locale.UK ).contains( translation1b ) );
+        assertTrue( translationService.getTranslationsNoFallback( className1, Locale.UK, uid1 ).contains( translation1a ) );
+        assertTrue( translationService.getTranslationsNoFallback( className1, Locale.UK, uid1 ).contains( translation1b ) );
     }
-    
+
     @Test
     public void testGetAllTranslations()
     {
@@ -159,7 +152,7 @@ public class TranslationServiceTest
         translationService.addTranslation( translation2a );
         translationService.addTranslation( translation2b );
         translationService.addTranslation( translation2c );
-        
+
         assertEquals( 5, translationService.getAllTranslations().size() );
     }
 }

@@ -28,8 +28,9 @@ package org.hisp.dhis.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.period.Period;
 import java.util.List;
+
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -42,7 +43,7 @@ public interface StatementBuilder
     //--------------------------------------------------------------------------
     // General
     //--------------------------------------------------------------------------
-
+    
     /**
      * Encodes the provided SQL value. Value will be wrapped in quotes.
      * 
@@ -205,4 +206,10 @@ public interface StatementBuilder
     String queryDataElementStructureForOrgUnit();
 
     String queryRawDataElementsForOrgUnitBetweenPeriods( Integer orgUnitId, List<Integer> betweenPeriodIds );
+    
+    String getDropPrimaryKey( String table );
+    
+    String getAddPrimaryKeyToExistingTable( String table, String column );
+    
+    String getDropNotNullConstraint( String table, String column, String type );
 }

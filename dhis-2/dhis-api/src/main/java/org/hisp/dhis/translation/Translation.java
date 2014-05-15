@@ -28,22 +28,23 @@ package org.hisp.dhis.translation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
 
 /**
  * @author Oyvind Brucker
  */
+@JacksonXmlRootElement( localName = "translation", namespace = DxfNamespaces.DXF_2_0 )
 public class Translation
-    implements Serializable
+    extends BaseIdentifiableObject
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 4432944068677351446L;
+    private String objectUid;
 
     private String className;
-
-    private int id;
 
     private String locale;
 
@@ -57,30 +58,34 @@ public class Translation
 
     public Translation()
     {
+       setAutoFields();
     }
 
-    public Translation( String className, int id, String locale, String property, String value )
+    public Translation( String className, String locale, String property, String value, String objectUid )
     {
+        this();
         this.className = className;
-        this.id = id;
         this.locale = locale;
         this.property = property;
         this.value = value;
+        this.objectUid = objectUid;
     }
 
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
+    @JsonIgnore
     public String getClassIdPropKey()
     {
-        return className + "-" + id + "-" + property;
+        return className + "-" + objectUid + "-" + property;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getClassName()
     {
         return className;
@@ -91,16 +96,8 @@ public class Translation
         this.className = className;
     }
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getLocale()
     {
         return locale;
@@ -111,6 +108,8 @@ public class Translation
         this.locale = locale;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getProperty()
     {
         return property;
@@ -121,6 +120,8 @@ public class Translation
         this.property = property;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getValue()
     {
         return value;
@@ -131,9 +132,21 @@ public class Translation
         this.value = value;
     }
 
-    // -------------------------------------------------------------------------
+
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getObjectUid()
+    {
+        return objectUid;
+    }
+
+    public void setObjectUid( String objectUid )
+    {
+        this.objectUid = objectUid;
+    }
 
     @Override
     public int hashCode()
@@ -142,10 +155,10 @@ public class Translation
         int result = 1;
 
         result = result * prime + className.hashCode();
-        result = result * prime + id;
+        result = result * prime + objectUid.hashCode();
         result = result * prime + locale.hashCode();
         result = result * prime + property.hashCode();
-        
+
         return result;
     }
 
@@ -169,13 +182,13 @@ public class Translation
 
         Translation translation = (Translation) o;
 
-        return className.equals( translation.getClassName() ) && id == translation.getId() &&
+        return className.equals( translation.getClassName() ) &&  objectUid == translation.getObjectUid() &&
             locale.equals( translation.getLocale() ) && property.equals( translation.getProperty());
     }
 
     @Override
     public String toString()
     {
-        return "[Class name: " + className + " id: " + id + " locale: " + locale + " property: " + property + " value: " + value + "]";
+        return "[Class name: " + className + " objectUid: " + objectUid + " uid: " + uid + " locale: " + locale + " property: " + property + " value: " + value + "]";
     }
 }

@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class MySQLStatementBuilder
     extends AbstractStatementBuilder
-{
+{    
     @Override
     public String getDoubleColumnType()
     {

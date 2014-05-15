@@ -84,16 +84,16 @@ public class I18nServiceTest
         String className = DataElement.class.getSimpleName();
         
         DataElement dataElementA = createDataElement( 'A' );
-        int idA = dataElementService.addDataElement( dataElementA );
+        String idA = dataElementA.getUid();
         
         Map<String, String> translationsA = new HashMap<String, String>();
         translationsA.put( "name", "frenchNameA" );
         translationsA.put( "shortName", "frenchShortNameA" );
         translationsA.put( "description", "frenchDescriptionA" );        
         
-        i18nService.updateTranslation( className, idA, locale, translationsA );
+        i18nService.updateTranslation( className, locale, translationsA, dataElementA.getUid());
         
-        Map<String, String> actual = i18nService.getTranslations( className, idA, locale );
+        Map<String, String> actual = i18nService.getTranslations( className, locale, idA );
         
         assertNotNull( actual );
         assertEquals( 3, actual.size() );
@@ -115,7 +115,7 @@ public class I18nServiceTest
         translationsA.put( "shortName", "frenchShortNameA" );
         translationsA.put( "description", "frenchDescriptionA" );        
         
-        i18nService.updateTranslation( className, idA, locale, translationsA );
+        i18nService.updateTranslation( className, locale, translationsA,dataElementA.getUid() );
 
         assertEquals( "DataElementA", dataElementA.getDisplayName() );
         assertEquals( "DataElementShortA", dataElementA.getDisplayShortName() );
@@ -163,9 +163,9 @@ public class I18nServiceTest
         translationsC.put( "shortName", "frenchShortNameC" );
         translationsC.put( "description", "frenchDescriptionC" );        
 
-        i18nService.updateTranslation( className, idA, locale, translationsA );
-        i18nService.updateTranslation( className, idB, locale, translationsB );
-        i18nService.updateTranslation( className, idC, locale, translationsC );
+        i18nService.updateTranslation( className, locale, translationsA,dataElementA.getUid() );
+        i18nService.updateTranslation( className, locale, translationsB,dataElementB.getUid() );
+        i18nService.updateTranslation( className, locale, translationsC, dataElementC.getUid());
         
         i18nService.internationalise( elements, locale );
         

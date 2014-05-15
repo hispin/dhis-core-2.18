@@ -28,27 +28,16 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.ReflectionUtils.getClassName;
-import static org.hisp.dhis.system.util.ReflectionUtils.getId;
-import static org.hisp.dhis.system.util.ReflectionUtils.getProperty;
-import static org.hisp.dhis.system.util.ReflectionUtils.isCollection;
-import static org.hisp.dhis.system.util.ReflectionUtils.setProperty;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationService;
 import org.hisp.dhis.user.UserSettingService;
+
+import java.util.*;
+
+import static org.hisp.dhis.system.util.ReflectionUtils.*;
 
 /**
  * @author Oyvind Brucker
@@ -119,7 +108,7 @@ public class DefaultI18nService
         List<String> properties = getObjectPropertyNames( object );
 
         Collection<Translation> translations = translationService.getTranslations( getClassName( object ),
-            getId( object ), locale );
+            locale, getProperty( object, "uid" ) );
 
         Map<String, String> translationMap = convertTranslations( translations );
 
@@ -149,7 +138,7 @@ public class DefaultI18nService
 
         for ( Object object : objects )
         {
-            Map<String, String> translationMap = getTranslationsForObject( translations, getId( object ) );
+            Map<String, String> translationMap = getTranslationsForObject( translations, getProperty( object, "uid" ) );
 
             for ( String property : properties )
             {
@@ -201,7 +190,7 @@ public class DefaultI18nService
     {
         if ( object != null )
         {
-            translationService.deleteTranslations( getClassName( object ), getId( object ) );
+            translationService.deleteTranslations( getClassName( object ), getProperty( object, "uid" ) );
         }
     }
 
@@ -209,7 +198,7 @@ public class DefaultI18nService
     // Translation
     // -------------------------------------------------------------------------
 
-    public void updateTranslation( String className, int id, Locale locale, Map<String, String> translations )
+    public void updateTranslation( String className, Locale locale, Map<String, String> translations, String objectUid )
     {
         if ( locale != null && className != null )
         {
@@ -217,55 +206,37 @@ public class DefaultI18nService
             {
                 String key = translationEntry.getKey();
                 String value = translationEntry.getValue();
-                
-                Translation translation = translationService.getTranslationNoFallback( className, id, locale, key );
-
-                if ( value != null && !value.trim().isEmpty() )
-                {                    
-                    if ( translation != null )
-                    {
-                        translation.setValue( value );
-                        translationService.updateTranslation( translation );
-                    }
-                    else
-                    {
-                        translation = new Translation( className, id, locale.toString(), key, value );
-                        translationService.addTranslation( translation );
-                    }
-                }
-                else if ( translation != null )
-                {
-                    translationService.deleteTranslation( translation );
-                }
+                Translation t = new Translation( className, locale.toString(), key, value, objectUid );
+                translationService.createOrUpdate( t );
             }
         }
     }
 
-    public Map<String, String> getTranslations( String className, int id )
+    public Map<String, String> getTranslations( String className, String objectUid )
     {
-        return getTranslations( className, id, getCurrentLocale() );
+        return getTranslations( className, getCurrentLocale(), objectUid );
     }
 
-    public Map<String, String> getTranslations( String className, int id, Locale locale )
+    public Map<String, String> getTranslations( String className, Locale locale, String objectUid )
     {
         if ( locale != null && className != null )
         {
-            return convertTranslations( translationService.getTranslations( className, id, locale ) );
+            return convertTranslations( translationService.getTranslations( className, locale, objectUid ) );
         }
 
         return new HashMap<String, String>();
     }
 
-    public Map<String, String> getTranslationsNoFallback( String className, int id )
+    public Map<String, String> getTranslationsNoFallback( String className, String objectUid )
     {
-        return getTranslationsNoFallback( className, id, getCurrentLocale() );
+        return getTranslationsNoFallback( className, objectUid, getCurrentLocale() );
     }
 
-    public Map<String, String> getTranslationsNoFallback( String className, int id, Locale locale )
+    public Map<String, String> getTranslationsNoFallback( String className, String objectUid, Locale locale )
     {
         if ( locale != null && className != null )
         {
-            return convertTranslations( translationService.getTranslationsNoFallback( className, id, locale ) );
+            return convertTranslations( translationService.getTranslationsNoFallback( className, locale, objectUid ) );
         }
 
         return new HashMap<String, String>();
@@ -299,17 +270,18 @@ public class DefaultI18nService
      * id where the key is the translation property and the value is the
      * translation value.
      * 
+     *
      * @param translations Collection to search.
-     * @param id the object id.
+     * @param objectUid
      * @return Map of property/value pairs.
      */
-    private Map<String, String> getTranslationsForObject( Collection<Translation> translations, int id )
+    private Map<String, String> getTranslationsForObject( Collection<Translation> translations, String objectUid )
     {
         Collection<Translation> objectTranslations = new ArrayList<Translation>();
 
         for ( Translation translation : translations )
         {
-            if ( translation.getId() == id )
+            if (translation.getObjectUid().equals( objectUid ))
             {
                 objectTranslations.add( translation );
             }

@@ -86,7 +86,7 @@ function referrerBack( defaultUrl )
  * @param context Context vars from context menu
  */
 function translateWithContext( context ) {
-  translate( context.type, context.id );
+  translate( context.type, context.uid );
 }
 
 /**
@@ -95,9 +95,9 @@ function translateWithContext( context ) {
  * @param className the name of the object class.
  * @param objectId the identifier of the object.
  */
-function translate( className, objectId )
+function translate( className, uid )
 {
-    var url = "../dhis-web-commons/i18n.action?className=" + className + "&objectId=" + objectId + "&returnUrl=" + htmlEncode( window.location.href ); 
+    var url = "../dhis-web-commons/i18n.action?className=" + className + "&uid=" + uid + "&returnUrl=" + htmlEncode( window.location.href );
     
     window.location.href = url; 
 }
