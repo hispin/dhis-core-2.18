@@ -776,6 +776,14 @@ input[type=text], input[type=password], textarea {
     padding-left: 5px;
 }
 
+.invalid-input {
+    border-style:solid;
+    border-color:red;
+}
+
+.alert {
+    padding: 5px;
+}
 .input-field {
     border: 1px solid #aaa;
     padding: 4px 1px;

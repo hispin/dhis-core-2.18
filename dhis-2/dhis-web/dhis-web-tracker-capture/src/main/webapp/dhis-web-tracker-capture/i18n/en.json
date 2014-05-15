@@ -12,6 +12,7 @@
     "advanced_search": "Advanced search",
     "search_for": "Search for",
     "your_search_input_here": "Your search input here",
+    "search_input_required": "Please specify a search criteria",
     "registered_entities": "Registered Entities",
     "empty_entity_list": "There are no reigstered entities",
     "empty": "Empty",

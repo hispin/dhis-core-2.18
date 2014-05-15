@@ -22,11 +22,11 @@
     <div class="row">
         <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
         <div class="input-group col-md-6">
-            <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
+            <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-class="{true: 'invalid-input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" title="{{'more' | translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
             </span>                
-        </div>
+        </div>        
         <div class="btn-group col-md-6">
             <button type="button" 
                     class="btn btn-default"
@@ -44,6 +44,11 @@
                     ng-click="showRegistration()">
                 {{'add_new'| translate}}
             </button>
+        </div>        
+    </div>
+    <div class="row" ng-if="!searchText && emptySearchText">
+        <div class="col-md-6">
+            <div class="alert alert-danger">{{'search_input_required' | translate}}</div>         
         </div>
     </div>
     
