@@ -38,15 +38,18 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.SecurityService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
@@ -58,6 +61,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import com.opensymphony.xwork2.Action;
+
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -113,12 +118,25 @@ public class AddUserAction
         this.attributeService = attributeService;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    @Autowired
+    private CurrentUserService currentUserService;
+
     @Autowired
     private UserGroupService userGroupService;
 
     @Autowired
     private DataElementCategoryService categoryService;
-    
+
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -247,6 +265,13 @@ public class AddUserAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -262,6 +287,37 @@ public class AddUserAction
         username = username.trim();
         inviteUsername = inviteUsername.trim();
         inviteEmail = inviteEmail.trim();
+
+        User currentUser = currentUserService.getCurrentUser();
+
+        // ---------------------------------------------------------------------
+        // Check if user group is required, before we add the user
+        // ---------------------------------------------------------------------
+
+        if ( (boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false )
+                && !currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
+        {
+            boolean groupFound = false;
+
+            for ( String ug : ugSelected )
+            {
+                UserGroup group = userGroupService.getUserGroup( ug );
+
+                if ( group != null && securityService.canWrite( group ) )
+                {
+                    groupFound = true;
+
+                    break;
+                }
+            }
+
+            if ( !groupFound )
+            {
+                message = i18n.getString( "users_must_belong_to_a_group_controlled_by_the_user_manager" );
+
+                return ERROR;
+            }
+        }
 
         // ---------------------------------------------------------------------
         // User credentials and user
@@ -313,6 +369,11 @@ public class AddUserAction
         Set<OrganisationUnit> dataViewOrgUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
         user.setDataViewOrganisationUnits( dataViewOrgUnits );
 
+        if ( dataViewOrgUnits.size() == 0 && currentUser.getDataViewOrganisationUnits().size() != 0 )
+        {
+            user.setDataViewOrganisationUnits( new HashSet<OrganisationUnit>( currentUser.getDataViewOrganisationUnits() ) );
+        }
+
         // ---------------------------------------------------------------------
         // User roles
         // ---------------------------------------------------------------------
@@ -330,14 +391,19 @@ public class AddUserAction
 
         // ---------------------------------------------------------------------
         // Dimension constraints
+        //
+        // Note that any new user must inherit dimension constraints (if any)
+        // from the current user.
         // ---------------------------------------------------------------------
+
+        userCredentials.setCogsDimensionConstraints( new HashSet<CategoryOptionGroupSet>( currentUser.getUserCredentials().getCogsDimensionConstraints() ) );
 
         for ( String id : dcSelected )
         {
             CategoryOptionGroupSet cogs = categoryService.getCategoryOptionGroupSet( id );
             userCredentials.getCogsDimensionConstraints().add( cogs );
         }
-        
+
         userService.addUser( user );
         userService.addUserCredentials( userCredentials );
 

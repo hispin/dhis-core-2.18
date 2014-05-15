@@ -98,12 +98,19 @@ public class SetAccessSettingsAction
     {
         this.accountInvite = accountInvite;
     }
-    
+
     private Boolean canGrantOwnUserAuthorityGroups;
 
     public void setCanGrantOwnUserAuthorityGroups( Boolean canGrantOwnUserAuthorityGroups )
     {
         this.canGrantOwnUserAuthorityGroups = canGrantOwnUserAuthorityGroups;
+    }
+
+    private Boolean onlyManageWithinUserGroups;
+
+    public void setOnlyManageWithinUserGroups( Boolean onlyManageWithinUserGroups )
+    {
+        this.onlyManageWithinUserGroups = onlyManageWithinUserGroups;
     }
 
     private Integer credentialsExpires;
@@ -172,6 +179,7 @@ public class SetAccessSettingsAction
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_RECOVERY, accountRecovery );
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_INVITE, accountInvite );
         systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, canGrantOwnUserAuthorityGroups );
+        systemSettingManager.saveSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, onlyManageWithinUserGroups );
         systemSettingManager.saveSystemSetting( KEY_SELF_REGISTRATION_NO_RECAPTCHA, selfRegistrationNoRecaptcha );
 
         systemSettingManager.saveSystemSetting( KEY_OPENID_PROVIDER, StringUtils.isEmpty( openIdProvider ) ? null : openIdProvider );
