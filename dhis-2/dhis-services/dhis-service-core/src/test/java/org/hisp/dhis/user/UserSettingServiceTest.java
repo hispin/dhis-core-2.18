@@ -28,12 +28,14 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.Serializable;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Kiran Prakash
@@ -52,7 +54,7 @@ public class UserSettingServiceTest
     private UserCredentialsStore userCredentialStore;
 
     private User testUser;
-    
+
     @Override
     protected void setUpTest()
         throws Exception
@@ -73,4 +75,14 @@ public class UserSettingServiceTest
         assertEquals( "myvalue", setting.getValue() );
         assertEquals( "mykey", setting.getName() );
     }
+
+   @Test
+   public void testShouldGetUserSettings() {
+       UserCredentials userCredentials = testUser.getUserCredentials();
+       userCredentials.setUser( testUser );
+       userCredentialStore.addUserCredentials( userCredentials );
+       userSettingService.saveUserSetting("mykey", "value", "username");
+       Serializable preference = userSettingService.getUserSetting("mykey", "username");
+       assertEquals(preference, "value");
+   }
 }

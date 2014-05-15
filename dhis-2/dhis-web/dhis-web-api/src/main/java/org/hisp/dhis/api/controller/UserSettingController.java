@@ -28,18 +28,13 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Lars Helge Overland
@@ -85,9 +80,9 @@ public class UserSettingController
     }
 
     @RequestMapping( value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String getSystemSetting( @PathVariable( "key" ) String key )
+    public @ResponseBody String getSystemSetting( @PathVariable( "key" ) String key, @RequestParam(value = "user", required = false) String username ) 
     {
-        return (String) userSettingService.getUserSetting( key );
+        return (String) ( username == null ? userSettingService.getUserSetting( key ) : userSettingService.getUserSetting( key, username ) );
     }
 
     @RequestMapping( value = "/{key}", method = RequestMethod.DELETE )

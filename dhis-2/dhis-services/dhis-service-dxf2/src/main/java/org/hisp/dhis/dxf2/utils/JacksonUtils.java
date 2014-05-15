@@ -30,6 +30,8 @@ package org.hisp.dhis.dxf2.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,10 +48,12 @@ import org.hisp.dhis.common.view.SharingExportView;
 import org.hisp.dhis.common.view.ShortNameView;
 import org.hisp.dhis.common.view.UuidView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
+import org.hisp.dhis.translation.Translation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -208,5 +212,10 @@ public class JacksonUtils
     public static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
+    }
+
+    public static <T> T fromJson( InputStream inputStream, TypeReference<?> typeReference ) throws IOException
+    {
+        return (T) jsonMapper.readValue( inputStream, typeReference );
     }
 }

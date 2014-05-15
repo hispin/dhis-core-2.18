@@ -63,15 +63,15 @@ public interface I18nService
     // Translation
     // -------------------------------------------------------------------------
 
-    void updateTranslation( String className, int id, Locale thisLocale, Map<String, String> translations );
+    void updateTranslation( String className, Locale thisLocale, Map<String, String> translations, String objectUid );
     
-    Map<String, String> getTranslations( String className, int id );
+    Map<String, String> getTranslations( String className, String objectUid );
 
-    Map<String, String> getTranslations( String className, int id, Locale locale );
+    Map<String, String> getTranslations( String className, Locale locale, String objectUid );
     
-    Map<String, String> getTranslationsNoFallback( String className, int id );
+    Map<String, String> getTranslationsNoFallback( String className, String objectUid );
 
-    Map<String, String> getTranslationsNoFallback( String className, int id, Locale locale );
+    Map<String, String> getTranslationsNoFallback( String className, String objectUid, Locale locale );
     
     // -------------------------------------------------------------------------
     // Locale

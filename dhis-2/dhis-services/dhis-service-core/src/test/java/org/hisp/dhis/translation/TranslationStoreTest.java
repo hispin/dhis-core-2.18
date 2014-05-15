@@ -45,7 +45,7 @@ import org.junit.Test;
  * @author Oyvind Brucker
  */
 @Ignore //TODO fails on ci
-public class TranslationStoreTest 
+public class TranslationStoreTest
     extends DhisSpringTest
 {
     private TranslationStore translationStore;
@@ -64,8 +64,8 @@ public class TranslationStoreTest
     // Testdata
     // -------------------------------------------------------------------------
 
-    private int id1 = 0;
-    private int id2 = 1;
+    private String uid1 = "uid1";
+    private String uid2 = "uid2";
 
     private String locale1 = Locale.UK.toString();
     private String locale2 = Locale.US.toString();
@@ -87,17 +87,17 @@ public class TranslationStoreTest
     @Test
     public void testAddGet()
     {
-        translation1a = new Translation( className1, id1, locale1, "name", "cheers" );
-        translation1b = new Translation( className1, id1, locale1, "shortName", "goodbye" );
-        translation2a = new Translation( className1, id1, locale2, "name", "hello" );
-        translation2b = new Translation( className2, id1, locale2, "name", "hey" );
-        translation2c = new Translation( className2, id2, locale3, "name", "bonjour" );
+        translation1a = new Translation( className1, locale1, "name", "cheers", className1 + uid1 );
+        translation1b = new Translation( className1, locale1, "shortName", "goodbye",className1 + uid1 );
+        translation2a = new Translation( className1, locale2, "name", "hello",className1 + uid1 );
+        translation2b = new Translation( className2, locale2, "name", "hey",className1 + uid1 );
+        translation2c = new Translation( className2, locale3, "name", "bonjour",className1 + uid2 );
         
         translationStore.addTranslation( translation1a );
         translationStore.addTranslation( translation1b );
         
-        assertEquals( translation1a, translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
-        assertEquals( translation1b, translationStore.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+        assertEquals( translation1a, translationStore.getTranslation( className1, Locale.UK, "name", uid1 ) );
+        assertEquals( translation1b, translationStore.getTranslation( className1, Locale.UK, "shortName", uid1 ) );
     }
     
     @Test
@@ -106,18 +106,18 @@ public class TranslationStoreTest
         translationStore.addTranslation( translation1a );
         translationStore.addTranslation( translation1b );
         
-        assertNotNull( translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
-        assertNotNull( translationStore.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+        assertNotNull( translationStore.getTranslation( className1, Locale.UK, "name", uid1 ) );
+        assertNotNull( translationStore.getTranslation( className1, Locale.UK, "shortName", uid1 ) );
         
         translationStore.deleteTranslation( translation1a );
         
-        assertNull( translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
-        assertNotNull( translationStore.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+        assertNull( translationStore.getTranslation( className1, Locale.UK, "name", uid1 ) );
+        assertNotNull( translationStore.getTranslation( className1, Locale.UK, "shortName", uid1 ) );
 
         translationStore.deleteTranslation( translation1b );
 
-        assertNull( translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
-        assertNull( translationStore.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+        assertNull( translationStore.getTranslation( className1, Locale.UK, "name", uid1 ) );
+        assertNull( translationStore.getTranslation( className1, Locale.UK, "shortName", uid1 ) );
     }
     
     @Test
@@ -125,13 +125,13 @@ public class TranslationStoreTest
     {
         translationStore.addTranslation( translation1a );
         
-        assertEquals( translation1a, translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
+        assertEquals( translation1a, translationStore.getTranslation( className1, Locale.UK, "name", uid1 ) );
         
         translation1a.setValue( "regards" );
         
         translationStore.updateTranslation( translation1a );
 
-        assertEquals( "regards", translationStore.getTranslation( className1, id1, Locale.UK, "name" ).getValue() );
+        assertEquals( "regards", translationStore.getTranslation( className1, Locale.UK, "name", uid1 ).getValue() );
     }
 
     @Test
@@ -143,9 +143,9 @@ public class TranslationStoreTest
         translationStore.addTranslation( translation2b );
         translationStore.addTranslation( translation2c );
         
-        assertEquals( 2, translationStore.getTranslations( className1, id1, Locale.UK ).size() );
-        assertTrue( translationStore.getTranslations( className1, id1, Locale.UK ).contains( translation1a ) );
-        assertTrue( translationStore.getTranslations( className1, id1, Locale.UK ).contains( translation1b ) );
+        assertEquals( 2, translationStore.getTranslations( className1, Locale.UK, uid1 ).size() );
+        assertTrue( translationStore.getTranslations( className1, Locale.UK, uid1 ).contains( translation1a ) );
+        assertTrue( translationStore.getTranslations( className1, Locale.UK, uid1 ).contains( translation1b ) );
     }
 
     @Test
@@ -158,8 +158,8 @@ public class TranslationStoreTest
         translationStore.addTranslation( translation2c );
         
         assertEquals( 2, translationStore.getTranslations( className1, Locale.UK ).size() );
-        assertTrue( translationStore.getTranslations( className1, id1, Locale.UK ).contains( translation1a ) );
-        assertTrue( translationStore.getTranslations( className1, id1, Locale.UK ).contains( translation1b ) );
+        assertTrue( translationStore.getTranslations( className1, Locale.UK, uid1 ).contains( translation1a ) );
+        assertTrue( translationStore.getTranslations( className1, Locale.UK, uid1 ).contains( translation1b ) );
     }
     
     @Test

@@ -31,6 +31,7 @@ package org.hisp.dhis.translation;
 import java.util.Collection;
 import java.util.Locale;
 
+import org.hisp.dhis.system.util.LocaleUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -61,29 +62,37 @@ public class DefaultTranslationService
         translationStore.addTranslation( translation );
     }
 
+    public void createOrUpdate( Collection<Translation> translations )
+    {
+        for ( Translation translation : translations )
+        {
+            createOrUpdate( translation );
+        }
+    }
+
     public void updateTranslation( Translation translation )
     {
         translationStore.updateTranslation( translation );
     }
 
-    public Translation getTranslation( String className, int id, Locale locale, String property )
+    public Translation getTranslation( String className, Locale locale, String property, String objectUid )
     {
-        return translationStore.getTranslation( className, id, locale, property );
+        return translationStore.getTranslation( className, locale, property, objectUid );
     }
 
-    public Translation getTranslationNoFallback( String className, int id, Locale locale, String property )
+    public Translation getTranslationNoFallback( String className, Locale locale, String property, String objectUid )
     {
-        return translationStore.getTranslationNoFallback( className, id, locale, property );
+        return translationStore.getTranslationNoFallback( className, locale, property, objectUid );
     }
 
-    public Collection<Translation> getTranslations( String className, int id, Locale locale )
+    public Collection<Translation> getTranslations( String className, Locale locale, String objectUid )
     {
-        return translationStore.getTranslations( className, id, locale );
+        return translationStore.getTranslations( className, locale, objectUid );
     }
 
-    public Collection<Translation> getTranslationsNoFallback( String className, int id, Locale locale )
+    public Collection<Translation> getTranslationsNoFallback( String className, Locale locale, String objectUid )
     {
-        return translationStore.getTranslationsNoFallback( className, id, locale );
+        return translationStore.getTranslationsNoFallback( className, objectUid, locale );
     }
 
     public Collection<Translation> getTranslations( String className, Locale locale )
@@ -106,8 +115,30 @@ public class DefaultTranslationService
         translationStore.deleteTranslation( translation );
     }
 
-    public void deleteTranslations( String className, int id )
+    public void deleteTranslations( String className, String objectUid )
     {
-        translationStore.deleteTranslations( className, id );
+        translationStore.deleteTranslations( className, objectUid );
+    }
+
+    public void createOrUpdate( Translation translation )
+    {
+        Translation translationNoFallback = getTranslationNoFallback( translation.getClassName(), LocaleUtils.getLocale( translation.getLocale() ), translation.getProperty(), translation.getObjectUid() );
+
+        if ( translation.getValue() != null && !translation.getValue().trim().isEmpty() )
+        {
+            if ( translationNoFallback != null )
+            {
+                translationNoFallback.setValue( translation.getValue() );
+                updateTranslation( translationNoFallback );
+            }
+            else
+            {
+                addTranslation( translation );
+            }
+        }
+        else if ( translationNoFallback != null )
+        {
+            deleteTranslation( translationNoFallback );
+        }
     }
 }

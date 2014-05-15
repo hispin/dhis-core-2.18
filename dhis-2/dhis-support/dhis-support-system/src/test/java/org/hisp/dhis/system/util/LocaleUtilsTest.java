@@ -50,14 +50,14 @@ public class LocaleUtilsTest
         Locale l2 = new Locale( "en", "UK" );
         Locale l3 = new Locale( "en" );
         
-        Translation t1 = new Translation( DataElement.class.getSimpleName(), 1, l1.toString(), "name", "Name" );
-        Translation t2 = new Translation( DataElement.class.getSimpleName(), 1, l2.toString(), "name", "Name" );
-        Translation t3 = new Translation( DataElement.class.getSimpleName(), 1, l3.toString(), "name", "Name" );
+        Translation t1 = new Translation( DataElement.class.getSimpleName(), l1.toString(), "name", "Name", "1" );
+        Translation t2 = new Translation( DataElement.class.getSimpleName(), l2.toString(), "name", "Name","1" );
+        Translation t3 = new Translation( DataElement.class.getSimpleName(), l3.toString(), "name", "Name","1" );
 
-        Translation t4 = new Translation( DataElement.class.getSimpleName(), 1, l1.toString(), "shortName", "Short name" );
-        Translation t5 = new Translation( DataElement.class.getSimpleName(), 1, l2.toString(), "shortName", "Short name" );
+        Translation t4 = new Translation( DataElement.class.getSimpleName(), l1.toString(), "shortName", "Short name", "1");
+        Translation t5 = new Translation( DataElement.class.getSimpleName(), l2.toString(), "shortName", "Short name", "1");
         
-        Translation t6 = new Translation( DataElement.class.getSimpleName(), 1, l2.toString(), "code", "Code" );
+        Translation t6 = new Translation( DataElement.class.getSimpleName(), l2.toString(), "code", "Code", "1");
         
         List<Translation> list = Arrays.asList( t1, t2, t3, t4, t5, t6 );
         

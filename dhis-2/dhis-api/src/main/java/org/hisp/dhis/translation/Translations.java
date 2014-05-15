@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n.action;
+package org.hisp.dhis.translation;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,76 +28,39 @@ package org.hisp.dhis.i18n.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Locale;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
-import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.system.util.LocaleUtils;
-
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.Collection;
 
 /**
- * @author Oyvind Brucker
+ * @author Kiran Prakash
  */
-public class GetTranslationsAction 
-    extends ActionSupport
-
+@JacksonXmlRootElement( localName = "translations", namespace = DxfNamespaces.DXF_2_0 )
+public class Translations
 {
-    private String className;
+    private Collection<Translation> translations;
 
-    private String uid;
-
-    private String loc;
-
-    private Map<String, String> translations;
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService i18nService )
+    public Translations()
     {
-        this.i18nService = i18nService;
     }
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    public void setClassName( String className )
+    public Translations( Collection<Translation> translations )
     {
-        this.className = className;
+        this.translations = translations;
     }
 
-    public void setUid( String uid )
-    {
-        this.uid = uid;
-    }
-
-    public void setLoc( String locale )
-    {
-        this.loc = locale;
-    }
-
-    public Map<String, String> getTranslations()
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Collection<Translation> getTranslations()
     {
         return translations;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
+    public void setTranslations( Collection<Translation> translations )
     {
-        Locale locale = LocaleUtils.getLocale( loc );
-
-        translations = i18nService.getTranslationsNoFallback( className, uid, locale );
-        
-        return SUCCESS;
+        this.translations = translations;
     }
 }
-

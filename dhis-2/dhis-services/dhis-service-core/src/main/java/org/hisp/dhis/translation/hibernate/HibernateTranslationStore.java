@@ -77,14 +77,14 @@ public class HibernateTranslationStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Translation getTranslation( String className, int id, Locale locale, String property )
+    public Translation getTranslation( String className, Locale locale, String property, String objectUid )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Translation.class );
 
         criteria.add( Restrictions.eq( "className", className ) );
-        criteria.add( Restrictions.eq( "id", id ) );
+        criteria.add( Restrictions.eq( "objectUid", objectUid ) );
         criteria.add( Restrictions.in( "locale", LocaleUtils.getLocaleFallbacks( locale ) ) );
         criteria.add( Restrictions.eq( "property", property ) );
 
@@ -98,14 +98,14 @@ public class HibernateTranslationStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Translation getTranslationNoFallback( String className, int id, Locale locale, String property )
+    public Translation getTranslationNoFallback( String className, Locale locale, String property, String objectUid )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Translation.class );
 
         criteria.add( Restrictions.eq( "className", className ) );
-        criteria.add( Restrictions.eq( "id", id ) );
+        criteria.add( Restrictions.eq( "objectUid", objectUid ) );
         criteria.add( Restrictions.eq( "locale", locale.toString() ) );
         criteria.add( Restrictions.eq( "property", property ) );
 
@@ -117,14 +117,14 @@ public class HibernateTranslationStore
     }
     
     @SuppressWarnings( "unchecked" )
-    public Collection<Translation> getTranslations( String className, int id, Locale locale )
+    public Collection<Translation> getTranslations( String className, Locale locale, String objectUid )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Translation.class );
 
         criteria.add( Restrictions.eq( "className", className ) );
-        criteria.add( Restrictions.eq( "id", id ) );
+        criteria.add( Restrictions.eq( "objectUid", objectUid ) );
         criteria.add( Restrictions.in( "locale", LocaleUtils.getLocaleFallbacks( locale ) ) );
 
         criteria.setCacheable( true );
@@ -135,14 +135,14 @@ public class HibernateTranslationStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Translation> getTranslationsNoFallback( String className, int id, Locale locale )
+    public Collection<Translation> getTranslationsNoFallback( String className, String objectUid, Locale locale )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Translation.class );
 
         criteria.add( Restrictions.eq( "className", className ) );
-        criteria.add( Restrictions.eq( "id", id ) );
+        criteria.add( Restrictions.eq( "objectUid", objectUid ) );
         criteria.add( Restrictions.eq( "locale", locale.toString() ) );
 
         criteria.setCacheable( true );
@@ -201,14 +201,14 @@ public class HibernateTranslationStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public void deleteTranslations( String className, int id )
+    public void deleteTranslations( String className, String objectUid )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery( "from Translation t where t.className = :className and t.id = :id" );
+        Query query = session.createQuery( "from Translation t where t.className = :className and t.objectUid = :objectUid" );
 
         query.setString( "className", className );
-        query.setInteger( "id", id );
+        query.setString( "objectUid", objectUid );
 
         List<Object> objlist = query.list();
 

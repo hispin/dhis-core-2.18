@@ -47,6 +47,13 @@ public interface TranslationService
     void addTranslation( Translation translation );
 
     /**
+     * Adds a collection of Translation.
+     *
+     * @param translations the collection of translations
+     */
+    void createOrUpdate( Collection<Translation> translations );
+
+    /**
      * Updates a Translation.
      * 
      * @param translation the Translation.
@@ -56,46 +63,52 @@ public interface TranslationService
     /**
      * Retrieves a Translation.
      * 
+     *
+     *
      * @param className the class name.
-     * @param id the id.
      * @param locale the locale.
      * @param property the property.
+     * @param objectUid
      * @return a Translation.
      */
-    Translation getTranslation( String className, int id, Locale locale, String property );
+    Translation getTranslation( String className, Locale locale, String property, String objectUid );
 
     /**
      * Retrieves a Translation. Only exact matches on the given
      * Locale will be returned.
      * 
+     *
+     *
      * @param className the class name.
-     * @param id the id.
      * @param locale the locale.
      * @param property the property.
+     * @param objectUid
      * @return a Translation.
      */
-    Translation getTranslationNoFallback( String className, int id, Locale locale, String property );
+    Translation getTranslationNoFallback( String className, Locale locale, String property, String objectUid );
 
     /**
      * Retrieves a Collection of Translations.
      * 
+     *
      * @param className the class name.
-     * @param id the id.
      * @param locale the locale.
      * @return a Collection of Translations.
      */
-    Collection<Translation> getTranslations( String className, int id, Locale locale );
+    Collection<Translation> getTranslations( String className, Locale locale, String objectUid );
 
     /**
      * Retrieves a Collection of Translations. Only exact matches on the given
      * Locale will be returned.
      * 
+     *
+     *
      * @param className the class name.
-     * @param id the id.
      * @param locale the locale.
+     * @param objectUid the id.
      * @return a Collection of Translations.
      */
-    Collection<Translation> getTranslationsNoFallback( String className, int id, Locale locale );
+    Collection<Translation> getTranslationsNoFallback( String className, Locale locale, String objectUid );
 
     /**
      * Retrieves a Collection of Translations.
@@ -130,9 +143,11 @@ public interface TranslationService
 
     /**
      * Deletes Translations.
-     * 
+     *
      * @param className the class name.
-     * @param id the id.
+     * @param objectUid the id.
      */
-    void deleteTranslations( String className, int id );
+    void deleteTranslations( String className, String objectUid );
+
+    void createOrUpdate( Translation translation );
 }

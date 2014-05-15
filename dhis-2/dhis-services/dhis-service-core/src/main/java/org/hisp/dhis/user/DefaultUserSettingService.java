@@ -28,11 +28,11 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -110,7 +110,19 @@ public class DefaultUserSettingService
     public Serializable getUserSetting( String name )
     {
         User currentUser = currentUserService.getCurrentUser();
+        return getUserSetting(name, currentUser);
+    }
 
+
+    public Serializable getUserSetting( String name, String username )
+    {
+        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
+        
+        return getUserSetting( name, credentials == null ? null : credentials.getUser() );
+    }
+
+    private Serializable getUserSetting( String name, User currentUser ) 
+    {
         if ( currentUser == null )
         {
             return null;

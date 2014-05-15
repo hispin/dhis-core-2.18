@@ -51,7 +51,7 @@ public class I18nAction
 {
     private String className;
 
-    private Integer objectId;
+    private String uid;
 
     private String returnUrl;
 
@@ -94,9 +94,9 @@ public class I18nAction
         this.className = className;
     }
 
-    public void setObjectId( Integer objectId )
+    public void setUid( String uid )
     {
-        this.objectId = objectId;
+        this.uid = uid;
     }
 
     public void setReturnUrl( String returnUrl )
@@ -118,9 +118,9 @@ public class I18nAction
         return className;
     }
 
-    public Integer getObjectId()
+    public String getUid()
     {
-        return objectId;
+        return uid;
     }
 
     public String getReturnUrl()
@@ -169,9 +169,9 @@ public class I18nAction
         
         availableLocales = i18nService.getAvailableLocales();
         
-        translations = i18nService.getTranslationsNoFallback( className, objectId );
+        translations = i18nService.getTranslationsNoFallback( className, uid );
 
-        IdentifiableObject object = identifiableObjectManager.getObject( objectId, className );
+        IdentifiableObject object = identifiableObjectManager.getObject( uid, className );
 
         referenceTranslations = i18nService.getObjectPropertyValues( object );
 

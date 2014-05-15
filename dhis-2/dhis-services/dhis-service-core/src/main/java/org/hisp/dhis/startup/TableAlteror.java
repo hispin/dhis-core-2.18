@@ -266,14 +266,6 @@ public class TableAlteror
         // orgunit shortname uniqueness
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_shortname_key" );
 
-        // update dataset-dataentryform association and programstage-cde
-        // association
-        if ( updateDataSetAssociation() && updateProgramStageAssociation() )
-        {
-            // delete table dataentryformassociation
-            executeSql( "DROP TABLE dataentryformassociation" );
-        }
-
         executeSql( "ALTER TABLE section DROP CONSTRAINT section_name_key" );
         executeSql( "UPDATE patientattribute set inheritable=false where inheritable is null" );
         executeSql( "UPDATE dataelement SET numbertype='number' where numbertype is null and valuetype='int'" );
@@ -727,7 +719,8 @@ public class TableAlteror
 
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
-        
+        upgradeTranslations();
+
         log.info( "Tables updated" );
     }
 
@@ -739,8 +732,7 @@ public class TableAlteror
 
         if ( no >= 5 )
         {
-            return; // attributeoptioncomboid already part of datavalue primary
-                    // key
+            return; // attributeoptioncomboid already part of datavalue pkey
         }
 
         int optionComboId = getDefaultOptionCombo();
@@ -995,6 +987,22 @@ public class TableAlteror
             log.debug( ex );
         }
     }
+    
+    private void upgradeTranslations()
+    {
+        final String sql = statementBuilder.getNumberOfColumnsInPrimaryKey( "translation" );
+
+        Integer no = statementManager.getHolder().queryForInteger( sql );
+
+        if ( no == 1 )
+        {
+            return; // translationid already set as single pkey
+        }
+        
+        executeSql( statementBuilder.getDropPrimaryKey( "translation" ) );
+        executeSql( statementBuilder.getAddPrimaryKeyToExistingTable( "translation", "translationid" ) );
+        executeSql( statementBuilder.getDropNotNullConstraint( "translation", "objectid", "integer" ) );
+    }
 
     private List<Integer> getDistinctIdList( String table, String col1 )
     {
@@ -1039,7 +1047,8 @@ public class TableAlteror
             {
                 List<Integer> foreignIds = new ArrayList<Integer>();
 
-                ResultSet resultSet = statement.executeQuery( "SELECT " + col2 + " FROM " + table + " WHERE " + col1
+                ResultSet resultSet = stat
+                    alter table translation modify column locale varchar(45) null;ement.executeQuery( "SELECT " + col2 + " FROM " + table + " WHERE " + col1
                     + "=" + distinctId );
 
                 while ( resultSet.next() )
@@ -1120,77 +1129,4 @@ public class TableAlteror
         return statementManager.getHolder().queryForInteger( sql );
     }
 
-    private boolean updateDataSetAssociation()
-    {
-        StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            Statement statement = holder.getStatement();
-
-            ResultSet isUpdated = statement
-                .executeQuery( "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'dataentryformassociation'" );
-
-            if ( isUpdated.next() )
-            {
-
-                ResultSet resultSet = statement
-                    .executeQuery( "SELECT associationid, dataentryformid FROM dataentryformassociation WHERE associationtablename = 'dataset'" );
-
-                while ( resultSet.next() )
-                {
-                    executeSql( "UPDATE dataset SET dataentryform=" + resultSet.getInt( 2 ) + " WHERE datasetid="
-                        + resultSet.getInt( 1 ) );
-                }
-                return true;
-            }
-
-            return false;
-
-        }
-        catch ( Exception ex )
-        {
-            log.debug( ex );
-            return false;
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-
-    private boolean updateProgramStageAssociation()
-    {
-        StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            Statement statement = holder.getStatement();
-
-            ResultSet isUpdated = statement
-                .executeQuery( "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'dataentryformassociation'" );
-
-            if ( isUpdated.next() )
-            {
-                ResultSet resultSet = statement
-                    .executeQuery( "SELECT associationid, dataentryformid FROM dataentryformassociation WHERE associationtablename = 'programstage'" );
-
-                while ( resultSet.next() )
-                {
-                    executeSql( "UPDATE programstage SET dataentryform=" + resultSet.getInt( 2 )
-                        + " WHERE programstageid=" + resultSet.getInt( 1 ) );
-                }
-            }
-            return true;
-        }
-        catch ( Exception ex )
-        {
-            log.debug( ex );
-            return false;
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
 }
