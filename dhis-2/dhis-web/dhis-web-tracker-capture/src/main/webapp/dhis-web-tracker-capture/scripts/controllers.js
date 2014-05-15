@@ -39,7 +39,11 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.emptySearchText = false;
     $scope.searchFilterExists = false;
     $scope.attributes = AttributesFactory.getWithoutProgram();    
-    $scope.searchMode = {listAll: 'LIST_ALL', freeText: 'FREE_TEXT', attributeBased: 'ATTRIBUTE_BASED'};
+    $scope.searchMode = { 
+                            listAll: 'LIST_ALL', 
+                            freeText: 'FREE_TEXT', 
+                            attributeBased: 'ATTRIBUTE_BASED'
+                        };
     
     //Registration
     $scope.showRegistrationDiv = false;
@@ -92,6 +96,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };        
     
     $scope.getProgramAttributes = function(program){ 
+        $scope.trackedEntityList = null; 
         $scope.selectedProgram = program;
         if($scope.selectedProgram){
             $scope.attributes = AttributesFactory.getByProgram($scope.selectedProgram);
@@ -102,20 +107,21 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };
     
     $scope.search = function(mode){ 
-        
+
         $scope.emptySearchText = false;
+        $scope.emptySearchAttribute = false;
+        $scope.showSearchDiv = false;
+        $scope.showRegistrationDiv = false;                
+        $scope.gridColumns = $scope.attributes;     
+        $scope.trackedEntityList = null; 
+        
         var queryUrl = null, 
             programUrl = null, 
-            attributeUrl = null;
+            attributeUrl = {url: null, hasValue: false};
     
         if($scope.selectedProgram){
             programUrl = 'program=' + $scope.selectedProgram.id;
-        }
-    
-        $scope.showSearchDiv = false;
-        $scope.showRegistrationDiv = false;    
-            
-        $scope.gridColumns = $scope.attributes;        
+        }      
 
         //generate grid column for the selected program
         angular.forEach($scope.gridColumns, function(gridColumn){
@@ -126,9 +132,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             }
         });
         
-        if( mode === $scope.searchMode.freeText ){            
-            $scope.trackedEntityList = null;
-            
+        if( mode === $scope.searchMode.freeText ){     
             if(!$scope.searchText){                
                 $scope.emptySearchText = true;
                 return;
@@ -138,55 +142,26 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             queryUrl = 'query=' + $scope.searchText;                     
         }
         else if( mode === $scope.searchMode.attributeBased ){
-            $scope.showTrackedEntityDiv = true;      
-            
+            $scope.showTrackedEntityDiv = true;                  
             attributeUrl = EntityQueryFactory.getQueryForAttributes($scope.attributes);
-          
+            
             if(!attributeUrl.hasValue){
-                console.log('empty search filter');
+                $scope.emptySearchAttribute = true;
+                $scope.showSearchDiv = true;
                 return;
             }
         }
        else if( mode === $scope.searchMode.listAll ){   
-            $scope.showTrackedEntityDiv = true; 
-            $scope.trackedEntityList = null;            
+            $scope.showTrackedEntityDiv = true;    
         }      
 
-        //(ouId, ouMode, queryUrl, programUrl, attributeUrl)
-        $scope.trackedEntityList = null; 
+        //get events for the specified parameters
         TrackedEntityInstanceService.search($scope.selectedOrgUnit.id, 
                                             $scope.ouMode,
                                             queryUrl,
                                             programUrl,
                                             attributeUrl.url).then(function(data){
             $scope.trackedEntityList = data;
-        });
-    };
-    
-    //get events for the selected program (and org unit)
-    $scope.loadTrackedEntities = function(){
-        
-        console.log('am I called...');
-        
-        $scope.showTrackedEntityDiv = !$scope.showTrackedEntityDiv;        
-        $scope.showSearchDiv = false;
-        $scope.showRegistrationDiv = false;      
-        $scope.trackedEntityList = null;
-        
-        $scope.gridColumns = $scope.attributes;
-
-        //generate grid column for the selected program
-        angular.forEach($scope.gridColumns, function(gridColumn){
-            gridColumn.showFilter =  false;
-            gridColumn.hide = false;                   
-            if(gridColumn.type === 'date'){
-                 $scope.filterText[gridColumn.id]= {start: '', end: ''};
-            }
-        });
-            
-        //Load entities for the selected orgunit
-        TrackedEntityInstanceService.getByOrgUnit($scope.selectedOrgUnit.id).then(function(data){
-            $scope.trackedEntityList = data;                
         });
     };
     
@@ -203,7 +178,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.showSearch = function(){        
         $scope.showSearchDiv = !$scope.showSearchDiv;
         $scope.showRegistrationDiv = false;
-        $scope.showTrackedEntityDiv = false;       
+        $scope.showTrackedEntityDiv = false;   
+        $scope.selectedProgram = '';
+        $scope.emptySearchAttribute = false;
     };
     
     $scope.hideSearch = function(){        
@@ -243,7 +220,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.showDashboard = function(currentEntity){       
         SelectedEntity.setSelectedEntity(currentEntity);
-        storage.set('SELECTED_OU', $scope.selectedOrgUnit);        
+        storage.set('SELECTED_OU', $scope.selectedOrgUnit);          
         $location.path('/dashboard').search({selectedEntityId: currentEntity.id});                                    
     };  
        
@@ -313,7 +290,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     //selections
     $scope.selectedEntityId = ($location.search()).selectedEntityId;       
-    $scope.selectedOrgUnit = storage.get('SELECTED_OU');     
+    $scope.selectedOrgUnit = storage.get('SELECTED_OU');   
         
     if( $scope.selectedEntityId ){
         
@@ -389,7 +366,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
     TranslationService.translate();
     
-    //selected org unit
+    //selected org unit 
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');  
     
     //programs for enrollment

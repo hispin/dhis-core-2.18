@@ -10,7 +10,7 @@
                     <input type='radio' ng-model='ouMode' value='DESCENDANTS'>{{'use_all_children'| translate}}
                 </td>
             </tr>
-            <tr>
+            <!--<tr>
                 <td>
                     {{'program'| translate}}
                 </td>
@@ -19,7 +19,7 @@
                         <option value="">{{'please_select'| translate}}</option>
                     </select>
                 </td>
-            </tr>      
+            </tr>     --> 
 
             <tr ng-repeat="attribute in attributes">
                 <td>
@@ -55,11 +55,17 @@
             </tr>         
         </table>
     </div>
-    
+
+    <div class="row" ng-if="emptySearchAttribute">
+        <div class="col-md-6">
+            <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
+        </div>
+    </div>
+
     <div class="btn-group">
         <button type="button" 
                 class="btn btn-default"
-               ng-click="search(searchMode.attributeBased)">
+                ng-click="search(searchMode.attributeBased)">
             {{'search'| translate}}
         </button>
         <button type="button" 
@@ -70,4 +76,3 @@
     </div>
 
 </div>
-

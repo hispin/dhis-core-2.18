@@ -398,6 +398,10 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     padding-right: 40px;
 }
 
+.btn-no-border {
+    border: none !important;
+}
+
 .max-column-width {
     max-width:200px !important; 
     word-wrap:break-word; 

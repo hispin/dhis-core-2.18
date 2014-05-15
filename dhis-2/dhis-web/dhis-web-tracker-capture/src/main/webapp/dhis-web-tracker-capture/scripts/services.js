@@ -152,14 +152,25 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity instances */
-.factory('TrackedEntityInstanceService', function($http, AttributesFactory) {
+.factory('TrackedEntityInstanceService', function($http, $filter) {
     
     var promise;
     return {
         
         get: function(entityUid) {
-            promise = $http.get(  '../api/trackedEntityInstances/' +  entityUid ).then(function(response){                                
-                return response.data;
+            promise = $http.get(  '../api/trackedEntityInstances/' +  entityUid ).then(function(response){     
+                var tei = response.data;
+                
+                angular.forEach(tei.attributes, function(attribute){                   
+                   if(attribute.type && attribute.value){                       
+                       if(attribute.type === 'date'){                           
+                           attribute.value = moment(attribute.value, 'YYYY-MM-DD')._d;
+                           attribute.value = Date.parse(attribute.value);
+                           attribute.value = $filter('date')(attribute.value, 'yyyy-MM-dd');                           
+                       }
+                   } 
+                });
+                return tei;
             });            
             return promise;
         },
@@ -338,50 +349,59 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };    
 })
 
-.service('EntityQueryFactory', function(){
-    
-    var query = {url: null, hasValue: false};
+.service('EntityQueryFactory', function(){  
     
     this.getQueryForAttributes = function(attributes){
         
-        angular.forEach(attributes, function(attribute){
-                
-            //console.log('attribute', attribute.valueType);
+        var query = {url: null, hasValue: false};
+        
+        angular.forEach(attributes, function(attribute){           
 
-            if(attribute.value && attribute.value !== ""){                    
-                query.hasValue = true;
+            if(attribute.value && attribute.value !== ''){                    
+                query.hasValue = true;                
                 if(angular.isArray(attribute.value)){
-                    var index = 0;
-
-                    angular.forEach(attribute.value, function(val){                            
-                        if(query.url){
-                            query.url = query.url + '&attribute=' + attribute.id + ':LIKE:' + val;
+                    var index = 0, q = '';
+                    
+                    angular.forEach(attribute.value, function(val){
+                        
+                        if(index < attribute.value.length-1){
+                            q = q + val + ';';
                         }
                         else{
-                            query.url = 'attribute=' + attribute.id + ':LIKE:' + val;
-                        }
+                            q = q + val;
+                        }                        
                         index++;
                     });
+                    
+                    if(query.url){
+                        if(q){
+                            query.url = query.url + '&filter=' + attribute.id + ':IN:' + q;
+                        }
+                    }
+                    else{
+                        if(q){
+                            query.url = 'filter=' + attribute.id + ':IN:' + q;
+                        }
+                    }                    
                 }
                 else{                        
                     if(query.url){
-                        query.url = query.url + '&attribute=' + attribute.id + ':LIKE:' + attribute.value;
+                        query.url = query.url + '&filter=' + attribute.id + ':LIKE:' + attribute.value;
                     }
                     else{
-                        query.url = 'attribute=' + attribute.id + ':LIKE:' + attribute.value;
+                        query.url = 'filter=' + attribute.id + ':LIKE:' + attribute.value;
                     }
                 }
             }
-            else{
+            /*else{
                 if(query.url){
-                    query.url = query.url + '&attribute=' + attribute.id;
+                    query.url = query.url + '&filter=' + attribute.id;
                 }
                 else{
-                    query.url = 'attribute=' + attribute.id;
+                    query.url = 'filter=' + attribute.id;
                 }
-            }
+            }*/
         });
-            
         return query;
     };    
 })
@@ -604,6 +624,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };
             
 });
+
+
 
 /*
 * Helper functions
