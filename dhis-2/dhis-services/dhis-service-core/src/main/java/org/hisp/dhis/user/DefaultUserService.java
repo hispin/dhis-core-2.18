@@ -45,12 +45,16 @@ import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
-import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 /**
  * @author Chau Thu Tran
@@ -91,6 +95,13 @@ public class DefaultUserService
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private SecurityService securityService;
+
+    public void setSecurityService( SecurityService securityService )
+    {
+        this.securityService = securityService;
     }
 
     private SystemSettingManager systemSettingManager;
@@ -522,11 +533,15 @@ public class DefaultUserService
 
     public void canUpdateFilter( Collection<UserCredentials> userCredentials )
     {
-        User user = currentUserService.getCurrentUser();
-
-        boolean canGrantOwnUserAuthorityGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
-
-        FilterUtils.filter( userCredentials, new UserCredentialsCanUpdateFilter( user, canGrantOwnUserAuthorityGroups ) );
+        FilterUtils.filter( userCredentials,
+            new Filter<UserCredentials>()
+            {
+                public boolean retain( UserCredentials object )
+                {
+                    return hasAuthorityToUpdateUser( object ) && hasGroupsToUpdateUser( object );
+                }
+            }
+        );
     }
 
     // -------------------------------------------------------------------------
@@ -631,5 +646,60 @@ public class DefaultUserService
         int months = DateUtils.monthsBetween( credentials.getPasswordLastUpdated(), new Date() );
 
         return months < credentialsExpires;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Determines if the current user has all the authorities required to
+     * update a user.
+     *
+     * @param userCredentials The user to be updated.
+     * @return true if current user has authorities, else false.
+     */
+    private boolean hasAuthorityToUpdateUser( UserCredentials userCredentials )
+    {
+        UserCredentials currentUserCredentials = currentUserService.getCurrentUser().getUserCredentials();
+
+        boolean canGrantOwnUserAuthorityGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false );
+
+        return currentUserCredentials != null && userCredentials != null
+                && currentUserCredentials.canIssueAll( userCredentials.getUserAuthorityGroups(), canGrantOwnUserAuthorityGroups );
+    }
+
+    /**
+     * Determines if the current user read/write access to at least one group
+     * to which the user belongs, if this is a requirement on this system
+     * for updating a user.
+     *
+     * @param userCredentials The user to be updated.
+     * @return true if current user has read/write access to a group to which
+     * the user belongs, or if this requirement is not applicable, else false.
+     */
+    private boolean hasGroupsToUpdateUser( UserCredentials userCredentials )
+    {
+        UserCredentials currentUserCredentials = currentUserService.getCurrentUser().getUserCredentials();
+
+        boolean onlyManageWithinUserGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
+
+        if ( onlyManageWithinUserGroups && !currentUserCredentials.getAllAuthorities().contains( "ALL" ) )
+        {
+            if ( userCredentials.getUser().getGroups() != null )
+            {
+                for ( UserGroup group : userCredentials.getUser().getGroups() )
+                {
+                    if ( securityService.canWrite( group ) )
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }
