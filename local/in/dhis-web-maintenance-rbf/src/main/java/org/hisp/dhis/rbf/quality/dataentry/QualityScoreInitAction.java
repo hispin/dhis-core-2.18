@@ -20,7 +20,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class QualityScoreInitAction implements Action
 {
-	private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
+	private final static String TARIFF_SETTING_AUTHORITY = "MAXSCORE_SETTING_AUTHORITY";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
