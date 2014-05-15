@@ -79,6 +79,18 @@ public class SystemSettingController
         ContextUtils.okResponse( response, "System setting " + key + " set as value '" + value + "'." );
     }
 
+    @RequestMapping( method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_JSON } )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_SYSTEM_SETTING')")
+    public void setSystemSetting( @RequestBody Map<String,Object> settings, HttpServletResponse response )
+    {
+        for ( String key : settings.keySet() )
+        {
+            systemSettingManager.saveSystemSetting( key, (Serializable) settings.get( key ) );
+        }
+
+        ContextUtils.okResponse( response, "System settings imported" );
+    }
+
     @RequestMapping(value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT)
     public @ResponseBody String getSystemSetting( @PathVariable("key") String key )
     {
