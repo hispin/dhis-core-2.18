@@ -378,13 +378,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.light.beneficiaryenrollment.action.SearchBeneficiaryAction"
-		class="org.hisp.dhis.light.beneficiaryenrollment.action.SearchBeneficiaryAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.light.beneficiaryenrollment.action.GetEnrollmentProgramListAction"
 		class="org.hisp.dhis.light.beneficiaryenrollment.action.GetEnrollmentProgramListAction"
 		scope="prototype">
@@ -425,17 +418,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.light.singleevent.action.GetSingleEventBeneficiaryAction"
-		class="org.hisp.dhis.light.singleevent.action.GetSingleEventBeneficiaryAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.singleevent.action.GetSingleEventFormAction"

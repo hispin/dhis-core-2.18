@@ -21,8 +21,4 @@
     class="org.hisp.dhis.sms.outcoming.ProcessingSendSMSAction" 
     scope="prototype"/>
 
-  <bean id="org.hisp.dhis.sms.outcoming.SearchPatientAction" 
-    class="org.hisp.dhis.sms.outcoming.SearchPatientAction"
-    scope="prototype" />
-
 </beans>
