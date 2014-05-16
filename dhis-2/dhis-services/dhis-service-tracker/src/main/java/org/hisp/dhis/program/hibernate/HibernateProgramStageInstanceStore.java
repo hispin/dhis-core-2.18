@@ -105,13 +105,6 @@ public class HibernateProgramStageInstanceStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramStageInstance> get( ProgramStage programStage )
-    {
-        return getCriteria( Restrictions.eq( "programStage", programStage ) ).list();
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, boolean completed )
     {
         return getCriteria( 
