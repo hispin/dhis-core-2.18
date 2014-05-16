@@ -435,7 +435,9 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     width: 100%;
     border-collapse: collapse;
     cursor: pointer;
+    table-layout: fixed;
 }
+
 
 .dhis2-table-striped-border tr th {
     border: 1px solid #cad5e5;

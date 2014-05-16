@@ -3,8 +3,13 @@
     <div ng-switch-default>
         <h2>
             {{selectedProgram.trackedEntity.name|| 'entity' | translate}} {{'list'| translate}}
+            <span class="pull-right">
+                <button class="btn btn-default" ng-click="showHideColumns()">
+                    {{'show_hide_columns'| translate}}
+                </button>
+            </span>
         </h2>
-        <div ng-switch="trackedEntityList.rows.length">
+        <div class="vertical-spacing" ng-switch="trackedEntityList.rows.length">
             <div ng-switch-when="undefined">
                 <p>
                     {{'empty'| translate}} {{selectedProgram.trackedEntity.name|| 'entity' | translate}} {{'list'| translate}}                        
@@ -21,7 +26,7 @@
                 <table class="listTable dhis2-table-striped-border dhis2-table-hover">                    
                     <thead>                        
                         <tr>
-                            <th ng-show="!gridColumn.hide" 
+                            <th ng-show="gridColumn.show" 
                                 class="max-column-width"                                                
                                 ng-repeat="gridColumn in gridColumns">
 
@@ -45,29 +50,29 @@
                                 <!-- filter icon ends -->
 
                                 <!-- filter input field begins -->
-                    <div ng-show="gridColumn.showFilter">
-                        <span ng-show="gridColumn.type !== 'date'">
-                            <input type="text" ng-model="filterText[gridColumn.id]" ng-blur="filterInGrid(gridColumn)">
-                        </span>                                                    
-                        <span ng-show="gridColumn.type === 'date'">
-                            <input placeholder="{{'start_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].start" data-ng-date readonly="readonly">
-                            <span ng-hide="filterText[gridColumn.id].start == 'undefined' || filterText[gridColumn.id].start == ''">
-                                <a href ng-click='removeStartFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
-                            </span>
-                            <input placeholder="{{'end_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].end" data-ng-date readonly="readonly">
-                            <span ng-hide="filterText[gridColumn.id].end == 'undefined' || filterText[gridColumn.id].end == ''">
-                                <a href ng-click='removeEndFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
-                            </span>
-                        </span>
-                    </div>
-                    <!-- filter input field ends -->
-                    </th>                                    
-                    </tr>                        
+                                <div ng-show="gridColumn.showFilter">
+                                    <span ng-show="gridColumn.type !== 'date'">
+                                        <input type="text" ng-model="filterText[gridColumn.id]" ng-blur="filterInGrid(gridColumn)">
+                                    </span>                                                    
+                                    <span ng-show="gridColumn.type === 'date'">
+                                        <input placeholder="{{'start_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].start" data-ng-date readonly="readonly">
+                                        <span ng-hide="filterText[gridColumn.id].start == 'undefined' || filterText[gridColumn.id].start == ''">
+                                            <a href ng-click='removeStartFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
+                                        </span>
+                                        <input placeholder="{{'end_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].end" data-ng-date readonly="readonly">
+                                        <span ng-hide="filterText[gridColumn.id].end == 'undefined' || filterText[gridColumn.id].end == ''">
+                                            <a href ng-click='removeEndFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
+                                        </span>
+                                    </span>
+                                </div>
+                                <!-- filter input field ends -->
+                            </th>                                    
+                        </tr>                        
                     </thead>
                     <tbody id="list">
                         <tr ng-repeat="trackedEntity in trackedEntityList.rows| paginate:rowsPerPage | orderBy:sortHeader:reverse | gridFilter:filterText:currentFilter" 
                             ng-click="showDashboard(trackedEntity)">
-                            <td class="max-column-width"                                              
+                            <td class="max-column-width" ng-show="gridColumn.show"                                            
                                 ng-repeat="gridColumn in gridColumns">                                                
                                 {{trackedEntity[gridColumn.id]}}                                                
                             </td>

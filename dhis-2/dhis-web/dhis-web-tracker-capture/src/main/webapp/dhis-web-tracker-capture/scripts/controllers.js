@@ -8,6 +8,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         function($rootScope,
                 $scope,
                 $location,
+                $modal,
                 Paginator,
                 TranslationService, 
                 SelectedEntity,
@@ -111,8 +112,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.emptySearchText = false;
         $scope.emptySearchAttribute = false;
         $scope.showSearchDiv = false;
-        $scope.showRegistrationDiv = false;                
-        $scope.gridColumns = $scope.attributes;     
+        $scope.showRegistrationDiv = false;                          
         $scope.trackedEntityList = null; 
         
         var queryUrl = null, 
@@ -123,14 +123,31 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             programUrl = 'program=' + $scope.selectedProgram.id;
         }      
 
-        //generate grid column for the selected program
+        $scope.gridColumns = $scope.attributes;   
+        //also add extra columns - orgunit for example
+        $scope.gridColumns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string'});
+        
+        //generate grid column for the selected program/attributes
         angular.forEach($scope.gridColumns, function(gridColumn){
+            
+            if(gridColumn.id === 'orgUnitName' && $scope.ouMode === 'SELECTED'){
+                gridColumn.show = false;    
+            }
+            else{
+                gridColumn.show = true;
+            }
+            
             gridColumn.showFilter =  false;
-            gridColumn.hide = false;                   
+            
             if(gridColumn.type === 'date'){
                  $scope.filterText[gridColumn.id]= {start: '', end: ''};
             }
         });
+        
+        
+        
+        
+        console.log('the columns are:  ', $scope.gridColumns);
         
         if( mode === $scope.searchMode.freeText ){     
             if(!$scope.searchText){                
@@ -151,7 +168,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 return;
             }
         }
-       else if( mode === $scope.searchMode.listAll ){   
+        else if( mode === $scope.searchMode.listAll ){   
             $scope.showTrackedEntityDiv = true;    
         }      
 
@@ -162,6 +179,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                             programUrl,
                                             attributeUrl.url).then(function(data){
             $scope.trackedEntityList = data;
+            
+            console.log('the list is:  ', $scope.trackedEntityList);
         });
     };
     
@@ -216,7 +235,36 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 $scope.gridColumns[i].showFilter = false;
             }
         }
-    };    
+    };   
+    
+    $scope.showHideColumns = function(){
+        
+        $scope.hiddenGridColumns = 0;
+        
+        angular.forEach($scope.gColumns, function(gridColumn){
+            if(!gridColumn.show){
+                $scope.hiddenGridColumns++;
+            }
+        });
+        
+        var modalInstance = $modal.open({
+            templateUrl: 'views/column-modal.html',
+            controller: 'ColumnDisplayController',
+            resolve: {
+                gridColumns: function () {
+                    return $scope.gridColumns;
+                },
+                hiddenGridColumns: function(){
+                    return $scope.hiddenGridColumns;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (gridColumns) {
+            $scope.gridColumns = gridColumns;
+        }, function () {
+        });
+    };
     
     $scope.showDashboard = function(currentEntity){       
         SelectedEntity.setSelectedEntity(currentEntity);
@@ -226,6 +274,31 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
        
     $scope.getHelpContent = function(){
         console.log('I will get help content');
+    };    
+})
+
+//Controller for column show/hide
+.controller('ColumnDisplayController', 
+    function($scope, 
+            $modalInstance, 
+            hiddenGridColumns,
+            gridColumns){
+    
+    $scope.gridColumns = gridColumns;
+    $scope.hiddenGridColumns = hiddenGridColumns;
+    
+    $scope.close = function () {
+      $modalInstance.close($scope.gridColumns);
+    };
+    
+    $scope.showHideColumns = function(gridColumn){
+       
+        if(gridColumn.show){                
+            $scope.hiddenGridColumns--;            
+        }
+        else{
+            $scope.hiddenGridColumns++;            
+        }      
     };    
 })
 
