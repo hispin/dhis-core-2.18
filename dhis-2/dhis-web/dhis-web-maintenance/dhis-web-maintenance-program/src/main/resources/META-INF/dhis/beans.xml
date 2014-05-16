@@ -963,7 +963,7 @@
 		scope="prototype">
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 		<property name="schedulingManager"
-			ref="org.hisp.dhis.trackedentity.scheduling.ProgramSchedulingManager" />
+			ref="org.hisp.dhis.scheduling.ProgramSchedulingManager" />
 	</bean>
 
 	<bean
@@ -972,7 +972,7 @@
 		scope="prototype">
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 		<property name="schedulingManager"
-			ref="org.hisp.dhis.trackedentity.scheduling.ProgramSchedulingManager" />
+			ref="org.hisp.dhis.scheduling.ProgramSchedulingManager" />
 		<property name="notifier" ref="notifier" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="sendMessageScheduled" ref="sendMessageScheduled" />
