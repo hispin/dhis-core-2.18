@@ -69,15 +69,6 @@ public interface ProgramStageInstanceStore
     Collection<ProgramStageInstance> getAll( ProgramInstance programInstance, ProgramStage programStage );
 
     /**
-     * Retrieve an event list on a program stage
-     * 
-     * @param programStage ProgramStage
-     * 
-     * @return ProgramStageInstance
-     */
-    Collection<ProgramStageInstance> get( ProgramStage programStage );
-
-    /**
      * Retrieve an event list on program instance list with a certain status
      * 
      * @param programInstances ProgramInstance list
