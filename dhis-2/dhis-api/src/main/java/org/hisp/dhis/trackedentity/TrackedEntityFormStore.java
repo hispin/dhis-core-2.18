@@ -55,5 +55,5 @@ public interface TrackedEntityFormStore
      * 
      * @return TrackedEntityForm
      */
-    TrackedEntityForm getCommonForm();
+    TrackedEntityForm getFormsWithoutProgram();
 }

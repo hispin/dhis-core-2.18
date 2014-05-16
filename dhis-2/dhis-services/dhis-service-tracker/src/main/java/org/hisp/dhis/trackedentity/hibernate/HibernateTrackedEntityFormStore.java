@@ -48,7 +48,7 @@ public class HibernateTrackedEntityFormStore
     }
 
     @Override
-    public TrackedEntityForm getCommonForm()
+    public TrackedEntityForm getFormsWithoutProgram()
     {
         return (TrackedEntityForm) getCriteria( Restrictions.isNull( "program" ) ).uniqueResult();
     }

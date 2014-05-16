@@ -184,7 +184,7 @@ public class TrackedEntityFormServiceTest
         entityFormService.saveTrackedEntityForm( entityFormB );
         entityFormService.saveTrackedEntityForm( entityFormC );
 
-        TrackedEntityForm form = entityFormService.getTrackedEntityForm( programA );
+        TrackedEntityForm form = entityFormService.getFormsWithProgram( programA );
         assertEquals( entityFormA, form );
     }
 
@@ -195,7 +195,7 @@ public class TrackedEntityFormServiceTest
         entityFormService.saveTrackedEntityForm( entityFormB );
         entityFormService.saveTrackedEntityForm( entityFormC );
 
-        TrackedEntityForm form = entityFormService.getCommonTrackedEntityForm();
+        TrackedEntityForm form = entityFormService.getFormsWithoutProgram();
         assertEquals( entityFormC, form );
     }
 

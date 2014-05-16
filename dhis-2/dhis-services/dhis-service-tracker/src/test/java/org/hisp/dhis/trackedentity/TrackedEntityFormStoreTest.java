@@ -126,7 +126,7 @@ public class TrackedEntityFormStoreTest
         entityFormStore.save( entityFormB );
         entityFormStore.save( entityFormC );
 
-        TrackedEntityForm form = entityFormStore.getCommonForm();
+        TrackedEntityForm form = entityFormStore.getFormsWithoutProgram();
         assertEquals( entityFormC, form );
     }
 

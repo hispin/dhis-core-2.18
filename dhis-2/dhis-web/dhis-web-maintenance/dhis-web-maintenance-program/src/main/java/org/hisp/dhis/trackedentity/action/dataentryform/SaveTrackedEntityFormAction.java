@@ -119,12 +119,12 @@ public class SaveTrackedEntityFormAction
 
         if ( programId == null )
         {
-            registrationForm = formService.getCommonTrackedEntityForm();
+            registrationForm = formService.getFormsWithoutProgram();
         }
         else
         {
             program = programService.getProgram( programId );
-            registrationForm = formService.getTrackedEntityForm( program );
+            registrationForm = formService.getFormsWithProgram( program );
         }
 
         // ---------------------------------------------------------------------

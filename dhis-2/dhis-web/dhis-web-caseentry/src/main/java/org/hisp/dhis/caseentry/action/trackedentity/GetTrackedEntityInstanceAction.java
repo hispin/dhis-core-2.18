@@ -285,7 +285,7 @@ public class GetTrackedEntityInstanceAction
 
         if ( programId == null || programId.isEmpty() )
         {
-            trackedEntityForm = trackedEntityFormService.getCommonTrackedEntityForm();
+            trackedEntityForm = trackedEntityFormService.getFormsWithoutProgram();
 
             if ( trackedEntityForm != null && trackedEntityForm.getDataEntryForm() != null )
             {
@@ -297,7 +297,7 @@ public class GetTrackedEntityInstanceAction
         else
         {
             program = programService.getProgram( programId );
-            trackedEntityForm = trackedEntityFormService.getTrackedEntityForm( program );
+            trackedEntityForm = trackedEntityFormService.getFormsWithProgram( program );
 
             Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( entityInstance,
                 program, ProgramInstance.STATUS_ACTIVE );
