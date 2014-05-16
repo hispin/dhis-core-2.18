@@ -68,6 +68,8 @@ public class MobileOrgUnitLinks
     private String sendFeedbackUrl;
 
     private String findUserUrl;
+    
+    private String sendMessageUrl;
 
     private String updateContactUrl;
 
@@ -238,6 +240,18 @@ public class MobileOrgUnitLinks
     {
         this.findUserUrl = findUserUrl;
     }
+    
+    
+
+    public String getSendMessageUrl()
+    {
+        return sendMessageUrl;
+    }
+
+    public void setSendMessageUrl( String sendMessageUrl )
+    {
+        this.sendMessageUrl = sendMessageUrl;
+    }
 
     public String getUpdateContactUrl()
     {
@@ -395,6 +409,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( updateNewVersionUrl );
         dataOutputStream.writeUTF( sendFeedbackUrl );
         dataOutputStream.writeUTF( findUserUrl );
+        dataOutputStream.writeUTF( sendMessageUrl );
         dataOutputStream.writeUTF( updateContactUrl );
         dataOutputStream.writeUTF( findPatientUrl );
         dataOutputStream.writeUTF( registerPersonUrl );
@@ -428,6 +443,7 @@ public class MobileOrgUnitLinks
         updateNewVersionUrl = dataInputStream.readUTF();
         sendFeedbackUrl = dataInputStream.readUTF();
         findUserUrl = dataInputStream.readUTF();
+        sendMessageUrl = dataInputStream.readUTF();
         updateContactUrl = dataInputStream.readUTF();
         findPatientUrl = dataInputStream.readUTF();
         registerPersonUrl = dataInputStream.readUTF();
@@ -478,6 +494,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
         dataOutputStream.writeUTF( this.sendFeedbackUrl );
         dataOutputStream.writeUTF( this.findUserUrl );
+        dataOutputStream.writeUTF( this.sendMessageUrl );
         // dataOutputStream.writeUTF( this.updateContactUrl );
     }
 
@@ -498,6 +515,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( updateNewVersionUrl );
         dataOutputStream.writeUTF( sendFeedbackUrl );
         dataOutputStream.writeUTF( findUserUrl );
+        dataOutputStream.writeUTF( sendMessageUrl );
         dataOutputStream.writeUTF( updateContactUrl );
         dataOutputStream.writeUTF( findPatientUrl );
         dataOutputStream.writeUTF( registerPersonUrl );

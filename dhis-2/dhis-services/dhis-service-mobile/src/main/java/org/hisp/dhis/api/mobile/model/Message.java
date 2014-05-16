@@ -44,11 +44,14 @@ public class Message
 
     private String text;
 
-    public Message( String subject, String text )
+    private Recipient recipient;
+
+    public Message( String subject, String text, Recipient recipient )
     {
         super();
         this.subject = subject;
         this.text = text;
+        this.recipient = recipient;
     }
 
     public Message()
@@ -87,12 +90,24 @@ public class Message
         this.text = text;
     }
 
+    public Recipient getRecipient()
+    {
+        return recipient;
+    }
+
+    public void setRecipient( Recipient recipient )
+    {
+        this.recipient = recipient;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
         dout.writeUTF( this.subject );
         dout.writeUTF( this.text );
+
+        this.getRecipient().serialize( dout );
 
     }
 
@@ -102,6 +117,14 @@ public class Message
     {
         subject = din.readUTF();
         text = din.readUTF();
+
+        int recipientSize = din.readInt();
+
+        if ( recipientSize > 0 )
+        {
+            recipient = new Recipient();
+            recipient.deSerialize( din );
+        }
 
     }
 
@@ -129,6 +152,8 @@ public class Message
     {
         dataOutputStream.writeUTF( this.subject );
         dataOutputStream.writeUTF( this.text );
+
+        this.getRecipient().serialize( dataOutputStream );
 
     }
 

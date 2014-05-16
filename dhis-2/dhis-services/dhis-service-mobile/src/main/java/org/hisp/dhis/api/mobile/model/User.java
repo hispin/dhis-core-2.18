@@ -39,6 +39,8 @@ public class User
 {
     private String clientVersion;
 
+    private int id;
+
     private String surname;
 
     private String firstName;
@@ -47,9 +49,10 @@ public class User
     {
     }
 
-    public User( String surname, String firstName )
+    public User( int id, String surname, String firstName )
     {
         super();
+        this.id = id;
         this.surname = surname;
         this.firstName = firstName;
     }
@@ -62,6 +65,17 @@ public class User
     public void setClientVersion( String clientVersion )
     {
         this.clientVersion = clientVersion;
+    }
+
+    @XmlAttribute
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
     }
 
     @XmlAttribute
@@ -90,6 +104,7 @@ public class User
     public void serialize( DataOutputStream dout )
         throws IOException
     {
+        dout.writeInt( this.id );
         dout.writeUTF( this.surname );
         dout.writeUTF( this.firstName );
 
@@ -99,6 +114,7 @@ public class User
     public void deSerialize( DataInputStream din )
         throws IOException
     {
+        id = din.readInt();
         surname = din.readUTF();
         firstName = din.readUTF();
     }
@@ -107,6 +123,7 @@ public class User
     public void serializeVersion2_8( DataOutputStream dout )
         throws IOException
     {
+        dout.writeInt( this.id );
         dout.writeUTF( this.surname );
         dout.writeUTF( this.firstName );
     }
@@ -115,6 +132,7 @@ public class User
     public void serializeVersion2_9( DataOutputStream dout )
         throws IOException
     {
+        dout.writeInt( this.id );
         dout.writeUTF( this.surname );
         dout.writeUTF( this.firstName );
     }
@@ -123,6 +141,7 @@ public class User
     public void serializeVersion2_10( DataOutputStream dout )
         throws IOException
     {
+        dout.writeInt( this.id );
         dout.writeUTF( this.surname );
         dout.writeUTF( this.firstName );
 

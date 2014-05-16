@@ -110,4 +110,7 @@ public interface ActivityReportingService
     public Collection<User> findUser( String keyword )
         throws NotAllowedException;
 
+    public String sendMessage( Message message )
+        throws NotAllowedException;
+
 }

@@ -86,7 +86,8 @@ public class OrgUnitsTest
         orgUnit.setSearchUrl( "search" );
         orgUnit.setUpdateNewVersionUrl( "updateNewVersionUrl" );
         orgUnit.setSendFeedbackUrl( "sendFeedback" );
-        orgUnit.setFindUserUrl( "findUserUrl" );
+        orgUnit.setFindUserUrl( "findUser" );
+        orgUnit.setSendMessageUrl( "sendMessage" );
         orgUnit.setUpdateContactUrl( "updateContactForMobile" );
         orgUnit.setFindPatientUrl( "findPatient" );
         orgUnit.setRegisterPersonUrl( "registerPerson" );
