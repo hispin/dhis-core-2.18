@@ -528,30 +528,6 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public Collection<TrackedEntityInstance> getTrackedEntityInstancesForMobile( String searchText, int orgUnitId )
-    {
-        Set<TrackedEntityInstance> entityInstances = new HashSet<TrackedEntityInstance>();
-        entityInstances.addAll( trackedEntityInstanceStore.getByPhoneNumber( searchText, 0, Integer.MAX_VALUE ) );
-
-        if ( orgUnitId != 0 )
-        {
-            Set<TrackedEntityInstance> toRemoveList = new HashSet<TrackedEntityInstance>();
-
-            for ( TrackedEntityInstance instance : entityInstances )
-            {
-                if ( instance.getOrganisationUnit().getId() != orgUnitId )
-                {
-                    toRemoveList.add( instance );
-                }
-            }
-
-            entityInstances.removeAll( toRemoveList );
-        }
-
-        return entityInstances;
-    }
-
-    @Override
     public Collection<TrackedEntityInstance> getTrackedEntityInstances( OrganisationUnit organisationUnit, Integer min,
         Integer max )
     {
@@ -675,33 +651,6 @@ public class DefaultTrackedEntityInstanceService
         return trackedEntityInstanceStore.validateEnrollment( instance, program, format );
     }
 
-    @Override
-    public Collection<TrackedEntityInstance> searchTrackedEntityInstancesForMobile( String searchText, int orgUnitId,
-        int attributeId )
-    {
-        Set<TrackedEntityInstance> entityInstances = new HashSet<TrackedEntityInstance>();
-
-        entityInstances.addAll( trackedEntityInstanceStore.getByAttributeValue( searchText, attributeId, 0,
-            Integer.MAX_VALUE ) );
-
-        if ( orgUnitId != 0 )
-        {
-            Set<TrackedEntityInstance> toRemoveList = new HashSet<TrackedEntityInstance>();
-
-            for ( TrackedEntityInstance instance : entityInstances )
-            {
-
-                if ( instance.getOrganisationUnit().getId() != orgUnitId )
-                {
-                    toRemoveList.add( instance );
-                }
-            }
-            entityInstances.removeAll( toRemoveList );
-        }
-
-        return entityInstances;
-    }
-    
     @Override
     public Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntity trackedEntity )
     {
