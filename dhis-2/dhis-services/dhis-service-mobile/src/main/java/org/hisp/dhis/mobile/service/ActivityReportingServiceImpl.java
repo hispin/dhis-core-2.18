@@ -115,6 +115,8 @@ public class ActivityReportingServiceImpl
 
     private static final String FEEDBACK_SENT = "feedback_sent";
 
+    private static final String MESSAGE_SENT = "message_sent";
+
     private ActivityComparator activityComparator = new ActivityComparator();
 
     // -------------------------------------------------------------------------
@@ -1608,12 +1610,12 @@ public class ActivityReportingServiceImpl
                 }
             }
         }
-        
-        //get tracked entity with no tracked entity name
+
+        // get tracked entity with no tracked entity name
         resultSet += "Others$";
         for ( TrackedEntityInstance patient : patients )
         {
-            if ( patient.getTrackedEntity() == null)
+            if ( patient.getTrackedEntity() == null )
             {
                 resultSet += patient.getId() + "/";
                 String attText = "";
@@ -1932,7 +1934,9 @@ public class ActivityReportingServiceImpl
 
         for ( User userCore : users )
         {
+
             org.hisp.dhis.api.mobile.model.User user = new org.hisp.dhis.api.mobile.model.User();
+            user.setId( userCore.getId() );
             user.setSurname( userCore.getSurname() );
             user.setFirstName( userCore.getFirstName() );
             userList.add( user );
@@ -1940,5 +1944,27 @@ public class ActivityReportingServiceImpl
         }
 
         return userList;
+    }
+
+    @Override
+    public String sendMessage( org.hisp.dhis.api.mobile.model.Message message )
+        throws NotAllowedException
+    {
+        String subject = message.getSubject();
+        String text = message.getText();
+        String metaData = MessageService.META_USER_AGENT;
+
+        Set<User> users = new HashSet<User>();
+
+        for ( org.hisp.dhis.api.mobile.model.User user : message.getRecipient().getUserList() )
+        {
+            User userWeb = userService.getUser( user.getId() );
+            users.add( userWeb );
+
+        }
+
+        messageService.sendMessage( subject, text, metaData, users );
+
+        return MESSAGE_SENT;
     }
 }

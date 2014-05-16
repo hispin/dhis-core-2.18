@@ -31,7 +31,9 @@ package org.hisp.dhis.api.mobile.model;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Recipient
     implements DataStreamSerializable
@@ -39,6 +41,8 @@ public class Recipient
     private String clientVersion;
 
     private Collection<User> users;
+
+    private List<User> userList = new ArrayList<User>();
 
     public String getClientVersion()
     {
@@ -58,6 +62,16 @@ public class Recipient
     public void setUsers( Collection<User> users )
     {
         this.users = users;
+    }
+
+    public List<User> getUserList()
+    {
+        return userList;
+    }
+
+    public void setUserList( List<User> userList )
+    {
+        this.userList = userList;
     }
 
     @Override
@@ -84,6 +98,14 @@ public class Recipient
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
+        int userSize = dataInputStream.readInt();
+
+        for ( int i = 0; i < userSize; i++ )
+        {
+            User user = new User();
+            user.deSerialize( dataInputStream );
+            userList.add( user );
+        }
 
     }
 
@@ -105,7 +127,7 @@ public class Recipient
     public void serializeVersion2_10( DataOutputStream dout )
         throws IOException
     {
-       
+
         if ( users == null )
         {
             dout.writeInt( 0 );

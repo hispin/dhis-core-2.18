@@ -574,4 +574,14 @@ public class MobileOrganisationUnitController
         return recipient;
     }
 
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/sendMessage" )
+    @ResponseBody
+    public String sendMessage( @PathVariable
+    int id, @RequestBody
+    Message message )
+        throws NotAllowedException
+    {
+        return activityReportingService.sendMessage(message);
+    }
+
 }
