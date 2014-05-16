@@ -141,8 +141,8 @@ public class SaveAggregateDataValueAction
 
             OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitId );
 
-            DataValue dataValue = dataValueService.getDataValue( dataElement, period, orgunit, optionCombo );
-            
+            DataValue dataValue = dataValueService.getDataValue( dataElement, period, orgunit, optionCombo , optionCombo );
+
             // -----------------------------------------------------------------
             // Save/Update/Delete data-values
             // -----------------------------------------------------------------
