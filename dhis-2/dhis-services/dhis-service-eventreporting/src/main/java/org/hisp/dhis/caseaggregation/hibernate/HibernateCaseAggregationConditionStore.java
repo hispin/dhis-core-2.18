@@ -663,19 +663,19 @@ public class HibernateCaseAggregationConditionStore
                 sql += " inner join programstageinstance _psi on _pi.programinstanceid=_psi.programinstanceid ";
                     
                 attributeId = attributeId.split( SEPARATOR_ID )[0];
-                sql += " WHERE _pav.patientid=pi.patientid AND _pav.trackedentityattributeid=" + attributeId + " AND DATE(_psi.executiondate) - DATE( _pav.value ) ";
+                sql += " WHERE _pav.trackedentityinstanceid=pi.trackedentityinstanceid AND _pav.trackedentityattributeid=" + attributeId + " AND DATE(_psi.executiondate) - DATE( _pav.value ) ";
             }
             else  if ( attributeId.split( SEPARATOR_ID )[1].equals( CaseAggregationCondition.FORMULA_AGE ) )
             {
                 sql += " inner join programinstance _pi on _pav.trackedentityinstanceid=_pi.trackedentityinstanceid ";
                     
                 attributeId = attributeId.split( SEPARATOR_ID )[0];
-                sql += " WHERE _pav.patientid=pi.patientid AND _pav.trackedentityattributeid=" + attributeId + " AND DATE(_psi.enrollmentdate) - DATE( _pav.value ) ";
+                sql += " WHERE _pav.trackedentityinstanceid=pi.trackedentityinstanceid AND _pav.trackedentityattributeid=" + attributeId + " AND DATE(_psi.enrollmentdate) - DATE( _pav.value ) ";
             }
         }
         else
         {
-            sql += " WHERE _pav.patientid=pi.patientid AND _pav.trackedentityattributeid=" + attributeId + " AND _pav.value ";
+            sql += " WHERE _pav.trackedentityinstanceid=pi.trackedentityinstanceid AND _pav.trackedentityattributeid=" + attributeId + " AND _pav.value ";
         }
 
         if ( isExist )
@@ -915,11 +915,6 @@ public class HibernateCaseAggregationConditionStore
         }
         else
         {
-            if ( hasEntityInstances || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
-            {
-                sql += "p.name,";
-            }
-
             if ( hasDataelement )
             {
                 sql += "pdv.value,pgs.name as program_stage, psi.executiondate as report_date,";
