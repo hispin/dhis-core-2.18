@@ -44,6 +44,8 @@
 							#set($organisationunitid=$col)
 						#elseif($velocityCount==7)
 							#set($periodid=$col)
+						#elseif($velocityCount==11)
+							#set($value=$col)
 						#end
 					#end
 					#set($item=$dataelementid + '_' + $categoryoptioncomboid + '_' + $periodid + '_' + $organisationunitid + '_' + $value)
