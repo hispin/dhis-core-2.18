@@ -1,8 +1,8 @@
 <div id="listDiv" ng-switch="trackedEntityList">                    
     <div ng-switch-when=""></div>
     <div ng-switch-default>
-        <h2>
-            {{selectedProgram.trackedEntity.name|| 'entity' | translate}} {{'list'| translate}}
+        <h2 ng-if="trackedEntityList.rows.length > 0">
+            {{selectedProgram.trackedEntity.name || 'entity' | translate}} {{'list'| translate}}
             <span class="pull-right">
                 <button class="btn btn-default" ng-click="showHideColumns()">
                     {{'show_hide_columns'| translate}}
