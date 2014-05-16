@@ -28,6 +28,8 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,7 +49,6 @@ import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
@@ -59,8 +60,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import com.opensymphony.xwork2.Action;
-
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -262,8 +261,9 @@ public class UpdateUserAction
         // Check if user group is required, before we start updating the user
         // ---------------------------------------------------------------------
 
-        if ( (boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false )
-                && !currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
+        Boolean canManageGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
+        
+        if ( canManageGroups && !currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
         {
             boolean groupFound = false;
 

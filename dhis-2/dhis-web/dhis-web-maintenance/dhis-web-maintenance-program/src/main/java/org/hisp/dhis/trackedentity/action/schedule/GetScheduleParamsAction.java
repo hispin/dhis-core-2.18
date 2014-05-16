@@ -31,9 +31,9 @@ package org.hisp.dhis.trackedentity.action.schedule;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_TIME_FOR_SENDING_MESSAGE;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIME_FOR_SENDING_MESSAGE;
 
+import org.hisp.dhis.scheduling.ProgramSchedulingManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
-import org.hisp.dhis.trackedentity.scheduling.ProgramSchedulingManager;
 
 import com.opensymphony.xwork2.Action;
 

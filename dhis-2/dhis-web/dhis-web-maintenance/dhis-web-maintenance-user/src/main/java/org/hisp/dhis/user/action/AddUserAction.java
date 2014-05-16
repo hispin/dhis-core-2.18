@@ -294,8 +294,9 @@ public class AddUserAction
         // Check if user group is required, before we add the user
         // ---------------------------------------------------------------------
 
-        if ( (boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false )
-                && !currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
+        boolean canManageGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
+        
+        if ( canManageGroups && !currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
         {
             boolean groupFound = false;
 
