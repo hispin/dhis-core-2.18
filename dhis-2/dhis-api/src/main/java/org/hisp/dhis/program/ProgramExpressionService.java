@@ -28,7 +28,6 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -85,14 +84,6 @@ public interface ProgramExpressionService
      * @return the ProgramExpression with the given id
      */
     ProgramExpression getProgramExpression( int id );
-
-    /**
-     * Returns all {@link ProgramExpression}
-     * 
-     * @return a collection of all ProgramExpression, or an empty collection if
-     *         there are no ProgramExpressions.
-     */
-    Collection<ProgramExpression> getAllProgramExpressions();
 
     /**
      * Get value of program expression

@@ -97,15 +97,6 @@ public interface ProgramValidationService
     Collection<ProgramValidation> getProgramValidation( ProgramStage programStage );
 
     /**
-     * Get {@link ProgramValidation} list from a {@link ProgramStageDataElement}
-     * 
-     * @param psdataElement {@link ProgramStageDataElement}
-     * 
-     * @return ProgramValidation list
-     */
-    Collection<ProgramValidation> getProgramValidation( ProgramStageDataElement psdataElement );
-
-    /**
      * Get validation violated in an event
      * 
      * @param validation ProgramValidation List

@@ -173,28 +173,6 @@ public class RelationshipServiceTest
     }
 
     @Test
-    public void testGetRelationshipByTwoEntityInstance()
-    {
-        relationshipService.addRelationship( relationshipA );
-        relationshipService.addRelationship( relationshipB );
-
-        Relationship relationship = relationshipService.getRelationship( entityInstanceA, entityInstanceB );
-        assertEquals( relationshipA, relationship );
-
-        relationship = relationshipService.getRelationship( entityInstanceC, entityInstanceD );
-        assertEquals( relationshipB, relationship );
-    }
-
-    @Test
-    public void testGetAllRelationships()
-    {
-        relationshipService.addRelationship( relationshipA );
-        relationshipService.addRelationship( relationshipB );
-
-        assertTrue( equals( relationshipService.getAllRelationships(), relationshipA, relationshipB ) );
-    }
-
-    @Test
     public void testGetRelationshipsForEntityInstance()
     {
         relationshipService.addRelationship( relationshipA );
@@ -202,28 +180,6 @@ public class RelationshipServiceTest
 
         Collection<Relationship> relationships = relationshipService
             .getRelationshipsForTrackedEntityInstance( entityInstanceA );
-        assertTrue( equals( relationships, relationshipA, relationshipC ) );
-    }
-
-    @Test
-    public void testGetRelationships()
-    {
-        relationshipService.addRelationship( relationshipA );
-        relationshipService.addRelationship( relationshipC );
-
-        Collection<Relationship> relationships = relationshipService.getRelationships( entityInstanceA,
-            relationshipType );
-        assertTrue( equals( relationships, relationshipA, relationshipC ) );
-    }
-
-    @Test
-    public void testGetRelationshipsByRelationshipType()
-    {
-        relationshipService.addRelationship( relationshipA );
-        relationshipService.addRelationship( relationshipC );
-
-        Collection<Relationship> relationships = relationshipService
-            .getRelationshipsByRelationshipType( relationshipType );
         assertTrue( equals( relationships, relationshipA, relationshipC ) );
     }
 

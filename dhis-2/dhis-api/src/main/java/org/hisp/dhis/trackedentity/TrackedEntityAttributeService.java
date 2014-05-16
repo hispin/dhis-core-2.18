@@ -119,15 +119,6 @@ public interface TrackedEntityAttributeService
     Collection<TrackedEntityAttribute> getAllTrackedEntityAttributes();
 
     /**
-     * Get attributes by value type
-     * 
-     * @param valueType Value type
-     * 
-     * @return List of attributes
-     */
-    Collection<TrackedEntityAttribute> getTrackedEntityAttributesByValueType( String valueType );
-
-    /**
      * Get attributes without groups
      * 
      * @return List of attributes

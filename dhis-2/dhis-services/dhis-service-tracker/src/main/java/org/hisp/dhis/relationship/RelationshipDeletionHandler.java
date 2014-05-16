@@ -76,17 +76,5 @@ public class RelationshipDeletionHandler
             }
         }
     }
-
-    @Override
-    public void deleteRelationshipType( RelationshipType relationshipType )
-    {
-        Collection<Relationship> relationships = relationshipSevice
-            .getRelationshipsByRelationshipType( relationshipType );
-
-        for ( Relationship relationship : relationships )
-        {
-            relationshipSevice.deleteRelationship( relationship );
-        }
-    }
-
+    
 }

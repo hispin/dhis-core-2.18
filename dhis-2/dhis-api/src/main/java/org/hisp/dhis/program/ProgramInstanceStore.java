@@ -45,16 +45,6 @@ public interface ProgramInstanceStore
     String ID = ProgramInstanceStore.class.getName();
 
     /**
-     * Retrieve program instances by status
-     * 
-     * @param status Status of program-instance, include STATUS_ACTIVE,
-     *        STATUS_COMPLETED and STATUS_CANCELLED
-     * 
-     * @return ProgramInstance list
-     */
-    Collection<ProgramInstance> getByStatus( Integer status );
-
-    /**
      * Retrieve program instances on a program
      * 
      * @param program Program
@@ -163,19 +153,6 @@ public interface ProgramInstanceStore
      * @return ProgramInstance list
      */
     Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Integer min, Integer max );
-
-    /**
-     * Retrieve program instances with active status on an orgunit by a program
-     * in a certain period
-     * 
-     * @param program Program
-     * @param organisationUnit Organisation Unit
-     * @param startDate The start date for retrieving on enrollment-date
-     * @param endDate The end date for retrieving on enrollment-date
-     * 
-     * @return ProgramInstance list
-     */
-    Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
 
     /**
      * Retrieve program instances with active status on an orgunit by a program

@@ -31,7 +31,6 @@ package org.hisp.dhis.program;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -201,15 +200,6 @@ public class ProgramExpressionServiceTest
 
         assertEquals( programExpressionA, programExpressionService.getProgramExpression( idA ) );
         assertEquals( programExpressionB, programExpressionService.getProgramExpression( idB ) );
-    }
-
-    @Test
-    public void tesGetAllProgramExpressions()
-    {
-        programExpressionService.addProgramExpression( programExpressionA );
-        programExpressionService.addProgramExpression( programExpressionB );
-
-        assertTrue( equals( programExpressionService.getAllProgramExpressions(), programExpressionA, programExpressionB ) );
     }
 
     @Test

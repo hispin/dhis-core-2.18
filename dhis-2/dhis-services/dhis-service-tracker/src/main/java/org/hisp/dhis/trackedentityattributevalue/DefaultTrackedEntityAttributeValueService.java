@@ -29,10 +29,6 @@ package org.hisp.dhis.trackedentityattributevalue;
  */
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
@@ -65,24 +61,6 @@ public class DefaultTrackedEntityAttributeValueService
     public void deleteTrackedEntityAttributeValue( TrackedEntityAttributeValue attributeValue )
     {
         attributeValueStore.delete( attributeValue );
-    }
-
-    @Override
-    public int deleteTrackedEntityAttributeValue( TrackedEntityInstance instance )
-    {
-        return attributeValueStore.deleteByTrackedEntityInstance( instance );
-    }
-
-    @Override
-    public int deleteTrackedEntityAttributeValue( TrackedEntityAttribute attribute )
-    {
-        return attributeValueStore.deleteByAttribute( attribute );
-    }
-
-    @Override
-    public Collection<TrackedEntityAttributeValue> getAllTrackedEntityAttributeValues()
-    {
-        return attributeValueStore.getAll();
     }
 
     @Override
@@ -136,59 +114,6 @@ public class DefaultTrackedEntityAttributeValueService
     }
 
     @Override
-    public Map<Integer, Collection<TrackedEntityAttributeValue>> getAttributeValueMapForAttributeValues(
-        Collection<TrackedEntityInstance> instances )
-    {
-        Map<Integer, Collection<TrackedEntityAttributeValue>> attributeValueMap = new HashMap<Integer, Collection<TrackedEntityAttributeValue>>();
-
-        Collection<TrackedEntityAttributeValue> attributeValues = getTrackedEntityAttributeValues( instances );
-
-        if ( attributeValues != null )
-        {
-            for ( TrackedEntityAttributeValue attributeValue : attributeValues )
-            {
-                if ( attributeValueMap.containsKey( attributeValue.getEntityInstance().getId() ) )
-                {
-                    Collection<TrackedEntityAttributeValue> values = attributeValueMap.get( attributeValue
-                        .getEntityInstance().getId() );
-                    values.add( attributeValue );
-                }
-                else
-                {
-                    Set<TrackedEntityAttributeValue> values = new HashSet<TrackedEntityAttributeValue>();
-                    values.add( attributeValue );
-                    attributeValueMap.put( attributeValue.getEntityInstance().getId(), values );
-                }
-            }
-
-        }
-
-        return attributeValueMap;
-    }
-
-    @Override
-    public Map<Integer, TrackedEntityAttributeValue> getAttributeValueMapForAttributeValues(
-        Collection<TrackedEntityInstance> entityInstances, TrackedEntityAttribute attribute )
-    {
-        Map<Integer, TrackedEntityAttributeValue> attributeValueMap = new HashMap<Integer, TrackedEntityAttributeValue>();
-
-        Collection<TrackedEntityAttributeValue> attributeValues = getTrackedEntityAttributeValues( entityInstances );
-
-        if ( attributeValues != null )
-        {
-            for ( TrackedEntityAttributeValue attributeValue : attributeValues )
-            {
-                if ( attributeValue.getAttribute() == attribute )
-                {
-                    attributeValueMap.put( attributeValue.getEntityInstance().getId(), attributeValue );
-                }
-            }
-        }
-
-        return attributeValueMap;
-    }
-
-    @Override
     public Collection<TrackedEntityAttributeValue> searchTrackedEntityAttributeValue( TrackedEntityAttribute attribute,
         String searchText )
     {
@@ -198,7 +123,7 @@ public class DefaultTrackedEntityAttributeValueService
     @Override
     public void copyTrackedEntityAttributeValues( TrackedEntityInstance source, TrackedEntityInstance destination )
     {
-        deleteTrackedEntityAttributeValue( destination );
+        attributeValueStore.deleteByTrackedEntityInstance( destination );
 
         for ( TrackedEntityAttributeValue attributeValue : getTrackedEntityAttributeValues( source ) )
         {

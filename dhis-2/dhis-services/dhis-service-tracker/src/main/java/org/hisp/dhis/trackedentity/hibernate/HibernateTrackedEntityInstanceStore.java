@@ -415,23 +415,6 @@ public class HibernateTrackedEntityInstanceStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<TrackedEntityInstance> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program,
-        Integer min, Integer max )
-    {
-        String hql = "select pt from TrackedEntityInstance pt inner join pt.programInstances pi "
-            + "where pt.organisationUnit = :organisationUnit " + "and pi.program = :program "
-            + "and pi.status = :status";
-
-        Query query = getQuery( hql );
-        query.setEntity( "organisationUnit", organisationUnit );
-        query.setEntity( "program", program );
-        query.setInteger( "status", ProgramInstance.STATUS_ACTIVE );
-
-        return query.list();
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<TrackedEntityInstance> getRepresentatives( TrackedEntityInstance instance )
     {
         String hql = "select distinct p from TrackedEntityInstance p where p.representative = :representative order by p.id DESC";

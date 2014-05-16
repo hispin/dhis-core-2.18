@@ -89,11 +89,6 @@ public class DefaultTrackedEntityAttributeService
         attributeStore.update( attribute );
     }
 
-    public Collection<TrackedEntityAttribute> getTrackedEntityAttributesByValueType( String valueType )
-    {
-        return attributeStore.getByValueType( valueType );
-    }
-
     public TrackedEntityAttribute getTrackedEntityAttributeByName( String name )
     {
         return attributeStore.getByName( name );

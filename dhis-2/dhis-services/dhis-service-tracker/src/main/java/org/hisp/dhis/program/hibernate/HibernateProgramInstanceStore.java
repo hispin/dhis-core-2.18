@@ -59,12 +59,6 @@ public class HibernateProgramInstanceStore
     // -------------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramInstance> getByStatus( Integer status )
-    {
-        return getCriteria( Restrictions.eq( "status", status ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Program program )
     {
         return getCriteria( Restrictions.eq( "program", program ) ).list();
@@ -168,20 +162,6 @@ public class HibernateProgramInstanceStore
         }
         
         return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Date startDate,
-        Date endDate )
-    {
-        return getCriteria( 
-            Restrictions.eq( "program", program ), 
-            Restrictions.isNull( "endDate" ),
-            Restrictions.ge( "enrollmentDate", startDate ), 
-            Restrictions.le( "enrollmentDate", endDate ) ).
-            createAlias( "entityInstance", "entityInstance" ).
-            add( Restrictions.eq( "entityInstance.organisationUnit", organisationUnit ) ).
-            addOrder( Order.asc( "entityInstance.id" ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )

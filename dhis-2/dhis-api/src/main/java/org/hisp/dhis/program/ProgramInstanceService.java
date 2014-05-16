@@ -34,9 +34,7 @@ import java.util.List;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
@@ -86,25 +84,7 @@ public interface ProgramInstanceService
      * @return the ProgramInstance with the given UID, or null if no match.
      */
     ProgramInstance getProgramInstance( String uid );
-
-    /**
-     * Returns all {@link ProgramInstance}.
-     * 
-     * @return a collection of all ProgramInstance, or an empty collection if
-     *         there are no ProgramInstances.
-     */
-    Collection<ProgramInstance> getAllProgramInstances();
-
-    /**
-     * Retrieve program instances by status
-     * 
-     * @param status Status of program-instance, include STATUS_ACTIVE,
-     *        STATUS_COMPLETED and STATUS_CANCELLED
-     * 
-     * @return ProgramInstance list
-     */
-    Collection<ProgramInstance> getProgramInstances( Integer status );
-
+    
     /**
      * Retrieve program instances on a program
      * 
@@ -219,20 +199,6 @@ public interface ProgramInstanceService
 
     /**
      * Retrieve program instances with active status on an orgunit by a program
-     * in a certain period
-     * 
-     * @param program Program
-     * @param organisationUnit Organisation Unit
-     * @param startDate The start date for retrieving on enrollment-date
-     * @param endDate The end date for retrieving on enrollment-date
-     * 
-     * @return ProgramInstance list
-     */
-    Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit,
-        Date startDate, Date endDate );
-
-    /**
-     * Retrieve program instances with active status on an orgunit by a program
      * for a certain period with result limited
      * 
      * @param program Program
@@ -321,42 +287,6 @@ public interface ProgramInstanceService
      */
     Collection<SchedulingProgramObject> getScheduleMesssages();
 
-    /**
-     * Send messages as SMS defined for a program
-     * 
-     * @param programInstance ProgramInstance
-     * @param status The time to send message, send when a person enrolled an
-     *        program or complete a program or send by scheduled days
-     * 
-     * @return OutboundSms list
-     */
-    Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status );
-
-    /**
-     * Send messages defined as DHIS messages for a program
-     * 
-     * @param programInstance ProgramInstance
-     * @param status The time to send message, send when a person enrolled an
-     *        program or complete a program or send by scheduled days
-     * 
-     * @return MessageConversation list
-     */
-    Collection<MessageConversation> sendMessageConversations( ProgramInstance programInstance, int status );
-
-    /**
-     * Enroll a TrackedEntityInstance into a program
-     * 
-     * @param entityInstance TrackedEntityInstance uid.
-     * @param program Program uid.
-     * @param enrollmentDate The date of enrollment
-     * @param dateOfIncident The date of incident
-     * @param orgunit Organisation Unit uid.
-     * 
-     * @return ProgramInsance
-     */
-    ProgramInstance enrollTrackedEntityInstance( String entityInstance, String program, 
-        Date enrollmentDate, Date dateOfIncident, String organisationUnit );
-    
     /**
      * Enroll a TrackedEntityInstance into a program. Must be run inside a transaction.
      * 

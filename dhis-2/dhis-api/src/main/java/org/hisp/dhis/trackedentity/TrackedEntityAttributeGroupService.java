@@ -29,7 +29,6 @@ package org.hisp.dhis.trackedentity;
  */
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Chau Thu Tran
@@ -103,17 +102,6 @@ public interface TrackedEntityAttributeGroupService
     Collection<TrackedEntityAttributeGroup> getAllTrackedEntityAttributeGroups();
 
     /**
-     * Get {@link TrackedEntityAttribute} by a
-     * {@link TrackedEntityAttributeGroup}
-     * 
-     * @param TrackedEntityAttributeGroup {@link TrackedEntityAttributeGroup}
-     * 
-     * @return TrackedEntityAttribute list
-     */
-    List<TrackedEntityAttribute> getTrackedEntityAttributes(
-        TrackedEntityAttributeGroup TrackedEntityAttributeGroup );
-
-    /**
      * Returns The number of TrackedEntityAttributeGroups with the key searched
      * 
      * @param name Keyword for searching by name
@@ -132,7 +120,7 @@ public interface TrackedEntityAttributeGroupService
      * @return a collection of all TrackedEntityAttribute, or an empty
      *         collection if there are no TrackedEntityAttributes.
      */
-    Collection<? extends TrackedEntityAttributeGroup> getTrackedEntityAttributeGroupsBetweenByName( String name,
+    Collection<TrackedEntityAttributeGroup> getTrackedEntityAttributeGroupsBetweenByName( String name,
         int min, int max );
 
     /**

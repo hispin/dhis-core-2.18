@@ -36,9 +36,7 @@ import java.util.Map;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
@@ -102,17 +100,6 @@ public interface ProgramStageInstanceService
     ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage );
 
     /**
-     * Retrieve an event list on a program instance and a program stage
-     * 
-     * @param programInstance ProgramInstance
-     * @param programStage ProgramStage
-     * 
-     * @return ProgramStageInstance
-     */
-    Collection<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance,
-        ProgramStage programStage );
-
-    /**
      * Retrieve an event list on program instance list with a certain status
      * 
      * @param programInstances ProgramInstance list
@@ -146,14 +133,6 @@ public interface ProgramStageInstanceService
     List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, Boolean completed );
 
     /**
-     * Create relationship between an OutboundSms with many events.
-     * 
-     * @param programStageInstances Event list
-     * @param outboundSms OutboundSms object
-     */
-    void updateProgramStageInstances( Collection<Integer> programStageInstances, OutboundSms outboundSms );
-
-    /**
      * Retrieve scheduled list of entityInstances registered
      * 
      * @return A SchedulingProgramObject list
@@ -174,77 +153,7 @@ public interface ProgramStageInstanceService
      */
     Grid getStatisticalReport( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         I18n i18n, I18nFormat format );
-
-    /**
-     * Get details of events which meets the criteria in statistical report
-     * 
-     * @param programStage The program stage needs to get details
-     * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * @param status The status of event. There are four statuses for events,
-     *        includes COMPLETED_STATUS, VISITED_STATUS, FUTURE_VISIT_STATUS,
-     *        LATE_VISIT_STATUS
-     * @param min
-     * @param max
-     */
-    List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
-        Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer max, Integer min );
-
-    /**
-     * Get events of a program by report date
-     * 
-     * @param program Program
-     * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * @param completed optional flag to only get completed (<code>true</code> )
-     *        or uncompleted (<code>false</code>) or all (<code>null</code>)
-     *        instances.
-     * 
-     * @return ProgramStageInstance list
-     */
-    Collection<ProgramStageInstance> getProgramStageInstances( Program program, Collection<Integer> orgunitIds,
-        Date startDate, Date endDate, Boolean completed );
-
-    /**
-     * Get the number of over due events of a program stage in a certain period
-     * 
-     * @param programStage ProgramStage
-     * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * 
-     * @return A number
-     */
-    int getOverDueEventCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate );
-
-    /**
-     * Get the number of program instances completed, includes all program stage
-     * instances were completed
-     * 
-     * @param program Program
-     * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * @param status The status of event. There are four statuses for events,
-     *        includes COMPLETED_STATUS, VISITED_STATUS, FUTURE_VISIT_STATUS,
-     *        LATE_VISIT_STATUS
-     * @return A number
-     */
-    int averageNumberCompletedProgramInstance( Program program, Collection<Integer> orgunitIds, Date startDate,
-        Date endDate, int status );
-
-    /**
-     * Get ids of orgunits where events happened in a period
-     * 
-     * @param startDate The start date for retrieving on report date
-     * @param endDate The end date for retrieving on report date
-     * 
-     * @return The ids of orgunits
-     */
-    Collection<Integer> getOrganisationUnitIds( Date startDate, Date endDate );
-
+    
     /**
      * Get/Export a report about the number of events of a program completed on
      * a orgunit
@@ -258,31 +167,6 @@ public interface ProgramStageInstanceService
      */
     Grid getCompletenessProgramStageInstance( Collection<Integer> orgunits, Program program, String startDate,
         String endDate, I18n i18n );
-
-    /**
-     * Send messages as SMS defined for a program-stage
-     * 
-     * @param programStageInstance ProgramStageInstance
-     * @param status The time to send message, send when to complete an event or
-     *        send by scheduled days
-     * @param format I18nFormat object
-     * 
-     * @return OutboundSms list
-     */
-    Collection<OutboundSms> sendMessages( ProgramStageInstance programStageInstance, int status, I18nFormat format );
-
-    /**
-     * Send messages defined as DHIS messages for a program-stage
-     * 
-     * @param programStageInstance ProgramStageInstance
-     * @param status The time to send message, send when a person enrolled an
-     *        program or complete a program or send by scheduled days
-     * @param format I18nFormat object
-     * 
-     * @return MessageConversation list
-     */
-    Collection<MessageConversation> sendMessageConversations( ProgramStageInstance programStageInstance, int status,
-        I18nFormat format );
 
     /**
      * Complete an event. Besides, program template messages will be send if it

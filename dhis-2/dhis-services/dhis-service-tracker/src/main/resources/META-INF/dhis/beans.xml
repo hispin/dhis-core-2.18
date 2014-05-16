@@ -204,7 +204,6 @@
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="i18nManager" ref="org.hisp.dhis.i18n.I18nManager" />
 		<property name="trackedEntityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageService" class="org.hisp.dhis.program.DefaultProgramStageService">
@@ -225,8 +224,6 @@
 
 	<bean id="org.hisp.dhis.program.ProgramValidationService" class="org.hisp.dhis.program.DefaultProgramValidationService">
 		<property name="validationStore" ref="org.hisp.dhis.program.ProgramValidationStore" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="expressionService"
 			ref="org.hisp.dhis.program.ProgramExpressionService" />
 		<property name="dataValueService"
@@ -362,10 +359,6 @@
 		<property name="name" value="TrackedEntityTableAlteror" />
 		<property name="runlevel" value="4" />
 		<property name="skipInTests" value="true" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="dataEntryFormService"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.common.TrackerIdentityPopulator" class="org.hisp.dhis.common.IdentityPopulator">

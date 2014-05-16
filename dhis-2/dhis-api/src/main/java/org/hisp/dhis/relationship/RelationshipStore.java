@@ -55,27 +55,6 @@ public interface RelationshipStore
     Relationship get( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB, RelationshipType relationshipType );
 
     /**
-     * Get the relationship between two entityInstances
-     * 
-     * @param entityInstanceA {@link TrackedEntityInstance}
-     * @param entityInstanceB {@link TrackedEntityInstance}
-     * 
-     * @return {@link RelationshipType}
-     */
-    Relationship get( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB );
-
-    /**
-     * Retrieve all relationships by relationship type of a person, for example
-     * a instance might have more than one sibling
-     * 
-     * @param entityInstanceA TrackedEntityInstance
-     * @param relationshipType RelationshipType
-     * 
-     * @return Relationship list
-     */
-    Collection<Relationship> get( TrackedEntityInstance entityInstanceA, RelationshipType relationshipType );
-
-    /**
      * Retrieve relationships of a instance
      * 
      * @param instance TrackedEntityInstance

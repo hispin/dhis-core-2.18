@@ -30,9 +30,6 @@ package org.hisp.dhis.program;
 
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,18 +86,6 @@ public class DefaultProgramStageSectionService
     public ProgramStageSection getProgramStageSection( int id )
     {
         return i18n( i18nService, programStageSectionStore.get( id ) );
-    }
-
-    @Override
-    public List<ProgramStageSection> getProgramStageSectionByName( String name )
-    {
-        return programStageSectionStore.getAllEqName( name );
-    }
-
-    @Override
-    public Collection<ProgramStageSection> getAllProgramStageSections()
-    {
-        return i18n( i18nService, programStageSectionStore.getAll() );
     }
 
     @Override

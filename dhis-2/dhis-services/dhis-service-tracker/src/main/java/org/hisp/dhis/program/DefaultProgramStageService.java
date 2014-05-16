@@ -30,9 +30,6 @@ package org.hisp.dhis.program;
 
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,11 +83,6 @@ public class DefaultProgramStageService
         return i18n( i18nService, programStageStore.getByUid( uid ) );
     }
 
-    public List<ProgramStage> getProgramStageByName( String name )
-    {
-        return programStageStore.getAllEqName( name );
-    }
-
     public ProgramStage getProgramStageByName( String name, Program program )
     {
         return i18n( i18nService, programStageStore.getByNameAndProgram( name, program ) );
@@ -99,11 +91,6 @@ public class DefaultProgramStageService
     public void updateProgramStage( ProgramStage programStage )
     {
         programStageStore.update( programStage );
-    }
-
-    public Collection<ProgramStage> getAllProgramStages()
-    {
-        return i18n( i18nService, programStageStore.getAll() );
     }
 
 }

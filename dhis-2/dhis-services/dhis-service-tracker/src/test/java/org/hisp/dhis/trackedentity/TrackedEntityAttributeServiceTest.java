@@ -75,24 +75,6 @@ public class TrackedEntityAttributeServiceTest
     }
 
     @Test
-    public void testGetTrackedEntityAttributesByValueType()
-    {
-        attributeStore.save( attributeA );
-        attributeStore.save( attributeB );
-        attributeStore.save( attributeC );
-
-        Collection<TrackedEntityAttribute> attributes = attributeStore.getByValueType( TrackedEntityAttribute.TYPE_STRING );
-        assertEquals( 2, attributes.size() );
-        assertTrue( attributes.contains( attributeA ) );
-        assertTrue( attributes.contains( attributeB ) );
-
-        attributes = attributeStore.getByValueType( TrackedEntityAttribute.TYPE_NUMBER );
-        assertEquals( 1, attributes.size() );
-        assertTrue( attributes.contains( attributeC ) );
-
-    }
-
-    @Test
     public void testGetTrackedEntityAttributesWithoutGroup()
     {
         attributeStore.save( attributeA );

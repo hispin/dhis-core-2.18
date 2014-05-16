@@ -28,7 +28,6 @@ package org.hisp.dhis.trackedentitycomment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 
 /**
  * @author Chau Thu Tran
@@ -70,13 +69,5 @@ public interface TrackedEntityCommentService
      * @return the TrackedEntityComment with the given id
      */
     TrackedEntityComment getTrackedEntityComment( int id );
-
-    /**
-     * Returns all {@link TrackedEntityComment}
-     * 
-     * @return a collection of all TrackedEntityComment, or an empty collection if
-     *         there are no TrackedEntityAttributes.
-     */
-    Collection<TrackedEntityComment> getAllTrackedEntityComments();
 
 }

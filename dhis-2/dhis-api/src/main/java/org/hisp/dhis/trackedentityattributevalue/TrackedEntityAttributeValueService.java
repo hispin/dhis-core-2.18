@@ -29,7 +29,6 @@ package org.hisp.dhis.trackedentityattributevalue;
  */
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
@@ -63,24 +62,6 @@ public interface TrackedEntityAttributeValueService
      * @param attributeValue the TrackedEntityAttribute to delete.
      */
     void deleteTrackedEntityAttributeValue( TrackedEntityAttributeValue attributeValue );
-
-    /**
-     * Deletes all {@link TrackedEntityAttributeValue} of a instance
-     * 
-     * @param instance {@link TrackedEntityInstance}
-     * 
-     * @return The error code. If the code is 0, deleting success
-     */
-    int deleteTrackedEntityAttributeValue( TrackedEntityInstance instance );
-
-    /**
-     * Delete all {@link TrackedEntityAttributeValue} of a {@link TrackedEntityAttribute}
-     * 
-     * @param attribute {@link TrackedEntityAttribute}
-     * 
-     * @return The error code. If the code is 0, deleting success
-     */
-    int deleteTrackedEntityAttributeValue( TrackedEntityAttribute attribute );
 
     /**
      * Retrieve a {@link TrackedEntityAttributeValue} on a {@link TrackedEntityInstance} and
@@ -118,38 +99,6 @@ public interface TrackedEntityAttributeValueService
      * @return TrackedEntityAttributeValue list
      */
     Collection<TrackedEntityAttributeValue> getTrackedEntityAttributeValues( Collection<TrackedEntityInstance> instances );
-
-    /**
-     * Returns all {@link TrackedEntityAttributeValue}
-     * 
-     * @return a collection of all TrackedEntityAttributeValue, or an empty collection
-     *         if there are no TrackedEntityAttributeTrackedEntityAttributeValues.
-     */
-    Collection<TrackedEntityAttributeValue> getAllTrackedEntityAttributeValues();
-
-    /**
-     * Retrieve TrackedEntityAttributeValues of many instances and put them into a Map
-     * Object with key as the ids of instances and values as a
-     * TrackedEntityAttributeValue list of each instance
-     * 
-     * @param instances A TrackedEntityInstance list
-     * 
-     * @return Map<TrackedEntityAttributeValueID, TrackedEntityAttributeValue list>
-     */
-    Map<Integer, Collection<TrackedEntityAttributeValue>> getAttributeValueMapForAttributeValues( Collection<TrackedEntityInstance> instances );
-
-    /**
-     * Retrieve TrackedEntityAttributeValues of many instances on a TrackedEntityAttribute
-     * and put them into a Map Object with key as the ids of instances and values
-     * as a TrackedEntityAttributeValue list of each instance
-     * 
-     * @param instances A instance list
-     * @param attribute TrackedEntityAttribute
-     * 
-     * @return Map<TrackedEntityAttributeValue ID, TrackedEntityAttributeValue>
-     */
-    Map<Integer, TrackedEntityAttributeValue> getAttributeValueMapForAttributeValues( Collection<TrackedEntityInstance> instances,
-        TrackedEntityAttribute attribute );
 
     /**
      * Search TrackedEntityAttributeValue objects by a TrackedEntityAttribute and a attribute

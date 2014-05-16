@@ -28,11 +28,7 @@ package org.hisp.dhis.trackedentitycomment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericStore;
-import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
-import org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService;
 
 /**
  * @author Chau Thu Tran
@@ -81,9 +77,4 @@ public class DefaultTrackedEntityCommentService
         return commentStore.get( id );
     }
 
-    @Override
-    public Collection<TrackedEntityComment> getAllTrackedEntityComments()
-    {
-        return commentStore.getAll();
-    }
 }

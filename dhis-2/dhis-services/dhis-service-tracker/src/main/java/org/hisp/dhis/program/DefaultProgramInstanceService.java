@@ -46,7 +46,6 @@ import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
@@ -147,13 +146,6 @@ public class DefaultProgramInstanceService
         this.trackedEntityInstanceService = trackedEntityInstanceService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
     private I18nManager i18nManager;
     
     public void setI18nManager( I18nManager i18nManager )
@@ -175,11 +167,6 @@ public class DefaultProgramInstanceService
         programInstanceStore.delete( programInstance );
     }
 
-    public Collection<ProgramInstance> getAllProgramInstances()
-    {
-        return programInstanceStore.getAll();
-    }
-
     public ProgramInstance getProgramInstance( int id )
     {
         return programInstanceStore.get( id );
@@ -189,11 +176,6 @@ public class DefaultProgramInstanceService
     public ProgramInstance getProgramInstance( String id )
     {
         return programInstanceStore.getByUid( id );
-    }
-
-    public Collection<ProgramInstance> getProgramInstances( Integer status )
-    {
-        return programInstanceStore.getByStatus( status );
     }
 
     public void updateProgramInstance( ProgramInstance programInstance )
@@ -253,12 +235,6 @@ public class DefaultProgramInstanceService
         Integer min, Integer max )
     {
         return programInstanceStore.get( program, organisationUnit, min, max );
-    }
-
-    public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit,
-        Date startDate, Date endDate )
-    {
-        return programInstanceStore.get( program, organisationUnit, startDate, endDate );
     }
 
     public Collection<ProgramInstance> getProgramInstances( Program program, Collection<Integer> orgunitIds,
@@ -461,69 +437,6 @@ public class DefaultProgramInstanceService
             .getSendMesssageEvents( TrackedEntityInstanceReminder.INCIDENT_DATE_TO_COMPARE ) );
 
         return result;
-    }
-
-    public Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status )
-    {
-        TrackedEntityInstance entityInstance = programInstance.getEntityInstance();
-        Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
-
-        Collection<TrackedEntityInstanceReminder> reminders = programInstance.getProgram().getInstanceReminders();
-
-        for ( TrackedEntityInstanceReminder rm : reminders )
-        {
-            if ( rm != null
-                && rm.getWhenToSend() != null
-                && rm.getWhenToSend() == status
-                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
-            {
-                OutboundSms outboundSms = sendProgramMessage( rm, programInstance, entityInstance );
-
-                if ( outboundSms != null )
-                {
-                    outboundSmsList.add( outboundSms );
-                }
-            }
-        }
-
-        return outboundSmsList;
-    }
-
-    @Override
-    public Collection<MessageConversation> sendMessageConversations( ProgramInstance programInstance, int status )
-    {
-        I18nFormat format = i18nManager.getI18nFormat();
-        
-        Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
-
-        Collection<TrackedEntityInstanceReminder> reminders = programInstance.getProgram().getInstanceReminders();
-        for ( TrackedEntityInstanceReminder rm : reminders )
-        {
-            if ( rm != null
-                && rm.getWhenToSend() != null
-                && rm.getWhenToSend() == status
-                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm
-                    .getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
-            {
-                int id = messageService.sendMessage( programInstance.getProgram().getDisplayName(),
-                    reminderService.getMessageFromTemplate( rm, programInstance, format ), null,
-                    reminderService.getUsers( rm, programInstance.getEntityInstance() ), null, false, true );
-                messageConversations.add( messageService.getMessageConversation( id ) );
-            }
-        }
-
-        return messageConversations;
-    }
-    
-    @Override
-    public ProgramInstance enrollTrackedEntityInstance( String entityInstance, String program, 
-        Date enrollmentDate, Date dateOfIncident, String organisationUnit )
-    {
-        TrackedEntityInstance tei = trackedEntityInstanceService.getTrackedEntityInstance( entityInstance );
-        Program pr = programService.getProgram( program );
-        OrganisationUnit ou = organisationUnitService.getOrganisationUnit( organisationUnit );
-        
-        return enrollTrackedEntityInstance( tei, pr, enrollmentDate, dateOfIncident, ou );        
     }
     
     @Override
@@ -846,4 +759,54 @@ public class DefaultProgramInstanceService
         return outboundSms;
     }
 
+    private Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status )
+    {
+        TrackedEntityInstance entityInstance = programInstance.getEntityInstance();
+        Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
+
+        Collection<TrackedEntityInstanceReminder> reminders = programInstance.getProgram().getInstanceReminders();
+
+        for ( TrackedEntityInstanceReminder rm : reminders )
+        {
+            if ( rm != null
+                && rm.getWhenToSend() != null
+                && rm.getWhenToSend() == status
+                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
+            {
+                OutboundSms outboundSms = sendProgramMessage( rm, programInstance, entityInstance );
+
+                if ( outboundSms != null )
+                {
+                    outboundSmsList.add( outboundSms );
+                }
+            }
+        }
+
+        return outboundSmsList;
+    }
+
+    private Collection<MessageConversation> sendMessageConversations( ProgramInstance programInstance, int status )
+    {
+        I18nFormat format = i18nManager.getI18nFormat();
+        
+        Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
+
+        Collection<TrackedEntityInstanceReminder> reminders = programInstance.getProgram().getInstanceReminders();
+        for ( TrackedEntityInstanceReminder rm : reminders )
+        {
+            if ( rm != null
+                && rm.getWhenToSend() != null
+                && rm.getWhenToSend() == status
+                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm
+                    .getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
+            {
+                int id = messageService.sendMessage( programInstance.getProgram().getDisplayName(),
+                    reminderService.getMessageFromTemplate( rm, programInstance, format ), null,
+                    reminderService.getUsers( rm, programInstance.getEntityInstance() ), null, false, true );
+                messageConversations.add( messageService.getMessageConversation( id ) );
+            }
+        }
+
+        return messageConversations;
+    }
 }

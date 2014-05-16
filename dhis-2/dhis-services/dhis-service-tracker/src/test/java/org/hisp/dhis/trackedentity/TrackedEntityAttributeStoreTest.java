@@ -158,25 +158,6 @@ public class TrackedEntityAttributeStoreTest
     }
 
     @Test
-    public void testGetTrackedEntityAttributesByValueType()
-    {
-        attributeService.addTrackedEntityAttribute( attributeA );
-        attributeService.addTrackedEntityAttribute( attributeB );
-        attributeService.addTrackedEntityAttribute( attributeC );
-
-        Collection<TrackedEntityAttribute> attributes = attributeService
-            .getTrackedEntityAttributesByValueType( TrackedEntityAttribute.TYPE_STRING );
-        assertEquals( 2, attributes.size() );
-        assertTrue( attributes.contains( attributeA ) );
-        assertTrue( attributes.contains( attributeB ) );
-
-        attributes = attributeService.getTrackedEntityAttributesByValueType( TrackedEntityAttribute.TYPE_NUMBER );
-        assertEquals( 1, attributes.size() );
-        assertTrue( attributes.contains( attributeC ) );
-
-    }
-
-    @Test
     public void testGetTrackedEntityAttributesWithoutGroup()
     {
         attributeService.addTrackedEntityAttribute( attributeA );

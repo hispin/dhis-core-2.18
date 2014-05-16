@@ -28,8 +28,6 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Abyot Asalefew
@@ -84,15 +82,6 @@ public interface ProgramStageService
     ProgramStage getProgramStage( String uid );
 
     /**
-     * Returns a {@link ProgramStage} with a given name.
-     * 
-     * @param name the name of the ProgramStage to return.
-     * 
-     * @return the ProgramStage with the given name, or null if no match.
-     */
-    List<ProgramStage> getProgramStageByName( String name );
-
-    /**
      * Retrieve a program stage by name and a program
      * 
      * @param name Name of program stage
@@ -103,13 +92,5 @@ public interface ProgramStageService
      * @return ProgramStage
      */
     ProgramStage getProgramStageByName( String name, Program program );
-
-    /**
-     * Returns all {@link ProgramStage}
-     * 
-     * @return a collection of all ProgramStage, or an empty collection if there
-     *         are no ProgramStages.
-     */
-    Collection<ProgramStage> getAllProgramStages();
 
 }

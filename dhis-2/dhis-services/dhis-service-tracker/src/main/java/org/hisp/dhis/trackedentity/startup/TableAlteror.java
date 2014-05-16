@@ -30,8 +30,6 @@ package org.hisp.dhis.trackedentity.startup;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Collection;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.amplecode.quick.StatementHolder;
@@ -39,13 +37,7 @@ import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.CodeGenerator;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,27 +67,6 @@ public class TableAlteror
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
-    }
-
-    private ProgramStageService programStageService;
-
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     @Autowired
@@ -183,8 +154,6 @@ public class TableAlteror
 
         executeSql( "update program set remindCompleted=false where remindCompleted is null" );
         executeSql( "UPDATE programinstance SET followup=false where followup is null" );
-
-        updateUidInDataEntryFrom();
 
         updateProgramInstanceStatus();
 
@@ -300,75 +269,6 @@ public class TableAlteror
     // -------------------------------------------------------------------------
     // Supporting methods
     // -------------------------------------------------------------------------
-
-    private void updateUidInDataEntryFrom()
-    {
-        Collection<ProgramStage> programStages = programStageService.getAllProgramStages();
-
-        for ( ProgramStage programStage : programStages )
-        {
-            DataEntryForm dataEntryForm = programStage.getDataEntryForm();
-            if ( dataEntryForm != null && dataEntryForm.getFormat() != DataEntryForm.CURRENT_FORMAT )
-            {
-                String programStageUid = programStage.getUid();
-                String htmlCode = programStage.getDataEntryForm().getHtmlCode();
-
-                // ---------------------------------------------------------------------
-                // Metadata code to add to HTML before outputting
-                // ---------------------------------------------------------------------
-
-                StringBuffer sb = new StringBuffer();
-
-                // ---------------------------------------------------------------------
-                // Pattern to match data elements in the HTML code
-                // ---------------------------------------------------------------------
-
-                Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
-
-                // ---------------------------------------------------------------------
-                // Iterate through all matching data element fields
-                // ---------------------------------------------------------------------
-
-                while ( inputMatcher.find() )
-                {
-                    String inputHTML = inputMatcher.group();
-
-                    // -----------------------------------------------------------------
-                    // Get HTML input field code
-                    // -----------------------------------------------------------------
-
-                    String dataElementCode = inputMatcher.group( 1 );
-
-                    Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
-
-                    if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
-                    {
-                        // -------------------------------------------------------------
-                        // Get data element ID of data element
-                        // -------------------------------------------------------------
-
-                        int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
-                        DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
-                        if ( dataElement != null )
-                        {
-                            inputHTML = inputHTML.replaceFirst( identifierMatcher.group( 1 ), programStageUid );
-                            inputHTML = inputHTML.replaceFirst( identifierMatcher.group( 2 ), dataElement.getUid() );
-                            inputMatcher.appendReplacement( sb, inputHTML );
-                        }
-
-                    }
-                }
-
-                inputMatcher.appendTail( sb );
-
-                htmlCode = (sb.toString().isEmpty()) ? htmlCode : sb.toString();
-                dataEntryForm.setHtmlCode( htmlCode );
-                dataEntryForm.setFormat( DataEntryForm.CURRENT_FORMAT );
-                dataEntryFormService.updateDataEntryForm( dataEntryForm );
-            }
-        }
-    }
 
     private void updateProgramInstanceStatus()
     {

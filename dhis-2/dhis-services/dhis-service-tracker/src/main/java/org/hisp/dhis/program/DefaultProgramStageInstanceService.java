@@ -143,14 +143,7 @@ public class DefaultProgramStageInstanceService
     {
         return programStageInstanceStore.get( programInstance, programStage );
     }
-
-    @Override
-    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance,
-        ProgramStage programStage )
-    {
-        return programStageInstanceStore.getAll( programInstance, programStage );
-    }
-
+    
     @Override
     public void updateProgramStageInstance( ProgramStageInstance programStageInstance )
     {
@@ -185,22 +178,9 @@ public class DefaultProgramStageInstanceService
     }
 
     @Override
-    public void updateProgramStageInstances( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms )
-    {
-        programStageInstanceStore.update( programStageInstanceIds, outboundSms );
-    }
-
-    @Override
     public Collection<SchedulingProgramObject> getSendMesssageEvents()
     {
         return programStageInstanceStore.getSendMesssageEvents();
-    }
-
-    @Override
-    public Collection<ProgramStageInstance> getProgramStageInstances( Program program, Collection<Integer> orgunitIds,
-        Date startDate, Date endDate, Boolean completed )
-    {
-        return programStageInstanceStore.get( program, orgunitIds, startDate, endDate, completed );
     }
 
     @Override
@@ -251,7 +231,7 @@ public class DefaultProgramStageInstanceService
         double percent = 0.0;
         if ( totalCompleted != 0 )
         {
-            int stageCompleted = averageNumberCompletedProgramInstance( program, orgunitIds, startDate, endDate,
+           int stageCompleted =  programStageInstanceStore.averageNumberCompleted( program, orgunitIds, startDate, endDate,
                 ProgramInstance.STATUS_ACTIVE );
             percent = (stageCompleted + 0.0) / totalCompleted;
         }
@@ -318,8 +298,7 @@ public class DefaultProgramStageInstanceService
             grid.addValue( format.formatValue( percent ) + "%" );
 
             // Visits overdue (#)
-
-            int overdue = this.getOverDueEventCount( programStage, orgunitIds, startDate, endDate );
+            int overdue = programStageInstanceStore.getOverDueCount( programStage, orgunitIds, startDate, endDate );
             grid.addValue( overdue );
 
             // Visits overdue (%)
@@ -336,92 +315,10 @@ public class DefaultProgramStageInstanceService
     }
 
     @Override
-    public List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
-        Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer min, Integer max )
-    {
-        return programStageInstanceStore.getStatisticalProgramStageDetailsReport( programStage, orgunitIds, startDate,
-            endDate, status, min, max );
-    }
-
-    @Override
-    public int getOverDueEventCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate,
-        Date endDate )
-    {
-        return programStageInstanceStore.getOverDueCount( programStage, orgunitIds, startDate, endDate );
-    }
-
-    @Override
-    public int averageNumberCompletedProgramInstance( Program program, Collection<Integer> orgunitIds, Date startDate,
-        Date endDate, int status )
-    {
-        return programStageInstanceStore.averageNumberCompleted( program, orgunitIds, startDate, endDate, status );
-    }
-
-    @Override
-    public Collection<Integer> getOrganisationUnitIds( Date startDate, Date endDate )
-    {
-        return programStageInstanceStore.getOrgunitIds( startDate, endDate );
-    }
-
-    @Override
     public Grid getCompletenessProgramStageInstance( Collection<Integer> orgunitIds, Program program, String startDate,
         String endDate, I18n i18n )
     {
         return programStageInstanceStore.getCompleteness( orgunitIds, program, startDate, endDate, i18n );
-    }
-
-    @Override
-    public Collection<OutboundSms> sendMessages( ProgramStageInstance programStageInstance, int status,
-        I18nFormat format )
-    {
-        TrackedEntityInstance entityInstance = programStageInstance.getProgramInstance().getEntityInstance();
-        Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
-
-        Collection<TrackedEntityInstanceReminder> reminders = programStageInstance.getProgramStage()
-            .getReminders();
-        for ( TrackedEntityInstanceReminder rm : reminders )
-        {
-            if ( rm != null
-                && rm.getWhenToSend() != null
-                && rm.getWhenToSend() == status
-                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
-            {
-                OutboundSms outboundSms = sendEventMessage( rm, programStageInstance, entityInstance, format );
-                if ( outboundSms != null )
-                {
-                    outboundSmsList.add( outboundSms );
-                }
-            }
-        }
-
-        return outboundSmsList;
-    }
-
-    @Override
-    public Collection<MessageConversation> sendMessageConversations( ProgramStageInstance programStageInstance,
-        int status, I18nFormat format )
-    {
-        Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
-
-        Collection<TrackedEntityInstanceReminder> reminders = programStageInstance.getProgramStage()
-            .getReminders();
-        for ( TrackedEntityInstanceReminder rm : reminders )
-        {
-            if ( rm != null
-                && rm.getWhenToSend() != null
-                && rm.getWhenToSend() == status
-                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm
-                    .getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
-            {
-                int id = messageService.sendMessage( programStageInstance.getProgramStage().getDisplayName(),
-                    reminderService.getMessageFromTemplate( rm, programStageInstance, format ), null,
-                    reminderService.getUsers( rm, programStageInstance.getProgramInstance().getEntityInstance() ),
-                    null, false, true );
-                messageConversations.add( messageService.getMessageConversation( id ) );
-            }
-        }
-
-        return messageConversations;
     }
 
     @Override
@@ -580,4 +477,56 @@ public class DefaultProgramStageInstanceService
 
         return outboundSms;
     }
+    
+    private Collection<OutboundSms> sendMessages( ProgramStageInstance programStageInstance, int status,
+        I18nFormat format )
+    {
+        TrackedEntityInstance entityInstance = programStageInstance.getProgramInstance().getEntityInstance();
+        Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
+
+        Collection<TrackedEntityInstanceReminder> reminders = programStageInstance.getProgramStage()
+            .getReminders();
+        for ( TrackedEntityInstanceReminder rm : reminders )
+        {
+            if ( rm != null
+                && rm.getWhenToSend() != null
+                && rm.getWhenToSend() == status
+                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
+            {
+                OutboundSms outboundSms = sendEventMessage( rm, programStageInstance, entityInstance, format );
+                if ( outboundSms != null )
+                {
+                    outboundSmsList.add( outboundSms );
+                }
+            }
+        }
+
+        return outboundSmsList;
+    }
+
+    private Collection<MessageConversation> sendMessageConversations( ProgramStageInstance programStageInstance,
+         int status, I18nFormat format )
+     {
+         Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
+
+         Collection<TrackedEntityInstanceReminder> reminders = programStageInstance.getProgramStage()
+             .getReminders();
+         for ( TrackedEntityInstanceReminder rm : reminders )
+         {
+             if ( rm != null
+                 && rm.getWhenToSend() != null
+                 && rm.getWhenToSend() == status
+                 && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm
+                     .getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
+             {
+                 int id = messageService.sendMessage( programStageInstance.getProgramStage().getDisplayName(),
+                     reminderService.getMessageFromTemplate( rm, programStageInstance, format ), null,
+                     reminderService.getUsers( rm, programStageInstance.getProgramInstance().getEntityInstance() ),
+                     null, false, true );
+                 messageConversations.add( messageService.getMessageConversation( id ) );
+             }
+         }
+
+         return messageConversations;
+     }
 }

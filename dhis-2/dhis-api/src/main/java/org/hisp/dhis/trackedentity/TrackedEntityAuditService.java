@@ -66,14 +66,6 @@ public interface TrackedEntityAuditService
     TrackedEntityAudit getTrackedEntityAudit( int id );
 
     /**
-     * Returns all {@link TrackedEntityAudit}
-     * 
-     * @return a collection of all TrackedEntityAudit, or an empty collection if
-     *         there are no TrackedEntityAttributeGroups.
-     */
-    Collection<TrackedEntityAudit> getAllTrackedEntityAudit();
-
-    /**
      * Get all instance audits of a instance
      * 
      * @param instance TrackedEntityInstance
