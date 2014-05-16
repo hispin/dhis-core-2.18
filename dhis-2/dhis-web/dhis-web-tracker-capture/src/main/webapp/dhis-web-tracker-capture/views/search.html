@@ -3,24 +3,13 @@
     <div class="search-container">
         <table class="dhis2-list-table-striped dhis2-table-hover">
             <tr>
-                <td>{{'org_unit_mode'| translate}}</td>
+                <td>{{'org_unit_mode'| translate}} - {{ouMode}}</td>
                 <td>
-                    <input type='radio' ng-model='ouMode' value='SELECTED'>{{'use_selected'| translate}}<br/>
-                    <input type='radio' ng-model='ouMode' value='CHILDREN'>{{'use_immediate_children'| translate}}<br/>
-                    <input type='radio' ng-model='ouMode' value='DESCENDANTS'>{{'use_all_children'| translate}}
+                    <input type="radio" ng-model="ouMode" value="SELECTED">{{'use_selected'| translate}}<br/>
+                    <input type="radio" ng-model="ouMode" value="CHILDREN">{{'use_immediate_children'| translate}}<br/>
+                    <input type="radio" ng-model="ouMode" value="DESCENDANTS">{{'use_all_children'| translate}}
                 </td>
             </tr>
-            <!--<tr>
-                <td>
-                    {{'program'| translate}}
-                </td>
-                <td>
-                    <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
-                        <option value="">{{'please_select'| translate}}</option>
-                    </select>
-                </td>
-            </tr>     --> 
-
             <tr ng-repeat="attribute in attributes">
                 <td>
                     {{attribute.name}} - {{attribute.valueType}}
@@ -54,13 +43,7 @@
                 </td>
             </tr>         
         </table>
-    </div>
-
-    <div class="row" ng-if="emptySearchAttribute">
-        <div class="col-md-6">
-            <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
-        </div>
-    </div>
+    </div>   
 
     <div class="btn-group">
         <button type="button" 
@@ -70,9 +53,19 @@
         </button>
         <button type="button" 
                 class="btn btn-default" 
+                ng-click="search(searchMode.listAll)">
+            {{'list_all'| translate}}
+        </button>
+        <button type="button" 
+                class="btn btn-default" 
                 ng-click="closeSearch()">
             {{'cancel'| translate}}
         </button>        
+    </div>
+    <div class="row" ng-if="emptySearchAttribute">
+        <div class="col-md-12">
+            <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
+        </div>
     </div>
 
 </div>
