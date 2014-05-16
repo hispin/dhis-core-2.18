@@ -85,11 +85,11 @@ public class RemoveTrackedEntityFormAction
         {
             Program program = programService.getProgram( id );
 
-            registrationForm = formService.getTrackedEntityForm( program );
+            registrationForm = formService.getFormsWithProgram( program );
         }
         else
         {
-            registrationForm = formService.getCommonTrackedEntityForm();
+            registrationForm = formService.getFormsWithoutProgram();
         }
 
         if ( registrationForm != null )

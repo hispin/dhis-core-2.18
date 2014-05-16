@@ -158,7 +158,7 @@ public class ViewTrackedEntityFormAction
 
         if ( programId == null )
         {
-            registrationForm = formService.getCommonTrackedEntityForm();
+            registrationForm = formService.getFormsWithoutProgram();
 
             attributes = attributeService.getAllTrackedEntityAttributes();
 
@@ -171,7 +171,7 @@ public class ViewTrackedEntityFormAction
         {
             program = programService.getProgram( programId );
             programAttributes = program.getAttributes();
-            registrationForm = formService.getTrackedEntityForm( program );
+            registrationForm = formService.getFormsWithProgram( program );
         }
 
         // ---------------------------------------------------------------------

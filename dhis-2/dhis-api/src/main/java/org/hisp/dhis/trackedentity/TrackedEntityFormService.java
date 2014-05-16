@@ -111,14 +111,14 @@ public interface TrackedEntityFormService
      * 
      * @return TrackedEntityForm
      */
-    TrackedEntityForm getTrackedEntityForm( Program program );
+    TrackedEntityForm getFormsWithProgram( Program program );
 
     /**
      * Get tracked entity form which doesn't belong to any program
      * 
      * @return TrackedEntityForm
      */
-    TrackedEntityForm getCommonTrackedEntityForm();
+    TrackedEntityForm getFormsWithoutProgram();
 
     /**
      * Prepares the custom registration by injecting required javascripts and
