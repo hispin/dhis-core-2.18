@@ -29,6 +29,7 @@ package org.hisp.dhis.user;
  */
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,9 +53,6 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 /**
  * @author Chau Thu Tran

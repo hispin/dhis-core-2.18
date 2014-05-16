@@ -36,8 +36,8 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIME_FOR_SENDING_ME
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.trackedentity.scheduling.ProgramSchedulingManager;
-import org.hisp.dhis.trackedentity.scheduling.SendScheduledMessageTask;
+import org.hisp.dhis.scheduling.ProgramSchedulingManager;
+import org.hisp.dhis.scheduling.SendScheduledMessageTask;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
