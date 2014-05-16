@@ -32,7 +32,6 @@ import static org.hisp.dhis.program.ProgramExpression.OBJECT_PROGRAM_STAGE_DATAE
 import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_ID;
 import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_OBJECT;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,12 +107,6 @@ public class DefaultProgramExpressionService
     public ProgramExpression getProgramExpression( int id )
     {
         return programExpressionStore.get( id );
-    }
-
-    @Override
-    public Collection<ProgramExpression> getAllProgramExpressions()
-    {
-        return programExpressionStore.getAll();
     }
 
     @Override

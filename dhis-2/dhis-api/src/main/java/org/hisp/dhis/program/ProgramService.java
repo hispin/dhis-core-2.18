@@ -161,19 +161,6 @@ public interface ProgramService
     Program getProgram( String uid );
 
     /**
-     * Get {@link Program} which are displayed on all {@link OrganisationUnit}
-     * for searching or enrolling a person
-     * 
-     * @param displayOnAllOrgunit Optional flag to specify programs can
-     *        displayed for searching or enrolling (<code>true</code> ) or
-     *        cannot be used on the orgunit (<code>false</code>) instances.
-     * @param orgunit {@link OrganisationUnit}
-     * 
-     * @return Program list
-     */
-    Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit );
-
-    /**
      * Get {@link Program} belong to an orgunit by the current user
      * 
      * @param organisationUnit {@link OrganisationUnit}
@@ -206,7 +193,7 @@ public interface ProgramService
      * @return a collection of all Program, or an empty collection if
      *         there are no Program.
      */
-    Collection<? extends Program> getProgramBetweenByName( String name, int min, int max );
+    Collection<Program> getProgramBetweenByName( String name, int min, int max );
 
     /**
      * Returns The number of all Program available

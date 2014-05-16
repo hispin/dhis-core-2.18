@@ -181,22 +181,7 @@ public class ProgramStageDataElementStoreTest
 
         assertTrue( equals( programStageDataElementStore.getAll(), stageDataElementA, stageDataElementB ) );
     }
-
-    @Test
-    public void testGetByStage()
-    {
-        programStageDataElementStore.save( stageDataElementA );
-        programStageDataElementStore.save( stageDataElementB );
-        programStageDataElementStore.save( stageDataElementC );
-        programStageDataElementStore.save( stageDataElementD );
-
-        Collection<ProgramStageDataElement> stageDataElements = programStageDataElementStore.get( stageA );
-        assertTrue( equals( stageDataElements, stageDataElementA, stageDataElementB ) );
-
-        stageDataElements = programStageDataElementStore.get( stageB );
-        assertTrue( equals( stageDataElements, stageDataElementC, stageDataElementD ) );
-    }
-
+    
     @Test
     public void testGetListDataElementByStage()
     {

@@ -91,11 +91,6 @@ public class DefaultTrackedEntityDataValueService
         }
     }
 
-    public Collection<TrackedEntityDataValue> getAllTrackedEntityDataValues()
-    {
-        return dataValueStore.getAll();
-    }
-
     public Collection<TrackedEntityDataValue> getTrackedEntityDataValues( ProgramStageInstance programStageInstance )
     {
         return dataValueStore.get( programStageInstance );

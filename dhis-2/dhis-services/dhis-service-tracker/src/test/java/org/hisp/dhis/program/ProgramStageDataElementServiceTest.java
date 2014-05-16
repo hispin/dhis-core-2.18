@@ -187,21 +187,6 @@ public class ProgramStageDataElementServiceTest
     }
 
     @Test
-    public void testGetByStage()
-    {
-        programStageDataElementService.addProgramStageDataElement( stageDataElementA );
-        programStageDataElementService.addProgramStageDataElement( stageDataElementB );
-        programStageDataElementService.addProgramStageDataElement( stageDataElementC );
-        programStageDataElementService.addProgramStageDataElement( stageDataElementD );
-
-        Collection<ProgramStageDataElement> stageDataElements = programStageDataElementService.get( stageA );
-        assertTrue( equals( stageDataElements, stageDataElementA, stageDataElementB ) );
-
-        stageDataElements = programStageDataElementService.get( stageB );
-        assertTrue( equals( stageDataElements, stageDataElementC, stageDataElementD ) );
-    }
-
-    @Test
     public void testGetListDataElementByStage()
     {
         programStageDataElementService.addProgramStageDataElement( stageDataElementA );

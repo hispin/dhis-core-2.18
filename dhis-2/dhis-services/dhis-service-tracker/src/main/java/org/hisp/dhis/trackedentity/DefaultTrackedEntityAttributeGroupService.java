@@ -28,15 +28,13 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
+import java.util.Collection;
+
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Chau Thu Tran
@@ -111,19 +109,13 @@ public class DefaultTrackedEntityAttributeGroupService
     }
 
     @Override
-    public List<TrackedEntityAttribute> getTrackedEntityAttributes( TrackedEntityAttributeGroup attributeGroup )
-    {
-        return new ArrayList<TrackedEntityAttribute>( i18n( i18nService, attributeGroup.getAttributes() ) );
-    }
-
-    @Override
     public Integer getTrackedEntityAttributeGroupCountByName( String name )
     {
         return attributeGroupStore.getCountLikeName( name );
     }
 
     @Override
-    public Collection<? extends TrackedEntityAttributeGroup> getTrackedEntityAttributeGroupsBetweenByName( String name, int min, int max )
+    public Collection<TrackedEntityAttributeGroup> getTrackedEntityAttributeGroupsBetweenByName( String name, int min, int max )
     {
         return attributeGroupStore.getAllLikeNameOrderedName( name, min, max );
     }

@@ -80,12 +80,6 @@ public class DefaultTrackedEntityAuditService
     }
 
     @Override
-    public Collection<TrackedEntityAudit> getAllTrackedEntityAudit()
-    {
-        return auditStore.getAll();
-    }
-
-    @Override
     public Collection<TrackedEntityAudit> getTrackedEntityAudits( TrackedEntityInstance instance )
     {
         return auditStore.get( instance );

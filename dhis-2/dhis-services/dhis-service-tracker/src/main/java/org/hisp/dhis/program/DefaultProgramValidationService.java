@@ -28,8 +28,8 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.program.ProgramExpression.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.program.ProgramExpression.OBJECT_PROGRAM_STAGE;
+import static org.hisp.dhis.program.ProgramExpression.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_ID;
 import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_OBJECT;
 
@@ -41,8 +41,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,21 +63,7 @@ public class DefaultProgramValidationService
         this.validationStore = validationStore;
     }
 
-    private ProgramStageService programStageService;
-
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
-
-    private DataElementService dataElementService;
-
     private ProgramExpressionService expressionService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
 
     public void setExpressionService( ProgramExpressionService expressionService )
     {
@@ -190,27 +174,6 @@ public class DefaultProgramValidationService
         return validationStore.get( program );
     }
 
-    public Collection<ProgramValidation> getProgramValidation( ProgramStageDataElement psdataElement )
-    {
-        Collection<ProgramValidation> programValidation = validationStore.get( psdataElement.getProgramStage()
-            .getProgram() );
-        Collection<ProgramValidation> result = new HashSet<ProgramValidation>();
-
-        for ( ProgramValidation validation : programValidation )
-        {
-            Collection<DataElement> dataElements = getDataElementInExpression( validation );
-            Collection<ProgramStage> programStages = getProgramStageInExpression( validation );
-
-            if ( dataElements.contains( psdataElement.getDataElement() )
-                && programStages.contains( psdataElement.getProgramStage() ) )
-            {
-                result.add( validation );
-            }
-        }
-
-        return result;
-    }
-
     public Collection<ProgramValidation> getProgramValidation( ProgramStage programStage )
     {
         Collection<ProgramValidation> programValidation = getProgramValidation( programStage.getProgram() );
@@ -253,60 +216,4 @@ public class DefaultProgramValidationService
 
         return programValidation;
     }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Collection<DataElement> getDataElementInExpression( ProgramValidation programValidation )
-    {
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
-
-        Pattern pattern = Pattern.compile( regExp );
-        String expression = programValidation.getLeftSide().getExpression() + " "
-            + programValidation.getRightSide().getExpression();
-        Matcher matcher = pattern.matcher( expression );
-        while ( matcher.find() )
-        {
-            String match = matcher.group();
-            match = match.replaceAll( "[\\[\\]]", "" );
-
-            String[] info = match.split( SEPARATOR_OBJECT );
-            String[] ids = info[1].split( SEPARATOR_ID );
-
-            int dataElementId = Integer.parseInt( ids[1] );
-            DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
-            dataElements.add( dataElement );
-        }
-
-        return dataElements;
-    }
-
-    private Collection<ProgramStage> getProgramStageInExpression( ProgramValidation programValidation )
-    {
-        Collection<ProgramStage> programStages = new HashSet<ProgramStage>();
-
-        Pattern pattern = Pattern.compile( regExp );
-        String expression = programValidation.getLeftSide().getExpression() + " "
-            + programValidation.getRightSide().getExpression();
-        Matcher matcher = pattern.matcher( expression );
-
-        while ( matcher.find() )
-        {
-            String match = matcher.group();
-            match = match.replaceAll( "[\\[\\]]", "" );
-
-            String[] info = match.split( SEPARATOR_OBJECT );
-            String[] ids = info[1].split( SEPARATOR_ID );
-
-            int programStageId = Integer.parseInt( ids[0] );
-            ProgramStage programStage = programStageService.getProgramStage( programStageId );
-
-            programStages.add( programStage );
-        }
-
-        return programStages;
-    }
-
 }

@@ -40,20 +40,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
-import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.config.SmsConfigurationManager;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
-import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -264,38 +258,6 @@ public class ProgramInstanceServiceTest
     }
 
     @Test
-    public void testGetAllProgramInstances()
-    {
-        programInstanceService.addProgramInstance( programInstanceA );
-        programInstanceService.addProgramInstance( programInstanceB );
-
-        assertTrue( equals( programInstanceService.getAllProgramInstances(), programInstanceA, programInstanceB ) );
-    }
-
-    @Test
-    public void testGetProgramInstancesByStatus()
-    {
-        programInstanceService.addProgramInstance( programInstanceA );
-        programInstanceService.addProgramInstance( programInstanceB );
-        programInstanceService.addProgramInstance( programInstanceC );
-        programInstanceService.addProgramInstance( programInstanceD );
-
-        Collection<ProgramInstance> programInstances = programInstanceService
-            .getProgramInstances( ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 2, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-        assertTrue( programInstances.contains( programInstanceD ) );
-
-        programInstances = programInstanceService.getProgramInstances( ProgramInstance.STATUS_CANCELLED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceB ) );
-
-        programInstances = programInstanceService.getProgramInstances( ProgramInstance.STATUS_COMPLETED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceC ) );
-    }
-
-    @Test
     public void testGetProgramInstancesByProgram()
     {
         programInstanceService.addProgramInstance( programInstanceA );
@@ -329,111 +291,6 @@ public class ProgramInstanceServiceTest
         assertTrue( programInstances.contains( programInstanceA ) );
         assertTrue( programInstances.contains( programInstanceB ) );
         assertTrue( programInstances.contains( programInstanceD ) );
-    }
-
-    @Test
-    public void testGetProgramInstancesByOuProgramList()
-    {
-        programInstanceService.addProgramInstance( programInstanceA );
-        programInstanceService.addProgramInstance( programInstanceB );
-        programInstanceService.addProgramInstance( programInstanceC );
-        programInstanceService.addProgramInstance( programInstanceD );
-
-        Collection<Program> programs = new HashSet<Program>();
-        programs.add( programA );
-        programs.add( programB );
-
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs,
-            organisationUnitA );
-        assertEquals( 2, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-        assertTrue( programInstances.contains( programInstanceB ) );
-
-        programInstances = programInstanceService.getProgramInstances( programs, organisationUnitB );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceD ) );
-    }
-
-    @Test
-    public void testGetProgramInstancesByOuProgramListStatus()
-    {
-        programInstanceService.addProgramInstance( programInstanceA );
-        programInstanceService.addProgramInstance( programInstanceB );
-        programInstanceService.addProgramInstance( programInstanceC );
-
-        Collection<Program> programs = new HashSet<Program>();
-        programs.add( programA );
-        programs.add( programB );
-        programs.add( programC );
-
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs,
-            organisationUnitA, ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-
-        programInstances = programInstanceService.getProgramInstances( programs, organisationUnitA,
-            ProgramInstance.STATUS_COMPLETED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceC ) );
-
-    }
-
-    @Test
-    public void testGetProgramInstancesByProgramStatus()
-    {
-        programInstanceService.addProgramInstance( programInstanceA );
-        programInstanceService.addProgramInstance( programInstanceB );
-        programInstanceService.addProgramInstance( programInstanceC );
-        programInstanceService.addProgramInstance( programInstanceD );
-
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programA,
-            ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 2, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-        assertTrue( programInstances.contains( programInstanceD ) );
-
-        programInstances = programInstanceService.getProgramInstances( programB, ProgramInstance.STATUS_CANCELLED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceB ) );
-
-        programInstances = programInstanceService.getProgramInstances( programC, ProgramInstance.STATUS_COMPLETED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceC ) );
-    }
-
-    @Test
-    public void testGetProgramInstancesByProgramListStatus()
-    {
-        programInstanceService.addProgramInstance( programInstanceA );
-        programInstanceService.addProgramInstance( programInstanceB );
-        programInstanceService.addProgramInstance( programInstanceC );
-        programInstanceService.addProgramInstance( programInstanceD );
-
-        Collection<Program> programs = new HashSet<Program>();
-        programs.add( programA );
-        programs.add( programB );
-
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs,
-            ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 2, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-        assertTrue( programInstances.contains( programInstanceD ) );
-    }
-
-    @Test
-    public void testGetProgramInstancesByEntityInstanceStatus()
-    {
-        programInstanceService.addProgramInstance( programInstanceA );
-        programInstanceService.addProgramInstance( programInstanceD );
-
-        Collection<Program> programs = new HashSet<Program>();
-        programs.add( programA );
-        programs.add( programB );
-
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( entityInstanceA,
-            ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
     }
 
     @Test
@@ -494,18 +351,6 @@ public class ProgramInstanceServiceTest
     }
 
     @Test
-    public void testGetProgramInstancesbyProgramOuPeriod()
-    {
-        programInstanceService.addProgramInstance( programInstanceA );
-        programInstanceService.addProgramInstance( programInstanceD );
-
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programA,
-            organisationUnitA, incidenDate, enrollmentDate );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-    }
-
-    @Test
     public void testGetProgramInstancesByOuListProgramPeriod()
     {
         programInstanceService.addProgramInstance( programInstanceA );
@@ -557,42 +402,6 @@ public class ProgramInstanceServiceTest
     }
 
     @Test
-    public void testSendMessages()
-    {
-        TrackedEntityAttribute attribute = createTrackedEntityAttribute( 'A' );
-        attribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );
-        attributeService.addTrackedEntityAttribute( attribute );
-
-        TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA, attribute );
-        attributeValue.setValue( "123456789" );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
-
-        entityInstanceA.getAttributeValues().add( attributeValue );
-        entityInstanceService.updateTrackedEntityInstance( entityInstanceA );
-
-        programInstanceService.addProgramInstance( programInstanceA );
-        Collection<OutboundSms> outboundSmsList = programInstanceService.sendMessages( programInstanceA,
-            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT );
-        assertEquals( 1, outboundSmsList.size() );
-        assertEquals( "Test program message template", outboundSmsList.iterator().next().getMessage() );
-    }
-
-    @Test
-    public void testSendMessageConversations()
-    {
-        this.createSMSConfiguration();
-        SmsConfiguration smsConfiguration = new SmsConfiguration();
-        smsConfiguration.setEnabled( true );
-
-        programInstanceService.addProgramInstance( programInstanceB );
-
-        Collection<MessageConversation> messages = programInstanceService.sendMessageConversations( programInstanceA,
-            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT );
-        assertEquals( 1, messages.size() );
-        assertEquals( "Test program message template", messages.iterator().next().getMessages().get( 0 ).getText() );
-    }
-
-    @Test
     public void testEnrollTrackedEntityInstance()
     {
         ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstanceA, programB, enrollmentDate,
@@ -637,20 +446,4 @@ public class ProgramInstanceServiceTest
         assertEquals( ProgramInstance.STATUS_CANCELLED, programInstanceService.getProgramInstance( idD ).getStatus() );
     }
 
-    private void createSMSConfiguration()
-    {
-        BulkSmsGatewayConfig bulkGatewayConfig = new BulkSmsGatewayConfig();
-        bulkGatewayConfig.setName( "bulksms" );
-        bulkGatewayConfig.setPassword( "bulk" );
-        bulkGatewayConfig.setUsername( "bulk" );
-        bulkGatewayConfig.setRegion( "uk" );
-        bulkGatewayConfig.setDefault( true );
-
-        SmsConfiguration smsConfig = new SmsConfiguration();
-        smsConfig.setPollingInterval( 3000 );
-        smsConfig.getGateways().add( bulkGatewayConfig );
-        smsConfig.setEnabled( true );
-        smsConfigurationManager.updateSmsConfiguration( smsConfig );
-
-    }
 }

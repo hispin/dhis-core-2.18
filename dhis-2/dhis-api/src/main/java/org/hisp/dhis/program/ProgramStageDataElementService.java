@@ -85,15 +85,6 @@ public interface ProgramStageDataElementService
     Collection<ProgramStageDataElement> getAllProgramStageDataElements();
 
     /**
-     * Retrieve ProgramStageDataElement list on a program stage
-     * 
-     * @param programStage ProgramStage
-     * 
-     * @return ProgramStageDataElement list
-     */
-    Collection<ProgramStageDataElement> get( ProgramStage programStage );
-
-    /**
      * Retrieve Data element list on a program stage
      * 
      * @param programStage ProgramStage

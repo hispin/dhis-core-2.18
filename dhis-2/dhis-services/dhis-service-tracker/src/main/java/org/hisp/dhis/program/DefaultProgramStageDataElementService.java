@@ -70,12 +70,7 @@ public class DefaultProgramStageDataElementService
     {
         return programStageDataElementStore.getAll();
     }
-
-    public Collection<ProgramStageDataElement> get( ProgramStage programStage )
-    {
-        return programStageDataElementStore.get( programStage );
-    }
-
+    
     public ProgramStageDataElement get( ProgramStage programStage, DataElement dataElement )
     {
         return programStageDataElementStore.get( programStage, dataElement );

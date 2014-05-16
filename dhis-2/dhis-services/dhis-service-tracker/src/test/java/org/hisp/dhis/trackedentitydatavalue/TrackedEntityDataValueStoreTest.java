@@ -30,7 +30,6 @@ package org.hisp.dhis.trackedentitydatavalue;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
@@ -172,26 +171,6 @@ public class TrackedEntityDataValueStoreTest
 
         assertNotNull( dataValueStore.get( stageInstanceA, dataElementA ) );
         assertNotNull( dataValueStore.get( stageInstanceA, dataElementB ) );
-    }
-
-    @Test
-    public void testDeleteTrackedEntityDataValueByStageInstance()
-    {
-        dataValueStore.saveVoid( dataValueA );
-        dataValueStore.saveVoid( dataValueB );
-        dataValueStore.saveVoid( dataValueC );
-        dataValueStore.saveVoid( dataValueD );
-
-        assertNotNull( dataValueStore.get( stageInstanceA, dataElementA ) );
-        assertNotNull( dataValueStore.get( stageInstanceA, dataElementB ) );
-        assertNotNull( dataValueStore.get( stageInstanceB, dataElementA ) );
-        assertNotNull( dataValueStore.get( stageInstanceB, dataElementB ) );
-
-        dataValueStore.detele( stageInstanceA );
-        assertNull( dataValueStore.get( stageInstanceA, dataElementA ) );
-        assertNull( dataValueStore.get( stageInstanceA, dataElementB ) );
-        assertNotNull( dataValueStore.get( stageInstanceB, dataElementA ) );
-        assertNotNull( dataValueStore.get( stageInstanceB, dataElementB ) );
     }
 
     @Test

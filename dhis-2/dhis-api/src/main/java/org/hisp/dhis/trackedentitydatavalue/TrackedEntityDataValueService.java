@@ -136,12 +136,4 @@ public interface TrackedEntityDataValueService
      * @return TrackedEntityDataValue
      */
     TrackedEntityDataValue getTrackedEntityDataValue( ProgramStageInstance programStageInstance, DataElement dataElement );
-
-    /**
-     * Returns all {@link TrackedEntityDataValue}
-     * 
-     * @return a collection of all TrackedEntityDataValues, or an empty collection if
-     *         there are no TrackedEntityDataValues.
-     */
-    Collection<TrackedEntityDataValue> getAllTrackedEntityDataValues();
 }

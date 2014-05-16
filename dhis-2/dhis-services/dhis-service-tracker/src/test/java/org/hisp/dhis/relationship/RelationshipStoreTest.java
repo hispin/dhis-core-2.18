@@ -117,35 +117,12 @@ public class RelationshipStoreTest
     }
 
     @Test
-    public void testGetRelationshipByTwoEntityInstance()
-    {
-        relationshipStore.save( relationshipA );
-        relationshipStore.save( relationshipB );
-
-        Relationship relationship = relationshipStore.get( entityInstanceA, entityInstanceB );
-        assertEquals( relationshipA, relationship );
-
-        relationship = relationshipStore.get( entityInstanceC, entityInstanceD );
-        assertEquals( relationshipB, relationship );
-    }
-
-    @Test
     public void testGetRelationshipsForEntityInstance()
     {
         relationshipStore.save( relationshipA );
         relationshipStore.save( relationshipC );
 
         Collection<Relationship> relationships = relationshipStore.getForTrackedEntityInstance( entityInstanceA );
-        assertTrue( equals( relationships, relationshipA, relationshipC ) );
-    }
-
-    @Test
-    public void testGetRelationships()
-    {
-        relationshipStore.save( relationshipA );
-        relationshipStore.save( relationshipC );
-
-        Collection<Relationship> relationships = relationshipStore.get( entityInstanceA, relationshipType );
         assertTrue( equals( relationships, relationshipA, relationshipC ) );
     }
 

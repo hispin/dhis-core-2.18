@@ -62,13 +62,6 @@ public interface TrackedEntityAttributeValueStore
     int deleteByTrackedEntityInstance( TrackedEntityInstance instance );
 
     /**
-     * Deletes a {@link TrackedEntityAttribute}.
-     * 
-     * @param attribute the TrackedEntityAttribute to delete.
-     */
-    int deleteByAttribute( TrackedEntityAttribute attribute );
-
-    /**
      * Retrieve a {@link TrackedEntityAttributeValue} on a
      * {@link TrackedEntityInstance} and {@link TrackedEntityAttribute}
      * 

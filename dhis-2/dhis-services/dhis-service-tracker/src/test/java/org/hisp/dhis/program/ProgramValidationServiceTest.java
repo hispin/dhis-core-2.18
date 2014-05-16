@@ -252,15 +252,6 @@ public class ProgramValidationServiceTest
     }
 
     @Test
-    public void testGetProgramValidationByProgram()
-    {
-        programValidationService.addProgramValidation( validationA );
-        programValidationService.addProgramValidation( validationB );
-
-        assertTrue( equals( programValidationService.getProgramValidation( program ), validationA, validationB ) );
-    }
-
-    @Test
     public void testGetProgramValidationByStage()
     {
         programValidationService.addProgramValidation( validationA );
@@ -268,16 +259,6 @@ public class ProgramValidationServiceTest
 
         assertTrue( equals( programValidationService.getProgramValidation( stageA ), validationA ) );
         assertTrue( equals( programValidationService.getProgramValidation( stageB ), validationB ) );
-    }
-
-    @Test
-    public void testGetProgramValidationByStageDe()
-    {
-        programValidationService.addProgramValidation( validationA );
-
-        Collection<ProgramValidation> result = programValidationService.getProgramValidation( stageDataElementA );
-        assertEquals( 1, result.size() );
-        assertTrue( result.contains( validationA ) );
     }
 
     @Test

@@ -137,15 +137,6 @@ public class TrackedEntityAuditServiceTest
     }
 
     @Test
-    public void testGetAllTrackedEntityAudit()
-    {
-        auditService.saveTrackedEntityAudit( auditA );
-        auditService.saveTrackedEntityAudit( auditB );
-
-        assertTrue( equals( auditService.getAllTrackedEntityAudit(), auditA, auditB ) );
-    }
-
-    @Test
     public void testGetTrackedEntityAuditsByEntityInstance()
     {
         auditService.saveTrackedEntityAudit( auditA );

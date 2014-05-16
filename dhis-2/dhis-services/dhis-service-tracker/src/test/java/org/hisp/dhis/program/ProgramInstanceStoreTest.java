@@ -180,28 +180,6 @@ public class ProgramInstanceStoreTest
     }
 
     @Test
-    public void testGetProgramInstancesByStatus()
-    {
-        programInstanceStore.save( programInstanceA );
-        programInstanceStore.save( programInstanceB );
-        programInstanceStore.save( programInstanceC );
-        programInstanceStore.save( programInstanceD );
-
-        Collection<ProgramInstance> programInstances = programInstanceStore.getByStatus( ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 2, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-        assertTrue( programInstances.contains( programInstanceD ) );
-
-        programInstances = programInstanceStore.getByStatus( ProgramInstance.STATUS_CANCELLED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceB ) );
-
-        programInstances = programInstanceStore.getByStatus( ProgramInstance.STATUS_COMPLETED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceC ) );
-    }
-
-    @Test
     public void testGetProgramInstancesByProgram()
     {
         programInstanceStore.save( programInstanceA );
@@ -238,109 +216,6 @@ public class ProgramInstanceStoreTest
     }
 
     @Test
-    public void testGetProgramInstancesByOuProgramList()
-    {
-        programInstanceStore.save( programInstanceA );
-        programInstanceStore.save( programInstanceB );
-        programInstanceStore.save( programInstanceC );
-        programInstanceStore.save( programInstanceD );
-
-        Collection<Program> programs = new HashSet<Program>();
-        programs.add( programA );
-        programs.add( programB );
-
-        Collection<ProgramInstance> programInstances = programInstanceStore.get( programs, organisationUnitA );
-        assertEquals( 2, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-        assertTrue( programInstances.contains( programInstanceB ) );
-
-        programInstances = programInstanceStore.get( programs, organisationUnitB );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceD ) );
-    }
-
-    @Test
-    public void testGetProgramInstancesByOuProgramListStatus()
-    {
-        programInstanceStore.save( programInstanceA );
-        programInstanceStore.save( programInstanceB );
-        programInstanceStore.save( programInstanceC );
-
-        Collection<Program> programs = new HashSet<Program>();
-        programs.add( programA );
-        programs.add( programB );
-        programs.add( programC );
-
-        Collection<ProgramInstance> programInstances = programInstanceStore.get( programs, organisationUnitA,
-            ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-
-        programInstances = programInstanceStore.get( programs, organisationUnitA, ProgramInstance.STATUS_COMPLETED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceC ) );
-
-    }
-
-    @Test
-    public void testGetProgramInstancesByProgramStatus()
-    {
-        programInstanceStore.save( programInstanceA );
-        programInstanceStore.save( programInstanceB );
-        programInstanceStore.save( programInstanceC );
-        programInstanceStore.save( programInstanceD );
-
-        Collection<ProgramInstance> programInstances = programInstanceStore.get( programA,
-            ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 2, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-        assertTrue( programInstances.contains( programInstanceD ) );
-
-        programInstances = programInstanceStore.get( programB, ProgramInstance.STATUS_CANCELLED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceB ) );
-
-        programInstances = programInstanceStore.get( programC, ProgramInstance.STATUS_COMPLETED );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceC ) );
-    }
-
-    @Test
-    public void testGetProgramInstancesByProgramListStatus()
-    {
-        programInstanceStore.save( programInstanceA );
-        programInstanceStore.save( programInstanceB );
-        programInstanceStore.save( programInstanceC );
-        programInstanceStore.save( programInstanceD );
-
-        Collection<Program> programs = new HashSet<Program>();
-        programs.add( programA );
-        programs.add( programB );
-
-        Collection<ProgramInstance> programInstances = programInstanceStore.get( programs,
-            ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 2, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-        assertTrue( programInstances.contains( programInstanceD ) );
-    }
-
-    @Test
-    public void testGetProgramInstancesByEntityInstanceStatus()
-    {
-        programInstanceStore.save( programInstanceA );
-        programInstanceStore.save( programInstanceD );
-
-        Collection<Program> programs = new HashSet<Program>();
-        programs.add( programA );
-        programs.add( programB );
-
-        Collection<ProgramInstance> programInstances = programInstanceStore.get( entityInstanceA,
-            ProgramInstance.STATUS_ACTIVE );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-    }
-
-    @Test
     public void testGetProgramInstancesByEntityInstanceProgramStatus()
     {
         programInstanceStore.save( programInstanceA );
@@ -366,18 +241,6 @@ public class ProgramInstanceStoreTest
         programInstanceStore.save( programInstanceD );
 
         Collection<ProgramInstance> programInstances = programInstanceStore.get( programA, organisationUnitA, 0, 10 );
-        assertEquals( 1, programInstances.size() );
-        assertTrue( programInstances.contains( programInstanceA ) );
-    }
-
-    @Test
-    public void testGetProgramInstancesbyProgramOuPeriod()
-    {
-        programInstanceStore.save( programInstanceA );
-        programInstanceStore.save( programInstanceD );
-
-        Collection<ProgramInstance> programInstances = programInstanceStore.get( programA, organisationUnitA,
-            incidenDate, enrollmentDate );
         assertEquals( 1, programInstances.size() );
         assertTrue( programInstances.contains( programInstanceA ) );
     }

@@ -204,26 +204,6 @@ public class TrackedEntityDataValueServiceTest
     }
 
     @Test
-    public void testDeleteTrackedEntityDataValueByStageInstance()
-    {
-        dataValueService.saveTrackedEntityDataValue( dataValueA );
-        dataValueService.saveTrackedEntityDataValue( dataValueB );
-        dataValueService.saveTrackedEntityDataValue( dataValueC );
-        dataValueService.saveTrackedEntityDataValue( dataValueD );
-
-        assertNotNull( dataValueService.getTrackedEntityDataValue( stageInstanceA, dataElementA ) );
-        assertNotNull( dataValueService.getTrackedEntityDataValue( stageInstanceA, dataElementB ) );
-        assertNotNull( dataValueService.getTrackedEntityDataValue( stageInstanceB, dataElementA ) );
-        assertNotNull( dataValueService.getTrackedEntityDataValue( stageInstanceB, dataElementB ) );
-
-        dataValueService.deleteTrackedEntityDataValue( stageInstanceA );
-        assertNull( dataValueService.getTrackedEntityDataValue( stageInstanceA, dataElementA ) );
-        assertNull( dataValueService.getTrackedEntityDataValue( stageInstanceA, dataElementB ) );
-        assertNotNull( dataValueService.getTrackedEntityDataValue( stageInstanceB, dataElementA ) );
-        assertNotNull( dataValueService.getTrackedEntityDataValue( stageInstanceB, dataElementB ) );
-    }
-
-    @Test
     public void testGetTrackedEntityDataValuesByStageInstance()
     {
         dataValueService.saveTrackedEntityDataValue( dataValueA );
@@ -332,15 +312,6 @@ public class TrackedEntityDataValueServiceTest
 
         dataValue = dataValueService.getTrackedEntityDataValue( stageInstanceA, dataElementB );
         assertEquals( dataValueB, dataValue );
-    }
-
-    @Test
-    public void testGetAllTrackedEntityDataValues()
-    {
-        dataValueService.saveTrackedEntityDataValue( dataValueA );
-        dataValueService.saveTrackedEntityDataValue( dataValueA );
-
-        assertTrue( equals( dataValueService.getAllTrackedEntityDataValues(), dataValueA, dataValueA ) );
     }
 
 }

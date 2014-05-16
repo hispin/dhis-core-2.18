@@ -31,7 +31,6 @@ package org.hisp.dhis.program;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 
@@ -144,15 +143,6 @@ public class ProgramStageServiceTest
     }
 
     @Test
-    public void testGetProgramStageByName()
-    {
-        int idA = programStageService.saveProgramStage( stageA );
-
-        assertNotNull( programStageService.getProgramStage( idA ) );
-        assertNotNull( programStageService.getProgramStageByName( "A" ) );
-    }
-
-    @Test
     public void testGetProgramStageByNameProgram()
     {
         programStageService.saveProgramStage( stageA );
@@ -160,15 +150,6 @@ public class ProgramStageServiceTest
         
         assertEquals( stageA, programStageService.getProgramStageByName( "A", program ) );
         assertEquals( stageB, programStageService.getProgramStageByName( "B", program ) );
-    }
-
-    @Test
-    public void testGetAllProgramStages()
-    {
-        programStageService.saveProgramStage( stageA );
-        programStageService.saveProgramStage( stageB );
-
-        assertTrue( equals( programStageService.getAllProgramStages(), stageA, stageB ) );
     }
 
 }

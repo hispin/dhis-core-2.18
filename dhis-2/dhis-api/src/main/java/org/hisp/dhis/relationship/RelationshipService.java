@@ -86,25 +86,7 @@ public interface RelationshipService
      * @return {@link RelationshipType}
      */
     Relationship getRelationship( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB, RelationshipType relationshipType );
-
-    /**
-     * Get the relationship between two entityInstances
-     * 
-     * @param entityInstanceA {@link TrackedEntityInstance}
-     * @param entityInstanceB {@link TrackedEntityInstance}
-     * 
-     * @return {@link RelationshipType}
-     */
-    Relationship getRelationship( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB );
-
-    /**
-     * Returns all {@link Relationship}.
-     * 
-     * @return a collection of all Relationship, or an empty collection if there
-     *         are no Programs.
-     */
-    Collection<Relationship> getAllRelationships();
-
+    
     /**
      * Retrieve relationships of a instance
      * 
@@ -124,14 +106,4 @@ public interface RelationshipService
      * @return Relationship list
      */
     Collection<Relationship> getRelationships( TrackedEntityInstance entityInstanceA, RelationshipType relationshipType );
-
-    /**
-     * Retrieve all relationships of a relationship type
-     * 
-     * @param relationshipType RelationshipType
-     * 
-     * @return Relationship list
-     */
-    Collection<Relationship> getRelationshipsByRelationshipType( RelationshipType relationshipType );
-
 }

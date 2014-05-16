@@ -279,18 +279,6 @@ public class ProgramStageInstanceStoreTest
     }
 
     @Test
-    public void testGetProgramStageInstanceListByProgramInstanceStage()
-    {
-        programStageInstanceStore.save( programStageInstanceD1 );
-        programStageInstanceStore.save( programStageInstanceD2 );
-
-        Collection<ProgramStageInstance> stageInstances = programStageInstanceStore.getAll( programInstanceB, stageD );
-        assertEquals( 2, stageInstances.size() );
-        assertTrue( stageInstances.contains( programStageInstanceD1 ) );
-        assertTrue( stageInstances.contains( programStageInstanceD2 ) );
-    }
-
-    @Test
     public void testGetProgramStageInstancesByInstanceListComplete()
     {
         programStageInstanceA.setCompleted( true );
@@ -339,30 +327,7 @@ public class ProgramStageInstanceStoreTest
         assertEquals( 1, stageInstances.size() );
         assertTrue( stageInstances.contains( programStageInstanceB ) );
     }
-
-    @Test
-    public void testGetProgramStageInstancesByOuPeriodProgram()
-    {
-        programStageInstanceA.setExecutionDate( enrollmentDate );
-        programStageInstanceA.setOrganisationUnit( organisationUnitA );
-        programStageInstanceB.setExecutionDate( enrollmentDate );
-        programStageInstanceB.setOrganisationUnit( organisationUnitB );
-
-        programStageInstanceStore.save( programStageInstanceA );
-        programStageInstanceStore.save( programStageInstanceB );
-
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
-        orgunitIds.add( orgunitAId );
-        orgunitIds.add( orgunitBId );
-
-        Collection<ProgramStageInstance> result = programStageInstanceStore.get( programA, orgunitIds, incidenDate,
-            enrollmentDate, false );
-
-        assertEquals( 2, result.size() );
-        assertTrue( result.contains( programStageInstanceA ) );
-        assertTrue( result.contains( programStageInstanceB ) );
-    }
-
+    
     @Test
     public void testGetOverDueEventCount()
     {
@@ -384,22 +349,4 @@ public class ProgramStageInstanceStoreTest
         int count = programStageInstanceStore.getOverDueCount( stageA, orgunitIds, incidenDate, enrollmentDate );
         assertEquals( 1, count );
     }
-
-    @Test
-    public void testGetOrganisationUnitIds()
-    {
-        programStageInstanceA.setExecutionDate( enrollmentDate );
-        programStageInstanceA.setOrganisationUnit( organisationUnitA );
-        programStageInstanceB.setExecutionDate( enrollmentDate );
-        programStageInstanceB.setOrganisationUnit( organisationUnitB );
-
-        programStageInstanceStore.save( programStageInstanceA );
-        programStageInstanceStore.save( programStageInstanceB );
-
-        Collection<Integer> orgunitIds = programStageInstanceStore.getOrgunitIds( incidenDate, enrollmentDate );
-        assertEquals( 2, orgunitIds.size() );
-        assertTrue( orgunitIds.contains( orgunitAId ) );
-        assertTrue( orgunitIds.contains( orgunitBId ) );
-    }
-
 }

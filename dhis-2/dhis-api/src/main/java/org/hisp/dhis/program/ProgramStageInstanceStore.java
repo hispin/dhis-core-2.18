@@ -35,7 +35,6 @@ import java.util.List;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
@@ -57,16 +56,6 @@ public interface ProgramStageInstanceStore
      * @return ProgramStageInstance
      */
     ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage );
-
-    /**
-     * Retrieve an event list on a program instance and a program stage
-     * 
-     * @param programInstance ProgramInstance
-     * @param programStage ProgramStage
-     * 
-     * @return ProgramStageInstance
-     */
-    Collection<ProgramStageInstance> getAll( ProgramInstance programInstance, ProgramStage programStage );
 
     /**
      * Retrieve an event list on program instance list with a certain status
@@ -92,78 +81,11 @@ public interface ProgramStageInstanceStore
     List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, Boolean completed );
 
     /**
-     * Create relationship between an OutboundSms with many events.
-     * 
-     * @param programStageInstances Event list
-     * @param outboundSms OutboundSms object
-     */
-    void update( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms );
-
-    /**
      * Retrieve scheduled list of entityInstances registered
      * 
      * @return A SchedulingProgramObject list
      */
     Collection<SchedulingProgramObject> getSendMesssageEvents();
-
-    /**
-     * Get the number of events by status
-     * 
-     * @param programStage The program stage needs to get details
-     * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * @param status The status of event. There are four statuses for events,
-     *        includes COMPLETED_STATUS, VISITED_STATUS, FUTURE_VISIT_STATUS,
-     *        LATE_VISIT_STATUS
-     */
-    int getStatisticalProgramStageReport( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate,
-        Date endDate, int status );
-
-    /**
-     * Get details of events which meets the criteria in statistical report
-     * 
-     * @param programStage The program stage needs to get details
-     * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * @param status The status of event. There are four statuses for events,
-     *        includes COMPLETED_STATUS, VISITED_STATUS, FUTURE_VISIT_STATUS,
-     *        LATE_VISIT_STATUS
-     * @param min
-     * @param max
-     */
-    List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
-        Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer min, Integer max );
-
-    /**
-     * Get events of a program by report date
-     * 
-     * @param program Program
-     * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * @param completed optional flag to only get completed (<code>true</code> )
-     *        or uncompleted (<code>false</code>) or all (<code>null</code>)
-     *        instances.
-     * 
-     * @return ProgramStageInstance list
-     */
-    Collection<ProgramStageInstance> get( Program program, Collection<Integer> orgunitIds, Date after, Date before,
-        Boolean completed );
-
-    /**
-     * Get the number of events by completed status
-     * 
-     * @param program Program
-     * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * @param completed Optional flag to only get completed (<code>true</code> )
-     *        or uncompleted (<code>false</code>) instances.
-     * @return A number
-     */
-    int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate, Boolean completed );
 
     /**
      * Get the number of events by completed status
@@ -204,16 +126,6 @@ public interface ProgramStageInstanceStore
      * @return A number
      */
     int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date after, Date before, int status );
-
-    /**
-     * Get ids of orgunits where events happened in a period
-     * 
-     * @param startDate The start date for retrieving on report date
-     * @param endDate The end date for retrieving on report date
-     * 
-     * @return The ids of orgunits
-     */
-    Collection<Integer> getOrgunitIds( Date startDate, Date endDate );
 
     /**
      * Get/Export a report about the number of events of a program completed on

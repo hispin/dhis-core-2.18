@@ -31,7 +31,6 @@ package org.hisp.dhis.program;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -191,29 +190,9 @@ public class ProgramStageSectionServiceTest
     }
 
     @Test
-    public void testGetProgramStageSectionListByName()
-    {
-        programStageService.updateProgramStage( stageA );
-
-        List<ProgramStageSection> sections = programStageSectionService.getProgramStageSectionByName( "A" );
-        assertEquals( 1, sections.size() );
-        assertTrue( sections.contains( sectionA ) );
-    }
-
-    @Test
     public void testGetProgramStageSectionByNameStage()
     {
         programStageService.updateProgramStage( stageA );
         assertNotNull( programStageSectionService.getProgramStageSectionByName( "A", stageA ) );
     }
-
-    @Test
-    public void testGetAllProgramStageSections()
-    {
-        programStageService.updateProgramStage( stageA );
-        Set<ProgramStageSection> sections = stageA.getProgramStageSections();
-
-        assertTrue( equals( sections, sectionA, sectionB ) );
-    }
-
 }

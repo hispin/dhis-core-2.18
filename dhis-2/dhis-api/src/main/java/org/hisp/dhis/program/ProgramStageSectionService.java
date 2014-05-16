@@ -28,8 +28,6 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Chau Thu Tran
@@ -77,15 +75,6 @@ public interface ProgramStageSectionService
     ProgramStageSection getProgramStageSection( int id );
 
     /**
-     * Returns a {@link ProgramStageSection} with a given name.
-     * 
-     * @param name the name of the ProgramStageSection to return.
-     * 
-     * @return the ProgramStageSection with the given name, or null if no match.
-     */
-    List<ProgramStageSection> getProgramStageSectionByName( String name );
-
-    /**
      * Retrieve a program stage section by name and a program stage
      * 
      * @param name Name of program stage
@@ -96,13 +85,4 @@ public interface ProgramStageSectionService
      * @return ProgramStage
      */
     ProgramStageSection getProgramStageSectionByName( String name, ProgramStage programStage );
-
-    /**
-     * Returns all {@link ProgramStageSection}
-     * 
-     * @return a collection of all ProgramStageSection, or an empty collection if
-     *         there are no ProgramStageSections.
-     */
-    Collection<ProgramStageSection> getAllProgramStageSections();
-    
 }

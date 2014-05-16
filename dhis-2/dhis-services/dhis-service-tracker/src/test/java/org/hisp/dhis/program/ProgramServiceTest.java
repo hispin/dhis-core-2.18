@@ -232,25 +232,4 @@ public class ProgramServiceTest
         assertEquals( programA, programService.getProgram( "UID-A" ) );
         assertEquals( programB, programService.getProgram( "UID-B" ) );
     }
-
-    @Test
-    public void testGetProgramsByDisplayOnAllOrgunit()
-    {
-        programA.setDisplayOnAllOrgunit( true );
-        programB.setDisplayOnAllOrgunit( true );
-        programC.setDisplayOnAllOrgunit( false );
-
-        programService.addProgram( programA );
-        programService.addProgram( programB );
-        programService.addProgram( programC );
-
-        Collection<Program> programs = programService.getProgramsByDisplayOnAllOrgunit( true, organisationUnitA );
-        assertEquals( 2, programs.size() );
-        assertTrue( programs.contains( programA ) );
-        assertTrue( programs.contains( programB ) );
-
-        programs = programService.getProgramsByDisplayOnAllOrgunit( false, organisationUnitB );
-        assertEquals( 1, programs.size() );
-        assertTrue( programs.contains( programC ) );
-    }
 }

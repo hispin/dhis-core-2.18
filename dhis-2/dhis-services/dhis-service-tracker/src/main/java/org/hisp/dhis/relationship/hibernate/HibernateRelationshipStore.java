@@ -75,10 +75,4 @@ public class HibernateRelationshipStore
             Restrictions.eq( "entityInstanceB", entityInstanceB ), 
             Restrictions.eq( "relationshipType", relationshipType ) ).uniqueResult();
     }
-    
-    public Relationship get( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB )
-    {
-        return (Relationship) getCriteria( Restrictions.eq( "entityInstanceA", entityInstanceA ),
-            Restrictions.eq( "entityInstanceB", entityInstanceB ) ).uniqueResult();
-    }
 }

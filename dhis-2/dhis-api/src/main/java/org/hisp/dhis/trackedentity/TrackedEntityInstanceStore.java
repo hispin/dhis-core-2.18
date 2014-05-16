@@ -66,22 +66,6 @@ public interface TrackedEntityInstanceStore
     Collection<TrackedEntityInstance> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
 
     /**
-     * Search entityInstances registered into a certain organisation unit and
-     * enrolled into a program with active status
-     * 
-     * @param organisationUnit Organisation unit where entityInstances
-     *        registered
-     * @param program Program. It's is used for getting attributes of this
-     *        program and put attribute values of entityInstances into the
-     *        result
-     * @param min
-     * @param max
-     * 
-     * @return List of entityInstances
-     */
-    Collection<TrackedEntityInstance> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min, Integer max );
-
-    /**
      * Search instances who has the same representative
      * 
      * @param instances Representative

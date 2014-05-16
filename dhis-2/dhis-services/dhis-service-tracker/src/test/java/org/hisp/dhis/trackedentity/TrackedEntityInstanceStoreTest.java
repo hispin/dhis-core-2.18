@@ -33,17 +33,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.hisp.dhis.validation.ValidationCriteriaService;
@@ -83,16 +77,8 @@ public class TrackedEntityInstanceStoreTest
 
     private TrackedEntityInstance entityInstanceB1;
 
-    private TrackedEntityInstance entityInstanceB2;
-
-    private Program programA;
-
-    private Program programB;
-
     private OrganisationUnit organisationUnit;
-
-    private Date date = new Date();
-
+    
     @Override
     public void setUpTest()
     {
@@ -109,10 +95,6 @@ public class TrackedEntityInstanceStoreTest
         entityInstanceA1 = createTrackedEntityInstance( 'A', organisationUnit );
         entityInstanceA2 = createTrackedEntityInstance( 'A', organisationUnitB );
         entityInstanceB1 = createTrackedEntityInstance( 'B', organisationUnit );
-        entityInstanceB2 = createTrackedEntityInstance( 'B', organisationUnit );
-
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
-        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
     }
 
     @Test
@@ -162,35 +144,6 @@ public class TrackedEntityInstanceStoreTest
         entityInstanceStore.save( entityInstanceB1 );
 
         assertTrue( equals( entityInstanceStore.getAll(), entityInstanceA1, entityInstanceB1 ) );
-    }
-
-    @Test
-    public void testGetByOrgUnitProgram()
-    {
-        programService.addProgram( programA );
-        programService.addProgram( programB );
-
-        entityInstanceStore.save( entityInstanceA1 );
-        entityInstanceStore.save( entityInstanceB1 );
-        entityInstanceStore.save( entityInstanceA2 );
-        entityInstanceStore.save( entityInstanceB2 );
-
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA2, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB2, programB, date, date, organisationUnit );
-
-        Collection<TrackedEntityInstance> entityInstances = entityInstanceStore.getByOrgUnitProgram( organisationUnit,
-            programA, 0, 100 );
-
-        assertEquals( 2, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceA1 ) );
-        assertTrue( entityInstances.contains( entityInstanceB1 ) );
-
-        entityInstances = entityInstanceStore.getByOrgUnitProgram( organisationUnit, programB, 0, 100 );
-
-        assertEquals( 1, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceB2 ) );
     }
 
     @Test

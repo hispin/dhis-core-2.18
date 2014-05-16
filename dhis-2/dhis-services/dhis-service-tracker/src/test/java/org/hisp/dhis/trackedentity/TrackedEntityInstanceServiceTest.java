@@ -35,7 +35,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,10 +42,8 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
@@ -95,17 +92,9 @@ public class TrackedEntityInstanceServiceTest
 
     private TrackedEntityInstance entityInstanceB1;
 
-    private TrackedEntityInstance entityInstanceB2;
-
     private TrackedEntityAttribute entityInstanceAttribute;
 
-    private Program programA;
-
-    private Program programB;
-
     private OrganisationUnit organisationUnit;
-
-    private Date date = new Date();
 
     @Override
     public void setUpTest()
@@ -124,10 +113,6 @@ public class TrackedEntityInstanceServiceTest
         entityInstanceA3 = createTrackedEntityInstance( 'A', organisationUnit, entityInstanceAttribute );
         entityInstanceB1 = createTrackedEntityInstance( 'B', organisationUnit );
         entityInstanceB1.setUid( "UID-B1" );
-        entityInstanceB2 = createTrackedEntityInstance( 'B', organisationUnit, entityInstanceAttribute );
-
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
-        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
     }
 
     @Test
@@ -208,35 +193,6 @@ public class TrackedEntityInstanceServiceTest
         assertEquals( 2, entityInstances.size() );
         assertTrue( entityInstances.contains( entityInstanceA1 ) );
         assertTrue( entityInstances.contains( entityInstanceA3 ) );
-    }
-
-    @Test
-    public void testGetTrackedEntityInstancesByProgramOu()
-    {
-        programService.addProgram( programA );
-        programService.addProgram( programB );
-
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceB2 );
-
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA1, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB1, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceA2, programA, date, date, organisationUnit );
-        programInstanceService.enrollTrackedEntityInstance( entityInstanceB2, programB, date, date, organisationUnit );
-
-        Collection<TrackedEntityInstance> entityInstances = entityInstanceService.getTrackedEntityInstances(
-            organisationUnit, programA, 0, 100 );
-
-        assertEquals( 2, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceA1 ) );
-        assertTrue( entityInstances.contains( entityInstanceB1 ) );
-
-        entityInstances = entityInstanceService.getTrackedEntityInstances( organisationUnit, programB, 0, 100 );
-
-        assertEquals( 1, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceB2 ) );
     }
 
     @Test

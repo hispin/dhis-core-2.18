@@ -149,30 +149,6 @@ public class TrackedEntityAttributeValueStoreTest
     }
 
     @Test
-    public void testDeleteByAttribute()
-    {
-        attributeValueStore.saveVoid( attributeValueA );
-        attributeValueStore.saveVoid( attributeValueB );
-        attributeValueStore.saveVoid( attributeValueC );
-
-        assertNotNull( attributeValueStore.get( entityInstanceA, attributeA ) );
-        assertNotNull( attributeValueStore.get( entityInstanceA, attributeB ) );
-        assertNotNull( attributeValueStore.get( entityInstanceB, attributeA ) );
-
-        attributeValueStore.deleteByAttribute( attributeA );
-
-        assertNull( attributeValueStore.get( entityInstanceA, attributeA ) );
-        assertNull( attributeValueStore.get( entityInstanceB, attributeA ) );
-        assertNotNull( attributeValueStore.get( entityInstanceA, attributeB ) );
-
-        attributeValueStore.deleteByAttribute( attributeB );
-        assertNull( attributeValueStore.get( entityInstanceA, attributeA ) );
-        assertNull( attributeValueStore.get( entityInstanceA, attributeB ) );
-        assertNull( attributeValueStore.get( entityInstanceB, attributeA ) );
-
-    }
-
-    @Test
     public void testGetTrackedEntityAttributeValue()
     {
         attributeValueStore.saveVoid( attributeValueA );
@@ -198,23 +174,6 @@ public class TrackedEntityAttributeValueStoreTest
 
         assertEquals( 1, attributeValues.size() );
         assertTrue( equals( attributeValues, attributeValueC ) );
-    }
-
-    @Test
-    public void testGetTrackedEntityAttributeValuesbyAttribute()
-    {
-        attributeValueStore.saveVoid( attributeValueA );
-        attributeValueStore.saveVoid( attributeValueB );
-        attributeValueStore.saveVoid( attributeValueC );
-
-        Collection<TrackedEntityAttributeValue> attributeValues = attributeValueStore.get( attributeA );
-        assertEquals( 2, attributeValues.size() );
-        assertTrue( attributeValues.contains( attributeValueA ) );
-        assertTrue( attributeValues.contains( attributeValueC ) );
-
-        attributeValues = attributeValueStore.get( attributeB );
-        assertEquals( 1, attributeValues.size() );
-        assertTrue( attributeValues.contains( attributeValueB ) );
     }
 
     @Test

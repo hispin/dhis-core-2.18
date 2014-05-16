@@ -160,12 +160,6 @@ public class DefaultProgramService
     }
 
     @Override
-    public Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
-    {
-        return i18n( i18nService, programStore.getProgramsByDisplayOnAllOrgunit( displayOnAllOrgunit, orgunit ) );
-    }
-
-    @Override
     public Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit )
     {
         Collection<Program> programs = new ArrayList<Program>( getProgramsByDisplayOnAllOrgunit( true, null ) );
@@ -204,4 +198,14 @@ public class DefaultProgramService
     {
         return programStore.getAllOrderedName( min, max );
     }
+    
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+    
+    private Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
+    {
+        return i18n( i18nService, programStore.getProgramsByDisplayOnAllOrgunit( displayOnAllOrgunit, orgunit ) );
+    }
+
 }

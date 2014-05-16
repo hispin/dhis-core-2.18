@@ -45,7 +45,6 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -53,10 +52,9 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.config.SmsConfigurationManager;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
@@ -108,10 +106,6 @@ public class ProgramStageInstanceServiceTest
     private OrganisationUnit organisationUnitA;
 
     private OrganisationUnit organisationUnitB;
-
-    private int orgunitAId;
-
-    private int orgunitBId;
 
     private ProgramStage stageA;
 
@@ -165,10 +159,10 @@ public class ProgramStageInstanceServiceTest
         mockFormat = new MockI18nFormat();
 
         organisationUnitA = createOrganisationUnit( 'A' );
-        orgunitAId = organisationUnitService.addOrganisationUnit( organisationUnitA );
+        organisationUnitService.addOrganisationUnit( organisationUnitA );
 
         organisationUnitB = createOrganisationUnit( 'B' );
-        orgunitBId = organisationUnitService.addOrganisationUnit( organisationUnitB );
+        organisationUnitService.addOrganisationUnit( organisationUnitB );
 
         entityInstanceA = createTrackedEntityInstance( 'A', organisationUnitA );
         entityInstanceService.addTrackedEntityInstance( entityInstanceA );
@@ -386,19 +380,6 @@ public class ProgramStageInstanceServiceTest
     }
 
     @Test
-    public void testGetProgramStageInstanceListByProgramInstanceStage()
-    {
-        programStageInstanceService.addProgramStageInstance( programStageInstanceD1 );
-        programStageInstanceService.addProgramStageInstance( programStageInstanceD2 );
-
-        Collection<ProgramStageInstance> stageInstances = programStageInstanceService.getProgramStageInstances(
-            programInstanceB, stageD );
-        assertEquals( 2, stageInstances.size() );
-        assertTrue( stageInstances.contains( programStageInstanceD1 ) );
-        assertTrue( stageInstances.contains( programStageInstanceD2 ) );
-    }
-
-    @Test
     public void testGetProgramStageInstancesByInstanceListComplete()
     {
         programStageInstanceA.setCompleted( true );
@@ -476,110 +457,6 @@ public class ProgramStageInstanceServiceTest
         stageInstances = programStageInstanceService.getProgramStageInstances( entityInstanceA, false );
         assertEquals( 1, stageInstances.size() );
         assertTrue( stageInstances.contains( programStageInstanceB ) );
-    }
-
-    @Test
-    public void testUpdateProgramStageInstances()
-    {
-        int idA = programStageInstanceService.addProgramStageInstance( programStageInstanceA );
-        int idB = programStageInstanceService.addProgramStageInstance( programStageInstanceB );
-
-        OutboundSms outboundSms = new OutboundSms();
-        Collection<Integer> programStageInstances = new HashSet<Integer>();
-        programStageInstances.add( idA );
-        programStageInstances.add( idB );
-
-        programStageInstanceService.updateProgramStageInstances( programStageInstances, outboundSms );
-        assertTrue( programStageInstanceService.getProgramStageInstance( idA ).getOutboundSms().contains( outboundSms ) );
-        assertTrue( programStageInstanceService.getProgramStageInstance( idB ).getOutboundSms().contains( outboundSms ) );
-    }
-
-    @Test
-    public void testGetProgramStageInstancesByOuPeriodProgram()
-    {
-        programStageInstanceA.setExecutionDate( enrollmentDate );
-        programStageInstanceA.setOrganisationUnit( organisationUnitA );
-        programStageInstanceB.setExecutionDate( enrollmentDate );
-        programStageInstanceB.setOrganisationUnit( organisationUnitB );
-
-        programStageInstanceService.addProgramStageInstance( programStageInstanceA );
-        programStageInstanceService.addProgramStageInstance( programStageInstanceB );
-
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
-        orgunitIds.add( orgunitAId );
-        orgunitIds.add( orgunitBId );
-
-        Collection<ProgramStageInstance> result = programStageInstanceService.getProgramStageInstances( programA,
-            orgunitIds, incidenDate, enrollmentDate, false );
-
-        assertEquals( 2, result.size() );
-        assertTrue( result.contains( programStageInstanceA ) );
-        assertTrue( result.contains( programStageInstanceB ) );
-    }
-
-    @Test
-    public void testGetOverDueEventCount()
-    {
-        Calendar cal = Calendar.getInstance();
-        PeriodType.clearTimeOfDay( cal );
-        cal.add( Calendar.DATE, -1 );
-        Date date = cal.getTime();
-
-        programStageInstanceA.setDueDate( date );
-        programStageInstanceB.setDueDate( date );
-
-        programStageInstanceService.addProgramStageInstance( programStageInstanceA );
-        programStageInstanceService.addProgramStageInstance( programStageInstanceB );
-
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
-        orgunitIds.add( orgunitAId );
-        orgunitIds.add( orgunitBId );
-
-        int count = programStageInstanceService.getOverDueEventCount( stageA, orgunitIds, incidenDate, enrollmentDate );
-        assertEquals( 1, count );
-    }
-
-    @Test
-    public void testGetOrganisationUnitIds()
-    {
-        programStageInstanceA.setExecutionDate( enrollmentDate );
-        programStageInstanceA.setOrganisationUnit( organisationUnitA );
-        programStageInstanceB.setExecutionDate( enrollmentDate );
-        programStageInstanceB.setOrganisationUnit( organisationUnitB );
-
-        programStageInstanceService.addProgramStageInstance( programStageInstanceA );
-        programStageInstanceService.addProgramStageInstance( programStageInstanceB );
-
-        Collection<Integer> orgunitIds = programStageInstanceService.getOrganisationUnitIds( incidenDate,
-            enrollmentDate );
-        assertEquals( 2, orgunitIds.size() );
-        assertTrue( orgunitIds.contains( orgunitAId ) );
-        assertTrue( orgunitIds.contains( orgunitBId ) );
-    }
-
-    @Test
-    public void testSendMessages()
-    {
-        createSMSConfiguration();
-
-        programStageInstanceService.addProgramStageInstance( programStageInstanceA );
-
-        Collection<OutboundSms> outboundSmsList = programStageInstanceService.sendMessages( programStageInstanceA,
-            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
-        assertEquals( 1, outboundSmsList.size() );
-        assertEquals( "Test program stage message template", outboundSmsList.iterator().next().getMessage() );
-    }
-
-    @Test
-    public void testSendMessageConversations()
-    {
-        programStageInstanceService.addProgramStageInstance( programStageInstanceB );
-
-        Collection<MessageConversation> messages = programStageInstanceService.sendMessageConversations(
-            programStageInstanceA, TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
-        assertEquals( 1, messages.size() );
-        assertEquals( "Test program stage message template", messages.iterator().next().getMessages().get( 0 )
-            .getText() );
     }
 
     @Test

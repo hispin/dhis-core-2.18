@@ -31,7 +31,6 @@ package org.hisp.dhis.trackedentitycomment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
@@ -112,16 +111,6 @@ public class TrackedEntityCommentServiceTest
 
         assertEquals( commentA, commentService.getTrackedEntityComment( idA ) );
         assertEquals( commentB, commentService.getTrackedEntityComment( idB ) );
-    }
-
-
-    @Test
-    public void testGetAllTrackedEntityComments()
-    {
-        commentService.addTrackedEntityComment( commentA );
-        commentService.addTrackedEntityComment( commentB );
-
-        assertTrue( equals( commentService.getAllTrackedEntityComments(), commentA, commentB ) );
     }
 
 }

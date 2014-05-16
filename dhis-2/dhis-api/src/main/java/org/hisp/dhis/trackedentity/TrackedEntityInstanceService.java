@@ -204,19 +204,6 @@ public interface TrackedEntityInstanceService
         Integer max );
 
     /**
-     * Search entityInstances base on OrganisationUnit and Program with result
-     * limited name
-     * 
-     * @param organisationUnit
-     * @param program
-     * @param min
-     * @param max
-     * @return
-     */
-    Collection<TrackedEntityInstance> getTrackedEntityInstances( OrganisationUnit organisationUnit, Program program,
-        Integer min, Integer max );
-
-    /**
      * Get entityInstances who has the same representative
      * 
      * @params entityInstance The representatives
@@ -252,17 +239,6 @@ public interface TrackedEntityInstanceService
     void updateTrackedEntityInstance( TrackedEntityInstance entityInstance, String representativeId,
         Integer relationshipTypeId, List<TrackedEntityAttributeValue> valuesForSave,
         List<TrackedEntityAttributeValue> valuesForUpdate, Collection<TrackedEntityAttributeValue> valuesForDelete );
-
-    /**
-     * Cache value from String to the value type based on property
-     * 
-     * @param property Property name of entityInstance
-     * @param value Value
-     * @param format I18nFormat
-     * 
-     * @return An object
-     */
-    Object getObjectValue( String property, String value, I18nFormat format );
 
     /**
      * Validate entityInstance attributes and validation criteria by program
