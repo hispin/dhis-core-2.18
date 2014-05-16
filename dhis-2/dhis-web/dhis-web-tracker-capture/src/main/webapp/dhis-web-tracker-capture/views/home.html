@@ -10,15 +10,15 @@
 </div>
 <div class="page" id="mainPage" ng-show="selectedOrgUnit">
     <h1>
-        <span ng-show="!selectedProgram">
-            {{'search'| translate}} {{selectedProgram.trackedEntity.name}}
+        <span ng-if='!showRegistrationDiv'>
+            {{selectedProgram.trackedEntity.name}} {{'search'| translate}}
         </span>
-        <span ng-show="selectedProgram">
-            {{'search_for'| translate}} {{selectedProgram.trackedEntity.name}}
-        </span>            
+        <span ng-if='showRegistrationDiv'>
+            {{selectedProgram.trackedEntity.name}} {{'registration'| translate}}
+        </span>          
         <a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a>
     </h1>
-
+    
     <div class="row">
         <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
         <div class="input-group col-md-6">
@@ -37,7 +37,7 @@
                 </button>
                 <button type="button" 
                         class="btn btn-default"
-                        ng-disabled="showSearchDiv"
+                        ng-disabled="showRegistrationDiv || showSearchDiv"
                         ng-click="search(searchMode.listAll)">
                     {{'list_all'| translate}}
                 </button>
@@ -45,8 +45,8 @@
             <span class="horizonal-spacing">
                 <button type="button" 
                         class="btn btn-default" 
-                        ng-click="showRegistration()">
-                    {{'add_new'| translate}}
+                        ng-click="showRegistration()">                    
+                    {{selectedProgram.trackedEntity.name }} {{'registration'| translate}}
                 </button>
             </span>
         </div>        
@@ -76,7 +76,7 @@
     <!--registration begins -->
     <div class="row" ng-if="showRegistrationDiv">
         <div class="col-md-6">
-            <div ng-include="'views/registration.html'"></div>             
+            <div ng-include="'views/registration.html'" ng-controller="RegistrationController"></div>             
         </div>
     </div>
     <!-- registration ends -->

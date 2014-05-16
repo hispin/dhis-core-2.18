@@ -121,34 +121,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
         if($scope.selectedProgram){
             programUrl = 'program=' + $scope.selectedProgram.id;
-        }      
+        }     
 
-        $scope.gridColumns = $scope.attributes;   
-        //also add extra columns - orgunit for example
-        $scope.gridColumns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string'});
-        
-        //generate grid column for the selected program/attributes
-        angular.forEach($scope.gridColumns, function(gridColumn){
-            
-            if(gridColumn.id === 'orgUnitName' && $scope.ouMode === 'SELECTED'){
-                gridColumn.show = false;    
-            }
-            else{
-                gridColumn.show = true;
-            }
-            
-            gridColumn.showFilter =  false;
-            
-            if(gridColumn.type === 'date'){
-                 $scope.filterText[gridColumn.id]= {start: '', end: ''};
-            }
-        });
-        
-        
-        
-        
-        console.log('the columns are:  ', $scope.gridColumns);
-        
+        $scope.gridColumns = $scope.generateGridColumns($scope.attributes);        
+           
         if( mode === $scope.searchMode.freeText ){     
             if(!$scope.searchText){                
                 $scope.emptySearchText = true;
@@ -179,9 +155,32 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                             programUrl,
                                             attributeUrl.url).then(function(data){
             $scope.trackedEntityList = data;
-            
-            console.log('the list is:  ', $scope.trackedEntityList);
         });
+    };
+    
+    $scope.generateGridColumns = function(attributes){
+        var columns = attributes;   
+        
+        //also add extra columns - orgunit for example
+        columns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string'});
+        
+        //generate grid column for the selected program/attributes
+        angular.forEach(columns, function(column){
+            
+            if(column.id === 'orgUnitName' && $scope.ouMode === 'SELECTED'){
+                column.show = false;    
+            }
+            else{
+                column.show = true;
+            }
+            
+            column.showFilter =  false;
+            
+            if(column.type === 'date'){
+                 $scope.filterText[column.id]= {start: '', end: ''};
+            }
+        });        
+        return columns;        
     };
     
     $scope.clearEntities = function(){
@@ -312,17 +311,13 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.attributes = AttributesFactory.getWithoutProgram();
     
-    $scope.selectedProgram = null;
-    
-    $scope.getProgramAttributes = function(program){        
-        if(program){
-            $scope.selectedProgram = program;
-            $scope.attributes = AttributesFactory.getByProgram(program);
+    //watch for selection of org unit from tree
+    $scope.$watch('selectedProgram', function() {        
+        if( angular.isObject($scope.selectedProgram)){                  
+            $scope.trackedEntityList = [];
+            $scope.attributes = AttributesFactory.getByProgram($scope.selectedProgram);
         }
-        else{
-            $scope.attributes = AttributesFactory.getWithoutProgram();
-        }
-    };
+    });
     
     $scope.showDashboard = function(){        
         $scope.registerEntity();
