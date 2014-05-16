@@ -293,28 +293,17 @@ public class HibernateProgramStageInstanceStore
         I18n i18n )
     {
         String sql = "SELECT ou.name as orgunit, ps.name as events, psi.completeduser as user_name, count(psi.programstageinstanceid) as number_of_events "
-            + "         FROM programstageinstance psi INNER JOIN programstage ps "
-            + "                         ON psi.programstageid = ps.programstageid "
-            + "                 INNER JOIN organisationunit ou "
-            + "                         ON ou.organisationunitid=psi.organisationunitid"
-            + "                 INNER JOIN program pg "
-            + "                         ON pg.programid = ps.programid "
-            + "         WHERE ou.organisationunitid in ( "
-            + TextUtils.getCommaDelimitedString( orgunitIds )
-            + " )                AND pg.programid = "
-            + program.getId()
-            + "         GROUP BY ou.name, ps.name, psi.completeduser, psi.completeddate, psi.completed "
-            + "         HAVING psi.completeddate >= '"
-            + startDate
-            + "'                AND psi.completeddate <= '"
-            + endDate
-            + "' "
-            + "                 AND psi.completed=true "
-            + "         ORDER BY ou.name, ps.name, psi.completeduser";
+            + "FROM programstageinstance psi INNER JOIN programstage ps "
+            + "ON psi.programstageid = ps.programstageid "
+            + "INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid "
+            + "INNER JOIN program pg ON pg.programid = ps.programid "
+            + "WHERE ou.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) "
+            + "AND pg.programid = " + program.getId()
+            + "GROUP BY ou.name, ps.name, psi.completeduser, psi.completeddate, psi.completed "
+            + "HAVING psi.completeddate >= '" + startDate + "' AND psi.completeddate <= '" + endDate + "' "
+            + "AND psi.completed=true ORDER BY ou.name, ps.name, psi.completeduser";
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
-
-        // Create column with Total column
 
         Grid grid = new ListGrid();
 
