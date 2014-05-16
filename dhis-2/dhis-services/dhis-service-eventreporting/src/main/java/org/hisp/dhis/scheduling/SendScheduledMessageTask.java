@@ -1,4 +1,4 @@
-package org.hisp.dhis.trackedentity.scheduling;
+package org.hisp.dhis.scheduling;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo

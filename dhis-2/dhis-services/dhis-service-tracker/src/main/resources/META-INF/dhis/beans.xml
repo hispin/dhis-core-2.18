@@ -312,45 +312,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<!-- Scheduling -->
-
-	<bean id="org.hisp.dhis.trackedentity.scheduling.ProgramSchedulingManager"
-		class="org.hisp.dhis.trackedentity.scheduling.DefaultProgramSchedulingManager"
-		init-method="scheduleTasks">
-		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-		<property name="scheduler" ref="scheduler" />
-		<property name="tasks">
-			<map>
-				<entry key="scheduleMessage" value-ref="scheduleMessage" />
-				<entry key="sendMessageScheduled" value-ref="sendMessageScheduled" />
-			</map>
-		</property>
-	</bean>
-
-	<bean id="abstractScheduledMessageTask"
-		class="org.hisp.dhis.trackedentity.scheduling.SendScheduledMessageTask">
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
-		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="notifier" ref="notifier" />
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
-	</bean>
-
-	<bean id="sendMessageScheduled"
-		class="org.hisp.dhis.trackedentity.scheduling.SendScheduledMessageTask"
-		parent="abstractScheduledMessageTask">
-		<property name="sendingMessage" value="true" />
-	</bean>
-
-	<bean id="scheduleMessage"
-		class="org.hisp.dhis.trackedentity.scheduling.SendScheduledMessageTask"
-		parent="abstractScheduledMessageTask">
-		<property name="sendingMessage" value="false" />
-	</bean>
-
 	<!-- TrackedEntityForm -->
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityFormService"
