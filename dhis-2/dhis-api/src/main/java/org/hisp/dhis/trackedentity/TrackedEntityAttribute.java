@@ -67,7 +67,7 @@ public class TrackedEntityAttribute
 
     public static final String TYPE_TRUE_ONLY = "trueOnly";
 
-    public static final String TYPE_COMBO = "combo";
+    public static final String TYPE_OPTION_SET = "optionSet";
 
     public static final String TYPE_PHONE_NUMBER = "phoneNumber";
 

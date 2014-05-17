@@ -649,7 +649,7 @@ public abstract class AbstractEnrollmentService
                 importConflicts.add( new ImportConflict( "Attribute.value", "Value is not pointing to a valid username." ) );
             }
         }
-        else if ( TrackedEntityAttribute.TYPE_COMBO.equals( teAttribute.getValueType() ) && !teAttribute.getOptionSet().getOptions().contains( attribute.getValue() ) )
+        else if ( TrackedEntityAttribute.TYPE_OPTION_SET.equals( teAttribute.getValueType() ) && !teAttribute.getOptionSet().getOptions().contains( attribute.getValue() ) )
         {
             importConflicts.add( new ImportConflict( "Attribute.value", "Value is not pointing to a valid option." ) );
         }

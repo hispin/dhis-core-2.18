@@ -70,7 +70,7 @@
                 <option value="phoneNumber" #if( $attribute.valueType == 'phoneNumber' ) selected="selected" #end>$i18n.getString( "phone_number" )</option>
 				<option value="trackerAssociate" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'trackerAssociate' ) selected="selected" #end>$i18n.getString( "tracker_associate" )</option>
 				<option value="users" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'users' ) selected="selected" #end>$i18n.getString( "users" )</option>
-				<option value="combo" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'combo' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
+				<option value="optionSet" #if( $attribute.unique=='true' ) style='display:none' #end #if( $attribute.valueType == 'optionSet' ) selected="selected" #end>$i18n.getString( "option_set" )</option>
             </select>
         </td>
     </tr>

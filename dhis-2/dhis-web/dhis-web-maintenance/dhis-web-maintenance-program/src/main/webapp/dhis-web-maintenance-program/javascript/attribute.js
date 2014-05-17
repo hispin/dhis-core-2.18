@@ -62,7 +62,7 @@ function attributeTypeMap()
 	typeMap['date'] = i18n_date;
 	typeMap['phoneNumber'] = i18n_phone_number;
 	typeMap['trackerAssociate'] = i18n_tracker_associate;
-	typeMap['combo'] = i18n_attribute_combo_type;
+	typeMap['optionSet'] = i18n_option_set;
 	return typeMap;
 }
 
@@ -78,7 +78,7 @@ function removeAttribute( context )
 
 function typeOnChange() {
 	var type = getFieldValue('valueType');
-	if( type=="combo"){
+	if( type=="optionSet"){
 		showById("optionSetRow");
 		enable("optionSetId");
 	}
@@ -103,7 +103,7 @@ function uniqueOnChange(){
 		jQuery('#valueType [value=date]').hide();
 		jQuery('#valueType [value=trackerAssociate]').hide();
 		jQuery('#valueType [value=users]').hide();
-		jQuery('#valueType [value=combo]').hide();
+		jQuery('#valueType [value=optionSet]').hide();
 	}
 	else {
 		jQuery('[name=uniqueTR]').hide();
@@ -112,7 +112,7 @@ function uniqueOnChange(){
 		jQuery('#valueType [value=date]').show();
 		jQuery('#valueType [value=trackerAssociate]').show();
 		jQuery('#valueType [value=users]').show();
-		jQuery('#valueType [value=combo]').show();
+		jQuery('#valueType [value=optionSet]').show();
 	}
 }
 
