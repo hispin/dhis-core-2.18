@@ -900,7 +900,6 @@ public class HibernateCaseAggregationConditionStore
     {
         String sql = "SELECT ";
 
-        boolean hasEntityInstances = hasEntityInstanceCriteria( caseExpression );
         boolean hasDataelement = hasDataelementCriteria( caseExpression );
 
         Collection<Integer> orgunitIds = new HashSet<Integer>();
