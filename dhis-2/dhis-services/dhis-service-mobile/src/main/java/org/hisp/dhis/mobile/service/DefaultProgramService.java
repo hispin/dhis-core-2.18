@@ -308,7 +308,7 @@ public class DefaultProgramService
             mobileAttribute.setDisplayedInList( false );
         }
 
-        if ( pa.getValueType().equals( TrackedEntityAttribute.TYPE_COMBO ) )
+        if ( pa.getValueType().equals( TrackedEntityAttribute.TYPE_OPTION_SET ) )
         {
             OptionSet optionSet = new OptionSet();
 

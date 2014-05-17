@@ -188,7 +188,7 @@ public class UpdateAttributeAction
             attribute.setOrgunitScope( orgunitScope );
             attribute.setProgramScope( programScope );
         }
-        else if ( valueType.equals( TrackedEntityAttribute.TYPE_COMBO ) )
+        else if ( valueType.equals( TrackedEntityAttribute.TYPE_OPTION_SET ) )
         {
             attribute.setOptionSet( optionService.getOptionSet( optionSetId ) );
         }
