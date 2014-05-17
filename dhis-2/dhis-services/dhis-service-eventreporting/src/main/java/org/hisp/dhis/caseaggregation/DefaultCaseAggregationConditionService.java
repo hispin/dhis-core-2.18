@@ -188,6 +188,7 @@ public class DefaultCaseAggregationConditionService
         return i18n( i18nService, aggregationConditionStore.get( dataElement, optionCombo ) );
     }
 
+    @Override
     public String getConditionDescription( String condition )
     {
         StringBuffer description = new StringBuffer();
