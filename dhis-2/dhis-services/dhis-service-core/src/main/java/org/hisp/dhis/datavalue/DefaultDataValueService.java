@@ -37,6 +37,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.MapMap;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -241,15 +242,11 @@ public class DefaultDataValueService
         return dataValueStore.getDataValueCount( cal.getTime() );
     }
     
-    public Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit source )
+    public MapMap<Integer, DataElementOperand, Double> getDataValueMapByAttributeCombo( Collection<DataElement> dataElements, Date date,
+            OrganisationUnit source, Collection<PeriodType> periodTypes, DataElementCategoryOptionCombo attributeCombo,
+            MapMap<Integer, DataElementOperand, Date> lastUpdatedMap )
     {
-        return dataValueStore.getDataValueMap( dataElements, period, source );
-    }
-    
-    public Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Date date, OrganisationUnit source,
-    		Collection<PeriodType> periodTypes, Map<DataElementOperand, Date> lastUpdatedMap )
-    {
-    	return dataValueStore.getDataValueMap( dataElements, date, source, periodTypes, lastUpdatedMap );
+        return dataValueStore.getDataValueMapByAttributeCombo( dataElements, date, source, periodTypes, attributeCombo, lastUpdatedMap );
     }
     
     public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )

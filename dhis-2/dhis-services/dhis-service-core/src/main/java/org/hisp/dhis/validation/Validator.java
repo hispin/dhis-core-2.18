@@ -35,6 +35,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -57,23 +60,25 @@ public class Validator
      * 
      * @param sources the organisation units in which to run the validation rules
      * @param periods the periods of data to check
+     * @param attributeCombo the attribute combo to check (if restricted)
      * @param rules the ValidationRules to evaluate
-     * @param runType whether this is an INTERACTIVE or SCHEDULED run
      * @param lastScheduledRun date/time of the most recent successful
      *        scheduled monitoring run (needed only for scheduled runs)
      * @param constantService Constant Service reference
      * @param expressionService Expression Service reference
      * @param periodService Period Service reference
      * @param dataValueService Data Value Service reference
+     * @param dataElementCategoryService Data Element Category Service reference
      * @return a collection of any validations that were found
      */
-    public static Collection<ValidationResult> validate( Collection<OrganisationUnit> sources,
-        Collection<Period> periods, Collection<ValidationRule> rules, Date lastScheduledRun,
-        ConstantService constantService, ExpressionService expressionService, PeriodService periodService, DataValueService dataValueService )
+    public static Collection<ValidationResult> validate( Collection<OrganisationUnit> sources, Collection<Period> periods,
+        Collection<ValidationRule> rules, DataElementCategoryOptionCombo attributeCombo, Date lastScheduledRun,
+        ConstantService constantService, ExpressionService expressionService, PeriodService periodService,
+        DataValueService dataValueService, DataElementCategoryService dataElementCategoryService )
     {
-        ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods, rules,
-            constantService.getConstantMap(), ValidationRunType.SCHEDULED, lastScheduledRun,
-            expressionService, periodService, dataValueService );
+        ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods,
+            attributeCombo, rules, constantService.getConstantMap(), ValidationRunType.SCHEDULED, lastScheduledRun,
+            expressionService, periodService, dataValueService, dataElementCategoryService );
 
         int threadPoolSize = getThreadPoolSize( context );
         ExecutorService executor = Executors.newFixedThreadPool( threadPoolSize );
@@ -97,7 +102,9 @@ public class Validator
         {
             executor.shutdownNow();
         }
-        
+
+        reloadAttributeOptionCombos( context.getValidationResults(), dataElementCategoryService );
+
         return context.getValidationResults();
     }
     
@@ -122,5 +129,19 @@ public class Validator
         }
 
     	return threadPoolSize;
+    }
+
+    /**
+     * Reload attribute category option combos into this Hibernate context.
+     *
+     * @param results
+     * @param dataElementCategoryService
+     */
+    private static void reloadAttributeOptionCombos( Collection<ValidationResult> results, DataElementCategoryService dataElementCategoryService )
+    {
+        for ( ValidationResult result : results )
+        {
+            result.setAttributeOptionCombo( dataElementCategoryService.getDataElementCategoryOptionCombo( result.getAttributeOptionCombo().getId() ) );
+        }
     }
 }

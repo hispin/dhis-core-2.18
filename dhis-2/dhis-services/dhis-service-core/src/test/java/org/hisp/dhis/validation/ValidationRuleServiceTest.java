@@ -48,6 +48,9 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -179,6 +182,8 @@ public class ValidationRuleServiceTest
 
     private ValidationRule validationRuleD;
 
+    private ValidationRule validationRuleX;
+
     private ValidationRule monitoringRuleE;
 
     private ValidationRule monitoringRuleF;
@@ -202,6 +207,8 @@ public class ValidationRuleServiceTest
     private PeriodType periodTypeMonthly;
     
     private PeriodType periodTypeYearly;
+
+    private DataElementCategoryOptionCombo defaultCombo;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -232,6 +239,8 @@ public class ValidationRuleServiceTest
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
 
         periodService = (PeriodService) getBean( PeriodService.ID );
+
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
         periodTypeWeekly = new WeeklyPeriodType();
         periodTypeMonthly = new MonthlyPeriodType();
@@ -379,11 +388,12 @@ public class ValidationRuleServiceTest
         dataElementService.updateDataElement( dataElementD );
         dataElementService.updateDataElement( dataElementE );
 
-        validationRuleA = createValidationRule( 'A', equal_to, expressionA, expressionB, periodTypeMonthly );
-        validationRuleB = createValidationRule( 'B', greater_than, expressionB, expressionC, periodTypeMonthly );
-        validationRuleC = createValidationRule( 'C', less_than_or_equal_to, expressionB, expressionA, periodTypeMonthly );
-        validationRuleD = createValidationRule( 'D', less_than, expressionA, expressionC, periodTypeMonthly );
-        
+        validationRuleA = createValidationRule( 'A', equal_to, expressionA, expressionB, periodTypeMonthly ); // deA + deB = deC - deD
+        validationRuleB = createValidationRule( 'B', greater_than, expressionB, expressionC, periodTypeMonthly ); // deC - deD > deB * 2
+        validationRuleC = createValidationRule( 'C', less_than_or_equal_to, expressionB, expressionA, periodTypeMonthly ); // deC - deD <= deA + deB
+        validationRuleD = createValidationRule( 'D', less_than, expressionA, expressionC, periodTypeMonthly ); // deA + deB < deB * 2
+        validationRuleX = createValidationRule( 'X', equal_to, expressionA, expressionC, periodTypeMonthly ); // deA + deB = deB * 2
+
         // Compare dataElementB with 1.5 times itself for one sequential previous period.
         monitoringRuleE = createMonitoringRule( 'E', less_than_or_equal_to, expressionD, expressionE, periodTypeMonthly, 1, 1, 0, 0, 0 );
 
@@ -409,6 +419,8 @@ public class ValidationRuleServiceTest
         monitoringRuleL = createMonitoringRule( 'L', less_than_or_equal_to, expressionF, expressionG, periodTypeMonthly, 1, 0, 1, 0, 0 );
 
         group = createValidationRuleGroup( 'A' );
+
+        defaultCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
     }
 
     @Override
@@ -479,19 +491,19 @@ public class ValidationRuleServiceTest
         // insures that if they are the same as the reference results, they will appear in the same order.
         
         Collection<ValidationResult> results = validationRuleService.validate(
-        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA, false, null );
+        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA, null, null, false, null );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodA, sourceA, validationRuleA, 3.0, -1.0 ) );
-        reference.add( new ValidationResult( periodB, sourceA, validationRuleA, 3.0, -1.0 ) );
-        reference.add( new ValidationResult( periodA, sourceB, validationRuleA, 3.0, -1.0 ) );
-        reference.add( new ValidationResult( periodB, sourceB, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, defaultCombo, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodB, sourceA, defaultCombo, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodA, sourceB, defaultCombo, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodB, sourceB, defaultCombo, validationRuleA, 3.0, -1.0 ) );
 
-        reference.add( new ValidationResult( periodA, sourceA, validationRuleB, -1.0, 4.0 ) );
-        reference.add( new ValidationResult( periodB, sourceA, validationRuleB, -1.0, 4.0 ) );
-        reference.add( new ValidationResult( periodA, sourceB, validationRuleB, -1.0, 4.0 ) );
-        reference.add( new ValidationResult( periodB, sourceB, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, defaultCombo, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodB, sourceA, defaultCombo, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodA, sourceB, defaultCombo, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodB, sourceB, defaultCombo, validationRuleB, -1.0, 4.0 ) );
 
         for ( ValidationResult result : results )
         {
@@ -537,14 +549,14 @@ public class ValidationRuleServiceTest
         validationRuleService.addValidationRuleGroup( group );
 
         Collection<ValidationResult> results = validationRuleService.validate(
-        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA, group, false, null );
+        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA, null, group, false, null );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodA, sourceA, validationRuleA, 3.0, -1.0 ) );
-        reference.add( new ValidationResult( periodB, sourceA, validationRuleA, 3.0, -1.0 ) );
-        reference.add( new ValidationResult( periodA, sourceB, validationRuleA, 3.0, -1.0 ) );
-        reference.add( new ValidationResult( periodB, sourceB, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, defaultCombo, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodB, sourceA, defaultCombo, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodA, sourceB, defaultCombo, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodB, sourceB, defaultCombo, validationRuleA, 3.0, -1.0 ) );
 
         for ( ValidationResult result : results )
         {
@@ -579,10 +591,10 @@ public class ValidationRuleServiceTest
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodA, sourceA, validationRuleA, 3.0, -1.0 ) );
-        reference.add( new ValidationResult( periodB, sourceA, validationRuleA, 3.0, -1.0 ) );
-        reference.add( new ValidationResult( periodA, sourceA, validationRuleB, -1.0, 4.0 ) );
-        reference.add( new ValidationResult( periodB, sourceA, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, defaultCombo, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodB, sourceA, defaultCombo, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, defaultCombo, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodB, sourceA, defaultCombo, validationRuleB, -1.0, 4.0 ) );
 
         for ( ValidationResult result : results )
         {
@@ -608,12 +620,12 @@ public class ValidationRuleServiceTest
         validationRuleService.saveValidationRule( validationRuleD );
 
         Collection<ValidationResult> results = validationRuleService.validate(
-        		dataSetMonthly, periodA, sourceA );
+        		dataSetMonthly, periodA, sourceA, null );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodA, sourceA, validationRuleA, 3.0, -1.0 ) );
-        reference.add( new ValidationResult( periodA, sourceA, validationRuleB, -1.0, 4.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, defaultCombo, validationRuleA, 3.0, -1.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, defaultCombo, validationRuleB, -1.0, 4.0 ) );
 
         for ( ValidationResult result : results )
         {
@@ -655,9 +667,9 @@ public class ValidationRuleServiceTest
         
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleE, 200.0, 150.0 /* 1.5 * 100 */ ) );
-        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleE, 400.0, 300.0 /* 1.5 * 200 */ ) );
-        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleE, 700.0, 600.0 /* 1.5 * 400 */ ) );
+        reference.add( new ValidationResult( periodL, sourceA, defaultCombo, monitoringRuleE, 200.0, 150.0 /* 1.5 * 100 */ ) );
+        reference.add( new ValidationResult( periodM, sourceA, defaultCombo, monitoringRuleE, 400.0, 300.0 /* 1.5 * 200 */ ) );
+        reference.add( new ValidationResult( periodN, sourceA, defaultCombo, monitoringRuleE, 700.0, 600.0 /* 1.5 * 400 */ ) );
 
         for ( ValidationResult result : results )
         {
@@ -697,9 +709,9 @@ public class ValidationRuleServiceTest
         
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodK, sourceA, monitoringRuleF, 100.0, 75.0 /* 1.5 * 50 */ ) );
-        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleF, 400.0, 300.0 /* 1.5 * 200 */ ) );
-        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleF, 800.0, 600.0 /* 1.5 * 400 */ ) );
+        reference.add( new ValidationResult( periodK, sourceA, defaultCombo, monitoringRuleF, 100.0, 75.0 /* 1.5 * 50 */ ) );
+        reference.add( new ValidationResult( periodM, sourceA, defaultCombo, monitoringRuleF, 400.0, 300.0 /* 1.5 * 200 */ ) );
+        reference.add( new ValidationResult( periodO, sourceA, defaultCombo, monitoringRuleF, 800.0, 600.0 /* 1.5 * 400 */ ) );
 
         for ( ValidationResult result : results )
         {
@@ -739,11 +751,11 @@ public class ValidationRuleServiceTest
         
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodK, sourceA, monitoringRuleG, 100.0, 83.6 /* 1.5 * ( 11 + 12 + 50 + 150 ) / 4 */  ) );
-        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleG, 200.0, 114.9 /* 1.5 * ( 11 + 12 + 13 + 50 + 150 + 200 + 100 ) / 7 */  ) );
-        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleG, 400.0, 254.8 /* 1.5 * ( 12 + 13 + 14 + 150 + 200 + 600 + 200 ) / 7 */  ) );
-        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleG, 700.0, 351.9 /* 1.5 * ( 13 + 14 + 15 + 200 + 600 + 400 + 400 ) / 7 */  ) );
-        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleG, 800.0, 518.7 /* 1.5 * ( 14 + 15 + 600 + 400 + 700 ) / 5 */  ) );
+        reference.add( new ValidationResult( periodK, sourceA, defaultCombo, monitoringRuleG, 100.0, 83.6 /* 1.5 * ( 11 + 12 + 50 + 150 ) / 4 */  ) );
+        reference.add( new ValidationResult( periodL, sourceA, defaultCombo, monitoringRuleG, 200.0, 114.9 /* 1.5 * ( 11 + 12 + 13 + 50 + 150 + 200 + 100 ) / 7 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, defaultCombo, monitoringRuleG, 400.0, 254.8 /* 1.5 * ( 12 + 13 + 14 + 150 + 200 + 600 + 200 ) / 7 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, defaultCombo, monitoringRuleG, 700.0, 351.9 /* 1.5 * ( 13 + 14 + 15 + 200 + 600 + 400 + 400 ) / 7 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, defaultCombo, monitoringRuleG, 800.0, 518.7 /* 1.5 * ( 14 + 15 + 600 + 400 + 700 ) / 5 */  ) );
 
         for ( ValidationResult result : results )
         {
@@ -784,10 +796,10 @@ public class ValidationRuleServiceTest
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
         // Not in results: reference.add( new ValidationResult( periodK, sourceA, monitoringRuleH, 100.0, 109.0 /* 1.5 * ( 11 + 12 + 13 + 50 + 150 + 200 ) / 6 */  ) );
-        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleH, 200.0, 191.7 /* 1.5 * ( 11 + 12 + 13 + 14 + 50 + 150 + 200 + 600 + 100 ) / 9 */  ) );
-        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleH, 400.0, 220.6 /* 1.5 * ( 11 + 12 + 13 + 14 + 15 + 50 + 150 + 200 + 600 + 400 + 100 + 200 ) / 12 */  ) );
-        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleH, 700.0, 300.6 /* 1.5 * ( 12 + 13 + 14 + 15 + 150 + 200 + 600 + 400 + 200 + 400 ) / 10 */  ) );
-        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleH, 800.0, 439.1 /* 1.5 * ( 13 + 14 + 15 + 200 + 600 + 400 + 400 + 700 ) / 8 */  ) );
+        reference.add( new ValidationResult( periodL, sourceA, defaultCombo, monitoringRuleH, 200.0, 191.7 /* 1.5 * ( 11 + 12 + 13 + 14 + 50 + 150 + 200 + 600 + 100 ) / 9 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, defaultCombo, monitoringRuleH, 400.0, 220.6 /* 1.5 * ( 11 + 12 + 13 + 14 + 15 + 50 + 150 + 200 + 600 + 400 + 100 + 200 ) / 12 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, defaultCombo, monitoringRuleH, 700.0, 300.6 /* 1.5 * ( 12 + 13 + 14 + 15 + 150 + 200 + 600 + 400 + 200 + 400 ) / 10 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, defaultCombo, monitoringRuleH, 800.0, 439.1 /* 1.5 * ( 13 + 14 + 15 + 200 + 600 + 400 + 400 + 700 ) / 8 */  ) );
         
         for ( ValidationResult result : results )
         {
@@ -827,11 +839,11 @@ public class ValidationRuleServiceTest
         
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodK, sourceA, monitoringRuleI, 100.0, 32.3 /* 1.5 * ( 11 + 12 + 13 + 50 ) / 4 */  ) );
-        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleI, 200.0, 75.0 /* 1.5 * ( 11 + 12 + 13 + 14 + 50 + 150 + 100 ) / 7 */  ) );
-        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleI, 400.0, 114.8 /* 1.5 * ( 11 + 12 + 13 + 14 + 15 + 50 + 150 + 200 + 100 + 200 ) / 10 */  ) );
-        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleI, 700.0, 188.3 /* 1.5 * ( 12 + 13 + 14 + 15 + 150 + 200 + 200 + 400 ) / 8 */  ) );
-        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleI, 800.0, 260.5 /* 1.5 * ( 13 + 14 + 15 + 200 + 400 + 400 ) / 6 */  ) );
+        reference.add( new ValidationResult( periodK, sourceA, defaultCombo, monitoringRuleI, 100.0, 32.3 /* 1.5 * ( 11 + 12 + 13 + 50 ) / 4 */  ) );
+        reference.add( new ValidationResult( periodL, sourceA, defaultCombo, monitoringRuleI, 200.0, 75.0 /* 1.5 * ( 11 + 12 + 13 + 14 + 50 + 150 + 100 ) / 7 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, defaultCombo, monitoringRuleI, 400.0, 114.8 /* 1.5 * ( 11 + 12 + 13 + 14 + 15 + 50 + 150 + 200 + 100 + 200 ) / 10 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, defaultCombo, monitoringRuleI, 700.0, 188.3 /* 1.5 * ( 12 + 13 + 14 + 15 + 150 + 200 + 200 + 400 ) / 8 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, defaultCombo, monitoringRuleI, 800.0, 260.5 /* 1.5 * ( 13 + 14 + 15 + 200 + 400 + 400 ) / 6 */  ) );
         
         for ( ValidationResult result : results )
         {
@@ -873,9 +885,9 @@ public class ValidationRuleServiceTest
 
         // Not in results: reference.add( new ValidationResult( periodK, sourceA, monitoringRuleH, 100.0, 154.9 /* 1.5 * ( 13 + 50 + 150 + 200 ) / 4 */  ) );
         // Not in results: reference.add( new ValidationResult( periodL, sourceA, monitoringRuleJ, 200.0, 241.5 /* 1.5 * ( 13 + 14 + 50 + 150 + 200 + 600 + 100 ) / 7 */  ) );
-        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleJ, 400.0, 261.3 /* 1.5 * ( 13 + 14 + 15 + 50 + 150 + 200 + 600 + 400 + 100 + 200 ) / 10 */  ) );
-        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleJ, 700.0, 371.1 /* 1.5 * ( 14 + 15 + 150 + 200 + 600 + 400 + 200 + 400 ) / 8 */  ) );
-        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleJ, 800.0, 578.8 /* 1.5 * ( 15 + 200 + 600 + 400 + 400 + 700 ) / 6 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, defaultCombo, monitoringRuleJ, 400.0, 261.3 /* 1.5 * ( 13 + 14 + 15 + 50 + 150 + 200 + 600 + 400 + 100 + 200 ) / 10 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, defaultCombo, monitoringRuleJ, 700.0, 371.1 /* 1.5 * ( 14 + 15 + 150 + 200 + 600 + 400 + 200 + 400 ) / 8 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, defaultCombo, monitoringRuleJ, 800.0, 578.8 /* 1.5 * ( 15 + 200 + 600 + 400 + 400 + 700 ) / 6 */  ) );
         
         for ( ValidationResult result : results )
         {
@@ -915,11 +927,11 @@ public class ValidationRuleServiceTest
         
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodK, sourceA, monitoringRuleK, 100.0, 47.3 /* 1.5 * ( 13 + 50 ) / 2 */  ) );
-        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleK, 200.0, 98.1 /* 1.5 * ( 13 + 14 + 50 + 150 + 100 ) / 5 */  ) );
-        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleK, 400.0, 139.1 /* 1.5 * ( 13 + 14 + 15 + 50 + 150 + 200 + 100 + 200 ) / 8 */  ) );
-        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleK, 700.0, 244.8 /* 1.5 * ( 14 + 15 + 150 + 200 + 200 + 400 ) / 6 */  ) );
-        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleK, 800.0, 380.6 /* 1.5 * ( 15 + 200 + 400 + 400 ) / 4 */  ) );
+        reference.add( new ValidationResult( periodK, sourceA, defaultCombo, monitoringRuleK, 100.0, 47.3 /* 1.5 * ( 13 + 50 ) / 2 */  ) );
+        reference.add( new ValidationResult( periodL, sourceA, defaultCombo, monitoringRuleK, 200.0, 98.1 /* 1.5 * ( 13 + 14 + 50 + 150 + 100 ) / 5 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, defaultCombo, monitoringRuleK, 400.0, 139.1 /* 1.5 * ( 13 + 14 + 15 + 50 + 150 + 200 + 100 + 200 ) / 8 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, defaultCombo, monitoringRuleK, 700.0, 244.8 /* 1.5 * ( 14 + 15 + 150 + 200 + 200 + 400 ) / 6 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, defaultCombo, monitoringRuleK, 800.0, 380.6 /* 1.5 * ( 15 + 200 + 400 + 400 ) / 4 */  ) );
         
         for ( ValidationResult result : results )
         {
@@ -966,11 +978,11 @@ public class ValidationRuleServiceTest
         
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
-        reference.add( new ValidationResult( periodK, sourceB, monitoringRuleL, 10.0 /* 100 / 10 */, 1.5 /* 1.5 * 50 / 50 */ ) );
-        reference.add( new ValidationResult( periodL, sourceB, monitoringRuleL, 20.0 /* 200 / 10 */, 4.5 /* 1.5 * 150 / 50 */ ) );
-        reference.add( new ValidationResult( periodM, sourceB, monitoringRuleL, 40.0 /* 400 / 10 */, 6.0 /* 1.5 * 200 / 50 */ ) );
-        reference.add( new ValidationResult( periodN, sourceB, monitoringRuleL, 70.0 /* 700 / 10 */, 18.0 /* 1.5 * 600 / 50 */ ) );
-        reference.add( new ValidationResult( periodO, sourceB, monitoringRuleL, 80.0 /* 800 / 10 */, 12.0 /* 1.5 * 400 / 50 */ ) );
+        reference.add( new ValidationResult( periodK, sourceB, defaultCombo, monitoringRuleL, 10.0 /* 100 / 10 */, 1.5 /* 1.5 * 50 / 50 */ ) );
+        reference.add( new ValidationResult( periodL, sourceB, defaultCombo, monitoringRuleL, 20.0 /* 200 / 10 */, 4.5 /* 1.5 * 150 / 50 */ ) );
+        reference.add( new ValidationResult( periodM, sourceB, defaultCombo, monitoringRuleL, 40.0 /* 400 / 10 */, 6.0 /* 1.5 * 200 / 50 */ ) );
+        reference.add( new ValidationResult( periodN, sourceB, defaultCombo, monitoringRuleL, 70.0 /* 700 / 10 */, 18.0 /* 1.5 * 600 / 50 */ ) );
+        reference.add( new ValidationResult( periodO, sourceB, defaultCombo, monitoringRuleL, 80.0 /* 800 / 10 */, 12.0 /* 1.5 * 400 / 50 */ ) );
 
         for ( ValidationResult result : results )
         {
@@ -980,6 +992,92 @@ public class ValidationRuleServiceTest
 
         assertEquals( 5, results.size() );
         assertEquals( orderedList( reference ), orderedList( results ) );
+    }
+
+    @Test
+    public void testValidateWithAttributeOptions()
+    {
+        DataElementCategoryOption optionA = new DataElementCategoryOption( "CategoryOptionA" );
+        DataElementCategoryOption optionB = new DataElementCategoryOption( "CategoryOptionB" );
+        DataElementCategoryOption optionC = new DataElementCategoryOption( "CategoryOptionC" );
+
+        categoryService.addDataElementCategoryOption( optionA );
+        categoryService.addDataElementCategoryOption( optionB );
+        categoryService.addDataElementCategoryOption( optionC );
+
+        DataElementCategory categoryA = createDataElementCategory( 'A', optionA, optionB );
+        DataElementCategory categoryB = createDataElementCategory( 'B', optionC );
+        categoryA.setDataDimension( true );
+        categoryB.setDataDimension( true );
+
+        categoryService.addDataElementCategory( categoryA );
+        categoryService.addDataElementCategory( categoryB );
+
+        DataElementCategoryCombo categoryComboAB = createCategoryCombo( 'A', categoryA, categoryB );
+
+        categoryService.addDataElementCategoryCombo( categoryComboAB );
+
+        DataElementCategoryOptionCombo optionComboAC = createCategoryOptionCombo( 'A', categoryComboAB, optionA, optionC );
+        DataElementCategoryOptionCombo optionComboBC = createCategoryOptionCombo( 'A', categoryComboAB, optionB, optionC );
+
+        categoryService.addDataElementCategoryOptionCombo( optionComboAC );
+        categoryService.addDataElementCategoryOptionCombo( optionComboBC );
+
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "4", optionCombo, optionComboAC ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "3", optionCombo, optionComboAC ) );
+
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "2", optionCombo, optionComboBC ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "1", optionCombo, optionComboBC ) );
+
+        validationRuleService.saveValidationRule( validationRuleD ); // deA + deB < deB * 2
+        validationRuleService.saveValidationRule( validationRuleX ); // deA + deB = deB * 2
+
+        //
+        // optionComboAC
+        //
+        Collection<ValidationResult> results = validationRuleService.validate( dataSetMonthly, periodA, sourceA, optionComboAC );
+
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        reference.add( new ValidationResult( periodA, sourceA, optionComboAC, validationRuleD, 7.0, 6.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, optionComboAC, validationRuleX, 7.0, 6.0 ) );
+
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                    .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 2, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
+
+        //
+        // All optionCombos
+        //
+        results = validationRuleService.validate( dataSetMonthly, periodA, sourceA, null );
+
+        reference = new HashSet<ValidationResult>();
+
+        reference.add( new ValidationResult( periodA, sourceA, optionComboAC, validationRuleD, 7.0, 6.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, optionComboAC, validationRuleX, 7.0, 6.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, optionComboBC, validationRuleD, 3.0, 2.0 ) );
+        reference.add( new ValidationResult( periodA, sourceA, optionComboBC, validationRuleX, 3.0, 2.0 ) );
+
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                    .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 4, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
+
+        //
+        // Default optionCombo
+        //
+        results = validationRuleService.validate( dataSetMonthly, periodA, sourceA, optionCombo );
+
+        assertEquals( 0, results.size() );
     }
 
     // -------------------------------------------------------------------------

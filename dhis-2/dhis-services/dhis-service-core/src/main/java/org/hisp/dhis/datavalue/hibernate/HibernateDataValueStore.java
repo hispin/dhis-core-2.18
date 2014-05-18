@@ -28,15 +28,14 @@ package org.hisp.dhis.datavalue.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,7 +46,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueStore;
@@ -60,6 +62,7 @@ import org.hisp.dhis.system.objectmapper.DataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.common.MapMap;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -97,6 +100,13 @@ public class HibernateDataValueStore
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -459,76 +469,47 @@ public class HibernateDataValueStore
 
         return rs != null ? rs.intValue() : 0;
     }
-    
-    public Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit source )
-    {
-        Map<DataElementOperand, Double> map = new HashMap<DataElementOperand, Double>();
-        
-        if ( dataElements.isEmpty() )
-        {
-            return map;
-        }
-        
-        final String sql = 
-            "select de.uid, coc.uid, dv.value " +
-            "from datavalue dv " +
-            "join dataelement de on dv.dataelementid = de.dataelementid " +
-            "join categoryoptioncombo coc on dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
-            "where dv.dataelementid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) ) + ") " +
-            "and dv.periodid = " + period.getId() + " " +
-            "and dv.sourceid = " + source.getId();
-        
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-        
-        while ( rowSet.next() )
-        {
-            String dataElement = rowSet.getString( 1 );
-            String categoryOptionCombo = rowSet.getString( 2 );
-            Double value = MathUtils.parseDouble( rowSet.getString( 3 ) );
-            
-            if ( value != null )
-            {
-                map.put( new DataElementOperand( dataElement, categoryOptionCombo ), value );
-            }
-        }
-        
-        return map; 
-    }
 
-    public Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Date date, OrganisationUnit source,
-    		Collection<PeriodType> periodTypes, Map<DataElementOperand, Date> lastUpdatedMap )
+    public MapMap<Integer, DataElementOperand, Double> getDataValueMapByAttributeCombo( Collection<DataElement> dataElements, Date date, OrganisationUnit source,
+        Collection<PeriodType> periodTypes, DataElementCategoryOptionCombo attributeCombo, MapMap<Integer, DataElementOperand, Date> lastUpdatedMap )
     {
-        Map<DataElementOperand, Double> map = new HashMap<DataElementOperand, Double>();
-        
+        MapMap<Integer, DataElementOperand, Double> map = new MapMap<Integer, DataElementOperand, Double>();
+
         if ( dataElements.isEmpty() || periodTypes.isEmpty() )
         {
             return map;
         }
-        
-        final String sql = 
-            "select de.uid, coc.uid, dv.value, dv.lastupdated, p.startdate, p.enddate " +
-            "from datavalue dv " +
-            "join dataelement de on dv.dataelementid = de.dataelementid " +
-            "join categoryoptioncombo coc on dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
-            "join period p on p.periodid = dv.periodid " +
-            "where dv.dataelementid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) ) + ") " +
-            "and dv.sourceid = " + source.getId() + " " +
-            "and p.startdate <= '" + DateUtils.getMediumDateString( date ) + "' " +
-            "and p.enddate >= '" + DateUtils.getMediumDateString( date ) + "' " +
-        	"and p.periodtypeid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( PeriodType.class, periodTypes ) ) + ") ";
+
+        String sql =
+                "select de.uid, coc.uid, dv.attributeoptioncomboid, dv.value, dv.lastupdated, p.startdate, p.enddate " +
+                        "from datavalue dv " +
+                        "join dataelement de on dv.dataelementid = de.dataelementid " +
+                        "join categoryoptioncombo coc on dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
+                        "join period p on p.periodid = dv.periodid " +
+                        "where dv.dataelementid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) ) + ") " +
+                        "and dv.sourceid = " + source.getId() + " " +
+                        "and p.startdate <= '" + DateUtils.getMediumDateString( date ) + "' " +
+                        "and p.enddate >= '" + DateUtils.getMediumDateString( date ) + "' " +
+                        "and p.periodtypeid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( PeriodType.class, periodTypes ) ) + ") ";
+
+        if ( attributeCombo != null )
+        {
+            sql += " and dv.attributeoptioncomboid = " + attributeCombo.getId();
+        }
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-        
-        Map<DataElementOperand, Long> checkForDuplicates = new HashMap<DataElementOperand, Long>();
+
+        MapMap<Integer, DataElementOperand, Long> checkForDuplicates = new MapMap<Integer, DataElementOperand, Long>();
 
         while ( rowSet.next() )
         {
             String dataElement = rowSet.getString( 1 );
             String categoryOptionCombo = rowSet.getString( 2 );
-            Double value = MathUtils.parseDouble( rowSet.getString( 3 ) );
-            Date lastUpdated = rowSet.getDate( 4 );
-            Date periodStartDate = rowSet.getDate( 5 );
-            Date periodEndDate = rowSet.getDate( 6 );
+            Integer attributeOptionComboId = rowSet.getInt( 3 );
+            Double value = MathUtils.parseDouble( rowSet.getString( 4 ) );
+            Date lastUpdated = rowSet.getDate( 5 );
+            Date periodStartDate = rowSet.getDate( 6 );
+            Date periodEndDate = rowSet.getDate( 7 );
             long periodInterval = periodEndDate.getTime() - periodStartDate.getTime();
 
             log.trace( "row: " + dataElement + " = " + value + " [" + periodStartDate + " : " + periodEndDate + "]");
@@ -536,22 +517,22 @@ public class HibernateDataValueStore
             if ( value != null )
             {
                 DataElementOperand dataElementOperand = new DataElementOperand( dataElement, categoryOptionCombo );
-                Long existingPeriodInterval = checkForDuplicates.get( dataElementOperand );
-                
+
+                Long existingPeriodInterval = checkForDuplicates.getValue( attributeOptionComboId, dataElementOperand );
+
                 if ( existingPeriodInterval != null && existingPeriodInterval < periodInterval )
                 {
                     // Don't overwrite the previous value if for a shorter interval
-                    continue; 
+                    continue;
                 }
-                
-                map.put( dataElementOperand, value );
-                
+                map.putEntry( attributeOptionComboId, dataElementOperand, value );
+
                 if ( lastUpdatedMap != null )
                 {
-                    lastUpdatedMap.put( dataElementOperand, lastUpdated );
+                    lastUpdatedMap.putEntry( attributeOptionComboId, dataElementOperand, lastUpdated );
                 }
-                
-                checkForDuplicates.put( dataElementOperand, periodInterval );
+
+                checkForDuplicates.putEntry( attributeOptionComboId, dataElementOperand, periodInterval );
             }
         }
 

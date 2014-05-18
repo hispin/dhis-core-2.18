@@ -22,9 +22,9 @@
             #set ( $rightFormula = $rightSideFormulaMap.get( $key ).get( $id ) )
             <tr>
                 <td style="height:32px"#alternate( $mark )>$!encoder.htmlEncode( $validationResult.validationRule.getInstructionFallback() )</td>
-                <td#alternate( $mark )>$validationResult.leftsideValue</td>
-                <td#alternate( $mark )>$encoder.htmlEncode( $i18n.getString( $validationResult.validationRule.operator.mathematicalOperator ) )</td>
-                <td#alternate( $mark )>$validationResult.rightsideValue</td>
+                <td #alternate( $mark )>$validationResult.leftsideValue</td>
+                <td #alternate( $mark )>$encoder.htmlEncode( $i18n.getString( $validationResult.validationRule.operator.mathematicalOperator ) )</td>
+                <td #alternate( $mark )>$validationResult.rightsideValue</td>
             </tr>
         #if( $mark )
             #set( $mark = false )

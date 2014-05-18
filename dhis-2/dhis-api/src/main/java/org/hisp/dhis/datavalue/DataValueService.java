@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.hisp.dhis.common.MapMap;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -296,33 +297,25 @@ public interface DataValueService
      * @return the number of DataValues.
      */
     int getDataValueCount( int days );
-    
-    /**
-     * Returns a map of values indexed by DataElementOperand.
-     * 
-     * @param dataElements collection of DataElements to fetch for
-     * @param period period for which to fetch the values
-     * @param unit OrganisationUnit for which to fetch the values
-     * @return
-     */
-    Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit source );
 
     /**
-     * Returns a map of values indexed by DataElementOperand.
-     * 
+     * Returns a map of values for each attribute option combo found.
+     * <p>
      * In the (unlikely) event that the same dataElement/optionCombo is found in
-     * more than one period for the same organisationUnit and date, the value
-     * is returned from the period with the shortest duration.
-     * 
+     * more than one period for the same organisationUnit, date, and attribute
+     * combo, the value is returned from the period with the shortest duration.
+     *
      * @param dataElements collection of DataElements to fetch for
      * @param date date which must be present in the period
-     * @param unit OrganisationUnit for which to fetch the values
+     * @param source OrganisationUnit for which to fetch the values
      * @param periodTypes allowable period types in which to find the data
+     * @param attributeCombo the attribute combo to check (if restricted)
      * @param lastUpdatedMap map in which to return the lastUpdated date for each value
-     * @return
+     * @return map of values by attribute option combo id, then DataElementOperand
      */
-    Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Date date, OrganisationUnit source,
-    		Collection<PeriodType> periodTypes, Map<DataElementOperand, Date> lastUpdatedMap );
+    MapMap<Integer, DataElementOperand, Double> getDataValueMapByAttributeCombo( Collection<DataElement> dataElements, Date date,
+            OrganisationUnit source, Collection<PeriodType> periodTypes, DataElementCategoryOptionCombo attributeCombo,
+            MapMap<Integer, DataElementOperand, Date> lastUpdatedMap );
 
     /**
      * Gets a Collection of DeflatedDataValues.

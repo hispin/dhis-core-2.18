@@ -31,6 +31,7 @@ package org.hisp.dhis.common;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -38,6 +39,11 @@ import java.util.List;
 public class ListMap<T, V>
     extends HashMap<T, List<V>>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 4880664228933342003L;
+
     public ListMap()
     {
         super();
@@ -55,5 +61,13 @@ public class ListMap<T, V>
         list.add( value );
         super.put( key, list );        
         return null;
+    }
+
+    public void putValueMap( Map<T, V> map )
+    {
+        for ( Map.Entry<T, V> entry : map.entrySet() )
+        {
+            putValue( entry.getKey(), entry.getValue() );
+        }
     }
 }
