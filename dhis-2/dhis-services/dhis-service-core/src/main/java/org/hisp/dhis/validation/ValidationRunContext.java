@@ -42,6 +42,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -81,6 +83,8 @@ public class ValidationRunContext
     private Map<ValidationRule, ValidationRuleExtended> ruleXMap;
 
     private Collection<OrganisationUnitExtended> sourceXs;
+
+    private DataElementCategoryOptionCombo attributeCombo;
     
     private int countOfSourcesToValidate;
 
@@ -91,6 +95,8 @@ public class ValidationRunContext
     private PeriodService periodService;
 
     private DataValueService dataValueService;
+
+    private DataElementCategoryService dataElementCategoryService;
 
     private ValidationRunContext()
     {
@@ -113,15 +119,17 @@ public class ValidationRunContext
      * 
      * @param sources organisation units for validation
      * @param periods periods for validation
+     * @param attributeCombo the attribute combo to check (if restricted)
      * @param rules validation rules for validation
      * @param runType whether this is an INTERACTIVE or SCHEDULED run
      * @param lastScheduledRun (for SCHEDULED runs) date/time of previous run
      * @return context object for this run
      */
     public static ValidationRunContext getNewValidationRunContext( Collection<OrganisationUnit> sources,
-        Collection<Period> periods, Collection<ValidationRule> rules, Map<String, Double> constantMap,
-        ValidationRunType runType, Date lastScheduledRun, ExpressionService expressionService, PeriodService periodService,
-        DataValueService dataValueService )
+        Collection<Period> periods, DataElementCategoryOptionCombo attributeCombo, Collection<ValidationRule> rules,
+        Map<String, Double> constantMap, ValidationRunType runType, Date lastScheduledRun,
+        ExpressionService expressionService, PeriodService periodService,
+        DataValueService dataValueService, DataElementCategoryService dataElementCategoryService )
     {
         ValidationRunContext context = new ValidationRunContext();
         context.runType = runType;
@@ -134,6 +142,8 @@ public class ValidationRunContext
         context.expressionService = expressionService;
         context.periodService = periodService;
         context.dataValueService = dataValueService;
+        context.dataElementCategoryService = dataElementCategoryService;
+        context.attributeCombo = attributeCombo;
         context.initialize( sources, periods, rules );
         return context;
     }
@@ -328,7 +338,6 @@ public class ValidationRunContext
      * creates a new PeriodTypeExtended object, puts it into the context object,
      * and returns it.
      * 
-     * @param context validation run context
      * @param periodType period type to search for
      * @return period type extended from the context object
      */
@@ -405,6 +414,11 @@ public class ValidationRunContext
         return sourceXs;
     }
 
+    public DataElementCategoryOptionCombo getAttributeCombo()
+    {
+        return attributeCombo;
+    }
+
     public int getCountOfSourcesToValidate()
     {
         return countOfSourcesToValidate;
@@ -428,5 +442,10 @@ public class ValidationRunContext
     public DataValueService getDataValueService()
     {
         return dataValueService;
+    }
+
+    public DataElementCategoryService getDataElementCategoryService()
+    {
+        return dataElementCategoryService;
     }
 }

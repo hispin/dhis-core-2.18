@@ -1711,7 +1711,16 @@ function validate( ignoreSuccessfulValidation, successCallback )
 
 	var validCompleteOnly = dhis2.de.dataSets[dhis2.de.currentDataSetId].validCompleteOnly;
 
+    var cc = dhis2.de.getCurrentCategoryCombo();
+    var cp = dhis2.de.getCurrentCategoryOptionsQueryValue();
+
     var params = dhis2.de.storageManager.getCurrentCompleteDataSetParams();
+
+    if ( cc && cp )
+    {
+        params.cc = dhis2.de.getCurrentCategoryCombo();
+        params.cp = dhis2.de.getCurrentCategoryOptionsQueryValue();
+    }
 
     $( '#validationDiv' ).load( 'validate.action', params, function( response, status, xhr ) {
     	var success = null;

@@ -51,6 +51,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
@@ -129,6 +131,13 @@ public class DefaultValidationRuleService
         this.dataValueService = dataValueService;
     }
 
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
+
     private ConstantService constantService;
 
     public void setConstantService( ConstantService constantService )
@@ -169,22 +178,16 @@ public class DefaultValidationRuleService
     // -------------------------------------------------------------------------
 
     @Override
-    public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, boolean sendAlerts, I18nFormat format )
-    {
-        return validate( startDate, endDate, sources, null, sendAlerts, format );
-    }
-
-    @Override
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
-        ValidationRuleGroup group, boolean sendAlerts, I18nFormat format )
+        DataElementCategoryOptionCombo attributeCombo, ValidationRuleGroup group, boolean sendAlerts, I18nFormat format )
     {
     	log.info( "Validate start:" + startDate + " end: " + endDate + " sources: " + sources.size() + " group: " + group );
     	
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = group != null ? group.getMembers() : getAllValidationRules();
         
-        Collection<ValidationResult> results = Validator.validate( sources, periods, rules, null,
-            constantService, expressionService, periodService, dataValueService );
+        Collection<ValidationResult> results = Validator.validate( sources, periods, rules, attributeCombo, null,
+            constantService, expressionService, periodService, dataValueService, dataElementCategoryService );
         
         formatPeriods( results, format );
         
@@ -207,17 +210,19 @@ public class DefaultValidationRuleService
         Collection<ValidationRule> rules = getAllValidationRules();
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( source );
-        
-        return Validator.validate( sources, periods, rules, null,
-            constantService, expressionService, periodService, dataValueService );
+
+        return Validator.validate( sources, periods, rules, null, null,
+            constantService, expressionService, periodService, dataValueService, dataElementCategoryService );
     }
 
     @Override
-    public Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source )
+    public Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source,
+        DataElementCategoryOptionCombo attributeCombo )
     {
     	log.info( "Validate data set: " + dataSet.getName() + " period: " + period.getPeriodType().getName() + " "
-            + period.getStartDate() + " " + period.getEndDate() + " source: " + source.getName() );
-    	
+            + period.getStartDate() + " " + period.getEndDate() + " source: " + source.getName()
+            + " attribute combo: " + ( attributeCombo == null ? "(null)" : attributeCombo.getName() ) );
+
         Collection<Period> periods = new ArrayList<Period>();
         periods.add( period );
 
@@ -237,8 +242,8 @@ public class DefaultValidationRuleService
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( source );
         
-        return Validator.validate( sources, periods, rules, null,
-            constantService, expressionService, periodService, dataValueService );
+        return Validator.validate( sources, periods, rules, attributeCombo, null,
+            constantService, expressionService, periodService, dataValueService, dataElementCategoryService );
     }
 
     @Override
@@ -263,8 +268,8 @@ public class DefaultValidationRuleService
         log.info( "Scheduled monitoring run sources: " + sources.size() + ", periods: " + periods.size() + ", rules:" + rules.size()
             + ", last run: " + ( lastScheduledRun == null ? "[none]" : lastScheduledRun ) );
         
-        Collection<ValidationResult> results = Validator.validate( sources, periods, rules,
-            lastScheduledRun, constantService, expressionService, periodService, dataValueService );
+        Collection<ValidationResult> results = Validator.validate( sources, periods, rules, null, lastScheduledRun,
+            constantService, expressionService, periodService, dataValueService, dataElementCategoryService );
         
         log.info( "Validation run result count: " + results.size() );
         
@@ -505,7 +510,8 @@ public class DefaultValidationRuleService
         {
             ValidationRule rule = result.getValidationRule();
             
-            builder.append( result.getSource().getName() ).append( " " ).append( result.getPeriod().getName() ).append( LN ).
+            builder.append( result.getSource().getName() ).append( " " ).append( result.getPeriod().getName() ).
+            append( result.getAttributeOptionCombo().isDefault() ? "" : " " + result.getAttributeOptionCombo().getName() ).append( LN ).
             append( rule.getName() ).append( " (" ).append( rule.getImportance() ).append( ") " ).append( LN ).
             append( rule.getLeftSide().getDescription() ).append( ": " ).append( result.getLeftsideValue() ).append( LN ).
             append( rule.getRightSide().getDescription() ).append( ": " ).append( result.getRightsideValue() ).append( LN ).append( LN );

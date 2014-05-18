@@ -174,7 +174,7 @@ public class FormUtilsImpl
     public List<String> getValidationRuleViolations( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
         List<ValidationResult> validationRuleResults = new ArrayList<ValidationResult>( validationRuleService.validate(
-            dataSet, period, organisationUnit ) );
+            dataSet, period, organisationUnit, null ) );
 
         List<String> validationRuleViolations = new ArrayList<String>( validationRuleResults.size() );
 

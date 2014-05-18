@@ -75,7 +75,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ListUtils;
-import org.hisp.dhis.system.util.MapMap;
+import org.hisp.dhis.common.MapMap;
 import org.hisp.dhis.system.util.MathUtils;
 
 /**

@@ -84,6 +84,9 @@
 			<!-- Note: &nbsp; in the headers below keeps the jquery.tablesorter icons from overlapping the labels. -->
 			<th>$i18n.getString( "organisation_unit" )&nbsp;&nbsp;&nbsp;&nbsp;</th>
 			<th>$i18n.getString( "period" )&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            #if( $showAttributeCombos )
+                <th>$i18n.getString( "attributes" )&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            #end
 			<!-- Note: column-level sortInitialOrder only works in tablesorter 2.0.8 and later (an earlier version in use as of this writing.) --->
 			<th class="{sorter: 'importanceSorter', sortInitialOrder: 'desc'}">$i18n.getString( "importance" )&nbsp;&nbsp;&nbsp;&nbsp;</th>
 			<th class="{sorter: false}">$i18n.getString( "validation_rule" )</th>
@@ -98,6 +101,9 @@
 		<tr id="tr${result.id}">
 		  <td>$encoder.htmlEncode( $!result.source.name )</td>
 		  <td>$!format.formatPeriod( $result.period )</td>
+          #if( $showAttributeCombos )
+              <td>#if($result.attributeOptionCombo.isDefault()=='false') $encoder.htmlEncode( $!result.attributeOptionCombo.name ) #end</td>
+          #end
 		  <td>$encoder.htmlEncode( $i18n.getString( $!result.validationRule.importance ) )</td>
 		  <td>$encoder.htmlEncode( $!result.validationRule.getInstructionFallback() )</td>
 		  <td>$encoder.htmlEncode( $!result.leftsideValue )</td>

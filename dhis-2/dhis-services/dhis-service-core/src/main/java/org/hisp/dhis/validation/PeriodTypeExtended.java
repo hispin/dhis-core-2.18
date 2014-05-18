@@ -43,7 +43,7 @@ import org.hisp.dhis.period.PeriodType;
 
 /**
  * Holds information for each period type that is needed during
- * a validation run (either interactive or an alert run).
+ * a validation run (either interactive or a scheduled run).
  * 
  * By computing these values once at the start of a validation run, we avoid
  * the overhead of having to compute them during the processing of every

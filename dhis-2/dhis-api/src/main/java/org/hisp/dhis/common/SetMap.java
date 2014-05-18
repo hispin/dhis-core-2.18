@@ -55,4 +55,11 @@ public class SetMap<T, V>
         set.add( value );
         return super.put( key, set );
     }
+
+    public Set<V> getSet( T key )
+    {
+        Set<V> set = this.get( key );
+        set = set == null ? new HashSet<V>() : set;
+        return super.put( key, set );
+    }
 }

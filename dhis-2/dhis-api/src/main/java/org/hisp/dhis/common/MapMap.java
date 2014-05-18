@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.util;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -51,5 +51,10 @@ public class MapMap<T, U, V>
         map = map == null ? new HashMap<U, V>() : map;
         map.putAll( m );
         this.put( key, map );
+    }
+
+    public V getValue( T key, U valueKey )
+    {
+        return this.get( key ) == null ? null : this.get( key ).get( valueKey );
     }
 }

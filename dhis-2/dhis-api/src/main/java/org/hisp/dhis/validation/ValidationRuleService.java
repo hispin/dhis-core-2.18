@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -55,37 +56,27 @@ public interface ValidationRuleService
     /**
      * Validate DataValues.
      *
-     * @param startDate  the start date.
-     * @param endDate    the end date.
-     * @param sources    a collection of Sources.
+     * @param startDate the start date.
+     * @param endDate the end date.
+     * @param sources a collection of Sources.
+     * @param attributeCombo attribute category option combo (null for all).
+     * @param group validation rule group (null for all validationRules).
      * @param sendAlerts whether to send alerts for surveillance.
-     * @param format     the i18n format.
+     * @param format the i18n format.
      * @return a collection of ValidationResults for each validation violation.
      */
-    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, boolean sendAlerts, I18nFormat format );
-
-    /**
-     * Validate DataValues.
-     *
-     * @param startDate  the start date.
-     * @param endDate    the end date.
-     * @param sources    a collection of Sources.
-     * @param group      a group of ValidationRules.
-     * @param sendAlerts whether to send alerts for surveillance.
-     * @param format     the i18n format.
-     * @return a collection of ValidationResults for each validation violation.
-     */
-    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group, boolean sendAlerts, I18nFormat format );
+    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, DataElementCategoryOptionCombo attributeCombo, ValidationRuleGroup group, boolean sendAlerts, I18nFormat format );
 
     /**
      * Validate DataValues.
      *
      * @param dataSet the DataSet.
-     * @param period  the Period.
-     * @param source  the Source.
+     * @param period the Period.
+     * @param source the Organisation unit.
+     * @param attributeCombo attribute category option combo (null for all).
      * @return a collection of ValidationResults for each validation violation.
      */
-    Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source );
+    Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source, DataElementCategoryOptionCombo attributeCombo );
 
     /**
      * Validate DataValues.

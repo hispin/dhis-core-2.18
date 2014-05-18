@@ -38,10 +38,14 @@ import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.api.utils.InputUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -54,9 +58,11 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationResult;
+import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 import com.opensymphony.xwork2.Action;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Margrethe Store
@@ -105,13 +111,23 @@ public class ValidationAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
+
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
     }
+
+    @Autowired
+    private InputUtils inputUtils;
 
     // -------------------------------------------------------------------------
     // Input
@@ -136,6 +152,20 @@ public class ValidationAction
     public void setOu( String ou )
     {
         this.ou = ou;
+    }
+
+    private String cc;
+
+    public void setCc( String cc )
+    {
+        this.cc = cc;
+    }
+
+    private String cp;
+
+    public void setCp( String cp )
+    {
+        this.cp = cp;
     }
 
     private boolean multiOu;
@@ -188,6 +218,13 @@ public class ValidationAction
 
         Period selectedPeriod = PeriodType.getPeriodFromIsoString( pe );
 
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( ServletActionContext.getResponse(), cc, cp );
+
+        if ( attributeOptionCombo == null )
+        {
+            attributeOptionCombo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
+        }
+
         if ( selectedPeriod == null || orgUnit == null || ( multiOu && !orgUnit.hasChild() ) )
         {
             return SUCCESS;
@@ -218,7 +255,7 @@ public class ValidationAction
                 dataValues.put( organisationUnit, values );
             }
 
-            List<ValidationResult> results = validationRuleAnalysis( organisationUnit, dataSet, period );
+            List<ValidationResult> results = validationRuleAnalysis( organisationUnit, dataSet, period, attributeOptionCombo );
 
             if ( !results.isEmpty() )
             {
@@ -254,9 +291,9 @@ public class ValidationAction
     // Validation rule analysis
     // -------------------------------------------------------------------------
     
-    private List<ValidationResult> validationRuleAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    private List<ValidationResult> validationRuleAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        List<ValidationResult> validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, organisationUnit ) );
+        List<ValidationResult> validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, organisationUnit, attributeOptionCombo ) );
 
         log.debug( "Number of validation violations: " + validationResults.size() );
 

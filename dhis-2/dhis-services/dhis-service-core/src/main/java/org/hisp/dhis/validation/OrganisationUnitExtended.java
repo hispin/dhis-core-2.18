@@ -37,7 +37,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * Holds information for each organisation unit that is needed during a
- * validation run (either interactive or an alert run).
+ * validation run (either interactive or a scheduled run).
  * 
  * It is important that they should be copied from Hibernate lazy collections
  * before the multithreaded part of the run starts, otherwise the threads may

@@ -28,6 +28,7 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -48,6 +49,8 @@ public class ValidationResult
 
     private Period period;
 
+    private DataElementCategoryOptionCombo attributeOptionCombo;
+
     private ValidationRule validationRule;
 
     private Double leftsideValue;
@@ -62,11 +65,13 @@ public class ValidationResult
     {
     }
 
-    public ValidationResult( Period period, OrganisationUnit source, ValidationRule validationRule,
+    public ValidationResult( Period period, OrganisationUnit source,
+        DataElementCategoryOptionCombo attributeOptionCombo, ValidationRule validationRule,
         Double leftsideValue, Double rightsideValue )
     {
         this.source = source;
         this.period = period;
+        this.attributeOptionCombo = attributeOptionCombo;
         this.validationRule = validationRule;
         this.leftsideValue = leftsideValue;
         this.rightsideValue = rightsideValue;
@@ -90,6 +95,11 @@ public class ValidationResult
         return result;
     }
 
+    //
+    // Note: this method is called from threads in which it may not be possible
+    // to initialize lazy Hibernate properties. So object properties to compare
+    // must be chosen accordingly.
+    //
     @Override
     public boolean equals( Object object )
     {
@@ -118,6 +128,18 @@ public class ValidationResult
             }
         }
         else if ( !period.equals( other.period ) )
+        {
+            return false;
+        }
+
+        if ( attributeOptionCombo == null )
+        {
+            if ( other.attributeOptionCombo != null )
+            {
+                return false;
+            }
+        }
+        else if ( attributeOptionCombo.getId() != other.attributeOptionCombo.getId() )
         {
             return false;
         }
@@ -157,7 +179,7 @@ public class ValidationResult
         {
             return false;
         }
-        else if ( Math.round( 100.0 * leftsideValue ) != Math.round( 100 * other.leftsideValue ) )
+        else if ( Math.round( 100.0 * leftsideValue ) != Math.round( 100.0 * other.leftsideValue ) )
         {
             return false;
         }
@@ -173,7 +195,7 @@ public class ValidationResult
         {
             return false;
         }
-        else if ( Math.round( 100.0 * leftsideValue ) != Math.round( 100 * other.leftsideValue ) )
+        else if ( Math.round( 100.0 * leftsideValue ) != Math.round( 100.0 * other.leftsideValue ) )
         {
             return false;
         }
@@ -181,14 +203,19 @@ public class ValidationResult
         return true;
     }
 
+    //
+    // Note: this method is called from threads in which it may not be possible
+    // to initialize lazy Hibernate properties. So object properties to compare
+    // must be chosen accordingly.
+    //
     public int compareTo( ValidationResult other )
     {
     	int result = source.getName().compareTo( other.source.getName() );
     	
     	if ( result != 0 )
-	{
+    	{
     	    return result;
-	}
+    	}
     	
     	result = period.getStartDate().compareTo( other.period.getStartDate() );
     	
@@ -203,6 +230,13 @@ public class ValidationResult
     	{
     	    return result;
     	}
+
+        result = attributeOptionCombo.getId() - other.attributeOptionCombo.getId();
+
+        if ( result != 0 )
+        {
+            return result;
+        }
 
     	result = validationImportanceOrder( validationRule.getImportance() ) - validationImportanceOrder( other.validationRule.getImportance() );
     	
@@ -257,7 +291,7 @@ public class ValidationResult
     @Override
     public String toString()
     {
-        return source + " - " + period + " - " + validationRule + " - " + leftsideValue + " - " + rightsideValue;
+        return source + " - " + period + " - " + attributeOptionCombo.getName() + " - " + validationRule + " - " + leftsideValue + " - " + rightsideValue;
     }
 
     // -------------------------------------------------------------------------
@@ -282,6 +316,16 @@ public class ValidationResult
     public void setPeriod( Period period )
     {
         this.period = period;
+    }
+
+    public DataElementCategoryOptionCombo getAttributeOptionCombo()
+    {
+        return attributeOptionCombo;
+    }
+
+    public void setAttributeOptionCombo( DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        this.attributeOptionCombo = attributeOptionCombo;
     }
 
     public ValidationRule getValidationRule()
