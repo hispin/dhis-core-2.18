@@ -67,7 +67,7 @@ public class DimensionController
     // Controller
     // -------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
     public String getDimension( @PathVariable("uid") String uid,
         @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, 
         Model model )
@@ -85,7 +85,7 @@ public class DimensionController
         return "dimension";
     }
     
-    @RequestMapping(value = "/{uid}/items", method = RequestMethod.GET)
+    @RequestMapping( value = "/{uid}/items", method = RequestMethod.GET )
     public String getItems( @PathVariable String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response )
     {
@@ -118,6 +118,25 @@ public class DimensionController
         WebMetaData metaData = new WebMetaData();
 
         metaData.setDimensions( dimensionService.getAllDimensions() );
+
+        model.addAttribute( "model", metaData );
+
+        if ( links )
+        {
+            WebUtils.generateLinks( metaData );
+        }
+
+        return "dimensions";
+    }
+
+    @RequestMapping( value = "/constraints", method = RequestMethod.GET )
+    public String getDimensionConstraints(
+        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, 
+        Model model )
+    {
+        WebMetaData metaData = new WebMetaData();
+
+        metaData.setDimensions( dimensionService.getDimensionConstraints() );
 
         model.addAttribute( "model", metaData );
 

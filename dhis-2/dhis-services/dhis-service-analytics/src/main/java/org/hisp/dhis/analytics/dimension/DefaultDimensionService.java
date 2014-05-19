@@ -257,6 +257,19 @@ public class DefaultDimensionService
 
         return dimensions;
     }
+    
+    public List<DimensionalObject> getDimensionConstraints()
+    {
+        Collection<CategoryOptionGroupSet> cogs = categoryService.getDataDimensionCategoryOptionGroupSets();
+        Collection<DataElementCategory> cs = categoryService.getAttributeCategories();
+
+        final List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
+
+        dimensions.addAll( cogs );
+        dimensions.addAll( cs );
+        
+        return dimensions;        
+    }
 
     @Override
     public void mergeAnalyticalObject( BaseAnalyticalObject object )
