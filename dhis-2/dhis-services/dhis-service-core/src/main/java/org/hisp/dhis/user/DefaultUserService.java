@@ -682,7 +682,7 @@ public class DefaultUserService
 
         boolean onlyManageWithinUserGroups = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
 
-        if ( onlyManageWithinUserGroups && !currentUserCredentials.getAllAuthorities().contains( "ALL" ) )
+        if ( onlyManageWithinUserGroups && !currentUserCredentials.getAllAuthorities().contains( UserAuthorityGroup.AUTHORITY_ALL ) )
         {
             if ( userCredentials.getUser().getGroups() != null )
             {

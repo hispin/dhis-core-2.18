@@ -30,6 +30,7 @@ package org.hisp.dhis.relationship;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,7 +91,6 @@ public class DefaultRelationshipService
     public Collection<Relationship> getRelationships( TrackedEntityInstance entityInstanceA,
         RelationshipType relationshipType )
     {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 }

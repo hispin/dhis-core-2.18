@@ -6,53 +6,23 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * 
  * @author Paul Mark Castillo
- * 
  */
 public class GetInterpretations
     implements Action, Comparator<Interpretation>
 {
-    /**
-     * 
-     */
-    private static final Log log = LogFactory.getLog( GetInterpretations.class );
-
-    /**
-     * 
-     */
-    public GetInterpretations()
-    {
-    }
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    /**
-     * 
-     */
     private InterpretationService interpretationService;
 
-    /**
-     * @return the interpretationService
-     */
-    public InterpretationService getInterpretationService()
-    {
-        return interpretationService;
-    }
-
-    /**
-     * @param interpretationService the interpretationService to set
-     */
     public void setInterpretationService( InterpretationService interpretationService )
     {
         this.interpretationService = interpretationService;
@@ -62,22 +32,13 @@ public class GetInterpretations
     // Input & Output
     // -------------------------------------------------------------------------
 
-    /**
-     * 
-     */
-    List<Interpretation> interpretations;
+    private List<Interpretation> interpretations;
 
-    /**
-     * @return the interpretations
-     */
     public List<Interpretation> getInterpretations()
     {
         return interpretations;
     }
 
-    /**
-     * @param interpretations the interpretations to set
-     */
     public void setInterpretations( List<Interpretation> interpretations )
     {
         this.interpretations = interpretations;
@@ -96,6 +57,7 @@ public class GetInterpretations
         List<Interpretation> finalInterpretations = new ArrayList<Interpretation>();
 
         Iterator<Interpretation> i = tempInterpretations.iterator();
+    
         while ( i.hasNext() )
         {
             Interpretation currentInterpretation = i.next();
