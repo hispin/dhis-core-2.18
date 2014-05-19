@@ -49,8 +49,8 @@ public class UserRoleSchemaDescriptor implements SchemaDescriptor
 
         schema.setShareable( true );
 
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_USERROLE_PUBLIC_ADD" ) ) );
-        schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_USERROLE_PRIVATE_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_USERROLE_PUBLIC_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_USERROLE_PRIVATE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_USERROLE_DELETE" ) ) );
 
         return schema;
