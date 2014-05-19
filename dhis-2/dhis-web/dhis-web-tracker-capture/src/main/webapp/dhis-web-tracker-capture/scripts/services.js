@@ -520,14 +520,14 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 
 /* current selections */
 .service('CurrentSelection', function(){
-    this.selection = '';
+    this.currentSelection = '';
     
-    this.set = function(selection){  
-        this.selection = selection;        
+    this.set = function(currentSelection){  
+        this.currentSelection = currentSelection;        
     };
     
     this.get = function(){
-        return this.selection;
+        return this.currentSelection;
     };
 })
 
