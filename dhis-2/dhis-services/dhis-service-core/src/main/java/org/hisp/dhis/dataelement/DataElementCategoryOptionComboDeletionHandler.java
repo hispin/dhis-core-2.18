@@ -86,23 +86,6 @@ public class DataElementCategoryOptionComboDeletionHandler
     }
     
     @Override
-    public String allowDeleteDataElementCategory( DataElementCategory category )
-    {
-        final String sql =
-            "select count(*) from datavalue dv " +
-            "where dv.categoryoptioncomboid in ( " +
-                "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc " +
-                "join categories_categoryoptions co on cc.categoryoptionid=co.categoryoptionid " +
-                "where co.categoryid=" + category.getId() + " ) " +
-            "or dv.attributeoptioncomboid in ( " +
-                "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc " +
-                "join categories_categoryoptions co on cc.categoryoptionid=co.categoryoptionid " +
-                "where co.categoryid=" + category.getId() + " );";
-
-        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
-    }
-    
-    @Override
     public String allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         final String sql =
