@@ -527,6 +527,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 
+	<!--  Interpretations -->
+
+	<bean id="org.hisp.dhis.light.interpretation.action.GetInterpretations"
+		class="org.hisp.dhis.light.interpretation.action.GetInterpretations" scope="prototype">
+		<property name="interpretationService" ref="org.hisp.dhis.interpretation.InterpretationService" />
+	</bean>	
+
+	<bean id="org.hisp.dhis.light.interpretation.action.GetInterpretation"
+		class="org.hisp.dhis.light.interpretation.action.GetInterpretation" scope="prototype">
+		<property name="interpretationService" ref="org.hisp.dhis.interpretation.InterpretationService" />
+	</bean>	
+
+	<bean id="org.hisp.dhis.light.interpretation.action.PostInterpretationComment"
+		class="org.hisp.dhis.light.interpretation.action.PostInterpretationComment" scope="prototype">
+		<property name="interpretationService" ref="org.hisp.dhis.interpretation.InterpretationService" />
+	</bean>	
+
+
 	<!-- Anonymous -->
 
 	<bean id="org.hisp.dhis.light.anonymous.action.SearchOrgUnitAction"

@@ -29,6 +29,7 @@
 	#end
 	
     <li><a href="messages.action">$i18n.getString( "messages" ) #if($unreadMessageConversationCount > 0)($unreadMessageConversationCount)#end</a></li>
+    <li><a href="getInterpretations.action">$i18n.getString( "interpretations" )</a></li>
     <li><a href="reports.action">$i18n.getString( "reports" )</a></li>
     <li><a href="settings.action">$i18n.getString( "settings" )</a></li>		
 </ul>

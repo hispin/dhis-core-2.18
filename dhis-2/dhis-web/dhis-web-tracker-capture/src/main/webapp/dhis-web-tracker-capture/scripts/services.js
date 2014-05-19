@@ -152,7 +152,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity instances */
-.factory('TrackedEntityInstanceService', function($http, $filter, EntityService) {
+.factory('TEIService', function($http, $filter, EntityService) {
     
     var promise;
     return {
@@ -210,6 +210,24 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             promise = $http.get( url ).then(function(response){                                
                 return EntityService.formatter(response.data);
             });            
+            return promise;
+        },
+        register: function(tei){
+            
+            var url = '../api/trackedEntityInstances';
+            
+            var promise = $http.post(url, tei).then(function(response){
+                return response.data;
+            });
+            return promise;
+        },        
+        update: function(tei){
+            
+            var url = '../api/trackedEntityInstances';
+            
+            var promise = $http.put( url + '/' + tei.trackedEntityInstance , tei).then(function(response){
+                return response.data;
+            });
             return promise;
         }
     };
@@ -500,16 +518,16 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 
     }])
 
-/* current item selected from grid */
-.service('SelectedEntity', function(){
-    this.selectedEntity = '';
+/* current selections */
+.service('CurrentSelection', function(){
+    this.selection = '';
     
-    this.setSelectedEntity = function(selectedEntity){  
-        this.selectedEntity = selectedEntity;        
+    this.set = function(selection){  
+        this.selection = selection;        
     };
     
-    this.getSelectedEntity = function(){
-        return this.selectedEntity;
+    this.get = function(){
+        return this.selection;
     };
 })
 

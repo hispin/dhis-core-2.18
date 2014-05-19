@@ -508,6 +508,27 @@
 			<param name="page">/dhis-web-light/messages.vm</param>
 		</action>
 
+
+		<!-- Interpretations -->
+		
+		<action name="getInterpretations"
+			class="org.hisp.dhis.light.interpretation.action.GetInterpretations">
+			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/interpretation/interpretations.vm</param>
+		</action>
+
+		<action name="getInterpretation"
+			class="org.hisp.dhis.light.interpretation.action.GetInterpretation">
+			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/interpretation/interpretation.vm</param>
+		</action>
+
+		<action name="postInterpretationComment"
+			class="org.hisp.dhis.light.interpretation.action.PostInterpretationComment">
+			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/interpretation/interpretation.vm</param>
+		</action>
+
 		<!-- Anonymous -->
 
 		<!-- <action name="selectAnonymousOrgUnit" class="org.hisp.dhis.light.beneficiaryregistration.action.GetBeneficiaryRegistrationOrganisationUnitAction"> -->
