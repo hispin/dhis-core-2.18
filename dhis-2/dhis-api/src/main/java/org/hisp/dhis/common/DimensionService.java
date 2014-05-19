@@ -43,5 +43,7 @@ public interface DimensionService
     
     List<DimensionalObject> getAllDimensions();
     
+    List<DimensionalObject> getDimensionConstraints();
+    
     void mergeAnalyticalObject( BaseAnalyticalObject object );
 }
