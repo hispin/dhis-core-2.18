@@ -77,6 +77,9 @@ public class DataElementCategoryOptionComboDeletionHandler
             "select count(*) from datavalue dv " +
             "where dv.categoryoptioncomboid in ( " +
                 "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc " +
+                "where cc.categoryoptionid = " + categoryOption.getId() + " ) " +
+            "or dv.attributeoptioncomboid in ( " +
+                "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc " +
                 "where cc.categoryoptionid = " + categoryOption.getId() + " );";
         
         return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
@@ -88,9 +91,13 @@ public class DataElementCategoryOptionComboDeletionHandler
         final String sql =
             "select count(*) from datavalue dv " +
             "where dv.categoryoptioncomboid in ( " +
-              "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc " +
-              "join categories_categoryoptions co on cc.categoryoptionid=co.categoryoptionid " +
-              "where co.categoryid=" + category.getId() + " );";        
+                "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc " +
+                "join categories_categoryoptions co on cc.categoryoptionid=co.categoryoptionid " +
+                "where co.categoryid=" + category.getId() + " ) " +
+            "or dv.attributeoptioncomboid in ( " +
+                "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc " +
+                "join categories_categoryoptions co on cc.categoryoptionid=co.categoryoptionid " +
+                "where co.categoryid=" + category.getId() + " );";
 
         return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
@@ -101,8 +108,11 @@ public class DataElementCategoryOptionComboDeletionHandler
         final String sql =
             "select count(*) from datavalue dv " +
             "where dv.categoryoptioncomboid in ( " +
-              "select co.categoryoptioncomboid from categorycombos_optioncombos co " +
-              "where co.categorycomboid=" + categoryCombo.getId() + " );";
+                "select co.categoryoptioncomboid from categorycombos_optioncombos co " +
+                "where co.categorycomboid=" + categoryCombo.getId() + " ) " +
+            "or dv.attributeoptioncomboid in ( " +
+                "select co.categoryoptioncomboid from categorycombos_optioncombos co " +
+                "where co.categorycomboid=" + categoryCombo.getId() + " );";
         
         return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
