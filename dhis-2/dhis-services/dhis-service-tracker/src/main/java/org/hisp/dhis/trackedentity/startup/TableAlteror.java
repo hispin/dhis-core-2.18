@@ -36,6 +36,7 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
@@ -266,11 +267,73 @@ public class TableAlteror
         executeSql( "DROP TABLE orgunitgroupprograms" ); 
         
         executeSql( "UPDATE trackedentityattribute SET valuetype='combo' WHERE valuetype='optionSet'" );
+        
+        updateAggregateQueryBuilder();
     }
 
     // -------------------------------------------------------------------------
     // Supporting methods
     // -------------------------------------------------------------------------
+
+    private void updateAggregateQueryBuilder()
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+            ResultSet resultSet = statement
+                .executeQuery( "select trackedentityattributeid from trackedentityattribute where name='Age'" );
+
+            if ( resultSet.next() )
+            {
+                int id = resultSet.getInt( "trackedentityattributeid" );
+                
+                String source = "PC:DATE@executionDate#-DATE@birthDate#";
+                String target = CaseAggregationCondition.OBJECT_TRACKED_ENTITY_ATTRIBUTE
+                    + CaseAggregationCondition.SEPARATOR_OBJECT + id + ".visit";
+
+                updateFixedAttributeInCaseAggregate( source, target );
+            }
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    private void updateFixedAttributeInCaseAggregate( String source, String target )
+    {
+        StatementHolder holder = statementManager.getHolder();
+        try
+        {
+            Statement statement = holder.getStatement();
+            ResultSet resultSet = statement
+                .executeQuery( "SELECT caseaggregationconditionid, aggregationExpression FROM caseaggregationcondition where aggregationExpression like '%"
+                    + source + "%'" );
+
+            source = source.replaceAll( "@", "\\@" ).replaceAll( "#", "\\#" );
+
+            while ( resultSet.next() )
+            {
+                String id = resultSet.getString( "caseaggregationconditionid" );
+                String expression = resultSet.getString( "aggregationExpression" );
+
+                expression = expression.replaceAll( source, target );
+                expression = expression.replaceAll( "'", "\"" );
+                executeSql( "UPDATE caseaggregationcondition SET aggregationExpression='" + expression
+                    + "'  WHERE caseaggregationconditionid=" + id );
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
 
     private void updateProgramInstanceStatus()
     {
