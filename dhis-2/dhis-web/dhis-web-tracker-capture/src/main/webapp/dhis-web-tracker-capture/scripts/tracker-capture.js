@@ -164,7 +164,6 @@ function getUserProfile()
     return def.promise(); 
 }
 
-
 function getMetaPrograms()
 {
     var def = $.Deferred();
@@ -293,9 +292,10 @@ function getTrackedEntities()
         type: 'GET',
         data:'viewClass=detailed&paging=false'
     }).done( function(response) {
-        _.each(_.values(response.trackedEntities), function(te){
+        /*_.each(_.values(response.trackedEntities), function(te){
             localStorage[te.id] = JSON.stringify(te);;
-        });        
+        });  */      
+        localStorage['TRACKED_ENTITIES'] = JSON.stringify(response.trackedEntities);           
         def.resolve();
     });
     

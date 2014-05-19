@@ -2,9 +2,24 @@
     <div class="registration-container">
         <form name="outerForm" novalidate>
             
+            <div ng-if='!selectedProgram'>
+                <h3>{{'category' | translate}}</h3>
+                <table class="dhis2-list-table-striped dhis2-table-hover">
+                    <tr>
+                        <td>
+                            {{'entity_type' | translate}}
+                        </td>
+                        <td>
+                            <select class="form-control" ng-model="trackedEntities.selected" ng-options="trackedEntity.name for trackedEntity in trackedEntities.available | orderBy: 'name'">                                
+                            </select>                            
+                        </td>
+                    </tr>                   
+                </table>
+                <hr>
+            </div>
+            
             <h3>{{'profile' | translate}}</h3>
             <table class="dhis2-list-table-striped dhis2-table-hover">
-
                 <tr ng-repeat="attribute in attributes">
                     <td>
                         {{attribute.name}}
@@ -47,29 +62,24 @@
                 <hr>
                 <h3>{{'enrollment' | translate}}</h3>
                 <table class="dhis2-list-table-striped dhis2-table-hover">
-                    <tr ng-if="selectedProgram">
+                    <tr>
                         <td>
-                            {{'program'| translate}}
+                            {{selectedProgram.dateOfEnrollmentDescription}}
                         </td>
                         <td>
-                            <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
-                                <option value="">{{'please_select'| translate}}</option>
-                            </select>
+                            <input type="text" class="form-control" ng-date ng-model="enrollment.incidentDate" />
                         </td>
                     </tr>     
-                    <tr ng-if="selectedProgram">
+                    <tr>
                         <td>
-                            {{'program'| translate}}
+                            {{selectedProgram.dateOfIncidentDescription}}
                         </td>
                         <td>
-                            <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
-                                <option value="">{{'please_select'| translate}}</option>
-                            </select>
+                            <input type="text" class="form-control" ng-date ng-model="enrollment.enrollmentDate" />
                         </td>
                     </tr>
                 </table>
             </div>
-            
             
             <div class="btn-group vertical-spacing">                
                 <button type="button" class="btn btn-default" ng-click="showDashboard()">{{'save_and_continue'| translate}}</button>
