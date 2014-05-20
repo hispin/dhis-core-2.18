@@ -41,6 +41,7 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceService.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -448,13 +449,12 @@ public class HibernateTrackedEntityInstanceStore
                 criteria.add( Restrictions.eq( "programInstance.program", program ) );
             }
 
-            Number rs = (Number) criteria.setProjection(
-                Projections.projectionList().add( Projections.property( "attribute.id" ) ) ).uniqueResult();
+            Number rs = (Number) criteria.setProjection( Projections.projectionList().add( 
+                Projections.property( "attribute.id" ) ) ).uniqueResult();
 
             if ( rs != null && rs.intValue() > 0 )
             {
-                return TrackedEntityInstanceService.ERROR_DUPLICATE_IDENTIFIER
-                    + TrackedEntityInstanceService.SEPERATOR + rs.intValue();
+                return ERROR_DUPLICATE_IDENTIFIER + SEPARATOR + rs.intValue();
             }
         }
         

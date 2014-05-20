@@ -101,7 +101,7 @@ public interface TrackedEntityInstanceService
 
     public static final int ERROR_ENROLLMENT = 2;
 
-    public static final String SEPERATOR = "_";
+    public static final String SEPARATOR = "_";
 
     /**
      * Returns a grid with tracked entity instance values based on the given
