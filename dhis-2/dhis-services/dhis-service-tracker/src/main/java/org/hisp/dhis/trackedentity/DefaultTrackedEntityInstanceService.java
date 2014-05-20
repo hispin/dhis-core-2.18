@@ -604,7 +604,7 @@ public class DefaultTrackedEntityInstanceService
 
             if ( validationCriteria != null )
             {
-                return TrackedEntityInstanceService.ERROR_ENROLLMENT + TrackedEntityInstanceService.SEPERATOR
+                return TrackedEntityInstanceService.ERROR_ENROLLMENT + TrackedEntityInstanceService.SEPARATOR
                     + validationCriteria.getId();
             }
         }
