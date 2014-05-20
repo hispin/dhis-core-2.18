@@ -38,7 +38,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.hisp.dhis.validation.ValidationCriteriaService;
 import org.junit.Test;
@@ -158,33 +157,4 @@ public class TrackedEntityInstanceStoreTest
 
         assertEquals( 2, entityInstanceStore.getRepresentatives( entityInstanceB1 ).size() );
     }
-
-    @Test
-    public void testGetByPhoneNumber()
-    {
-        entityInstanceStore.save( entityInstanceA1 );
-        entityInstanceStore.save( entityInstanceB1 );
-
-        TrackedEntityAttribute attribute = createTrackedEntityAttribute( 'C' );
-        attribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );
-        attributeService.addTrackedEntityAttribute( attribute );
-
-        TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA1,
-            attribute );
-        attributeValue.setValue( "123456789" );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
-
-        entityInstanceA1.addAttributeValue( attributeValue );
-        entityInstanceStore.update( entityInstanceA1 );
-
-        attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceB1, attribute );
-        attributeValue.setValue( "123456789" );
-        attributeValueService.addTrackedEntityAttributeValue( attributeValue );
-
-        entityInstanceB1.addAttributeValue( attributeValue );
-        entityInstanceStore.update( entityInstanceB1 );
-
-        assertEquals( 2, entityInstanceStore.getByPhoneNumber( "123456789", null, null ).size() );
-    }
-
 }
