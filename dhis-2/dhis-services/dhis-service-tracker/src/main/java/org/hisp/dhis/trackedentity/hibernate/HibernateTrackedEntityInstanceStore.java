@@ -68,7 +68,6 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.Timer;
-import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
@@ -563,39 +562,5 @@ public class HibernateTrackedEntityInstanceStore
         {
             throw new RuntimeException( ex );
         }
-    }
-
-    @SuppressWarnings( "unchecked" )
-    @Override
-    public Collection<TrackedEntityInstance> getByAttributeValue( String searchText, int attributeId, Integer min,
-        Integer max )
-    {
-        String hql = "FROM TrackedEntityAttributeValue pav WHERE lower (pav.value) LIKE lower ('%" + searchText
-            + "%') AND pav.attribute.id =:attributeId order by pav.entityInstance";
-
-        Query query = getQuery( hql );
-
-        query.setInteger( "attributeId", attributeId );
-
-        if ( min != null && max != null )
-        {
-            query.setFirstResult( min ).setMaxResults( max );
-        }
-
-        List<TrackedEntityInstance> entityInstances = new ArrayList<TrackedEntityInstance>();
-        Collection<TrackedEntityAttributeValue> attributeValue = query.list();
-        for ( TrackedEntityAttributeValue pv : attributeValue )
-        {
-            entityInstances.add( pv.getEntityInstance() );
-        }
-
-        return entityInstances;
-    }
-    
-    @SuppressWarnings( "unchecked" )
-    @Override
-    public Collection<TrackedEntityInstance> get( TrackedEntity trackedEntity )
-    {
-        return getCriteria( Restrictions.eq( "trackedEntity", trackedEntity ) ).list();
     }
 }
