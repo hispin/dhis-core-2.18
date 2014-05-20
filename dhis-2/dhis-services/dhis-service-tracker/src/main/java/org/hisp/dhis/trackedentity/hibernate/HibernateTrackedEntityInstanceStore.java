@@ -421,25 +421,6 @@ public class HibernateTrackedEntityInstanceStore
         return getQuery( hql ).setEntity( "representative", instance ).list();
     }
 
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<TrackedEntityInstance> getByPhoneNumber( String phoneNumber, Integer min, Integer max )
-    {
-        Criteria criteria = getCriteria();
-        criteria.createAlias( "attributeValues", "attributeValue" );
-        criteria.createAlias( "attributeValue.attribute", "attribute" );
-        criteria.add( Restrictions.eq( "attribute.valueType", TrackedEntityAttribute.TYPE_PHONE_NUMBER ) );
-        criteria.add( Restrictions.like( "attributeValue.value", phoneNumber ) );
-
-        if ( min != null && max != null )
-        {
-            criteria.setFirstResult( min );
-            criteria.setMaxResults( max );
-        }
-
-        return criteria.list();
-    }
-
     public String validate( TrackedEntityInstance instance, Program program, I18nFormat format )
     {
         if ( instance.getAttributeValues() != null && instance.getAttributeValues().size() > 0 )

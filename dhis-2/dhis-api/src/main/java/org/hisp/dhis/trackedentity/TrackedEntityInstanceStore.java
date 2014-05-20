@@ -75,17 +75,6 @@ public interface TrackedEntityInstanceStore
     Collection<TrackedEntityInstance> getRepresentatives( TrackedEntityInstance instances );
 
     /**
-     * Search entityInstances by phone number (performs partial search)
-     * 
-     * @param phoneNumber The string for searching by phone number
-     * @param min
-     * @param max
-     * 
-     * @return List of instances
-     */
-    Collection<TrackedEntityInstance> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
-
-    /**
      * Validate entity-instances attribute values and validation criteria by
      * program before registering / updating information
      * 
