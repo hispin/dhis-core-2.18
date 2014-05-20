@@ -92,6 +92,13 @@ public class SetSMTPSettingsAction
         this.smtpTls = smtpTls;
     }
 
+    private String emailSender;
+
+    public void setEmailSender( String emailSender )
+    {
+        this.emailSender = emailSender;
+    }
+    
     private String message;
 
     public String getMessage()
@@ -121,6 +128,8 @@ public class SetSMTPSettingsAction
         systemSettingManager.saveSystemSetting( KEY_EMAIL_USERNAME, smtpUsername );
 
         systemSettingManager.saveSystemSetting( KEY_EMAIL_TLS, smtpTls );
+        
+        systemSettingManager.saveSystemSetting( KEY_EMAIL_SENDER, emailSender );
         
         message = i18n.getString( "settings_updated" );
 

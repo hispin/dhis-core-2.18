@@ -159,7 +159,12 @@ public class DefaultSystemSettingManager
     {
         return (Boolean) getSystemSetting( KEY_EMAIL_TLS, true );
     }
-
+    
+    public String getEmailSender()
+    {
+        return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_SENDER ) );
+    }
+    
     public boolean accountRecoveryEnabled()
     {
         return (Boolean) getSystemSetting( KEY_ACCOUNT_RECOVERY, false );

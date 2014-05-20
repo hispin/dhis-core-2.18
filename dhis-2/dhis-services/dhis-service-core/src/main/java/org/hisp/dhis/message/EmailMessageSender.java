@@ -44,6 +44,8 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.scheduling.annotation.Async;
 
+import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+
 /**
  * @author Lars Helge Overland
  */
@@ -52,7 +54,7 @@ public class EmailMessageSender
 {
     private static final Log log = LogFactory.getLog( EmailMessageSender.class );
     private static final String FROM_ADDRESS = "noreply@dhis2.org";
-    private static final String FROM_NAME = "DHIS2 Message [No reply]";
+    private static final String FROM_NAME = "DHIS 2 Message [No reply]";
     private static final String SUBJECT_PREFIX = "[DHIS2] ";
     private static final String LB = System.getProperty( "line.separator" );
 
@@ -90,6 +92,7 @@ public class EmailMessageSender
         String username = systemSettingManager.getEmailUsername();
         String password = systemSettingManager.getEmailPassword();
         boolean tls = systemSettingManager.getEmailTls();
+        String from = systemSettingManager.getEmailSender();
 
         if ( hostName == null )
         {
@@ -104,7 +107,7 @@ public class EmailMessageSender
         
         try
         {
-            Email email = getEmail( hostName, port, username, password, tls );
+            Email email = getEmail( hostName, port, username, password, tls, from );
             email.setSubject( SUBJECT_PREFIX + subject );
             email.setMsg( text );
             
@@ -141,12 +144,12 @@ public class EmailMessageSender
         return null;
     }
 
-    private Email getEmail( String hostName, int port, String username, String password, boolean tls )
+    private Email getEmail( String hostName, int port, String username, String password, boolean tls, String sender )
         throws EmailException
     {
         Email email = new SimpleEmail();
         email.setHostName( hostName );
-        email.setFrom( FROM_ADDRESS, FROM_NAME );
+        email.setFrom( defaultIfEmpty( sender, FROM_ADDRESS ), FROM_NAME );
         email.setSmtpPort( port );
         email.setTLS( true );
         

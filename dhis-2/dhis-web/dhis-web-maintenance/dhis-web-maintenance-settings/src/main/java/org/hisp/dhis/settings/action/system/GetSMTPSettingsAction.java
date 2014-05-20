@@ -88,6 +88,13 @@ public class GetSMTPSettingsAction
     {
         return smtpTls;
     }
+    
+    private String emailSender;
+
+    public String getEmailSender()
+    {
+        return emailSender;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -104,6 +111,8 @@ public class GetSMTPSettingsAction
         smtpUsername = systemSettingManager.getEmailUsername();
 
         smtpTls = systemSettingManager.getEmailTls();
+        
+        emailSender = systemSettingManager.getEmailSender();
         
         return SUCCESS;
     }

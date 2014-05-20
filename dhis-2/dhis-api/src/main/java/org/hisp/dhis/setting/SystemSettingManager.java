@@ -68,6 +68,7 @@ public interface SystemSettingManager
     final String KEY_EMAIL_USERNAME = "keyEmailUsername";
     final String KEY_EMAIL_PASSWORD = "keyEmailPassword";
     final String KEY_EMAIL_TLS = "keyEmailTls";
+    final String KEY_EMAIL_SENDER = "keyEmailSender";
     final String KEY_SCHEDULED_PERIOD_TYPES = "keyScheduledPeriodTypes";
     final String KEY_SCHEDULED_TASKS = "keySchedTasks";
     final String KEY_ORGUNITGROUPSET_AGG_LEVEL = "orgUnitGroupSetAggregationLevel";
@@ -145,6 +146,8 @@ public interface SystemSettingManager
     String getEmailPassword();
 
     boolean getEmailTls();
+    
+    String getEmailSender();
 
     boolean accountRecoveryEnabled();
 
