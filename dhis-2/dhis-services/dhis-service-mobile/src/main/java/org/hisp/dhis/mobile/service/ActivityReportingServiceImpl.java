@@ -416,39 +416,6 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public String findPatient( String keyword, int orgUnitId )
-        throws NotAllowedException
-    {
-        Collection<TrackedEntityInstance> patients = attValueService.getTrackedEntityInstance( null, keyword );
-
-        if ( patients.size() == 0 )
-        {
-            throw NotAllowedException.NO_BENEFICIARY_FOUND;
-        }
-
-        Collection<TrackedEntityAttribute> displayAttributes = attributeService
-            .getTrackedEntityAttributesDisplayInList();
-        String resultSet = "";
-
-        for ( TrackedEntityInstance patient : patients )
-        {
-            resultSet += patient.getId() + "/";
-            String attText = "";
-            for ( TrackedEntityAttribute displayAttribute : displayAttributes )
-            {
-
-                TrackedEntityAttributeValue value = attValueService.getTrackedEntityAttributeValue( patient,
-                    displayAttribute );
-                attText += value + " ";
-            }
-            attText = attText.trim();
-            resultSet += attText + "$";
-        }
-
-        return resultSet;
-    }
-
-    @Override
     public String saveProgramStage( org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage,
         int patientId, int orgUnitId )
         throws NotAllowedException
