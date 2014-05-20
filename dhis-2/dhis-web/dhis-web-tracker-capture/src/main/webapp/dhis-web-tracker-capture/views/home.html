@@ -10,7 +10,7 @@
 </div>
 <div class="page" id="mainPage" ng-show="selectedOrgUnit">
     <h1>
-        <span ng-if='!showRegistrationDiv'>
+        <span ng-if='showSearchDiv || !showRegistrationDiv'>
             {{selectedProgram.trackedEntity.name}} {{'search'| translate}}
         </span>
         <span ng-if='showRegistrationDiv'>
