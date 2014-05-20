@@ -32,8 +32,10 @@ import java.lang.Character.UnicodeBlock;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.message.MessageSender;
@@ -48,8 +50,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Nguyen Kim Lai
- * 
- * @version SmsSender.java 10:29:11 AM Apr 16, 2013 $
  */
 public class SmsMessageSender
     implements MessageSender
@@ -57,6 +57,7 @@ public class SmsMessageSender
     private static final Log log = LogFactory.getLog( SmsMessageSender.class );
 
     private static int MAX_CHAR = 160;
+    private static final String GW_BULK = "bulk_gw";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -88,83 +89,67 @@ public class SmsMessageSender
     {
         String message = null;
 
-        if ( outboundSmsTransportService == null || outboundSmsTransportService.getGatewayMap() == null || !outboundSmsTransportService.isEnabled() )
+        Map<String, String> gatewayMap = outboundSmsTransportService != null ? outboundSmsTransportService.getGatewayMap() : null;
+
+        String gatewayId = StringUtils.trimToNull( outboundSmsTransportService.getDefaultGateway() );
+
+        if ( gatewayMap == null || gatewayId == null || !outboundSmsTransportService.isEnabled() )
         {
-            message = "No gateway";
-            return message;
+            return "No gateway";
         }
 
         Set<User> toSendList = new HashSet<User>();
 
-        String gatewayId = outboundSmsTransportService.getDefaultGateway();
-
-        if ( gatewayId != null && !gatewayId.trim().isEmpty() )
+        User currentUser = currentUserService.getCurrentUser();
+        
+        if ( !forceSend )
         {
-            if( !forceSend )
+            for ( User user : users )
             {
-                for ( User user : users )
+                if ( currentUser == null || ( currentUser != null && !currentUser.equals( user ) ) )
                 {
-                    if ( currentUserService.getCurrentUser() != null )
+                    if ( isQualifiedReceiver( user ) )
                     {
-                        if ( !currentUserService.getCurrentUser().equals( user ) )
-                        {
-                            if ( isQualifiedReceiver( user ) )
-                            {
-                                toSendList.add( user );
-                            }
-                        }
-                    }
-                    else if ( currentUserService.getCurrentUser() == null )
-                    {
-                        if ( isQualifiedReceiver( user ) )
-                        {
-                            toSendList.add( user );
-                        }
+                        toSendList.add( user );
                     }
                 }
             }
-            else
+        }
+        else
+        {
+            toSendList.addAll( users );
+        }
+
+        Set<String> phoneNumbers = null;
+
+        phoneNumbers = getRecipientsPhoneNumber( toSendList );
+
+        text = createMessage( subject, text, sender );
+
+        // Bulk is limited in sending long SMS, need to split in pieces
+                
+        if ( gatewayId.equals( gatewayMap.get( GW_BULK ) ) )
+        {
+            // Check if text contain any specific character
+            
+            for ( char each : text.toCharArray() )
             {
-                toSendList.addAll( users );
+                if ( !Character.UnicodeBlock.of( each ).equals( UnicodeBlock.BASIC_LATIN ) )
+                {
+                    MAX_CHAR = 40;
+                    break;
+                }
             }
-
-            Set<String> phoneNumbers = null;
-
-            phoneNumbers = getRecipientsPhoneNumber( toSendList );
-
-            text = createMessage( subject, text, sender );
-
-            // Bulk is limited in sending long SMS, need to cut into small
-            // pieces
-            if ( outboundSmsTransportService.getGatewayMap().get( "bulk_gw" ) != null
-                && outboundSmsTransportService.getGatewayMap().get( "bulk_gw" ).equals( gatewayId ) )
+            if ( text.length() > MAX_CHAR )
             {
-                // Check if text contain any specific unicode character
-                for ( char each : text.toCharArray() )
-                {
-                    if ( !Character.UnicodeBlock.of( each ).equals( UnicodeBlock.BASIC_LATIN ) )
-                    {
-                        MAX_CHAR = 40;
-                        break;
-                    }
-                }
-                if ( text.length() > MAX_CHAR )
-                {
-                    List<String> splitTextList = new ArrayList<String>();
-                    splitTextList = splitLongUnicodeString( text, splitTextList );
-                    for ( String each : splitTextList )
-                    {
-                        if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
-                        {
-                            message = sendMessage( each, phoneNumbers, gatewayId );
-                        }
-                    }
-                }
-                else
+                List<String> splitTextList = new ArrayList<String>();
+                splitTextList = splitLongUnicodeString( text, splitTextList );
+                
+                for ( String each : splitTextList )
                 {
                     if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
                     {
-                        message = sendMessage( text, phoneNumbers, gatewayId );
+                        message = sendMessage( each, phoneNumbers, gatewayId );
                     }
                 }
             }
@@ -174,6 +159,13 @@ public class SmsMessageSender
                 {
                     message = sendMessage( text, phoneNumbers, gatewayId );
                 }
+            }
+        }
+        else
+        {
+            if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
+            {
+                message = sendMessage( text, phoneNumbers, gatewayId );
             }
         }
 
@@ -186,33 +178,15 @@ public class SmsMessageSender
 
     private boolean isQualifiedReceiver( User user )
     {
-        if ( user.getFirstName() == null ) // If receiver is raw number
+        if ( user.getFirstName() == null ) // Receiver is raw number
         {
             return true;
         }
-        else
-        // If receiver is user
+        else // Receiver is user
         {
-            UserSetting userSetting = userService
-                .getUserSetting( user, UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION );
+            UserSetting userSetting = userService.getUserSetting( user, UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION );
 
-            if ( userSetting != null )
-            {
-                boolean sendSMSNotification = (Boolean) userSetting.getValue();
-
-                if ( sendSMSNotification == true )
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            return ( userSetting != null && userSetting.getValue() != null ) ? (Boolean) userSetting.getValue() : false;
         }
     }
 
@@ -249,7 +223,7 @@ public class SmsMessageSender
         {
             String phoneNumber = user.getPhoneNumber();
 
-            if ( phoneNumber != null && !phoneNumber.trim().isEmpty() )
+            if ( StringUtils.trimToNull( phoneNumber ) != null )
             {
                 recipients.add( phoneNumber );
             }
@@ -260,6 +234,7 @@ public class SmsMessageSender
     private String sendMessage( String text, Set<String> recipients, String gateWayId )
     {
         String message = null;
+        
         OutboundSms sms = new OutboundSms();
         sms.setMessage( text );
         sms.setRecipients( recipients );
@@ -270,10 +245,11 @@ public class SmsMessageSender
         }
         catch ( SmsServiceException e )
         {
-            message = "Unable to send message through sms: " + sms + e.getCause().getMessage();
+            message = "Unable to send message through SMS: " + sms + e.getCause().getMessage();
 
-            log.warn( "Unable to send message through sms: " + sms, e );
+            log.warn( "Unable to send message through SMS: " + sms, e );
         }
+        
         return message;
     }
 
@@ -296,6 +272,7 @@ public class SmsMessageSender
         if ( secondTempString.length() <= MAX_CHAR )
         {
             result.add( secondTempString );
+            
             return result;
         }
         else
