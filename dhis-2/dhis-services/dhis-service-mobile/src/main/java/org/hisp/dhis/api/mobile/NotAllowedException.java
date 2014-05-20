@@ -64,7 +64,7 @@ public class NotAllowedException
         this.reason = reason;
     }
 
-    String getReason()
+    public String getReason()
     {
         return reason;
     }
