@@ -857,29 +857,6 @@ public class ActivityReportingServiceImpl
         }
         patientModel.setRelationships( relationshipList );
 
-        // Set available enrollment relationships
-        // List<RelationshipType> enrollmentRelationshipList = new
-        // ArrayList<RelationshipType>(
-        // relationshipTypeService.getAllRelationshipTypes() );
-        // List<org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship>
-        // enrollmentRelationshipMobileList = new
-        // ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship>();
-        // for ( RelationshipType enrollmentRelationship :
-        // enrollmentRelationshipList )
-        // {
-        // org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship
-        // enrollmentRelationshipMobile = new
-        // org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship();
-        // enrollmentRelationshipMobile.setId( enrollmentRelationship.getId() );
-        // enrollmentRelationshipMobile.setName(
-        // enrollmentRelationship.getName() );
-        // enrollmentRelationshipMobile.setaIsToB(
-        // enrollmentRelationship.getaIsToB() );
-        // enrollmentRelationshipMobile.setbIsToA(
-        // enrollmentRelationship.getbIsToA() );
-        // enrollmentRelationshipMobileList.add( enrollmentRelationshipMobile );
-        // }
-        // patientModel.setRelationships( enrollmentRelationshipMobileList );
         return patientModel;
     }
 
@@ -1203,6 +1180,7 @@ public class ActivityReportingServiceImpl
                         programsInfo += program.getId() + "/" + program.getName() + "$";
                     }
                 }
+                
                 throw new NotAllowedException( programsInfo );
             }
         }
@@ -1401,6 +1379,7 @@ public class ActivityReportingServiceImpl
         }
     }
 
+    @Override
     public Collection<TrackedEntityAttribute> getPatientAtts( String programId )
     {
         Collection<TrackedEntityAttribute> patientAttributes = null;
@@ -1418,6 +1397,7 @@ public class ActivityReportingServiceImpl
         return patientAttributes;
     }
 
+    @Override
     public Collection<org.hisp.dhis.api.mobile.model.PatientAttribute> getAttsForMobile()
     {
         Collection<org.hisp.dhis.api.mobile.model.PatientAttribute> list = new HashSet<org.hisp.dhis.api.mobile.model.PatientAttribute>();
@@ -1820,14 +1800,16 @@ public class ActivityReportingServiceImpl
         return mobilePatient;
     }
 
+    // TODO remove, we cannot have state like this in a singleton
+    
     private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile;
 
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientMobile()
+    private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientMobile()
     {
         return patientMobile;
     }
 
-    public void setPatientMobile( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile )
+    private void setPatientMobile( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile )
     {
         this.patientMobile = patientMobile;
     }
