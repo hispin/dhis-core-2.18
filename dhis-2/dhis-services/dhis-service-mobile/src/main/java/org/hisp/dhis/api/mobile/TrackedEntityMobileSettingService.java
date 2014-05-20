@@ -34,12 +34,12 @@ import org.hisp.dhis.trackedentity.TrackedEntityMobileSetting;
 
 public interface TrackedEntityMobileSettingService
 {
-    public int saveTrackedEntityMobileSetting( TrackedEntityMobileSetting setting );
+    int saveTrackedEntityMobileSetting( TrackedEntityMobileSetting setting );
 
-    public void updateTrackedEntityMobileSetting( TrackedEntityMobileSetting setting );
+    void updateTrackedEntityMobileSetting( TrackedEntityMobileSetting setting );
 
-    public Collection<TrackedEntityMobileSetting> getCurrentSetting();
+    Collection<TrackedEntityMobileSetting> getCurrentSetting();
     
-    public TrackedEntityMobileSetting get( int id );
+    TrackedEntityMobileSetting get( int id );
     
 }

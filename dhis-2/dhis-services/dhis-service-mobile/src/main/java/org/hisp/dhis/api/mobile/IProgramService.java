@@ -36,14 +36,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 public interface IProgramService
 {
-    public List<Program> getPrograms( OrganisationUnit unit, String localeString );
+    List<Program> getPrograms( OrganisationUnit unit, String localeString );
 
-    public Program getProgram( int programId, String localeString );
+    Program getProgram( int programId, String localeString );
     
-    public List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> getProgramsLWUIT( OrganisationUnit unit );
+    List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> getProgramsLWUIT( OrganisationUnit unit );
     
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Program getProgramLWUIT( int programId );
+    org.hisp.dhis.api.mobile.model.LWUITmodel.Program getProgramLWUIT( int programId );
 
-    public List<Program> updateProgram( ModelList programsFromClient, String localeString, OrganisationUnit unit );
+    List<Program> updateProgram( ModelList programsFromClient, String localeString, OrganisationUnit unit );
 
 }
