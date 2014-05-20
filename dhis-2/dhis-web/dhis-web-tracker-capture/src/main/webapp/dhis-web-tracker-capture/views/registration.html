@@ -82,11 +82,10 @@
             </div>
             
             <div class="btn-group vertical-spacing">                
-                <button type="button" class="btn btn-default" ng-click="showDashboard()">{{'save_and_continue'| translate}}</button>
-                <button type="button" class="btn btn-default" ng-click="registerEntity()">{{'save_and_add_new'| translate}}</button>
+                <button type="button" class="btn btn-default" ng-click="registerEntity(true)">{{'save_and_continue'| translate}}</button>
+                <button type="button" class="btn btn-default" ng-click="registerEntity(false)">{{'save_and_add_new'| translate}}</button>
                 <button type="button" class="btn btn-default" ng-click="showRegistration()">{{'cancel'| translate}}</button>
             </div>
-
         </form>
     </div>
 </div>

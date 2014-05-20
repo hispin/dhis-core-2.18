@@ -162,7 +162,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.generateGridColumns = function(attributes){
         var columns = angular.copy(attributes);  
         
-        //also add extra columns - orgunit for example
+        //also add extra columns which are not part of attributes (orgunit for example)
         columns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string'});
         
         //generate grid column for the selected program/attributes
@@ -328,14 +328,12 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             $scope.trackedEntityList = [];
             $scope.attributes = AttributesFactory.getByProgram($scope.selectedProgram);
         }
-    });
+    });    
     
-    $scope.showDashboard = function(){        
-        $scope.registerEntity();
-    };
     
-    $scope.registerEntity = function(){    
+    $scope.registerEntity = function(showDashboard){
         
+        //get selected entity
         var selectedTrackedEntity = '';        
         if($scope.selectedProgram){
             selectedTrackedEntity = $scope.selectedProgram.trackedEntity.id;
@@ -344,6 +342,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             selectedTrackedEntity = $scope.trackedEntities.selected.id;
         }
         
+        //get tei attributes and their values
         var registrationAttributes = [];    
         angular.forEach($scope.attributes, function(attribute){
             if(!angular.isUndefined(attribute.value)){
@@ -352,38 +351,59 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             } 
         });       
         
-        $scope.tei = {trackedEntity: selectedTrackedEntity, orgUnit: $scope.selectedOrgUnit.id, attributes: registrationAttributes };
-        
-        //Register TEI
+        //prepare tei model and do registration
+        $scope.tei = {trackedEntity: selectedTrackedEntity, orgUnit: $scope.selectedOrgUnit.id, attributes: registrationAttributes };   
+        var teiId = '';
+    
         TEIService.register($scope.tei).then(function(tei){
-            if(tei.status === 'SUCCESS'){                
-                //check for enrollment
-                if($scope.selectedProgram){                    
+            
+            if(tei.status === 'SUCCESS'){
+                
+                teiId = tei.reference;
+                
+                //registration is successful and check for enrollment
+                if($scope.selectedProgram){    
                     //enroll TEI
-                    var enrollment = {trackedEntityInstance: tei.reference,
-                            program: $scope.selectedProgram.id,
-                            status: 'ACTIVE',
-                            dateOfEnrollment: $scope.enrollment.enrollmentDate,
-                            dateOfIncident: $scope.enrollment.incidentDate
-                        };
+                    var enrollment = {trackedEntityInstance: teiId,
+                                program: $scope.selectedProgram.id,
+                                status: 'ACTIVE',
+                                dateOfEnrollment: $scope.enrollment.enrollmentDate,
+                                dateOfIncident: $scope.enrollment.incidentDate
+                            };
                     EnrollmentService.enroll(enrollment).then(function(data){
-                        if(data.status === 'SUCCESS'){
-                            $location.path('/dashboard').search({selectedEntityId: tei.reference,
-                                                                selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id: null});   
+                        if(data.status != 'SUCCESS'){
+                            //enrollment has failed
+                            var dialogOptions = {
+                                    headerText: 'enrollment_error',
+                                    bodyText: data.description
+                                };
+                            DialogService.showDialog({}, dialogOptions);
+                            return;
                         }
                     });
                 }
-                else{
-                    $location.path('/dashboard').search({selectedEntityId: tei.reference,
-                                                        selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id: null});
-                }
             }
             else{
+                //registration has failed
                 var dialogOptions = {
                         headerText: 'registration_error',
                         bodyText: tei.description
                     };
                 DialogService.showDialog({}, dialogOptions);
+                return;
+            }
+            
+            if(showDashboard){
+                $location.path('/dashboard').search({selectedEntityId: teiId,
+                                                selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id : null});
+            }
+            else{            
+                
+                angular.forEach($scope.attributes, function(attribute){
+                    attribute.value = ''; 
+                });
+                $scope.enrollment.enrollmentDate = '';
+                $scope.enrollment.incidentDate =  '';
             }
         });
     };
@@ -618,27 +638,24 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                         var programStages = [];
                         
                         angular.forEach(program.programStages, function(ps){  
-                            
-                            programStages.push(storage.get(ps.id));
+                            ps = storage.get(ps.id);
+                            programStages.push(ps);
                             var dhis2Event = {programStage: ps.id, 
                                               orgUnit: $scope.selectedOrgUnitId, 
                                               eventDate: moment(),
                                               name: ps.name,
                                               status: 'ACTIVE'};
                             
-                            var date = moment();                        
+                            var today = moment();                                       
                             
-                            if( moment().add('days', ps.minDaysFromStart).isBefore(date)){
+                            dhis2Event.statusColor = 'stage-on-time';
+                            
+                            if( moment().add('d', ps.minDaysFromStart).isBefore(today)){                                
                                 dhis2Event.statusColor = 'stage-overdue';
-                            }
-                            else{
-                                dhis2Event.statusColor = 'stage-on-time';
-                            }                      
-                            
+                            }                            
+
                             $scope.dhis2Events.push(dhis2Event);
                         });
-                        
-                        console.log('the stages are:  ', $scope.dhis2Events);
                     }
                 }
                 
