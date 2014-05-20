@@ -669,13 +669,11 @@ public class DefaultProgramInstanceService
 
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
-            grid.addRow();
-            grid.addValue( "" );
-            grid.addValue( "" );
+            grid.addRow().addEmptyValues( 2 );
 
             grid.addRow();
             grid.addValue( programStageInstance.getProgramStage().getName() );
-            grid.addValue( "" );
+            grid.addEmptyValues( 1 );
 
             // -----------------------------------------------------------------
             // due-date && report-date

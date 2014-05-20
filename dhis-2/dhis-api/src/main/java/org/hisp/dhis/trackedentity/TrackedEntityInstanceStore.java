@@ -111,24 +111,4 @@ public interface TrackedEntityInstanceStore
      * @return ValidationCriteria object which is violated
      */
     ValidationCriteria validateEnrollment( TrackedEntityInstance entityinstance, Program program, I18nFormat format );
-
-    /**
-     * Validate instances attribute values and validation criteria by program
-     * before registering / updating information
-     * 
-     * @param searchText The value of a TrackedEntityAttribute
-     * @param attributeId The id of a TrackedEntityAttribute
-     * 
-     * @return TrackedEntityInstance list
-     */
-    Collection<TrackedEntityInstance> getByAttributeValue( String searchText, int attributeId, Integer min, Integer max );
-
-     /**
-     * Get entityInstances by {@link TrackedEntity}
-     * 
-     * @param trackedEntity {@link TrackedEntity}
-     * 
-     * @return List of entityInstance
-     */
-    Collection<TrackedEntityInstance> get( TrackedEntity trackedEntity );
 }

@@ -32,6 +32,8 @@ import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class TrackedEntityInstanceDeletionHandler
     extends DeletionHandler
@@ -46,6 +48,9 @@ public class TrackedEntityInstanceDeletionHandler
     {
         this.instanceService = instanceService;
     }
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
@@ -78,10 +83,8 @@ public class TrackedEntityInstanceDeletionHandler
     @Override
     public String allowDeleteTrackedEntity( TrackedEntity trackedEntity )
     {
-        Collection<TrackedEntityInstance> entityInstances = instanceService.getTrackedEntityInstances( trackedEntity );
+        String sql = "select count(*) from trackedentityinstance where trackedentityid = " + trackedEntity.getId();
 
-        return (entityInstances != null && entityInstances.size() > 0) ? ERROR : null;
+        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
-
-
 }

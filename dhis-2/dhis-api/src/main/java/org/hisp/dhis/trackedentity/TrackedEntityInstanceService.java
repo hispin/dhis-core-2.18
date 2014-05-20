@@ -89,6 +89,7 @@ import org.hisp.dhis.validation.ValidationCriteria;
  * </pre>
  * 
  * @author Abyot Asalefew Gizaw
+ * @author Lars Helge Overland
  */
 public interface TrackedEntityInstanceService
 {
@@ -266,13 +267,4 @@ public interface TrackedEntityInstanceService
      * @return ValidationCriteria object which is violated
      */
     ValidationCriteria validateEnrollment( TrackedEntityInstance entityInstance, Program program, I18nFormat format );
-
-    /**
-     * Get entityInstances by {@link TrackedEntity}
-     * 
-     * @param trackedEntity {@link TrackedEntity}
-     * 
-     * @return List of entityInstance
-     */
-    Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntity trackedEntity );
 }

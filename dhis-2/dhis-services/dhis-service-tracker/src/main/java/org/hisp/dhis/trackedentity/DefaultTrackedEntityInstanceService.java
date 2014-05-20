@@ -606,10 +606,4 @@ public class DefaultTrackedEntityInstanceService
     {
         return trackedEntityInstanceStore.validateEnrollment( instance, program, format );
     }
-
-    @Override
-    public Collection<TrackedEntityInstance> getTrackedEntityInstances( TrackedEntity trackedEntity )
-    {
-        return trackedEntityInstanceStore.get( trackedEntity );
-    }
 }
