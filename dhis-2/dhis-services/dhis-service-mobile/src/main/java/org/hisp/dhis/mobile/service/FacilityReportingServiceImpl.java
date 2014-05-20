@@ -118,6 +118,7 @@ public class FacilityReportingServiceImpl
     // Service methods
     // -------------------------------------------------------------------------
 
+    @Override
     public List<DataSet> getMobileDataSetsForUnit( OrganisationUnit unit, String localeString )
     {
 
@@ -149,6 +150,7 @@ public class FacilityReportingServiceImpl
         return datasets;
     }
 
+    @Override
     public DataSetList getUpdatedDataSet( DataSetList dataSetList, OrganisationUnit unit, String locale )
     {
         if ( DEBUG )
@@ -207,6 +209,7 @@ public class FacilityReportingServiceImpl
         return updatedDataSetList;
     }
 
+    @Override
     public DataSetList getDataSetsForLocale( OrganisationUnit unit, String locale )
     {
         DataSetList dataSetList = new DataSetList();
@@ -215,11 +218,13 @@ public class FacilityReportingServiceImpl
         return dataSetList;
     }
 
+    @Override
     public DataSet getDataSet( int id )
     {
         return getDataSetForLocale( id, null );
     }
 
+    @Override
     public DataSet getDataSetForLocale( int dataSetId, Locale locale )
     {
         org.hisp.dhis.dataset.DataSet dataSet = dataSetService.getDataSet( dataSetId );
@@ -498,7 +503,7 @@ public class FacilityReportingServiceImpl
     // Supportive method
     // -------------------------------------------------------------------------
 
-    public Period getPeriod( String periodName, PeriodType periodType )
+    private Period getPeriod( String periodName, PeriodType periodType )
     {
         Period period = PeriodUtil.getPeriod( periodName, periodType );
 
