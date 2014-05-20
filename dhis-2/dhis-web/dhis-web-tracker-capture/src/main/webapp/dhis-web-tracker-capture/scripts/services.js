@@ -238,13 +238,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     
     return {
         getAll: function(){  
-
-            var attributes = storage.get('ATTRIBUTES');
-            
-            if(attributes){
-                return attributes;
-            }                
-            return; 
+            return storage.get('ATTRIBUTES');
         }, 
         getByProgram: function(program){
             var attributes = [];
@@ -576,7 +570,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             //grid.headers[5..] = Attribute, Attribute,.... 
             var attributes = [];
             for(var i=5; i<grid.headers.length; i++){
-                attributes.push({id: grid.headers[i].name, name: grid.headers[i].column});
+                attributes.push({id: grid.headers[i].name, name: grid.headers[i].column, type: grid.headers[i].type});
             }
 
             var entityList = [];

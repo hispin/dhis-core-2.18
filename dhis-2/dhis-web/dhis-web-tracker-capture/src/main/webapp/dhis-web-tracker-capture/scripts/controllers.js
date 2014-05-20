@@ -95,7 +95,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 }
             }
         }        
-    };        
+    };
     
     $scope.getProgramAttributes = function(program){ 
         $scope.trackedEntityList = null; 
@@ -122,10 +122,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
         if($scope.selectedProgram){
             programUrl = 'program=' + $scope.selectedProgram.id;
-        }     
-
-        $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+        }        
         
+        //check search mode
         if( mode === $scope.searchMode.freeText ){     
             if(!$scope.searchText){                
                 $scope.emptySearchText = true;
@@ -156,9 +155,15 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                             programUrl,
                                             attributeUrl.url).then(function(data){
             $scope.trackedEntityList = data;
+            
+            if($scope.trackedEntityList){
+                $scope.gridColumns = $scope.generateGridColumns($scope.trackedEntityList.headers); 
+            }                      
+            
         });
     };
     
+    //generate grid columns from teilist attributes
     $scope.generateGridColumns = function(attributes){
         var columns = angular.copy(attributes);  
         
@@ -241,7 +246,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         $scope.hiddenGridColumns = 0;
         
-        angular.forEach($scope.gColumns, function(gridColumn){
+        angular.forEach($scope.gridColumns, function(gridColumn){
             if(!gridColumn.show){
                 $scope.hiddenGridColumns++;
             }
@@ -330,7 +335,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }
     });    
     
-    
     $scope.registerEntity = function(showDashboard){
         
         //get selected entity
@@ -408,12 +412,14 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         });
     };
 })
+
 //Controller for dashboard
 .controller('DashboardController',
         function($rootScope,
                 $scope,
                 $location,
                 $modal,
+                $timeout,
                 storage,
                 TEIService,      
                 CurrentSelection,
@@ -439,6 +445,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $rootScope.dashboardWidgets.smaller.push($rootScope.notesWidget);
     
     //selections
+    $scope.selectedEntityId = null;
+    $scope.selectedProgramId = null;
+    
     $scope.selectedEntityId = ($location.search()).selectedEntityId; 
     $scope.selectedProgramId = ($location.search()).selectedProgramId; 
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
@@ -455,9 +464,11 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         //Fetch the selected entity
         TEIService.get($scope.selectedEntityId).then(function(data){              
             CurrentSelection.set({tei: data, pr: $scope.selectedProgram});
-            
+         
             //broadcast selected entity for dashboard controllers
-            $rootScope.$broadcast('selectedEntity', {});
+            $timeout(function() { 
+                $rootScope.$broadcast('selectedEntity', {});
+            }, 100);
         });       
     }   
     
@@ -503,10 +514,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     //listen for the selected entity
     $scope.$on('selectedEntity', function(event, args) { 
-        
         var selections = CurrentSelection.get();
-        $scope.selectedEntity = selections.tei;
-        
+        $scope.selectedEntity = selections.tei;        
+      
         angular.forEach(storage.get('TRACKED_ENTITIES'), function(te){
             if($scope.selectedEntity.trackedEntity === te.id){
                 $scope.trackedEntity = te;
