@@ -598,12 +598,91 @@ public class DefaultTrackedEntityInstanceService
     @Override
     public String validateTrackedEntityInstance( TrackedEntityInstance instance, Program program, I18nFormat format )
     {
-        return trackedEntityInstanceStore.validate( instance, program, format );
-    }
+        if ( program != null )
+        {
+            ValidationCriteria validationCriteria = validateEnrollment( instance, program, format );
 
+            if ( validationCriteria != null )
+            {
+                return TrackedEntityInstanceService.ERROR_ENROLLMENT + TrackedEntityInstanceService.SEPERATOR
+                    + validationCriteria.getId();
+            }
+        }
+
+        if ( instance.getAttributeValues() != null && instance.getAttributeValues().size() > 0 )
+        {
+            for ( TrackedEntityAttributeValue attributeValue : instance.getAttributeValues() )
+            {
+                String valid = trackedEntityInstanceStore.validate( instance, attributeValue, program );
+                
+                if ( valid != null )
+                {
+                    return valid;
+                }
+            }
+        }
+
+        return TrackedEntityInstanceService.ERROR_NONE + "";
+    }
+    
     @Override
     public ValidationCriteria validateEnrollment( TrackedEntityInstance instance, Program program, I18nFormat format )
     {
-        return trackedEntityInstanceStore.validateEnrollment( instance, program, format );
+        for ( ValidationCriteria criteria : program.getValidationCriteria() )
+        {
+            String value = "";
+            
+            for ( TrackedEntityAttributeValue attributeValue : instance.getAttributeValues() )
+            {
+                if ( attributeValue.getAttribute().getUid().equals( criteria.getProperty() ) )
+                {
+                    value = attributeValue.getValue();
+
+                    String type = attributeValue.getAttribute().getValueType();
+                    
+                    // For integer type
+                    if ( type.equals( TrackedEntityAttribute.TYPE_NUMBER ) )
+                    {
+                        int value1 = Integer.parseInt( value );
+                        int value2 = Integer.parseInt( criteria.getValue() );
+
+                        if ( (criteria.getOperator() == ValidationCriteria.OPERATOR_LESS_THAN && value1 >= value2)
+                            || (criteria.getOperator() == ValidationCriteria.OPERATOR_EQUAL_TO && value1 != value2)
+                            || (criteria.getOperator() == ValidationCriteria.OPERATOR_GREATER_THAN && value1 <= value2) )
+                        {
+                            return criteria;
+                        }
+                    }
+                    // For Date type
+                    else if ( type.equals( TrackedEntityAttribute.TYPE_DATE ) )
+                    {
+                        Date value1 = format.parseDate( value );
+                        Date value2 = format.parseDate( criteria.getValue() );
+                        int i = value1.compareTo( value2 );
+                        
+                        if ( i != criteria.getOperator() )
+                        {
+                            return criteria;
+                        }
+                    }
+                    // For other types
+                    else
+                    {
+                        if ( criteria.getOperator() == ValidationCriteria.OPERATOR_EQUAL_TO
+                            && !value.equals( criteria.getValue() ) )
+                        {
+                            return criteria;
+                        }
+
+                    }
+
+                }
+            }
+
+        }
+
+        // Return null if all criteria are met
+
+        return null;
     }
 }

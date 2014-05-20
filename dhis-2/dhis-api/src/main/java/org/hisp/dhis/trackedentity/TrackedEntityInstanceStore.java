@@ -33,10 +33,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.validation.ValidationCriteria;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -75,29 +74,12 @@ public interface TrackedEntityInstanceStore
     Collection<TrackedEntityInstance> getRepresentatives( TrackedEntityInstance instances );
 
     /**
-     * Validate entity-instances attribute values and validation criteria by
-     * program before registering / updating information
+     * Returns null if valid, a descriptive, non-null string if invalid.
      * 
-     * @param entityinstance TrackedEntityInstance object
-     * @param program Program which person needs to enroll. If this parameter is
-     *        null, the system check attribute values of the instances
-     * @param format I18nFormat
-     * 
-     * @return Error code 0 : Validation is OK 1_<duplicate-value> : The
-     *         attribute value is duplicated 2_<validation-criteria-id> :
-     *         Violate validation criteria of the program
+     * @param instance
+     * @param attributeValue
+     * @param program
+     * @return
      */
-    String validate( TrackedEntityInstance entityinstance, Program program, I18nFormat format );
-
-    /**
-     * Validate entity-instance enrollment
-     * 
-     * @param entityinstance TrackedEntityInstance object
-     * @param program Program which person needs to enroll. If this parameter is
-     *        null, the system check identifiers of the patient
-     * @param format I18nFormat
-     * 
-     * @return ValidationCriteria object which is violated
-     */
-    ValidationCriteria validateEnrollment( TrackedEntityInstance entityinstance, Program program, I18nFormat format );
+    String validate( TrackedEntityInstance instance, TrackedEntityAttributeValue attributeValue, Program program );
 }
