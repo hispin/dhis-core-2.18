@@ -44,29 +44,22 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public interface FacilityReportingService
 {
 
-    public List<DataSet> getMobileDataSetsForUnit( OrganisationUnit unit, String localeString );
+    List<DataSet> getMobileDataSetsForUnit( OrganisationUnit unit, String localeString );
 
-    public DataSet getDataSet( int id );
+    DataSet getDataSet( int id );
 
-    public DataSet getDataSetForLocale( int dataSetId, Locale locale );
+    DataSet getDataSetForLocale( int dataSetId, Locale locale );
 
-    /**
-     * Save {@link DataSetValue} to given {@link OrganisationUnit}
-     * 
-     * @param unit - the Organisation unit to save to
-     * @param dataSetValue - the data set value to save
-     * @throws NotAllowedException if saving is not allowed
-     */
-    public void saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue )
+    void saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue )
         throws NotAllowedException;
 
-    public DataSetValueList getDataSetValues( OrganisationUnit unit, DataSetList dataSetList )
+    DataSetValueList getDataSetValues( OrganisationUnit unit, DataSetList dataSetList )
         throws NotAllowedException;
 
-    public DataSetList getUpdatedDataSet( DataSetList dataSetList, OrganisationUnit unit, String locale );
+    DataSetList getUpdatedDataSet( DataSetList dataSetList, OrganisationUnit unit, String locale );
 
-    public DataSetList getDataSetsForLocale( OrganisationUnit unit, String locale );
+    DataSetList getDataSetsForLocale( OrganisationUnit unit, String locale );
 
-    public Contact updateContactForMobile();
+    Contact updateContactForMobile();
 
 }

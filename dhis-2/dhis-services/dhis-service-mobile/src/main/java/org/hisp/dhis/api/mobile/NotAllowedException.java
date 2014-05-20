@@ -31,11 +31,6 @@ package org.hisp.dhis.api.mobile;
 public class NotAllowedException
     extends Exception
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 2830950542493770883L;
-
     public static final NotAllowedException INVALID_PROGRAM_STAGE = new NotAllowedException( "INVALID_PROGRAM_STAGE" );
 
     public static final NotAllowedException INVALID_DATASET_ASSOCIATION = new NotAllowedException( "INVALID_DATASET_ASSOCIATION" );
@@ -69,7 +64,7 @@ public class NotAllowedException
         this.reason = reason;
     }
 
-    public String getReason()
+    String getReason()
     {
         return reason;
     }
