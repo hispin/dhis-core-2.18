@@ -75,30 +75,6 @@ public interface TrackedEntityInstanceStore
     Collection<TrackedEntityInstance> getRepresentatives( TrackedEntityInstance instances );
 
     /**
-     * Search the number of entityInstances who registered into an organisation
-     * unit
-     * 
-     * @param organisationUnit Organisation unit
-     * 
-     * @return The number of entityInstances
-     */
-    //int countListTrackedEntityInstanceByOrgunit( OrganisationUnit organisationUnit );
-
-    /**
-     * Get the number of entityInstances who registered into a certain
-     * organisation unit and enrolled into a program with active status
-     * 
-     * @param organisationUnit Organisation unit where entityInstances
-     *        registered
-     * @param program Program. It's is used for getting attributes of this
-     *        program and put attribute values of entityInstances into the
-     *        result
-     * 
-     * @return The number of entityInstances
-     */
-    //int countGetTrackedEntityInstancesByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
-
-    /**
      * Search entityInstances by phone number (performs partial search)
      * 
      * @param phoneNumber The string for searching by phone number
@@ -108,17 +84,6 @@ public interface TrackedEntityInstanceStore
      * @return List of instances
      */
     Collection<TrackedEntityInstance> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
-
-    /**
-     * Search entityInstances who enrolled into a program with active status
-     * 
-     * @param program Program
-     * @param min
-     * @param max
-     * 
-     *        return List of entityInstances
-     */
-    //Collection<TrackedEntityInstance> getByProgram( Program program, Integer min, Integer max );
 
     /**
      * Validate entity-instances attribute values and validation criteria by
