@@ -23,15 +23,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     {name: 'SELECTED', id: 1}, 
                     {name: 'CHILDREN', id: 2}, 
                     {name: 'DESCENDANTS', id: 3}
-                  ];
-                  
+                  ];                  
     $scope.ouMode = $scope.ouModes[0];
-   
-    
-    //Filtering
-    $scope.reverse = false;
-    $scope.filterText = {}; 
-    $scope.currentFilter;
     
     //Paging
     $scope.rowsPerPage = 50;
@@ -193,9 +186,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     column.show = false;
                 }                
             }
-            
-            column.showFilter =  false;
-            
+           
             if(column.type === 'date'){
                  $scope.filterText[column.id]= {start: '', end: ''};
             }
@@ -229,33 +220,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.closeSearch = function(){
         $scope.showSearchDiv = !$scope.showSearchDiv;
-    };   
-    
-    $scope.sortGrid = function(gridHeader){
-        
-        if ($scope.sortHeader === gridHeader.id){
-            $scope.reverse = !$scope.reverse;
-            return;
-        }
-        
-        $scope.sortHeader = gridHeader.id;
-        $scope.reverse = false;    
-    };    
-    
-    $scope.filterInGrid = function(gridColumn){
-        
-        $scope.currentFilter = gridColumn;
-        for(var i=0; i<$scope.gridColumns.length; i++){
-            
-            //toggle the selected grid column's filter
-            if($scope.gridColumns[i].id === gridColumn.id){
-                $scope.gridColumns[i].showFilter = !$scope.gridColumns[i].showFilter;
-            }            
-            else{
-                $scope.gridColumns[i].showFilter = false;
-            }
-        }
-    };   
+    };
     
     $scope.showHideColumns = function(){
         

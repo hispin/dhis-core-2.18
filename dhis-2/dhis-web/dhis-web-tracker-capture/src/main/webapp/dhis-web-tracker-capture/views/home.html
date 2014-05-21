@@ -21,15 +21,15 @@
     
     <div class="row">
         <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
-        <div class="input-group col-md-6">
+        <div class="input-group col-md-4">
             <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" title="{{'advanced_search'| translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-cog"></i></button>
+                <button class="btn btn-default" style="margin-bottom: 5px; margin-top: 5px;" type="button" title="{{'advanced_search'| translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-cog"></i></button>
             </span>                
         </div>        
-        <div class="col-md-6">            
+        <div class="col-md-8" style="margin-bottom: 5px; margin-top: 5px;">            
             <button type="button" 
-                    class="btn btn-default small-horizonal-spacing"
+                    class="btn btn-default"
                     ng-disabled="showRegistrationDiv || showSearchDiv"
                     ng-click="search(searchMode.freeText)">
                 {{'search'| translate}}
@@ -45,23 +45,24 @@
                 <button type="button" 
                         class="btn btn-default small-horizonal-spacing" 
                         ng-click="showRegistration()">                    
-                    {{selectedProgram.trackedEntity.name }} {{'register'| translate}}
+                   {{'register'| translate}} {{selectedProgram.trackedEntity.name }}
                 </button>
             </span>
         </div>        
     </div>
-    <div class="row" ng-if="!searchText && emptySearchText">
-        <div class="col-md-6">
-            <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
+    
+    <div class="row vertical-spacing">
+        <div class="col-md-4">
             <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
                 <option value="">{{'please_select_a_program'| translate}}</option>
             </select>
         </div>        
+    </div>
+    
+    <div class="row vertical-spacing" ng-if="!searchText && emptySearchText">
+        <div class="col-md-4">
+            <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
+        </div>
     </div>
 
     <!-- search begins -->

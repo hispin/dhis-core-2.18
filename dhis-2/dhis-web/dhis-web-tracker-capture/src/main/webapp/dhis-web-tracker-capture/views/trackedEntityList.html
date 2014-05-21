@@ -1,83 +1,48 @@
 <div id="listDiv" ng-switch="trackedEntityList">                    
     <div ng-switch-when=""></div>
-    <div ng-switch-default>
-        <h2 ng-if="trackedEntityList.rows.length > 0">
-            {{selectedProgram.trackedEntity.name || 'entity' | translate}} {{'list'| translate}}
-            <span class="pull-right">
-                <button class="btn btn-default" ng-click="showHideColumns()">
-                    {{'show_hide_columns'| translate}}
-                </button>
-            </span>
-        </h2>
-        <div class="vertical-spacing" ng-switch="trackedEntityList.rows.length">
+    <div ng-switch-default>        
+        <div ng-switch="trackedEntityList.rows.length">
             <div ng-switch-when="undefined">
                 <p>
-                    {{'empty'| translate}} {{selectedProgram.trackedEntity.name|| 'entity' | translate}} {{'list'| translate}}                        
+                    {{'no'| translate}} {{selectedProgram.trackedEntity.name|| 'records' | translate}} {{'found'| translate}}                        
                 </p>
             </div>
             <div ng-switch-when="0">
                 <p>
-                    {{'empty'| translate}} {{selectedProgram.trackedEntity.name|| 'entity' | translate}} {{'list'| translate}}
+                    {{'no'| translate}} {{selectedProgram.trackedEntity.name|| 'records' | translate}} {{'found'| translate}} 
                 </p>
             </div>
             <div ng-switch-default>
 
+                <!-- show/hide grid colum begins-->
+                <div class="row" style="margin-right: 0;">
+                    <button class="btn btn-default pull-right" ng-click="showHideColumns()">
+                        {{'show_hide_columns'| translate}}
+                    </button>
+                </div>
+                <!-- show/hide grid colum ends-->
+
                 <!-- entity begins -->
-                <table class="listTable dhis2-table-striped-border dhis2-table-hover">                    
-                    <thead>                        
-                        <tr>
-                            <th ng-show="gridColumn.show"                                           
-                                ng-repeat="gridColumn in gridColumns">
-
-                                <!-- sort icon begins -->
-                                <span ng-hide="gridColumn.showFilter" class="bold" ng-click="sortGrid(gridColumn)">
-                                    <i ng-show="sortHeader == gridColumn.id && !reverse" class="fa fa-sort-desc"></i>
-                                    <i ng-show="sortHeader == gridColumn.id && reverse" class="fa fa-sort-asc"></i>
+                <div class="vertical-spacing">
+                    <table class="listTable dhis2-table-striped-border dhis2-table-hover">                    
+                        <thead>                        
+                            <tr>
+                                <th ng-show="gridColumn.show" ng-repeat="gridColumn in gridColumns">
                                     {{gridColumn.name}}
-                                </span>
-                                <!-- sort icon ends -->
-
-                                <!-- filter icon begins -->
-                                <span class='pull-right'>
-                                    <span ng-show="gridColumn.type !== 'date'">
-                                        <a href ng-click="filterInGrid(gridColumn)" title="{{'filter'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [filterText[gridColumn.id] == undefined || filterText[gridColumn.id] == '']"><i class="fa fa-filter"></i></span></a>
-                                    </span>
-                                    <span ng-show="gridColumn.type === 'date'">
-                                        <a href ng-click="filterInGrid(gridColumn)" title="{{'filter'| translate}}"><span ng-class="{true: 'filter - without - content', false: 'filter - with - content'} [(filterText[gridColumn.id].start == 'undefined' || filterText[gridColumn.id].start == '') && (filterText[gridColumn.id].end == 'undefined' || filterText[gridColumn.id].end == '')]"><i class="fa fa-filter"></i></span></a>
-                                    </span>                                                    
-                                </span>
-                                <!-- filter icon ends -->
-
-                                <!-- filter input field begins -->
-                                <div ng-show="gridColumn.showFilter">
-                                    <span ng-show="gridColumn.type !== 'date'">
-                                        <input type="text" ng-model="filterText[gridColumn.id]" ng-blur="filterInGrid(gridColumn)">
-                                    </span>                                                    
-                                    <span ng-show="gridColumn.type === 'date'">
-                                        <input placeholder="{{'start_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].start" data-ng-date readonly="readonly">
-                                        <span ng-hide="filterText[gridColumn.id].start == 'undefined' || filterText[gridColumn.id].start == ''">
-                                            <a href ng-click='removeStartFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
-                                        </span>
-                                        <input placeholder="{{'end_date'| translate}}" type="text" ng-model="filterText[gridColumn.id].end" data-ng-date readonly="readonly">
-                                        <span ng-hide="filterText[gridColumn.id].end == 'undefined' || filterText[gridColumn.id].end == ''">
-                                            <a href ng-click='removeEndFilterText(gridColumn.id)'><span class='black'><i class="fa fa-trash-o"></i></span></a>                                                        
-                                        </span>
-                                    </span>
-                                </div>
-                                <!-- filter input field ends -->
-                            </th>                                    
-                        </tr>                        
-                    </thead>
-                    <tbody id="list">
-                        <tr ng-repeat="trackedEntity in trackedEntityList.rows| paginate:rowsPerPage | orderBy:sortHeader:reverse | gridFilter:filterText:currentFilter" 
-                            ng-click="showDashboard(trackedEntity)">
-                            <td ng-show="gridColumn.show"                                            
-                                ng-repeat="gridColumn in gridColumns">                                                
-                                {{trackedEntity[gridColumn.id]}}                                                
-                            </td>
-                        </tr>
-                    </tbody>        
-                </table>
+                                </th>                                    
+                            </tr>                        
+                        </thead>
+                        <tbody id="list">
+                            <tr ng-repeat="trackedEntity in trackedEntityList.rows | paginate:rowsPerPage" 
+                                ng-click="showDashboard(trackedEntity)">
+                                <td ng-show="gridColumn.show"                                            
+                                    ng-repeat="gridColumn in gridColumns">                                                
+                                    {{trackedEntity[gridColumn.id]}}                                                
+                                </td>
+                            </tr>
+                        </tbody>        
+                    </table>
+                </div>
                 <paginator></paginator>
                 <!-- entity ends -->                            
             </div>
