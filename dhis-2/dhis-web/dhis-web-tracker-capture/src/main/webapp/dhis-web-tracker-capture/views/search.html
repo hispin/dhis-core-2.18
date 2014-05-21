@@ -3,11 +3,11 @@
     <div class="search-container">
         <table class="dhis2-list-table-striped dhis2-table-hover">
             <tr>
-                <td>{{'org_unit_mode'| translate}} - {{ouMode}}</td>
+                <td>{{'org_unit_mode'| translate}} - {{selectedOuMode.name}}</td>
                 <td>
-                    <input type="radio" ng-model="ouMode" value="SELECTED">{{'use_selected'| translate}}<br/>
-                    <input type="radio" ng-model="ouMode" value="CHILDREN">{{'use_immediate_children'| translate}}<br/>
-                    <input type="radio" ng-model="ouMode" value="DESCENDANTS">{{'use_all_children'| translate}}
+                    <input type="radio" ng-model="ouMode.name" value="SELECTED">{{'use_selected'| translate}}<br/>
+                    <input type="radio" ng-model="ouMode.name" value="CHILDREN">{{'use_immediate_children'| translate}}<br/>
+                    <input type="radio" ng-model="ouMode.name" value="DESCENDANTS">{{'use_all_children'| translate}}
                 </td>
             </tr>
             <tr ng-repeat="attribute in attributes">
@@ -45,23 +45,23 @@
         </table>
     </div>   
 
-    <div class="btn-group">
-        <button type="button" 
-                class="btn btn-default"
-                ng-click="search(searchMode.attributeBased)">
-            {{'search'| translate}}
-        </button>
-        <button type="button" 
-                class="btn btn-default" 
-                ng-click="search(searchMode.listAll)">
-            {{'list_all'| translate}}
-        </button>
-        <button type="button" 
-                class="btn btn-default" 
-                ng-click="closeSearch()">
-            {{'cancel'| translate}}
-        </button>        
-    </div>
+
+    <button type="button" 
+            class="btn btn-default small-horizonal-spacing"
+            ng-click="search(searchMode.attributeBased)">
+        {{'search'| translate}}
+    </button>
+    <button type="button" 
+            class="btn btn-default small-horizonal-spacing" 
+            ng-click="search(searchMode.listAll)">
+        {{'list_all'| translate}}
+    </button>
+    <button type="button" 
+            class="btn btn-default small-horizonal-spacing" 
+            ng-click="closeSearch()">
+        {{'cancel'| translate}}
+    </button>        
+
     <div class="row" ng-if="emptySearchAttribute">
         <div class="col-md-12">
             <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
