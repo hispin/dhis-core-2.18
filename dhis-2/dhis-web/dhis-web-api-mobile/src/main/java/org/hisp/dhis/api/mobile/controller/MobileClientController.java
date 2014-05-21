@@ -160,6 +160,7 @@ public class MobileClientController
         orgUnit.setDownloadAnonymousProgramUrl( getUrl( request, unit.getId(), "downloadAnonymousProgram" ) );
         orgUnit.setFindProgramUrl( getUrl( request, unit.getId(), "findProgram" ) );
         orgUnit.setFindPatientInAdvancedUrl( getUrl( request, unit.getId(), "findPatientInAdvanced" ) );
+        orgUnit.setFindVisitScheduleUrl( getUrl( request, unit.getId(), "findVisitSchedule" ) );
         orgUnit.setFindLostToFollowUpUrl( getUrl( request, unit.getId(), "findLostToFollowUp" ) );
         orgUnit.setHandleLostToFollowUpUrl( getUrl( request, unit.getId(), "handleLostToFollowUp" ) );
         orgUnit.setGenerateRepeatableEventUrl( getUrl( request, unit.getId(), "generateRepeatableEvent" ) );

@@ -91,6 +91,8 @@ public class MobileOrgUnitLinks
 
     private String findPatientInAdvancedUrl;
 
+    private String findVisitScheduleUrl;
+
     private String findLostToFollowUpUrl;
 
     private String handleLostToFollowUpUrl;
@@ -352,6 +354,16 @@ public class MobileOrgUnitLinks
     {
         this.findPatientInAdvancedUrl = findPatientInAdvancedUrl;
     }
+    
+    public String getFindVisitScheduleUrl()
+    {
+        return findVisitScheduleUrl;
+    }
+    
+    public void setFindVisitScheduleUrl( String findVisitScheduleUrl )
+    {
+        this.findVisitScheduleUrl = findVisitScheduleUrl;
+    }
 
     public String getFindLostToFollowUpUrl()
     {
@@ -420,6 +432,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( downloadAnonymousProgramUrl );
         dataOutputStream.writeUTF( findProgramUrl );
         dataOutputStream.writeUTF( findPatientInAdvancedUrl );
+        dataOutputStream.writeUTF( findVisitScheduleUrl );
         dataOutputStream.writeUTF( findLostToFollowUpUrl );
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
         dataOutputStream.writeUTF( generateRepeatableEventUrl );
@@ -454,6 +467,7 @@ public class MobileOrgUnitLinks
         downloadAnonymousProgramUrl = dataInputStream.readUTF();
         findProgramUrl = dataInputStream.readUTF();
         findPatientInAdvancedUrl = dataInputStream.readUTF();
+        findVisitScheduleUrl = dataInputStream.readUTF();
         findLostToFollowUpUrl = dataInputStream.readUTF();
         handleLostToFollowUpUrl = dataInputStream.readUTF();
         generateRepeatableEventUrl = dataInputStream.readUTF();
@@ -526,6 +540,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( downloadAnonymousProgramUrl );
         dataOutputStream.writeUTF( findProgramUrl );
         dataOutputStream.writeUTF( findPatientInAdvancedUrl );
+        dataOutputStream.writeUTF( findVisitScheduleUrl );
         dataOutputStream.writeUTF( findLostToFollowUpUrl );
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
         dataOutputStream.writeUTF( generateRepeatableEventUrl );

@@ -72,6 +72,7 @@ public class OrgUnitTest
         unit.setDownloadAnonymousProgramUrl( "downloadAnonymousProgramUrl" );
         unit.setFindProgramUrl( "findProgramUrl" );
         unit.setFindPatientInAdvancedUrl( "findPatientInAdvanced" );
+        unit.setFindVisitScheduleUrl( "findVisitSchedule" );
         unit.setFindLostToFollowUpUrl( "findLostToFollowUpUrl" );
         unit.setHandleLostToFollowUpUrl( "handleLostToFollowUpUrl" );
         unit.setGenerateRepeatableEventUrl( "generateRepeatableEventUrl" );
