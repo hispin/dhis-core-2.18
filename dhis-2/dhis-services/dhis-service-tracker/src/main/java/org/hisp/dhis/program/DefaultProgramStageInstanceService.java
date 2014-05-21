@@ -172,7 +172,7 @@ public class DefaultProgramStageInstanceService
     }
 
     @Override
-    public List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, Boolean completed )
+    public List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, boolean completed )
     {
         return programStageInstanceStore.get( entityInstance, completed );
     }

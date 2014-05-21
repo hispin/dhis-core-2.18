@@ -130,7 +130,7 @@ public interface ProgramStageInstanceService
      * 
      * @return ProgramStageInstance list
      */
-    List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, Boolean completed );
+    List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, boolean completed );
 
     /**
      * Retrieve scheduled list of entityInstances registered

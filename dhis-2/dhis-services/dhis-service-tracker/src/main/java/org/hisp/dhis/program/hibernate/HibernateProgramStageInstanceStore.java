@@ -102,7 +102,7 @@ public class HibernateProgramStageInstanceStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, Boolean completed )
+    public List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, boolean completed )
     {
         Criteria criteria = getCriteria();
         criteria.createAlias( "programInstance", "programInstance" );
