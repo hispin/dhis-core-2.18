@@ -47,15 +47,25 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     @Override
     public DateUnit toIso( DateUnit dateUnit )
     {
+        if ( dateUnit.isIso8601() )
+        {
+            return dateUnit;
+        }
+
         DateTime dateTime = dateUnit.toDateTime( chronology );
         dateTime = dateTime.withChronology( ISOChronology.getInstance() );
 
-        return DateUnit.fromDateTime( dateTime );
+        return new DateUnit( DateUnit.fromDateTime( dateTime ), true );
     }
 
     @Override
     public DateUnit fromIso( DateUnit dateUnit )
     {
+        if ( !dateUnit.isIso8601() )
+        {
+            return dateUnit;
+        }
+
         DateTime dateTime = dateUnit.toDateTime( ISOChronology.getInstance() );
         dateTime = dateTime.withChronology( chronology );
         return DateUnit.fromDateTime( dateTime );
@@ -204,7 +214,14 @@ public abstract class ChronologyBasedCalendar extends AbstractCalendar
     public int daysInMonth( int year, int month )
     {
         DateTime dateTime = new DateTime( year, month, 1, 0, 0, chronology );
-        return (int) dateTime.monthOfYear().toInterval().toDuration().getStandardDays();
+        return dateTime.dayOfMonth().getMaximumValue();
+    }
+
+    @Override
+    public int weeksInYear( int year )
+    {
+        DateTime dateTime = new DateTime( year, 1, 1, 0, 0, chronology );
+        return dateTime.weekOfWeekyear().getMaximumValue();
     }
 
     @Override

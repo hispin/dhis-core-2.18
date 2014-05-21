@@ -49,7 +49,7 @@ public class NepaliCalendar extends AbstractCalendar
 {
     private static final DateUnit startNepal = new DateUnit( 2000, 1, 1, java.util.Calendar.WEDNESDAY );
 
-    private static final DateUnit startIso = new DateUnit( 1943, 4, 14, java.util.Calendar.WEDNESDAY );
+    private static final DateUnit startIso = new DateUnit( 1943, 4, 14, java.util.Calendar.WEDNESDAY, true );
 
     private static final Calendar self = new NepaliCalendar();
 
@@ -85,7 +85,7 @@ public class NepaliCalendar extends AbstractCalendar
 
         dateTime = dateTime.plusDays( totalDays );
 
-        return DateUnit.fromDateTime( dateTime );
+        return new DateUnit( DateUnit.fromDateTime( dateTime ), true );
     }
 
     @Override
@@ -216,6 +216,13 @@ public class NepaliCalendar extends AbstractCalendar
     public int daysInMonth( int year, int month )
     {
         return conversionMap.get( year )[month];
+    }
+
+    @Override
+    public int weeksInYear( int year )
+    {
+        DateTime dateTime = new DateTime( year, 1, 1, 0, 0, ISOChronology.getInstance() );
+        return dateTime.weekOfWeekyear().getMaximumValue();
     }
 
     @Override

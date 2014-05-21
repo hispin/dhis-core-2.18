@@ -28,13 +28,15 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.calendar.DateUnit;
+
 import java.util.Calendar;
 
 /**
  * PeriodType for six-monthly Periods. A valid six-monthly Period has startDate
  * set to either January 1st or July 1st, and endDate set to the last day of the
  * fifth month after the startDate.
- * 
+ *
  * @author Torgeir Lorange Ostby
  * @version $Id: SixMonthlyPeriodType.java 2971 2007-03-03 18:54:56Z torgeilo $
  */
@@ -76,24 +78,17 @@ public class SixMonthlyPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public String getIsoDate( Period period )
+    public String getIsoDate( DateUnit dateUnit )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        int year = cal.get( Calendar.YEAR );
-        int month = cal.get( Calendar.MONTH );
-
-        return year + Semester.getByMonth( month ).name();
-    }
-
-    @Override
-    public Period createPeriod( String isoDate )
-    {
-        int year = Integer.parseInt( isoDate.substring( 0, 4 ) );
-        int month = Semester.valueOf( isoDate.substring( 4, 6 ) ).getMonth();
-        
-        Calendar cal = createCalendarInstance();
-        cal.set( year, month, 1 );
-        return createPeriod( cal );
+        switch ( dateUnit.getMonth() )
+        {
+            case 1:
+                return dateUnit.getYear() + "S1";
+            case 7:
+                return dateUnit.getYear() + "S2";
+            default:
+                throw new IllegalArgumentException( "Month not valid [1,7]" );
+        }
     }
 
     /**
@@ -103,35 +98,5 @@ public class SixMonthlyPeriodType
     public String getIsoFormat()
     {
         return ISO_FORMAT;
-    }
-
-    public enum Semester
-    {
-        S1( Calendar.JANUARY ), S2( Calendar.JULY );
-
-        private final int month;
-
-        Semester( int month )
-        {
-            this.month = month;
-        }
-
-        public int getMonth()
-        {
-            return month;
-        }
-
-        public static Semester getByMonth( int month )
-        {
-            switch ( month )
-            {
-            case Calendar.JANUARY:
-                return S1;
-            case Calendar.JULY:
-                return S2;
-            default:
-                throw new IllegalArgumentException( "Not a valid six-monthly starting month" );
-            }
-        }
     }
 }

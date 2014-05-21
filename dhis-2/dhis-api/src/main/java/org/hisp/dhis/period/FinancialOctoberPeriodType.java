@@ -28,6 +28,8 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.calendar.DateUnit;
+
 import java.util.Calendar;
 
 /**
@@ -50,7 +52,7 @@ public class FinancialOctoberPeriodType
     {
         return Calendar.OCTOBER;
     }
-    
+
     @Override
     public String getName()
     {
@@ -58,11 +60,9 @@ public class FinancialOctoberPeriodType
     }
 
     @Override
-    public String getIsoDate( Period period )
+    public String getIsoDate( DateUnit dateUnit )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        int year = cal.get( Calendar.YEAR );
-        return String.valueOf( year ) + "Oct";
+        return String.format( "%dOct", dateUnit.getYear() );
     }
 
     @Override

@@ -84,6 +84,30 @@ public class DateInterval
     }
 
     @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        DateInterval that = (DateInterval) o;
+
+        if ( from != null ? !from.equals( that.from ) : that.from != null ) return false;
+        if ( to != null ? !to.equals( that.to ) : that.to != null ) return false;
+        if ( type != that.type ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = from != null ? from.hashCode() : 0;
+        result = 31 * result + (to != null ? to.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString()
     {
         return "DateInterval{" +

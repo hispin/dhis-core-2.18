@@ -46,9 +46,6 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
-/**
- * Provides services for activity reporting
- */
 public interface ActivityReportingService
 {
     ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString );
@@ -112,9 +109,9 @@ public interface ActivityReportingService
     String sendMessage( Message message )
         throws NotAllowedException;
 
-    public Collection<MessageConversation> downloadMessageConversation()
+    Collection<MessageConversation> downloadMessageConversation()
         throws NotAllowedException;
 
-    public Collection<Message> getMessage( String conversationId )
+    Collection<Message> getMessage( String conversationId )
         throws NotAllowedException;
 }

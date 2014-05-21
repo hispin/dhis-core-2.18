@@ -143,7 +143,7 @@ public abstract class AbstractCalendar implements Calendar
     @Override
     public DateUnit fromIso( int year, int month, int day )
     {
-        return fromIso( new DateUnit( year, month, day ) );
+        return fromIso( new DateUnit( year, month, day, true ) );
     }
 
     @Override

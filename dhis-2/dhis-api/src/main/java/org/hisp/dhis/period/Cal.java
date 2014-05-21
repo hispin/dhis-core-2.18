@@ -28,43 +28,62 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.calendar.CalendarService;
+import org.hisp.dhis.calendar.DateUnit;
+import org.hisp.dhis.calendar.impl.Iso8601Calendar;
+
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
+ * An abstraction over a calendar implementation, expects input to be in whatever the current
+ * system calendar is using, and all output will be in ISO 8601.
+ *
  * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class Cal
 {
-    private Calendar calendar;
-    
+    private static CalendarService calendarService;
+
+    public static void setCalendarService( CalendarService calendarService )
+    {
+        Cal.calendarService = calendarService;
+    }
+
+    public static org.hisp.dhis.calendar.Calendar getCalendar()
+    {
+        if ( calendarService != null )
+        {
+            return calendarService.getSystemCalendar();
+        }
+
+        return Iso8601Calendar.getInstance();
+    }
+
+    private DateUnit dateUnit = new DateUnit( 1, 1, 1 );
+
     public Cal()
     {
-        calendar = new GregorianCalendar();
-        calendar.clear();
+        dateUnit = getCalendar().today();
     }
 
     /**
-    * @param year the year starting at AD 1.
-    * @param month the month starting at 1.
-    * @param day the day of the month starting at 1.
-    */
+     * @param year  the year starting at AD 1.
+     * @param month the month starting at 1.
+     * @param day   the day of the month starting at 1.
+     */
     public Cal( int year, int month, int day )
     {
-        calendar = new GregorianCalendar();
-        calendar.clear();
-        set( year, month, day );
+        dateUnit = new DateUnit( year, month, day );
     }
-    
+
     /**
      * @param date the date.
      */
     public Cal( Date date )
     {
-        calendar = new GregorianCalendar();
-        calendar.clear();
-        calendar.setTime( date );
+        dateUnit = DateUnit.fromJdkDate( date );
     }
 
     /**
@@ -72,95 +91,107 @@ public class Cal
      */
     public Cal now()
     {
-        calendar.setTime( new Date() );
+        dateUnit = getCalendar().today();
         return this;
     }
-        
+
     /**
      * Adds the given amount of time to the given calendar field.
-     * 
-     * @param field the calendar field.
+     * @param field  the calendar field.
      * @param amount the amount of time.
      */
     public Cal add( int field, int amount )
     {
-        calendar.add( field, amount );
+        switch ( field )
+        {
+            case Calendar.YEAR:
+                getCalendar().plusYears( dateUnit, amount );
+            case Calendar.MONTH:
+                getCalendar().plusMonths( dateUnit, amount );
+            case Calendar.DAY_OF_MONTH:
+                getCalendar().plusDays( dateUnit, amount );
+        }
+
         return this;
     }
 
     /**
      * Subtracts the given amount of time to the given calendar field.
-     * 
-     * @param field the calendar field.
+     * @param field  the calendar field.
      * @param amount the amount of time.
      */
     public Cal subtract( int field, int amount )
     {
-        calendar.add( field, amount * -1 );
+        switch ( field )
+        {
+            case Calendar.YEAR:
+                getCalendar().minusYears( dateUnit, amount );
+            case Calendar.MONTH:
+                getCalendar().minusMonths( dateUnit, amount );
+            case Calendar.DAY_OF_MONTH:
+                getCalendar().minusDays( dateUnit, amount );
+        }
+
         return this;
     }
 
     /**
      * Returns the value of the given calendar field.
-     * 
      * @param field the field.
      */
     public int get( int field )
     {
-        return calendar.get( field );
+        return getCalendar().toIso( dateUnit ).toJdkCalendar().get( field );
     }
-    
+
     /**
      * Returns the current year.
      * @return current year
      */
     public int getYear()
     {
-        return calendar.get( Calendar.YEAR );
+        return getCalendar().toIso( dateUnit ).toJdkCalendar().get( Calendar.YEAR );
     }
-    
+
     /**
      * Sets the current time.
-     * 
-     * @param year the year starting at AD 1.
+     * @param year  the year starting at AD 1.
      * @param month the month starting at 1.
-     * @param day the day of the month starting at 1.
+     * @param day   the day of the month starting at 1.
      */
     public Cal set( int year, int month, int day )
     {
-        calendar.set( year, month - 1, day );
+        dateUnit = new DateUnit( year, month, day );
         return this;
     }
 
     /**
      * Sets the current month and day.
-     * 
      * @param month the month starting at 1.
-     * @param day the day of the month starting at 1.
+     * @param day   the day of the month starting at 1.
      */
     public Cal set( int month, int day )
     {
-        calendar.set( Calendar.MONTH, month - 1 );
-        calendar.set( Calendar.DAY_OF_MONTH, day );
+        dateUnit.setMonth( month );
+        dateUnit.setDay( day );
         return this;
-    }    
-    
+    }
+
     /**
      * Sets the current time.
-     * 
      * @param date the date to base time on.
      */
     public Cal set( Date date )
     {
-        calendar.setTime( date );
+        dateUnit = getCalendar().fromIso( DateUnit.fromJdkDate( date ) );
         return this;
     }
-    
+
     /**
      * Returns the current date the cal.
      */
     public Date time()
     {
-        return calendar.getTime();
+        return getCalendar().toIso( dateUnit ).toJdkDate();
     }
 }

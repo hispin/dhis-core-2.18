@@ -28,14 +28,6 @@ package org.hisp.dhis.light.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -64,6 +56,14 @@ import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -144,7 +144,7 @@ public class FormUtilsImpl
     // Utils
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Map<String, DeflatedDataValue> getValidationViolations( OrganisationUnit organisationUnit,
         Collection<DataElement> dataElements, Period period )
     {
@@ -280,7 +280,6 @@ public class FormUtilsImpl
         }
         else
         {
-
             List<Period> periods = periodType.generateLast5Years( new Date() );
             FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
             Collections.reverse( periods );
