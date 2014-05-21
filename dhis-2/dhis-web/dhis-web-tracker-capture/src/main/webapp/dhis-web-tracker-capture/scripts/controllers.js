@@ -745,25 +745,26 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         if(event){
             
-            $scope.currentEvent = event;   
+            $scope.currentEvent = event;
+            $scope.currentEvent.providedElsewhere = [];
             $scope.currentEvent.dataValues = [];
             $scope.currentStage = storage.get($scope.currentEvent.programStage); 
             
             angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){                
                 $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
-                //$scope.currentEvent.dataValues.push({value: '', dataElement: prStDe.dataElement.id, providedElsewhere: ''});
+                if(prStDe.allowProvidedElsewhere){
+                    $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
+                }                
             });
             
             angular.forEach($scope.currentEvent.dataValues, function(dataValue){
                 var val = dataValue.value;
                 var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
-                if( de && de.type == 'int' && val){
+                if( de && de.type === 'int' && val){
                     val = parseInt(val);
                     dataValue.value = val;
-                }
-        
-                //$scope.currentEvent[dataValue.dataElement] = val;                
-            });                   
+                }                   
+            });     
         }     
     };    
 })
