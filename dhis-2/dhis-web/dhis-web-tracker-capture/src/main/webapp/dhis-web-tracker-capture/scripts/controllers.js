@@ -62,6 +62,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             TranslationService.translate();
             $scope.loadPrograms($scope.selectedOrgUnit);
             $scope.search($scope.searchMode.listAll);
+            
+            console.log('hi there...');
         }
     });
     
@@ -209,7 +211,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.showSearch = function(){        
         $scope.showSearchDiv = !$scope.showSearchDiv;
         $scope.showRegistrationDiv = false;
-        $scope.showTrackedEntityDiv = false;   
+        //$scope.showTrackedEntityDiv = false;   
         $scope.selectedProgram = '';
         $scope.emptySearchAttribute = false;
     };
