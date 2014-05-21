@@ -28,7 +28,6 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -50,15 +49,6 @@ public interface TrackedEntityInstanceStore
     List<Map<String, String>> getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
 
     int getTrackedEntityInstanceCount( TrackedEntityInstanceQueryParams params );
-
-    /**
-     * Search instances who has the same representative
-     * 
-     * @param instances Representative
-     * 
-     * @return List of entityInstances
-     */
-    Collection<TrackedEntityInstance> getRepresentatives( TrackedEntityInstance instances );
 
     /**
      * Returns null if valid, a descriptive, non-null string if invalid.

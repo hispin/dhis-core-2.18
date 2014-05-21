@@ -583,12 +583,6 @@ public class DefaultTrackedEntityInstanceService
     }
     
     @Override
-    public Collection<TrackedEntityInstance> getRepresentatives( TrackedEntityInstance instance )
-    {
-        return trackedEntityInstanceStore.getRepresentatives( instance );
-    }
-
-    @Override
     public String validateTrackedEntityInstance( TrackedEntityInstance instance, Program program, I18nFormat format )
     {
         if ( program != null )
