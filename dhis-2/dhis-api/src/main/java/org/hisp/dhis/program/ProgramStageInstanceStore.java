@@ -78,7 +78,7 @@ public interface ProgramStageInstanceStore
      * 
      * @return ProgramStageInstance list
      */
-    List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, Boolean completed );
+    List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, boolean completed );
 
     /**
      * Retrieve scheduled list of entityInstances registered
