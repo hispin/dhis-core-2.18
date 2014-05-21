@@ -60,7 +60,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
             //apply translation - by now user's profile is fetched from server.
             TranslationService.translate();
-            $scope.loadPrograms($scope.selectedOrgUnit);   
+            $scope.loadPrograms($scope.selectedOrgUnit);
+            $scope.search($scope.searchMode.listAll);
         }
     });
     
