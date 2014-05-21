@@ -38,7 +38,6 @@ import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
@@ -191,18 +190,6 @@ public interface TrackedEntityInstanceService
      *         no match.
      */
     TrackedEntityInstance getTrackedEntityInstance( String uid );
-
-    /**
-     * Retrieve entityInstances base on organization unit with result limited
-     * 
-     * @param organisationUnit organisationUnit
-     * @param min
-     * @param max
-     * 
-     * @return TrackedEntityInstance List
-     */
-    Collection<TrackedEntityInstance> getTrackedEntityInstances( OrganisationUnit organisationUnit, Integer min,
-        Integer max );
 
     /**
      * Get entityInstances who has the same representative

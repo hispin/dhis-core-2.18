@@ -31,10 +31,8 @@ package org.hisp.dhis.trackedentity;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -179,20 +177,6 @@ public class TrackedEntityInstanceServiceTest
 
         assertEquals( entityInstanceA1, entityInstanceService.getTrackedEntityInstance( "A1" ) );
         assertEquals( entityInstanceB1, entityInstanceService.getTrackedEntityInstance( "B1" ) );
-    }
-
-    @Test
-    public void testGetTrackedEntityInstancesByOu()
-    {
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA3 );
-
-        Collection<TrackedEntityInstance> entityInstances = entityInstanceService.getTrackedEntityInstances(
-            organisationUnit, null, null );
-        assertEquals( 2, entityInstances.size() );
-        assertTrue( entityInstances.contains( entityInstanceA1 ) );
-        assertTrue( entityInstances.contains( entityInstanceA3 ) );
     }
 
     @Test

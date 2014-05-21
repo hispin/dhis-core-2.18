@@ -526,13 +526,6 @@ public class DefaultTrackedEntityInstanceService
     }
 
     @Override
-    public Collection<TrackedEntityInstance> getTrackedEntityInstances( OrganisationUnit organisationUnit, Integer min,
-        Integer max )
-    {
-        return trackedEntityInstanceStore.getByOrgUnit( organisationUnit, min, max );
-    }
-
-    @Override
     public void updateTrackedEntityInstance( TrackedEntityInstance instance, String representativeId,
         Integer relationshipTypeId, List<TrackedEntityAttributeValue> valuesForSave,
         List<TrackedEntityAttributeValue> valuesForUpdate, Collection<TrackedEntityAttributeValue> valuesForDelete )

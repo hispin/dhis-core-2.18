@@ -30,6 +30,7 @@ package org.hisp.dhis.trackedentity;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,11 @@ public class TrackedEntityInstanceDeletionHandler
     @Override
     public String allowDeleteOrganisationUnit( OrganisationUnit unit )
     {
-        return instanceService.getTrackedEntityInstances( unit, 0, Integer.MAX_VALUE ).size() == 0 ? null : ERROR;
+        TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
+        params.addOrganisationUnit( unit );
+        Grid grid = instanceService.getTrackedEntityInstances( params );
+        
+        return grid.getHeight() == 0 ? null : ERROR;
     }
     
     @Override

@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 
@@ -51,18 +50,6 @@ public interface TrackedEntityInstanceStore
     List<Map<String, String>> getTrackedEntityInstances( TrackedEntityInstanceQueryParams params );
 
     int getTrackedEntityInstanceCount( TrackedEntityInstanceQueryParams params );
-
-    /**
-     * Search entityInstances who registered in a certain organisation unit
-     * 
-     * @param organisationUnit Organisation unit where entityInstances
-     *        registered
-     * @param min
-     * @param max
-     * 
-     * @return List of entityInstances
-     */
-    Collection<TrackedEntityInstance> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
 
     /**
      * Search instances who has the same representative
