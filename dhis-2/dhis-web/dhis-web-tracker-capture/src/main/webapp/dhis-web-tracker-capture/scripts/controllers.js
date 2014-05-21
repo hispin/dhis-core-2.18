@@ -62,8 +62,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             TranslationService.translate();
             $scope.loadPrograms($scope.selectedOrgUnit);
             $scope.search($scope.searchMode.listAll);
-            
-            console.log('hi there...');
         }
     });
     
@@ -160,7 +158,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             $scope.trackedEntityList = data;
             
             if($scope.trackedEntityList){
-                $scope.gridColumns = $scope.generateGridColumns($scope.trackedEntityList.headers); 
+                $scope.gridColumns = $scope.generateGridColumns($scope.attributes); 
             }                      
             
         });
@@ -169,31 +167,22 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //generate grid columns from teilist attributes
     $scope.generateGridColumns = function(attributes){
         var columns = angular.copy(attributes);  
-        var defaultColumnSize = 5;
-        var index = 0;
-        
+       
         //also add extra columns which are not part of attributes (orgunit for example)
-        columns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string'});
+        columns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string', displayInListNoProgram: false});
         
         //generate grid column for the selected program/attributes
         angular.forEach(columns, function(column){
-            
             if(column.id === 'orgUnitName' && $scope.ouMode.name === 'SELECTED'){
                 column.show = false;    
             }
-            else{
-                if(index < defaultColumnSize){
-                    column.show = true;
-                }
-                else{
-                    column.show = false;
-                }                
-            }
+            if(column.displayInListNoProgram){
+                column.show = true;
+            }           
            
             if(column.type === 'date'){
                  $scope.filterText[column.id]= {start: '', end: ''};
             }
-            index++;
         });        
         return columns;        
     };
