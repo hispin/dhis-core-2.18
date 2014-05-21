@@ -30,6 +30,7 @@ package org.hisp.dhis.api.mobile;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
@@ -40,6 +41,7 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Program;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramInstance;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -65,7 +67,7 @@ public interface ActivityReportingService
     String saveProgramStage( ProgramStage programStage, int patientId, int orgUnitId )
         throws NotAllowedException;
 
-    Patient enrollProgram( String enrollInfo, Date incidentDate )
+    Patient enrollProgram( String  enrollInfo, List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>  mobileProgramStageList, Date incidentDate )
         throws NotAllowedException;
 
     Collection<org.hisp.dhis.trackedentity.TrackedEntityAttribute> getPatientAtts( String programId );
