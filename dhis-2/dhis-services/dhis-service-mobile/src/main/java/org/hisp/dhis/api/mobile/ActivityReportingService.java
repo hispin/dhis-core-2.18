@@ -35,6 +35,7 @@ import java.util.List;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.Message;
+import org.hisp.dhis.api.mobile.model.MessageConversation;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.User;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
@@ -111,4 +112,9 @@ public interface ActivityReportingService
     String sendMessage( Message message )
         throws NotAllowedException;
 
+    public Collection<MessageConversation> downloadMessageConversation()
+        throws NotAllowedException;
+
+    public Collection<Message> getMessage( String conversationId )
+        throws NotAllowedException;
 }

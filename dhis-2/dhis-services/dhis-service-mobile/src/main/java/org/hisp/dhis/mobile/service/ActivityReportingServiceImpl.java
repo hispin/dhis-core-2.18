@@ -1972,4 +1972,56 @@ public class ActivityReportingServiceImpl
 
         return MESSAGE_SENT;
     }
+
+    @Override
+    public Collection<org.hisp.dhis.api.mobile.model.MessageConversation> downloadMessageConversation()
+        throws NotAllowedException
+    {
+        Collection<MessageConversation> conversations = new HashSet<MessageConversation>();
+
+        Collection<org.hisp.dhis.api.mobile.model.MessageConversation> mobileConversationList = new HashSet<org.hisp.dhis.api.mobile.model.MessageConversation>();
+
+        conversations = new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, 10 ) );
+
+        for ( MessageConversation conversation : conversations )
+        {
+            if ( conversation.getLastSenderFirstname() != null )
+            {
+                org.hisp.dhis.api.mobile.model.MessageConversation messConversation = new org.hisp.dhis.api.mobile.model.MessageConversation();
+                messConversation.setId( conversation.getId() );
+                messConversation.setSubject( conversation.getSubject() );
+                mobileConversationList.add( messConversation );
+            }
+
+        }
+
+        return mobileConversationList;
+    }
+
+    @Override
+    public Collection<org.hisp.dhis.api.mobile.model.Message> getMessage( String conversationId )
+        throws NotAllowedException
+    {
+
+        MessageConversation conversation = messageService.getMessageConversation( Integer.parseInt( conversationId ) );
+        List<Message> messageList = new ArrayList<Message>( conversation.getMessages() );
+
+        Collection<org.hisp.dhis.api.mobile.model.Message> messages = new HashSet<org.hisp.dhis.api.mobile.model.Message>();
+
+        for ( Message message : messageList )
+        {
+
+            if ( message.getSender().getFirstName() != null )
+            {
+
+                org.hisp.dhis.api.mobile.model.Message messageMobile = new org.hisp.dhis.api.mobile.model.Message();
+                messageMobile.setSubject( conversation.getSubject() );
+                messageMobile.setText( message.getText() );
+                messageMobile.setLastSenderName( message.getSender().getName() );
+                messages.add( messageMobile );
+            }
+        }
+
+        return messages;
+    }
 }

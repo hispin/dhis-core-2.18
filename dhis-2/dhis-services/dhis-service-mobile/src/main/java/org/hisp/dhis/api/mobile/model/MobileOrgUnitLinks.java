@@ -68,8 +68,12 @@ public class MobileOrgUnitLinks
     private String sendFeedbackUrl;
 
     private String findUserUrl;
-    
+
     private String sendMessageUrl;
+
+    private String downloadMessageConversationUrl;
+
+    private String getMessageUrl;
 
     private String updateContactUrl;
 
@@ -242,8 +246,6 @@ public class MobileOrgUnitLinks
     {
         this.findUserUrl = findUserUrl;
     }
-    
-    
 
     public String getSendMessageUrl()
     {
@@ -253,6 +255,26 @@ public class MobileOrgUnitLinks
     public void setSendMessageUrl( String sendMessageUrl )
     {
         this.sendMessageUrl = sendMessageUrl;
+    }
+
+    public String getDownloadMessageConversationUrl()
+    {
+        return downloadMessageConversationUrl;
+    }
+
+    public void setDownloadMessageConversationUrl( String downloadMessageConversationUrl )
+    {
+        this.downloadMessageConversationUrl = downloadMessageConversationUrl;
+    }
+
+    public String getGetMessageUrl()
+    {
+        return getMessageUrl;
+    }
+
+    public void setGetMessageUrl( String getMessageUrl )
+    {
+        this.getMessageUrl = getMessageUrl;
     }
 
     public String getUpdateContactUrl()
@@ -422,6 +444,8 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( sendFeedbackUrl );
         dataOutputStream.writeUTF( findUserUrl );
         dataOutputStream.writeUTF( sendMessageUrl );
+        dataOutputStream.writeUTF( downloadMessageConversationUrl );
+        dataOutputStream.writeUTF( getMessageUrl );
         dataOutputStream.writeUTF( updateContactUrl );
         dataOutputStream.writeUTF( findPatientUrl );
         dataOutputStream.writeUTF( registerPersonUrl );
@@ -457,6 +481,8 @@ public class MobileOrgUnitLinks
         sendFeedbackUrl = dataInputStream.readUTF();
         findUserUrl = dataInputStream.readUTF();
         sendMessageUrl = dataInputStream.readUTF();
+        downloadMessageConversationUrl = dataInputStream.readUTF();
+        getMessageUrl = dataInputStream.readUTF();
         updateContactUrl = dataInputStream.readUTF();
         findPatientUrl = dataInputStream.readUTF();
         registerPersonUrl = dataInputStream.readUTF();
@@ -509,6 +535,8 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.sendFeedbackUrl );
         dataOutputStream.writeUTF( this.findUserUrl );
         dataOutputStream.writeUTF( this.sendMessageUrl );
+        dataOutputStream.writeUTF( this.downloadMessageConversationUrl );
+        dataOutputStream.writeUTF( this.getMessageUrl );
         // dataOutputStream.writeUTF( this.updateContactUrl );
     }
 
@@ -530,6 +558,8 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( sendFeedbackUrl );
         dataOutputStream.writeUTF( findUserUrl );
         dataOutputStream.writeUTF( sendMessageUrl );
+        dataOutputStream.writeUTF( downloadMessageConversationUrl );
+        dataOutputStream.writeUTF( getMessageUrl );
         dataOutputStream.writeUTF( updateContactUrl );
         dataOutputStream.writeUTF( findPatientUrl );
         dataOutputStream.writeUTF( registerPersonUrl );
