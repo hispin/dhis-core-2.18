@@ -403,7 +403,7 @@ public class MobileOrganisationUnitController
     String enrollInfo )
         throws NotAllowedException
     {
-        return activityReportingService.enrollProgram( enrollInfo,null, new Date() );
+        return activityReportingService.enrollProgram( enrollInfo, null, new Date() );
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/addRelationship" )
@@ -524,14 +524,7 @@ public class MobileOrganisationUnitController
     String programId )
         throws NotAllowedException
     {
-        if ( activityReportingService.savePatient( patient, id, programId ) != null )
-        {
-            return activityReportingService.findLatestPatient();
-        }
-        else
-        {
-            return null;
-        }
+        return activityReportingService.savePatient( patient, id, programId );
     }
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/getVariesInfo" )
@@ -581,7 +574,7 @@ public class MobileOrganisationUnitController
     Message message )
         throws NotAllowedException
     {
-        return activityReportingService.sendMessage(message);
+        return activityReportingService.sendMessage( message );
     }
 
 }
