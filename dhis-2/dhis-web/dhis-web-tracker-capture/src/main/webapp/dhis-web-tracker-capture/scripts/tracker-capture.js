@@ -118,7 +118,7 @@ $(document).ready(function()
         }
         else {
             setHeaderMessage(i18n_offline_notification);
-            selection.responseReceived(); //notify angular 
+            //selection.responseReceived(); //notify angular 
         }
     });
    
@@ -339,7 +339,7 @@ function uploadLocalData()
             dhis2.tc.storageManager.clear();
             log( 'Successfully uploaded local events' );      
             setHeaderDelayMessage( i18n_sync_success );
-            selection.responseReceived(); //notify angular 
+            //selection.responseReceived(); //notify angular 
         },
         error: function( xhr )
         {
