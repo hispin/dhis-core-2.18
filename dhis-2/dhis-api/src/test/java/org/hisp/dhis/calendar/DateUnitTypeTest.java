@@ -1,4 +1,4 @@
-package org.hisp.dhis.period;
+package org.hisp.dhis.calendar;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,46 +28,29 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.calendar.DateUnit;
+import org.junit.Test;
 
-import java.util.Calendar;
+import static org.junit.Assert.assertEquals;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FinancialJulyPeriodType
-    extends FinancialPeriodType
+public class DateUnitTypeTest
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 5190072405972068226L;
-
-    private static final String ISO_FORMAT = "yyyyJuly";
-
-    public static final String NAME = "FinancialJuly";
-
-    @Override
-    protected int getBaseMonth()
+    @Test
+    public void testDateUnitTypeFind()
     {
-        return Calendar.JULY;
-    }
-    
-    @Override
-    public String getName()
-    {
-        return NAME;
-    }
-
-    @Override
-    public String getIsoDate( DateUnit dateUnit )
-    {
-        return String.format( "%dJuly", dateUnit.getYear() );
-    }
-
-    @Override
-    public String getIsoFormat()
-    {
-        return ISO_FORMAT;
+        assertEquals( DateUnitType.DAILY, DateUnitType.find( "20140101" ) );
+        assertEquals( DateUnitType.WEEKLY, DateUnitType.find( "2014W1" ) );
+        assertEquals( DateUnitType.MONTHLY, DateUnitType.find( "201401" ) );
+        assertEquals( DateUnitType.MONTHLY, DateUnitType.find( "2014-01" ) );
+        assertEquals( DateUnitType.BI_MONTHLY, DateUnitType.find( "201401B" ) );
+        assertEquals( DateUnitType.QUARTERLY, DateUnitType.find( "2014Q1" ) );
+        assertEquals( DateUnitType.SIX_MONTHLY, DateUnitType.find( "2014S1" ) );
+        assertEquals( DateUnitType.SIX_MONTHLY_APRIL, DateUnitType.find( "2014AprilS1" ) );
+        assertEquals( DateUnitType.YEARLY, DateUnitType.find( "2014" ) );
+        assertEquals( DateUnitType.FINANCIAL_APRIL, DateUnitType.find( "2014April" ) );
+        assertEquals( DateUnitType.FINANCIAL_JULY, DateUnitType.find( "2014July" ) );
+        assertEquals( DateUnitType.FINANCIAL_OCTOBER, DateUnitType.find( "2014Oct" ) );
     }
 }

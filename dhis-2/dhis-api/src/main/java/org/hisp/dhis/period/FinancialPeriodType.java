@@ -28,8 +28,9 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import com.google.common.collect.Lists;
+import org.hisp.dhis.calendar.DateUnit;
+
 import java.util.Date;
 import java.util.List;
 
@@ -45,44 +46,37 @@ public abstract class FinancialPeriodType
     private static final long serialVersionUID = 2649990007010207631L;
 
     public static final int FREQUENCY_ORDER = 365;
-    
+
     // -------------------------------------------------------------------------
     // Abstract methods
     // -------------------------------------------------------------------------
 
     protected abstract int getBaseMonth();
-    
+
     // -------------------------------------------------------------------------
     // PeriodType functionality
     // -------------------------------------------------------------------------
 
     @Override
-    public Period createPeriod()
+    public Period createPeriod( DateUnit dateUnit )
     {
-        return createPeriod( createCalendarInstance() );
-    }
+        boolean past = dateUnit.getMonth() >= (getBaseMonth() + 1);
 
-    @Override
-    public Period createPeriod( Date date )
-    {
-        return createPeriod( createCalendarInstance( date ) );
-    }
+        if ( !past )
+        {
+            dateUnit = getCalendar().minusYears( dateUnit, 1 );
+        }
 
-    @Override
-    public Period createPeriod( Calendar cal )
-    {
-        boolean past = cal.get( Calendar.MONTH ) >= getBaseMonth();
-        
-        cal.set( Calendar.YEAR, past ? cal.get( Calendar.YEAR ) : cal.get( Calendar.YEAR ) - 1 );
-        cal.set( Calendar.MONTH, getBaseMonth() );
-        cal.set( Calendar.DATE, 1 );
+        dateUnit.setMonth( getBaseMonth() + 1 );
+        dateUnit.setDay( 1 );
 
-        Date startDate = cal.getTime();
+        DateUnit start = new DateUnit( dateUnit );
+        DateUnit end = new DateUnit( dateUnit );
 
-        cal.add( Calendar.YEAR, 1 );
-        cal.set( Calendar.DAY_OF_YEAR, cal.get( Calendar.DAY_OF_YEAR ) - 1  );
+        end = getCalendar().plusYears( end, 1 );
+        end = getCalendar().minusDays( end, 1 );
 
-        return new Period( this, startDate, cal.getTime() );
+        return toIsoPeriod( start, end );
     }
 
     @Override
@@ -98,40 +92,40 @@ public abstract class FinancialPeriodType
     @Override
     public Period getNextPeriod( Period period )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.add( Calendar.YEAR, 1 );
-        return createPeriod( cal );
+        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
+        dateUnit = getCalendar().plusYears( dateUnit, 1 );
+
+        return createPeriod( dateUnit );
     }
 
     @Override
     public Period getPreviousPeriod( Period period )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.add( Calendar.YEAR, -1 );
-        return createPeriod( cal );
+        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
+        dateUnit = getCalendar().minusYears( dateUnit, 1 );
+
+        return createPeriod( dateUnit );
     }
 
     /**
-     * Generates financial yearly periods for the last 5, current and next 5 
+     * Generates financial yearly periods for the last 5, current and next 5
      * financial years.
      */
     @Override
-    public List<Period> generatePeriods( Date date )
+    public List<Period> generatePeriods( DateUnit dateUnit )
     {
-        Calendar cal = createCalendarInstance( date );
-        
-        boolean past = cal.get( Calendar.MONTH ) >= getBaseMonth();
-        
-        cal.add( Calendar.YEAR, past ? -5 : -6 );
-        cal.set( Calendar.MONTH, getBaseMonth() );
-        cal.set( Calendar.DATE, 1 );
+        boolean past = dateUnit.getMonth() >= (getBaseMonth() + 1);
 
-        ArrayList<Period> periods = new ArrayList<Period>();
+        List<Period> periods = Lists.newArrayList();
 
-        for ( int i = 0; i < 11; ++i )
+        dateUnit = getCalendar().minusYears( dateUnit, past ? 5 : 6 );
+        dateUnit.setMonth( getBaseMonth() + 1 );
+        dateUnit.setDay( 1 );
+
+        for ( int i = 0; i < 11; i++ )
         {
-            periods.add( createPeriod( cal ) );
-            cal.add( Calendar.YEAR, 1 );
+            periods.add( createPeriod( dateUnit ) );
+            dateUnit = getCalendar().plusYears( dateUnit, 1 );
         }
 
         return periods;
@@ -146,49 +140,43 @@ public abstract class FinancialPeriodType
     {
         return generateLast5Years( date );
     }
-    
+
+    @Override
+    public List<Period> generateRollingPeriods( DateUnit dateUnit )
+    {
+        return generateLast5Years( getCalendar().toIso( dateUnit ).toJdkDate() );
+    }
+
     @Override
     public List<Period> generateLast5Years( Date date )
     {
-        Calendar cal = createCalendarInstance( date );
-        
-        boolean past = cal.get( Calendar.MONTH ) >= getBaseMonth();
-        
-        cal.add( Calendar.YEAR, past ? -4 : -5 );
-        cal.set( Calendar.MONTH, getBaseMonth() );
-        cal.set( Calendar.DATE, 1 );
+        DateUnit dateUnit = createLocalDateUnitInstance( date );
+        boolean past = dateUnit.getMonth() >= (getBaseMonth() + 1);
 
-        ArrayList<Period> periods = new ArrayList<Period>();
+        List<Period> periods = Lists.newArrayList();
 
-        for ( int i = 0; i < 5; ++i )
+        dateUnit = getCalendar().minusYears( dateUnit, past ? 4 : 5 );
+        dateUnit.setMonth( getBaseMonth() + 1 );
+        dateUnit.setDay( 1 );
+
+        for ( int i = 0; i < 5; i++ )
         {
-            periods.add( createPeriod( cal ) );
-            cal.add( Calendar.YEAR, 1 );
+            periods.add( createPeriod( dateUnit ) );
+            dateUnit = getCalendar().plusYears( dateUnit, 1 );
         }
 
         return periods;
     }
 
     @Override
-    public Period createPeriod( String isoDate )
-    {
-        int year = Integer.parseInt( isoDate.substring( 0, 4 ) );
-        Calendar cal = createCalendarInstance();
-        cal.set( Calendar.YEAR, year );
-        cal.set( Calendar.MONTH, 11 );
-        cal.set( Calendar.DAY_OF_MONTH, 31 );
-        return createPeriod( cal );
-    }
-    
-    @Override
     public Date getRewindedDate( Date date, Integer rewindedPeriods )
     {
-        date = date != null ? date : new Date();        
+        date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 
-        Calendar cal = createCalendarInstance( date );        
-        cal.add( Calendar.YEAR, (rewindedPeriods * -1) );
+        DateUnit dateUnit = createLocalDateUnitInstance( date );
+        dateUnit = getCalendar().minusYears( dateUnit, rewindedPeriods );
 
-        return cal.getTime();
+        return getCalendar().toIso( dateUnit ).toJdkDate();
     }
 }

@@ -28,10 +28,9 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class PeriodTypeTest
 {
@@ -40,31 +39,31 @@ public class PeriodTypeTest
     {
         assertNull( PeriodType.getByIndex( -1 ) );
         assertEquals( new YearlyPeriodType(), PeriodType.getByIndex( 8 ) );
-        assertNull( PeriodType.getByIndex( 999 ) );    
+        assertNull( PeriodType.getByIndex( 999 ) );
     }
 
     @Test
     public void testGetPeriodTypeFromIsoString()
     {
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011").getName(),"Yearly");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "201101").getName(),"Monthly");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011W1").getName(),"Weekly");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011W32").getName(),"Weekly");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "20110101").getName(),"Daily");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011Q3").getName(),"Quarterly");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "201101B").getName(),"BiMonthly");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011S1").getName(),"SixMonthly");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011AprilS1").getName(),"SixMonthlyApril");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011April").getName(),"FinancialApril");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011July").getName(),"FinancialJuly");
-        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011Oct").getName(),"FinancialOct");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011" ).getName(), "Yearly" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "201101" ).getName(), "Monthly" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011W1" ).getName(), "Weekly" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011W32" ).getName(), "Weekly" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "20110101" ).getName(), "Daily" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011Q3" ).getName(), "Quarterly" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "201101B" ).getName(), "BiMonthly" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011S1" ).getName(), "SixMonthly" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011AprilS1" ).getName(), "SixMonthlyApril" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011April" ).getName(), "FinancialApril" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011July" ).getName(), "FinancialJuly" );
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011Oct" ).getName(), "FinancialOct" );
 
-        assertNull(PeriodType.getPeriodTypeFromIsoString( "201"));
-        assertNull(PeriodType.getPeriodTypeFromIsoString( "20111"));
-        assertNull(PeriodType.getPeriodTypeFromIsoString( "201W2"));
-        assertNull(PeriodType.getPeriodTypeFromIsoString( "2011Q12"));
-        assertNull(PeriodType.getPeriodTypeFromIsoString( "2011W234"));
-        assertNull(PeriodType.getPeriodTypeFromIsoString( "201er2345566"));
-        assertNull(PeriodType.getPeriodTypeFromIsoString( "2011Q10"));
+        assertNull( PeriodType.getPeriodTypeFromIsoString( "201" ) );
+        assertNull( PeriodType.getPeriodTypeFromIsoString( "20111" ) );
+        assertNull( PeriodType.getPeriodTypeFromIsoString( "201W2" ) );
+        assertNull( PeriodType.getPeriodTypeFromIsoString( "2011Q12" ) );
+        assertNull( PeriodType.getPeriodTypeFromIsoString( "2011W234" ) );
+        assertNull( PeriodType.getPeriodTypeFromIsoString( "201er2345566" ) );
+        assertNull( PeriodType.getPeriodTypeFromIsoString( "2011Q10" ) );
     }
 }

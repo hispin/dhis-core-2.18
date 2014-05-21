@@ -1,4 +1,4 @@
-package org.hisp.dhis.period;
+package org.hisp.dhis.calendar.impl;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,46 +28,36 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.DateUnit;
-
-import java.util.Calendar;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FinancialJulyPeriodType
-    extends FinancialPeriodType
+public class NepaliCalendarTest
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 5190072405972068226L;
+    private Calendar calendar;
 
-    private static final String ISO_FORMAT = "yyyyJuly";
-
-    public static final String NAME = "FinancialJuly";
-
-    @Override
-    protected int getBaseMonth()
+    @Before
+    public void init()
     {
-        return Calendar.JULY;
-    }
-    
-    @Override
-    public String getName()
-    {
-        return NAME;
+        calendar = NepaliCalendar.getInstance();
     }
 
-    @Override
-    public String getIsoDate( DateUnit dateUnit )
+    @Test
+    public void testToIso()
     {
-        return String.format( "%dJuly", dateUnit.getYear() );
+        Assert.assertEquals( new DateUnit( 2014, 4, 14, true ), calendar.toIso( new DateUnit( 2071, 1, 1 ) ) );
+        Assert.assertEquals( new DateUnit( 2014, 4, 14, true ), calendar.toIso( 2071, 1, 1 ) );
     }
 
-    @Override
-    public String getIsoFormat()
+    @Test
+    public void testFromIso()
     {
-        return ISO_FORMAT;
+        Assert.assertEquals( new DateUnit( 2071, 1, 1, false ), calendar.fromIso( new DateUnit( 2014, 4, 14, true ) ) );
+        Assert.assertEquals( new DateUnit( 2071, 1, 1, false ), calendar.fromIso( 2014, 4, 14 ) );
     }
 }

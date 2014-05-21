@@ -1,4 +1,4 @@
-package org.hisp.dhis.period;
+package org.hisp.dhis.calendar;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,46 +28,10 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.calendar.DateUnit;
-
-import java.util.Calendar;
-
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FinancialJulyPeriodType
-    extends FinancialPeriodType
+public interface PeriodTypeParser
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 5190072405972068226L;
-
-    private static final String ISO_FORMAT = "yyyyJuly";
-
-    public static final String NAME = "FinancialJuly";
-
-    @Override
-    protected int getBaseMonth()
-    {
-        return Calendar.JULY;
-    }
-    
-    @Override
-    public String getName()
-    {
-        return NAME;
-    }
-
-    @Override
-    public String getIsoDate( DateUnit dateUnit )
-    {
-        return String.format( "%dJuly", dateUnit.getYear() );
-    }
-
-    @Override
-    public String getIsoFormat()
-    {
-        return ISO_FORMAT;
-    }
+    public DateInterval parse( String period );
 }

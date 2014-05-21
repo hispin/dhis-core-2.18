@@ -28,15 +28,16 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import com.google.common.collect.Lists;
+import org.hisp.dhis.calendar.DateUnit;
+
 import java.util.Date;
 import java.util.List;
 
 /**
  * PeriodType for yearly Periods. A valid yearly Period has startDate set to
  * January 1st and endDate set to the last day of the same year.
- * 
+ *
  * @author Torgeir Lorange Ostby
  * @version $Id: YearlyPeriodType.java 2971 2007-03-03 18:54:56Z torgeilo $
  */
@@ -68,25 +69,18 @@ public class YearlyPeriodType
     }
 
     @Override
-    public Period createPeriod()
+    public Period createPeriod( DateUnit dateUnit )
     {
-        return createPeriod( createCalendarInstance() );
-    }
+        DateUnit start = new DateUnit( dateUnit );
+        DateUnit end = new DateUnit( dateUnit );
 
-    @Override
-    public Period createPeriod( Date date )
-    {
-        return createPeriod( createCalendarInstance( date ) );
-    }
+        start.setDay( 1 );
+        start.setMonth( 1 );
 
-    @Override
-    public Period createPeriod( Calendar cal )
-    {
-        cal.set( Calendar.DAY_OF_YEAR, 1 );        
-        Date startDate = cal.getTime();
-        cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );
+        end.setMonth( getCalendar().monthsInYear() );
+        end.setDay( getCalendar().daysInMonth( end.getYear(), end.getMonth() ) );
 
-        return new Period( this, startDate, cal.getTime() );
+        return toIsoPeriod( start, end );
     }
 
     @Override
@@ -102,42 +96,44 @@ public class YearlyPeriodType
     @Override
     public Period getNextPeriod( Period period )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.add( Calendar.YEAR, 1 );
-        return createPeriod( cal );
+        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
+        dateUnit = getCalendar().plusYears( dateUnit, 1 );
+
+        return createPeriod( dateUnit );
     }
 
     @Override
     public Period getPreviousPeriod( Period period )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.add( Calendar.YEAR, -1 );
-        return createPeriod( cal );
+        DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
+        dateUnit = getCalendar().minusYears( dateUnit, 1 );
+
+        return createPeriod( dateUnit );
     }
 
     /**
      * Generates yearly periods for the last 5, current and next 5 years.
      */
     @Override
-    public List<Period> generatePeriods( Date date )
+    public List<Period> generatePeriods( DateUnit dateUnit )
     {
-        Calendar cal = createCalendarInstance( date );
-        cal.add( Calendar.YEAR, -5 );
-        cal.set( Calendar.DAY_OF_YEAR, 1 );
+        dateUnit = getCalendar().minusYears( dateUnit, 5 );
+        dateUnit.setDay( 1 );
+        dateUnit.setMonth( 1 );
 
-        ArrayList<Period> periods = new ArrayList<Period>();
+        List<Period> periods = Lists.newArrayList();
 
         for ( int i = 0; i < 11; ++i )
         {
-            periods.add( createPeriod( cal ) );
-            cal.add( Calendar.YEAR, 1 );
+            periods.add( createPeriod( dateUnit ) );
+            dateUnit = getCalendar().plusYears( dateUnit, 1 );
         }
 
         return periods;
     }
 
     /**
-     * Generates the last 5 years where the last one is the year which the given 
+     * Generates the last 5 years where the last one is the year which the given
      * date is inside.
      */
     @Override
@@ -146,42 +142,39 @@ public class YearlyPeriodType
         return generateLast5Years( date );
     }
 
+    @Override
+    public List<Period> generateRollingPeriods( DateUnit dateUnit )
+    {
+        return generateLast5Years( getCalendar().toIso( dateUnit ).toJdkDate() );
+    }
+
     /**
-     * Generates the last 5 years where the last one is the year which the given 
+     * Generates the last 5 years where the last one is the year which the given
      * date is inside.
      */
     @Override
     public List<Period> generateLast5Years( Date date )
     {
-        Calendar cal = createCalendarInstance( date );
-        cal.add( Calendar.YEAR, -4 );
-        cal.set( Calendar.DAY_OF_YEAR, 1 );
+        DateUnit dateUnit = createLocalDateUnitInstance( date );
+        dateUnit = getCalendar().minusYears( dateUnit, 4 );
+        dateUnit.setDay( 1 );
+        dateUnit.setMonth( 1 );
 
-        ArrayList<Period> periods = new ArrayList<Period>();
+        List<Period> periods = Lists.newArrayList();
 
         for ( int i = 0; i < 5; ++i )
         {
-            periods.add( createPeriod( cal ) );
-            cal.add( Calendar.YEAR, 1 );
+            periods.add( createPeriod( dateUnit ) );
+            dateUnit = getCalendar().plusYears( dateUnit, 1 );
         }
 
         return periods;
     }
 
     @Override
-    public String getIsoDate( Period period )
+    public String getIsoDate( DateUnit dateUnit )
     {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        int year = cal.get( Calendar.YEAR );
-        return String.valueOf( year );
-    }
-
-    @Override
-    public Period createPeriod( String isoDate )
-    {
-        Calendar cal = createCalendarInstance();
-        cal.set( Calendar.YEAR, Integer.parseInt( isoDate ) );
-        return createPeriod( cal );
+        return String.valueOf( dateUnit.getYear() );
     }
 
     @Override
@@ -189,16 +182,16 @@ public class YearlyPeriodType
     {
         return ISO_FORMAT;
     }
-    
+
     @Override
     public Date getRewindedDate( Date date, Integer rewindedPeriods )
     {
-        date = date != null ? date : new Date();        
+        date = date != null ? date : new Date();
         rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
 
-        Calendar cal = createCalendarInstance( date );        
-        cal.add( Calendar.YEAR, (rewindedPeriods * -1) );
+        DateUnit dateUnit = createLocalDateUnitInstance( date );
+        dateUnit = getCalendar().minusYears( dateUnit, rewindedPeriods );
 
-        return cal.getTime();
+        return getCalendar().toIso( dateUnit ).toJdkDate();
     }
 }

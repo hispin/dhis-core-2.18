@@ -79,7 +79,7 @@ public class DateUnitTest
     @Test
     public void toDateTimeTest()
     {
-        DateUnit dateUnit = new DateUnit( 2014, 3, 20 );
+        DateUnit dateUnit = new DateUnit( 2014, 3, 20, true );
         DateTime dateTime = dateUnit.toDateTime();
 
         assertEquals( 2014, dateTime.getYear() );
@@ -90,7 +90,7 @@ public class DateUnitTest
     @Test
     public void toJdkCalendarTest()
     {
-        DateUnit dateUnit = new DateUnit( 2014, 3, 20 );
+        DateUnit dateUnit = new DateUnit( 2014, 3, 20, true );
         Calendar calendar = dateUnit.toJdkCalendar();
 
         assertEquals( 2014, calendar.get( Calendar.YEAR ) );
@@ -101,7 +101,7 @@ public class DateUnitTest
     @Test
     public void toJdkDateTest()
     {
-        DateUnit dateUnit = new DateUnit( 2014, 3, 20 );
+        DateUnit dateUnit = new DateUnit( 2014, 3, 20, true );
         Date date = dateUnit.toJdkDate();
 
         // use dateTime for testing
