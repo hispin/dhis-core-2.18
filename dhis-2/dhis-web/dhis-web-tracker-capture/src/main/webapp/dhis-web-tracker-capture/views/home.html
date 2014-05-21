@@ -11,10 +11,10 @@
 <div class="page" id="mainPage" ng-show="selectedOrgUnit">
     <h1>
         <span ng-if='showSearchDiv || !showRegistrationDiv'>
-            {{selectedProgram.trackedEntity.name}} {{'search'| translate}}
+           {{'search'| translate}} {{selectedProgram.trackedEntity.name}}
         </span>
         <span ng-if='showRegistrationDiv'>
-            {{selectedProgram.trackedEntity.name}} {{'registration'| translate}}
+           {{'register'| translate}} {{selectedProgram.trackedEntity.name}}
         </span>          
         <a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a>
     </h1>
@@ -27,26 +27,25 @@
                 <button class="btn btn-default" type="button" title="{{'advanced_search'| translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-cog"></i></button>
             </span>                
         </div>        
-        <div class="col-md-6">
-            <div class="btn-group">
-                <button type="button" 
-                        class="btn btn-default"
-                        ng-disabled="showRegistrationDiv || showSearchDiv"
-                        ng-click="search(searchMode.freeText)">
-                    {{'search'| translate}}
-                </button>
-                <button type="button" 
-                        class="btn btn-default"
-                        ng-disabled="showRegistrationDiv || showSearchDiv"
-                        ng-click="search(searchMode.listAll)">
-                    {{'list_all'| translate}}
-                </button>
-            </div>
+        <div class="col-md-6">            
+            <button type="button" 
+                    class="btn btn-default small-horizonal-spacing"
+                    ng-disabled="showRegistrationDiv || showSearchDiv"
+                    ng-click="search(searchMode.freeText)">
+                {{'search'| translate}}
+            </button>
+            <button type="button" 
+                    class="btn btn-default small-horizonal-spacing"
+                    ng-disabled="showRegistrationDiv || showSearchDiv"
+                    ng-click="search(searchMode.listAll)">
+                {{'list_all'| translate}}
+            </button>
+            
             <span class="horizonal-spacing">
                 <button type="button" 
-                        class="btn btn-default" 
+                        class="btn btn-default small-horizonal-spacing" 
                         ng-click="showRegistration()">                    
-                    {{selectedProgram.trackedEntity.name }} {{'registration'| translate}}
+                    {{selectedProgram.trackedEntity.name }} {{'register'| translate}}
                 </button>
             </span>
         </div>        

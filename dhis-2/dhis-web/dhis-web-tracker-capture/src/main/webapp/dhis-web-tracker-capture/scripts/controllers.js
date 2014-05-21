@@ -19,7 +19,14 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //Selection
     $scope.selectedOrgUnit = '';
     $scope.selectedProgram = '';
-    $scope.ouMode = 'SELECTED';
+    $scope.ouModes = [
+                    {name: 'SELECTED', id: 1}, 
+                    {name: 'CHILDREN', id: 2}, 
+                    {name: 'DESCENDANTS', id: 3}
+                  ];
+                  
+    $scope.ouMode = $scope.ouModes[0];
+   
     
     //Filtering
     $scope.reverse = false;
@@ -150,7 +157,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 
         //get events for the specified parameters
         TEIService.search($scope.selectedOrgUnit.id, 
-                                            $scope.ouMode,
+                                            $scope.ouMode.name,
                                             queryUrl,
                                             programUrl,
                                             attributeUrl.url).then(function(data){
@@ -166,6 +173,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //generate grid columns from teilist attributes
     $scope.generateGridColumns = function(attributes){
         var columns = angular.copy(attributes);  
+        var defaultColumnSize = 5;
+        var index = 0;
         
         //also add extra columns which are not part of attributes (orgunit for example)
         columns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string'});
@@ -173,11 +182,16 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         //generate grid column for the selected program/attributes
         angular.forEach(columns, function(column){
             
-            if(column.id === 'orgUnitName' && $scope.ouMode === 'SELECTED'){
+            if(column.id === 'orgUnitName' && $scope.ouMode.name === 'SELECTED'){
                 column.show = false;    
             }
             else{
-                column.show = true;
+                if(index < defaultColumnSize){
+                    column.show = true;
+                }
+                else{
+                    column.show = false;
+                }                
             }
             
             column.showFilter =  false;
@@ -185,6 +199,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             if(column.type === 'date'){
                  $scope.filterText[column.id]= {start: '', end: ''};
             }
+            index++;
         });        
         return columns;        
     };
@@ -616,7 +631,13 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                                     selectedProgramId: $scope.selectedProgram.id,
                                                     selectedEnrollment: $scope.selectedEnrollment});
             });            
-        }        
+        }
+        
+        $rootScope.$broadcast('dataentry', {selectedEntity: $scope.selectedEntity,
+                                                    selectedOrgUnit: $scope.selectedOrgUnit,
+                                                    selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id : null,
+                                                    selectedEnrollment: $scope.selectedEnrollment ? $scope.selectedEnrollment : null});
+        
     };
     
     $scope.showEnrollment = function(){        
@@ -639,9 +660,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 TranslationService) {
 
     TranslationService.translate();
-    
-    $scope.selectedOrgUnit = storage.get('SELECTED_OU');
-    
+     
     //listen for the selected items
     $scope.$on('dataentry', function(event, args) {  
         
@@ -655,10 +674,14 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.dhis2Events = [];       
     
         $scope.selectedEntity = args.selectedEntity;
+        $scope.selectedOrgUnit = args.selectedOrgUnit;
         $scope.selectedProgramId = args.selectedProgramId;        
-        $scope.selectedEnrollment = args.selectedEnrollment;
+        $scope.selectedEnrollment = args.selectedEnrollment;        
         
-        if($scope.selectedOrgUnit && $scope.selectedProgramId && $scope.selectedEntity ){
+        if($scope.selectedOrgUnit && 
+                $scope.selectedProgramId && 
+                $scope.selectedEntity && 
+                $scope.selectedEnrollment){
             
             DHIS2EventFactory.getByEntity($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgramId).then(function(data){
                 $scope.dhis2Events = data;
@@ -699,7 +722,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     //check if a stage is repeatable
                     if(ps.repeatable){
                         $scope.allowEventCreation = true;
-                        if($scope.repeatableStages.indexOf(ps) == -1){
+                        if($scope.repeatableStages.indexOf(ps) === -1){
                             $scope.repeatableStages.push(ps);
                         }
                     }

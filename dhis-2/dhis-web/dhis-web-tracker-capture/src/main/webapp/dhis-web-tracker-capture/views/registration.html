@@ -70,7 +70,7 @@
                             <input type="text" class="form-control" ng-date ng-model="enrollment.incidentDate" />
                         </td>
                     </tr>     
-                    <tr>
+                    <tr ng-if="selectedProgram.displayIncidentDate">
                         <td>
                             {{selectedProgram.dateOfIncidentDescription}}
                         </td>

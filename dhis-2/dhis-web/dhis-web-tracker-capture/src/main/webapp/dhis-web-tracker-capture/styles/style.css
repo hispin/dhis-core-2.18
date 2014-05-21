@@ -573,6 +573,14 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     margin-top: 20px;    
 }
 
+.small-horizonal-spacing{
+    margin-left: 5px;    
+}
+
+.small-vertical-spacing{
+    margin-top: 5px;    
+}
+
 .search-container{
     margin-top: 20px;
     margin-bottom: 20px;
