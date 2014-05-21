@@ -55,6 +55,7 @@ import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.Task;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.common.Grid;
@@ -1435,18 +1436,7 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient findLatestPatient()
-        throws NotAllowedException
-    {
-        // Patient patient = entityInstanceService.getPatient( this.patientId );
-        //
-        // org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile =
-        // getPatientModel( patient );
-        return this.getPatientMobile();
-    }
-
-    @Override
-    public Integer savePatient( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patient, int orgUnitId,
+    public Patient savePatient( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patient, int orgUnitId,
         String programIdText )
         throws NotAllowedException
     {
@@ -1480,7 +1470,8 @@ public class ActivityReportingServiceImpl
         }
 
         patientId = entityInstanceService.createTrackedEntityInstance( patientWeb, null, null, patientAttributeValues );
-
+        TrackedEntityInstance newTrackedEntityInstance = entityInstanceService
+            .getTrackedEntityInstance( this.patientId );
         try
         {
             for ( org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramInstance mobileProgramInstance : patient
@@ -1493,13 +1484,10 @@ public class ActivityReportingServiceImpl
         }
         catch ( Exception e )
         {
-            return patientId;
+            throw new NotAllowedException( e.getMessage() );
         }
 
-        TrackedEntityInstance patientNew = entityInstanceService.getTrackedEntityInstance( this.patientId );
-        setPatientMobile( getPatientModel( patientNew ) );
-
-        return patientId;
+        return getPatientModel( newTrackedEntityInstance );
 
     }
 
@@ -1791,20 +1779,6 @@ public class ActivityReportingServiceImpl
             .getTrackedEntityInstance( programInstance.getEntityInstance().getId() ) );
 
         return mobilePatient;
-    }
-
-    // TODO remove, we cannot have state like this in a singleton
-
-    private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile;
-
-    private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientMobile()
-    {
-        return patientMobile;
-    }
-
-    private void setPatientMobile( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile )
-    {
-        this.patientMobile = patientMobile;
     }
 
     @Override

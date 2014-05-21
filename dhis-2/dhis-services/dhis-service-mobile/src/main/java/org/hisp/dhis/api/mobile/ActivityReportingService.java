@@ -84,10 +84,7 @@ public interface ActivityReportingService
     Program findProgram( String programInfo )
         throws NotAllowedException;
 
-    Patient findLatestPatient()
-        throws NotAllowedException;
-
-    Integer savePatient( Patient patient, int orgUnitId, String programId )
+    Patient savePatient( Patient patient, int orgUnitId, String programId )
         throws NotAllowedException;
 
     String findLostToFollowUp( int orgUnitId, String programId )
