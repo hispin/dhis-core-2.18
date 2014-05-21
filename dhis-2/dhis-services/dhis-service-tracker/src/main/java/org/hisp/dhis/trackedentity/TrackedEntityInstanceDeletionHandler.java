@@ -28,8 +28,6 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -66,13 +64,8 @@ public class TrackedEntityInstanceDeletionHandler
     @Override
     public void deleteTrackedEntityInstance( TrackedEntityInstance instance )
     {
-        Collection<TrackedEntityInstance> representatives = instanceService.getRepresentatives( instance );
-
-        for ( TrackedEntityInstance representative : representatives )
-        {
-            representative.setRepresentative( null );
-            instanceService.updateTrackedEntityInstance( representative );
-        }
+        //TODO handle instance representative
+        //TODO re-consider representative concept / implement in TEI query
     }
 
     @Override

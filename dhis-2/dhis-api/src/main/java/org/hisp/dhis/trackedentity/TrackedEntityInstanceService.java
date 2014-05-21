@@ -192,15 +192,6 @@ public interface TrackedEntityInstanceService
     TrackedEntityInstance getTrackedEntityInstance( String uid );
 
     /**
-     * Get entityInstances who has the same representative
-     * 
-     * @params entityInstance The representatives
-     * 
-     * @return TrackedEntityInstance List
-     * **/
-    Collection<TrackedEntityInstance> getRepresentatives( TrackedEntityInstance entityInstance );
-
-    /**
      * Register a new entityInstance
      * 
      * @param entityInstance TrackedEntityInstance

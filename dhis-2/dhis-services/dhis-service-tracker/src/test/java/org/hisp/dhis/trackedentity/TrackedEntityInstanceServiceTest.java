@@ -84,8 +84,6 @@ public class TrackedEntityInstanceServiceTest
 
     private TrackedEntityInstance entityInstanceA1;
 
-    private TrackedEntityInstance entityInstanceA2;
-
     private TrackedEntityInstance entityInstanceA3;
 
     private TrackedEntityInstance entityInstanceB1;
@@ -107,7 +105,6 @@ public class TrackedEntityInstanceServiceTest
         attributeService.addTrackedEntityAttribute( entityInstanceAttribute );
 
         entityInstanceA1 = createTrackedEntityInstance( 'A', organisationUnit );
-        entityInstanceA2 = createTrackedEntityInstance( 'A', organisationUnitB );
         entityInstanceA3 = createTrackedEntityInstance( 'A', organisationUnit, entityInstanceAttribute );
         entityInstanceB1 = createTrackedEntityInstance( 'B', organisationUnit );
         entityInstanceB1.setUid( "UID-B1" );
@@ -177,20 +174,6 @@ public class TrackedEntityInstanceServiceTest
 
         assertEquals( entityInstanceA1, entityInstanceService.getTrackedEntityInstance( "A1" ) );
         assertEquals( entityInstanceB1, entityInstanceService.getTrackedEntityInstance( "B1" ) );
-    }
-
-    @Test
-    public void testGetRepresentatives()
-    {
-        entityInstanceService.addTrackedEntityInstance( entityInstanceB1 );
-
-        entityInstanceA1.setRepresentative( entityInstanceB1 );
-        entityInstanceA2.setRepresentative( entityInstanceB1 );
-
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA1 );
-        entityInstanceService.addTrackedEntityInstance( entityInstanceA2 );
-
-        assertEquals( 2, entityInstanceService.getRepresentatives( entityInstanceB1 ).size() );
     }
 
     @Test

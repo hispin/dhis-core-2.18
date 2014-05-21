@@ -72,8 +72,6 @@ public class TrackedEntityInstanceStoreTest
 
     private TrackedEntityInstance entityInstanceA1;
 
-    private TrackedEntityInstance entityInstanceA2;
-
     private TrackedEntityInstance entityInstanceB1;
 
     private OrganisationUnit organisationUnit;
@@ -92,7 +90,6 @@ public class TrackedEntityInstanceStoreTest
         attributeService.addTrackedEntityAttribute( entityInstanceAttributeB );
       
         entityInstanceA1 = createTrackedEntityInstance( 'A', organisationUnit );
-        entityInstanceA2 = createTrackedEntityInstance( 'A', organisationUnitB );
         entityInstanceB1 = createTrackedEntityInstance( 'B', organisationUnit );
     }
 
@@ -143,18 +140,5 @@ public class TrackedEntityInstanceStoreTest
         entityInstanceStore.save( entityInstanceB1 );
 
         assertTrue( equals( entityInstanceStore.getAll(), entityInstanceA1, entityInstanceB1 ) );
-    }
-
-    @Test
-    public void testGetRepresentatives()
-    {
-        entityInstanceStore.save( entityInstanceB1 );
-
-        entityInstanceA1.setRepresentative( entityInstanceB1 );
-        entityInstanceA2.setRepresentative( entityInstanceB1 );
-        entityInstanceStore.save( entityInstanceA1 );
-        entityInstanceStore.save( entityInstanceA2 );
-
-        assertEquals( 2, entityInstanceStore.getRepresentatives( entityInstanceB1 ).size() );
     }
 }

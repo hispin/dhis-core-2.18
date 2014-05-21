@@ -45,7 +45,6 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceService.ERROR_DUP
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceService.SEPARATOR;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -390,15 +389,6 @@ public class HibernateTrackedEntityInstanceStore
         }
 
         return sql;
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<TrackedEntityInstance> getRepresentatives( TrackedEntityInstance instance )
-    {
-        String hql = "select distinct p from TrackedEntityInstance p where p.representative = :representative order by p.id DESC";
-
-        return getQuery( hql ).setEntity( "representative", instance ).list();
     }
 
     @Override
