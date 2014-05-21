@@ -41,7 +41,6 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Program;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramInstance;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship;
 import org.hisp.dhis.organisationunit.OrganisationUnit;

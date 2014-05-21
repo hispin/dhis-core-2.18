@@ -41,7 +41,8 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.LAST_
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.ORG_UNIT_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_ID;
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams.TRACKED_ENTITY_INSTANCE_ID;
-import static org.hisp.dhis.trackedentity.TrackedEntityInstanceService.*;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceService.ERROR_DUPLICATE_IDENTIFIER;
+import static org.hisp.dhis.trackedentity.TrackedEntityInstanceService.SEPARATOR;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +52,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
@@ -390,23 +390,6 @@ public class HibernateTrackedEntityInstanceStore
         }
 
         return sql;
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<TrackedEntityInstance> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max )
-    {
-        String hql = "select p from TrackedEntityInstance p where p.organisationUnit = :organisationUnit order by p.id DESC";
-
-        Query query = getQuery( hql );
-        query.setEntity( "organisationUnit", organisationUnit );
-
-        if ( min != null && max != null )
-        {
-            query.setFirstResult( min ).setMaxResults( max );
-        }
-
-        return query.list();
     }
 
     @Override
