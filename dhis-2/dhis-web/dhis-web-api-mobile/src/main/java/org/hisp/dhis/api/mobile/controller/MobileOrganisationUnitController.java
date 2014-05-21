@@ -403,7 +403,7 @@ public class MobileOrganisationUnitController
     String enrollInfo )
         throws NotAllowedException
     {
-        return activityReportingService.enrollProgram( enrollInfo, new Date() );
+        return activityReportingService.enrollProgram( enrollInfo,null, new Date() );
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/addRelationship" )

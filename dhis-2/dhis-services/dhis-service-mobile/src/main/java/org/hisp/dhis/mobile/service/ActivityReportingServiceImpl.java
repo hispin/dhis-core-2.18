@@ -283,13 +283,19 @@ public class ActivityReportingServiceImpl
         long lowerBound = cal.getTime().getTime();
 
         List<Activity> items = new ArrayList<Activity>();
-        Collection<TrackedEntityInstance> patients = entityInstanceService.getTrackedEntityInstances( unit, 0,
-            Integer.MAX_VALUE );
 
-        for ( TrackedEntityInstance patient : patients )
+        TrackedEntityInstanceQueryParams param = new TrackedEntityInstanceQueryParams();
+        param.addOrganisationUnit( unit );
+
+        Grid trackedEntityDrid = entityInstanceService.getTrackedEntityInstances( param );
+        List<List<Object>> entityInstanceList = trackedEntityDrid.getRows();
+
+        for ( List<Object> entityInstance : entityInstanceList )
         {
+            TrackedEntityInstance trackedEntityInstance = entityInstanceService
+                .getTrackedEntityInstance( entityInstance.get( 0 ).toString() );
             for ( ProgramStageInstance programStageInstance : programStageInstanceService.getProgramStageInstances(
-                patient, false ) )
+                trackedEntityInstance, false ) )
             {
                 if ( programStageInstance.getDueDate().getTime() >= lowerBound
                     && programStageInstance.getDueDate().getTime() <= upperBound )
@@ -319,19 +325,19 @@ public class ActivityReportingServiceImpl
         param.addOrganisationUnit( unit );
 
         Grid trackedEntityDrid = entityInstanceService.getTrackedEntityInstances( param );
-        List<List<Object>> listOfListProgramStageInstance = trackedEntityDrid.getRows();
+        List<List<Object>> entityInstanceList = trackedEntityDrid.getRows();
 
-        for ( List<Object> listProgramStageInstance : listOfListProgramStageInstance )
+        for ( List<Object> entityInstance : entityInstanceList )
         {
-            for ( Object obj : listProgramStageInstance )
+            TrackedEntityInstance trackedEntityInstance = entityInstanceService
+                .getTrackedEntityInstance( entityInstance.get( 0 ).toString() );
+            for ( ProgramStageInstance programStageInstance : programStageInstanceService.getProgramStageInstances(
+                trackedEntityInstance, false ) )
             {
-                TrackedEntityInstance patient = (TrackedEntityInstance) obj;
-                for ( ProgramStageInstance programStageInstance : programStageInstanceService.getProgramStageInstances(
-                    patient, false ) )
-                {
-                    items.add( getActivity( programStageInstance, false ) );
-                }
+
+                items.add( getActivity( programStageInstance, false ) );
             }
+
         }
 
         if ( items.isEmpty() )
@@ -597,7 +603,8 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient enrollProgram( String enrollInfo, Date incidentDate )
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient enrollProgram( String enrollInfo,
+        List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStageList, Date incidentDate )
         throws NotAllowedException
     {
         String[] enrollProgramInfo = enrollInfo.split( "-" );
@@ -614,8 +621,13 @@ public class ActivityReportingServiceImpl
         programInstance.setEntityInstance( patient );
         programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
         programInstanceService.addProgramInstance( programInstance );
-        for ( ProgramStage programStage : program.getProgramStages() )
+
+        Iterator<ProgramStage> programStagesIterator = program.getProgramStages().iterator();
+
+        for ( int i = 0; i < program.getProgramStages().size(); i++ )
         {
+            ProgramStage programStage = programStagesIterator.next();
+
             if ( programStage.getAutoGenerateEvent() )
             {
                 ProgramStageInstance programStageInstance = new ProgramStageInstance();
@@ -636,7 +648,20 @@ public class ActivityReportingServiceImpl
                     programStageInstance.setExecutionDate( dueDate );
                 }
 
-                programStageInstanceService.addProgramStageInstance( programStageInstance );
+                int programStageInstanceId = programStageInstanceService.addProgramStageInstance( programStageInstance );
+
+                // Inject Datavalue avaiable on-the-fly
+                if ( mobileProgramStageList != null && mobileProgramStageList.size() > 0 )
+                {
+                    org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage = mobileProgramStageList
+                        .get( i );
+                    if ( mobileProgramStage != null && mobileProgramStage.getDataElements().size() > 0 )
+                    {
+                        mobileProgramStage.setId( programStageInstanceId );
+                        this.saveProgramStage( mobileProgramStage, patientId, patient.getOrganisationUnit().getId() );
+                    }
+                }
+
                 programInstance.getProgramStageInstances().add( programStageInstance );
             }
         }
@@ -1147,7 +1172,7 @@ public class ActivityReportingServiceImpl
                         programsInfo += program.getId() + "/" + program.getName() + "$";
                     }
                 }
-                
+
                 throw new NotAllowedException( programsInfo );
             }
         }
@@ -1462,7 +1487,8 @@ public class ActivityReportingServiceImpl
                 .getEnrollmentPrograms() )
             {
                 Date incidentDate = PeriodUtil.stringToDate( mobileProgramInstance.getDateOfIncident() );
-                enrollProgram( patientId + "-" + mobileProgramInstance.getProgramId(), incidentDate );
+                enrollProgram( patientId + "-" + mobileProgramInstance.getProgramId(),
+                    mobileProgramInstance.getProgramStageInstances(), incidentDate );
             }
         }
         catch ( Exception e )
@@ -1768,7 +1794,7 @@ public class ActivityReportingServiceImpl
     }
 
     // TODO remove, we cannot have state like this in a singleton
-    
+
     private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile;
 
     private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientMobile()
