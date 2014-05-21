@@ -64,26 +64,6 @@
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
-	<!-- Patient Mobile Settings -->
-
-	<bean id="org.hisp.dhis.mobile.action.ShowMobileSettingFormAction"
-		class="org.hisp.dhis.mobile.action.ShowMobileSettingFormAction" 
-		scope="prototype">
-		<property name="mobileSettingService"
-			ref="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.mobile.action.UpdateMobileSettingAction"
-		class="org.hisp.dhis.mobile.action.UpdateMobileSettingAction" 
-		scope="prototype">
-		<property name="mobileSettingService"
-			ref="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-	</bean>
-
 	<!-- Mobile DataSet -->
 
 	<bean id="org.hisp.dhis.mobile.action.MobileDataSetListAction"
@@ -172,10 +152,8 @@
 
 	<bean id="org.hisp.dhis.mobile.action.J2meClientUpdateAction"
 		class="org.hisp.dhis.mobile.action.J2meClientUpdateAction" 
-		scope="prototype">
-		<property name="mobileSettingService"
-			ref="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService" />
-	</bean>
+		scope="prototype"/>
+
 	
 	<bean id="org.hisp.dhis.mobile.action.incoming.ProcessingSendQuickSMSAction"
         class="org.hisp.dhis.mobile.action.incoming.ProcessingSendQuickSMSAction" 

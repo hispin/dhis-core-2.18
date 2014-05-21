@@ -105,6 +105,9 @@ public interface ActivityReportingService
     Collection<User> findUser( String keyword )
         throws NotAllowedException;
 
+    String findVisitSchedule( int orgUnitId, int programId, String info )
+        throws NotAllowedException;
+
     String sendMessage( Message message )
         throws NotAllowedException;
 

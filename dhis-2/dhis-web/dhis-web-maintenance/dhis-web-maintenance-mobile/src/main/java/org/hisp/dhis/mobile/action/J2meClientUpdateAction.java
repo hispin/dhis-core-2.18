@@ -28,11 +28,6 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService;
-import org.hisp.dhis.trackedentity.TrackedEntityMobileSetting;
-
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -41,21 +36,11 @@ import com.opensymphony.xwork2.Action;
 public class J2meClientUpdateAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-    
-    private TrackedEntityMobileSettingService mobileSettingService;
-
-    public void setMobileSettingService( TrackedEntityMobileSettingService mobileSettingService )
-    {
-        this.mobileSettingService = mobileSettingService;
-    }
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-    
+
     private double version;
 
     public void setVersion( double version )
@@ -64,50 +49,48 @@ public class J2meClientUpdateAction
     }
 
     private String autoUpdate;
-    
+
     public void setAutoUpdate( String autoUpdate )
     {
         this.autoUpdate = autoUpdate;
-    }
-    
-    private TrackedEntityMobileSetting trackedEntityMobileSetting;
-
-    public TrackedEntityMobileSetting getTrackedEntityMobileSetting()
-    {
-        return trackedEntityMobileSetting;
     }
 
     @Override
     public String execute()
         throws Exception
-    { 
-        List<TrackedEntityMobileSetting> list;
+    {
+
+        //TO DO: reimplement using SystemSetting
         
-        list = (List<TrackedEntityMobileSetting>) mobileSettingService.getCurrentSetting();
-        
-        if( list.size() == 0 )
-        {
-            trackedEntityMobileSetting = new TrackedEntityMobileSetting();
-        }
-        else
-        {
-            trackedEntityMobileSetting = list.get( 0 );
-        }    
-        if ( this.version != 0 )
-        {
-            trackedEntityMobileSetting.setVersionToUpdate( this.version );
-        }
-        if ( autoUpdate != null && autoUpdate.equals( "yes" ) )
-        {
-            trackedEntityMobileSetting.setAutoUpdateClient( true );
-        }
-        
-        if ( autoUpdate != null && autoUpdate.equals( "no" ) )
-        {
-            trackedEntityMobileSetting.setAutoUpdateClient( false );
-        }
-        
-        mobileSettingService.saveTrackedEntityMobileSetting( this.trackedEntityMobileSetting );
+        // List<TrackedEntityMobileSetting> list;
+        //
+        // list = (List<TrackedEntityMobileSetting>)
+        // mobileSettingService.getCurrentSetting();
+        //
+        // if( list.size() == 0 )
+        // {
+        // trackedEntityMobileSetting = new TrackedEntityMobileSetting();
+        // }
+        // else
+        // {
+        // trackedEntityMobileSetting = list.get( 0 );
+        // }
+        // if ( this.version != 0 )
+        // {
+        // trackedEntityMobileSetting.setVersionToUpdate( this.version );
+        // }
+        // if ( autoUpdate != null && autoUpdate.equals( "yes" ) )
+        // {
+        // trackedEntityMobileSetting.setAutoUpdateClient( true );
+        // }
+        //
+        // if ( autoUpdate != null && autoUpdate.equals( "no" ) )
+        // {
+        // trackedEntityMobileSetting.setAutoUpdateClient( false );
+        // }
+        //
+        // mobileSettingService.saveTrackedEntityMobileSetting(
+        // this.trackedEntityMobileSetting );
         return SUCCESS;
     }
 }
