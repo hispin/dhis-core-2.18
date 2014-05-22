@@ -28,14 +28,14 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
+import static org.hisp.dhis.webapi.utils.ContextUtils.CONTENT_TYPE_JSON;
 
 import com.opensymphony.xwork2.Action;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;

@@ -39,7 +39,7 @@ import java.util.TreeMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.api.utils.InputUtils;
+import org.hisp.dhis.webapi.utils.InputUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataelement.DataElement;

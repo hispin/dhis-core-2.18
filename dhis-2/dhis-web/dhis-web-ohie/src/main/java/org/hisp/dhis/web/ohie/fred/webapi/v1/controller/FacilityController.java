@@ -51,7 +51,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
-import org.hisp.dhis.api.controller.organisationunit.OrganisationUnitLevelController;
+import org.hisp.dhis.webapi.controller.organisationunit.OrganisationUnitLevelController;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;

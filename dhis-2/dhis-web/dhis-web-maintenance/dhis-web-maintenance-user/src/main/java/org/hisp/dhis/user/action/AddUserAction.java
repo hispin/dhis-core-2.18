@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
