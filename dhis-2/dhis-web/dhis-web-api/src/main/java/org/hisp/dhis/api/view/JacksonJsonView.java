@@ -70,6 +70,11 @@ public class JacksonJsonView
         setContentType( CONTENT_TYPE_APPLICATION_JSON );
     }
 
+    public JacksonJsonView( String contentType )
+    {
+        setContentType( contentType );
+    }
+
     public JacksonJsonView( boolean withPadding, boolean withCompression )
     {
         this.withPadding = withPadding;
