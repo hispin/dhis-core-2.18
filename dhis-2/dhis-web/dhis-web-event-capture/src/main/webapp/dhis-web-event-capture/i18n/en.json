@@ -62,15 +62,14 @@
     "please_select": "[Please Select]",    
     "not_selected": "NOT_SELECTED",   
     "search": "Search",
+    "locate_organisation_unit_by_name": "Locate organisation unit by name",
     "register_new": "Register New",
     "empty_event_list": "There are no events",
     "empty_search_result": "Empty Search Result",
     "no": "NO",
     "yes": "YES",   
     "offline_notification": "You are offline, data will be stored locally",
-    "online_nofification": "You are online"
-
-    ,
+    "online_nofification": "You are online",
     "profile": "Profile",
     "applications": "Apps",
     "more_applications": "More apps",
