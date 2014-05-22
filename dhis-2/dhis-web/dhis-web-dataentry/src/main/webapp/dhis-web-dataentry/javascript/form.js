@@ -2670,7 +2670,7 @@ dhis2.de.autocompleteOptionSetField = function( idField, optionSetUid )
         .addClass( 'ui-combobox' )
         .insertAfter( input );
 
-    var button = $( '<a style="width:20px; margin-bottom:-5px;height:20px;">' )
+    var button = $( '<a style="width:20px; margin-bottom:1px; height:20px;">' )
         .attr( 'tabIndex', -1 )
         .attr( 'title', i18n_show_all_items )
         .appendTo( wrapper )
