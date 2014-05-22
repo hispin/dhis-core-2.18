@@ -160,6 +160,10 @@ public class TableAlteror
         executeSql( "DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name in ( 'Survey', 'OnChange', 'Relative' ))" );
         executeSql( "DELETE FROM periodtype WHERE name in ( 'Survey', 'OnChange', 'Relative' )" );
 
+        // upgrade report table totals
+        executeSql( "UPDATE reporttable SET rowtotals = totals, coltotals = totals" );
+        executeSql( "ALTER TABLE reporttable DROP COLUMN totals" );
+        
         // mapping
         executeSql( "DROP TABLE maporganisationunitrelation" );
         executeSql( "ALTER TABLE mapview DROP COLUMN mapid" );

@@ -176,7 +176,7 @@ Ext.onReady( function() {
 	};
 
 	GIS.core.createSelectHandlers = function(gis, layer) {
-		var isRelocate = !!GIS.app ? (gis.init.user.isAdmin ? true : false) : false,
+		var isRelocate = !!GIS.app ? !!gis.init.user.isAdmin : false,
 			options = {},
 			infrastructuralPeriod,
 			defaultHoverSelect,
@@ -616,7 +616,9 @@ Ext.onReady( function() {
                 }));
 			}
 
-			menuItems[menuItems.length - 1].addCls('gis-menu-item-last');
+			if (menuItems.length) {
+                menuItems[menuItems.length - 1].addCls('gis-menu-item-last');
+            }
 
 			menu = new Ext.menu.Menu({
 				baseCls: 'gis-plugin',
@@ -2972,8 +2974,6 @@ Ext.onReady( function() {
 		gis.olmap.addLayers(layers);
 
 		GIS.core.instances.push(gis);
-g = gis;
-b = gis.layer.boundary;
 
 		return gis;
 	};

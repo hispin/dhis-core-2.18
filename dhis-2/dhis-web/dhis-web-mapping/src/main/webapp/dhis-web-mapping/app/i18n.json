@@ -433,5 +433,6 @@
 "open_last_table",
 "go_to_charts",
 "open_this_map_as_chart",
-"open_last_chart"
+"open_last_chart",
+"clear"
 ]

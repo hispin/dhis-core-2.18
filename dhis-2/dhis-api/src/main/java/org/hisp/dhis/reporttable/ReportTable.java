@@ -153,7 +153,12 @@ public class ReportTable
     /**
      * Indicates rendering of sub-totals for the table.
      */
-    private boolean totals;
+    private boolean rowTotals;
+
+    /**
+     * Indicates rendering of sub-totals for the table.
+     */
+    private boolean colTotals;
 
     /**
      * Indicates rendering of sub-totals for the table.
@@ -871,14 +876,27 @@ public class ReportTable
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public boolean isTotals()
+    public boolean isRowTotals()
     {
-        return totals;
+        return rowTotals;
     }
 
-    public void setTotals( boolean totals )
+    public void setRowTotals( boolean rowTotals )
     {
-        this.totals = totals;
+        this.rowTotals = rowTotals;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isColTotals()
+    {
+        return colTotals;
+    }
+
+    public void setColTotals( boolean colTotals )
+    {
+        this.colTotals = colTotals;
     }
 
     @JsonProperty
@@ -1035,7 +1053,8 @@ public class ReportTable
             reportParams = reportTable.getReportParams() == null ? reportParams : reportTable.getReportParams();
             sortOrder = reportTable.getSortOrder();
             topLimit = reportTable.getTopLimit();
-            totals = reportTable.isTotals();
+            rowTotals = reportTable.isRowTotals();
+            colTotals = reportTable.isColTotals();
             subtotals = reportTable.isSubtotals();
             hideEmptyRows = reportTable.isHideEmptyRows();
             showHierarchy = reportTable.isShowHierarchy();

@@ -4,7 +4,6 @@
 "column",
 "filter",
 "table_layout",
-"show_totals",
 "show_subtotals",
 "hide_empty_rows",
 "display_density",
@@ -159,5 +158,7 @@
 "open_last_chart",
 "go_to_maps",
 "open_this_table_as_map",
-"open_last_map"
+"open_last_map",
+"show_row_totals",
+"show_col_totals"
 ]
