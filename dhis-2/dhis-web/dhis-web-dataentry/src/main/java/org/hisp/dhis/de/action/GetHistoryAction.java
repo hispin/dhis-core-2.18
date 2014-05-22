@@ -31,7 +31,7 @@ package org.hisp.dhis.de.action;
 import java.util.Collection;
 
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.api.utils.InputUtils;
+import org.hisp.dhis.webapi.utils.InputUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;

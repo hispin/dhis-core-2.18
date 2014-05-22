@@ -19,7 +19,7 @@
     </mvc:message-converters>
   </mvc:annotation-driven>
 
-  <context:component-scan base-package="org.hisp.dhis.api" />
+  <context:component-scan base-package="org.hisp.dhis.webapi" />
   <context:annotation-config />
 
   <bean id="fixedContentNegotiationStrategy" class="org.springframework.web.accept.FixedContentNegotiationStrategy">
@@ -28,7 +28,7 @@
 
   <bean id="headerContentNegotiationStrategy" class="org.springframework.web.accept.HeaderContentNegotiationStrategy" />
 
-  <bean id="pathExtensionContentNegotiationStrategy" class="org.hisp.dhis.api.view.CustomPathExtensionContentNegotiationStrategy">
+  <bean id="pathExtensionContentNegotiationStrategy" class="org.hisp.dhis.webapi.view.CustomPathExtensionContentNegotiationStrategy">
     <constructor-arg name="mediaTypes">
       <map>
         <entry key="json" value="application/json" />
@@ -60,43 +60,43 @@
 
     <property name="defaultViews">
       <list>
-        <bean class="org.hisp.dhis.api.view.JacksonXmlView">
+        <bean class="org.hisp.dhis.webapi.view.JacksonXmlView">
           <constructor-arg name="withCompression" value="false" />
         </bean>
 
-        <bean class="org.hisp.dhis.api.view.JacksonXmlView">
+        <bean class="org.hisp.dhis.webapi.view.JacksonXmlView">
           <constructor-arg name="withCompression" value="true" />
         </bean>
 
-        <bean class="org.hisp.dhis.api.view.JacksonJsonView">
+        <bean class="org.hisp.dhis.webapi.view.JacksonJsonView">
           <constructor-arg name="contentType" value="text/html" />
         </bean>
 
-        <bean class="org.hisp.dhis.api.view.JacksonJsonView">
+        <bean class="org.hisp.dhis.webapi.view.JacksonJsonView">
           <constructor-arg name="withPadding" value="false" />
           <constructor-arg name="withCompression" value="false" />
         </bean>
 
-        <bean class="org.hisp.dhis.api.view.JacksonJsonView">
+        <bean class="org.hisp.dhis.webapi.view.JacksonJsonView">
           <constructor-arg name="withPadding" value="false" />
           <constructor-arg name="withCompression" value="true" />
         </bean>
 
-        <bean class="org.hisp.dhis.api.view.JacksonJsonView">
+        <bean class="org.hisp.dhis.webapi.view.JacksonJsonView">
           <constructor-arg name="withPadding" value="true" />
           <constructor-arg name="withCompression" value="false" />
         </bean>
 
-        <bean class="org.hisp.dhis.api.view.JacksonJsonView">
+        <bean class="org.hisp.dhis.webapi.view.JacksonJsonView">
           <constructor-arg name="withPadding" value="true" />
           <constructor-arg name="withCompression" value="true" />
         </bean>
 
-        <bean class="org.hisp.dhis.api.view.PdfGridView" />
+        <bean class="org.hisp.dhis.webapi.view.PdfGridView" />
 
-        <bean class="org.hisp.dhis.api.view.ExcelGridView" />
+        <bean class="org.hisp.dhis.webapi.view.ExcelGridView" />
 
-        <bean class="org.hisp.dhis.api.view.CsvGridView" />
+        <bean class="org.hisp.dhis.webapi.view.CsvGridView" />
       </list>
     </property>
 
