@@ -171,7 +171,15 @@
                     <table>
                         <tr>
                             <td><label>{{'registering_unit'| translate}}</label></td>
-                            <td><input type="text" class="fixed-width-text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" disabled=""></td>
+                            <td><input type="text" class="fixed-width-text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" disabled="" style="height:14px"></td>
+                        	<td style='padding-left: 10px;'>
+                                <button class="button button-std"
+                                        ng-show="dhis2Events.length"
+                                        ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid"                                        
+                                        ng-click="showHideColumns()">
+                                    {{'show_hide_columns'| translate}}
+                                </button>  
+                            </td>
                         </tr>
                         <tr>
                             <td><label>{{'program'| translate}}</label></td>
@@ -187,21 +195,13 @@
                                 </select>      
                             </td>
                             <td style='padding-left: 10px;'>
-                                <button class="button"
+                                <button class="button button-std"
                                         ng-show="selectedProgramStage" 
                                         ng-click="showEventRegistration()" 
                                         ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
-                                    {{'register_new_event'| translate}}
+                                    {{'register_event'| translate}}
                                 </button>  
-                            </td>
-                            <td style='padding-left: 8px;'>
-                                <button class="button"
-                                        ng-show="dhis2Events.length"
-                                        ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid"                                        
-                                        ng-click="showHideColumns()">
-                                    {{'show_hide_columns'| translate}}
-                                </button>  
-                            </td>
+                            </td>                            
                         </tr>                       
                     </table>
                 </div>
