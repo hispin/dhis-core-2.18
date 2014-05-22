@@ -33,9 +33,11 @@
 require(plyr)
 require(stringr)
 #If you are exeucting from the command line, you will need to give the working directory
-wd<-cmd_args[6]
+args <- commandArgs(trailingOnly = TRUE)
+wd<-args[1]
+if (length(args) != 2) { stop("Usage: Rscript cleanTranslations.R DHIS2_SOURCE_DIR LANGUAGE_CODE") }
 #A regular expression of language to clean
-languages<-"_fr"
+languages<-paste0("_",args[2])
 
 allprops<-dir(wd, pattern = "i18.*\\.properties$", full.names = TRUE, recursive=TRUE)
 allprops<-allprops[grepl("src",allprops)]
