@@ -1496,7 +1496,7 @@ Ext.onReady( function() {
 		});
 
 		item = {
-			text: GIS.i18n.close,
+			text: GIS.i18n.clear,
 			iconCls: 'gis-menu-item-icon-clear',
 			handler: function() {
 				layer.core.reset();

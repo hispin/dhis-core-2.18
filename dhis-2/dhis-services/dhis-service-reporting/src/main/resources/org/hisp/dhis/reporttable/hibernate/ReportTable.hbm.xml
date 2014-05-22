@@ -151,7 +151,9 @@
 
     <property name="topLimit" />
 
-    <property name="totals" />
+    <property name="rowTotals" />
+	  
+	<property name="colTotals" />
 
     <property name="subtotals" />
 
