@@ -40,7 +40,6 @@
         <entry key="pdf" value="application/pdf" />
         <entry key="xls" value="application/vnd.ms-excel" />
         <entry key="csv" value="application/csv" />
-        <entry key="html" value="text/html" />
       </map>
     </constructor-arg>
   </bean>
@@ -67,6 +66,10 @@
 
         <bean class="org.hisp.dhis.api.view.JacksonXmlView">
           <constructor-arg name="withCompression" value="true" />
+        </bean>
+
+        <bean class="org.hisp.dhis.api.view.JacksonJsonView">
+          <constructor-arg name="contentType" value="text/html" />
         </bean>
 
         <bean class="org.hisp.dhis.api.view.JacksonJsonView">
@@ -97,15 +100,6 @@
       </list>
     </property>
 
-    <property name="viewResolvers">
-      <list>
-        <bean name="xsltHtmlViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-          <property name="prefix" value="/templates/html/" />
-          <property name="suffix" value=".xsl" />
-          <property name="viewClass" value="org.hisp.dhis.api.view.XsltHtmlView" />
-        </bean>
-      </list>
-    </property>
   </bean>
 
 </beans>
