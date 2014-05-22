@@ -64,7 +64,8 @@ public interface ActivityReportingService
     String saveProgramStage( ProgramStage programStage, int patientId, int orgUnitId )
         throws NotAllowedException;
 
-    Patient enrollProgram( String  enrollInfo, List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>  mobileProgramStageList, Date incidentDate )
+    Patient enrollProgram( String enrollInfo,
+        List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStageList, Date incidentDate )
         throws NotAllowedException;
 
     Collection<org.hisp.dhis.trackedentity.TrackedEntityAttribute> getPatientAtts( String programId );
@@ -114,4 +115,8 @@ public interface ActivityReportingService
 
     Collection<Message> getMessage( String conversationId )
         throws NotAllowedException;
+
+    String replyMessage( Message message )
+        throws NotAllowedException;
+
 }

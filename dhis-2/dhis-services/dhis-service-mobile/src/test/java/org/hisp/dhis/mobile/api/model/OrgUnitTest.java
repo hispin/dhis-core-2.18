@@ -64,6 +64,7 @@ public class OrgUnitTest
         unit.setSendMessageUrl( "sendMessageUrl" );
         unit.setDownloadMessageConversationUrl( "downloadMessageConversationUrl" );
         unit.setGetMessageUrl( "getMessageUrl" );
+        unit.setReplyMessageUrl( "replyMessageUrl" );
         unit.setUpdateContactUrl( "updateContactUrl" );
         unit.setFindPatientUrl( "findPatientUrl" );
         unit.setUploadProgramStageUrl( "uploadProgramStageUrl" );
