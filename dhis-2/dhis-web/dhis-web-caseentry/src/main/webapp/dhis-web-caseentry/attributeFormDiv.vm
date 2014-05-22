@@ -16,7 +16,7 @@
 				<script type="text/javascript">
 					datePickerValid( 'attr$attribute.id', false );
 				</script>                 
-			#elseif( $attribute.valueType == "combo" )
+			#elseif( $attribute.valueType == "optionSet" )
 				<select  id="attr$attribute.id" name="attr$attribute.id" class=' #validate( "default"  $attribute.mandatory )' >
 					 <option value="">[$i18n.getString( "please_select" )]</option>
 				#foreach ($option in $attribute.optionSet.options )
