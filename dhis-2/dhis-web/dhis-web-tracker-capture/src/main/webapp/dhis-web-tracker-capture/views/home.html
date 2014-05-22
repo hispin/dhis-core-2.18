@@ -11,54 +11,53 @@
 <div class="page" id="mainPage" ng-show="selectedOrgUnit">
     <h1>
         <span ng-if='showSearchDiv || !showRegistrationDiv'>
-           {{'search'| translate}} {{selectedProgram.trackedEntity.name}}
+            {{'search'| translate}} {{selectedProgram.trackedEntity.name}}
         </span>
         <span ng-if='showRegistrationDiv'>
-           {{'register'| translate}} {{selectedProgram.trackedEntity.name}}
+            {{'register'| translate}} {{selectedProgram.trackedEntity.name}}
         </span>          
         <a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a>
     </h1>
-    
-    <div class="row">
-        <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
+
+    <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
+    <div class="row">        
         <div class="input-group col-md-4">
             <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
             <span class="input-group-btn">
-                <button class="btn btn-default" style="margin-bottom: 5px; margin-top: 5px;" type="button" title="{{'advanced_search'| translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-cog"></i></button>
+                <button class="btn btn-default trim" type="button" title="{{'advanced_search'| translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
             </span>                
         </div>        
-        <div class="col-md-8" style="margin-bottom: 5px; margin-top: 5px;">            
+        <div class="col-md-3 trim">            
             <button type="button" 
                     class="btn btn-default"
-                    ng-disabled="showRegistrationDiv || showSearchDiv"
+                    ng-disabled="showRegistrationDiv"
                     ng-click="search(searchMode.freeText)">
                 {{'search'| translate}}
             </button>
             <button type="button" 
                     class="btn btn-default small-horizonal-spacing"
-                    ng-disabled="showRegistrationDiv || showSearchDiv"
+                    ng-disabled="showRegistrationDiv"
                     ng-click="search(searchMode.listAll)">
                 {{'list_all'| translate}}
             </button>
-            
-            <span class="horizonal-spacing">
-                <button type="button" 
-                        class="btn btn-default small-horizonal-spacing" 
-                        ng-click="showRegistration()">                    
-                   {{'register'| translate}} {{selectedProgram.trackedEntity.name }}
-                </button>
-            </span>
         </div>        
     </div>
-    
+
     <div class="row vertical-spacing">
         <div class="col-md-4">
             <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
                 <option value="">{{'please_select_a_program'| translate}}</option>
             </select>
-        </div>        
+        </div>
+        <div class="col-md-3 trim"> 
+            <button type="button" 
+                    class="btn btn-default" 
+                    ng-click="showRegistration()">                    
+                {{'register'| translate}} {{selectedProgram.trackedEntity.name}}
+            </button>
+        </div>  
     </div>
-    
+
     <div class="row vertical-spacing" ng-if="!searchText && emptySearchText">
         <div class="col-md-4">
             <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
