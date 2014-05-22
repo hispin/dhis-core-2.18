@@ -162,10 +162,9 @@
             </div>
             
             <div class="page" id="mainPage">
-                <h1>
+                <h3>
                     {{'event_capture'| translate}}
-                    <a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a>
-                </h1>
+                </h3>
                 
                 <!-- selection begins-->
                 <div>
@@ -213,19 +212,19 @@
                     <img src="../images/ajax-loader-bar.gif" ng-if="!eventFetched"/>
                     <div ng-switch="eventLength">                        
                         <div ng-switch-when="undefined">
-                            <h2>
+                            <h4>
                                 {{'empty_event_list'| translate}}
-                            </h2>
+                            </h4>
                         </div>                        
                         <div ng-switch-when="0">  
-                            <h2 ng-if="eventFetched">
+                            <h4 ng-if="eventFetched">
                                 {{'empty_event_list'| translate}}
-                            </h2>
+                            </h4>
                         </div>
                         <div ng-switch-default>
-                            <h2>
+                            <h4>
                                 {{'registered_events'| translate}}                                                 
-                            </h2>
+                            </h4>
                             
                             <!-- context menu for event grid -->
                             <div id="contextMenu" class="contextMenu" style="width: 180px;">
@@ -404,9 +403,9 @@
                 <!-- event update in full begins-->
                 <form name="outerFormUpdate" novalidate>
                     <div ng-if="editingEventInFull">
-                        <h2>
+                        <h3>
                             {{'update_event'| translate}}                                                 
-                        </h2>                                           
+                        </h3>                                           
                         <div class="bordered-div" style="width:50%;">
                             <table class="dhis2-list-table-striped">                    
                                 <thead>                        
@@ -491,9 +490,9 @@
                 <!-- event registration begins -->
                 <form name="outerForm" novalidate>
                     <div ng-if="eventRegistration">
-                        <h2>
+                        <h3>
                             {{'new_event'| translate}}                                                 
-                        </h2>   
+                        </h3>   
                         <div class="bordered-div" style="width:50%;">                            
                             <table class="dhis2-list-table-striped">                    
                                 <thead>                        
