@@ -1,14 +1,14 @@
 #if($program) 
 	#set($attributes = $program.attributes)
 #end
+
 <table width="100%">
 #foreach($_attribute in $attributes )
 	#if($program) 
 		#set($attribute = $_attribute.attribute)
 	#end
-	#set( $attributeValue = '')
 	#set($mandatory=$!_attribute.mandatory)
-	<tr>
+	<tr name='attributesFields'>
 		<td class='text-column'><label>$attribute.displayName #if($mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 		<td class="input-column" align='right'>
 			#set( $value='' )
@@ -37,20 +37,20 @@
 				<select inherit="$!attribute.inherit" class=' #validate( "default"  $mandatory  )' >
 					<option value="">[$i18n.getString("please_select")]</option>
 					#foreach( $user in $healthWorkers)
-						<option value="$user.id" #if($attributeValue == $user.id) selected="selected" #end >$user.name</option>
+						<option value="$user.id" #if($value == $user.id) selected="selected" #end >$user.name</option>
 					#end
 				</select>
 			#elseif( $attribute.valueType == "phoneNumber" ) 
-				#if($attributeValue=='')
-					#set($attributeValue=$!phoneNumberAreaCode)
+				#if($value=='')
+					#set($value=$!phoneNumberAreaCode)
 				#end
-				<input type='text' value='$attributeValue' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true}}"/>
+				<input type='text' value='$value' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true}}"/>
 			#elseif( $attribute.valueType == "trackerAssociate" ) 
 				<input type="checkbox" value='true' id="attr$attribute.id" name="attr$attribute.id" 
 					inherit="$!attribute.inherit" #if($value=='true') checked #end
 					onclick="toggleUnderAge(this);" class='underAge' />
 			#elseif( $attribute.valueType == "age" || $attribute.valueType == "number" ) 
-				<input type='text' id="attr$attribute.id" value="$!attributeValue" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{required:$mandatory ,number:true}}"/>
+				<input type='text' id="attr$attribute.id" value="$!value" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{required:$mandatory ,number:true}}"/>
 			#else
 				<input type="text"  id="attr$attribute.id" name="attr$attribute.id" value='$value' class="{validate:{required:$mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}"  > 
 			#end
@@ -58,3 +58,12 @@
 	</tr>
 #end
 </table>
+
+<script>
+	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditAttributes" ) )
+		disableButtons = false;
+	#else
+		jQuery('#identifierAndAttributeDiv [name=attributesFields] input').attr('disabled',true);
+		jQuery('#identifierAndAttributeDiv [name=attributesFields] select').attr('disabled',true);
+	#end
+</script>

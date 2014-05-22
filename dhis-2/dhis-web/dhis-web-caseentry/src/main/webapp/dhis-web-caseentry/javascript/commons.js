@@ -1157,6 +1157,21 @@ function validateProgramEnrollment()
 				} else if (type == 'input') {
 					setMessage(json.message);
 				}
+				$("[id=tab-2] :input").each(function() {
+					 var input = $(this);
+					 var id = 'dashboard_' + input.attr('id');
+					 setInnerHTML(id, input.val());
+                 });
+                 $('#identifierAndAttributeDiv :input').each(function() {
+					 var input = $(this);
+					 var id = input.attr('id');
+					 if( input.val() != "" ){
+							 setInnerHTML('value_' + id, input.val());
+							 showById('row_' + id);
+					 }
+					 var input = $(this);
+					 jQuery("#tab-2 [id=" + id + "]").val(input.val());
+                 });
 				$('#loaderDiv').hide();
 			}
 		});
