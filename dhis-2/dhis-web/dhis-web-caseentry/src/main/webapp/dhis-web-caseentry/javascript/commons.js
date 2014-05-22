@@ -1139,27 +1139,29 @@ function saveSingleEnrollment(entityInstanceId, programId) {
 // ----------------------------------------------------------------
 // Program enrollmment && unenrollment
 // ----------------------------------------------------------------
+
 function validateProgramEnrollment()
 {
-$('#loaderDiv').show();
-$.ajax({
-		type : "GET",
-		url : 'validateProgramEnrollment.action',
-		data : getParamsForDiv('programEnrollmentSelectDiv'),
-		success : function(json) {
-			var type = json.response;
-			if (type == 'success') {
-				saveEnrollment();
-			} else if (type == 'error') {
-				setMessage(i18n_program_enrollment_failed + ':' + '\n'
-						+ message);
-			} else if (type == 'input') {
-				setMessage(json.message);
+	$('#loaderDiv').show();
+	$.ajax({
+			type : "GET",
+			url : 'validateProgramEnrollment.action',
+			data : getParamsForDiv('programEnrollmentSelectDiv'),
+			success : function(json) {
+				var type = json.response;
+				if (type == 'success') {
+					saveEnrollment();
+				} else if (type == 'error') {
+					setMessage(i18n_program_enrollment_failed + ':' + '\n'
+							+ message);
+				} else if (type == 'input') {
+					setMessage(json.message);
+				}
+				$('#loaderDiv').hide();
 			}
-			$('#loaderDiv').hide();
-		}
-	});
+		});
 }
+
 function saveEnrollment() {
 	var entityInstanceId = $('#enrollmentDiv [id=entityInstanceId]').val();
 	var programId = $('#enrollmentDiv [id=programId] option:selected').val();
@@ -1217,7 +1219,7 @@ function unenrollmentForm(programInstanceId, status) {
 	if (status == 2)
 		comfirmMessage = i18n_quit_confirm_message;
 	if ( confirm(comfirmMessage) ) {
-$.ajax({
+	$.ajax({
 								type : "POST",
 					url : 'setProgramInstanceStatus.action',
 					data : "programInstanceId=" + programInstanceId
