@@ -2659,7 +2659,7 @@ dhis2.de.autocompleteOptionSetField = function( idField, optionSetUid )
         }
     } ).addClass( 'ui-widget' );
 
-    input.data( 'autocomplete' )._renderItem = function ( ul, item ) {
+    input.data( 'ui-autocomplete' )._renderItem = function ( ul, item ) {
         return $( '<li></li>' )
             .data( 'item.autocomplete', item )
             .append( '<a>' + item.label + '</a>' )
