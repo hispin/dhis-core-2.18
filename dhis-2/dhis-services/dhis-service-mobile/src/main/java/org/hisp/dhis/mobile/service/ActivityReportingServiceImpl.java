@@ -420,6 +420,7 @@ public class ActivityReportingServiceImpl
 
             // ---------------------------------------------------------------------
             // Add a new program-instance
+            //
             // ---------------------------------------------------------------------
             ProgramInstance programInstance = new ProgramInstance();
             programInstance.setEnrollmentDate( new Date() );
@@ -432,6 +433,7 @@ public class ActivityReportingServiceImpl
 
             // ---------------------------------------------------------------------
             // Add a new program-stage-instance
+            //
             // ---------------------------------------------------------------------
 
             ProgramStageInstance programStageInstance = new ProgramStageInstance();
@@ -445,6 +447,7 @@ public class ActivityReportingServiceImpl
 
             // ---------------------------------------------------------------------
             // Save value
+            //
             // ---------------------------------------------------------------------
 
             List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement> dataElements = mobileProgramStage
@@ -486,27 +489,31 @@ public class ActivityReportingServiceImpl
             {
                 DataElement dataElement = dataElementService.getDataElement( dataElements.get( i ).getId() );
                 String value = dataElements.get( i ).getValue();
-
-                if ( dataElement.getType().equalsIgnoreCase( "date" ) && !value.trim().equals( "" ) )
+                if ( value != null )
                 {
-                    value = PeriodUtil.convertDateFormat( value );
-                }
 
-                TrackedEntityDataValue previousPatientDataValue = dataValueService.getTrackedEntityDataValue(
-                    programStageInstance, dataElement );
+                    if ( dataElement.getType().equalsIgnoreCase( "date" ) && !value.trim().equals( "" ) )
+                    {
+                        value = PeriodUtil.convertDateFormat( value );
+                    }
 
-                if ( previousPatientDataValue == null )
-                {
-                    TrackedEntityDataValue patientDataValue = new TrackedEntityDataValue( programStageInstance,
-                        dataElement, new Date(), value );
-                    dataValueService.saveTrackedEntityDataValue( patientDataValue );
-                }
-                else
-                {
-                    previousPatientDataValue.setValue( value );
-                    previousPatientDataValue.setTimestamp( new Date() );
-                    previousPatientDataValue.setProvidedElsewhere( false );
-                    dataValueService.updateTrackedEntityDataValue( previousPatientDataValue );
+                    TrackedEntityDataValue previousPatientDataValue = dataValueService.getTrackedEntityDataValue(
+                        programStageInstance, dataElement );
+
+                    if ( previousPatientDataValue == null )
+                    {
+                        TrackedEntityDataValue patientDataValue = new TrackedEntityDataValue( programStageInstance,
+                            dataElement, new Date(), value );
+                        dataValueService.saveTrackedEntityDataValue( patientDataValue );
+                    }
+                    else
+                    {
+                        previousPatientDataValue.setValue( value );
+                        previousPatientDataValue.setTimestamp( new Date() );
+                        previousPatientDataValue.setProvidedElsewhere( false );
+                        dataValueService.updateTrackedEntityDataValue( previousPatientDataValue );
+                    }
+
                 }
 
             }
@@ -528,29 +535,18 @@ public class ActivityReportingServiceImpl
             else
             {
                 programStageInstance.setCompleted( mobileProgramStage.isCompleted() );
-
-                // check if any compulsory value is null
-                for ( int i = 0; i < dataElements.size(); i++ )
-                {
-                    if ( dataElements.get( i ).isCompulsory() == true )
-                    {
-                        if ( dataElements.get( i ).getValue() == null )
-                        {
-                            programStageInstance.setCompleted( false );
-                            // break;
-                            throw NotAllowedException.INVALID_PROGRAM_STAGE;
-                        }
-                    }
-                }
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
                 // check if all belonged program stage are completed
+
                 if ( isAllProgramStageFinished( programStageInstance ) == true )
                 {
+
                     ProgramInstance programInstance = programStageInstance.getProgramInstance();
                     programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
                     programInstanceService.updateProgramInstance( programInstance );
                 }
+
                 if ( mobileProgramStage.isRepeatable() )
                 {
                     Date nextDate = DateUtils.getDateAfterAddition( new Date(),
@@ -572,6 +568,10 @@ public class ActivityReportingServiceImpl
         Collection<ProgramStageInstance> programStageInstances = programInstance.getProgramStageInstances();
         if ( programStageInstances != null )
         {
+            if ( programStageInstances.size() < programInstance.getProgram().getProgramStages().size() )
+            {
+                return false;
+            }
             Iterator<ProgramStageInstance> iterator = programStageInstances.iterator();
 
             while ( iterator.hasNext() )
@@ -654,7 +654,6 @@ public class ActivityReportingServiceImpl
         entityInstanceService.updateTrackedEntityInstance( patient );
 
         patient = entityInstanceService.getTrackedEntityInstance( patientId );
-
         return getPatientModel( patient );
     }
 
@@ -1391,7 +1390,6 @@ public class ActivityReportingServiceImpl
         throws NotAllowedException
     {
         TrackedEntityInstance patientWeb = new TrackedEntityInstance();
-
         patientWeb.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
         Set<TrackedEntityAttribute> patientAttributeSet = new HashSet<TrackedEntityAttribute>();
