@@ -14,7 +14,7 @@
 	});	
 </script>
 
-<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST' action='saveProgramEnrollment.action'>
+<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST' >
 	<input type="hidden" id="entityInstanceId" name="entityInstanceId" value="$entityInstance.id">
 	<input type="hidden" id="entityInstanceUid" name="entityInstanceUid" value="$entityInstance.uid">
 	<table>
@@ -59,7 +59,7 @@
 			<td></td>                             
 		</tr>
 		
-		<tbody id='identifierAndAttributeDiv' name='identifierAndAttributeDiv'></tbody>
+		<tbody><tr><td id='identifierAndAttributeDiv' name='identifierAndAttributeDiv' colspan='2'></td></tr></tbody>
 		
 		<tr>
 			<td></td>
