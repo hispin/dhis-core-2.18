@@ -202,10 +202,7 @@ function displayTEIList(json, page) {
 	table += "<table class='listTable' width='100%'>";
 	
 	var idx = 4;
-	if(getFieldValue('ouMode') != 'SELECTED'){
-		var idx = 3;
-	}	
-	else if(getFieldValue('program') != '') {
+	if(getFieldValue('program') != '') {
 		idx = 5;
 	}
 	

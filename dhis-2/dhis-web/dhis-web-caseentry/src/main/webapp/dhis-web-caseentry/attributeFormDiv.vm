@@ -1,4 +1,11 @@
-#foreach($attribute in $attributes )
+#if($program) 
+	#set($attributes = $program.attributes)
+#end
+
+#foreach($_attribute in $attributes )
+	#if($program) 
+		#set($attribute = $_attribute.attribute)
+	#end
 	#set( $attributeValue = '')
 	<tr>
 		<td class='text-column'><label>$attribute.displayName #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
