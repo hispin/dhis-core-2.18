@@ -421,8 +421,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .table-borderless>tbody>tr>td, 
 .table-borderless>tfoot>tr>td {
     border-top: none; 
-    //background-color: #ebf0f6;
-    padding-right: 8px;
+    padding: 5px;
 }
 
 .dhis2-table>thead>tr>th, 
@@ -469,7 +468,6 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 
 .dhis2-list-table-striped {
     width: 100%;
-    border: 1px solid #c2c2c2;
     padding: 5px 10px;
     table-layout: fixed;
 }
@@ -489,6 +487,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 
 .dhis2-table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
     background-color: #dfe9f4;
+    cursor: pointer;
 }
 
 #contextMenu {
@@ -598,6 +597,10 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     padding: 20px 10px;
 }
 
+.trim {
+    margin-bottom: 5px; 
+    margin-top: 5px;
+}
 /*----------------------------------------------------------------------------*/
 /* Bootstrap modal style
 /*----------------------------------------------------------------------------*/

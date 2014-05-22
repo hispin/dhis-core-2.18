@@ -49,6 +49,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
         }  
     };
 })
+
 .directive('dhisContextMenu', function(ContextMenuSelectedItem) {
         
     return {        
