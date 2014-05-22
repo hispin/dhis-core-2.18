@@ -59,6 +59,7 @@
         <script type="text/javascript" src="scripts/directives.js"></script>
         <script type="text/javascript" src="scripts/controllers.js"></script>
         <script type="text/javascript" src="scripts/filters.js"></script>
+        <script type="text/javascript" src="scripts/orgunitTreeSearch.js"></script>
 
         <!-- Menu scripts -->
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
@@ -153,15 +154,27 @@
         
         <div ng-controller="MainController">
             
-            <div id="leftBar">                
-                <div id="orgUnitTree" style="margin-top:20px">
+            <div id="leftBar"> 
+                
+                <div style="margin-top:20px">
+                    
+
+                    <img id="searchIcon" src="../images/search.png" style="cursor: pointer" title="{{ 'locate_organisation_unit_by_name' | translate}}">
+
+                    <span id="searchSpan" style="width:100%;display:none;">
+                            <input type="text" id="searchField" name="key" style="width:160px" />
+                            <input type="button" value="Find" onclick="selection.findByName()" />
+                    </span>
+                </div>
+                   
+                <div id="orgUnitTree">
                     <ul>
                     </ul>
                 </div>
                 <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
             </div>
             
-            <div class="page" id="mainPage">
+            <div class="page" id="mainPage" ng-show="selectedOrgUnit">
                 <h3>
                     {{'event_capture'| translate}}
                 </h3>
@@ -171,15 +184,7 @@
                     <table>
                         <tr>
                             <td><label>{{'registering_unit'| translate}}</label></td>
-                            <td><input type="text" class="fixed-width-text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" disabled="" style="height:14px"></td>
-                        	<td style='padding-left: 10px;'>
-                                <button class="button button-std"
-                                        ng-show="dhis2Events.length"
-                                        ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid"                                        
-                                        ng-click="showHideColumns()">
-                                    {{'show_hide_columns'| translate}}
-                                </button>  
-                            </td>
+                            <td><input type="text" class="fixed-width-text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name || 'please_select'| translate}}" disabled="" style="height:14px"></td>                        	                            
                         </tr>
                         <tr>
                             <td><label>{{'program'| translate}}</label></td>
@@ -201,7 +206,7 @@
                                         ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
                                     {{'register_event'| translate}}
                                 </button>  
-                            </td>                            
+                            </td>                               
                         </tr>                       
                     </table>
                 </div>
@@ -223,7 +228,13 @@
                         </div>
                         <div ng-switch-default>
                             <h4>
-                                {{'registered_events'| translate}}                                                 
+                                {{'registered_events'| translate}}   
+                                <button class="button button-std pull-right"
+                                        ng-show="dhis2Events.length"
+                                        ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid"                                        
+                                        ng-click="showHideColumns()">
+                                    {{'show_hide_columns'| translate}}
+                                </button>
                             </h4>
                             
                             <!-- context menu for event grid -->
@@ -238,7 +249,7 @@
 
                             <!-- grid begins -->
                             <form name="outerForm" novalidate>                              
-
+                                
                                 <table class="listTable dhis2-table-striped-border dhis2-table-hover">
                                     <thead>                        
                                         <tr>

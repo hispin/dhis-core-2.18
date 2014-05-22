@@ -12,7 +12,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 TranslationService,
                 storage,
                 DHIS2EventFactory,                
-                orderByFilter,
                 ContextMenuSelectedItem,
                 ModalService,
                 DialogService) {   
@@ -74,7 +73,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     if($scope.programs.length === 1){
                         $scope.selectedProgram = $scope.programs[0];
                         $scope.pr = $scope.selectedProgram;
-                        $scope.loadEvents($scope.pr, $scope.pager);
+                        $scope.loadEvents($scope.pr);
                     }                    
                 }
             }
@@ -82,7 +81,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };    
     
     //get events for the selected program (and org unit)
-    $scope.loadEvents = function(program, pager){   
+    $scope.loadEvents = function(program){   
+        
+        $scope.selectedProgramStage = null;
         
         //Filtering
         $scope.reverse = false;
@@ -125,7 +126,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });           
 
             //Load events for the selected program stage and orgunit
-            DHIS2EventFactory.getByStage($scope.selectedOrgUnit.id, $scope.selectedProgramStage.id, pager ).then(function(data){
+            DHIS2EventFactory.getByStage($scope.selectedOrgUnit.id, $scope.selectedProgramStage.id, $scope.pager ).then(function(data){
                 
                 if(data.events){
                     $scope.eventLength = data.events.length;
@@ -144,7 +145,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 }
                 
                 //process event list for easier tabular sorting
-                //angular.forEach($scope.dhis2Events, function(dhis2Event){ 
                 if( angular.isObject( $scope.dhis2Events ) ) {
 
                     for(var i=0; i < $scope.dhis2Events.length; i++){  
