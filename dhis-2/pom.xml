@@ -1011,8 +1011,8 @@
   <properties>
     <rootDir></rootDir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>3.2.8.RELEASE</spring.version>
-    <spring.security.version>3.2.3.RELEASE</spring.security.version>
+    <spring.version>3.2.9.RELEASE</spring.version>
+    <spring.security.version>3.2.4.RELEASE</spring.security.version>
     <hibernate.version>4.2.0.Final</hibernate.version>
     <hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
     <jackson.version>2.3.3</jackson.version>
