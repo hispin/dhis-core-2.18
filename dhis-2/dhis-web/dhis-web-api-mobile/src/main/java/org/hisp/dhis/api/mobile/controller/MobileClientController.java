@@ -152,6 +152,7 @@ public class MobileClientController
         orgUnit.setSendMessageUrl( getUrl( request, unit.getId(), "sendMessage" ) );
         orgUnit.setDownloadMessageConversationUrl( getUrl( request, unit.getId(), "downloadMessageConversation" ) );
         orgUnit.setGetMessageUrl( getUrl( request, unit.getId(), "getMessage" ) );
+        orgUnit.setReplyMessageUrl( getUrl( request, unit.getId(), "replyMessage" ) );
         orgUnit.setUpdateContactUrl( getUrl( request, unit.getId(), "updateContactForMobile" ) );
         orgUnit.setFindPatientUrl( getUrl( request, unit.getId(), "findPatient" ) );
         orgUnit.setRegisterPersonUrl( getUrl( request, unit.getId(), "registerPerson" ) );

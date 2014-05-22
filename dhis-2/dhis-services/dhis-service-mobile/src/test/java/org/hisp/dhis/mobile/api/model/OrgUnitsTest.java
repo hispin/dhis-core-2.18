@@ -90,6 +90,7 @@ public class OrgUnitsTest
         orgUnit.setSendMessageUrl( "sendMessage" );
         orgUnit.setDownloadMessageConversationUrl( "downloadMessageConversation" );
         orgUnit.setGetMessageUrl( "getMessage" );
+        orgUnit.setReplyMessageUrl( "replyMessage" );
         orgUnit.setUpdateContactUrl( "updateContactForMobile" );
         orgUnit.setFindPatientUrl( "findPatient" );
         orgUnit.setRegisterPersonUrl( "registerPerson" );

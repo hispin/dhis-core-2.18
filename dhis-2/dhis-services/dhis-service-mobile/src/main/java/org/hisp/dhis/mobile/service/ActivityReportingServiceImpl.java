@@ -1909,14 +1909,16 @@ public class ActivityReportingServiceImpl
         String eventsInfo = "";
         for ( List<Object> row : listOfListProgramStageInstance )
         {
-            TrackedEntityInstance instance = entityInstanceService.getTrackedEntityInstance( (String)row.get(0) );
-            Collection<TrackedEntityAttribute> displayAttributes = attributeService.getTrackedEntityAttributesDisplayInList();
-            
+            TrackedEntityInstance instance = entityInstanceService.getTrackedEntityInstance( (String) row.get( 0 ) );
+            Collection<TrackedEntityAttribute> displayAttributes = attributeService
+                .getTrackedEntityAttributesDisplayInList();
+
             eventsInfo += instance.getId() + "/";
             String displayName = "";
             for ( TrackedEntityAttribute displayAttribute : displayAttributes )
             {
-                TrackedEntityAttributeValue value = attValueService.getTrackedEntityAttributeValue( instance, displayAttribute );
+                TrackedEntityAttributeValue value = attValueService.getTrackedEntityAttributeValue( instance,
+                    displayAttribute );
                 if ( value != null )
                 {
                     displayName += value.getValue() + " ";
@@ -1944,7 +1946,7 @@ public class ActivityReportingServiceImpl
         {
             calendar.add( Calendar.DATE, operation * 7 );
         }
-        else if ( adjustment.equals( "1 month"   ))
+        else if ( adjustment.equals( "1 month" ) )
         {
             calendar.add( Calendar.DATE, operation * 30 );
         }
@@ -2023,5 +2025,19 @@ public class ActivityReportingServiceImpl
         }
 
         return messages;
+    }
+
+    @Override
+    public String replyMessage( org.hisp.dhis.api.mobile.model.Message message )
+        throws NotAllowedException
+    {
+        String metaData = MessageService.META_USER_AGENT;
+
+        MessageConversation conversation = messageService.getMessageConversation( Integer.parseInt( message
+            .getSubject() ) );
+
+        messageService.sendReply( conversation, message.getText(), metaData );
+
+        return MESSAGE_SENT;
     }
 }

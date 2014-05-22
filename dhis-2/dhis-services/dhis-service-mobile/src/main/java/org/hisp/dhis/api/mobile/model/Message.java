@@ -122,8 +122,10 @@ public class Message
     public void deSerialize( DataInputStream din )
         throws IOException
     {
+
         subject = din.readUTF();
         text = din.readUTF();
+
         if ( lastSenderName != null )
         {
             lastSenderName = din.readUTF();
