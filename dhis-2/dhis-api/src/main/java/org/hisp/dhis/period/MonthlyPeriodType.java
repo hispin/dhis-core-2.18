@@ -52,8 +52,6 @@ public class MonthlyPeriodType
 
     private static final String ISO_FORMAT = "yyyyMM";
 
-    private static final String ALTERNATIVE_ISO_FORMAT = "yyyy-MM";
-
     /**
      * The name of the MonthlyPeriodType, which is "Monthly".
      */
