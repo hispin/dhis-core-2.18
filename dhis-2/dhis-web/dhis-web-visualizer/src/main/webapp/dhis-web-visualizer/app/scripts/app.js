@@ -254,10 +254,10 @@ Ext.onReady( function() {
 						{
 							bodyStyle: 'border:0 none; padding-top:3px; margin-right:5px; color:#333',
 							width: 130,
-							html: 'Range axis max/min:'
+							html: 'Range axis min/max:'
 						},
-						rangeAxisMaxValue,
-						rangeAxisMinValue
+						rangeAxisMinValue,
+						rangeAxisMaxValue
 					]
 				},
 				rangeAxisSteps,
