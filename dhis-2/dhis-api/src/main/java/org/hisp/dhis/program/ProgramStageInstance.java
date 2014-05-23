@@ -42,10 +42,6 @@ import java.util.List;
 /**
  * @author Abyot Asalefew
  */
-/**
- * @author abyot
- * 
- */
 public class ProgramStageInstance
     extends BaseIdentifiableObject
 {

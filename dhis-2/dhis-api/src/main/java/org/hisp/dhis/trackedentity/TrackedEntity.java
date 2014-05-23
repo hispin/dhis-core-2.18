@@ -28,15 +28,14 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DxfNamespaces;
-
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Chau Thu Tran
  */
-@JacksonXmlRootElement( localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "trackedEntity", namespace = DxfNamespaces.DXF_2_0)
 public class TrackedEntity
     extends BaseNameableObject
 {
@@ -48,10 +47,12 @@ public class TrackedEntity
 
     public TrackedEntity()
     {
+        setAutoFields();
     }
-    
+
     public TrackedEntity( String name, String description )
     {
+        this();
         this.name = name;
         this.description = description;
     }

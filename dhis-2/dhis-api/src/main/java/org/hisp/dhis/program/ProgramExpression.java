@@ -28,29 +28,35 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 import java.io.Serializable;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version ProgramExpression.java 2:48:32 PM Nov 8, 2012 $
  */
+@JacksonXmlRootElement( localName = "programExpression", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramExpression
     implements Serializable
 {
-    private static final long serialVersionUID = -2807997671779497354L;    
+    private static final long serialVersionUID = -2807997671779497354L;
 
     public static final String SEPARATOR_ID = "\\.";
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
     public static String OBJECT_PROGRAM_STAGE = "PS";
 
     public static final String SEPARATOR_OBJECT = ":";
-    public static final String DUE_DATE = "DUE_DATE";    
+    public static final String DUE_DATE = "DUE_DATE";
     public static final String REPORT_DATE = "REPORT_DATE";
-    public static final String RANGE_IN_DUE_DATE = "RANGE_IN_DUE_DATE";    
+    public static final String RANGE_IN_DUE_DATE = "RANGE_IN_DUE_DATE";
     public static final String NOT_NULL_VALUE_IN_EXPRESSION = "NOT-NULL-VALUE";
 
-    
     private int id;
 
     private String expression;
@@ -80,8 +86,8 @@ public class ProgramExpression
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ( ( description == null ) ? 0 : description.hashCode() );
-        result = prime * result + ( ( expression == null ) ? 0 : expression.hashCode() );
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((expression == null) ? 0 : expression.hashCode());
         return result;
     }
 
@@ -92,19 +98,19 @@ public class ProgramExpression
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final ProgramExpression other = (ProgramExpression) object;
-        
+
         if ( description == null )
         {
             if ( other.description != null )
@@ -116,7 +122,7 @@ public class ProgramExpression
         {
             return false;
         }
-        
+
         if ( expression == null )
         {
             if ( other.expression != null )
@@ -128,7 +134,7 @@ public class ProgramExpression
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -146,6 +152,9 @@ public class ProgramExpression
         this.id = id;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getExpression()
     {
         return expression;
@@ -156,6 +165,9 @@ public class ProgramExpression
         this.expression = expression;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -165,5 +177,4 @@ public class ProgramExpression
     {
         this.description = description;
     }
-
 }

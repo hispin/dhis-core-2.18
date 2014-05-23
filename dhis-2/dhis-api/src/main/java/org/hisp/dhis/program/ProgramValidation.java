@@ -28,13 +28,21 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.expression.Operator;
 
 /**
  * @author Chau Thu Tran
- * @version $ ProgramValidation.java Apr 28, 2011 10:27:29 AM $
  */
+@JacksonXmlRootElement( localName = "programValidation", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramValidation
     extends BaseIdentifiableObject
 {
@@ -63,7 +71,7 @@ public class ProgramValidation
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
-    
+
     private ProgramExpression leftSide;
 
     private Operator operator;
@@ -99,9 +107,9 @@ public class ProgramValidation
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ( ( leftSide == null ) ? 0 : leftSide.hashCode() );
-        result = prime * result + ( ( program == null ) ? 0 : program.hashCode() );
-        result = prime * result + ( ( rightSide == null ) ? 0 : rightSide.hashCode() );
+        result = prime * result + ((leftSide == null) ? 0 : leftSide.hashCode());
+        result = prime * result + ((program == null) ? 0 : program.hashCode());
+        result = prime * result + ((rightSide == null) ? 0 : rightSide.hashCode());
         return result;
     }
 
@@ -167,7 +175,10 @@ public class ProgramValidation
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-    
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ProgramExpression getLeftSide()
     {
         return leftSide;
@@ -178,6 +189,9 @@ public class ProgramValidation
         this.leftSide = leftSide;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ProgramExpression getRightSide()
     {
         return rightSide;
@@ -188,6 +202,10 @@ public class ProgramValidation
         this.rightSide = rightSide;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Program getProgram()
     {
         return program;
@@ -198,6 +216,9 @@ public class ProgramValidation
         this.program = program;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Operator getOperator()
     {
         return operator;

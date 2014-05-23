@@ -28,6 +28,11 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -36,12 +41,6 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 import org.hisp.dhis.option.OptionSet;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Abyot Asalefew
@@ -112,7 +111,7 @@ public class TrackedEntityAttribute
         setAutoFields();
     }
 
-    public TrackedEntityAttribute( String name, String description, String valueType, 
+    public TrackedEntityAttribute( String name, String description, String valueType,
         Boolean inherit, Boolean displayOnVisitSchedule )
     {
         this.name = name;
@@ -141,7 +140,7 @@ public class TrackedEntityAttribute
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getInherit()
     {
@@ -152,9 +151,9 @@ public class TrackedEntityAttribute
     {
         this.inherit = inherit;
     }
-    
+
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
@@ -195,7 +194,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getExpression()
     {
@@ -208,7 +207,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getDisplayOnVisitSchedule()
     {
@@ -221,7 +220,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getSortOrderInVisitSchedule()
     {
@@ -234,7 +233,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getDisplayInListNoProgram()
     {
@@ -247,7 +246,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getSortOrderInListNoProgram()
     {
@@ -260,7 +259,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean isUnique()
     {
@@ -273,7 +272,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getOrgunitScope()
     {
@@ -286,7 +285,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getProgramScope()
     {
@@ -299,6 +298,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public OptionSet getOptionSet()
@@ -314,7 +314,7 @@ public class TrackedEntityAttribute
     // -------------------------------------------------------------------------
     // Static methods
     // -------------------------------------------------------------------------
-    
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
