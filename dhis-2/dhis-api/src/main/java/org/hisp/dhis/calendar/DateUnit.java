@@ -87,20 +87,20 @@ public class DateUnit
 
     public DateUnit( DateUnit dateUnit )
     {
+        this( dateUnit.isIso8601() );
         this.year = dateUnit.getYear();
         this.month = dateUnit.getMonth();
         this.day = dateUnit.getDay();
         this.dayOfWeek = dateUnit.getDayOfWeek();
-        this.iso8601 = dateUnit.isIso8601();
     }
 
     public DateUnit( DateUnit dateUnit, boolean iso8601 )
     {
+        this( iso8601 );
         this.year = dateUnit.getYear();
         this.month = dateUnit.getMonth();
         this.day = dateUnit.getDay();
         this.dayOfWeek = dateUnit.getDayOfWeek();
-        this.iso8601 = iso8601;
     }
 
     public DateUnit( int year, int month, int day, boolean iso8601 )
