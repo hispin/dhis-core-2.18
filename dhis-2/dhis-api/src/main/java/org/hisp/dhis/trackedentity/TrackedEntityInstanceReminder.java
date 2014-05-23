@@ -28,13 +28,22 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 import org.hisp.dhis.user.UserGroup;
 
 /**
  * @author Chau Thu Tran
- * @version TrackedEntityInstanceReminder.java 1:07:58 PM Sep 18, 2012 $
  */
+@JacksonXmlRootElement( localName = "trackedEntityInstanceReminder", namespace = DxfNamespaces.DXF_2_0 )
 public class TrackedEntityInstanceReminder
     extends BaseIdentifiableObject
 {
@@ -85,7 +94,7 @@ public class TrackedEntityInstanceReminder
     public static final int MESSAGE_TYPE_DHIS_MESSAGE = 2;
 
     public static final int MESSAGE_TYPE_BOTH = 3;
-    
+
     private Integer daysAllowedSendMessage;
 
     private String templateMessage;
@@ -127,12 +136,13 @@ public class TrackedEntityInstanceReminder
         this.messageType = messageType;
     }
 
-    // TODO implement hashcode and equals
-
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
-    
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getDaysAllowedSendMessage()
     {
         return daysAllowedSendMessage;
@@ -143,6 +153,9 @@ public class TrackedEntityInstanceReminder
         this.daysAllowedSendMessage = daysAllowedSendMessage;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getTemplateMessage()
     {
         return templateMessage;
@@ -153,6 +166,9 @@ public class TrackedEntityInstanceReminder
         this.templateMessage = templateMessage;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDateToCompare()
     {
         return dateToCompare;
@@ -163,6 +179,9 @@ public class TrackedEntityInstanceReminder
         this.dateToCompare = dateToCompare;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getSendTo()
     {
         return sendTo;
@@ -173,6 +192,9 @@ public class TrackedEntityInstanceReminder
         this.sendTo = sendTo;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getWhenToSend()
     {
         return whenToSend;
@@ -183,6 +205,10 @@ public class TrackedEntityInstanceReminder
         this.whenToSend = whenToSend;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public UserGroup getUserGroup()
     {
         return userGroup;
@@ -193,6 +219,9 @@ public class TrackedEntityInstanceReminder
         this.userGroup = userGroup;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getMessageType()
     {
         return messageType;
