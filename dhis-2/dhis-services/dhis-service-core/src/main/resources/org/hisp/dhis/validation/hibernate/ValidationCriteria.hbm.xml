@@ -11,8 +11,7 @@
     <id name="id" column="validationcriteriaid">
       <generator class="native" />
     </id>
-
-    <property name="name" column="name" not-null="true" unique="true" length="230" />
+    &identifiableProperties;
 
     <property name="description" />
 
