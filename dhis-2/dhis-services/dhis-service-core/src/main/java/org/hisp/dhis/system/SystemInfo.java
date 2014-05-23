@@ -28,14 +28,13 @@ package org.hisp.dhis.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.system.database.DatabaseInfo;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.system.database.DatabaseInfo;
+
+import java.util.Date;
 
 /**
  * @author Lars Helge Overland
@@ -46,19 +45,23 @@ public class SystemInfo
     private String contextPath;
 
     private String userAgent;
-    
+
+    private String calendar;
+
+    private String dateFormat;
+
     private String version;
-    
+
     private String revision;
-    
+
     private Date buildTime;
-    
+
     private Date serverDate;
-    
+
     private String environmentVariable;
 
     private String javaVersion;
-    
+
     private String javaVendor;
 
     private String javaIoTmpDir;
@@ -66,11 +69,11 @@ public class SystemInfo
     private String javaOpts;
 
     private String osName;
-    
+
     private String osArchitecture;
-    
+
     private String osVersion;
-    
+
     private String externalDirectory;
 
     private DatabaseInfo databaseInfo;
@@ -78,13 +81,13 @@ public class SystemInfo
     private String memoryInfo;
 
     private Integer cpuCores;
-    
+
     private String systemId;
 
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
-    
+
     public void clearSensitiveInfo()
     {
         this.revision = null;
@@ -101,11 +104,11 @@ public class SystemInfo
         this.cpuCores = null;
         this.systemId = null;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-    
+
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getContextPath()
@@ -128,6 +131,30 @@ public class SystemInfo
     public void setUserAgent( String userAgent )
     {
         this.userAgent = userAgent;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getCalendar()
+    {
+        return calendar;
+    }
+
+    public void setCalendar( String calendar )
+    {
+        this.calendar = calendar;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getDateFormat()
+    {
+        return dateFormat;
+    }
+
+    public void setDateFormat( String dateFormat )
+    {
+        this.dateFormat = dateFormat;
     }
 
     @JsonProperty
