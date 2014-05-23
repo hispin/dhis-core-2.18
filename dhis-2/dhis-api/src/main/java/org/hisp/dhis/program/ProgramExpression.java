@@ -45,18 +45,15 @@ import java.io.Serializable;
 public class ProgramExpression
     implements Serializable
 {
-    private static final long serialVersionUID = -2807997671779497354L;
-
     public static final String SEPARATOR_ID = "\\.";
-    public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
-    public static String OBJECT_PROGRAM_STAGE = "PS";
-
     public static final String SEPARATOR_OBJECT = ":";
     public static final String DUE_DATE = "DUE_DATE";
     public static final String REPORT_DATE = "REPORT_DATE";
     public static final String RANGE_IN_DUE_DATE = "RANGE_IN_DUE_DATE";
     public static final String NOT_NULL_VALUE_IN_EXPRESSION = "NOT-NULL-VALUE";
-
+    private static final long serialVersionUID = -2807997671779497354L;
+    public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
+    public static String OBJECT_PROGRAM_STAGE = "PS";
     private int id;
 
     private String expression;

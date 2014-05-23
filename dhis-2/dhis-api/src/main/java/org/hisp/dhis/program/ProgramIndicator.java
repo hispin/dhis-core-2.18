@@ -46,21 +46,15 @@ import org.hisp.dhis.common.view.ExportView;
 public class ProgramIndicator
     extends BaseNameableObject
 {
-    private static final long serialVersionUID = 7920320128945484331L;
-
-    public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
-
-    public static String SEPARATOR_OBJECT = ":";
-
     public static final String SEPARATOR_ID = "\\.";
-
     public static final String VALUE_TYPE_DATE = "date";
     public static final String VALUE_TYPE_INT = "int";
-
     public static final String INCIDENT_DATE = "incident_date";
     public static final String ENROLLEMENT_DATE = "enrollment_date";
     public static final String CURRENT_DATE = "current_date";
-
+    private static final long serialVersionUID = 7920320128945484331L;
+    public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
+    public static String SEPARATOR_OBJECT = ":";
     public static final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
         + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 

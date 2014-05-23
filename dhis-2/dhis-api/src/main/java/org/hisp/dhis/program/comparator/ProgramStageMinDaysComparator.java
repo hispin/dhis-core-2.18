@@ -28,13 +28,12 @@ package org.hisp.dhis.program.comparator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Comparator;
-
 import org.hisp.dhis.program.ProgramStage;
+
+import java.util.Comparator;
 
 /**
  * @author Chau Thu Tran
- *
  * @version $ProgramStageMinDaysComparator.java Jun 12, 2012 3:22:20 PM$
  */
 public class ProgramStageMinDaysComparator implements Comparator<ProgramStage>

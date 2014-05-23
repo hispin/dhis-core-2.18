@@ -56,25 +56,18 @@ import java.util.Set;
 public class ProgramInstance
     extends BaseIdentifiableObject
 {
-    public static int STATUS_ACTIVE = 0;
-    public static int STATUS_COMPLETED = 1;
-    public static int STATUS_CANCELLED = 2;
-
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = -1235315582356509653L;
-
-    private int id;
-
-    private Date dateOfIncident; //TODO rename to incidenceDate
-
-    private Date enrollmentDate;
-
-    private Date endDate;
-
+    public static int STATUS_ACTIVE = 0;
     private Integer status = STATUS_ACTIVE;
-
+    public static int STATUS_COMPLETED = 1;
+    public static int STATUS_CANCELLED = 2;
+    private int id;
+    private Date dateOfIncident; //TODO rename to incidenceDate
+    private Date enrollmentDate;
+    private Date endDate;
     private TrackedEntityInstance entityInstance;
 
     private Program program;

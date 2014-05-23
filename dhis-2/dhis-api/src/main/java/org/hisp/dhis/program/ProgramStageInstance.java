@@ -45,38 +45,26 @@ import java.util.List;
 public class ProgramStageInstance
     extends BaseIdentifiableObject
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 6239130884678145713L;
-
     public static final int ACTIVE_STATUS = 0;
+    private Integer status = ACTIVE_STATUS;
     public static final int COMPLETED_STATUS = 1;
     public static final int VISITED_STATUS = 2;
     public static final int FUTURE_VISIT_STATUS = 3;
     public static final int LATE_VISIT_STATUS = 4;
     public static final int SKIPPED_STATUS = 5;
-
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6239130884678145713L;
     private ProgramInstance programInstance;
-
     private ProgramStage programStage;
-
     private Date dueDate;
-
     private Date executionDate;
-
     private OrganisationUnit organisationUnit;
-
     private boolean completed;
-
     private List<OutboundSms> outboundSms = new ArrayList<OutboundSms>();
-
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
-
     private TrackedEntityComment comment;
-
-    private Integer status = ACTIVE_STATUS;
-
     private Double longitude;
 
     private Double latitude;

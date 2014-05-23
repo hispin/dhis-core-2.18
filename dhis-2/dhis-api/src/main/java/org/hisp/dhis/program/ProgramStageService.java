@@ -43,39 +43,37 @@ public interface ProgramStageService
 
     /**
      * Adds an {@link ProgramStage}
-     * 
+     *
      * @param programStage The to ProgramStage add.
-     * 
      * @return A generated unique id of the added {@link ProgramStage}.
      */
     int saveProgramStage( ProgramStage programStage );
 
     /**
      * Deletes a {@link ProgramStage}.
-     * 
+     *
      * @param programStage the ProgramStage to delete.
      */
     void deleteProgramStage( ProgramStage programStage );
 
     /**
      * Updates an {@link ProgramStage}.
-     * 
+     *
      * @param programStage the ProgramStage to update.
      */
     void updateProgramStage( ProgramStage programStage );
 
     /**
      * Returns a {@link ProgramStage}.
-     * 
+     *
      * @param id the id of the ProgramStage to return.
-     * 
      * @return the ProgramStage with the given id
      */
     ProgramStage getProgramStage( int id );
 
     /**
      * Returns the {@link ProgramStage} with the given UID.
-     * 
+     *
      * @param uid the UID.
      * @return the ProgramStage with the given UID, or null if no match.
      */
@@ -83,12 +81,11 @@ public interface ProgramStageService
 
     /**
      * Retrieve a program stage by name and a program
-     * 
-     * @param name Name of program stage
+     *
+     * @param name    Name of program stage
      * @param program Specify a {@link Program} for retrieving a program stage.
-     *        The system allows the name of program stages are duplicated on
-     *        different programs
-     * 
+     *                The system allows the name of program stages are duplicated on
+     *                different programs
      * @return ProgramStage
      */
     ProgramStage getProgramStageByName( String name, Program program );

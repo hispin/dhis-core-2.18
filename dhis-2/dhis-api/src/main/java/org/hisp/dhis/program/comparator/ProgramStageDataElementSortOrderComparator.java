@@ -28,9 +28,9 @@ package org.hisp.dhis.program.comparator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Comparator;
-
 import org.hisp.dhis.program.ProgramStageDataElement;
+
+import java.util.Comparator;
 
 public class ProgramStageDataElementSortOrderComparator
     implements Comparator<ProgramStageDataElement>
@@ -38,11 +38,11 @@ public class ProgramStageDataElementSortOrderComparator
     @Override
     public int compare( ProgramStageDataElement object0, ProgramStageDataElement object1 )
     {
-        if ( object0.getDataElement().getSortOrder() == null ) 
+        if ( object0.getDataElement().getSortOrder() == null )
         {
             return object1.getDataElement().getSortOrder() != null ? -1 : 0;
         }
-        
+
         return object0.getDataElement().getSortOrder().compareTo( object1.getDataElement().getSortOrder() );
     }
 }

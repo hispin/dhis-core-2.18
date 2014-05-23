@@ -31,7 +31,6 @@ package org.hisp.dhis.program;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version ProgramStageSectionService.java 11:12:41 AM Aug 22, 2012 $
  */
 public interface ProgramStageSectionService
@@ -44,44 +43,41 @@ public interface ProgramStageSectionService
 
     /**
      * Adds an {@link ProgramStageSection}
-     * 
+     *
      * @param programStageSection The to ProgramStageSection add.
-     * 
      * @return A generated unique id of the added {@link ProgramStageSection}.
      */
     int saveProgramStageSection( ProgramStageSection programStageSection );
 
     /**
      * Deletes a {@link ProgramStageSection}.
-     * 
+     *
      * @param programStageSection the ProgramStageSection to delete.
      */
     void deleteProgramStageSection( ProgramStageSection programStageSection );
 
     /**
      * Updates an {@link ProgramStageSection}.
-     * 
+     *
      * @param programStageSection the ProgramStageSection to update.
      */
     void updateProgramStageSection( ProgramStageSection programStageSection );
 
     /**
      * Returns a {@link ProgramStageSection}.
-     * 
+     *
      * @param id the id of the ProgramStageSection to return.
-     * 
      * @return the ProgramStageSection with the given id
      */
     ProgramStageSection getProgramStageSection( int id );
 
     /**
      * Retrieve a program stage section by name and a program stage
-     * 
-     * @param name Name of program stage
+     *
+     * @param name         Name of program stage
      * @param programStage Specify a {@link Program} for retrieving a program
-     *        stage. The system allows the name of program stages are duplicated
-     *        on different programs
-     * 
+     *                     stage. The system allows the name of program stages are duplicated
+     *                     on different programs
      * @return ProgramStage
      */
     ProgramStageSection getProgramStageSectionByName( String name, ProgramStage programStage );

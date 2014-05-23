@@ -28,13 +28,12 @@ package org.hisp.dhis.program.comparator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Comparator;
-
 import org.hisp.dhis.program.ProgramStageInstance;
+
+import java.util.Comparator;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version $ProgramStageInstanceDueDateComparator.java Jun 7, 2012 9:49:25 AM$
  */
 public class ProgramStageInstanceDueDateComparator
