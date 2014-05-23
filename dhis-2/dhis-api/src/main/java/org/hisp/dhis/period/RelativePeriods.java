@@ -739,7 +739,7 @@ public class RelativePeriods
     /**
      * Returns a date.
      *
-     * @param months the number of weeks to subtract from the current date.
+     * @param weeks the number of weeks to subtract from the current date.
      * @param date the date representing now, ignored if null.
      * @return a date.
      */
@@ -754,7 +754,7 @@ public class RelativePeriods
     /**
      * Returns a RelativePeriods instance based on the given list of RelativePeriodsEnum.
      * 
-     * @param relativePeriods a list of RelativePeriodsEnum.
+     * @param relativePeriod a list of RelativePeriodsEnum.
      * @return a RelativePeriods instance.
      */
     public static List<Period> getRelativePeriodsFromEnum( RelativePeriodEnum relativePeriod, Date date, I18nFormat format, boolean dynamicNames )
