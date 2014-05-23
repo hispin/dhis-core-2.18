@@ -28,17 +28,16 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.regex.Pattern;
-
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 
+import java.util.Collection;
+import java.util.regex.Pattern;
+
 /**
  * @author Chau Thu Tran
  * @version $ ProgramDataEntryService.java May 26, 2011 3:56:03 PM $
- * 
  */
 public interface ProgramDataEntryService
 {
@@ -53,15 +52,15 @@ public interface ProgramDataEntryService
     /**
      * Prepares the data entry form for data entry by injecting required
      * javascripts and drop down lists.
-     * 
-     * @param htmlCode the HTML code of the data entry form.
-     * @param dataValues the {@link TrackedEntityDataValue} which are registered for
-     *        this form.
-     * @param programStage {@link ProgramStage}
+     *
+     * @param htmlCode             the HTML code of the data entry form.
+     * @param dataValues           the {@link TrackedEntityDataValue} which are registered for
+     *                             this form.
+     * @param programStage         {@link ProgramStage}
      * @param programStageInstance The {@link ProgramStageInstance} associated
-     *        with entry form
-     * @param organisationUnit The {@link OrganisationUnit} associated with this
-     *        program stage instance.
+     *                             with entry form
+     * @param organisationUnit     The {@link OrganisationUnit} associated with this
+     *                             program stage instance.
      * @return HTML code for the form.
      */
     String prepareDataEntryFormForEntry( String htmlCode, Collection<TrackedEntityDataValue> dataValues, I18n i18n,
@@ -70,11 +69,10 @@ public interface ProgramDataEntryService
     /**
      * Prepare DataEntryForm code for save by reversing the effects of
      * prepareDataEntryFormForEdit().
-     * 
-     * @param htmlCode the HTML code of the data entry form.
-     * @param i18n I18n object
+     *
+     * @param htmlCode     the HTML code of the data entry form.
+     * @param i18n         I18n object
      * @param programStage {@link ProgramStage}
-     * 
      * @return htmlCode the HTML code of the data entry form.
      */
     String prepareDataEntryFormForAdd( String htmlCode, I18n i18n, ProgramStage programStage );
@@ -82,9 +80,8 @@ public interface ProgramDataEntryService
     /**
      * Prepares the data entry form code by injecting the data element operand
      * name as value and title for each entry field.
-     * 
+     *
      * @param htmlCode the HTML code of the data entry form.
-     * 
      * @return HTML code for the data entry form.
      */
     String prepareDataEntryFormForEdit( String htmlCode );

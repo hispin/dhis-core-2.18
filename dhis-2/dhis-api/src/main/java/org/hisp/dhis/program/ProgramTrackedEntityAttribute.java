@@ -33,7 +33,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
@@ -47,7 +46,7 @@ import java.io.Serializable;
  * @author Chau Thu Tran
  * @version $ ProgramTrackedEntityAttribute.java Jan 7, 2014 9:16:05 AM $
  */
-@JacksonXmlRootElement( localName = "programTrackedEntityAttribute", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "programTrackedEntityAttribute", namespace = DxfNamespaces.DXF_2_0)
 public class ProgramTrackedEntityAttribute
     implements Serializable
 {
@@ -136,22 +135,22 @@ public class ProgramTrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Boolean isMandatory()
     {
         return mandatory;
     }
-    
+
     public void setMandatory( Boolean mandatory )
     {
         this.mandatory = mandatory;
     }
 
     @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlProperty( localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0 )
+    @JsonSerialize(as = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
+    @JacksonXmlProperty(localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0)
     public TrackedEntityAttribute getAttribute()
     {
         return attribute;
@@ -173,8 +172,8 @@ public class ProgramTrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlProperty( localName = "displayInList", namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
+    @JacksonXmlProperty(localName = "displayInList", namespace = DxfNamespaces.DXF_2_0)
     public boolean isDisplayInList()
     {
         return displayInList;

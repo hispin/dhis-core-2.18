@@ -28,9 +28,9 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericNameableObjectStore;
+
+import java.util.Collection;
 
 /**
  * @author Chau Thu Tran
@@ -41,9 +41,8 @@ public interface ProgramIndicatorStore
 {
     /**
      * Get {@link ProgramIndicator} of a program
-     * 
+     *
      * @param program Program
-     * 
      * @return ProgramIndicators belong to the program
      */
     Collection<ProgramIndicator> getByProgram( Program program );

@@ -28,13 +28,12 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.dataelement.DataElement;
+
+import java.util.Collection;
 
 /**
  * @author Viet Nguyen
- * 
  * @version $Id$
  */
 public interface ProgramStageDataElementService
@@ -43,22 +42,21 @@ public interface ProgramStageDataElementService
 
     /**
      * Adds an {@link ProgramStageDataElement}
-     * 
+     *
      * @param programStageDataElement The to ProgramStageDataElement add.
-     * 
      */
     void addProgramStageDataElement( ProgramStageDataElement programStageDataElement );
 
     /**
      * Updates an {@link ProgramStageDataElement}.
-     * 
+     *
      * @param programStageDataElement the ProgramStageDataElement to update.
      */
     void updateProgramStageDataElement( ProgramStageDataElement programStageDataElement );
 
     /**
      * Deletes a {@link ProgramStageDataElement}.
-     * 
+     *
      * @param programStageDataElement the ProgramStageDataElement to delete.
      */
     void deleteProgramStageDataElement( ProgramStageDataElement programStageDataElement );
@@ -66,27 +64,25 @@ public interface ProgramStageDataElementService
     /**
      * Retrieve ProgramStageDataElement list on a program stage and a data
      * element
-     * 
+     *
      * @param programStage ProgramStage
-     * @param dataElement DataElement
-     * 
+     * @param dataElement  DataElement
      * @return ProgramStageDataElement
      */
     ProgramStageDataElement get( ProgramStage programStage, DataElement dataElement );
 
     /**
      * Returns all {@link ProgramStageDataElement}
-     * 
+     *
      * @return a collection of all ProgramStageDataElement, or an empty
-     *         collection if there are no ProgramStageDataElements.
+     * collection if there are no ProgramStageDataElements.
      */
     Collection<ProgramStageDataElement> getAllProgramStageDataElements();
 
     /**
      * Retrieve Data element list on a program stage
-     * 
+     *
      * @param programStage ProgramStage
-     * 
      * @return ProgramStageDataElement list
      */
     Collection<DataElement> getListDataElement( ProgramStage programStage );

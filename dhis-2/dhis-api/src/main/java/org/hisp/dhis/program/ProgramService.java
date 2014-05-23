@@ -28,11 +28,11 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.validation.ValidationCriteria;
+
+import java.util.Collection;
 
 /**
  * @author Abyot Asalefew
@@ -44,16 +44,15 @@ public interface ProgramService
 
     /**
      * Adds an {@link Program}
-     * 
+     *
      * @param program The to Program add.
-     * 
      * @return A generated unique id of the added {@link Program}.
      */
     int addProgram( Program program );
 
     /**
      * Updates an {@link Program}.
-     * 
+     *
      * @param program the Program to update.
      */
     void updateProgram( Program program );
@@ -62,23 +61,22 @@ public interface ProgramService
      * Deletes a {@link Program}. All {@link ProgramStage},
      * {@link ProgramInstance} and {@link ProgramStageInstance} belong to this
      * program are removed
-     * 
+     *
      * @param program the Program to delete.
      */
     void deleteProgram( Program program );
 
     /**
      * Returns a {@link Program}.
-     * 
+     *
      * @param id the id of the Program to return.
-     * 
      * @return the Program with the given id
      */
     Program getProgram( int id );
 
     /**
      * Returns a {@link Program} with a given name.
-     * 
+     *
      * @param name the name of the Program to return.
      * @return the Program with the given name, or null if no match.
      */
@@ -86,35 +84,33 @@ public interface ProgramService
 
     /**
      * Returns all {@link Program}.
-     * 
+     *
      * @return a collection of all Program, or an empty collection if there are
-     *         no Programs.
+     * no Programs.
      */
     Collection<Program> getAllPrograms();
 
     /**
      * Get all {@link Program} belong to a orgunit
-     * 
+     *
      * @param organisationUnit {@link OrganisationUnit}
-     * 
      * @return The program list
      */
     Collection<Program> getPrograms( OrganisationUnit organisationUnit );
 
     /**
      * Get {@link Program} by the current user.
-     * 
+     *
      * @return The program list the current user
      */
     Collection<Program> getProgramsByCurrentUser();
 
     /**
      * Get {@link Program} by the current user and a certain type
-     * 
+     *
      * @param type The type of program. There are three types, include Multi
-     *        events with registration, Single event with registration and
-     *        Single event without registration.
-     * 
+     *             events with registration, Single event with registration and
+     *             Single event without registration.
      * @return Program list by a type specified
      */
     Collection<Program> getProgramsByCurrentUser( int type );
@@ -122,39 +118,36 @@ public interface ProgramService
     /**
      * Get {@link Program} included in the expression of a
      * {@link ValidationCriteria}
-     * 
+     *
      * @param validationCriteria {@link ValidationCriteria}
-     * 
      * @return Program list
      */
     Collection<Program> getPrograms( ValidationCriteria validationCriteria );
 
     /**
      * Get {@link Program} by a type
-     * 
+     *
      * @param type The type of program. There are three types, include Multi
-     *        events with registration, Single event with registration and
-     *        Single event without registration
-     * 
+     *             events with registration, Single event with registration and
+     *             Single event without registration
      * @return Program list by a type specified
      */
     Collection<Program> getPrograms( int type );
 
     /**
      * Get {@link Program} assigned to an {@link OrganisationUnit} by a type
-     * 
-     * @param type The type of program. There are three types, include Multi
-     *        events with registration, Single event with registration and
-     *        Single event without registration
+     *
+     * @param type    The type of program. There are three types, include Multi
+     *                events with registration, Single event with registration and
+     *                Single event without registration
      * @param orgunit Where programs assigned
-     * 
      * @return Program list by a type specified
      */
     Collection<Program> getPrograms( int type, OrganisationUnit orgunit );
 
     /**
      * Returns the {@link Program} with the given UID.
-     * 
+     *
      * @param uid the UID.
      * @return the Program with the given UID, or null if no match.
      */
@@ -162,52 +155,49 @@ public interface ProgramService
 
     /**
      * Get {@link Program} belong to an orgunit by the current user
-     * 
+     *
      * @param organisationUnit {@link OrganisationUnit}
      */
     Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit );
 
     /**
      * Get {@link TrackedEntity} by TrackedEntity
-     * 
+     *
      * @param trackedEntity {@link TrackedEntity}
      */
     Collection<Program> getProgramsByTrackedEntity( TrackedEntity trackedEntity );
 
     /**
      * Returns The number of Programs with the key searched
-     * 
+     *
      * @param name Keyword for searching by name
-     * 
      * @return A number
-     * 
      */
     Integer getProgramCountByName( String name );
 
     /**
      * Returns {@link Program} list with paging
-     * 
+     *
      * @param name Keyword for searching by name
-     * @param min First result
-     * @param max Maximum results
+     * @param min  First result
+     * @param max  Maximum results
      * @return a collection of all Program, or an empty collection if
-     *         there are no Program.
+     * there are no Program.
      */
     Collection<Program> getProgramBetweenByName( String name, int min, int max );
 
     /**
      * Returns The number of all Program available
-     * 
      */
     Integer getProgramCount();
 
     /**
      * Returns {@link Program} list with paging
-     * 
+     *
      * @param min First result
      * @param max Maximum results
      * @return a collection of all Program, or an empty collection if
-     *         there are no Program.
+     * there are no Program.
      */
     Collection<Program> getProgramsBetween( int min, int max );
 }

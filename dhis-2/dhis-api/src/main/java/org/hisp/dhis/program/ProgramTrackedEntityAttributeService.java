@@ -32,7 +32,6 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version $ ProgramTrackedEntityAttributeService.java Mar 19, 2014 2:53:34 PM
  *          $
  */
@@ -40,10 +39,9 @@ public interface ProgramTrackedEntityAttributeService
 {
     /**
      * Get ProgramTrackedEntityAttribute by Program and TrackedEntityAttribute
-     * 
-     * @param program Program
+     *
+     * @param program   Program
      * @param attribute TrackedEntityAttribute
-     * 
      * @return ProgramTrackedEntityAttribute
      */
     ProgramTrackedEntityAttribute getProgramTrackedEntityAttribute( Program program, TrackedEntityAttribute attribute );

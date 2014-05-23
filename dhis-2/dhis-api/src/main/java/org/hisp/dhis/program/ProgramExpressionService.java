@@ -28,10 +28,10 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+
+import java.util.Map;
 
 /**
  * An Expression is the expression of e.g. a validation rule of a program. It
@@ -44,9 +44,8 @@ import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
  * i) [DE:1.2] where 1 refers to the program stage identifier and 2 refers to
  * the data element identifier.
  * <p/>
- * 
+ *
  * @author Chau Thu Tran
- * 
  * @version ProgramExpressionService.java 2:59:58 PM Nov 8, 2012 $
  */
 public interface ProgramExpressionService
@@ -55,45 +54,42 @@ public interface ProgramExpressionService
 
     /**
      * Adds an {@link ProgramExpression}
-     * 
+     *
      * @param programExpression The to ProgramExpression add.
-     * 
      * @return A generated unique id of the added {@link ProgramExpression}.
      */
     int addProgramExpression( ProgramExpression programExpression );
 
     /**
      * Updates an {@link ProgramExpression}.
-     * 
+     *
      * @param programExpression the ProgramExpression to update.
      */
     void updateProgramExpression( ProgramExpression programExpression );
 
     /**
      * Deletes a {@link ProgramExpression}.
-     * 
+     *
      * @param programExpression the ProgramExpression to delete.
      */
     void deleteProgramExpression( ProgramExpression programExpression );
 
     /**
      * Returns a {@link ProgramExpression}.
-     * 
+     *
      * @param id the id of the ProgramExpression to return.
-     * 
      * @return the ProgramExpression with the given id
      */
     ProgramExpression getProgramExpression( int id );
 
     /**
      * Get value of program expression
-     * 
-     * @param programExpression {@link ProgramExpression}
-     * @param programStageInstance The {@link ProgramStageInstance} associate
-     *        with this expression
+     *
+     * @param programExpression         {@link ProgramExpression}
+     * @param programStageInstance      The {@link ProgramStageInstance} associate
+     *                                  with this expression
      * @param trackedEntityDataValueMap TrackedEntityDataValue<The id of {@link DataElement}
-     *        , {@link TrackedEntityDataValue} >
-     * 
+     *                                  , {@link TrackedEntityDataValue} >
      * @return The expression value
      */
     String getProgramExpressionValue( ProgramExpression programExpression, ProgramStageInstance programStageInstance,
@@ -101,9 +97,8 @@ public interface ProgramExpressionService
 
     /**
      * Get the description of a program expression
-     * 
+     *
      * @param programExpression The expression
-     * 
      * @return the description of an expression
      */
     String getExpressionDescription( String programExpression );

@@ -28,13 +28,12 @@ package org.hisp.dhis.program.comparator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Comparator;
-
 import org.hisp.dhis.program.ProgramStageSection;
+
+import java.util.Comparator;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version ProgramStageSectionSortOrderComparator.java 9:32:23 AM Feb 4, 2013 $
  */
 public class ProgramStageSectionSortOrderComparator
