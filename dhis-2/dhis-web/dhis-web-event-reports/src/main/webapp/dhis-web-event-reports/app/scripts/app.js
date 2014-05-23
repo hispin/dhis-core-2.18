@@ -5005,6 +5005,8 @@ Ext.onReady( function() {
                 if (!(view.startDate && view.endDate)) {
                     return;
                 }
+
+                map['pe'] = [{dimension: 'pe'}];
             }
             else if (periodMode.getValue() === 'periods') {
 				map['pe'] = [periods.getDimension()];
