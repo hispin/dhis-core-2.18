@@ -58,10 +58,6 @@ public class ProgramStage
 
     public static final String TYPE_CUSTOM = "custom";
 
-    public static final String REPORT_DATE_TO_USE_INCIDENT_DATE = "dateOfIncident";
-
-    public static final String REPORT_DATE_TO_USE_ENROLLMENT_DATE = "enrollmentDate";
-
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
