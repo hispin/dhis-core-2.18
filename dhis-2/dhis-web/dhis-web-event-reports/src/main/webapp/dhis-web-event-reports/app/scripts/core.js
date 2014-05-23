@@ -1830,7 +1830,7 @@ Ext.onReady( function() {
 					for (var i = 0, dim; i < dimensions.length; i++) {
 						dim = dimensions[i];
 
-						if (Ext.Array.contains(ignoreKeys, dim.dimension)) {
+						if (Ext.Array.contains(ignoreKeys, dim.dimension) || (dim.dimension === 'pe' && !dim.items && !dim.filter)) {
 							continue;
 						}
 
