@@ -330,7 +330,7 @@ function uploadLocalData()
         var key = array[0];
         var value = dataValues[key];
 
-        if ( value.value.length > 254 )
+        if ( value !== undefined && value.value !== undefined && value.value.length > 254 )
         {
             value.value = value.value.slice(0, 254);
         }
