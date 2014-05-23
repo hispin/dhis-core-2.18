@@ -29,6 +29,7 @@ package org.hisp.dhis.system;
  */
 
 import org.apache.commons.io.IOUtils;
+import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.external.location.LocationManager;
@@ -62,6 +63,9 @@ public class DefaultSystemService
     @Autowired
     private ConfigurationService configurationService;
 
+    @Autowired
+    private CalendarService calendarService;
+
     private SystemInfo systemInfo = null;
 
     // -------------------------------------------------------------------------
@@ -77,6 +81,9 @@ public class DefaultSystemService
         }
 
         systemInfo = new SystemInfo();
+
+        systemInfo.setCalendar( calendarService.getSystemCalendar().name() );
+        systemInfo.setDateFormat( calendarService.getSystemDateFormat().getJs() );
 
         // ---------------------------------------------------------------------
         // Version
