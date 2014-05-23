@@ -51,8 +51,6 @@ public class SixMonthlyAprilPeriodType
 
     private static final int BASE_MONTH = Calendar.APRIL;
 
-    private static final String BASE_MONTH_NAME = "April";
-
     /**
      * The name of the SixMonthlyPeriodType, which is "SixMonthly".
      */
