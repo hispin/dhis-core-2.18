@@ -80,7 +80,7 @@ public interface ProgramIndicatorService
     /**
      * Returns a {@link ProgramIndicator} with a given short name.
      * 
-     * @param name the name of the ProgramIndicator to return.
+     * @param shortName the name of the ProgramIndicator to return.
      * @return the ProgramIndicator with the given short name, or null if no
      *         match.
      */

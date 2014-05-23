@@ -46,8 +46,6 @@ public interface ProgramStageDataElementService
      * 
      * @param programStageDataElement The to ProgramStageDataElement add.
      * 
-     * @return A generated unique id of the added
-     *         {@link ProgramStageDataElement}.
      */
     void addProgramStageDataElement( ProgramStageDataElement programStageDataElement );
 

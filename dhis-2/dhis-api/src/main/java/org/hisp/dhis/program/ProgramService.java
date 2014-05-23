@@ -188,8 +188,8 @@ public interface ProgramService
      * Returns {@link Program} list with paging
      * 
      * @param name Keyword for searching by name
-     * @param min
-     * @param max
+     * @param min First result
+     * @param max Maximum results
      * @return a collection of all Program, or an empty collection if
      *         there are no Program.
      */
@@ -204,8 +204,8 @@ public interface ProgramService
     /**
      * Returns {@link Program} list with paging
      * 
-     * @param min
-     * @param max
+     * @param min First result
+     * @param max Maximum results
      * @return a collection of all Program, or an empty collection if
      *         there are no Program.
      */

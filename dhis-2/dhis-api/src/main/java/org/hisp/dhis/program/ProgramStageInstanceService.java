@@ -28,17 +28,17 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Abyot Asalefew
@@ -50,39 +50,37 @@ public interface ProgramStageInstanceService
 
     /**
      * Adds an {@link TrackedEntityAttribute}
-     * 
-     * @param TrackedEntityAttribute The to TrackedEntityAttribute add.
-     * 
+     *
+     * @param programStageInstance The to TrackedEntityAttribute add.
      * @return A generated unique id of the added {@link TrackedEntityAttribute}.
      */
     int addProgramStageInstance( ProgramStageInstance programStageInstance );
 
     /**
      * Deletes a {@link TrackedEntityAttribute}.
-     * 
+     *
      * @param programStageInstance the TrackedEntityAttribute to delete.
      */
     void deleteProgramStageInstance( ProgramStageInstance programStageInstance );
 
     /**
      * Updates an {@link TrackedEntityAttribute}.
-     * 
-     * @param TrackedEntityAttribute the TrackedEntityAttribute to update.
+     *
+     * @param programStageInstance the TrackedEntityAttribute to update.
      */
     void updateProgramStageInstance( ProgramStageInstance programStageInstance );
 
     /**
      * Returns a {@link TrackedEntityAttribute}.
-     * 
+     *
      * @param id the id of the TrackedEntityAttribute to return.
-     * 
      * @return the TrackedEntityAttribute with the given id
      */
     ProgramStageInstance getProgramStageInstance( int id );
 
     /**
      * Returns the {@link TrackedEntityAttribute} with the given UID.
-     * 
+     *
      * @param uid the UID.
      * @return the TrackedEntityAttribute with the given UID, or null if no match.
      */
@@ -91,21 +89,19 @@ public interface ProgramStageInstanceService
     /**
      * Retrieve an event on a program instance and a program stage. For
      * repeatable stage, the system returns the last event
-     * 
+     *
      * @param programInstance ProgramInstance
-     * @param programStage ProgramStage
-     * 
+     * @param programStage    ProgramStage
      * @return ProgramStageInstance
      */
     ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage );
 
     /**
      * Retrieve an event list on program instance list with a certain status
-     * 
+     *
      * @param programInstances ProgramInstance list
-     * @param completed Optional flag to only get completed (<code>true</code> )
-     *        or uncompleted (<code>false</code>) instances.
-     * 
+     * @param completed        Optional flag to only get completed (<code>true</code> )
+     *                         or uncompleted (<code>false</code>) instances.
      * @return ProgramStageInstance list
      */
     Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances,
@@ -113,56 +109,51 @@ public interface ProgramStageInstanceService
 
     /**
      * Get statuses of events
-     * 
+     *
      * @param programStageInstances ProgramStageInstance list
-     * 
      * @return Map< ProgramStageInstance ID, status >
      */
     Map<Integer, Integer> statusProgramStageInstances( Collection<ProgramStageInstance> programStageInstances );
 
     /**
      * Get all events by TrackedEntityInstance, optionally filtering by completed.
-     * 
+     *
      * @param entityInstance TrackedEntityInstance
-     * 
-     * @param completed - optional flag to only get completed (
-     *        <code>true</code> ) or uncompleted (<code>false</code>) instances.
-     * 
+     * @param completed      - optional flag to only get completed (
+     *                       <code>true</code> ) or uncompleted (<code>false</code>) instances.
      * @return ProgramStageInstance list
      */
     List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, boolean completed );
 
     /**
      * Retrieve scheduled list of entityInstances registered
-     * 
+     *
      * @return A SchedulingProgramObject list
      */
     Collection<SchedulingProgramObject> getSendMesssageEvents();
 
     /**
      * Get/export statistical report of a program
-     * 
-     * @param program Program needs to report
+     *
+     * @param program    Program needs to report
      * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * @param i18n I18n object
-     * @param format I18nFormat
-     * 
+     * @param startDate  Optional date the instance should be on or after.
+     * @param endDate    Optional date the instance should be on or before.
+     * @param i18n       I18n object
+     * @param format     I18nFormat
      * @return Program report
      */
     Grid getStatisticalReport( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         I18n i18n, I18nFormat format );
-    
+
     /**
      * Get/Export a report about the number of events of a program completed on
      * a orgunit
-     * 
-     * @param orgunitIds The ids of orgunits where the events happened
-     * @param program The program needs for reporting
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * 
+     *
+     * @param orgunits  The ids of orgunits where the events happened
+     * @param program   The program needs for reporting
+     * @param startDate Optional date the instance should be on or after.
+     * @param endDate   Optional date the instance should be on or before.
      * @return Grid
      */
     Grid getCompletenessProgramStageInstance( Collection<Integer> orgunits, Program program, String startDate,
@@ -171,18 +162,18 @@ public interface ProgramStageInstanceService
     /**
      * Complete an event. Besides, program template messages will be send if it
      * was defined to send when to complete this program
-     * 
-     * @param programInstance ProgramInstance
-     * @param format I18nFormat
+     *
+     * @param programStageInstance ProgramStageInstance
+     * @param format               I18nFormat
      */
     void completeProgramStageInstance( ProgramStageInstance programStageInstance, I18nFormat format );
 
     /**
      * Set report date and orgunit where an event happened for the event
-     * 
+     *
      * @param programStageInstance ProgramStageInstance
-     * @param executionDate Report date
-     * @param organisationUnit Orgunit where the event happens
+     * @param executionDate        Report date
+     * @param organisationUnit     Orgunit where the event happens
      */
     void setExecutionDate( ProgramStageInstance programStageInstance, Date executionDate,
         OrganisationUnit organisationUnit );
@@ -192,12 +183,11 @@ public interface ProgramStageInstanceService
      * exist, So system has to create a program-instance and
      * program-stage-instance. The similar thing happens for single event with
      * registration.
-     * 
-     * @param entityInstance TrackedEntityInstance
-     * @param program Single event without registration
-     * @param executionDate Report date of the event
+     *
+     * @param entityInstance   TrackedEntityInstance
+     * @param program          Single event without registration
+     * @param executionDate    Report date of the event
      * @param organisationUnit Orgunit where the event happens
-     * 
      * @return ProgramStageInstance ProgramStageInstance object
      */
     ProgramStageInstance createProgramStageInstance( TrackedEntityInstance entityInstance, Program program, Date executionDate,
