@@ -15,6 +15,7 @@ import java.util.Set;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -204,6 +205,33 @@ public class DefaultPBFAggregationService
         return aggregationResultMap;
     }
     
+    public Double calculateOverallUnadjustedPBFAmount( Period period, OrganisationUnit orgUnit, DataSet dataSet )
+    {
+        Double overAllAdjustedAmt = null;
+        
+        try
+        {
+            String query = "SELECT SUM( ( qtyvalidated * tariffamount ) ) FROM pbfdatavalue " +
+                            " WHERE " + 
+                                " periodid = "+ period.getId() +" AND "+
+                                " datasetid = "+ dataSet.getId() + " AND " +
+                                " organisationunitid = " + orgUnit.getId();
+            
+            System.out.println( "Query After Replace : --" +  query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            if( rs.next() )
+            {
+                overAllAdjustedAmt = rs.getDouble( 1 );
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("Exception in calculateOverallUnadjustedPBFAmount :"+ e.getMessage() );
+        }
+        
+        return overAllAdjustedAmt;
+    }
     
     public Double calculateOverallQualityScore( Period period, Set<OrganisationUnit> orgUnits, Integer dataSetId, int maxScoreOrgUnitId )
     {
