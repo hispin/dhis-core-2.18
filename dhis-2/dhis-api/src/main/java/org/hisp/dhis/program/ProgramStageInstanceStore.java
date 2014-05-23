@@ -90,10 +90,10 @@ public interface ProgramStageInstanceStore
     /**
      * Get the number of events by completed status
      * 
-     * @param program Program
+     * @param programStage Program
      * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
+     * @param startDate Optional date the instance should be on or after.
+     * @param endDate Optional date the instance should be on or before.
      * @param completed Optional flag to only get completed (<code>true</code> )
      *        or uncompleted (<code>false</code>) instances.
      * @return A number
@@ -106,8 +106,8 @@ public interface ProgramStageInstanceStore
      * 
      * @param programStage ProgramStage
      * @param orgunitIds The ids of orgunits where the events happened
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
+     * @param startDate Optional date the instance should be on or after.
+     * @param endDate Optional date the instance should be on or before.
      * 
      * @return A number
      */
@@ -133,8 +133,8 @@ public interface ProgramStageInstanceStore
      * 
      * @param orgunitIds The ids of orgunits where the events happened
      * @param program The program needs for reporting
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
+     * @param startDate Optional date the instance should be on or after.
+     * @param endDate Optional date the instance should be on or before.
      * 
      * @return Grid
      */

@@ -147,8 +147,8 @@ public interface ProgramInstanceStore
      * 
      * @param program Program
      * @param organisationUnit Organisation Unit
-     * @param min
-     * @param max
+     * @param min First result
+     * @param max Maximum results
      * 
      * @return ProgramInstance list
      */
@@ -159,11 +159,11 @@ public interface ProgramInstanceStore
      * for a certain period with result limited
      * 
      * @param program Program
-     * @param organisationUnit Organisation Unit
+     * @param orgunitIds Organisation Units
      * @param startDate The start date for retrieving on enrollment-date
      * @param endDate The end date for retrieving on enrollment-date
-     * @param min
-     * @param max
+     * @param min First result
+     * @param max Maximum results
      * 
      * @return ProgramInstance list
      */
@@ -175,9 +175,7 @@ public interface ProgramInstanceStore
      * 
      * @param program Program
      * @param organisationUnit Organisation Unit
-     * @param startDate The start date for retrieving on enrollment-date
-     * @param endDate The end date for retrieving on enrollment-date
-     * 
+     *
      * @return ProgramInstance list
      */
     int count( Program program, OrganisationUnit organisationUnit );
@@ -187,7 +185,7 @@ public interface ProgramInstanceStore
      * registered in a certain orgunit by a program for a certain period
      * 
      * @param program Program
-     * @param organisationUnit Organisation Unit
+     * @param orgunitIds Organisation Units
      * @param startDate The start date for retrieving on enrollment-date
      * @param endDate The end date for retrieving on enrollment-date
      * 
@@ -199,7 +197,7 @@ public interface ProgramInstanceStore
      * Get the number of program instances of a program which have a certain
      * status and an orgunit ids list for a period
      * 
-     * @param Status of program-instance, include STATUS_ACTIVE,
+     * @param status of program-instance, include STATUS_ACTIVE,
      *        STATUS_COMPLETED and STATUS_CANCELLED
      * @param program ProgramInstance
      * @param orgunitIds A list of orgunit ids
@@ -214,7 +212,7 @@ public interface ProgramInstanceStore
      * Retrieve program instances with a certain status on a program and an
      * orgunit ids list for a period
      * 
-     * @param Status of program-instance, include STATUS_ACTIVE,
+     * @param status of program-instance, include STATUS_ACTIVE,
      *        STATUS_COMPLETED and STATUS_CANCELLED
      * @param program ProgramInstance
      * @param orgunitIds A list of orgunit ids

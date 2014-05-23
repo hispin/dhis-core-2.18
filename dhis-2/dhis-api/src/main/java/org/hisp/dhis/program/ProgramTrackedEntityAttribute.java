@@ -118,7 +118,7 @@ public class ProgramTrackedEntityAttribute
 
         final ProgramTrackedEntityAttribute other = (ProgramTrackedEntityAttribute) object;
 
-        return attribute != null && attribute.equals( other.getAttribute() ) && sortOrder == other.getSortOrder();
+        return attribute != null && attribute.equals( other.getAttribute() ) && sortOrder.equals( other.getSortOrder() );
     }
 
     // -------------------------------------------------------------------------
