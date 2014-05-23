@@ -376,7 +376,6 @@
 				<value>relationshiptype</value>
 				<value>programstagesection</value>
 				<value>programvalidation</value>
-				<value>validationcriteria</value>
 			</list>
 		</property>
 	</bean>
