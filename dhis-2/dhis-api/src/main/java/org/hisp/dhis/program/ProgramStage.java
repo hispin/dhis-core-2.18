@@ -200,6 +200,11 @@ public class ProgramStage
         return description;
     }
 
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
     @JsonProperty( value = "programStageSections" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "programStageSections", namespace = DxfNamespaces.DXF_2_0 )
@@ -225,11 +230,6 @@ public class ProgramStage
     public void setStandardInterval( Integer standardInterval )
     {
         this.standardInterval = standardInterval;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
     }
 
     @JsonProperty( "repeatable" )
