@@ -310,7 +310,7 @@ public class ProgramInstance
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getStatus()
     {
-        return status.intValue();
+        return status;
     }
 
     public void setStatus( Integer status )
