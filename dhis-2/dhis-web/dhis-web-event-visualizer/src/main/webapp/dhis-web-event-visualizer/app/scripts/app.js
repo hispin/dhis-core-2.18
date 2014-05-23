@@ -5932,72 +5932,324 @@ Ext.onReady( function() {
 
 		// viewport
 
-        aggregateButton = Ext.create('Ext.button.Button', {
-            width: 223,
-			param: 'aggregated_values',
-            text: '<b>Aggregated values</b><br/>Show aggregated event report',
-            style: 'margin-right:1px',
+        column = Ext.create('Ext.button.Button', {
+            xtype: 'button',
+            chartType: ns.core.conf.finals.chart.column,
+            icon: 'images/column.png',
+            name: ns.core.conf.finals.chart.column,
+            tooltipText: NS.i18n.column_chart,
             pressed: true,
             listeners: {
-				mouseout: function(cmp) {
-					cmp.addCls('x-btn-default-toolbar-small-over');
-				}
-			}
+                added: buttonAddedListener
+            }
         });
-        paramButtonMap[aggregateButton.param] = aggregateButton;
 
-		caseButton = Ext.create('Ext.button.Button', {
-            width: 224,
-			param: 'individual_cases',
-            text: '<b>Individual cases</b><br/>Show case-based event report',
-            style: 'margin-right:1px',
-			listeners: {
-				mouseout: function(cmp) {
-					cmp.addCls('x-btn-default-toolbar-small-over');
-				}
-			}
+        stackedcolumn = Ext.create('Ext.button.Button', {
+            xtype: 'button',
+            chartType: ns.core.conf.finals.chart.stackedcolumn,
+            icon: 'images/column-stacked.png',
+            name: ns.core.conf.finals.chart.stackedcolumn,
+            tooltipText: NS.i18n.stacked_column_chart,
+            listeners: {
+                added: buttonAddedListener
+            }
         });
-        paramButtonMap[caseButton.param] = caseButton;
 
-		typeToolbar = Ext.create('Ext.toolbar.Toolbar', {
-			style: 'padding:1px; background:#f5f5f5; border:0 none',
-            height: 41,
-            getType: function() {
-				return aggregateButton.pressed ? aggregateButton.param : caseButton.param;
-			},
-            setType: function(dataType) {
-                var button = paramButtonMap[dataType];
+        bar = Ext.create('Ext.button.Button', {
+            xtype: 'button',
+            chartType: ns.core.conf.finals.chart.bar,
+            icon: 'images/bar.png',
+            name: ns.core.conf.finals.chart.bar,
+            tooltipText: NS.i18n.bar_chart,
+            listeners: {
+                added: buttonAddedListener
+            }
+        });
 
-                if (button) {
-                    button.toggle(true);
+        stackedbar = Ext.create('Ext.button.Button', {
+            xtype: 'button',
+            chartType: ns.core.conf.finals.chart.stackedbar,
+            icon: 'images/bar-stacked.png',
+            name: ns.core.conf.finals.chart.stackedbar,
+            tooltipText: NS.i18n.stacked_bar_chart,
+            listeners: {
+                added: buttonAddedListener
+            }
+        });
+
+        line = Ext.create('Ext.button.Button', {
+            xtype: 'button',
+            chartType: ns.core.conf.finals.chart.line,
+            icon: 'images/line.png',
+            name: ns.core.conf.finals.chart.line,
+            tooltipText: NS.i18n.line_chart,
+            listeners: {
+                added: buttonAddedListener
+            }
+        });
+
+        area = Ext.create('Ext.button.Button', {
+            xtype: 'button',
+            chartType: ns.core.conf.finals.chart.area,
+            icon: 'images/area.png',
+            name: ns.core.conf.finals.chart.area,
+            tooltipText: NS.i18n.area_chart,
+            listeners: {
+                added: buttonAddedListener
+            }
+        });
+
+        pie = Ext.create('Ext.button.Button', {
+            xtype: 'button',
+            chartType: ns.core.conf.finals.chart.pie,
+            icon: 'images/pie.png',
+            name: ns.core.conf.finals.chart.pie,
+            tooltipText: NS.i18n.pie_chart,
+            listeners: {
+                added: buttonAddedListener
+            }
+        });
+
+        radar = Ext.create('Ext.button.Button', {
+            xtype: 'button',
+            chartType: ns.core.conf.finals.chart.radar,
+            icon: 'images/radar.png',
+            name: ns.core.conf.finals.chart.radar,
+            tooltipText: NS.i18n.radar_chart,
+            listeners: {
+                added: buttonAddedListener
+            }
+        });
+
+        chartType = Ext.create('Ext.toolbar.Toolbar', {
+            height: 45,
+            style: 'padding-top:0px; border-style:none',
+            getChartType: function() {
+                for (var i = 0; i < buttons.length; i++) {
+                    if (buttons[i].pressed) {
+                        return buttons[i].chartType;
+                    }
+                }
+            },
+            setChartType: function(type) {
+                for (var i = 0; i < buttons.length; i++) {
+                    if (buttons[i].chartType === type) {
+                        buttons[i].toggle(true);
+                    }
                 }
             },
             defaults: {
                 height: 40,
-                toggleGroup: 'mode',
-				cls: 'x-btn-default-toolbar-small-over',
+                toggleGroup: 'charttype',
                 handler: function(b) {
-					onTypeClick(b);
-				}
-			},
-			items: [
-				aggregateButton,
-				caseButton
-			],
-			listeners: {
-				added: function() {
-					ns.app.typeToolbar = this;
-				}
-			}
-		});
+					if (!b.pressed) {
+						b.toggle();
+					}
+				},
+                listeners: {
+                    afterrender: function(b) {
+                        if (b.xtype === 'button') {
+                            Ext.create('Ext.tip.ToolTip', {
+                                target: b.getEl(),
+                                html: b.tooltipText,
+                                'anchor': 'bottom'
+                            });
+                        }
+                    }
+                }
+            },
+            items: [
+                {
+                    xtype: 'label',
+                    text: NS.i18n.chart_type,
+                    style: 'font-size:11px; font-weight:bold; padding:13px 8px 0 6px'
+                },
+                column,
+                stackedcolumn,
+                bar,
+                stackedbar,
+                line,
+                area,
+                pie,
+                radar
+            ]
+        });
 
-		onTypeClick = function(button) {
-			if (!button.pressed) {
-				button.toggle();
-			}
+		getDimensionStore = function() {
+			return Ext.create('Ext.data.Store', {
+				fields: ['id', 'name'],
+				data: function() {
+					var data = [
+							{id: dimConf.data.dimensionName, name: dimConf.data.name},
+							{id: dimConf.period.dimensionName, name: dimConf.period.name},
+							{id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name}
+						];
 
-			update();
+					return data.concat(Ext.clone(ns.core.init.dimensions));
+				}()
+			});
 		};
+
+        colStore = getDimensionStore();
+		ns.app.stores.col = colStore;
+
+        rowStore = getDimensionStore();
+		ns.app.stores.row = rowStore;
+
+        filterStore = getDimensionStore();
+		ns.app.stores.filter = filterStore;
+
+        series = Ext.create('Ext.form.field.ComboBox', {
+            cls: 'ns-combo',
+            baseBodyCls: 'small',
+            style: 'margin-bottom:0',
+            name: ns.core.conf.finals.chart.series,
+            queryMode: 'local',
+            editable: false,
+            valueField: 'id',
+            displayField: 'name',
+            width: (ns.core.conf.layout.west_fieldset_width / 3),
+            value: ns.core.conf.finals.dimension.data.dimensionName,
+            filterNext: function() {
+                category.filter(this.getValue());
+                filter.filter([this.getValue(), category.getValue()]);
+            },
+            store: colStore,
+            listeners: {
+                added: function(cb) {
+                    cb.filterNext();
+                },
+                select: function(cb) {
+                    cb.filterNext();
+                }
+            }
+        });
+
+        category = Ext.create('Ext.form.field.ComboBox', {
+            cls: 'ns-combo',
+            baseBodyCls: 'small',
+            style: 'margin-bottom:0',
+            name: ns.core.conf.finals.chart.category,
+            queryMode: 'local',
+            editable: false,
+            lastQuery: '',
+            valueField: 'id',
+            displayField: 'name',
+            width: (ns.core.conf.layout.west_fieldset_width / 3),
+            value: ns.core.conf.finals.dimension.period.dimensionName,
+            filter: function(value) {
+                if (Ext.isString(value)) {
+                    if (value === this.getValue()) {
+                        this.clearValue();
+                    }
+
+                    this.store.clearFilter();
+
+                    this.store.filterBy(function(record, id) {
+                        return id !== value;
+                    });
+                }
+            },
+            filterNext: function() {
+                filter.filter([series.getValue(), this.getValue()]);
+            },
+            store: rowStore,
+            listeners: {
+                added: function(cb) {
+                    cb.filterNext();
+                },
+                select: function(cb) {
+                    cb.filterNext();
+                }
+            }
+        });
+
+        filter = Ext.create('Ext.form.field.ComboBox', {
+            cls: 'ns-combo',
+            multiSelect: true,
+            baseBodyCls: 'small',
+            style: 'margin-bottom:0',
+            name: ns.core.conf.finals.chart.filter,
+            queryMode: 'local',
+            editable: false,
+            lastQuery: '',
+            valueField: 'id',
+            displayField: 'name',
+            width: (ns.core.conf.layout.west_fieldset_width / 3) + 1,
+            value: ns.core.conf.finals.dimension.organisationUnit.dimensionName,
+            filter: function(values) {
+                var a = Ext.clone(this.getValue()),
+                    b = [];
+
+                for (var i = 0; i < a.length; i++) {
+                    if (!Ext.Array.contains(values, a[i])) {
+                        b.push(a[i]);
+                    }
+                }
+
+                this.clearValue();
+                this.setValue(b);
+
+                this.store.filterBy(function(record, id) {
+                    return !Ext.Array.contains(values, id);
+                });
+            },
+            store: filterStore,
+            listeners: {
+                beforedeselect: function(cb) {
+                    return cb.getValue().length !== 1;
+                }
+            }
+        });
+
+        layout = Ext.create('Ext.toolbar.Toolbar', {
+            id: 'chartlayout_tb',
+            style: 'padding:2px 0 0 1px; background:#f5f5f5; border:0 none; border-top:1px dashed #ccc; border-bottom:1px solid #ccc',
+            height: 45,
+            items: [
+                {
+                    xtype: 'container',
+                    bodyStyle: 'border-style:none; background-color:transparent; padding:0',
+                    style: 'margin:0',
+                    items: [
+                        {
+                            xtype: 'label',
+                            text: NS.i18n.series,
+                            style: 'font-size:11px; font-weight:bold; padding:0 4px'
+                        },
+                        { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
+                        series
+                    ]
+                },
+                {
+                    xtype: 'container',
+                    bodyStyle: 'border-style:none; background-color:transparent; padding:0',
+                    style: 'margin:0',
+                    items: [
+                        {
+                            xtype: 'label',
+                            text: NS.i18n.category,
+                            style: 'font-size:11px; font-weight:bold; padding:0 4px'
+                        },
+                        { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
+                        category
+                    ]
+                },
+                {
+                    xtype: 'container',
+                    bodyStyle: 'border-style:none; background-color:transparent; padding:0',
+                    items: [
+                        {
+                            xtype: 'label',
+                            text: NS.i18n.filters,
+                            style: 'font-size:11px; font-weight:bold; padding:0 4px'
+                        },
+                        { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
+                        filter
+                    ]
+                }
+            ]
+        });
 
 		widget = LayerWidgetEvent();
 
@@ -6440,8 +6692,6 @@ Ext.onReady( function() {
 				}
 			}
 		});
-
-
 
         getLayoutWindow = function(dataType) {
             if (dataType === 'aggregated_values') {
