@@ -41,7 +41,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class DateUnitPeriodTypeParser implements PeriodTypeParser
 {
-    private Map<String, Pattern> compileCache = Maps.newHashMap();
+    private final Map<String, Pattern> compileCache = Maps.newHashMap();
 
     private static CalendarService calendarService;
 
