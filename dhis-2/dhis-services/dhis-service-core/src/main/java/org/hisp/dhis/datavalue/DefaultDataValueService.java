@@ -33,7 +33,6 @@ import static org.hisp.dhis.system.util.ValidationUtils.dataValueIsValid;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
