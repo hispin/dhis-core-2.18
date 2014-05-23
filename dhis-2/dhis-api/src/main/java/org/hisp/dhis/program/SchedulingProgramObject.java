@@ -28,11 +28,18 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 /**
  * @author Chau Thu Tran
- * 
- * @version SchedulingProgramObject.java 4:45:18 PM Sep 10, 2012 $
  */
+@JacksonXmlRootElement( localName = "schedulingProgramObject", namespace = DxfNamespaces.DXF_2_0 )
 public class SchedulingProgramObject
 {
     private String phoneNumber;
@@ -63,6 +70,9 @@ public class SchedulingProgramObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getPhoneNumber()
     {
         return phoneNumber;
@@ -73,6 +83,9 @@ public class SchedulingProgramObject
         this.phoneNumber = phoneNumber;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getProgramStageInstanceId()
     {
         return programStageInstanceId;
@@ -83,6 +96,9 @@ public class SchedulingProgramObject
         this.programStageInstanceId = programStageInstanceId;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getMessage()
     {
         return message;
@@ -93,6 +109,9 @@ public class SchedulingProgramObject
         this.message = message;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getProgramInstanceId()
     {
         return programInstanceId;

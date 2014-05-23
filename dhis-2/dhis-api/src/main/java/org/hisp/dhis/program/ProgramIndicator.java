@@ -28,21 +28,30 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
 /**
  * @author Chau Thu Tran
- * @version $ ProgramIndicator.java Apr 16, 2013 1:00:15 PM $
  */
+@JacksonXmlRootElement( localName = "programIndicator", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramIndicator
     extends BaseNameableObject
 {
     private static final long serialVersionUID = 7920320128945484331L;
 
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
-    
+
     public static String SEPARATOR_OBJECT = ":";
-    
+
     public static final String SEPARATOR_ID = "\\.";
 
     public static final String VALUE_TYPE_DATE = "date";
@@ -53,8 +62,8 @@ public class ProgramIndicator
     public static final String CURRENT_DATE = "current_date";
 
     public static final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
-    + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
-    
+        + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
+
     private String valueType;
 
     private String expression;
@@ -69,11 +78,12 @@ public class ProgramIndicator
 
     public ProgramIndicator()
     {
-
+        setAutoFields();
     }
 
     public ProgramIndicator( String name, String description, String valueType, String expression )
     {
+        this();
         this.name = name;
         this.description = description;
         this.valueType = valueType;
@@ -84,6 +94,9 @@ public class ProgramIndicator
     // Getters && Setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getValueType()
     {
         return valueType;
@@ -94,6 +107,9 @@ public class ProgramIndicator
         this.valueType = valueType;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getExpression()
     {
         return expression;
@@ -104,6 +120,9 @@ public class ProgramIndicator
         this.expression = expression;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getRootDate()
     {
         return rootDate;
@@ -114,6 +133,10 @@ public class ProgramIndicator
         this.rootDate = rootDate;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Program getProgram()
     {
         return program;
@@ -123,5 +146,4 @@ public class ProgramIndicator
     {
         this.program = program;
     }
-
 }

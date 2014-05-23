@@ -28,9 +28,20 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 /**
  * @author Chau Thu Tran
  */
+@JacksonXmlRootElement( localName = "programValidationResult", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramValidationResult
 {
     private ProgramStageInstance programStageInstance;
@@ -80,19 +91,19 @@ public class ProgramValidationResult
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final ProgramValidationResult other = (ProgramValidationResult) object;
-        
+
         if ( programStageInstance == null )
         {
             if ( other.programStageInstance != null )
@@ -104,7 +115,7 @@ public class ProgramValidationResult
         {
             return false;
         }
-        
+
         if ( programValidation == null )
         {
             if ( other.programValidation != null )
@@ -116,7 +127,7 @@ public class ProgramValidationResult
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -124,6 +135,10 @@ public class ProgramValidationResult
     // Setters && Getters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ProgramStageInstance getProgramStageInstance()
     {
         return programStageInstance;
@@ -134,6 +149,10 @@ public class ProgramValidationResult
         this.programStageInstance = programStageInstance;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ProgramValidation getProgramValidation()
     {
         return programValidation;
@@ -144,6 +163,9 @@ public class ProgramValidationResult
         this.programValidation = programValidation;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getLeftsideValue()
     {
         return leftsideValue;
@@ -154,6 +176,9 @@ public class ProgramValidationResult
         this.leftsideValue = leftsideValue;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getRightsideValue()
     {
         return rightsideValue;

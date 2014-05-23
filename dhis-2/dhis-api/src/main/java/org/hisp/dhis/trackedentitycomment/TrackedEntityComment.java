@@ -28,13 +28,20 @@ package org.hisp.dhis.trackedentitycomment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 import java.util.Date;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version TrackedEntityComment.java 9:24:52 AM Aug 17, 2012 $
  */
+@JacksonXmlRootElement( localName = "trackedEntityComment", namespace = DxfNamespaces.DXF_2_0 )
 public class TrackedEntityComment
 {
     private int id;
@@ -59,7 +66,7 @@ public class TrackedEntityComment
         this.creator = creator;
         this.createdDate = createdDate;
     }
-    
+
     //TODO implement hashCode and equals
 
     // -------------------------------------------------------------------------
@@ -76,6 +83,9 @@ public class TrackedEntityComment
         this.id = id;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCommentText()
     {
         return commentText;
@@ -86,6 +96,9 @@ public class TrackedEntityComment
         this.commentText = commentText;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getCreatedDate()
     {
         return createdDate;
@@ -96,6 +109,9 @@ public class TrackedEntityComment
         this.createdDate = createdDate;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCreator()
     {
         return creator;
