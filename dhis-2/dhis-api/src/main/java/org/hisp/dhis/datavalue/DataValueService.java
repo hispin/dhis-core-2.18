@@ -30,7 +30,6 @@ package org.hisp.dhis.datavalue;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 import org.hisp.dhis.common.MapMap;
 import org.hisp.dhis.dataelement.DataElement;
