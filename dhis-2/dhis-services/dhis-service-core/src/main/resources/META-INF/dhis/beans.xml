@@ -962,6 +962,7 @@
         <value>usergroup</value>
         <value>userrole</value>
         <value>optionset</value>
+        <value>validationcriteria</value>
       </list>
     </property>
   </bean>
