@@ -395,8 +395,6 @@
         $('#appsDropDown').addClass('app-menu-dropdown ui-helper-clearfix');
         $(selector).html('');
         $.tmpl( "appMenuItemTemplate", apps).appendTo(selector);
-        $('#appsDropDown .menu-drop-down-scroll .apps-menu-more').remove();
-        $('.apps-menu-more').clone().css('display', 'table').addClass('ui-helper-clearfix').appendTo($('#appsDropDown .menu-drop-down-scroll'));
     }
 
     function renderAppManager(selector) {
@@ -621,16 +619,13 @@
          * Adds a scrolling mechanism that makes space for the scrollbar and shows/hides the more apps button
          */
         $('.menu-drop-down-scroll').scroll(function (event) {
-            var self = $(this),
-                moreAppsElement = $('#appsDropDown > .apps-menu-more');
+            var self = $(this);
 
             if (self.scrollTop() < 10) {
-                moreAppsElement.show();
                 self.parent().css('width', '360px');
                 self.parent().parent().css('width', '360px');
             } else {
                 if (self.innerHeight() === 375 ) {
-                    moreAppsElement.hide();
                     self.parent().css('width', '384px');
                     self.parent().parent().css('width', '384px');
                 }
@@ -746,6 +741,31 @@
                 $(newDropDownId).css('top', '55px');
                 $(newDropDownId).css('left', Math.ceil(position.left - Math.ceil(parseInt($(newDropDownId).innerWidth(), 10) - 108)) + 'px');
             });
+        });
+
+        $('.apps-scroll-up').click(function (event) {
+            var scrollDistance = 330,
+                scrollTop = $('.menu-drop-down-scroll').scrollTop();
+
+            event.preventDefault();
+
+            $('.menu-drop-down-scroll').animate({
+                scrollTop: scrollTop - scrollDistance
+            }, 200);
+        });
+
+        $('.apps-scroll-down').click(function (event) {
+            var scrollDistance = 330,
+                scrollTop = $('.menu-drop-down-scroll').scrollTop();
+
+            event.preventDefault();
+
+            if (scrollTop < 110) {
+                scrollDistance += 40;
+            }
+            $('.menu-drop-down-scroll').animate({
+                scrollTop: scrollTop + scrollDistance
+            }, 200);
         });
 
     });

@@ -328,18 +328,16 @@ a.menu-link:hover
     width:100px;
 }
 
-.apps-menu-more
-{
+.apps-menu-bottom-button {
     display: table;
     height: 34px;
     padding-top: 8px;
     text-align: center;
-    width: 360px;
-	margin-top: 5px;
+    margin-top: 5px;
+    float: left;
 }
 
-.apps-menu-more a
-{
+.apps-menu-bottom-button a {
     color: #4A89BA;
     border: 1px solid #ccc;
     background-color: #f5f5f7;
@@ -349,11 +347,26 @@ a.menu-link:hover
     text-decoration: none;
 }
 
-.apps-menu-more a:hover
+.apps-scroll {
+    width: 85px;
+    margin-left: 5px;
+}
+
+.apps-menu-bottom-button a:hover
 {
     color: #fff;
     border: 1px solid #4A89BA;
     background-color: #4A89BA;
+}
+
+.apps-menu-more
+{
+    width: 180px;
+}
+
+.apps-menu-more a
+{
+
 }
 
 .menu-placeholder
