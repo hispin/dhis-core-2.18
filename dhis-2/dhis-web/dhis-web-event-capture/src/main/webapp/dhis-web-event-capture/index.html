@@ -100,10 +100,16 @@
                 <div class="caret-up-background"></div>
                 <div class="menu-drop-down-wrap">
                     <div class="menu-drop-down-scroll">
+                        <div class="apps-search-wrap">
+                            <input id="apps-search" class="apps-search" type="text" placeholder="{{'search_apps' | translate}}">
+                            <span id="apps-search-clear" class="fa fa-times-circle"></span>
+                        </div>
                         <ul class="menuDropDownBox"><li class="menu-placeholder"><img src="../images/ajax-loader-bar.gif"></li></ul>
                     </div>
                 </div>
-                <div class="apps-menu-more"><a href="../dhis-web-commons-about/modules.action">{{'more_applications'| translate}}</a></div>
+                <div class="apps-menu-bottom-button apps-menu-more"><a href="../dhis-web-commons-about/modules.action">{{'more_applications'| translate}}</a></div>
+                <div class="apps-menu-bottom-button apps-scroll apps-scroll-up"><a class="fa fa-caret-up" href="#"></a></div>
+                <div class="apps-menu-bottom-button apps-scroll apps-scroll-down"><a class="fa fa-caret-down" href="#"></a></div>
             </div>
 
             <div id="profileDropDown" class="menuDropDownArea app-menu-dropdown ui-helper-clearfix profileMenuLink_menu">

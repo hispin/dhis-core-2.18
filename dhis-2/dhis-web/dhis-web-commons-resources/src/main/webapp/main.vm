@@ -133,7 +133,9 @@
               <ul class="menuDropDownBox"><li class="menu-placeholder"><img src="../images/ajax-loader-bar.gif"></li></ul>
             </div>
         </div>
-        <div class="apps-menu-more"><a href="../dhis-web-commons-about/modules.action">$i18n.getString( "more_applications" )</a></div>
+        <div class="apps-menu-bottom-button apps-menu-more"><a href="../dhis-web-commons-about/modules.action">$i18n.getString( "more_applications" )</a></div>
+          <div class="apps-menu-bottom-button apps-scroll apps-scroll-up"><a class="fa fa-caret-up" href="#"></a></div>
+          <div class="apps-menu-bottom-button apps-scroll apps-scroll-down"><a class="fa fa-caret-down" href="#"></a></div>
       </div>
 
 	  <div id="profileDropDown" class="menuDropDownArea app-menu-dropdown ui-helper-clearfix profileMenuLink_menu">
