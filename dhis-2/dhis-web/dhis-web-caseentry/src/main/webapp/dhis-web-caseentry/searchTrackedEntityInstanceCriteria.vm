@@ -112,6 +112,9 @@
 			<td>
 				<input type='text' id='startDate' name='startDate' style='width:127px;'>
 				<input type='text' id='endDate' name='endDate' style='width:127px;'>
+				<script>
+					datePickerInRange( 'startDate', 'endDate', true, true );
+				</script>
 			</td>
 		</tr>
 		<tr>
@@ -146,7 +149,7 @@
 		</tbody>
 	</table>
 	<div style="padding: 10px 0 15px 3px">
-		<input type="button" class='large-button' value='$i18n.getString( "add_filter" )' onclick='addAttributeOption();'>
+		<input type="button" id='addAdvancedSearchBtn' class='large-button' value='$i18n.getString( "add_filter" )' onclick='addAttributeOption();'>
         <input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='isAdvancedSearch=true;validateAdvancedSearch(1);' id='searchEntityInstanceBtn'>
     </div>
 </div>
