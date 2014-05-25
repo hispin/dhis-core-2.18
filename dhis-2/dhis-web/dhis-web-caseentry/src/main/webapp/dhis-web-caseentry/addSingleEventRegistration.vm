@@ -14,8 +14,8 @@
 	
 </script>
 
-<h3 id='entityInstanceMamagementLink'>
-	<a href="javascript:onClickBackBtn();">$i18n.getString( 'tracked_entity_instance_management' )</a>
+<h3>
+	<a href="javascript:onClickBackBtn();" id='entityInstanceMamagementLink'>$i18n.getString( 'tracked_entity_instance_management' )</a>
 	#if($!relatedProgram)
 		&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$!entityInstanceUid');">$i18n.getString( 'dashboard' )</a>
 	#end
