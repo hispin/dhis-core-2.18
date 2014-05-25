@@ -348,24 +348,6 @@ followup = true;
 
 function advancedSearch( params, page )
 {
-	/* setFieldValue('listAll', "false");
-	$('#contentDataRecord').html('');
-	$('#listEventDiv').html('');
-	hideById('listEventDiv');
-	showLoader();
-	
-	$.ajax({
-		url : '../api/events.json',
-		type : "GET",
-		data : params,
-		success : function(json) {
-			setInnerHTML('listEventDiv', displayEvents(json, page));
-			showById('listEventDiv');
-			jQuery('#loaderDiv').hide();
-			setTableStyles();
-		}
-	}); */
-	
 	setFieldValue('listAll', "false");
 	$('#contentDataRecord').html('');
 	$('#listEventDiv').html('');
@@ -402,7 +384,6 @@ function advancedSearch( params, page )
 			setTableStyles();
 		}
 	});
-	
 }
 
 function exportXlsFile()

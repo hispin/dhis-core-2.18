@@ -81,9 +81,9 @@ public class SaveRelationshipAction
         this.entityInstanceId = entityInstanceId;
     }
 
-    private Integer partnerId;
+    private String partnerId;
 
-    public void setPartnerId( Integer partnerId )
+    public void setPartnerId( String partnerId )
     {
         this.partnerId = partnerId;
     }

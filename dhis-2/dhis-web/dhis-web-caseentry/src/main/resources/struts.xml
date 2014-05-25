@@ -668,21 +668,7 @@
 			<param name="page">/dhis-web-caseentry/addRelationshipForm.vm</param>
 			<param name="requiredAuthorities">F_RELATIONSHIP_ADD, F_TRACKED_ENTITY_INSTANCE_ADD</param>
 		</action>
-
-		<action name="validateSearchRelationship"
-			class="org.hisp.dhis.caseentry.action.trackedentity.ValidateSearchRelationshipAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm
-			</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm
-			</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseInput.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
+		
 		<action name="searchRelationshipTrackedEntityInstance"
 			class="org.hisp.dhis.caseentry.action.trackedentity.SearchRelationshipEntityInstanceAction">
 			<result name="success" type="velocity">/content.vm</result>
