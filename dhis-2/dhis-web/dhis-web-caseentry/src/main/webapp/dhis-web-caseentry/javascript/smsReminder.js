@@ -348,15 +348,53 @@ followup = true;
 
 function advancedSearch( params, page )
 {
-	setFieldValue('listAll', "false");
+	/* setFieldValue('listAll', "false");
 	$('#contentDataRecord').html('');
 	$('#listEventDiv').html('');
 	hideById('listEventDiv');
 	showLoader();
+	
 	$.ajax({
 		url : '../api/events.json',
 		type : "GET",
 		data : params,
+		success : function(json) {
+			setInnerHTML('listEventDiv', displayEvents(json, page));
+			showById('listEventDiv');
+			jQuery('#loaderDiv').hide();
+			setTableStyles();
+		}
+	}); */
+	
+	setFieldValue('listAll', "false");
+	$('#contentDataRecord').html('');
+	$('#listEventDiv').html('');
+	hideById('listEventDiv');
+	showLoader()
+	
+	var params = "ou=" + getFieldValue("orgunitId");
+	params += "&ouMode=" + getFieldValue("ouMode");
+	params += "&program=" + getFieldValue('program');
+	params += "&programStatus=ACTIVE";
+	params += "&page=" + page;
+	
+	if( $('#followup').attr('checked')=='checked'){
+		params += "followUp=true";
+	}
+	
+	params += '&eventStatus=' + getFieldValue('status');
+	params += "&eventStartDate=" + getFieldValue('startDate');
+	params += "&eventEndDate=" + getFieldValue('endDate');
+	
+	$('#attributeIds option').each(function(i, item){
+		params += "&attribute=" + item.value;
+	});
+	
+	$.ajax({
+		type : "GET",
+		url : "../api/trackedEntityInstances.json",
+		data : params,
+		dataType : "json",
 		success : function(json) {
 			setInnerHTML('listEventDiv', displayEvents(json, page));
 			showById('listEventDiv');
