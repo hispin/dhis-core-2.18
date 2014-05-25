@@ -59,6 +59,7 @@ function showAddTrackedEntityInstanceForm()
 			unSave = true;
 			showById('addNewDiv');
 			jQuery('#loaderDiv').hide();
+			setInnerHTML('entityInstanceMamagementLink', i18n_single_event_with_registration_management);
 		});
 }
 
