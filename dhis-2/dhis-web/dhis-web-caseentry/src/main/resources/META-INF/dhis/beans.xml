@@ -652,12 +652,6 @@
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.caseentry.action.trackedentity.ValidateSearchRelationshipAction"
-		class="org.hisp.dhis.caseentry.action.trackedentity.ValidateSearchRelationshipAction"
-		scope="prototype">
-	</bean>
-
 	<!-- Reminder -->
 
 	<bean

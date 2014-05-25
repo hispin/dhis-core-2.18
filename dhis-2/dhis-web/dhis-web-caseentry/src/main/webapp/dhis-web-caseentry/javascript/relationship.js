@@ -120,47 +120,129 @@ function removeRepresentativeCompleted( messageElement )
 // Search Relationship Partner
 //-----------------------------------------------------------------------------
 
-function validateSearchPartner()
+function searchTEIForRelationship()
 {
 	hideById('searchRelationshipDiv');
+	var params  = "ou=" + getFieldValue("orgunitId");
+		params += "&ouMode=ALL";
+		params += "&attribute=" + getFieldValue("searchingAttributeId") + ":LIKE:" + jQuery('#relationshipSelectForm [id=searchText]').val();
+	
+	var p = params;
+	$('#attributeIds option').each(function(i, item){
+		if ( p.indexOf(item.value) < 0 ) {
+			params += "&attribute=" + item.value;
+		}
+	});
+	
 	$.ajax({
-		url: 'validateSearchRelationship.action',
-		type:"POST",
-		data: getParamsForDiv('relationshipSelectForm'),
-		dataType: "xml",
-		success: searchValidationCompleted
-		}); 
+		type : "GET",
+		url : "../api/trackedEntityInstances.json",
+		data : params,
+		dataType : "json",
+		success : function(json) {
+			setInnerHTML('searchRelationshipDiv', showRelationShips( json ));
+			showById('searchRelationshipDiv');
+			setTableStyles();
+		}
+	});		
 }
 
-function searchValidationCompleted( messageElement )
-{
-	messageElement = messageElement.getElementsByTagName( 'message' )[0];
-	var type = messageElement.getAttribute( 'type' );
-	var message = messageElement.firstChild.nodeValue;
+function showRelationShips(json) {
+
+	// Header
+	var table = "";
+	if (json.rows.length == 0) {
+		table += "<p>" + i18n_no_result_found + "</p>";
+	}
+	else{
 	
-	if( type == 'success' )
-	{
-		jQuery('#loaderDiv').show();
-		$.ajax({
-			type: "GET",
-			url: 'searchRelationshipTrackedEntityInstance.action',
-			data: getParamsForDiv('relationshipSelectForm'),
-			success: function( html ) {
-				setInnerHTML('searchRelationshipDiv',html);
-				showById('searchRelationshipDiv');
-				jQuery('#loaderDiv').hide();
+		// TEI list
+		table += "<table class='listTable' width='100%'>";
+		
+		var idx = 4;
+		if(getFieldValue('program') != '') {
+			idx = 5;
+		}
+		
+		// Yes/No and Yes Only attributes in result
+		
+		var attList = new Array();
+		var attDate = new Array();
+		$('#attributeIds option').each(function(i, item) {
+			var valueType = $(item).attr('valueType');
+			var value = $(item).val();
+			if ( valueType == 'bool' || valueType == 'trueOnly' ) {
+				for (var i = idx; i < json.width; i++) {
+					if( value==json.headers[i].name ){
+						attList.push(i);
+					}
+					else if( valueType=='date'){
+						attDate.push(i);
+					}
+				}
+			}
+			else if ( valueType == 'date' ) {
+				for (var i = idx; i < json.width; i++) {
+					if( value==json.headers[i].name ){
+						attDate.push(i);
+					}
+				}
 			}
 		});
-		return false;
+
+		// TEI List
+		
+		table += "<col width='30' />";
+		for (var i = idx; i < json.width; i++) {
+			table += "<col />";
+		}
+		table += "<col width='200' />";
+		table += "<thead><tr><th>#</th>";
+		for (var i = idx; i < json.width; i++) {
+			table += "<th>" + json.headers[i].column + "</th>";
+		}
+		table += "<th>" + i18n_operations + "</th>";
+		table += "</tr></thead>";
+		
+		table += "<tbody id='list'>";
+		for ( var i in json.rows) {
+			var cols = json.rows[i];
+			var uid = cols[0];
+			var no = i + 1;
+			table += "<tr id='tr" + uid + "'>";
+			table += "<td>" + no + "</td>";
+			for (var j = idx; j < json.width; j++) {
+				var colVal = cols[j];
+				if (j == 4) {
+					colVal = json.metaData.names[colVal];
+				}
+				
+				if( jQuery.inArray( j, attList )>=0 && colVal!="" ){
+					colVal = (colVal=='true')? i18n_yes : i18n_no;
+				}
+				else if( jQuery.inArray( j, attDate )>=0 && colVal!="" ){
+					colVal = colVal.split(' ')[0];
+				}
+				
+				table += "<td onclick=\"javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '"
+					+ uid
+					+ "' )\" title='"
+					+ i18n_dashboard
+					+ "'>" + colVal + "</td>";
+			}
+			
+			// Operations column
+			table += "<td>";
+			table += "<a href=\"javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '" + uid + "' )\" title='" + i18n_dashboard + "'><img src=\"../images/enroll.png\"></a>";
+			table += "<a href=\"javascript:validateAddRelationship('" + uid + "');\" title='" + i18n_assign_relationship + "' ><img src=\"../images/relationship.png\" ></a>";
+			table += "<a href=\"javascript:showTrackedEntityInstanceHistory('" + uid + "')\" title='" + i18n_tracked_entity_instance_details_and_history + "'><img src=\"../images/information.png\"></a>";
+			table += "</td>";
+			table += "</tr>";
+		}
+		table += "</tbody>";
+		table += "</table>";
 	}
-	else if( type == 'error' )
-	{
-		setHeaderMessage( i18n_searching_tracked_entity_instance_failed + ':' + '\n' + message );
-	}
-	else if( type == 'input' )
-	{
-		setHeaderMessage( message );
-	}
+	return table;
 }
 
 function validateAddRelationship(partnerId)
