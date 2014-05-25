@@ -19,8 +19,8 @@
 						#set($value=$i18n.getString($attributeValue.value))
 					#end
 					<tr>
-						<td>$!attributeValue.attribute.displayName:</td>
-						<td>$value</td>
+						<td>$!attributeValue.attribute.displayName</td>
+						<td>:$value</td>
 					</tr>
 				#end 
 			</table>
@@ -31,8 +31,8 @@
                
 	<tr>            
 		<th>$i18n.getString( "relationship" )</th>
-		<th>$i18n.getString( "profile" )<th>
-		<th style="text-align:center">$i18n.getString( "operations" )</th>
+		<th>$i18n.getString( "profile" )</th>
+		<th>$i18n.getString( "operations" )</th>
 	</tr>
 	
 	<tbody id="list"> 
@@ -50,14 +50,14 @@
 						<table>
 							#foreach($attributeValue in $relationship.entityInstanceB.attributeValues)
 								#set($value=$attributeValue.value)
-							#if( $attribute.valueType == 'bool')
-								#set($value=$i18n.getString($attributeValue.value))
+								#if( $attribute.valueType == 'bool')
+									#set($value=$i18n.getString($attributeValue.value))
+								#end
+								<tr>
+									<td>$!encoder.htmlEncode( $attributeValue.attribute.displayName )</td>
+									<td>: $value</td>
+								</tr>
 							#end
-							<tr>
-								<td>$!encoder.htmlEncode( $attributeValue.attribute.displayName )</td>
-								<td>: $value</td>
-							</tr>
-						#end
 						</table>
 					</td>
 				#elseif($relationship.entityInstanceB.id == $entityInstance.id )
@@ -67,11 +67,22 @@
 					</td>
 								
 					<td>
-						$!encoder.htmlEncode( $relationship.entityInstanceA.name )
+						<table>
+							#foreach($attributeValue in $relationship.entityInstanceB.attributeValues)
+								#set($value=$attributeValue.value)
+								#if( $attribute.valueType == 'bool')
+									#set($value=$i18n.getString($attributeValue.value))
+								#end
+								<tr>
+									<td>$!encoder.htmlEncode( $attributeValue.attribute.displayName )</td>
+									<td>: $value</td>
+								</tr>
+							#end
+						</table>
 					</td>
 				#end                  
 				
-				<td style="text-align:center">
+				<td>
 					<a href="javascript:manageRepresentative( '$entityInstance.id', $partnerId )" title="$i18n.getString( 'set_as_representative' )"><img src="images/representative.png" alt="$i18n.getString( 'manage_representative' )"></a>
 					<a href="javascript:removeRelationship( '$relationship.id', '$!encoder.jsEncode( $relationship.entityInstanceA.name )', '$encoder.jsEncode( $relationship.relationshipType.aIsToB )', '$!encoder.jsEncode( $relationship.entityInstanceB.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				</td>   						

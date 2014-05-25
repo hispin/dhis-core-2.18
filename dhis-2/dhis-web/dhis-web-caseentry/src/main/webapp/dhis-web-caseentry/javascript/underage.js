@@ -107,7 +107,7 @@ function showTEIs( divContainer, json )
 		$('#attributeIds option').each(function(i, item) {
 			var valueType = $(item).attr('valueType');
 			var value = $(item).val();
-			if ( valueType == 'bool' || valueType == 'trueOnly' ) {
+			if ( valueType == 'bool' || valueType == 'trueOnly' || valueType == 'trackerAssociate' ) {
 				for (var i = idx; i < json.width; i++) {
 					if( value==json.headers[i].name ){
 						attList.push(i);

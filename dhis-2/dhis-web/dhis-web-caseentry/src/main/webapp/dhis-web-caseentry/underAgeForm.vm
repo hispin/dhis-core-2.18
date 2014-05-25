@@ -28,7 +28,7 @@
 <!-- TAB Header -->
 <div id="addRepresentativeTabs">
 	<ul>
-		<li><a href="#tab-1">$i18n.getString("search_existing_person")</a></li>
+		<li><a href="#tab-1">$i18n.getString("search_existing_tracked_entity_instance")</a></li>
 		<li><a href="#tab-2">$i18n.getString("add_new_tracked_entity_instance")</a></li>
 	</ul>
 
