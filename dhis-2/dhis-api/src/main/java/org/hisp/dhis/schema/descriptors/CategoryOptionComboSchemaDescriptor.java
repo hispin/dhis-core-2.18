@@ -47,10 +47,10 @@ public class CategoryOptionComboSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( DataElementCategoryOptionCombo.class, "categoryOptionCombo", "categoryOptionCombos" );
 
-        schema.setShareable( true );
+        schema.setShareable( false );
 
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_CATEGORY_COMBO_PUBLIC_ADD" ) ) );
-        schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_CATEGORY_COMBO_PRIVATE_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE,
+            Lists.newArrayList( "F_CATEGORY_COMBO_PUBLIC_ADD", "F_CATEGORY_COMBO_PRIVATE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_CATEGORY_COMBO_DELETE" ) ) );
 
         return schema;
