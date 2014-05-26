@@ -21,11 +21,15 @@
 
     <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
     <div class="row">        
-        <div class="input-group col-md-4">
+        <div id="searchDropDownParent" class="input-group col-md-6">
             <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
-            <span class="input-group-btn">
-                <button class="btn btn-default trim" type="button" title="{{'advanced_search'| translate}}" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
-            </span>                
+            <div class="input-group-btn">
+                <button class="btn btn-default trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
+                <div id="searchDropDown" class="dropdown-menu pull-right">
+                    <form ng-include="'views/search.html'">                       
+                    </form>
+                </div>
+            </div>                
         </div>        
         <div class="col-md-3 trim">            
             <button type="button" 
@@ -44,11 +48,21 @@
     </div>
 
     <div class="row vertical-spacing">
-        <div class="col-md-4">
-            <select class="form-control" ng-model="pr" ng-change="getProgramAttributes(pr)" ng-options="program as program.name for program in programs | orderBy: 'name'">
-                <option value="">{{'please_select_a_program'| translate}}</option>
-            </select>
+        <div id="selectDropDownParent" class="input-group col-md-6">            
+            <button type="button" class="select-drop-down-button form-control" >{{selectedProgram ? selectedProgram.name : 'please_select_a_program'| translate}}</button>
+            <div class="input-group-btn">
+                <button class="btn btn-default trim" type="button" title="{{'list_programs'| translate}}" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
+                <ul id="selectDropDown" class="dropdown-menu pull-right">
+                    <li>
+                        <a href ng-click="getProgramAttributes(null)">{{'please_select_a_program'| translate}}</a>
+                    </li>
+                    <li ng-repeat="program in programs | orderBy: 'name'">
+                        <a href ng-click="getProgramAttributes(program)">{{program.name}}</a>
+                    </li>
+                </ul>
+            </div>                
         </div>
+
         <div class="col-md-3 trim"> 
             <button type="button" 
                     class="btn btn-default" 
@@ -59,17 +73,17 @@
     </div>
 
     <div class="row vertical-spacing" ng-if="!searchText && emptySearchText">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
         </div>
     </div>
 
     <!-- search begins -->
-    <div class="row" ng-show="showSearchDiv">
+    <!--<div class="row" ng-show="showSearchDiv">
         <div class="col-md-6">
             <div ng-include="'views/search.html'"></div>             
         </div>
-    </div>
+    </div>-->
     <!-- search ends -->
 
     <!--registration begins -->

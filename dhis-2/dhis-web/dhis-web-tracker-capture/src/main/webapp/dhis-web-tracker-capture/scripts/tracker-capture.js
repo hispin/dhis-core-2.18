@@ -124,6 +124,23 @@ $(document).ready(function()
    
     //dhis2.availability.startAvailabilityCheck();
     
+    //drop down menus for program selection and advanced search
+    $( "#searchDropDown" ).width($( "#searchDropDownParent" ).width());   
+    $( "#selectDropDown" ).width($( "#selectDropDownParent" ).width());
+    
+    $(".select-drop-down-button").on('click', function(e){
+       e.stopPropagation();
+       $("#selectDropDown").dropdown('toggle');
+    });
+    
+});
+
+$(window).resize(function() {
+    $( "#selectDropDown" ).width($( "#selectDropDownParent" ).width());  
+    $( "#searchDropDown" ).width($( "#searchDropDownParent" ).width());  
+    
+    console.log('select parent width is-r:  ', $( "#selectDropDownParent" ).width());
+    console.log('select width is-r:  ', $( "#selectDropDown" ).width());
 });
 
 function ajax_login()
