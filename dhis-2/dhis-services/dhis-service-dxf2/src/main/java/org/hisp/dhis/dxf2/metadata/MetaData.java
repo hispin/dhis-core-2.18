@@ -77,6 +77,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -207,6 +208,8 @@ public class MetaData
     private List<Program> programs = new ArrayList<Program>();
 
     private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+
+    private List<ProgramStageSection> programStageSections = new ArrayList<ProgramStageSection>();
 
     private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
 
@@ -856,6 +859,19 @@ public class MetaData
     public void setProgramStages( List<ProgramStage> programStages )
     {
         this.programStages = programStages;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "programStageSections", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "programStageSection", namespace = DxfNamespaces.DXF_2_0 )
+    public List<ProgramStageSection> getProgramStageSections()
+    {
+        return programStageSections;
+    }
+
+    public void setProgramStageSections( List<ProgramStageSection> programStageSections )
+    {
+        this.programStageSections = programStageSections;
     }
 
     @JsonProperty
