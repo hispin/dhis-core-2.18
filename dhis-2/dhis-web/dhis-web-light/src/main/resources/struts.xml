@@ -429,6 +429,12 @@
 			</result>
 		</action>
 
+		<action name="getDashboardChart"
+			class="org.hisp.dhis.light.dashboard.action.GetDashboardChartAction">
+			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/dashboard_chart.vm</param>
+		</action>
+
 		<!-- Settings -->
 
 		<action name="settings"
@@ -527,6 +533,12 @@
 			class="org.hisp.dhis.light.interpretation.action.PostInterpretationComment">
 			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/interpretation/interpretation.vm</param>
+		</action>
+
+		<action name="postInterpretation"
+			class="org.hisp.dhis.light.interpretation.action.PostInterpretation">
+			<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/menu.vm</param>
 		</action>
 
 		<!-- Anonymous -->
