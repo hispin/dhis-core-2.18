@@ -28,12 +28,8 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseDimensionalObject;
@@ -89,6 +85,10 @@ import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -108,7 +108,7 @@ final public class ExchangeClasses
 
     static
     {
-        allExportClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>();
+        allExportClasses = Maps.newLinkedHashMap();
 
         allExportClasses.put( SqlView.class, "sqlViews" );
         allExportClasses.put( Concept.class, "concepts" );
@@ -182,8 +182,8 @@ final public class ExchangeClasses
 
         allExportClasses.put( BaseDimensionalObject.class, "dimensions" );
 
-        exportClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>( allExportClasses );
-        importClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>( allExportClasses );
+        exportClasses = Maps.newLinkedHashMap( allExportClasses );
+        importClasses = Maps.newLinkedHashMap( allExportClasses );
 
         // this is considered data, and is not available for meta-data export/import
         exportClasses.remove( MessageConversation.class );
@@ -203,7 +203,7 @@ final public class ExchangeClasses
         exportClasses.remove( MetaDataFilter.class );
         importClasses.remove( MetaDataFilter.class );
 
-        deletableClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>( importClasses );
+        deletableClasses = Maps.newLinkedHashMap( importClasses );
         deletableClasses.remove( User.class );
         deletableClasses.remove( UserGroup.class );
         deletableClasses.remove( UserAuthorityGroup.class );
@@ -226,7 +226,7 @@ final public class ExchangeClasses
 
     public static List<Class<? extends IdentifiableObject>> getImportClasses()
     {
-        return new ArrayList<Class<? extends IdentifiableObject>>( importClasses.keySet() );
+        return Lists.newArrayList( importClasses.keySet() );
     }
 
     public static Map<Class<? extends IdentifiableObject>, String> getDeletableMap()
@@ -236,6 +236,6 @@ final public class ExchangeClasses
 
     public static List<Class<? extends IdentifiableObject>> getDeletableClasses()
     {
-        return new ArrayList<Class<? extends IdentifiableObject>>( deletableClasses.keySet() );
+        return Lists.newArrayList( deletableClasses.keySet() );
     }
 }
