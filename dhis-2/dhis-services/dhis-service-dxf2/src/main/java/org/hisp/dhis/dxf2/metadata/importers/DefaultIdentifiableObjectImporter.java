@@ -59,6 +59,8 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
+import org.hisp.dhis.trackedentity.TrackedEntity;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -762,7 +764,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             NameableObject nameableObject = (NameableObject) object;
 
-            if ( nameableObject.getShortName() == null || nameableObject.getShortName().length() == 0 )
+            if ( (nameableObject.getShortName() == null || nameableObject.getShortName().length() == 0)
+                // this is nasty, but we have types in the system which have shortName, but which do -not- require not-null )
+                && !TrackedEntityAttribute.class.isAssignableFrom( object.getClass() )
+                && !TrackedEntity.class.isAssignableFrom( object.getClass() ) )
             {
                 conflict = new ImportConflict( ImportUtils.getDisplayName( object ), "Empty shortName for object " + object );
             }
