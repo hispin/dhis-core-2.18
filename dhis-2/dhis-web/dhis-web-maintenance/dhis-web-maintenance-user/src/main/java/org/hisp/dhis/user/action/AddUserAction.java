@@ -342,7 +342,7 @@ public class AddUserAction
             userCredentials.setUsername( inviteUsername );
             user.setEmail( inviteEmail );
 
-            securityService.prepareUserForInvite( userCredentials );
+            securityService.prepareUserForInvite( user );
         }
         else
         {

@@ -29,6 +29,7 @@ package org.hisp.dhis.security;
  */
 
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 
 /**
@@ -40,10 +41,10 @@ public interface SecurityService
      * Sets information for a user who will be invited by email to finish
      * setting up their user account.
      *
-     * @param credentials the credentials of the user to invite.
+     * @param user the user to invite.
      * @return true if the invitation was sent, otherwise false.
      */
-    boolean prepareUserForInvite( UserCredentials credentials );
+    boolean prepareUserForInvite( User user );
 
     /**
      * Invokes the initRestore method and dispatches email messages with

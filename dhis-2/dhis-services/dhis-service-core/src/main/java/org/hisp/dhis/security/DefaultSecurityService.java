@@ -110,25 +110,25 @@ public class DefaultSecurityService
     // SecurityService implementation
     // -------------------------------------------------------------------------
 
-    public boolean prepareUserForInvite( UserCredentials credentials )
+    public boolean prepareUserForInvite( User user )
     {
-        if ( credentials == null || credentials.getUser() == null )
+        if ( user == null || user.getUserCredentials() == null )
         {
             return false;
         }
 
-        if ( credentials.getUsername().isEmpty() )
+        if ( user.getUsername() == null || user.getUsername().isEmpty() )
         {
             String username = "user_invitation_" + CodeGenerator.generateCode( INVITED_USERNAME_UNIQUE_LENGTH );
 
-            credentials.setUsername( username );
+            user.getUserCredentials().setUsername( username );
         }
 
         String rawPassword = CodeGenerator.generateCode( INVITED_USER_PASSWORD_LENGTH );
 
-        credentials.getUser().setSurname( "(TBD)" );
-        credentials.getUser().setFirstName( "(TBD)" );
-        credentials.setPassword( passwordManager.encodePassword( credentials.getUsername(), rawPassword ) );
+        user.setSurname( "(TBD)" );
+        user.setFirstName( "(TBD)" );
+        user.getUserCredentials().setPassword( passwordManager.encodePassword( user.getUsername(), rawPassword ) );
 
         return true;
     }
