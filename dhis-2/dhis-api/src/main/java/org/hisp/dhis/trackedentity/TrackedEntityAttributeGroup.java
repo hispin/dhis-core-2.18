@@ -37,6 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -59,6 +60,7 @@ public class TrackedEntityAttributeGroup
 
     private Integer sortOrder;
 
+    @Scanned
     private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
 
     // -------------------------------------------------------------------------

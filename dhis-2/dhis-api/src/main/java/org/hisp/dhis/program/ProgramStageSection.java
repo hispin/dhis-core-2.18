@@ -43,7 +43,6 @@ import java.util.List;
 
 /**
  * @author Chau Thu Tran
- * @version ProgramStageSection.java 11:07:27 AM Aug 22, 2012 $
  */
 @JacksonXmlRootElement( localName = "programStageSection", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramStageSection
