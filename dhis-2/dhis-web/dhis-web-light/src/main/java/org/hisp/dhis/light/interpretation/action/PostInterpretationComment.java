@@ -7,47 +7,17 @@ import org.hisp.dhis.interpretation.InterpretationService;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * 
- * @author Paul Mark Castillo
- * 
- */
 public class PostInterpretationComment
     implements Action
 {
-	
-    /**
-     * 
-     */
     private static final Log log = LogFactory.getLog( PostInterpretationComment.class );
-
-    /**
-     * 
-     */
-    public PostInterpretationComment()
-    {
-    }
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    /**
-     * 
-     */
     private InterpretationService interpretationService;
 
-    /**
-     * @return the interpretationService
-     */
-    public InterpretationService getInterpretationService()
-    {
-        return interpretationService;
-    }
-
-    /**
-     * @param interpretationService the interpretationService to set
-     */
     public void setInterpretationService( InterpretationService interpretationService )
     {
         this.interpretationService = interpretationService;
@@ -57,66 +27,27 @@ public class PostInterpretationComment
     // Input & Output
     // -------------------------------------------------------------------------
 
-    /**
-     * 
-     */
     private int interpretationId;
 
-    /**
-     * @return the interpretationId
-     */
-    public int getInterpretationId()
-    {
-        return interpretationId;
-    }
-
-    /**
-     * @param interpretationId the interpretationId to set
-     */
     public void setInterpretationId( int interpretationId )
     {
         this.interpretationId = interpretationId;
     }
 
-    /**
-     * 
-     */
     private Interpretation interpretation;
 
-    /**
-     * @return the interpretation
-     */
-    public Interpretation getInterpretation()
-    {
-        return interpretation;
-    }
-
-    /**
-     * @param interpretation the interpretation to set
-     */
     public void setInterpretation( Interpretation interpretation )
     {
         this.interpretation = interpretation;
     }
 
-    /**
-     * 
-     */
-    private String comment;
-
-    /**
-     * 
-     * @return
-     */
-    public String getComment()
+    public Interpretation getInterpretation()
     {
-        return comment;
+        return interpretation;
     }
 
-    /**
-     * 
-     * @param comment
-     */
+    private String comment;
+
     public void setComment( String comment )
     {
         this.comment = comment;
@@ -130,8 +61,10 @@ public class PostInterpretationComment
     public String execute()
         throws Exception
     {
-        setInterpretation( interpretationService.getInterpretation( getInterpretationId() ) );
-        interpretationService.addInterpretationComment( getInterpretation().getUid(), getComment() );
+        setInterpretation( interpretationService.getInterpretation( interpretationId ) );
+
+        interpretationService.addInterpretationComment( interpretation.getUid(), comment );
+
         return SUCCESS;
     }
 }
