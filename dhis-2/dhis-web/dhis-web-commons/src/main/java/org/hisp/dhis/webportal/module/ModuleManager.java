@@ -49,16 +49,6 @@ public interface ModuleManager
     
     List<Module> getAccessibleMenuModulesAndApps();
     
-    List<Module> getMaintenanceMenuModules();
-    
-    List<Module> getAccessibleMaintenanceModules();
-    
-    List<Module> getServiceMenuModules();
-
-    List<Module> getAccessibleServiceModules();
-    
-    List<Module> getAccessibleServiceModulesAndApps();
-    
     Collection<Module> getAllModules();
 
     Module getCurrentModule();

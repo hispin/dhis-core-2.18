@@ -64,10 +64,6 @@ public class DefaultModuleManager
 
     private List<Module> menuModules = new ArrayList<Module>();
     
-    private List<Module> maintenanceMenuModules = new ArrayList<Module>();
-    
-    private List<Module> serviceMenuModules = new ArrayList<Module>();
-
     private ThreadLocal<Module> currentModule = new ThreadLocal<Module>();
 
     // -------------------------------------------------------------------------
@@ -96,13 +92,6 @@ public class DefaultModuleManager
     public void setDefaultActionName( String defaultActionName )
     {
         this.defaultActionName = defaultActionName;
-    }
-
-    private String maintenanceModuleIdentifier;
-
-    public void setMaintenanceModuleIdentifier( String maintenanceModuleIdentifier )
-    {
-        this.maintenanceModuleIdentifier = maintenanceModuleIdentifier;
     }
     
     // -------------------------------------------------------------------------
@@ -156,48 +145,6 @@ public class DefaultModuleManager
         return modules;
     }
 
-    public List<Module> getMaintenanceMenuModules()
-    {
-        detectModules();
-        
-        return maintenanceMenuModules;
-    }
-
-    public List<Module> getAccessibleMaintenanceModules()
-    {
-        detectModules();
-        
-        return getAccessibleModules( maintenanceMenuModules );
-    }
-    
-    public List<Module> getServiceMenuModules()
-    {
-        detectModules();
-        
-        return serviceMenuModules;
-    }
-
-    public List<Module> getAccessibleServiceModules()
-    {
-        detectModules();
-        
-        return getAccessibleModules( serviceMenuModules );
-    }
-
-    public List<Module> getAccessibleServiceModulesAndApps()
-    {
-        List<Module> modules = getAccessibleServiceModules();
-
-        List<App> apps = appManager.getApps();
-        
-        for ( App app : apps )
-        {   
-            modules.add( Module.getModule( app ) );
-        }
-        
-        return modules;
-    }
-    
     public Collection<Module> getAllModules()
     {
         detectModules();
@@ -267,15 +214,6 @@ public class DefaultModuleManager
                 menuModules.add( module );
 
                 LOG.debug( "Has default action: " + name );
-                
-                if ( name.toLowerCase().contains( maintenanceModuleIdentifier ) )
-                {
-                    maintenanceMenuModules.add( module );
-                }
-                else
-                {
-                    serviceMenuModules.add( module );
-                }
             }
             else
             {
@@ -284,8 +222,6 @@ public class DefaultModuleManager
         }
 
         Collections.sort( menuModules, moduleComparator );
-        Collections.sort( maintenanceMenuModules, moduleComparator );
-        Collections.sort( serviceMenuModules, moduleComparator );
 
         modulesDetected = true;
     }
