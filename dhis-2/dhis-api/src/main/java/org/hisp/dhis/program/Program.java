@@ -36,6 +36,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
@@ -90,8 +92,10 @@ public class Program
 
     private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
 
+    @Scanned
     private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
 
+    @Scanned
     private Set<ValidationCriteria> validationCriteria = new HashSet<ValidationCriteria>();
 
     private Integer type;
@@ -102,10 +106,12 @@ public class Program
 
     private Set<ProgramTrackedEntityAttribute> attributes = new HashSet<ProgramTrackedEntityAttribute>();
 
+    @Scanned
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
 
     private Boolean onlyEnrollOnce = false;
 
+    @Scanned
     private Set<TrackedEntityInstanceReminder> instanceReminders = new HashSet<TrackedEntityInstanceReminder>();
 
     /**
@@ -560,5 +566,52 @@ public class Program
     public void setTrackedEntity( TrackedEntity trackedEntity )
     {
         this.trackedEntity = trackedEntity;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            Program program = (Program) other;
+
+            description = program.getDescription();
+            version = program.getVersion();
+            dateOfEnrollmentDescription = program.getDateOfEnrollmentDescription();
+            dateOfIncidentDescription = program.getDateOfIncidentDescription();
+            type = program.getType();
+            displayIncidentDate = program.getDisplayIncidentDate();
+            ignoreOverdueEvents = program.getIgnoreOverdueEvents();
+            onlyEnrollOnce = program.getOnlyEnrollOnce();
+            displayOnAllOrgunit = program.getDisplayOnAllOrgunit();
+            selectEnrollmentDatesInFuture = program.getSelectEnrollmentDatesInFuture();
+            selectIncidentDatesInFuture = program.getSelectIncidentDatesInFuture();
+            relationshipText = program.getRelationshipText();
+            relationshipType = program.getRelationshipType();
+            relationshipFromA = program.getRelationshipFromA();
+            relatedProgram = program.getRelatedProgram();
+            dataEntryMethod = program.getDataEntryMethod();
+            trackedEntity = program.getTrackedEntity();
+
+            organisationUnits.clear();
+            organisationUnits.addAll( program.getOrganisationUnits() );
+
+            programStages.clear();
+            programStages.addAll( program.getProgramStages() );
+
+            validationCriteria.clear();
+            validationCriteria.addAll( program.getValidationCriteria() );
+
+            attributes.clear();
+            attributes.addAll( program.getAttributes() );
+
+            userRoles.clear();
+            userRoles.addAll( program.getUserRoles() );
+
+            instanceReminders.clear();
+            instanceReminders.addAll( program.getInstanceReminders() );
+        }
     }
 }

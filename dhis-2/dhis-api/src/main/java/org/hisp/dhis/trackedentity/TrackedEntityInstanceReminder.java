@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
@@ -230,5 +231,24 @@ public class TrackedEntityInstanceReminder
     public void setMessageType( Integer messageType )
     {
         this.messageType = messageType;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            TrackedEntityInstanceReminder trackedEntityInstanceReminder = (TrackedEntityInstanceReminder) other;
+
+            daysAllowedSendMessage = trackedEntityInstanceReminder.getDaysAllowedSendMessage();
+            templateMessage = trackedEntityInstanceReminder.getTemplateMessage();
+            dateToCompare = trackedEntityInstanceReminder.getDateToCompare();
+            sendTo = trackedEntityInstanceReminder.getSendTo();
+            whenToSend = trackedEntityInstanceReminder.getWhenToSend();
+            messageType = trackedEntityInstanceReminder.getMessageType();
+            userGroup = trackedEntityInstanceReminder.getUserGroup();
+        }
     }
 }
