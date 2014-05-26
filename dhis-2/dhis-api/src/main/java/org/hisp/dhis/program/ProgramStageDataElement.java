@@ -192,33 +192,34 @@ public class ProgramStageDataElement
     // -------------------------------------------------------------------------
 
     @Override
-    public int hashCode()
+    public boolean equals( Object o )
     {
-        final int prime = 31;
-        int result = 1;
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
 
-        result = result * prime + programStage.hashCode();
-        result = result * prime + dataElement.hashCode();
+        ProgramStageDataElement that = (ProgramStageDataElement) o;
 
-        return result;
+        if ( compulsory != that.compulsory ) return false;
+        if ( allowDateInFuture != null ? !allowDateInFuture.equals( that.allowDateInFuture ) : that.allowDateInFuture != null )
+            return false;
+        if ( allowProvidedElsewhere != null ? !allowProvidedElsewhere.equals( that.allowProvidedElsewhere ) : that.allowProvidedElsewhere != null )
+            return false;
+        if ( dataElement != null ? !dataElement.equals( that.dataElement ) : that.dataElement != null ) return false;
+        if ( displayInReports != null ? !displayInReports.equals( that.displayInReports ) : that.displayInReports != null ) return false;
+        if ( programStage != null ? !programStage.equals( that.programStage ) : that.programStage != null ) return false;
+
+        return true;
     }
 
     @Override
-    public boolean equals( Object object )
+    public int hashCode()
     {
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        final ProgramStageDataElement other = (ProgramStageDataElement) object;
-
-        return dataElement.getId() == other.getDataElement().getId()
-            && programStage.getId() == other.getProgramStage().getId();
+        int result = programStage != null ? programStage.hashCode() : 0;
+        result = 31 * result + (dataElement != null ? dataElement.hashCode() : 0);
+        result = 31 * result + (compulsory ? 1 : 0);
+        result = 31 * result + (allowProvidedElsewhere != null ? allowProvidedElsewhere.hashCode() : 0);
+        result = 31 * result + (displayInReports != null ? displayInReports.hashCode() : 0);
+        result = 31 * result + (allowDateInFuture != null ? allowDateInFuture.hashCode() : 0);
+        return result;
     }
 }
