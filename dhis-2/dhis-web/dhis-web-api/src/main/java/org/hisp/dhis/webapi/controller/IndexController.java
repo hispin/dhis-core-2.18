@@ -29,9 +29,11 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -44,14 +46,14 @@ public class IndexController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public String getIndex( Model model )
+    public void getIndex( HttpServletResponse response ) throws IOException
     {
-        return "redirect:/api/resources";
+        response.sendRedirect( "/api/resources" );
     }
 
     @RequestMapping( value = "/", method = RequestMethod.GET )
-    public String getIndexWithSlash( Model model )
+    public void getIndexWithSlash( HttpServletResponse response ) throws IOException
     {
-        return "redirect:/api/resources";
+        response.sendRedirect( "/api/resources" );
     }
 }
