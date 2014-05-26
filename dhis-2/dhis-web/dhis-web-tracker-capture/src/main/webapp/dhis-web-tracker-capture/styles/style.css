@@ -850,3 +850,13 @@ input[type=text], input[type=password], textarea {
 .underline{
     text-decoration: underline;
 }
+
+.select-drop-down-button{
+    text-align: left;
+    padding: 6px 12px;
+    color: #999;
+}
+
+.dropdown-menu {
+    margin-top: -5px;
+}
