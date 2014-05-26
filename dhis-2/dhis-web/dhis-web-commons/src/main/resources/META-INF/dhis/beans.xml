@@ -9,7 +9,6 @@
     <property name="actionAccessResolver" ref="org.hisp.dhis.security.ActionAccessResolver" />
     <property name="moduleComparator" ref="org.hisp.dhis.webportal.module.ConfigurableModuleComparator" />
     <property name="defaultActionName" value="index" />
-    <property name="maintenanceModuleIdentifier" value="maintenance" />
   </bean>
 
   <bean id="org.hisp.dhis.webportal.module.ConfigurableModuleComparator"
