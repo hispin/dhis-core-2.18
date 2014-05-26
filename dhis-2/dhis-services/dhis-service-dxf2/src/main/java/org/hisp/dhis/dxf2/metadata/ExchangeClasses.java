@@ -71,6 +71,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -174,6 +175,7 @@ final public class ExchangeClasses
 
         allExportClasses.put( RelationshipType.class, "relationshipTypes" );
         allExportClasses.put( ValidationCriteria.class, "validationCriterias" );
+        allExportClasses.put( ProgramStageSection.class, "programStageSections" );
         allExportClasses.put( ProgramStage.class, "programStages" );
         allExportClasses.put( Program.class, "programs" );
         allExportClasses.put( TrackedEntity.class, "trackedEntities" );

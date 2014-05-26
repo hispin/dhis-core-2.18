@@ -215,6 +215,10 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.program.ProgramStage" />
   </bean>
 
+  <bean id="programStageSectionImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.program.ProgramStageSection" />
+  </bean>
+
   <bean id="relationshipTypeImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.relationship.RelationshipType" />
   </bean>
