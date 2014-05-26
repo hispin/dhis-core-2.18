@@ -44,7 +44,6 @@ import java.io.Serializable;
 
 /**
  * @author Chau Thu Tran
- * @version $ ProgramTrackedEntityAttribute.java Jan 7, 2014 9:16:05 AM $
  */
 @JacksonXmlRootElement(localName = "programTrackedEntityAttribute", namespace = DxfNamespaces.DXF_2_0)
 public class ProgramTrackedEntityAttribute
@@ -91,34 +90,31 @@ public class ProgramTrackedEntityAttribute
     // -------------------------------------------------------------------------
 
     @Override
-    public int hashCode()
+    public boolean equals( Object o )
     {
-        final int prime = 31;
-        int result = 1;
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
 
-        result = result * prime + (attribute != null ? attribute.hashCode() : 1);
-        result = result * prime + sortOrder;
+        ProgramTrackedEntityAttribute that = (ProgramTrackedEntityAttribute) o;
 
-        return result;
+        if ( displayInList != that.displayInList ) return false;
+        if ( id != that.id ) return false;
+        if ( attribute != null ? !attribute.equals( that.attribute ) : that.attribute != null ) return false;
+        if ( mandatory != null ? !mandatory.equals( that.mandatory ) : that.mandatory != null ) return false;
+
+        return true;
     }
 
     @Override
-    public boolean equals( Object object )
+    public int hashCode()
     {
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        final ProgramTrackedEntityAttribute other = (ProgramTrackedEntityAttribute) object;
-
-        return attribute != null && attribute.equals( other.getAttribute() ) && sortOrder.equals( other.getSortOrder() );
+        int result = id;
+        result = 31 * result + (attribute != null ? attribute.hashCode() : 0);
+        result = 31 * result + (displayInList ? 1 : 0);
+        result = 31 * result + (mandatory != null ? mandatory.hashCode() : 0);
+        return result;
     }
+
 
     // -------------------------------------------------------------------------
     // Getters && Setters
