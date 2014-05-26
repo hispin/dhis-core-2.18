@@ -6,7 +6,7 @@
 #end
 <div class="contentChartDiv">
 #foreach( $chart in $chartsForAll )
-<a href="getChart.action?id=$chart.id">$chart.name</a></br>
+<a href="getDashboardChart.action?id=$chart.id">$chart.name</a></br>
 #end
 </div>
 </div>

@@ -1,6 +1,6 @@
 ## ============================================================================
 <h2>
-	$i18n.getString( "Interpretation" )
+	$i18n.getString( "interpretation" )
 </h2>
 
 <p>
