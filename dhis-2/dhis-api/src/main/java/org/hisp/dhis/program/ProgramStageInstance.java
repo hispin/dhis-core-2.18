@@ -87,46 +87,7 @@ public class ProgramStageInstance
         this.programInstance = programInstance;
         this.programStage = programStage;
     }
-
-    // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( !getClass().isAssignableFrom( object.getClass() ) )
-        {
-            return false;
-        }
-
-        final ProgramStageInstance other = (ProgramStageInstance) object;
-
-        return programInstance.equals( other.getProgramInstance() ) && programStage.equals( other.getProgramStage() );
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-
-        result = result * prime + programInstance.hashCode();
-        result = result * prime + programStage.hashCode();
-
-        return result;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

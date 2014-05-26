@@ -124,9 +124,9 @@ public class RegisterIrregularEncounterAction
         programStageInstance.setProgramInstance( programInstance );
         programStageInstance.setProgramStage( programStage );
         programStageInstance.setDueDate( format.parseDate( dueDate ) );
-
+        
         message = Integer.toString( programStageInstanceService.addProgramStageInstance( programStageInstance ) );
-
+        
         return SUCCESS;
     }
 }
