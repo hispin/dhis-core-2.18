@@ -195,12 +195,6 @@ final public class ExchangeClasses
         importClasses.remove( BaseDimensionalObject.class );
 
         // tracker types are not enabled for meta-data import-export yet
-        exportClasses.remove( Program.class );
-        exportClasses.remove( ProgramStage.class );
-        exportClasses.remove( RelationshipType.class );
-        exportClasses.remove( TrackedEntity.class );
-        exportClasses.remove( TrackedEntityAttribute.class );
-        exportClasses.remove( TrackedEntityAttributeGroup.class );
         importClasses.remove( Program.class );
         importClasses.remove( ProgramStage.class );
         importClasses.remove( RelationshipType.class );
@@ -211,8 +205,6 @@ final public class ExchangeClasses
         // special class which is created on demand in association with other objects
         exportClasses.remove( DataElementOperand.class );
         importClasses.remove( DataElementOperand.class );
-        exportClasses.remove( CategoryOptionGroupSet.class );
-        importClasses.remove( CategoryOptionGroupSet.class );
 
         allExportClasses.put( MetaDataFilter.class, "metaDataFilters" );
         exportClasses.remove( MetaDataFilter.class );

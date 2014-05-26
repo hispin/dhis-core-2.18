@@ -198,18 +198,18 @@ public class MetaData
 
     private List<DataSet> dataSets = new ArrayList<DataSet>();
 
-    private List<Program> programs = new ArrayList<Program>();
-
-    private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
-
-    private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
-
     private List<MetaDataFilter> metaDataFilters = new ArrayList<MetaDataFilter>();
     
     private List<Event> events = new ArrayList<Event>();
 
     private List<EventReport> eventReports = new ArrayList<EventReport>();
     
+    private List<Program> programs = new ArrayList<Program>();
+
+    private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+
+    private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+
     private List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
     private List<TrackedEntityAttribute> trackedEntityAttributes = new ArrayList<TrackedEntityAttribute>();
