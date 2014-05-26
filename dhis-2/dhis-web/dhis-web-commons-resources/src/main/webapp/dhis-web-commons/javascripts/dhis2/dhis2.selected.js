@@ -61,7 +61,6 @@
       context.target.data('selected', context);
 
       context.page = 1;
-      context.paging = true;
       context.defaultProgressiveLoader(context);
 
       context.source.on('dblclick', 'option', context.defaultSourceDblClickHandler);
