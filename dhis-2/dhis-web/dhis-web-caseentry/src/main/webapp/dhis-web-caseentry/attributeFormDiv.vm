@@ -22,9 +22,10 @@
 			#elseif( $attribute.valueType == "trueOnly" )
 				<input type='checkbox' value="true" id="attr$attribute.id" name="attr$attribute.id" #if($value=='true') checked #end> 
 			#elseif( $attribute.valueType == "date" )
-				<input type="text" id="attr$attribute.id" name="attr$attribute.id" value='$!format.formatDate($value)' objectId='$attribute.id' objectType='attr' class=' #validate( "default"  $mandatory )' >
+				<input type="text" id="attr$attribute.id" style='width:240px;' name="attr$attribute.id" value='$value' objectId='$attribute.id' objectType='attr' class=' #validate( "default"  $mandatory )' >
 				<script type="text/javascript">
-					datePickerValid( 'attr$attribute.id', false );
+					var attrId = 'attr' + '$attribute.id';
+					datePickerValid( 'programEnrollmentSelectDiv [id=' + attrId + ']', false, false );
 				</script>                 
 			#elseif( $attribute.valueType == "optionSet" )
 				<select  id="attr$attribute.id" name="attr$attribute.id" class=' #validate( "default"  $mandatory )' >

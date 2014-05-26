@@ -20,7 +20,7 @@
 	<table>
 		<tr>
 			<td class='text-column'><label for="programId">$i18n.getString( "program" )</label></td>
-			<td class='input-column'>
+			<td class='input-column' align='right'>
 				<select id="programId" name="programId" onchange='programOnchange(this.value);'>
 					#if($programs.size()==0)
 					<option value="">[$i18n.getString( "none_program" )]</option>
@@ -43,14 +43,14 @@
 		
 		<tr id='enrollmentDateTR' class='hidden'>
 			<td class='text-column'><label for="enrollmentDate"><span id='enrollmentDateDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
-			<td colspan='2' class='input-column'>
-				<input type="text" id="enrollmentDateField" name="enrollmentDateField" class="{validate:{required:true}}" >
+			<td colspan='2' class='input-column'  align='right'>
+				<input type="text" id="enrollmentDateField" name="enrollmentDateField" style='width:265px' class="{validate:{required:true}}" >
 			</td>
 		</tr>
 		
-		<tr id='dateOfIncidentTR' class='hidden'>
+		<tr id='dateOfIncidentTR' class='hidden' align='right'>
 			<td class='text-column'><label for="dateOfIncident"><span id='dateOfIncidentDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
-			<td colspan='2' class='input-column'><input type="text" id="dateOfIncidentField" name="dateOfIncidentField" class="{validate:{required:true}}" ></td>
+			<td colspan='2' class='input-column'><input type="text" id="dateOfIncidentField" name="dateOfIncidentField" style='width:265px' class="{validate:{required:true}}" ></td>
 		</tr>
 	
 		<tr>
