@@ -61,6 +61,7 @@
       context.target.data('selected', context);
 
       context.page = 1;
+      context.paging = true;
       context.defaultProgressiveLoader(context);
 
       context.source.on('dblclick', 'option', context.defaultSourceDblClickHandler);
@@ -158,13 +159,19 @@
       }
 
       return $.ajax(request).done(function( data ) {
-        if( data.pager.page == 1 ) {
+        if( data.pager ) {
+          if( data.pager.page == 1 ) {
+            context.source.children().remove();
+          }
+
+          context.page++;
+        }
+
+        if( typeof data.pager === 'undefined' ) {
           context.source.children().remove();
         }
 
-        context.page++;
-
-        if( context.page > data.pager.pageCount ) {
+        if( typeof data.pager === 'undefined' || context.page > data.pager.pageCount ) {
           delete context.page;
         }
 
