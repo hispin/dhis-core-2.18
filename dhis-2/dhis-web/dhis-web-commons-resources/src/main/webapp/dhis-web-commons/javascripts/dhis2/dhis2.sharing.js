@@ -166,6 +166,29 @@ function showSharingDialog( type, uid ) {
     $(document).on('click', '.removeUserGroupAccess', removeUserGroupAccess);
     $('#addUserGroupAccess').unbind('click').bind('click', addUserGroupAccessSelectedItem);
 
+    $('#sharingSettings').dialog({
+      modal: true,
+      resizable: false,
+      width: 485,
+      height: 480,
+      buttons: {
+        'Cancel': function() {
+          $(this).dialog('close');
+        },
+        'Save': function() {
+          var me = $(this);
+
+          data.object.publicAccess = getPublicAccess();
+          data.object.externalAccess = getExternalAccess();
+          data.object.userGroupAccesses = getUserGroupAccesses();
+
+          saveSharingSettings(type, uid, data).done(function() {
+            me.dialog('close');
+          });
+        }
+      }
+    });
+
     $('#sharingFindUserGroup').autocomplete({
       source: function( request, response ) {
         $.ajax({
@@ -207,29 +230,6 @@ function showSharingDialog( type, uid ) {
       select: function( event, ui ) {
         sharingSelectedItem = ui.item;
         $('#addUserGroupAccess').removeAttr('disabled');
-      }
-    });
-
-    $('#sharingSettings').dialog({
-      modal: true,
-      resizable: false,
-      width: 485,
-      height: 480,
-      buttons: {
-        'Cancel': function() {
-          $(this).dialog('close');
-        },
-        'Save': function() {
-          var me = $(this);
-
-          data.object.publicAccess = getPublicAccess();
-          data.object.externalAccess = getExternalAccess();
-          data.object.userGroupAccesses = getUserGroupAccesses();
-
-          saveSharingSettings(type, uid, data).done(function() {
-            me.dialog('close');
-          });
-        }
       }
     });
   });
