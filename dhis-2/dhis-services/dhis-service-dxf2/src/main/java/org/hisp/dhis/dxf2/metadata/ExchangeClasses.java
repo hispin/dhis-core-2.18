@@ -85,6 +85,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 
@@ -171,10 +172,10 @@ final public class ExchangeClasses
         allExportClasses.put( MessageConversation.class, "messageConversations" );
         allExportClasses.put( Interpretation.class, "interpretations" );
 
-        // allExportClasses.put( ValidationCriteria.class, "validationCriterias" );
-        allExportClasses.put( Program.class, "programs" );
-        allExportClasses.put( ProgramStage.class, "programStages" );
         allExportClasses.put( RelationshipType.class, "relationshipTypes" );
+        allExportClasses.put( ValidationCriteria.class, "validationCriterias" );
+        allExportClasses.put( ProgramStage.class, "programStages" );
+        allExportClasses.put( Program.class, "programs" );
         allExportClasses.put( TrackedEntity.class, "trackedEntities" );
         allExportClasses.put( TrackedEntityAttribute.class, "trackedEntityAttributes" );
         allExportClasses.put( TrackedEntityAttributeGroup.class, "trackedEntityAttributeGroups" );
