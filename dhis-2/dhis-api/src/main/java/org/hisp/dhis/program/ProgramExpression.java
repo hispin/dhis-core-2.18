@@ -54,6 +54,7 @@ public class ProgramExpression
     private static final long serialVersionUID = -2807997671779497354L;
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
     public static String OBJECT_PROGRAM_STAGE = "PS";
+
     private int id;
 
     private String expression;

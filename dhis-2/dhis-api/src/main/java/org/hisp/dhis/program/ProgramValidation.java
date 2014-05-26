@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.expression.Operator;
@@ -51,6 +52,7 @@ public class ProgramValidation
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = 4785165717118297802L;
+
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
 
     // -------------------------------------------------------------------------
@@ -212,5 +214,21 @@ public class ProgramValidation
     public void setOperator( Operator operator )
     {
         this.operator = operator;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            ProgramValidation programValidation = (ProgramValidation) other;
+
+            leftSide = programValidation.getLeftSide();
+            operator = programValidation.getOperator();
+            rightSide = programValidation.getRightSide();
+            program = programValidation.getProgram();
+        }
     }
 }
