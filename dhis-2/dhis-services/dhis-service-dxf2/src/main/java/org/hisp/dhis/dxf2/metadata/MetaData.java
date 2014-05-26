@@ -78,6 +78,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -208,6 +209,8 @@ public class MetaData
     private List<Program> programs = new ArrayList<Program>();
 
     private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
+
+    private List<ProgramValidation> programValidations = Lists.newArrayList();
 
     private List<ProgramStageSection> programStageSections = new ArrayList<ProgramStageSection>();
 
@@ -859,6 +862,19 @@ public class MetaData
     public void setProgramStages( List<ProgramStage> programStages )
     {
         this.programStages = programStages;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "programValidations", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "programValidation", namespace = DxfNamespaces.DXF_2_0 )
+    public List<ProgramValidation> getProgramValidations()
+    {
+        return programValidations;
+    }
+
+    public void setProgramValidations( List<ProgramValidation> programValidations )
+    {
+        this.programValidations = programValidations;
     }
 
     @JsonProperty

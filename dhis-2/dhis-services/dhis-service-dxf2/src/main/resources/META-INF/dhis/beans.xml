@@ -223,6 +223,10 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.relationship.RelationshipType" />
   </bean>
 
+  <bean id="programValidationImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.program.ProgramValidation" />
+  </bean>
+
   <bean id="validationCriteriaImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.validation.ValidationCriteria" />
   </bean>
