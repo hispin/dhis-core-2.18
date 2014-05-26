@@ -114,7 +114,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private AclService aclService;
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -231,19 +231,17 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         private Expression extractExpression( T object, String fieldName )
         {
-            Expression expression = null;
-
             if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
             {
-                expression = ReflectionUtils.invokeGetterMethod( fieldName, object );
+                Object expression = ReflectionUtils.invokeGetterMethod( fieldName, object );
 
-                if ( expression != null )
+                if ( expression != null && Expression.class.isAssignableFrom( expression.getClass() ) )
                 {
                     ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[]{ null } );
                 }
             }
 
-            return expression;
+            return null;
         }
 
         private Set<DataElementOperand> extractDataElementOperands( T object, String fieldName )
