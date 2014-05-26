@@ -53,26 +53,26 @@ $(document).ready(function()
     $('#loaderSpan').show();
 
     $('#orgUnitTree').one('ouwtLoaded', function()
-    {        
+    {
         var def = $.Deferred();
         var promise = def.promise();
-        
-        promise = promise.then( getUserProfile );
-        promise = promise.then( getAttributes );
-        promise = promise.then( getTrackedEntities );
-        promise = promise.then( getMetaPrograms );     
-        promise = promise.then( getPrograms );      
-        promise = promise.then( getProgramStages );        
-        promise.done( function() {           
-            selection.responseReceived();                      
-        });           
-        
+
+        promise = promise.then(getUserProfile);
+        promise = promise.then(getAttributes);
+        promise = promise.then(getTrackedEntities);
+        promise = promise.then(getMetaPrograms);
+        promise = promise.then(getPrograms);
+        promise = promise.then(getProgramStages);
+        promise.done(function() {
+            selection.responseReceived();
+        });
+
         def.resolve();
-        
+
     });
 
     $(document).bind('dhis2.online', function(event, loggedIn)
-    {        
+    {
         if (loggedIn)
         {
             if (dhis2.tc.storageManager.hasLocalData())
@@ -121,26 +121,30 @@ $(document).ready(function()
             //selection.responseReceived(); //notify angular 
         }
     });
-   
+
     //dhis2.availability.startAvailabilityCheck();
-    
-    //drop down menus for program selection and advanced search
-    $( "#searchDropDown" ).width($( "#searchDropDownParent" ).width());   
-    $( "#selectDropDown" ).width($( "#selectDropDownParent" ).width());
-    
-    $(".select-drop-down-button").on('click', function(e){
-       e.stopPropagation();
-       $("#selectDropDown").dropdown('toggle');
+
+    //drop down menu for advanced search
+    $("#searchDropDown").width($("#searchDropDownParent").width());
+    $('#searchDropDown').on('click', "[data-stop-propagation]", function(e) {
+        e.stopPropagation();
     });
-    
+
+    //drop down menu for program selection
+    $("#selectDropDown").width($("#selectDropDownParent").width());
+    $(".select-drop-down-button").on('click', function(e) {
+        e.stopPropagation();
+        $("#selectDropDown").dropdown('toggle');
+    });
+
 });
 
 $(window).resize(function() {
-    $( "#selectDropDown" ).width($( "#selectDropDownParent" ).width());  
-    $( "#searchDropDown" ).width($( "#searchDropDownParent" ).width());  
-    
-    console.log('select parent width is-r:  ', $( "#selectDropDownParent" ).width());
-    console.log('select width is-r:  ', $( "#selectDropDown" ).width());
+    $("#selectDropDown").width($("#selectDropDownParent").width());
+    $("#searchDropDown").width($("#searchDropDownParent").width());
+
+    console.log('select parent width is-r:  ', $("#selectDropDownParent").width());
+    console.log('select width is-r:  ', $("#selectDropDown").width());
 });
 
 function ajax_login()
@@ -173,12 +177,12 @@ function getUserProfile()
     $.ajax({
         url: '../api/me/profile',
         type: 'GET'
-    }).done( function(response) {            
-        localStorage['USER_PROFILE'] = JSON.stringify(response);           
+    }).done(function(response) {
+        localStorage['USER_PROFILE'] = JSON.stringify(response);
         def.resolve();
     });
-    
-    return def.promise(); 
+
+    return def.promise();
 }
 
 function getMetaPrograms()
@@ -188,97 +192,97 @@ function getMetaPrograms()
     $.ajax({
         url: '../api/programs',
         type: 'GET',
-        data:'type=1&paging=false'
-    }).done( function(response) {        
-        localStorage[PROGRAMS_METADATA] = JSON.stringify(response.programs);           
-        def.resolve( response.programs );
+        data: 'type=1&paging=false'
+    }).done(function(response) {
+        localStorage[PROGRAMS_METADATA] = JSON.stringify(response.programs);
+        def.resolve(response.programs);
     });
-    
-    return def.promise(); 
+
+    return def.promise();
 }
 
-function getPrograms( programs )
+function getPrograms(programs)
 {
-    if( !programs ){
+    if (!programs) {
         return;
     }
-    
+
     var def = $.Deferred();
     var promise = def.promise();
 
-    _.each( _.values( programs ), function ( program ) {        
-        promise = promise.then( getProgram( program.href ) );
+    _.each(_.values(programs), function(program) {
+        promise = promise.then(getProgram(program.href));
     });
-    
+
     promise = promise.then(function() {
-        return $.Deferred().resolve( programs );
+        return $.Deferred().resolve(programs);
     });
-    
-    def.resolve( programs );
-    
-    return promise;   
+
+    def.resolve(programs);
+
+    return promise;
 }
 
-function getProgram( url )
-{   
+function getProgram(url)
+{
 
     return function() {
-        return $.ajax( {
+        return $.ajax({
             url: url,
             type: 'GET'
-        }).done( function( program ){     
-            
+        }).done(function(program) {
+
             var ou = {};
-            _.each(_.values( program.organisationUnits), function(o){
+            _.each(_.values(program.organisationUnits), function(o) {
                 ou[o.id] = o.name;
             });
-            
+
             program.organisationUnits = ou;
-            
+
             var ur = {};
-            _.each(_.values( program.userRoles), function(u){
+            _.each(_.values(program.userRoles), function(u) {
                 ur[u.id] = u.name;
             });
-            
+
             program.userRoles = ur;
-          
+
             localStorage[program.id] = JSON.stringify(program);
         });
     };
 }
 
-function getProgramStages( programs )
+function getProgramStages(programs)
 {
-    if( !programs ){
+    if (!programs) {
         return;
     }
-    
+
     var def = $.Deferred();
     var promise = def.promise();
 
-    _.each( _.values( programs ), function ( program ) {  
-        program = JSON.parse( localStorage[program.id] );
-        _.each( _.values( program.programStages ), function( programStage ) {
-            promise = promise.then( getProgramStage( programStage.href ) );
-        });        
+    _.each(_.values(programs), function(program) {
+        program = JSON.parse(localStorage[program.id]);
+        _.each(_.values(program.programStages), function(programStage) {
+            promise = promise.then(getProgramStage(programStage.href));
+        });
     });
-    
+
     promise = promise.then(function() {
         return def.resolve();
     });
-    
+
     def.resolve();
-    
-    return promise; 
+
+    return promise;
 }
 
-function getProgramStage( url )
+function getProgramStage(url)
 {
     return function() {
-        return $.ajax( {
+        return $.ajax({
             url: url,
             type: 'GET'
-        }).done( function( programStage ){
+        }).done(function(programStage) {
             localStorage[programStage.id] = JSON.stringify(programStage);
         });
     };
@@ -291,13 +295,13 @@ function getAttributes()
     $.ajax({
         url: '../api/trackedEntityAttributes',
         type: 'GET',
-        data:'viewClass=detailed&paging=false'
-    }).done( function(response) {            
+        data: 'viewClass=detailed&paging=false'
+    }).done(function(response) {
         localStorage['ATTRIBUTES'] = JSON.stringify(response.trackedEntityAttributes);
         def.resolve();
     });
-    
-    return def.promise(); 
+
+    return def.promise();
 }
 
 function getTrackedEntities()
@@ -307,60 +311,60 @@ function getTrackedEntities()
     $.ajax({
         url: '../api/trackedEntities',
         type: 'GET',
-        data:'viewClass=detailed&paging=false'
-    }).done( function(response) {
+        data: 'viewClass=detailed&paging=false'
+    }).done(function(response) {
         /*_.each(_.values(response.trackedEntities), function(te){
-            localStorage[te.id] = JSON.stringify(te);;
-        });  */      
-        localStorage['TRACKED_ENTITIES'] = JSON.stringify(response.trackedEntities);           
+         localStorage[te.id] = JSON.stringify(te);;
+         });  */
+        localStorage['TRACKED_ENTITIES'] = JSON.stringify(response.trackedEntities);
         def.resolve();
     });
-    
-    return def.promise(); 
+
+    return def.promise();
 }
 
 function uploadLocalData()
 {
-    if ( !dhis2.tc.storageManager.hasLocalData() )
+    if (!dhis2.tc.storageManager.hasLocalData())
     {
         return;
     }
 
-    setHeaderWaitMessage( i18n_uploading_data_notification );
-    
-    var events = dhis2.tc.storageManager.getEventsAsArray();   
-    
-    _.each( _.values( events ), function( event ) {
-        
-        if( event.hasOwnProperty('src')){
-            if( event.src == 'local'){
+    setHeaderWaitMessage(i18n_uploading_data_notification);
+
+    var events = dhis2.tc.storageManager.getEventsAsArray();
+
+    _.each(_.values(events), function(event) {
+
+        if (event.hasOwnProperty('src')) {
+            if (event.src == 'local') {
                 delete event.event;
             }
-            
+
             delete event.src;
-        }        
-    });    
-    
+        }
+    });
+
     events = {eventList: events};
-    
+
     //jackson insists for valid json, where properties are bounded with ""    
-    events = JSON.stringify(events);  
-    
-    $.ajax( {
+    events = JSON.stringify(events);
+
+    $.ajax({
         url: '../api/events.json',
         type: 'POST',
         data: events,
-        contentType: 'application/json',              
+        contentType: 'application/json',
         success: function()
         {
             dhis2.tc.storageManager.clear();
-            log( 'Successfully uploaded local events' );      
-            setHeaderDelayMessage( i18n_sync_success );
+            log('Successfully uploaded local events');
+            setHeaderDelayMessage(i18n_sync_success);
             //selection.responseReceived(); //notify angular 
         },
-        error: function( xhr )
+        error: function(xhr)
         {
-            if ( 409 == xhr.status ) // Invalid event
+            if (409 == xhr.status) // Invalid event
             {
                 // there is something wrong with the data - ignore for now.
 
@@ -369,13 +373,13 @@ function uploadLocalData()
             else // Connection lost during upload
             {
                 var message = i18n_sync_failed
-                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+                        + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
 
-                setHeaderMessage( message );
-                $( '#sync_button' ).bind( 'click', uploadLocalData );
+                setHeaderMessage(message);
+                $('#sync_button').bind('click', uploadLocalData);
             }
         }
-    } );
+    });
 }
 
 // -----------------------------------------------------------------------------
@@ -420,15 +424,15 @@ function StorageManager()
     {
         return MAX_SIZE - this.totalSize();
     };
-    
+
     /**
      * Clears stored events. 
      */
-    this.clear = function ()
+    this.clear = function()
     {
-        localStorage.removeItem(TRACKER_VALUES);        
-    };    
-    
+        localStorage.removeItem(TRACKER_VALUES);
+    };
+
     /**
      * Saves an event
      *
@@ -437,14 +441,14 @@ function StorageManager()
     this.saveEvent = function(event)
     {
         //var newEvent = event;
-        
-        if( !event.hasOwnProperty('src') )
+
+        if (!event.hasOwnProperty('src'))
         {
-            if( !event.event){
+            if (!event.event) {
                 event.event = this.generatePseudoUid();
                 event.src = 'local';
-            }            
-        }        
+            }
+        }
 
         var events = {};
 
@@ -466,7 +470,7 @@ function StorageManager()
             log('Max local storage quota reached, not storing data value locally');
         }
     };
-    
+
     /**
      * Gets the value for the event with the given arguments, or null if it
      * does not exist.
@@ -501,7 +505,7 @@ function StorageManager()
             localStorage[TRACKER_VALUES] = JSON.stringify(events);
         }
     };
-    
+
     /**
      * Returns events matching the arguments provided
      * 
@@ -514,23 +518,23 @@ function StorageManager()
     {
         var events = this.getEventsAsArray();
         var match = [];
-        for( var i=0; i<events.length; i++){
-            if(events[i].orgUnit == orgUnit && events[i].programStage == programStage ){
+        for (var i = 0; i < events.length; i++) {
+            if (events[i].orgUnit == orgUnit && events[i].programStage == programStage) {
                 match.push(events[i]);
             }
         }
-        
+
         return match;
     };
-    
+
     /**
      *
      * @return a JSON associative array.
      */
     this.getAllEvents = function()
     {
-        return localStorage[TRACKER_VALUES] != null ? JSON.parse( localStorage[TRACKER_VALUES] ) : null;
-    };    
+        return localStorage[TRACKER_VALUES] != null ? JSON.parse(localStorage[TRACKER_VALUES]) : null;
+    };
 
     /**
      * Returns all event objects in an array. Returns an empty array if no
@@ -556,7 +560,7 @@ function StorageManager()
 
         return values;
     };
-    
+
     /**
      * Indicates whether there exists data values or complete data set
      * registrations in the local storage.
@@ -565,7 +569,7 @@ function StorageManager()
      */
     this.hasLocalData = function()
     {
-        var events = this.getAllEvents();        
+        var events = this.getAllEvents();
 
         if (events == null)
         {
@@ -574,12 +578,12 @@ function StorageManager()
         if (Object.keys(events).length < 1)
         {
             return false;
-        }    
+        }
 
         return true;
     };
-    
-    this.generatePseudoUid = function () 
+
+    this.generatePseudoUid = function()
     {
         return Math.random().toString(36).substr(2, 11);
     };
