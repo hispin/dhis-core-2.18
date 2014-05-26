@@ -194,14 +194,6 @@ final public class ExchangeClasses
         importClasses.remove( Dashboard.class );
         importClasses.remove( BaseDimensionalObject.class );
 
-        // tracker types are not enabled for meta-data import-export yet
-        importClasses.remove( Program.class );
-        importClasses.remove( ProgramStage.class );
-        importClasses.remove( RelationshipType.class );
-        importClasses.remove( TrackedEntity.class );
-        importClasses.remove( TrackedEntityAttribute.class );
-        importClasses.remove( TrackedEntityAttributeGroup.class );
-
         // special class which is created on demand in association with other objects
         exportClasses.remove( DataElementOperand.class );
         importClasses.remove( DataElementOperand.class );
