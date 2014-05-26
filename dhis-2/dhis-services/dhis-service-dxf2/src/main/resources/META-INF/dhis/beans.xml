@@ -219,6 +219,10 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.relationship.RelationshipType" />
   </bean>
 
+  <bean id="validationCriteriaImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.validation.ValidationCriteria" />
+  </bean>
+
   <bean id="trackedEntityImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter"
     scope="prototype">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.trackedentity.TrackedEntity" />
