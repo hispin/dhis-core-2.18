@@ -28,10 +28,11 @@ package org.hisp.dhis.eventreport;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -45,11 +46,9 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.user.User;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -180,39 +179,6 @@ public class EventReport
         for ( String filter : filterDimensions )
         {
             filters.addAll( getDimensionalObjectList( filter ) );
-        }
-    }
-
-    @Override
-    public void mergeWith( IdentifiableObject other )
-    {
-        super.mergeWith( other );
-
-        if ( other.getClass().isInstance( this ) )
-        {
-            EventReport report = (EventReport) other;
-
-            dataType = report.getDataType();
-            program = report.getProgram();
-            programStage = report.getProgramStage();
-            startDate = report.getStartDate();
-            endDate = report.getEndDate();
-            totals = report.isTotals();
-            subtotals = report.isSubtotals();
-            hideEmptyRows = report.isHideEmptyRows();
-            countType = report.getCountType();
-            showHierarchy = report.isShowHierarchy();
-            displayDensity = report.getDisplayDensity();
-            fontSize = report.getFontSize();
-
-            columnDimensions.clear();
-            columnDimensions.addAll( report.getColumnDimensions() );
-            
-            rowDimensions.clear();
-            rowDimensions.addAll( report.getRowDimensions() );
-            
-            filterDimensions.clear();
-            filterDimensions.addAll( report.getFilterDimensions() );
         }
     }
 
@@ -418,5 +384,38 @@ public class EventReport
     public void setFontSize( String fontSize )
     {
         this.fontSize = fontSize;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            EventReport report = (EventReport) other;
+
+            dataType = report.getDataType();
+            program = report.getProgram();
+            programStage = report.getProgramStage();
+            startDate = report.getStartDate();
+            endDate = report.getEndDate();
+            totals = report.isTotals();
+            subtotals = report.isSubtotals();
+            hideEmptyRows = report.isHideEmptyRows();
+            countType = report.getCountType();
+            showHierarchy = report.isShowHierarchy();
+            displayDensity = report.getDisplayDensity();
+            fontSize = report.getFontSize();
+
+            columnDimensions.clear();
+            columnDimensions.addAll( report.getColumnDimensions() );
+
+            rowDimensions.clear();
+            rowDimensions.addAll( report.getRowDimensions() );
+
+            filterDimensions.clear();
+            filterDimensions.addAll( report.getFilterDimensions() );
+        }
     }
 }
