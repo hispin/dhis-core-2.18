@@ -63,8 +63,6 @@ public class TrackedEntityAuditStoreTest
 
     private TrackedEntityAudit auditB;
 
-    private TrackedEntityAudit auditC;
-
     private TrackedEntityInstance entityInstanceA;
 
     private TrackedEntityInstance entityInstanceB;
@@ -90,8 +88,7 @@ public class TrackedEntityAuditStoreTest
         today = cal.getTime();
 
         auditA = new TrackedEntityAudit( entityInstanceA, "test", today, TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );
-        auditB = new TrackedEntityAudit( entityInstanceA, "test", today, TrackedEntityAudit.MODULE_TABULAR_REPORT );
-        auditC = new TrackedEntityAudit( entityInstanceB, "test", today, TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );
+        auditB = new TrackedEntityAudit( entityInstanceB, "test", today, TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );
     }
 
     @Test
@@ -99,16 +96,14 @@ public class TrackedEntityAuditStoreTest
     {
         auditStore.save( auditA );
         auditStore.save( auditB );
-        auditStore.save( auditC );
 
         Collection<TrackedEntityAudit> entityInstanceAudits = auditStore.get( entityInstanceA );
-        assertEquals( 2, entityInstanceAudits.size() );
+        assertEquals( 1, entityInstanceAudits.size() );
         assertTrue( entityInstanceAudits.contains( auditA ) );
-        assertTrue( entityInstanceAudits.contains( auditB ) );
 
         entityInstanceAudits = auditStore.get( entityInstanceB );
         assertEquals( 1, entityInstanceAudits.size() );
-        assertTrue( entityInstanceAudits.contains( auditC ) );
+        assertTrue( entityInstanceAudits.contains( auditB ) );
     }
 
     @Test
@@ -120,6 +115,5 @@ public class TrackedEntityAuditStoreTest
         TrackedEntityAudit entityInstanceAudit = auditStore.get( entityInstanceAId, "test", today,
             TrackedEntityAudit.MODULE_ENTITY_INSTANCE_DASHBOARD );
         assertEquals( auditA, entityInstanceAudit );
-
     }
 }
