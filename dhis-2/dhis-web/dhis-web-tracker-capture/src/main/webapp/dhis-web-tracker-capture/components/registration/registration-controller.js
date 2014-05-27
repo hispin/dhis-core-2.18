@@ -7,15 +7,17 @@ trackerCapture.controller('RegistrationController',
                 DialogService,
                 storage,
                 TranslationService) {
-    
+
     //do translation of the registration page
     TranslationService.translate();   
+    
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
     $scope.enrollment = {enrollmentDate: '', incidentDate: ''};    
     
     $scope.attributes = AttributesFactory.getWithoutProgram();
-    $scope.trackedEntities = {available: storage.get('TRACKED_ENTITIES')};
-    
+    $scope.trackedEntities = {available: []};
+    $scope.trackedEntities.available = storage.get('TRACKED_ENTITIES');
+   
     $scope.trackedEntities.selected = $scope.trackedEntities.available[0];
       
     //watch for selection of org unit from tree

@@ -5,40 +5,38 @@
             <a href ng-click="removeWidget(enrollmentWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
         </span>
     </div>
-    <table class="table-borderless">
+    <table class="table-borderless table-striped">
         <tr>
-            <td>
+            <!--<td>
                 {{'program'| translate}}
-            </td>
+            </td>-->
             <td>
                 <select ng-model="selectedProgram"
                         class="form-control"
                         ng-options="program as program.name for program in programs | orderBy: 'name'" 
                         ng-change="loadEvents()">
-                    <option value="">{{'please_select'| translate}}</option>
+                    <option value="">{{'please_select_a_program'| translate}}</option>
                 </select>
             </td>
-            <td>
+            <td ng-if="selectedProgram && !selectedEnrollment" >
                 <button type="button" 
                         class="btn btn-default"
-                        ng-show="selectedProgram && !selectedEnrollment" 
                         ng-click="showEnrollment()">
                     {{'enroll'| translate}}
                 </button>  
             </td>                
-            <td>
+            <td ng-if="selectedProgram && selectedEnrollment" >
                 <button type="button" 
                         class="btn btn-default"
-                        ng-show="selectedProgram && selectedEnrollment" 
                         ng-click="scheduling()">
                     {{'scheduling'| translate}}
                 </button>                                
             </td>
         </tr>
     </table>
+
     <div ng-if="selectedProgram">
-        <div ng-if="programStages">
-            
+        <div ng-if="programStages">            
             <hr>
             <table class="table-borderless table-striped">
                 <thead>
@@ -61,6 +59,9 @@
                     </td>
                 </tr>
             </table>
+        </div>
+        <div ng-if="showEnrollmentDiv">
+            
         </div>
     </div>    
 </div>

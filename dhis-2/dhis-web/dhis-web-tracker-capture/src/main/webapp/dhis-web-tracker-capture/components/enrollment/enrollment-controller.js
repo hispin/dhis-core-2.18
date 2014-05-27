@@ -66,21 +66,25 @@ trackerCapture.controller('EnrollmentController',
                     $scope.selectedEnrollment.dateOfIncident = $filter('date')($scope.selectedEnrollment.dateOfIncident, 'yyyy-MM-dd');
                 }
                 
-                $rootScope.$broadcast('dataentry', {selectedEntity: $scope.selectedEntity,
+                $rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
                                                     selectedOrgUnit: $scope.selectedOrgUnit,
                                                     selectedProgramId: $scope.selectedProgram.id,
                                                     selectedEnrollment: $scope.selectedEnrollment});
             });            
         }
         
-        $rootScope.$broadcast('dataentry', {selectedEntity: $scope.selectedEntity,
+        /*$rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
                                                     selectedOrgUnit: $scope.selectedOrgUnit,
                                                     selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id : null,
-                                                    selectedEnrollment: $scope.selectedEnrollment ? $scope.selectedEnrollment : null});
+                                                    selectedEnrollment: $scope.selectedEnrollment ? $scope.selectedEnrollment : null});*/
         
     };
     
+    
+    
     $scope.showEnrollment = function(){        
+        $scope.showEnrollmentDiv = !$scope.showEnrollmentDiv;
+        
         console.log('Enrollment', $scope.selectedEntity, ' ', $scope.selectedProgram);
     };
     

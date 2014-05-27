@@ -10,7 +10,7 @@ trackerCapture.controller('DataEntryController',
     TranslationService.translate();
      
     //listen for the selected items
-    $scope.$on('dataentry', function(event, args) {  
+    $scope.$on('dashboard', function(event, args) {  
         
         var today = moment();
         today = Date.parse(today);
@@ -43,11 +43,11 @@ trackerCapture.controller('DataEntryController',
                     if($scope.selectedEnrollment.status === 'ACTIVE'){
                         //create events for the selected enrollment
                         var program = storage.get($scope.selectedProgramId);
-                        var programStages = [];
+                        //var programStages = [];
                         
                         angular.forEach(program.programStages, function(ps){  
                             ps = storage.get(ps.id);
-                            programStages.push(ps);
+                            //programStages.push(ps);
                             
                             var eventDate = moment(moment().add('d', ps.minDaysFromStart), 'YYYY-MM-DD')._d;
                             eventDate = Date.parse(eventDate);

@@ -7,8 +7,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
 .controller('SelectionController',
         function($rootScope,
                 $scope,
-                $location,
                 $modal,
+                $location,
                 Paginator,
                 TranslationService, 
                 storage,
@@ -251,11 +251,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         });
     };
     
-    $scope.showDashboard = function(currentEntity){
-        
+    $scope.showDashboard = function(currentEntity){        
         $location.path('/dashboard').search({selectedEntityId: currentEntity.id,                                            
                                             selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id: null});                                    
-    };  
+    };
        
     $scope.getHelpContent = function(){
         console.log('I will get help content');
