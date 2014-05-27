@@ -207,6 +207,10 @@
   </bean>
 
   <!-- register tracker importers -->
+  <bean id="eventReportImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.eventreport.EventReport" />
+  </bean>
+
   <bean id="programImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.program.Program" />
   </bean>
