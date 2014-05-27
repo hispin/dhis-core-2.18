@@ -59,6 +59,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.mock.MockCurrentUserService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -68,6 +69,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.MathUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.junit.Test;
 
 /**
@@ -174,6 +176,8 @@ public class ValidationRuleServiceTest
 
     private Set<OrganisationUnit> sourcesA = new HashSet<OrganisationUnit>();
 
+    private Set<OrganisationUnit> allSources = new HashSet<OrganisationUnit>();
+
     private ValidationRule validationRuleA;
 
     private ValidationRule validationRuleB;
@@ -241,6 +245,9 @@ public class ValidationRuleServiceTest
         periodService = (PeriodService) getBean( PeriodService.ID );
 
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
+
+        CurrentUserService currentUserService = new MockCurrentUserService( allSources, null );
+        setDependency( validationRuleService, "currentUserService", currentUserService, CurrentUserService.class );
 
         periodTypeWeekly = new WeeklyPeriodType();
         periodTypeMonthly = new MonthlyPeriodType();
@@ -331,6 +338,14 @@ public class ValidationRuleServiceTest
 
         sourcesA.add( sourceA );
         sourcesA.add( sourceB );
+
+        allSources.add( sourceA );
+        allSources.add( sourceB );
+        allSources.add( sourceC );
+        allSources.add( sourceD );
+        allSources.add( sourceE );
+        allSources.add( sourceF );
+        allSources.add( sourceG );
 
         joinDataSetToSource( dataSetMonthly, sourceA );
         joinDataSetToSource( dataSetMonthly, sourceB );

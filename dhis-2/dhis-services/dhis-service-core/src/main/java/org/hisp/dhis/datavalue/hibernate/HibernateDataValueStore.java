@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,8 +45,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.common.MapMap;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
@@ -459,15 +462,34 @@ public class HibernateDataValueStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    public MapMap<Integer, DataElementOperand, Double> getDataValueMapByAttributeCombo( Collection<DataElement> dataElements, Date date, OrganisationUnit source,
-        Collection<PeriodType> periodTypes, DataElementCategoryOptionCombo attributeCombo, MapMap<Integer, DataElementOperand, Date> lastUpdatedMap )
+    public MapMap<Integer, DataElementOperand, Double> getDataValueMapByAttributeCombo( Collection<DataElement> dataElements, Date date,
+        OrganisationUnit source, Collection<PeriodType> periodTypes, DataElementCategoryOptionCombo attributeCombo,
+        Set<CategoryOptionGroup> cogDimensionConstraints, Set<DataElementCategoryOption> coDimensionConstraints,
+        MapMap<Integer, DataElementOperand, Date> lastUpdatedMap )
     {
         MapMap<Integer, DataElementOperand, Double> map = new MapMap<Integer, DataElementOperand, Double>();
 
-        if ( dataElements.isEmpty() || periodTypes.isEmpty() )
+        if ( dataElements.isEmpty() || periodTypes.isEmpty()
+                || ( cogDimensionConstraints != null && cogDimensionConstraints.isEmpty() )
+                || ( coDimensionConstraints != null && coDimensionConstraints.isEmpty() ) )
         {
             return map;
         }
+
+        String joinCo = coDimensionConstraints == null && cogDimensionConstraints == null ? "" :
+                "join categoryoptioncombos_categoryoptions c_c on dv.attributeoptioncomboid = c_c.categoryoptioncomboid ";
+
+        String joinCog = cogDimensionConstraints == null ? "" :
+                "join categoryoptiongroupmembers cogm on c_c.categoryoptionid = cogm.categoryoptionid ";
+
+        String whereCo = coDimensionConstraints == null ? "" :
+                "and c_c.categoryoptionid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElementCategoryOption.class, coDimensionConstraints ) ) + ") ";
+
+        String whereCog = cogDimensionConstraints == null ? "" :
+                "and cogm.categoryoptiongroupid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( CategoryOptionGroup.class, cogDimensionConstraints ) ) + ") ";
+
+        String whereCombo = attributeCombo == null ? "" :
+                "and dv.attributeoptioncomboid = " + attributeCombo.getId() + " ";
 
         String sql =
                 "select de.uid, coc.uid, dv.attributeoptioncomboid, dv.value, dv.lastupdated, p.startdate, p.enddate " +
@@ -475,16 +497,16 @@ public class HibernateDataValueStore
                         "join dataelement de on dv.dataelementid = de.dataelementid " +
                         "join categoryoptioncombo coc on dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
                         "join period p on p.periodid = dv.periodid " +
+                        joinCo +
+                        joinCog +
                         "where dv.dataelementid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) ) + ") " +
                         "and dv.sourceid = " + source.getId() + " " +
                         "and p.startdate <= '" + DateUtils.getMediumDateString( date ) + "' " +
                         "and p.enddate >= '" + DateUtils.getMediumDateString( date ) + "' " +
-                        "and p.periodtypeid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( PeriodType.class, periodTypes ) ) + ") ";
-
-        if ( attributeCombo != null )
-        {
-            sql += " and dv.attributeoptioncomboid = " + attributeCombo.getId();
-        }
+                        "and p.periodtypeid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( PeriodType.class, periodTypes ) ) + ") " +
+                        whereCo +
+                        whereCog +
+                        whereCombo;
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 

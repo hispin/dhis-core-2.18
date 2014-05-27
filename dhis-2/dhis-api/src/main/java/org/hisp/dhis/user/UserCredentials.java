@@ -45,6 +45,7 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataset.DataSet;
 import org.springframework.util.StringUtils;
 
@@ -102,6 +103,12 @@ public class UserCredentials
      */
     @Scanned
     private Set<CategoryOptionGroupSet> cogsDimensionConstraints = new HashSet<CategoryOptionGroupSet>();
+
+    /**
+     * Category dimensions to constrain data analytics aggregation.
+     */
+    @Scanned
+    private Set<DataElementCategory> catDimensionConstraints = new HashSet<DataElementCategory>();
 
     /**
      * Date of the user's last login.
@@ -381,6 +388,12 @@ public class UserCredentials
             constraints.add( cogs );
         }
 
+        for ( DataElementCategory cat : catDimensionConstraints )
+        {
+            cat.setDimensionType( DimensionType.CATEGORY );
+            constraints.add( cat );
+        }
+
         return constraints;
     }
 
@@ -475,6 +488,21 @@ public class UserCredentials
     public void setUserAuthorityGroups( Set<UserAuthorityGroup> userAuthorityGroups )
     {
         this.userAuthorityGroups = userAuthorityGroups;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "catDimensionConstraints", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "catDimensionConstraint", namespace = DxfNamespaces.DXF_2_0 )
+    public Set<DataElementCategory> getCatDimensionConstraints()
+    {
+        return catDimensionConstraints;
+    }
+
+    public void setCatDimensionConstraints( Set<DataElementCategory> catDimensionConstraints )
+    {
+        this.catDimensionConstraints = catDimensionConstraints;
     }
 
     @JsonProperty
@@ -600,6 +628,9 @@ public class UserCredentials
             disabled = userCredentials.isDisabled();
             selfRegistered = userCredentials.isSelfRegistered();
             password = StringUtils.isEmpty( userCredentials.getPassword() ) ? password : userCredentials.getPassword();
+
+            catDimensionConstraints.clear();
+            catDimensionConstraints.addAll( userCredentials.getCatDimensionConstraints() );
 
             cogsDimensionConstraints.clear();
             cogsDimensionConstraints.addAll( userCredentials.getCogsDimensionConstraints() );

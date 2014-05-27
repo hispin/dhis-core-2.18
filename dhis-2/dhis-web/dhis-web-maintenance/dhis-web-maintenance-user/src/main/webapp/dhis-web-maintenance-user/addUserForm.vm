@@ -44,10 +44,10 @@
     });
     
     $('#dcAvailable').selected({
-      url: '../api/categoryOptionGroupSets.json',
+      url: '../api/dimensions/constraints.json',
       target: $('#dcSelected'),
       search: $('#dcAvailableSearch'),
-      iterator: 'categoryOptionGroupSets'
+      iterator: 'dimensions'
     });
   });
 </script>

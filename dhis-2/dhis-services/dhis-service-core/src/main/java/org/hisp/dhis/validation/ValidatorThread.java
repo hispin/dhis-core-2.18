@@ -567,7 +567,8 @@ public class ValidatorThread
         else
         {
             dataValueMap2 = context.getDataValueService().getDataValueMapByAttributeCombo( dataElementsToGet,
-                period.getStartDate(), source, allowedPeriodTypes, context.getAttributeCombo(), lastUpdatedMap );
+                period.getStartDate(), source, allowedPeriodTypes, context.getAttributeCombo(),
+                context.getCogDimensionConstraints(), context.getCoDimensionConstraints(), lastUpdatedMap );
         }
 
         // See if there are any data elements we need to get recursively:
