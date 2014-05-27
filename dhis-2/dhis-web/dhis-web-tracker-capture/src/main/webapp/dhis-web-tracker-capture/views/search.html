@@ -1,66 +1,82 @@
-<table data-stop-propagation="true" class="table-borderless table-striped">
-    <tr>
-        <td>{{'org_unit_mode'| translate}}</td>
-        <td>
-            <input type="radio" ng-model="ouMode.name" value="SELECTED">{{'use_selected'| translate}}<br/>
-            <input type="radio" ng-model="ouMode.name" value="CHILDREN">{{'use_immediate_children'| translate}}<br/>
-            <input type="radio" ng-model="ouMode.name" value="DESCENDANTS">{{'use_all_children'| translate}}
-        </td>
-    </tr>
-    <tr ng-repeat="attribute in attributes">
-        <td>
-            {{attribute.name}} - {{attribute.valueType}}
-        </td>
-        <td>
-            <div ng-switch="attribute.valueType">
-                <div ng-switch-when="date">
-                    <input type="text" class="form-control" ng-date ng-model="attribute.value" />
-                </div>
-                <div ng-switch-when="trueOnly">
-                    <input type="checkbox" class="form-control" ng-model="attribute.value" />
-                </div>
-                <div ng-switch-when="bool">
-                    <select multiple ui-select2 ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
-                        <option value="0">{{'no'| translate}}</option>
-                        <option value="1">{{'yes'| translate}}</option>
-                    </select>
-                </div>
-                <div ng-switch-when="combo">
-                    <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
-                        <option ng-repeat="option in attribute.optionSet.options" value="{{option}}">{{option}}</option>
-                    </select>
-                </div>
-                <div ng-switch-when="number">
-                    <input type="number" class="form-control" ng-model="attribute.value"/>
-                </div>
-                <div ng-switch-default>
-                    <input type="text" class="form-control" ng-model="attribute.value" />                                        
-                </div>
-            </div>                                                                                                    
-        </td>
-    </tr>         
-</table>
+<div class="search-container">
+    <table data-stop-propagation="true" class="table-borderless table-striped">
+        <tr>
+            <td>{{'org_unit_mode'| translate}}</td>
+            <td>
+                <input type="radio" ng-model="ouMode.name" value="SELECTED">{{'use_selected'| translate}}<br/>
+                <input type="radio" ng-model="ouMode.name" value="CHILDREN">{{'use_immediate_children'| translate}}<br/>
+                <input type="radio" ng-model="ouMode.name" value="DESCENDANTS">{{'use_all_children'| translate}}
+            </td>
+        </tr>
+        <tr>
+            <td>{{'registration_date'| translate}}</td>
+            <td>
+                <input type="text" class="form-control-select2" ng-date ng-model="attribute.value" />
+            </td>
+        </tr>
+        <tr>
+            <td>{{'program'| translate}}</td>
+            <td>
+                <select class="form-control-select2"
+                        ng-model="selectedProgram" 
+                        ng-change="getProgramAttributes(selectedProgram, false)"
+                        ng-options="program as program.name for program in programs | orderBy: 'name'">
+                    <option value="">{{'please_select'| translate}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr ng-repeat="attribute in attributes">
+            <td>
+                {{attribute.name}} - {{attribute.valueType}}
+            </td>
+            <td>
+                <div ng-switch="attribute.valueType">
+                    <div ng-switch-when="date">
+                        <input type="text" class="form-control-select2" ng-date ng-model="attribute.value" />
+                    </div>
+                    <div ng-switch-when="trueOnly">
+                        <input type="checkbox" class="form-control-select2" ng-model="attribute.value" />
+                    </div>
+                    <div ng-switch-when="bool">
+                        <select multiple ui-select2 ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
+                            <option value="0">{{'no'| translate}}</option>
+                            <option value="1">{{'yes'| translate}}</option>
+                        </select>
+                    </div>
+                    <div ng-switch-when="combo">
+                        <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
+                            <option ng-repeat="option in attribute.optionSet.options" value="{{option}}">{{option}}</option>
+                        </select>
+                    </div>
+                    <div ng-switch-when="number">
+                        <input type="number" class="form-control-select2" ng-model="attribute.value"/>
+                    </div>
+                    <div ng-switch-default>
+                        <input type="text" class="form-control-select2" ng-model="attribute.value" />                                        
+                    </div>
+                </div>                                                                                                    
+            </td>
+        </tr>         
+    </table>
+    
+    <button type="button"
+            class="btn btn-default"
+            ng-click="search(searchMode.attributeBased)">
+        {{'search'| translate}}
+    </button>
+    <button type="button" 
+            class="btn btn-default small-horizonal-spacing" 
+            ng-click="search(searchMode.listAll)">
+        {{'list_all'| translate}}
+    </button>
+    <button type="button" 
+            class="btn btn-default small-horizonal-spacing" 
+            ng-click="closeSearch()">
+        {{'cancel'| translate}}
+    </button>
 
-<button type="button" 
-        class="btn btn-default"
-        ng-click="search(searchMode.attributeBased)">
-    {{'search'| translate}}
-</button>
-<button type="button" 
-        class="btn btn-default small-horizonal-spacing" 
-        ng-click="search(searchMode.listAll)">
-    {{'list_all'| translate}}
-</button>
-<button type="button" 
-        class="btn btn-default small-horizonal-spacing" 
-        ng-click="closeSearch()">
-    {{'cancel'| translate}}
-</button>        
-
-<div class="row" ng-if="emptySearchAttribute">
-    <div class="col-md-12">
-        <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
-    </div>
 </div>
+
+
 
 

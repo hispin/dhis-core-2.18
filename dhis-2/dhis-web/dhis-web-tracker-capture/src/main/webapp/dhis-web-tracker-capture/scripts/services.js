@@ -22,7 +22,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Factory to fetch programs */
-.factory('ProgramFactory', function($http) {
+.factory('ProgramFactory', function($http, storage) {
     
     var programUid, programPromise;
     var programs, programsPromise;
@@ -57,6 +57,13 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 return programs;
             });            
             return promise;
+        },
+        getAll: function(){
+            var programs = [];
+            angular.forEach(storage.get('TRACKER_PROGRAMS'), function(p){
+                programs.push(storage.get(p.id));
+            });
+            return programs;
         }
     };
 })
@@ -558,7 +565,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
 })
 
-.service('EntityService', function(OrgUnitService){
+.service('EntityService', function(OrgUnitService, $filter){
     
     return {
         formatter: function(grid){
@@ -582,6 +589,11 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     var isEmpty = true;
 
                     entity.id = row[0];
+                    var rDate = row[1];
+                    rDate = moment(rDate, 'YYYY-MM-DD')._d;
+                    rDate = Date.parse(rDate);
+                    rDate = $filter('date')(rDate, 'yyyy-MM-dd');                           
+                    entity.created = rDate;
                     entity.orgUnit = row[3];                              
                     entity.type = row[4];  
 
