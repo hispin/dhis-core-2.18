@@ -3952,7 +3952,7 @@ Ext.onReady( function() {
 			validateView,
 
         // constants
-            baseWidth = 442,
+            baseWidth = 444,
             toolWidth = 36,
 
             accBaseWidth = baseWidth - 2;
@@ -4038,7 +4038,7 @@ Ext.onReady( function() {
 			forceSelection: true,
 			queryMode: 'remote',
 			columnWidth: 0.5,
-			style: 'margin:1px 1px 2px 0',
+			style: 'margin:1px 1px 1px 0',
 			storage: {},
 			store: programStore,
             getRecord: function() {
@@ -4090,7 +4090,7 @@ Ext.onReady( function() {
 			queryMode: 'remote',
 			forceSelection: true,
 			columnWidth: 0.5,
-			style: 'margin:1px 0 2px 1px',
+			style: 'margin:1px 0 1px 0',
 			disabled: true,
 			listConfig: {loadMask: false},
 			store: stagesByProgramStore,
@@ -4171,10 +4171,10 @@ Ext.onReady( function() {
 		dataElementAvailable = Ext.create('Ext.ux.form.MultiSelect', {
 			cls: 'ns-toolbar-multiselect-left',
 			width: accBaseWidth,
-            height: 112,
+            height: 118,
 			valueField: 'id',
 			displayField: 'name',
-            style: 'margin-bottom:2px',
+            style: 'margin-bottom:1px',
 			store: dataElementsByStageStore,
 			tbar: [
 				{
@@ -4220,7 +4220,7 @@ Ext.onReady( function() {
         dataElementSelected = Ext.create('Ext.panel.Panel', {
 			width: accBaseWidth,
             height: 204,
-            bodyStyle: 'padding:2px 0 5px 3px; overflow-y: scroll',
+            bodyStyle: 'padding:2px 0 1px 3px; overflow-y: scroll',
             tbar: {
                 height: 27,
                 items: {
@@ -4329,7 +4329,7 @@ Ext.onReady( function() {
 
         dataElement = Ext.create('Ext.panel.Panel', {
             title: '<div class="gis-panel-title-data">Data</div>',
-            bodyStyle: 'padding:2px',
+            bodyStyle: 'padding:1px',
             hideCollapseTool: true,
             items: [
                 {
@@ -8552,7 +8552,6 @@ Ext.onReady( function() {
 
 		fn = function() {
 			if (++callbacks === requests.length) {
-
 				gis = GIS.core.getInstance(init);
 
 				GIS.app.createExtensions();
@@ -8574,7 +8573,7 @@ Ext.onReady( function() {
 						var i18nArray = Ext.decode(r.responseText);
 
 						Ext.Ajax.request({
-							url: init.contextPath + '/api/system/context.json',
+							url: init.contextPath + '/api/system/info.json',
 							success: function(r) {
 								init.contextPath = Ext.decode(r.responseText).contextPath || init.contextPath;
 
@@ -8627,10 +8626,8 @@ Ext.onReady( function() {
 												ouc = Ext.Array.clean(ouc.concat(Ext.Array.pluck(org.children, 'id') || []));
 											}
 
-											init.user = {
-												ou: ou,
-												ouc: ouc
-											}
+											init.user.ou = ou;
+                                            init.user.ouc = ouc;
 										}
 										else {
 											alert('User is not assigned to any organisation units');
@@ -8644,7 +8641,7 @@ Ext.onReady( function() {
 								requests.push({
 									url: init.contextPath + '/api/me/authorization/F_GIS_ADMIN',
 									success: function(r) {
-										init.user.isAdmin = Ext.decode(r.responseText);
+										init.user.isAdmin = (r.responseText === 'true');
 										fn();
 									}
 								});

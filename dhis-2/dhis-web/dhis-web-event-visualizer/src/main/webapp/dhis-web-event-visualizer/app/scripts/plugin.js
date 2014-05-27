@@ -2752,9 +2752,9 @@ Ext.onReady( function() {
 				}
 
 				Ext.data.JsonP.request({
-					url: init.contextPath + '/api/eventReports/' + id + '.jsonp?viewClass=dimensional&links=false',
+					url: init.contextPath + '/api/eventCharts/' + id + '.jsonp?viewClass=dimensional&links=false',
 					failure: function(r) {
-						window.open(init.contextPath + '/api/eventReports/' + id + '.json?viewClass=dimensional&links=false', '_blank');
+						window.open(init.contextPath + '/api/eventCharts/' + id + '.json?viewClass=dimensional&links=false', '_blank');
 					},
 					success: function(r) {
 						var layout = api.layout.Layout(r);

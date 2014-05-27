@@ -5120,6 +5120,34 @@ Ext.onReady( function() {
 							}
 						}
 					}
+                    //{
+                        //text: 'export',
+                        //handler: function() {
+                            //var myWin = window.open(),
+                                //tableId = 'datatable',
+                                //text = '';
+
+                            ////text += '<a id="csvlink" href="" download="datatable.csv" onclick="javascript:this.download()">Download CSV</a><br/><br/>';
+                            //text += '<a href="" download="data.csv">download</a>';
+
+                            //text += '<table id="datatable">';
+
+                            //text += '<tr><th>indicator</th><th>period</th><th>orgunit</th><th>value</th></tr>';
+
+                            //text += '<tr><td>anc1</td><td>jan</td><td>telemark</td><td>8</td></tr>';
+                            //text += '<tr><td>anc1</td><td>jan</td><td>oslo</td><td>2</td></tr>';
+                            //text += '<tr><td>anc1</td><td>feb</td><td>telemark</td><td>11</td></tr>';
+                            //text += '<tr><td>anc1</td><td>feb</td><td>oslo</td><td>12</td></tr>';
+
+                            //text += '</table>';
+
+                            //myWin.document.write(text);
+
+                            //myWin.document.getElementById('csvlink').download = function() {
+                                //return ExcellentExport.csv(window, 'datatable');
+                            //};
+                        //}
+                    //}
 				],
 				listeners: {
 					added: function() {
@@ -5795,7 +5823,7 @@ Ext.onReady( function() {
 						var i18nArray = Ext.decode(r.responseText);
 
 						Ext.Ajax.request({
-							url: init.contextPath + '/api/system/context.json',
+							url: init.contextPath + '/api/system/info.json',
 							success: function(r) {
 								init.contextPath = Ext.decode(r.responseText).contextPath || init.contextPath;
 

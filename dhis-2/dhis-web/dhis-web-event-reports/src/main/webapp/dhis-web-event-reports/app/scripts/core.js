@@ -825,6 +825,11 @@ Ext.onReady( function() {
 
 				if (service.layout.isHierarchy(layout, response, id)) {
 					var a = metaData.names[id].split('/');
+
+                    if (a.length === 1) {
+                        return a[0];
+                    }
+
 					a.shift();
 
 					for (var i = 0, isLast; i < a.length; i++) {
@@ -2075,16 +2080,16 @@ Ext.onReady( function() {
 					}
 
 					html += '<td ' + (config.uuid ? ('id="' + config.uuid + '" ') : '');
-					html += ' class="' + cls + '" ' + colSpan + rowSpan
+					html += ' class="' + cls + '" ' + colSpan + rowSpan;
 
 
-					if (bgColor) {
-						html += '>';
-						html += '<div class="legendCt">';
-						html += '<div class="number ' + config.cls + '" style="padding:' + displayDensity + '; padding-right:3px; font-size:' + fontSize + '">' + htmlValue + '</div>';
-						html += '<div class="arrowCt ' + config.cls + '">';
-						html += '<div class="arrow" style="border-bottom:8px solid transparent; border-right:8px solid ' + bgColor + '">&nbsp;</div>';
-						html += '</div></div></div></td>';
+					//if (bgColor) {
+						//html += '>';
+						//html += '<div class="legendCt">';
+						//html += '<div class="number ' + config.cls + '" style="padding:' + displayDensity + '; padding-right:3px; font-size:' + fontSize + '">' + htmlValue + '</div>';
+						//html += '<div class="arrowCt ' + config.cls + '">';
+						//html += '<div class="arrow" style="border-bottom:8px solid transparent; border-right:8px solid ' + bgColor + '">&nbsp;</div>';
+						//html += '</div></div></div></td>';
 
 						//cls = 'legend';
 						//cls += config.hidden ? ' td-hidden' : '';
@@ -2098,10 +2103,11 @@ Ext.onReady( function() {
 						//html += htmlValue + '</div>';
 						//html += '<div class="legendColor" style="background-color:' + bgColor + '">&nbsp;</div>';
 						//html += '</div></td>';
-					}
-					else {
-						html += 'style="padding:' + displayDensity + '; font-size:' + fontSize + ';"' + '>' + htmlValue + '</td>';
-					}
+					//}
+					//else {
+						//html += 'style="padding:' + displayDensity + '; font-size:' + fontSize + ';"' + '>' + htmlValue + '</td>';
+                        html += 'style="' + (bgColor && isValue ? 'color:' + bgColor + '; ' : '') + 'padding:' + displayDensity + '; font-size:' + fontSize + ';"' + '>' + htmlValue + '</td>';
+					//}
 
 					return html;
 				};

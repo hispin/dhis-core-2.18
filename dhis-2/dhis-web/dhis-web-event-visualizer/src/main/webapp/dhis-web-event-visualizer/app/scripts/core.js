@@ -93,9 +93,37 @@ Ext.onReady( function() {
 						value: 'value'
 					}
 				},
-				root: {
-					id: 'root'
-				}
+                chart: {
+                    series: 'series',
+                    category: 'category',
+                    filter: 'filter',
+                    column: 'column',
+                    stackedcolumn: 'stackedcolumn',
+                    bar: 'bar',
+                    stackedbar: 'stackedbar',
+                    line: 'line',
+                    area: 'area',
+                    pie: 'pie',
+                    radar: 'radar'
+                },
+                data: {
+                    domain: 'domain_',
+                    targetLine: 'targetline_',
+                    baseLine: 'baseline_',
+                    trendLine: 'trendline_'
+                },
+                image: {
+                    png: 'png',
+                    pdf: 'pdf'
+                },
+                cmd: {
+                    init: 'init_',
+                    none: 'none_',
+                    urlparam: 'id'
+                },
+                root: {
+                    id: 'root'
+                }
 			};
 
 			dimConf = conf.finals.dimension;
