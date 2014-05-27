@@ -1,0 +1,11 @@
+<div class="panel panel-default" ng-controller="NotesController">
+    <div class="panel-heading">
+        {{notesWidget.title| translate}}
+        <span class="pull-right">
+            <a href ng-click="removeWidget(notesWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
+        </span>        
+    </div>
+    <div class="panel-body dashboard-element-container">
+        This is notes.
+    </div>
+</div>

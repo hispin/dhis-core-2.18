@@ -159,7 +159,7 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
   return {
     require: ['typeahead', 'ngModel'],
     link: function (scope, element, attr, ctrls) {        
-      element.bind('focus', function () {
+      element.bind('focus', function () {          
         ctrls[0].getMatchesAsync(ctrls[1].$viewValue);
         //scope.$apply();
       });

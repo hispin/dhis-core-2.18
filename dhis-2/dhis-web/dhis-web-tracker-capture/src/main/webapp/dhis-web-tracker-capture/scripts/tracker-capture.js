@@ -60,9 +60,7 @@ $(document).ready(function()
         promise = promise.then(getUserProfile);
         promise = promise.then(getAttributes);
         promise = promise.then(getTrackedEntities);
-        promise = promise.then(getMetaPrograms);
-        promise = promise.then(getPrograms);
-        promise = promise.then(getProgramStages);
+        promise = promise.then(getProgramsMetaData);
         promise.done(function() {
             selection.responseReceived();
         });
@@ -142,9 +140,6 @@ $(document).ready(function()
 $(window).resize(function() {
     $("#selectDropDown").width($("#selectDropDownParent").width());
     $("#searchDropDown").width($("#searchDropDownParent").width());
-
-    console.log('select parent width is-r:  ', $("#selectDropDownParent").width());
-    console.log('select width is-r:  ', $("#selectDropDown").width());
 });
 
 function ajax_login()
@@ -185,107 +180,52 @@ function getUserProfile()
     return def.promise();
 }
 
-function getMetaPrograms()
+function getProgramsMetaData()
 {
     var def = $.Deferred();
 
     $.ajax({
-        url: '../api/programs',
+        url: '../api/programs.json',
         type: 'GET',
-        data: 'type=1&paging=false'
+        data: 'paging=false&filter=type:eq:1&include=id,name,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,realionshipText,trackedEntity[id,name,description],userRoles[id,name],organisationUnits[id,name],programStages[id,name,description,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type]]],programTrackedEntityAttributes[displayInList,mandatory,attribute[id,name,description,valueType,displayInListNoProgram,inherit,optionSet[id,name,options]]]'
     }).done(function(response) {
-        localStorage[PROGRAMS_METADATA] = JSON.stringify(response.programs);
+        var programs = [];
+        _.each(_.values(response.programs), function(p) {
+            var programForListing = {id: p.id, name: p.name};
+            programs.push(programForListing);           
+            
+            var programForStorage = _.clone(p); 
+            
+            //save program stages
+            programForStorage.programStages = [];
+            _.each(_.values(p.programStages), function(ps){
+                localStorage[ps.id] = JSON.stringify(ps);
+                programForStorage.programStages.push({id: ps.id, name: ps.name});
+            });
+            
+            var ou = {};
+            _.each(_.values(programForStorage.organisationUnits), function(o) {
+                ou[o.id] = o.name;
+            });
+
+            programForStorage.organisationUnits = ou;
+
+            var ur = {};
+            _.each(_.values(programForStorage.userRoles), function(u) {
+                ur[u.id] = u.name;
+            });
+
+            programForStorage.userRoles = ur;            
+            
+            localStorage[programForStorage.id] = JSON.stringify(programForStorage);
+            
+        });
+        
+        localStorage[PROGRAMS_METADATA] = JSON.stringify(programs);
         def.resolve(response.programs);
     });
 
     return def.promise();
-}
-
-function getPrograms(programs)
-{
-    if (!programs) {
-        return;
-    }
-
-    var def = $.Deferred();
-    var promise = def.promise();
-
-    _.each(_.values(programs), function(program) {
-        promise = promise.then(getProgram(program.href));
-    });
-
-    promise = promise.then(function() {
-        return $.Deferred().resolve(programs);
-    });
-
-    def.resolve(programs);
-
-    return promise;
-}
-
-function getProgram(url)
-{
-
-    return function() {
-        return $.ajax({
-            url: url,
-            type: 'GET'
-        }).done(function(program) {
-
-            var ou = {};
-            _.each(_.values(program.organisationUnits), function(o) {
-                ou[o.id] = o.name;
-            });
-
-            program.organisationUnits = ou;
-
-            var ur = {};
-            _.each(_.values(program.userRoles), function(u) {
-                ur[u.id] = u.name;
-            });
-
-            program.userRoles = ur;
-
-            localStorage[program.id] = JSON.stringify(program);
-        });
-    };
-}
-
-function getProgramStages(programs)
-{
-    if (!programs) {
-        return;
-    }
-
-    var def = $.Deferred();
-    var promise = def.promise();
-
-    _.each(_.values(programs), function(program) {
-        program = JSON.parse(localStorage[program.id]);
-        _.each(_.values(program.programStages), function(programStage) {
-            promise = promise.then(getProgramStage(programStage.href));
-        });
-    });
-
-    promise = promise.then(function() {
-        return def.resolve();
-    });
-
-    def.resolve();
-
-    return promise;
-}
-
-function getProgramStage(url)
-{
-    return function() {
-        return $.ajax({
-            url: url,
-            type: 'GET'
-        }).done(function(programStage) {
-            localStorage[programStage.id] = JSON.stringify(programStage);
-        });
-    };
 }
 
 function getAttributes()
@@ -293,9 +233,9 @@ function getAttributes()
     var def = $.Deferred();
 
     $.ajax({
-        url: '../api/trackedEntityAttributes',
+        url: '../api/trackedEntityAttributes.json',
         type: 'GET',
-        data: 'viewClass=detailed&paging=false'
+        data: 'paging=false&include=id,name,description,valueType,inherit,displayOnVisitSchedule,displayInListNoProgram,unique,optionSet[id,name,options]'
     }).done(function(response) {
         localStorage['ATTRIBUTES'] = JSON.stringify(response.trackedEntityAttributes);
         def.resolve();
@@ -313,9 +253,6 @@ function getTrackedEntities()
         type: 'GET',
         data: 'viewClass=detailed&paging=false'
     }).done(function(response) {
-        /*_.each(_.values(response.trackedEntities), function(te){
-         localStorage[te.id] = JSON.stringify(te);;
-         });  */
         localStorage['TRACKED_ENTITIES'] = JSON.stringify(response.trackedEntities);
         def.resolve();
     });

@@ -1,0 +1,18 @@
+<div class="panel panel-default" ng-controller="SelectedInfoController">
+    <div class="panel-heading">
+        {{selectedWidget.title| translate}}
+        <span class="pull-right">
+            <a href ng-click="removeWidget(selectedWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
+        </span>        
+    </div>    
+    <div class="panel-body dashboard-element-container">
+        <div class="row" ng-repeat="selection in selections">
+            <div class="col-sm-6">
+                {{selection.title| translate}}
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="{{selection.value| translate}}" ng-disabled="true"/>                
+            </div>
+        </div>        
+    </div>
+</div>

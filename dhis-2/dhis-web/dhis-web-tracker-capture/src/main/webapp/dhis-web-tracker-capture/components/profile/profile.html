@@ -1,0 +1,66 @@
+
+<div class="panel panel-default" ng-controller="ProfileController">
+    <div class="panel-heading">
+        {{trackedEntity.name|| 'entity' | translate}} {{profileWidget.title| translate}}
+        <span class="nav-pills" ng-show="selectedEntity.attributes.length">
+            | <span><a href ng-click="showEdit()" title="{{'edit_profile'| translate}}">{{'edit'| translate}}</a></span>            
+        </span>
+        <span class="pull-right">
+            <a href ng-click="removeWidget(profileWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
+        </span>        
+    </div>
+    <table class="table-borderless table-striped">
+        <tr ng-repeat="attribute in selectedEntity.attributes">
+            <td>
+                {{attribute.displayName}}
+            </td>
+            <td>
+                <div ng-switch="attribute.type">
+                    <div ng-switch-when="date">
+                        <input type="text" class="form-control" ng-date ng-model="attribute.value"  value="attribute.value | date:'yyyy-MM-dd" ng-disabled="!editProfile"/>
+                    </div>
+                    <div ng-switch-when="trueOnly">
+                        <input type="checkbox" class="form-control" ng-model="attribute.value" ng-disabled="!editProfile"/>
+                    </div>
+                    <div ng-switch-when="bool">
+                        <select ng-model="attribute.value" class="form-control" ng-disabled="!editProfile">
+                            <option value="">{{'please_select'| translate}}</option>                        
+                            <option value="0">{{'no'| translate}}</option>
+                            <option value="1">{{'yes'| translate}}</option>
+                        </select>
+                    </div>
+                    <div ng-switch-when="combo">
+                        <input type="text"  
+                               class="form-control"
+                               ng-model="attribute.value"                                                 
+                               typeahead="option for option in attributes[attribute.attribute].optionSet.options | filter:$viewValue | limitTo:20" 
+                               typeahead-open-on-focus 
+                               ng-disabled="!editProfile"/>
+                    </div>
+                    <div ng-switch-when="number">
+                        <input type="number" class="form-control" ng-model="attribute.value" ng-disabled="!editProfile"/>
+                    </div>
+                    <div ng-switch-default>
+                        <input type="text"  class="form-control" ng-model="attribute.value" ng-disabled="!editProfile"/>                         
+                    </div>
+                </div>                                                                                                    
+            </td>
+        </tr>           
+    </table>
+
+    <div class="widget-content-container" ng-if="editProfile">
+
+        <button type="button" 
+                class="btn btn-default small-horizonal-spacing"
+                ng-click="save()">
+            {{'save'| translate}}
+        </button>        
+        <button type="button" 
+                class="btn btn-default small-horizonal-spacing" 
+                ng-click="cancel()">
+            {{'cancel'| translate}}
+        </button>        
+
+    </div>
+
+</div>
