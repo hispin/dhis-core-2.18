@@ -41,7 +41,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
@@ -51,6 +53,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 
 /**
  * Holds common values that are used during a validation run (either interactive
@@ -88,6 +93,10 @@ public class ValidationRunContext
     
     private int countOfSourcesToValidate;
 
+    private Set<CategoryOptionGroup> cogDimensionConstraints;
+
+    private Set<DataElementCategoryOption> coDimensionConstraints;
+
     private Collection<ValidationResult> validationResults;
 
     private ExpressionService expressionService;
@@ -123,14 +132,24 @@ public class ValidationRunContext
      * @param rules validation rules for validation
      * @param runType whether this is an INTERACTIVE or SCHEDULED run
      * @param lastScheduledRun (for SCHEDULED runs) date/time of previous run
+     * @param expressionService expression service
+     * @param periodService period service
+     * @param dataValueService data value service
+     * @param dataElementCategoryService data element category service
+     * @param userService user service
+     * @param currentUserService current user service
+     *
      * @return context object for this run
      */
     public static ValidationRunContext getNewValidationRunContext( Collection<OrganisationUnit> sources,
         Collection<Period> periods, DataElementCategoryOptionCombo attributeCombo, Collection<ValidationRule> rules,
         Map<String, Double> constantMap, ValidationRunType runType, Date lastScheduledRun,
         ExpressionService expressionService, PeriodService periodService,
-        DataValueService dataValueService, DataElementCategoryService dataElementCategoryService )
+        DataValueService dataValueService, DataElementCategoryService dataElementCategoryService,
+        UserService userService, CurrentUserService currentUserService )
     {
+        UserCredentials currentUserCredentials = currentUserService.getCurrentUser().getUserCredentials();
+
         ValidationRunContext context = new ValidationRunContext();
         context.runType = runType;
         context.lastScheduledRun = lastScheduledRun;
@@ -144,6 +163,8 @@ public class ValidationRunContext
         context.dataValueService = dataValueService;
         context.dataElementCategoryService = dataElementCategoryService;
         context.attributeCombo = attributeCombo;
+        context.cogDimensionConstraints = userService.getCogDimensionConstraints( currentUserCredentials );
+        context.coDimensionConstraints = userService.getCoDimensionConstraints( currentUserCredentials );
         context.initialize( sources, periods, rules );
         return context;
     }
@@ -381,7 +402,7 @@ public class ValidationRunContext
     }
 
     // -------------------------------------------------------------------------
-    // Set and get methods
+    // Get methods
     // -------------------------------------------------------------------------
 
     public Map<PeriodType, PeriodTypeExtended> getPeriodTypeExtendedMap()
@@ -427,6 +448,16 @@ public class ValidationRunContext
     public Collection<ValidationResult> getValidationResults()
     {
         return validationResults;
+    }
+
+    public Set<CategoryOptionGroup> getCogDimensionConstraints()
+    {
+        return cogDimensionConstraints;
+    }
+
+    public Set<DataElementCategoryOption> getCoDimensionConstraints()
+    {
+        return coDimensionConstraints;
     }
 
     public ExpressionService getExpressionService()

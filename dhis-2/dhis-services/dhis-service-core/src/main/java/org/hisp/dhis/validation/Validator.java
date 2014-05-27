@@ -43,6 +43,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.SystemUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 
 /**
  * Evaluates validation rules.
@@ -68,16 +71,19 @@ public class Validator
      * @param periodService Period Service reference
      * @param dataValueService Data Value Service reference
      * @param dataElementCategoryService Data Element Category Service reference
+     * @param userService user service
+     * @param currentUserService current user service
      * @return a collection of any validations that were found
      */
     public static Collection<ValidationResult> validate( Collection<OrganisationUnit> sources, Collection<Period> periods,
         Collection<ValidationRule> rules, DataElementCategoryOptionCombo attributeCombo, Date lastScheduledRun,
         ConstantService constantService, ExpressionService expressionService, PeriodService periodService,
-        DataValueService dataValueService, DataElementCategoryService dataElementCategoryService )
+        DataValueService dataValueService, DataElementCategoryService dataElementCategoryService,
+        UserService userService, CurrentUserService currentUserService )
     {
         ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods,
             attributeCombo, rules, constantService.getConstantMap(), ValidationRunType.SCHEDULED, lastScheduledRun,
-            expressionService, periodService, dataValueService, dataElementCategoryService );
+            expressionService, periodService, dataValueService, dataElementCategoryService, userService, currentUserService );
 
         int threadPoolSize = getThreadPoolSize( context );
         ExecutorService executor = Executors.newFixedThreadPool( threadPoolSize );

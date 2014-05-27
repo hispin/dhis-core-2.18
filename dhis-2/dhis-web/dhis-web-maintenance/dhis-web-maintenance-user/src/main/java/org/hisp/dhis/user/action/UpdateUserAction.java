@@ -37,6 +37,7 @@ import java.util.Set;
 
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -357,12 +358,30 @@ public class UpdateUserAction
         // ---------------------------------------------------------------------
 
         userCredentials.setCogsDimensionConstraints( new HashSet<CategoryOptionGroupSet>( currentUser.getUserCredentials().getCogsDimensionConstraints() ) );
-        
+        userCredentials.setCatDimensionConstraints( new HashSet<DataElementCategory>( currentUser.getUserCredentials().getCatDimensionConstraints() ) );
+
         for ( String id : dcSelected )
         {
             CategoryOptionGroupSet cogs = categoryService.getCategoryOptionGroupSet( id );
-            userCredentials.getCogsDimensionConstraints().add( cogs );
+
+            if ( cogs != null )
+            {
+                userCredentials.getCogsDimensionConstraints().add( cogs );
+                continue;
+            }
+
+            DataElementCategory cat = categoryService.getDataElementCategory( id );
+
+            if ( cat != null )
+            {
+                userCredentials.getCatDimensionConstraints().add( cat );
+                continue;
+            }
         }
+
+        // ---------------------------------------------------------------------
+        // Update User
+        // ---------------------------------------------------------------------
         
         userService.updateUserCredentials( userCredentials );
         userService.updateUser( user );

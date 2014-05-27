@@ -1,5 +1,7 @@
 package org.hisp.dhis.user;
 
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
@@ -8,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -149,6 +152,24 @@ public interface UserService
     User searchForUser( String query );
 
     List<User> queryForUsers( String query );
+
+    /**
+     * Returns a set of CategoryOptionGroups that may be seen by the current
+     * user, if the current user has any CategoryOptionGroupSet constraint(s).
+     *
+     * @param userCredentials User credentials to check restrictions for.
+     * @return Set of CategoryOptionGroups if constrained, else null.
+     */
+    public Set<CategoryOptionGroup> getCogDimensionConstraints( UserCredentials userCredentials );
+
+    /**
+     * Returns a set of CategoryOptions that may be seen by the current
+     * user, if the current user has any Category constraint(s).
+     *
+     * @param userCredentials User credentials to check restrictions for.
+     * @return Set of CategoryOptions if constrained, else null.
+     */
+    public Set<DataElementCategoryOption> getCoDimensionConstraints( UserCredentials userCredentials );
 
     // -------------------------------------------------------------------------
     // UserCredentials

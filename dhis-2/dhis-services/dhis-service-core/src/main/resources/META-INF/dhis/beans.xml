@@ -508,6 +508,8 @@
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 

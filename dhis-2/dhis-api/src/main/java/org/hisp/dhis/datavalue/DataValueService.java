@@ -30,9 +30,12 @@ package org.hisp.dhis.datavalue;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 import org.hisp.dhis.common.MapMap;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -314,6 +317,7 @@ public interface DataValueService
      */
     MapMap<Integer, DataElementOperand, Double> getDataValueMapByAttributeCombo( Collection<DataElement> dataElements, Date date,
             OrganisationUnit source, Collection<PeriodType> periodTypes, DataElementCategoryOptionCombo attributeCombo,
+            Set<CategoryOptionGroup> cogDimensionConstraints, Set<DataElementCategoryOption> coDimensionConstraints,
             MapMap<Integer, DataElementOperand, Date> lastUpdatedMap );
 
     /**

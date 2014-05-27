@@ -293,6 +293,9 @@ public class UserController
         user.getUserCredentials().getCogsDimensionConstraints().addAll(
             currentUserService.getCurrentUser().getUserCredentials().getCogsDimensionConstraints() );
 
+        user.getUserCredentials().getCatDimensionConstraints().addAll(
+            currentUserService.getCurrentUser().getUserCredentials().getCatDimensionConstraints() );
+
         String encodePassword = passwordManager.encodePassword( user.getUsername(),
             user.getUserCredentials().getPassword() );
         user.getUserCredentials().setPassword( encodePassword );

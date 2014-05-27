@@ -33,11 +33,14 @@ import static org.hisp.dhis.system.util.ValidationUtils.dataValueIsValid;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.MapMap;
+import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -243,9 +246,11 @@ public class DefaultDataValueService
     
     public MapMap<Integer, DataElementOperand, Double> getDataValueMapByAttributeCombo( Collection<DataElement> dataElements, Date date,
             OrganisationUnit source, Collection<PeriodType> periodTypes, DataElementCategoryOptionCombo attributeCombo,
+            Set<CategoryOptionGroup> cogDimensionConstraints, Set<DataElementCategoryOption> coDimensionConstraints,
             MapMap<Integer, DataElementOperand, Date> lastUpdatedMap )
     {
-        return dataValueStore.getDataValueMapByAttributeCombo( dataElements, date, source, periodTypes, attributeCombo, lastUpdatedMap );
+        return dataValueStore.getDataValueMapByAttributeCombo( dataElements, date, source, periodTypes, attributeCombo,
+               cogDimensionConstraints, coDimensionConstraints, lastUpdatedMap );
     }
     
     public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )
