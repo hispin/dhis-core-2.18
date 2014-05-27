@@ -28,8 +28,14 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.webdomain.Resource;
+import org.hisp.dhis.webapi.webdomain.Resources;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -43,6 +49,9 @@ import java.io.IOException;
 @Controller
 public class IndexController
 {
+    @Autowired
+    private SchemaService schemaService;
+
     //--------------------------------------------------------------------------
     // GET
     //--------------------------------------------------------------------------
@@ -50,14 +59,30 @@ public class IndexController
     @RequestMapping( value = "/api", method = RequestMethod.GET )
     public void getIndex( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        String location = response.encodeRedirectURL( "/resources" );
+        String location = response.encodeRedirectURL( "/" );
         response.sendRedirect( ContextUtils.getRootPath( request ) + location );
     }
 
     @RequestMapping( value = "/", method = RequestMethod.GET )
-    public void getIndexWithSlash( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public String getResources( Model model, HttpServletRequest request )
     {
-        String location = response.encodeRedirectURL( "/resources" );
-        response.sendRedirect( ContextUtils.getRootPath( request ) + location );
+        Resources resources = new Resources();
+
+        for ( Schema schema : schemaService.getSchemas() )
+        {
+            if ( schema.haveEndpoint() )
+            {
+                Resource resource = new Resource();
+                resource.setSingular( schema.getSingular() );
+                resource.setPlural( schema.getPlural() );
+                resource.setHref( ContextUtils.getRootPath( request ) + schema.getApiEndpoint() );
+
+                resources.getResources().add( resource );
+            }
+        }
+
+        model.addAttribute( "model", resources );
+
+        return "resources";
     }
 }

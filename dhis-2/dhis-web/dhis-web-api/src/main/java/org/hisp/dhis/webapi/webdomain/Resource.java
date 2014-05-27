@@ -29,16 +29,9 @@ package org.hisp.dhis.webapi.webdomain;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.view.DetailedView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * At some point this class will be extended to show all available options
@@ -46,77 +39,59 @@ import java.util.List;
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "resource", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "resource", namespace = DxfNamespaces.DXF_2_0)
 public class Resource
-    extends BaseLinkableObject
 {
-    private String name;
+    private String singular;
 
-    private Class<?> clazz;
+    private String plural;
 
-    private List<String> methods = new ArrayList<String>();
-
-    private List<String> mediaTypes = new ArrayList<String>();
+    private String href;
 
     public Resource()
     {
 
     }
 
-    public Resource( String name, Class<?> clazz, List<String> methods, List<String> mediaTypes )
+    public Resource( String singular, String plural )
     {
-        this.name = name;
-        this.clazz = clazz;
-        this.methods = methods;
-        this.mediaTypes = mediaTypes;
+        this.singular = singular;
+        this.plural = plural;
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class} )
     @JacksonXmlProperty( isAttribute = true )
-    public String getName()
+    public String getSingular()
     {
-        return name;
+        return singular;
     }
 
-    public void setName( String name )
+    public void setSingular( String singular )
     {
-        this.name = name;
-    }
-
-    @JsonProperty
-    @JacksonXmlElementWrapper( localName = "methods", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "method", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getMethods()
-    {
-        return methods;
-    }
-
-    public void setMethods( List<String> methods )
-    {
-        this.methods = methods;
+        this.singular = singular;
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "mediaTypes", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "mediaType", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getMediaTypes()
+    @JacksonXmlProperty( isAttribute = true )
+    public String getPlural()
     {
-        return mediaTypes;
+        return plural;
     }
 
-    public void setMediaTypes( List<String> mediaTypes )
+    public void setPlural( String plural )
     {
-        this.mediaTypes = mediaTypes;
+        this.plural = plural;
     }
 
-    public Class<?> getClazz()
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getHref()
     {
-        return clazz;
+        return href;
     }
 
-    public void setClazz( Class<?> clazz )
+    public void setHref( String href )
     {
-        this.clazz = clazz;
+        this.href = href;
     }
 }

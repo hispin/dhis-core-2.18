@@ -34,21 +34,14 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseCollection;
 import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
-import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * At some point this class will be extended to show all available options
- * for a current user for this resource. For now it is only used for index page.
- *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "dxf2", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "dxf2", namespace = DxfNamespaces.DXF_2_0)
 public class Resources
     extends BaseCollection
 {
@@ -56,12 +49,12 @@ public class Resources
 
     public Resources()
     {
-        generateResources();
+
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "resources", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "resource", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlElementWrapper(localName = "resources", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "resource", namespace = DxfNamespaces.DXF_2_0)
     public List<Resource> getResources()
     {
         return resources;
@@ -70,35 +63,5 @@ public class Resources
     public void setResources( List<Resource> resources )
     {
         this.resources = resources;
-    }
-
-    //----------------------------------------------------------------------------------------------
-    // Helpers
-    //----------------------------------------------------------------------------------------------
-
-    private void generateResources()
-    {
-        List<String> requestMethods = new ArrayList<String>();
-        requestMethods.add( RequestMethod.GET.toString() );
-
-        List<String> mediaTypes = new ArrayList<String>();
-        mediaTypes.add( MediaType.TEXT_HTML.toString() );
-        mediaTypes.add( MediaType.APPLICATION_JSON.toString() );
-        mediaTypes.add( MediaType.APPLICATION_XML.toString() );
-        mediaTypes.add( new MediaType( "application", "javascript" ).toString() );
-
-        for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getAllExportMap().entrySet() )
-        {
-            resources.add( new Resource( StringUtils.capitalize( entry.getValue() ), entry.getKey(), requestMethods, mediaTypes ) );
-        }
-
-        Collections.sort(resources, new Comparator<Resource>()
-        {
-            @Override
-            public int compare( Resource o1, Resource o2 )
-            {
-                return o1.getName().compareTo( o2.getName() );
-            }
-        });
     }
 }
