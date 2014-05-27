@@ -1038,8 +1038,11 @@ Ext.onReady( function() {
 
             // ou
             if (Ext.isArray(view.organisationUnits)) {
+                paramString += '&dimension=ou:';
+
 				for (var i = 0; i < view.organisationUnits.length; i++) {
-					paramString += '&dimension=ou:' + view.organisationUnits[i].id;
+					paramString += view.organisationUnits[i].id;
+                    paramString += i < view.organisationUnits.length - 1 ? ';' : '';
 				}
 			}
 

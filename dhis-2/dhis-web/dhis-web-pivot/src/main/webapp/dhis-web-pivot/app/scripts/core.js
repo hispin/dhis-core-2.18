@@ -110,6 +110,10 @@ Ext.onReady( function() {
 			dimConf.objectNameMap[dimConf.organisationUnit.objectName] = dimConf.organisationUnit;
 			dimConf.objectNameMap[dimConf.dimension.objectName] = dimConf.dimension;
 
+			dimConf.objectNameMap['ou1'] = dimConf.organisationUnit;
+			dimConf.objectNameMap['ou2'] = dimConf.organisationUnit;
+			dimConf.objectNameMap['ou3'] = dimConf.organisationUnit;
+
 			conf.period = {
 				periodTypes: [
 					{id: 'Daily', name: NS.i18n.daily},
@@ -1110,8 +1114,10 @@ Ext.onReady( function() {
                 addOuHierarchyDimensions = function() {
                     var axis = xLayout.dimensionNameAxisMap[ou],
                         ouHierarchy = response.metaData.ouHierarchy,
-                        levels = [],
+                        idsByLevel = [],
+                        objectsByLevel = [],
                         ouIndex,
+                        numLevels = 0,
                         a;
 
                     // get ou index
@@ -1122,25 +1128,75 @@ Ext.onReady( function() {
                         }
                     }
 
-                    // get levels
+                    // number of levels
                     for (var key in ouHierarchy) {
                         if (ouHierarchy.hasOwnProperty(key)) {
                             a = Ext.Array.clean(ouHierarchy[key].split('/'));
 
-                            if (!levels[a.length]) {
-                                levels[a.length] = [];
-                            }
+                            numLevels = Math.max(a.length, numLevels);
+                        }
+                    }
 
-                            levels[a.length].push({
-                                id: key,
-                                name: response.metaData.names[key]
+                    numLevels = numLevels + 1;
+
+                    // create level arrays
+                    for (var i = 0; i < numLevels; i++) {
+                        idsByLevel.push([]);
+                        objectsByLevel.push([]);
+                    }
+
+                    // populate levels
+                    for (var key in ouHierarchy) {
+                        if (ouHierarchy.hasOwnProperty(key)) {
+                            a = Ext.Array.clean(ouHierarchy[key].split('/'));
+                            a.push(key);
+
+                            if (a.length === numLevels) {
+                                for (var i = 0, id; i < a.length; i++) {
+                                    id = a[i];
+
+                                    idsByLevel[i].push(id);
+                                }
+                            }
+                        }
+                    }
+
+                    // unique only, create objects
+                    for (var i = 0, idLevel; i < idsByLevel.length; i++) {
+                        idLevel = idsByLevel[i];
+                        idLevel = Ext.Array.unique(idLevel);
+
+                        for (var j = 0; j < idLevel.length; j++) {
+                            objectsByLevel[i].push({
+                                id: idLevel[j],
+                                name: response.metaData.names[idLevel[j]]
                             });
                         }
                     }
 
-                    levels = Ext.Array.clean(levels);
+                    objectsByLevel = Ext.Array.clean(objectsByLevel);
+                    objectsByLevel.shift();
 
-                    console.log("levels", levels);
+                    // remove ou dimension
+                    axis = Ext.Array.erase(axis, ouIndex, 1);
+
+                    // insert levels
+                    for (var i = 0; i < objectsByLevel.length; i++) {
+                        Ext.Array.insert(axis, ouIndex, [{
+                            dimension: 'ou' + (i + 1),
+                            dimensionName: 'ou' + (i + 1),
+                            objectName: 'ou' + (i + 1),
+                            ids: idsByLevel[i],
+                            items: objectsByLevel[i]
+                        }]);
+
+                        ouIndex = ouIndex + 1;
+                    }
+
+                console.log("axis", axis);
+                console.log("objectsByLevel", objectsByLevel);
+
+
                 };
 
                 // Set items from init/metaData/xLayout
@@ -1260,9 +1316,9 @@ Ext.onReady( function() {
                 }
 
                 // Add ou hierarchy dimensions
-                if (xOuDimension && xLayout.showHierarchy) {
-                    addOuHierarchyDimensions();
-                }
+                //if (xOuDimension && xLayout.showHierarchy) {
+                    //addOuHierarchyDimensions();
+                //}
 
                 // Re-layout
                 layout = api.layout.Layout(xLayout);

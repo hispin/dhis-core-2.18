@@ -1260,302 +1260,12 @@ Ext.onReady( function() {
 		return window;
 	};
 
-    QueryLayoutWindow = function() {
-		var dimension,
-			dimensionStore,
-			col,
-			colStore,
-
-			getStore,
-			getStoreKeys,
-			getCmpHeight,
-			getSetup,
-            addDimension,
-            removeDimension,
-            saveState,
-            resetData,
-            reset,
-            dimensionStoreMap = {},
-
-			dimensionPanel,
-			window,
-
-			margin = 1,
-			defaultWidth = 160,
-			defaultHeight = 158,
-			maxHeight = (ns.app.viewport.getHeight() - 100) / 2,
-
-			dataType = 'individual_cases';
-
-		getStore = function(data) {
-			var config = {};
-
-			config.fields = ['id', 'name'];
-
-			if (data) {
-				config.data = data;
-			}
-
-			config.getDimensionNames = function() {
-				var dimensionNames = [];
-
-				this.each(function(r) {
-					dimensionNames.push(r.data.id);
-				});
-
-				return Ext.clone(dimensionNames);
-			};
-
-			return Ext.create('Ext.data.Store', config);
-		};
-
-		getStoreKeys = function(store) {
-			var keys = [],
-				items = store.data.items;
-
-			if (items) {
-				for (var i = 0; i < items.length; i++) {
-					keys.push(items[i].data.id);
-				}
-			}
-
-			return keys;
-		};
-
-		dimensionStore = getStore();
-		dimensionStore.reset = function(all) {
-			dimensionStore.removeAll();
-		};
-
-		colStore = getStore();
-
-		getCmpHeight = function() {
-			var size = dimensionStore.totalCount,
-				expansion = 10,
-				height = defaultHeight,
-				diff;
-
-			if (size > 10) {
-				diff = size - 10;
-				height += (diff * expansion);
-			}
-
-			height = height > maxHeight ? maxHeight : height;
-
-			return height;
-		};
-
-		dimension = Ext.create('Ext.ux.form.MultiSelect', {
-			cls: 'ns-toolbar-multiselect-leftright',
-			width: defaultWidth,
-			height: (getCmpHeight() * 2) + margin,
-			style: 'margin-right:' + margin + 'px; margin-bottom:0px',
-			valueField: 'id',
-			displayField: 'name',
-			dragGroup: 'querylayoutDD',
-			dropGroup: 'querylayoutDD',
-			ddReorder: false,
-			store: dimensionStore,
-			tbar: {
-				height: 25,
-				items: {
-					xtype: 'label',
-					text: NS.i18n.filter,
-					cls: 'ns-toolbar-multiselect-leftright-label'
-				}
-			},
-			listeners: {
-				afterrender: function(ms) {
-					ms.boundList.on('itemdblclick', function(view, record) {
-						ms.store.remove(record);
-						colStore.add(record);
-					});
-
-					ms.store.on('add', function() {
-						Ext.defer( function() {
-							ms.boundList.getSelectionModel().deselectAll();
-						}, 10);
-					});
-				}
-			}
-		});
-
-		col = Ext.create('Ext.ux.form.MultiSelect', {
-			cls: 'ns-toolbar-multiselect-leftright',
-			width: defaultWidth,
-			height: (getCmpHeight() * 2) + margin,
-			style: 'margin-bottom: 0px',
-			valueField: 'id',
-			displayField: 'name',
-			dragGroup: 'querylayoutDD',
-			dropGroup: 'querylayoutDD',
-			store: colStore,
-			tbar: {
-				height: 25,
-				items: {
-					xtype: 'label',
-					text: NS.i18n.column,
-					cls: 'ns-toolbar-multiselect-leftright-label'
-				}
-			},
-			listeners: {
-				afterrender: function(ms) {
-					ms.boundList.on('itemdblclick', function(view, record) {
-						ms.store.remove(record);
-						dimensionStore.add(record);
-					});
-
-					ms.store.on('add', function() {
-						Ext.defer( function() {
-							ms.boundList.getSelectionModel().deselectAll();
-						}, 10);
-					});
-				}
-			}
-		});
-
-		getSetup = function() {
-			return {
-				col: getStoreKeys(colStore)
-			};
-		};
-
-        addDimension = function(record) {
-            var store = dimensionStoreMap[record.id] || dimensionStore;
-            store.add(record);
-        };
-
-        removeDimension = function(dataElementId) {
-            var stores = [dimensionStore, colStore];
-
-            for (var i = 0, store, index; i < stores.length; i++) {
-                store = stores[i];
-                index = store.findExact('id', dataElementId);
-
-                if (index != -1) {
-                    store.remove(store.getAt(index));
-                    dimensionStoreMap[dataElementId] = store;
-                }
-            }
-        };
-
-		saveState = function(map) {
-            map = map || dimensionStoreMap;
-
-            dimensionStore.each(function(record) {
-                map[record.data.id] = dimensionStore;
-            });
-
-            colStore.each(function(record) {
-                map[record.data.id] = colStore;
-            });
-
-            return map;
-        };
-
-		resetData = function() {
-			var map = saveState({}),
-				keys = ['pe', 'latitude', 'longitude', 'ou'];
-
-			for (var key in map) {
-				if (map.hasOwnProperty(key) && !Ext.Array.contains(keys, key)) {
-					removeDimension(key);
-				}
-			}
-		};
-
-		reset = function() {
-			colStore.removeAll();
-			dimensionStore.removeAll();
-
-			colStore.add({id: 'pe', name: 'Event date'});
-			colStore.add({id: 'ou', name: 'Organisation unit'});
-
-			dimensionStore.add({id: 'longitude', name: 'Longitude'});
-			dimensionStore.add({id: 'latitude', name: 'Latitude'});
-		};
-
-		window = Ext.create('Ext.window.Window', {
-			title: NS.i18n.table_layout,
-            layout: 'column',
-			bodyStyle: 'background-color:#fff; padding:' + margin + 'px',
-			closeAction: 'hide',
-			autoShow: true,
-			modal: true,
-			resizable: false,
-			getSetup: getSetup,
-			dimensionStore: dimensionStore,
-			dataType: dataType,
-			colStore: colStore,
-            addDimension: addDimension,
-            removeDimension: removeDimension,
-            saveState: saveState,
-            resetData: resetData,
-            reset: reset,
-			hideOnBlur: true,
-			items: [
-                dimension,
-                col
-            ],
-			bbar: [
-				'->',
-				{
-					text: NS.i18n.hide,
-					listeners: {
-						added: function(b) {
-							b.on('click', function() {
-								window.hide();
-							});
-						}
-					}
-				},
-				{
-					text: '<b>' + NS.i18n.update + '</b>',
-					listeners: {
-						added: function(b) {
-							b.on('click', function() {
-								var config = ns.core.web.report.getLayoutConfig();
-
-								if (!config) {
-									return;
-								}
-
-								// keep sorting
-								if (ns.app.layout && ns.app.layout.sorting) {
-									config.sorting = Ext.clone(ns.app.layout.sorting);
-								}
-
-								window.hide();
-
-								ns.core.web.report.getData(config, false);
-							});
-						}
-					}
-				}
-			],
-			listeners: {
-				show: function(w) {
-					if (ns.app.layoutButton.rendered) {
-						ns.core.web.window.setAnchorPosition(w, ns.app.layoutButton);
-
-						if (!w.hasHideOnBlurHandler) {
-							ns.core.web.window.addHideOnBlurHandler(w);
-						}
-					}
-				},
-				render: function() {
-					reset();
-				}
-			}
-		});
-
-		return window;
-	};
-
     AggregateOptionsWindow = function() {
 		var showTotals,
 			showSubTotals,
 			hideEmptyRows,
+            limit,
+            countType,
             aggregationType,
 			showHierarchy,
 			digitGroupSeparator,
@@ -1569,7 +1279,7 @@ Ext.onReady( function() {
 			style,
 			parameters,
 
-			comboboxWidth = 262,
+			comboboxWidth = 280,
 			window;
 
 		showTotals = Ext.create('Ext.form.field.Checkbox', {
@@ -1593,8 +1303,29 @@ Ext.onReady( function() {
         limit = Ext.create('Ext.ux.container.LimitContainer', {
             boxLabel: NS.i18n.limit,
             sortOrder: 1,
-            topLimit: 10
+            topLimit: 10,
+            comboboxWidth: comboboxWidth
         });
+
+        countType = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'ns-combo',
+			style: 'margin-bottom:2px',
+			width: comboboxWidth,
+			labelWidth: 130,
+			fieldLabel: NS.i18n.count_type,
+			labelStyle: 'color:#333',
+			queryMode: 'local',
+			valueField: 'id',
+			editable: false,
+			value: 'events',
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'text'],
+				data: [
+					{id: 'events', text: NS.i18n.events},
+					{id: 'tracked_entity_instances', text: NS.i18n.tracked_entity_instances}
+				]
+			})
+		});
 
 		showHierarchy = Ext.create('Ext.form.field.Checkbox', {
 			boxLabel: NS.i18n.show_hierarchy,
@@ -1684,7 +1415,8 @@ Ext.onReady( function() {
 				showTotals,
 				showSubTotals,
 				hideEmptyRows,
-                limit
+                limit,
+                countType
                 //aggregationType
 			]
 		};
@@ -1723,6 +1455,7 @@ Ext.onReady( function() {
 					hideEmptyRows: hideEmptyRows.getValue(),
                     sortOrder: limit.getSortOrder(),
                     topLimit: limit.getTopLimit(),
+					countType: countType.getValue(),
 					showHierarchy: showHierarchy.getValue(),
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue(),
@@ -1735,6 +1468,7 @@ Ext.onReady( function() {
 				showSubTotals.setValue(Ext.isBoolean(layout.showSubTotals) ? layout.showSubTotals : true);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
 				limit.setValues(layout.sortOrder, layout.topLimit);
+				countType.setValue(Ext.isString(layout.countType) ? layout.countType : 'events');
                 //aggregationType.setValue(Ext.isString(layout.aggregationType) ? layout.aggregationType : 'default');
 				showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
 				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
@@ -1818,224 +1552,8 @@ Ext.onReady( function() {
 					w.showSubTotals = showSubTotals;
 					w.hideEmptyRows = hideEmptyRows;
                     w.limit = limit;
+					w.countType = countType;
 					w.showHierarchy = showHierarchy;
-					w.displayDensity = displayDensity;
-					w.fontSize = fontSize;
-					w.digitGroupSeparator = digitGroupSeparator;
-				}
-			}
-		});
-
-		return window;
-	};
-
-    QueryOptionsWindow = function() {
-		var showHierarchy,
-			digitGroupSeparator,
-			displayDensity,
-			fontSize,
-			reportingPeriod,
-			organisationUnit,
-			parentOrganisationUnit,
-
-			data,
-			style,
-			parameters,
-
-			comboboxWidth = 262,
-			window;
-
-		//showHierarchy = Ext.create('Ext.form.field.Checkbox', {
-			//boxLabel: NS.i18n.show_hierarchy,
-			//style: 'margin-bottom:4px'
-		//});
-
-		displayDensity = Ext.create('Ext.form.field.ComboBox', {
-			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
-			width: comboboxWidth,
-			labelWidth: 130,
-			fieldLabel: NS.i18n.display_density,
-			labelStyle: 'color:#333',
-			queryMode: 'local',
-			valueField: 'id',
-			editable: false,
-			value: 'normal',
-			store: Ext.create('Ext.data.Store', {
-				fields: ['id', 'text'],
-				data: [
-					{id: 'comfortable', text: NS.i18n.comfortable},
-					{id: 'normal', text: NS.i18n.normal},
-					{id: 'compact', text: NS.i18n.compact}
-				]
-			})
-		});
-
-		fontSize = Ext.create('Ext.form.field.ComboBox', {
-			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
-			width: comboboxWidth,
-			labelWidth: 130,
-			fieldLabel: NS.i18n.font_size,
-			labelStyle: 'color:#333',
-			queryMode: 'local',
-			valueField: 'id',
-			editable: false,
-			value: 'normal',
-			store: Ext.create('Ext.data.Store', {
-				fields: ['id', 'text'],
-				data: [
-					{id: 'large', text: NS.i18n.large},
-					{id: 'normal', text: NS.i18n.normal},
-					{id: 'small', text: NS.i18n.small_}
-				]
-			})
-		});
-
-		digitGroupSeparator = Ext.create('Ext.form.field.ComboBox', {
-			labelStyle: 'color:#333',
-			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
-			width: comboboxWidth,
-			labelWidth: 130,
-			fieldLabel: NS.i18n.digit_group_separator,
-			queryMode: 'local',
-			valueField: 'id',
-			editable: false,
-			value: 'space',
-			store: Ext.create('Ext.data.Store', {
-				fields: ['id', 'text'],
-				data: [
-					{id: 'comma', text: 'Comma'},
-					{id: 'space', text: 'Space'},
-					{id: 'none', text: 'None'}
-				]
-			})
-		});
-
-		//legendSet = Ext.create('Ext.form.field.ComboBox', {
-			//cls: 'ns-combo',
-			//style: 'margin-bottom:3px',
-			//width: comboboxWidth,
-			//labelWidth: 130,
-			//fieldLabel: NS.i18n.legend_set,
-			//valueField: 'id',
-			//displayField: 'name',
-			//editable: false,
-			//value: 0,
-			//store: ns.app.stores.legendSet
-		//});
-
-		//organisationUnits = {
-			//bodyStyle: 'border:0 none',
-			//style: 'margin-left:14px',
-			//items: [
-				//showHierarchy
-			//]
-		//};
-
-		style = {
-			bodyStyle: 'border:0 none',
-			style: 'margin-left:14px',
-			items: [
-				displayDensity,
-				fontSize,
-				digitGroupSeparator
-				//legendSet
-			]
-		};
-
-		window = Ext.create('Ext.window.Window', {
-			title: NS.i18n.table_options,
-			bodyStyle: 'background-color:#fff; padding:5px 5px 3px',
-			closeAction: 'hide',
-			autoShow: true,
-			modal: true,
-			resizable: false,
-			hideOnBlur: true,
-			getOptions: function() {
-				return {
-					showTotals: false,
-					showSubTotals: false,
-					hideEmptyRows: false,
-                    sortOrder: 0,
-                    topLimit: 0,
-					showHierarchy: false,
-					displayDensity: displayDensity.getValue(),
-					fontSize: fontSize.getValue(),
-					digitGroupSeparator: digitGroupSeparator.getValue()
-					//legendSet: {id: legendSet.getValue()}
-				};
-			},
-			setOptions: function(layout) {
-				//showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
-				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
-				fontSize.setValue(Ext.isString(layout.fontSize) ? layout.fontSize : 'normal');
-				digitGroupSeparator.setValue(Ext.isString(layout.digitGroupSeparator) ? layout.digitGroupSeparator : 'space');
-				//legendSet.setValue(Ext.isObject(layout.legendSet) && Ext.isString(layout.legendSet.id) ? layout.legendSet.id : 0);
-			},
-			items: [
-				//{
-					//bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					//style: 'margin-bottom:6px; margin-left:2px',
-					//html: NS.i18n.organisation_units
-				//},
-				//organisationUnits,
-				//{
-					//bodyStyle: 'border:0 none; padding:5px'
-				//},
-				{
-					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
-					style: 'margin-bottom:6px; margin-left:2px',
-					html: NS.i18n.style
-				},
-				style
-			],
-			bbar: [
-				'->',
-				{
-					text: NS.i18n.hide,
-					handler: function() {
-						window.hide();
-					}
-				},
-				{
-					text: '<b>' + NS.i18n.update + '</b>',
-					handler: function() {
-						var config = ns.core.web.report.getLayoutConfig();
-							//layout = ns.core.api.layout.Layout(config);
-
-						if (!config) {
-							return;
-						}
-
-						// keep sorting
-						if (ns.app.layout && ns.app.layout.sorting) {
-							config.sorting = Ext.clone(ns.app.layout.sorting);
-						}
-
-						window.hide();
-
-						ns.core.web.report.getData(config, false);
-					}
-				}
-			],
-			listeners: {
-				show: function(w) {
-					if (ns.app.optionsButton.rendered) {
-						ns.core.web.window.setAnchorPosition(w, ns.app.optionsButton);
-
-						if (!w.hasHideOnBlurHandler) {
-							ns.core.web.window.addHideOnBlurHandler(w);
-						}
-					}
-
-					//if (!legendSet.store.isLoaded) {
-						//legendSet.store.load();
-					//}
-
-					// cmp
-					//w.showHierarchy = showHierarchy;
 					w.displayDensity = displayDensity;
 					w.fontSize = fontSize;
 					w.digitGroupSeparator = digitGroupSeparator;
@@ -2076,7 +1594,7 @@ Ext.onReady( function() {
 			windowWidth = 500,
 			windowCmpWidth = windowWidth - 14;
 
-		ns.app.stores.eventReport.on('load', function(store, records) {
+		ns.app.stores.eventChart.on('load', function(store, records) {
 			var pager;
 
 			if (store.proxy.reader && store.proxy.reader.jsonData && store.proxy.reader.jsonData.pager) {
@@ -2125,7 +1643,7 @@ Ext.onReady( function() {
 
 		NameWindow = function(id) {
 			var window,
-				record = ns.app.stores.eventReport.getById(id);
+				record = ns.app.stores.eventChart.getById(id);
 
 			nameTextfield = Ext.create('Ext.form.field.Text', {
 				height: 26,
@@ -2152,7 +1670,7 @@ Ext.onReady( function() {
 
 					if (favorite && favorite.name) {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/eventReports/',
+							url: ns.core.init.contextPath + '/api/eventCharts/',
 							method: 'POST',
 							headers: {'Content-Type': 'application/json'},
 							params: Ext.encode(favorite),
@@ -2166,7 +1684,7 @@ Ext.onReady( function() {
 								ns.app.layout.id = id;
 								ns.app.layout.name = name;
 
-								ns.app.stores.eventReport.loadStore();
+								ns.app.stores.eventChart.loadStore();
 
 								ns.app.shareButton.enable();
 
@@ -2181,25 +1699,25 @@ Ext.onReady( function() {
 				text: NS.i18n.update,
 				handler: function() {
 					var name = nameTextfield.getValue(),
-						eventReport;
+						eventChart;
 
 					if (id && name) {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/eventReports/' + id + '.json?viewClass=dimensional&links=false',
+							url: ns.core.init.contextPath + '/api/eventCharts/' + id + '.json?viewClass=dimensional&links=false',
 							method: 'GET',
 							failure: function(r) {
 								ns.core.web.mask.show();
 								alert(r.responseText);
 							},
 							success: function(r) {
-								eventReport = Ext.decode(r.responseText);
-								eventReport.name = name;
+								eventChart = Ext.decode(r.responseText);
+								eventChart.name = name;
 
 								Ext.Ajax.request({
-									url: ns.core.init.contextPath + '/api/eventReports/' + eventReport.id,
+									url: ns.core.init.contextPath + '/api/eventCharts/' + eventReport.id,
 									method: 'PUT',
 									headers: {'Content-Type': 'application/json'},
-									params: Ext.encode(eventReport),
+									params: Ext.encode(eventChart),
 									failure: function(r) {
 										ns.core.web.mask.show();
 										alert(r.responseText);
@@ -2213,7 +1731,7 @@ Ext.onReady( function() {
 											}
 										}
 
-										ns.app.stores.eventReport.loadStore();
+										ns.app.stores.eventChart.loadStore();
 										window.destroy();
 									}
 								});
@@ -2290,8 +1808,8 @@ Ext.onReady( function() {
 							this.currentValue = this.getValue();
 
 							var value = this.getValue(),
-								url = value ? ns.core.init.contextPath + '/api/eventReports.json?include=id,name,access&filter=name:like:' + value : null;
-								store = ns.app.stores.eventReport;
+								url = value ? ns.core.init.contextPath + '/api/eventCharts.json?include=id,name,access&filter=name:like:' + value : null;
+								store = ns.app.stores.eventChart;
 
 							store.page = 1;
 							store.loadStore(url);
@@ -2306,8 +1824,8 @@ Ext.onReady( function() {
 			text: NS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/eventReports.json?include=id,name,access&filter=name:like:' + value : null;
-					store = ns.app.stores.eventReport;
+					url = value ? ns.core.init.contextPath + '/api/eventCharts.json?include=id,name,access&filter=name:like:' + value : null;
+					store = ns.app.stores.eventChart;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
 				store.loadStore(url);
@@ -2318,8 +1836,8 @@ Ext.onReady( function() {
 			text: NS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/eventReports/query/' + value + '.json?viewClass=sharing&links=false' : null,
-					store = ns.app.stores.eventReport;
+					url = value ? ns.core.init.contextPath + '/api/eventCharts/query/' + value + '.json?viewClass=sharing&links=false' : null,
+					store = ns.app.stores.eventChart;
 
 				store.page = store.page + 1;
 				store.loadStore(url);
@@ -2399,7 +1917,7 @@ Ext.onReady( function() {
 
 										if (confirm(message)) {
 											Ext.Ajax.request({
-												url: ns.core.init.contextPath + '/api/eventReports/' + record.data.id,
+												url: ns.core.init.contextPath + '/api/eventCharts/' + record.data.id,
 												method: 'PUT',
 												headers: {'Content-Type': 'application/json'},
 												params: Ext.encode(favorite),
@@ -2410,7 +1928,7 @@ Ext.onReady( function() {
 													ns.app.layout.name = true;
 													ns.app.xLayout.name = true;
 
-													ns.app.stores.eventReport.loadStore();
+													ns.app.stores.eventChart.loadStore();
 
 													ns.app.shareButton.enable();
 												}
@@ -2433,7 +1951,7 @@ Ext.onReady( function() {
 
 								if (record.data.access.manage) {
 									Ext.Ajax.request({
-										url: ns.core.init.contextPath + '/api/sharing?type=eventReport&id=' + record.data.id,
+										url: ns.core.init.contextPath + '/api/sharing?type=eventChart&id=' + record.data.id,
 										method: 'GET',
 										failure: function(r) {
 											ns.app.viewport.mask.hide();
@@ -2462,7 +1980,7 @@ Ext.onReady( function() {
 
 									if (confirm(message)) {
 										Ext.Ajax.request({
-											url: ns.core.init.contextPath + '/api/eventReports/' + record.data.id,
+											url: ns.core.init.contextPath + '/api/eventCharts/' + record.data.id,
 											method: 'DELETE',
 											success: function() {
 												ns.app.stores.eventReport.loadStore();
@@ -2479,7 +1997,7 @@ Ext.onReady( function() {
 					width: 6
 				}
 			],
-			store: ns.app.stores.eventReport,
+			store: ns.app.stores.eventChart,
 			bbar: [
 				info,
 				'->',
@@ -2493,7 +2011,7 @@ Ext.onReady( function() {
 					this.store.page = 1;
 					this.store.loadStore();
 
-					ns.app.stores.eventReport.on('load', function() {
+					ns.app.stores.eventChart.on('load', function() {
 						if (this.isVisible()) {
 							this.fireEvent('afterrender');
 						}
@@ -2853,7 +2371,7 @@ Ext.onReady( function() {
 					text: NS.i18n.save,
 					handler: function() {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/sharing?type=eventReport&id=' + sharing.object.id,
+							url: ns.core.init.contextPath + '/api/sharing?type=eventChart&id=' + sharing.object.id,
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json'
@@ -2907,8 +2425,8 @@ Ext.onReady( function() {
 
 			linkPanel = Ext.create('Ext.panel.Panel', {
 				html: function() {
-					var url = ns.core.init.contextPath + '/dhis-web-event-reports/app/index.html?id=' + ns.app.layout.id,
-						apiUrl = ns.core.init.contextPath + '/api/eventReports/' + ns.app.layout.id + '/data.html',
+					var url = ns.core.init.contextPath + '/dhis-web-event-charts/app/index.html?id=' + ns.app.layout.id,
+						apiUrl = ns.core.init.contextPath + '/api/eventCharts/' + ns.app.layout.id + '/data.html',
 						html = '';
 
 					html += '<div><b>Report link: </b><span class="user-select"><a href="' + url + '" target="_blank">' + url + '</a></span></div>';
@@ -5663,7 +5181,7 @@ Ext.onReady( function() {
 				}
 
 				Ext.Ajax.request({
-					url: init.contextPath + '/api/eventReports/' + id + '.json?viewClass=dimensional&links=false',
+					url: init.contextPath + '/api/eventCharts/' + id + '.json?viewClass=dimensional&links=false',
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
 						alert(r.responseText);
@@ -5863,11 +5381,28 @@ Ext.onReady( function() {
 
 	// viewport
 	createViewport = function() {
-        var caseButton,
-			aggregateButton,
-			paramButtonMap = {},
-			typeToolbar,
-            onTypeClick,
+        var eventChartStore,
+
+			buttons = [],
+            buttonAddedListener,
+            column,
+            stackedcolumn,
+            bar,
+            stackedbar,
+            line,
+            area,
+            pie,
+            radar,
+            chartType,
+            getDimensionStore,
+            colStore,
+            rowStore,
+            filterStore,
+            series,
+            category,
+            filter,
+            layout,
+            
 			widget,
 			accordion,
 			westRegion,
@@ -5887,19 +5422,19 @@ Ext.onReady( function() {
 
 		ns.app.stores = ns.app.stores || {};
 
-		eventReportStore = Ext.create('Ext.data.Store', {
+		eventChartStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'lastUpdated', 'access'],
 			proxy: {
 				type: 'ajax',
 				reader: {
 					type: 'json',
-					root: 'eventReports'
+					root: 'eventCharts'
 				}
 			},
 			isLoaded: false,
 			pageSize: 10,
 			page: 1,
-			defaultUrl: ns.core.init.contextPath + '/api/eventReports.json?include=id,name,access',
+			defaultUrl: ns.core.init.contextPath + '/api/eventCharts.json?include=id,name,access',
 			loadStore: function(url) {
 				this.proxy.url = url || this.defaultUrl;
 
@@ -5928,9 +5463,13 @@ Ext.onReady( function() {
 				}
 			}
 		});
-		ns.app.stores.eventReport = eventReportStore;
+		ns.app.stores.eventChart = eventChartStore;
 
 		// viewport
+
+		buttonAddedListener = function(b) {
+            buttons.push(b);
+        };
 
         column = Ext.create('Ext.button.Button', {
             xtype: 'button',
@@ -6324,8 +5863,9 @@ Ext.onReady( function() {
 				}
 			}(),
 			items: [
-				typeToolbar,
-				accordion
+                chartType,
+                layout,
+                accordion
 			],
 			listeners: {
 				added: function() {
@@ -6730,12 +6270,8 @@ Ext.onReady( function() {
 
 					ns.app.aggregateLayoutWindow = AggregateLayoutWindow();
 					ns.app.aggregateLayoutWindow.hide();
-					ns.app.queryLayoutWindow = QueryLayoutWindow();
-					ns.app.queryLayoutWindow.hide();
 					ns.app.aggregateOptionsWindow = AggregateOptionsWindow();
 					ns.app.aggregateOptionsWindow.hide();
-					ns.app.queryOptionsWindow = QueryOptionsWindow();
-					ns.app.queryOptionsWindow.hide();
 				},
 				afterrender: function() {
 
@@ -6830,13 +6366,13 @@ Ext.onReady( function() {
 						var i18nArray = Ext.decode(r.responseText);
 
 						Ext.Ajax.request({
-							url: init.contextPath + '/api/system/context.json',
+							url: init.contextPath + '/api/system/info.json',
 							success: function(r) {
 								init.contextPath = Ext.decode(r.responseText).contextPath || init.contextPath;
 
 								// i18n
 								requests.push({
-									url: init.contextPath + '/api/i18n?package=org.hisp.dhis.eventreport',
+									url: init.contextPath + '/api/i18n?package=org.hisp.dhis.eventchart',
 									method: 'POST',
 									headers: {
 										'Content-Type': 'application/json',
