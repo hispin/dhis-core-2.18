@@ -165,9 +165,8 @@ public class TrackedEntityAttribute
         this.description = description;
     }
 
-    // TODO remove WithoutOrganisationUnitsView, temporary hack
     @JsonProperty
-    @JsonView( { DetailedView.class, WithoutOrganisationUnitsView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getValueType()
     {
@@ -180,7 +179,7 @@ public class TrackedEntityAttribute
     }
 
     @JsonProperty( "trackedEntityAttributeGroup" )
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class  } )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JacksonXmlProperty( localName = "trackedEntityAttributeGroup", namespace = DxfNamespaces.DXF_2_0 )
     public TrackedEntityAttributeGroup getAttributeGroup()

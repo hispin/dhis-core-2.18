@@ -177,12 +177,15 @@ final public class ExchangeClasses
         allExportClasses.put( RelationshipType.class, "relationshipTypes" );
         allExportClasses.put( ValidationCriteria.class, "validationCriterias" );
         allExportClasses.put( ProgramStageSection.class, "programStageSections" );
-        allExportClasses.put( ProgramStage.class, "programStages" );
-        allExportClasses.put( ProgramValidation.class, "programValidations" );
-        allExportClasses.put( Program.class, "programs" );
         allExportClasses.put( TrackedEntity.class, "trackedEntities" );
         allExportClasses.put( TrackedEntityAttribute.class, "trackedEntityAttributes" );
         allExportClasses.put( TrackedEntityAttributeGroup.class, "trackedEntityAttributeGroups" );
+
+        /*
+        allExportClasses.put( ProgramStage.class, "programStages" );
+        allExportClasses.put( Program.class, "programs" );
+        allExportClasses.put( ProgramValidation.class, "programValidations" );
+        */
 
         allExportClasses.put( BaseDimensionalObject.class, "dimensions" );
 
