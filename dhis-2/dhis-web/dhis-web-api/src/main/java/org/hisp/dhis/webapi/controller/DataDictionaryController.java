@@ -29,6 +29,7 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import org.hisp.dhis.datadictionary.DataDictionary;
+import org.hisp.dhis.schema.descriptors.DataDictionarySchemaDescriptor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,9 +37,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = DataDictionaryController.RESOURCE_PATH )
+@RequestMapping( value = DataDictionarySchemaDescriptor.API_ENDPOINT )
 public class DataDictionaryController
     extends AbstractCrudController<DataDictionary>
 {
-    public static final String RESOURCE_PATH = "/dataDictionaries";
 }

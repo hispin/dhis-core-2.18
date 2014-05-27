@@ -28,8 +28,9 @@ package org.hisp.dhis.webapi.controller.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
+import org.hisp.dhis.schema.descriptors.CategoryOptionGroupSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/categoryOptionGroups" )
+@RequestMapping( value = CategoryOptionGroupSchemaDescriptor.API_ENDPOINT )
 public class CategoryOptionGroupController
     extends AbstractCrudController<CategoryOptionGroup>
 {

@@ -42,11 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ChartSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "chart";
+
+    public static final String PLURAL = "charts";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Chart.class, "chart", "charts" );
-
+        Schema schema = new Schema( Chart.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_CHART_PUBLIC_ADD" ) ) );

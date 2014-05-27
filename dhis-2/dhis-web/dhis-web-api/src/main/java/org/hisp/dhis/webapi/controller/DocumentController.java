@@ -29,12 +29,13 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import org.apache.commons.io.IOUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
+import org.hisp.dhis.schema.descriptors.DocumentSchemaDescriptor;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,12 +50,10 @@ import java.io.InputStream;
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping(value = DocumentController.RESOURCE_PATH)
+@RequestMapping( value = DocumentSchemaDescriptor.API_ENDPOINT )
 public class DocumentController
     extends AbstractCrudController<Document>
 {
-    public static final String RESOURCE_PATH = "/documents";
-
     @Autowired
     private DocumentService documentService;
 
@@ -64,8 +63,8 @@ public class DocumentController
     @Autowired
     private ContextUtils contextUtils;
 
-    @RequestMapping(value = "/{uid}/data", method = RequestMethod.GET)
-    public void getDocumentContent( @PathVariable("uid") String uid, HttpServletResponse response ) throws Exception
+    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
+    public void getDocumentContent( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
     {
         Document document = documentService.getDocument( uid );
 

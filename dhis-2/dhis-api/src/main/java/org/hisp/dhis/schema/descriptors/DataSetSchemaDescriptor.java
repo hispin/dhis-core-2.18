@@ -42,11 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSetSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "dataSet";
+
+    public static final String PLURAL = "dataSets";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataSet.class, "dataSet", "dataSets" );
-
+        Schema schema = new Schema( DataSet.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_DATASET_PUBLIC_ADD" ) ) );

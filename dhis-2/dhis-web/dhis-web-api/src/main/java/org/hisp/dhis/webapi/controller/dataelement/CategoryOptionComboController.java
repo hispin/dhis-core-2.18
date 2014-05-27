@@ -28,11 +28,12 @@ package org.hisp.dhis.webapi.controller.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.schema.descriptors.CategoryOptionComboSchemaDescriptor;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.controller.WebMetaData;
 import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -45,7 +46,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/categoryOptionCombos" )
+@RequestMapping( value = CategoryOptionComboSchemaDescriptor.API_ENDPOINT )
 public class CategoryOptionComboController
     extends AbstractCrudController<DataElementCategoryOptionCombo>
 {

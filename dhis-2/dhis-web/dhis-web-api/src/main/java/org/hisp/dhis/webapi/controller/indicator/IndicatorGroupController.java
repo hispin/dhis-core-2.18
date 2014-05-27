@@ -36,6 +36,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hisp.dhis.schema.descriptors.IndicatorGroupSchemaDescriptor;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.controller.WebMetaData;
 import org.hisp.dhis.webapi.controller.WebOptions;
@@ -58,12 +59,10 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = IndicatorGroupController.RESOURCE_PATH)
+@RequestMapping( value = IndicatorGroupSchemaDescriptor.API_ENDPOINT )
 public class IndicatorGroupController
     extends AbstractCrudController<IndicatorGroup>
 {
-    public static final String RESOURCE_PATH = "/indicatorGroups";
-
     @RequestMapping( value = "/{uid}/members", method = RequestMethod.GET )
     public String getMembers( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
@@ -80,7 +79,7 @@ public class IndicatorGroupController
         WebMetaData metaData = new WebMetaData();
         List<Indicator> indicators = new ArrayList<Indicator>( indicatorGroup.getMembers() );
         Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );
-        
+
         if ( options.hasPaging() )
         {
             Pager pager = new Pager( options.getPage(), indicators.size(), options.getPageSize() );
@@ -101,8 +100,8 @@ public class IndicatorGroupController
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    @RequestMapping(value = "/{uid}/members/query/{q}", method = RequestMethod.GET)
-    public String getMembersByQuery( @PathVariable("uid") String uid, @PathVariable("q") String q,
+    @RequestMapping( value = "/{uid}/members/query/{q}", method = RequestMethod.GET )
+    public String getMembersByQuery( @PathVariable( "uid" ) String uid, @PathVariable( "q" ) String q,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception
     {

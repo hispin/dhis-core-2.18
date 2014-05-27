@@ -28,33 +28,31 @@ package org.hisp.dhis.webapi.controller.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.controller.WebMetaData;
-import org.hisp.dhis.webapi.controller.WebOptions;
+import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.schema.descriptors.DataElementSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.controller.WebMetaData;
+import org.hisp.dhis.webapi.controller.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = DataElementController.RESOURCE_PATH)
+@RequestMapping( value = DataElementSchemaDescriptor.API_ENDPOINT )
 public class DataElementController
     extends AbstractCrudController<DataElement>
 {
-    public static final String RESOURCE_PATH = "/dataElements";
-
     @Autowired
     private DataElementService dataElementService;
 

@@ -28,27 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.FormUtils;
-import org.hisp.dhis.webapi.view.ClassPathUriResolver;
-import org.hisp.dhis.webapi.webdomain.form.Form;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
@@ -65,6 +44,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.schema.descriptors.DataSetSchemaDescriptor;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.FormUtils;
+import org.hisp.dhis.webapi.view.ClassPathUriResolver;
+import org.hisp.dhis.webapi.webdomain.form.Form;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -76,15 +60,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = DataSetController.RESOURCE_PATH )
+@RequestMapping( value = DataSetSchemaDescriptor.API_ENDPOINT )
 public class DataSetController
     extends AbstractCrudController<DataSet>
 {
-    public static final String RESOURCE_PATH = "/dataSets";
     public static final String DSD_TRANSFORM = "/templates/metadata2dsd.xsl";
 
     // -------------------------------------------------------------------------
@@ -102,10 +101,10 @@ public class DataSetController
 
     @Autowired
     private DataValueService dataValueService;
-    
+
     @Autowired
     private DataValueSetService dataValueSetService;
-    
+
     @Autowired
     private PeriodService periodService;
 
@@ -195,7 +194,7 @@ public class DataSetController
         }
 
         Period pe = periodService.getPeriod( period );
-        
+
         response.setContentType( MediaType.APPLICATION_XML_VALUE );
 
         dataValueSetService.writeDataValueSetTemplate( response.getOutputStream(), dataSet, pe, orgUnits, comment, orgUnitIdScheme, dataElementIdScheme );

@@ -29,6 +29,7 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.schema.descriptors.ConceptSchemaDescriptor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,9 +37,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = ConceptController.RESOURCE_PATH )
+@RequestMapping( value = ConceptSchemaDescriptor.API_ENDPOINT )
 public class ConceptController
     extends AbstractCrudController<Concept>
 {
-    public static final String RESOURCE_PATH = "/concepts";
 }

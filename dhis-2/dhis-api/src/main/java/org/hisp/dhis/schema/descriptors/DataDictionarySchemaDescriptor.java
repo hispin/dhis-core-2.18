@@ -42,11 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataDictionarySchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "dataDictionary";
+
+    public static final String PLURAL = "dataDictionaries";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataDictionary.class, "dataDictionary", "dataDictionaries" );
-
+        Schema schema = new Schema( DataDictionary.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_DATADICTIONARY_PUBLIC_ADD" ) ) );

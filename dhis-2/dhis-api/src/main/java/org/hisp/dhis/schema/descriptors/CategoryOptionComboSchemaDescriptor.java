@@ -42,11 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class CategoryOptionComboSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "categoryOptionCombo";
+
+    public static final String PLURAL = "categoryOptionCombos";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataElementCategoryOptionCombo.class, "categoryOptionCombo", "categoryOptionCombos" );
-
+        Schema schema = new Schema( DataElementCategoryOptionCombo.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( false );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE,

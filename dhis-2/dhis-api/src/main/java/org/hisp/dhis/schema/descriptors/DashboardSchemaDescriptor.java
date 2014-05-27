@@ -42,12 +42,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class DashboardSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "dashboard";
+
+    public static final String PLURAL = "dashboards";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
         Schema schema = new Schema( Dashboard.class, "dashboard", "dashboards" );
-
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
+
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_DASHBOARD_PUBLIC_ADD" ) ) );
 
         return schema;
