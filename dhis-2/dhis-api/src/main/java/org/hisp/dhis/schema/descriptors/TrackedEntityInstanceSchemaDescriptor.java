@@ -39,9 +39,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrackedEntityInstanceSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "trackedEntityInstance";
+
+    public static final String PLURAL = "trackedEntityInstances";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        return new Schema( TrackedEntityInstance.class, "trackedEntityInstance", "trackedEntityInstances" );
+        Schema schema = new Schema( TrackedEntityInstance.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
+
+        return schema;
     }
 }

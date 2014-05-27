@@ -28,11 +28,12 @@ package org.hisp.dhis.webapi.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.schema.descriptors.UserRoleSchemaDescriptor;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.controller.WebMetaData;
 import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,12 +44,10 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = UserRoleController.RESOURCE_PATH )
+@RequestMapping( value = UserRoleSchemaDescriptor.API_ENDPOINT )
 public class UserRoleController
     extends AbstractCrudController<UserAuthorityGroup>
 {
-    public static final String RESOURCE_PATH = "/userRoles";
-
     @Autowired
     private UserService userService;
 

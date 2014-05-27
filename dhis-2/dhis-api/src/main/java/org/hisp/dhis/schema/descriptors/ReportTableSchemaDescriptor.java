@@ -42,11 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportTableSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "reportTable";
+
+    public static final String PLURAL = "reportTables";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( ReportTable.class, "reportTable", "reportTables" );
-
+        Schema schema = new Schema( ReportTable.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_REPORTTABLE_PUBLIC_ADD" ) ) );

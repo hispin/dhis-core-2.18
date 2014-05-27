@@ -28,19 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
-import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
-
-import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -58,8 +45,11 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.schema.descriptors.ReportTableSchemaDescriptor;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -71,17 +61,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = ReportTableController.RESOURCE_PATH )
+@RequestMapping( value = ReportTableSchemaDescriptor.API_ENDPOINT )
 public class ReportTableController
     extends AbstractCrudController<ReportTable>
 {
-    public static final String RESOURCE_PATH = "/reportTables";
-
     @Autowired
     public ReportTableService reportTableService;
 
@@ -105,10 +103,10 @@ public class ReportTableController
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private DimensionService dimensionService;
-    
+
     @Autowired
     private MappingService mappingService;
 
@@ -132,7 +130,7 @@ public class ReportTableController
 
         reportTableService.saveReportTable( reportTable );
 
-        ContextUtils.createdResponse( response, "Report table created", RESOURCE_PATH + "/" + reportTable.getUid() );
+        ContextUtils.createdResponse( response, "Report table created", ReportTableSchemaDescriptor.API_ENDPOINT + "/" + reportTable.getUid() );
     }
 
     @Override
@@ -282,7 +280,7 @@ public class ReportTableController
     protected void postProcessEntity( ReportTable reportTable ) throws Exception
     {
         reportTable.populateAnalyticalProperties();
-        
+
         for ( OrganisationUnit organisationUnit : reportTable.getOrganisationUnits() )
         {
             reportTable.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
@@ -298,7 +296,7 @@ public class ReportTableController
             }
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // Supportive methods
     //--------------------------------------------------------------------------
@@ -306,15 +304,15 @@ public class ReportTableController
     private void mergeReportTable( ReportTable reportTable )
     {
         dimensionService.mergeAnalyticalObject( reportTable );
-        
+
         reportTable.getColumnDimensions().clear();
         reportTable.getRowDimensions().clear();
         reportTable.getFilterDimensions().clear();
-        
+
         reportTable.getColumnDimensions().addAll( getUniqueDimensions( reportTable.getColumns() ) );
         reportTable.getRowDimensions().addAll( getUniqueDimensions( reportTable.getRows() ) );
         reportTable.getFilterDimensions().addAll( getUniqueDimensions( reportTable.getFilters() ) );
-        
+
         if ( reportTable.getLegendSet() != null )
         {
             reportTable.setLegendSet( mappingService.getMapLegendSet( reportTable.getLegendSet().getUid() ) );

@@ -28,14 +28,7 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.utils.ContextUtils;
+import com.google.common.collect.Lists;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.Pager;
@@ -52,8 +45,10 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.schema.descriptors.InterpretationSchemaDescriptor;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
@@ -63,18 +58,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.common.collect.Lists;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = InterpretationController.RESOURCE_PATH )
+@RequestMapping( value = InterpretationSchemaDescriptor.API_ENDPOINT )
 public class InterpretationController
     extends AbstractCrudController<Interpretation>
 {
-    public static final String RESOURCE_PATH = "/interpretations";
-
     @Autowired
     private InterpretationService interpretationService;
 
@@ -148,7 +145,7 @@ public class InterpretationController
 
         interpretationService.saveInterpretation( interpretation );
 
-        ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
+        ContextUtils.createdResponse( response, "Interpretation created", InterpretationSchemaDescriptor.API_ENDPOINT + "/" + interpretation.getUid() );
     }
 
     @RequestMapping( value = "/map/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -168,7 +165,7 @@ public class InterpretationController
 
         interpretationService.saveInterpretation( interpretation );
 
-        ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
+        ContextUtils.createdResponse( response, "Interpretation created", InterpretationSchemaDescriptor.API_ENDPOINT + "/" + interpretation.getUid() );
     }
 
     @RequestMapping( value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -205,7 +202,7 @@ public class InterpretationController
 
         interpretationService.saveInterpretation( interpretation );
 
-        ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
+        ContextUtils.createdResponse( response, "Interpretation created", InterpretationSchemaDescriptor.API_ENDPOINT + "/" + interpretation.getUid() );
     }
 
     @RequestMapping( value = "/dataSetReport/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -243,7 +240,7 @@ public class InterpretationController
 
         interpretationService.saveInterpretation( interpretation );
 
-        ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
+        ContextUtils.createdResponse( response, "Interpretation created", InterpretationSchemaDescriptor.API_ENDPOINT + "/" + interpretation.getUid() );
     }
 
     @Override
@@ -367,7 +364,7 @@ public class InterpretationController
         InterpretationComment comment = interpretationService.addInterpretationComment( uid, text );
 
         StringBuilder builder = new StringBuilder();
-        builder.append( InterpretationController.RESOURCE_PATH ).append( "/" ).append( uid );
+        builder.append( InterpretationSchemaDescriptor.API_ENDPOINT ).append( "/" ).append( uid );
         builder.append( "/comments/" ).append( comment.getUid() );
 
         ContextUtils.createdResponse( response, "Commented created", builder.toString() );

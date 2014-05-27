@@ -42,10 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProgramStageSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "programStage";
+
+    public static final String PLURAL = "programStages";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( ProgramStage.class, "programStage", "programStages" );
+        Schema schema = new Schema( ProgramStage.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_PROGRAMSTAGE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_PROGRAMSTAGE_DELETE" ) ) );

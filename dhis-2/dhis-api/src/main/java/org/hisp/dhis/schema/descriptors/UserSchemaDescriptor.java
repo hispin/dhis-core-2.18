@@ -42,10 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "user";
+
+    public static final String PLURAL = "users";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( User.class, "user", "users" );
+        Schema schema = new Schema( User.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_USER_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_USER_DELETE" ) ) );

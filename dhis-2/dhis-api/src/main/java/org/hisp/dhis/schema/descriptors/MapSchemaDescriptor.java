@@ -42,11 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "map";
+
+    public static final String PLURAL = "maps";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Map.class, "map", "maps" );
-
+        Schema schema = new Schema( Map.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_MAP_PUBLIC_ADD" ) ) );

@@ -28,8 +28,9 @@ package org.hisp.dhis.webapi.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.schema.descriptors.OrganisationUnitLevelSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,9 +38,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = OrganisationUnitLevelController.RESOURCE_PATH )
+@RequestMapping( value = OrganisationUnitLevelSchemaDescriptor.API_ENDPOINT )
 public class OrganisationUnitLevelController
     extends AbstractCrudController<OrganisationUnitLevel>
 {
-    public static final String RESOURCE_PATH = "/organisationUnitLevels";
 }

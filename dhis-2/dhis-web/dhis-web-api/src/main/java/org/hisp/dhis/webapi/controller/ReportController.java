@@ -28,21 +28,9 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
-
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.j2ee.servlets.BaseHttpServlet;
 import net.sf.jasperreports.j2ee.servlets.ImageServlet;
-
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -52,7 +40,10 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.schema.descriptors.ReportSchemaDescriptor;
 import org.hisp.dhis.system.util.CodecUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,17 +54,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = ReportController.RESOURCE_PATH )
+@RequestMapping( value = ReportSchemaDescriptor.API_ENDPOINT )
 public class ReportController
     extends AbstractCrudController<Report>
 {
-    public static final String RESOURCE_PATH = "/reports";
-
     @Autowired
     public ReportService reportService;
 
@@ -92,19 +89,19 @@ public class ReportController
 
     @RequestMapping( value = "/{uid}/design", method = RequestMethod.PUT )
     @PreAuthorize( "hasRole('ALL')" )
-    public void updateReportDesign( @PathVariable( "uid" ) String uid, 
+    public void updateReportDesign( @PathVariable( "uid" ) String uid,
         @RequestBody String designContent,
         HttpServletResponse response ) throws Exception
     {
         Report report = reportService.getReport( uid );
-        
+
         if ( report == null )
         {
             ContextUtils.notFoundResponse( response, "Report not found for identifier: " + uid );
             return;
         }
-        
-        report.setDesignContent( designContent );        
+
+        report.setDesignContent( designContent );
         reportService.saveReport( report );
     }
 
@@ -118,13 +115,13 @@ public class ReportController
             ContextUtils.notFoundResponse( response, "Report not found for identifier: " + uid );
             return;
         }
-        
+
         if ( report.getDesignContent() == null )
         {
             ContextUtils.conflictResponse( response, "Report has no design content: " + uid );
             return;
-        }        
-        
+        }
+
         if ( Report.TYPE_HTML.equals( report.getType() ) )
         {
             contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.NO_CACHE, filenameEncode( report.getName() ) + ".html", true );
@@ -133,7 +130,7 @@ public class ReportController
         {
             contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE, filenameEncode( report.getName() ) + ".jrxml", true );
         }
-        
+
         response.getWriter().write( report.getDesignContent() );
     }
 
@@ -181,7 +178,7 @@ public class ReportController
      * reports path in this controller.
      */
     @RequestMapping( value = "/jasperReports/img", method = RequestMethod.GET )
-    public void getJasperImage( @RequestParam String image, 
+    public void getJasperImage( @RequestParam String image,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         new ImageServlet().service( request, response );
@@ -195,7 +192,7 @@ public class ReportController
         Date date, String type, String contentType, boolean attachment ) throws Exception
     {
         Report report = reportService.getReport( uid );
-        
+
         I18nFormat format = i18nManager.getI18nFormat();
 
         if ( report == null )
@@ -203,7 +200,7 @@ public class ReportController
             ContextUtils.notFoundResponse( response, "Report does not exist: " + uid );
             return;
         }
-        
+
         if ( organisationUnitUid == null && report.hasReportTable() && report.getReportTable().hasReportParams()
             && report.getReportTable().getReportParams().isOrganisationUnitSet() )
         {
@@ -213,23 +210,23 @@ public class ReportController
         if ( report.isTypeHtml() )
         {
             contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
-            
+
             reportService.renderHtmlReport( response.getWriter(), uid, date, organisationUnitUid, format );
         }
         else
         {
             date = date != null ? date : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
-            
+
             Period period = isoPeriod != null ? PeriodType.getPeriodFromIsoString( isoPeriod ) : new MonthlyPeriodType().createPeriod( date );
-            
+
             String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
-            
+
             contextUtils.configureResponse( response, contentType, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, attachment );
-            
+
             JasperPrint print = reportService.renderReport( response.getOutputStream(), uid, period, organisationUnitUid, type, format );
-            
+
             if ( "html".equals( type ) )
-            {            
+            {
                 request.getSession().setAttribute( BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, print );
             }
         }

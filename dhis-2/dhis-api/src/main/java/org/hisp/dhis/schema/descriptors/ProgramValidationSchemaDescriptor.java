@@ -70,10 +70,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProgramValidationSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "programValidation";
+
+    public static final String PLURAL = "programValidations";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( ProgramValidation.class, "programValidation", "programValidations" );
+        Schema schema = new Schema( ProgramValidation.class, SINGULAR, PLURAL );
+        // schema.setApiEndpoint( API_ENDPOINT );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_PROGRAM_VALIDATION" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_PROGRAM_VALIDATION" ) ) );

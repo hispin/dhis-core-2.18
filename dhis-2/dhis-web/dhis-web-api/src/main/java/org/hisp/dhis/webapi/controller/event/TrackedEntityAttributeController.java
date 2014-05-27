@@ -29,16 +29,17 @@ package org.hisp.dhis.webapi.controller.event;
  */
 
 import com.google.common.collect.Lists;
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.controller.WebMetaData;
-import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.schema.descriptors.TrackedEntityAttributeSchemaDescriptor;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.controller.WebMetaData;
+import org.hisp.dhis.webapi.controller.WebOptions;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -57,12 +58,10 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = TrackedEntityAttributeController.RESOURCE_PATH )
+@RequestMapping( value = TrackedEntityAttributeSchemaDescriptor.API_ENDPOINT )
 public class TrackedEntityAttributeController
     extends AbstractCrudController<TrackedEntityAttribute>
 {
-    public static final String RESOURCE_PATH = "/trackedEntityAttributes";
-
     @Autowired
     private TrackedEntityAttributeService trackedEntityAttributeService;
 
@@ -125,7 +124,7 @@ public class TrackedEntityAttributeController
         TrackedEntityAttribute trackedEntityAttribute = JacksonUtils.fromXml( input, TrackedEntityAttribute.class );
         trackedEntityAttributeService.addTrackedEntityAttribute( trackedEntityAttribute );
 
-        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + trackedEntityAttribute.getUid() );
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + TrackedEntityAttributeSchemaDescriptor.API_ENDPOINT + "/" + trackedEntityAttribute.getUid() );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
@@ -135,7 +134,7 @@ public class TrackedEntityAttributeController
         TrackedEntityAttribute trackedEntityAttribute = JacksonUtils.fromJson( input, TrackedEntityAttribute.class );
         trackedEntityAttributeService.addTrackedEntityAttribute( trackedEntityAttribute );
 
-        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + trackedEntityAttribute.getUid() );
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + TrackedEntityAttributeSchemaDescriptor.API_ENDPOINT + "/" + trackedEntityAttribute.getUid() );
     }
 
     //--------------------------------------------------------------------------

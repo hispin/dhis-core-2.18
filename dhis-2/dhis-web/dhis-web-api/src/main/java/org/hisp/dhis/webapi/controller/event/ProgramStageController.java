@@ -29,13 +29,14 @@ package org.hisp.dhis.webapi.controller.event;
  */
 
 import com.google.common.collect.Lists;
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.controller.WebMetaData;
-import org.hisp.dhis.webapi.controller.WebOptions;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.schema.descriptors.ProgramStageSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.controller.WebMetaData;
+import org.hisp.dhis.webapi.controller.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,12 +48,10 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = ProgramStageController.RESOURCE_PATH)
+@RequestMapping( value = ProgramStageSchemaDescriptor.API_ENDPOINT )
 public class ProgramStageController
     extends AbstractCrudController<ProgramStage>
 {
-    public static final String RESOURCE_PATH = "/programStages";
-
     private ProgramService programService;
 
     @Autowired

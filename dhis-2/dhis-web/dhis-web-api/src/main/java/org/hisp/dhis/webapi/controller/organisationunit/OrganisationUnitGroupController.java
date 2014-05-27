@@ -28,19 +28,6 @@ package org.hisp.dhis.webapi.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.controller.WebMetaData;
-import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.WebUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -48,6 +35,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.schema.descriptors.OrganisationUnitGroupSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.controller.WebMetaData;
+import org.hisp.dhis.webapi.controller.WebOptions;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -60,16 +53,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = OrganisationUnitGroupController.RESOURCE_PATH)
+@RequestMapping( value = OrganisationUnitGroupSchemaDescriptor.API_ENDPOINT )
 public class OrganisationUnitGroupController
     extends AbstractCrudController<OrganisationUnitGroup>
 {
-    public static final String RESOURCE_PATH = "/organisationUnitGroups";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -121,8 +119,8 @@ public class OrganisationUnitGroupController
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    @RequestMapping(value = "/{uid}/members/query/{q}", method = RequestMethod.GET)
-    public String getMembersByQuery( @PathVariable("uid") String uid, @PathVariable( "q" ) String q,
+    @RequestMapping( value = "/{uid}/members/query/{q}", method = RequestMethod.GET )
+    public String getMembersByQuery( @PathVariable( "uid" ) String uid, @PathVariable( "q" ) String q,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception
     {
