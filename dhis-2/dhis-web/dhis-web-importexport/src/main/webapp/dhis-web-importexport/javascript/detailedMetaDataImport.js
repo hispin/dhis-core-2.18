@@ -1,5 +1,5 @@
 // Global Variables
-var metaDataArray = [ "Attributes", "Dimensions", "Charts", "Concepts", "Constants", "DataDictionaries", "DataElementGroupSets",
+var metaDataArray = [ "AttributesTypes", "Dimensions", "Charts", "Concepts", "Constants", "DataDictionaries", "DataElementGroupSets",
     "DataElementGroups", "DataElements", "DataSets", "Documents", "IndicatorGroupSets", "IndicatorGroups", "Indicators",
     "IndicatorTypes", "MapLegendSets", "Maps", "OptionSets", "OrganisationUnitGroupSets", "OrganisationUnitGroups",
     "OrganisationUnitLevels", "OrganisationUnits", "ReportTables", "Reports", "SqlViews", "UserGroups", "UserRoles",
@@ -18,7 +18,7 @@ jQuery( function ()
                 active: false,
                 collapsible: true,
                 clearStyle: true,
-                autoHeight: false
+                heightStyle: 'content'
             } );
 
         selectAllMetaDataCategories();
