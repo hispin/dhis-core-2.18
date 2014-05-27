@@ -146,9 +146,9 @@
 <!-- METADATA ACCORDION -->
 <div id="mainDivAccordion" style="margin-bottom: 10px; margin-top: 10px; width: 90%;">
     <!-- ATTRIBUTES TYPES SELECTION -->
-    <h6 id="headingAttributeTypes" style="font-size: 10pt;"><label>$i18n.getString( "attribute_types" )</label></h6>
+    <h6 id="headingAttributes" style="font-size: 10pt;"><label>$i18n.getString( "attribute_types" )</label></h6>
 
-    <div id="mainDivAttributeTypes" style="margin: 5px;"></div>
+    <div id="mainDivAttributes" style="margin: 5px;"></div>
 
     <!-- CATEGORIES SELECTION -->
     <h6 id="headingDimensions" style="font-size: 10pt;"><label>$i18n.getString( "categories" )</label></h6>
