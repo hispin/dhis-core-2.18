@@ -180,12 +180,9 @@ final public class ExchangeClasses
         allExportClasses.put( TrackedEntity.class, "trackedEntities" );
         allExportClasses.put( TrackedEntityAttribute.class, "trackedEntityAttributes" );
         allExportClasses.put( TrackedEntityAttributeGroup.class, "trackedEntityAttributeGroups" );
-
-        /*
         allExportClasses.put( ProgramStage.class, "programStages" );
         allExportClasses.put( Program.class, "programs" );
         allExportClasses.put( ProgramValidation.class, "programValidations" );
-        */
 
         allExportClasses.put( BaseDimensionalObject.class, "dimensions" );
 
