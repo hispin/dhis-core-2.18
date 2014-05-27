@@ -15,8 +15,8 @@ jQuery( function ()
     $( "#mainDivAccordion" ).accordion( {
         active: false,
         collapsible: true,
-        clearStyle: true,
-        autoHeight: false
+        clearStyle: false,
+        heightStyle: 'content'
     } );
 
     loadMetaDataAccordionEvents();
