@@ -53,15 +53,7 @@
     </div>
 
     <div class="row vertical-spacing">
-        <div id="selectDropDownParent" class="input-group col-md-6">
-            
-            <!--<input type="text"
-                   class="form-control"
-                   ng-model="program"
-                   typeahead="program.name for program in programs | filter:$viewValue | limitTo:20" 
-                   typeahead-open-on-focus>-->
-            
-            
+        <div id="selectDropDownParent" class="input-group col-md-6">            
             <button type="button" class="select-drop-down-button form-control" >{{selectedProgram ? selectedProgram.name : 'please_select_a_program'| translate}}</button>
             <div class="input-group-btn">
                 <button class="btn btn-default trim" type="button" title="{{'list_programs'| translate}}" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
@@ -94,7 +86,7 @@
     <!--registration begins -->
     <div class="row" ng-if="showRegistrationDiv">
         <div class="col-md-6">
-            <div ng-include="'components/registration/registration.html'" ng-controller="RegistrationController"></div>             
+            <div ng-include="'components/registration/registration.html'"></div>             
         </div>
     </div>
     <!-- registration ends -->

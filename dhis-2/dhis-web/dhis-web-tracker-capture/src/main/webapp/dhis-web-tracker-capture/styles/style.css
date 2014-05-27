@@ -570,6 +570,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 
 .horizonal-spacing{
     margin-left: 10px;    
+    margin-right: 10px;    
 }
 
 .vertical-spacing{
