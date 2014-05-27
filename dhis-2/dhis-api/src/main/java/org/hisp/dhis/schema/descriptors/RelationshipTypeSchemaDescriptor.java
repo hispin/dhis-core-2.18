@@ -42,10 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class RelationshipTypeSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "relationshipType";
+
+    public static final String PLURAL = "relationshipTypes";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( RelationshipType.class, "relationshipType", "relationshipTypes" );
+        Schema schema = new Schema( RelationshipType.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_RELATIONSHIPTYPE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_RELATIONSHIPTYPE_DELETE" ) ) );

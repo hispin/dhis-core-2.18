@@ -28,19 +28,6 @@ package org.hisp.dhis.webapi.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.webapi.controller.exception.NotFoundException;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IllegalQueryException;
@@ -53,8 +40,13 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.program.ProgramStatus;
+import org.hisp.dhis.schema.descriptors.TrackedEntityInstanceSchemaDescriptor;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceQueryParams;
+import org.hisp.dhis.webapi.controller.WebOptions;
+import org.hisp.dhis.webapi.controller.exception.NotFoundException;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -69,19 +61,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = TrackedEntityInstanceController.RESOURCE_PATH )
+@RequestMapping( value = TrackedEntityInstanceSchemaDescriptor.API_ENDPOINT )
 @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_INSTANCE_SEARCH')" )
 public class TrackedEntityInstanceController
 {
-    public static final String RESOURCE_PATH = "/trackedEntityInstances";
-
     @Autowired
     private TrackedEntityInstanceService trackedEntityInstanceService;
-    
+
     @Autowired
     private org.hisp.dhis.trackedentity.TrackedEntityInstanceService instanceService;
 
@@ -94,37 +92,37 @@ public class TrackedEntityInstanceController
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
-    
+
     @RequestMapping( method = RequestMethod.GET, produces = { ContextUtils.CONTENT_TYPE_JSON, ContextUtils.CONTENT_TYPE_JAVASCRIPT } )
     public String queryTrackedEntityInstancesJson(
-        @RequestParam(required=false) String query,
-        @RequestParam(required=false) Set<String> attribute,
-        @RequestParam(required=false) Set<String> filter,
+        @RequestParam( required = false ) String query,
+        @RequestParam( required = false ) Set<String> attribute,
+        @RequestParam( required = false ) Set<String> filter,
         @RequestParam String ou,
-        @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
-        @RequestParam(required=false) String program,
-        @RequestParam(required=false) ProgramStatus programStatus,
-        @RequestParam(required=false) Boolean followUp,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
-        @RequestParam(required=false) String trackedEntity,
-        @RequestParam(required=false) EventStatus eventStatus,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
-        @RequestParam(required=false) boolean skipMeta,
-        @RequestParam(required=false) Integer page,
-        @RequestParam(required=false) Integer pageSize,
+        @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
+        @RequestParam( required = false ) String program,
+        @RequestParam( required = false ) ProgramStatus programStatus,
+        @RequestParam( required = false ) Boolean followUp,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
+        @RequestParam( required = false ) String trackedEntity,
+        @RequestParam( required = false ) EventStatus eventStatus,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) Integer page,
+        @RequestParam( required = false ) Integer pageSize,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, 
-            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, 
+        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode,
+            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity,
             eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
-        
+
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );
         return "grid";
@@ -132,31 +130,31 @@ public class TrackedEntityInstanceController
 
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_XML )
     public void queryTrackedEntityInstancesXml(
-        @RequestParam(required=false) String query,
-        @RequestParam(required=false) Set<String> attribute,
-        @RequestParam(required=false) Set<String> filter,
+        @RequestParam( required = false ) String query,
+        @RequestParam( required = false ) Set<String> attribute,
+        @RequestParam( required = false ) Set<String> filter,
         @RequestParam String ou,
-        @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
-        @RequestParam(required=false) String program,
-        @RequestParam(required=false) ProgramStatus programStatus,
-        @RequestParam(required=false) Boolean followUp,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
-        @RequestParam(required=false) String trackedEntity,
-        @RequestParam(required=false) EventStatus eventStatus,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
-        @RequestParam(required=false) boolean skipMeta,
-        @RequestParam(required=false) Integer page,
-        @RequestParam(required=false) Integer pageSize,
+        @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
+        @RequestParam( required = false ) String program,
+        @RequestParam( required = false ) ProgramStatus programStatus,
+        @RequestParam( required = false ) Boolean followUp,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
+        @RequestParam( required = false ) String trackedEntity,
+        @RequestParam( required = false ) EventStatus eventStatus,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) Integer page,
+        @RequestParam( required = false ) Integer pageSize,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, 
-            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, 
+        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode,
+            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity,
             eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
         GridUtils.toXml( grid, response.getOutputStream() );
@@ -164,31 +162,31 @@ public class TrackedEntityInstanceController
 
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_EXCEL )
     public void queryTrackedEntityInstancesXls(
-        @RequestParam(required=false) String query,
-        @RequestParam(required=false) Set<String> attribute,
-        @RequestParam(required=false) Set<String> filter,
+        @RequestParam( required = false ) String query,
+        @RequestParam( required = false ) Set<String> attribute,
+        @RequestParam( required = false ) Set<String> filter,
         @RequestParam String ou,
-        @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
-        @RequestParam(required=false) String program,
-        @RequestParam(required=false) ProgramStatus programStatus,
-        @RequestParam(required=false) Boolean followUp,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
-        @RequestParam(required=false) String trackedEntity,
-        @RequestParam(required=false) EventStatus eventStatus,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
-        @RequestParam(required=false) boolean skipMeta,
-        @RequestParam(required=false) Integer page,
-        @RequestParam(required=false) Integer pageSize,
+        @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
+        @RequestParam( required = false ) String program,
+        @RequestParam( required = false ) ProgramStatus programStatus,
+        @RequestParam( required = false ) Boolean followUp,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
+        @RequestParam( required = false ) String trackedEntity,
+        @RequestParam( required = false ) EventStatus eventStatus,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) Integer page,
+        @RequestParam( required = false ) Integer pageSize,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, 
-            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, 
+        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode,
+            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity,
             eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
         GridUtils.toXls( grid, response.getOutputStream() );
@@ -196,36 +194,36 @@ public class TrackedEntityInstanceController
 
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_CSV )
     public void queryTrackedEntityInstancesCsv(
-        @RequestParam(required=false) String query,
-        @RequestParam(required=false) Set<String> attribute,
-        @RequestParam(required=false) Set<String> filter,
+        @RequestParam( required = false ) String query,
+        @RequestParam( required = false ) Set<String> attribute,
+        @RequestParam( required = false ) Set<String> filter,
         @RequestParam String ou,
-        @RequestParam(required=false) OrganisationUnitSelectionMode ouMode,
-        @RequestParam(required=false) String program,
-        @RequestParam(required=false) ProgramStatus programStatus,
-        @RequestParam(required=false) Boolean followUp,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
-        @RequestParam(required=false) String trackedEntity,
-        @RequestParam(required=false) EventStatus eventStatus,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
-        @RequestParam(required=false) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
-        @RequestParam(required=false) boolean skipMeta,
-        @RequestParam(required=false) Integer page,
-        @RequestParam(required=false) Integer pageSize,
+        @RequestParam( required = false ) OrganisationUnitSelectionMode ouMode,
+        @RequestParam( required = false ) String program,
+        @RequestParam( required = false ) ProgramStatus programStatus,
+        @RequestParam( required = false ) Boolean followUp,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programStartDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date programEndDate,
+        @RequestParam( required = false ) String trackedEntity,
+        @RequestParam( required = false ) EventStatus eventStatus,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventStartDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date eventEndDate,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) Integer page,
+        @RequestParam( required = false ) Integer pageSize,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );        
-        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode, 
-            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity, 
+        Set<String> orgUnits = new HashSet<String>( ContextUtils.getQueryParamValues( ou ) );
+        TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode,
+            program, programStatus, followUp, programStartDate, programEndDate, trackedEntity,
             eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
         GridUtils.toCsv( grid, response.getOutputStream() );
     }
-    
+
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_INSTANCE_SEARCH')" )
     public String getTrackedEntityInstance( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model )
@@ -354,12 +352,12 @@ public class TrackedEntityInstanceController
     {
         return ContextUtils.getContextPath( request ) + "/api/" + "trackedEntityInstances" + "/" + importSummary.getReference();
     }
-    
+
     // -------------------------------------------------------------------------
     // Exception handling
     // -------------------------------------------------------------------------
-  
-    @ExceptionHandler(IllegalQueryException.class)
+
+    @ExceptionHandler( IllegalQueryException.class )
     public void handleError( IllegalQueryException ex, HttpServletResponse response )
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );

@@ -28,8 +28,9 @@ package org.hisp.dhis.webapi.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.mapping.MapLayer;
+import org.hisp.dhis.schema.descriptors.MapLayerSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,9 +38,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = MapLayerController.RESOURCE_PATH )
+@RequestMapping( value = MapLayerSchemaDescriptor.API_ENDPOINT )
 public class MapLayerController
     extends AbstractCrudController<MapLayer>
 {
-    public static final String RESOURCE_PATH = "/mapLayers";
 }

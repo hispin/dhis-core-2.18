@@ -42,10 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrganisationUnitSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "organisationUnit";
+
+    public static final String PLURAL = "organisationUnits";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( OrganisationUnit.class, "organisationUnit", "organisationUnits" );
+        Schema schema = new Schema( OrganisationUnit.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_ORGANISATIONUNIT_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_ORGANISATIONUNIT_DELETE" ) ) );

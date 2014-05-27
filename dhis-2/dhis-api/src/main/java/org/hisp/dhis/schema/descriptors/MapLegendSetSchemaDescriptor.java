@@ -39,9 +39,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapLegendSetSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "mapLegendSet";
+
+    public static final String PLURAL = "mapLegendSets";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        return new Schema( MapLegendSet.class, "mapLegendSet", "mapLegendSets" );
+        Schema schema = new Schema( MapLegendSet.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
+
+        return schema;
     }
 }

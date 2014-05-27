@@ -28,23 +28,18 @@ package org.hisp.dhis.webapi.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.controller.WebMetaData;
-import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
+import com.google.common.collect.Lists;
 import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.schema.descriptors.MapViewSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.controller.WebMetaData;
+import org.hisp.dhis.webapi.controller.WebOptions;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,18 +48,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.common.collect.Lists;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping(value = MapViewController.RESOURCE_PATH)
+@RequestMapping( value = MapViewSchemaDescriptor.API_ENDPOINT )
 public class MapViewController
     extends AbstractCrudController<MapView>
 {
-    public static final String RESOURCE_PATH = "/mapViews";
-
     @Autowired
     private MappingService mappingService;
 
@@ -81,7 +78,7 @@ public class MapViewController
     // Get data
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
+    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
     public void getMapViewData( @PathVariable String uid, HttpServletResponse response ) throws Exception
     {
         MapView mapView = mappingService.getMapView( uid );
@@ -95,11 +92,11 @@ public class MapViewController
         renderMapViewPng( mapView, response );
     }
 
-    @RequestMapping(value = { "/data", "/data.png" }, method = RequestMethod.GET)
+    @RequestMapping( value = { "/data", "/data.png" }, method = RequestMethod.GET )
     public void getMapView( Model model,
-        @RequestParam(value = "in") String indicatorUid,
-        @RequestParam(value = "ou") String organisationUnitUid,
-        @RequestParam(value = "level", required = false) Integer level,
+        @RequestParam( value = "in" ) String indicatorUid,
+        @RequestParam( value = "ou" ) String organisationUnitUid,
+        @RequestParam( value = "level", required = false ) Integer level,
         HttpServletResponse response ) throws Exception
     {
         if ( level == null )

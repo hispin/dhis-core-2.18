@@ -42,10 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class SectionSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "section";
+
+    public static final String PLURAL = "sections";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Section.class, "section", "sections" );
+        Schema schema = new Schema( Section.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_SECTION_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_SECTION_DELETE" ) ) );

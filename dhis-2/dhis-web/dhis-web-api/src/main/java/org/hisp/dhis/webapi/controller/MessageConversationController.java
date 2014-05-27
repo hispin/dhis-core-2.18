@@ -28,15 +28,7 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.utils.ContextUtils;
+import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.message.Message;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -44,11 +36,13 @@ import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.schema.descriptors.MessageConversationSchemaDescriptor;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,18 +51,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.common.collect.Lists;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = MessageConversationController.RESOURCE_PATH )
+@RequestMapping( value = MessageConversationSchemaDescriptor.API_ENDPOINT )
 public class MessageConversationController
     extends AbstractCrudController<MessageConversation>
 {
-    public static final String RESOURCE_PATH = "/messageConversations";
-
     @Autowired
     private MessageService messageService;
 
@@ -89,7 +86,7 @@ public class MessageConversationController
     {
         Boolean markRead = Boolean.parseBoolean( parameters.get( "markRead" ) );
 
-        if ( markRead  )
+        if ( markRead )
         {
             entity.markRead( currentUserService.getCurrentUser() );
             manager.update( entity );
@@ -193,10 +190,10 @@ public class MessageConversationController
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
         int id = messageService.sendMessage( message.getSubject(), message.getText(), metaData, message.getUsers() );
-        
+
         MessageConversation conversation = messageService.getMessageConversation( id );
 
-        ContextUtils.createdResponse( response, "Message conversation created", MessageConversationController.RESOURCE_PATH + "/" + conversation.getUid() );
+        ContextUtils.createdResponse( response, "Message conversation created", MessageConversationSchemaDescriptor.API_ENDPOINT + "/" + conversation.getUid() );
     }
 
     //--------------------------------------------------------------------------
@@ -205,7 +202,7 @@ public class MessageConversationController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.POST )
     public void postMessageConversationReply( @PathVariable( "uid" ) String uid, @RequestBody String body,
-                                              HttpServletRequest request, HttpServletResponse response ) throws Exception
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
@@ -219,7 +216,7 @@ public class MessageConversationController
 
         messageService.sendReply( conversation, body, metaData );
 
-        ContextUtils.createdResponse( response, "Message conversation created", MessageConversationController.RESOURCE_PATH + "/" + conversation.getUid() );
+        ContextUtils.createdResponse( response, "Message conversation created", MessageConversationSchemaDescriptor.API_ENDPOINT + "/" + conversation.getUid() );
     }
 
     //--------------------------------------------------------------------------
@@ -228,7 +225,7 @@ public class MessageConversationController
 
     @RequestMapping( value = "/feedback", method = RequestMethod.POST )
     public void postMessageConversationFeedback( @RequestParam( "subject" ) String subject, @RequestBody String body,
-                                                 HttpServletRequest request, HttpServletResponse response ) throws Exception
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 

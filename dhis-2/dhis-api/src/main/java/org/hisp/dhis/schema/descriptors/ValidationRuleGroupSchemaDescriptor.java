@@ -42,11 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidationRuleGroupSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "validationRuleGroup";
+
+    public static final String PLURAL = "validationRuleGroups";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( ValidationRuleGroup.class, "validationRuleGroup", "validationRuleGroups" );
-
+        Schema schema = new Schema( ValidationRuleGroup.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_VALIDATIONRULEGROUP_PUBLIC_ADD" ) ) );

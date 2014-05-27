@@ -42,10 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrackedEntityAttributeGroupSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "trackedEntityAttributeGroup";
+
+    public static final String PLURAL = "trackedEntityAttributeGroups";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( TrackedEntityAttributeGroup.class, "trackedEntityAttributeGroup", "trackedEntityAttributeGroups" );
+        Schema schema = new Schema( TrackedEntityAttributeGroup.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE,
             Lists.newArrayList( "F_TRACKED_ENTITY_ATTRIBUTE_PUBLIC_ADD", "F_TRACKED_ENTITY_ATTRIBUTE_PRIVATE_ADD" ) ) );

@@ -28,20 +28,6 @@ package org.hisp.dhis.webapi.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
-
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.Iterator;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -58,8 +44,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.schema.descriptors.MapSchemaDescriptor;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -70,17 +60,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Iterator;
+
+import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = MapController.RESOURCE_PATH )
+@RequestMapping( value = MapSchemaDescriptor.API_ENDPOINT )
 public class MapController
     extends AbstractCrudController<Map>
 {
-    public static final String RESOURCE_PATH = "/maps";
-
     @Autowired
     private MappingService mappingService;
 
@@ -98,7 +96,7 @@ public class MapController
 
     @Autowired
     private DataElementOperandService operandService;
-    
+
     @Autowired
     private PeriodService periodService;
 
@@ -110,12 +108,12 @@ public class MapController
 
     @Autowired
     private MapGenerationService mapGenerationService;
-    
+
     @Autowired
     private DimensionService dimensionService;
-    
+
     @Autowired
-    private UserService userService; 
+    private UserService userService;
 
     @Autowired
     private ContextUtils contextUtils;
@@ -141,7 +139,7 @@ public class MapController
 
         mappingService.addMap( map );
 
-        ContextUtils.createdResponse( response, "Map created", RESOURCE_PATH + "/" + map.getUid() );
+        ContextUtils.createdResponse( response, "Map created", MapSchemaDescriptor.API_ENDPOINT + "/" + map.getUid() );
     }
 
     @Override
@@ -207,12 +205,12 @@ public class MapController
     // Get data
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
-    public void getMapData( @PathVariable String uid, 
+    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
+    public void getMapData( @PathVariable String uid,
         @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
         @RequestParam( value = "ou", required = false ) String ou,
-        @RequestParam( required = false ) Integer width, 
-        @RequestParam( required = false ) Integer height, 
+        @RequestParam( required = false ) Integer width,
+        @RequestParam( required = false ) Integer height,
         HttpServletResponse response ) throws Exception
     {
         Map map = mappingService.getMapNoAcl( uid );
@@ -224,7 +222,7 @@ public class MapController
         }
 
         OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
-        
+
         renderMapViewPng( map, date, unit, width, height, response );
     }
 
@@ -236,18 +234,18 @@ public class MapController
     public void postProcessEntity( Map map ) throws Exception
     {
         I18nFormat format = i18nManager.getI18nFormat();
-        
+
         for ( MapView view : map.getMapViews() )
         {
             view.populateAnalyticalProperties();
-            
+
             for ( OrganisationUnit organisationUnit : view.getOrganisationUnits() )
             {
                 view.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
             }
-            
+
             if ( view.getPeriods() != null && !view.getPeriods().isEmpty() )
-            {   
+            {
                 for ( Period period : view.getPeriods() )
                 {
                     period.setName( format.formatPeriod( period ) );
@@ -275,7 +273,7 @@ public class MapController
     private void mergeMapView( MapView view )
     {
         dimensionService.mergeAnalyticalObject( view );
-        
+
         if ( view.getLegendSet() != null )
         {
             view.setLegendSet( mappingService.getMapLegendSet( view.getLegendSet().getUid() ) );

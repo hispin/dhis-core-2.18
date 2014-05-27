@@ -28,16 +28,10 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
+import org.hisp.dhis.schema.descriptors.OptionSetSchemaDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,16 +39,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = OptionSetController.RESOURCE_PATH)
+@RequestMapping( value = OptionSetSchemaDescriptor.API_ENDPOINT )
 public class OptionSetController
     extends AbstractCrudController<OptionSet>
 {
-    public static final String RESOURCE_PATH = "/optionSets";
-    
     @Autowired
     private OptionService optionService;
 
@@ -69,15 +67,15 @@ public class OptionSetController
 
         JacksonUtils.toJson( response.getOutputStream(), versionMap );
     }
-    
+
     @RequestMapping( value = "/{uid}/options", method = RequestMethod.GET )
-    public void getOptions( @PathVariable( "uid" ) String uid, 
-        @RequestParam(required = false) String key, 
-        @RequestParam(required = false) Integer max,
+    public void getOptions( @PathVariable( "uid" ) String uid,
+        @RequestParam( required = false ) String key,
+        @RequestParam( required = false ) Integer max,
         HttpServletResponse response ) throws IOException
     {
         List<String> options = optionService.getOptions( uid, key, max );
-        
+
         JacksonUtils.toJson( response.getOutputStream(), options );
     }
 }

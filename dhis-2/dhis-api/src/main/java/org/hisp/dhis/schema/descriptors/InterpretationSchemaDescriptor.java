@@ -39,11 +39,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class InterpretationSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "interpretation";
+
+    public static final String PLURAL = "interpretations";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Interpretation.class, "interpretation", "interpretations" );
-
+        Schema schema = new Schema( Interpretation.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
 
         return schema;

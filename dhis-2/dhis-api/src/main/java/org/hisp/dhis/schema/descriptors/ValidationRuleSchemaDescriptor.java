@@ -42,10 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidationRuleSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "validationRule";
+
+    public static final String PLURAL = "validationRules";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( ValidationRule.class, "validationRule", "validationRules" );
+        Schema schema = new Schema( ValidationRule.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_VALIDATIONRULE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_VALIDATIONRULE_DELETE" ) ) );

@@ -30,15 +30,12 @@ package org.hisp.dhis.webapi.controller.user;
 
 import com.google.common.collect.Lists;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.controller.WebMetaData;
-import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.schema.descriptors.UserSchemaDescriptor;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.RestoreOptions;
 import org.hisp.dhis.security.SecurityService;
@@ -47,6 +44,10 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.controller.WebMetaData;
+import org.hisp.dhis.webapi.controller.WebOptions;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -71,11 +72,10 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = UserController.RESOURCE_PATH )
+@RequestMapping( value = UserSchemaDescriptor.API_ENDPOINT )
 public class UserController
     extends AbstractCrudController<User>
 {
-    public static final String RESOURCE_PATH = "/users";
     public static final String INVITE_PATH = "/invite";
 
     @Autowired
@@ -202,7 +202,7 @@ public class UserController
 
         User parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
-        if (parsed.getUserCredentials().getPassword() != null)
+        if ( parsed.getUserCredentials().getPassword() != null )
         {
             String encodePassword = passwordManager.encodePassword( parsed.getUsername(),
                 parsed.getUserCredentials().getPassword() );
@@ -234,7 +234,7 @@ public class UserController
         User parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
 
-        if (parsed.getUserCredentials().getPassword() != null)
+        if ( parsed.getUserCredentials().getPassword() != null )
         {
             String encodePassword = passwordManager.encodePassword( parsed.getUsername(),
                 parsed.getUserCredentials().getPassword() );
@@ -252,7 +252,7 @@ public class UserController
     /**
      * Creates a user invitation and invites the user
      *
-     * @param user user object parsed from the POST request
+     * @param user     user object parsed from the POST request
      * @param response response for created user invitation
      * @throws Exception
      */
@@ -272,7 +272,7 @@ public class UserController
     /**
      * Creates a user
      *
-     * @param user user object parsed from the POST request
+     * @param user     user object parsed from the POST request
      * @param response response for created user
      * @throws Exception
      */
@@ -362,7 +362,7 @@ public class UserController
             {
                 UserGroup group = userGroupService.getUserGroup( ug.getUid() );
 
-                if ( group != null && ( !writeGroupRequired || securityService.canWrite( group ) ) )
+                if ( group != null && (!writeGroupRequired || securityService.canWrite( group )) )
                 {
                     group.addUser( user );
 

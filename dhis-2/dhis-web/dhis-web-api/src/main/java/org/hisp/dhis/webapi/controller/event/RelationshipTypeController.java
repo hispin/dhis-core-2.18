@@ -28,11 +28,12 @@ package org.hisp.dhis.webapi.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.schema.descriptors.RelationshipTypeSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -49,11 +50,9 @@ import java.io.InputStream;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = RelationshipTypeController.RESOURCE_PATH )
+@RequestMapping( value = RelationshipTypeSchemaDescriptor.API_ENDPOINT )
 public class RelationshipTypeController extends AbstractCrudController<RelationshipType>
 {
-    public static final String RESOURCE_PATH = "/relationshipTypes";
-
     @Autowired
     private RelationshipTypeService relationshipTypeService;
 
@@ -68,7 +67,7 @@ public class RelationshipTypeController extends AbstractCrudController<Relations
         RelationshipType relationshipType = JacksonUtils.fromXml( input, RelationshipType.class );
         relationshipTypeService.addRelationshipType( relationshipType );
 
-        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + relationshipType.getUid() );
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RelationshipTypeSchemaDescriptor.API_ENDPOINT + "/" + relationshipType.getUid() );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
@@ -78,7 +77,7 @@ public class RelationshipTypeController extends AbstractCrudController<Relations
         RelationshipType relationshipType = JacksonUtils.fromJson( input, RelationshipType.class );
         relationshipTypeService.addRelationshipType( relationshipType );
 
-        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + relationshipType.getUid() );
+        response.setHeader( "Location", ContextUtils.getRootPath( request ) + RelationshipTypeSchemaDescriptor.API_ENDPOINT + "/" + relationshipType.getUid() );
     }
 
     //--------------------------------------------------------------------------

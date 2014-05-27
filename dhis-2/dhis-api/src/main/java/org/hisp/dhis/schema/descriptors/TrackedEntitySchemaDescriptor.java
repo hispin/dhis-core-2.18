@@ -42,10 +42,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrackedEntitySchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "trackedEntity";
+
+    public static final String PLURAL = "trackedEntities";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( TrackedEntity.class, "trackedEntity", "trackedEntities" );
+        Schema schema = new Schema( TrackedEntity.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_TRACKED_ENTITY_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_TRACKED_ENTITY_UPDATE" ) ) );
