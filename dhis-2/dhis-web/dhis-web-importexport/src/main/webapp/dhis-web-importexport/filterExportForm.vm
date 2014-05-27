@@ -148,7 +148,7 @@
     <!-- ATTRIBUTES TYPES SELECTION -->
     <h6 id="headingAttributes" style="font-size: 10pt;"><label>$i18n.getString( "attribute_types" )</label></h6>
 
-    <div id="mainDivAttributes" style="margin: 5px; height: 340px;"></div>
+    <div id="mainDivAttributes" style="margin: 5px;"></div>
 
     <!-- CATEGORIES SELECTION -->
     <h6 id="headingDimensions" style="font-size: 10pt;"><label>$i18n.getString( "categories" )</label></h6>
