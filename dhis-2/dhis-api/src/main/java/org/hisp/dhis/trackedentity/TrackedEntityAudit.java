@@ -37,9 +37,7 @@ import java.util.Date;
  */
 public class TrackedEntityAudit
 {
-    public static final String MODULE_ENTITY_INSTANCE_DASHBOARD = "instance_dashboard";
-
-    public static final String MODULE_TABULAR_REPORT = "tabular_report";
+    public static final String MODULE_ENTITY_INSTANCE_DASHBOARD = "tracked_entity_instance_dashboard";
 
     private int id;
 
