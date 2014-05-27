@@ -28,10 +28,12 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -46,14 +48,16 @@ public class IndexController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public void getIndex( HttpServletResponse response ) throws IOException
+    public void getIndex( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        response.sendRedirect( "/api/resources" );
+        String location = response.encodeRedirectURL( "/resources" );
+        response.sendRedirect( ContextUtils.getRootPath( request ) + location );
     }
 
     @RequestMapping( value = "/", method = RequestMethod.GET )
-    public void getIndexWithSlash( HttpServletResponse response ) throws IOException
+    public void getIndexWithSlash( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        response.sendRedirect( "/api/resources" );
+        String location = response.encodeRedirectURL( "/resources" );
+        response.sendRedirect( ContextUtils.getRootPath( request ) + location );
     }
 }
