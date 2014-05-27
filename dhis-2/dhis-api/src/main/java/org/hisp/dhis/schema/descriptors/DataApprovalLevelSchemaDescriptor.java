@@ -28,6 +28,7 @@ package org.hisp.dhis.schema.descriptors;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.schema.Authority;
 import org.hisp.dhis.schema.AuthorityType;
@@ -35,22 +36,26 @@ import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaDescriptor;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Lists;
-
 @Component
 public class DataApprovalLevelSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "dataApprovalLevel";
+
+    public static final String PLURAL = "dataApprovalLevels";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( DataApprovalLevel.class, "dataApprovalLevel", "dataApprovalLevels" );
-        
+        Schema schema = new Schema( DataApprovalLevel.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
-        
+
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_SYSTEM_SETTING" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_SYSTEM_SETTING" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_SYSTEM_SETTING" ) ) );
-        
+
         return schema;
     }
 }

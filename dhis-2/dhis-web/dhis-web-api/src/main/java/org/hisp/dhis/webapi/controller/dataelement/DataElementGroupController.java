@@ -29,11 +29,6 @@ package org.hisp.dhis.webapi.controller.dataelement;
  */
 
 import com.google.common.collect.Lists;
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.controller.WebMetaData;
-import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.WebUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -41,6 +36,12 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.schema.descriptors.DataElementGroupSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.controller.WebMetaData;
+import org.hisp.dhis.webapi.controller.WebOptions;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,17 +62,15 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = DataElementGroupController.RESOURCE_PATH)
+@RequestMapping( value = DataElementGroupSchemaDescriptor.API_ENDPOINT )
 public class DataElementGroupController
     extends AbstractCrudController<DataElementGroup>
 {
-    public static final String RESOURCE_PATH = "/dataElementGroups";
-
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
 
-    @RequestMapping(value = "/{uid}/members", method = RequestMethod.GET)
-    public String getMembers( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping( value = "/{uid}/members", method = RequestMethod.GET )
+    public String getMembers( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -107,8 +106,8 @@ public class DataElementGroupController
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    @RequestMapping(value = "/{uid}/members/query/{q}", method = RequestMethod.GET)
-    public String getMembersByQuery( @PathVariable("uid") String uid, @PathVariable("q") String q,
+    @RequestMapping( value = "/{uid}/members/query/{q}", method = RequestMethod.GET )
+    public String getMembersByQuery( @PathVariable( "uid" ) String uid, @PathVariable( "q" ) String q,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception
     {
@@ -154,8 +153,8 @@ public class DataElementGroupController
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    @RequestMapping(value = "/{uid}/operands", method = RequestMethod.GET)
-    public String getOperands( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping( value = "/{uid}/operands", method = RequestMethod.GET )
+    public String getOperands( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -169,10 +168,10 @@ public class DataElementGroupController
 
         WebMetaData metaData = new WebMetaData();
         List<DataElementOperand> dataElementOperands = Lists.newArrayList( dataElementCategoryService.getOperands( dataElementGroup.getMembers() ) );
-        
+
         Collections.sort( dataElementOperands, IdentifiableObjectNameComparator.INSTANCE );
 
-		Collections.sort( dataElementOperands, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( dataElementOperands, IdentifiableObjectNameComparator.INSTANCE );
 
         metaData.setDataElementOperands( dataElementOperands );
 
@@ -196,8 +195,8 @@ public class DataElementGroupController
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    @RequestMapping(value = "/{uid}/operands/query/{q}", method = RequestMethod.GET)
-    public String getOperandsByQuery( @PathVariable("uid") String uid, @PathVariable("q") String q,
+    @RequestMapping( value = "/{uid}/operands/query/{q}", method = RequestMethod.GET )
+    public String getOperandsByQuery( @PathVariable( "uid" ) String uid, @PathVariable( "q" ) String q,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception
     {

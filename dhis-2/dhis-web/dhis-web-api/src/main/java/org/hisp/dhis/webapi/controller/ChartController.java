@@ -28,19 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
-import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
-import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.DimensionService;
@@ -57,8 +44,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.schema.descriptors.ChartSchemaDescriptor;
 import org.hisp.dhis.system.util.CodecUtils;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,29 +60,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+
+import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
+import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
+import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = ChartController.RESOURCE_PATH )
+@RequestMapping( value = ChartSchemaDescriptor.API_ENDPOINT )
 public class ChartController
     extends AbstractCrudController<Chart>
 {
-    public static final String RESOURCE_PATH = "/charts";
-
     @Autowired
     private ChartService chartService;
 
     @Autowired
-    private UserService userService;
+    private DataElementService dataElementService;
 
     @Autowired
-    private DataElementService dataElementService;
-    
-    @Autowired
     private DataElementCategoryService categoryService;
-    
+
     @Autowired
     private IndicatorService indicatorService;
 
@@ -102,7 +96,7 @@ public class ChartController
 
     @Autowired
     private DimensionService dimensionService;
-    
+
     @Autowired
     private I18nManager i18nManager;
 
@@ -118,12 +112,12 @@ public class ChartController
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         Chart chart = JacksonUtils.fromJson( input, Chart.class );
-        
+
         mergeChart( chart );
-        
+
         chartService.addChart( chart );
-        
-        ContextUtils.createdResponse( response, "Chart created", RESOURCE_PATH + "/" + chart.getUid() );
+
+        ContextUtils.createdResponse( response, "Chart created", ChartSchemaDescriptor.API_ENDPOINT + "/" + chart.getUid() );
     }
 
     @Override
@@ -132,19 +126,19 @@ public class ChartController
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         Chart chart = chartService.getChart( uid );
-        
+
         if ( chart == null )
         {
             ContextUtils.notFoundResponse( response, "Chart does not exist: " + uid );
             return;
         }
-        
+
         Chart newChart = JacksonUtils.fromJson( input, Chart.class );
-        
+
         mergeChart( newChart );
-        
+
         chart.mergeWith( newChart );
-        
+
         chartService.updateChart( chart );
     }
 
@@ -154,22 +148,22 @@ public class ChartController
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
     {
         Chart chart = chartService.getChart( uid );
-        
+
         if ( chart == null )
         {
             ContextUtils.notFoundResponse( response, "Chart does not exist: " + uid );
             return;
         }
-        
+
         chartService.deleteChart( chart );
     }
-    
+
     //--------------------------------------------------------------------------
     // Get data
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
-    public void getChart( 
+    public void getChart(
         @PathVariable( "uid" ) String uid,
         @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
         @RequestParam( value = "ou", required = false ) String ou,
@@ -184,9 +178,9 @@ public class ChartController
             ContextUtils.notFoundResponse( response, "Chart does not exist: " + uid );
             return;
         }
-        
+
         OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
-        
+
         JFreeChart jFreeChart = chartService.getJFreeChart( chart, date, unit, i18nManager.getI18nFormat() );
 
         String filename = CodecUtils.filenameEncode( chart.getName() ) + ".png";
@@ -197,7 +191,7 @@ public class ChartController
     }
 
     @RequestMapping( value = { "/data", "/data.png" }, method = RequestMethod.GET )
-    public void getChart( 
+    public void getChart(
         @RequestParam( value = "in" ) String indicatorUid,
         @RequestParam( value = "ou" ) String organisationUnitUid,
         @RequestParam( value = "periods", required = false ) boolean periods,
@@ -209,7 +203,7 @@ public class ChartController
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
 
-        JFreeChart chart = null;
+        JFreeChart chart;
 
         if ( periods )
         {
@@ -236,41 +230,41 @@ public class ChartController
         HttpServletResponse response ) throws IOException
     {
         DataElement dataElement = dataElementService.getDataElement( de );
-        
+
         if ( dataElement == null )
         {
             ContextUtils.conflictResponse( response, "Data element does not exist: " + de );
             return;
         }
-        
+
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( co );
-        
+
         if ( categoryOptionCombo == null )
         {
             ContextUtils.conflictResponse( response, "Category option combo does not exist: " + co );
             return;
         }
-        
+
         Period period = PeriodType.getPeriodFromIsoString( pe );
-        
+
         if ( period == null )
         {
             ContextUtils.conflictResponse( response, "Period does not exist: " + pe );
             return;
         }
-        
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
-        
+
         if ( organisationUnit == null )
         {
             ContextUtils.conflictResponse( response, "Organisation unit does not exist: " + ou );
             return;
-        }        
+        }
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "chart.png", false );
 
         JFreeChart chart = chartService.getJFreeChartHistory( dataElement, categoryOptionCombo, period, organisationUnit, 13, i18nManager.getI18nFormat() );
-        
+
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
 
@@ -282,16 +276,16 @@ public class ChartController
     public void postProcessEntity( Chart chart ) throws Exception
     {
         chart.populateAnalyticalProperties();
-        
+
         for ( OrganisationUnit organisationUnit : chart.getOrganisationUnits() )
         {
             chart.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
         }
-        
+
         if ( chart.getPeriods() != null && !chart.getPeriods().isEmpty() )
         {
             I18nFormat format = i18nManager.getI18nFormat();
-            
+
             for ( Period period : chart.getPeriods() )
             {
                 period.setName( format.formatPeriod( period ) );
@@ -306,19 +300,19 @@ public class ChartController
     private void mergeChart( Chart chart )
     {
         dimensionService.mergeAnalyticalObject( chart );
-        
+
         chart.getFilterDimensions().clear();
-        
+
         if ( chart.getColumns() != null )
         {
             chart.setSeries( toDimension( chart.getColumns().get( 0 ).getDimension() ) );
         }
-        
+
         if ( chart.getRows() != null )
         {
             chart.setCategory( toDimension( chart.getRows().get( 0 ).getDimension() ) );
         }
-        
+
         chart.getFilterDimensions().addAll( getUniqueDimensions( chart.getFilters() ) );
     }
 }

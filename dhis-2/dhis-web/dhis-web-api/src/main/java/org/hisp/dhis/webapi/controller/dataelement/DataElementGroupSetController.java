@@ -28,8 +28,9 @@ package org.hisp.dhis.webapi.controller.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.schema.descriptors.DataElementGroupSetSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,9 +38,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = DataElementGroupSetController.RESOURCE_PATH )
+@RequestMapping( value = DataElementGroupSetSchemaDescriptor.API_ENDPOINT )
 public class DataElementGroupSetController
     extends AbstractCrudController<DataElementGroupSet>
 {
-    public static final String RESOURCE_PATH = "/dataElementGroupSets";
 }

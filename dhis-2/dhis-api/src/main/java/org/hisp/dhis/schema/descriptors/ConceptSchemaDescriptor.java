@@ -39,9 +39,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConceptSchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "concept";
+
+    public static final String PLURAL = "concepts";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
     @Override
     public Schema getSchema()
     {
-        return new Schema( Concept.class, "concept", "concepts" );
+        Schema schema = new Schema( Concept.class, SINGULAR, PLURAL );
+        schema.setApiEndpoint( API_ENDPOINT );
+
+        return schema;
     }
 }

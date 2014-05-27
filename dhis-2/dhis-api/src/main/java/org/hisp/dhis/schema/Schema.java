@@ -59,6 +59,8 @@ public class Schema
 
     private boolean shareable;
 
+    private String apiEndpoint;
+
     private List<Authority> authorities = Lists.newArrayList();
 
     private List<Property> properties = Lists.newArrayList();
@@ -132,6 +134,23 @@ public class Schema
     public void setShareable( boolean shareable )
     {
         this.shareable = shareable;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getApiEndpoint()
+    {
+        return apiEndpoint;
+    }
+
+    public void setApiEndpoint( String apiEndpoint )
+    {
+        this.apiEndpoint = apiEndpoint;
+    }
+
+    public boolean haveEndpoint()
+    {
+        return getApiEndpoint() != null;
     }
 
     @JsonProperty

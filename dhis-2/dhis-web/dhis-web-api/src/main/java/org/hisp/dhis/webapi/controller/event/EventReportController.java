@@ -28,15 +28,6 @@ package org.hisp.dhis.webapi.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensions;
-
-import java.io.InputStream;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.eventreport.EventReport;
@@ -47,6 +38,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.schema.descriptors.EventReportSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -55,25 +49,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+
+import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensions;
+
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = EventReportController.RESOURCE_PATH )
+@RequestMapping( value = EventReportSchemaDescriptor.API_ENDPOINT )
 public class EventReportController
     extends AbstractCrudController<EventReport>
 {
-    public static final String RESOURCE_PATH = "/eventReports";
-
     @Autowired
     private EventReportService eventReportService;
 
     @Autowired
     private DimensionService dimensionService;
-    
+
     @Autowired
     private ProgramService programService;
-    
+
     @Autowired
     private ProgramStageService programStageService;
 
@@ -89,12 +87,12 @@ public class EventReportController
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         EventReport report = JacksonUtils.fromJson( input, EventReport.class );
-        
+
         mergeEventReport( report );
-        
+
         eventReportService.saveEventReport( report );
-        
-        ContextUtils.createdResponse( response, "Event report created", RESOURCE_PATH + "/" + report.getUid() );
+
+        ContextUtils.createdResponse( response, "Event report created", EventReportSchemaDescriptor.API_ENDPOINT + "/" + report.getUid() );
     }
 
     @Override
@@ -111,11 +109,11 @@ public class EventReportController
         }
 
         EventReport newReport = JacksonUtils.fromJson( input, EventReport.class );
-        
+
         mergeEventReport( newReport );
-        
+
         report.mergeWith( newReport );
-        
+
         eventReportService.updateEventReport( report );
     }
 
@@ -133,14 +131,14 @@ public class EventReportController
         }
 
         eventReportService.deleteEventReport( report );
-    }        
-        
+    }
+
     //--------------------------------------------------------------------------
     // Hooks
     //--------------------------------------------------------------------------
 
     @Override
-    protected void postProcessEntity( EventReport report ) 
+    protected void postProcessEntity( EventReport report )
         throws Exception
     {
         report.populateAnalyticalProperties();
@@ -160,7 +158,7 @@ public class EventReportController
             }
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // Supportive methods
     //--------------------------------------------------------------------------
@@ -168,20 +166,20 @@ public class EventReportController
     private void mergeEventReport( EventReport report )
     {
         dimensionService.mergeAnalyticalObject( report );
-        
+
         report.getColumnDimensions().clear();
         report.getRowDimensions().clear();
         report.getFilterDimensions().clear();
-        
+
         report.getColumnDimensions().addAll( getDimensions( report.getColumns() ) );
         report.getRowDimensions().addAll( getDimensions( report.getRows() ) );
         report.getFilterDimensions().addAll( getDimensions( report.getFilters() ) );
-        
+
         if ( report.getProgram() != null )
         {
             report.setProgram( programService.getProgram( report.getProgram().getUid() ) );
         }
-        
+
         if ( report.getProgramStage() != null )
         {
             report.setProgramStage( programStageService.getProgramStage( report.getProgramStage().getUid() ) );

@@ -28,21 +28,15 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.WebUtils;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.schema.descriptors.DashboardSchemaDescriptor;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -53,62 +47,66 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Set;
+
 import static org.hisp.dhis.dashboard.Dashboard.MAX_ITEMS;
 
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = DashboardController.RESOURCE_PATH )
+@RequestMapping( value = DashboardSchemaDescriptor.API_ENDPOINT )
 public class DashboardController
     extends AbstractCrudController<Dashboard>
 {
-    public static final String RESOURCE_PATH = "/dashboards";
-    
     @Autowired
     private DashboardService dashboardService;
-    
+
     @RequestMapping( value = "/q/{query}", method = RequestMethod.GET )
-    public String search( @PathVariable String query, @RequestParam(required=false) Set<String> max, 
+    public String search( @PathVariable String query, @RequestParam( required = false ) Set<String> max,
         Model model, HttpServletResponse response ) throws Exception
     {
         DashboardSearchResult result = dashboardService.search( query, max );
-        
+
         model.addAttribute( "model", result );
-        
+
         return "dashboardSearchResult";
     }
-    
+
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         Dashboard dashboard = JacksonUtils.fromJson( input, Dashboard.class );
-        
+
         dashboardService.mergeDashboard( dashboard );
-        
+
         dashboardService.saveDashboard( dashboard );
-        
-        ContextUtils.createdResponse( response, "Dashboard created", RESOURCE_PATH + "/" + dashboard.getUid() );
+
+        ContextUtils.createdResponse( response, "Dashboard created", DashboardSchemaDescriptor.API_ENDPOINT + "/" + dashboard.getUid() );
     }
-    
+
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( uid );
-        
+
         if ( dashboard == null )
         {
             ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + uid );
             return;
         }
-        
+
         Dashboard newDashboard = JacksonUtils.fromJson( input, Dashboard.class );
 
         dashboard.setName( newDashboard.getName() ); // TODO Name only for now
-        
+
         dashboardService.updateDashboard( dashboard );
     }
 
@@ -124,14 +122,14 @@ public class DashboardController
             ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + uid );
             return;
         }
-        
+
         dashboardService.deleteDashboard( dashboard );
-        
+
         ContextUtils.okResponse( response, "Dashboard deleted" );
     }
-    
+
     @RequestMapping( value = "/{uid}/items", method = RequestMethod.POST, consumes = "application/json" )
-    public void postJsonItem( HttpServletResponse response, HttpServletRequest request, 
+    public void postJsonItem( HttpServletResponse response, HttpServletRequest request,
         InputStream input, @PathVariable String uid ) throws Exception
     {
         Dashboard dashboard = dashboardService.getDashboard( uid );
@@ -141,24 +139,24 @@ public class DashboardController
             ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + uid );
             return;
         }
-        
+
         DashboardItem item = JacksonUtils.fromJson( input, DashboardItem.class );
-        
+
         dashboardService.mergeDashboardItem( item );
-        
+
         dashboard.getItems().add( 0, item );
-        
+
         dashboardService.updateDashboard( dashboard );
-        
+
         ContextUtils.createdResponse( response, "Dashboard item created", item.getUid() );
     }
-    
+
     @RequestMapping( value = "/{dashboardUid}/items/content", method = RequestMethod.POST )
-    public void postJsonItemContent( HttpServletResponse response, HttpServletRequest request, 
+    public void postJsonItemContent( HttpServletResponse response, HttpServletRequest request,
         @PathVariable String dashboardUid, @RequestParam String type, @RequestParam( "id" ) String contentUid ) throws Exception
     {
         boolean result = dashboardService.addItemContent( dashboardUid, type, contentUid );
-        
+
         if ( !result )
         {
             ContextUtils.conflictResponse( response, "Max number of dashboard items reached: " + MAX_ITEMS );
@@ -168,7 +166,7 @@ public class DashboardController
             ContextUtils.okResponse( response, "Dashboard item added" );
         }
     }
-    
+
     @RequestMapping( value = "/{dashboardUid}/items/{itemUid}/position/{position}", method = RequestMethod.POST )
     public void moveItem( HttpServletResponse response, HttpServletRequest request,
         @PathVariable String dashboardUid, @PathVariable String itemUid, @PathVariable int position ) throws Exception
@@ -180,15 +178,15 @@ public class DashboardController
             ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + dashboardUid );
             return;
         }
-        
+
         if ( dashboard.moveItem( itemUid, position ) )
         {
             dashboardService.updateDashboard( dashboard );
-            
+
             ContextUtils.okResponse( response, "Dashboard item moved" );
         }
     }
-    
+
     @RequestMapping( value = "/{dashboardUid}/items/{itemUid}", method = RequestMethod.DELETE )
     public void deleteItem( HttpServletResponse response, HttpServletRequest request,
         @PathVariable String dashboardUid, @PathVariable String itemUid )
@@ -200,13 +198,13 @@ public class DashboardController
             ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + dashboardUid );
             return;
         }
-        
+
         if ( dashboard.removeItem( itemUid ) )
         {
             dashboardService.updateDashboard( dashboard );
-            
+
             ContextUtils.okResponse( response, "Dashboard item removed" );
-        }        
+        }
     }
 
     @RequestMapping( value = "/{dashboardUid}/items/{itemUid}/content/{contentUid}", method = RequestMethod.DELETE )
@@ -220,7 +218,7 @@ public class DashboardController
             ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + dashboardUid );
             return;
         }
-        
+
         DashboardItem item = dashboard.getItemByUid( itemUid );
 
         if ( item == null )
@@ -228,18 +226,18 @@ public class DashboardController
             ContextUtils.notFoundResponse( response, "Dashboard item does not exist: " + itemUid );
             return;
         }
-        
+
         if ( item.removeItemContent( contentUid ) )
         {
             if ( item.getContentCount() == 0 )
             {
                 dashboard.removeItem( item.getUid() ); // Remove if empty
             }
-            
-            dashboardService.updateDashboard( dashboard );            
-            
+
+            dashboardService.updateDashboard( dashboard );
+
             ContextUtils.okResponse( response, "Dashboard item content removed" );
-        }        
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -252,9 +250,9 @@ public class DashboardController
         for ( DashboardItem item : entity.getItems() )
         {
             if ( item != null )
-            {                
+            {
                 item.setHref( null ); // Null item link, not relevant
-            
+
                 if ( item.getEmbeddedItem() != null )
                 {
                     WebUtils.generateLinks( item.getEmbeddedItem() );

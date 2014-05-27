@@ -28,8 +28,9 @@ package org.hisp.dhis.webapi.controller.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.schema.descriptors.IndicatorGroupSetSchemaDescriptor;
+import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,9 +38,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = IndicatorGroupSetController.RESOURCE_PATH )
+@RequestMapping( value = IndicatorGroupSetSchemaDescriptor.API_ENDPOINT )
 public class IndicatorGroupSetController
     extends AbstractCrudController<IndicatorGroupSet>
 {
-    public static final String RESOURCE_PATH = "/indicatorGroupSets";
 }
