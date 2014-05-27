@@ -15,7 +15,7 @@ function getI18nAvailableMetaData( metaDataCategoryName )
 {
     switch ( metaDataCategoryName )
     {
-        case "AttributeTypes":
+        case "Attributes":
             return i18n_available_attributeTypes;
         case "Dimensions":
             return i18n_available_categories;
@@ -85,7 +85,7 @@ function getI18nSelectedMetaData( metaDataCategoryName )
 {
     switch ( metaDataCategoryName )
     {
-        case "AttributeTypes":
+        case "Attributes":
             return i18n_selected_attributeTypes;
         case "Dimensions":
             return i18n_selected_categories;
