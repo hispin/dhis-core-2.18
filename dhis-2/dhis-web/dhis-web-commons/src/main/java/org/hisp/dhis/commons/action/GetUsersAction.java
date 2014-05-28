@@ -35,10 +35,13 @@ import java.util.ListIterator;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.comparator.UserComparator;
 import org.hisp.dhis.util.ContextUtils;
+
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 /**
  * @author mortenoh
@@ -55,6 +58,13 @@ public class GetUsersAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -99,6 +109,13 @@ public class GetUsersAction
             this.paging = createPaging( users.size() );
 
             users = users.subList( paging.getStartPos(), paging.getEndPos() );
+        }
+
+        boolean writeGroupRequired = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
+
+        if ( writeGroupRequired )
+        {
+            userService.canUpdateUsersFilter( users );
         }
 
         return SUCCESS;

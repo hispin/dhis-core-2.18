@@ -329,7 +329,7 @@ public class UserController
 
                 if ( group == null )
                 {
-                    throw new UpdateAccessDeniedException( "Can't add user: Can't find user group with UID = " + ug.getUid() );
+                    throw new CreateAccessDeniedException( "Can't add user: Can't find user group with UID = " + ug.getUid() );
                 }
 
                 if ( writeGroupRequired && securityService.canWrite( group ) )

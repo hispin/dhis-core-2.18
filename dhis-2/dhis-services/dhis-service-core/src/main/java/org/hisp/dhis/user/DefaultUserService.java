@@ -585,6 +585,19 @@ public class DefaultUserService
         return userCredentialsStore.getActiveUsersCount( since );
     }
 
+    public void canUpdateUsersFilter( Collection<User> users )
+    {
+        FilterUtils.filter( users,
+            new Filter<User>()
+            {
+                public boolean retain( User object )
+                {
+                    return canUpdate( object.getUserCredentials() );
+                }
+            }
+        );
+    }
+
     public void canUpdateFilter( Collection<UserCredentials> userCredentials )
     {
         FilterUtils.filter( userCredentials,
@@ -592,10 +605,15 @@ public class DefaultUserService
             {
                 public boolean retain( UserCredentials object )
                 {
-                    return hasAuthorityToUpdateUser( object ) && hasGroupsToUpdateUser( object );
+                    return canUpdate( object );
                 }
             }
         );
+    }
+
+    public boolean canUpdate( UserCredentials userCredentials )
+    {
+        return hasAuthorityToUpdateUser( userCredentials ) && hasGroupsToUpdateUser( userCredentials );
     }
 
     // -------------------------------------------------------------------------

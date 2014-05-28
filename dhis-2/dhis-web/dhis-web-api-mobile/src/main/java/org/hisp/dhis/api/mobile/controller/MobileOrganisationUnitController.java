@@ -54,7 +54,7 @@ import org.hisp.dhis.api.mobile.model.SMSCommand;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
-//import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientIdentifierAndAttribute;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Program;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
@@ -366,15 +366,15 @@ public class MobileOrganisationUnitController
         return activityReportingService.findPatient( Integer.parseInt( patientId ) );
     }
     
-//    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findPatients" )
-//    @ResponseBody
-//    public PatientList findPatientsById( @PathVariable
-//    int id, @RequestHeader( "patientIds" )
-//    String patientIds )
-//        throws NotAllowedException
-//    {
-//        return activityReportingService.findPatients( patientIds );
-//    }
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findPatients" )
+    @ResponseBody
+    public PatientList findPatientsById( @PathVariable
+    int id, @RequestHeader( "patientIds" )
+    String patientIds )
+        throws NotAllowedException
+    {
+        return activityReportingService.findPatients( patientIds );
+    }
 
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findPatientInAdvanced/{programId}" )
     @ResponseBody
