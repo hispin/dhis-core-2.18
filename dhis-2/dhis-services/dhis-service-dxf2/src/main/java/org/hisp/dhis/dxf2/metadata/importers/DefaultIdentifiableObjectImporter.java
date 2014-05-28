@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.metadata.importers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Sets;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -56,6 +57,9 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
@@ -114,7 +118,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private AclService aclService;
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -139,15 +143,18 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     // keeping this internal for now, might be split into several classes
     private class NonIdentifiableObjects
     {
-        private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+        private Set<AttributeValue> attributeValues = Sets.newHashSet();
 
         private Expression leftSide;
         private Expression rightSide;
 
-        private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
-        private Set<DataElementOperand> greyedFields = new HashSet<DataElementOperand>();
+        private Set<DataElementOperand> compulsoryDataElementOperands = Sets.newHashSet();
+        private Set<DataElementOperand> greyedFields = Sets.newHashSet();
 
         private DataEntryForm dataEntryForm;
+
+        private Set<ProgramStageDataElement> programStageDataElements = Sets.newHashSet();
+        private Set<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = Sets.newHashSet();
 
         public void extract( T object )
         {
@@ -157,6 +164,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             dataEntryForm = extractDataEntryForm( object, "dataEntryForm" );
             compulsoryDataElementOperands = extractDataElementOperands( object, "compulsoryDataElementOperands" );
             greyedFields = extractDataElementOperands( object, "greyedFields" );
+            programStageDataElements = extractProgramStageDataElements( object );
+            programTrackedEntityAttributes = extractProgramTrackedEntityAttributes( object );
         }
 
         public void delete( T object )
@@ -398,6 +407,32 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     }
                 } );
             }
+        }
+
+        private Set<ProgramStageDataElement> extractProgramStageDataElements( T object )
+        {
+            Set<ProgramStageDataElement> programStageDataElements = Sets.newHashSet();
+
+            if ( ReflectionUtils.findGetterMethod( "programStageDataElements", object ) != null )
+            {
+                programStageDataElements = ReflectionUtils.invokeGetterMethod( "programStageDataElements", object );
+                ReflectionUtils.invokeSetterMethod( "programStageDataElements", object, new HashSet<ProgramStageDataElement>() );
+            }
+
+            return programStageDataElements;
+        }
+
+        private Set<ProgramTrackedEntityAttribute> extractProgramTrackedEntityAttributes( T object )
+        {
+            Set<ProgramTrackedEntityAttribute> trackedEntityAttributes = Sets.newHashSet();
+
+            if ( ReflectionUtils.isCollection( "attributes", object, ProgramTrackedEntityAttribute.class ) )
+            {
+                trackedEntityAttributes = ReflectionUtils.invokeGetterMethod( "attributes", object );
+                ReflectionUtils.invokeSetterMethod( "attributes", object, new HashSet<ProgramTrackedEntityAttribute>() );
+            }
+
+            return trackedEntityAttributes;
         }
     }
 
@@ -924,8 +959,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
             }
 
-            // if ( !options.isDryRun() ) { }
-            // TODO why do we have to invoke the setter on dryRun?
             if ( !options.isDryRun() )
             {
                 ReflectionUtils.invokeSetterMethod( field.getName(), object, reference );
