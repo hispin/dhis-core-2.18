@@ -28,13 +28,15 @@ package org.hisp.dhis.importexport.action.dxf2;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang3.StringUtils;
-import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,11 +46,14 @@ import java.util.Map;
 public class MetaDataExportFormAction
     implements Action
 {
+    @Autowired
+    private SchemaService schemaService;
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Map<String, String> exportClasses = new LinkedHashMap<String, String>();
+    private Map<String, String> exportClasses = Maps.newLinkedHashMap();
 
     public Map<String, String> getExportClasses()
     {
@@ -62,7 +67,13 @@ public class MetaDataExportFormAction
     @Override
     public String execute() throws Exception
     {
-        List<String> values = new ArrayList<String>( ExchangeClasses.getExportMap().values() );
+        List<String> values = Lists.newArrayList();
+
+        for ( Schema schema : schemaService.getMetadataSchemas() )
+        {
+            values.add( schema.getPlural() );
+        }
+
         Collections.sort( values );
 
         for ( String key : values )
