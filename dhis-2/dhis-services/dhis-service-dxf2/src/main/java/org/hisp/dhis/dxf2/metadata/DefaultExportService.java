@@ -38,6 +38,8 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.filter.MetaDataFilterService;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -80,6 +82,9 @@ public class DefaultExportService
     @Autowired
     private MetaDataFilterService metaDataFilterService;
 
+    @Autowired
+    private SchemaService schemaService;
+
     //-------------------------------------------------------------------------------------------------------
     // ExportService Implementation - MetaData
     //-------------------------------------------------------------------------------------------------------
@@ -105,15 +110,14 @@ public class DefaultExportService
             notifier.notify( taskId, "Exporting meta-data" );
         }
 
-        for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getExportMap().entrySet() )
+        for ( Schema schema : schemaService.getMetadataSchemas() )
         {
-            if ( !options.isEnabled( entry.getValue() ) )
+            if ( !options.isEnabled( schema.getPlural() ) || !schema.isIdentifiableObject() )
             {
                 continue;
             }
 
-            Class<? extends IdentifiableObject> idObjectClass = entry.getKey();
-
+            Class<? extends IdentifiableObject> idObjectClass = (Class<? extends IdentifiableObject>) schema.getKlass();
             Collection<? extends IdentifiableObject> idObjects;
 
             if ( lastUpdated != null )
@@ -130,7 +134,7 @@ public class DefaultExportService
                 continue;
             }
 
-            String message = "Exporting " + idObjects.size() + " " + StringUtils.capitalize( entry.getValue() );
+            String message = "Exporting " + idObjects.size() + " " + StringUtils.capitalize( schema.getPlural() );
 
             log.info( message );
 
@@ -139,7 +143,7 @@ public class DefaultExportService
                 notifier.notify( taskId, message );
             }
 
-            ReflectionUtils.invokeSetterMethod( entry.getValue(), metaData, new ArrayList<IdentifiableObject>( idObjects ) );
+            ReflectionUtils.invokeSetterMethod( schema.getPlural(), metaData, new ArrayList<IdentifiableObject>( idObjects ) );
         }
 
         log.info( "Export done at " + new Date() );
@@ -156,7 +160,6 @@ public class DefaultExportService
     // ExportService Implementation - Detailed MetaData Export
     //-------------------------------------------------------------------------------------------------------
 
-    //@author Ovidiu Rosu <rosu.ovi@gmail.com>
     @Override
     public MetaData getFilteredMetaData( FilterOptions filterOptions ) throws IOException
     {

@@ -55,6 +55,7 @@ import org.hisp.dhis.api.mobile.model.Task;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.common.Grid;
@@ -1446,6 +1447,22 @@ public class ActivityReportingServiceImpl
         TrackedEntityInstance patient = entityInstanceService.getTrackedEntityInstance( patientId );
         org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( patient );
         return patientMobile;
+    }
+    
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList findPatients( String patientIds )
+        throws NotAllowedException
+    {
+        PatientList patientlist = new PatientList();
+        
+        while ( patientIds.length() > 0 )
+        {
+            int patientId = Integer.parseInt( patientIds.substring( 0, patientIds.indexOf( "$" ) ) );
+            TrackedEntityInstance patient = entityInstanceService.getTrackedEntityInstance( patientId );
+            patientlist.getPatientList().add( getPatientModel( patient ) );
+            patientIds = patientIds.substring( patientIds.indexOf( "$" ) + 1, patientIds.length() );
+        }
+        
+        return patientlist;
     }
 
     @Override

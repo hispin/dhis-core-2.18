@@ -50,6 +50,7 @@ public class TrackedEntityInstanceSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( TrackedEntityInstance.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setMetadata( false );
 
         return schema;
     }
