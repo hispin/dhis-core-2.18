@@ -35,7 +35,7 @@
 
     <many-to-one name="relatives" unique="true" class="org.hisp.dhis.period.RelativePeriods" column="relativeperiodsid"
       cascade="all-delete-orphan" foreign-key="fk_report_relativeperiodsid" />
-    
+
     <list name="organisationUnitLevels" table="eventreport_orgunitlevels">
       <cache usage="read-write" />
       <key column="eventreportid" foreign-key="fk_eventreport_orgunitlevels_eventreportid" />
@@ -50,14 +50,14 @@
       <many-to-many column="orgunitgroupid" class="org.hisp.dhis.organisationunit.OrganisationUnitGroup"
         foreign-key="fk_eventreport_itemorgunitgroups_orgunitgroupid" />
     </list>
-    
+
     <list name="attributeDimensions" table="eventreport_attributedimensions" cascade="all, delete-orphan">
       <key column="eventreportid" foreign-key="fk_eventreport_attributedimensions_eventreportid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="trackedentityattributedimensionid" class="org.hisp.dhis.trackedentity.TrackedEntityAttributeDimension"
         foreign-key="fk_eventreport_attributedimensions_attributedimensionid" />
     </list>
-    
+
     <list name="dataElementDimensions" table="eventreport_dataelementdimensions" cascade="all, delete-orphan">
       <key column="eventreportid" foreign-key="fk_eventreport_dataelementdimensions_eventreportid" />
       <list-index column="sort_order" base="0" />
@@ -73,16 +73,16 @@
 
     <many-to-one name="program" class="org.hisp.dhis.program.Program"
       column="programid" not-null="true" foreign-key="fk_eventreport_programid" />
-    
+
     <many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
       column="programstageid" foreign-key="fk_eventreport_programstageid" />
-    
+
     <property name="startDate" />
-    
+
     <property name="endDate" />
-    
+
     <property name="dataType" not-null="true" />
-    
+
     <list name="columnDimensions" table="eventreport_columns">
       <cache usage="read-write" />
       <key column="eventreportid" foreign-key="fk_eventreport_columns_eventreportid" />

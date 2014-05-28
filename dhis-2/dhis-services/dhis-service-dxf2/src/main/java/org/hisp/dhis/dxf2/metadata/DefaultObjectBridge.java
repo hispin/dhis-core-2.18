@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -44,6 +45,7 @@ import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.deletion.DeletionManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
@@ -73,6 +75,9 @@ public class DefaultObjectBridge
 
     @Autowired
     private DeletionManager deletionManager;
+
+    @Autowired
+    private SchemaService schemaService;
 
     //-------------------------------------------------------------------------------------------------------
     // Internal and Semi-Public maps
@@ -118,12 +123,12 @@ public class DefaultObjectBridge
         Timer timer = new SystemNanoTimer();
         timer.start();
 
-        masterMap = new HashMap<Class<?>, Set<?>>();
-        periodTypeMap = new HashMap<String, PeriodType>();
-        uidMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
-        codeMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
-        nameMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
-        usernameMap = new HashMap<String, UserCredentials>();
+        masterMap = Maps.newHashMap();
+        periodTypeMap = Maps.newHashMap();
+        uidMap = Maps.newHashMap();
+        codeMap = Maps.newHashMap();
+        nameMap = Maps.newHashMap();
+        usernameMap = Maps.newHashMap();
 
         populatePeriodTypeMap( PeriodType.class );
         populateUsernameMap( UserCredentials.class );
