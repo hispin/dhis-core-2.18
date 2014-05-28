@@ -28,7 +28,6 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -38,6 +37,8 @@ import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -69,7 +70,7 @@ public class DefaultImportService
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
     @Autowired
@@ -86,6 +87,9 @@ public class DefaultImportService
 
     @Autowired
     private Notifier notifier;
+
+    @Autowired
+    private SchemaService schemaService;
 
     //-------------------------------------------------------------------------------------------------------
     // ImportService Implementation
@@ -148,20 +152,9 @@ public class DefaultImportService
         objectBridge.setPreheatCache( importOptions.isPreheatCache() );
         objectBridge.init();
 
-        List<String> types;
-
-        if ( importOptions.getImportStrategy().isDelete() )
+        for ( Schema schema : schemaService.getMetadataSchemas() )
         {
-            types = Lists.reverse( Lists.newArrayList( ExchangeClasses.getDeletableMap().values() ) );
-        }
-        else
-        {
-            types = Lists.newArrayList( ExchangeClasses.getImportMap().values() );
-        }
-
-        for ( String type : types )
-        {
-            Object value = ReflectionUtils.invokeGetterMethod( type, metaData );
+            Object value = ReflectionUtils.invokeGetterMethod( schema.getPlural(), metaData );
 
             if ( value != null )
             {
@@ -171,7 +164,7 @@ public class DefaultImportService
 
                     if ( !objects.isEmpty() )
                     {
-                        String message = "Importing " + objects.size() + " " + StringUtils.capitalize( type );
+                        String message = "Importing " + objects.size() + " " + StringUtils.capitalize( schema.getPlural() );
 
                         if ( taskId != null )
                         {
@@ -193,12 +186,12 @@ public class DefaultImportService
                 }
                 else
                 {
-                    log.warn( "Getter for '" + type + "' did not return a collection." );
+                    log.warn( "Getter for '" + schema.getPlural() + "' did not return a collection." );
                 }
             }
             else
             {
-                log.warn( "Can not find getter for '" + type + "'." );
+                log.warn( "Can not find getter for '" + schema.getPlural() + "'." );
             }
         }
 
