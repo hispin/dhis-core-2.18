@@ -25,21 +25,45 @@ package org.hisp.dhis.schema;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.collect.Lists;
+import org.hisp.dhis.common.DxfNamespaces;
 
 import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface SchemaService
+@JacksonXmlRootElement( localName = "schemas", namespace = DxfNamespaces.DXF_2_0 )
+public class Schemas
 {
-    Schema getSchema( Class<?> klass );
+    private List<Schema> schemas = Lists.newArrayList();
 
-    Schema getSchemaBySingularName( String name );
+    public Schemas()
+    {
+    }
 
-    List<Schema> getSchemas();
+    public Schemas( List<Schema> schemas )
+    {
+        this.schemas = schemas;
+    }
 
-    List<Schema> getMetadataSchemas();
+    @JsonProperty
+    @JacksonXmlProperty( localName = "schema", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlElementWrapper( localName = "schemas", namespace = DxfNamespaces.DXF_2_0, useWrapping = false )
+    public List<Schema> getSchemas()
+    {
+        return schemas;
+    }
+
+    public void setSchemas( List<Schema> schemas )
+    {
+        this.schemas = schemas;
+    }
 }

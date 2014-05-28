@@ -33,6 +33,7 @@ import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -106,5 +107,25 @@ public class DefaultSchemaService implements SchemaService
     public List<Schema> getSchemas()
     {
         return Lists.newArrayList( classSchemaMap.values() );
+    }
+
+    @Override
+    public List<Schema> getMetadataSchemas()
+    {
+        List<Schema> schemas = getSchemas();
+
+        Iterator<Schema> iterator = schemas.iterator();
+
+        while ( iterator.hasNext() )
+        {
+            Schema schema = iterator.next();
+
+            if ( !schema.isMetadata() )
+            {
+                iterator.remove();
+            }
+        }
+
+        return schemas;
     }
 }
