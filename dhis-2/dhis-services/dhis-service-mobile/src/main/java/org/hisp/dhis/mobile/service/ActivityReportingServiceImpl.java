@@ -41,7 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.hisp.dhis.api.mobile.ActivityReportingService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.Activity;
@@ -55,7 +54,6 @@ import org.hisp.dhis.api.mobile.model.Task;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.common.Grid;
@@ -1449,21 +1447,21 @@ public class ActivityReportingServiceImpl
         return patientMobile;
     }
     
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList findPatients( String patientIds )
-        throws NotAllowedException
-    {
-        PatientList patientlist = new PatientList();
-        
-        while ( patientIds.length() > 0 )
-        {
-            int patientId = Integer.parseInt( patientIds.substring( 0, patientIds.indexOf( "$" ) ) );
-            TrackedEntityInstance patient = entityInstanceService.getTrackedEntityInstance( patientId );
-            patientlist.getPatientList().add( getPatientModel( patient ) );
-            patientIds = patientIds.substring( patientIds.indexOf( "$" ) + 1, patientIds.length() );
-        }
-        
-        return patientlist;
-    }
+//    public org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList findPatients( String patientIds )
+//        throws NotAllowedException
+//    {
+//        PatientList patientlist = new PatientList();
+//        
+//        while ( patientIds.length() > 0 )
+//        {
+//            int patientId = Integer.parseInt( patientIds.substring( 0, patientIds.indexOf( "$" ) ) );
+//            TrackedEntityInstance patient = entityInstanceService.getTrackedEntityInstance( patientId );
+//            patientlist.getPatientList().add( getPatientModel( patient ) );
+//            patientIds = patientIds.substring( patientIds.indexOf( "$" ) + 1, patientIds.length() );
+//        }
+//        
+//        return patientlist;
+//    }
 
     @Override
     public String findPatientInAdvanced( String keyword, int orgUnitId, int programId )
