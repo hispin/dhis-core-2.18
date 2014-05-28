@@ -37,22 +37,22 @@ trackerCapture.controller('EnrollmentController',
         
         EnrollmentService.get($scope.selectedEntity.trackedEntityInstance).then(function(data){
             $scope.enrollments = data.enrollmentList;  
-        });
+            if(selections.pr){       
+                angular.forEach($scope.programs, function(program){
+                    if(selections.pr.id === program.id){
+                        $scope.selectedProgram = program;
+                        $scope.loadEvents();
+                    }
+                });
+            }
+        });        
         
-        if(selections.pr){       
-            angular.forEach($scope.programs, function(program){
-                if(selections.pr.id === program.id){
-                    $scope.selectedProgram = program;
-                    $scope.loadEvents();
-                }
-            });
-        }
     }); 
     
     $scope.loadEvents = function() {
         
         if($scope.selectedProgram){
-            
+           
             //check for possible enrollment
             $scope.selectedEnrollment = '';
             angular.forEach($scope.enrollments, function(enrollment){
@@ -71,14 +71,14 @@ trackerCapture.controller('EnrollmentController',
             $scope.programStages = [];   
             var incidentDate = $scope.selectedEnrollment ? $scope.selectedEnrollment.dateOfIncident : new Date();
             
-            angular.forEach($scope.selectedProgram.programStages, function(stage){
+            angular.forEach($scope.selectedProgram.programStages, function(stage){                
                 var ps = storage.get(stage.id);
                 ps.dueDate = moment(moment(incidentDate).add('d', ps.minDaysFromStart), 'YYYY-MM-DD')._d;
                 ps.dueDate = Date.parse(ps.dueDate);
                 ps.dueDate= $filter('date')(ps.dueDate, 'yyyy-MM-dd');
                 $scope.programStages.push(ps);               
             });
-
+            
             $rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
                                                 selectedOrgUnit: $scope.selectedOrgUnit,
                                                 selectedProgramId: $scope.selectedProgram.id,
@@ -96,14 +96,10 @@ trackerCapture.controller('EnrollmentController',
         
     $scope.showEnrollment = function(){        
         $scope.showEnrollmentDiv = !$scope.showEnrollmentDiv;
-        
-        console.log('Enrollment', $scope.selectedEntity, ' ', $scope.selectedProgram);
     };
     
     $scope.showScheduling = function(){        
         $scope.showSchedulingDiv = !$scope.showSchedulingDiv;
-        
-        console.log('Scheduling', $scope.selectedEntity, ' ', $scope.selectedProgram);
     };
     
     $scope.enroll = function(){    
@@ -171,9 +167,6 @@ trackerCapture.controller('EnrollmentController',
                 return;
             }            
         });
-        
-        console.log('tei', tei, ' ');
-        console.log('scope', $scope.selectedEntity, ' ');
     };
     
     $scope.cancelEnrollment = function(){
