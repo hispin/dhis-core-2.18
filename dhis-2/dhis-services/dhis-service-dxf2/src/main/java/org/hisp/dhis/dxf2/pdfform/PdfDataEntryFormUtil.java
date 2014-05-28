@@ -192,6 +192,9 @@ public class PdfDataEntryFormUtil
         return cell;
     }
 
+    /**
+	 * Creates data value set from Input Stream (PDF) for PDF data import
+     */
     public static DataValueSet getDataValueSet( InputStream in )
     {
         PdfReader reader = null;
@@ -300,7 +303,7 @@ public class PdfDataEntryFormUtil
                 }
                 else if( fldValue.compareTo( "Off" ) == 0 )
                 {
-                    fldValue = "false";                                    
+                    fldValue = null;                                    
                 }                                
             }            
         }
