@@ -88,6 +88,7 @@ public class Program
      */
     private String dateOfIncidentDescription;
 
+    @Scanned
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
 
     private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
