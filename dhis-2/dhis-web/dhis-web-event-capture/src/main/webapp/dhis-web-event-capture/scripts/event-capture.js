@@ -60,10 +60,7 @@ $(document).ready(function()
         var promise = def.promise();
         
         promise = promise.then( getUserProfile );
-        promise = promise.then( getMetaPrograms );     
-        promise = promise.then( getPrograms );      
-        promise = promise.then( getProgramStages );
-        
+        promise = promise.then( getMetaData );        
         promise.done( function() {           
             selection.responseReceived();                      
         });           
@@ -165,108 +162,50 @@ function getUserProfile()
     return def.promise(); 
 }
 
-
-function getMetaPrograms()
+function getMetaData()
 {
     var def = $.Deferred();
 
     $.ajax({
-        url: '../api/programs',
+        url: '../api/programs.json',
         type: 'GET',
-        data:'type=3&paging=false'
-    }).done( function(response) {             
-        localStorage[PROGRAMS_METADATA] = JSON.stringify(response.programs);           
+        data: 'paging=false&filter=type:eq:3&include=id,name,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name,description,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type, optionSet[id,name,options]]]]'
+    }).done( function(response) {   
+        var programs = [];
+        _.each(_.values(response.programs), function(p) {
+            programs.push({id: p.id, name: p.name});            
+            var programForStorage = _.clone(p); 
+            
+            //save program stages
+            programForStorage.programStages = [];
+            _.each(_.values(p.programStages), function(ps){
+                localStorage[ps.id] = JSON.stringify(ps);
+                programForStorage.programStages.push({id: ps.id, name: ps.name});
+            });
+            
+            var ou = {};
+            _.each(_.values(programForStorage.organisationUnits), function(o) {
+                ou[o.id] = o.name;
+            });
+
+            programForStorage.organisationUnits = ou;
+
+            var ur = {};
+            _.each(_.values(programForStorage.userRoles), function(u) {
+                ur[u.id] = u.name;
+            });
+
+            programForStorage.userRoles = ur;            
+            
+            localStorage[programForStorage.id] = JSON.stringify(programForStorage);
+            
+        });
+        
+        localStorage[PROGRAMS_METADATA] = JSON.stringify(programs);
         def.resolve(response.programs);
     });
     
     return def.promise(); 
-}
-
-function getPrograms( programs )
-{
-    if( !programs ){
-        return;
-    }
-    
-    var def = $.Deferred();
-    var promise = def.promise();
-
-    _.each( _.values( programs ), function ( program ) {        
-        promise = promise.then( getProgram( program.href ) );
-    });
-    
-    promise = promise.then(function() {
-        return $.Deferred().resolve( programs );
-    });
-    
-    def.resolve( programs );
-    
-    return promise;   
-}
-
-function getProgram( url )
-{   
-
-    return function() {
-        return $.ajax( {
-            url: url,
-            type: 'GET'
-        }).done( function( program ){     
-            
-            var ou = {};
-            _.each(_.values( program.organisationUnits), function(o){
-                ou[o.id] = o.name;
-            });
-            
-            program.organisationUnits = ou;
-            
-            var ur = {};
-            _.each(_.values( program.userRoles), function(u){
-                ur[u.id] = u.name;
-            });
-            
-            program.userRoles = ur;
-          
-            localStorage[program.id] = JSON.stringify(program);
-        });
-    };
-}
-
-function getProgramStages( programs )
-{
-    if( !programs ){
-        return;
-    }
-    
-    var def = $.Deferred();
-    var promise = def.promise();
-
-    _.each( _.values( programs ), function ( program ) {  
-        program = JSON.parse( localStorage[program.id] );
-        _.each( _.values( program.programStages ), function( programStage ) {
-            promise = promise.then( getProgramStage( programStage.href ) );
-        });        
-    });
-    
-    promise = promise.then(function() {
-        return def.resolve();
-    });
-    
-    def.resolve();
-    
-    return promise; 
-}
-
-function getProgramStage( url )
-{
-    return function() {
-        return $.ajax( {
-            url: url,
-            type: 'GET'
-        }).done( function( programStage ){
-            localStorage[programStage.id] = JSON.stringify(programStage);
-        });
-    };
 }
 
 function uploadLocalData()
