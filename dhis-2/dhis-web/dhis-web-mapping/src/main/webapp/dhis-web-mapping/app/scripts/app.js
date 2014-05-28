@@ -7993,13 +7993,15 @@ Ext.onReady( function() {
                 }
 
 				text += '<html>\n<head>\n';
-				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v214/ext/resources/css/ext-plugin-gray.css" />\n';
-				text += '<script src="http://dhis2-cdn.org/v214/ext/ext-all.js"></script>\n';
-				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n';
+				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v215/ext/resources/css/ext-plugin-gray.css" />\n';
+				text += '<script src="http://dhis2-cdn.org/v215/ext/ext-all.js"></script>\n';
+				text += '<script src="http://dhis2-cdn.org/v215/plugin/table.js"></script>\n';
 				text += '</head>\n\n<body>\n';
 				text += '<div id="' + el + '"></div>\n\n';
 				text += '<script>\n\n';
+				text += 'Ext.onReady(function() {\n\n';
 				text += 'DHIS.getMap(' + JSON.stringify(layout, null, 2) + ');\n\n';
+				text += '});\n\n';
 				text += '</script>\n\n';
 				text += '</body>\n</html>';
 
