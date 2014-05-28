@@ -38,6 +38,7 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
@@ -57,9 +58,10 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
+import org.hisp.dhis.program.ProgramTrackedEntityAttributeService;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
@@ -108,6 +110,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     @Autowired
     private DataElementOperandService dataElementOperandService;
+
+    @Autowired
+    private IdentifiableObjectManager manager;
 
     @Autowired
     private ObjectBridge objectBridge;
@@ -183,6 +188,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
 
                 deleteDataElementOperands( object, "greyedFields" );
+                deleteProgramStageDataElements( object );
+                deleteProgramTrackedEntityAttributes( object );
             }
         }
 
@@ -194,6 +201,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveDataEntryForm( object, "dataEntryForm", dataEntryForm );
             saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
             saveDataElementOperands( object, "greyedFields", greyedFields );
+            saveProgramStageDataElements( object, programStageDataElements );
+            saveProgramTrackedEntityAttributes( object, programTrackedEntityAttributes );
         }
 
         private void saveDataEntryForm( T object, String fieldName, DataEntryForm dataEntryForm )
@@ -337,6 +346,23 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
         }
 
+        private void deleteAttributeValues( T object )
+        {
+            if ( !Attribute.class.isAssignableFrom( object.getClass() ) )
+            {
+                Set<AttributeValue> attributeValues = extractAttributeValues( object );
+
+                CollectionUtils.forEach( attributeValues, new Function1<AttributeValue>()
+                {
+                    @Override
+                    public void apply( AttributeValue attributeValue )
+                    {
+                        attributeService.deleteAttributeValue( attributeValue );
+                    }
+                } );
+            }
+        }
+
         private void saveAttributeValues( T object, Set<AttributeValue> attributeValues )
         {
             if ( attributeValues.size() > 0 )
@@ -392,23 +418,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             } );
         }
 
-        private void deleteAttributeValues( T object )
-        {
-            if ( !Attribute.class.isAssignableFrom( object.getClass() ) )
-            {
-                Set<AttributeValue> attributeValues = extractAttributeValues( object );
-
-                CollectionUtils.forEach( attributeValues, new Function1<AttributeValue>()
-                {
-                    @Override
-                    public void apply( AttributeValue attributeValue )
-                    {
-                        attributeService.deleteAttributeValue( attributeValue );
-                    }
-                } );
-            }
-        }
-
         private Set<ProgramStageDataElement> extractProgramStageDataElements( T object )
         {
             Set<ProgramStageDataElement> programStageDataElements = Sets.newHashSet();
@@ -422,6 +431,25 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return programStageDataElements;
         }
 
+        private void deleteProgramTrackedEntityAttributes( T object )
+        {
+            Set<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = extractProgramTrackedEntityAttributes( object );
+
+            CollectionUtils.forEach( programTrackedEntityAttributes, new Function1<ProgramTrackedEntityAttribute>()
+            {
+                @Override
+                public void apply( ProgramTrackedEntityAttribute programTrackedEntityAttribute )
+                {
+                    sessionFactory.getCurrentSession().delete( programTrackedEntityAttribute );
+                }
+            } );
+        }
+
+        private void saveProgramTrackedEntityAttributes( T object, Set<ProgramTrackedEntityAttribute> programTrackedEntityAttributes )
+        {
+
+        }
+
         private Set<ProgramTrackedEntityAttribute> extractProgramTrackedEntityAttributes( T object )
         {
             Set<ProgramTrackedEntityAttribute> trackedEntityAttributes = Sets.newHashSet();
@@ -433,6 +461,25 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
 
             return trackedEntityAttributes;
+        }
+
+        private void saveProgramStageDataElements( T object, Set<ProgramStageDataElement> programStageDataElements )
+        {
+
+        }
+
+        private void deleteProgramStageDataElements( T object )
+        {
+            Set<ProgramStageDataElement> programStageDataElements = extractProgramStageDataElements( object );
+
+            CollectionUtils.forEach( programStageDataElements, new Function1<ProgramStageDataElement>()
+            {
+                @Override
+                public void apply( ProgramStageDataElement programStageDataElement )
+                {
+                    sessionFactory.getCurrentSession().delete( programStageDataElement );
+                }
+            } );
         }
     }
 
