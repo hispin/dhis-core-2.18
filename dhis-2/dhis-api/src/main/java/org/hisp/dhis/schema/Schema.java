@@ -37,6 +37,7 @@ import com.google.common.collect.Maps;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.springframework.core.Ordered;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @JacksonXmlRootElement( localName = "schema", namespace = DxfNamespaces.DXF_2_0 )
-public class Schema
+public class Schema implements Ordered
 {
     /**
      * Class that is described in this schema.
@@ -100,6 +101,11 @@ public class Schema
      * List of all exposed properties on this class.
      */
     private List<Property> properties = Lists.newArrayList();
+
+    /**
+     * Used for sorting of schema list when doing metadata import/export.
+     */
+    private int order = Ordered.LOWEST_PRECEDENCE;
 
     public Schema( Class<?> klass, String singular, String plural )
     {
@@ -248,6 +254,18 @@ public class Schema
         }
 
         return authorityMap.get( type );
+    }
+
+    // TODO not exposed right now, should we?
+    @Override
+    public int getOrder()
+    {
+        return order;
+    }
+
+    public void setOrder( int order )
+    {
+        this.order = order;
     }
 
     @Override
