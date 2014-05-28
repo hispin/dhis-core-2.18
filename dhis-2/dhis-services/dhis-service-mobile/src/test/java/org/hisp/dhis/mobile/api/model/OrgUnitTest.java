@@ -75,6 +75,7 @@ public class OrgUnitTest
         unit.setDownloadAnonymousProgramUrl( "downloadAnonymousProgramUrl" );
         unit.setFindProgramUrl( "findProgramUrl" );
         unit.setFindPatientInAdvancedUrl( "findPatientInAdvanced" );
+        unit.setFindPatientsUrl( "findPatientsUrl" );
         unit.setFindVisitScheduleUrl( "findVisitSchedule" );
         unit.setFindLostToFollowUpUrl( "findLostToFollowUpUrl" );
         unit.setHandleLostToFollowUpUrl( "handleLostToFollowUpUrl" );

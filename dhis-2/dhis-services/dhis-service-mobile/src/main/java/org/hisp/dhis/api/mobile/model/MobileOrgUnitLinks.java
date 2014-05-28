@@ -80,6 +80,8 @@ public class MobileOrgUnitLinks
     private String updateContactUrl;
 
     private String findPatientUrl;
+    
+    private String findPatientsUrl;
 
     private String uploadProgramStageUrl;
 
@@ -309,6 +311,16 @@ public class MobileOrgUnitLinks
         this.findPatientUrl = findPatientUrl;
     }
 
+    public String getFindPatientsUrl()
+    {
+        return findPatientsUrl;
+    }
+    
+    public void setFindPatientsUrl( String findPatientsUrl )
+    {
+        this.findPatientsUrl = findPatientsUrl;
+    }
+    
     public String getUploadProgramStageUrl()
     {
         return uploadProgramStageUrl;
@@ -469,6 +481,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( downloadAnonymousProgramUrl );
         dataOutputStream.writeUTF( findProgramUrl );
         dataOutputStream.writeUTF( findPatientInAdvancedUrl );
+        dataOutputStream.writeUTF( findPatientsUrl );
         dataOutputStream.writeUTF( findVisitScheduleUrl );
         dataOutputStream.writeUTF( findLostToFollowUpUrl );
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
@@ -507,6 +520,7 @@ public class MobileOrgUnitLinks
         downloadAnonymousProgramUrl = dataInputStream.readUTF();
         findProgramUrl = dataInputStream.readUTF();
         findPatientInAdvancedUrl = dataInputStream.readUTF();
+        findPatientsUrl = dataInputStream.readUTF();
         findVisitScheduleUrl = dataInputStream.readUTF();
         findLostToFollowUpUrl = dataInputStream.readUTF();
         handleLostToFollowUpUrl = dataInputStream.readUTF();
@@ -586,6 +600,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( downloadAnonymousProgramUrl );
         dataOutputStream.writeUTF( findProgramUrl );
         dataOutputStream.writeUTF( findPatientInAdvancedUrl );
+        dataOutputStream.writeUTF( findPatientsUrl );
         dataOutputStream.writeUTF( findVisitScheduleUrl );
         dataOutputStream.writeUTF( findLostToFollowUpUrl );
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
