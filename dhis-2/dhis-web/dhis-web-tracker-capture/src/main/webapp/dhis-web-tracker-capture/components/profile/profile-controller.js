@@ -2,6 +2,7 @@ trackerCapture.controller('ProfileController',
         function($scope,                
                 storage,
                 CurrentSelection,
+                TEIService,
                 TranslationService) {
 
     TranslationService.translate();
@@ -23,8 +24,13 @@ trackerCapture.controller('ProfileController',
             if($scope.selectedEntity.trackedEntity === te.id){
                 $scope.trackedEntity = te;
             }
-        }); 
+        });
         
+        angular.forEach($scope.selectedEntity.attributes, function(att){
+            if(att.type === 'number' && !isNaN(parseInt(att.value))){
+                att.value = parseInt(att.value);
+            }
+        });
         $scope.entityAttributes = angular.copy($scope.selectedEntity.attributes);
     });
     
@@ -34,6 +40,28 @@ trackerCapture.controller('ProfileController',
     
     $scope.save = function(){
         
+        var tei = angular.copy($scope.selectedEntity);
+        tei.attributes = [];
+        //prepare to update the tei on the server side 
+        angular.forEach($scope.selectedEntity.attributes, function(attribute){
+            if(!angular.isUndefined(attribute.value)){
+                tei.attributes.push({attribute: attribute.attribute, value: attribute.value});
+            } 
+        });
+        
+        TEIService.update(tei).then(function(updateResponse){
+            
+            if(updateResponse.status !== 'SUCCESS'){//update has failed
+                var dialogOptions = {
+                        headerText: 'registration_error',
+                        bodyText: updateResponse.description
+                    };
+                DialogService.showDialog({}, dialogOptions);
+                return;
+            }            
+        });
+        
+        console.log('the tei is:  ', tei);
         $scope.editProfile = !$scope.editProfile;
     };
     

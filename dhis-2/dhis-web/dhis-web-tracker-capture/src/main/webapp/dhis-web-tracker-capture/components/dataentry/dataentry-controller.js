@@ -38,8 +38,6 @@ trackerCapture.controller('DataEntryController',
                     
                     $scope.dhis2Events = [];
                     
-                    console.log('need to create new ones:  ', $scope.selectedEnrollment);
-                    
                     if($scope.selectedEnrollment.status === 'ACTIVE'){
                         //create events for the selected enrollment
                         var program = storage.get($scope.selectedProgramId);
@@ -67,6 +65,7 @@ trackerCapture.controller('DataEntryController',
                 angular.forEach($scope.dhis2Events, function(dhis2Event){
                     
                     var ps = storage.get(dhis2Event.programStage);
+                    
                     //check if a stage is repeatable
                     if(ps.repeatable){
                         $scope.allowEventCreation = true;
