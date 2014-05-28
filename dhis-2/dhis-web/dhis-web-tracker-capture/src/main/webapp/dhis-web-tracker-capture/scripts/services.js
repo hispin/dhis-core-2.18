@@ -279,6 +279,23 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });
             
             return param;
+        },
+        getMissingAttributesForEnrollment: function(tei, program){
+            var programAttributes = this.getByProgram(program);
+            var existingAttributes = tei.attributes;
+            var missingAttributes = [];
+            for(var i=0; i<programAttributes.length; i++){
+                var exists = false;
+                for(var j=0; j<existingAttributes.length && !exists; j++){
+                    if(programAttributes[i].id === existingAttributes[j].attribute){
+                        exists = true;
+                    }
+                }
+                if(!exists){
+                    missingAttributes.push(programAttributes[i]);
+                }
+            }
+            return missingAttributes;
         }
     };
 })

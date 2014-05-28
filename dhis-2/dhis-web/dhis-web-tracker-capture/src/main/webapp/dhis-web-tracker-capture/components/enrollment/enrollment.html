@@ -7,9 +7,6 @@
     </div>
     <table class="table-borderless table-striped">
         <tr>
-            <!--<td>
-                {{'program'| translate}}
-            </td>-->
             <td>
                 <select ng-model="selectedProgram"
                         class="form-control"
@@ -17,51 +14,137 @@
                         ng-change="loadEvents()">
                     <option value="">{{'please_select_a_program'| translate}}</option>
                 </select>
-            </td>
-            <td ng-if="selectedProgram && !selectedEnrollment" >
-                <button type="button" 
-                        class="btn btn-default"
-                        ng-click="showEnrollment()">
-                    {{'enroll'| translate}}
-                </button>  
-            </td>                
-            <td ng-if="selectedProgram && selectedEnrollment" >
-                <button type="button" 
-                        class="btn btn-default"
-                        ng-click="scheduling()">
-                    {{'scheduling'| translate}}
-                </button>                                
-            </td>
+            </td>           
         </tr>
     </table>
 
-    <div ng-if="selectedProgram">
-        <div ng-if="programStages">            
-            <hr>
-            <table class="table-borderless table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            {{'program_stage'| translate}}
-                        </th>
-                        <th>
-                            {{'scheduled_date'| translate}}
-                        </th>
-                    </tr>                
-                </thead>
-                <tr ng-repeat="programStage in programStages">
-                    <td>
-                        {{programStage.name}}
-                    </td>
-                    <td>
-                        {{programStage.minDaysFromStart}}
-                        {{selectedEnrollment.dateOfIncident}}
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div ng-if="showEnrollmentDiv">
-            
+    <div class="horizonal-spacing" ng-if="selectedEnrollment">
+        <hr>
+        <table class="table-borderless">
+            <tr>
+                <td>
+                    {{selectedProgram.dateOfIncidentDescription}}
+                </td>
+                <td>
+                    <input type="text" class="form-control" ng-date ng-model="selectedEnrollment.dateOfIncident" ng-disabled="true"/>
+                </td>
+            </tr>
+
+        </table>
+        <hr>
+        <table class="table-borderless table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        {{'program_stage'| translate}}
+                    </th>
+                    <th>
+                        {{'scheduled_date'| translate}}
+                    </th>
+                </tr>                
+            </thead>           
+            <tr ng-repeat="programStage in programStages">
+                <td>
+                    {{programStage.name}}
+                </td>
+                <td>
+                    <input type="text" class="form-control" ng-date ng-model="programStage.dueDate" ng-disabled="!showSchedulingDiv"/>
+                </td>
+            </tr>
+        </table>
+
+        <div class="vertical-spacing small-horizonal-spacing">
+            <button type="button" 
+                    class="btn btn-default"
+                    ng-disabled="showSchedulingDiv"
+                    ng-click="showScheduling()">
+                {{'reschedule'| translate}}
+            </button>
+            <button type="button" 
+                    class="btn btn-default"
+                    ng-show="showSchedulingDiv"
+                    ng-click="showScheduling()">
+                {{'save'| translate}}
+            </button>
+            <button type="button" 
+                    class="btn btn-default"
+                    ng-show="showSchedulingDiv"
+                    ng-click="showScheduling()">
+                {{'cancel'| translate}}
+            </button>
         </div>
     </div>    
+    <div class="vertical-spacing horizonal-spacing" ng-if="selectedProgram && !selectedEnrollment">
+        <hr>
+        <table class="table-borderless">
+            <tr>
+                <td>
+                    {{selectedProgram.dateOfEnrollmentDescription}}
+                </td>
+                <td>
+                    <input type="text" class="form-control" ng-date ng-model="newEnrollment.dateOfEnrollment" />
+                </td>
+            </tr>     
+            <tr ng-if="selectedProgram.displayIncidentDate">
+                <td>
+                    {{selectedProgram.dateOfIncidentDescription}}
+                </td>
+                <td>
+                    <input type="text" class="form-control" ng-date ng-model="newEnrollment.dateOfIncident" />                    
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <table class="table-borderless table-striped">
+            <tr ng-repeat="attribute in attributesForEnrollment">
+                <td>
+                    {{attribute.name}}
+                </td>
+                <td>
+                    <div ng-switch="attribute.valueType">
+                        <div ng-switch-when="date">
+                            <input type="text" class="form-control" ng-date ng-model="attribute.value" />
+                        </div>
+                        <div ng-switch-when="trueOnly">
+                            <input type="checkbox" class="form-control" ng-model="attribute.value" />
+                        </div>
+                        <div ng-switch-when="bool">
+                            <select ng-model="attribute.value" class="form-control">
+                                <option value="">{{'please_select'| translate}}</option>                        
+                                <option value="0">{{'no'| translate}}</option>
+                                <option value="1">{{'yes'| translate}}</option>
+                            </select>
+                        </div>
+                        <div ng-switch-when="combo">
+                            <input type="text" 
+                                   class="form-control"
+                                   ng-model="attribute.value"                                                 
+                                   typeahead="option for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
+                                   typeahead-open-on-focus 
+                                   />
+                        </div>
+                        <div ng-switch-when="number">
+                            <input type="number" class="form-control" ng-model="attribute.value"/>
+                        </div>
+                        <div ng-switch-default>
+                            <input type="text" class="form-control" ng-model="attribute.value" />                                        
+                        </div>
+                    </div>                                                                                                    
+                </td>
+            </tr>                        
+        </table>
+
+        <div class="vertical-spacing small-horizonal-spacing">            
+            <button type="button" 
+                    class="btn btn-default"
+                    ng-click="enroll()">
+                {{'enroll'| translate}}
+            </button>  
+            <button type="button" 
+                    class="btn btn-default"
+                    ng-click="cancelEnrollment()">
+                {{'cancel'| translate}}
+            </button>
+        </div>
+    </div>
 </div>
