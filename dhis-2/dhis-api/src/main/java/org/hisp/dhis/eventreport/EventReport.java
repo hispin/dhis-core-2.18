@@ -393,29 +393,29 @@ public class EventReport
 
         if ( other.getClass().isInstance( this ) )
         {
-            EventReport report = (EventReport) other;
+            EventReport eventReport = (EventReport) other;
 
-            dataType = report.getDataType();
-            program = report.getProgram();
-            programStage = report.getProgramStage();
-            startDate = report.getStartDate();
-            endDate = report.getEndDate();
-            totals = report.isTotals();
-            subtotals = report.isSubtotals();
-            hideEmptyRows = report.isHideEmptyRows();
-            countType = report.getCountType();
-            showHierarchy = report.isShowHierarchy();
-            displayDensity = report.getDisplayDensity();
-            fontSize = report.getFontSize();
+            dataType = eventReport.getDataType();
+            program = eventReport.getProgram();
+            programStage = eventReport.getProgramStage();
+            startDate = eventReport.getStartDate();
+            endDate = eventReport.getEndDate();
+            totals = eventReport.isTotals();
+            subtotals = eventReport.isSubtotals();
+            hideEmptyRows = eventReport.isHideEmptyRows();
+            countType = eventReport.getCountType();
+            showHierarchy = eventReport.isShowHierarchy();
+            displayDensity = eventReport.getDisplayDensity();
+            fontSize = eventReport.getFontSize();
 
             columnDimensions.clear();
-            columnDimensions.addAll( report.getColumnDimensions() );
+            columnDimensions.addAll( eventReport.getColumnDimensions() );
 
             rowDimensions.clear();
-            rowDimensions.addAll( report.getRowDimensions() );
+            rowDimensions.addAll( eventReport.getRowDimensions() );
 
             filterDimensions.clear();
-            filterDimensions.addAll( report.getFilterDimensions() );
+            filterDimensions.addAll( eventReport.getFilterDimensions() );
         }
     }
 }

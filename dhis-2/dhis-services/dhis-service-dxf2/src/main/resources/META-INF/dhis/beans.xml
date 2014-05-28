@@ -66,6 +66,11 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.dataelement.CategoryOptionGroup" />
   </bean>
 
+  <bean id="categoryOptionGroupSetImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter"
+    scope="prototype">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.dataelement.CategoryOptionGroupSet" />
+  </bean>
+
   <bean id="categoryOptionComboImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" />
   </bean>
