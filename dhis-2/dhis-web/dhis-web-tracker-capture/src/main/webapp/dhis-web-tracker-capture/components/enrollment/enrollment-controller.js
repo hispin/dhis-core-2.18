@@ -15,7 +15,9 @@ trackerCapture.controller('EnrollmentController',
     $scope.enrollments = [];
     $scope.programs = []; 
     $scope.showEnrollmentDiv = false;
-    $scope.showSchedulingDiv = false;
+    $scope.showSchedulingDiv = false;    
+    $scope.selectedProgram = '';
+    $scope.selectedEnrollment = '';
     
     TranslationService.translate();
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
@@ -24,7 +26,7 @@ trackerCapture.controller('EnrollmentController',
     $scope.$on('selectedEntity', function(event, args) {   
         $scope.newEnrollment = {};
         var selections = CurrentSelection.get();
-        $scope.selectedEntity = selections.tei;    
+        $scope.selectedEntity = selections.tei;      
         
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
         
@@ -39,20 +41,18 @@ trackerCapture.controller('EnrollmentController',
             $scope.enrollments = data.enrollmentList;  
             if(selections.pr){       
                 angular.forEach($scope.programs, function(program){
-                    if(selections.pr.id === program.id){
+                    if(selections.pr === program.id){
                         $scope.selectedProgram = program;
                         $scope.loadEvents();
                     }
                 });
             }
             
-            $scope.selectedProgram = '';
-            $scope.selectedEnrollment = '';
             CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram.id});
             $rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
                                                 selectedOrgUnit: $scope.selectedOrgUnit,
                                                 selectedProgramId: $scope.selectedProgram.id,
-                                                selectedEnrollment: $scope.selectedEnrollment})
+                                                selectedEnrollment: $scope.selectedEnrollment});
         });        
         
     }); 

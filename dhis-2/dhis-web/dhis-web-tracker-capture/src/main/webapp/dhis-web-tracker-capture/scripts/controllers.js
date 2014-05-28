@@ -339,7 +339,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         //Fetch the selected entity
         TEIService.get($scope.selectedEntityId).then(function(data){              
-            CurrentSelection.set({tei: data, pr: $scope.selectedProgram});
+            CurrentSelection.set({tei: data, pr: $scope.selectedProgram ? $scope.selectedProgram.id : null});
          
             //broadcast selected entity for dashboard controllers
             $timeout(function() { 
