@@ -3,14 +3,14 @@
     <div class="panel-heading">
         {{trackedEntity.name|| 'entity' | translate}} {{profileWidget.title| translate}}
         <span class="nav-pills" ng-show="selectedEntity.attributes.length">
-            | <span><a href ng-click="showEdit()" title="{{'edit_profile'| translate}}">{{'edit'| translate}}</a></span>            
+            | <span><a href ng-click="enableEdit()" title="{{'edit_profile'| translate}}">{{'edit'| translate}}</a></span>            
         </span>
         <span class="pull-right">
             <a href ng-click="removeWidget(profileWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
         </span>        
     </div>
     <table class="table-borderless table-striped">
-        <tr ng-repeat="attribute in selectedEntity.attributes">
+        <tr ng-repeat="attribute in selectedEntity.attributes" ng-show="attribute.show">
             <td>
                 {{attribute.displayName}}
             </td>

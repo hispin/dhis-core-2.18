@@ -45,6 +45,14 @@ trackerCapture.controller('EnrollmentController',
                     }
                 });
             }
+            
+            $scope.selectedProgram = '';
+            $scope.selectedEnrollment = '';
+            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram.id});
+            $rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
+                                                selectedOrgUnit: $scope.selectedOrgUnit,
+                                                selectedProgramId: $scope.selectedProgram.id,
+                                                selectedEnrollment: $scope.selectedEnrollment})
         });        
         
     }); 
@@ -79,6 +87,7 @@ trackerCapture.controller('EnrollmentController',
                 $scope.programStages.push(ps);               
             });
             
+            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram.id});
             $rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
                                                 selectedOrgUnit: $scope.selectedOrgUnit,
                                                 selectedProgramId: $scope.selectedProgram.id,
@@ -87,6 +96,7 @@ trackerCapture.controller('EnrollmentController',
         else{
             $scope.selectedProgram = '';
             $scope.selectedEnrollment = '';
+            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram.id});
             $rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
                                                 selectedOrgUnit: $scope.selectedOrgUnit,
                                                 selectedProgramId: $scope.selectedProgram.id,

@@ -3,6 +3,7 @@ trackerCapture.controller('ProfileController',
                 storage,
                 CurrentSelection,
                 TEIService,
+                AttributesFactory,
                 TranslationService) {
 
     TranslationService.translate();
@@ -16,10 +17,28 @@ trackerCapture.controller('ProfileController',
     }); 
     
     //listen for the selected entity
-    $scope.$on('selectedEntity', function(event, args) { 
+    /*$scope.$on('selectedEntity', function(event, args) { 
         var selections = CurrentSelection.get();
-        $scope.selectedEntity = selections.tei;        
-      
+        $scope.selectedEntity = selections.tei; 
+        $scope.selectedProgram = selections.pr ? storage.get(selections.pr) : null;        
+        $scope.getTei();
+        
+    });*/
+    
+    $scope.$on('dashboard', function(event, args) { 
+        var selections = CurrentSelection.get();
+        $scope.selectedEntity = selections.tei; 
+        $scope.selectedProgram = selections.pr ? storage.get(selections.pr) : null; 
+        $scope.processTeiAttributes();
+        
+    });
+    
+    //display only those attributes that belong the selected program
+    //if no program, display attributesInNoProgram
+    $scope.processTeiAttributes = function(){
+        
+        $scope.entityAttributes = angular.copy($scope.selectedEntity.attributes);
+        
         angular.forEach(storage.get('TRACKED_ENTITIES'), function(te){
             if($scope.selectedEntity.trackedEntity === te.id){
                 $scope.trackedEntity = te;
@@ -30,12 +49,13 @@ trackerCapture.controller('ProfileController',
             if(att.type === 'number' && !isNaN(parseInt(att.value))){
                 att.value = parseInt(att.value);
             }
-        });
-        $scope.entityAttributes = angular.copy($scope.selectedEntity.attributes);
-    });
+        }); 
+        
+        $scope.selectedEntity.attributes = AttributesFactory.hideAttributesNotInProgram($scope.selectedEntity, $scope.selectedProgram);
+    };
     
-    $scope.showEdit = function(){
-      $scope.editProfile = !$scope.editProfile; 
+    $scope.enableEdit = function(){
+        $scope.editProfile = !$scope.editProfile; 
     };
     
     $scope.save = function(){
@@ -60,8 +80,6 @@ trackerCapture.controller('ProfileController',
                 return;
             }            
         });
-        
-        console.log('the tei is:  ', tei);
         $scope.editProfile = !$scope.editProfile;
     };
     
