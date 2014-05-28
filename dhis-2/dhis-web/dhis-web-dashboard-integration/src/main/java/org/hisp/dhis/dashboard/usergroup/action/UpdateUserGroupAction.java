@@ -30,6 +30,9 @@ package org.hisp.dhis.dashboard.usergroup.action;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
+import org.hisp.dhis.security.SecurityService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
@@ -39,6 +42,8 @@ import org.hisp.dhis.user.UserService;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 public class UpdateUserGroupAction
     implements Action
@@ -62,6 +67,20 @@ public class UpdateUserGroupAction
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
+    private SecurityService securityService;
+
+    public void setSecurityService( SecurityService securityService )
+    {
+        this.securityService = securityService;
     }
 
     // -------------------------------------------------------------------------
@@ -103,15 +122,47 @@ public class UpdateUserGroupAction
     public String execute()
         throws Exception
     {
+        boolean writeGroupRequired = (Boolean) systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false );
+
+        UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
+
         Set<User> userList = new HashSet<User>();
 
         for ( Integer groupMember : groupMembersList )
         {
             User user = userService.getUser( groupMember );
             userList.add( user );
+
+            if ( writeGroupRequired && !userGroup.getMembers().contains( user) && !userService.canUpdate( user.getUserCredentials() ) )
+            {
+                throw new UpdateAccessDeniedException( "- You don't have permission to add all selected users to this group." );
+            }
         }
 
-        UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
+        if ( writeGroupRequired )
+        {
+            for ( User member : userGroup.getMembers() )
+            {
+                if ( !userList.contains( member ) ) // Trying to remove member user from group.
+                {
+                    boolean otherGroupFound = false;
+
+                    for ( UserGroup ug : member.getGroups() )
+                    {
+                        if ( !userGroup.equals( ug ) && securityService.canWrite( ug ) )
+                        {
+                            otherGroupFound = true;
+                            break;
+                        }
+                    }
+
+                    if ( !otherGroupFound )
+                    {
+                        throw new UpdateAccessDeniedException( "- You can't remove member who belongs to no other user groups that you control." );
+                    }
+                }
+            }
+        }
 
         userGroup.setName( name );
         userGroup.updateUsers( userList );
