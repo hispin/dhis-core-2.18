@@ -47,22 +47,58 @@ import java.util.Map;
 @JacksonXmlRootElement( localName = "schema", namespace = DxfNamespaces.DXF_2_0 )
 public class Schema
 {
+    /**
+     * Class that is described in this schema.
+     */
     private Class<?> klass;
 
+    /**
+     * Is this class a sub-class of IdentifiableObject
+     *
+     * @see org.hisp.dhis.common.IdentifiableObject
+     */
     private boolean identifiableObject;
 
+    /**
+     * Is this class a sub-class of NameableObject
+     *
+     * @see org.hisp.dhis.common.NameableObject
+     */
     private boolean nameableObject;
 
+    /**
+     * Singular name.
+     */
     private String singular;
 
+    /**
+     * Plural name.
+     */
     private String plural;
 
+    /**
+     * Is sharing supported for instances of this class.
+     */
     private boolean shareable;
 
+    /**
+     * Points to Web-API endpoint (if exposed).
+     */
     private String apiEndpoint;
 
+    /**
+     * Is this class considered metadata, this is mainly used for our metadata importer/exporter.
+     */
+    private boolean metadata;
+
+    /**
+     * List of authorities required for doing operations on this class.
+     */
     private List<Authority> authorities = Lists.newArrayList();
 
+    /**
+     * List of all exposed properties on this class.
+     */
     private List<Property> properties = Lists.newArrayList();
 
     public Schema( Class<?> klass, String singular, String plural )
@@ -72,6 +108,7 @@ public class Schema
         this.nameableObject = NameableObject.class.isAssignableFrom( klass );
         this.singular = singular;
         this.plural = plural;
+        this.metadata = true;
     }
 
     @JsonProperty
@@ -151,6 +188,18 @@ public class Schema
     public boolean haveEndpoint()
     {
         return getApiEndpoint() != null;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isMetadata()
+    {
+        return metadata;
+    }
+
+    public void setMetadata( boolean metadata )
+    {
+        this.metadata = metadata;
     }
 
     @JsonProperty

@@ -41,26 +41,67 @@ import java.lang.reflect.Method;
 @JacksonXmlRootElement( localName = "property", namespace = DxfNamespaces.DXF_2_0 )
 public class Property
 {
+    /**
+     * Name of property.
+     */
     private String name;
 
+    /**
+     * Description if provided, will be fetched from @Description annotation.
+     *
+     * @see org.hisp.dhis.common.annotation.Description
+     */
     private String description;
 
+    /**
+     * Usually equals to name, but for lists the name and xmlName might differ.
+     */
     private String xmlName;
 
+    /**
+     * XML-Namespace used for this property.
+     */
     private String xmlNamespace;
 
+    /**
+     * Is this property exposed as a attribute in XML.
+     */
     private boolean xmlAttribute;
 
+    /**
+     * Name of collection wrapper.
+     */
     private String xmlCollectionName;
 
+    /**
+     * Class for property.
+     */
     private Class<?> klass;
 
+    /**
+     * Direct link to getter for this property.
+     */
     private Method getterMethod;
 
+    /**
+     * Is this a Collection sub-class.
+     *
+     * @see java.util.Collection
+     */
     private boolean collection;
 
+    /**
+     * Is this class a sub-class of IdentifiableObject
+     *
+     * @see org.hisp.dhis.common.IdentifiableObject
+     */
     private boolean identifiableObject;
 
+    /**
+     * Is this class a sub-class of NameableObject
+     *
+     * @see org.hisp.dhis.common.NameableObject
+     */
     private boolean nameableObject;
 
     public Property( Method getterMethod )

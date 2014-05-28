@@ -50,6 +50,7 @@ public class InterpretationSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( Interpretation.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setMetadata( false );
         schema.setShareable( true );
 
         return schema;
