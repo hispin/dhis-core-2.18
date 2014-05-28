@@ -53,6 +53,7 @@ public class AttributeSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( Attribute.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 106 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_ATTRIBUTE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_ATTRIBUTE_DELETE" ) ) );

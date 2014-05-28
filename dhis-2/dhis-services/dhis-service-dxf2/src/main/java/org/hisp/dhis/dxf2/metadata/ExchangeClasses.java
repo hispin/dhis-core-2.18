@@ -133,7 +133,7 @@ final public class ExchangeClasses
         allExportClasses.put( CategoryOptionGroupSet.class, "categoryOptionGroupSets" );
         allExportClasses.put( DataElementCategory.class, "categories" );
         allExportClasses.put( DataElementCategoryCombo.class, "categoryCombos" );
-        allExportClasses.put( DataElementCategoryOptionCombo.class, "categoryOptionCombos" );
+        allExportClasses.put( DataElementCategoryOptionCombo.class, "categoryOptionCombos" ); // 119
 
         allExportClasses.put( DataElement.class, "dataElements" );
         allExportClasses.put( DataElementGroup.class, "dataElementGroups" );
@@ -146,7 +146,7 @@ final public class ExchangeClasses
         allExportClasses.put( IndicatorGroup.class, "indicatorGroups" );
         allExportClasses.put( IndicatorGroupSet.class, "indicatorGroupSets" );
 
-        allExportClasses.put( DataDictionary.class, "dataDictionaries" );
+        allExportClasses.put( DataDictionary.class, "dataDictionaries" ); // 128
 
         allExportClasses.put( User.class, "users" );
         allExportClasses.put( UserGroup.class, "userGroups" );

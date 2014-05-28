@@ -54,6 +54,7 @@ public class CategoryComboSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( DataElementCategoryCombo.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
+        schema.setOrder( 118 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_CATEGORY_COMBO_PUBLIC_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_CATEGORY_COMBO_PRIVATE_ADD" ) ) );

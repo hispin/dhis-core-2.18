@@ -54,6 +54,7 @@ public class OptionSetSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( OptionSet.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
+        schema.setOrder( 105 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_OPTIONSET_PUBLIC_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_OPTIONSET_PRIVATE_ADD" ) ) );

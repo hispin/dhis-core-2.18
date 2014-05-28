@@ -53,6 +53,7 @@ public class IndicatorTypeSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( IndicatorType.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 124 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_INDICATORTYPE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_INDICATORTYPE_DELETE" ) ) );

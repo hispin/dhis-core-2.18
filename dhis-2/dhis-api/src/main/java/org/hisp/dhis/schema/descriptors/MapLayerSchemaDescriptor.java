@@ -50,6 +50,7 @@ public class MapLayerSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( MapLayer.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 109 );
 
         return schema;
     }

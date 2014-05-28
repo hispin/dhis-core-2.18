@@ -53,6 +53,7 @@ public class RelationshipTypeSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( RelationshipType.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 144 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_RELATIONSHIPTYPE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_RELATIONSHIPTYPE_DELETE" ) ) );
