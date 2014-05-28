@@ -41,7 +41,7 @@ import org.hisp.dhis.api.mobile.model.User;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
+//import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Program;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship;
@@ -59,8 +59,8 @@ public interface ActivityReportingService
     Patient findPatient( int patientId )
         throws NotAllowedException;
     
-    PatientList findPatients( String patientIds )
-        throws NotAllowedException;
+//    PatientList findPatients( String patientIds )
+//        throws NotAllowedException;
 
     String findPatientInAdvanced( String keyword, int orgUnitId, int programId )
         throws NotAllowedException;
