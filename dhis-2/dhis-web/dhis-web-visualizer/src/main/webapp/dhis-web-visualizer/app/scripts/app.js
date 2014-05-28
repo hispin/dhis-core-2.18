@@ -4918,13 +4918,15 @@ Ext.onReady( function() {
 					text = '';
 
 				text += '<html>\n<head>\n';
-				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v214/ext/resources/css/ext-plugin-gray.css" />\n';
-				text += '<script src="http://dhis2-cdn.org/v214/ext/ext-all.js"></script>\n';
-				text += '<script src="http://dhis2-cdn.org/v214/plugin/chart.js"></script>\n';
+				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v215/ext/resources/css/ext-plugin-gray.css" />\n';
+				text += '<script src="http://dhis2-cdn.org/v215/ext/ext-all.js"></script>\n';
+				text += '<script src="http://dhis2-cdn.org/v215/plugin/chart.js"></script>\n';
 				text += '</head>\n\n<body>\n';
 				text += '<div id="chart1" style="width:700px; height:400px"></div>\n\n';
 				text += '<script>\n\n';
+				text += 'Ext.onReady(function() {\n\n';
 				text += 'DHIS.getChart(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'chart1'), null, 2) + ');\n\n';
+				text += '});\n\n';
 				text += '</script>\n\n';
 				text += '</body>\n</html>';
 
