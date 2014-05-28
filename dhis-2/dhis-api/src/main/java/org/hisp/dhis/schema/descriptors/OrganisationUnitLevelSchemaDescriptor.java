@@ -53,6 +53,7 @@ public class OrganisationUnitLevelSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( OrganisationUnitLevel.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 111 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_ORGANISATIONUNITLEVEL_UPDATE" ) ) );
 

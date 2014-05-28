@@ -53,6 +53,7 @@ public class TrackedEntitySchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( TrackedEntity.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 147 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_TRACKED_ENTITY_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_TRACKED_ENTITY_UPDATE" ) ) );

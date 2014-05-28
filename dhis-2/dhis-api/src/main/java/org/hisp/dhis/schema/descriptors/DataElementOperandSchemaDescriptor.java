@@ -51,6 +51,7 @@ public class DataElementOperandSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( DataElementOperand.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setMetadata( false );
+        schema.setOrder( 123 );
 
         return schema;
     }

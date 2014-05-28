@@ -50,6 +50,7 @@ public class MapLegendSetSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( MapLegendSet.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 108 );
 
         return schema;
     }

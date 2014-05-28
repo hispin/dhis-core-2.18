@@ -50,6 +50,7 @@ public class MapViewSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( MapView.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 142 );
 
         return schema;
     }

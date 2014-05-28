@@ -54,6 +54,7 @@ public class UserGroupSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( UserGroup.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
+        schema.setOrder( 130 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_USERGROUP_PUBLIC_ADD" ) ) );
 

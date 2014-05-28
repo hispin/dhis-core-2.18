@@ -54,6 +54,7 @@ public class CategoryOptionSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( DataElementCategoryOption.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
+        schema.setOrder( 114 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_CATEGORY_OPTION_PUBLIC_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_CATEGORY_OPTION_PRIVATE_ADD" ) ) );

@@ -53,6 +53,7 @@ public class UserSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( User.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 129 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_USER_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_USER_DELETE" ) ) );

@@ -54,6 +54,7 @@ public class ValidationRuleGroupSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( ValidationRuleGroup.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
+        schema.setOrder( 141 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_VALIDATIONRULEGROUP_PUBLIC_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.UPDATE, Lists.newArrayList( "F_VALIDATIONRULEGROUP_PRIVATE_ADD" ) ) );

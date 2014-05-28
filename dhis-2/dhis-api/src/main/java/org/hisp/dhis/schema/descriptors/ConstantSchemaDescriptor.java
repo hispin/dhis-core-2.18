@@ -53,6 +53,7 @@ public class ConstantSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( Constant.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 103 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_CONSTANT_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_CONSTANT_DELETE" ) ) );

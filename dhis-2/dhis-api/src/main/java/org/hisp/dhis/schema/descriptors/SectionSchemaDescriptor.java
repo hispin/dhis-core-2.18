@@ -53,6 +53,7 @@ public class SectionSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( Section.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 132 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_SECTION_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_SECTION_DELETE" ) ) );
