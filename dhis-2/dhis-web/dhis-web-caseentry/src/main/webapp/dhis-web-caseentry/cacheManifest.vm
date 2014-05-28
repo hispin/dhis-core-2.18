@@ -69,9 +69,10 @@ CACHE:
 ../images/ajax-loader-circle.gif
 ../images/ajax-loader-bar.gif
 
-# jquery-ui 1.9.1
-../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js?_rev=$!{buildRevision}
-../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css?_rev=$!{buildRevision}
+# jquery-ui
+../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js?_rev=$!{buildRevision}
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css?_rev=$!{buildRevision}
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/animated-overlay.gif
 ../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_flat_0_aaaaaa_40x100.png
 ../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png
 ../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png
