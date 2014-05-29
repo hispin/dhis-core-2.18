@@ -40,7 +40,7 @@ public class J2meClientUpdateAction
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-
+/*
     private double version;
 
     public void setVersion( double version )
@@ -53,7 +53,7 @@ public class J2meClientUpdateAction
     public void setAutoUpdate( String autoUpdate )
     {
         this.autoUpdate = autoUpdate;
-    }
+    }*/
 
     @Override
     public String execute()
