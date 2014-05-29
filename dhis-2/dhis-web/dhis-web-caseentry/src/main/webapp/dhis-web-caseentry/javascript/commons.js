@@ -358,18 +358,12 @@ function enableBtn() {
 			enable('addEntityInstanceBtn');
 			enable('advancedSearchBtn');
 			enable('scheduledVisitDays');
-			$('#advanced-search :input').each(function(idx, item) {
-				enable(this.id);
-			});
 		} else {
 			disable('status');
 			disable('listEntityInstanceBtn');
 			disable('addEntityInstanceBtn');
 			disable('advancedSearchBtn');
 			disable('scheduledVisitDays');
-			$('#advanced-search :input').each(function(idx, item) {
-				disable(this.id);
-			});
 		}
 	} else if (program != '') {
 		showById('enrollmentSelectTR');
