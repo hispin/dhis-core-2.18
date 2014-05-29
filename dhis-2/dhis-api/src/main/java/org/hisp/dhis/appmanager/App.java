@@ -78,9 +78,6 @@ public class App
     private String locales;
 
     @JsonProperty
-    private String permissions;
-
-    @JsonProperty
     private AppActivities activities;
     
     @JsonProperty
@@ -192,16 +189,6 @@ public class App
     public void setLocales( String locales )
     {
         this.locales = locales;
-    }
-
-    public String getPermissions()
-    {
-        return permissions;
-    }
-
-    public void setPermissions( String permissions )
-    {
-        this.permissions = permissions;
     }
 
     public AppActivities getActivities()
