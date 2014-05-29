@@ -29,6 +29,7 @@ package org.hisp.dhis.program;
  */
 
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -50,7 +51,10 @@ public class ProgramStageInstanceDeletionHandler
     {
         this.jdbcTemplate = jdbcTemplate;
     }
-
+    
+    @Autowired
+    private ProgramStageInstanceService programStageInstanceService;
+    
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -72,9 +76,18 @@ public class ProgramStageInstanceDeletionHandler
     @Override
     public String allowDeleteProgramInstance( ProgramInstance programInstance )
     {
-        String sql = "SELECT COUNT(*) FROM programstageinstance WHERE programinstanceid=" + programInstance.getId();
+        String sql = "SELECT COUNT(*) FROM programstageinstance WHERE programinstanceid=" + programInstance.getId() + " and executionDate is not null ";
 
         return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
+    }
+    
+    @Override
+    public void deleteProgramInstance( ProgramInstance programInstance )
+    {
+        for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
+        {
+            programStageInstanceService.deleteProgramStageInstance( programStageInstance );
+        }
     }
     
     @Override
