@@ -36,8 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
@@ -60,9 +59,7 @@ public class SaveAttributeAction
     private TrackedEntityInstanceService entityInstanceService;
 
     private TrackedEntityAttributeValueService attributeValueService;
-
-    private TrackedEntityAttributeService attributeService;
-
+    
     private ProgramService programService;
 
     // -------------------------------------------------------------------------
@@ -82,11 +79,6 @@ public class SaveAttributeAction
     public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
     {
         this.entityInstanceService = entityInstanceService;
-    }
-
-    public void setAttributeService( TrackedEntityAttributeService attributeService )
-    {
-        this.attributeService = attributeService;
     }
 
     public void setAttributeValueService( TrackedEntityAttributeValueService attributeValueService )
@@ -152,16 +144,16 @@ public class SaveAttributeAction
 
         String value = null;
 
-        Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
-
+        Collection<ProgramTrackedEntityAttribute> programAttributes = program.getAttributes();
+        
         TrackedEntityAttributeValue attributeValue = null;
 
-        if ( attributes != null && attributes.size() > 0 )
+        if ( programAttributes != null && programAttributes.size() > 0 )
         {
-            for ( TrackedEntityAttribute attribute : attributes )
+            for ( ProgramTrackedEntityAttribute programAttribute : programAttributes )
             {
-                value = request.getParameter( AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE + attribute.getId() );
-                attributeValue = attributeValueService.getTrackedEntityAttributeValue( entityInstance, attribute );
+                value = request.getParameter( AddTrackedEntityInstanceAction.PREFIX_ATTRIBUTE + programAttribute.getAttribute().getId() );
+                attributeValue = attributeValueService.getTrackedEntityAttributeValue( entityInstance, programAttribute.getAttribute() );
 
                 if ( StringUtils.isNotBlank( value ) )
                 {
@@ -169,7 +161,7 @@ public class SaveAttributeAction
                     {
                         attributeValue = new TrackedEntityAttributeValue();
                         attributeValue.setEntityInstance( entityInstance );
-                        attributeValue.setAttribute( attribute );
+                        attributeValue.setAttribute( programAttribute.getAttribute() );
                         attributeValue.setValue( value.trim() );
                         attributeValueService.addTrackedEntityAttributeValue( attributeValue );
                     }

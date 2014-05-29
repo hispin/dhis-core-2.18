@@ -25,7 +25,7 @@
 				<input type="text" id="attr$attribute.id" style='width:240px;' name="attr$attribute.id" value='$value' objectId='$attribute.id' objectType='attr' class=' #validate( "default"  $mandatory )' >
 				<script type="text/javascript">
 					var attrId = 'attr' + '$attribute.id';
-					datePickerValid( 'programEnrollmentSelectDiv [id=' + attrId + ']', false, false );
+					datePickerValid( 'identifierAndAttributeDiv [id=' + attrId + ']', false, false );
 				</script>                 
 			#elseif( $attribute.valueType == "optionSet" )
 				<select  id="attr$attribute.id" name="attr$attribute.id" class=' #validate( "default"  $mandatory )' >
