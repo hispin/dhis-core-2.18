@@ -426,6 +426,7 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 					jQuery('#executionDate').val(executionDate);
 					jQuery("#org_" + programStageInstanceId ).html(getFieldValue("orgunitName"));
 					showById('inputCriteriaDiv');
+					hideById('removeProgram');
 					handleResponse (json);
 			   },
 			   error: function(request,status,errorThrown) {
