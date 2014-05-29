@@ -31,6 +31,8 @@ package org.hisp.dhis.system.util;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.referencing.GeodeticCalculator;
@@ -44,7 +46,9 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Lars Helge Overland
  */
 public class GeoUtils
-{    
+{
+    private static final Pattern SVG_TEXT_PATTERN = Pattern.compile( "text=\"(.*?)\"", Pattern.DOTALL );
+    
     /**
      * Returns boundaries of a box shape which centre is the point defined by the 
      * given longitude and latitude. The distance between the center point and the
@@ -172,5 +176,30 @@ public class GeoUtils
         {
             return false;
         }
+    }
+    
+    public static final String replaceUnsafeSvgText( String svg )
+    {
+        if ( svg == null )
+        {
+            return null;
+        }
+
+        StringBuffer sb = new StringBuffer();
+        
+        Matcher matcher = SVG_TEXT_PATTERN.matcher( svg );
+        
+        while ( matcher.find() )
+        {
+            String text = matcher.group( 1 );
+            
+            if ( text != null && !text.isEmpty() )
+            {
+                text = "text=\"" + text.replaceAll( "[<>&]", "" ) + "\"";                
+                matcher.appendReplacement( sb, text );
+            }
+        }
+        
+        return matcher.appendTail( sb ).toString();
     }
 }
