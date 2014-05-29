@@ -40,19 +40,21 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.fop.svg.PDFTranscoder;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
-import org.hisp.dhis.system.util.CodecUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static org.hisp.dhis.system.util.GeoUtils.replaceUnsafeSvgText;
+
 @Controller
 @RequestMapping
 public class SvgConversionController
-{
+{    
     @Autowired
     private ContextUtils contextUtils;
     
@@ -85,6 +87,8 @@ public class SvgConversionController
     private void convertToPng( String svg, OutputStream out )
         throws TranscoderException
     {
+        svg = replaceUnsafeSvgText( svg );
+        
         PNGTranscoder t = new PNGTranscoder();
 
         t.addTranscodingHint( ImageTranscoder.KEY_BACKGROUND_COLOR, Color.WHITE );
@@ -99,6 +103,8 @@ public class SvgConversionController
     private void convertToPdf( String svg, OutputStream out )
         throws TranscoderException
     {
+        svg = replaceUnsafeSvgText( svg );
+        
         PDFTranscoder t = new PDFTranscoder();
 
         TranscoderInput input = new TranscoderInput( new StringReader( svg ) );

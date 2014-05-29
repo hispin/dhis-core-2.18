@@ -29,6 +29,7 @@ package org.hisp.dhis.system.util;
  */
 
 import static org.hisp.dhis.system.util.GeoUtils.getBoxShape;
+import static org.hisp.dhis.system.util.GeoUtils.replaceUnsafeSvgText;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -60,5 +61,25 @@ public class GeoUtilsTest
         assertEquals( -70d, box[1], DELTA );
         assertEquals( -53.6, box[2], DELTA );
         assertEquals( -72d, box[3], DELTA );        
+    }
+    
+    @Test
+    public void testReplaceUnsafeSvgText()
+    {
+        String text = 
+            "<svg xmlns=\"http://www.w3.org/2000/svg\">" +
+            "<text id=\"ext-sprite-1866\" zIndex=\"500\" text=\"Measles Coverage <1y\" hidden=\"false\">" +
+            "<text id=\"ext-sprite-1866\" zIndex=\"500\" text=\"BCG & DPT Coverage\" hidden=\"false\">" +
+            "</svg>";
+
+        String expected = 
+            "<svg xmlns=\"http://www.w3.org/2000/svg\">" +
+            "<text id=\"ext-sprite-1866\" zIndex=\"500\" text=\"Measles Coverage 1y\" hidden=\"false\">" +
+            "<text id=\"ext-sprite-1866\" zIndex=\"500\" text=\"BCG  DPT Coverage\" hidden=\"false\">" +
+            "</svg>";
+        
+        String actual = replaceUnsafeSvgText( text );
+        
+        assertEquals( expected, actual );
     }
 }
