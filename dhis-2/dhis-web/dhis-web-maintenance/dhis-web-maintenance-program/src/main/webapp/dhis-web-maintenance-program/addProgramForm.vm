@@ -50,7 +50,7 @@
 	
 </script>
 
-<h3>$i18n.getString( "create_new_program" )</h3>
+<h3>$i18n.getString( "create_new_program" ) #openHelp( "program_information" )</h3>
 									
 <form id="addProgramForm" name="addProgramForm" action="addProgram.action" method="post" class="inputForm">
 	

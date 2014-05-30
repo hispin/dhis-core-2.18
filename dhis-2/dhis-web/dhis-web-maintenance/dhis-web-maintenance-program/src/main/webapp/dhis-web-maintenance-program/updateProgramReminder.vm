@@ -46,7 +46,7 @@
 
 </script>
 
-<h3>$i18n.getString( "edit_template_reminder_message" )</h3>
+<h3>$i18n.getString( "edit_template_reminder_message" ) #openHelp( "program_template_reminder" )</h3>
 <h5>$program.displayName</h5>
 
 <form id="updateReminderForm" name="updateReminderForm" action="updateProgramReminder.action" method="get" onsubmit="selectAllById('selectedPropertyIds');" class="inputForm">

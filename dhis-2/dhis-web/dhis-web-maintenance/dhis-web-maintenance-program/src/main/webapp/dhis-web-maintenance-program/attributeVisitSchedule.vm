@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "tracked_entity_attribute_visit_schedule_form" ) #openHelp('tracked_entity_attribute_visit_schedule')</h3>
+<h3>$i18n.getString( "tracked_entity_attribute_visit_schedule_form" ) #openHelp('tracked_entity_attribute_configuration')</h3>
 																			
 <form id="attributeVisitScheduleForm" name="attributeVisitScheduleForm" action="saveAttributeVisitSchedule.action" method="post" action='saveAttributeVisitSchedule.action' onsubmit="selectAllById('selectedAttributeIds');">
 

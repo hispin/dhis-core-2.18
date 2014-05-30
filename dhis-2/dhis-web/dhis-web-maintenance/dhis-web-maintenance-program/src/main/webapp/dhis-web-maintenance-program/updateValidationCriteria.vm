@@ -1,6 +1,6 @@
 <script type="text/javascript" src="javascript/updateValidationCriteria.js"></script>																
 
-<h3>$i18n.getString( "edit_validation_criteria" )</h3>
+<h3>$i18n.getString( "edit_validation_criteria" ) #openHelp( "validation_criteria" )</h3>
 <h5>$program.displayName</h5>
 
 <form id="validationCriteriaForm" action="updateValidationCriteria.action" method="post" class="inputForm">

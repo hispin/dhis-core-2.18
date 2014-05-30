@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "tracked_entity_management" )</h3>
+<h3>$i18n.getString( "tracked_entity_management" ) #openHelp('tracked_entity')</h3>
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">

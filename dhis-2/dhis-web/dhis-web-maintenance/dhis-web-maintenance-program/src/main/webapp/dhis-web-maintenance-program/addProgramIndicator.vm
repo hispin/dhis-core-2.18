@@ -11,7 +11,7 @@ jQuery( document ).ready( function()
 });
 </script>
 
-<h3>$i18n.getString( "create_new_program_indicator" )</h3>
+<h3>$i18n.getString( "create_new_program_indicator" ) #openHelp( "program_indicator" )</h3>
 									
 <form id="programIndicatorForm" action="addProgramIndicator.action" method="post" class="inputForm">
 <input type='hidden' id='programId' name='programId' value='$program.id'>

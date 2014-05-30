@@ -49,23 +49,12 @@ function getTrackedEntityDataElements() {
       programStageId: programStageId
     }
     , function( json ) {
-      if( programStageId != '' ) {
-        enable('programStageProperty');
-      }
-      else {
-        disable('programStageProperty');
-      }
       var dataElements = jQuery('#dataElements');
-      var deSumId = jQuery('#deSumId');
       for( i in json.dataElements ) {
         if( json.dataElements[i].type == 'int' || json.dataElements[i].type == 'date' ) {
           dataElements.append("<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>");
-          if( json.dataElements[i].type == 'int' ) {
-            deSumId.append("<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>");
-          }
         }
       }
-
     });
 }
 

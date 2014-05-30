@@ -7,7 +7,7 @@
 	program_stage_SMS_reminder_form +="</select>";
 </script>
 
-<h3>$i18n.getString( "create_new_program_stage" )</h3>
+<h3>$i18n.getString( "create_new_program_stage" ) #openHelp( "program_stage_information" )</h3>
 
 <h4>$program.displayName</h4>
 		
