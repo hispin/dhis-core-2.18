@@ -199,13 +199,7 @@ public class ProgramStageDataElement
 
         ProgramStageDataElement that = (ProgramStageDataElement) o;
 
-        if ( compulsory != that.compulsory ) return false;
-        if ( allowDateInFuture != null ? !allowDateInFuture.equals( that.allowDateInFuture ) : that.allowDateInFuture != null )
-            return false;
-        if ( allowProvidedElsewhere != null ? !allowProvidedElsewhere.equals( that.allowProvidedElsewhere ) : that.allowProvidedElsewhere != null )
-            return false;
         if ( dataElement != null ? !dataElement.equals( that.dataElement ) : that.dataElement != null ) return false;
-        if ( displayInReports != null ? !displayInReports.equals( that.displayInReports ) : that.displayInReports != null ) return false;
         if ( programStage != null ? !programStage.equals( that.programStage ) : that.programStage != null ) return false;
 
         return true;
@@ -216,10 +210,20 @@ public class ProgramStageDataElement
     {
         int result = programStage != null ? programStage.hashCode() : 0;
         result = 31 * result + (dataElement != null ? dataElement.hashCode() : 0);
-        result = 31 * result + (compulsory ? 1 : 0);
-        result = 31 * result + (allowProvidedElsewhere != null ? allowProvidedElsewhere.hashCode() : 0);
-        result = 31 * result + (displayInReports != null ? displayInReports.hashCode() : 0);
-        result = 31 * result + (allowDateInFuture != null ? allowDateInFuture.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ProgramStageDataElement{" +
+            "programStage=" + programStage +
+            ", dataElement=" + dataElement +
+            ", compulsory=" + compulsory +
+            ", allowProvidedElsewhere=" + allowProvidedElsewhere +
+            ", sortOrder=" + sortOrder +
+            ", displayInReports=" + displayInReports +
+            ", allowDateInFuture=" + allowDateInFuture +
+            '}';
     }
 }
