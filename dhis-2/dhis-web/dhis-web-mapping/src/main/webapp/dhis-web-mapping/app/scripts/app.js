@@ -2571,6 +2571,11 @@ Ext.onReady( function() {
 						success: function(r) {
 							var id = r.getAllResponseHeaders().location.split('/').pop();
 
+                            gis.map = {
+                                id: id,
+                                name: name
+                            };
+
 							gis.store.maps.loadStore();
 
 							gis.viewport.shareButton.enable();
