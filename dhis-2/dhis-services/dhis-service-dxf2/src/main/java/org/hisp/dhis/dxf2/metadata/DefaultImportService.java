@@ -177,8 +177,6 @@ public class DefaultImportService
 
                         ImportTypeSummary importTypeSummary = doImport( user, objects, importOptions );
 
-                        sessionFactory.getCurrentSession().flush();
-
                         if ( importTypeSummary != null )
                         {
                             importSummary.getImportTypeSummaries().add( importTypeSummary );
