@@ -13,7 +13,7 @@
 
 </script>
 
-<h3>$i18n.getString( "create_new_template_reminder_message" )</h3>
+<h3>$i18n.getString( "create_new_template_reminder_message" ) #openHelp( "program_stage_template_reminder" )</h3>
 <h5>$programStage.displayName</h5>
 
 <form id="addReminderForm" name="addReminderForm" action="addProgramStageReminder.action" method="post" onsubmit="selectAllById('selectedPropertyIds');" class="inputForm">

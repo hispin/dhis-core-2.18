@@ -1,6 +1,6 @@
 #sharingDialog()
 
-<h3>$i18n.getString( "program_management" ) #openHelp( "program" )</h3>
+<h3>$i18n.getString( "program_management" ) #openHelp( "program_program_stage" )</h3>
 
 <div id="contextMenu" class="contextMenu" style="width: 250px;">
   <ul id="contextMenuItems" class="contextMenuItems">

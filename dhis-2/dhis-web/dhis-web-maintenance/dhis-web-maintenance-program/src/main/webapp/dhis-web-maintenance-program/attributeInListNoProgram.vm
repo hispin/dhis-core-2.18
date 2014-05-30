@@ -1,4 +1,4 @@
-<script>
+<script> 
 	jQuery(document).ready(	function(){
 		validation( 'saveAttributeInListNoProgramForm', function(form){
 			form.submit();
@@ -11,7 +11,7 @@
 	});	
 </script>
 
-<h3>$i18n.getString( "tracked_entity_attributes_displayed_in_list" )</h3>
+<h3>$i18n.getString( "tracked_entity_attributes_displayed_in_list" ) #openHelp( "tracked_entity_attribute_configuration" )</h3>
 																			
 <form id="saveAttributeInListNoProgramForm" name="saveAttributeInListNoProgramForm" action="saveAttributeInListNoProgram.action" method="post" action='saveAttributeVisitSchedule.action' onsubmit="selectAllById('selectedAttributeIds');">
 

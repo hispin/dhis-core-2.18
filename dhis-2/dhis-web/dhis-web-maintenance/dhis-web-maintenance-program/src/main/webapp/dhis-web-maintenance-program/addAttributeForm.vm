@@ -1,6 +1,6 @@
 <script type="text/javascript" src="javascript/addAttributeForm.js"></script>
 
-<h3>$i18n.getString( "create_new_tracked_entity_attribute" )</h3>
+<h3>$i18n.getString( "create_new_tracked_entity_attribute" ) #openHelp( "tracked_entity_attribute_information" )</h3>
 
 #sharingCreateNotification( "trackedEntityAttribute" )
 
