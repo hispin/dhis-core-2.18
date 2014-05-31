@@ -54,7 +54,7 @@ public class IndicatorGroupSetSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( IndicatorGroupSet.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
-        schema.setOrder( 127 );
+        schema.setOrder( 1270 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_INDICATORGROUPSET_PUBLIC_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_INDICATORGROUPSET_PRIVATE_ADD" ) ) );

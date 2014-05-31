@@ -77,7 +77,7 @@ public class ValidationCriteriaSchemaDescriptor implements SchemaDescriptor
     public Schema getSchema()
     {
         Schema schema = new Schema( ValidationCriteria.class, SINGULAR, PLURAL );
-        schema.setOrder( 145 );
+        schema.setOrder( 1460 );
 
         return schema;
     }

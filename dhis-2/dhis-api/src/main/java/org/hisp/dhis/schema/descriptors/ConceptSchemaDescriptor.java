@@ -50,7 +50,7 @@ public class ConceptSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( Concept.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
-        schema.setOrder( 102 );
+        schema.setOrder( 1020 );
 
         return schema;
     }

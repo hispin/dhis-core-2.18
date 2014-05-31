@@ -60,10 +60,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -117,7 +115,7 @@ public class DataSetController
 
     @RequestMapping( produces = "application/dsd+xml" )
     public void getStructureDefinition( @RequestParam Map<String, String> parameters, HttpServletResponse response )
-        throws IOException, TransformerConfigurationException, TransformerException
+        throws IOException, TransformerException
     {
         WebOptions options = filterMetadataOptions();
 
@@ -139,7 +137,7 @@ public class DataSetController
     {
         DataSet dataSet = manager.get( DataSet.class, uid );
 
-        Map<String, Integer> versionMap = new HashMap<String, Integer>();
+        Map<String, Integer> versionMap = new HashMap<>();
         versionMap.put( "version", dataSet.getVersion() );
 
         JacksonUtils.toJson( response.getOutputStream(), versionMap );
@@ -231,16 +229,6 @@ public class DataSetController
         }
 
         JacksonUtils.toXml( response.getOutputStream(), form );
-    }
-
-    @RequestMapping( value = "/{uid}/form", method = RequestMethod.POST, consumes = "application/json" )
-    public void postFormJson( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response )
-    {
-    }
-
-    @RequestMapping( value = "/{uid}/form", method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
-    public void postFormXml( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response )
-    {
     }
 
     @RequestMapping( value = "/{uid}/customDataEntryForm", method = { RequestMethod.PUT, RequestMethod.POST }, consumes = "text/html" )

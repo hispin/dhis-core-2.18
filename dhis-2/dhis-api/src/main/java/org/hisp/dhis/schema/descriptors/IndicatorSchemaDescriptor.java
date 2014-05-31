@@ -54,7 +54,7 @@ public class IndicatorSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( Indicator.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
-        schema.setOrder( 125 );
+        schema.setOrder( 1250 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_INDICATOR_PUBLIC_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_INDICATOR_PRIVATE_ADD" ) ) );

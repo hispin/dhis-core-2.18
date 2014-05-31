@@ -53,7 +53,7 @@ public class ValidationRuleSchemaDescriptor implements SchemaDescriptor
     {
         Schema schema = new Schema( ValidationRule.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
-        schema.setOrder( 140 );
+        schema.setOrder( 1390 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_VALIDATIONRULE_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_VALIDATIONRULE_DELETE" ) ) );

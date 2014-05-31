@@ -52,6 +52,7 @@ public class InterpretationSchemaDescriptor implements SchemaDescriptor
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setMetadata( false );
         schema.setShareable( true );
+        schema.setOrder( 1440 );
 
         return schema;
     }
