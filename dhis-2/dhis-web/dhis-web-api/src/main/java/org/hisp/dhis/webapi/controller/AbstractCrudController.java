@@ -32,16 +32,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.hisp.dhis.acl.Access;
 import org.hisp.dhis.acl.AclService;
-import org.hisp.dhis.webapi.controller.exception.NotFoundException;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.WebUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dxf2.filter.FilterService;
-import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.dxf2.render.RenderService;
@@ -54,6 +50,9 @@ import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.webapi.controller.exception.NotFoundException;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -120,7 +119,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
 
-        ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
+        ReflectionUtils.invokeSetterMethod( schemaService.getSchema( getEntityClass() ).getPlural(), metaData, entityList );
 
         if ( viewClass.equals( "basic" ) )
         {
@@ -183,7 +182,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         response.setContentType( MediaType.APPLICATION_JSON_VALUE + "; charset=UTF-8" );
 
-        ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
+        ReflectionUtils.invokeSetterMethod( schemaService.getSchema( getEntityClass() ).getPlural(), metaData, entityList );
 
         if ( include != null && include.contains( "access" ) )
         {

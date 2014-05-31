@@ -45,7 +45,6 @@ import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
-import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.dxf2.metadata.ImportUtils;
@@ -64,6 +63,7 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.program.ProgramValidation;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
@@ -120,6 +120,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     @Autowired
     private AclService aclService;
+
+    @Autowired
+    private SchemaService schemaService;
 
     @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
@@ -1018,7 +1021,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( reference == null )
             {
-                if ( ExchangeClasses.getImportMap().get( idObject.getClass() ) != null )
+                if ( schemaService.getSchema( idObject.getClass() ) != null )
                 {
                     reportReferenceError( object, idObject );
                 }
@@ -1068,7 +1071,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    if ( ExchangeClasses.getImportMap().get( idObject.getClass() ) != null || UserCredentials.class.isAssignableFrom( idObject.getClass() ) )
+                    if ( schemaService.getSchema( idObject.getClass() ) != null || UserCredentials.class.isAssignableFrom( idObject.getClass() ) )
                     {
                         reportReferenceError( idObject, object );
                     }
