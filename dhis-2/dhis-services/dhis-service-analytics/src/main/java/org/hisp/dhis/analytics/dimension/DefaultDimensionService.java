@@ -34,6 +34,7 @@ import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
@@ -68,6 +69,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -167,20 +169,28 @@ public class DefaultDimensionService
         {            
             User user = currentUserService.getCurrentUser();
 
-            //TODO do this with query to improve performance
-
-            for ( NameableObject item : dimension.getItems() )
-            {
-                boolean canRead = aclService.canRead( user, item );
-
-                if ( canRead )
-                {
-                    items.add( item );
-                }
-            }
+            items.addAll( filterCanRead( user, dimension.getItems() ) );
         }
 
         return items;
+    }
+    
+    public <T extends IdentifiableObject> List<T> filterCanRead( User user, List<T> objects )
+    {        
+        List<T> list = new ArrayList<T>( objects );
+        Iterator<T> iterator = list.iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            T object = iterator.next();
+            
+            if ( !aclService.canRead( user, object ) )
+            {
+                iterator.remove();
+            }
+        }
+        
+        return list;
     }
         
     public DimensionType getDimensionType( String uid )
@@ -255,7 +265,9 @@ public class DefaultDimensionService
         dimensions.addAll( degs );
         dimensions.addAll( ougs );
 
-        return dimensions;
+        User user = currentUserService.getCurrentUser();
+        
+        return filterCanRead( user, dimensions );
     }
     
     public List<DimensionalObject> getDimensionConstraints()
