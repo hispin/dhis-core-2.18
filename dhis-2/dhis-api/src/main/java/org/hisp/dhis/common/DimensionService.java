@@ -30,6 +30,8 @@ package org.hisp.dhis.common;
 
 import java.util.List;
 
+import org.hisp.dhis.user.User;
+
 /**
  * @author Lars Helge Overland
  */
@@ -38,6 +40,8 @@ public interface DimensionService
     DimensionalObject getDimension( String uid );
     
     List<NameableObject> getCanReadDimensionItems( String uid );
+    
+    <T extends IdentifiableObject> List<T> filterCanRead( User user, List<T> objects );
     
     DimensionType getDimensionType( String uid );
     
