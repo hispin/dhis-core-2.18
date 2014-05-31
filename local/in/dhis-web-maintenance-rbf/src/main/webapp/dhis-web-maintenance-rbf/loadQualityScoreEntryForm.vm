@@ -18,6 +18,13 @@
   #end
 #end
 
+
+
+<select id="qualityScorePaymentsLB" size="10" style="display:none" >
+    #foreach( $qualityScorePayment in $qualityScorePayments )
+        <option value="$!qualityScorePayment.addQtyPayment">$qualityScorePayment.getStartRange()-$!qualityScorePayment.endRange</option>
+    #end
+</select>
 #set( $tabIndex = 1 )
 #if ( $dataElements.size() > 0)
 
@@ -46,7 +53,10 @@
 		<tr #if( $mark1 ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8" #end>
 			<td><label>$dataElement.getFormNameFallback()</label></td>
 			
+			#set( $qualityMaxValue = "" )
 			#set( $qualityMaxValue = $!qualityMaxValueMap.get( $dataElement.id ) )
+			
+			#set( $dataValue = "" )
 			#set( $dataValue = $!dataValueMap.get( $dataElement.id ) )
 			<td>
 				<input onkeyup="calPercenVal( $dataElement.id )" onblur="saveValue('$dataElement.id')" type="text" name="score_$dataElement.id" id="score_$dataElement.id" 
@@ -63,7 +73,7 @@
 						var percentage = 0.0;
     					if($("#score_"+$dataElement.id).val() != '' && $("#max_"+$dataElement.id).val() != '')
     					{
-    						percentage = (parseFloat($dataValue.value) * 100) / parseFloat($qualityMaxValue.value);
+    						percentage = (parseFloat($dataValue.value) * 100) / parseFloat($qualityMaxValue);
     						$('#percentage_'+$dataElement.id).val(percentage.toFixed(2));
     					}	
     					
@@ -82,25 +92,12 @@
 					
 						$('#all-total').val(allTotal.toFixed(2));
 						
-						for( var qualityScoreRange in qualityScorePayments ) 
-                        {
-                            var startRange = parseFloat( qualityScoreRange.split("-")[0] );
-            
-                            var endRange = parseFloat( qualityScoreRange.split("-")[1] );
-            
-                            alert( qualityScoreRange );
-                            
-                            if( allTotal >= startRange && allTotal <= endRange )
-                            {
-                                $("#qualityOverHeadPayment").val() = qualityScorePayments[ qualityScoreRange ];
-                            }
-                        }
 					}
 					
 					changeInt();
 			</script>
 			<td>
-				<input type="text" class="max" name="max_$dataElement.id" id="max_$dataElement.id" value="$!qualityMaxValue.value" tabindex="$tabIndex" style="text-align: center;" readonly/>
+				<input type="text" class="max" name="max_$dataElement.id" id="max_$dataElement.id" value="$!qualityMaxValue" tabindex="$tabIndex" style="text-align: center;" readonly/>
 			</td>
 			<td >
 				<input type="text" id="percentage_$dataElement.id" style="text-align: center;" readonly />
@@ -124,7 +121,7 @@
         </tr>       
 
         <tr>
-            <td colspan="3" style="text-align: right;">$paymentMessage -- Total PPS payment for this quarter</td>
+            <td colspan="3" style="text-align: right;"> <font color="red"><strong>$!paymentMessage</strong></font> &nbsp;Total PPS payment for this quarter</td>
             <td >
                 <input type="text" id="ppsPayment" style="text-align: center;" value="$totalUnadjustedAmt" readonly size="18"/>
             </td>
@@ -132,7 +129,7 @@
         <tr>
             <td colspan="3" style="text-align: right;">Total quality based payment for this quarter</td>           
             <td >
-                <input type="text" id="all-total" style="text-align: center;" readonly size="18"/>
+                <input type="text" id="totalQualitybasedPayment" style="text-align: center;" readonly size="18"/>
             </td>
         </tr>
 </table>
@@ -162,28 +159,42 @@
 		  allTotal = ( score / allMax ) * 100;
 		}
 		
-		$('#all-total').val(allTotal.toFixed(2));
+		$('#all-total').val( allTotal.toFixed(2) );
 		
-                        for( var qualityScoreRange in qualityScorePayments ) 
-                        {
-                            var startRange = parseFloat( qualityScoreRange.split("-")[0] );
-            
-                            var endRange = parseFloat( qualityScoreRange.split("-")[1] );
-            
-                            alert( qualityScoreRange );
-                            
-                            if( allTotal >= startRange && allTotal <= endRange )
-                            {
-                                $("#qualityOverHeadPayment").val() = qualityScorePayments[ qualityScoreRange ];
-                            }
-                        }
-		
+
+        calCulateQualityScorePayment();
 	}
 	
-	var qualityScorePayments = new Array();
+	function calCulateQualityScorePayment()
+	{
+        var qualityScorePayments = document.getElementById("qualityScorePaymentsLB");
+	   
+	    var allTotal = $('#all-total').val();
+	    
+        for ( i=0; i < qualityScorePayments.length; i++ )
+        {
+            var qualityScoreRange =    qualityScorePayments.options[i].text;
+            var startRange = parseFloat( qualityScoreRange.split("-")[0] );           
+            var endRange = parseFloat( qualityScoreRange.split("-")[1] );
+            
+            if( endRange == -1 && allTotal >= startRange )
+            {
+                $("#qualityOverHeadPayment").val( qualityScorePayments.options[i].value );
+                break;
+            }
+            else if( allTotal >= startRange && allTotal < endRange )
+            {
+                $("#qualityOverHeadPayment").val( qualityScorePayments.options[i].value );
+                break;
+            }
+        }
+        
+        var ppsPayment = $('#ppsPayment').val();
+        
+        var totalQualityBasedPayment = parseFloat( ppsPayment ) + ( parseFloat( ppsPayment ) * parseFloat( $("#qualityOverHeadPayment").val() ) / 100 );
+        $("#totalQualitybasedPayment").val( totalQualityBasedPayment );
+	}
 	
-	#foreach( $qualityScorePayment in $qualityScorePayments)
-		qualityScorePayments['$qualityScorePayment.startRange-$qualityScorePayment.endRange'] = $qualityScorePayment.addQtyPayment; 
-	#end
+	calCulateQualityScorePayment();
 	
 </script>

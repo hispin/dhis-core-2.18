@@ -27,11 +27,7 @@
    inset 8px 10px 10px rgba(255,255,255,0.75);
    }
 </style>
-<div width="100%">
-	<div id="tariffSetting">
-		Quality Max Score Level : $!tariff_setting_authority
-    </div>
-</div>
+
 <h3>$i18n.getString( "quality_max_entry" )</h3>
 
 <form id="qualityMaxDataEntryForm" name="qualityMaxDataEntryForm" method="post" >	
@@ -41,13 +37,26 @@
 	
 </div>
 
-<div class="inputCriteria" style="width:480px;height:auto;">
+<div class="inputCriteria" style="width:560px;height:auto;">
 <table>
 	<tr>
 		<td><label for="orgUnitName">$i18n.getString( "organisation_unit" )</label></td>
 		<td><input type="text" id="orgUnitName" name = "orgUnitName" readonly="readonly" value="$!organisationUnit.name" style="width:352px"></td>
 	</tr>
-	
+
+	<tr>
+		<td>Orgainsation Unit Group: </td>
+		<td> 
+		    <select id="orgUnitGroupId" name="orgUnitGroupId" onchange="javascript:orgUnitGroupChange()" style="width:352px">
+                <option value="-1">[Please select]</option>		    	
+                #foreach( $orgUnitGroup in $orgUnitGroups )
+                	<option value="$!orgUnitGroup.id">$!orgUnitGroup.name</option>
+                #end
+      		</select>      		
+      	</td>
+		<td >&nbsp;</td>
+	</tr>
+		
 	<tr>
 		<td><label>$i18n.getString( "dataset" )</label></td>
 		<td>

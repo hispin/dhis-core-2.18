@@ -9,10 +9,13 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.rbf.api.Lookup;
 import org.hisp.dhis.rbf.api.LookupService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -21,7 +24,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class QualityMaxInitAction implements Action
 {
-	private final static String TARIFF_SETTING_AUTHORITY = "MAXSCORE_SETTING_AUTHORITY";
+	private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -60,10 +63,22 @@ public class QualityMaxInitAction implements Action
     {
         this.constantService = constantService;
     }
+    
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
+
+    
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
 
+    private List<OrganisationUnitGroup> orgUnitGroups;
+    
+    public List<OrganisationUnitGroup> getOrgUnitGroups()
+    {
+        return orgUnitGroups;
+    }
+  
     private OrganisationUnit organisationUnit;
 
     public OrganisationUnit getOrganisationUnit()
@@ -140,6 +155,8 @@ public class QualityMaxInitAction implements Action
             organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
            
         }
+        
+        orgUnitGroups = new ArrayList<OrganisationUnitGroup>( orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() ).getOrganisationUnitGroups() );
         
        // dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
         

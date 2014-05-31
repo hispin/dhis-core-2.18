@@ -37,11 +37,14 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.rbf.api.QualityMaxValue;
 import org.hisp.dhis.rbf.api.QualityMaxValueService;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -92,6 +95,10 @@ public class SaveQualityValueAction
 		this.qualityMaxValueService = qualityMaxValueService;
 	}
     
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
+    
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -117,7 +124,14 @@ public class SaveQualityValueAction
         this.organisationUnitId = organisationUnitId;
     }
    
-    private String dataSetId;
+    private String orgUnitGroupId;
+    
+    public void setOrgUnitGroupId(String orgUnitGroupId) 
+    {
+		this.orgUnitGroupId = orgUnitGroupId;
+	}
+
+	private String dataSetId;
     
 	public void setDataSetId(String dataSetId) 
 	{
@@ -126,16 +140,19 @@ public class SaveQualityValueAction
     
 	private String startDate ;
     
-    public void setStartDate(String startDate) {
+    public void setStartDate(String startDate) 
+    {
 		this.startDate = startDate;
 	}
     
     private String endDate ;
     
-	public void setEndDate(String endDate) {
+	public void setEndDate(String endDate) 
+	{
 		this.endDate = endDate;
 	}
     
+	
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -174,6 +191,12 @@ public class SaveQualityValueAction
             return logError( "Invalid dataset identifier: " + dataSetId );
         }
         
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
+        if ( orgUnitGroup == null )
+        {
+            return logError( "Invalid orgunitgroup identifier: " + orgUnitGroupId );
+        }
+        
         String storedBy = currentUserService.getCurrentUsername();
 
         Date now = new Date();
@@ -208,16 +231,18 @@ public class SaveQualityValueAction
         Date sDate = dateFormat.parse( startDate );
         Date eDate = dateFormat.parse( endDate );
         
-        QualityMaxValue qualityMaxValue = qualityMaxValueService.getQualityMaxValue(organisationUnit, dataElement, dataSet, sDate, eDate );
+        QualityMaxValue qualityMaxValue = qualityMaxValueService.getQualityMaxValue( orgUnitGroup, organisationUnit, dataElement, dataSet, sDate, eDate );
 
         if ( qualityMaxValue == null )
         {
             if ( value != null )
             {
             	qualityMaxValue = new QualityMaxValue( );
+            	
             	qualityMaxValue.setDataSet(dataSet);
             	qualityMaxValue.setDataElement(dataElement);
             	qualityMaxValue.setOrganisationUnit(organisationUnit);
+            	qualityMaxValue.setOrgUnitGroup( orgUnitGroup );
             	
             	qualityMaxValue.setValue(Double.parseDouble(value));
             	qualityMaxValue.setStartDate(sDate);

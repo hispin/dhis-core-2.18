@@ -122,9 +122,9 @@ public class DefaultTariffDataValueService implements TariffDataValueService
         return tariffDataValueStore.getTariffDataValues( orgUnitGroup, organisationUnit, dataElement );
     }
     
-    public Map<Integer, Double> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    public Map<Integer, Double> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, String orgUnitBranchIds, DataSet dataSet, Period period )
     {
-        return tariffDataValueStore.getTariffDataValues( orgUnitGroup, organisationUnit, dataSet, period );
+        return tariffDataValueStore.getTariffDataValues( orgUnitGroup, orgUnitBranchIds, dataSet, period );
     }
     
     public String getTariffDataValue( Integer orgunitgroupId, Integer organisationUnitId, Integer dataSetId, Integer dataElementId, String date )

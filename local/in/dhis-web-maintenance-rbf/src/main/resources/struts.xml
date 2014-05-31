@@ -33,7 +33,7 @@
 		<action name="deleteTariffData" class="org.hisp.dhis.rbf.action.DeleteTariffDataAction">
 			<result name="success" type="velocity-json">/dhis-web-maintenance-rbf/tariffStatus.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_TARIFFDATAVALUE_UPDATE</param>					
+			<param name="requiredAuthorities">F_TARIFFDATAVALUE_UPDATE</param>
 		</action>
 		
 		<action name="validateTariffData" class="org.hisp.dhis.rbf.action.ValidateTariffDataAction">
@@ -287,6 +287,7 @@
    		<param name="page">/dhis-web-maintenance-rbf/qualityScorePaymentList.vm</param>
    		<param name="javascripts">javascript/qualityScorePayment.js</param>
    		<param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+   		<param name="anyAuthorities">F_QUALITY_SCORE_PAYMENT</param>
    </action>
 
 
@@ -380,21 +381,6 @@
       <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

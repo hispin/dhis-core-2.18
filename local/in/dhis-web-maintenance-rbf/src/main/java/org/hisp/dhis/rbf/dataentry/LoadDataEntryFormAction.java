@@ -261,9 +261,16 @@ public class LoadDataEntryFormAction
 
         OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit );
         
+        List<OrganisationUnit> orgUnitBranch = organisationUnitService.getOrganisationUnitBranch( organisationUnit.getId() );
+        String orgUnitBranchIds = "-1";
+        for( OrganisationUnit orgUnit : orgUnitBranch )
+        {
+        	orgUnitBranchIds += "," + orgUnit.getId();
+        }
+        
         if( orgUnitGroup != null )
         {
-            tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( orgUnitGroup, dataSet, period ) );
+            tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( orgUnitGroup, orgUnitBranchIds, dataSet, period ) );
         }
         
         /*

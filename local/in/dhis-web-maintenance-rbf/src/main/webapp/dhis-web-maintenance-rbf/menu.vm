@@ -29,10 +29,14 @@
 <ul>
 	<li><a href="getAllLookups.action">$i18n.getString( "Lookup" )</a></li>
 </ul>
+
+#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "getPaymentAdjustmentDetail") )
 <h2>$i18n.getString( "payment_adjustment" )</h2>
 <ul>
 	<li><a href="getPaymentAdjustmentDetail.action">$i18n.getString( "payment_adjustment" )</a></li>
 </ul>
+#end
+
 <h2>$i18n.getString( "reports" )</h2>
 <ul>
     <li><a href="PBFInvoiceReportForm.action">$i18n.getString( "quarterly_invoice_for_PBF_indicators_PMA" )</a></li>
