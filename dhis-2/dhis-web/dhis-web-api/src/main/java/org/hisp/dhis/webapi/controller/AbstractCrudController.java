@@ -52,7 +52,7 @@ import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.webapi.controller.exception.NotFoundException;
 import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.WebUtils;
+import org.hisp.dhis.webapi.utils.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -98,6 +98,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     protected SchemaService schemaService;
 
     @Autowired
+    protected LinkService linkService;
+
+    @Autowired
     protected RenderService renderService;
 
     @Autowired
@@ -107,7 +110,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // GET
     //--------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.GET )
+    @RequestMapping(method = RequestMethod.GET)
     public String getObjectList(
         @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request )
     {
@@ -136,11 +139,11 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
 
-    @RequestMapping( method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE } )
+    @RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
     public void getObjectListJson(
-        @RequestParam( required = false ) String include,
-        @RequestParam( required = false ) String exclude,
-        @RequestParam( value = "filter", required = false ) List<String> filters,
+        @RequestParam(required = false) String include,
+        @RequestParam(required = false) String exclude,
+        @RequestParam(value = "filter", required = false) List<String> filters,
         @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
@@ -227,8 +230,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
+    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -241,7 +244,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( entity );
+            linkService.generateLinks( entity );
         }
 
         if ( aclService.isSupported( getEntityClass() ) )
@@ -262,7 +265,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // POST
     //--------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @RequestMapping(method = RequestMethod.POST, consumes = { "application/xml", "text/xml" })
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
@@ -275,7 +278,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         renderService.toJson( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
@@ -292,9 +295,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // PUT
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE } )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
+    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream
         input ) throws Exception
     {
         T object = getEntity( uid );
@@ -317,9 +320,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         renderService.toJson( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
+    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream
         input ) throws Exception
     {
         T object = getEntity( uid );
@@ -346,9 +349,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // DELETE
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws
+    @RequestMapping(value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid ) throws
         Exception
     {
         T object = getEntity( uid );
@@ -452,7 +455,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     {
         if ( options != null && options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData, deep );
+            linkService.generateLinks( metaData );
         }
 
         if ( !JacksonUtils.isSharingView( options.getViewClass( "basic" ) ) )
@@ -479,7 +482,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     private String entitySimpleName;
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass()
     {
         if ( entityClass == null )
@@ -511,7 +514,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return entitySimpleName;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected T getEntityInstance()
     {
         try

@@ -30,6 +30,7 @@ package org.hisp.dhis.schema;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import javassist.util.proxy.ProxyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.OrderComparator;
 
@@ -79,24 +80,38 @@ public class DefaultSchemaService implements SchemaService
             return null;
         }
 
-        /*
         if ( ProxyFactory.isProxyClass( klass ) )
         {
             klass = klass.getSuperclass();
         }
-        */
 
         if ( classSchemaMap.containsKey( klass ) )
         {
             return classSchemaMap.get( klass );
         }
 
-        if ( classSchemaMap.containsKey( klass.getSuperclass() ) )
+        return null;
+    }
+
+    @Override
+    public Schema getDynamicSchema( Class<?> klass )
+    {
+        if ( klass == null )
         {
-            return classSchemaMap.get( klass.getSuperclass() );
+            return null;
         }
 
-        return null;
+        Schema schema = getSchema( klass );
+
+        if ( schema != null )
+        {
+            return schema;
+        }
+
+        schema = new Schema( klass, klass.getName(), klass.getName() );
+        schema.setProperties( propertyIntrospectorService.getProperties( schema.getKlass() ) );
+
+        return schema;
     }
 
     @Override
