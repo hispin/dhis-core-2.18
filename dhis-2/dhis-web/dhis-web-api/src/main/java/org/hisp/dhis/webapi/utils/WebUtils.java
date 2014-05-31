@@ -28,28 +28,26 @@ package org.hisp.dhis.webapi.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.system.util.ReflectionUtils;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.webapi.controller.WebMetaData;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.webapi.controller.WebMetaData;
-import org.hisp.dhis.common.DimensionalObject;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.system.util.ReflectionUtils;
-import org.hisp.dhis.user.UserCredentials;
+import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
 
 /**
- * TODO too many inner classes, need to be split up
- *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class WebUtils
+final public class WebUtils
 {
     private static final Log log = LogFactory.getLog( WebUtils.class );
 
@@ -68,7 +66,7 @@ public class WebUtils
             if ( ReflectionUtils.isCollection( field.getName(), metaData, IdentifiableObject.class ) ||
                 ReflectionUtils.isCollection( field.getName(), metaData, DimensionalObject.class ) )
             {
-                List<Object> objects = new ArrayList<Object>( (Collection<?>) ReflectionUtils.getFieldObject( field, metaData ) );
+                List<Object> objects = new ArrayList<>( (Collection<?>) ReflectionUtils.getFieldObject( field, metaData ) );
 
                 if ( !objects.isEmpty() )
                 {
@@ -143,7 +141,7 @@ public class WebUtils
             identifiableObject.setHref( ContextUtils.getPathWithUid( identifiableObject ) );
         }
 
-        List<Field> fields = new ArrayList<Field>();
+        List<Field> fields = new ArrayList<>();
         fields.addAll( ReflectionUtils.collectFields( object.getClass() ) );
 
         if ( !deep )
@@ -183,4 +181,7 @@ public class WebUtils
         }
     }
 
+    private WebUtils()
+    {
+    }
 }
