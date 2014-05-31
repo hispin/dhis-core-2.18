@@ -28,14 +28,7 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,12 +38,22 @@ import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.deletion.DeletionManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -83,7 +86,7 @@ public class DefaultObjectBridge
     // Internal and Semi-Public maps
     //-------------------------------------------------------------------------------------------------------
 
-    private static final List<Class<?>> registeredTypes = new ArrayList<Class<?>>();
+    private List<Class<?>> registeredTypes = Lists.newArrayList();
 
     private HashMap<Class<?>, Set<?>> masterMap;
 
@@ -105,14 +108,15 @@ public class DefaultObjectBridge
     // Build maps
     //-------------------------------------------------------------------------------------------------------
 
-    static
+    @PostConstruct
+    public void postConstruct()
     {
         registeredTypes.add( PeriodType.class );
         registeredTypes.add( UserCredentials.class );
 
-        for ( Class<?> clazz : ExchangeClasses.getImportClasses() )
+        for ( Schema schema : schemaService.getMetadataSchemas() )
         {
-            registeredTypes.add( clazz );
+            registeredTypes.add( schema.getKlass() );
         }
     }
 
@@ -165,11 +169,11 @@ public class DefaultObjectBridge
     @SuppressWarnings( "unchecked" )
     private void populateIdentifiableObjectMap( Class<?> clazz )
     {
-        Set<IdentifiableObject> map = new HashSet<IdentifiableObject>();
+        Set<IdentifiableObject> map = new HashSet<>();
 
         if ( preheatCache && IdentifiableObject.class.isAssignableFrom( clazz ) )
         {
-            map = new HashSet<IdentifiableObject>( manager.getAll( (Class<IdentifiableObject>) clazz ) );
+            map = new HashSet<>( manager.getAll( (Class<IdentifiableObject>) clazz ) );
         }
 
         masterMap.put( clazz, map );
@@ -178,7 +182,7 @@ public class DefaultObjectBridge
     @SuppressWarnings( "unchecked" )
     private void populateIdentifiableObjectMap( Class<?> clazz, IdentifiableObject.IdentifiableProperty property )
     {
-        Map<String, IdentifiableObject> map = new HashMap<String, IdentifiableObject>();
+        Map<String, IdentifiableObject> map = new HashMap<>();
 
         if ( preheatCache && IdentifiableObject.class.isAssignableFrom( clazz ) )
         {
@@ -226,10 +230,7 @@ public class DefaultObjectBridge
                             }
                         }
                     }
-                    catch ( InstantiationException ignored )
-                    {
-                    }
-                    catch ( IllegalAccessException ignored )
+                    catch ( InstantiationException | IllegalAccessException ignored )
                     {
                     }
                 }
@@ -239,7 +240,7 @@ public class DefaultObjectBridge
 
     private void populatePeriodTypeMap( Class<?> clazz )
     {
-        Collection<Object> periodTypes = new ArrayList<Object>();
+        Collection<Object> periodTypes = new ArrayList<>();
 
         if ( PeriodType.class.isAssignableFrom( clazz ) )
         {
@@ -250,7 +251,7 @@ public class DefaultObjectBridge
             }
         }
 
-        masterMap.put( clazz, new HashSet<Object>( periodTypes ) );
+        masterMap.put( clazz, new HashSet<>( periodTypes ) );
     }
 
     private void populateUsernameMap( Class<?> clazz )
@@ -339,7 +340,7 @@ public class DefaultObjectBridge
         }
         else
         {
-            String objectName = null;
+            String objectName;
 
             try
             {
@@ -409,7 +410,7 @@ public class DefaultObjectBridge
     @SuppressWarnings( "unchecked" )
     private <T> Set<T> _findMatches( T object )
     {
-        Set<T> objects = new HashSet<T>();
+        Set<T> objects = new HashSet<>();
 
         if ( PeriodType.class.isInstance( object ) )
         {
