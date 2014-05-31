@@ -217,8 +217,6 @@ public class DefaultPBFAggregationService
                                 " datasetid = "+ dataSet.getId() + " AND " +
                                 " organisationunitid = " + orgUnit.getId();
             
-            System.out.println( "Query After Replace : --" +  query );
-            
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             if( rs.next() )
             {

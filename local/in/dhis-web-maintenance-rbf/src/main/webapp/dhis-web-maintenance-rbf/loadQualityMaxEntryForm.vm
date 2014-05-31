@@ -25,7 +25,8 @@
 	<tr bgcolor="#CBDDEB">
 		<th style="text-align: left;width:35%;">$i18n.getString( "dataelement" )</th>
 		<th style="text-align: center;width:15%;">$i18n.getString( "quality_max" )</th>		
-	</tr>	
+	</tr>
+	
 	#set( $mark = false )
 	#foreach($dataElement in $dataElements )
 		#if( $mark1 )
@@ -35,7 +36,8 @@
         #end
 		<tr #if( $mark1 ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8" #end>
 			<td><label>$dataElement.getFormNameFallback()</label></td>
-			
+
+            #set( $qualityDataValue = "" )			
 			#set( $qualityDataValue = $!qualityMaxValueMap.get( $dataElement.id ) )
 			
 			<td>

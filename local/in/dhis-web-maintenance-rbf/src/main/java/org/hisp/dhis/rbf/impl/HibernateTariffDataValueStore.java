@@ -268,7 +268,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         return tariffDataValueMap;
     }
     
-    public Map<Integer, Double> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    public Map<Integer, Double> getTariffDataValues( OrganisationUnitGroup orgUnitGroup, String orgUnitBranchIds, DataSet dataSet, Period period )
     {
         Map<Integer, Double> tariffDataValueMap = new HashMap<Integer, Double>();
         
@@ -286,7 +286,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
                                 " enddate >= '" + curPeriod +"'";
             */
             
-            String query = "select td.value,td.dataelementid from "+
+            String query = "select td.dataelementid,td.value from "+
                             "( " +
                                 "select max(asd.orgunitlevelid) as level,asd.dataelementid,asd.orgunitgroupid,datasetid " +
                                 " from " +
@@ -303,7 +303,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
                                                 " where td.orgunitgroupid=sag1.orgunitgroupid " + 
                                                 " and td.datasetid=sag1.datasetid " +
                                                 " and sag1.level=td.orgunitlevelid " +
-                                                " and td.organisationunitid in ("+ organisationUnit.getId() +") ";
+                                                " and td.organisationunitid in ("+ orgUnitBranchIds +") ";
             
             //System.out.println("Query: " + query );
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );

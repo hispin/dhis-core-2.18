@@ -2,10 +2,13 @@ package org.hisp.dhis.rbf.impl;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.rbf.api.QualityMaxValue;
 import org.hisp.dhis.rbf.api.QualityMaxValueService;
 import org.hisp.dhis.rbf.api.QualityMaxValueStore;
@@ -76,8 +79,26 @@ public class DefaultQualityMaxValueService
     @Override
     public Collection<QualityMaxValue> getQuanlityMaxValues( OrganisationUnit organisationUnit, DataElement dataElement )
     {
-
         return qualityMaxValueStore.getQuanlityMaxValues( organisationUnit, dataElement );
     }
 
+    public Collection<QualityMaxValue> getQuanlityMaxValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataElement dataElement)
+    {
+    	return qualityMaxValueStore.getQuanlityMaxValues( orgUnitGroup, organisationUnit, dataElement);
+    }
+    
+    public QualityMaxValue getQualityMaxValue( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet,Date startDate ,Date endDate )
+    {
+    	return qualityMaxValueStore.getQualityMaxValue( orgUnitGroup, organisationUnit, dataElement, dataSet, startDate, endDate );
+    }
+    
+    public Collection<QualityMaxValue> getQuanlityMaxValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataSet dataSet) 
+    {
+    	return qualityMaxValueStore.getQuanlityMaxValues( orgUnitGroup, organisationUnit, dataSet );
+    }
+    
+    public Map<Integer, Double> getQualityMaxValues( OrganisationUnitGroup orgUnitGroup, String orgUnitBranchIds, DataSet dataSet, Period period )
+    {
+    	return qualityMaxValueStore.getQualityMaxValues( orgUnitGroup, orgUnitBranchIds, dataSet, period );
+    }
 }

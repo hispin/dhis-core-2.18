@@ -11,44 +11,45 @@
 function orgUnitHasBeenSelected( orgUnitIds , orgUnitNames )
 {
 	$( '#dataEntryFormDiv' ).html( '' );
-	var bValue = false;
-	for(var i=0;i<=countryTags.length-1;i++)
-	{
-    	if(countryTags[i] == orgUnitIds[0] )
-    	{
-    		bValue = true;
-    	}
-	}
-	if(bValue == false)
-	{
-		$("#startDate").val('');
-		$("#endDate").val('');
-		disable('dataSetId');
-        disable('selectedPeriodId');
-        disable('startDate');
-        disable('endDate');
-       
-        setFieldValue('orgUnitName', orgUnitNames[0] );
-        setFieldValue('selectedOrgunitName', orgUnitNames[0] );
-        $("select#dataSetId option[value=-1]").attr('selected', 'selected');
-		alert('Please Select Correct level OrgUnit');
-	}
-	else
-	{		
+		
 	if( orgUnitIds != null && orgUnitIds != "" )
 	{
-		var dataSetId = $( '#dataSetId' ).val();		
-		 $.getJSON( 'getOrganisationUnitForMax.action', {orgUnitId:orgUnitIds[0]}
+		setFieldValue('selectedOrgunitID',orgUnitIds[0]);
+		setFieldValue('selectedOrgunitName', orgUnitNames[0] );
+		
+		orgUnitGroupChange();
+	}
+}
+
+selection.setListenerFunction( orgUnitHasBeenSelected );
+
+function orgUnitGroupChange()
+{
+	$( '#dataEntryFormDiv' ).html( '' );
+		
+	var dataSetId = $( '#dataSetId' ).val();
+	var orgUnitId = $( '#selectedOrgunitID' ).val();
+	var orgUnitGroupId = $( '#orgUnitGroupId' ).val();
+
+	//alert( orgUnitId + " : " + orgUnitGroupId );
+	
+	if( orgUnitId != "" && orgUnitGroupId != "-1" )
+	{
+		 $.getJSON( 'getOrganisationUnitForMax.action', { orgUnitId:orgUnitId, orgUnitGroupId:orgUnitGroupId }
 	        , function( json ) 
 	        {
 	            var type = json.response;
 	            setFieldValue('orgUnitName', json.message );
-	            setFieldValue('selectedOrgunitName', json.message );	            
+	            setFieldValue('selectedOrgunitName', json.message );
+	            setFieldValue('selectedOrgunitID', orgUnitId )
+	            
 	            if( type == "success" )
 	            {
 					enable('dataSetId');
 					enable('startDate');
 					enable('endDate');
+					enable('orgUnitGroupId');
+					
 					var options = '';
 					options += '<option value="-1">Please Select</option>';
 		            $.each(json.dataSets, function(i, obj){		            	
@@ -58,10 +59,7 @@ function orgUnitHasBeenSelected( orgUnitIds , orgUnitNames )
 		            
 		            $("select#dataSetId option[value="+dataSetId+"]").attr('selected', 'selected');
 		            	            
-					setFieldValue('selectedOrgunitID',orgUnitIds[0])
-	                setFieldValue('orgUnitName', json.message );
-	                setFieldValue('selectedOrgunitName', json.message );
-	                loadDataEntryForm();
+	                if( $( '#dataSetId' ).val() != "-1" ) loadDataEntryForm();
 	            }
 	            else if( type == "input" )
 	            {
@@ -69,22 +67,20 @@ function orgUnitHasBeenSelected( orgUnitIds , orgUnitNames )
 	                disable('selectedPeriodId');
 	                disable('startDate');
 	                disable('endDate');
-	                
-	                setFieldValue('orgUnitName', json.message );
-	                setFieldValue('selectedOrgunitName', json.message );
+	                //disable('orgUnitGroupId');
 	            }
 	        } );		
 	}
-	}	
+		
 }
-
-selection.setListenerFunction( orgUnitHasBeenSelected );
 
 
 function loadDataEntryForm()
 {
 	var orgUnitId = $( '#selectedOrgunitID' ).val();
+	var orgUnitGroupId = $( '#orgUnitGroupId' ).val();
 	var dataSetId = $( '#dataSetId' ).val();
+	
 	$( '#dataEntryFormDiv' ).html('');
 	
 	var startDate = $("#startDate").val();
@@ -98,7 +94,8 @@ function loadDataEntryForm()
 	if(startDate != "" && endDate != "")
 	{
 		 var dataValue = {
-     			'orgUnitId' : orgUnitId,        		        			
+     			'orgUnitId' : orgUnitId,
+     			'orgUnitGroupId' : orgUnitGroupId,
      			'startDate' : startDate,
 				'endDate' : endDate,
 				'dataSetId': dataSetId
@@ -126,6 +123,7 @@ function loadDataEntryForm()
 			jQuery('#dataEntryFormDiv').load('loadQualityMaxForm.action',
 				{
 					orgUnitId:orgUnitId,
+					orgUnitGroupId : orgUnitGroupId,
 					dataSetId:dataSetId,
 					startDate:startDate,
 					endDate:endDate
@@ -162,12 +160,13 @@ function saveQualityDataValue( dataElementId )
 		return false;
 	}
 	
-	if(defaultValue != value)
+	if( defaultValue != value )
 	{
 		var dataValue = {
 				'dataElementId' : dataElementId,
 				'dataSetId' : dataSetId,
-				'organisationUnitId' : $("#selectedOrgunitID").val(),				
+				'organisationUnitId' : $("#selectedOrgunitID").val(),
+				'orgUnitGroupId' : $("#orgUnitGroupId").val(),
 				'value' : value,
 				'startDate' : startDate,
 				'endDate' : endDate
@@ -211,16 +210,4 @@ function saveQualityDataValue( dataElementId )
 	    document.getElementById(valueId).style.backgroundColor = color;	   
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

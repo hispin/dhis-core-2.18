@@ -11,9 +11,12 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.rbf.api.QualityMaxValue;
 import org.hisp.dhis.rbf.api.QualityMaxValueService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,6 +48,9 @@ public class ValidateQualityMaxDataAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
+    
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -56,7 +62,14 @@ public class ValidateQualityMaxDataAction
         this.orgUnitId = orgUnitId;
     }
 
-    private String dataSetId;
+    private String orgUnitGroupId;
+    
+    public void setOrgUnitGroupId(String orgUnitGroupId) 
+    {
+		this.orgUnitGroupId = orgUnitGroupId;
+	}
+
+	private String dataSetId;
 
     public void setDataSetId( String dataSetId )
     {
@@ -125,9 +138,9 @@ public class ValidateQualityMaxDataAction
         Date eDate = dateFormat.parse( endDate );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
 
-        List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>(
-            qualityMaxValueService.getQuanlityMaxValues( organisationUnit, dataSet ) );
+        List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>( qualityMaxValueService.getQuanlityMaxValues( orgUnitGroup, organisationUnit, dataSet ) );
         for ( QualityMaxValue qualityMaxValue : qualityMaxValues )
         {
             if ( qualityMaxValue.getStartDate().getTime() ==  sDate.getTime() && qualityMaxValue.getEndDate().getTime() ==  eDate.getTime() )

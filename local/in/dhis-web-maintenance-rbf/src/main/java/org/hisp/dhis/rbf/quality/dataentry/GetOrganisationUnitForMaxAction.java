@@ -7,9 +7,12 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.rbf.api.Lookup;
 import org.hisp.dhis.rbf.api.LookupService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -40,6 +43,8 @@ public class GetOrganisationUnitForMaxAction implements Action
         this.dataSetService = dataSetService;
     }
     
+    @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
     
     // -------------------------------------------------------------------------
     // Input/output
@@ -63,7 +68,14 @@ public class GetOrganisationUnitForMaxAction implements Action
         this.orgUnitId = orgUnitId;
     }
 
-    private List<DataSet> dataSets = new ArrayList<DataSet>();
+    private String orgUnitGroupId;
+    
+    public void setOrgUnitGroupId(String orgUnitGroupId) 
+    {
+		this.orgUnitGroupId = orgUnitGroupId;
+	}
+
+	private List<DataSet> dataSets = new ArrayList<DataSet>();
     
     public List<DataSet> getDataSets()
     {
@@ -77,6 +89,8 @@ public class GetOrganisationUnitForMaxAction implements Action
     public String execute() throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );        
+        
+        OrganisationUnitGroup orgUnitGroup = orgUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupId ) );
         
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_QUALITY_TYPE ) );
         
@@ -94,16 +108,21 @@ public class GetOrganisationUnitForMaxAction implements Action
             }
         }
         
-        dataSets.addAll( pbfDataSets );
+        dataSets.addAll( orgUnitGroup.getDataSets() );
+        
+        System.out.println( "Before : " + dataSets.size() );
+        
+        dataSets.retainAll( pbfDataSets );
+        
         Collections.sort(dataSets);
         
-       
-        System.out.println( dataSets.size() );
+        System.out.println( "After : " + dataSets.size() );
+        
         if ( dataSets.size() > 0 )
         {
             message = organisationUnit.getName();
-            return SUCCESS;
             
+            return SUCCESS;
         }
         else
         {

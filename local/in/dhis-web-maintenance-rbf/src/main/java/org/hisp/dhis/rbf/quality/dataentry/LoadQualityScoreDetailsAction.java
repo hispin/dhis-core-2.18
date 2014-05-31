@@ -20,13 +20,15 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.rbf.api.Lookup;
 import org.hisp.dhis.rbf.api.LookupService;
-import org.hisp.dhis.rbf.api.QualityMaxValue;
 import org.hisp.dhis.rbf.api.QualityMaxValueService;
 import org.hisp.dhis.rbf.api.QualityScorePayment;
 import org.hisp.dhis.rbf.api.QualityScorePaymentService;
@@ -38,7 +40,7 @@ import com.opensymphony.xwork2.Action;
 public class LoadQualityScoreDetailsAction
     implements Action
 {
-    private final static String TARIFF_SETTING_AUTHORITY = "MAXSCORE_SETTING_AUTHORITY";
+    private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
 
     private final static String QUALITY_MAX_DATAELEMENT = "QUALITY_MAX_DATAELEMENT";
 
@@ -96,6 +98,9 @@ public class LoadQualityScoreDetailsAction
     }
 
     @Autowired
+    private OrganisationUnitGroupService orgUnitGroupService;
+    
+    @Autowired
     private DefaultPBFAggregationService defaultPBFAggregationService;
     
     @Autowired
@@ -103,7 +108,8 @@ public class LoadQualityScoreDetailsAction
     
     @Autowired
     private QualityScorePaymentService qualityScorePaymentService;
-    
+
+
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -143,9 +149,9 @@ public class LoadQualityScoreDetailsAction
         return simpleDateFormat;
     }
 
-    private Map<Integer, QualityMaxValue> qualityMaxValueMap = new HashMap<Integer, QualityMaxValue>();
+    private Map<Integer, Double> qualityMaxValueMap = new HashMap<Integer, Double>();
 
-    public Map<Integer, QualityMaxValue> getQualityMaxValueMap()
+    public Map<Integer, Double> getQualityMaxValueMap()
     {
         return qualityMaxValueMap;
     }
@@ -157,7 +163,7 @@ public class LoadQualityScoreDetailsAction
         return dataValueMap;
     }
 
-    private String paymentMessage = "No Data avialable for ";
+    private String paymentMessage = "( No data avialable for ";
     
     public String getPaymentMessage()
     {
@@ -177,7 +183,7 @@ public class LoadQualityScoreDetailsAction
     {
         return qualityScorePayments;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -202,9 +208,24 @@ public class LoadQualityScoreDetailsAction
         
         Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        
+        List<OrganisationUnit> orgUnitBranch = organisationUnitService.getOrganisationUnitBranch( organisationUnit.getId() );
+        String orgUnitBranchIds = "-1";
+        for( OrganisationUnit orgUnit : orgUnitBranch )
+        {
+        	orgUnitBranchIds += "," + orgUnit.getId();
+        }
+        
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
 
         DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+
+        OrganisationUnitGroup orgUnitGroup = findPBFOrgUnitGroupforTariff( organisationUnit );
+        
+        if( orgUnitGroup != null )
+        {
+        	qualityMaxValueMap.putAll( qualityMaxValueService.getQualityMaxValues( orgUnitGroup, orgUnitBranchIds, dataSet, period ) );
+        }
 
         List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
         for ( DataElement de : dataElementList )
@@ -221,32 +242,14 @@ public class LoadQualityScoreDetailsAction
         
         for ( DataElement dataElement : dataElements )
         {
-            List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>();
-            OrganisationUnit parentOrgunit = findParentOrgunitforTariff( organisationUnit, tariff_setting_authority );
-            if ( parentOrgunit != null )
-            {
-                qualityMaxValues = new ArrayList<QualityMaxValue>( qualityMaxValueService.getQuanlityMaxValues( parentOrgunit, dataElement ) );
-            }
-            
             DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, optionCombo );
-            for ( QualityMaxValue qualityMaxValue : qualityMaxValues )
+
+            if ( dataValue != null )
             {
-
-                if ( qualityMaxValue.getStartDate().getTime() <= period.getStartDate().getTime()
-                    && period.getEndDate().getTime() <= qualityMaxValue.getEndDate().getTime() )
-                {
-                    qualityMaxValueMap.put( dataElement.getId(), qualityMaxValue );
-                    if ( dataValue != null )
-                    {
-                        dataValueMap.put( dataElement.getId(), dataValue );
-                    }
-
-                    System.out.println( "In Quality Data Value" );
-                    break;
-                }
+                dataValueMap.put( dataElement.getId(), dataValue );
             }
         }
-                
+        
         Collections.sort( dataElements );
         
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PAYMENT_TYPE ) );
@@ -270,7 +273,7 @@ public class LoadQualityScoreDetailsAction
             
             if( overAllAdjustedAmt == null || overAllAdjustedAmt == 0 )
             {
-                paymentMessage += period1.getStartDateString() +", ";
+                paymentMessage += period1.getDisplayName() +", ";
                 flag = 2;
             }
             else
@@ -281,7 +284,12 @@ public class LoadQualityScoreDetailsAction
         
         if( flag == 1 )
         {
-            paymentMessage = "Data available for this quarter";
+            paymentMessage = " ";
+        }
+        else
+        {
+        	paymentMessage = paymentMessage.substring(0, paymentMessage.length()-2);
+        	paymentMessage += " ) ";
         }
 
         qualityScorePayments = new HashSet<QualityScorePayment>( qualityScorePaymentService.getAllQualityScorePayments() );
@@ -289,6 +297,17 @@ public class LoadQualityScoreDetailsAction
         return SUCCESS;
     }
 
+    public OrganisationUnitGroup findPBFOrgUnitGroupforTariff( OrganisationUnit organisationUnit )
+    {
+    	Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+    	
+    	OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
+    	
+    	OrganisationUnitGroup orgUnitGroup = organisationUnit.getGroupInGroupSet( orgUnitGroupSet );
+    	
+    	return orgUnitGroup;
+    }
+    
     public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
     {
         Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
