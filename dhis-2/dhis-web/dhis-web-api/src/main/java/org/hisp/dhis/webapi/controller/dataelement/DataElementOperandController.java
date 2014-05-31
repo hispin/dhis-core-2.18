@@ -81,11 +81,11 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
 
             if ( dataElementGroup == null )
             {
-                entityList = new ArrayList<DataElementOperand>();
+                entityList = new ArrayList<>();
             }
             else
             {
-                entityList = new ArrayList<DataElementOperand>( dataElementOperandService.getDataElementOperandByDataElementGroup( dataElementGroup ) );
+                entityList = new ArrayList<>( dataElementOperandService.getDataElementOperandByDataElementGroup( dataElementGroup ) );
             }
         }
         else if ( options.hasPaging() )
@@ -95,12 +95,12 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<DataElementOperand>( dataElementOperandService.getAllDataElementOperands(
+            entityList = new ArrayList<>( dataElementOperandService.getAllDataElementOperands(
                 pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            entityList = new ArrayList<DataElementOperand>( dataElementOperandService.getAllDataElementOperands() );
+            entityList = new ArrayList<>( dataElementOperandService.getAllDataElementOperands() );
         }
 
         return entityList;
