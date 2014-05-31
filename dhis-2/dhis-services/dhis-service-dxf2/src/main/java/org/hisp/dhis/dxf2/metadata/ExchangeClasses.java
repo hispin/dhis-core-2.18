@@ -135,7 +135,6 @@ final public class ExchangeClasses
         allExportClasses.put( DataElement.class, "dataElements" );
         allExportClasses.put( DataElementGroup.class, "dataElementGroups" );
         allExportClasses.put( DataElementGroupSet.class, "dataElementGroupSets" );
-
         allExportClasses.put( DataElementOperand.class, "dataElementOperands" );
 
         allExportClasses.put( IndicatorType.class, "indicatorTypes" );

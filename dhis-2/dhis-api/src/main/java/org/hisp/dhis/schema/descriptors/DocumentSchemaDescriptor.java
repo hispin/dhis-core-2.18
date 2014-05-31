@@ -54,7 +54,7 @@ public class DocumentSchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( Document.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
-        schema.setOrder( 104 );
+        schema.setOrder( 1040 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_DOCUMENT_PUBLIC_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_DOCUMENT_PRIVATE_ADD" ) ) );

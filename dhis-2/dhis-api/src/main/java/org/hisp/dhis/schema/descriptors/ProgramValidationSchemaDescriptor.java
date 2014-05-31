@@ -80,7 +80,7 @@ public class ProgramValidationSchemaDescriptor implements SchemaDescriptor
     public Schema getSchema()
     {
         Schema schema = new Schema( ProgramValidation.class, SINGULAR, PLURAL );
-        schema.setOrder( 152 );
+        schema.setOrder( 1530 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_PROGRAM_VALIDATION" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_PROGRAM_VALIDATION" ) ) );

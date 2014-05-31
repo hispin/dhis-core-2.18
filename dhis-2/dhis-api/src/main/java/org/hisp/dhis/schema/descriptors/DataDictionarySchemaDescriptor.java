@@ -54,7 +54,7 @@ public class DataDictionarySchemaDescriptor implements SchemaDescriptor
         Schema schema = new Schema( DataDictionary.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setShareable( true );
-        schema.setOrder( 128 );
+        schema.setOrder( 1280 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_DATADICTIONARY_PUBLIC_ADD" ) ) );
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PRIVATE, Lists.newArrayList( "F_DATADICTIONARY_PRIVATE_ADD" ) ) );
