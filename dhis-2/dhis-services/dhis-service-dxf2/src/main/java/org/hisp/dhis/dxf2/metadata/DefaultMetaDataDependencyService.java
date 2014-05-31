@@ -28,18 +28,7 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-
+import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.proxy.HibernateProxy;
@@ -56,11 +45,23 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.validation.ValidationRule;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
 
 /**
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
@@ -88,38 +89,41 @@ public class DefaultMetaDataDependencyService
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
+    @Autowired
+    private SchemaService schemaService;
+
     //--------------------------------------------------------------------------
     // Get MetaData dependency Map
     //--------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Map<String, List<IdentifiableObject>> getIdentifiableObjectMap( Map<String, Object> identifiableObjectUidMap )
     {
-        Map<String, List<IdentifiableObject>> identifiableObjectMap = new HashMap<String, List<IdentifiableObject>>();
+        Map<String, List<IdentifiableObject>> identifiableObjectMap = new HashMap<>();
 
         for ( Map.Entry<String, Object> identifiableObjectUidEntry : identifiableObjectUidMap.entrySet() )
         {
             String className = identifiableObjectUidEntry.getKey();
 
-            for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getExportMap().entrySet() )
+            for ( Schema schema : schemaService.getMetadataSchemas() )
             {
-                if ( className.equals( ( entry.getValue() + "_all" ) ) )
+                if ( className.equals( (schema.getPlural() + "_all") ) )
                 {
                     Boolean o = (Boolean) identifiableObjectUidMap.get( className );
 
                     if ( o != null && o )
                     {
-                        Class<? extends IdentifiableObject> identifiableObjectClass = entry.getKey();
+                        Class<? extends IdentifiableObject> identifiableObjectClass = (Class<? extends IdentifiableObject>) schema.getKlass();
                         Collection<? extends IdentifiableObject> identifiableObjects = manager.getAll( identifiableObjectClass );
-                        identifiableObjectMap.put( entry.getValue(), new ArrayList<IdentifiableObject>( identifiableObjects ) );
+                        identifiableObjectMap.put( schema.getPlural(), new ArrayList<>( identifiableObjects ) );
                     }
                 }
-                else if ( entry.getValue().equals( className ) )
+                else if ( schema.getPlural().equals( className ) )
                 {
-                    Class<? extends IdentifiableObject> identifiableObjectClass = entry.getKey();
+                    Class<? extends IdentifiableObject> identifiableObjectClass = (Class<? extends IdentifiableObject>) schema.getKlass();
                     Collection<? extends IdentifiableObject> identifiableObjects = manager.getByUid( identifiableObjectClass, (Collection<String>) identifiableObjectUidEntry.getValue() );
 
-                    identifiableObjectMap.put( entry.getValue(), new ArrayList<IdentifiableObject>( identifiableObjects ) );
+                    identifiableObjectMap.put( schema.getPlural(), new ArrayList<>( identifiableObjects ) );
                 }
             }
         }
@@ -130,7 +134,7 @@ public class DefaultMetaDataDependencyService
     public Map<String, List<IdentifiableObject>> getIdentifiableObjectWithDependencyMap( Map<String, Object> identifiableObjectUidMap )
     {
         Map<String, List<IdentifiableObject>> identifiableObjectMap = getIdentifiableObjectMap( identifiableObjectUidMap );
-        Collection<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>();
+        Collection<IdentifiableObject> identifiableObjects = new HashSet<>();
 
         for ( Map.Entry<String, List<IdentifiableObject>> identifiableObjectEntry : identifiableObjectMap.entrySet() )
         {
@@ -141,20 +145,20 @@ public class DefaultMetaDataDependencyService
 
         for ( IdentifiableObject dependency : dependencySet )
         {
-            for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getExportMap().entrySet() )
+            for ( Schema schema : schemaService.getMetadataSchemas() )
             {
-                if ( entry.getKey().equals( dependency.getClass() ) )
+                if ( schema.getKlass().equals( dependency.getClass() ) )
                 {
-                    if ( identifiableObjectMap.get( entry.getValue() ) != null )
+                    if ( identifiableObjectMap.get( schema.getPlural() ) != null )
                     {
-                        identifiableObjectMap.get( entry.getValue() ).add( dependency );
+                        identifiableObjectMap.get( schema.getPlural() ).add( dependency );
                     }
                     else
                     {
-                        List<IdentifiableObject> idObjects = new ArrayList<IdentifiableObject>();
+                        List<IdentifiableObject> idObjects = new ArrayList<>();
                         idObjects.add( dependency );
 
-                        identifiableObjectMap.put( entry.getValue(), idObjects );
+                        identifiableObjectMap.put( schema.getPlural(), idObjects );
                     }
                 }
             }
@@ -170,7 +174,7 @@ public class DefaultMetaDataDependencyService
     @Override
     public Set<IdentifiableObject> getDependencySet( IdentifiableObject identifiableObject )
     {
-        Set<IdentifiableObject> dependencySet = new HashSet<IdentifiableObject>();
+        Set<IdentifiableObject> dependencySet = new HashSet<>();
         dependencySet.addAll( computeAllDependencies( identifiableObject ) );
 
         if ( isSpecialCase( identifiableObject ) )
@@ -184,7 +188,7 @@ public class DefaultMetaDataDependencyService
     @Override
     public Set<IdentifiableObject> getDependencySet( Collection<? extends IdentifiableObject> identifiableObjects )
     {
-        Set<IdentifiableObject> dependencySet = new HashSet<IdentifiableObject>();
+        Set<IdentifiableObject> dependencySet = new HashSet<>();
 
         for ( IdentifiableObject identifiableObject : identifiableObjects )
         {
@@ -200,7 +204,7 @@ public class DefaultMetaDataDependencyService
 
     private List<IdentifiableObject> computeAllDependencies( IdentifiableObject identifiableObject )
     {
-        List<IdentifiableObject> finalDependencies = new ArrayList<IdentifiableObject>();
+        List<IdentifiableObject> finalDependencies = new ArrayList<>();
         List<IdentifiableObject> dependencies = getDependencies( identifiableObject );
 
         if ( dependencies.isEmpty() )
@@ -225,14 +229,14 @@ public class DefaultMetaDataDependencyService
 
     private List<IdentifiableObject> getDependencies( IdentifiableObject identifiableObject )
     {
-        List<IdentifiableObject> dependencies = new ArrayList<IdentifiableObject>();
+        List<IdentifiableObject> dependencies = new ArrayList<>();
         List<Field> fields = ReflectionUtils.getAllFields( identifiableObject.getClass() );
 
         for ( Field field : fields )
         {
-            for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getExportMap().entrySet() )
+            for ( Schema schema : schemaService.getMetadataSchemas() )
             {
-                if ( ReflectionUtils.isType( field, entry.getKey() ) )
+                if ( ReflectionUtils.isType( field, schema.getKlass() ) )
                 {
                     Method getterMethod = ReflectionUtils.findGetterMethod( field.getName(), identifiableObject );
                     IdentifiableObject dependencyObject = ReflectionUtils.invokeGetterMethod( field.getName(), identifiableObject );
@@ -254,7 +258,7 @@ public class DefaultMetaDataDependencyService
                         }
                     }
                 }
-                else if ( ReflectionUtils.isCollection( field.getName(), identifiableObject, entry.getKey() ) )
+                else if ( ReflectionUtils.isCollection( field.getName(), identifiableObject, schema.getKlass() ) )
                 {
                     Method getterMethod = ReflectionUtils.findGetterMethod( field.getName(), identifiableObject );
                     Collection<IdentifiableObject> dependencyCollection = ReflectionUtils.invokeGetterMethod( field.getName(), identifiableObject );
@@ -304,11 +308,11 @@ public class DefaultMetaDataDependencyService
 
     private Set<IdentifiableObject> computeSpecialDependencyCase( IdentifiableObject identifiableObject )
     {
-        Set<IdentifiableObject> resultSet = new HashSet<IdentifiableObject>();
+        Set<IdentifiableObject> resultSet = new HashSet<>();
 
         if ( identifiableObject instanceof Indicator )
         {
-            List<Indicator> indicators = new ArrayList<Indicator>();
+            List<Indicator> indicators = new ArrayList<>();
             indicators.add( (Indicator) identifiableObject );
 
             Set<DataElement> dataElementSet = expressionService.getDataElementsInIndicators( indicators );
@@ -316,9 +320,9 @@ public class DefaultMetaDataDependencyService
             resultSet.addAll( dataElementSet );
             resultSet.addAll( getDependencySet( dataElementSet ) );
 
-            Set<Constant> constantSet = new HashSet<Constant>();
+            Set<Constant> constantSet = new HashSet<>();
 
-            List<String> expressions = new ArrayList<String>();
+            List<String> expressions = new ArrayList<>();
             Collections.addAll( expressions, ((Indicator) identifiableObject).getNumerator(), ((Indicator) identifiableObject).getDenominator() );
 
             for ( String expression : expressions )
@@ -338,7 +342,7 @@ public class DefaultMetaDataDependencyService
         }
         else if ( identifiableObject instanceof ValidationRule )
         {
-            Set<DataElement> dataElementSet = new HashSet<DataElement>();
+            Set<DataElement> dataElementSet = new HashSet<>();
 
             Expression leftSide = ReflectionUtils.invokeGetterMethod( "leftSide", identifiableObject );
             Expression rightSide = ReflectionUtils.invokeGetterMethod( "rightSide", identifiableObject );
@@ -349,7 +353,7 @@ public class DefaultMetaDataDependencyService
             resultSet.addAll( dataElementSet );
             resultSet.addAll( getDependencySet( dataElementSet ) );
 
-            Set<Constant> constantSet = new HashSet<Constant>();
+            Set<Constant> constantSet = new HashSet<>();
             constantSet.addAll( constantService.getAllConstants() );
 
             resultSet.addAll( constantSet );
@@ -359,7 +363,7 @@ public class DefaultMetaDataDependencyService
         }
         else if ( identifiableObject instanceof DataElement )
         {
-            Set<DataElementCategoryOptionCombo> dataElementCategoryOptionComboSet = new HashSet<DataElementCategoryOptionCombo>();
+            Set<DataElementCategoryOptionCombo> dataElementCategoryOptionComboSet = new HashSet<>();
             dataElementCategoryOptionComboSet.addAll( ((DataElement) identifiableObject).getCategoryCombo().getOptionCombos() );
 
             resultSet.addAll( dataElementCategoryOptionComboSet );
@@ -369,7 +373,7 @@ public class DefaultMetaDataDependencyService
         }
         else if ( identifiableObject instanceof OrganisationUnit )
         {
-            Set<OrganisationUnitLevel> organisationUnitLevelSet = new HashSet<OrganisationUnitLevel>();
+            Set<OrganisationUnitLevel> organisationUnitLevelSet = new HashSet<>();
             int level = ((OrganisationUnit) identifiableObject).getOrganisationUnitLevel();
 
             while ( level > 0 )
