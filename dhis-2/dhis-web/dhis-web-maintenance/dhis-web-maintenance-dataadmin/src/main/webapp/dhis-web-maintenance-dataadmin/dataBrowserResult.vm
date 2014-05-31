@@ -1,17 +1,17 @@
 <script type="text/javascript">
 
-	jQuery( document ).ready( function()
-	{	
-		contentDiv = 'dataBrowserContent';
+jQuery( document ).ready( function()
+{	
+	contentDiv = 'dataBrowserContent';
 
-		if ( jQuery( '#baseLink' ).length )
-		{
-			var newBaseLink = getFieldValue( 'baseLink' ).replace( 'searchResult.action', 'searchResultByAjax.action' );
-			setFieldValue( 'baseLink', newBaseLink );
-		}
+	if ( jQuery( '#baseLink' ).length )
+	{
+		var newBaseLink = getFieldValue( 'baseLink' ).replace( 'searchResult.action', 'searchResultByAjax.action' );
+		setFieldValue( 'baseLink', newBaseLink );
+	}
 
-		setTableStyles();
-	} );
+	setTableStyles();
+} );
 
 </script>
 

@@ -61,8 +61,8 @@ jQuery( document ).ready( function()
 				
 				#foreach( $item in $list )
 				<td style="min-width:80px;text-align:right" title="$title">
-				#if ( $!item == "0" )<span class="bold" style="color:red">$!item</span> 
-				#else<span class="bold" style="color:blue;">$!item</span>#end
+				#if ( $!item == "0" )<span style="color:red">$!item</span> 
+				#else<span style="color:blue;">$!item</span>#end
 				</td>
 				#end
 			</tr>
