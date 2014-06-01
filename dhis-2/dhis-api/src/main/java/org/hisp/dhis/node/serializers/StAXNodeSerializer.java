@@ -1,4 +1,4 @@
-package org.hisp.dhis.node;
+package org.hisp.dhis.node.serializers;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,10 +28,14 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.hisp.dhis.node.Node;
+import org.hisp.dhis.node.NodeHint;
+import org.hisp.dhis.node.NodeSerializer;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.node.types.SimpleNode;
+import org.springframework.stereotype.Component;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -42,10 +46,19 @@ import java.io.OutputStream;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class StaXNodeRenderer implements NodeRenderer
+@Component
+public class StAXNodeSerializer implements NodeSerializer
 {
+    public static final String CONTENT_TYPE = "application/xml";
+
     @Override
-    public void render( RootNode rootNode, OutputStream outputStream ) throws IOException
+    public String contentType()
+    {
+        return CONTENT_TYPE;
+    }
+
+    @Override
+    public void serialize( RootNode rootNode, OutputStream outputStream ) throws IOException
     {
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
         XMLStreamWriter writer;
@@ -54,7 +67,6 @@ public class StaXNodeRenderer implements NodeRenderer
         {
             writer = factory.createXMLStreamWriter( outputStream );
             renderRootNode( rootNode, writer );
-            writer.flush();
         }
         catch ( XMLStreamException e )
         {
@@ -66,18 +78,12 @@ public class StaXNodeRenderer implements NodeRenderer
     {
         writer.writeStartDocument( "UTF-8", "1.0" );
 
-        if ( rootNode.haveHint( NodeHint.Type.XML_NAMESPACE ) )
-        {
-            writer.writeStartElement( "", rootNode.getName(), (String) rootNode.getHint( NodeHint.Type.XML_NAMESPACE ).getValue() );
-        }
-        else
-        {
-            writer.writeStartElement( rootNode.getName() );
-        }
+        writeStartElement( rootNode, writer );
 
         for ( Node node : rootNode.getNodes() )
         {
             dispatcher( node, writer );
+            writer.flush();
         }
 
         writeEndElement( writer );

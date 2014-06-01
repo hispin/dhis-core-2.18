@@ -1,4 +1,4 @@
-package org.hisp.dhis.node;
+package org.hisp.dhis.node.serializers;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -30,10 +30,13 @@ package org.hisp.dhis.node;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import org.hisp.dhis.node.Node;
+import org.hisp.dhis.node.NodeSerializer;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.node.types.SimpleNode;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,16 +44,24 @@ import java.io.OutputStream;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JacksonJsonNodeRenderer implements NodeRenderer
+@Component
+public class JacksonJsonNodeSerializer implements NodeSerializer
 {
+    public static final String CONTENT_TYPE = "application/json";
+
     @Override
-    public void render( RootNode rootNode, OutputStream outputStream ) throws IOException
+    public String contentType()
+    {
+        return CONTENT_TYPE;
+    }
+
+    @Override
+    public void serialize( RootNode rootNode, OutputStream outputStream ) throws IOException
     {
         JsonFactory jsonFactory = new JsonFactory();
         JsonGenerator generator = jsonFactory.createGenerator( outputStream );
 
         renderRootNode( rootNode, generator );
-        generator.flush();
     }
 
     private void renderRootNode( RootNode rootNode, JsonGenerator generator ) throws IOException
@@ -60,6 +71,7 @@ public class JacksonJsonNodeRenderer implements NodeRenderer
         for ( Node node : rootNode.getNodes() )
         {
             dispatcher( node, generator );
+            generator.flush();
         }
 
         generator.writeEndObject();
