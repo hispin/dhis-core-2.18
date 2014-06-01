@@ -1225,7 +1225,7 @@ function autocompletedUsernameField( idField )
 					$( this ).val( "" );
 					if(!unSave)
 						saveVal( dataElementUid );
-					input.data( "autocomplete" ).term = "";
+					input.data( "uiAutocomplete" ).term = "";
 					return false;
 				}
 			}
@@ -1233,7 +1233,7 @@ function autocompletedUsernameField( idField )
 	})
 	.addClass( "ui-widget" );
 	
-	input.data( "autocomplete" )._renderItem = function( ul, item ) {
+	input.data( "uiAutocomplete" )._renderItem = function( ul, item ) {
 		return $( "<li></li>" )
 			.data( "item.autocomplete", item )
 			.append( "<a>" + item.label + "</a>" )

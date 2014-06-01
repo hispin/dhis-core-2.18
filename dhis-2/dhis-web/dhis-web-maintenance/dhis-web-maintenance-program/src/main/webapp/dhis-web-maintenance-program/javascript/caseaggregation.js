@@ -57,14 +57,14 @@ function autoCompletedField() {
             // remove invalid value, as it didn't match anything
             $(this).val("");
             select.val("");
-            input.data("autocomplete").term = "";
+            input.data("uiAutocomplete").term = "";
             return false;
           }
         }
       }
     }).addClass("ui-widget");
 
-  input.data("autocomplete")._renderItem = function( ul, item ) {
+  input.data("uiAutocomplete")._renderItem = function( ul, item ) {
     return $("<li></li>")
       .data("item.autocomplete", item)
       .append("<a>" + item.label + "</a>")
