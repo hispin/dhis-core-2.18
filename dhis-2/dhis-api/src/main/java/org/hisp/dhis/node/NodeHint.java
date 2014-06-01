@@ -36,7 +36,8 @@ final public class NodeHint
     public enum Type
     {
         XML_NAMESPACE,
-        XML_ATTRIBUTE
+        XML_ATTRIBUTE,
+        XML_COLLECTION_WRAPPING
     }
 
     private final Type type;
