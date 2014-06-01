@@ -136,7 +136,8 @@ public class StaXNodeRenderer implements NodeRenderer
         switch ( node.getType() )
         {
             case SIMPLE:
-                if ( node.haveHint( NodeHint.Type.XML_ATTRIBUTE ) )
+                if ( node.haveHint( NodeHint.Type.XML_ATTRIBUTE ) &&
+                    (boolean) node.getHint( NodeHint.Type.XML_ATTRIBUTE ).getValue() )
                 {
                     renderSimpleNodeAttribute( (SimpleNode) node, writer );
                 }
