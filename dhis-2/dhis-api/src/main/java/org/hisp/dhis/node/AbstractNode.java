@@ -80,6 +80,12 @@ public abstract class AbstractNode implements Node
     }
 
     @Override
+    public NodeHint addHint( NodeHint.Type type, Object value )
+    {
+        return addHint( new NodeHint( type, value ) );
+    }
+
+    @Override
     public NodeHint addHint( NodeHint nodeHint )
     {
         nodeHints.put( nodeHint.getType(), nodeHint );

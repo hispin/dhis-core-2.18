@@ -45,6 +45,8 @@ public interface Node
 
     List<Node> getNodes();
 
+    NodeHint addHint( NodeHint.Type type, Object value );
+
     NodeHint addHint( NodeHint nodeHint );
 
     NodeHint getHint( NodeHint.Type type );

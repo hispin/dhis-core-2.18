@@ -46,6 +46,7 @@ import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,7 +86,7 @@ public class SystemController
     // UID Generator
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = { "/uid", "/id" }, method = RequestMethod.GET )
+    @RequestMapping( value = { "/uid", "/id" }, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
     public @ResponseBody RootNode getUid( @RequestParam( required = false, defaultValue = "1" ) Integer n, HttpServletResponse response )
         throws IOException, InvalidTypeException
     {
@@ -96,7 +97,7 @@ public class SystemController
 
         RootNode rootNode = new RootNode( "codes" );
         CollectionNode collectionNode = rootNode.addNode( new CollectionNode( "codes" ) );
-        collectionNode.addHint( new NodeHint( NodeHint.Type.XML_COLLECTION_WRAPPING, false ) );
+        collectionNode.addHint( NodeHint.Type.XML_COLLECTION_WRAPPING, false );
 
         for ( int i = 0; i < n; i++ )
         {
