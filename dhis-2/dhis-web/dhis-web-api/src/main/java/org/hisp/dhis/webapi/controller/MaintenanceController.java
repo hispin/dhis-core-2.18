@@ -28,6 +28,8 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.analytics.partition.PartitionManager;
+import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.maintenance.MaintenanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,12 @@ public class MaintenanceController
     @Autowired
     private DataElementCategoryService categoryService;
 
+    @Autowired
+    private HibernateCacheManager cacheManager;
+
+    @Autowired
+    private PartitionManager partitionManager;    
+    
     @RequestMapping( value = "/periodPruning", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void prunePeriods()
@@ -71,4 +79,12 @@ public class MaintenanceController
     {
         categoryService.updateAllOptionCombos();
     }
+
+    @RequestMapping( value = "/clearCache", method = { RequestMethod.PUT, RequestMethod.POST } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
+    public void clearCache()
+    {
+        cacheManager.clearCache();
+        partitionManager.clearCaches();
+    }    
 }
