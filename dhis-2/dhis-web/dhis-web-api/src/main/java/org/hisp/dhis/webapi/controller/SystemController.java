@@ -32,7 +32,6 @@ import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dxf2.metadata.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.node.NodeHint;
-import org.hisp.dhis.node.NodeService;
 import org.hisp.dhis.node.exception.InvalidTypeException;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.RootNode;
@@ -81,9 +80,6 @@ public class SystemController
 
     @Autowired
     private Notifier notifier;
-
-    @Autowired
-    private NodeService nodeService;
 
     //--------------------------------------------------------------------------
     // UID Generator

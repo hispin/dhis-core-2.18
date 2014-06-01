@@ -59,6 +59,12 @@ public class DefaultNodeService implements NodeService
     }
 
     @Override
+    public List<NodeSerializer> getSerializers()
+    {
+        return nodeSerializers;
+    }
+
+    @Override
     public void serialize( RootNode rootNode, String contentType, OutputStream outputStream ) throws IOException
     {
         if ( !nodeSerializerMap.containsKey( contentType ) )
