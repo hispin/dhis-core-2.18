@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.trimToNull;
 import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
 import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
@@ -53,7 +54,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -495,10 +495,10 @@ public class DefaultDataValueSetService
 
             totalCount++;
 
-            DataElement dataElement = dataElementMap.get( dataValue.getDataElement() );
-            DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( dataValue.getCategoryOptionCombo() );
-            Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( dataValue.getPeriod() );
-            OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : orgUnitMap.get( dataValue.getOrgUnit() );
+            DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ) );
+            DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ) );
+            Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( trimToNull( dataValue.getPeriod() ) );
+            OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ) );
 
             if ( dataElement == null )
             {
@@ -559,7 +559,7 @@ public class DefaultDataValueSetService
             internalValue.setSource( orgUnit );
             internalValue.setCategoryOptionCombo( categoryOptionCombo );
             internalValue.setAttributeOptionCombo( fallbackCategoryOptionCombo ); // TODO
-            internalValue.setValue( StringUtils.trimToNull( dataValue.getValue() ) );
+            internalValue.setValue( trimToNull( dataValue.getValue() ) );
 
             if ( dataValue.getStoredBy() == null || dataValue.getStoredBy().trim().isEmpty() )
             {
@@ -571,7 +571,7 @@ public class DefaultDataValueSetService
             }
 
             internalValue.setTimestamp( getDefaultDate( dataValue.getLastUpdated() ) );
-            internalValue.setComment( StringUtils.trimToNull( dataValue.getComment() ) );
+            internalValue.setComment( trimToNull( dataValue.getComment() ) );
             internalValue.setFollowup( dataValue.getFollowup() );
 
             if ( !skipExistingCheck && batchHandler.objectExists( internalValue ) )
