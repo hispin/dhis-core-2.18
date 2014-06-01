@@ -51,6 +51,8 @@ public class StAXNodeSerializer implements NodeSerializer
 {
     public static final String CONTENT_TYPE = "application/xml";
 
+    private final XMLOutputFactory xmlFactory = XMLOutputFactory.newInstance();
+
     @Override
     public String contentType()
     {
@@ -60,13 +62,13 @@ public class StAXNodeSerializer implements NodeSerializer
     @Override
     public void serialize( RootNode rootNode, OutputStream outputStream ) throws IOException
     {
-        XMLOutputFactory factory = XMLOutputFactory.newInstance();
         XMLStreamWriter writer;
 
         try
         {
-            writer = factory.createXMLStreamWriter( outputStream );
+            writer = xmlFactory.createXMLStreamWriter( outputStream );
             renderRootNode( rootNode, writer );
+            writer.flush();
         }
         catch ( XMLStreamException e )
         {
@@ -125,16 +127,22 @@ public class StAXNodeSerializer implements NodeSerializer
         writeEndElement( writer );
     }
 
-    private void renderCollectionNode( CollectionNode collectionNode, XMLStreamWriter writer ) throws XMLStreamException, IOException
+    private void renderCollectionNode( CollectionNode collectionNode, XMLStreamWriter writer, boolean useWrapping ) throws XMLStreamException, IOException
     {
-        writeStartElement( collectionNode, writer );
+        if ( useWrapping )
+        {
+            writeStartElement( collectionNode, writer );
+        }
 
         for ( Node node : collectionNode.getNodes() )
         {
             dispatcher( node, writer );
         }
 
-        writeEndElement( writer );
+        if ( useWrapping )
+        {
+            writeEndElement( writer );
+        }
     }
 
     private void dispatcher( Node node, XMLStreamWriter writer ) throws IOException, XMLStreamException
@@ -156,7 +164,14 @@ public class StAXNodeSerializer implements NodeSerializer
                 renderComplexNode( (ComplexNode) node, writer );
                 break;
             case COLLECTION:
-                renderCollectionNode( (CollectionNode) node, writer );
+                boolean useWrapping = true;
+
+                if ( node.haveHint( NodeHint.Type.XML_COLLECTION_WRAPPING ) )
+                {
+                    useWrapping = (boolean) node.getHint( NodeHint.Type.XML_COLLECTION_WRAPPING ).getValue();
+                }
+
+                renderCollectionNode( (CollectionNode) node, writer, useWrapping );
                 break;
         }
     }

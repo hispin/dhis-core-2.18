@@ -49,19 +49,26 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
 {
     public static final String CONTENT_TYPE = "application/json";
 
+    private final JsonFactory jsonFactory = new JsonFactory();
+
     @Override
     public String contentType()
     {
         return CONTENT_TYPE;
     }
 
+    public JacksonJsonNodeSerializer()
+    {
+
+    }
+
     @Override
     public void serialize( RootNode rootNode, OutputStream outputStream ) throws IOException
     {
-        JsonFactory jsonFactory = new JsonFactory();
         JsonGenerator generator = jsonFactory.createGenerator( outputStream );
 
         renderRootNode( rootNode, generator );
+        generator.flush();
     }
 
     private void renderRootNode( RootNode rootNode, JsonGenerator generator ) throws IOException
@@ -70,54 +77,75 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
 
         for ( Node node : rootNode.getNodes() )
         {
-            dispatcher( node, generator );
+            dispatcher( node, generator, true );
             generator.flush();
         }
 
         generator.writeEndObject();
     }
 
-    private void renderSimpleNode( SimpleNode simpleNode, JsonGenerator generator ) throws IOException
+    private void renderSimpleNode( SimpleNode simpleNode, JsonGenerator generator, boolean writeKey ) throws IOException
     {
-        generator.writeObjectField( simpleNode.getName(), simpleNode.getValue() );
+        if ( writeKey )
+        {
+            generator.writeObjectField( simpleNode.getName(), simpleNode.getValue() );
+        }
+        else
+        {
+            generator.writeObject( simpleNode.getValue() );
+        }
     }
 
-    private void renderComplexNode( ComplexNode complexNode, JsonGenerator generator ) throws IOException
+    private void renderComplexNode( ComplexNode complexNode, JsonGenerator generator, boolean writeKey ) throws IOException
     {
-        generator.writeObjectFieldStart( complexNode.getName() );
+        if ( writeKey )
+        {
+            generator.writeObjectFieldStart( complexNode.getName() );
+        }
+        else
+        {
+            generator.writeStartObject();
+        }
 
         for ( Node node : complexNode.getNodes() )
         {
-            dispatcher( node, generator );
+            dispatcher( node, generator, true );
         }
 
         generator.writeEndObject();
     }
 
-    private void renderCollectionNode( CollectionNode collectionNode, JsonGenerator generator ) throws IOException
+    private void renderCollectionNode( CollectionNode collectionNode, JsonGenerator generator, boolean writeKey ) throws IOException
     {
-        generator.writeArrayFieldStart( collectionNode.getName() );
+        if ( writeKey )
+        {
+            generator.writeArrayFieldStart( collectionNode.getName() );
+        }
+        else
+        {
+            generator.writeStartArray();
+        }
 
         for ( Node node : collectionNode.getNodes() )
         {
-            dispatcher( node, generator );
+            dispatcher( node, generator, false );
         }
 
         generator.writeEndArray();
     }
 
-    private void dispatcher( Node node, JsonGenerator generator ) throws IOException
+    private void dispatcher( Node node, JsonGenerator generator, boolean writeKey ) throws IOException
     {
         switch ( node.getType() )
         {
             case SIMPLE:
-                renderSimpleNode( (SimpleNode) node, generator );
+                renderSimpleNode( (SimpleNode) node, generator, writeKey );
                 break;
             case COMPLEX:
-                renderComplexNode( (ComplexNode) node, generator );
+                renderComplexNode( (ComplexNode) node, generator, writeKey );
                 break;
             case COLLECTION:
-                renderCollectionNode( (CollectionNode) node, generator );
+                renderCollectionNode( (CollectionNode) node, generator, writeKey );
                 break;
         }
     }

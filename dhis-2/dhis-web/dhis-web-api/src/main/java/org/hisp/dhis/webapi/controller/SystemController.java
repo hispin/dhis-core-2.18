@@ -31,6 +31,12 @@ package org.hisp.dhis.webapi.controller;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dxf2.metadata.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.node.NodeHint;
+import org.hisp.dhis.node.NodeService;
+import org.hisp.dhis.node.exception.InvalidTypeException;
+import org.hisp.dhis.node.types.CollectionNode;
+import org.hisp.dhis.node.types.RootNode;
+import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.SystemInfo;
@@ -41,6 +47,7 @@ import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,35 +83,33 @@ public class SystemController
     @Autowired
     private Notifier notifier;
 
+    @Autowired
+    private NodeService nodeService;
+
     //--------------------------------------------------------------------------
     // UID Generator
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = { "/uid", "/id" }, method = RequestMethod.GET )
-    public void getUid( @RequestParam( required = false ) Integer n, HttpServletResponse response ) throws IOException
+    public void getUid( @RequestParam( required = false, defaultValue = "1" ) Integer n, HttpServletResponse response )
+        throws IOException, InvalidTypeException
     {
-        response.setContentType( ContextUtils.CONTENT_TYPE_JSON );
-
-        List<String> codes = new ArrayList<String>();
-
-        if ( n == null )
+        if ( n > 10000 )
         {
-            codes.add( CodeGenerator.generateCode() );
-        }
-        else
-        {
-            if ( n > 10000 )
-            {
-                n = 10000;
-            }
-
-            for ( int i = 0; i < n; i++ )
-            {
-                codes.add( CodeGenerator.generateCode() );
-            }
+            n = 10000;
         }
 
-        JacksonUtils.toJson( response.getOutputStream(), codes );
+        RootNode rootNode = new RootNode( "codes" );
+        CollectionNode collectionNode = rootNode.addNode( new CollectionNode( "codes" ) );
+        collectionNode.addHint( new NodeHint( NodeHint.Type.XML_COLLECTION_WRAPPING, false ) );
+
+        for ( int i = 0; i < n; i++ )
+        {
+            collectionNode.addNode( new SimpleNode( "code", CodeGenerator.generateCode() ) );
+        }
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        nodeService.serialize( rootNode, MediaType.APPLICATION_JSON_VALUE, response.getOutputStream() );
     }
 
     @RequestMapping( value = "/tasks/{category}", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
