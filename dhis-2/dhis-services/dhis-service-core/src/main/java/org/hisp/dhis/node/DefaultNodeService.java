@@ -28,15 +28,45 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.hisp.dhis.node.types.RootNode;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface NodeRenderer
+public class DefaultNodeService implements NodeService
 {
-    void render( RootNode rootNode, OutputStream outputStream ) throws IOException;
+    @Autowired( required = false )
+    private List<NodeSerializer> nodeSerializers = Lists.newArrayList();
+
+    private Map<String, NodeSerializer> nodeSerializerMap = Maps.newHashMap();
+
+    @PostConstruct
+    private void init()
+    {
+        for ( NodeSerializer nodeSerializer : nodeSerializers )
+        {
+            nodeSerializerMap.put( nodeSerializer.contentType(), nodeSerializer );
+        }
+    }
+
+    @Override
+    public void serialize( RootNode rootNode, String contentType, OutputStream outputStream ) throws IOException
+    {
+        if ( !nodeSerializerMap.containsKey( contentType ) )
+        {
+            return;
+        }
+
+        NodeSerializer nodeSerializer = nodeSerializerMap.get( contentType );
+        nodeSerializer.serialize( rootNode, outputStream );
+    }
 }

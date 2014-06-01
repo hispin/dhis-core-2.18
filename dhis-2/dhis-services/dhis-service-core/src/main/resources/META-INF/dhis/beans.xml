@@ -5,9 +5,11 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-  <context:component-scan base-package="org.hisp.dhis.schema.descriptors" />
+  <context:component-scan base-package="org.hisp.dhis.schema" />
 
-  <context:component-scan base-package="org.hisp.dhis.calendar.impl" />
+  <context:component-scan base-package="org.hisp.dhis.calendar" />
+
+  <context:component-scan base-package="org.hisp.dhis.node" />
 
   <bean id="org.hisp.dhis.calendar.CalendarService" class="org.hisp.dhis.calendar.DefaultCalendarService" />
 
@@ -16,6 +18,8 @@
   <bean id="org.hisp.dhis.schema.PropertyIntrospectorService" class="org.hisp.dhis.schema.DefaultPropertyIntrospectorService" />
 
   <bean id="org.hisp.dhis.acl.AclService" class="org.hisp.dhis.acl.DefaultAclService" />
+
+  <bean id="org.hisp.dhis.node.NodeService" class="org.hisp.dhis.node.DefaultNodeService" />
 
   <!-- Store definitions -->
 
