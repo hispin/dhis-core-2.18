@@ -1,7 +1,15 @@
 <script type="text/javascript">
-	jQuery(document).ready(	function(){
-		validation( 'saveOrganisationUnitLevelsForm', function( form ){ form.submit() } );				
-	});	
+var i18n_org_unit_levels_not_yet_saved = '$encoder.jsEscape( $i18n.getString( "org_unit_levels_not_yet_saved" ) , "'" )';
+	
+jQuery(document).ready(	function(){
+	validation( 'saveOrganisationUnitLevelsForm', function( form ){ form.submit() } );
+	
+	jQuery.getJSON( '../api/organisationUnitLevels.json?paging=false', function( data ) {
+		if ( !data || !data.organisationUnitLevels || !data.organisationUnitLevels ) {
+			setMessage( 'Organisation unit level is not yet saved, please save' );
+		}
+	} );
+});	
 </script>
 
 <h3>$i18n.getString( "organisation_unit_level_management" ) #openHelp( "ou_level" )</h3>
@@ -23,8 +31,12 @@
     #end
     <tr>
     	<td></td>
-    	<td><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/><input 
-    	   type="button" value="$i18n.getString( 'cancel' )" onclick="javascript:window.location.href='index.action'" style="width:10em"/></td>
+    	<td>
+    		<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
+    		<input type="button" value="$i18n.getString( 'cancel' )" onclick="javascript:window.location.href='index.action'" style="width:10em"/>
+    	</td>
     </tr>
 </table>
 </form>
+
+<span id="message"></span>
