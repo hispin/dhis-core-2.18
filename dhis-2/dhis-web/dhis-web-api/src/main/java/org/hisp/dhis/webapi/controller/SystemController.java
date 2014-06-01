@@ -47,7 +47,6 @@ import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,7 +90,7 @@ public class SystemController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = { "/uid", "/id" }, method = RequestMethod.GET )
-    public void getUid( @RequestParam( required = false, defaultValue = "1" ) Integer n, HttpServletResponse response )
+    public @ResponseBody RootNode getUid( @RequestParam( required = false, defaultValue = "1" ) Integer n, HttpServletResponse response )
         throws IOException, InvalidTypeException
     {
         if ( n > 10000 )
@@ -108,15 +107,14 @@ public class SystemController
             collectionNode.addNode( new SimpleNode( "code", CodeGenerator.generateCode() ) );
         }
 
-        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
-        nodeService.serialize( rootNode, MediaType.APPLICATION_JSON_VALUE, response.getOutputStream() );
+        return rootNode;
     }
 
     @RequestMapping( value = "/tasks/{category}", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
     public void getTaskJson( @PathVariable( "category" ) String category,
         @RequestParam( required = false ) String lastId, HttpServletResponse response ) throws IOException
     {
-        List<Notification> notifications = new ArrayList<Notification>();
+        List<Notification> notifications = new ArrayList<>();
 
         if ( category != null )
         {
