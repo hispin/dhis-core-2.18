@@ -32,11 +32,14 @@ import org.hisp.dhis.node.types.RootNode;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public interface NodeService
 {
+    List<NodeSerializer> getSerializers();
+
     void serialize( RootNode rootNode, String contentType, OutputStream outputStream ) throws IOException;
 }
