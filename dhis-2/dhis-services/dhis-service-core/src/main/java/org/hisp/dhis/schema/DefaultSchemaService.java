@@ -64,7 +64,7 @@ public class DefaultSchemaService implements SchemaService
 
             if ( schema.getProperties().isEmpty() )
             {
-                schema.setProperties( propertyIntrospectorService.getProperties( schema.getKlass() ) );
+                schema.setPropertyMap( propertyIntrospectorService.getPropertiesMap( schema.getKlass() ) );
             }
 
             classSchemaMap.put( schema.getKlass(), schema );
@@ -109,7 +109,7 @@ public class DefaultSchemaService implements SchemaService
         }
 
         schema = new Schema( klass, klass.getName(), klass.getName() );
-        schema.setProperties( propertyIntrospectorService.getProperties( schema.getKlass() ) );
+        schema.setPropertyMap( propertyIntrospectorService.getPropertiesMap( schema.getKlass() ) );
 
         return schema;
     }
