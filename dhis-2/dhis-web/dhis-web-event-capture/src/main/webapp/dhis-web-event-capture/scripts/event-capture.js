@@ -7,8 +7,7 @@ dhis2.ec.emptyOrganisationUnits = false;
 // Instance of the StorageManager
 dhis2.ec.storageManager = new StorageManager();
 
-var DAO = DAO || {};
-
+var EC_STORE_NAME = "dhis2ec";
 var i18n_no_orgunits = 'No organisation unit attached to current user, no data entry possible';
 var i18n_offline_notification = 'You are offline, data will be stored locally';
 var i18n_online_notification = 'You are online';
@@ -22,10 +21,10 @@ var PROGRAMS_METADATA = 'EVENT_PROGRAMS';
 
 var EVENT_VALUES = 'EVENT_VALUES';
 
-DAO.store = new dhis2.storage.Store({
-    name: 'dhis2',
-    adapters: [dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
-    objectStores: ['optionSets']
+dhis2.ec.store = new dhis2.storage.Store({
+    name: EC_STORE_NAME,
+    adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+    objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
 });
 
 (function($) {
@@ -59,12 +58,9 @@ $(document).ready(function()
         var def = $.Deferred();
         var promise = def.promise();
         
-        promise = promise.then( getUserProfile );
-        promise = promise.then( getMetaPrograms );     
-        promise = promise.then( getPrograms );      
-        promise = promise.then( getProgramStages );
+        promise = promise.then( getUserProfile );        
         promise.done( function() {           
-            selection.responseReceived();                      
+            selection.responseReceived();            
         });           
         
         def.resolve();
@@ -169,9 +165,9 @@ function getMetaPrograms()
     var def = $.Deferred();
 
     $.ajax({
-        url: '../api/programs',
+        url: '../api/programs.json',
         type: 'GET',
-        data:'type=3&paging=false'
+        data:'type=3&paging=false&include=id,name,version'
     }).done( function(response) {             
         localStorage[PROGRAMS_METADATA] = JSON.stringify(response.programs);           
         def.resolve(response.programs);
@@ -189,8 +185,19 @@ function getPrograms( programs )
     var def = $.Deferred();
     var promise = def.promise();
 
-    _.each( _.values( programs ), function ( program ) {        
-        promise = promise.then( getProgram( program.id ) );
+    _.each( _.values( programs ), function ( program ) {   
+        var d = $.Deferred();
+        var p = d.promise();
+        var localProgram = localStorage[program.id];
+        if(localProgram){
+            localProgram = JSON.parse( localProgram );            
+            if(program.version !== localProgram.version){
+                promise = promise.then( getProgram( program.id ) );
+            }else{
+                d.resolve();
+            }
+        }
+        return p;
     });
     
     promise = promise.then(function() {
@@ -203,8 +210,7 @@ function getPrograms( programs )
 }
 
 function getProgram( id )
-{   
-
+{
     return function() {
         return $.ajax( {
             url: '../api/programs.json?filter=id:eq:' + id +'&include=id,name,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name]',
