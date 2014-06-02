@@ -21,6 +21,69 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
     };  
 })
 
+/* Factory to fetch programs */
+.factory('ProgramFactory', function($http) {
+    
+    var programUid, programPromise;
+    var programs, programsPromise;
+    var program;
+    return {
+        
+        getAll: function(){
+            if( !programsPromise ){
+                programsPromise = $http.get('../api/programs.json?filter=type:eq:3&include=id,name,version,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name]').then(function(response){
+                //programsPromise = $http.get('../api/programs.json?filter=type:eq:3&include=id,name,version').then(function(response){
+                   programs = response.data.programs;
+                   
+                   angular.forEach(programs, function ( program ) {
+                       var ou = {};
+                       angular.forEach(program.organisationUnits, function(o){
+                           ou[o.id] = o.name;
+                       });
+                       
+                       program.organisationUnits = ou;
+                       var ur = {};
+                       angular.forEach(program.userRoles, function(u){
+                           ur[u.id] = u.name;
+                       });                       
+                       program.userRoles = ur;
+                   });
+                   return programs;
+                });                        
+            }
+            return programsPromise;
+        },
+        
+        get: function(uid){
+            if( programUid !== uid ){
+                programPromise = $http.get('../api/programs.json?filter=id:eq:' + uid +'&include=id,name,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name]').then(function(response){
+                    programUid = response.data.id; 
+                    program = response.data;                     
+                    return program;
+                });
+            }
+            return programPromise;
+        }
+    };
+})
+
+/* Factory to fetch programStages */
+.factory('ProgramStageFactory', function($http) {  
+    
+    var programStageUid, promise;   
+    return {        
+        get: function(uid){
+            if( programStageUid !== uid ){
+                promise = $http.get( '../api/programStages.json?filter=id:eq:' + uid +'&include=id,name,version,description,minDaysFromStart,repeatable,dataEntryForm,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,optionSet[id,name,options]]]').then(function(response){
+                   programStageUid = response.data.programStages[0].id;
+                   return response.data.programStages[0];
+                });
+            }
+            return promise;
+        }
+    };    
+})
+
 /* factory for handling events */
 .factory('DHIS2EventFactory', function($http) {   
     
