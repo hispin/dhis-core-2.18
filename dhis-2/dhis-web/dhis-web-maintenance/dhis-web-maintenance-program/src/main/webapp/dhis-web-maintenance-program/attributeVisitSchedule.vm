@@ -4,9 +4,9 @@
 
 <table>
 	<colgroup>
-		<col style='width:300px'/>
+		<col style='width:500px'/>
 		<col/>
-		<col style='width:300px'/>
+		<col style='width:500px'/>
 	</colgroup>
 	<tr>
 		<th>$i18n.getString( "availableAttribute" )</th>
@@ -16,7 +16,7 @@
 	
 	<tr>
 		<td>
-			<select style='width:322px' multiple="multiple" id="availableAttributes" name="availableAttributes" size="15" ondblclick="moveSelectedById( 'availableAttributes', 'selectedAttributeIds' )" >
+			<select style="height:200px; width:100%;" multiple="multiple" id="availableAttributes" name="availableAttributes" size="15" ondblclick="moveSelectedById( 'availableAttributes', 'selectedAttributeIds' )" >
 				#foreach($attribute in $availableAttributes)
 					<option value='$attribute.id'>$attribute.name</option>
 				#end
@@ -29,7 +29,7 @@
 			<input type="button" value="&lt;&lt;" onclick="moveAllById( 'selectedAttributeIds', 'availableAttributes' )" class='filterButton' />
 		</td>
 		<td>
-			<select style='width:322px' multiple="multiple" id="selectedAttributeIds" name="selectedAttributeIds" size="15" ondblclick="moveSelectedById( 'selectedAttributeIds', 'availableAttributes' )" >
+			<select style="height:200px; width:100%;" multiple="multiple" id="selectedAttributeIds" name="selectedAttributeIds" size="15" ondblclick="moveSelectedById( 'selectedAttributeIds', 'availableAttributes' )" >
 				#foreach($attribute in $selectedAttributes)
 					<option value='$attribute.id'>$attribute.name</option>
 				#end
