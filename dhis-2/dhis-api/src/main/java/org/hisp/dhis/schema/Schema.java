@@ -45,7 +45,7 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "schema", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "schema", namespace = DxfNamespaces.DXF_2_0)
 public class Schema implements Ordered
 {
     /**
@@ -103,6 +103,14 @@ public class Schema implements Ordered
     private List<Property> properties = Lists.newArrayList();
 
     /**
+     * Map of all exposed properties on this class, where key is property
+     * name, and value is instance of Property class.
+     *
+     * @see org.hisp.dhis.schema.Property
+     */
+    private Map<String, Property> propertyMap = Maps.newHashMap();
+
+    /**
      * Used for sorting of schema list when doing metadata import/export.
      */
     private int order = Ordered.LOWEST_PRECEDENCE;
@@ -130,14 +138,14 @@ public class Schema implements Ordered
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isIdentifiableObject()
     {
         return identifiableObject;
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isNameableObject()
     {
         return nameableObject;
@@ -226,12 +234,17 @@ public class Schema implements Ordered
     @JacksonXmlProperty( localName = "property", namespace = DxfNamespaces.DXF_2_0 )
     public List<Property> getProperties()
     {
-        return properties;
+        return Lists.newArrayList( propertyMap.values() );
     }
 
-    public void setProperties( List<Property> properties )
+    public Map<String, Property> getPropertyMap()
     {
-        this.properties = properties;
+        return propertyMap;
+    }
+
+    public void setPropertyMap( Map<String, Property> propertyMap )
+    {
+        this.propertyMap = propertyMap;
     }
 
     private Map<AuthorityType, List<String>> authorityMap = Maps.newHashMap();
@@ -279,7 +292,7 @@ public class Schema implements Ordered
             ", plural='" + plural + '\'' +
             ", shareable=" + shareable +
             ", authorities=" + authorities +
-            ", properties=" + properties +
+            ", propertyMap=" + propertyMap +
             '}';
     }
 }
