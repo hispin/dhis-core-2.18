@@ -47,6 +47,9 @@ import java.util.Map;
  */
 public class DefaultFilterService implements FilterService
 {
+    private static final List<String> IDENTIFIABLE_PROPERTIES =
+        Lists.newArrayList( "id", "name", "code", "created", "lastUpdated" );
+
     @Autowired
     private ParserService parserService;
 
@@ -132,65 +135,62 @@ public class DefaultFilterService implements FilterService
         Map<String, Object> output = Maps.newHashMap();
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
 
-        for ( String key : fieldMap.keySet() )
+        for ( String fieldKey : fieldMap.keySet() )
         {
-            if ( !schema.getPropertyMap().containsKey( key ) )
+            if ( !schema.getPropertyMap().containsKey( fieldKey ) )
             {
                 continue;
             }
 
-            Map value = fieldMap.get( key );
-            Property descriptor = schema.getPropertyMap().get( key );
+            Property property = schema.getPropertyMap().get( fieldKey );
+            Object returnValue = ReflectionUtils.invokeMethod( object, property.getGetterMethod() );
 
-            Object returned = ReflectionUtils.invokeMethod( object, descriptor.getGetterMethod() );
-
-            if ( returned == null )
+            if ( returnValue == null )
             {
                 continue;
             }
 
-            if ( value.isEmpty() )
+            Map fieldValue = fieldMap.get( fieldKey );
+
+            if ( fieldValue.isEmpty() )
             {
-                if ( !descriptor.isIdentifiableObject() )
+                if ( !property.isIdentifiableObject() )
                 {
-                    output.put( key, returned );
+                    output.put( fieldKey, returnValue );
                 }
-                else if ( !descriptor.isCollection() )
+                else if ( !property.isCollection() )
                 {
-                    Map<String, Object> properties = getIdentifiableObjectProperties( returned );
-                    output.put( key, properties );
+                    output.put( fieldKey, getIdentifiableObjectProperties( returnValue ) );
                 }
                 else
                 {
-                    List<Map<String, Object>> properties = getIdentifiableObjectCollectionProperties( returned );
-                    output.put( key, properties );
+                    output.put( fieldKey, getIdentifiableObjectCollectionProperties( returnValue ) );
                 }
             }
             else
             {
-                if ( descriptor.isCollection() )
+                if ( property.isCollection() )
                 {
-                    Collection<?> objects = (Collection<?>) returned;
-                    List<Object> arrayList = Lists.newArrayList();
-                    output.put( key, arrayList );
+                    List<Object> list = Lists.newArrayList();
+                    output.put( fieldKey, list );
 
-                    for ( Object obj : objects )
+                    for ( Object obj : (Collection<?>) returnValue )
                     {
-                        Map<String, Object> properties = buildObjectOutput( obj, value );
+                        Map<String, Object> properties = buildObjectOutput( obj, fieldValue );
 
                         if ( !properties.isEmpty() )
                         {
-                            arrayList.add( properties );
+                            list.add( properties );
                         }
                     }
                 }
                 else
                 {
-                    Map<String, Object> properties = buildObjectOutput( returned, value );
+                    Map<String, Object> map = buildObjectOutput( returnValue, fieldValue );
 
-                    if ( !properties.isEmpty() )
+                    if ( !map.isEmpty() )
                     {
-                        output.put( key, properties );
+                        output.put( fieldKey, map );
                     }
                 }
             }
@@ -201,8 +201,7 @@ public class DefaultFilterService implements FilterService
 
     private List<Map<String, Object>> getIdentifiableObjectCollectionProperties( Object object )
     {
-        List<String> fields = Lists.newArrayList( "id", "name", "code", "created", "lastUpdated" );
-        return getIdentifiableObjectCollectionProperties( object, fields );
+        return getIdentifiableObjectCollectionProperties( object, IDENTIFIABLE_PROPERTIES );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -232,33 +231,32 @@ public class DefaultFilterService implements FilterService
 
     private Map<String, Object> getIdentifiableObjectProperties( Object object )
     {
-        List<String> fields = Lists.newArrayList( "id", "name", "code", "created", "lastUpdated" );
-        return getIdentifiableObjectProperties( object, fields );
+        return getIdentifiableObjectProperties( object, IDENTIFIABLE_PROPERTIES );
     }
 
     private Map<String, Object> getIdentifiableObjectProperties( Object object, List<String> fields )
     {
-        Map<String, Object> idProps = Maps.newLinkedHashMap();
+        Map<String, Object> map = Maps.newLinkedHashMap();
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
 
         for ( String field : fields )
         {
-            Property descriptor = schema.getPropertyMap().get( field );
+            Property property = schema.getPropertyMap().get( field );
 
-            if ( descriptor == null )
+            if ( property == null )
             {
                 continue;
             }
 
-            Object o = ReflectionUtils.invokeMethod( object, descriptor.getGetterMethod() );
+            Object o = ReflectionUtils.invokeMethod( object, property.getGetterMethod() );
 
             if ( o != null )
             {
-                idProps.put( field, o );
+                map.put( field, o );
             }
         }
 
-        return idProps;
+        return map;
     }
 
     @SuppressWarnings( "unchecked" )
