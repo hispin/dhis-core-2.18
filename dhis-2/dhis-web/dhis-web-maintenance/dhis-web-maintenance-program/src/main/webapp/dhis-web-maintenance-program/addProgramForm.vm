@@ -46,8 +46,11 @@
 	});
 	
 	checkValueIsExist( "name", "validateProgram.action" );	
+	jQuery('[name=nonAnonymous]').hide();
+	jQuery('[name=advanced]').hide();
 });
-	
+		var i18n_hide_advanced_options = '$encoder.jsEscape( $i18n.getString( "hide_advanced_options" ) , "'") ';
+
 </script>
 
 <h3>$i18n.getString( "create_new_program" ) #openHelp( "program_information" )</h3>
@@ -86,17 +89,6 @@
 			<td></td>
 		</tr>
 
-		<tr>
-			<td><label for="dataEntryMethod">$i18n.getString( "data_entry_method_for_option_sets" ) </label></td>
-			<td>
-				<select id='dataEntryMethod' name='dataEntryMethod' style="width: 335px;">
-					<option value='false' selected>$i18n.getString('drop_down_lists')</option>
-					<option value='true'>$i18n.getString('radio_buttons')</option>
-				</select>
-			</td>
-			<td></td>
-		</tr>
-		
 		<tr name='nonAnonymous'>
 			<td><label for="trackedEntityId">$i18n.getString( "tracked_entity" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
@@ -109,7 +101,18 @@
 			</td>
 			<td></td>
 		</tr>
-
+		
+		<tr name='advanced'>
+			<td><label for="dataEntryMethod">$i18n.getString( "data_entry_method_for_option_sets" ) </label></td>
+			<td>
+				<select id='dataEntryMethod' name='dataEntryMethod' style="width: 335px;">
+					<option value='false' selected>$i18n.getString('drop_down_lists')</option>
+					<option value='true'>$i18n.getString('radio_buttons')</option>
+				</select>
+			</td>
+			<td></td>
+		</tr>
+		
 		<tr name='nonAnonymous'>
 			<th colspan="2" style="width: 590px;">$i18n.getString( "enrollment_details" )</th>
 		</tr>
@@ -276,6 +279,8 @@
 	</tr>
 </table>
 
+<p><a href='advancedOptionToggle()' id='advancedOptionsLink'>$i18n.getString('show_advanced_options')<a></p>
+
 <table>
 	<tr>
 		<td colspan='3'>
@@ -286,3 +291,6 @@
 </table>
 </form>
 
+<script>
+	var i18n_hide_advanced_options = '$encoder.jsEscape( $i18n.getString( "hide_advanced_options" ) , "'") ';
+</script>
