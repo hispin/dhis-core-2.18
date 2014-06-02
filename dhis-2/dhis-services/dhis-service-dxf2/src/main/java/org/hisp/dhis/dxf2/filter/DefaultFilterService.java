@@ -33,7 +33,8 @@ import com.google.common.collect.Maps;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.filter.ops.Op;
 import org.hisp.dhis.schema.Property;
-import org.hisp.dhis.schema.PropertyIntrospectorService;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,7 +51,7 @@ public class DefaultFilterService implements FilterService
     private ParserService parserService;
 
     @Autowired
-    private PropertyIntrospectorService propertyIntrospectorService;
+    private SchemaService schemaService;
 
     @Override
     public <T extends IdentifiableObject> List<T> filterObjects( List<T> objects, List<String> filters )
@@ -86,12 +87,11 @@ public class DefaultFilterService implements FilterService
         }
 
         Map<String, Map> fieldMap = Maps.newHashMap();
+        Schema schema = schemaService.getDynamicSchema( objects.get( 0 ).getClass() );
 
         if ( include == null && exclude == null )
         {
-            List<Property> properties = propertyIntrospectorService.getProperties( objects.get( 0 ).getClass() );
-
-            for ( Property property : properties )
+            for ( Property property : schema.getProperties() )
             {
                 fieldMap.put( property.getName(), Maps.newHashMap() );
             }
@@ -102,10 +102,9 @@ public class DefaultFilterService implements FilterService
         }
         else
         {
-            List<Property> properties = propertyIntrospectorService.getProperties( objects.get( 0 ).getClass() );
             Map<String, Map> excludeMap = parserService.parsePropertyFilter( exclude );
 
-            for ( Property property : properties )
+            for ( Property property : schema.getProperties() )
             {
                 if ( !excludeMap.containsKey( property.getName() ) )
                 {
@@ -131,17 +130,17 @@ public class DefaultFilterService implements FilterService
         }
 
         Map<String, Object> output = Maps.newHashMap();
-        Map<String, Property> propertiesMap = propertyIntrospectorService.getPropertiesMap( object.getClass() );
+        Schema schema = schemaService.getDynamicSchema( object.getClass() );
 
         for ( String key : fieldMap.keySet() )
         {
-            if ( !propertiesMap.containsKey( key ) )
+            if ( !schema.getPropertyMap().containsKey( key ) )
             {
                 continue;
             }
 
             Map value = fieldMap.get( key );
-            Property descriptor = propertiesMap.get( key );
+            Property descriptor = schema.getPropertyMap().get( key );
 
             Object returned = ReflectionUtils.invokeMethod( object, descriptor.getGetterMethod() );
 
@@ -240,11 +239,11 @@ public class DefaultFilterService implements FilterService
     private Map<String, Object> getIdentifiableObjectProperties( Object object, List<String> fields )
     {
         Map<String, Object> idProps = Maps.newLinkedHashMap();
-        Map<String, Property> propertiesMap = propertyIntrospectorService.getPropertiesMap( object.getClass() );
+        Schema schema = schemaService.getDynamicSchema( object.getClass() );
 
         for ( String field : fields )
         {
-            Property descriptor = propertiesMap.get( field );
+            Property descriptor = schema.getPropertyMap().get( field );
 
             if ( descriptor == null )
             {
@@ -265,17 +264,17 @@ public class DefaultFilterService implements FilterService
     @SuppressWarnings( "unchecked" )
     private <T> boolean evaluateWithFilters( T object, Filters filters )
     {
-        Map<String, Property> propertiesMap = propertyIntrospectorService.getPropertiesMap( object.getClass() );
+        Schema schema = schemaService.getDynamicSchema( object.getClass() );
 
         for ( String field : filters.getFilters().keySet() )
         {
-            if ( !propertiesMap.containsKey( field ) )
+            if ( !schema.getPropertyMap().containsKey( field ) )
             {
                 System.err.println( "Skipping non-existent field: " + field );
                 continue;
             }
 
-            Property descriptor = propertiesMap.get( field );
+            Property descriptor = schema.getPropertyMap().get( field );
 
             if ( descriptor == null )
             {
