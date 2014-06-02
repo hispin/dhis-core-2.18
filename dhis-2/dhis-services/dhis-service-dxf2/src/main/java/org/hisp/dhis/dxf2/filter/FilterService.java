@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.filter;
  */
 
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.node.types.CollectionNode;
 
 import java.util.List;
 
@@ -54,5 +55,6 @@ public interface FilterService
      * @param exclude Exclusion filter
      * @return List of objects with only wanted properties
      */
-    <T extends IdentifiableObject> List<Object> filterProperties( List<T> objects, String include, String exclude );
+    <T extends IdentifiableObject> CollectionNode filterProperties( Class<?> klass, List<T> objects,
+        String include, String exclude );
 }

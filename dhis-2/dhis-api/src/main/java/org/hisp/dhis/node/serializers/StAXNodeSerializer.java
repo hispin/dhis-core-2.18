@@ -94,6 +94,11 @@ public class StAXNodeSerializer implements NodeSerializer
 
     private void renderSimpleNode( SimpleNode simpleNode, XMLStreamWriter writer ) throws XMLStreamException
     {
+        if ( simpleNode.getValue() == null ) // add hint for this, exclude if null
+        {
+            return;
+        }
+
         String value = String.format( "%s", simpleNode.getValue() );
 
         writeStartElement( simpleNode, writer );
@@ -103,6 +108,11 @@ public class StAXNodeSerializer implements NodeSerializer
 
     private void renderSimpleNodeAttribute( SimpleNode simpleNode, XMLStreamWriter writer ) throws XMLStreamException
     {
+        if ( simpleNode.getValue() == null ) // add hint for this, exclude if null
+        {
+            return;
+        }
+
         String value = String.format( "%s", simpleNode.getValue() );
 
         if ( simpleNode.haveHint( NodeHint.Type.XML_NAMESPACE ) )

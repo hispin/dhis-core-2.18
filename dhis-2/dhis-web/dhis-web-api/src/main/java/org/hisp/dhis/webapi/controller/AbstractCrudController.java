@@ -29,7 +29,6 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.hisp.dhis.acl.Access;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -46,6 +45,10 @@ import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.node.NodeService;
+import org.hisp.dhis.node.types.ComplexNode;
+import org.hisp.dhis.node.types.RootNode;
+import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -105,6 +108,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @Autowired
     protected ImportService importService;
+
+    @Autowired
+    protected NodeService nodeService;
 
     //--------------------------------------------------------------------------
     // GET
@@ -204,24 +210,21 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         // enable property filter
         if ( include != null || exclude != null )
         {
-            List<Object> objects = filterService.filterProperties( entityList, include, exclude );
-            Map<String, Object> output = Maps.newLinkedHashMap();
+            RootNode rootNode = new RootNode( "metadata" );
 
             if ( hasPaging )
             {
-                output.put( "pager", metaData.getPager() );
+                ComplexNode pagerNode = rootNode.addNode( new ComplexNode( "pager" ) );
+                pagerNode.addNode( new SimpleNode( "page", metaData.getPager().getPage() ) );
+                pagerNode.addNode( new SimpleNode( "pageCount", metaData.getPager().getPageCount() ) );
+                pagerNode.addNode( new SimpleNode( "total", metaData.getPager().getTotal() ) );
+                pagerNode.addNode( new SimpleNode( "nextPage", metaData.getPager().getNextPage() ) );
+                pagerNode.addNode( new SimpleNode( "prevPage", metaData.getPager().getPrevPage() ) );
             }
 
-            if ( schema != null )
-            {
-                output.put( schema.getPlural(), objects );
-            }
-            else
-            {
-                output.put( "objects", objects );
-            }
+            rootNode.addNode( filterService.filterProperties( getEntityClass(), entityList, include, exclude ) );
 
-            renderService.toJson( response.getOutputStream(), output );
+            nodeService.serialize( rootNode, "application/json", response.getOutputStream() );
         }
         else
         {

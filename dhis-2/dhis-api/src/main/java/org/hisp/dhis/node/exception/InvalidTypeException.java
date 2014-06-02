@@ -31,7 +31,7 @@ package org.hisp.dhis.node.exception;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class InvalidTypeException extends Exception
+public class InvalidTypeException extends RuntimeException
 {
     public InvalidTypeException( String message )
     {
