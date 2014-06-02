@@ -1607,6 +1607,7 @@ Ext.onReady( function() {
                                 id = response.rows[j][i] || emptyId;
                                 fullId = header.name + id;
                                 parsedId = parseFloat(id);
+
                                 displayId = Ext.isNumber(parsedId) ? parsedId : (names[id] || id);
 
 								// update names
@@ -1618,7 +1619,7 @@ Ext.onReady( function() {
 								// number sorting
                                 objects.push({
                                     id: fullId,
-                                    sortingId: parsedId
+                                    sortingId: parsedId || Number.MAX_VALUE
                                 });
                             }
 
