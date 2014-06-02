@@ -1,3 +1,20 @@
+<script> 
+	jQuery(document).ready(	function(){
+		jQuery("#availableAttributes").dhisAjaxSelect({
+			source: 'getAttributes.action',
+			iterator: 'attributes',
+			connectedTo: 'selectedAttributeIds',
+			handler: function(item){
+				var option = jQuery( "<option/>" );
+				option.attr( "value", item.id );
+				option.text( item.name );
+				
+				return option;
+			}
+		});
+	});
+</script>
+		
 <h3>$i18n.getString( "tracked_entity_attribute_visit_schedule_form" ) #openHelp('tracked_entity_attribute_configuration')</h3>
 																			
 <form id="attributeVisitScheduleForm" name="attributeVisitScheduleForm" action="saveAttributeVisitSchedule.action" method="post" action='saveAttributeVisitSchedule.action' onsubmit="selectAllById('selectedAttributeIds');">
@@ -17,9 +34,6 @@
 	<tr>
 		<td>
 			<select style="height:200px; width:100%;" multiple="multiple" id="availableAttributes" name="availableAttributes" size="15" ondblclick="moveSelectedById( 'availableAttributes', 'selectedAttributeIds' )" >
-				#foreach($attribute in $availableAttributes)
-					<option value='$attribute.id'>$attribute.name</option>
-				#end
 			</select>
 		</td>
 		<td>
@@ -29,7 +43,7 @@
 			<input type="button" value="&lt;&lt;" onclick="moveAllById( 'selectedAttributeIds', 'availableAttributes' )" class='filterButton' />
 		</td>
 		<td>
-			<select style="height:200px; width:100%;" multiple="multiple" id="selectedAttributeIds" name="selectedAttributeIds" size="15" ondblclick="moveSelectedById( 'selectedAttributeIds', 'availableAttributes' )" >
+			<select style="height:200px; width:100%; margin-top: 22px;" multiple="multiple" id="selectedAttributeIds" name="selectedAttributeIds" size="15" ondblclick="moveSelectedById( 'selectedAttributeIds', 'availableAttributes' )" >
 				#foreach($attribute in $selectedAttributes)
 					<option value='$attribute.id'>$attribute.name</option>
 				#end

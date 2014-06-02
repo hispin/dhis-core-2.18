@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeSortOrderInListNoProgramComparator;
@@ -63,13 +62,6 @@ public class ShowAttributeInListNoProgramAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<TrackedEntityAttribute> availableAttributes = new ArrayList<TrackedEntityAttribute>();
-
-    public List<TrackedEntityAttribute> getAvailableAttributes()
-    {
-        return availableAttributes;
-    }
-
     private List<TrackedEntityAttribute> selectedAttributes = new ArrayList<TrackedEntityAttribute>();
 
     public List<TrackedEntityAttribute> getSelectedAttributes()
@@ -86,12 +78,8 @@ public class ShowAttributeInListNoProgramAction
     {
         selectedAttributes = new ArrayList<TrackedEntityAttribute>(
             attributeService.getTrackedEntityAttributesDisplayInList() );
+        
         Collections.sort( selectedAttributes, new TrackedEntityAttributeSortOrderInListNoProgramComparator() );
-
-        availableAttributes = new ArrayList<TrackedEntityAttribute>(
-            attributeService.getAllTrackedEntityAttributes() );
-        availableAttributes.removeAll( selectedAttributes );
-        Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
