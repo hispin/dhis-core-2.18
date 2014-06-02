@@ -44,7 +44,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
 /**
