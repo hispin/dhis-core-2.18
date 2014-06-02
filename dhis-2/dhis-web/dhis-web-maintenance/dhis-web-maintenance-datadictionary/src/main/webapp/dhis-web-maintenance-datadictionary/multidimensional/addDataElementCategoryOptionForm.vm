@@ -4,8 +4,14 @@
 		form.submit();
 	});
 
-		checkValueIsExist( "name", "validateDataElementCategoryOption.action" );	
-        checkValueIsExist( "code", "validateDataElementCategoryOption.action" ); 
+        dhis2.period.picker.createInstance('#startDate');
+        dhis2.period.picker.createInstance('#endDate');
+
+        $('#startDate').calendarsPicker('option', 'maxDate', dhis2.period.calendar.add(dhis2.period.calendar.today(), 100, 'y'));
+        $('#endDate').calendarsPicker('option', 'maxDate', dhis2.period.calendar.add(dhis2.period.calendar.today(), 100, 'y'));
+
+        checkValueIsExist( "name", "validateDataElementCategoryOption.action" );
+        checkValueIsExist( "code", "validateDataElementCategoryOption.action" );
 	});
 
     var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
@@ -28,6 +34,22 @@
 	  <td><label>$i18n.getString( "code" )</td>
 	  <td colspan="3"><input type="text" id="code" name="code"/></td>
     </tr>
+      <tr>
+        <td>
+          <label for="startDate">$i18n.getString( 'start_date' )</label>
+        </td>
+        <td>
+          <input type="text" id="startDate" name="startDate" style="width:20em">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="endDate">$i18n.getString( 'end_date' )</label>
+        </td>
+        <td>
+          <input type="text" id="endDate" name="endDate" style="width:20em">
+        </td>
+      </tr>
 	<tr>
 	  <td></td>
 	  <td colspan="3">

@@ -15,9 +15,11 @@
 		jQuery.post( 'getDataElementCategoryOption.action', { id: context.id } ,
 			function ( json ) {
 			
-				setInnerHTML( 'nameField', json.dataElementCategoryOption.name );  
-				setInnerHTML( 'codeField', json.dataElementCategoryOption.code ); 
-				setInnerHTML( 'conceptField', json.dataElementCategoryOption.concept ); 				
+				setInnerHTML( 'nameField', json.dataElementCategoryOption.name );
+				setInnerHTML( 'codeField', json.dataElementCategoryOption.code );
+				setInnerHTML( 'startDateField', json.dataElementCategoryOption.startDate );
+				setInnerHTML( 'endDateField', json.dataElementCategoryOption.endDate );
+				setInnerHTML( 'conceptField', json.dataElementCategoryOption.concept );
 					  
 				showDetails();
 		});
@@ -85,7 +87,9 @@
         <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
       </div>
       <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
-        <p><label>$i18n.getString( "code" ):</label><br/><span id="codeField"></span></p>
+          <p><label>$i18n.getString( "code" ):</label><br/><span id="codeField"></span></p>
+          <p><label>$i18n.getString( "start_date" ):</label><br/><span id="startDateField"></span></p>
+          <p><label>$i18n.getString( "end_date" ):</label><br/><span id="endDateField"></span></p>
         <p><label>$i18n.getString( "concept" ):</label><br/><span id="conceptField"></span></p>
       </div>
 

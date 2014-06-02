@@ -29,10 +29,15 @@ package org.hisp.dhis.dd.action.category;
  */
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.calendar.CalendarService;
+import org.hisp.dhis.calendar.DateUnit;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 
 /**
  * @author Lars Helge Overland
@@ -51,6 +56,9 @@ public class AddDataElementCategoryOptionAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
+    @Autowired
+    private CalendarService calendarService;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -67,6 +75,20 @@ public class AddDataElementCategoryOptionAction
     public void setCode( String code )
     {
         this.code = code;
+    }
+
+    private String startDate;
+
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    private String endDate;
+
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
     }
 
     // -------------------------------------------------------------------------
@@ -87,10 +109,27 @@ public class AddDataElementCategoryOptionAction
     public String execute()
     {
         code = StringUtils.trimToNull( code );
-        
+
+        Date sDate = null;
+        Date eDate = null;
+
+        if ( startDate != null && startDate.trim().length() != 0 )
+        {
+            DateUnit isoStartDate = calendarService.getSystemCalendar().toIso( startDate );
+            sDate = isoStartDate.toJdkCalendar().getTime();
+        }
+
+        if ( endDate != null && endDate.trim().length() != 0 )
+        {
+            DateUnit isoEndDate = calendarService.getSystemCalendar().toIso( endDate );
+            eDate = isoEndDate.toJdkCalendar().getTime();
+        }
+
         dataElementCategoryOption = new DataElementCategoryOption( name );
         dataElementCategoryOption.setCode( code );
-        
+        dataElementCategoryOption.setStartDate( sDate );
+        dataElementCategoryOption.setEndDate( eDate );
+
         dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
 
         return SUCCESS;
