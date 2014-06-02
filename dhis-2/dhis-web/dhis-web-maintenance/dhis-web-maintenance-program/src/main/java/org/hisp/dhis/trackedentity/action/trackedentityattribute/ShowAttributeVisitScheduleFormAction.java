@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeSortOrderComparator;
@@ -62,13 +61,6 @@ public class ShowAttributeVisitScheduleFormAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<TrackedEntityAttribute> availableAttributes = new ArrayList<TrackedEntityAttribute>();
-
-    public List<TrackedEntityAttribute> getAvailableAttributes()
-    {
-        return availableAttributes;
-    }
-
     private List<TrackedEntityAttribute> selectedAttributes = new ArrayList<TrackedEntityAttribute>();
 
     public List<TrackedEntityAttribute> getSelectedAttributes()
@@ -83,12 +75,9 @@ public class ShowAttributeVisitScheduleFormAction
     public String execute()
         throws Exception
     {
-        availableAttributes = new ArrayList<TrackedEntityAttribute>(
-            attributeService.getTrackedEntityAttributesByDisplayOnVisitSchedule( false ) );
-        Collections.sort( availableAttributes, IdentifiableObjectNameComparator.INSTANCE );
-
         selectedAttributes = new ArrayList<TrackedEntityAttribute>(
             attributeService.getTrackedEntityAttributesByDisplayOnVisitSchedule( true ) );
+        
         Collections.sort( selectedAttributes, new TrackedEntityAttributeSortOrderComparator() );
 
         return SUCCESS;
