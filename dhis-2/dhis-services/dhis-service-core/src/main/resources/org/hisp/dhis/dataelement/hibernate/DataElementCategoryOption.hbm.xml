@@ -17,6 +17,10 @@
 
     <property name="name" column="name" not-null="true" unique="true" length="230" />
 
+    <property name="startDate" type="timestamp" />
+
+    <property name="endDate" type="timestamp" />
+
     <set name="categoryOptionCombos" table="categoryoptioncombos_categoryoptions" inverse="true">
       <cache usage="read-write" />
       <key column="categoryoptionid" foreign-key="fk_categoryoptioncombos_categoryoptions_categoryoptionid" />

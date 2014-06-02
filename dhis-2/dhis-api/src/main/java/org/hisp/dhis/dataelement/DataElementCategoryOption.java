@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -58,6 +59,10 @@ public class DataElementCategoryOption
     private static final long serialVersionUID = -4479376547579688312L;
 
     public static final String DEFAULT_NAME = "default";
+
+    private Date startDate;
+
+    private Date endDate;
 
     private Set<DataElementCategory> categories = new HashSet<DataElementCategory>();
 
@@ -149,6 +154,30 @@ public class DataElementCategoryOption
     public String getShortName()
     {
         return name;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class } )
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+
+    public void setStartDate( Date startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class } )
+    public Date getEndDate()
+    {
+        return endDate;
+    }
+
+    public void setEndDate( Date endDate )
+    {
+        this.endDate = endDate;
     }
 
     @JsonProperty

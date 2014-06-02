@@ -3,10 +3,16 @@
 	    validation2( 'editDataElementCategoryOptionForm', function( form ){ form.submit()}, {
 			'beforeValidateHandler': function() { listValidator( 'memberValidator', 'categoryOptions' ); },
 			'rules': getValidationRules("dateElementCategoryOption")
-		}); 
+		});
+
+        dhis2.period.picker.createInstance('#startDate');
+        dhis2.period.picker.createInstance('#endDate');
+
+        $('#startDate').calendarsPicker('option', 'maxDate', dhis2.period.calendar.add(dhis2.period.calendar.today(), 100, 'y'));
+        $('#endDate').calendarsPicker('option', 'maxDate', dhis2.period.calendar.add(dhis2.period.calendar.today(), 100, 'y'));
 
         checkValueIsExist( "name", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.id} );
-        checkValueIsExist( "code", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.code} );
+//Error:        checkValueIsExist( "code", "validateDataElementCategoryOption.action", {id: $dataElementCategoryOption.code} );
 	});
 
     var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_category_option" ) , "'")';
@@ -33,6 +39,22 @@
 	<tr>
 	  <td><label>$i18n.getString( "code" )</label></td>
 	  <td colspan="3"><input type="text" id="code" name="code" style="width:25em" value="$!encoder.htmlEncode( $dataElementCategoryOption.code )" /></td>
+    </tr>
+    <tr>
+      <td>
+        <label for="startDate">$i18n.getString( 'start_date' )</label>
+      </td>
+      <td>
+        <input type="text" id="startDate" name="startDate" style="width:20em" value="$!format.formatDate( $!dataElementCategoryOption.startDate )">
+          </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="endDate">$i18n.getString( 'end_date' )</label>
+        </td>
+      <td>
+          <input type="text" id="endDate" name="endDate" style="width:20em" value="$!format.formatDate( $!dataElementCategoryOption.endDate )">
+      </td>
     </tr>
     <tr>
       <td></td>

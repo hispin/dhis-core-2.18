@@ -61,7 +61,8 @@ var i18n_no_orgunits = '$encoder.jsEscape( $i18n.getString( "no_orgunits" ) , "'
 
 <div id="currentSelection">
 	<span id="closeCurrentSelection"><img src="../images/hide.png" title="$i18n.getString( 'close' )" onclick="closeCurrentSelection()"></span>
-	<span id="currentOrganisationUnit">$i18n.getString( "no_organisationunit_selected" )</span> - <span id="currentPeriod">$i18n.getString( "no_period_selected" )</span/><br>
+	<span id="currentOrganisationUnit">$i18n.getString( "no_organisationunit_selected" )</span> - <span id="currentPeriod">$i18n.getString( "no_period_selected" )</span/>
+    <span id="currentOptionsSelection"></span><br>
 	<span id="currentDataElement">$i18n.getString( "no_dataelement_selected" )</span>
 </div>
 
@@ -81,13 +82,13 @@ var i18n_no_orgunits = '$encoder.jsEscape( $i18n.getString( "no_orgunits" ) , "'
 	<select id="selectedDataSetId" name="selectedDataSetId" class="selectionBoxSelect" onchange="dataSetSelected()" disabled="disabled"></select>
     <span id="loaderSpan" style="display:none"><img src='../images/ajax-loader-bar.gif'></span>
 </div>
-<div id="attributeComboDiv"></div>
 <div class="selectionBoxRow">
     <div class="selectionLabel">$i18n.getString( "period" )</div>
     <select id="selectedPeriodId" name="selectedPeriodId" style="width:225px" onchange="periodSelected()" disabled="disabled"></select>
     <input type="button" id="prevButton" style="width:85px" value="$i18n.getString( 'prev_year' )" title="$i18n.getString('earlier_periods')" onclick="previousPeriodsSelected()" disabled="disabled">
    	<input type="button" id="nextButton" style="width:85px" value="$i18n.getString( 'next_year' )" title="$i18n.getString('later_periods')" onclick="nextPeriodsSelected()" disabled="disabled">
 </div>
+<div id="attributeComboDiv"></div>
 <div id="filterDataSetSectionDiv" class="selectionBoxRow" style="display:none">
     <div class="selectionLabel">$i18n.getString( "filter_on_section" )</div>
     <select id="filterDataSetSection" name="filterDataSetSection" class="selectionBoxSelect" onchange="filterOnSection()"></select>
