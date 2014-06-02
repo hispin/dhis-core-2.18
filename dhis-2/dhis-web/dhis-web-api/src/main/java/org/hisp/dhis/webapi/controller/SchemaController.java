@@ -49,13 +49,13 @@ public class SchemaController
     private SchemaService schemaService;
 
     @RequestMapping
-    public @ResponseBody Schemas getSchemasJson()
+    public @ResponseBody Schemas getSchemas()
     {
         return new Schemas( schemaService.getSchemas() );
     }
 
     @RequestMapping( value = "/{type}" )
-    public @ResponseBody Schema getSchemaJson( @PathVariable String type )
+    public @ResponseBody Schema getSchema( @PathVariable String type )
     {
         return schemaService.getSchemaBySingularName( type );
     }
