@@ -5501,7 +5501,7 @@ Ext.onReady( function() {
 
 								// root nodes
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits.json?userDataViewFallback=true&include=id,name,children[id,name]',
+									url: init.contextPath + '/api/organisationUnits.json?userDataViewFallback=true&paging=false&include=id,name,children[id,name]',
 									success: function(r) {
 										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
 										fn();
@@ -5513,6 +5513,11 @@ Ext.onReady( function() {
 									url: init.contextPath + '/api/organisationUnitLevels.json?include=id,name,level&paging=false',
 									success: function(r) {
 										init.organisationUnitLevels = Ext.decode(r.responseText).organisationUnitLevels || [];
+
+										if (!init.organisationUnitLevels.length) {
+											alert('No organisation unit levels');
+										}
+
 										fn();
 									}
 								});
@@ -5533,10 +5538,9 @@ Ext.onReady( function() {
 												ouc = Ext.Array.clean(ouc.concat(Ext.Array.pluck(org.children, 'id') || []));
 											}
 
-											init.user = {
-												ou: ou,
-												ouc: ouc
-											}
+											init.user = init.user || {};
+											init.user.ou = ou;
+											init.user.ouc = ouc;
 										}
 										else {
 											alert('User is not assigned to any organisation units');

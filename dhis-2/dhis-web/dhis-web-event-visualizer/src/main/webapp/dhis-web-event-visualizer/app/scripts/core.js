@@ -1822,15 +1822,11 @@ Ext.onReady( function() {
                 var paramString,
                     dimensions = Ext.Array.clean([].concat(view.columns || [], view.rows || [])),
                     ignoreKeys = ['longitude', 'latitude'],
-                    dataTypeMap = {
-                        'aggregated_values': 'aggregate',
-                        'individual_cases': 'query'
-                    },
                     nameItemsMap;
 
                 format = format || 'json';
 
-                paramString = '/api/analytics/events/' + dataTypeMap[view.dataType] + '/' + view.program.id + '.' + format + '?';
+                paramString = '/api/analytics/events/aggregate/' + view.program.id + '.' + format + '?';
 
 				// stage
 				paramString += 'stage=' + view.programStage.id;
