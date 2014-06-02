@@ -11,7 +11,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 Paginator,
                 TranslationService,
                 storage,
-                DHIS2EventFactory,                
+                DHIS2EventFactory,       
+                DHIS2EventService,
                 ContextMenuSelectedItem,
                 ModalService,
                 DialogService) {   
@@ -30,6 +31,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.updateSuccess = false;
     $scope.currentGridColumnId = '';  
     $scope.currentEventOrginialValue = '';   
+    $scope.displayCustomForm = false;
+    $scope.currentElement = {id: '', update: false};
     
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function(newObj, oldObj) {
@@ -52,6 +55,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.selectedOrgUnit = orgUnit;
         $scope.selectedProgram = null;
         $scope.selectedProgramStage = null;
+
+        $scope.eventRegistration = false;
+        $scope.editGridColumns = false;
+        $scope.editingEventInFull = false;
+        $scope.editingEventInGrid = false;   
+        $scope.updateSuccess = false;
+        $scope.currentGridColumnId = '';  
+        $scope.currentEventOrginialValue = ''; 
+        $scope.displayCustomForm = false;
         
         if (angular.isObject($scope.selectedOrgUnit)) {   
 
@@ -72,8 +84,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 if( !angular.isUndefined($scope.programs)){                    
                     if($scope.programs.length === 1){
                         $scope.selectedProgram = $scope.programs[0];
-                        $scope.pr = $scope.selectedProgram;
-                        $scope.loadEvents($scope.pr);
+                        $scope.loadEvents();
                     }                    
                 }
             }
@@ -81,7 +92,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     };    
     
     //get events for the selected program (and org unit)
-    $scope.loadEvents = function(program){   
+    $scope.loadEvents = function(){   
         
         $scope.selectedProgramStage = null;
         
@@ -94,10 +105,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         $scope.eventFetched = false;
                
-        if( program ){
+        if( $scope.selectedProgram && $scope.selectedProgram.programStages[0].id){
             
             //because this is single event, take the first program stage
-            $scope.selectedProgramStage = storage.get(program.programStages[0].id);
+            $scope.selectedProgramStage = storage.get($scope.selectedProgram.programStages[0].id);   
+            
+            //$scope.customForm = CustomFormService.processCustomForm($scope.selectedProgramStage);
+            $scope.customForm = $scope.selectedProgramStage.dataEntryForm ? $scope.selectedProgramStage.dataEntryForm.htmlCode : null; 
 
             $scope.programStageDataElements = [];  
             $scope.eventGridColumns = [];
@@ -193,25 +207,24 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                             i--;                           
                         }
                     }                                  
-                }
-                
+                }                
                 $scope.eventFetched = true;
             });            
         }        
     };
     
     $scope.jumpToPage = function(){
-        $scope.loadEvents($scope.selectedProgram, $scope.pager);
+        $scope.loadEvents();
     };
     
     $scope.resetPageSize = function(){
         $scope.pager.page = 1;        
-        $scope.loadEvents($scope.selectedProgram, $scope.pager);
+        $scope.loadEvents();
     };
     
     $scope.getPage = function(page){    
         $scope.pager.page = page;
-        $scope.loadEvents($scope.selectedProgram, $scope.pager);
+        $scope.loadEvents();
     };
     
     $scope.sortEventGrid = function(gridHeader){
@@ -281,13 +294,16 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.eventRegistration = false;
         $scope.editingEventInFull = false;
         $scope.editingEventInGrid = false;
+        $scope.currentElement.updated = false;
         
         $scope.outerForm.$valid = true;
         
         $scope.currentEvent = {};
     };
     
-    $scope.showEventRegistration = function(){
+    $scope.showEventRegistration = function(){        
+        $scope.displayCustomForm = $scope.customForm ? true:false;        
+        
         $scope.eventRegistration = !$scope.eventRegistration;  
         $scope.currentEvent = $scope.newDhis2Event;        
         $scope.outerForm.submitted = false;
@@ -302,12 +318,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.outerForm.$valid = true;
     };
     
-    $scope.showEditEventInFull = function(){
-        
+    $scope.showEditEventInFull = function(){        
+        $scope.displayCustomForm = $scope.customForm ? true:false;                
+
         $scope.currentEvent = ContextMenuSelectedItem.getSelectedItem();  
         $scope.currentEventOrginialValue = angular.copy($scope.currentEvent);
         $scope.editingEventInFull = !$scope.editingEventInFull;   
         $scope.eventRegistration = false;
+        
+        $scope.currentEvent.eventDate = moment($scope.currentEvent.eventDate, 'YYYY-MM-DD')._d;       
+        $scope.currentEvent.eventDate = Date.parse($scope.currentEvent.eventDate);
+        $scope.currentEvent.eventDate = $filter('date')($scope.currentEvent.eventDate, 'yyyy-MM-dd');
         
         angular.forEach($scope.selectedProgramStage.programStageDataElements, function(prStDe){
             if(!$scope.currentEvent.hasOwnProperty(prStDe.dataElement.id)){
@@ -317,7 +338,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         
     };
     
-    $scope.addEvent = function(addingAnotherEvent){                
+    $scope.switchDataEntryForm = function(){
+        $scope.displayCustomForm = !$scope.displayCustomForm;
+    };
+    
+    $scope.addEvent = function(addingAnotherEvent){        
         
         //check for form validity
         $scope.outerForm.submitted = true;        
@@ -374,14 +399,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $scope.currentEvent = {};
                 $scope.outerForm.submitted = false;
             }
-        }); 
+        });
     }; 
     
     $scope.updateEvent = function(){
         
         //check for form validity
-        $scope.outerFormUpdate.submitted = true;        
-        if( $scope.outerFormUpdate.$invalid ){
+        $scope.outerForm.submitted = true;        
+        if( $scope.outerForm.$invalid ){
             return false;
         }
         
@@ -417,7 +442,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             }
                 
             $scope.currentEventOrginialValue = angular.copy($scope.currentEvent); 
-            $scope.outerFormUpdate.submitted = false;            
+            $scope.outerForm.submitted = false;            
             $scope.editingEventInFull = false;
             $scope.currentEvent = {};
         });       
@@ -451,7 +476,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         if( newValue != oldValue ){                     
             
             var updatedSingleValueEvent = {event: currentEvent.event, dataValues: [{value: newValue, dataElement: dataElement}]};
-            var updatedFullValueEvent = reconstructEvent(currentEvent, $scope.selectedProgramStage.programStageDataElements);
+            var updatedFullValueEvent = DHIS2EventService.reconstructEvent(currentEvent, $scope.selectedProgramStage.programStageDataElements);
             DHIS2EventFactory.updateForSingleValue(updatedSingleValueEvent, updatedFullValueEvent).then(function(data){
                 
                 var continueLoop = true;
@@ -502,33 +527,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     
     $scope.getHelpContent = function(){
     };
-    
-    //for simplicity of grid display, events were changed from
-    //event.datavalues = [{dataElement: dataElement, value: value}] to
-    //event[dataElement] = value
-    //now they are changed back for the purpose of storage.    
-    function reconstructEvent(event, programStageDataElements)
-    {
-        var e = {};
-        
-        e.event         = event.event;
-        e.status        = event.status;
-        e.program       = event.program;
-        e.programStage  = event.programStage;
-        e.orgUnit       = event.orgUnit;
-        e.eventDate     = event.eventDate;
-        
-        var dvs = [];
-        angular.forEach(programStageDataElements, function(prStDe){
-            if(event.hasOwnProperty(prStDe.dataElement.id)){
-                dvs.push({dataElement: prStDe.dataElement.id, value: event[prStDe.dataElement.id]});
-            }
-        });
-        
-        e.dataValues = dvs;
-        
-        return e;        
-    }
 })
 
 //Controller for the header section

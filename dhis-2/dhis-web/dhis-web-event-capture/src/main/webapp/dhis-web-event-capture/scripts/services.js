@@ -4,69 +4,6 @@
 
 var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource'])
 
-/* Factory to fetch programs */
-.factory('ProgramFactory', function($http) {
-    
-    var programUid, programPromise;
-    var programs, programsPromise;
-    var program;
-    return {
-        
-        get: function(uid){
-            if( programUid !== uid ){
-                programPromise = $http.get('../api/programs/' + uid + '.json?viewClass=detailed&paging=false').then(function(response){
-                    programUid = response.data.id; 
-                    program = response.data;                     
-                    return program;
-                });
-            }
-            return programPromise;
-        },       
-        
-        getMine: function(type){ 
-            if( !programsPromise ){
-                programsPromise = $http.get('../api/me/programs?includeDescendants=true&type='+type).then(function(response){
-                   programs = response.data;
-                   return programs;
-                });
-            }
-            return programsPromise;    
-        },
-        
-        getEventProgramsByOrgUnit: function(orgUnit, type){
-                       
-            var promise = $http.get( '../api/programs.json?orgUnit=' + orgUnit + '&type=' + type ).then(function(response){
-                programs = response.data;
-                return programs;
-            });            
-            return promise;
-        }
-    };
-})
-
-/* Factory to fetch programStages */
-.factory('ProgramStageFactory', function($http, storage) {  
-    
-    var programStage, promise;   
-    return {        
-        get: function(uid){
-            if( programStage !== uid ){
-                promise = $http.get( '../api/programStages/' + uid + '.json?viewClass=detailed&paging=false').then(function(response){
-                   programStage = response.data.id;
-
-                   //store locally - might need them for event data values
-                   angular.forEach(response.data.programStageDataElements, function(prStDe){      
-                       storage.set(prStDe.dataElement.id, prStDe);                       
-                   });
-                   
-                   return response.data;
-                });
-            }
-            return promise;
-        }
-    };    
-})
-
 /* factory for loading logged in user profiles from DHIS2 */
 .factory('CurrentUserProfile', function($http) { 
            
@@ -91,9 +28,9 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
         getByStage: function(orgUnit, programStage, pager){
         	var pgSize = pager ? pager.pageSize : 50;
         	var pg = pager ? pager.page : 1;
-            var url = '../api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&pageSize=' + pgSize + '&page=' + pg;            
-            
-            var promise = $http.get( url ).then(function(response){                        
+                var url = '../api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&pageSize=' + pgSize + '&page=' + pg;            
+
+                var promise = $http.get( url ).then(function(response){                        
                 return response.data;        
             }, function(){     
                 return dhis2.ec.storageManager.getEvents(orgUnit, programStage);                
@@ -153,6 +90,120 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             return promise;
         }
     };    
+})
+
+/* service for dealing with events */
+.service('DHIS2EventService', function(){
+    return {     
+        //for simplicity of grid display, events were changed from
+        //event.datavalues = [{dataElement: dataElement, value: value}] to
+        //event[dataElement] = value
+        //now they are changed back for the purpose of storage.   
+        reconstructEvent: function(event, programStageDataElements){
+            var e = {};
+        
+            e.event         = event.event;
+            e.status        = event.status;
+            e.program       = event.program;
+            e.programStage  = event.programStage;
+            e.orgUnit       = event.orgUnit;
+            e.eventDate     = event.eventDate;
+
+            var dvs = [];
+            angular.forEach(programStageDataElements, function(prStDe){
+                if(event.hasOwnProperty(prStDe.dataElement.id)){
+                    dvs.push({dataElement: prStDe.dataElement.id, value: event[prStDe.dataElement.id]});
+                }
+            });
+
+            e.dataValues = dvs;
+
+            return e;  
+        }        
+    };
+})
+
+/* service for dealing with custom form */
+.service('CustomFormService', function(){
+    
+    return {
+        getForProgramStage: function(programStage){
+            
+            var htmlCode = programStage.dataEntryForm ? programStage.dataEntryForm.htmlCode : null;  
+            
+            if(htmlCode){                
+            
+                var programStageDataElements = [];
+
+                angular.forEach(programStage.programStageDataElements, function(prStDe){
+                    programStageDataElements[prStDe.dataElement.id] = prStDe;
+                });
+
+                var inputRegex = /<input(.*)\/>/g,
+                    styleRegex = /style="[^"]*"/,
+                    idRegex = /id="[^"]*"/,
+                    match,
+                    inputFields = [];
+
+                while (match = inputRegex.exec(htmlCode)) {                
+                    inputFields.push(match[0]);        
+                }
+
+                for(var i=0; i<inputFields.length; i++){
+                    var inputField = inputFields[i];
+                    var deId = '', style = '', newInputField;
+
+                    if(match = idRegex.exec(inputFields[i])){                    
+                        deId = match[0].substring(4, match[0].length-1).split("-")[1];
+
+                        if(match = styleRegex.exec(inputFields[i]) ){
+                            style = match[0];                          
+                        }
+
+                        if(programStageDataElements[deId].dataElement.type == "int"){
+                            newInputField = '<input type="number" name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
+                                            'ng-required="programStageDataElements.' + deId + '.compulsory">';
+                        }
+                        if(programStageDataElements[deId].dataElement.type == "string"){
+                            newInputField = '<input type="text" name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
+                                            'ng-required="programStageDataElements.' + deId + '.compulsory"' +
+                                            'typeahead="option for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
+                                            'typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory" name="foo" style="width:99%;">';
+                        }
+                        if(programStageDataElements[deId].dataElement.type == "bool"){
+                            newInputField = '<select name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
+                                            'ng-required="programStageDataElements.' + deId + '.compulsory">' + 
+                                            'option value="">{{\'please_select\'| translate}}</option>' +
+                                            '<option value="0">{{\'no\'| translate}}</option>' + 
+                                            '<option value="1">{{\'yes\'| translate}}</option>';
+                        }
+                        if(programStageDataElements[deId].dataElement.type == "date"){
+                            newInputField = '<input type="text" name="'+ deId +'"' + style + ' ng-model="currentEvent.' + deId + '"' +
+                                            'ng-date' +
+                                            'ng-required="programStageDataElements.' + deId + '.compulsory">';
+                        }
+                        if(programStageDataElements[deId].dataElement.type == "trueOnly"){
+                            newInputField = '<input type="checkbox" name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
+                                            'ng-required="programStageDataElements.' + deId + '.compulsory">';
+                        }
+
+                        newInputField = //'<ng-form name="innerForm">' + 
+                                        newInputField + 
+                                        '<span ng-show="outerForm.submitted && outerForm.'+ deId +'.$invalid" class="required">{{\'required\'| translate}}</span>';                                     
+                                        //'</ng-form>';                                    
+
+                        htmlCode = htmlCode.replace(inputField, newInputField);
+                    }                
+                }
+                
+                return htmlCode;
+                
+            }
+            
+            return null;
+        }
+    };
+            
 })
 
 /* Modal service for user interaction */
