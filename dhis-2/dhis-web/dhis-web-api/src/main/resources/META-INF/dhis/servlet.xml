@@ -79,10 +79,6 @@
         </bean>
 
         <bean class="org.hisp.dhis.webapi.view.JacksonJsonView">
-          <constructor-arg name="contentType" value="text/html" />
-        </bean>
-
-        <bean class="org.hisp.dhis.webapi.view.JacksonJsonView">
           <constructor-arg name="withPadding" value="false" />
           <constructor-arg name="withCompression" value="false" />
         </bean>

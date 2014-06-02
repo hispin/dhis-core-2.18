@@ -52,7 +52,7 @@ public class SchemaController
     @Autowired
     private SchemaService schemaService;
 
-    @RequestMapping( value = "", method = RequestMethod.GET, produces = { "text/html", "*/*" } )
+    @RequestMapping( value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE )
     public void getSchemasJson( HttpServletResponse response ) throws IOException
     {
         Schemas schemas = new Schemas( schemaService.getSchemas() );
@@ -61,7 +61,7 @@ public class SchemaController
         JacksonUtils.toJson( response.getOutputStream(), schemas );
     }
 
-    @RequestMapping( value = "/{type}", method = RequestMethod.GET, produces = { "text/html", "*/*" } )
+    @RequestMapping( value = "/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE )
     public void getSchemaJson( @PathVariable String type, HttpServletResponse response ) throws IOException
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
