@@ -101,6 +101,12 @@ function saveValue(dataElementId)
 	var period = document.getElementById("selectedPeriodId").value;
 	var valueId = "score_"+dataElementId;
 	
+	var overAllScoreValue = document.getElementById("all-total").value;
+	
+	var overAllScoreDeId = "126";
+	
+	var overAllScorefieldId = "#"+overAllScoreDeId;
+	
 	var fieldId = "#"+valueId;
 	var defaultValue = document.getElementById(valueId).defaultValue;
 	var value = document.getElementById(valueId).value;
@@ -111,7 +117,9 @@ function saveValue(dataElementId)
         'dataElementId' : dataElementId,        
         'organisationUnitId' : $("#selectedOrgunitID").val(),
         'periodIso' : period,
-        'value' : value
+        'value' : value,
+        'overAllScoreValue' : overAllScoreValue,
+        'overAllScoreDeId'  : overAllScoreDeId
     };
 	    jQuery.ajax( {
 	            url: 'saveDataValue.action',
@@ -128,15 +136,19 @@ function saveValue(dataElementId)
 	    if ( code == '0' || code == 0) // Value successfully saved on server
 	    {
 	    	 markValue( fieldId, COLOR_GREEN );
+	    	 markValue( overAllScorefieldId, COLOR_GREEN );
+	    	 
 	    }
 	    else if ( code == 2 )
 	    {
 	        markValue( fieldId, COLOR_RED );
+	        markValue( overAllScorefieldId, COLOR_RED );
 	        window.alert( i18n_saving_value_failed_dataset_is_locked );
 	    }
 	    else // Server error during save
 	    {
 	        markValue( fieldId, COLOR_RED );
+	        markValue( overAllScorefieldId, COLOR_RED );
 	        window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
 	    }            
 	}
@@ -148,7 +160,8 @@ function saveValue(dataElementId)
 
 	function markValue( fieldId, color )
 	{
-	    document.getElementById(valueId).style.backgroundColor = color;	   
+	    document.getElementById(valueId).style.backgroundColor = color;
+	    document.getElementById("all-total").style.backgroundColor = color;
 	}
 }
 
