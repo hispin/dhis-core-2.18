@@ -122,14 +122,28 @@ public class SaveDataValueAction
 
     public void setPeriodIso(String periodIso) 
     {
-		this.periodIso = periodIso;
-	}
+	this.periodIso = periodIso;
+    }
+    
+    private String overAllScoreValue;
+    
+    public void setOverAllScoreValue( String overAllScoreValue )
+    {
+        this.overAllScoreValue = overAllScoreValue;
+    }
+    
+    private String overAllScoreDeId;
+    
+    public void setOverAllScoreDeId( String overAllScoreDeId )
+    {
+        this.overAllScoreDeId = overAllScoreDeId;
+    }
     
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
     
-	private int statusCode = 0;
+    private int statusCode = 0;
 
     public int getStatusCode()
     {
@@ -188,7 +202,7 @@ public class SaveDataValueAction
         // Update data
         // ---------------------------------------------------------------------
 
-        DataValue dataValue = dataValueService.getDataValue(dataElement, period, organisationUnit, optionCombo);
+        DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, optionCombo);
        
         if ( dataValue == null )
         {
@@ -210,14 +224,62 @@ public class SaveDataValueAction
         }
         else
         {
-            if( !(value.trim().equalsIgnoreCase( dataValue.getValue() )) )
+            if( !(value.trim().equalsIgnoreCase( dataValue.getValue() ) ) )
             {
                 dataValue.setValue( value.trim() );
                 dataValue.setTimestamp( now );
                 dataValue.setStoredBy( storedBy );                
                 dataValueService.updateDataValue( dataValue );
           }            
-        }        
+        }
+        
+        // for saving Over All Score
+        
+        if ( overAllScoreValue != null && overAllScoreDeId != null )
+        {
+            overAllScoreValue = overAllScoreValue.trim();
+            
+            DataElement overAllScoreDataElement = dataElementService.getDataElement( Integer.parseInt( overAllScoreDeId ) );
+
+            if ( overAllScoreDataElement == null )
+            {
+                return logError( "Invalid dataelement identifier: " + overAllScoreDeId );
+            }
+            
+            DataValue overAllScoreDataValue = dataValueService.getDataValue( overAllScoreDataElement, period, organisationUnit, optionCombo );
+            
+            if ( overAllScoreDataValue == null )
+            {
+                if ( overAllScoreValue != null && (!overAllScoreValue.trim().equals( "" ) )  )
+                {
+                    overAllScoreDataValue = new DataValue();
+                    
+                    overAllScoreDataValue.setPeriod( period );
+                    overAllScoreDataValue.setDataElement( overAllScoreDataElement );
+                    overAllScoreDataValue.setSource(organisationUnit);
+                    overAllScoreDataValue.setCategoryOptionCombo( optionCombo );
+                    
+                    overAllScoreDataValue.setValue( overAllScoreValue.trim() );
+                    overAllScoreDataValue.setTimestamp( now );
+                    overAllScoreDataValue.setStoredBy( storedBy );
+                    
+                    dataValueService.addDataValue( overAllScoreDataValue );
+                }
+            }
+            else
+            {
+                if( !(overAllScoreValue.trim().equalsIgnoreCase( overAllScoreDataValue.getValue() ) ) )
+                {
+                    overAllScoreDataValue.setValue( overAllScoreValue.trim() );
+                    overAllScoreDataValue.setTimestamp( now );
+                    overAllScoreDataValue.setStoredBy( storedBy );                
+                    dataValueService.updateDataValue( overAllScoreDataValue );
+              }            
+            }
+            
+        }
+        
+        
         return SUCCESS;
     }
 

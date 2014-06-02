@@ -393,5 +393,18 @@
         <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
    </action>
 	
+	
+    <!-- PBF Reports -->
+    <action name="pbfReportForm" class="org.hisp.dhis.rbf.report.action.PBFReportFormAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-rbf/pbfReportForm.vm</param>
+        <param name="javascripts">javascript/prevNextPeriods.js</param>
+        <param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+   </action>	
+	
+	
+	
+	
+	
 	</package>
 </struts>

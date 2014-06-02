@@ -54,10 +54,11 @@ public class GetQualityScorePaymentAction implements Action
     {
     
         qualityscorepayment = qualityScorePaymentService.getQualityScorePayment( id );
-        
+        /*
         System.out.println( qualityscorepayment.getStartRange() );
         System.out.println( qualityscorepayment.getEndRange() );
         System.out.println( qualityscorepayment.getAddQtyPayment() );
+        */
         
         return SUCCESS;
     }

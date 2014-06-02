@@ -12,14 +12,15 @@ import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
-public class PBFInvoiceReportFormAction
-    implements Action
+/**
+ * @author Mithilesh Kumar Thakur
+ */
+public class PBFReportFormAction implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -75,8 +76,10 @@ public class PBFInvoiceReportFormAction
         
         birtPath += File.separator + "birtreports" + File.separator + "PBFInvoice.rptdesign";
         
-        periodTypeName = QuarterlyPeriodType.NAME;
-
+        //periodTypeName = QuarterlyPeriodType.NAME;
+        
+        periodTypeName = MonthlyPeriodType.NAME;
+        
         CalendarPeriodType _periodType = (CalendarPeriodType) CalendarPeriodType.getPeriodTypeByName( periodTypeName );
 
         Calendar cal = PeriodType.createCalendarInstance();
@@ -93,7 +96,6 @@ public class PBFInvoiceReportFormAction
         for ( Period period : periods )
         {
             period.setName( format.formatPeriod( period ) );
-            
         }
 
         return SUCCESS;
