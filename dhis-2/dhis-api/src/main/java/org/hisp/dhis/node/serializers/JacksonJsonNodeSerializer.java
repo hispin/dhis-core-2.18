@@ -28,8 +28,10 @@ package org.hisp.dhis.node.serializers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.NodeSerializer;
 import org.hisp.dhis.node.types.CollectionNode;
@@ -49,7 +51,7 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
 {
     public static final String CONTENT_TYPE = "application/json";
 
-    private final JsonFactory jsonFactory = new JsonFactory();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public String contentType()
@@ -59,13 +61,17 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
 
     public JacksonJsonNodeSerializer()
     {
-
+        objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
+        objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+        objectMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
+        objectMapper.configure( SerializationFeature.WRAP_EXCEPTIONS, true );
+        objectMapper.getFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
     }
 
     @Override
     public void serialize( RootNode rootNode, OutputStream outputStream ) throws IOException
     {
-        JsonGenerator generator = jsonFactory.createGenerator( outputStream );
+        JsonGenerator generator = objectMapper.getFactory().createGenerator( outputStream );
 
         renderRootNode( rootNode, generator );
         generator.flush();
@@ -86,6 +92,11 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
 
     private void renderSimpleNode( SimpleNode simpleNode, JsonGenerator generator, boolean writeKey ) throws IOException
     {
+        if ( simpleNode.getValue() == null ) // add hint for this, exclude if null
+        {
+            return;
+        }
+
         if ( writeKey )
         {
             generator.writeObjectField( simpleNode.getName(), simpleNode.getValue() );

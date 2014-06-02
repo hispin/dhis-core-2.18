@@ -32,6 +32,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.filter.ops.Op;
+import org.hisp.dhis.node.types.CollectionNode;
+import org.hisp.dhis.node.types.ComplexNode;
+import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
@@ -80,13 +83,15 @@ public class DefaultFilterService implements FilterService
     }
 
     @Override
-    public <T extends IdentifiableObject> List<Object> filterProperties( List<T> objects, String include, String exclude )
+    public <T extends IdentifiableObject> CollectionNode filterProperties( Class<?> klass, List<T> objects,
+        String include, String exclude )
     {
-        List<Object> output = Lists.newArrayList();
+        Schema rootSchema = schemaService.getDynamicSchema( klass );
+        CollectionNode collectionNode = new CollectionNode( rootSchema.getPlural() ); // replace with 'xml' collection name
 
         if ( objects.isEmpty() )
         {
-            return output;
+            return collectionNode;
         }
 
         Map<String, Map> fieldMap = Maps.newHashMap();
@@ -118,22 +123,22 @@ public class DefaultFilterService implements FilterService
 
         for ( Object object : objects )
         {
-            output.add( buildObjectOutput( object, fieldMap ) );
+            collectionNode.addNode( buildObjectOutput( fieldMap, object ) );
         }
 
-        return output;
+        return collectionNode;
     }
 
     @SuppressWarnings( "unchecked" )
-    private Map<String, Object> buildObjectOutput( Object object, Map<String, Map> fieldMap )
+    private ComplexNode buildObjectOutput( Map<String, Map> fieldMap, Object object )
     {
         if ( object == null )
         {
             return null;
         }
 
-        Map<String, Object> output = Maps.newHashMap();
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
+        ComplexNode complexNode = new ComplexNode( schema.getSingular() );
 
         for ( String fieldKey : fieldMap.keySet() )
         {
@@ -156,58 +161,62 @@ public class DefaultFilterService implements FilterService
             {
                 if ( !property.isIdentifiableObject() )
                 {
-                    output.put( fieldKey, returnValue );
+                    complexNode.addNode( new SimpleNode( fieldKey, returnValue ) );
                 }
                 else if ( !property.isCollection() )
                 {
-                    output.put( fieldKey, getIdentifiableObjectProperties( returnValue ) );
+                    complexNode.addNode( getIdentifiableObjectProperties( returnValue, IDENTIFIABLE_PROPERTIES ) );
                 }
                 else
                 {
-                    output.put( fieldKey, getIdentifiableObjectCollectionProperties( returnValue ) );
+                    complexNode.addNode( getIdentifiableObjectCollectionProperties( returnValue, IDENTIFIABLE_PROPERTIES, fieldKey ) );
                 }
             }
             else
             {
                 if ( property.isCollection() )
                 {
-                    List<Object> list = Lists.newArrayList();
-                    output.put( fieldKey, list );
+                    CollectionNode collectionNode = complexNode.addNode( new CollectionNode( property.getXmlCollectionName() ) );
 
-                    for ( Object obj : (Collection<?>) returnValue )
+                    for ( Object collectionObject : (Collection<?>) returnValue )
                     {
-                        Map<String, Object> properties = buildObjectOutput( obj, fieldValue );
+                        ComplexNode node = buildObjectOutput( fieldValue, collectionObject );
 
-                        if ( !properties.isEmpty() )
+                        if ( !node.getNodes().isEmpty() )
                         {
-                            list.add( properties );
+                            collectionNode.addNode( node );
                         }
                     }
                 }
                 else
                 {
-                    Map<String, Object> map = buildObjectOutput( returnValue, fieldValue );
+                    ComplexNode node = buildObjectOutput( fieldValue, returnValue );
 
-                    if ( !map.isEmpty() )
+                    if ( !node.getNodes().isEmpty() )
                     {
-                        output.put( fieldKey, map );
+                        complexNode.addNode( node );
                     }
                 }
             }
         }
 
-        return output;
-    }
-
-    private List<Map<String, Object>> getIdentifiableObjectCollectionProperties( Object object )
-    {
-        return getIdentifiableObjectCollectionProperties( object, IDENTIFIABLE_PROPERTIES );
+        return complexNode;
     }
 
     @SuppressWarnings( "unchecked" )
-    private List<Map<String, Object>> getIdentifiableObjectCollectionProperties( Object object, List<String> fields )
+    private CollectionNode getIdentifiableObjectCollectionProperties( Object object, List<String> fields, String collectionName )
     {
-        List<Map<String, Object>> output = Lists.newArrayList();
+        if ( object == null )
+        {
+            return null;
+        }
+
+        if ( !Collection.class.isInstance( object ) )
+        {
+            return null;
+        }
+
+        CollectionNode collectionNode = new CollectionNode( collectionName );
         Collection<IdentifiableObject> identifiableObjects;
 
         try
@@ -217,27 +226,32 @@ public class DefaultFilterService implements FilterService
         catch ( ClassCastException ex )
         {
             ex.printStackTrace();
-            return output;
+            return collectionNode;
         }
 
         for ( IdentifiableObject identifiableObject : identifiableObjects )
         {
-            Map<String, Object> properties = getIdentifiableObjectProperties( identifiableObject, fields );
-            output.add( properties );
+            collectionNode.addNode( getIdentifiableObjectProperties( identifiableObject, fields ) );
         }
 
-        return output;
+        return collectionNode;
     }
 
-    private Map<String, Object> getIdentifiableObjectProperties( Object object )
+    private ComplexNode getIdentifiableObjectProperties( Object object, List<String> fields )
     {
-        return getIdentifiableObjectProperties( object, IDENTIFIABLE_PROPERTIES );
-    }
+        if ( object == null )
+        {
+            return null;
+        }
 
-    private Map<String, Object> getIdentifiableObjectProperties( Object object, List<String> fields )
-    {
-        Map<String, Object> map = Maps.newLinkedHashMap();
+        if ( !IdentifiableObject.class.isInstance( object ) )
+        {
+            return null;
+        }
+
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
+
+        ComplexNode complexNode = new ComplexNode( schema.getSingular() );
 
         for ( String field : fields )
         {
@@ -252,11 +266,11 @@ public class DefaultFilterService implements FilterService
 
             if ( o != null )
             {
-                map.put( field, o );
+                complexNode.addNode( new SimpleNode( field, o ) );
             }
         }
 
-        return map;
+        return complexNode;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -268,7 +282,6 @@ public class DefaultFilterService implements FilterService
         {
             if ( !schema.getPropertyMap().containsKey( field ) )
             {
-                System.err.println( "Skipping non-existent field: " + field );
                 continue;
             }
 

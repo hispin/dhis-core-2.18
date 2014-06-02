@@ -28,6 +28,8 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javassist.util.proxy.ProxyFactory;
+import org.hibernate.collection.spi.PersistentCollection;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.system.util.functional.Predicate;
 import org.springframework.util.StringUtils;
@@ -496,5 +498,20 @@ public class ReflectionUtils
         {
             throw new RuntimeException( "Unknown Collection type." );
         }
+    }
+
+    public static Class<?> getRealClass( Class<?> klass )
+    {
+        if ( ProxyFactory.isProxyClass( klass ) )
+        {
+            klass = klass.getSuperclass();
+        }
+
+        while ( PersistentCollection.class.isAssignableFrom( klass ) )
+        {
+            klass = klass.getSuperclass();
+        }
+
+        return klass;
     }
 }

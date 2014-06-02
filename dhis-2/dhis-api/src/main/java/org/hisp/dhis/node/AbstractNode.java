@@ -69,6 +69,11 @@ public abstract class AbstractNode implements Node
     @Override
     public <T extends Node> T addNode( T node ) throws InvalidTypeException
     {
+        if ( node == null )
+        {
+            return null;
+        }
+
         nodes.add( node );
         return node;
     }
