@@ -45,12 +45,8 @@
 		
 	});
 	
-	checkValueIsExist( "name", "validateProgram.action" );	
-	jQuery('[name=nonAnonymous]').hide();
-	jQuery('[name=advanced]').hide();
+	checkValueIsExist( "name", "validateProgram.action" );
 });
-		var i18n_hide_advanced_options = '$encoder.jsEscape( $i18n.getString( "hide_advanced_options" ) , "'") ';
-
 </script>
 
 <h3>$i18n.getString( "create_new_program" ) #openHelp( "program_information" )</h3>
@@ -88,8 +84,7 @@
 			</td>
 			<td></td>
 		</tr>
-
-		<tr name='nonAnonymous'>
+		<tr name='nonAnonymous' class='multiEvents'>
 			<td><label for="trackedEntityId">$i18n.getString( "tracked_entity" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
 				<select id='trackedEntityId' name='trackedEntityId' style="width: 335px;" class="{validate:{required:true}}">
@@ -222,7 +217,7 @@
 
 <br />
 
-<table name='nonAnonymous'>
+<table name='nonAnonymous' class='multiEvents'>
 	<colgroup>
         <col style="width:400px;"/>
 		<col/>
@@ -278,9 +273,10 @@
 		</td>  
 	</tr>
 </table>
-
-<p><a href='advancedOptionToggle()' id='advancedOptionsLink'>$i18n.getString('show_advanced_options')<a></p>
-
+	
+<p><a href='javascript:showAdvancedOptions()' id='showAdvancedOptionLink'>$i18n.getString('show_advanced_options') <img src='../images/asc.gif'><a></p>
+<p><a href='javascript:hideAdvancedOptions()' id='hideAdvancedOptionLink' style="display:none;">$i18n.getString('hide_advanced_options') <img src='../images/desc.gif'><a></p>
+		
 <table>
 	<tr>
 		<td colspan='3'>
@@ -292,5 +288,5 @@
 </form>
 
 <script>
-	var i18n_hide_advanced_options = '$encoder.jsEscape( $i18n.getString( "hide_advanced_options" ) , "'") ';
+	hideAdvancedOptions();
 </script>

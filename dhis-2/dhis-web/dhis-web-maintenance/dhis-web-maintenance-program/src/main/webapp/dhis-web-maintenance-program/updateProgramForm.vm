@@ -41,7 +41,7 @@
 			}
 			
 		});
-	checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );
+	checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );	
 });
 
 </script>
@@ -82,18 +82,7 @@
 			<td></td>
 		</tr>
 		
-		<tr>
-			<td><label for="dataEntryMethod">$i18n.getString( "data_entry_method_for_option_sets" ) </label></td>
-			<td>
-                <select id='dataEntryMethod' name='dataEntryMethod' style="width: 335px;">
-					<option value='false' #if( $program.dataEntryMethod=='false' ) selected #end>$i18n.getString('drop_down_lists')</option>
-					<option value='true' #if( $program.dataEntryMethod=='true' ) selected #end>$i18n.getString('radio_buttons')</option>
-				</select>
-			</td>
-			<td></td>
-		</tr>
-		
-		<tr name='nonAnonymous'>
+		<tr name='nonAnonymous' class='multiEvents'>
 			<td><label for="trackedEntityId">$i18n.getString( "tracked_entity" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
 				<select id='trackedEntityId' name='trackedEntityId' style="width: 335px;" class="{validate:{required:true}}">
@@ -109,6 +98,17 @@
 		<tr>
 			<td><label for="version">$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input type="text" id="version" name="version" style="width: 330px;" value="$program.version" class="{validate:{required:true,integer:true}}"></td>
+			<td></td>
+		</tr>
+		
+		<tr name='advanced'>
+			<td><label for="dataEntryMethod">$i18n.getString( "data_entry_method_for_option_sets" ) </label></td>
+			<td>
+                <select id='dataEntryMethod' name='dataEntryMethod' style="width: 335px;">
+					<option value='false' #if( $program.dataEntryMethod=='false' ) selected #end>$i18n.getString('drop_down_lists')</option>
+					<option value='true' #if( $program.dataEntryMethod=='true' ) selected #end>$i18n.getString('radio_buttons')</option>
+				</select>
+			</td>
 			<td></td>
 		</tr>
 		
@@ -228,7 +228,7 @@
 
   <br />
 
-	<table name='nonAnonymous'>
+	<table name='nonAnonymous' class='multiEvents'>
 		<colgroup>
 			<col style="width:400px;"/>
 			<col/>
@@ -295,7 +295,10 @@
 	  </tr>
     </tbody>
   </table>  
-  	
+ 
+	<p><a href='javascript:showAdvancedOptions()' id='showAdvancedOptionLink'>$i18n.getString('show_advanced_options') <img src='../images/asc.gif'><a></p>
+	<p><a href='javascript:hideAdvancedOptions()' id='hideAdvancedOptionLink' style="display:none;">$i18n.getString('hide_advanced_options') <img src='../images/desc.gif'><a></p>
+	
   <table>
 	 <tr>
       	<td colspan='3'>
