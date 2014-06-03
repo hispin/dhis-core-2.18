@@ -266,7 +266,7 @@ public class TableAlteror
         
         executeSql( "DROP TABLE orgunitgroupprograms" ); 
         
-        executeSql( "UPDATE trackedentityattribute SET valuetype='combo' WHERE valuetype='optionSet'" );
+        executeSql( "UPDATE trackedentityattribute SET valuetype='optionSet' WHERE valuetype='combo'" );
         
         updateAggregateQueryBuilder();
         
