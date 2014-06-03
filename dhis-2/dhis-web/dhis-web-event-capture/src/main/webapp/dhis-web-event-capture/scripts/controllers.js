@@ -18,6 +18,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 ModalService,
                 DialogService) {   
    
+                      
     //selected org unit
     $scope.selectedOrgUnit = '';
     
@@ -34,7 +35,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     $scope.currentEventOrginialValue = '';   
     $scope.displayCustomForm = false;
     $scope.currentElement = {id: '', update: false};
-    
+    $scope.selectedOrgUnit = '';
+        
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function(newObj, oldObj) {
         
@@ -42,19 +44,16 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             
             //apply translation - by now user's profile is fetched from server.
             TranslationService.translate();            
-            
-            ProgramFactory.getAll().then(function(programs){
-                if(programs){
-                    $scope.loadPrograms($scope.selectedOrgUnit);     
-                }
-            });
+
+            $scope.loadPrograms();
+
         }
     });
     
     //load programs associated with the selected org unit.
-    $scope.loadPrograms = function(orgUnit) {        
+    $scope.loadPrograms = function() {        
                 
-        $scope.selectedOrgUnit = orgUnit;
+        //$scope.selectedOrgUnit = orgUnit;
         $scope.selectedProgram = null;
         $scope.selectedProgramStage = null;
 
@@ -67,26 +66,26 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.currentEventOrginialValue = ''; 
         $scope.displayCustomForm = false;
         
-        if (angular.isObject($scope.selectedOrgUnit)) {   
-            
+        if (angular.isObject($scope.selectedOrgUnit)) {    
             
             ProgramFactory.getAll().then(function(programs){
-                
-                $scope.programs = [];                
-                angular.forEach(programs, function(program){
-                    if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id)){
+                $scope.programs = [];
+                angular.forEach(programs, function(program){                            
+                    if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id)){                                
                         $scope.programs.push(program);
                     }
                 });
                 
-                if($scope.programs && $scope.programs.length === 1){
+                if(angular.isObject($scope.programs) && $scope.programs.length === 1){
                     $scope.selectedProgram = $scope.programs[0];
                     $scope.loadEvents();
                 }
-            });
+                
+            });       
         }        
     };    
     
+        
     //get events for the selected program (and org unit)
     $scope.loadEvents = function(){   
         
@@ -104,11 +103,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         if( $scope.selectedProgram && $scope.selectedProgram.programStages[0].id){
             
             //because this is single event, take the first program stage
-            //$scope.selectedProgramStage = storage.get($scope.selectedProgram.programStages[0].id);                          
-            ProgramStageFactory.get($scope.selectedProgram.programStages[0].id).then(function(programStage){
+            ProgramStageFactory.get($scope.selectedProgram.programStages[0].id).then(function (programStage){
                 
                 $scope.selectedProgramStage = programStage;   
-                
+               
                 //$scope.customForm = CustomFormService.processCustomForm($scope.selectedProgramStage);
                 $scope.customForm = $scope.selectedProgramStage.dataEntryForm ? $scope.selectedProgramStage.dataEntryForm.htmlCode : null; 
 
