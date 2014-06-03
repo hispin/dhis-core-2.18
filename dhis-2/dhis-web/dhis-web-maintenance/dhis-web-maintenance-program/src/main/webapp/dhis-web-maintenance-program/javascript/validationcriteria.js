@@ -49,23 +49,52 @@ function showValidationCriteriaDetails( context ) {
 // ----------------------------------------------------------------------------------------
 
 function showDivValue() {
-  var value = getFieldValue('value');
-  var property = jQuery('#property option:selected');
-  var propertyName = property.val();
-  if( propertyName != '' && property.attr('opt')!='') {
-	var opts = property.attr('opt').split(";");
-	var selectField = "<select id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:200px;\">";
-	for(var i=1;i<opts.length;i++){
-		selectField += "<option value=\"" + opts[i] + "\" >" + opts[i] + "</option>";
+	var value = getFieldValue('value');
+	var property = jQuery('#property option:selected');
+	var type = property.attr('valueType');
+	var propertyName = property.val();
+	
+	var valueField = "";
+	 if(type=='bool') {
+		valueField = "<select id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:140px;\">";
+		valueField += "<option value='true' >" + i18n_yes + "</option>";
+		valueField += "<option value='false' >" + i18n_no + "</option>";
+		valueField += "</select>";
 	}
-	selectField += "</select>";
-	setInnerHTML('valueTD', selectField);
-  }
-  else
-  {
-	var inputField = "<input id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:200px;\"/>";
-  }
-  setFieldValue('value', value);
+	else if(type == "trueOnly" ){
+		valueField = "<select id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:140px;\">";
+		valueField += "<option value='true' >" + i18n_yes + "</option>";
+		valueField += "</select>";
+	}
+	else if(type=='date') {
+		valueField = "<input id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:140px;\"/>";
+	}
+	else if(type=='optionSet') {
+		var opts = property.attr('opt').split(";");
+		valueField = "<select id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:140px;\">";
+		for(var i=1;i<opts.length;i++){
+			valueField += "<option value=\"" + opts[i] + "\" >" + opts[i] + "</option>";
+		}
+		valueField += "</select>";
+	}
+	else if( type == "phoneNumber" ){
+		valueField = "<select id='value' name='value' class=\"{validate:{phone:true,required:true}}\" style=\"width:140px;\">";
+	}
+	else if( type == "age" || type == "number" ){
+		valueField = "<input id='value' name='value' class=\"{validate:{number:true,required:true}}\" style=\"width:140px;\"/>";
+	}
+	else if( type == "letter" ){
+		valueField = "<select id='value' name='value' class=\"{validate:{letterswithbasicpunc:true,required:true}}\" style=\"width:140px;\">";
+	}
+	else{
+		valueField = "<input id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:140px;\"/>";
+	}
+	
+	setInnerHTML('valueTD', valueField);
+	setFieldValue('value', value);
+	if(type=='date') {
+		datePickerValid( 'value', false, false );
+	}
 }
 
 function fillValue( value ) {
