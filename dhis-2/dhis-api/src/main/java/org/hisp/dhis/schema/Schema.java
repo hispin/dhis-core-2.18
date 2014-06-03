@@ -83,16 +83,16 @@ public class Schema implements Ordered
     private String namespaceURI;
 
     /**
+     * This will normally be set to equal singular, but in certain cases it might be useful to have another name
+     * for when this class is used as an item inside a collection.
+     */
+    private String name;
+
+    /**
      * This will normally be set to equal plural, and is normally used as a wrapper for a collection of
      * instances of this klass type.
      */
     private String collectionName;
-
-    /**
-     * This will normally be set to equal singular, but in certain cases it might be useful to have another name
-     * for when this class is used as an item inside a collection.
-     */
-    private String collectionItemName;
 
     /**
      * Is sharing supported for instances of this class.
@@ -213,14 +213,14 @@ public class Schema implements Ordered
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getCollectionItemName()
+    public String getName()
     {
-        return collectionItemName == null ? singular : collectionItemName;
+        return name == null ? singular : name;
     }
 
-    public void setCollectionItemName( String collectionItemName )
+    public void setName( String name )
     {
-        this.collectionItemName = collectionItemName;
+        this.name = name;
     }
 
     @JsonProperty
@@ -338,9 +338,16 @@ public class Schema implements Ordered
             ", nameableObject=" + nameableObject +
             ", singular='" + singular + '\'' +
             ", plural='" + plural + '\'' +
+            ", namespaceURI='" + namespaceURI + '\'' +
+            ", name='" + name + '\'' +
+            ", collectionName='" + collectionName + '\'' +
             ", shareable=" + shareable +
+            ", apiEndpoint='" + apiEndpoint + '\'' +
+            ", metadata=" + metadata +
             ", authorities=" + authorities +
             ", propertyMap=" + propertyMap +
+            ", order=" + order +
+            ", authorityMap=" + authorityMap +
             '}';
     }
 }

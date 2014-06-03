@@ -51,7 +51,7 @@ public class Property
     /**
      * Direct link to getter for this property.
      */
-    private final Method getterMethod;
+    private Method getterMethod;
 
     /**
      * Name for this property, if this class is a collection, it is the name of the items -inside- the collection
@@ -101,6 +101,10 @@ public class Property
      * @see org.hisp.dhis.common.NameableObject
      */
     private boolean nameableObject;
+
+    public Property()
+    {
+    }
 
     public Property( Method getterMethod )
     {
