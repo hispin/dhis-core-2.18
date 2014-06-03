@@ -22,66 +22,66 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
 })
 
 /* Factory to fetch programs */
-.factory('ProgramFactory', function($http) {
+.factory('ProgramFactory', function($q, $rootScope) {  
     
-    var programUid, programPromise;
-    var programs, programsPromise;
-    var program;
+    dhis2.ec.store = new dhis2.storage.Store({
+        name: EC_STORE_NAME,
+        adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+        objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
+    });
+        
     return {
         
         getAll: function(){
-            if( !programsPromise ){
-                programsPromise = $http.get('../api/programs.json?filter=type:eq:3&include=id,name,version,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name]').then(function(response){
-                //programsPromise = $http.get('../api/programs.json?filter=type:eq:3&include=id,name,version').then(function(response){
-                   programs = response.data.programs;
-                   
-                   angular.forEach(programs, function ( program ) {
-                       var ou = {};
-                       angular.forEach(program.organisationUnits, function(o){
-                           ou[o.id] = o.name;
-                       });
-                       
-                       program.organisationUnits = ou;
-                       var ur = {};
-                       angular.forEach(program.userRoles, function(u){
-                           ur[u.id] = u.name;
-                       });                       
-                       program.userRoles = ur;
-                   });
-                   return programs;
-                });                        
-            }
-            return programsPromise;
-        },
-        
-        get: function(uid){
-            if( programUid !== uid ){
-                programPromise = $http.get('../api/programs.json?filter=id:eq:' + uid +'&include=id,name,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name]').then(function(response){
-                    programUid = response.data.id; 
-                    program = response.data;                     
-                    return program;
+            
+            var def = $q.defer();
+            
+            dhis2.ec.store.open().done(function(){
+                dhis2.ec.store.getAll('eventCapturePrograms').done(function(programs){
+                    
+                    $rootScope.$apply(function(){
+                        def.resolve(programs);
+                    });                    
                 });
-            }
-            return programPromise;
-        }
+            });            
+            
+            return def.promise;            
+        }        
+        
     };
 })
 
 /* Factory to fetch programStages */
-.factory('ProgramStageFactory', function($http) {  
+.factory('ProgramStageFactory', function($q, $rootScope) {  
+
+    dhis2.ec.store = new dhis2.storage.Store({
+        name: EC_STORE_NAME,
+        adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+        objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
+    });
     
-    var programStageUid, promise;   
     return {        
         get: function(uid){
-            if( programStageUid !== uid ){
-                promise = $http.get( '../api/programStages.json?filter=id:eq:' + uid +'&include=id,name,version,description,minDaysFromStart,repeatable,dataEntryForm,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,optionSet[id,name,options]]]').then(function(response){
-                   programStageUid = response.data.programStages[0].id;
-                   return response.data.programStages[0];
+            
+            var def = $q.defer();
+            
+            dhis2.ec.store.open().done(function(){
+                dhis2.ec.store.get('programStages', uid).done(function(pst){                    
+                    angular.forEach(pst.programStageDataElements, function(pstDe){   
+                        if(pstDe.dataElement.optionSet){
+                            dhis2.ec.store.get('optionSets', pstDe.dataElement.optionSet.id).done(function(optionSet){
+                                pstDe.dataElement.optionSet = optionSet;                                
+                            });                            
+                        }
+                        $rootScope.$apply(function(){
+                            def.resolve(pst);
+                        });
+                    });                                        
                 });
-            }
-            return promise;
-        }
-    };    
+            });                        
+            return def.promise;            
+        }        
+    };        
 })
 
 /* factory for handling events */

@@ -22,6 +22,12 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
     return {        
         restrict: 'A',        
         link: function(scope, element, attrs){ 
+           
+            dhis2.ec.store = new dhis2.storage.Store({
+                name: EC_STORE_NAME,
+                adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+                objectStores: ['eventCapturePrograms', 'programStages', 'optionSets']
+            });
             
             //when tree has loaded, get selected orgunit - if there is any - and inform angular           
             $(function() {                 
@@ -57,11 +63,11 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
                         var selected = selection.getSelected()[0];
                         selection.getOrganisationUnit(selected).done(function(data){                            
                             if( data ){
-                                scope.selectedOrgUnit = {id: selected, name: data[selected].n};                                  
-                                scope.$apply();
+                                scope.selectedOrgUnit = {id: selected, name: data[selected].n, programs: []};
+                                scope.$apply();                                                              
                             }                        
                         });
-                    } );
+                    });
                     
                 });
             });
@@ -71,7 +77,7 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
             selection.responseReceived();
             
             function organisationUnitSelected( orgUnits, orgUnitNames ) {
-                scope.selectedOrgUnit = {id: orgUnits[0], name: orgUnitNames[0]};    
+                scope.selectedOrgUnit = {id: orgUnits[0], name: orgUnitNames[0], programs: []};    
                 scope.$apply();                
             }
         }  
