@@ -213,7 +213,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( include != null || exclude != null )
         {
             RootNode rootNode = new RootNode( "metadata" );
-            rootNode.addHint( NodeHint.Type.COMMENT, "Metadata exported on " + new Date() );
 
             if ( hasPaging )
             {
