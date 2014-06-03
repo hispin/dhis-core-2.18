@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.datavalueset;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.scheduling.TaskId;
 
@@ -53,10 +54,10 @@ public interface DataValueSetService
     void writeDataValueSetJson( Set<String> dataSet, Date startDate, Date endDate, Set<String> ous, OutputStream outputStream );
 
     void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer );
-    
-    void writeDataValueSetTemplate( OutputStream out, DataSet dataSet, Period period, List<String> orgUnits,
-        boolean comment, String orgUnitIdScheme, String dataElementIdScheme ) throws IOException;
-    
+
+    RootNode getDataValueSetTemplate( DataSet dataSet, Period period, List<String> orgUnits,
+        boolean writeComments, String ouScheme, String deScheme );
+
     ImportSummary saveDataValueSet( InputStream in );
 
     ImportSummary saveDataValueSetJson( InputStream in );

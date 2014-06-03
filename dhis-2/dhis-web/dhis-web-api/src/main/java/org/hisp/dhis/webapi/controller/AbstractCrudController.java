@@ -45,6 +45,7 @@ import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.node.NodeHint;
 import org.hisp.dhis.node.NodeService;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
@@ -73,6 +74,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -211,6 +213,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         if ( include != null || exclude != null )
         {
             RootNode rootNode = new RootNode( "metadata" );
+            rootNode.addHint( NodeHint.Type.COMMENT, "Metadata exported on " + new Date() );
 
             if ( hasPaging )
             {
@@ -224,7 +227,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
             rootNode.addNode( filterService.filterProperties( getEntityClass(), entityList, include, exclude ) );
 
-            nodeService.serialize( rootNode, "application/json", response.getOutputStream() );
+            // response.setContentType( MediaType.APPLICATION_XML_VALUE );
+            // nodeService.serialize( rootNode, MediaType.APPLICATION_XML_VALUE, response.getOutputStream() );
+            nodeService.serialize( rootNode, MediaType.APPLICATION_JSON_VALUE, response.getOutputStream() );
         }
         else
         {

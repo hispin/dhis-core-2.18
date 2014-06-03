@@ -79,6 +79,15 @@ public abstract class AbstractNode implements Node
     }
 
     @Override
+    public <T extends Node> void addNodes( List<T> nodes )
+    {
+        for ( Node node : nodes )
+        {
+            addNode( node );
+        }
+    }
+
+    @Override
     public List<Node> getNodes()
     {
         return nodes;

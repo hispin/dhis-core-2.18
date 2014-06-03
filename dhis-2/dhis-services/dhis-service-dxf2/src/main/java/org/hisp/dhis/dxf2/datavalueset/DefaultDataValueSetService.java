@@ -28,29 +28,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.trimToNull;
-import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
-import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
-import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
-import static org.hisp.dhis.system.util.ConversionUtils.wrap;
-import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
+import com.csvreader.CsvReader;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
@@ -77,6 +55,11 @@ import org.hisp.dhis.dxf2.pdfform.PdfDataEntryFormUtil;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
+import org.hisp.dhis.node.NodeHint;
+import org.hisp.dhis.node.types.CollectionNode;
+import org.hisp.dhis.node.types.ComplexNode;
+import org.hisp.dhis.node.types.RootNode;
+import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -90,8 +73,24 @@ import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.csvreader.CsvReader;
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.apache.commons.lang.StringUtils.trimToNull;
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+import static org.hisp.dhis.system.util.ConversionUtils.wrap;
+import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
 /**
  * @author Lars Helge Overland
@@ -238,116 +237,107 @@ public class DefaultDataValueSetService
         dataValueSetStore.writeDataValueSetCsv( getDataElements( dataSets ), periods, getOrgUnits( orgUnits ), writer );
     }
 
-    public void writeDataValueSetTemplate( OutputStream out, DataSet dataSet, Period period, List<String> orgUnits,
-        boolean comment, String orgUnitIdScheme, String dataElementIdScheme ) throws IOException
+
+    @Override
+    public RootNode getDataValueSetTemplate( DataSet dataSet, Period period, List<String> orgUnits,
+        boolean writeComments, String ouScheme, String deScheme )
     {
-        ToXmlGenerator generator = (ToXmlGenerator) JacksonUtils.getXmlMapper().getFactory().createGenerator( out );
-            
-        try
+        RootNode rootNode = new RootNode( "dataValueSet" );
+        rootNode.addHint( NodeHint.Type.NAMESPACE, DxfNamespaces.DXF_2_0 );
+        rootNode.addHint( NodeHint.Type.COMMENT, "Data set: " + dataSet.getDisplayName() + " (" + dataSet.getUid() + ")" );
+
+        CollectionNode collectionNode = rootNode.addNode( new CollectionNode( "dataValues" ) );
+        collectionNode.addHint( NodeHint.Type.WRAP_COLLECTION, false );
+
+        if ( orgUnits.isEmpty() )
         {
-            XMLStreamWriter staxWriter = generator.getStaxWriter();
-    
-            if ( comment )
+            for ( DataElement dataElement : dataSet.getDataElements() )
             {
-                staxWriter.writeComment( "Data set: " + dataSet.getDisplayName() + " (" + dataSet.getUid() + ")" );
+                CollectionNode collection = getDataValueTemplate( dataElement, deScheme, null, ouScheme, period, writeComments );
+                collectionNode.addNodes( collection.getNodes() );
             }
-    
-            staxWriter.writeStartElement( "", "dataValueSet", DxfNamespaces.DXF_2_0 );
-    
-            if ( orgUnits.isEmpty() )
+        }
+        else
+        {
+            for ( String orgUnit : orgUnits )
             {
+                OrganisationUnit organisationUnit = identifiableObjectManager.search( OrganisationUnit.class, orgUnit );
+
+                if ( organisationUnit == null )
+                {
+                    continue;
+                }
+
                 for ( DataElement dataElement : dataSet.getDataElements() )
                 {
-                    writeDataValue( dataElement, dataElementIdScheme, null, orgUnitIdScheme, period, comment, staxWriter );
+                    CollectionNode collection = getDataValueTemplate( dataElement, deScheme, organisationUnit, ouScheme, period, writeComments );
+                    collectionNode.addNodes( collection.getNodes() );
                 }
             }
-            else
-            {
-                for ( String orgUnit : orgUnits )
-                {
-                    OrganisationUnit organisationUnit = identifiableObjectManager.search( OrganisationUnit.class, orgUnit );
-    
-                    if ( organisationUnit == null )
-                    {
-                        continue;
-                    }
-    
-                    if ( comment )
-                    {
-                        if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( orgUnitIdScheme.toLowerCase() ) )
-                        {
-                            staxWriter.writeComment( "Org unit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getCode() + ")" );
-                        }
-                        else
-                        {
-                            staxWriter.writeComment( "Org unit: " + organisationUnit.getDisplayName() + " (" + organisationUnit.getUid() + ")" );
-                        }    
-                    }
-    
-                    for ( DataElement dataElement : dataSet.getDataElements() )
-                    {
-                        writeDataValue( dataElement, dataElementIdScheme, organisationUnit, orgUnitIdScheme, period, comment, staxWriter );
-                    }
-                }
-            }
-    
-            staxWriter.writeEndElement();
-            staxWriter.flush();
         }
-        catch ( XMLStreamException ignored )
-        {
-            ignored.printStackTrace();
-        }
+
+        return rootNode;
     }
-    
-    private void writeDataValue( DataElement dataElement, String deScheme, OrganisationUnit organisationUnit, String ouScheme, Period period, boolean comment, XMLStreamWriter staxWriter ) throws XMLStreamException
+
+    private CollectionNode getDataValueTemplate( DataElement dataElement, String deScheme, OrganisationUnit organisationUnit, String ouScheme, Period period, boolean comment )
     {
+        CollectionNode collectionNode = new CollectionNode( "dataValues" );
+        collectionNode.addHint( NodeHint.Type.WRAP_COLLECTION, false );
+
         for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getSortedOptionCombos() )
         {
+            ComplexNode complexNode = collectionNode.addNode( new ComplexNode( "dataValue" ) );
+
             String label = dataElement.getDisplayName();
-    
+
             if ( !categoryOptionCombo.isDefault() )
             {
                 label += " " + categoryOptionCombo.getDisplayName();
             }
-    
+
             if ( comment )
             {
-                staxWriter.writeComment( "Data element: " + label );
+                complexNode.addHint( NodeHint.Type.COMMENT, "Data element: " + label );
             }
-    
-            staxWriter.writeStartElement( "", "dataValue", DxfNamespaces.DXF_2_0 );
-    
+
             if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( deScheme.toLowerCase() ) )
             {
-                staxWriter.writeAttribute( "dataElement", dataElement.getCode() );
+                SimpleNode simpleNode = complexNode.addNode( new SimpleNode( "dataElement", dataElement.getCode() ) );
+                simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
             }
             else
             {
-                staxWriter.writeAttribute( "dataElement", dataElement.getUid() );
+                SimpleNode simpleNode = complexNode.addNode( new SimpleNode( "dataElement", dataElement.getUid() ) );
+                simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
             }
-    
-            staxWriter.writeAttribute( "categoryOptionCombo", categoryOptionCombo.getUid() );
-            
-            staxWriter.writeAttribute( "period", period != null ? period.getIsoDate() : "" );
-    
+
+            SimpleNode simpleNode = complexNode.addNode( new SimpleNode( "categoryOptionCombo", categoryOptionCombo.getUid() ) );
+            simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
+
+            simpleNode = complexNode.addNode( new SimpleNode( "period", period != null ? period.getIsoDate() : "" ) );
+            simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
+
             if ( organisationUnit != null )
             {
                 if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( ouScheme.toLowerCase() ) )
                 {
-                    staxWriter.writeAttribute( "orgUnit", organisationUnit.getCode() == null ? "" : organisationUnit.getCode() );
+                    simpleNode = complexNode.addNode( new SimpleNode( "orgUnit", organisationUnit.getCode() == null ? "" : organisationUnit.getCode() ) );
+                    simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
                 }
                 else
                 {
-                    staxWriter.writeAttribute( "orgUnit", organisationUnit.getUid() == null ? "" : organisationUnit.getUid() );
+                    simpleNode = complexNode.addNode( new SimpleNode( "orgUnit", organisationUnit.getUid() == null ? "" : organisationUnit.getUid() ) );
+                    simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
                 }
             }
-    
-            staxWriter.writeAttribute( "value", "" );
-            staxWriter.writeEndElement();
+
+            simpleNode = complexNode.addNode( new SimpleNode( "value", "" ) );
+            simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
         }
+
+        return collectionNode;
     }
-    
+
     public ImportSummary saveDataValueSet( InputStream in )
     {
         return saveDataValueSet( in, ImportOptions.getDefaultImportOptions(), null );
