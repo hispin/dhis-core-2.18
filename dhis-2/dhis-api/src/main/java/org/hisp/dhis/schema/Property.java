@@ -32,6 +32,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 
 import java.lang.reflect.Method;
 
@@ -42,9 +44,25 @@ import java.lang.reflect.Method;
 public class Property
 {
     /**
-     * Name of property.
+     * Class for property.
+     */
+    private Class<?> klass;
+
+    /**
+     * Direct link to getter for this property.
+     */
+    private final Method getterMethod;
+
+    /**
+     * Name for this property, if this class is a collection, it is the name of the items -inside- the collection
+     * and not the collection wrapper itself.
      */
     private String name;
+
+    /**
+     * Name of collection wrapper.
+     */
+    private String collectionName;
 
     /**
      * Description if provided, will be fetched from @Description annotation.
@@ -54,34 +72,14 @@ public class Property
     private String description;
 
     /**
-     * Usually equals to name, but for lists the name and xmlName might differ.
-     */
-    private String xmlName;
-
-    /**
      * XML-Namespace used for this property.
      */
-    private String xmlNamespace;
+    private String namespaceURI;
 
     /**
-     * Is this property exposed as a attribute in XML.
+     * Usually only used for XML. Is this property considered an attribute.
      */
-    private boolean xmlAttribute;
-
-    /**
-     * Name of collection wrapper.
-     */
-    private String xmlCollectionName;
-
-    /**
-     * Class for property.
-     */
-    private Class<?> klass;
-
-    /**
-     * Direct link to getter for this property.
-     */
-    private Method getterMethod;
+    private boolean attribute;
 
     /**
      * Is this a Collection sub-class.
@@ -109,6 +107,31 @@ public class Property
         this.getterMethod = getterMethod;
     }
 
+    public Property( Method getterMethod, Class<?> klass )
+    {
+        this.getterMethod = getterMethod;
+        setKlass( klass );
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Class<?> getKlass()
+    {
+        return klass;
+    }
+
+    public void setKlass( Class<?> klass )
+    {
+        this.identifiableObject = IdentifiableObject.class.isAssignableFrom( klass );
+        this.nameableObject = NameableObject.class.isAssignableFrom( klass );
+        this.klass = klass;
+    }
+
+    public Method getGetterMethod()
+    {
+        return getterMethod;
+    }
+
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getName()
@@ -119,6 +142,18 @@ public class Property
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getCollectionName()
+    {
+        return collectionName == null ? name : collectionName;
+    }
+
+    public void setCollectionName( String collectionName )
+    {
+        this.collectionName = collectionName;
     }
 
     @JsonProperty
@@ -135,72 +170,26 @@ public class Property
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getXmlName()
+    public String getNamespaceURI()
     {
-        return xmlName;
+        return namespaceURI;
     }
 
-    public void setXmlName( String xmlName )
+    public void setNamespaceURI( String namespaceURI )
     {
-        this.xmlName = xmlName;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getXmlNamespace()
-    {
-        return xmlNamespace;
-    }
-
-    public void setXmlNamespace( String xmlNamespace )
-    {
-        this.xmlNamespace = xmlNamespace;
+        this.namespaceURI = namespaceURI;
     }
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isXmlAttribute()
+    public boolean isAttribute()
     {
-        return xmlAttribute;
+        return attribute;
     }
 
-    public void setXmlAttribute( boolean xmlAttribute )
+    public void setAttribute( boolean attribute )
     {
-        this.xmlAttribute = xmlAttribute;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getXmlCollectionName()
-    {
-        return xmlCollectionName;
-    }
-
-    public void setXmlCollectionName( String xmlCollectionName )
-    {
-        this.xmlCollectionName = xmlCollectionName;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Class<?> getKlass()
-    {
-        return klass;
-    }
-
-    public void setKlass( Class<?> klass )
-    {
-        this.klass = klass;
-    }
-
-    public Method getGetterMethod()
-    {
-        return getterMethod;
-    }
-
-    public void setGetterMethod( Method getterMethod )
-    {
-        this.getterMethod = getterMethod;
+        this.attribute = attribute;
     }
 
     @JsonProperty
@@ -240,18 +229,57 @@ public class Property
     }
 
     @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        Property property = (Property) o;
+
+        if ( attribute != property.attribute ) return false;
+        if ( collection != property.collection ) return false;
+        if ( identifiableObject != property.identifiableObject ) return false;
+        if ( nameableObject != property.nameableObject ) return false;
+        if ( collectionName != null ? !collectionName.equals( property.collectionName ) : property.collectionName != null ) return false;
+        if ( description != null ? !description.equals( property.description ) : property.description != null ) return false;
+        if ( getterMethod != null ? !getterMethod.equals( property.getterMethod ) : property.getterMethod != null ) return false;
+        if ( klass != null ? !klass.equals( property.klass ) : property.klass != null ) return false;
+        if ( name != null ? !name.equals( property.name ) : property.name != null ) return false;
+        if ( namespaceURI != null ? !namespaceURI.equals( property.namespaceURI ) : property.namespaceURI != null ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = klass != null ? klass.hashCode() : 0;
+        result = 31 * result + (getterMethod != null ? getterMethod.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (collectionName != null ? collectionName.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (namespaceURI != null ? namespaceURI.hashCode() : 0);
+        result = 31 * result + (attribute ? 1 : 0);
+        result = 31 * result + (collection ? 1 : 0);
+        result = 31 * result + (identifiableObject ? 1 : 0);
+        result = 31 * result + (nameableObject ? 1 : 0);
+        return result;
+    }
+
+    @Override
     public String toString()
     {
         return "Property{" +
-            "name='" + name + '\'' +
+            "klass=" + klass +
+            ", getterMethod=" + getterMethod +
+            ", name='" + name + '\'' +
+            ", collectionName='" + collectionName + '\'' +
             ", description='" + description + '\'' +
-            ", xmlName='" + xmlName + '\'' +
-            ", xmlAttribute=" + xmlAttribute +
-            ", xmlCollectionName='" + xmlCollectionName + '\'' +
-            ", klass=" + klass +
-            ", getter=" + getterMethod +
+            ", namespaceURI='" + namespaceURI + '\'' +
+            ", attribute=" + attribute +
             ", collection=" + collection +
             ", identifiableObject=" + identifiableObject +
+            ", nameableObject=" + nameableObject +
             '}';
     }
 }

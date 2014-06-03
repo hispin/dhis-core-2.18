@@ -122,21 +122,25 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
 
                     if ( jacksonXmlProperty.localName().isEmpty() )
                     {
-                        property.setXmlName( name );
+                        property.setName( name );
                     }
                     else
                     {
-                        property.setXmlName( jacksonXmlProperty.localName() );
+                        property.setName( jacksonXmlProperty.localName() );
                     }
 
-                    property.setXmlNamespace( jacksonXmlProperty.namespace() );
-                    property.setXmlAttribute( jacksonXmlProperty.isAttribute() );
+                    if ( !StringUtils.isEmpty( jacksonXmlProperty.namespace() ) )
+                    {
+                        property.setNamespaceURI( jacksonXmlProperty.namespace() );
+                    }
+
+                    property.setAttribute( jacksonXmlProperty.isAttribute() );
                 }
 
                 if ( method.isAnnotationPresent( JacksonXmlElementWrapper.class ) )
                 {
                     JacksonXmlElementWrapper jacksonXmlElementWrapper = method.getAnnotation( JacksonXmlElementWrapper.class );
-                    property.setXmlCollectionName( jacksonXmlElementWrapper.localName() );
+                    property.setCollectionName( jacksonXmlElementWrapper.localName() );
                 }
 
                 property.setName( name );
@@ -145,16 +149,7 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                 Class<?> returnType = method.getReturnType();
                 property.setKlass( returnType );
 
-                if ( IdentifiableObject.class.isAssignableFrom( returnType ) )
-                {
-                    property.setIdentifiableObject( true );
-
-                    if ( NameableObject.class.isAssignableFrom( returnType ) )
-                    {
-                        property.setNameableObject( true );
-                    }
-                }
-                else if ( Collection.class.isAssignableFrom( returnType ) )
+                if ( Collection.class.isAssignableFrom( returnType ) )
                 {
                     property.setCollection( true );
 
