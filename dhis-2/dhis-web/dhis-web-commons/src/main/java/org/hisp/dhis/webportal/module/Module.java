@@ -157,6 +157,10 @@ public class Module
         this.description = description;
     }
 
+    // -------------------------------------------------------------------------
+    // hashCode, equals, toString
+    // -------------------------------------------------------------------------
+
     @Override
     public int hashCode()
     {
@@ -187,6 +191,12 @@ public class Module
         final Module other = (Module) object;
         
         return name.equals( other.getName() );
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "[Name: " + name + ", namespace: " + namespace + ", default action: " + defaultAction + "]";
     }
     
 }
