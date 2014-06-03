@@ -87,6 +87,8 @@
 															 onclick="toggleUnderAge(this);" class='underAge' />
 											 #elseif( $attribute.valueType == "age" || $attribute.valueType == "number" ) 
 													 <input type='text' id="attr$attribute.id" value="$value" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{required:$mandatory ,number:true}}"/>
+											 #elseif( $attribute.valueType == "age" || $attribute.valueType == "number" ) 
+													 <input type='text' id="attr$attribute.id" value="$value" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{required:$mandatory ,letterswithbasicpunc:true}}"/>
 											 #else 
 													 <input type="text" id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value='$value' class="{validate:{required:$mandatory  #if($attribute.valueType=='NUMBER'),number:true #end }}" />
 											 #end
