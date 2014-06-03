@@ -32,7 +32,7 @@
 									#foreach($option in $programAttribute.attribute.optionSet.options)
 										#set($opt=$opt + ';' + $option )
 									#end 
-									<option value="$programAttribute.attribute.uid" opt="$opt" #if($validationCriteria.property==$$programAttribute.attribute.uid) #set($attribute = $$programAttribute.attribute) selected #end>$programAttribute.attribute.displayName</option>
+									<option valuetype='$programAttribute.attribute.valueType' value="$programAttribute.attribute.uid" opt="$opt" #if($validationCriteria.property==$$programAttribute.attribute.uid) #set($attribute = $$programAttribute.attribute) selected #end>$programAttribute.attribute.displayName</option>
 								#end
 							</select>
 						</td>
@@ -44,15 +44,7 @@
 							</select>
 						</td>
 						<td id='valueTD'>
-							#if($attribute.optionSet.options)
-								<select id='value' name='value' class="{validate:{required:true}}" style="width:130px">
-									#foreach($option in $attribute.optionSet.options)
-									<option value="$option" #if($validationCriteria.value==$option.name) selected #end>$option</option>
-									#end
-								</select>
-							#else
-								<input type='text' id='value' name='value' class="{validate:{required:true}}" style="width:200px;" value='$validationCriteria.value' />
-							#end
+							<input type='text' id='value' name='value' class="{validate:{required:true}}" style="width:140px;" value='$validationCriteria.value' />
 						</td>
 					</tr>
 				</table>
@@ -67,3 +59,7 @@
 		</tr>
 	</table>
 </form>
+
+<script>
+	showDivValue();
+</script>
