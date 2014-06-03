@@ -638,5 +638,16 @@ public class MobileOrganisationUnitController
         return activityReportingService.replyMessage( message );
 
     }
+    
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/sendFeedback" )
+    @ResponseBody
+    public String sendFeedbackTracker( @PathVariable
+    int id, @RequestBody
+    Message message )
+        throws NotAllowedException
+    {
+        return activityReportingService.sendFeedback( message );
+
+    }
 
 }
