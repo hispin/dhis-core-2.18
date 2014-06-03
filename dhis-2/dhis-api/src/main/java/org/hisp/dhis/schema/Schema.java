@@ -78,6 +78,23 @@ public class Schema implements Ordered
     private String plural;
 
     /**
+     * Namespace URI to be used for this class.
+     */
+    private String namespaceURI;
+
+    /**
+     * This will normally be set to equal plural, and is normally used as a wrapper for a collection of
+     * instances of this klass type.
+     */
+    private String collectionName;
+
+    /**
+     * This will normally be set to equal singular, but in certain cases it might be useful to have another name
+     * for when this class is used as an item inside a collection.
+     */
+    private String collectionItemName;
+
+    /**
      * Is sharing supported for instances of this class.
      */
     private boolean shareable;
@@ -96,11 +113,6 @@ public class Schema implements Ordered
      * List of authorities required for doing operations on this class.
      */
     private List<Authority> authorities = Lists.newArrayList();
-
-    /**
-     * List of all exposed properties on this class.
-     */
-    private List<Property> properties = Lists.newArrayList();
 
     /**
      * Map of all exposed properties on this class, where key is property
@@ -173,6 +185,42 @@ public class Schema implements Ordered
     public void setPlural( String plural )
     {
         this.plural = plural;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getNamespaceURI()
+    {
+        return namespaceURI;
+    }
+
+    public void setNamespaceURI( String namespaceURI )
+    {
+        this.namespaceURI = namespaceURI;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getCollectionName()
+    {
+        return collectionName == null ? plural : collectionName;
+    }
+
+    public void setCollectionName( String collectionName )
+    {
+        this.collectionName = collectionName;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getCollectionItemName()
+    {
+        return collectionItemName == null ? singular : collectionItemName;
+    }
+
+    public void setCollectionItemName( String collectionItemName )
+    {
+        this.collectionItemName = collectionItemName;
     }
 
     @JsonProperty

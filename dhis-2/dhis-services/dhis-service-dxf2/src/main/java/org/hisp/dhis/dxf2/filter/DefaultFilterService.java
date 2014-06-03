@@ -176,7 +176,7 @@ public class DefaultFilterService implements FilterService
             {
                 if ( property.isCollection() )
                 {
-                    CollectionNode collectionNode = complexNode.addNode( new CollectionNode( property.getXmlCollectionName() ) );
+                    CollectionNode collectionNode = complexNode.addNode( new CollectionNode( property.getCollectionName() ) );
 
                     for ( Object collectionObject : (Collection<?>) returnValue )
                     {
