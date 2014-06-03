@@ -35,9 +35,27 @@ final public class NodeHint
 {
     public enum Type
     {
-        XML_NAMESPACE,
-        XML_ATTRIBUTE,
-        XML_COLLECTION_WRAPPING
+        /**
+         * If the serializer supports namespacing, this hint can be used to set the namespace.
+         */
+        NAMESPACE,
+
+        /**
+         * If the serializer supports attributes, this hint can be used to hint that this
+         * node is a attribute or not.
+         */
+        ATTRIBUTE,
+
+        /**
+         * If the serializer has a notion of wrapping collection (like XML), this hint can be used to
+         * turn this feature on or off.
+         */
+        WRAP_COLLECTION,
+
+        /**
+         * If the serializer supports comments, this hint can be used to set a comment for a node.
+         */
+        COMMENT
     }
 
     private final Type type;

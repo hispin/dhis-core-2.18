@@ -80,6 +80,11 @@ public class StAXNodeSerializer implements NodeSerializer
     {
         writer.writeStartDocument( "UTF-8", "1.0" );
 
+        if ( rootNode.haveHint( NodeHint.Type.COMMENT ) )
+        {
+            writer.writeComment( (String) rootNode.getHint( NodeHint.Type.COMMENT ).getValue() );
+        }
+
         writeStartElement( rootNode, writer );
 
         for ( Node node : rootNode.getNodes() )
@@ -115,9 +120,9 @@ public class StAXNodeSerializer implements NodeSerializer
 
         String value = String.format( "%s", simpleNode.getValue() );
 
-        if ( simpleNode.haveHint( NodeHint.Type.XML_NAMESPACE ) )
+        if ( simpleNode.haveHint( NodeHint.Type.NAMESPACE ) )
         {
-            writer.writeAttribute( "", String.valueOf( simpleNode.getHint( NodeHint.Type.XML_NAMESPACE ).getValue() ), simpleNode.getName(), value );
+            writer.writeAttribute( "", String.valueOf( simpleNode.getHint( NodeHint.Type.NAMESPACE ).getValue() ), simpleNode.getName(), value );
         }
         else
         {
@@ -157,11 +162,16 @@ public class StAXNodeSerializer implements NodeSerializer
 
     private void dispatcher( Node node, XMLStreamWriter writer ) throws IOException, XMLStreamException
     {
+        if ( node.haveHint( NodeHint.Type.COMMENT ) )
+        {
+            writer.writeComment( (String) node.getHint( NodeHint.Type.COMMENT ).getValue() );
+        }
+
         switch ( node.getType() )
         {
             case SIMPLE:
-                if ( node.haveHint( NodeHint.Type.XML_ATTRIBUTE ) &&
-                    (boolean) node.getHint( NodeHint.Type.XML_ATTRIBUTE ).getValue() )
+                if ( node.haveHint( NodeHint.Type.ATTRIBUTE ) &&
+                    (boolean) node.getHint( NodeHint.Type.ATTRIBUTE ).getValue() )
                 {
                     renderSimpleNodeAttribute( (SimpleNode) node, writer );
                 }
@@ -176,9 +186,9 @@ public class StAXNodeSerializer implements NodeSerializer
             case COLLECTION:
                 boolean useWrapping = true;
 
-                if ( node.haveHint( NodeHint.Type.XML_COLLECTION_WRAPPING ) )
+                if ( node.haveHint( NodeHint.Type.WRAP_COLLECTION ) )
                 {
-                    useWrapping = (boolean) node.getHint( NodeHint.Type.XML_COLLECTION_WRAPPING ).getValue();
+                    useWrapping = (boolean) node.getHint( NodeHint.Type.WRAP_COLLECTION ).getValue();
                 }
 
                 renderCollectionNode( (CollectionNode) node, writer, useWrapping );
@@ -188,9 +198,9 @@ public class StAXNodeSerializer implements NodeSerializer
 
     private void writeStartElement( Node node, XMLStreamWriter writer ) throws XMLStreamException
     {
-        if ( node.haveHint( NodeHint.Type.XML_NAMESPACE ) )
+        if ( node.haveHint( NodeHint.Type.NAMESPACE ) )
         {
-            writer.writeStartElement( "", node.getName(), String.valueOf( node.getHint( NodeHint.Type.XML_NAMESPACE ).getValue() ) );
+            writer.writeStartElement( "", node.getName(), String.valueOf( node.getHint( NodeHint.Type.NAMESPACE ).getValue() ) );
         }
         else
         {
