@@ -28,8 +28,6 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import org.hisp.dhis.node.exception.InvalidTypeException;
-
 import java.util.List;
 
 /**
@@ -41,7 +39,9 @@ public interface Node
 
     NodeType getType();
 
-    <T extends Node> T addNode( T node ) throws InvalidTypeException;
+    <T extends Node> T addNode( T node );
+
+    <T extends Node> void addNodes( List<T> nodes );
 
     List<Node> getNodes();
 

@@ -97,7 +97,7 @@ public class SystemController
 
         RootNode rootNode = new RootNode( "codes" );
         CollectionNode collectionNode = rootNode.addNode( new CollectionNode( "codes" ) );
-        collectionNode.addHint( NodeHint.Type.XML_COLLECTION_WRAPPING, false );
+        collectionNode.addHint( NodeHint.Type.WRAP_COLLECTION, false );
 
         for ( int i = 0; i < n; i++ )
         {

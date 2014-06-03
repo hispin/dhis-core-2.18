@@ -40,6 +40,7 @@ import org.hisp.dhis.dxf2.metadata.ExportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -51,7 +52,6 @@ import org.hisp.dhis.webapi.view.ClassPathUriResolver;
 import org.hisp.dhis.webapi.webdomain.form.Form;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,6 +59,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Transformer;
@@ -174,8 +175,8 @@ public class DataSetController
         JacksonUtils.toJson( response.getOutputStream(), form );
     }
 
-    @RequestMapping( value = "/{uid}/dataValueSet", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )
-    public void getDvs( @PathVariable( "uid" ) String uid,
+    @RequestMapping( value = "/{uid}/dataValueSet", method = RequestMethod.GET )
+    public @ResponseBody RootNode getDvs( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "orgUnitIdScheme", defaultValue = "ID", required = false ) String orgUnitIdScheme,
         @RequestParam( value = "dataElementIdScheme", defaultValue = "ID", required = false ) String dataElementIdScheme,
         @RequestParam( value = "period", defaultValue = "", required = false ) String period,
@@ -188,14 +189,11 @@ public class DataSetController
         if ( dataSet == null )
         {
             ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
-            return;
+            return null;
         }
 
         Period pe = periodService.getPeriod( period );
-
-        response.setContentType( MediaType.APPLICATION_XML_VALUE );
-
-        dataValueSetService.writeDataValueSetTemplate( response.getOutputStream(), dataSet, pe, orgUnits, comment, orgUnitIdScheme, dataElementIdScheme );
+        return dataValueSetService.getDataValueSetTemplate( dataSet, pe, orgUnits, comment, orgUnitIdScheme, dataElementIdScheme );
     }
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )
