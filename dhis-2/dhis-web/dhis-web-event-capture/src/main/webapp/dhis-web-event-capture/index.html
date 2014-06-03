@@ -328,7 +328,8 @@
                                             </td>
 
                                             <!-- Visible when event is under editing - in grid -->
-                                            <td style="cursor:default;"                                                
+                                            <td style="cursor:default;"      
+                                                ng-dblclick="showEventList()"
                                                 ng-if="(currentEvent.event == dhis2Event.event) && eventGridColumn.show" 
                                                 ng-repeat="eventGridColumn in eventGridColumns">
                                                 <ng-form name="innerFormGrid">
