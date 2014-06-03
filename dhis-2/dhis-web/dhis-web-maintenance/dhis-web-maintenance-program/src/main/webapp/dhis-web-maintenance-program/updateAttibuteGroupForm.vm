@@ -40,7 +40,7 @@
 	
 	<tr>
 		<td>
-			<select style="height: 200px; width: 100%; margin-top: 22px;" multiple id="availableAttributes" name="availableAttributes" size="15"></select>
+			<select style="height: 200px; width: 100%;" multiple id="availableAttributes" name="availableAttributes" size="15"></select>
 		</td>
 		<td>
 			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'availableAttributes', 'selectedAttributes' )" class='filterButton'/><br/>
