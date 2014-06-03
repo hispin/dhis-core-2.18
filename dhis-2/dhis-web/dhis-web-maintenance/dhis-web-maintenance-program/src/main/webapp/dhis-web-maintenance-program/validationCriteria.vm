@@ -17,7 +17,9 @@
 			<table width="100%">
 				<tr>
 					<td>
-						$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+						<input type="text" id='keySearch' onchange="filterValues( this.value , 1)" style="width:250px" placeholder="$i18n.getString( 'filter_by_name' )" />
+						<input type='button' value="$i18n.getString('filter')" onclick="filterValues( getFieldValue('keySearch' , 1)"/>
+						<input type='button' value="$i18n.getString('cancel')" onclick="setFieldValue('keySearch',''), filterValues('', 1)"/>
 					</td>
 					
 					<td style="text-align:right" >			
