@@ -28,6 +28,7 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.acl.Access;
 import org.hisp.dhis.acl.AclService;
@@ -45,12 +46,10 @@ import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.node.NodeHint;
 import org.hisp.dhis.node.NodeService;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.node.types.SimpleNode;
-import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
@@ -74,7 +73,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -83,6 +81,8 @@ import java.util.Map;
  */
 public abstract class AbstractCrudController<T extends IdentifiableObject>
 {
+    private static final String DEFAULT_LIST_INCLUDE = Joiner.on( "," ).join( FilterService.IDENTIFIABLE_PROPERTIES );
+
     //--------------------------------------------------------------------------
     // Dependencies
     //--------------------------------------------------------------------------
@@ -132,14 +132,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         ReflectionUtils.invokeSetterMethod( schemaService.getSchema( getEntityClass() ).getPlural(), metaData, entityList );
 
-        if ( viewClass.equals( "basic" ) )
-        {
-            handleLinksAndAccess( options, metaData, entityList, false );
-        }
-        else
-        {
-            handleLinksAndAccess( options, metaData, entityList, true );
-        }
+        handleLinksAndAccess( options, metaData, entityList );
 
         model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", viewClass );
@@ -157,7 +150,10 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
 
-        Schema schema = schemaService.getSchema( getEntityClass() );
+        if ( include == null && exclude == null )
+        {
+            include = DEFAULT_LIST_INCLUDE;
+        }
 
         boolean hasPaging = options.hasPaging();
 
@@ -200,40 +196,25 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             options.getOptions().put( "viewClass", "sharing" );
         }
 
-        if ( options.getViewClass( "basic" ).equals( "basic" ) )
+        handleLinksAndAccess( options, metaData, entityList );
+
+        RootNode rootNode = new RootNode( "metadata" );
+
+        if ( hasPaging )
         {
-            handleLinksAndAccess( options, metaData, entityList, false );
-        }
-        else
-        {
-            handleLinksAndAccess( options, metaData, entityList, true );
+            ComplexNode pagerNode = rootNode.addNode( new ComplexNode( "pager" ) );
+            pagerNode.addNode( new SimpleNode( "page", metaData.getPager().getPage() ) );
+            pagerNode.addNode( new SimpleNode( "pageCount", metaData.getPager().getPageCount() ) );
+            pagerNode.addNode( new SimpleNode( "total", metaData.getPager().getTotal() ) );
+            pagerNode.addNode( new SimpleNode( "nextPage", metaData.getPager().getNextPage() ) );
+            pagerNode.addNode( new SimpleNode( "prevPage", metaData.getPager().getPrevPage() ) );
         }
 
-        // enable property filter
-        if ( include != null || exclude != null )
-        {
-            RootNode rootNode = new RootNode( "metadata" );
+        rootNode.addNode( filterService.filterProperties( getEntityClass(), entityList, include, exclude ) );
 
-            if ( hasPaging )
-            {
-                ComplexNode pagerNode = rootNode.addNode( new ComplexNode( "pager" ) );
-                pagerNode.addNode( new SimpleNode( "page", metaData.getPager().getPage() ) );
-                pagerNode.addNode( new SimpleNode( "pageCount", metaData.getPager().getPageCount() ) );
-                pagerNode.addNode( new SimpleNode( "total", metaData.getPager().getTotal() ) );
-                pagerNode.addNode( new SimpleNode( "nextPage", metaData.getPager().getNextPage() ) );
-                pagerNode.addNode( new SimpleNode( "prevPage", metaData.getPager().getPrevPage() ) );
-            }
-
-            rootNode.addNode( filterService.filterProperties( getEntityClass(), entityList, include, exclude ) );
-
-            // response.setContentType( MediaType.APPLICATION_XML_VALUE );
-            // nodeService.serialize( rootNode, MediaType.APPLICATION_XML_VALUE, response.getOutputStream() );
-            nodeService.serialize( rootNode, MediaType.APPLICATION_JSON_VALUE, response.getOutputStream() );
-        }
-        else
-        {
-            renderService.toJson( response.getOutputStream(), metaData, JacksonUtils.getViewClass( options.getViewClass( "basic" ) ) );
-        }
+        // response.setContentType( MediaType.APPLICATION_XML_VALUE );
+        // nodeService.serialize( rootNode, MediaType.APPLICATION_XML_VALUE, response.getOutputStream() );
+        nodeService.serialize( rootNode, MediaType.APPLICATION_JSON_VALUE, response.getOutputStream() );
     }
 
 
@@ -458,7 +439,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         ((BaseIdentifiableObject) object).setAccess( access );
     }
 
-    protected void handleLinksAndAccess( WebOptions options, WebMetaData metaData, List<T> entityList, boolean deep )
+    protected void handleLinksAndAccess( WebOptions options, WebMetaData metaData, List<T> entityList )
     {
         if ( options != null && options.hasLinks() )
         {

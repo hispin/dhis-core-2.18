@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.node.types.CollectionNode;
 
@@ -38,6 +39,9 @@ import java.util.List;
  */
 public interface FilterService
 {
+    static final List<String> IDENTIFIABLE_PROPERTIES =
+        Lists.newArrayList( "id", "name", "code", "created", "lastUpdated" );
+
     /**
      * Filter a list of objects based on un-parsed filter string.
      *

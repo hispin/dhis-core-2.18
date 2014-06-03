@@ -50,9 +50,6 @@ import java.util.Map;
  */
 public class DefaultFilterService implements FilterService
 {
-    private static final List<String> IDENTIFIABLE_PROPERTIES =
-        Lists.newArrayList( "id", "name", "code", "created", "lastUpdated" );
-
     @Autowired
     private ParserService parserService;
 
