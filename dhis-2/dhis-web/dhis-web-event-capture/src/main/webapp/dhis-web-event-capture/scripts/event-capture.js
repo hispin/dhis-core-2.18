@@ -172,9 +172,21 @@ function getMetaPrograms()
     $.ajax({
         url: '../api/programs.json',
         type: 'GET',
-        data:'type=3&paging=false&include=id,name,version,programStages[id,version,programStageDataElements[dataElement[optionSet[id,version]]]]'
-    }).done( function(response) {                     
-        def.resolve( response.programs );
+        data:'type=3&paging=false&include=id,name,version,programStages[id,version,programStageDataElements[dataElement[id,optionSet[id,version]]]]'
+    }).done( function(response) {          
+        var programs = [];
+        _.each( _.values( response.programs ), function ( program ) { 
+            if( program.programStages &&
+                program.programStages.length &&
+                program.programStages[0].programStageDataElements &&
+                program.programStages[0].programStageDataElements.length ) {
+            
+                programs.push(program);
+            }  
+            
+        });
+        
+        def.resolve( programs );
     });
     
     return def.promise(); 
@@ -271,6 +283,7 @@ function getProgramStages( programs )
     var build = builder.promise();
 
     _.each( _.values( programs ), function ( program ) {
+
         build = build.then(function() {
             var d = $.Deferred();
             var p = d.promise();
@@ -284,6 +297,7 @@ function getProgramStages( programs )
 
             return p;
         });
+              
     });
 
     build.done(function() {
@@ -327,23 +341,24 @@ function getOptionSets( programs )
 
     var builder = $.Deferred();
     var build = builder.promise();    
-    
 
     _.each( _.values( programs ), function ( program ) {
         _.each(_.values( program.programStages[0].programStageDataElements), function(prStDe){
-            build = build.then(function() {
-                var d = $.Deferred();
-                var p = d.promise();
-                dhis2.ec.store.get('optionSets', prStDe.dataElement.optionSet.id).done(function(obj) {                    
-                    if(!obj || obj.version !== prStDe.dataElement.optionSet.version) {
-                        promise = promise.then( getOptionSet( prStDe.dataElement.optionSet.id ) );
-                    }
-                    d.resolve();
-                });
+            if( prStDe.dataElement.optionSet && prStDe.dataElement.optionSet ){
+                build = build.then(function() {
+                    var d = $.Deferred();
+                    var p = d.promise();
+                    dhis2.ec.store.get('optionSets', prStDe.dataElement.optionSet.id).done(function(obj) {                    
+                        if(!obj || obj.version !== prStDe.dataElement.optionSet.version) {
+                            promise = promise.then( getOptionSet( prStDe.dataElement.optionSet.id ) );
+                        }
+                        d.resolve();
+                    });
 
-                return p;
-            });
-        });        
+                    return p;
+                });
+            }            
+        });                      
     });
 
     build.done(function() {
