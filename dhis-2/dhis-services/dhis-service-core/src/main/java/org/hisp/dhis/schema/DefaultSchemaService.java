@@ -69,6 +69,13 @@ public class DefaultSchemaService implements SchemaService
 
             classSchemaMap.put( schema.getKlass(), schema );
             singularSchemaMap.put( schema.getSingular(), schema );
+
+            if ( schema.getPropertyMap().containsKey( "__self__" ) )
+            {
+                Property property = schema.getPropertyMap().get( "__self__" );
+                schema.setName( property.getName() );
+                schema.setNamespaceURI( property.getNamespaceURI() );
+            }
         }
     }
 

@@ -31,6 +31,7 @@ package org.hisp.dhis.schema;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -80,6 +81,27 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
         }
 
         Map<String, Property> propertyMap = Maps.newHashMap();
+
+        // TODO this is quite nasty, should find a better way of exposing properties at class-level
+        if ( clazz.isAnnotationPresent( JacksonXmlRootElement.class ) )
+        {
+            Property property = new Property();
+
+            JacksonXmlRootElement jacksonXmlRootElement = clazz.getAnnotation( JacksonXmlRootElement.class );
+
+            if ( !StringUtils.isEmpty( jacksonXmlRootElement.localName() ) )
+            {
+                property.setName( jacksonXmlRootElement.localName() );
+            }
+
+            if ( !StringUtils.isEmpty( jacksonXmlRootElement.namespace() ) )
+            {
+                property.setNamespaceURI( jacksonXmlRootElement.namespace() );
+            }
+
+            propertyMap.put( "__self__", property );
+        }
+
         List<Method> allMethods = ReflectionUtils.getAllMethods( clazz );
 
         for ( Method method : allMethods )
@@ -120,7 +142,7 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                 {
                     JacksonXmlProperty jacksonXmlProperty = method.getAnnotation( JacksonXmlProperty.class );
 
-                    if ( jacksonXmlProperty.localName().isEmpty() )
+                    if ( StringUtils.isEmpty( jacksonXmlProperty.localName() ) )
                     {
                         property.setName( name );
                     }
@@ -140,7 +162,12 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                 if ( method.isAnnotationPresent( JacksonXmlElementWrapper.class ) )
                 {
                     JacksonXmlElementWrapper jacksonXmlElementWrapper = method.getAnnotation( JacksonXmlElementWrapper.class );
-                    property.setCollectionName( jacksonXmlElementWrapper.localName() );
+
+                    // TODO what if element-wrapper have different namespace?
+                    if ( !StringUtils.isEmpty( jacksonXmlElementWrapper.localName() ) )
+                    {
+                        property.setCollectionName( jacksonXmlElementWrapper.localName() );
+                    }
                 }
 
                 property.setName( name );
