@@ -133,14 +133,7 @@ public class DataElementOperandController extends AbstractCrudController<DataEle
 
         String viewClass = options.getViewClass( "basic" );
 
-        if ( viewClass.equals( "basic" ) || viewClass.equals( "sharingBasic" ) )
-        {
-            handleLinksAndAccess( options, metaData, dataElementOperands, false );
-        }
-        else
-        {
-            handleLinksAndAccess( options, metaData, dataElementOperands, true );
-        }
+        handleLinksAndAccess( options, metaData, dataElementOperands );
 
         postProcessEntities( dataElementOperands );
         postProcessEntities( dataElementOperands, options, parameters );
