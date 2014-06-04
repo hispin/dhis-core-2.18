@@ -17,11 +17,8 @@
 	</tr>
 	<tr>
 		<td>
-			 <select style="height:200px;width:100%;" size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableList', 'userRoleIds' )">
-            #foreach ( $userRole in $userRoles )
-              <option value="$userRole.id">$encoder.htmlEncode( $userRole.name )</option>
-            #end
-          </select>
+			<select style="height:200px;width:100%;" size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableList', 'userRoleIds' )">
+            </select>
 		</td>
 		<td>
 			<input type="button" value="&gt;" onclick="moveSelectedById( 'availableList', 'userRoleIds' )" class="filterButton" /><br/>
@@ -47,5 +44,18 @@
 	$(document).ready(function(){
 		sortList('availableList', 'ASC');
 		sortList('selectedList', 'ASC');
+		
+		jQuery("#availableList").dhisAjaxSelect({
+			source: '../dhis-web-commons-ajax-json/getUserRoles.action',
+			iterator: 'userRoles',
+			connectedTo: 'selectedList',
+			handler: function(item){
+				var option = jQuery( "<option/>" );
+				option.attr( "value", item.id );
+				option.text( item.name );
+				
+				return option;
+			}
+		});
 	});
 </script>
