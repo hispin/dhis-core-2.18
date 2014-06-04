@@ -65,8 +65,9 @@ public interface AnalyticsTableManager
     
     /**
      * Checks if the database content is in valid state for analytics table generation.
+     * Returns null if valid, a descriptive string if invalid.
      */
-    boolean validState();
+    String validState();
     
     /**
      * Returns the base table name.
