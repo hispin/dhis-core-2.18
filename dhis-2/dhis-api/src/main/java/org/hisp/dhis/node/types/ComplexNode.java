@@ -36,26 +36,8 @@ import org.hisp.dhis.node.NodeType;
  */
 public class ComplexNode extends AbstractNode
 {
-    private Class<?> klass;
-
     public ComplexNode( String name )
     {
         super( name, NodeType.COMPLEX );
-    }
-
-    public ComplexNode( String name, Class<?> klass )
-    {
-        super( name, NodeType.COMPLEX );
-        this.klass = klass;
-    }
-
-    public Class<?> getKlass()
-    {
-        return klass;
-    }
-
-    public void setKlass( Class<?> klass )
-    {
-        this.klass = klass;
     }
 }
