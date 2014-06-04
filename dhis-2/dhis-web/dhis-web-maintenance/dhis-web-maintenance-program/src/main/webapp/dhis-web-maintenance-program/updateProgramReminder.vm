@@ -90,12 +90,11 @@
 				#set($time = '-1')
 				#set($value=-1 * $value)
 			#end
-			<td><label for="daysAllowedSendMessage">$i18n.getString( "send_message" )</label></td>
-			<td><input type="text" id="daysAllowedSendMessage" name="daysAllowedSendMessage" 
+			<td><label for="days">$i18n.getString( "send_message" )</label></td>
+			<td><input type="text" id="days" name="days" 
 				class="{validate:{required:true,number:true}}" value="$!value"
 				onkeyup='setRealDays();' style="width:100px;"
-				#if($!reminder.whenToSend==1 || $!reminder.whenToSend==3 ) disabled #end 
-				realvalue="$!reminder.daysAllowedSendMessage" />
+				#if($!reminder.whenToSend==1 || $!reminder.whenToSend==3 ) disabled #end />
 				$i18n.getString('days')
 				<select id='time' name='time' onchange='setRealDays();' style="width:100px;"
 					#if($!reminder.whenToSend==1 || $!reminder.whenToSend==3 ) disabled #end  >
@@ -103,6 +102,7 @@
 					<option value='-1' #if($time=='-1') selected #end  >$i18n.getString('after')</option>
 				</select>
 				$i18n.getString('scheduled_date')
+				<input type="hidden" id="daysAllowedSendMessage" name="daysAllowedSendMessage" value="$!reminder.daysAllowedSendMessage" />
 			</td>
 		</tr>
 		<tr>
