@@ -73,11 +73,11 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
     {
         JsonGenerator generator = objectMapper.getFactory().createGenerator( outputStream );
 
-        renderRootNode( rootNode, generator );
+        writeRootNode( rootNode, generator );
         generator.flush();
     }
 
-    private void renderRootNode( RootNode rootNode, JsonGenerator generator ) throws IOException
+    private void writeRootNode( RootNode rootNode, JsonGenerator generator ) throws IOException
     {
         generator.writeStartObject();
 
@@ -90,7 +90,7 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
         generator.writeEndObject();
     }
 
-    private void renderSimpleNode( SimpleNode simpleNode, JsonGenerator generator, boolean writeKey ) throws IOException
+    private void writeSimpleNode( SimpleNode simpleNode, JsonGenerator generator, boolean writeKey ) throws IOException
     {
         if ( simpleNode.getValue() == null ) // add hint for this, exclude if null
         {
@@ -107,7 +107,7 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
         }
     }
 
-    private void renderComplexNode( ComplexNode complexNode, JsonGenerator generator, boolean writeKey ) throws IOException
+    private void writeComplexNode( ComplexNode complexNode, JsonGenerator generator, boolean writeKey ) throws IOException
     {
         if ( writeKey )
         {
@@ -126,7 +126,7 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
         generator.writeEndObject();
     }
 
-    private void renderCollectionNode( CollectionNode collectionNode, JsonGenerator generator, boolean writeKey ) throws IOException
+    private void writeCollectionNode( CollectionNode collectionNode, JsonGenerator generator, boolean writeKey ) throws IOException
     {
         if ( writeKey )
         {
@@ -150,13 +150,13 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
         switch ( node.getType() )
         {
             case SIMPLE:
-                renderSimpleNode( (SimpleNode) node, generator, writeKey );
+                writeSimpleNode( (SimpleNode) node, generator, writeKey );
                 break;
             case COMPLEX:
-                renderComplexNode( (ComplexNode) node, generator, writeKey );
+                writeComplexNode( (ComplexNode) node, generator, writeKey );
                 break;
             case COLLECTION:
-                renderCollectionNode( (CollectionNode) node, generator, writeKey );
+                writeCollectionNode( (CollectionNode) node, generator, writeKey );
                 break;
         }
     }

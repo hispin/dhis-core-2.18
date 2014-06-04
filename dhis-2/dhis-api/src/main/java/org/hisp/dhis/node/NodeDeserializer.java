@@ -66,5 +66,5 @@ import java.io.InputStream;
  */
 public interface NodeDeserializer
 {
-    RootNode render( InputStream inputStream ) throws IOException;
+    RootNode deserialize( InputStream inputStream ) throws IOException;
 }
