@@ -108,6 +108,7 @@ function messageTypeMap()
 	typeMap['3'] = i18n_both;
 	return typeMap;
 }
+
 function showHideUserGroup() {
   jQuery(".sendTo").each(function( i, item ) {
     var numb = i + 1;
