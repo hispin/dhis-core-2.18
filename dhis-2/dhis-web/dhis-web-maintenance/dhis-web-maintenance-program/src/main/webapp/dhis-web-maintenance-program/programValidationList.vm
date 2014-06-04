@@ -19,8 +19,10 @@
     <td style="vertical-align:top" colspan="2">
 		<table width="100%">
 			<tr>
-				<td valign='bottom'>
-					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+				<td>
+					<input type="text" id='keySearch' onchange="filterValues( this.value , 1)" style="width:250px" placeholder="$i18n.getString( 'filter_by_name' )" />
+					<input type='button' value="$i18n.getString('filter')" onclick="filterValues( getFieldValue('keySearch' , 1)"/>
+					<input type='button' value="$i18n.getString('cancel')" onclick="setFieldValue('keySearch',''), filterValues('', 1)"/>
 				</td>
 				<td align="right">
 					<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddSingleProgramValidationForm.action?id=$program.id'" style="width:100px"><br>
