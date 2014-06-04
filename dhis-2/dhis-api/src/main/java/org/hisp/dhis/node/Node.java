@@ -83,5 +83,19 @@ public interface Node
      */
     <T extends Node> void addChildren( Iterable<T> children );
 
+    /**
+     * Returns child with name, or null if it doesn't exist.
+     *
+     * @param name Name to search for
+     * @return A node with that name if it exists, or null
+     */
+    Node getChild( String name );
+
+    /**
+     * Get all child notes associated with this node. Please note that the returned list is a copy
+     * of the internal list, and changes to the list will not be reflected in the node.
+     *
+     * @return List of child nodes associated with this node
+     */
     List<Node> getChildren();
 }
