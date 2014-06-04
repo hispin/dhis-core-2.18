@@ -35,21 +35,53 @@ import java.util.List;
  */
 public interface Node
 {
+    /**
+     * Name of this node.
+     *
+     * @return current name of node
+     */
     String getName();
 
+    /**
+     * Type specifier for this node.
+     *
+     * @return Node type
+     * @see org.hisp.dhis.node.NodeType
+     */
     NodeType getType();
 
-    <T extends Node> T addNode( T node );
+    /**
+     * Namespace for this node. Not all serializers support this, and its up to the
+     * NodeSerializer implementation to decide what to do with this.
+     *
+     * @return namespace
+     * @see org.hisp.dhis.node.NodeSerializer
+     */
+    String getNamespace();
 
-    <T extends Node> void addNodes( List<T> nodes );
+    /**
+     * Comment for this node. Not all serializers support this, and its up to the
+     * NodeSerializer implementation to decide what to do with this.
+     *
+     * @return namespace
+     * @see org.hisp.dhis.node.NodeSerializer
+     */
+    String getComment();
 
-    List<Node> getNodes();
+    /**
+     * Adds a child to this node.
+     *
+     * @param child Child node to add
+     * @return Child node that was added
+     */
+    <T extends Node> T addChild( T child );
 
-    NodeHint addHint( NodeHint.Type type, Object value );
+    /**
+     * Adds a collection of children to this node.
+     *
+     * @param children Child nodes to add
+     */
+    <T extends Node> void addChildren( Iterable<T> children );
 
-    NodeHint addHint( NodeHint nodeHint );
-
-    NodeHint getHint( NodeHint.Type type );
-
-    boolean haveHint( NodeHint.Type type );
+    List<Node> getChildren();
 }

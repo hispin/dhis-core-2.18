@@ -29,13 +29,13 @@ package org.hisp.dhis.node.serializers;
  */
 
 import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.NodeHint;
 import org.hisp.dhis.node.NodeSerializer;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.node.types.SimpleNode;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -80,14 +80,14 @@ public class StAXNodeSerializer implements NodeSerializer
     {
         writer.writeStartDocument( "UTF-8", "1.0" );
 
-        if ( rootNode.haveHint( NodeHint.Type.COMMENT ) )
+        if ( !StringUtils.isEmpty( rootNode.getComment() ) )
         {
-            writer.writeComment( (String) rootNode.getHint( NodeHint.Type.COMMENT ).getValue() );
+            writer.writeComment( rootNode.getComment() );
         }
 
         writeStartElement( rootNode, writer );
 
-        for ( Node node : rootNode.getNodes() )
+        for ( Node node : rootNode.getChildren() )
         {
             dispatcher( node, writer );
             writer.flush();
@@ -120,9 +120,9 @@ public class StAXNodeSerializer implements NodeSerializer
 
         String value = String.format( "%s", simpleNode.getValue() );
 
-        if ( simpleNode.haveHint( NodeHint.Type.NAMESPACE ) )
+        if ( !StringUtils.isEmpty( simpleNode.getNamespace() ) )
         {
-            writer.writeAttribute( "", String.valueOf( simpleNode.getHint( NodeHint.Type.NAMESPACE ).getValue() ), simpleNode.getName(), value );
+            writer.writeAttribute( "", simpleNode.getNamespace(), simpleNode.getName(), value );
         }
         else
         {
@@ -134,7 +134,7 @@ public class StAXNodeSerializer implements NodeSerializer
     {
         writeStartElement( complexNode, writer );
 
-        for ( Node node : complexNode.getNodes() )
+        for ( Node node : complexNode.getChildren() )
         {
             dispatcher( node, writer );
         }
@@ -149,7 +149,7 @@ public class StAXNodeSerializer implements NodeSerializer
             writeStartElement( collectionNode, writer );
         }
 
-        for ( Node node : collectionNode.getNodes() )
+        for ( Node node : collectionNode.getChildren() )
         {
             dispatcher( node, writer );
         }
@@ -162,16 +162,15 @@ public class StAXNodeSerializer implements NodeSerializer
 
     private void dispatcher( Node node, XMLStreamWriter writer ) throws IOException, XMLStreamException
     {
-        if ( node.haveHint( NodeHint.Type.COMMENT ) )
+        if ( !StringUtils.isEmpty( node.getComment() ) )
         {
-            writer.writeComment( (String) node.getHint( NodeHint.Type.COMMENT ).getValue() );
+            writer.writeComment( node.getComment() );
         }
 
         switch ( node.getType() )
         {
             case SIMPLE:
-                if ( node.haveHint( NodeHint.Type.ATTRIBUTE ) &&
-                    (boolean) node.getHint( NodeHint.Type.ATTRIBUTE ).getValue() )
+                if ( ((SimpleNode) node).isAttribute() )
                 {
                     renderSimpleNodeAttribute( (SimpleNode) node, writer );
                 }
@@ -184,13 +183,7 @@ public class StAXNodeSerializer implements NodeSerializer
                 renderComplexNode( (ComplexNode) node, writer );
                 break;
             case COLLECTION:
-                boolean useWrapping = true;
-
-                if ( node.haveHint( NodeHint.Type.WRAP_COLLECTION ) )
-                {
-                    useWrapping = (boolean) node.getHint( NodeHint.Type.WRAP_COLLECTION ).getValue();
-                }
-
+                boolean useWrapping = ((CollectionNode) node).isWrapping();
                 renderCollectionNode( (CollectionNode) node, writer, useWrapping );
                 break;
         }
@@ -198,9 +191,9 @@ public class StAXNodeSerializer implements NodeSerializer
 
     private void writeStartElement( Node node, XMLStreamWriter writer ) throws XMLStreamException
     {
-        if ( node.haveHint( NodeHint.Type.NAMESPACE ) )
+        if ( !StringUtils.isEmpty( node.getNamespace() ) )
         {
-            writer.writeStartElement( "", node.getName(), String.valueOf( node.getHint( NodeHint.Type.NAMESPACE ).getValue() ) );
+            writer.writeStartElement( "", node.getName(), node.getNamespace() );
         }
         else
         {

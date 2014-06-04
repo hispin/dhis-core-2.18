@@ -31,7 +31,6 @@ package org.hisp.dhis.webapi.controller;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dxf2.metadata.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.node.NodeHint;
 import org.hisp.dhis.node.exception.InvalidTypeException;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.RootNode;
@@ -96,12 +95,12 @@ public class SystemController
         }
 
         RootNode rootNode = new RootNode( "codes" );
-        CollectionNode collectionNode = rootNode.addNode( new CollectionNode( "codes" ) );
-        collectionNode.addHint( NodeHint.Type.WRAP_COLLECTION, false );
+        CollectionNode collectionNode = rootNode.addChild( new CollectionNode( "codes" ) );
+        collectionNode.setWrapping( false );
 
         for ( int i = 0; i < n; i++ )
         {
-            collectionNode.addNode( new SimpleNode( "code", CodeGenerator.generateCode() ) );
+            collectionNode.addChild( new SimpleNode( "code", CodeGenerator.generateCode() ) );
         }
 
         return rootNode;

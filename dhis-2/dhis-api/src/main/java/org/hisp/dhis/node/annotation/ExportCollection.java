@@ -1,4 +1,4 @@
-package org.hisp.dhis.node;
+package org.hisp.dhis.node.annotation;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,53 +28,27 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-final public class NodeHint
+@Target( { ElementType.FIELD, ElementType.METHOD } )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface ExportCollection
 {
-    public enum Type
-    {
-        /**
-         * If the serializer supports namespacing, this hint can be used to set the namespace.
-         */
-        NAMESPACE,
+    String value() default "";
 
-        /**
-         * If the serializer supports attributes, this hint can be used to hint that this
-         * node is a attribute or not.
-         */
-        ATTRIBUTE,
+    String namespace() default "";
 
-        /**
-         * If the serializer has a notion of wrapping collection (like XML), this hint can be used to
-         * turn this feature on or off.
-         */
-        WRAP_COLLECTION,
+    String itemName() default "";
 
-        /**
-         * If the serializer supports comments, this hint can be used to set a comment for a node.
-         */
-        COMMENT
-    }
+    String itemNamespace() default "";
 
-    private final Type type;
+    boolean owner() default false;
 
-    private final Object value;
-
-    public NodeHint( Type type, Object value )
-    {
-        this.type = type;
-        this.value = value;
-    }
-
-    public Type getType()
-    {
-        return type;
-    }
-
-    public Object getValue()
-    {
-        return value;
-    }
+    boolean useWrapping() default true;
 }

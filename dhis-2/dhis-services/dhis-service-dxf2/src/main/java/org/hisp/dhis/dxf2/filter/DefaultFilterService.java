@@ -120,7 +120,7 @@ public class DefaultFilterService implements FilterService
 
         for ( Object object : objects )
         {
-            collectionNode.addNode( buildObjectOutput( fieldMap, object ) );
+            collectionNode.addChild( buildObjectOutput( fieldMap, object ) );
         }
 
         return collectionNode;
@@ -158,30 +158,30 @@ public class DefaultFilterService implements FilterService
             {
                 if ( !property.isIdentifiableObject() )
                 {
-                    complexNode.addNode( new SimpleNode( fieldKey, returnValue ) );
+                    complexNode.addChild( new SimpleNode( fieldKey, returnValue ) );
                 }
                 else if ( !property.isCollection() )
                 {
-                    complexNode.addNode( getIdentifiableObjectProperties( returnValue, IDENTIFIABLE_PROPERTIES ) );
+                    complexNode.addChild( getIdentifiableObjectProperties( returnValue, IDENTIFIABLE_PROPERTIES ) );
                 }
                 else
                 {
-                    complexNode.addNode( getIdentifiableObjectCollectionProperties( returnValue, IDENTIFIABLE_PROPERTIES, fieldKey ) );
+                    complexNode.addChild( getIdentifiableObjectCollectionProperties( returnValue, IDENTIFIABLE_PROPERTIES, fieldKey ) );
                 }
             }
             else
             {
                 if ( property.isCollection() )
                 {
-                    CollectionNode collectionNode = complexNode.addNode( new CollectionNode( property.getCollectionName() ) );
+                    CollectionNode collectionNode = complexNode.addChild( new CollectionNode( property.getCollectionName() ) );
 
                     for ( Object collectionObject : (Collection<?>) returnValue )
                     {
                         ComplexNode node = buildObjectOutput( fieldValue, collectionObject );
 
-                        if ( !node.getNodes().isEmpty() )
+                        if ( !node.getChildren().isEmpty() )
                         {
-                            collectionNode.addNode( node );
+                            collectionNode.addChild( node );
                         }
                     }
                 }
@@ -189,9 +189,9 @@ public class DefaultFilterService implements FilterService
                 {
                     ComplexNode node = buildObjectOutput( fieldValue, returnValue );
 
-                    if ( !node.getNodes().isEmpty() )
+                    if ( !node.getChildren().isEmpty() )
                     {
-                        complexNode.addNode( node );
+                        complexNode.addChild( node );
                     }
                 }
             }
@@ -228,7 +228,7 @@ public class DefaultFilterService implements FilterService
 
         for ( IdentifiableObject identifiableObject : identifiableObjects )
         {
-            collectionNode.addNode( getIdentifiableObjectProperties( identifiableObject, fields ) );
+            collectionNode.addChild( getIdentifiableObjectProperties( identifiableObject, fields ) );
         }
 
         return collectionNode;
@@ -263,7 +263,7 @@ public class DefaultFilterService implements FilterService
 
             if ( o != null )
             {
-                complexNode.addNode( new SimpleNode( field, o ) );
+                complexNode.addChild( new SimpleNode( field, o ) );
             }
         }
 

@@ -202,15 +202,15 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( hasPaging )
         {
-            ComplexNode pagerNode = rootNode.addNode( new ComplexNode( "pager" ) );
-            pagerNode.addNode( new SimpleNode( "page", metaData.getPager().getPage() ) );
-            pagerNode.addNode( new SimpleNode( "pageCount", metaData.getPager().getPageCount() ) );
-            pagerNode.addNode( new SimpleNode( "total", metaData.getPager().getTotal() ) );
-            pagerNode.addNode( new SimpleNode( "nextPage", metaData.getPager().getNextPage() ) );
-            pagerNode.addNode( new SimpleNode( "prevPage", metaData.getPager().getPrevPage() ) );
+            ComplexNode pagerNode = rootNode.addChild( new ComplexNode( "pager" ) );
+            pagerNode.addChild( new SimpleNode( "page", metaData.getPager().getPage() ) );
+            pagerNode.addChild( new SimpleNode( "pageCount", metaData.getPager().getPageCount() ) );
+            pagerNode.addChild( new SimpleNode( "total", metaData.getPager().getTotal() ) );
+            pagerNode.addChild( new SimpleNode( "nextPage", metaData.getPager().getNextPage() ) );
+            pagerNode.addChild( new SimpleNode( "prevPage", metaData.getPager().getPrevPage() ) );
         }
 
-        rootNode.addNode( filterService.filterProperties( getEntityClass(), entityList, include, exclude ) );
+        rootNode.addChild( filterService.filterProperties( getEntityClass(), entityList, include, exclude ) );
 
         // response.setContentType( MediaType.APPLICATION_XML_VALUE );
         // nodeService.serialize( rootNode, MediaType.APPLICATION_XML_VALUE, response.getOutputStream() );

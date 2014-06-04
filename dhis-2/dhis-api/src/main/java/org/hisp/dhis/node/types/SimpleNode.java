@@ -40,9 +40,18 @@ public class SimpleNode extends AbstractNode
 {
     private final Object value;
 
+    private boolean attribute;
+
     public SimpleNode( String name, Object value )
     {
         super( name, NodeType.SIMPLE );
+        this.value = value;
+        this.attribute = false;
+    }
+
+    public SimpleNode( String name, NodeType nodeType, Object value, boolean attribute )
+    {
+        super( name, nodeType );
         this.value = value;
     }
 
@@ -51,9 +60,25 @@ public class SimpleNode extends AbstractNode
         return value;
     }
 
-    @Override
-    public <T extends Node> T addNode( T node ) throws InvalidTypeException
+    public boolean isAttribute()
     {
-        throw new InvalidTypeException( "Adding nodes to a node of type simple is not allowed." );
+        return attribute;
+    }
+
+    public void setAttribute( boolean attribute )
+    {
+        this.attribute = attribute;
+    }
+
+    @Override
+    public <T extends Node> T addChild( T child ) throws InvalidTypeException
+    {
+        throw new InvalidTypeException( "Adding children to a node of type simple is not allowed." );
+    }
+
+    @Override
+    public <T extends Node> void addChildren( Iterable<T> children )
+    {
+        throw new InvalidTypeException( "Adding children to a node of type simple is not allowed." );
     }
 }
