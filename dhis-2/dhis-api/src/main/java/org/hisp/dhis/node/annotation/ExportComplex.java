@@ -1,4 +1,4 @@
-package org.hisp.dhis.node;
+package org.hisp.dhis.node.annotation;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,95 +28,19 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.collect.Lists;
-import org.hisp.dhis.node.exception.InvalidTypeException;
-
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractNode implements Node
+@Target( { ElementType.FIELD, ElementType.METHOD } )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface ExportComplex
 {
-    private String name;
+    String value() default "";
 
-    private final NodeType nodeType;
-
-    private String namespace;
-
-    private String comment;
-
-    private final List<Node> nodes = Lists.newArrayList();
-
-    protected AbstractNode( String name, NodeType nodeType )
-    {
-        this.name = name;
-        this.nodeType = nodeType;
-    }
-
-    @Override
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    @Override
-    public NodeType getType()
-    {
-        return nodeType;
-    }
-
-    @Override
-    public String getNamespace()
-    {
-        return namespace;
-    }
-
-    public void setNamespace( String namespace )
-    {
-        this.namespace = namespace;
-    }
-
-    @Override
-    public String getComment()
-    {
-        return comment;
-    }
-
-    public void setComment( String comment )
-    {
-        this.comment = comment;
-    }
-
-    @Override
-    public <T extends Node> T addChild( T child ) throws InvalidTypeException
-    {
-        if ( child == null )
-        {
-            return null;
-        }
-
-        nodes.add( child );
-        return child;
-    }
-
-    @Override
-    public <T extends Node> void addChildren( Iterable<T> children )
-    {
-        for ( Node node : children )
-        {
-            addChild( node );
-        }
-    }
-
-    @Override
-    public List<Node> getChildren()
-    {
-        return nodes;
-    }
+    String namespace() default "";
 }

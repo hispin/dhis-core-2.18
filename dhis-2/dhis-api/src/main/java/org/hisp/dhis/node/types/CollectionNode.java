@@ -36,8 +36,23 @@ import org.hisp.dhis.node.NodeType;
  */
 public class CollectionNode extends AbstractNode
 {
+    /**
+     * Should this collection act as a wrapper around its children.
+     */
+    boolean wrapping = true;
+
     public CollectionNode( String name )
     {
         super( name, NodeType.COLLECTION );
+    }
+
+    public boolean isWrapping()
+    {
+        return wrapping;
+    }
+
+    public void setWrapping( boolean wrapping )
+    {
+        this.wrapping = wrapping;
     }
 }

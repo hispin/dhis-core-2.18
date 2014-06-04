@@ -81,7 +81,7 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
     {
         generator.writeStartObject();
 
-        for ( Node node : rootNode.getNodes() )
+        for ( Node node : rootNode.getChildren() )
         {
             dispatcher( node, generator, true );
             generator.flush();
@@ -118,7 +118,7 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
             generator.writeStartObject();
         }
 
-        for ( Node node : complexNode.getNodes() )
+        for ( Node node : complexNode.getChildren() )
         {
             dispatcher( node, generator, true );
         }
@@ -137,7 +137,7 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
             generator.writeStartArray();
         }
 
-        for ( Node node : collectionNode.getNodes() )
+        for ( Node node : collectionNode.getChildren() )
         {
             dispatcher( node, generator, false );
         }

@@ -55,7 +55,6 @@ import org.hisp.dhis.dxf2.pdfform.PdfDataEntryFormUtil;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
-import org.hisp.dhis.node.NodeHint;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
@@ -243,18 +242,18 @@ public class DefaultDataValueSetService
         boolean writeComments, String ouScheme, String deScheme )
     {
         RootNode rootNode = new RootNode( "dataValueSet" );
-        rootNode.addHint( NodeHint.Type.NAMESPACE, DxfNamespaces.DXF_2_0 );
-        rootNode.addHint( NodeHint.Type.COMMENT, "Data set: " + dataSet.getDisplayName() + " (" + dataSet.getUid() + ")" );
+        rootNode.setNamespace( DxfNamespaces.DXF_2_0 );
+        rootNode.setComment( "Data set: " + dataSet.getDisplayName() + " (" + dataSet.getUid() + ")" );
 
-        CollectionNode collectionNode = rootNode.addNode( new CollectionNode( "dataValues" ) );
-        collectionNode.addHint( NodeHint.Type.WRAP_COLLECTION, false );
+        CollectionNode collectionNode = rootNode.addChild( new CollectionNode( "dataValues" ) );
+        collectionNode.setWrapping( false );
 
         if ( orgUnits.isEmpty() )
         {
             for ( DataElement dataElement : dataSet.getDataElements() )
             {
                 CollectionNode collection = getDataValueTemplate( dataElement, deScheme, null, ouScheme, period, writeComments );
-                collectionNode.addNodes( collection.getNodes() );
+                collectionNode.addChildren( collection.getChildren() );
             }
         }
         else
@@ -271,7 +270,7 @@ public class DefaultDataValueSetService
                 for ( DataElement dataElement : dataSet.getDataElements() )
                 {
                     CollectionNode collection = getDataValueTemplate( dataElement, deScheme, organisationUnit, ouScheme, period, writeComments );
-                    collectionNode.addNodes( collection.getNodes() );
+                    collectionNode.addChildren( collection.getChildren() );
                 }
             }
         }
@@ -282,11 +281,11 @@ public class DefaultDataValueSetService
     private CollectionNode getDataValueTemplate( DataElement dataElement, String deScheme, OrganisationUnit organisationUnit, String ouScheme, Period period, boolean comment )
     {
         CollectionNode collectionNode = new CollectionNode( "dataValues" );
-        collectionNode.addHint( NodeHint.Type.WRAP_COLLECTION, false );
+        collectionNode.setWrapping( false );
 
         for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getSortedOptionCombos() )
         {
-            ComplexNode complexNode = collectionNode.addNode( new ComplexNode( "dataValue" ) );
+            ComplexNode complexNode = collectionNode.addChild( new ComplexNode( "dataValue" ) );
 
             String label = dataElement.getDisplayName();
 
@@ -297,42 +296,42 @@ public class DefaultDataValueSetService
 
             if ( comment )
             {
-                complexNode.addHint( NodeHint.Type.COMMENT, "Data element: " + label );
+                complexNode.setComment( "Data element: " + label );
             }
 
             if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( deScheme.toLowerCase() ) )
             {
-                SimpleNode simpleNode = complexNode.addNode( new SimpleNode( "dataElement", dataElement.getCode() ) );
-                simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
+                SimpleNode simpleNode = complexNode.addChild( new SimpleNode( "dataElement", dataElement.getCode() ) );
+                simpleNode.setAttribute( true );
             }
             else
             {
-                SimpleNode simpleNode = complexNode.addNode( new SimpleNode( "dataElement", dataElement.getUid() ) );
-                simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
+                SimpleNode simpleNode = complexNode.addChild( new SimpleNode( "dataElement", dataElement.getUid() ) );
+                simpleNode.setAttribute( true );
             }
 
-            SimpleNode simpleNode = complexNode.addNode( new SimpleNode( "categoryOptionCombo", categoryOptionCombo.getUid() ) );
-            simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
+            SimpleNode simpleNode = complexNode.addChild( new SimpleNode( "categoryOptionCombo", categoryOptionCombo.getUid() ) );
+            simpleNode.setAttribute( true );
 
-            simpleNode = complexNode.addNode( new SimpleNode( "period", period != null ? period.getIsoDate() : "" ) );
-            simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
+            simpleNode = complexNode.addChild( new SimpleNode( "period", period != null ? period.getIsoDate() : "" ) );
+            simpleNode.setAttribute( true );
 
             if ( organisationUnit != null )
             {
                 if ( IdentifiableObject.IdentifiableProperty.CODE.toString().toLowerCase().equals( ouScheme.toLowerCase() ) )
                 {
-                    simpleNode = complexNode.addNode( new SimpleNode( "orgUnit", organisationUnit.getCode() == null ? "" : organisationUnit.getCode() ) );
-                    simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
+                    simpleNode = complexNode.addChild( new SimpleNode( "orgUnit", organisationUnit.getCode() == null ? "" : organisationUnit.getCode() ) );
+                    simpleNode.setAttribute( true );
                 }
                 else
                 {
-                    simpleNode = complexNode.addNode( new SimpleNode( "orgUnit", organisationUnit.getUid() == null ? "" : organisationUnit.getUid() ) );
-                    simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
+                    simpleNode = complexNode.addChild( new SimpleNode( "orgUnit", organisationUnit.getUid() == null ? "" : organisationUnit.getUid() ) );
+                    simpleNode.setAttribute( true );
                 }
             }
 
-            simpleNode = complexNode.addNode( new SimpleNode( "value", "" ) );
-            simpleNode.addHint( NodeHint.Type.ATTRIBUTE, true );
+            simpleNode = complexNode.addChild( new SimpleNode( "value", "" ) );
+            simpleNode.setAttribute( true );
         }
 
         return collectionNode;
