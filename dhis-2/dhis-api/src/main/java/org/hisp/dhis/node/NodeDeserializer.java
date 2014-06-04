@@ -60,11 +60,14 @@ import org.hisp.dhis.node.types.RootNode;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public interface NodeDeserializer
 {
+    List<String> contentTypes();
+
     RootNode deserialize( InputStream inputStream ) throws IOException;
 }

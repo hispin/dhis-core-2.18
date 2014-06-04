@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.collect.Lists;
 import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.NodeSerializer;
 import org.hisp.dhis.node.types.CollectionNode;
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -54,9 +56,9 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String contentType()
+    public List<String> contentTypes()
     {
-        return CONTENT_TYPE;
+        return Lists.newArrayList( CONTENT_TYPE );
     }
 
     public JacksonJsonNodeSerializer()

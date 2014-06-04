@@ -28,6 +28,7 @@ package org.hisp.dhis.node.serializers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.NodeSerializer;
 import org.hisp.dhis.node.types.CollectionNode;
@@ -42,6 +43,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -54,9 +56,9 @@ public class StAXNodeSerializer implements NodeSerializer
     private final XMLOutputFactory xmlFactory = XMLOutputFactory.newInstance();
 
     @Override
-    public String contentType()
+    public List<String> contentTypes()
     {
-        return CONTENT_TYPE;
+        return Lists.newArrayList( CONTENT_TYPE );
     }
 
     @Override
