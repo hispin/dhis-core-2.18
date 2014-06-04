@@ -67,7 +67,7 @@ public class StAXNodeSerializer implements NodeSerializer
         try
         {
             writer = xmlFactory.createXMLStreamWriter( outputStream );
-            renderRootNode( rootNode, writer );
+            writeRootNode( rootNode, writer );
             writer.flush();
         }
         catch ( XMLStreamException e )
@@ -76,7 +76,7 @@ public class StAXNodeSerializer implements NodeSerializer
         }
     }
 
-    private void renderRootNode( RootNode rootNode, XMLStreamWriter writer ) throws IOException, XMLStreamException
+    private void writeRootNode( RootNode rootNode, XMLStreamWriter writer ) throws IOException, XMLStreamException
     {
         writer.writeStartDocument( "UTF-8", "1.0" );
 
@@ -97,40 +97,35 @@ public class StAXNodeSerializer implements NodeSerializer
         writer.writeEndDocument();
     }
 
-    private void renderSimpleNode( SimpleNode simpleNode, XMLStreamWriter writer ) throws XMLStreamException
+    private void writeSimpleNode( SimpleNode simpleNode, XMLStreamWriter writer ) throws XMLStreamException
     {
-        if ( simpleNode.getValue() == null ) // add hint for this, exclude if null
+        if ( simpleNode.getValue() == null ) // TODO include null or not?
         {
             return;
         }
 
         String value = String.format( "%s", simpleNode.getValue() );
 
-        writeStartElement( simpleNode, writer );
-        writer.writeCharacters( value );
-        writeEndElement( writer );
-    }
-
-    private void renderSimpleNodeAttribute( SimpleNode simpleNode, XMLStreamWriter writer ) throws XMLStreamException
-    {
-        if ( simpleNode.getValue() == null ) // add hint for this, exclude if null
+        if ( simpleNode.isAttribute() )
         {
-            return;
-        }
-
-        String value = String.format( "%s", simpleNode.getValue() );
-
-        if ( !StringUtils.isEmpty( simpleNode.getNamespace() ) )
-        {
-            writer.writeAttribute( "", simpleNode.getNamespace(), simpleNode.getName(), value );
+            if ( !StringUtils.isEmpty( simpleNode.getNamespace() ) )
+            {
+                writer.writeAttribute( "", simpleNode.getNamespace(), simpleNode.getName(), value );
+            }
+            else
+            {
+                writer.writeAttribute( simpleNode.getName(), value );
+            }
         }
         else
         {
-            writer.writeAttribute( simpleNode.getName(), value );
+            writeStartElement( simpleNode, writer );
+            writer.writeCharacters( value );
+            writeEndElement( writer );
         }
     }
 
-    private void renderComplexNode( ComplexNode complexNode, XMLStreamWriter writer ) throws XMLStreamException, IOException
+    private void writeComplexNode( ComplexNode complexNode, XMLStreamWriter writer ) throws XMLStreamException, IOException
     {
         writeStartElement( complexNode, writer );
 
@@ -142,9 +137,9 @@ public class StAXNodeSerializer implements NodeSerializer
         writeEndElement( writer );
     }
 
-    private void renderCollectionNode( CollectionNode collectionNode, XMLStreamWriter writer, boolean useWrapping ) throws XMLStreamException, IOException
+    private void writeCollectionNode( CollectionNode collectionNode, XMLStreamWriter writer ) throws XMLStreamException, IOException
     {
-        if ( useWrapping )
+        if ( collectionNode.isWrapping() )
         {
             writeStartElement( collectionNode, writer );
         }
@@ -154,7 +149,7 @@ public class StAXNodeSerializer implements NodeSerializer
             dispatcher( node, writer );
         }
 
-        if ( useWrapping )
+        if ( collectionNode.isWrapping() )
         {
             writeEndElement( writer );
         }
@@ -170,21 +165,13 @@ public class StAXNodeSerializer implements NodeSerializer
         switch ( node.getType() )
         {
             case SIMPLE:
-                if ( ((SimpleNode) node).isAttribute() )
-                {
-                    renderSimpleNodeAttribute( (SimpleNode) node, writer );
-                }
-                else
-                {
-                    renderSimpleNode( (SimpleNode) node, writer );
-                }
+                writeSimpleNode( (SimpleNode) node, writer );
                 break;
             case COMPLEX:
-                renderComplexNode( (ComplexNode) node, writer );
+                writeComplexNode( (ComplexNode) node, writer );
                 break;
             case COLLECTION:
-                boolean useWrapping = ((CollectionNode) node).isWrapping();
-                renderCollectionNode( (CollectionNode) node, writer, useWrapping );
+                writeCollectionNode( (CollectionNode) node, writer );
                 break;
         }
     }
