@@ -55,9 +55,9 @@ public class JdbcOrgUnitTargetTableManager
         return tables;
     }
 
-    public boolean validState()
+    public String validState()
     {
-        return true;
+        return null;
     }    
     
     public String getTableName()

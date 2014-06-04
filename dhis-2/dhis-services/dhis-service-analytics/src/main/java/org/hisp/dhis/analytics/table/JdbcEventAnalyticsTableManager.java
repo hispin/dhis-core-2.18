@@ -94,9 +94,16 @@ public class JdbcEventAnalyticsTableManager
         return tables;
     }
 
-    public boolean validState()
+    public String validState()
     {
-        return jdbcTemplate.queryForRowSet( "select dataelementid from trackedentitydatavalue limit 1" ).next();
+        boolean hasData = jdbcTemplate.queryForRowSet( "select dataelementid from trackedentitydatavalue limit 1" ).next();
+        
+        if ( !hasData )
+        {
+            return "No events exist, not updating event analytics tables";
+        }
+        
+        return null;
     }
 
     public String getTableName()

@@ -95,11 +95,11 @@ public class DefaultAnalyticsTableService
     {
         Clock clock = new Clock().startClock().logTime( "Starting update, no of processes: " + getProcessNo() );
         
-        boolean valid = tableManager.validState();
+        String validState = tableManager.validState();
         
-        if ( !valid )
+        if ( validState != null )
         {
-            notifier.notify( taskId, "Table not valid, aborted update" );
+            notifier.notify( taskId, validState );
             return;
         }
         

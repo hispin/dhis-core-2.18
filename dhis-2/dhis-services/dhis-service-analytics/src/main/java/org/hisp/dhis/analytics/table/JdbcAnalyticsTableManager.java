@@ -76,9 +76,16 @@ public class JdbcAnalyticsTableManager
     // Implementation
     // -------------------------------------------------------------------------
     
-    public boolean validState()
+    public String validState()
     {
-        return jdbcTemplate.queryForRowSet( "select dataelementid from datavalue limit 1" ).next();
+        boolean hasData = jdbcTemplate.queryForRowSet( "select dataelementid from datavalue limit 1" ).next();
+        
+        if ( !hasData )
+        {
+            return "No data values exist, not updating aggregate analytics tables";
+        }
+        
+        return null;
     }
     
     public String getTableName()
