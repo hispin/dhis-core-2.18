@@ -50,11 +50,18 @@ function showReminderDetails( context ) {
 	programStageId: getFieldValue('programStageId')
   }, function( json ) {
     setInnerHTML('nameField', json.reminder.name);
-    setInnerHTML('daysAllowedSendMessageField', json.reminder.daysAllowedSendMessage);
+	
+	var days = json.reminder.daysAllowedSendMessage;
+	if( eval(days)>=0 ){
+		setInnerHTML('daysAllowedSendMessageField', days + " " + i18n_days_before);
+	}
+	else{
+		setInnerHTML('daysAllowedSendMessageField', -1 * eval(days) + " " + i18n_days_after);
+	}
     setInnerHTML('templateMessageField', json.reminder.templateMessage);
     setInnerHTML('dateToCompareField', json.reminder.dateToCompare);
 	
-	var map = sendToMap();
+	var map = recipientsMap();
 	setInnerHTML( 'sendToField', map[json.reminder.sendTo] ); 
 	
 	var whenToSend = i18n_days_scheduled;
@@ -73,14 +80,16 @@ function showReminderDetails( context ) {
 	else if( json.reminder.whenToSend=='3'){
 		whenToSend = i18n_both;
 	}
-    setInnerHTML('messageTypeField', json.reminder.messageType);
+	
+	map = messageTypeMap();
+    setInnerHTML('messageTypeField', map[json.reminder.messageType]);
 	
     setInnerHTML('userGroupField', json.reminder.userGroup);
     showDetails();
   });
 }
 
-function sendToMap()
+function recipientsMap()
 {
 	var typeMap = [];
 	typeMap['1'] = i18n_tracked_entity_sms_only;
@@ -91,6 +100,14 @@ function sendToMap()
 	return typeMap;
 }
 
+function messageTypeMap()
+{
+	var typeMap = [];
+	typeMap['1'] = i18n_direct_sms;
+	typeMap['2'] = i18n_message;
+	typeMap['3'] = i18n_both;
+	return typeMap;
+}
 function showHideUserGroup() {
   jQuery(".sendTo").each(function( i, item ) {
     var numb = i + 1;
@@ -145,9 +162,9 @@ function getMessageLength( ) {
 }
 
 function setRealDays( ) {
-  var daysAllowedSendMessage = jQuery("#daysAllowedSendMessage");
+  var days = jQuery("#days");
   var time = jQuery("#time option:selected ").val();
-  daysAllowedSendMessage.attr("realvalue", time * eval(daysAllowedSendMessage).val());
+  jQuery("#daysAllowedSendMessage").val(time * eval(days).val());
 }
 
 function onchangeUserGroup() {

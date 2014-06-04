@@ -41,17 +41,17 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="daysAllowedSendMessage">$i18n.getString( "send_message" )</label></td>
-			<td><input type="text" id="daysAllowedSendMessage" name="daysAllowedSendMessage" 
+			<td><label for="days">$i18n.getString( "send_message" )</label></td>
+			<td><input type="text" id="days" name="days" 
 				class="{validate:{required:true,number:true}}"
-				onkeyup='setRealDays();' style="width:100px;"
-				realvalue="$!reminder.daysAllowedSendMessage" />
+				onkeyup='setRealDays();' style="width:100px;"/>
 				$i18n.getString('days')
 				<select id='time' name='time' onchange='setRealDays();' style="width:100px;">
 					<option value='1' >$i18n.getString('before')</option>
 					<option value='-1' >$i18n.getString('after')</option>
 				</select>
 				$i18n.getString('scheduled_date')
+				<input type="hidden" id="daysAllowedSendMessage" name="daysAllowedSendMessage" />
 			</td>
 		</tr>
 		<tr>
