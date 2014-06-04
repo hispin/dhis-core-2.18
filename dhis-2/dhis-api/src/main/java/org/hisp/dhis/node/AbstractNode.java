@@ -29,9 +29,12 @@ package org.hisp.dhis.node;
  */
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.hisp.dhis.node.exception.DuplicateNodeException;
 import org.hisp.dhis.node.exception.InvalidTypeException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -46,7 +49,7 @@ public abstract class AbstractNode implements Node
 
     private String comment;
 
-    private final List<Node> nodes = Lists.newArrayList();
+    private Map<String, Node> children = Maps.newHashMap();
 
     protected AbstractNode( String name, NodeType nodeType )
     {
@@ -96,27 +99,74 @@ public abstract class AbstractNode implements Node
     @Override
     public <T extends Node> T addChild( T child ) throws InvalidTypeException
     {
-        if ( child == null )
+        if ( child == null || child.getName() == null )
         {
             return null;
         }
 
-        nodes.add( child );
+        if ( children.containsKey( child.getName() ) )
+        {
+            throw new DuplicateNodeException();
+        }
+
+        children.put( child.getName(), child );
         return child;
     }
 
     @Override
     public <T extends Node> void addChildren( Iterable<T> children )
     {
-        for ( Node node : children )
+        for ( Node child : children )
         {
-            addChild( node );
+            addChild( child );
         }
+    }
+
+    @Override
+    public Node getChild( String name )
+    {
+        if ( children.containsKey( name ) )
+        {
+            return children.get( name );
+        }
+
+        return null;
     }
 
     @Override
     public List<Node> getChildren()
     {
-        return nodes;
+        return Lists.newArrayList( children.values() );
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        AbstractNode that = (AbstractNode) o;
+
+        if ( name != null ? !name.equals( that.name ) : that.name != null ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return name != null ? name.hashCode() : 0;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Node{" +
+            "name='" + name + '\'' +
+            ", nodeType=" + nodeType +
+            ", namespace='" + namespace + '\'' +
+            ", comment='" + comment + '\'' +
+            ", children=" + children +
+            '}';
     }
 }

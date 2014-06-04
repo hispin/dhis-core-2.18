@@ -1,4 +1,4 @@
-package org.hisp.dhis.node.types;
+package org.hisp.dhis.node.exception;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,51 +28,13 @@ package org.hisp.dhis.node.types;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import org.hisp.dhis.node.AbstractNode;
-import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.NodeType;
-import org.hisp.dhis.node.exception.InvalidTypeException;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class SimpleNode extends AbstractNode
+public class DuplicateNodeException extends RuntimeException
 {
-    private final Object value;
-
-    private boolean attribute;
-
-    public SimpleNode( String name, Object value )
+    public DuplicateNodeException()
     {
-        super( name, NodeType.SIMPLE );
-        this.value = value;
-        this.attribute = false;
-    }
-
-    public Object getValue()
-    {
-        return value;
-    }
-
-    public boolean isAttribute()
-    {
-        return attribute;
-    }
-
-    public void setAttribute( boolean attribute )
-    {
-        this.attribute = attribute;
-    }
-
-    @Override
-    public <T extends Node> T addChild( T child ) throws InvalidTypeException
-    {
-        throw new InvalidTypeException();
-    }
-
-    @Override
-    public <T extends Node> void addChildren( Iterable<T> children )
-    {
-        throw new InvalidTypeException();
+        super( "A node with that name already exists in the child list." );
     }
 }
