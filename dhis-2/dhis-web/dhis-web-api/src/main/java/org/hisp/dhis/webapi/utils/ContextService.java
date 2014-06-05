@@ -29,6 +29,7 @@ package org.hisp.dhis.webapi.utils;
  */
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -57,4 +58,13 @@ public interface ContextService
      * @return HttpServletRequest
      */
     HttpServletRequest getRequest();
+
+    /**
+     * Returns a list of parameters with a given name, if the parameter doesn't exist, it will
+     * return a empty list.
+     *
+     * @param name Parameter to get
+     * @return List of parameter values, or empty if not found
+     */
+    Set<String> getParameterValues( String name );
 }

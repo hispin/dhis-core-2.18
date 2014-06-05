@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -81,8 +82,11 @@ public class DefaultFilterService implements FilterService
 
     @Override
     public <T extends IdentifiableObject> CollectionNode filterProperties( Class<?> klass, List<T> objects,
-        String include, String exclude )
+        List<String> includes, List<String> excludes )
     {
+        String include = includes == null ? "" : Joiner.on( "," ).join( includes );
+        String exclude = excludes == null ? "" : Joiner.on( "," ).join( excludes );
+
         Schema rootSchema = schemaService.getDynamicSchema( klass );
         CollectionNode collectionNode = new CollectionNode( rootSchema.getPlural() ); // replace with 'xml' collection name
 
