@@ -51,6 +51,37 @@ public interface Node
     NodeType getType();
 
     /**
+     * @param type Type to check for
+     * @return True if node is of this type
+     */
+    boolean is( NodeType type );
+
+    /**
+     * Helper that checks if node is of simple type, useful to checking if
+     * you are allowed to add children to this node.
+     *
+     * @return true if type is simple
+     * @see org.hisp.dhis.node.NodeType
+     */
+    boolean isSimple();
+
+    /**
+     * Helper that checks if node is of complex type.
+     *
+     * @return true if type is complex
+     * @see org.hisp.dhis.node.NodeType
+     */
+    boolean isComplex();
+
+    /**
+     * Helper that checks if node is of collection type.
+     *
+     * @return true if type is collection
+     * @see org.hisp.dhis.node.NodeType
+     */
+    boolean isCollection();
+
+    /**
      * Namespace for this node. Not all serializers support this, and its up to the
      * NodeSerializer implementation to decide what to do with this.
      *
@@ -82,14 +113,6 @@ public interface Node
      * @param children Child nodes to add
      */
     <T extends Node> void addChildren( Iterable<T> children );
-
-    /**
-     * Returns child with name, or null if it doesn't exist.
-     *
-     * @param name Name to search for
-     * @return A node with that name if it exists, or null
-     */
-    Node getChild( String name );
 
     /**
      * Get all child notes associated with this node. Please note that the returned list is a copy

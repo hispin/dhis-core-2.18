@@ -28,13 +28,11 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.hisp.dhis.node.exception.DuplicateNodeException;
 import org.hisp.dhis.node.exception.InvalidTypeException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -49,7 +47,7 @@ public abstract class AbstractNode implements Node
 
     private String comment;
 
-    private Map<String, Node> children = Maps.newHashMap();
+    private List<Node> children = Lists.newArrayList();
 
     protected AbstractNode( String name, NodeType nodeType )
     {
@@ -72,6 +70,30 @@ public abstract class AbstractNode implements Node
     public NodeType getType()
     {
         return nodeType;
+    }
+
+    @Override
+    public boolean is( NodeType type )
+    {
+        return type.equals( nodeType );
+    }
+
+    @Override
+    public boolean isSimple()
+    {
+        return is( NodeType.SIMPLE );
+    }
+
+    @Override
+    public boolean isComplex()
+    {
+        return is( NodeType.COMPLEX );
+    }
+
+    @Override
+    public boolean isCollection()
+    {
+        return is( NodeType.COLLECTION );
     }
 
     @Override
@@ -104,12 +126,7 @@ public abstract class AbstractNode implements Node
             return null;
         }
 
-        if ( children.containsKey( child.getName() ) )
-        {
-            throw new DuplicateNodeException();
-        }
-
-        children.put( child.getName(), child );
+        children.add( child );
         return child;
     }
 
@@ -123,20 +140,9 @@ public abstract class AbstractNode implements Node
     }
 
     @Override
-    public Node getChild( String name )
-    {
-        if ( children.containsKey( name ) )
-        {
-            return children.get( name );
-        }
-
-        return null;
-    }
-
-    @Override
     public List<Node> getChildren()
     {
-        return Lists.newArrayList( children.values() );
+        return ImmutableList.copyOf( children );
     }
 
     @Override
