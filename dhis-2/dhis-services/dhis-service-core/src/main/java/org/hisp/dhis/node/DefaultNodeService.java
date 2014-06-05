@@ -80,7 +80,7 @@ public class DefaultNodeService implements NodeService
     {
         if ( nodeSerializerMap.containsKey( contentType ) )
         {
-            nodeSerializerMap.get( contentType );
+            return nodeSerializerMap.get( contentType );
         }
 
         return null;
