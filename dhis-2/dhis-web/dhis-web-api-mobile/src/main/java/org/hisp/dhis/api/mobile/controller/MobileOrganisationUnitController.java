@@ -672,4 +672,44 @@ public class MobileOrganisationUnitController
         return activityReportingService.sendMessage( message );
     }
 
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/downloadMessageConversation" )
+    @ResponseBody
+    public Conversation downloadConversationTracker( String clientVersion )
+        throws NotAllowedException
+    {
+
+        Conversation conversation = new Conversation();
+        conversation.setClientVersion( clientVersion );
+        conversation.setConversations( activityReportingService.downloadMessageConversation() );
+
+        return conversation;
+
+    }
+
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/getMessage" )
+    @ResponseBody
+    public Conversation getMessageTracker( String clientVersion, @PathVariable
+    int id, @RequestHeader( "id" )
+    String conversationId )
+        throws NotAllowedException
+    {
+
+        Conversation conversation = new Conversation();
+        conversation.setMessages( activityReportingService.getMessage( conversationId ) );
+
+        return conversation;
+
+    }
+
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/replyMessage" )
+    @ResponseBody
+    public String replyMessageTracker( @PathVariable
+    int id, @RequestBody
+    Message message )
+        throws NotAllowedException
+    {
+        return activityReportingService.replyMessage( message );
+
+    }
+
 }
