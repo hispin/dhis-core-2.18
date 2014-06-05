@@ -28,14 +28,13 @@ package org.hisp.dhis.webapi.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -44,8 +43,6 @@ import java.util.Set;
 @Service
 public class DefaultContextService implements ContextService
 {
-    private static final Splitter COMMA_SPLITTER = Splitter.on( "," );
-
     @Override
     public String getServletPath()
     {
@@ -109,11 +106,7 @@ public class DefaultContextService implements ContextService
 
         Set<String> parameter = Sets.newHashSet();
         String[] parameterValues = getRequest().getParameterValues( name );
-
-        for ( String value : parameterValues )
-        {
-            parameter.addAll( Lists.newArrayList( COMMA_SPLITTER.split( value ) ) );
-        }
+        Collections.addAll( parameter, parameterValues );
 
         return parameter;
     }
