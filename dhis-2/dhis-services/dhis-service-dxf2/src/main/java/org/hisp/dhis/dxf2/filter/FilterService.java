@@ -60,5 +60,5 @@ public interface FilterService
      * @return List of objects with only wanted properties
      */
     <T extends IdentifiableObject> CollectionNode filterProperties( Class<?> klass, List<T> objects,
-        String include, String exclude );
+        List<String> include, List<String> exclude );
 }

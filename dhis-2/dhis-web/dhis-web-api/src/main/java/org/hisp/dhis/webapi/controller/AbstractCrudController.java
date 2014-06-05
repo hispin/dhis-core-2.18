@@ -28,7 +28,6 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.acl.Access;
 import org.hisp.dhis.acl.AclService;
@@ -46,7 +45,6 @@ import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.node.NodeService;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.node.types.SimpleNode;
@@ -54,6 +52,7 @@ import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.webapi.controller.exception.NotFoundException;
+import org.hisp.dhis.webapi.utils.ContextService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.utils.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +64,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +81,7 @@ import java.util.Map;
  */
 public abstract class AbstractCrudController<T extends IdentifiableObject>
 {
-    private static final String DEFAULT_LIST_INCLUDE = Joiner.on( "," ).join( FilterService.IDENTIFIABLE_PROPERTIES );
+    private static final List<String> DEFAULT_LIST_INCLUDES = Lists.newArrayList( FilterService.IDENTIFIABLE_PROPERTIES );
 
     //--------------------------------------------------------------------------
     // Dependencies
@@ -112,7 +112,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     protected ImportService importService;
 
     @Autowired
-    protected NodeService nodeService;
+    protected ContextService contextService;
 
     //--------------------------------------------------------------------------
     // GET
@@ -141,18 +141,19 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE } )
-    public void getObjectListJson(
-        @RequestParam( required = false ) String include,
-        @RequestParam( required = false ) String exclude,
-        @RequestParam( value = "filter", required = false ) List<String> filters,
+    public @ResponseBody RootNode getObjectListJson(
         @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
+        List<String> includes = Lists.newArrayList( contextService.getParameterValues( "include" ) );
+        List<String> excludes = Lists.newArrayList( contextService.getParameterValues( "exclude" ) );
+        List<String> filters = Lists.newArrayList( contextService.getParameterValues( "filter" ) );
+
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
 
-        if ( include == null && exclude == null )
+        if ( includes.isEmpty() && excludes.isEmpty() )
         {
-            include = DEFAULT_LIST_INCLUDE;
+            includes = DEFAULT_LIST_INCLUDES;
         }
 
         boolean hasPaging = options.hasPaging();
@@ -170,16 +171,16 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         List<T> entityList = getEntityList( metaData, options );
+        Pager pager = metaData.getPager();
 
         // enable object filter
-        if ( filters != null && !filters.isEmpty() )
+        if ( !filters.isEmpty() )
         {
             entityList = filterService.filterObjects( entityList, filters );
 
             if ( hasPaging )
             {
-                Pager pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
-                metaData.setPager( pager );
+                pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
                 entityList = PagerUtils.pageCollection( entityList, pager );
             }
         }
@@ -187,11 +188,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
 
-        response.setContentType( MediaType.APPLICATION_JSON_VALUE + "; charset=UTF-8" );
-
-        ReflectionUtils.invokeSetterMethod( schemaService.getSchema( getEntityClass() ).getPlural(), metaData, entityList );
-
-        if ( include != null && include.contains( "access" ) )
+        if ( includes != null && includes.contains( "access" ) )
         {
             options.getOptions().put( "viewClass", "sharing" );
         }
@@ -200,21 +197,19 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         RootNode rootNode = new RootNode( "metadata" );
 
-        if ( hasPaging )
+        if ( pager != null )
         {
             ComplexNode pagerNode = rootNode.addChild( new ComplexNode( "pager" ) );
-            pagerNode.addChild( new SimpleNode( "page", metaData.getPager().getPage() ) );
-            pagerNode.addChild( new SimpleNode( "pageCount", metaData.getPager().getPageCount() ) );
-            pagerNode.addChild( new SimpleNode( "total", metaData.getPager().getTotal() ) );
-            pagerNode.addChild( new SimpleNode( "nextPage", metaData.getPager().getNextPage() ) );
-            pagerNode.addChild( new SimpleNode( "prevPage", metaData.getPager().getPrevPage() ) );
+            pagerNode.addChild( new SimpleNode( "page", pager.getPage() ) );
+            pagerNode.addChild( new SimpleNode( "pageCount", pager.getPageCount() ) );
+            pagerNode.addChild( new SimpleNode( "total", pager.getTotal() ) );
+            pagerNode.addChild( new SimpleNode( "nextPage", pager.getNextPage() ) );
+            pagerNode.addChild( new SimpleNode( "prevPage", pager.getPrevPage() ) );
         }
 
-        rootNode.addChild( filterService.filterProperties( getEntityClass(), entityList, include, exclude ) );
+        rootNode.addChild( filterService.filterProperties( getEntityClass(), entityList, includes, excludes ) );
 
-        // response.setContentType( MediaType.APPLICATION_XML_VALUE );
-        // nodeService.serialize( rootNode, MediaType.APPLICATION_XML_VALUE, response.getOutputStream() );
-        nodeService.serialize( rootNode, MediaType.APPLICATION_JSON_VALUE, response.getOutputStream() );
+        return rootNode;
     }
 
 
