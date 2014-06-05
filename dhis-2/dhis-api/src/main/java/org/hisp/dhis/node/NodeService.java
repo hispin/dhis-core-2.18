@@ -39,11 +39,37 @@ import java.io.OutputStream;
  */
 public interface NodeService
 {
+    /**
+     * Find a nodeSerializer that supports contentType or return null.
+     *
+     * @param contentType NodeSerializer contentType
+     * @return NodeSerializer that support contentType, or null if not match was found
+     * @see org.hisp.dhis.node.NodeSerializer
+     */
     NodeSerializer getNodeSerializer( String contentType );
 
+    /**
+     * Write out rootNode to a nodeSerializer that matches the contentType.
+     *
+     * @param rootNode     RootNode to write
+     * @param contentType  NodeSerializer contentType
+     * @param outputStream Write to this outputStream
+     */
     void serialize( RootNode rootNode, String contentType, OutputStream outputStream ) throws IOException;
 
+    /**
+     * Find a nodeDeserializer that supports contentType or return null.
+     *
+     * @param contentType NodeDeserializer contentType
+     * @return NodeDeserializer that support contentType, or null if not match was found
+     * @see org.hisp.dhis.node.NodeDeserializer
+     */
     NodeDeserializer getNodeDeserializer( String contentType );
 
-    RootNode deserialize( RootNode rootNode, String contentType, InputStream inputStream ) throws IOException;
+    /**
+     * @param contentType NodeDeserializer contentType
+     * @param inputStream Read RootNode from this stream
+     * @return RootNode deserialized from inputStream
+     */
+    RootNode deserialize( String contentType, InputStream inputStream ) throws IOException;
 }

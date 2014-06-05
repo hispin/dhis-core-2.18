@@ -111,7 +111,7 @@ public class DefaultNodeService implements NodeService
     }
 
     @Override
-    public RootNode deserialize( RootNode rootNode, String contentType, InputStream inputStream ) throws IOException
+    public RootNode deserialize( String contentType, InputStream inputStream ) throws IOException
     {
         NodeDeserializer nodeDeserializer = getNodeDeserializer( contentType );
 
