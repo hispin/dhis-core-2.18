@@ -1652,6 +1652,7 @@ function registerCompleteDataSet()
 	        	}
 	        	else // Offline, keep local value
 	        	{
+              $( document ).trigger('dhis2.de.event.completed');
 	        		disableCompleteButton();
 	        		setHeaderMessage( i18n_offline_notification );
 	        	}
@@ -1702,6 +1703,7 @@ function undoCompleteDataSet()
         	}
         	else // Offline, keep local value
         	{
+            $( document ).trigger('dhis2.de.event.uncompleted');
         		disableUndoButton();
         		setHeaderMessage( i18n_offline_notification );
         	}
