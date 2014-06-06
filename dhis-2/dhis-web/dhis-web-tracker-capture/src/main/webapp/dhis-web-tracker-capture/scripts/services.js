@@ -4,6 +4,17 @@
 
 var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResource'])
 
+
+.factory('StorageService', function(){
+    var store = new dhis2.storage.Store({
+        name: "dhis2tc",
+        adapters: [dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter],
+        objectStores: ['trackerCapturePrograms', 'programStages', 'trackedEntities','attributes','optionSets']
+    });
+    return{
+        currentStore: store
+    };
+})
 /* factory for loading logged in user profiles from DHIS2 */
 .factory('CurrentUserProfile', function($http) { 
            
@@ -22,71 +33,88 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Factory to fetch programs */
-.factory('ProgramFactory', function($http, storage) {
-    
-    var programUid, programPromise;
-    var programs, programsPromise;
-    var program;
+.factory('ProgramFactory', function($q, $rootScope, StorageService, ProgramStageFactory) { 
     return {
-        
-        get: function(uid){
-            if( programUid !== uid ){
-                programPromise = $http.get( '../api/programs/' + uid + '.json?viewClass=detailed&paging=false').then(function(response){
-                    programUid = response.data.id; 
-                    program = response.data;                     
-                    return program;
-                });
-            }
-            return programPromise;
-        },       
-        
-        getMine: function(type){ 
-            if( !programsPromise ){
-                programsPromise = $http.get( '../api/me/programs?includeDescendants=true&type='+type).then(function(response){
-                   programs = response.data;
-                   return programs;
-                });
-            }
-            return programsPromise;    
-        },
-        
-        getEventProgramsByOrgUnit: function(orgUnit, type){
-                       
-            var promise = $http.get(  '../api/programs.json?orgUnit=' + orgUnit + '&type=' + type ).then(function(response){
-                programs = response.data;
-                return programs;
-            });            
-            return promise;
-        },
         getAll: function(){
-            var programs = [];
-            angular.forEach(storage.get('TRACKER_PROGRAMS'), function(p){
-                programs.push(storage.get(p.id));
-            });
-            return programs;
+            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getAll('trackerCapturePrograms').done(function(programs){
+                    $rootScope.$apply(function(){
+                        def.resolve(programs);
+                    });                    
+                });
+            });            
+            
+            return def.promise;            
+        },
+        get: function(uid){
+            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.get('trackerCapturePrograms', uid).done(function(pr){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(pr);
+                    });
+                });
+            });                        
+            return def.promise;            
         }
     };
 })
 
 /* Factory to fetch programStages */
-.factory('ProgramStageFactory', function($http, storage) {  
+.factory('ProgramStageFactory', function($q, $rootScope, StorageService) {  
     
-    var programStage, promise;   
     return {        
-        get: function(uid){
-            if( programStage !== uid ){
-                promise = $http.get(  '../api/programStages/' + uid + '.json?viewClass=detailed&paging=false').then(function(response){
-                   programStage = response.data.id;
-
-                   //store locally - might need them for event data values
-                   angular.forEach(response.data.programStageDataElements, function(prStDe){      
-                       storage.set(prStDe.dataElement.id, prStDe);                       
-                   });
-                   
-                   return response.data;
+        get: function(uid){            
+            var def = $q.defer();
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.get('programStages', uid).done(function(pst){                    
+                    angular.forEach(pst.programStageDataElements, function(pstDe){   
+                        if(pstDe.dataElement.optionSet){
+                            StorageService.currentStore.get('optionSets', pstDe.dataElement.optionSet.id).done(function(optionSet){
+                                pstDe.dataElement.optionSet = optionSet;                                
+                            });                            
+                        }                        
+                    });
+                    $rootScope.$apply(function(){
+                        def.resolve(pst);
+                    });
                 });
-            }
-            return promise;
+            });            
+            return def.promise;
+        },
+        getByProgram: function(program){
+            var def = $q.defer();
+            var stageIds = [];
+            var programStages = [];
+            angular.forEach(program.programStages, function(stage){
+                stageIds.push(stage.id);
+            });
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getAll('programStages').done(function(stages){   
+                    angular.forEach(stages, function(stage){
+                        if(stageIds.indexOf(stage.id) !== -1){
+                            angular.forEach(stage.programStageDataElements, function(pstDe){   
+                                if(pstDe.dataElement.optionSet){
+                                    StorageService.currentStore.get('optionSets', pstDe.dataElement.optionSet.id).done(function(optionSet){
+                                        pstDe.dataElement.optionSet = optionSet;                                
+                                    });                            
+                                }                            
+                            });
+                            programStages.push(stage);                               
+                        }                        
+                    });                    
+                    $rootScope.$apply(function(){
+                        def.resolve(programStages);
+                    });
+                });                
+            });            
+            return def.promise;
         }
     };    
 })
@@ -156,6 +184,26 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             return promise;
         }        
     };   
+})
+
+/* Service for getting tracked entity instances */
+.factory('TEService', function(StorageService, $q, $rootScope) {
+
+    return {
+        
+        getAll: function(){            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getAll('trackedEntities').done(function(entities){
+                    $rootScope.$apply(function(){
+                        def.resolve(entities);
+                    });                    
+                });
+            });            
+            return def.promise;
+        }
+    };
 })
 
 /* Service for getting tracked entity instances */
@@ -241,84 +289,85 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Factory for getting tracked entity attributes */
-.factory('AttributesFactory', function(storage) { 
-    
+.factory('AttributesFactory', function($q, $rootScope, StorageService) {      
+
     return {
-        getAll: function(){  
-            return storage.get('ATTRIBUTES');
+        getAll: function(){
+            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getAll('attributes').done(function(attributes){
+                    angular.forEach(attributes, function(att){
+                        if(att.optionSet){
+                           StorageService.currentStore.get('optionSets', att.optionSet.id).done(function(optionSet){
+                                att.optionSet = optionSet;
+                            });
+                        }
+                        $rootScope.$apply(function(){
+                            def.resolve(attributes);
+                        });
+                    });                    
+                });
+            });            
+            return def.promise;            
         }, 
         getByProgram: function(program){
             
-            if(program){
-                var attributes = [];
-                var programAttributes = [];
+            var attributes = [];
+            var programAttributes = [];
 
-                angular.forEach(this.getAll(), function(attribute){
+            var def = $q.defer();
+            this.getAll().then(function(atts){
+                angular.forEach(atts, function(attribute){
                     attributes[attribute.id] = attribute;
                 });
 
                 angular.forEach(program.programTrackedEntityAttributes, function(pAttribute){
-                   programAttributes.push(attributes[pAttribute.attribute.id]);                
-                }); 
+                    programAttributes.push(attributes[pAttribute.trackedEntityAttribute.id]);                
+                });
                 
-                return programAttributes;            
-            }
-            return this.getWithoutProgram();           
-        },
-        getWithoutProgram: function(){            
-            var attributes = [];
-            
-            angular.forEach(this.getAll(), function(attribute) {
-                if (attribute.displayInListNoProgram) {
-                    attributes.push(attribute);
-                }
-            });           
-
-            return attributes;
-        },
-        convertListingForToQuery: function(){
-            var param = '';
-            angular.forEach(this.getForListing(), function(attribute) {
-                param +=  '&' + 'attribute=' + attribute.id;
+                def.resolve(programAttributes);                                  
             });
-            
-            return param;
+            return def.promise;    
         },
+        getWithoutProgram: function(){   
+            
+            var def = $q.defer();
+            this.getAll().then(function(atts){
+                var attributes = [];
+                angular.forEach(atts, function(attribute){
+                    if (attribute.displayInListNoProgram) {
+                        attributes.push(attribute);
+                    }
+                });     
+                def.resolve(attributes);             
+            });     
+            return def.promise;
+        },        
         getMissingAttributesForEnrollment: function(tei, program){
-            var programAttributes = this.getByProgram(program);
-            var existingAttributes = tei.attributes;
-            var missingAttributes = [];
-            for(var i=0; i<programAttributes.length; i++){
-                var exists = false;
-                for(var j=0; j<existingAttributes.length && !exists; j++){
-                    if(programAttributes[i].id === existingAttributes[j].attribute){
-                        exists = true;
+            var def = $q.defer();
+            this.getByProgram(program).then(function(atts){
+                var programAttributes = atts;
+                var existingAttributes = tei.attributes;
+                var missingAttributes = [];
+                
+                for(var i=0; i<programAttributes.length; i++){
+                    var exists = false;
+                    for(var j=0; j<existingAttributes.length && !exists; j++){
+                        if(programAttributes[i].id === existingAttributes[j].attribute){
+                            exists = true;
+                        }
+                    }
+                    if(!exists){
+                        missingAttributes.push(programAttributes[i]);
                     }
                 }
-                if(!exists){
-                    missingAttributes.push(programAttributes[i]);
-                }
-            }
-            return missingAttributes;
-        },
-        hideAttributesNotInProgram: function(tei, program){
-            var programAttributes = this.getByProgram(program);
-            var teiAttributes = tei.attributes;
-            
-            for(var i=0; i<teiAttributes.length; i++){
-                teiAttributes[i].show = true;
-                var inProgram = false;
-                for(var j=0; j<programAttributes.length && !inProgram; j++){
-                    if(teiAttributes[i].attribute === programAttributes[j].id){
-                        inProgram = true;
-                    }
-                }
-                if(!inProgram){
-                    teiAttributes[i].show = false;
-                }                
-            }            
-            return tei.attributes;
+                def.resolve(missingAttributes);
+            });            
+            return def.promise();            
         }
+
     };
 })
 

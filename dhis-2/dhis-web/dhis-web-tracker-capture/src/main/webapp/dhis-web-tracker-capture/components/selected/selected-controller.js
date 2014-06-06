@@ -1,6 +1,7 @@
 trackerCapture.controller('SelectedInfoController',
         function($scope,                
                 storage,
+                CurrentSelection,
                 TranslationService) {
 
     TranslationService.translate();
@@ -8,13 +9,9 @@ trackerCapture.controller('SelectedInfoController',
     //listen for the selected items
     $scope.$on('selectedEntity', function(event, args) {
         
-        $scope.selectedEntity = args.selectedEntity;
-        $scope.selectedProgramId = args.selectedProgramId;        
-        $scope.selectedOrgUnitId = args.selectedOrgUnitId;        
-        
-        if($scope.selectedProgramId){
-            $scope.selectedProgram = storage.get($scope.selectedProgramId);        
-        }
+        var selections = CurrentSelection.get();
+        $scope.selectedEntity = selections.tei; 
+        $scope.selectedProgram = selections.pr; 
         
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
         $scope.selections = [];

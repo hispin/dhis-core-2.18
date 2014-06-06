@@ -14,12 +14,12 @@
             <tbody>
                 <tr>
                     <td class="inline-block" ng-repeat="dhis2Event in dhis2Events track by $index">
-                        <span class="block orgunit-container">{{dhis2Event.orgUnitName}}</span>                                              
+                        <span class="block align-center">{{dhis2Event.orgUnitName}}</span>                                              
                         <span class="stage-container"                                                     
-                              ng-class="{'current-stage': currentEvent.programStage == dhis2Event.programStage, '{{dhis2Event.statusColor}}': true}"                                                      
+                              ng-class="{'current-stage': currentEvent && currentEvent.event == dhis2Event.event, '{{dhis2Event.statusColor}}': true}"                                                      
                               ng-click="showDataEntry(dhis2Event)">
                             {{dhis2Event.name}}<br/>
-                            {{dhis2Event.eventDate}}                                                    
+                            {{dhis2Event.eventDate}}         
                         </span>
                         <i class="fa fa-arrow-right" ng-show="$index < dhis2Events.length-1"></i>
                     </td>                        
@@ -29,15 +29,15 @@
         <hr>
         <div ng-show="currentEvent">
             <table class="table-borderless table-striped">
-                <thead>
+                <thead class="align-center">
                     <tr>
-                        <th>
+                        <th class="align-center">
                             {{'data_element' | translate}}
                         </th>
-                        <th>
+                        <th class="align-center">
                             {{'value' | translate}}
                         </th>
-                        <th>
+                        <th class="align-center">
                             {{'provided_elsewhere' | translate}}
                         </th>
                     </tr>
@@ -53,7 +53,8 @@
                                 <input type="number"
                                        class="form-control"
                                        ng-model="currentEvent[prStDe.dataElement.id]" 
-                                       ng-required={{prStDe.compulsory}} 
+                                       ng-required={{prStDe.compulsory}}
+                                       ng-blur="savePatientDatavalue(currentEvent, prStDe.dataElement.id)" 
                                        name="foo"/>
                             </div>
                             <div ng-switch-when="string">                                        
@@ -62,13 +63,15 @@
                                        ng-model="currentEvent[prStDe.dataElement.id]" 
                                        ng-required={{prStDe.compulsory}} 
                                        typeahead="option for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                       typeahead-open-on-focus                                                        
+                                       typeahead-open-on-focus    
+                                       ng-blur="savePatientDatavalue(currentEvent, prStDe.dataElement.id)" 
                                        name="foo"/>
                             </div>
                             <div ng-switch-when="bool">
                                 <select class="form-control"
                                         ng-model="currentEvent[prStDe.dataElement.id]" 
                                         ng-required={{prStDe.compulsory}} 
+                                        ng-change="savePatientDatavalue(currentEvent, prStDe.dataElement.id)" 
                                         name="foo">
                                     <option value="">{{'please_select'| translate}}</option>                        
                                     <option value="0">{{'no'| translate}}</option>
@@ -81,16 +84,19 @@
                                        placeholder="yyyy-mm-dd" 
                                        ng-date 
                                        class="form-control"
-                                       ng-model="currentEvent[prStDe.dataElement.id]" 
+                                       ng-model="savePatientDatavalue(currentEvent, prStDe.dataElement.id)" 
                                        ng-required={{prStDe.compulsory}}  
+                                       blur-or-change="savePatientDatavalue(dhis2Event, eventGridColumn.id)"
                                        name="foo"/>
                             </div>
                         </div>
                     </td>
                     <td>                        
-                        <span ng-if="prStDe.allowProvidedElsewhere">
-                            <input type="checkbox" ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]"/>
-                        </span>
+                        <div class="align-center" ng-if="prStDe.allowProvidedElsewhere">
+                            <input type="checkbox" 
+                                   ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]"
+                                   ng-change="savePatientDatavalue(currentEvent, prStDe.dataElement.id)"/>
+                        </div>
                     </td>
                 </tr>
             </table>    

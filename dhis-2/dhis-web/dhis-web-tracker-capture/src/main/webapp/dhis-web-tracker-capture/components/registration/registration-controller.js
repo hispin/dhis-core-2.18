@@ -2,6 +2,7 @@ trackerCapture.controller('RegistrationController',
         function($scope,
                 $location,
                 AttributesFactory,
+                TEService,
                 TEIService,
                 EnrollmentService,
                 DialogService,
@@ -12,19 +13,25 @@ trackerCapture.controller('RegistrationController',
     TranslationService.translate();   
     
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
-    $scope.enrollment = {enrollmentDate: '', incidentDate: ''};    
+    $scope.enrollment = {enrollmentDate: '', incidentDate: ''};   
     
-    $scope.attributes = AttributesFactory.getWithoutProgram();
+    AttributesFactory.getWithoutProgram().then(function(atts){
+        $scope.attributes = atts;
+    });
+            
     $scope.trackedEntities = {available: []};
-    $scope.trackedEntities.available = storage.get('TRACKED_ENTITIES');
-   
-    $scope.trackedEntities.selected = $scope.trackedEntities.available[0];
-      
+    TEService.getAll().then(function(entities){
+        $scope.trackedEntities.available = entities;   
+        $scope.trackedEntities.selected = $scope.trackedEntities.available[0];
+    });
+    
     //watch for selection of org unit from tree
     $scope.$watch('selectedProgram', function() {        
         if( angular.isObject($scope.selectedProgram)){
             $scope.trackedEntityList = [];
-            $scope.attributes = AttributesFactory.getByProgram($scope.selectedProgram);
+            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
+                $scope.attributes = atts;
+            });
         }
     });    
     

@@ -1,8 +1,7 @@
 trackerCapture.controller('RelationshipController',
-        function($scope,                
-                storage,
+        function($scope,
                 TranslationService) {
 
     TranslationService.translate();    
-    $scope.attributes = storage.get('ATTRIBUTES');    
+     
 });

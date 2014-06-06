@@ -50,9 +50,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.showRegistrationDiv = false;
     
     //watch for selection of org unit from tree
-    $scope.$watch('selectedOrgUnit', function() {
-        
-        $scope.attributes = AttributesFactory.getWithoutProgram();    
+    $scope.$watch('selectedOrgUnit', function() {           
         
         if( angular.isObject($scope.selectedOrgUnit)){   
             
@@ -63,9 +61,13 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
             //apply translation - by now user's profile is fetched from server.
             TranslationService.translate();
-            $scope.loadPrograms($scope.selectedOrgUnit);            
-            $scope.search($scope.searchMode.listAll);
             
+            $scope.loadPrograms($scope.selectedOrgUnit); 
+            
+            AttributesFactory.getWithoutProgram().then(function(atts){
+                $scope.attributes = atts;
+                $scope.search($scope.searchMode.listAll);
+            });           
         }
     });
     
@@ -78,39 +80,41 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         if (angular.isObject($scope.selectedOrgUnit)) {   
 
-            $scope.programs = [];
-            
-            var programs = ProgramFactory.getAll();
-            
-            if( programs && programs != 'undefined' ){
-                angular.forEach(programs, function(program){
-                    if(angular.isObject(program)){
-                        if(program.organisationUnits.hasOwnProperty(orgUnit.id)){
-                            $scope.programs.push(program);
-                        }
+            ProgramFactory.getAll().then(function(programs){
+                $scope.programs = [];
+                angular.forEach(programs, function(program){                            
+                    if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id)){                                
+                        $scope.programs.push(program);
                     }
-                });                
+                });
                 
-                if( !angular.isUndefined($scope.programs)){                    
-                    if($scope.programs.length === 1){
-                        $scope.selectedProgram = $scope.programs[0];
-                        $scope.pr = $scope.selectedProgram;    
-                        $scope.attributes = AttributesFactory.getByProgram($scope.selectedProgram);
-                    }                    
-                }
-            }
+                if(angular.isObject($scope.programs) && $scope.programs.length === 1){
+                    $scope.selectedProgram = $scope.programs[0];
+                    
+                    AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
+                        $scope.attributes = atts;
+                        $scope.generateGridColumns($scope.attributes);
+                    });
+                }                
+            });
         }        
     };
     
     $scope.getProgramAttributes = function(program, doSearch){ 
         $scope.trackedEntityList = null; 
         $scope.selectedProgram = program;
-        
+       
         if($scope.selectedProgram){
-            $scope.attributes = AttributesFactory.getByProgram($scope.selectedProgram);
+            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
+                $scope.attributes = atts;
+                $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+            });           
         }
         else{
-            $scope.attributes = AttributesFactory.getWithoutProgram();
+            AttributesFactory.getWithoutProgram().then(function(atts){
+                $scope.attributes = atts;
+                $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+            });
         }
         
         if(doSearch){
@@ -119,7 +123,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };
     
     $scope.search = function(mode){ 
-        
+
         $scope.emptySearchText = false;
         $scope.emptySearchAttribute = false;
         $scope.showSearchDiv = false;
@@ -157,7 +161,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         else if( mode === $scope.searchMode.listAll ){   
             $scope.showTrackedEntityDiv = true;    
         }      
-        
+
         $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
 
         //get events for the specified parameters
@@ -172,7 +176,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     //generate grid columns from teilist attributes
     $scope.generateGridColumns = function(attributes){
-        var columns = angular.copy(attributes);  
+        var columns = attributes ? angular.copy(attributes) : [];
        
         //also add extra columns which are not part of attributes (orgunit for example)
         columns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string', displayInListNoProgram: false});
@@ -251,7 +255,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         });
     };
     
-    $scope.showDashboard = function(currentEntity){        
+    $scope.showDashboard = function(currentEntity){   
         $location.path('/dashboard').search({selectedEntityId: currentEntity.id,                                            
                                             selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id: null});                                    
     };
@@ -297,7 +301,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 $modal,
                 $timeout,
                 storage,
-                TEIService,      
+                TEIService,  
+                ProgramFactory,
                 CurrentSelection,
                 TranslationService) {
 
@@ -306,7 +311,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     //dashboard items   
     $rootScope.dashboardWidgets = {bigger: [], smaller: []};       
-    $rootScope.enrollmentWidget = {title: 'enrollment', view: "components/enrollment/enrollment.html", show: true};
+    $rootScope.enrollmentWidget = {title: 'program', view: "components/enrollment/enrollment.html", show: true};
     $rootScope.dataentryWidget = {title: 'dataentry', view: "components/dataentry/dataentry.html", show: true};
     $rootScope.selectedWidget = {title: 'current_selections', view: "components/selected/selected.html", show: false};
     $rootScope.profileWidget = {title: 'profile', view: "components/profile/profile.html", show: true};
@@ -327,24 +332,30 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.selectedEntityId = ($location.search()).selectedEntityId; 
     $scope.selectedProgramId = ($location.search()).selectedProgramId; 
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
-    
-    if($scope.selectedProgramId && storage.get($scope.selectedProgramId)){
-        $scope.selectedProgram = storage.get($scope.selectedProgramId);
-    }
-    else{
-        $scope.selectedProgram = null;
-    }
         
     if( $scope.selectedEntityId ){
-        
+      
         //Fetch the selected entity
-        TEIService.get($scope.selectedEntityId).then(function(data){              
-            CurrentSelection.set({tei: data, pr: $scope.selectedProgram ? $scope.selectedProgram.id : null});
-         
-            //broadcast selected entity for dashboard controllers
-            $timeout(function() { 
-                $rootScope.$broadcast('selectedEntity', {});
-            }, 100);
+        TEIService.get($scope.selectedEntityId).then(function(data){     
+            
+            if($scope.selectedProgramId){
+                ProgramFactory.get($scope.selectedProgramId).then(function(program){
+                    $scope.selectedProgram = program;   
+                    
+                    //broadcast selected items for dashboard controllers
+                    CurrentSelection.set({tei: data, pr: $scope.selectedProgram});
+                    $timeout(function() { 
+                        $rootScope.$broadcast('selectedEntity', {});
+                    }, 100);
+                });
+            }
+            else{                
+                //broadcast selected items for dashboard controllers
+                CurrentSelection.set({tei: data, pr: ''});
+                $timeout(function() { 
+                    $rootScope.$broadcast('selectedEntity', {});
+                }, 100);
+            }
         });       
     }   
     
@@ -372,15 +383,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };
 })
 
-//Controller for the profile section
-
-
-//Controller for the enrollment section
-
-
-//Controller for the data entry section
-
-
 //Controller for the dashboard widgets
 .controller('DashboardWidgetsController', 
     function($scope, 
@@ -393,15 +395,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $modalInstance.close($scope.eventGridColumns);
     };       
 })
-
-//Controller for the relationship section
-
-
-//Controller for the notes section
-
-
-//Controller for the selected section
-
 
 //Controller for the header section
 .controller('HeaderController',

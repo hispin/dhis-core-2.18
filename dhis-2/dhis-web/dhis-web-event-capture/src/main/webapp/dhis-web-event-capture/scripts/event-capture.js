@@ -344,7 +344,7 @@ function getOptionSets( programs )
 
     _.each( _.values( programs ), function ( program ) {
         _.each(_.values( program.programStages[0].programStageDataElements), function(prStDe){
-            if( prStDe.dataElement.optionSet && prStDe.dataElement.optionSet ){
+            if( prStDe.dataElement.optionSet && prStDe.dataElement.optionSet.id ){
                 build = build.then(function() {
                     var d = $.Deferred();
                     var p = d.promise();
