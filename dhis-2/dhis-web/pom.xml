@@ -32,6 +32,7 @@
     <module>dhis-web-sms</module>
     <module>dhis-web-event-capture</module>
     <module>dhis-web-event-reports</module>
+    <module>dhis-web-event-visualizer</module>
     <module>dhis-web-tracker-capture</module>
     <module>dhis-web-portal</module>
   </modules>
