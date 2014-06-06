@@ -16,6 +16,8 @@ var trackerCapture = angular.module('trackerCapture',
               
 .value('DHIS2URL', '..')
 
+
+
 .config(function($httpProvider, $routeProvider, $translateProvider) {    
             
     $httpProvider.defaults.useXDomain = true;

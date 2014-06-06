@@ -4,6 +4,7 @@ trackerCapture.controller('EnrollmentController',
                 $filter,
                 storage,
                 ProgramFactory,
+                ProgramStageFactory,
                 AttributesFactory,
                 CurrentSelection,
                 TEIService,
@@ -26,41 +27,39 @@ trackerCapture.controller('EnrollmentController',
     $scope.$on('selectedEntity', function(event, args) {   
         $scope.newEnrollment = {};
         var selections = CurrentSelection.get();
-        $scope.selectedEntity = selections.tei;      
-        
+        $scope.selectedEntity = selections.tei;        
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
         
-        angular.forEach(ProgramFactory.getAll(), function(program){
-            if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
-               program.trackedEntity.id === $scope.selectedEntity.trackedEntity){
-                $scope.programs.push(program);
-            }
-        });
-        
-        EnrollmentService.get($scope.selectedEntity.trackedEntityInstance).then(function(data){
-            $scope.enrollments = data.enrollmentList;  
-            if(selections.pr){       
-                angular.forEach($scope.programs, function(program){
-                    if(selections.pr === program.id){
-                        $scope.selectedProgram = program;
-                        $scope.loadEvents();
-                    }
-                });
-            }
+        ProgramFactory.getAll().then(function(programs){  
             
-            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram.id});
-            $rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
-                                                selectedOrgUnit: $scope.selectedOrgUnit,
-                                                selectedProgramId: $scope.selectedProgram.id,
-                                                selectedEnrollment: $scope.selectedEnrollment});
+            angular.forEach(programs, function(program){
+                if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
+                   program.trackedEntity.id === $scope.selectedEntity.trackedEntity){
+                    $scope.programs.push(program);
+                }
+            });
+
+            EnrollmentService.get($scope.selectedEntity.trackedEntityInstance).then(function(data){
+                $scope.enrollments = data.enrollmentList;  
+                if(selections.pr){   
+                    angular.forEach($scope.programs, function(program){
+                        if(selections.pr.id === program.id){
+                            $scope.selectedProgram = program;
+                            $scope.loadEvents();
+                        }
+                    });
+                }
+
+                CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});
+                $rootScope.$broadcast('dashboard', {});
+            });                           
         });        
-        
     }); 
     
     $scope.loadEvents = function() {
         
         if($scope.selectedProgram){
-           
+          
             //check for possible enrollment
             $scope.selectedEnrollment = '';
             angular.forEach($scope.enrollments, function(enrollment){
@@ -73,34 +72,43 @@ trackerCapture.controller('EnrollmentController',
                 $scope.selectedEnrollment.dateOfIncident = $filter('date')($scope.selectedEnrollment.dateOfIncident, 'yyyy-MM-dd');
             }
             else{//prepare for possible enrollment
-                $scope.attributesForEnrollment = AttributesFactory.getMissingAttributesForEnrollment($scope.selectedEntity, $scope.selectedProgram);
+                AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
+                    
+                    $scope.attributesForEnrollment = [];
+                    for(var i=0; i<atts.length; i++){
+                        var exists = false;
+                        for(var j=0; j<$scope.selectedEntity.attributes.length && !exists; j++){
+                            if(atts[i].id === $scope.selectedEntity.attributes[j].attribute){
+                                exists = true;
+                            }
+                        }
+                        if(!exists){
+                            $scope.attributesForEnrollment.push(atts[i]);
+                        }
+                    }
+                });                
             }
 
             $scope.programStages = [];   
             var incidentDate = $scope.selectedEnrollment ? $scope.selectedEnrollment.dateOfIncident : new Date();
             
-            angular.forEach($scope.selectedProgram.programStages, function(stage){                
-                var ps = storage.get(stage.id);
-                ps.dueDate = moment(moment(incidentDate).add('d', ps.minDaysFromStart), 'YYYY-MM-DD')._d;
-                ps.dueDate = Date.parse(ps.dueDate);
-                ps.dueDate= $filter('date')(ps.dueDate, 'yyyy-MM-dd');
-                $scope.programStages.push(ps);               
+            ProgramStageFactory.getByProgram($scope.selectedProgram).then(function(stages){
+                angular.forEach(stages, function(stage){                
+                    stage.dueDate = moment(moment(incidentDate).add('d', stage.minDaysFromStart), 'YYYY-MM-DD')._d;
+                    stage.dueDate = Date.parse(stage.dueDate);
+                    stage.dueDate= $filter('date')(stage.dueDate, 'yyyy-MM-dd');
+                    $scope.programStages.push(stage);               
+                });                
             });
-            
-            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram.id});
-            $rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
-                                                selectedOrgUnit: $scope.selectedOrgUnit,
-                                                selectedProgramId: $scope.selectedProgram.id,
-                                                selectedEnrollment: $scope.selectedEnrollment});
+
+            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});
+            $rootScope.$broadcast('dashboard', {});
         }
         else{
             $scope.selectedProgram = '';
             $scope.selectedEnrollment = '';
-            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram.id});
-            $rootScope.$broadcast('dashboard', {selectedEntity: $scope.selectedEntity,
-                                                selectedOrgUnit: $scope.selectedOrgUnit,
-                                                selectedProgramId: $scope.selectedProgram.id,
-                                                selectedEnrollment: $scope.selectedEnrollment});
+            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});
+            $rootScope.$broadcast('dashboard', {});
         }
     };
         
@@ -120,7 +128,6 @@ trackerCapture.controller('EnrollmentController',
         //get enrollment attributes and their values - new attributes because of enrollment
         angular.forEach($scope.attributesForEnrollment, function(attribute){
             if(!angular.isUndefined(attribute.value)){
-                //$scope.selectedEntity.attributes.push({attribute: attribute.id, value: attribute.value, type: attribute.valueType, displayName: attribute.name});
                 tei.attributes.push({attribute: attribute.id, value: attribute.value});
             } 
         });

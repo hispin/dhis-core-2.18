@@ -9,6 +9,8 @@
     <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
 </div>
 <div class="page" id="mainPage" ng-show="selectedOrgUnit">
+    
+    <!-- Search heading begins -->
     <h1>
         <span ng-if='showSearchDiv || !showRegistrationDiv'>
             {{'search'| translate}} {{selectedProgram.trackedEntity.name}}
@@ -18,8 +20,13 @@
         </span>          
         <a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a>
     </h1>
-
+    <!-- Search heading ends -->
+    
+    <!--- Simple search field begins -->
     <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
+    <!--- Simple search input field beings -->
+    
+    <!--- Advanced search input field begins -->
     <div class="row">        
         <div id="searchDropDownParent" class="input-group col-md-6">
             <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
@@ -46,11 +53,15 @@
             </button>
         </div>        
     </div>
+    <!--- Advanced search input field begins -->
+    
+    <!--- Error display for search begins -->
     <div class="row" ng-if="emptySearchAttribute">
         <div class="col-md-6">
             <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
         </div>
     </div>
+    <!--- Error display for search ends -->
 
     <div class="row vertical-spacing">
         <div id="selectDropDownParent" class="input-group col-md-6">            

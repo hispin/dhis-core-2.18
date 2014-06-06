@@ -3,8 +3,10 @@ trackerCapture.controller('DataEntryController',
                 $filter,
                 orderByFilter,
                 storage,
+                ProgramStageFactory,
                 DHIS2EventFactory,
                 OrgUnitService,
+                CurrentSelection,
                 TranslationService) {
 
     TranslationService.translate();
@@ -20,21 +22,22 @@ trackerCapture.controller('DataEntryController',
         $scope.allowEventCreation = false;
         $scope.repeatableStages = [];        
         $scope.dhis2Events = [];       
-    
-        $scope.selectedEntity = args.selectedEntity;
-        $scope.selectedOrgUnit = args.selectedOrgUnit;
-        $scope.selectedProgramId = args.selectedProgramId;        
-        $scope.selectedEnrollment = args.selectedEnrollment;        
+        
+        var selections = CurrentSelection.get();          
+        $scope.selectedOrgUnit = storage.get('SELECTED_OU');
+        $scope.selectedEntity = selections.tei;      
+        $scope.selectedProgram = selections.pr;        
+        $scope.selectedEnrollment = selections.enrollment;        
         
         if($scope.selectedOrgUnit && 
-                $scope.selectedProgramId && 
+                $scope.selectedProgram && 
                 $scope.selectedEntity && 
                 $scope.selectedEnrollment){
             
-            DHIS2EventFactory.getByEntity($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgramId).then(function(data){
+            DHIS2EventFactory.getByEntity($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id).then(function(data){
                 $scope.dhis2Events = data;
                 
-                if(angular.isUndefined($scope.dhis2Events)){
+                /*if(angular.isUndefined($scope.dhis2Events)){
                     
                     $scope.dhis2Events = [];
                     
@@ -60,21 +63,22 @@ trackerCapture.controller('DataEntryController',
                             
                         });
                     }
-                }
-                
+                }*/                
+
                 angular.forEach($scope.dhis2Events, function(dhis2Event){
                     
-                    var ps = storage.get(dhis2Event.programStage);
-                    
-                    //check if a stage is repeatable
-                    if(ps.repeatable){
-                        $scope.allowEventCreation = true;
-                        if($scope.repeatableStages.indexOf(ps) === -1){
-                            $scope.repeatableStages.push(ps);
+                    ProgramStageFactory.get(dhis2Event.programStage).then(function(stage){
+                        //check if a stage is repeatable
+                        if(stage.repeatable){
+                            $scope.allowEventCreation = true;
+                            if($scope.repeatableStages.indexOf(stage) === -1){
+                                $scope.repeatableStages.push(stage);
+                            }
                         }
-                    }
-                            
-                    dhis2Event.name = ps.name;
+
+                        dhis2Event.name = stage.name;
+                    });
+                    
                     dhis2Event.eventDate = moment(dhis2Event.eventDate, 'YYYY-MM-DD')._d;
                     dhis2Event.eventDate = Date.parse(dhis2Event.eventDate);
                     dhis2Event.eventDate = $filter('date')(dhis2Event.eventDate, 'yyyy-MM-dd');
@@ -101,8 +105,8 @@ trackerCapture.controller('DataEntryController',
                     }                                                             
                 });
 
-                $scope.dhis2Events = orderByFilter($scope.dhis2Events, '-eventDate');
-                $scope.dhis2Events.reverse();              
+                //$scope.dhis2Events = orderByFilter($scope.dhis2Events, '-eventDate');
+                //$scope.dhis2Events.reverse();              
             });          
         }
     });
@@ -112,29 +116,39 @@ trackerCapture.controller('DataEntryController',
     };
     
     $scope.showDataEntry = function(event){
-        
         if(event){
             
             $scope.currentEvent = event;
             $scope.currentEvent.providedElsewhere = [];
             $scope.currentEvent.dataValues = [];
-            $scope.currentStage = storage.get($scope.currentEvent.programStage); 
-           
-            angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
-                $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
-                if(prStDe.allowProvidedElsewhere){
-                    $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
-                }                
-            });
             
-            angular.forEach($scope.currentEvent.dataValues, function(dataValue){
-                var val = dataValue.value;
-                var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
-                if( de && de.type === 'int' && val){
-                    val = parseInt(val);
-                    dataValue.value = val;
-                }                   
-            });     
-        }     
+            ProgramStageFactory.get($scope.currentEvent.programStage).then(function(stage){
+                $scope.currentStage = stage;
+           
+                angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
+                    $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
+                    if(prStDe.allowProvidedElsewhere){
+                        $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
+                    }                
+                });
+
+                angular.forEach($scope.currentEvent.dataValues, function(dataValue){
+                    var val = dataValue.value;
+                    var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
+                    if( de && de.type === 'int' && val){
+                        val = parseInt(val);
+                        dataValue.value = val;
+                    }
+                });
+            });                 
+        }
     };    
+    
+    $scope.savePatientDatavalue = function(currentEvent, dataElement){
+        
+        $scope.updateSuccess = false;
+        
+        //get the dataelement whose value is being saved/updated
+        $scope.currentDataElement = {id: dataElement};
+    };
 });

@@ -12,23 +12,18 @@ trackerCapture.controller('ProfileController',
     $scope.attributes = {};    
     $scope.editProfile = false;    
     
-    angular.forEach(storage.get('ATTRIBUTES'), function(attribute){
-        $scope.attributes[attribute.id] = attribute;
+    AttributesFactory.getAll().then(function(atts){
+        angular.forEach(atts, function(att){
+            $scope.attributes[att.id] = att;
+        }); 
     }); 
     
-    //listen for the selected entity
-    /*$scope.$on('selectedEntity', function(event, args) { 
-        var selections = CurrentSelection.get();
-        $scope.selectedEntity = selections.tei; 
-        $scope.selectedProgram = selections.pr ? storage.get(selections.pr) : null;        
-        $scope.getTei();
-        
-    });*/
-    
+    //listen for the selected entity       
     $scope.$on('dashboard', function(event, args) { 
         var selections = CurrentSelection.get();
         $scope.selectedEntity = selections.tei; 
-        $scope.selectedProgram = selections.pr ? storage.get(selections.pr) : null; 
+        $scope.selectedProgram = selections.pr; 
+
         $scope.processTeiAttributes();
         
     });
@@ -36,9 +31,7 @@ trackerCapture.controller('ProfileController',
     //display only those attributes that belong the selected program
     //if no program, display attributesInNoProgram
     $scope.processTeiAttributes = function(){
-        
-        $scope.entityAttributes = angular.copy($scope.selectedEntity.attributes);
-        
+       
         angular.forEach(storage.get('TRACKED_ENTITIES'), function(te){
             if($scope.selectedEntity.trackedEntity === te.id){
                 $scope.trackedEntity = te;
@@ -49,12 +42,42 @@ trackerCapture.controller('ProfileController',
             if(att.type === 'number' && !isNaN(parseInt(att.value))){
                 att.value = parseInt(att.value);
             }
-        }); 
+        });
         
-        $scope.selectedEntity.attributes = AttributesFactory.hideAttributesNotInProgram($scope.selectedEntity, $scope.selectedProgram);
+        if($scope.selectedProgram){
+            //show only those attributes in selected program            
+            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
+                for(var i=0; i<$scope.selectedEntity.attributes.length; i++){
+                    $scope.selectedEntity.attributes[i].show = false;
+                    var processed = false;
+                    for(var j=0; j<atts.length && !processed; j++){
+                        if($scope.selectedEntity.attributes[i].attribute === atts[j].id){
+                            processed = true;
+                            $scope.selectedEntity.attributes[i].show = true;
+                        }
+                    }                                   
+                }
+            }); 
+        }
+        else{
+            //show attributes in no program
+            AttributesFactory.getWithoutProgram().then(function(atts){
+                for(var i=0; i<$scope.selectedEntity.attributes.length; i++){
+                    $scope.selectedEntity.attributes[i].show = false;
+                    var processed = false;
+                    for(var j=0; j<atts.length && !processed; j++){
+                        if($scope.selectedEntity.attributes[i].attribute === atts[j].id){
+                            processed = true;
+                            $scope.selectedEntity.attributes[i].show = true;
+                        }
+                    }                                   
+                }
+            });
+        }              
     };
     
     $scope.enableEdit = function(){
+        $scope.entityAttributes = angular.copy($scope.selectedEntity.attributes);
         $scope.editProfile = !$scope.editProfile; 
     };
     
