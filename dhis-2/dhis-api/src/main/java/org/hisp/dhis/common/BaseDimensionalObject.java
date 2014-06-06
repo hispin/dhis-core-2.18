@@ -28,11 +28,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.common.view.DimensionalView;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -40,8 +35,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.view.DimensionalView;
 
-@JacksonXmlRootElement( localName = "dimensionalObject", namespace = DxfNamespaces.DXF_2_0)
+import java.util.ArrayList;
+import java.util.List;
+
+@JacksonXmlRootElement( localName = "dimensionalObject", namespace = DxfNamespaces.DXF_2_0 )
 public class BaseDimensionalObject
     extends BaseNameableObject implements DimensionalObject
 {
@@ -61,27 +60,27 @@ public class BaseDimensionalObject
      * The dimensional items for this dimension.
      */
     private List<NameableObject> items = new ArrayList<NameableObject>();
-    
+
     /**
      * Filter. Applicable for events. Contains operator and filter on this format:
      * <operator>:<filter>;<operator>:<filter>
      * Operator and filter pairs can be repeated any number of times.
      */
     private String filter;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
     public BaseDimensionalObject()
-    {        
+    {
     }
 
     public BaseDimensionalObject( String dimension )
     {
         this.uid = dimension;
     }
-    
+
     public BaseDimensionalObject( String dimension, List<? extends NameableObject> items )
     {
         this.uid = dimension;
@@ -124,7 +123,7 @@ public class BaseDimensionalObject
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
-    
+
     /**
      * Indicates whether this dimension should use all dimension items. All
      * dimension options is represented as an option list of zero elements.
@@ -141,7 +140,7 @@ public class BaseDimensionalObject
     {
         return items != null && !items.isEmpty();
     }
-    
+
     /**
      * Returns dimension name with fall back to dimension.
      */
@@ -149,13 +148,13 @@ public class BaseDimensionalObject
     {
         return dimensionName != null ? dimensionName : uid;
     }
-        
+
     //--------------------------------------------------------------------------
     // Getters and setters
     //--------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DimensionalView.class} )
+    @JsonView( { DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDimension()
     {
@@ -168,7 +167,7 @@ public class BaseDimensionalObject
     }
 
     @JsonProperty
-    @JsonView( {DimensionalView.class} )
+    @JsonView( { DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DimensionType getDimensionType()
     {
@@ -199,7 +198,7 @@ public class BaseDimensionalObject
 
     @Override
     @JsonProperty
-    @JsonView( {DimensionalView.class} )
+    @JsonView( { DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getFilter()
     {
@@ -218,6 +217,6 @@ public class BaseDimensionalObject
     @Override
     public String toString()
     {
-        return "[" + uid + ", type: " + dimensionType  + ", " + items + "]";
+        return "[" + uid + ", type: " + dimensionType + ", " + items + "]";
     }
 }
