@@ -28,14 +28,6 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.validator.routines.DateValidator;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
@@ -44,6 +36,14 @@ import org.hisp.dhis.period.PeriodType;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Months;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
 
 /**
  * @author Lars Helge Overland
@@ -58,7 +58,7 @@ public class DateUtils
 
     /**
      * Formats a Date to the Access date format.
-     * 
+     *
      * @param date the Date to parse.
      * @return a formatted date string.
      */
@@ -71,7 +71,7 @@ public class DateUtils
 
     /**
      * Formats a Date to the format yyyy-MM-dd HH:mm:ss.
-     * 
+     *
      * @param date the Date to parse.
      * @return A formatted date string.
      */
@@ -84,7 +84,7 @@ public class DateUtils
 
     /**
      * Formats a Date to the format yyyy-MM-dd HH:mm:ss.
-     * 
+     *
      * @return A formatted date string.
      */
     public static String getLongDateString()
@@ -94,7 +94,7 @@ public class DateUtils
 
     /**
      * Formats a Date to the format YYYY-MM-DD.
-     * 
+     *
      * @param date the Date to parse.
      * @return A formatted date string. Null if argument is null.
      */
@@ -109,11 +109,11 @@ public class DateUtils
 
     /**
      * Formats a Date to the format YYYY-MM-DD.
-     * 
-     * @param date the Date to parse.
+     *
+     * @param date         the Date to parse.
      * @param defaultValue the return value if the date argument is null.
      * @return A formatted date string. The defaultValue argument if date
-     *         argument is null.
+     * argument is null.
      */
     public static String getMediumDateString( Date date, String defaultValue )
     {
@@ -122,7 +122,7 @@ public class DateUtils
 
     /**
      * Formats the current Date to the format YYYY-MM-DD.
-     * 
+     *
      * @return A formatted date string.
      */
     public static String getMediumDateString()
@@ -132,21 +132,21 @@ public class DateUtils
 
     /**
      * Formats a Date according to the HTTP specification standard date format.
-     * 
+     *
      * @param date the Date to format.
      * @return a formatted string.
      */
     public static String getHttpDateString( Date date )
     {
         final SimpleDateFormat format = new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss" );
-        
-        return format.format( date ) + " GMT" ;
+
+        return format.format( date ) + " GMT";
     }
 
     /**
-     * Returns yesterday's date formatted according to the HTTP specification 
+     * Returns yesterday's date formatted according to the HTTP specification
      * standard date format.
-     * 
+     *
      * @param date the Date to format.
      * @return a formatted string.
      */
@@ -154,14 +154,14 @@ public class DateUtils
     {
         Calendar cal = Calendar.getInstance();
         cal.add( Calendar.DAY_OF_YEAR, -1 );
-        
+
         return getHttpDateString( cal.getTime() );
     }
 
     /**
      * Parses the given string into a Date using the default date format which is
      * yyyy-MM-dd. Returns null if the string cannot be parsed.
-     * 
+     *
      * @param dateString the date string.
      * @return a date.
      */
@@ -179,7 +179,7 @@ public class DateUtils
 
     /**
      * Parses a date from a String on the format YYYY-MM-DD.
-     * 
+     *
      * @param dateString the String to parse.
      * @return a Date based on the given String.
      */
@@ -202,12 +202,12 @@ public class DateUtils
     /**
      * Tests if the given base date is between the given start date and end
      * date, including the dates themselves.
-     * 
-     * @param baseDate the date used as base for the test.
+     *
+     * @param baseDate  the date used as base for the test.
      * @param startDate the start date.
-     * @param endDate the end date.
+     * @param endDate   the end date.
      * @return <code>true</code> if the base date is between the start date
-     *         and end date, <code>false</code> otherwise.
+     * and end date, <code>false</code> otherwise.
      */
     public static boolean between( Date baseDate, Date startDate, Date endDate )
     {
@@ -228,12 +228,12 @@ public class DateUtils
     /**
      * Tests if the given base date is strictly between the given start date and
      * end date.
-     * 
-     * @param baseDate the date used as base for the test.
+     *
+     * @param baseDate  the date used as base for the test.
      * @param startDate the start date.
-     * @param endDate the end date.
+     * @param endDate   the end date.
      * @return <code>true</code> if the base date is between the start date
-     *         and end date, <code>false</code> otherwise.
+     * and end date, <code>false</code> otherwise.
      */
     public static boolean strictlyBetween( Date baseDate, Date startDate, Date endDate )
     {
@@ -253,7 +253,7 @@ public class DateUtils
     /**
      * Returns the number of days since 01/01/1970. The value is rounded off to
      * the floor value and does not take daylight saving time into account.
-     * 
+     *
      * @param date the date.
      * @return number of days since Epoch.
      */
@@ -261,14 +261,14 @@ public class DateUtils
     {
         return date.getTime() / MS_PER_DAY;
     }
-    
+
     /**
      * Returns the number of days between the start date (inclusive) and end
      * date (exclusive). The value is rounded off to the floor value and does
      * not take daylight saving time into account.
-     * 
+     *
      * @param startDate the start-date.
-     * @param endDate the end-date.
+     * @param endDate   the end-date.
      * @return the number of days between the start and end-date.
      */
     public static long getDays( Date startDate, Date endDate )
@@ -280,9 +280,9 @@ public class DateUtils
      * Returns the number of days between the start date (inclusive) and end
      * date (inclusive). The value is rounded off to the floor value and does
      * not take daylight saving time into account.
-     * 
+     *
      * @param startDate the start-date.
-     * @param endDate the end-date.
+     * @param endDate   the end-date.
      * @return the number of days between the start and end-date.
      */
     public static long getDaysInclusive( Date startDate, Date endDate )
@@ -292,11 +292,11 @@ public class DateUtils
 
     /**
      * Calculates the number of days between the start and end-date. Note this
-     * method is taking daylight saving time into account and has a performance 
+     * method is taking daylight saving time into account and has a performance
      * overhead.
-     * 
+     *
      * @param startDate the start date.
-     * @param endDate the end date.
+     * @param endDate   the end date.
      * @return the number of days between the start and end date.
      */
     public static int daysBetween( Date startDate, Date endDate )
@@ -312,7 +312,7 @@ public class DateUtils
      * overhead.
      *
      * @param startDate the start date.
-     * @param endDate the end date.
+     * @param endDate   the end date.
      * @return the number of months between the start and end date.
      */
     public static int monthsBetween( Date startDate, Date endDate )
@@ -324,7 +324,7 @@ public class DateUtils
 
     /**
      * Calculates the number of days between Epoch and the given date.
-     * 
+     *
      * @param date the date.
      * @return the number of days between Epoch and the given date.
      */
@@ -340,7 +340,7 @@ public class DateUtils
 
     /**
      * Returns Epoch date, ie. 01/01/1970.
-     * 
+     *
      * @return Epoch date, ie. 01/01/1970.
      */
     public static Date getEpoch()
@@ -355,7 +355,7 @@ public class DateUtils
 
     /**
      * Returns a date formatted in ANSI SQL.
-     * 
+     *
      * @param date the Date.
      * @return a date String.
      */
@@ -379,32 +379,32 @@ public class DateUtils
     /**
      * This method checks whether the String inDate is a valid date following
      * the format "yyyy-MM-dd".
-     * 
+     *
      * @param date the string to be checked.
      * @return true/false depending on whether the string is a date according to
-     *         the format "yyyy-MM-dd".
+     * the format "yyyy-MM-dd".
      */
     public static boolean dateIsValid( String dateString )
     {
         return DateValidator.getInstance().isValid( dateString, DEFAULT_DATE_FORMAT );
     }
-    
+
     /**
      * Returns the number of seconds until the next day at the given hour.
-     * 
+     *
      * @param hour the hour.
      * @return number of seconds.
      */
     public static long getSecondsUntilTomorrow( int hour )
     {
         Date date = getDateForTomorrow( hour );
-        return ( date.getTime() - new Date().getTime() ) / MS_PER_S;        
+        return (date.getTime() - new Date().getTime()) / MS_PER_S;
     }
-    
+
     /**
      * Returns a date set to tomorrow at the given hour.
-     * 
-     * @param hour the hour. 
+     *
+     * @param hour the hour.
      * @return a date.
      */
     public static Date getDateForTomorrow( int hour )
@@ -417,7 +417,7 @@ public class DateUtils
 
     /**
      * This method adds days to a date
-     * 
+     *
      * @param date the date.
      * @param days the number of days to add.
      */
@@ -434,7 +434,7 @@ public class DateUtils
     /**
      * This is a helper method for checking if the fromDate is later than the
      * toDate. This is necessary in case a user sends the dates with HTTP GET.
-     * 
+     *
      * @param fromDate
      * @param toDate
      * @return boolean
@@ -473,17 +473,17 @@ public class DateUtils
     public static double getAnnualizationFactor( Indicator indicator, Date startDate, Date endDate )
     {
         double factor = 1.0;
-        
+
         if ( indicator.isAnnualized() )
         {
             final int daysInPeriod = DateUtils.daysBetween( startDate, endDate ) + 1;
-            
+
             factor = DAYS_IN_YEAR / daysInPeriod;
         }
-        
+
         return factor;
     }
-    
+
     /**
      * Sets the name property of each period based on the given I18nFormat.
      */
@@ -498,5 +498,37 @@ public class DateUtils
         }
 
         return periods;
+    }
+
+    /**
+     * Parses the given string into a Date using the supported date formats.
+     * Returns null if the string cannot be parsed.
+     *
+     * @param dateString the date string.
+     * @return a date.
+     */
+    public static Date parseDate( final String dateString )
+    {
+        SimpleDateFormat[] supportedDateFormats = new SimpleDateFormat[]{
+            new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ),
+            new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ),
+            new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm" ),
+            new SimpleDateFormat( "yyyy-MM-dd'T'HH" ),
+            new SimpleDateFormat( "yyyy-MM-dd" ),
+            new SimpleDateFormat( "yyyy-MM" ),
+            new SimpleDateFormat( "yyyy" )
+        };
+
+        for ( SimpleDateFormat format : supportedDateFormats )
+        {
+            try
+            {
+                return format.parse( dateString );
+            }
+            catch ( ParseException ignored )
+            {
+            }
+        }
+        return null;
     }
 }

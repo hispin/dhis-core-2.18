@@ -90,6 +90,7 @@ import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 import static org.hisp.dhis.system.util.ConversionUtils.wrap;
 import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
+import static org.hisp.dhis.system.util.DateUtils.parseDate;
 
 /**
  * @author Lars Helge Overland
@@ -559,7 +560,7 @@ public class DefaultDataValueSetService
                 internalValue.setStoredBy( dataValue.getStoredBy() );
             }
 
-            internalValue.setTimestamp( getDefaultDate( dataValue.getLastUpdated() ) );
+            internalValue.setTimestamp( parseDate( dataValue.getLastUpdated() ) );
             internalValue.setComment( trimToNull( dataValue.getComment() ) );
             internalValue.setFollowup( dataValue.getFollowup() );
 
