@@ -64,18 +64,13 @@ public class DefaultSchemaService implements SchemaService
 
             if ( schema.getProperties().isEmpty() )
             {
-                schema.setPropertyMap( propertyIntrospectorService.getPropertiesMap( schema.getKlass() ) );
+                schema.setPropertyMap( Maps.newHashMap( propertyIntrospectorService.getPropertiesMap( schema.getKlass() ) ) );
             }
 
             classSchemaMap.put( schema.getKlass(), schema );
             singularSchemaMap.put( schema.getSingular(), schema );
 
-            if ( schema.getPropertyMap().containsKey( "__self__" ) )
-            {
-                Property property = schema.getPropertyMap().get( "__self__" );
-                schema.setName( property.getName() );
-                schema.setNamespaceURI( property.getNamespaceURI() );
-            }
+            updateSelf( schema );
         }
     }
 
@@ -115,7 +110,9 @@ public class DefaultSchemaService implements SchemaService
         klass = ReflectionUtils.getRealClass( klass );
 
         schema = new Schema( klass, klass.getName(), klass.getName() );
-        schema.setPropertyMap( propertyIntrospectorService.getPropertiesMap( schema.getKlass() ) );
+        schema.setPropertyMap( Maps.newHashMap( propertyIntrospectorService.getPropertiesMap( schema.getKlass() ) ) );
+
+        updateSelf( schema );
 
         return schema;
     }
@@ -152,5 +149,17 @@ public class DefaultSchemaService implements SchemaService
         Collections.sort( schemas, OrderComparator.INSTANCE );
 
         return schemas;
+    }
+
+    private void updateSelf( Schema schema )
+    {
+        if ( schema.getPropertyMap().containsKey( "__self__" ) )
+        {
+            Property property = schema.getPropertyMap().get( "__self__" );
+            schema.setName( property.getName() );
+            schema.setNamespaceURI( property.getNamespaceURI() );
+
+            schema.getPropertyMap().remove( "__self__" );
+        }
     }
 }

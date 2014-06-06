@@ -103,7 +103,7 @@ public class DefaultParserService implements ParserService
                 continue;
             }
 
-            if ( StringUtils.isAlpha( c ) )
+            if ( StringUtils.isAlpha( c ) || c.equals( "*" ) || c.equals( ":" ) || c.equals( "!" ) )
             {
                 builder.append( c );
             }
@@ -124,9 +124,14 @@ public class DefaultParserService implements ParserService
         return prefixes;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private void putInMap( Map<String, Map> map, String path )
     {
+        if ( StringUtils.isEmpty( path ) )
+        {
+            return;
+        }
+
         for ( String p : path.split( "\\." ) )
         {
             if ( map.get( p ) == null )

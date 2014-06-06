@@ -126,4 +126,17 @@ public class Access
     {
         this.delete = delete;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Access{" +
+            "manage=" + manage +
+            ", externalize=" + externalize +
+            ", write=" + write +
+            ", read=" + read +
+            ", update=" + update +
+            ", delete=" + delete +
+            '}';
+    }
 }

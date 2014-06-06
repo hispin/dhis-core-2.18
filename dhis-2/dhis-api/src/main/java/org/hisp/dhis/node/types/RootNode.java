@@ -28,13 +28,35 @@ package org.hisp.dhis.node.types;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.hisp.dhis.node.Node;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class RootNode extends ComplexNode
 {
+    private String defaultNamespace;
+
     public RootNode( String name )
     {
         super( name );
+    }
+
+    public RootNode( Node node )
+    {
+        super( node.getName() );
+        setNamespace( node.getNamespace() );
+        setComment( node.getComment() );
+        addChildren( node.getChildren() );
+    }
+
+    public String getDefaultNamespace()
+    {
+        return defaultNamespace;
+    }
+
+    public void setDefaultNamespace( String defaultNamespace )
+    {
+        this.defaultNamespace = defaultNamespace;
     }
 }

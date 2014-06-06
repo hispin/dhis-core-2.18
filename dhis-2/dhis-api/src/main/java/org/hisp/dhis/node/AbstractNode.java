@@ -28,10 +28,13 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.node.exception.InvalidTypeException;
+import org.hisp.dhis.node.types.SimpleNode;
+import org.springframework.core.OrderComparator;
+import org.springframework.core.Ordered;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -142,7 +145,33 @@ public abstract class AbstractNode implements Node
     @Override
     public List<Node> getChildren()
     {
-        return ImmutableList.copyOf( children );
+        List<Node> clone = Lists.newArrayList( children );
+        Collections.sort( clone, OrderComparator.INSTANCE );
+        return clone;
+    }
+
+    @Override
+    public int getOrder()
+    {
+        if ( isSimple() )
+        {
+            if ( ((SimpleNode) this).isAttribute() )
+            {
+                return 10;
+            }
+
+            return 20;
+        }
+        else if ( isComplex() )
+        {
+            return 30;
+        }
+        else if ( isCollection() )
+        {
+            return 40;
+        }
+
+        return Ordered.LOWEST_PRECEDENCE;
     }
 
     @Override
