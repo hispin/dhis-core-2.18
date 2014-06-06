@@ -1615,9 +1615,11 @@ function registerCompleteDataSet()
 	if ( !confirm( i18n_confirm_complete ) )
 	{
 		return false;
-	}
+  }
 	
-	validate( true, function() {	
+  $( document ).trigger('dhis2.de.event.completed');
+
+	validate( true, function() {
 	    var params = dhis2.de.storageManager.getCurrentCompleteDataSetParams();
 
         var cc = dhis2.de.getCurrentCategoryCombo();
@@ -1638,6 +1640,7 @@ function registerCompleteDataSet()
 	        type: 'post',
 	    	success: function( data, textStatus, xhr )
 	        {
+          $( document ).trigger('dhis2.de.event.completed');
 	    		disableCompleteButton();
 	    		dhis2.de.storageManager.clearCompleteDataSet( params );
 	        },
@@ -1663,7 +1666,7 @@ function undoCompleteDataSet()
 	{
 		return false;
 	}
-	
+
     var params = dhis2.de.storageManager.getCurrentCompleteDataSetParams();
 
     var cc = dhis2.de.getCurrentCategoryCombo();
@@ -1687,8 +1690,9 @@ function undoCompleteDataSet()
     	type: 'delete',
     	success: function( data, textStatus, xhr )
         {
-    		disableUndoButton();
-            dhis2.de.storageManager.clearCompleteDataSet( params );
+          $( document ).trigger('dhis2.de.event.uncompleted');
+          disableUndoButton();
+          dhis2.de.storageManager.clearCompleteDataSet( params );
         },
         error: function( xhr, textStatus, errorThrown )
         {
