@@ -802,10 +802,10 @@ public abstract class BaseAnalyticalObject
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseNameableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "indicators", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "indicator", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "indicators", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "indicator", namespace = DxfNamespaces.DXF_2_0 )
     public List<Indicator> getIndicators()
     {
         return indicators;
@@ -817,10 +817,10 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseNameableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "dataElements", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "dataElement", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "dataElements", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataElement", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -832,10 +832,10 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView(DetailedView.class)
-    @JacksonXmlElementWrapper(localName = "dataElementOperands", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "dataElementOperand", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( DetailedView.class )
+    @JacksonXmlElementWrapper( localName = "dataElementOperands", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataElementOperand", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataElementOperand> getDataElementOperands()
     {
         return dataElementOperands;
@@ -847,10 +847,10 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseNameableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "dataSets", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "dataSet", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "dataSets", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataSet", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -862,10 +862,10 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonSerialize(contentAs = BaseNameableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
     public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -877,11 +877,11 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonSerialize(contentUsing = JacksonPeriodSerializer.class)
-    @JsonDeserialize(contentUsing = JacksonPeriodDeserializer.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "periods", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "period", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentUsing = JacksonPeriodSerializer.class )
+    @JsonDeserialize( contentUsing = JacksonPeriodDeserializer.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "periods", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "period", namespace = DxfNamespaces.DXF_2_0 )
     public List<Period> getPeriods()
     {
         return periods;
@@ -892,9 +892,9 @@ public abstract class BaseAnalyticalObject
         this.periods = periods;
     }
 
-    @JsonProperty(value = "relativePeriods")
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty( value = "relativePeriods" )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public RelativePeriods getRelatives()
     {
         return relatives;
@@ -916,9 +916,9 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "dataElementGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "dataElementGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "dataElementGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dataElementGroup", namespace = DxfNamespaces.DXF_2_0 )
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
@@ -930,9 +930,9 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "organisationUnitGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = DxfNamespaces.DXF_2_0 )
     public List<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
         return organisationUnitGroups;
@@ -975,8 +975,8 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isUserOrganisationUnit()
     {
         return userOrganisationUnit;
@@ -988,8 +988,8 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isUserOrganisationUnitChildren()
     {
         return userOrganisationUnitChildren;
@@ -1001,8 +1001,8 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isUserOrganisationUnitGrandChildren()
     {
         return userOrganisationUnitGrandChildren;
@@ -1014,9 +1014,9 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "organisationUnitLevels", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "organisationUnitLevel", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "organisationUnitLevels", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnitLevel", namespace = DxfNamespaces.DXF_2_0 )
     public List<Integer> getOrganisationUnitLevels()
     {
         return organisationUnitLevels;
@@ -1028,9 +1028,9 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "itemOrganisationUnitGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "itemOrganisationUnitGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "itemOrganisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "itemOrganisationUnitGroup", namespace = DxfNamespaces.DXF_2_0 )
     public List<OrganisationUnitGroup> getItemOrganisationUnitGroups()
     {
         return itemOrganisationUnitGroups;
@@ -1042,8 +1042,8 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRewindRelativePeriods()
     {
         return rewindRelativePeriods;
@@ -1055,8 +1055,8 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDigitGroupSeparator()
     {
         return digitGroupSeparator;
@@ -1068,8 +1068,8 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getSortOrder()
     {
         return sortOrder;
@@ -1081,8 +1081,8 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, DimensionalView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getTopLimit()
     {
         return topLimit;
@@ -1120,11 +1120,11 @@ public abstract class BaseAnalyticalObject
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonDeserialize(contentAs = BaseDimensionalObject.class)
-    @JsonSerialize(contentAs = BaseDimensionalObject.class)
-    @JsonView({ DimensionalView.class })
-    @JacksonXmlElementWrapper(localName = "columns", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "column", namespace = DxfNamespaces.DXF_2_0)
+    @JsonDeserialize( contentAs = BaseDimensionalObject.class )
+    @JsonSerialize( contentAs = BaseDimensionalObject.class )
+    @JsonView( { DimensionalView.class } )
+    @JacksonXmlElementWrapper( localName = "columns", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "column", namespace = DxfNamespaces.DXF_2_0 )
     public List<DimensionalObject> getColumns()
     {
         return columns;
@@ -1136,11 +1136,11 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonDeserialize(contentAs = BaseDimensionalObject.class)
-    @JsonSerialize(contentAs = BaseDimensionalObject.class)
-    @JsonView({ DimensionalView.class })
-    @JacksonXmlElementWrapper(localName = "rows", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "row", namespace = DxfNamespaces.DXF_2_0)
+    @JsonDeserialize( contentAs = BaseDimensionalObject.class )
+    @JsonSerialize( contentAs = BaseDimensionalObject.class )
+    @JsonView( { DimensionalView.class } )
+    @JacksonXmlElementWrapper( localName = "rows", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "row", namespace = DxfNamespaces.DXF_2_0 )
     public List<DimensionalObject> getRows()
     {
         return rows;
@@ -1152,11 +1152,11 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonDeserialize(contentAs = BaseDimensionalObject.class)
-    @JsonSerialize(contentAs = BaseDimensionalObject.class)
-    @JsonView({ DimensionalView.class })
-    @JacksonXmlElementWrapper(localName = "filters", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "filter", namespace = DxfNamespaces.DXF_2_0)
+    @JsonDeserialize( contentAs = BaseDimensionalObject.class )
+    @JsonSerialize( contentAs = BaseDimensionalObject.class )
+    @JsonView( { DimensionalView.class } )
+    @JacksonXmlElementWrapper( localName = "filters", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "filter", namespace = DxfNamespaces.DXF_2_0 )
     public List<DimensionalObject> getFilters()
     {
         return filters;
@@ -1168,7 +1168,7 @@ public abstract class BaseAnalyticalObject
     }
 
     @JsonProperty
-    @JsonView({ DimensionalView.class })
+    @JsonView( { DimensionalView.class } )
     public Map<String, String> getParentGraphMap()
     {
         return parentGraphMap;
