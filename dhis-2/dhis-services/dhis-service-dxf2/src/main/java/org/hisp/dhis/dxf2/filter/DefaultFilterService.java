@@ -125,7 +125,7 @@ public class DefaultFilterService implements FilterService
         return collectionNode;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private ComplexNode buildObjectOutput( Map<String, Map> fieldMap, Object object )
     {
         if ( object == null )
@@ -238,11 +238,11 @@ public class DefaultFilterService implements FilterService
     private void updateFields( Map<String, Map> fieldMap, Object object )
     {
         // we need two run this (at least) two times, since some of the presets might contain other presets
-        _updateFields( fieldMap, object );
-        _updateFields( fieldMap, object );
+        _updateFields( fieldMap, object, true );
+        _updateFields( fieldMap, object, false );
     }
 
-    private void _updateFields( Map<String, Map> fieldMap, Object object )
+    private void _updateFields( Map<String, Map> fieldMap, Object object, boolean expandOnly )
     {
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
 
@@ -276,7 +276,7 @@ public class DefaultFilterService implements FilterService
 
                 cleanupFields.add( fieldKey );
             }
-            else if ( fieldKey.startsWith( "!" ) )
+            else if ( fieldKey.startsWith( "!" ) && !expandOnly )
             {
                 cleanupFields.add( fieldKey );
             }
@@ -285,7 +285,11 @@ public class DefaultFilterService implements FilterService
         for ( String ignore : cleanupFields )
         {
             fieldMap.remove( ignore );
-            fieldMap.remove( ignore.substring( 1 ) );
+
+            if ( !expandOnly )
+            {
+                fieldMap.remove( ignore.substring( 1 ) );
+            }
         }
     }
 
@@ -363,7 +367,7 @@ public class DefaultFilterService implements FilterService
         return complexNode;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private <T> boolean evaluateWithFilters( T object, Filters filters )
     {
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
