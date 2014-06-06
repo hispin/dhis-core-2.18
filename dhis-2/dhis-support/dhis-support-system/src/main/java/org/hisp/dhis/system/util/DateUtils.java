@@ -509,6 +509,11 @@ public class DateUtils
      */
     public static Date parseDate( final String dateString )
     {
+        if ( dateString == null )
+        {
+            return null;
+        }
+
         SimpleDateFormat[] supportedDateFormats = new SimpleDateFormat[]{
             new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ),
             new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ),
@@ -529,6 +534,7 @@ public class DateUtils
             {
             }
         }
+
         return null;
     }
 }
