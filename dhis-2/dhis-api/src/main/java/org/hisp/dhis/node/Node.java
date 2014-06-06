@@ -28,12 +28,14 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.springframework.core.Ordered;
+
 import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface Node
+public interface Node extends Ordered
 {
     /**
      * Name of this node.

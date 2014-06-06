@@ -323,7 +323,7 @@ public class DataElement
     public PeriodType getPeriodType()
     {
         DataSet dataSet = getDataSet();
-        
+
         return dataSet != null ? dataSet.getPeriodType() : null;
     }
 
@@ -453,7 +453,7 @@ public class DataElement
     {
         return optionSet != null;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

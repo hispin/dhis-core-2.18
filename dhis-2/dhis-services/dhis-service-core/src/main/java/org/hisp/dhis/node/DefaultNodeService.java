@@ -48,7 +48,7 @@ public class DefaultNodeService implements NodeService
     @Autowired( required = false )
     private List<NodeSerializer> nodeSerializers = Lists.newArrayList();
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<NodeDeserializer> nodeDeserializers = Lists.newArrayList();
 
     private Map<String, NodeSerializer> nodeSerializerMap = Maps.newHashMap();

@@ -30,6 +30,7 @@ package org.hisp.dhis.webapi.controller.organisationunit;
 
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
@@ -172,9 +173,11 @@ public class OrganisationUnitController
         return entityList;
     }
 
+
+    /* TODO can this be replaced by inclusion/filter?
     @Override
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+    public RootNode getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -261,5 +264,5 @@ public class OrganisationUnitController
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
-
+    */
 }

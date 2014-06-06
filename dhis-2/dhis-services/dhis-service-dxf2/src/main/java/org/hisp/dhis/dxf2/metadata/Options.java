@@ -60,7 +60,7 @@ public class Options
             return null;
         }
 
-        String patterns[] = new String[] {
+        String patterns[] = new String[]{
             "yyyy-MM-dd",
             "yyyy-MM",
             "yyyyMMdd",
@@ -88,7 +88,8 @@ public class Options
             try
             {
                 return new SimpleDateFormat( pattern ).parse( str );
-            } catch ( ParseException ignored )
+            }
+            catch ( ParseException ignored )
             {
             }
         }
@@ -131,7 +132,7 @@ public class Options
             try
             {
                 return Integer.parseInt( str );
-            } 
+            }
             catch ( NumberFormatException ignored )
             {
             }
@@ -183,6 +184,17 @@ public class Options
         return !isEnabled( type );
     }
 
+    public boolean booleanTrue( String key )
+    {
+        return booleanTrue( key, false );
+    }
+
+    public boolean booleanTrue( String key, boolean defaultValue )
+    {
+        String value = options.get( key );
+        return stringAsBoolean( value, defaultValue );
+    }
+
     public Date getDate( String key )
     {
         return stringAsDate( options.get( key ) );
@@ -224,15 +236,15 @@ public class Options
     //--------------------------------------------------------------------------
     // Adding options
     //--------------------------------------------------------------------------
-    
-    public void addOption(String option, String value)
+
+    public void addOption( String option, String value )
     {
-        options.put( option, value);
+        options.put( option, value );
     }
-    
-    public void addOptions(Map<String,String> newOptions)
+
+    public void addOptions( Map<String, String> newOptions )
     {
         options.putAll( options );
     }
-    
+
 }

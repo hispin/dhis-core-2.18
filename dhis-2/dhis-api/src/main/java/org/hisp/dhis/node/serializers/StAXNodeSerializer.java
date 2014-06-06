@@ -35,6 +35,8 @@ import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.node.types.SimpleNode;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -49,6 +51,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
+@Scope( ConfigurableBeanFactory.SCOPE_PROTOTYPE )
 public class StAXNodeSerializer implements NodeSerializer
 {
     public static final String CONTENT_TYPE = "application/xml";
@@ -68,7 +71,9 @@ public class StAXNodeSerializer implements NodeSerializer
 
         try
         {
+            xmlFactory.setProperty( "javax.xml.stream.isRepairingNamespaces", true );
             writer = xmlFactory.createXMLStreamWriter( outputStream );
+            writer.setDefaultNamespace( rootNode.getDefaultNamespace() );
             writeRootNode( rootNode, writer );
             writer.flush();
         }
@@ -182,7 +187,7 @@ public class StAXNodeSerializer implements NodeSerializer
     {
         if ( !StringUtils.isEmpty( node.getNamespace() ) )
         {
-            writer.writeStartElement( "", node.getName(), node.getNamespace() );
+            writer.writeStartElement( node.getNamespace(), node.getName() );
         }
         else
         {

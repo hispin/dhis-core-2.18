@@ -35,6 +35,7 @@ import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.schema.descriptors.UserSchemaDescriptor;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.RestoreOptions;
@@ -95,14 +96,14 @@ public class UserController
 
     @Override
     @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
-    public String getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request )
+    public RootNode getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletResponse response, HttpServletRequest request )
     {
         return super.getObjectList( parameters, model, response, request );
     }
 
     @Override
     @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_VIEW')" )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, Model model,
+    public RootNode getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, Model model,
         HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         return super.getObject( uid, parameters, model, request, response );
