@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Event reports</title>
+	<title>DHIS2 Event Visualizer</title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
@@ -11,11 +11,17 @@
 </head>
 
 <body>
+    <form id="exportForm" method="post">
+        <input type="hidden" id="svgField" name="svg"/>
+        <input type="hidden" id="filenameField" name="filename"/>
+    </form>
+    
     <script src="../../dhis-web-commons/javascripts/ext/ext-all.js"></script>
     <script src="../../dhis-web-commons/javascripts/ext-ux/layout/component/form/MultiSelect.js"></script>
     <script src="../../dhis-web-commons/javascripts/ext-ux/form/MultiSelect.js"></script>
 
     <script src="../../dhis-web-commons/javascripts/periodTypeNoDep.js"></script>
+    <script src="../../dhis-web-commons/javascripts/simpleRegression.js"></script>
 	<script src="scripts/core.js"></script>
 	<script src="scripts/app.js"></script>
 </body>

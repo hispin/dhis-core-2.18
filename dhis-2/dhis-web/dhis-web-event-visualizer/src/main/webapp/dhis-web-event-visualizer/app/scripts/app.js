@@ -1,5 +1,5 @@
 Ext.onReady( function() {
-	var NS = ER,
+	var NS = EV,
 
 		AggregateLayoutWindow,
 		AggregateOptionsWindow,
@@ -980,10 +980,28 @@ Ext.onReady( function() {
 						filterStore.add(record);
 					});
 
-					ms.store.on('add', function() {
+					ms.store.on('add', function(store, addedRecords) {
+                        var range = store.getRange();
+                        
+                        if (range.length > 1) {
+                            var addedIds = Ext.Array.pluck(addedRecords, 'internalId'),
+                                records = Ext.clone(range);
+
+                            store.removeAll();
+
+                            for (var i = 0; i < range.length; i++) {
+                                if (Ext.Array.contains(addedIds, range[i].internalId)) {
+                                    store.add(range[i]);
+                                }
+                                else {
+                                    filterStore.add(range[i]);
+                                }
+                            }
+                        }
+                        
 						Ext.defer( function() {
 							ms.boundList.getSelectionModel().deselectAll();
-						}, 10);
+						}, 10);                        
 					});
 				}
 			}
@@ -1014,10 +1032,28 @@ Ext.onReady( function() {
 						filterStore.add(record);
 					});
 
-					ms.store.on('add', function() {
+					ms.store.on('add', function(store, addedRecords) {
+                        var range = store.getRange();
+                        
+                        if (range.length > 1) {
+                            var addedIds = Ext.Array.pluck(addedRecords, 'internalId'),
+                                records = Ext.clone(range);
+
+                            store.removeAll();
+
+                            for (var i = 0; i < range.length; i++) {
+                                if (Ext.Array.contains(addedIds, range[i].internalId)) {
+                                    store.add(range[i]);
+                                }
+                                else {
+                                    filterStore.add(range[i]);
+                                }
+                            }
+                        }
+                        
 						Ext.defer( function() {
 							ms.boundList.getSelectionModel().deselectAll();
-						}, 10);
+						}, 10);                        
 					});
 				}
 			}
@@ -1177,8 +1213,8 @@ Ext.onReady( function() {
 			filterStore.removeAll();
 
 			if (!isAll) {
-				colStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
-				colStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
+				filterStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
+				rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
 			}
 
 			fixedFilterStore.setListHeight();
@@ -1207,31 +1243,17 @@ Ext.onReady( function() {
 				'->',
 				{
 					text: NS.i18n.hide,
-					listeners: {
-						added: function(b) {
-							b.on('click', function() {
-								window.hide();
-							});
-						}
-					}
+                    handler: function() {
+                        window.hide();
+                    }
 				},
 				{
 					text: '<b>' + NS.i18n.update + '</b>',
-					listeners: {
-						added: function(b) {
-							b.on('click', function() {
-								var config = ns.core.web.report.getLayoutConfig();
+                    handler: function() {
+                        ns.app.viewport.update();                        
 
-								if (!config) {
-									return;
-								}
-
-								ns.core.web.report.getData(config, false);
-
-								window.hide();
-							});
-						}
-					}
+                        window.hide();
+                    }
 				}
 			],
 			listeners: {
@@ -1261,182 +1283,245 @@ Ext.onReady( function() {
 	};
 
     AggregateOptionsWindow = function() {
-		var showTotals,
-			showSubTotals,
-			hideEmptyRows,
-            limit,
-            countType,
-            aggregationType,
-			showHierarchy,
-			digitGroupSeparator,
-			displayDensity,
-			fontSize,
-			reportingPeriod,
-			organisationUnit,
-			parentOrganisationUnit,
+		var showValues,
+            hideEmptyRows,
+            showTrendLine,
+			targetLineValue,
+			targetLineTitle,
+			baseLineValue,
+			baseLineTitle,
+
+            rangeAxisMaxValue,
+            rangeAxisMinValue,
+            rangeAxisSteps,
+            rangeAxisDecimals,
+			rangeAxisTitle,
+			domainAxisTitle,
+            
+			hideLegend,
+			hideTitle,
+			title,
 
 			data,
-			style,
-			parameters,
+			axes,
+			general,
+			window,
 
-			comboboxWidth = 280,
-			window;
+			cmpWidth = 340,
+			labelWidth = 125,
+			numberWidth = 80;
 
-		showTotals = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_totals,
-			style: 'margin-bottom:4px',
-			checked: true
+		showTrendLine = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.trend_line,
+			style: 'margin-bottom:6px'
 		});
 
-		showSubTotals = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_subtotals,
-			style: 'margin-bottom:4px',
-			checked: true
+		targetLineValue = Ext.create('Ext.form.field.Number', {
+			width: numberWidth,
+			height: 18,
+			listeners: {
+				change: function(nf) {
+					targetLineTitle.xable();
+				}
+			}
+		});
+
+		targetLineTitle = Ext.create('Ext.form.field.Text', {
+			style: 'margin-left:1px; margin-bottom:1px',
+			fieldStyle: 'padding-left:3px',
+			emptyText: NS.i18n.target,
+			width: cmpWidth - labelWidth - 5 - numberWidth - 1,
+			maxLength: 100,
+			enforceMaxLength: true,
+			disabled: true,
+			xable: function() {
+				this.setDisabled(!targetLineValue.getValue() && !Ext.isNumber(targetLineValue.getValue()));
+			}
+		});
+
+		baseLineValue = Ext.create('Ext.form.field.Number', {
+			//cls: 'gis-numberfield',
+			width: numberWidth,
+			height: 18,
+			listeners: {
+				change: function(nf) {
+					baseLineTitle.xable();
+				}
+			}
+		});
+
+		baseLineTitle = Ext.create('Ext.form.field.Text', {
+			//cls: 'ns-textfield-alt1',
+			style: 'margin-left:1px; margin-bottom:1px',
+			fieldStyle: 'padding-left:3px',
+			emptyText: NS.i18n.base,
+			width: cmpWidth - labelWidth - 5 - numberWidth - 1,
+			maxLength: 100,
+			enforceMaxLength: true,
+			disabled: true,
+			xable: function() {
+				this.setDisabled(!baseLineValue.getValue() && !Ext.isNumber(baseLineValue.getValue()));
+			}
 		});
 
 		hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.hide_empty_rows,
-			style: 'margin-bottom:4px',
-            checked: true
-		});
-
-        limit = Ext.create('Ext.ux.container.LimitContainer', {
-            boxLabel: NS.i18n.limit,
-            sortOrder: 1,
-            topLimit: 10,
-            comboboxWidth: comboboxWidth
-        });
-
-        countType = Ext.create('Ext.form.field.ComboBox', {
-			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
-			width: comboboxWidth,
-			labelWidth: 130,
-			fieldLabel: NS.i18n.count_type,
-			labelStyle: 'color:#333',
-			queryMode: 'local',
-			valueField: 'id',
-			editable: false,
-			value: 'events',
-			store: Ext.create('Ext.data.Store', {
-				fields: ['id', 'text'],
-				data: [
-					{id: 'events', text: NS.i18n.events},
-					{id: 'tracked_entity_instances', text: NS.i18n.tracked_entity_instances}
-				]
-			})
-		});
-
-		showHierarchy = Ext.create('Ext.form.field.Checkbox', {
-			boxLabel: NS.i18n.show_hierarchy,
+			boxLabel: NS.i18n.hide_empty_category_items,
 			style: 'margin-bottom:4px'
 		});
 
-		displayDensity = Ext.create('Ext.form.field.ComboBox', {
-			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
-			width: comboboxWidth,
-			labelWidth: 130,
-			fieldLabel: NS.i18n.display_density,
-			labelStyle: 'color:#333',
-			queryMode: 'local',
-			valueField: 'id',
-			editable: false,
-			value: 'normal',
-			store: Ext.create('Ext.data.Store', {
-				fields: ['id', 'text'],
-				data: [
-					{id: 'comfortable', text: NS.i18n.comfortable},
-					{id: 'normal', text: NS.i18n.normal},
-					{id: 'compact', text: NS.i18n.compact}
-				]
-			})
+		rangeAxisMaxValue = Ext.create('Ext.form.field.Number', {
+			width: numberWidth,
+			height: 18,
+			labelWidth: 125,
+            style: 'margin-left:1px'
 		});
 
-		fontSize = Ext.create('Ext.form.field.ComboBox', {
-			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
-			width: comboboxWidth,
-			labelWidth: 130,
-			fieldLabel: NS.i18n.font_size,
-			labelStyle: 'color:#333',
-			queryMode: 'local',
-			valueField: 'id',
-			editable: false,
-			value: 'normal',
-			store: Ext.create('Ext.data.Store', {
-				fields: ['id', 'text'],
-				data: [
-					{id: 'large', text: NS.i18n.large},
-					{id: 'normal', text: NS.i18n.normal},
-					{id: 'small', text: NS.i18n.small_}
-				]
-			})
+		rangeAxisMinValue = Ext.create('Ext.form.field.Number', {
+			width: numberWidth,
+			height: 18,
+			labelWidth: 125
 		});
 
-		digitGroupSeparator = Ext.create('Ext.form.field.ComboBox', {
-			labelStyle: 'color:#333',
-			cls: 'ns-combo',
-			style: 'margin-bottom:2px',
-			width: comboboxWidth,
-			labelWidth: 130,
-			fieldLabel: NS.i18n.digit_group_separator,
-			queryMode: 'local',
-			valueField: 'id',
-			editable: false,
-			value: 'space',
-			store: Ext.create('Ext.data.Store', {
-				fields: ['id', 'text'],
-				data: [
-					{id: 'comma', text: 'Comma'},
-					{id: 'space', text: 'Space'},
-					{id: 'none', text: 'None'}
-				]
-			})
+		rangeAxisSteps = Ext.create('Ext.form.field.Number', {
+			width: labelWidth + 5 + numberWidth,
+			height: 18,
+			fieldLabel: 'Range axis tick steps',
+			labelWidth: 125,
+			minValue: 1
 		});
 
-		//legendSet = Ext.create('Ext.form.field.ComboBox', {
-			//cls: 'ns-combo',
-			//style: 'margin-bottom:3px',
-			//width: comboboxWidth,
-			//labelWidth: 130,
-			//fieldLabel: NS.i18n.legend_set,
-			//valueField: 'id',
-			//displayField: 'name',
-			//editable: false,
-			//value: 0,
-			//store: ns.app.stores.legendSet
-		//});
+		rangeAxisDecimals = Ext.create('Ext.form.field.Number', {
+			width: labelWidth + 5 + numberWidth,
+			height: 18,
+			fieldLabel: 'Range axis decimals',
+			labelWidth: 125,
+			minValue: 0
+		});
 
-		data = {
+		showValues = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.show_values,
+			style: 'margin-bottom:4px',
+			checked: true
+		});
+
+		hideLegend = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.hide_legend,
+			style: 'margin-bottom:4px'
+		});
+
+		hideTitle = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: NS.i18n.hide_chart_title,
+			style: 'margin-bottom:7px',
+			listeners: {
+				change: function() {
+					title.xable();
+				}
+			}
+		});
+
+		title = Ext.create('Ext.form.field.Text', {
+			style: 'margin-bottom:2px',
+			width: cmpWidth,
+			fieldLabel: NS.i18n.chart_title,
+			labelStyle: 'color:#333',
+			labelWidth: 125,
+			maxLength: 100,
+			enforceMaxLength: true,
+			xable: function() {
+				this.setDisabled(hideTitle.getValue());
+			}
+		});
+
+		rangeAxisTitle = Ext.create('Ext.form.field.Text', {
+			width: cmpWidth,
+			fieldLabel: NS.i18n.range_axis_label,
+			labelStyle: 'color:#333',
+			labelWidth: 125,
+			maxLength: 100,
+			enforceMaxLength: true,
+			style: 'margin-bottom:1px'
+		});
+		
+		domainAxisTitle = Ext.create('Ext.form.field.Text', {
+			width: cmpWidth,
+			fieldLabel: NS.i18n.domain_axis_label,
+			labelStyle: 'color:#333',
+			labelWidth: 125,
+			maxLength: 100,
+			enforceMaxLength: true,
+			style: 'margin-bottom:1px'
+		});
+
+        data = {
+			xtype: 'container',
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-				showTotals,
-				showSubTotals,
+				showValues,
 				hideEmptyRows,
-                limit,
-                countType
-                //aggregationType
+				showTrendLine,
+				{
+					xtype: 'container',
+					layout: 'column',
+					bodyStyle: 'border:0 none',
+					items: [
+						{
+							bodyStyle: 'border:0 none; padding-top:3px; margin-right:5px; color:#333',
+							width: 130,
+							html: 'Target value / title:'
+						},
+						targetLineValue,
+						targetLineTitle
+					]
+				},
+				{
+					xtype: 'container',
+					layout: 'column',
+					bodyStyle: 'border:0 none',
+					items: [
+						{
+							bodyStyle: 'border:0 none; padding-top:3px; margin-right:5px; color:#333',
+							width: 130,
+							html: 'Base value / title:'
+						},
+						baseLineValue,
+						baseLineTitle
+					]
+				}
 			]
 		};
 
-		organisationUnits = {
+		axes = {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-				showHierarchy
+				{
+					layout: 'column',
+					bodyStyle: 'border:0 none',
+					items: [
+						{
+							bodyStyle: 'border:0 none; padding-top:3px; margin-right:5px; color:#333',
+							width: 130,
+							html: 'Range axis min/max:'
+						},
+						rangeAxisMinValue,
+						rangeAxisMaxValue
+					]
+				},
+				rangeAxisSteps,
+				rangeAxisDecimals,
+				rangeAxisTitle,
+				domainAxisTitle
 			]
-		};
+		};			
 
-		style = {
+		general = {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
 			items: [
-				displayDensity,
-				fontSize,
-				digitGroupSeparator
-				//legendSet
+				hideLegend,
+				hideTitle,
+				title
 			]
 		};
 
@@ -1450,38 +1535,117 @@ Ext.onReady( function() {
 			hideOnBlur: true,
 			getOptions: function() {
 				return {
-					showTotals: showTotals.getValue(),
-					showSubTotals: showSubTotals.getValue(),
-					hideEmptyRows: hideEmptyRows.getValue(),
-                    sortOrder: limit.getSortOrder(),
-                    topLimit: limit.getTopLimit(),
-					countType: countType.getValue(),
-					showHierarchy: showHierarchy.getValue(),
-					displayDensity: displayDensity.getValue(),
-					fontSize: fontSize.getValue(),
-					digitGroupSeparator: digitGroupSeparator.getValue()
-					//legendSet: {id: legendSet.getValue()}
+					showValues: showValues.getValue(),
+                    hideEmptyRows: hideEmptyRows.getValue(),
+					showTrendLine: showTrendLine.getValue(),
+					targetLineValue: targetLineValue.getValue(),
+					targetLineTitle: targetLineTitle.getValue(),
+					baseLineValue: baseLineValue.getValue(),
+					baseLineTitle: baseLineTitle.getValue(),
+					rangeAxisMaxValue: rangeAxisMaxValue.getValue(),
+					rangeAxisMinValue: rangeAxisMinValue.getValue(),
+					rangeAxisSteps: rangeAxisSteps.getValue(),
+					rangeAxisDecimals: rangeAxisDecimals.getValue(),
+					rangeAxisTitle: rangeAxisTitle.getValue(),
+					domainAxisTitle: domainAxisTitle.getValue(),
+					hideLegend: hideLegend.getValue(),
+					hideTitle: hideTitle.getValue(),
+					title: title.getValue()
 				};
 			},
 			setOptions: function(layout) {
-				showTotals.setValue(Ext.isBoolean(layout.showTotals) ? layout.showTotals : true);
-				showSubTotals.setValue(Ext.isBoolean(layout.showSubTotals) ? layout.showSubTotals : true);
+				showValues.setValue(Ext.isBoolean(layout.showValues) ? layout.showValues : false);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
-				limit.setValues(layout.sortOrder, layout.topLimit);
-				countType.setValue(Ext.isString(layout.countType) ? layout.countType : 'events');
-                //aggregationType.setValue(Ext.isString(layout.aggregationType) ? layout.aggregationType : 'default');
-				showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
-				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
-				fontSize.setValue(Ext.isString(layout.fontSize) ? layout.fontSize : 'normal');
-				digitGroupSeparator.setValue(Ext.isString(layout.digitGroupSeparator) ? layout.digitGroupSeparator : 'space');
-				//legendSet.setValue(Ext.isObject(layout.legendSet) && Ext.isString(layout.legendSet.id) ? layout.legendSet.id : 0);
-				//reportingPeriod.setValue(Ext.isBoolean(layout.reportingPeriod) ? layout.reportingPeriod : false);
-				//organisationUnit.setValue(Ext.isBoolean(layout.organisationUnit) ? layout.organisationUnit : false);
-				//parentOrganisationUnit.setValue(Ext.isBoolean(layout.parentOrganisationUnit) ? layout.parentOrganisationUnit : false);
-				//regression.setValue(Ext.isBoolean(layout.regression) ? layout.regression : false);
-				//cumulative.setValue(Ext.isBoolean(layout.cumulative) ? layout.cumulative : false);
-				//sortOrder.setValue(Ext.isNumber(layout.sortOrder) ? layout.sortOrder : 0);
-				//topLimit.setValue(Ext.isNumber(layout.topLimit) ? layout.topLimit : 0);
+				showTrendLine.setValue(Ext.isBoolean(layout.showTrendLine) ? layout.showTrendLine : false);
+
+				// target line
+				if (Ext.isNumber(layout.targetLineValue)) {
+					targetLineValue.setValue(layout.targetLineValue);
+				}
+				else {
+					targetLineValue.reset();
+				}
+
+				if (Ext.isString(layout.targetLineTitle)) {
+					targetLineTitle.setValue(layout.targetLineTitle);
+				}
+				else {
+					targetLineTitle.reset();
+				}
+
+				// base line
+				if (Ext.isNumber(layout.baseLineValue)) {
+					baseLineValue.setValue(layout.baseLineValue);
+				}
+				else {
+					baseLineValue.reset();
+				}
+
+				if (Ext.isString(layout.baseLineTitle)) {
+					baseLineTitle.setValue(layout.baseLineTitle);
+				}
+				else {
+					baseLineTitle.reset();
+				}
+
+				// rangeAxisMaxValue
+				if (Ext.isNumber(layout.rangeAxisMaxValue)) {
+					rangeAxisMaxValue.setValue(layout.rangeAxisMaxValue);
+				}
+				else {
+					rangeAxisMaxValue.reset();
+				}
+
+				// rangeAxisMinValue
+				if (Ext.isNumber(layout.rangeAxisMinValue)) {
+					rangeAxisMinValue.setValue(layout.rangeAxisMinValue);
+				}
+				else {
+					rangeAxisMinValue.reset();
+				}
+
+				// rangeAxisSteps
+				if (Ext.isNumber(layout.rangeAxisSteps)) {
+					rangeAxisSteps.setValue(layout.rangeAxisSteps);
+				}
+				else {
+					rangeAxisSteps.reset();
+				}
+
+				// rangeAxisDecimals
+				if (Ext.isNumber(layout.rangeAxisDecimals)) {
+					rangeAxisDecimals.setValue(layout.rangeAxisDecimals);
+				}
+				else {
+					rangeAxisDecimals.reset();
+				}
+
+				// range axis title
+				if (Ext.isString(layout.rangeAxisTitle)) {
+					rangeAxisTitle.setValue(layout.rangeAxisTitle);
+				}
+				else {
+					rangeAxisTitle.reset();
+				}
+
+				// domain axis title
+				if (Ext.isString(layout.domainAxisTitle)) {
+					domainAxisTitle.setValue(layout.domainAxisTitle);
+				}
+				else {
+					domainAxisTitle.reset();
+				}
+				
+				hideLegend.setValue(Ext.isBoolean(layout.hideLegend) ? layout.hideLegend : false);
+				hideTitle.setValue(Ext.isBoolean(layout.hideTitle) ? layout.hideTitle : false);
+
+				// title
+				if (Ext.isString(layout.title)) {
+					title.setValue(layout.title);
+				}
+				else {
+					title.reset();
+				}
 			},
 			items: [
 				{
@@ -1496,18 +1660,18 @@ Ext.onReady( function() {
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
 					style: 'margin-bottom:6px; margin-left:2px',
-					html: NS.i18n.organisation_units
+					html: NS.i18n.axes
 				},
-				organisationUnits,
+				axes,
 				{
 					bodyStyle: 'border:0 none; padding:5px'
 				},
 				{
 					bodyStyle: 'border:0 none; color:#222; font-size:12px; font-weight:bold',
 					style: 'margin-bottom:6px; margin-left:2px',
-					html: NS.i18n.style
+					html: NS.i18n.general
 				},
-				style
+				general
 			],
 			bbar: [
 				'->',
@@ -1520,14 +1684,7 @@ Ext.onReady( function() {
 				{
 					text: '<b>' + NS.i18n.update + '</b>',
 					handler: function() {
-						var config = ns.core.web.report.getLayoutConfig();
-							//layout = ns.core.api.layout.Layout(config);
-
-						if (!config) {
-							return;
-						}
-
-						ns.core.web.report.getData(config, false);
+                        ns.app.viewport.update();                        
 
 						window.hide();
 					}
@@ -1543,20 +1700,25 @@ Ext.onReady( function() {
 						}
 					}
 
-					//if (!legendSet.store.isLoaded) {
-						//legendSet.store.load();
-					//}
-
 					// cmp
-					w.showTotals = showTotals;
-					w.showSubTotals = showSubTotals;
-					w.hideEmptyRows = hideEmptyRows;
-                    w.limit = limit;
-					w.countType = countType;
-					w.showHierarchy = showHierarchy;
-					w.displayDensity = displayDensity;
-					w.fontSize = fontSize;
-					w.digitGroupSeparator = digitGroupSeparator;
+					w.showValues = showValues;
+                    w.hideEmptyRows = hideEmptyRows;
+					w.showTrendLine = showTrendLine;
+					w.targetLineValue = targetLineValue;
+					w.targetLineTitle = targetLineTitle;
+					w.baseLineValue = baseLineValue;
+					w.baseLineTitle = baseLineTitle;
+
+					w.rangeAxisMaxValue = rangeAxisMaxValue;
+					w.rangeAxisMinValue = rangeAxisMinValue;
+					w.rangeAxisSteps = rangeAxisSteps;
+					w.rangeAxisDecimals = rangeAxisDecimals;
+					w.rangeAxisTitle = rangeAxisTitle;
+					w.domainAxisTitle = domainAxisTitle;
+					
+					w.hideLegend = hideLegend;
+					w.hideTitle = hideTitle;
+					w.title = title;
 				}
 			}
 		});
@@ -3198,7 +3360,7 @@ Ext.onReady( function() {
                     ux.setRecord(element);
                 }
 
-                store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.rowStore : aggWindow.fixedFilterStore;
+                store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.colStore : aggWindow.fixedFilterStore;
 
                 if (store === aggWindow.fixedFilterStore) {
 					fixedFilterElementIds.push(element.id);
@@ -4445,7 +4607,7 @@ Ext.onReady( function() {
 				ns.app.shareButton.enable();
 			}
 
-            ns.app.statusBar.setStatus(layout, response);
+            //ns.app.statusBar.setStatus(layout, response);
 
 			// set gui
 			if (!updateGui) {
@@ -4688,6 +4850,32 @@ Ext.onReady( function() {
 			if (Ext.isArray(init.organisationUnitLevels)) {
 				support.prototype.array.sort(init.organisationUnitLevels, 'ASC', 'level');
 			}
+		}());
+
+        // support
+		(function() {
+
+			// svg
+			support.svg = support.svg || {};
+
+			support.svg.submitForm = function(type) {
+				var svg = Ext.query('svg'),
+					form = Ext.query('#exportForm')[0];
+
+				if (!(Ext.isArray(svg) && svg.length)) {
+					alert('Browser does not support SVG');
+					return;
+				}
+
+				svg = Ext.get(svg[0]);
+				svg = svg.parent().dom.innerHTML;
+
+				Ext.query('#svgField')[0].value = svg;
+				Ext.query('#filenameField')[0].value = 'test';
+
+				form.action = ns.core.init.contextPath + '/api/svg.' + type;
+				form.submit();
+			};
 		}());
 
 		// web
@@ -5147,8 +5335,7 @@ Ext.onReady( function() {
                         direction: view.sortOrder == 1 ? 'DESC' : 'ASC'
                     };
                 }
-                //}
-
+                
                 return view;
             };
 
@@ -5240,53 +5427,37 @@ Ext.onReady( function() {
 			};
 
 			web.report.createReport = function(layout, response, isUpdateGui) {
-				var map = {};
-
-				//map['aggregated_values'] = function() {
                 var xLayout,
                     xColAxis,
                     xRowAxis,
-                    table,
-                    getHtml,
+                    chart,
+                    //getHtml,
                     getXLayout = service.layout.getExtendedLayout,
                     getSXLayout = service.layout.getSyncronizedXLayout,
-                    getXResponse = service.response.aggregate.getExtendedResponse,
-                    getXAxis = service.layout.getExtendedAxis;
+                    getXResponse = service.response.aggregate.getExtendedResponse;
+                    //getXAxis = service.layout.getExtendedAxis;
 
                 response = response || ns.app.response;
-
-                getHtml = function(xLayout, xResponse) {
-                    xColAxis = getXAxis(xLayout, 'col');
-                    xRowAxis = getXAxis(xLayout, 'row');
-
-                    return web.report.aggregate.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
-                };
 
                 xLayout = getXLayout(layout);
                 xResponse = service.response.aggregate.getExtendedResponse(xLayout, response);
                 xLayout = getSXLayout(xLayout, xResponse);
 
-                table = getHtml(xLayout, xResponse);
+                chart = web.report.aggregate.createChart(layout, xLayout, xResponse, ns.app.centerRegion);
 
-                if (table.tdCount > 20000 || (layout.hideEmptyRows && table.tdCount > 10000)) {
-                    alert('Table has too many cells. Please reduce the table and try again.');
-                    web.mask.hide(ns.app.centerRegion);
-                    return;
-                }
+                //if (layout.sorting) {
+                    //xResponse = web.report.aggregate.sort(xLayout, xResponse, xColAxis);
+                    //xLayout = getSXLayout(xLayout, xResponse);
+                    //table = getHtml(xLayout, xResponse);
+                //}
 
-                if (layout.sorting) {
-                    xResponse = web.report.aggregate.sort(xLayout, xResponse, xColAxis);
-                    xLayout = getSXLayout(xLayout, xResponse);
-                    table = getHtml(xLayout, xResponse);
-                }
-
-                web.mask.show(ns.app.centerRegion, 'Rendering table..');
+                web.mask.show(ns.app.centerRegion, 'Rendering chart..');
 
                 // timing
                 ns.app.dateRender = new Date();
 
                 ns.app.centerRegion.removeAll(true);
-                ns.app.centerRegion.update(table.html);
+				ns.app.centerRegion.add(chart);
 
                 // timing
                 ns.app.dateTotal = new Date();
@@ -5296,23 +5467,17 @@ Ext.onReady( function() {
                 ns.app.xLayout = xLayout;
                 ns.app.response = response;
                 ns.app.xResponse = xResponse;
-                ns.app.xColAxis = xColAxis;
-                ns.app.xRowAxis = xRowAxis;
-                ns.app.uuidDimUuidsMap = table.uuidDimUuidsMap;
-                ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
-
+                ns.app.chart = chart;
+                
                 if (NS.isSessionStorage) {
-                    //web.events.setValueMouseHandlers(layout, response || xResponse, ns.app.uuidDimUuidsMap, ns.app.uuidObjectMap);
-                    web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
-                    web.storage.session.set(layout, 'table');
+                    web.storage.session.set(layout, 'eventchart');
                 }
 
-                ns.app.widget.setGui(layout, xLayout, response, isUpdateGui, table);
+                ns.app.widget.setGui(layout, xLayout, response, isUpdateGui); //table);
 
                 web.mask.hide(ns.app.centerRegion);
-
+                
                 if (NS.isDebug) {
-                    console.log("Number of cells", table.tdCount);
                     console.log("DATA", (ns.app.dateCreate - ns.app.dateData) / 1000);
                     console.log("CREATE", (ns.app.dateRender - ns.app.dateCreate) / 1000);
                     console.log("RENDER", (ns.app.dateTotal - ns.app.dateRender) / 1000);
@@ -5723,6 +5888,25 @@ Ext.onReady( function() {
 				shadow: false,
 				showSeparator: false,
 				items: [
+                    {
+                        xtype: 'label',
+                        text: NS.i18n.graphics,
+                        style: 'padding:7px 5px 5px 7px; font-weight:bold'
+                    },
+                    {
+                        text: 'PNG (.png)',
+                        iconCls: 'ns-menu-item-image',
+                        handler: function() {
+                            ns.core.support.svg.submitForm('png');
+                        }
+                    },
+                    {
+                        text: 'PDF (.pdf)',
+                        iconCls: 'ns-menu-item-image',
+                        handler: function() {
+                            ns.core.support.svg.submitForm('pdf');
+                        }
+                    },
 					{
 						xtype: 'label',
 						text: NS.i18n.plain_data_sources,
@@ -5926,16 +6110,16 @@ Ext.onReady( function() {
 			}
 		});
 
-        statusBar = Ext.create('Ext.ux.toolbar.StatusBar', {
-            height: 27,
-            listeners: {
-                render: function() {
-                    ns.app.statusBar = this;
+        //statusBar = Ext.create('Ext.ux.toolbar.StatusBar', {
+            //height: 27,
+            //listeners: {
+                //render: function() {
+                    //ns.app.statusBar = this;
 
-                    this.reset();
-                }
-            }
-        });
+                    //this.reset();
+                //}
+            //}
+        //});
 
 		centerRegion = Ext.create('Ext.panel.Panel', {
 			region: 'center',
@@ -5982,28 +6166,16 @@ Ext.onReady( function() {
 					}
 				]
 			},
-            bbar: statusBar,
+            //bbar: statusBar,
 			listeners: {
 				added: function() {
 					ns.app.centerRegion = this;
 				},
-				afterrender: function(p) {
-					var liStyle = 'padding:3px 10px; color:#333',
-						html = '';
-
-					html += '<div style="padding:20px">';
-					html += '<div style="font-size:14px; padding-bottom:8px">' + NS.i18n.example1 + '</div>';
-					html += '<div style="' + liStyle + '">- ' + NS.i18n.example2 + '</div>';
-					html += '<div style="' + liStyle + '">- ' + NS.i18n.example3 + '</div>';
-					html += '<div style="' + liStyle + '">- ' + NS.i18n.example4 + '</div>';
-					html += '<div style="font-size:14px; padding-top:20px; padding-bottom:8px">' + NS.i18n.example5 + '</div>';
-					html += '<div style="' + liStyle + '">- ' + NS.i18n.example6 + '</div>';
-					html += '<div style="' + liStyle + '">- ' + NS.i18n.example7 + '</div>';
-					html += '<div style="' + liStyle + '">- ' + NS.i18n.example8 + '</div>';
-					html += '</div>';
-
-					p.update(html);
-				}
+                resize: function(p) {
+                    if (ns.app.xLayout && ns.app.chart) {
+                        ns.app.chart.onViewportResize();
+                    }
+                }
 			}
 		});
 
@@ -6019,6 +6191,7 @@ Ext.onReady( function() {
 			layout: 'border',
             getLayoutWindow: getLayoutWindow,
             chartType: chartType,
+            update: update,
 			items: [
 				westRegion,
 				centerRegion
