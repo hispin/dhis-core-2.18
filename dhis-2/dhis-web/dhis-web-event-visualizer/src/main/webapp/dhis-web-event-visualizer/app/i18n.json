@@ -182,5 +182,8 @@
 "target_line_label",
 "chart_title",
 "hide_chart_title",
-"trend"
+"trend",
+"base",
+"axes",
+"general"
 ]
