@@ -181,7 +181,8 @@ public abstract class AbstractCalendar implements Calendar
     public DateUnit today()
     {
         DateTime dateTime = DateTime.now( ISOChronology.getInstance() );
-        return fromIso( DateUnit.fromDateTime( dateTime ) );
+        DateUnit dateUnit = new DateUnit( dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), true );
+        return fromIso( dateUnit );
     }
 
     @Override

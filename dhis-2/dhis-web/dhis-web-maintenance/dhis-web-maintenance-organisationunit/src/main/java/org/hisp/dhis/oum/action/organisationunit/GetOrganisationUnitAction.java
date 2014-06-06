@@ -28,17 +28,12 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.ValidationUtils.coordinateIsValid;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.calendar.CalendarService;
+import org.hisp.dhis.calendar.DateUnit;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -48,8 +43,15 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.hisp.dhis.system.util.ValidationUtils.coordinateIsValid;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -61,33 +63,20 @@ public class GetOrganisationUnitAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
+    @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
 
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
+    @Autowired
     private DataSetService dataSetService;
 
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
+    @Autowired
     private AttributeService attributeService;
 
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
+    @Autowired
+    private CalendarService calendarService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -148,7 +137,7 @@ public class GetOrganisationUnitAction
     {
         return attributeValues;
     }
-    
+
     private boolean point;
 
     public boolean isPoint()
@@ -164,10 +153,24 @@ public class GetOrganisationUnitAction
     }
 
     private String latitude;
-    
+
     public String getLatitude()
     {
         return latitude;
+    }
+
+    private String openingDate;
+
+    public String getOpeningDate()
+    {
+        return openingDate;
+    }
+
+    private String closedDate;
+
+    public String getClosedDate()
+    {
+        return closedDate;
     }
 
     // -------------------------------------------------------------------------
@@ -181,15 +184,15 @@ public class GetOrganisationUnitAction
 
         numberOfChildren = organisationUnit.getChildren().size();
 
-        availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        availableDataSets = new ArrayList<>( dataSetService.getAllDataSets() );
         availableDataSets.removeAll( organisationUnit.getDataSets() );
 
-        dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+        dataSets = new ArrayList<>( organisationUnit.getDataSets() );
 
-        groupSets = new ArrayList<OrganisationUnitGroupSet>(
+        groupSets = new ArrayList<>(
             organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitAttributes() );
+        attributes = new ArrayList<>( attributeService.getOrganisationUnitAttributes() );
 
         attributeValues = AttributeUtils.getAttributeValueMap( organisationUnit.getAttributeValues() );
 
@@ -205,7 +208,21 @@ public class GetOrganisationUnitAction
         point = organisationUnit.getCoordinates() == null || coordinateIsValid( organisationUnit.getCoordinates() );
         longitude = ValidationUtils.getLongitude( organisationUnit.getCoordinates() );
         latitude = ValidationUtils.getLatitude( organisationUnit.getCoordinates() );
-        
+
+        if ( organisationUnit.getOpeningDate() != null )
+        {
+            DateUnit dateUnit = DateUnit.fromJdkDate( organisationUnit.getOpeningDate() );
+            dateUnit = calendarService.getSystemCalendar().fromIso( dateUnit );
+            openingDate = calendarService.getSystemCalendar().formattedDate( dateUnit );
+        }
+
+        if ( organisationUnit.getClosedDate() != null )
+        {
+            DateUnit dateUnit = DateUnit.fromJdkDate( organisationUnit.getClosedDate() );
+            dateUnit = calendarService.getSystemCalendar().fromIso( dateUnit );
+            closedDate = calendarService.getSystemCalendar().formattedDate( dateUnit );
+        }
+
         return SUCCESS;
     }
 }
