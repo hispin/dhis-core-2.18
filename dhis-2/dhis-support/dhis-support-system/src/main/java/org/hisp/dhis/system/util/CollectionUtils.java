@@ -28,9 +28,12 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.AbstractMap;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.system.util.functional.Function1;
@@ -94,5 +97,35 @@ public class CollectionUtils
         }
         
         return set;
+    }
+
+    /**
+     * Constructs a Map Entry (key, value). Used to construct a Map with asMap.
+     *
+     * @param key map entry key
+     * @param value map entry value
+     * @return entry with the key and value
+     */
+    public static <K, V> AbstractMap.SimpleEntry<K, V> asEntry( K key, V value )
+    {
+        return new AbstractMap.SimpleEntry<K, V>( key, value );
+    }
+
+    /**
+     * Constructs a Map from Entries, each containing a (key, value) pair.
+     *
+     * @param entries any number of (key, value) pairs
+     * @return Map of the entries
+     */
+    public static <K, V> Map<K, V> asMap( AbstractMap.SimpleEntry<K, V>... entries )
+    {
+        Map<K, V> map = new HashMap<K, V>();
+
+        for ( AbstractMap.SimpleEntry<K, V> entry : entries )
+        {
+            map.put( entry.getKey(), entry.getValue() );
+        }
+
+        return map;
     }
 }

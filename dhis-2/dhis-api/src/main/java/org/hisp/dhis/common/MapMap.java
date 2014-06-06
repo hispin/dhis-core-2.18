@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,5 +57,17 @@ public class MapMap<T, U, V>
     public V getValue( T key, U valueKey )
     {
         return this.get( key ) == null ? null : this.get( key ).get( valueKey );
+    }
+
+    public static <T, U, V> MapMap<T, U, V> asMapMap( AbstractMap.SimpleEntry<T, Map<U, V>>... entries )
+    {
+        MapMap<T, U, V> map = new MapMap<T, U, V>();
+
+        for ( AbstractMap.SimpleEntry<T, Map<U, V>> entry : entries )
+        {
+            map.put( entry.getKey(), entry.getValue() );
+        }
+
+        return map;
     }
 }

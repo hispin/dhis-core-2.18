@@ -122,6 +122,18 @@ public class DataApproval
         this.creator = creator;
     }
 
+    public DataApproval( DataApproval da )
+    {
+        this.dataApprovalLevel = da.dataApprovalLevel;
+        this.dataSet = da.dataSet;
+        this.period = da.period;
+        this.organisationUnit = da.organisationUnit;
+        this.categoryOptionGroup = da.categoryOptionGroup;
+        this.accepted = da.accepted;
+        this.created = da.created;
+        this.creator = da.creator;
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
