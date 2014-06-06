@@ -32,16 +32,17 @@ import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.calendar.CalendarService;
+import org.hisp.dhis.calendar.DateUnit;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.period.Cal;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,34 +55,25 @@ public class ShowAddOrganisationUnitFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private DataSetService dataSetService;
 
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
+    @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
 
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
+    @Autowired
     private AttributeService attributeService;
 
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
+    @Autowired
+    private CalendarService calendarService;
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Date defaultDate;
+    private String defaultDate;
 
-    public Date getDefaultDate()
+    public String getDefaultDate()
     {
         return defaultDate;
     }
@@ -113,14 +105,15 @@ public class ShowAddOrganisationUnitFormAction
 
     public String execute()
     {
-        defaultDate = new Cal().set( 1900, 1, 1 ).time();
+        DateUnit today = calendarService.getSystemCalendar().today();
+        defaultDate = calendarService.getSystemCalendar().formattedDate( today );
 
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
 
-        groupSets = new ArrayList<OrganisationUnitGroupSet>(
+        groupSets = new ArrayList<>(
             organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitAttributes() );
+        attributes = new ArrayList<>( attributeService.getOrganisationUnitAttributes() );
 
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
