@@ -167,7 +167,20 @@ public class DefaultFilterService implements FilterService
                     }
                     else
                     {
-                        complexNode.addChild( getCollectionProperties( returnValue, Lists.newArrayList( propertySchema.getPropertyMap().keySet() ), property ) );
+                        CollectionNode collectionNode = complexNode.addChild( new CollectionNode( property.getCollectionName() ) );
+                        collectionNode.setNamespace( property.getNamespaceURI() );
+
+                        Map<String, Map> map = getFullFieldMap( schemaService.getDynamicSchema( property.getItemKlass() ) );
+
+                        for ( Object collectionObject : (Collection<?>) returnValue )
+                        {
+                            ComplexNode node = buildObjectOutput( map, collectionObject );
+
+                            if ( !node.getChildren().isEmpty() )
+                            {
+                                collectionNode.addChild( node );
+                            }
+                        }
                     }
                 }
                 else if ( property.isIdentifiableObject() )

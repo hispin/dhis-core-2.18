@@ -49,6 +49,11 @@ public class Property
     private Class<?> klass;
 
     /**
+     * If this property is a collection, this is the class of the items inside the collection.
+     */
+    private Class<?> itemKlass;
+
+    /**
      * Direct link to getter for this property.
      */
     private Method getterMethod;
@@ -129,6 +134,18 @@ public class Property
         this.identifiableObject = IdentifiableObject.class.isAssignableFrom( klass );
         this.nameableObject = NameableObject.class.isAssignableFrom( klass );
         this.klass = klass;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Class<?> getItemKlass()
+    {
+        return itemKlass;
+    }
+
+    public void setItemKlass( Class<?> itemKlass )
+    {
+        this.itemKlass = itemKlass;
     }
 
     public Method getGetterMethod()

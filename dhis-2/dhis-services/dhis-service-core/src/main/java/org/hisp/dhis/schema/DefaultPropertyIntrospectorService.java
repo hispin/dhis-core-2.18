@@ -186,6 +186,7 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                     {
                         ParameterizedType parameterizedType = (ParameterizedType) type;
                         Class<?> klass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+                        property.setItemKlass( klass );
 
                         if ( IdentifiableObject.class.isAssignableFrom( klass ) )
                         {
