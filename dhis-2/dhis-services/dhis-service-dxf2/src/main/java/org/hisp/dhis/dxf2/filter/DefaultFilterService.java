@@ -85,6 +85,11 @@ public class DefaultFilterService implements FilterService
     public <T extends IdentifiableObject> CollectionNode fieldFilter( Class<?> klass, List<T> objects,
         List<String> fieldList )
     {
+        if ( objects.isEmpty() )
+        {
+            return null;
+        }
+
         String fields = fieldList == null ? "" : Joiner.on( "," ).join( fieldList );
 
         Schema rootSchema = schemaService.getDynamicSchema( klass );
@@ -154,7 +159,22 @@ public class DefaultFilterService implements FilterService
 
             if ( fieldValue.isEmpty() )
             {
-                if ( !property.isIdentifiableObject() )
+                if ( property.isCollection() )
+                {
+                    if ( property.isIdentifiableObject() )
+                    {
+                        complexNode.addChild( getCollectionProperties( returnValue, FilterService.FIELD_PRESETS.get( "identifiable" ), property ) );
+                    }
+                    else
+                    {
+                        complexNode.addChild( getCollectionProperties( returnValue, Lists.newArrayList( propertySchema.getPropertyMap().keySet() ), property ) );
+                    }
+                }
+                else if ( property.isIdentifiableObject() )
+                {
+                    complexNode.addChild( getProperties( returnValue, FilterService.FIELD_PRESETS.get( "identifiable" ) ) );
+                }
+                else
                 {
                     if ( propertySchema.getProperties().isEmpty() )
                     {
@@ -168,14 +188,6 @@ public class DefaultFilterService implements FilterService
                     {
                         complexNode.addChild( buildObjectOutput( getFullFieldMap( propertySchema ), returnValue ) );
                     }
-                }
-                else if ( !property.isCollection() )
-                {
-                    complexNode.addChild( getProperties( returnValue, FilterService.FIELD_PRESETS.get( "identifiable" ) ) );
-                }
-                else
-                {
-                    complexNode.addChild( getCollectionProperties( returnValue, FilterService.FIELD_PRESETS.get( "identifiable" ), property ) );
                 }
             }
             else

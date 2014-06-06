@@ -129,7 +129,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( fields.isEmpty() )
         {
-            fields = FilterService.FIELD_PRESETS.get( "identifiable" );
+            fields.add( ":identifiable" );
         }
 
         boolean hasPaging = options.hasPaging();
@@ -164,7 +164,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
 
-        if ( fields != null && fields.contains( "access" ) )
+        if ( fields.contains( "access" ) )
         {
             options.getOptions().put( "viewClass", "sharing" );
         }
@@ -199,7 +199,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( fields.isEmpty() )
         {
-            fields.add( "*" );
+            fields.add( ":all" );
         }
 
         WebOptions options = new WebOptions( parameters );
