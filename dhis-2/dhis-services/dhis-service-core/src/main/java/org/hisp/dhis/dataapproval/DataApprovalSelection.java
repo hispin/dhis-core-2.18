@@ -59,6 +59,7 @@ import org.springframework.util.CollectionUtils;
  * between methods.
  *
  * @author Jim Grace
+ * @version $Id$
  */
 class DataApprovalSelection
 {
@@ -189,7 +190,7 @@ class DataApprovalSelection
         {
             if ( period.getPeriodType().getFrequencyOrder() > dataSet.getPeriodType().getFrequencyOrder() )
             {
-                findStatusForLongerPeriodType();
+                findStatusForCompositePeriod();
             }
             else
             {
@@ -250,19 +251,8 @@ class DataApprovalSelection
      * Handles the case where the selected period type is longer than the
      * data set period type. The selected period is broken down into data
      * set type periods. The approval status of the selected period is
-     * constructed by logic that combines the approval statuses of the
-     * constituent periods.
-     * <p>
-     * If the data is unapproved for any time segment, returns
-     * UNAPPROVED_ELSEWHERE.
-     * <p>
-     * If the data is accepted for all time segments, returns
-     * ACCEPTED_ELSEWHERE.
-     * <p>
-     * If the data is approved for all time segments (and maybe accepted for
-     * some but not all), returns APPROVED_ELSEWHERE.
-     * <p>
-     * Note that the dataApproval object always returns null.
+     * constructed by state transition logic that combines the approval
+     * statuses of the constituent periods.
      * <p>
      * If data is accepted and/or approved in all time periods, the
      * dataApprovalLevel object reference points to the lowest level of
@@ -272,8 +262,10 @@ class DataApprovalSelection
      *
      * @return status status of the longer period
      */
-    private void findStatusForLongerPeriodType()
+    private void findStatusForCompositePeriod()
     {
+        Period longerPeriod = period;
+
         Collection<Period> testPeriods = periodService.getPeriodsBetweenDates( dataSet.getPeriodType(), period.getStartDate(), period.getEndDate() );
 
         DataApprovalLevel lowestApprovalLevel = null;
@@ -282,65 +274,44 @@ class DataApprovalSelection
         {
             period = testPeriod;
 
-            DataApprovalState s = getState();
+            state = DataApprovalPeriodAggregator.nextState( state, getState() );
 
-            switch ( s )
+            switch ( state )
             {
+                case PARTIALLY_APPROVED_HERE:
                 case APPROVED_HERE:
                 case APPROVED_ELSEWHERE:
-
-                    state = DataApprovalState.APPROVED_ELSEWHERE;
-
-                    dataApproval = null;
-
-                    if ( lowestApprovalLevel == null || dataApprovalLevel.getLevel() > lowestApprovalLevel.getLevel() )
-                    {
-                        lowestApprovalLevel = dataApprovalLevel;
-                    }
-
-                    break;
-
+                case PARTIALLY_ACCEPTED_HERE:
                 case ACCEPTED_HERE:
                 case ACCEPTED_ELSEWHERE:
+                case UNAPPROVED_READY:
 
-                    if ( state == null )
-                    {
-                        state = DataApprovalState.ACCEPTED_ELSEWHERE;
-                    }
-
-                    dataApproval = null;
-
-                    if ( lowestApprovalLevel == null || dataApprovalLevel.getLevel() > lowestApprovalLevel.getLevel() )
+                    if ( lowestApprovalLevel == null || ( dataApprovalLevel != null
+                            && dataApprovalLevel.getLevel() > lowestApprovalLevel.getLevel() ) )
                     {
                         lowestApprovalLevel = dataApprovalLevel;
                     }
 
                     break;
 
-                case UNAPPROVED_READY:
                 case UNAPPROVED_WAITING:
                 case UNAPPROVED_ELSEWHERE:
-
-                    dataApproval = null;
-                    dataApprovalLevel = null;
-
-                    state = DataApprovalState.UNAPPROVED_ELSEWHERE;
-
-                    return;
-
                 case UNAPPROVABLE:
                 default: // (Not expected)
 
-                    state = s;
-
                     dataApproval = null;
                     dataApprovalLevel = null;
 
-                    return;
+                    return; // No further state transitions are possible from these three states.
             }
         }
 
         dataApprovalLevel = lowestApprovalLevel;
+        if ( dataApproval != null )
+        {
+            dataApproval = new DataApproval( dataApproval ); // (clone, so we don't modify a Hibernate object.)
+            dataApproval.setPeriod( longerPeriod );
+        }
     }
 
     /**

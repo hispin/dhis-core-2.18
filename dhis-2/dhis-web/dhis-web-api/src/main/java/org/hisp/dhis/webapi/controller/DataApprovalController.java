@@ -213,10 +213,13 @@ public class DataApprovalController
         }
 
         DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
-        
-        if ( !DataApprovalState.UNAPPROVED_READY.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
+
+        DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
+
+        if ( state != DataApprovalState.UNAPPROVED_READY &&
+             state != DataApprovalState.PARTIALLY_APPROVED_HERE )
         {
-            ContextUtils.conflictResponse( response, "Data is not ready for approval, current state is: " + permissions.getDataApprovalStatus().getDataApprovalState().name() );
+            ContextUtils.conflictResponse( response, "Data is not ready for approval here, current state is: " + state.name() );
             return;
         }
 
@@ -289,10 +292,12 @@ public class DataApprovalController
 
         DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
 
-        if ( !DataApprovalState.APPROVED_HERE.equals( state )
-            && !DataApprovalState.ACCEPTED_HERE.equals(state ) )
+        if ( state != DataApprovalState.APPROVED_HERE &&
+             state != DataApprovalState.ACCEPTED_HERE &&
+             state != DataApprovalState.PARTIALLY_APPROVED_HERE &&
+             state != DataApprovalState.PARTIALLY_ACCEPTED_HERE )
         {
-            ContextUtils.conflictResponse( response, "Data is not approved here and cannot be unapproved" );
+            ContextUtils.conflictResponse( response, "Data is not approved here, current state is: " + state.name() );
             return;
         }
 
@@ -355,9 +360,12 @@ public class DataApprovalController
 
         DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
 
-        if ( !DataApprovalState.APPROVED_HERE.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
+        DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
+
+        if ( state != DataApprovalState.APPROVED_HERE &&
+             state != DataApprovalState.PARTIALLY_ACCEPTED_HERE )
         {
-            ContextUtils.conflictResponse( response, "Data is not approved here, current state is: " + permissions.getDataApprovalStatus().getDataApprovalState().name() );
+            ContextUtils.conflictResponse( response, "Data is not ready for accepting here, current state is: " + state.name() );
             return;
         }
 
@@ -421,9 +429,12 @@ public class DataApprovalController
 
         DataApprovalPermissions permissions = dataApprovalService.getDataApprovalPermissions( dataSet, period, organisationUnit, categoryOptionGroups, null );
 
-        if ( !DataApprovalState.ACCEPTED_HERE.equals( permissions.getDataApprovalStatus().getDataApprovalState() ) )
+        DataApprovalState state = permissions.getDataApprovalStatus().getDataApprovalState();
+
+        if ( state != DataApprovalState.ACCEPTED_HERE &&
+             state != DataApprovalState.PARTIALLY_ACCEPTED_HERE )
         {
-            ContextUtils.conflictResponse( response, "Data is not approved here, current state is: " + permissions.getDataApprovalStatus().getDataApprovalState().name() );
+            ContextUtils.conflictResponse( response, "Data is not accepted here, current state is: " + state.name() );
             return;
         }
 

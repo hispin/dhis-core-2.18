@@ -59,9 +59,21 @@ public enum DataApprovalState
     UNAPPROVED_READY ( DataApprovalBaseState.UNAPPROVED_READY, false, true, true, false, true ),
 
     /**
+     * Some periods within this multi-period selection are approved here
+     * and some are not approved (but ready for approval here.)
+     */
+    PARTIALLY_APPROVED_HERE( DataApprovalBaseState.PARTIALLY_APPROVED, false, false, true, false, true ),
+
+    /**
      * Data is approved, and was approved here (so could be unapproved here.)
      */
     APPROVED_HERE ( DataApprovalBaseState.APPROVED, true, false, true, false, false ),
+
+    /**
+     * Some periods within this multi-period selection are approved elsewhere
+     * and some are not approved elsewhere (not approvable here.)
+     */
+    PARTIALLY_APPROVED_ELSEWHERE ( DataApprovalBaseState.PARTIALLY_APPROVED, false, false, false, false, false ),
 
     /**
      * Data is approved, but was not approved here (so cannot be unapproved here.)
@@ -69,7 +81,6 @@ public enum DataApprovalState
      * <ul>
      * <li>Data is approved at a higher level.</li>
      * <li>Data is approved for wider scope of category options.</li>
-     * <li>Data is approved for all sub-periods in selected period.</li>
      * </ul>
      * In the first two cases, there is a single data approval object
      * that covers the selection. In the third case there is not.
@@ -77,9 +88,21 @@ public enum DataApprovalState
     APPROVED_ELSEWHERE( DataApprovalBaseState.APPROVED, true, false, false, false, false ),
 
     /**
+     * Some periods within this multi-period selection are accepted here
+     * and some are not approved elsewhere (not approvable here.)
+     */
+    PARTIALLY_ACCEPTED_HERE( DataApprovalBaseState.PARTIALLY_ACCEPTED, true, false, true, false, false ),
+
+    /**
      * Data is approved and accepted here (so could be unapproved here.)
      */
     ACCEPTED_HERE ( DataApprovalBaseState.ACCEPTED, true, false, true, true, false ),
+
+    /**
+     * Some periods within this multi-period selection are accepted elsewhere
+     * and some are approved elsewhere (not approvable here.)
+     */
+    PARTIALLY_ACCEPTED_ELSEWHERE ( DataApprovalBaseState.PARTIALLY_APPROVED, false, false, false, false, false ),
 
     /**
      * Data is approved and accepted, but elsewhere.

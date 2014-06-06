@@ -52,9 +52,21 @@ public enum DataApprovalBaseState
     UNAPPROVED_READY,
 
     /**
+     * Data is approved for some but not all periods inside this longer period
+     * and is ready for approval in all periods inside this containing period.
+     */
+    PARTIALLY_APPROVED,
+
+    /**
      * Data is approved (either here or elsewhere).
      */
     APPROVED,
+
+    /**
+     * Data is accepted for some but not all periods inside this longer period
+     * and is ready for accepting in all periods inside this containing period.
+     */
+    PARTIALLY_ACCEPTED,
 
     /**
      * Data is approved and accepted (either here or elsewhere).
