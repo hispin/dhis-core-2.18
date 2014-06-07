@@ -125,7 +125,7 @@ public class DefaultFilterService implements FilterService
         return collectionNode;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private ComplexNode buildObjectOutput( Map<String, Map> fieldMap, Object object )
     {
         if ( object == null )
@@ -174,11 +174,19 @@ public class DefaultFilterService implements FilterService
 
                         for ( Object collectionObject : (Collection<?>) returnValue )
                         {
-                            ComplexNode node = buildObjectOutput( map, collectionObject );
-
-                            if ( !node.getChildren().isEmpty() )
+                            if ( map.isEmpty() )
                             {
-                                collectionNode.addChild( node );
+                                SimpleNode simpleNode = new SimpleNode( property.getName(), collectionObject );
+                                collectionNode.addChild( simpleNode );
+                            }
+                            else
+                            {
+                                ComplexNode node = buildObjectOutput( map, collectionObject );
+
+                                if ( !node.getChildren().isEmpty() )
+                                {
+                                    collectionNode.addChild( node );
+                                }
                             }
                         }
                     }
@@ -367,7 +375,7 @@ public class DefaultFilterService implements FilterService
         return complexNode;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private <T> boolean evaluateWithFilters( T object, Filters filters )
     {
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
