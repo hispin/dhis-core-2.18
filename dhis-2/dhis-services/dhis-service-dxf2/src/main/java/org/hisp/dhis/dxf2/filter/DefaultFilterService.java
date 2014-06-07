@@ -159,40 +159,47 @@ public class DefaultFilterService implements FilterService
 
             if ( fieldValue.isEmpty() )
             {
+                List<String> fields = FilterService.FIELD_PRESETS.get( "identifiable" );
+
                 if ( property.isCollection() )
                 {
+                    Collection<?> collection = (Collection<?>) returnValue;
+
+                    CollectionNode collectionNode = complexNode.addChild( new CollectionNode( property.getCollectionName() ) );
+                    collectionNode.setNamespace( property.getNamespaceURI() );
+
                     if ( property.isIdentifiableObject() )
                     {
-                        complexNode.addChild( getCollectionProperties( returnValue, FilterService.FIELD_PRESETS.get( "identifiable" ), property ) );
+                        for ( Object collectionObject : collection )
+                        {
+                            collectionNode.addChild( getProperties( collectionObject, fields ) );
+                        }
+                    }
+                    else if ( !property.isSimple() )
+                    {
+                        Map<String, Map> map = getFullFieldMap( schemaService.getDynamicSchema( property.getItemKlass() ) );
+
+                        for ( Object collectionObject : collection )
+                        {
+                            ComplexNode node = buildObjectOutput( map, collectionObject );
+
+                            if ( !node.getChildren().isEmpty() )
+                            {
+                                collectionNode.addChild( node );
+                            }
+                        }
                     }
                     else
                     {
-                        CollectionNode collectionNode = complexNode.addChild( new CollectionNode( property.getCollectionName() ) );
-                        collectionNode.setNamespace( property.getNamespaceURI() );
-
-                        Map<String, Map> map = getFullFieldMap( schemaService.getDynamicSchema( property.getItemKlass() ) );
-
-                        for ( Object collectionObject : (Collection<?>) returnValue )
+                        for ( Object collectionObject : collection )
                         {
-                            if ( map.isEmpty() )
-                            {
-                                collectionNode.addChild( new SimpleNode( property.getName(), collectionObject ) );
-                            }
-                            else
-                            {
-                                ComplexNode node = buildObjectOutput( map, collectionObject );
-
-                                if ( !node.getChildren().isEmpty() )
-                                {
-                                    collectionNode.addChild( node );
-                                }
-                            }
+                            collectionNode.addChild( new SimpleNode( property.getName(), collectionObject ) );
                         }
                     }
                 }
                 else if ( property.isIdentifiableObject() )
                 {
-                    complexNode.addChild( getProperties( returnValue, FilterService.FIELD_PRESETS.get( "identifiable" ) ) );
+                    complexNode.addChild( getProperties( returnValue, fields ) );
                 }
                 else
                 {
@@ -312,32 +319,6 @@ public class DefaultFilterService implements FilterService
         return map;
     }
 
-    @SuppressWarnings( "unchecked" )
-    private CollectionNode getCollectionProperties( Object object, List<String> fields, Property property )
-    {
-        if ( object == null )
-        {
-            return null;
-        }
-
-        if ( !Collection.class.isInstance( object ) )
-        {
-            return null;
-        }
-
-        CollectionNode collectionNode = new CollectionNode( property.getCollectionName() );
-        collectionNode.setNamespace( property.getNamespaceURI() );
-
-        Collection<?> collection = (Collection<?>) object;
-
-        for ( Object collectionObject : collection )
-        {
-            collectionNode.addChild( getProperties( collectionObject, fields ) );
-        }
-
-        return collectionNode;
-    }
-
     private ComplexNode getProperties( Object object, List<String> fields )
     {
         if ( object == null )
@@ -374,7 +355,7 @@ public class DefaultFilterService implements FilterService
         return complexNode;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private <T> boolean evaluateWithFilters( T object, Filters filters )
     {
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
