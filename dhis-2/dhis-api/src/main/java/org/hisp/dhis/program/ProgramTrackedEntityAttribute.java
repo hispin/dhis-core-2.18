@@ -86,37 +86,6 @@ public class ProgramTrackedEntityAttribute
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
-
-        ProgramTrackedEntityAttribute that = (ProgramTrackedEntityAttribute) o;
-
-        if ( displayInList != that.displayInList ) return false;
-        if ( id != that.id ) return false;
-        if ( attribute != null ? !attribute.equals( that.attribute ) : that.attribute != null ) return false;
-        if ( mandatory != null ? !mandatory.equals( that.mandatory ) : that.mandatory != null ) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int result = id;
-        result = 31 * result + (attribute != null ? attribute.hashCode() : 0);
-        result = 31 * result + (displayInList ? 1 : 0);
-        result = 31 * result + (mandatory != null ? mandatory.hashCode() : 0);
-        return result;
-    }
-
-
-    // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
 
