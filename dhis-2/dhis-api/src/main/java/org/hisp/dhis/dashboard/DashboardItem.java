@@ -28,10 +28,12 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -43,17 +45,14 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents an item in the dashboard. An item can represent an embedded object
  * or represent links to other objects.
- * 
+ *
  * @author Lars Helge Overland
  */
 @JacksonXmlRootElement( localName = "dashboardItem", namespace = DxfNamespaces.DXF_2_0 )
@@ -86,7 +85,7 @@ public class DashboardItem
     private List<Document> resources = new ArrayList<Document>();
 
     private Boolean messages;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -141,12 +140,12 @@ public class DashboardItem
         {
             return TYPE_MESSAGES;
         }
-        
+
         return null;
     }
-    
+
     /**
-     * Returns the actual item object if this dashboard item represents an 
+     * Returns the actual item object if this dashboard item represents an
      * embedded item and not links to items.
      */
     public IdentifiableObject getEmbeddedItem()
@@ -163,12 +162,12 @@ public class DashboardItem
         {
             return reportTable;
         }
-        
+
         return null;
     }
-    
+
     /**
-     * Returns a list of the actual item objects if this dashboard item 
+     * Returns a list of the actual item objects if this dashboard item
      * represents a list of objects and not an embedded item.
      */
     public List<? extends IdentifiableObject> getLinkItems()
@@ -189,7 +188,7 @@ public class DashboardItem
         {
             return resources;
         }
-        
+
         return null;
     }
 
