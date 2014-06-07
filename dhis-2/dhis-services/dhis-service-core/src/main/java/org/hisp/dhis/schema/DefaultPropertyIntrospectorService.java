@@ -138,6 +138,8 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                     property.setDescription( description.value() );
                 }
 
+                property.setName( name );
+
                 if ( method.isAnnotationPresent( JacksonXmlProperty.class ) )
                 {
                     JacksonXmlProperty jacksonXmlProperty = method.getAnnotation( JacksonXmlProperty.class );
@@ -170,7 +172,6 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                     }
                 }
 
-                property.setName( name );
                 propertyMap.put( name, property );
 
                 Class<?> returnType = method.getReturnType();
