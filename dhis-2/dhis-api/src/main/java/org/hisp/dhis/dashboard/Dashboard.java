@@ -28,19 +28,19 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.view.DetailedView;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.view.DetailedView;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -50,7 +50,7 @@ public class Dashboard
     extends BaseIdentifiableObject
 {
     public static final int MAX_ITEMS = 40;
-    
+
     private List<DashboardItem> items = new ArrayList<>();
 
     // -------------------------------------------------------------------------
@@ -77,7 +77,7 @@ public class Dashboard
      * is equal to current item index or if attempting to move an item one
      * position to the right (pointless operation).
      *
-     * @param uid the uid of the item to move.
+     * @param uid      the uid of the item to move.
      * @param position the new index position of the item.
      * @return true if the operation lead to a modification of order, false otherwise.
      */
@@ -90,16 +90,16 @@ public class Dashboard
 
         int index = items.indexOf( new DashboardItem( uid ) );
 
-        if ( index == -1 || index == position || ( index + 1 ) == position )
+        if ( index == -1 || index == position || (index + 1) == position )
         {
             return false; // Not found, already at position or pointless move
         }
 
         DashboardItem item = items.get( index );
 
-        index = position < index ? ( index + 1 ) : index; // New index after move
+        index = position < index ? (index + 1) : index; // New index after move
 
-        items.add( position, item ); // Add item at position        
+        items.add( position, item ); // Add item at position
         items.remove( index ); // Remove item at previous index
 
         return true;
@@ -173,8 +173,8 @@ public class Dashboard
 
     @JsonProperty( value = "items" )
     @JsonView( { DetailedView.class } )
-    @JacksonXmlElementWrapper( localName = "dashboardItems", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "dashboardItem", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "dashboardItems", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dashboardItem", namespace = DxfNamespaces.DXF_2_0 )
     public List<DashboardItem> getItems()
     {
         return items;
@@ -183,5 +183,19 @@ public class Dashboard
     public void setItems( List<DashboardItem> items )
     {
         this.items = items;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            Dashboard dashboard = (Dashboard) other;
+
+            items.clear();
+            items.addAll( dashboard.getItems() );
+        }
     }
 }
