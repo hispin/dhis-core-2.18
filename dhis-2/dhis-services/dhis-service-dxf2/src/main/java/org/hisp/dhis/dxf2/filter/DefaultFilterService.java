@@ -176,8 +176,7 @@ public class DefaultFilterService implements FilterService
                         {
                             if ( map.isEmpty() )
                             {
-                                SimpleNode simpleNode = new SimpleNode( property.getName(), collectionObject );
-                                collectionNode.addChild( simpleNode );
+                                collectionNode.addChild( new SimpleNode( property.getName(), collectionObject ) );
                             }
                             else
                             {
