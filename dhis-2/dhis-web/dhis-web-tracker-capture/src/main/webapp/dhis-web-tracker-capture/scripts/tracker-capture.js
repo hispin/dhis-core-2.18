@@ -191,7 +191,7 @@ function getAttributes()
     $.ajax({
         url: '../api/trackedEntityAttributes.json',
         type: 'GET',
-        data: 'paging=false&include=id,name,version,description,valueType,inherit,displayOnVisitSchedule,displayInListNoProgram,unique,optionSet[id,version]'
+        data: 'paging=false&fields=id,name,version,description,valueType,inherit,displayOnVisitSchedule,displayInListNoProgram,unique,optionSet[id,version]'
     }).done(function(response) {
         dhis2.tc.store.setAll( 'attributes', response.trackedEntityAttributes );        
         def.resolve(response.trackedEntityAttributes);        
@@ -268,7 +268,7 @@ function getMetaPrograms()
     $.ajax({
         url: '../api/programs.json',
         type: 'GET',
-        data:'type=1&paging=false&include=id,name,version,programTrackedEntityAttributes[displayInList,mandatory,attribute[id]],programStages[id,version,programStageDataElements[dataElement[id,optionSet[id,version]]]]'
+        data:'type=1&paging=false&fields=id,name,version,programTrackedEntityAttributes[displayInList,mandatory,attribute[id]],programStages[id,version,programStageDataElements[dataElement[id,optionSet[id,version]]]]'
     }).done( function(response) {          
         var programs = [];
         _.each( _.values( response.programs ), function ( program ) { 
@@ -338,7 +338,7 @@ function getProgram( id )
         return $.ajax( {
             url: '../api/programs.json',
             type: 'GET',
-            data: 'paging=false&filter=id:eq:' + id +'&include=id,name,version,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,realionshipText,trackedEntity[id,name,description],userRoles[id,name],organisationUnits[id,name],programStages[id,name,version,description,minDaysFromStart,repeatable],programTrackedEntityAttributes[displayInList,mandatory,attribute[id]]'            
+            data: 'paging=false&filter=id:eq:' + id +'&fields=id,name,version,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,realionshipText,trackedEntity[id,name,description],userRoles[id,name],organisationUnits[id,name],programStages[id,name,version,description,minDaysFromStart,repeatable],programTrackedEntityAttributes[displayInList,mandatory,attribute[id]]'
         }).done( function( response ){
             
             _.each( _.values( response.programs ), function ( program ) { 
@@ -415,7 +415,7 @@ function getProgramStage( id )
         return $.ajax( {
             url: '../api/programStages.json',
             type: 'GET',
-            data: 'filter=id:eq:' + id +'&include=id,name,dataEntryForm,description,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,optionSet[id]]]'
+            data: 'filter=id:eq:' + id +'&fields=id,name,dataEntryForm,description,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,optionSet[id]]]'
         }).done( function( response ){            
             _.each( _.values( response.programStages ), function( programStage ) {                
                 dhis2.tc.store.set( 'programStages', programStage );
@@ -477,7 +477,7 @@ function getOptionSet( id )
         return $.ajax( {
             url: '../api/optionSets.json',
             type: 'GET',
-            data: 'filter=id:eq:' + id +'&include=id,name,version,options'
+            data: 'filter=id:eq:' + id +'&fields=id,name,version,options'
         }).done( function( response ){            
             _.each( _.values( response.optionSets ), function( optionSet ) {                
                 dhis2.tc.store.set( 'optionSets', optionSet );

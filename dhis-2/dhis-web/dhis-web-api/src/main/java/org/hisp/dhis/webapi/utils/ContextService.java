@@ -63,9 +63,6 @@ public interface ContextService
      * Returns a list of values from a parameter, if the parameter doesn't exist, it will
      * return a empty list.
      *
-     * Values will be split on comma, in normal Spring MVC style:
-     * include=id,name&include=created,lastUpdated => [id,name,created,lastUpdated]
-     *
      * @param name Parameter to get
      * @return List of parameter values, or empty if not found
      */
