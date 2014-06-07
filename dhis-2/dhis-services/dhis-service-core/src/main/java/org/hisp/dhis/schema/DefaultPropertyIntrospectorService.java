@@ -102,103 +102,120 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
             propertyMap.put( "__self__", property );
         }
 
-        List<Method> allMethods = ReflectionUtils.getAllMethods( clazz );
+        List<Property> properties = collectProperties( clazz );
 
-        for ( Method method : allMethods )
+        for ( Property property : properties )
         {
-            if ( method.isAnnotationPresent( JsonProperty.class ) )
+            Method method = property.getGetterMethod();
+            JsonProperty jsonProperty = method.getAnnotation( JsonProperty.class );
+
+            String name = jsonProperty.value();
+
+            if ( StringUtils.isEmpty( name ) )
             {
-                JsonProperty jsonProperty = method.getAnnotation( JsonProperty.class );
-                Property property = new Property( method );
+                String[] getters = new String[]{
+                    "is", "has", "get"
+                };
 
-                String name = jsonProperty.value();
+                name = method.getName();
 
-                if ( StringUtils.isEmpty( name ) )
+                for ( String getter : getters )
                 {
-                    String[] getters = new String[]{
-                        "is", "has", "get"
-                    };
-
-                    name = method.getName();
-
-                    for ( String getter : getters )
+                    if ( name.startsWith( getter ) )
                     {
-                        if ( name.startsWith( getter ) )
-                        {
-                            name = name.substring( getter.length() );
-                        }
+                        name = name.substring( getter.length() );
                     }
-
-                    name = StringUtils.uncapitalize( name );
                 }
 
-                if ( method.isAnnotationPresent( Description.class ) )
+                name = StringUtils.uncapitalize( name );
+            }
+
+            if ( method.isAnnotationPresent( Description.class ) )
+            {
+                Description description = method.getAnnotation( Description.class );
+                property.setDescription( description.value() );
+            }
+
+            property.setName( name );
+
+            if ( method.isAnnotationPresent( JacksonXmlProperty.class ) )
+            {
+                JacksonXmlProperty jacksonXmlProperty = method.getAnnotation( JacksonXmlProperty.class );
+
+                if ( StringUtils.isEmpty( jacksonXmlProperty.localName() ) )
                 {
-                    Description description = method.getAnnotation( Description.class );
-                    property.setDescription( description.value() );
+                    property.setName( name );
+                }
+                else
+                {
+                    property.setName( jacksonXmlProperty.localName() );
                 }
 
-                property.setName( name );
-
-                if ( method.isAnnotationPresent( JacksonXmlProperty.class ) )
+                if ( !StringUtils.isEmpty( jacksonXmlProperty.namespace() ) )
                 {
-                    JacksonXmlProperty jacksonXmlProperty = method.getAnnotation( JacksonXmlProperty.class );
+                    property.setNamespaceURI( jacksonXmlProperty.namespace() );
+                }
 
-                    if ( StringUtils.isEmpty( jacksonXmlProperty.localName() ) )
+                property.setAttribute( jacksonXmlProperty.isAttribute() );
+            }
+
+            if ( method.isAnnotationPresent( JacksonXmlElementWrapper.class ) )
+            {
+                JacksonXmlElementWrapper jacksonXmlElementWrapper = method.getAnnotation( JacksonXmlElementWrapper.class );
+
+                // TODO what if element-wrapper have different namespace?
+                if ( !StringUtils.isEmpty( jacksonXmlElementWrapper.localName() ) )
+                {
+                    property.setCollectionName( jacksonXmlElementWrapper.localName() );
+                }
+            }
+
+            propertyMap.put( name, property );
+
+            Class<?> returnType = method.getReturnType();
+            property.setKlass( returnType );
+
+            if ( Collection.class.isAssignableFrom( returnType ) )
+            {
+                property.setCollection( true );
+
+                Type type = method.getGenericReturnType();
+
+                if ( ParameterizedType.class.isInstance( type ) )
+                {
+                    ParameterizedType parameterizedType = (ParameterizedType) type;
+                    Class<?> klass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+                    property.setItemKlass( klass );
+
+                    if ( collectProperties( klass ).isEmpty() )
                     {
-                        property.setName( name );
+                        property.setSimple( true );
                     }
                     else
                     {
-                        property.setName( jacksonXmlProperty.localName() );
+                        property.setComplex( true );
                     }
 
-                    if ( !StringUtils.isEmpty( jacksonXmlProperty.namespace() ) )
+                    if ( IdentifiableObject.class.isAssignableFrom( klass ) )
                     {
-                        property.setNamespaceURI( jacksonXmlProperty.namespace() );
-                    }
+                        property.setIdentifiableObject( true );
 
-                    property.setAttribute( jacksonXmlProperty.isAttribute() );
-                }
-
-                if ( method.isAnnotationPresent( JacksonXmlElementWrapper.class ) )
-                {
-                    JacksonXmlElementWrapper jacksonXmlElementWrapper = method.getAnnotation( JacksonXmlElementWrapper.class );
-
-                    // TODO what if element-wrapper have different namespace?
-                    if ( !StringUtils.isEmpty( jacksonXmlElementWrapper.localName() ) )
-                    {
-                        property.setCollectionName( jacksonXmlElementWrapper.localName() );
-                    }
-                }
-
-                propertyMap.put( name, property );
-
-                Class<?> returnType = method.getReturnType();
-                property.setKlass( returnType );
-
-                if ( Collection.class.isAssignableFrom( returnType ) )
-                {
-                    property.setCollection( true );
-
-                    Type type = method.getGenericReturnType();
-
-                    if ( ParameterizedType.class.isInstance( type ) )
-                    {
-                        ParameterizedType parameterizedType = (ParameterizedType) type;
-                        Class<?> klass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-                        property.setItemKlass( klass );
-
-                        if ( IdentifiableObject.class.isAssignableFrom( klass ) )
+                        if ( NameableObject.class.isAssignableFrom( klass ) )
                         {
-                            property.setIdentifiableObject( true );
-
-                            if ( NameableObject.class.isAssignableFrom( klass ) )
-                            {
-                                property.setNameableObject( true );
-                            }
+                            property.setNameableObject( true );
                         }
                     }
+                }
+            }
+            else
+            {
+                if ( collectProperties( returnType ).isEmpty() )
+                {
+                    property.setSimple( true );
+                }
+                else
+                {
+                    property.setComplex( true );
                 }
             }
         }
@@ -206,5 +223,21 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
         classMapCache.put( clazz, propertyMap );
 
         return propertyMap;
+    }
+
+    private static List<Property> collectProperties( Class<?> clazz )
+    {
+        List<Method> allMethods = ReflectionUtils.getAllMethods( clazz );
+        List<Property> properties = Lists.newArrayList();
+
+        for ( Method method : allMethods )
+        {
+            if ( method.isAnnotationPresent( JsonProperty.class ) )
+            {
+                properties.add( new Property( method ) );
+            }
+        }
+
+        return properties;
     }
 }

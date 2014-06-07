@@ -40,7 +40,7 @@ import java.lang.reflect.Method;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "property", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "property", namespace = DxfNamespaces.DXF_2_0)
 public class Property
 {
     /**
@@ -87,7 +87,15 @@ public class Property
     private boolean attribute;
 
     /**
-     * Is this a Collection sub-class.
+     * This property is true if the type pointed to does not export any properties itself, it is then
+     * assumed to be a primitive type. If collection is true, this this check is done on the generic type
+     * of the collection, e.g. List<String> would set simple to be true, but List<DataElement> would set it
+     * to false.
+     */
+    private boolean simple;
+
+    /**
+     * This property is true if the type of this property is a sub-class of Collection.
      *
      * @see java.util.Collection
      */
@@ -123,7 +131,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Class<?> getKlass()
     {
         return klass;
@@ -137,7 +145,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Class<?> getItemKlass()
     {
         return itemKlass;
@@ -154,7 +162,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getName()
     {
         return name;
@@ -166,7 +174,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getCollectionName()
     {
         return collectionName == null ? name : collectionName;
@@ -178,7 +186,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getDescription()
     {
         return description;
@@ -190,7 +198,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getNamespaceURI()
     {
         return namespaceURI;
@@ -202,7 +210,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isAttribute()
     {
         return attribute;
@@ -215,6 +223,18 @@ public class Property
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isSimple()
+    {
+        return simple;
+    }
+
+    public void setSimple( boolean simple )
+    {
+        this.simple = simple;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isCollection()
     {
         return collection;
@@ -226,7 +246,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isIdentifiableObject()
     {
         return identifiableObject;
@@ -238,7 +258,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isNameableObject()
     {
         return nameableObject;
