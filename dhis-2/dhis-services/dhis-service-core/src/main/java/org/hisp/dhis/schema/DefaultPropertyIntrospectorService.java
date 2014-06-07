@@ -191,10 +191,6 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                     {
                         property.setSimple( true );
                     }
-                    else
-                    {
-                        property.setComplex( true );
-                    }
 
                     if ( IdentifiableObject.class.isAssignableFrom( klass ) )
                     {
@@ -212,10 +208,6 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
                 if ( collectProperties( returnType ).isEmpty() )
                 {
                     property.setSimple( true );
-                }
-                else
-                {
-                    property.setComplex( true );
                 }
             }
         }
