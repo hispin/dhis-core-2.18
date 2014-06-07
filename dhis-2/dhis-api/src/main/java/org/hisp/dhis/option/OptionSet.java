@@ -47,13 +47,13 @@ import java.util.regex.Pattern;
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "optionSet", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "optionSet", namespace = DxfNamespaces.DXF_2_0 )
 public class OptionSet
     extends BaseIdentifiableObject
 {
     private static final Pattern OPTION_PATTERN = Pattern.compile( "\\[(.*)\\]" );
 
-    private List<String> options = new ArrayList<String>();
+    private List<String> options = new ArrayList<>();
 
     /**
      * Indicating version number.
@@ -75,9 +75,9 @@ public class OptionSet
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "options", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "option", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "options", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "option", namespace = DxfNamespaces.DXF_2_0 )
     public List<String> getOptions()
     {
         return options;
