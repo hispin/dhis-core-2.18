@@ -1049,7 +1049,7 @@ Ext.onReady( function() {
 							this.currentValue = this.getValue();
 
 							var value = this.getValue(),
-								url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+								url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 								store = ns.app.stores.reportTable;
 
 							store.page = 1;
@@ -1065,7 +1065,7 @@ Ext.onReady( function() {
 			text: NS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+					url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -1077,7 +1077,7 @@ Ext.onReady( function() {
 			text: NS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&include=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+					url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page + 1;
@@ -2540,10 +2540,10 @@ Ext.onReady( function() {
                 }
 
 				if (Ext.isString(uid)) {
-					path = '/indicators.json?include=id,name&filter=indicatorGroups.id:eq:' + uid + (filter ? '&filter=name:like:' + filter : '');
+					path = '/indicators.json?fields=id,name&filter=indicatorGroups.id:eq:' + uid + (filter ? '&filter=name:like:' + filter : '');
 				}
 				else if (uid === 0) {
-					path = '/indicators.json?include=id,name' + (filter ? '&filter=name:like:' + filter : '');
+					path = '/indicators.json?fields=id,name' + (filter ? '&filter=name:like:' + filter : '');
 				}
 
 				if (!path) {
@@ -2600,7 +2600,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name', 'index'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/indicatorGroups.json?include=id,name&paging=false',
+				url: ns.core.init.contextPath + '/api/indicatorGroups.json?fields=id,name&paging=false',
 				reader: {
 					type: 'json',
 					root: 'indicatorGroups'
@@ -2668,10 +2668,10 @@ Ext.onReady( function() {
                 }
 
 				if (Ext.isString(uid)) {
-					path = '/dataElements.json?include=id,name&filter=dataElementGroups.id:eq:' + uid + (filter ? '&filter=name:like:' + filter : '');
+					path = '/dataElements.json?fields=id,name&filter=dataElementGroups.id:eq:' + uid + (filter ? '&filter=name:like:' + filter : '');
 				}
 				else if (uid === 0) {
-					path = '/dataElements.json?include=id,name' + (filter ? '&filter=name:like:' + filter : '');
+					path = '/dataElements.json?fields=id,name' + (filter ? '&filter=name:like:' + filter : '');
 				}
 
 				if (!path) {
@@ -2711,7 +2711,7 @@ Ext.onReady( function() {
 					path = '/dataElementGroups/' + uid + '/operands' + (filter ? '/query/' + filter : '') + '.json';
 				}
 				else if (uid === 0) {
-					path = '/generatedDataElementOperands.json?include=id,name' + (filter ? '&filter=name:like:' + filter : '');
+					path = '/generatedDataElementOperands.json?fields=id,name' + (filter ? '&filter=name:like:' + filter : '');
 				}
 
 				if (!path) {
@@ -2770,7 +2770,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name', 'index'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/dataElementGroups.json?include=id,name&paging=false',
+				url: ns.core.init.contextPath + '/api/dataElementGroups.json?fields=id,name&paging=false',
 				reader: {
 					type: 'json',
 					root: 'dataElementGroups'
@@ -2800,7 +2800,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/dataSets.json?include=id,name',
+				url: ns.core.init.contextPath + '/api/dataSets.json?fields=id,name',
 				reader: {
 					type: 'json',
 					root: 'dataSets'
@@ -2871,7 +2871,7 @@ Ext.onReady( function() {
 			isLoaded: false,
 			pageSize: 10,
 			page: 1,
-			defaultUrl: ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&include=id,name,access',
+			defaultUrl: ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&fields=id,name,access',
 			loadStore: function(url) {
 				this.proxy.url = url || this.defaultUrl;
 
@@ -2912,7 +2912,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: ns.core.init.contextPath + '/api/organisationUnitGroups.json?include=id,name&paging=false',
+				url: ns.core.init.contextPath + '/api/organisationUnitGroups.json?fields=id,name&paging=false',
 				reader: {
 					type: 'json',
 					root: 'organisationUnitGroups'
@@ -5846,7 +5846,7 @@ Ext.onReady( function() {
 
 								// root nodes
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits.json?userDataViewFallback=true&paging=false&include=id,name,children[id,name]',
+									url: init.contextPath + '/api/organisationUnits.json?userDataViewFallback=true&paging=false&fields=id,name,children[id,name]',
 									success: function(r) {
 										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
 										fn();
@@ -5855,7 +5855,7 @@ Ext.onReady( function() {
 
 								// organisation unit levels
 								requests.push({
-									url: init.contextPath + '/api/organisationUnitLevels.json?include=id,name,level&paging=false',
+									url: init.contextPath + '/api/organisationUnitLevels.json?fields=id,name,level&paging=false',
 									success: function(r) {
 										init.organisationUnitLevels = Ext.decode(r.responseText).organisationUnitLevels || [];
 
@@ -5869,7 +5869,7 @@ Ext.onReady( function() {
 
 								// user orgunits and children
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits.json?userOnly=true&include=id,name,children[id,name]&paging=false',
+									url: init.contextPath + '/api/organisationUnits.json?userOnly=true&fields=id,name,children[id,name]&paging=false',
 									success: function(r) {
 										var organisationUnits = Ext.decode(r.responseText).organisationUnits || [],
 											ou = [],
@@ -5897,7 +5897,7 @@ Ext.onReady( function() {
 
 								// legend sets
 								requests.push({
-									url: init.contextPath + '/api/mapLegendSets.json?include=id,name,mapLegends[id,name,startValue,endValue,color]&paging=false',
+									url: init.contextPath + '/api/mapLegendSets.json?fields=id,name,mapLegends[id,name,startValue,endValue,color]&paging=false',
 									success: function(r) {
 										init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
 										fn();
