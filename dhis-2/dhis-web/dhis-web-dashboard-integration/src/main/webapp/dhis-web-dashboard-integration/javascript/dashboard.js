@@ -371,55 +371,55 @@ dhis2.db.renderDashboard = function( id )
 	
 	$( "#dashboard-" + dhis2.db.current() ).addClass( "currentDashboard" );
 	
-	$.getJSON( "../api/dashboards/" + id, function( data )
+	$.getJSON( "../api/dashboards/" + id + '/?fields=:all,dashboardItems[:all]', function( data )
 	{
         $d = $( "#contentList" ).empty();
 		
         updateSharing( data );
 
-        if( undefined !== data.items )
+        if( undefined !== data.dashboardItems )
         {
-			$.each( data.items, function( index, item )
+			$.each( data.dashboardItems, function( index, dashboardItem )
 			{
-				if ( null == item || undefined === item )
+				if ( null == dashboardItem || undefined === dashboardItem )
 				{
 					return true;
 				}
 				
-				if ( "chart" == item.type )
+				if ( "chart" == dashboardItem.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": item.id, "id": item.chart.id, "name": item.chart.name, 
+					$d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name,
 						"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) )
 				}
-				else if ( "map" == item.type )
+				else if ( "map" == dashboardItem.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": item.id, "id": item.map.id, "name": item.map.name, 
+					$d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name,
 						"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) )
 				}
-				else if ( "reportTable" == item.type )
+				else if ( "reportTable" == dashboardItem.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": item.id, "id": item.reportTable.id, "name": item.reportTable.name, 
+					$d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name,
 						"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share_interpretation, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) )
 				}
-				else if ( "users" == item.type )
+				else if ( "users" == dashboardItem.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.users, "Users", "../dhis-web-dashboard-integration/profile.action?id=", "" );
+					dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.users, "Users", "../dhis-web-dashboard-integration/profile.action?id=", "" );
 				}
-				else if ( "reportTables" == item.type )
+				else if ( "reportTables" == dashboardItem.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.reportTables, "Pivot tables", "../dhis-web-pivot/app/index.html?id=", "" );
+					dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.reportTables, "Pivot tables", "../dhis-web-pivot/app/index.html?id=", "" );
 				}
-				else if ( "reports" == item.type )
+				else if ( "reports" == dashboardItem.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.reports, "Reports", "../dhis-web-reporting/getReportParams.action?mode=report&uid=", "" );
+					dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.reports, "Reports", "../dhis-web-reporting/getReportParams.action?mode=report&uid=", "" );
 				}
-				else if ( "resources" == item.type )
+				else if ( "resources" == dashboardItem.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.resources, "Resources", "../api/documents/", "/data" );
+					dhis2.db.renderLinkItem( $d, dashboardItem.id, dashboardItem.resources, "Resources", "../api/documents/", "/data" );
 				}
-				else if ( "messages" == item.type )
+				else if ( "messages" == dashboardItem.type )
 				{
-					dhis2.db.renderMessagesItem( $d, item.id );
+					dhis2.db.renderMessagesItem( $d, dashboardItem.id );
 				}
 			} );
 			
@@ -452,7 +452,7 @@ dhis2.db.renderMessagesItem = function( $d, itemId )
 
     var $ul = $( "#ul-" + itemId );
 
-	$.get( "../api/messageConversations.json?viewClass=detailed&pageSize=5", function( json )
+	$.get( "../api/messageConversations.json?fields=:all&pageSize=5", function( json )
 	{
 		$.each( json.messageConversations, function( index, message )
 		{
