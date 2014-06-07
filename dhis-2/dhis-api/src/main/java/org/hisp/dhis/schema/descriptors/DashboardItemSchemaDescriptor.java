@@ -29,7 +29,7 @@ package org.hisp.dhis.schema.descriptors;
  */
 
 import com.google.common.collect.Lists;
-import org.hisp.dhis.dashboard.Dashboard;
+import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.schema.Authority;
 import org.hisp.dhis.schema.AuthorityType;
 import org.hisp.dhis.schema.Schema;
@@ -40,18 +40,18 @@ import org.springframework.stereotype.Component;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-public class DashboardSchemaDescriptor implements SchemaDescriptor
+public class DashboardItemSchemaDescriptor implements SchemaDescriptor
 {
-    public static final String SINGULAR = "dashboard";
+    public static final String SINGULAR = "dashboardItem";
 
-    public static final String PLURAL = "dashboards";
+    public static final String PLURAL = "dashboardItems";
 
     public static final String API_ENDPOINT = "/" + PLURAL;
 
     @Override
     public Schema getSchema()
     {
-        Schema schema = new Schema( Dashboard.class, SINGULAR, PLURAL );
+        Schema schema = new Schema( DashboardItem.class, SINGULAR, PLURAL );
         schema.setApiEndpoint( API_ENDPOINT );
         schema.setMetadata( false );
         schema.setShareable( true );

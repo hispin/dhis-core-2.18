@@ -51,7 +51,7 @@ public class Dashboard
 {
     public static final int MAX_ITEMS = 40;
     
-    private List<DashboardItem> items = new ArrayList<DashboardItem>();
+    private List<DashboardItem> items = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Constructors
