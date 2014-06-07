@@ -282,13 +282,13 @@ public class DefaultFilterService implements FilterService
             }
         }
 
-        for ( String ignore : cleanupFields )
+        for ( String field : cleanupFields )
         {
-            fieldMap.remove( ignore );
+            fieldMap.remove( field );
 
             if ( !expandOnly )
             {
-                fieldMap.remove( ignore.substring( 1 ) );
+                fieldMap.remove( field.substring( 1 ) );
             }
         }
     }
