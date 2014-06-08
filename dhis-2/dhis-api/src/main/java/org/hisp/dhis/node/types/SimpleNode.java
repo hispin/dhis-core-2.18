@@ -28,13 +28,10 @@ package org.hisp.dhis.node.types;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.collect.Lists;
 import org.hisp.dhis.node.AbstractNode;
 import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.NodeType;
 import org.hisp.dhis.node.exception.InvalidTypeException;
-
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -50,12 +47,6 @@ public class SimpleNode extends AbstractNode
         super( name, NodeType.SIMPLE );
         this.value = value;
         this.attribute = false;
-    }
-
-    public SimpleNode( String name, Object value, boolean attribute )
-    {
-        this( name, value );
-        this.attribute = attribute;
     }
 
     public Object getValue()

@@ -33,15 +33,15 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.Lists;
-import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.NodeSerializer;
+import org.hisp.dhis.node.AbstractNodeSerializer;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.node.types.SimpleNode;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -49,19 +49,14 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-public class JacksonJsonNodeSerializer implements NodeSerializer
+@Scope( value = "prototype", proxyMode = ScopedProxyMode.INTERFACES )
+public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
 {
     public static final String CONTENT_TYPE = "application/json";
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final static ObjectMapper objectMapper = new ObjectMapper();
 
-    @Override
-    public List<String> contentTypes()
-    {
-        return Lists.newArrayList( CONTENT_TYPE );
-    }
-
-    public JacksonJsonNodeSerializer()
+    static
     {
         objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
         objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
@@ -70,96 +65,97 @@ public class JacksonJsonNodeSerializer implements NodeSerializer
         objectMapper.getFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
     }
 
-    @Override
-    public void serialize( RootNode rootNode, OutputStream outputStream ) throws IOException
-    {
-        JsonGenerator generator = objectMapper.getFactory().createGenerator( outputStream );
+    private JsonGenerator generator;
 
-        writeRootNode( rootNode, generator );
+    @Override
+    public List<String> contentTypes()
+    {
+        return Lists.newArrayList( CONTENT_TYPE );
+    }
+
+    @Override
+    protected void flushStream() throws Exception
+    {
         generator.flush();
     }
 
-    private void writeRootNode( RootNode rootNode, JsonGenerator generator ) throws IOException
+    @Override
+    protected boolean startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
+    {
+        generator = objectMapper.getFactory().createGenerator( outputStream );
+        return true;
+    }
+
+    @Override
+    protected void startWriteRootNode( RootNode rootNode ) throws Exception
     {
         generator.writeStartObject();
+    }
 
-        for ( Node node : rootNode.getChildren() )
-        {
-            dispatcher( node, generator, true );
-            generator.flush();
-        }
-
+    @Override
+    protected void endWriteRootNode( RootNode rootNode ) throws Exception
+    {
         generator.writeEndObject();
     }
 
-    private void writeSimpleNode( SimpleNode simpleNode, JsonGenerator generator, boolean writeKey ) throws IOException
+    @Override
+    protected void startWriteSimpleNode( SimpleNode simpleNode ) throws Exception
     {
         if ( simpleNode.getValue() == null ) // add hint for this, exclude if null
         {
             return;
         }
 
-        if ( writeKey )
-        {
-            generator.writeObjectField( simpleNode.getName(), simpleNode.getValue() );
-        }
-        else
+        if ( simpleNode.getParent().isCollection() )
         {
             generator.writeObject( simpleNode.getValue() );
         }
+        else
+        {
+            generator.writeObjectField( simpleNode.getName(), simpleNode.getValue() );
+        }
     }
 
-    private void writeComplexNode( ComplexNode complexNode, JsonGenerator generator, boolean writeKey ) throws IOException
+    @Override
+    protected void endWriteSimpleNode( SimpleNode simpleNode ) throws Exception
     {
-        if ( writeKey )
-        {
-            generator.writeObjectFieldStart( complexNode.getName() );
-        }
-        else
+    }
+
+    @Override
+    protected void startWriteComplexNode( ComplexNode complexNode ) throws Exception
+    {
+        if ( complexNode.getParent().isCollection() )
         {
             generator.writeStartObject();
         }
-
-        for ( Node node : complexNode.getChildren() )
+        else
         {
-            dispatcher( node, generator, true );
+            generator.writeObjectFieldStart( complexNode.getName() );
         }
+    }
 
+    @Override
+    protected void endWriteComplexNode( ComplexNode complexNode ) throws Exception
+    {
         generator.writeEndObject();
     }
 
-    private void writeCollectionNode( CollectionNode collectionNode, JsonGenerator generator, boolean writeKey ) throws IOException
+    @Override
+    protected void startWriteCollectionNode( CollectionNode collectionNode ) throws Exception
     {
-        if ( writeKey )
-        {
-            generator.writeArrayFieldStart( collectionNode.getName() );
-        }
-        else
+        if ( collectionNode.getParent().isCollection() )
         {
             generator.writeStartArray();
         }
-
-        for ( Node node : collectionNode.getChildren() )
+        else
         {
-            dispatcher( node, generator, false );
+            generator.writeArrayFieldStart( collectionNode.getName() );
         }
-
-        generator.writeEndArray();
     }
 
-    private void dispatcher( Node node, JsonGenerator generator, boolean writeKey ) throws IOException
+    @Override
+    protected void endWriteCollectionNode( CollectionNode collectionNode ) throws Exception
     {
-        switch ( node.getType() )
-        {
-            case SIMPLE:
-                writeSimpleNode( (SimpleNode) node, generator, writeKey );
-                break;
-            case COMPLEX:
-                writeComplexNode( (ComplexNode) node, generator, writeKey );
-                break;
-            case COLLECTION:
-                writeCollectionNode( (CollectionNode) node, generator, writeKey );
-                break;
-        }
+        generator.writeEndArray();
     }
 }

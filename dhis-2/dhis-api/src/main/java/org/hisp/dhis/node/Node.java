@@ -53,6 +53,12 @@ public interface Node extends Ordered
     NodeType getType();
 
     /**
+     * Get parent node, or null if this is a top-level node.
+     * @return parent or null if node does not have parent
+     */
+    Node getParent();
+
+    /**
      * @param type Type to check for
      * @return True if node is of this type
      */

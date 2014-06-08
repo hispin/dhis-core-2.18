@@ -30,7 +30,6 @@ package org.hisp.dhis.node;
 
 import org.hisp.dhis.node.types.RootNode;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -55,7 +54,7 @@ public interface NodeService
      * @param contentType  NodeSerializer contentType
      * @param outputStream Write to this outputStream
      */
-    void serialize( RootNode rootNode, String contentType, OutputStream outputStream ) throws IOException;
+    void serialize( RootNode rootNode, String contentType, OutputStream outputStream );
 
     /**
      * Find a nodeDeserializer that supports contentType or return null.
@@ -71,5 +70,5 @@ public interface NodeService
      * @param inputStream Read RootNode from this stream
      * @return RootNode deserialized from inputStream
      */
-    RootNode deserialize( String contentType, InputStream inputStream ) throws IOException;
+    RootNode deserialize( String contentType, InputStream inputStream );
 }
