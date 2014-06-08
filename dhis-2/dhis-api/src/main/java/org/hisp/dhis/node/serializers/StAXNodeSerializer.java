@@ -71,11 +71,10 @@ public class StAXNodeSerializer extends AbstractNodeSerializer
     }
 
     @Override
-    protected boolean startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
+    protected void startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
     {
         writer = xmlFactory.createXMLStreamWriter( outputStream );
         writer.setDefaultNamespace( rootNode.getDefaultNamespace() );
-        return true;
     }
 
     @Override

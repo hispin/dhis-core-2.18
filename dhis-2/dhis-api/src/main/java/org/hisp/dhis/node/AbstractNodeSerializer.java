@@ -40,9 +40,8 @@ import java.io.OutputStream;
  */
 public abstract class AbstractNodeSerializer implements NodeSerializer
 {
-    protected boolean startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
+    protected void startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
     {
-        return true;
     }
 
     protected void endSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
