@@ -80,10 +80,9 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
     }
 
     @Override
-    protected boolean startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
+    protected void startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
     {
         generator = objectMapper.getFactory().createGenerator( outputStream );
-        return true;
     }
 
     @Override
