@@ -28,6 +28,8 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.node.exception.InvalidTypeException;
 import org.hisp.dhis.node.types.SimpleNode;
@@ -42,15 +44,17 @@ import java.util.List;
  */
 public abstract class AbstractNode implements Node
 {
-    private String name;
+    protected String name;
 
-    private final NodeType nodeType;
+    protected final NodeType nodeType;
 
-    private String namespace;
+    protected Node parent;
 
-    private String comment;
+    protected String namespace;
 
-    private List<Node> children = Lists.newArrayList();
+    protected String comment;
+
+    protected List<Node> children = Lists.newArrayList();
 
     protected AbstractNode( String name, NodeType nodeType )
     {
@@ -73,6 +77,17 @@ public abstract class AbstractNode implements Node
     public NodeType getType()
     {
         return nodeType;
+    }
+
+    @Override
+    public Node getParent()
+    {
+        return parent;
+    }
+
+    protected void setParent( Node parent )
+    {
+        this.parent = parent;
     }
 
     @Override
@@ -130,6 +145,8 @@ public abstract class AbstractNode implements Node
         }
 
         children.add( child );
+        ((AbstractNode) child).setParent( this );
+
         return child;
     }
 
@@ -147,7 +164,7 @@ public abstract class AbstractNode implements Node
     {
         List<Node> clone = Lists.newArrayList( children );
         Collections.sort( clone, OrderComparator.INSTANCE );
-        return clone;
+        return ImmutableList.copyOf( clone );
     }
 
     @Override
@@ -196,12 +213,13 @@ public abstract class AbstractNode implements Node
     @Override
     public String toString()
     {
-        return "Node{" +
-            "name='" + name + '\'' +
-            ", nodeType=" + nodeType +
-            ", namespace='" + namespace + '\'' +
-            ", comment='" + comment + '\'' +
-            ", children=" + children +
-            '}';
+        return Objects.toStringHelper( this )
+            .add( "name", name )
+            .add( "nodeType", nodeType )
+            .add( "parent", parent.getName() )
+            .add( "namespace", namespace )
+            .add( "comment", comment )
+            .add( "children", children )
+            .toString();
     }
 }
