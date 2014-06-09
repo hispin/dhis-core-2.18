@@ -157,7 +157,7 @@ public class DefaultSchemaService implements SchemaService
         {
             Property property = schema.getPropertyMap().get( "__self__" );
             schema.setName( property.getName() );
-            schema.setNamespaceURI( property.getNamespaceURI() );
+            schema.setNamespace( property.getNamespace() );
 
             schema.getPropertyMap().remove( "__self__" );
         }

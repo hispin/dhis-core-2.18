@@ -81,7 +81,7 @@ public class Schema implements Ordered
     /**
      * Namespace URI to be used for this class.
      */
-    private String namespaceURI;
+    private String namespace;
 
     /**
      * This will normally be set to equal singular, but in certain cases it might be useful to have another name
@@ -190,14 +190,14 @@ public class Schema implements Ordered
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getNamespaceURI()
+    public String getNamespace()
     {
-        return namespaceURI;
+        return namespace;
     }
 
-    public void setNamespaceURI( String namespaceURI )
+    public void setNamespace( String namespace )
     {
-        this.namespaceURI = namespaceURI;
+        this.namespace = namespace;
     }
 
     @JsonProperty
@@ -334,7 +334,7 @@ public class Schema implements Ordered
     @Override
     public int hashCode()
     {
-        return Objects.hashCode( klass, identifiableObject, nameableObject, singular, plural, namespaceURI, name,
+        return Objects.hashCode( klass, identifiableObject, nameableObject, singular, plural, namespace, name,
             collectionName, shareable, apiEndpoint, metadata, authorities, propertyMap, order, authorityMap );
     }
 
@@ -354,7 +354,7 @@ public class Schema implements Ordered
 
         return Objects.equal( this.klass, other.klass ) && Objects.equal( this.identifiableObject, other.identifiableObject )
             && Objects.equal( this.nameableObject, other.nameableObject ) && Objects.equal( this.singular, other.singular )
-            && Objects.equal( this.plural, other.plural ) && Objects.equal( this.namespaceURI, other.namespaceURI )
+            && Objects.equal( this.plural, other.plural ) && Objects.equal( this.namespace, other.namespace )
             && Objects.equal( this.name, other.name ) && Objects.equal( this.collectionName, other.collectionName )
             && Objects.equal( this.shareable, other.shareable ) && Objects.equal( this.apiEndpoint, other.apiEndpoint )
             && Objects.equal( this.metadata, other.metadata ) && Objects.equal( this.authorities, other.authorities )
@@ -371,7 +371,7 @@ public class Schema implements Ordered
             .add( "nameableObject", nameableObject )
             .add( "singular", singular )
             .add( "plural", plural )
-            .add( "namespaceURI", namespaceURI )
+            .add( "namespace", namespace )
             .add( "name", name )
             .add( "collectionName", collectionName )
             .add( "shareable", shareable )
@@ -379,7 +379,6 @@ public class Schema implements Ordered
             .add( "metadata", metadata )
             .add( "authorities", authorities )
             .add( "propertyMap", propertyMap )
-            .add( "order", order )
             .add( "authorityMap", authorityMap )
             .toString();
     }
