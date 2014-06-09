@@ -28,6 +28,7 @@ package org.hisp.dhis.node.types;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.base.Objects;
 import org.hisp.dhis.node.AbstractNode;
 import org.hisp.dhis.node.NodeType;
 
@@ -54,5 +55,32 @@ public class CollectionNode extends AbstractNode
     public void setWrapping( boolean wrapping )
     {
         this.wrapping = wrapping;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return 31 * super.hashCode() + Objects.hashCode( wrapping );
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( this == obj )
+        {
+            return true;
+        }
+        if ( obj == null || getClass() != obj.getClass() )
+        {
+            return false;
+        }
+        if ( !super.equals( obj ) )
+        {
+            return false;
+        }
+
+        final CollectionNode other = (CollectionNode) obj;
+
+        return Objects.equal( this.wrapping, other.wrapping );
     }
 }

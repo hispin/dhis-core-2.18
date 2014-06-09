@@ -60,10 +60,26 @@ public class Property
     private Method getterMethod;
 
     /**
+     * Direct link to setter for this property.
+     */
+    private Method setterMethod;
+
+    /**
      * Name for this property, if this class is a collection, it is the name of the items -inside- the collection
      * and not the collection wrapper itself.
      */
     private String name;
+
+    /**
+     * Name for actual field, used to persistence operations and getting setter/getter.
+     */
+    private String fieldName;
+
+    /**
+     * Is this property persisted somewhere. This property will be used to create criteria queries
+     * on demand (default: true)
+     */
+    private boolean persisted = true;
 
     /**
      * Name of collection wrapper.
@@ -80,7 +96,7 @@ public class Property
     /**
      * XML-Namespace used for this property.
      */
-    private String namespaceURI;
+    private String namespace;
 
     /**
      * Usually only used for XML. Is this property considered an attribute.
@@ -162,6 +178,16 @@ public class Property
         return getterMethod;
     }
 
+    public Method getSetterMethod()
+    {
+        return setterMethod;
+    }
+
+    public void setSetterMethod( Method setterMethod )
+    {
+        this.setterMethod = setterMethod;
+    }
+
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getName()
@@ -172,6 +198,30 @@ public class Property
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getFieldName()
+    {
+        return fieldName;
+    }
+
+    public void setFieldName( String fieldName )
+    {
+        this.fieldName = fieldName;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isPersisted()
+    {
+        return persisted;
+    }
+
+    public void setPersisted( boolean persisted )
+    {
+        this.persisted = persisted;
     }
 
     @JsonProperty
@@ -200,14 +250,14 @@ public class Property
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getNamespaceURI()
+    public String getNamespace()
     {
-        return namespaceURI;
+        return namespace;
     }
 
-    public void setNamespaceURI( String namespaceURI )
+    public void setNamespace( String namespace )
     {
-        this.namespaceURI = namespaceURI;
+        this.namespace = namespace;
     }
 
     @JsonProperty
@@ -273,8 +323,8 @@ public class Property
     @Override
     public int hashCode()
     {
-        return Objects.hashCode( klass, itemKlass, getterMethod, name, collectionName, description, namespaceURI,
-            attribute, simple, collection, identifiableObject, nameableObject );
+        return Objects.hashCode( klass, itemKlass, getterMethod, name, fieldName, persisted, collectionName, description,
+            namespace, attribute, simple, collection, identifiableObject, nameableObject );
     }
 
     @Override
@@ -292,11 +342,13 @@ public class Property
         final Property other = (Property) obj;
 
         return Objects.equal( this.klass, other.klass ) && Objects.equal( this.itemKlass, other.itemKlass )
-            && Objects.equal( this.getterMethod, other.getterMethod ) && Objects.equal( this.name, other.name )
-            && Objects.equal( this.collectionName, other.collectionName ) && Objects.equal( this.description, other.description )
-            && Objects.equal( this.namespaceURI, other.namespaceURI ) && Objects.equal( this.attribute, other.attribute )
-            && Objects.equal( this.simple, other.simple ) && Objects.equal( this.collection, other.collection )
-            && Objects.equal( this.identifiableObject, other.identifiableObject ) && Objects.equal( this.nameableObject, other.nameableObject );
+            && Objects.equal( this.getterMethod, other.getterMethod ) && Objects.equal( this.setterMethod, other.setterMethod )
+            && Objects.equal( this.name, other.name ) && Objects.equal( this.fieldName, other.fieldName )
+            && Objects.equal( this.persisted, other.persisted ) && Objects.equal( this.collectionName, other.collectionName )
+            && Objects.equal( this.description, other.description ) && Objects.equal( this.namespace, other.namespace )
+            && Objects.equal( this.attribute, other.attribute ) && Objects.equal( this.simple, other.simple )
+            && Objects.equal( this.collection, other.collection ) && Objects.equal( this.identifiableObject, other.identifiableObject )
+            && Objects.equal( this.nameableObject, other.nameableObject );
     }
 
     @Override
@@ -307,9 +359,11 @@ public class Property
             .add( "itemKlass", itemKlass )
             .add( "getterMethod", getterMethod )
             .add( "name", name )
+            .add( "fieldName", fieldName )
+            .add( "persisted", persisted )
             .add( "collectionName", collectionName )
             .add( "description", description )
-            .add( "namespaceURI", namespaceURI )
+            .add( "namespace", namespace )
             .add( "attribute", attribute )
             .add( "simple", simple )
             .add( "collection", collection )

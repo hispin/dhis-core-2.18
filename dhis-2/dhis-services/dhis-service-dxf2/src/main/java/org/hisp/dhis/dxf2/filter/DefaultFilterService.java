@@ -117,7 +117,7 @@ public class DefaultFilterService implements FilterService
         }
 
         CollectionNode collectionNode = new CollectionNode( rootSchema.getCollectionName() );
-        collectionNode.setNamespace( rootSchema.getNamespaceURI() );
+        collectionNode.setNamespace( rootSchema.getNamespace() );
 
         if ( objects.isEmpty() )
         {
@@ -142,7 +142,7 @@ public class DefaultFilterService implements FilterService
 
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
         ComplexNode complexNode = new ComplexNode( schema.getName() );
-        complexNode.setNamespace( schema.getNamespaceURI() );
+        complexNode.setNamespace( schema.getNamespace() );
 
         updateFields( fieldMap, object );
 
@@ -173,7 +173,7 @@ public class DefaultFilterService implements FilterService
                     Collection<?> collection = (Collection<?>) returnValue;
 
                     CollectionNode collectionNode = complexNode.addChild( new CollectionNode( property.getCollectionName() ) );
-                    collectionNode.setNamespace( property.getNamespaceURI() );
+                    collectionNode.setNamespace( property.getNamespace() );
 
                     if ( property.isIdentifiableObject() )
                     {
@@ -214,7 +214,7 @@ public class DefaultFilterService implements FilterService
                     {
                         SimpleNode simpleNode = new SimpleNode( fieldKey, returnValue );
                         simpleNode.setAttribute( property.isAttribute() );
-                        simpleNode.setNamespace( property.getNamespaceURI() );
+                        simpleNode.setNamespace( property.getNamespace() );
 
                         complexNode.addChild( simpleNode );
                     }
@@ -229,7 +229,7 @@ public class DefaultFilterService implements FilterService
                 if ( property.isCollection() )
                 {
                     CollectionNode collectionNode = complexNode.addChild( new CollectionNode( property.getCollectionName() ) );
-                    collectionNode.setNamespace( property.getNamespaceURI() );
+                    collectionNode.setNamespace( property.getNamespace() );
 
                     for ( Object collectionObject : (Collection<?>) returnValue )
                     {
@@ -336,7 +336,7 @@ public class DefaultFilterService implements FilterService
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
 
         ComplexNode complexNode = new ComplexNode( schema.getSingular() );
-        complexNode.setNamespace( schema.getNamespaceURI() );
+        complexNode.setNamespace( schema.getNamespace() );
 
         for ( String field : fields )
         {
@@ -353,7 +353,7 @@ public class DefaultFilterService implements FilterService
             {
                 SimpleNode simpleNode = new SimpleNode( field, o );
                 simpleNode.setAttribute( property.isAttribute() );
-                simpleNode.setNamespace( property.getNamespaceURI() );
+                simpleNode.setNamespace( property.getNamespace() );
 
                 complexNode.addChild( simpleNode );
             }

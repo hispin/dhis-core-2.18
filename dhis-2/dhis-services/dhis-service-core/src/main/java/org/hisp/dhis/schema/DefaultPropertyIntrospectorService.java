@@ -96,7 +96,7 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
 
             if ( !StringUtils.isEmpty( jacksonXmlRootElement.namespace() ) )
             {
-                property.setNamespaceURI( jacksonXmlRootElement.namespace() );
+                property.setNamespace( jacksonXmlRootElement.namespace() );
             }
 
             propertyMap.put( "__self__", property );
@@ -153,7 +153,7 @@ public class DefaultPropertyIntrospectorService implements PropertyIntrospectorS
 
                 if ( !StringUtils.isEmpty( jacksonXmlProperty.namespace() ) )
                 {
-                    property.setNamespaceURI( jacksonXmlProperty.namespace() );
+                    property.setNamespace( jacksonXmlProperty.namespace() );
                 }
 
                 property.setAttribute( jacksonXmlProperty.isAttribute() );
