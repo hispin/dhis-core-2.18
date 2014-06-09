@@ -28,20 +28,13 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.webapi.utils.WebUtils;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.webapi.utils.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,8 +43,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 @Controller
-@RequestMapping(value = DimensionController.RESOURCE_PATH)
+@RequestMapping( value = DimensionController.RESOURCE_PATH )
 public class DimensionController
 {
     public static final String RESOURCE_PATH = "/dimensions";
@@ -63,13 +62,16 @@ public class DimensionController
     @Autowired
     private DimensionService dimensionService;
 
+    @Autowired
+    private LinkService linkService;
+
     // -------------------------------------------------------------------------
     // Controller
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDimension( @PathVariable("uid") String uid,
-        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, 
+    public String getDimension( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links,
         Model model )
     {
         DimensionalObject dimension = dimensionService.getDimension( uid );
@@ -79,29 +81,29 @@ public class DimensionController
 
         if ( links )
         {
-            WebUtils.generateLinks( dimension );
+            linkService.generateLinks( dimension );
         }
 
         return "dimension";
     }
-    
+
     @RequestMapping( value = "/{uid}/items", method = RequestMethod.GET )
     public String getItems( @PathVariable String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response )
     {
-        WebOptions options = new WebOptions( parameters );        
+        WebOptions options = new WebOptions( parameters );
         List<NameableObject> items = dimensionService.getCanReadDimensionItems( uid );
-                
+
         WebMetaData metaData = new WebMetaData();
         Collections.sort( items, IdentifiableObjectNameComparator.INSTANCE );
-        
+
         if ( options.hasPaging() )
         {
             Pager pager = new Pager( options.getPage(), items.size(), options.getPageSize() );
             metaData.setPager( pager );
             items = PagerUtils.pageCollection( items, pager );
         }
-        
+
         metaData.setItems( items );
 
         model.addAttribute( "model", metaData );
@@ -112,7 +114,7 @@ public class DimensionController
 
     @RequestMapping( method = RequestMethod.GET )
     public String getDimensions(
-        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, 
+        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links,
         Model model )
     {
         WebMetaData metaData = new WebMetaData();
@@ -123,7 +125,7 @@ public class DimensionController
 
         if ( links )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         return "dimensions";
@@ -131,7 +133,7 @@ public class DimensionController
 
     @RequestMapping( value = "/constraints", method = RequestMethod.GET )
     public String getDimensionConstraints(
-        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links, 
+        @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links,
         Model model )
     {
         WebMetaData metaData = new WebMetaData();
@@ -142,7 +144,7 @@ public class DimensionController
 
         if ( links )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         return "dimensions";

@@ -41,7 +41,6 @@ import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.controller.WebMetaData;
 import org.hisp.dhis.webapi.controller.WebOptions;
 import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,7 +96,7 @@ public class DataElementGroupController
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         model.addAttribute( "model", metaData );
@@ -144,7 +143,7 @@ public class DataElementGroupController
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         model.addAttribute( "model", metaData );
@@ -186,7 +185,7 @@ public class DataElementGroupController
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         model.addAttribute( "model", metaData );
@@ -233,7 +232,7 @@ public class DataElementGroupController
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         model.addAttribute( "model", metaData );

@@ -40,7 +40,6 @@ import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.controller.WebMetaData;
 import org.hisp.dhis.webapi.controller.WebOptions;
 import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -110,7 +109,7 @@ public class OrganisationUnitGroupController
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         model.addAttribute( "model", metaData );
@@ -157,7 +156,7 @@ public class OrganisationUnitGroupController
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         model.addAttribute( "model", metaData );
