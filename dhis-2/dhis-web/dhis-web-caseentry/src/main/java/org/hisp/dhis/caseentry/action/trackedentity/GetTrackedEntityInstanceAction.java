@@ -57,6 +57,7 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeGroupSortOrderComparator;
+import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeSortOrderInListNoProgramComparator;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -326,19 +327,10 @@ public class GetTrackedEntityInstanceAction
 
             if ( program == null )
             {
-                attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
-                Collection<Program> programs = programService.getAllPrograms();
-                for ( Program p : programs )
-                {
-                    for ( ProgramTrackedEntityAttribute programAttribute : p.getAttributes() )
-                    {
-                        if ( !programAttribute.isDisplayInList() )
-                        {
-                            attributes.remove( programAttribute.getAttribute() );
-                        }
-                    }
-                }
-
+                attributes = new ArrayList<TrackedEntityAttribute>(
+                    attributeService.getTrackedEntityAttributesDisplayInList() );
+                Collections.sort( attributes, new TrackedEntityAttributeSortOrderInListNoProgramComparator() );
+                
                 for ( TrackedEntityAttribute attribute : attributes )
                 {
                     mandatoryMap.put( attribute.getId(), false );
