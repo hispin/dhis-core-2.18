@@ -38,6 +38,7 @@ import java.lang.annotation.Target;
  */
 @Target( { ElementType.FIELD } )
 @Retention( RetentionPolicy.RUNTIME )
+@NodeAnnotation
 public @interface NodeSimple
 {
     String value() default "";
@@ -45,8 +46,6 @@ public @interface NodeSimple
     boolean isAttribute() default false;
 
     boolean isPersisted() default true;
-
-    String persistedName() default "";
 
     String namespace() default "";
 }
