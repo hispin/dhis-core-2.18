@@ -345,13 +345,6 @@ public class ShowAddTrackedEntityInstanceFormAction
             {
                 attributes = new ArrayList<TrackedEntityAttribute>(
                     attributeService.getTrackedEntityAttributesDisplayInList() );
-                Collection<Program> programs = programService.getAllPrograms();
-
-                for ( Program p : programs )
-                {
-                    attributes.removeAll( p.getAttributes() );
-                }
-
                 for ( TrackedEntityAttribute attribute : attributes )
                 {
                     mandatoryMap.put( attribute.getId(), false );
