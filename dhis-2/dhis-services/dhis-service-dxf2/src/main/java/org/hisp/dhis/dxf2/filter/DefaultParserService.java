@@ -84,14 +84,14 @@ public class DefaultParserService implements ParserService
                 continue;
             }
 
-            if ( c.equals( "[" ) )
+            if ( c.equals( "[" ) || c.equals( "(" ) || c.equals( "{" ) )
             {
                 prefixList.add( builder.toString() );
                 builder = new StringBuilder();
                 continue;
             }
 
-            if ( c.equals( "]" ) )
+            if ( c.equals( "]" ) || c.equals( ")" ) || c.equals( "}" ) )
             {
                 if ( !builder.toString().isEmpty() )
                 {
@@ -124,7 +124,7 @@ public class DefaultParserService implements ParserService
         return prefixes;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private void putInMap( Map<String, Map> map, String path )
     {
         if ( StringUtils.isEmpty( path ) )
