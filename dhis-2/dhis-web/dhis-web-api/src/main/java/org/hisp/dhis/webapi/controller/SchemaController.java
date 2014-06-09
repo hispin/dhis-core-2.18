@@ -28,6 +28,7 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.schema.Schemas;
@@ -61,7 +62,7 @@ public class SchemaController
     }
 
     @RequestMapping(value = "/{type}/{property}")
-    public @ResponseBody Object getSchemaProperty( @PathVariable String type, @PathVariable String property )
+    public @ResponseBody Property getSchemaProperty( @PathVariable String type, @PathVariable String property )
     {
         Schema schema = schemaService.getSchemaBySingularName( type );
 
