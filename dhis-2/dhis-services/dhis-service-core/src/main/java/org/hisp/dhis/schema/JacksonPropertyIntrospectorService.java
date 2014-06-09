@@ -53,7 +53,7 @@ import java.util.Map;
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DefaultPropertyIntrospectorService implements PropertyIntrospectorService
+public class JacksonPropertyIntrospectorService implements PropertyIntrospectorService
 {
     @Override
     public List<Property> getProperties( Class<?> klass )
