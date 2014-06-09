@@ -31,6 +31,7 @@ package org.hisp.dhis.schema;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.google.common.base.Objects;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
@@ -40,7 +41,7 @@ import java.lang.reflect.Method;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement(localName = "property", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "property", namespace = DxfNamespaces.DXF_2_0 )
 public class Property
 {
     /**
@@ -131,7 +132,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Class<?> getKlass()
     {
         return klass;
@@ -145,7 +146,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Class<?> getItemKlass()
     {
         return itemKlass;
@@ -162,7 +163,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getName()
     {
         return name;
@@ -174,7 +175,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getCollectionName()
     {
         return collectionName == null ? name : collectionName;
@@ -186,7 +187,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -198,7 +199,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getNamespaceURI()
     {
         return namespaceURI;
@@ -210,7 +211,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isAttribute()
     {
         return attribute;
@@ -234,7 +235,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isCollection()
     {
         return collection;
@@ -246,7 +247,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isIdentifiableObject()
     {
         return identifiableObject;
@@ -258,7 +259,7 @@ public class Property
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isNameableObject()
     {
         return nameableObject;
@@ -310,17 +311,19 @@ public class Property
     @Override
     public String toString()
     {
-        return "Property{" +
-            "klass=" + klass +
-            ", getterMethod=" + getterMethod +
-            ", name='" + name + '\'' +
-            ", collectionName='" + collectionName + '\'' +
-            ", description='" + description + '\'' +
-            ", namespaceURI='" + namespaceURI + '\'' +
-            ", attribute=" + attribute +
-            ", collection=" + collection +
-            ", identifiableObject=" + identifiableObject +
-            ", nameableObject=" + nameableObject +
-            '}';
+        return Objects.toStringHelper( this )
+            .add( "klass", klass )
+            .add( "itemKlass", itemKlass )
+            .add( "getterMethod", getterMethod )
+            .add( "name", name )
+            .add( "collectionName", collectionName )
+            .add( "description", description )
+            .add( "namespaceURI", namespaceURI )
+            .add( "attribute", attribute )
+            .add( "simple", simple )
+            .add( "collection", collection )
+            .add( "identifiableObject", identifiableObject )
+            .add( "nameableObject", nameableObject )
+            .toString();
     }
 }
