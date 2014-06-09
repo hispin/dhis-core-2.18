@@ -34,6 +34,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.filter.ops.Op;
+import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
+import org.hisp.dhis.dxf2.timer.Timer;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.SimpleNode;
@@ -109,7 +111,7 @@ public class DefaultFilterService implements FilterService
             fieldMap = parserService.parsePropertyFilter( fields );
         }
 
-        CollectionNode collectionNode = new CollectionNode( rootSchema.getPlural() ); // replace with 'xml' collection name
+        CollectionNode collectionNode = new CollectionNode( rootSchema.getCollectionName() );
         collectionNode.setNamespace( rootSchema.getNamespaceURI() );
 
         if ( objects.isEmpty() )
@@ -355,7 +357,7 @@ public class DefaultFilterService implements FilterService
         return complexNode;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private <T> boolean evaluateWithFilters( T object, Filters filters )
     {
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
