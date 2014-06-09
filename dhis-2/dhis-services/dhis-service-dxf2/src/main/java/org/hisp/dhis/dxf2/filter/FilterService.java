@@ -28,8 +28,6 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.node.types.CollectionNode;
 
@@ -40,12 +38,6 @@ import java.util.List;
  */
 public interface FilterService
 {
-    static final ImmutableMap<String, List<String>> FIELD_PRESETS = ImmutableMap.<String, List<String>>builder()
-        .put( "all", Lists.newArrayList( "*" ) )
-        .put( "identifiable", Lists.newArrayList( "id", "name", "code", "created", "lastUpdated" ) )
-        .put( "nameable", Lists.newArrayList( "id", "name", "shortName", "description", "code", "created", "lastUpdated" ) )
-        .build();
-
     /**
      * Filter a list of objects based on un-parsed filter string.
      *

@@ -32,6 +32,7 @@ import javassist.util.proxy.ProxyFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.collection.spi.PersistentCollection;
+import org.hisp.dhis.common.LinkableObject;
 import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
