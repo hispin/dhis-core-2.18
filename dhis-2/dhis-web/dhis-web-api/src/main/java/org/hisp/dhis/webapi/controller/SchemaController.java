@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/schemas", method = RequestMethod.GET )
+@RequestMapping(value = "/schemas", method = RequestMethod.GET)
 public class SchemaController
 {
     @Autowired
@@ -58,5 +58,18 @@ public class SchemaController
     public @ResponseBody Schema getSchema( @PathVariable String type )
     {
         return schemaService.getSchemaBySingularName( type );
+    }
+
+    @RequestMapping(value = "/{type}/{property}")
+    public @ResponseBody Object getSchemaProperty( @PathVariable String type, @PathVariable String property )
+    {
+        Schema schema = schemaService.getSchemaBySingularName( type );
+
+        if ( schema.getPropertyMap().containsKey( property ) )
+        {
+            return schema.getPropertyMap().get( property );
+        }
+
+        return null;
     }
 }
