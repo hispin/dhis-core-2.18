@@ -330,7 +330,40 @@ public class Schema implements Ordered
         this.order = order;
     }
 
-    @Override public String toString()
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode( klass, identifiableObject, nameableObject, singular, plural, namespaceURI, name,
+            collectionName, shareable, apiEndpoint, metadata, authorities, propertyMap, order, authorityMap );
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( this == obj )
+        {
+            return true;
+        }
+        if ( obj == null || getClass() != obj.getClass() )
+        {
+            return false;
+        }
+
+        final Schema other = (Schema) obj;
+
+        return Objects.equal( this.klass, other.klass ) && Objects.equal( this.identifiableObject, other.identifiableObject )
+            && Objects.equal( this.nameableObject, other.nameableObject ) && Objects.equal( this.singular, other.singular )
+            && Objects.equal( this.plural, other.plural ) && Objects.equal( this.namespaceURI, other.namespaceURI )
+            && Objects.equal( this.name, other.name ) && Objects.equal( this.collectionName, other.collectionName )
+            && Objects.equal( this.shareable, other.shareable ) && Objects.equal( this.apiEndpoint, other.apiEndpoint )
+            && Objects.equal( this.metadata, other.metadata ) && Objects.equal( this.authorities, other.authorities )
+            && Objects.equal( this.propertyMap, other.propertyMap ) && Objects.equal( this.order, other.order )
+            && Objects.equal( this.authorityMap, other.authorityMap );
+    }
+
+    @Override
+    public String toString()
     {
         return Objects.toStringHelper( this )
             .add( "klass", klass )
