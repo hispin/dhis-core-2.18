@@ -29,13 +29,12 @@ package org.hisp.dhis.dxf2.filter;
  */
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.filter.ops.Op;
-import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
-import org.hisp.dhis.dxf2.timer.Timer;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.SimpleNode;
@@ -54,6 +53,12 @@ import java.util.Map;
  */
 public class DefaultFilterService implements FilterService
 {
+    static final ImmutableMap<String, List<String>> FIELD_PRESETS = ImmutableMap.<String, List<String>>builder()
+        .put( "all", Lists.newArrayList( "*" ) )
+        .put( "identifiable", Lists.newArrayList( "id", "name", "code", "created", "lastUpdated", "href" ) )
+        .put( "nameable", Lists.newArrayList( "id", "name", "shortName", "description", "code", "created", "lastUpdated", "href" ) )
+        .build();
+
     @Autowired
     private ParserService parserService;
 
@@ -161,7 +166,7 @@ public class DefaultFilterService implements FilterService
 
             if ( fieldValue.isEmpty() )
             {
-                List<String> fields = FilterService.FIELD_PRESETS.get( "identifiable" );
+                List<String> fields = FIELD_PRESETS.get( "identifiable" );
 
                 if ( property.isCollection() )
                 {
@@ -280,7 +285,7 @@ public class DefaultFilterService implements FilterService
             }
             else if ( fieldKey.startsWith( ":" ) )
             {
-                List<String> fields = FilterService.FIELD_PRESETS.get( fieldKey.substring( 1 ) );
+                List<String> fields = FIELD_PRESETS.get( fieldKey.substring( 1 ) );
 
                 for ( String field : fields )
                 {
