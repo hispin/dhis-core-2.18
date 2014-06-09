@@ -41,7 +41,6 @@ import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.controller.WebMetaData;
 import org.hisp.dhis.webapi.controller.WebOptions;
 import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.WebUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -91,7 +90,7 @@ public class IndicatorGroupController
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         model.addAttribute( "model", metaData );
@@ -138,7 +137,7 @@ public class IndicatorGroupController
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData );
+            linkService.generateLinks( metaData );
         }
 
         model.addAttribute( "model", metaData );
