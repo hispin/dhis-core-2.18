@@ -271,41 +271,32 @@ public class Property
     }
 
     @Override
-    public boolean equals( Object o )
+    public int hashCode()
     {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
-
-        Property property = (Property) o;
-
-        if ( attribute != property.attribute ) return false;
-        if ( collection != property.collection ) return false;
-        if ( identifiableObject != property.identifiableObject ) return false;
-        if ( nameableObject != property.nameableObject ) return false;
-        if ( collectionName != null ? !collectionName.equals( property.collectionName ) : property.collectionName != null ) return false;
-        if ( description != null ? !description.equals( property.description ) : property.description != null ) return false;
-        if ( getterMethod != null ? !getterMethod.equals( property.getterMethod ) : property.getterMethod != null ) return false;
-        if ( klass != null ? !klass.equals( property.klass ) : property.klass != null ) return false;
-        if ( name != null ? !name.equals( property.name ) : property.name != null ) return false;
-        if ( namespaceURI != null ? !namespaceURI.equals( property.namespaceURI ) : property.namespaceURI != null ) return false;
-
-        return true;
+        return Objects.hashCode( klass, itemKlass, getterMethod, name, collectionName, description, namespaceURI,
+            attribute, simple, collection, identifiableObject, nameableObject );
     }
 
     @Override
-    public int hashCode()
+    public boolean equals( Object obj )
     {
-        int result = klass != null ? klass.hashCode() : 0;
-        result = 31 * result + (getterMethod != null ? getterMethod.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (collectionName != null ? collectionName.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (namespaceURI != null ? namespaceURI.hashCode() : 0);
-        result = 31 * result + (attribute ? 1 : 0);
-        result = 31 * result + (collection ? 1 : 0);
-        result = 31 * result + (identifiableObject ? 1 : 0);
-        result = 31 * result + (nameableObject ? 1 : 0);
-        return result;
+        if ( this == obj )
+        {
+            return true;
+        }
+        if ( obj == null || getClass() != obj.getClass() )
+        {
+            return false;
+        }
+
+        final Property other = (Property) obj;
+
+        return Objects.equal( this.klass, other.klass ) && Objects.equal( this.itemKlass, other.itemKlass )
+            && Objects.equal( this.getterMethod, other.getterMethod ) && Objects.equal( this.name, other.name )
+            && Objects.equal( this.collectionName, other.collectionName ) && Objects.equal( this.description, other.description )
+            && Objects.equal( this.namespaceURI, other.namespaceURI ) && Objects.equal( this.attribute, other.attribute )
+            && Objects.equal( this.simple, other.simple ) && Objects.equal( this.collection, other.collection )
+            && Objects.equal( this.identifiableObject, other.identifiableObject ) && Objects.equal( this.nameableObject, other.nameableObject );
     }
 
     @Override
