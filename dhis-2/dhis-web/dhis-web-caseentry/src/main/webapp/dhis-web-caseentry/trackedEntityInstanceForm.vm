@@ -36,6 +36,7 @@
 	#end
 	
 #foreach ($attributeGroup in $attributeGroups )
+	 #set($attributesByGroup = "")
 	 #set($attributesByGroup = $!attributesMap.get($attributeGroup.displayName))
 	 #if( $attributesByGroup && $attributesByGroup.size() > 0 )
 			 <tr><td>&nbsp;</td></tr>
