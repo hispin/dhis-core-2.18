@@ -1,4 +1,4 @@
-package org.hisp.dhis.node.annotation;
+package org.hisp.dhis.schema;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,20 +28,41 @@ package org.hisp.dhis.node.annotation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Target( { ElementType.FIELD } )
-@Retention( RetentionPolicy.RUNTIME )
-@NodeAnnotation
-public @interface NodeComplex
+public abstract class AbstractPropertyIntrospectorService implements PropertyIntrospectorService
 {
-    String value() default "";
+    private Map<Class<?>, Map<String, Property>> classMapCache = Maps.newHashMap();
 
-    String namespace() default "";
+    @Override
+    public List<Property> getProperties( Class<?> klass )
+    {
+        return Lists.newArrayList( getPropertiesMap( klass ).values() );
+    }
+
+    @Override
+    public Map<String, Property> getPropertiesMap( Class<?> klass )
+    {
+        if ( !classMapCache.containsKey( klass ) )
+        {
+            classMapCache.put( klass, scanClass( klass ) );
+        }
+
+        return classMapCache.get( klass );
+    }
+
+    /**
+     * Introspect a class and return a map with key=property-name, and value=Property class.
+     *
+     * @param klass Class to scan
+     * @return Map with key=property-name, and value=Property class
+     */
+    protected abstract Map<String, Property> scanClass( Class<?> klass );
 }
