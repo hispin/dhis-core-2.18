@@ -498,7 +498,7 @@
 		</action>
 
 		<action name="showAddRepresentative"
-			class="org.hisp.dhis.caseentry.action.trackedentity.ShowAddRepresentativeAction">
+			class="org.hisp.dhis.caseentry.action.trackedentity.ShowAddTrackedEntityInstanceFormAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/underAgeForm.vm</param>
 			<param name="javascripts">javascript/underage.js,

@@ -46,7 +46,7 @@
 
 <script>
 	var i18n_error_connect_to_server = '$encoder.jsEscape( $i18n.getString( "error_connect_to_server" ) , "'" )';
-	var i18n_add_person_successfully = '$encoder.jsEscape( $i18n.getString( "add_person_successfully" ) , "'" )';
+	var i18n_add_tracked_entity_instance_successfully = '$encoder.jsEscape( $i18n.getString( "add_tracked_entity_instance_successfully" ) , "'" )';
 	setInnerHTML('entryName', jQuery('#program option:selected').text() );
 	setFieldValue("programStageId", getFieldValue("program"));
 </script>

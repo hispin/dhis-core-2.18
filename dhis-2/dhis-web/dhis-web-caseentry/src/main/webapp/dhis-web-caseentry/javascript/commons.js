@@ -994,23 +994,25 @@ function removeDisabledIdentifier() {
 // -----------------------------------------------------------------------------
 // Show representative form
 // -----------------------------------------------------------------------------
+
 function toggleUnderAge(this_) {
 	if ($(this_).is(":checked")) {
 		$('#representativeDiv').dialog('destroy').remove();
 		$('<div id="representativeDiv">').load('showAddRepresentative.action',
-				{}, function() {
-				}).dialog({
-			title : i18n_tracker_associate,
-			maximize : true,
-			closable : true,
-			modal : true,
-			overlay : {
-				background : '#000000',
-				opacity : 0.1
-			},
-			width : 800,
-			height : 450
-		});
+			{
+				related:true
+			}, function() {}).dialog({
+				title : i18n_tracker_associate,
+				maximize : true,
+				closable : true,
+				modal : true,
+				overlay : {
+					background : '#000000',
+					opacity : 0.1
+				},
+				width : 800,
+				height : 450
+			});
 	} else {
 		$("#representativeDiv :input.idfield").each(function() {
 			if ($(this).is(":disabled")) {
