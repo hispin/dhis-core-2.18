@@ -500,10 +500,6 @@ function setSuggestedDueDate(programInstanceId) {
 	$('#dueDateNewEncounter_' + programInstanceId).val(sdate);
 }
 
-function closeDueDateDiv(programInstanceId) {
-	$('#createNewEncounterDiv_' + programInstanceId).dialog('close');
-}
-
 // ------------------------------------------------------
 // Register Irregular-encounter
 // ------------------------------------------------------
@@ -645,7 +641,7 @@ function registerIrregularEncounter(programInstanceId, programStageId,
 						disable('newEncounterBtn_' + programInstanceId);
 					}
 
-					closeDueDateDiv(programInstanceId);
+					$('#createNewEncounterDiv_' + programInstanceId).dialog('close');
 					showSuccessMessage(i18n_create_event_success);
 				});
 	}
