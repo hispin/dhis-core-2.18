@@ -42,7 +42,9 @@ import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,9 +59,27 @@ public class AddRepresentativeAction
 
     private TrackedEntityInstanceService entityInstanceService;
 
+    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
+    {
+        this.entityInstanceService = entityInstanceService;
+    }
+
     private OrganisationUnitSelectionManager selectionManager;
 
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
     private TrackedEntityAttributeService attributeService;
+
+    public void setAttributeService( TrackedEntityAttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
+    @Autowired
+    private TrackedEntityService trackedEntityService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -67,11 +87,33 @@ public class AddRepresentativeAction
 
     private Integer relationshipTypeId;
 
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
+    }
+
+    public Integer getRelationshipTypeId()
+    {
+        return relationshipTypeId;
+    }
+
+    private Integer trackedEntityId;
+
+    public void setTrackedEntityId( Integer trackedEntityId )
+    {
+        this.trackedEntityId = trackedEntityId;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
     private TrackedEntityInstance entityInstance;
+
+    public TrackedEntityInstance getEntityInstance()
+    {
+        return entityInstance;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -87,6 +129,7 @@ public class AddRepresentativeAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         entityInstance = new TrackedEntityInstance();
+        entityInstance.setTrackedEntity( trackedEntityService.getTrackedEntity( trackedEntityId ) );
 
         entityInstance.setOrganisationUnit( organisationUnit );
 
@@ -128,35 +171,5 @@ public class AddRepresentativeAction
     // -----------------------------------------------------------------------------
     // Getter/Setter
     // -----------------------------------------------------------------------------
-
-    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
-    {
-        this.entityInstanceService = entityInstanceService;
-    }
-
-    public void setAttributeService( TrackedEntityAttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
-    public Integer getRelationshipTypeId()
-    {
-        return relationshipTypeId;
-    }
-
-    public void setRelationshipTypeId( Integer relationshipTypeId )
-    {
-        this.relationshipTypeId = relationshipTypeId;
-    }
-
-    public TrackedEntityInstance getEntityInstance()
-    {
-        return entityInstance;
-    }
 
 }
