@@ -216,7 +216,7 @@ public abstract class AbstractNode implements Node
         return Objects.toStringHelper( this )
             .add( "name", name )
             .add( "nodeType", nodeType )
-            .add( "parent", parent.getName() )
+            .add( "parent", (parent != null ? parent.getName() : null) )
             .add( "namespace", namespace )
             .add( "comment", comment )
             .add( "children", children )

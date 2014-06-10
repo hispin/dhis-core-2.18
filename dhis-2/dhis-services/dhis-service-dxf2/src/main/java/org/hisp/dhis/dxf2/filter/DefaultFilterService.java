@@ -157,12 +157,14 @@ public class DefaultFilterService implements FilterService
             Object returnValue = ReflectionUtils.invokeMethod( object, property.getGetterMethod() );
             Schema propertySchema = schemaService.getDynamicSchema( property.getKlass() );
 
+            // TODO should we include nulls?
             if ( returnValue == null )
             {
                 continue;
             }
 
             Map fieldValue = fieldMap.get( fieldKey );
+            updateFields( fieldValue, object );
 
             if ( fieldValue.isEmpty() )
             {
@@ -286,6 +288,11 @@ public class DefaultFilterService implements FilterService
             else if ( fieldKey.startsWith( ":" ) )
             {
                 List<String> fields = FIELD_PRESETS.get( fieldKey.substring( 1 ) );
+
+                if ( fields == null )
+                {
+                    continue;
+                }
 
                 for ( String field : fields )
                 {

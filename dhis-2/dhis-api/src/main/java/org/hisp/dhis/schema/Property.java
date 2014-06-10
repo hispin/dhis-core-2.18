@@ -50,13 +50,13 @@ public class Property
     /**
      * Class for property.
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private Class<?> klass;
 
     /**
      * If this property is a collection, this is the class of the items inside the collection.
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private Class<?> itemKlass;
 
     /**
@@ -73,32 +73,32 @@ public class Property
      * Name for this property, if this class is a collection, it is the name of the items -inside- the collection
      * and not the collection wrapper itself.
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private String name;
 
     /**
      * Name for actual field, used to persistence operations and getting setter/getter.
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private String fieldName;
 
     /**
      * Is this property persisted somewhere. This property will be used to create criteria queries
      * on demand (default: true)
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private boolean persisted = true;
 
     /**
      * Name of collection wrapper.
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private String collectionName;
 
     /**
      * If this Property is a collection, should it be wrapped with collectionName?
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private boolean collectionWrapping;
 
     /**
@@ -106,19 +106,19 @@ public class Property
      *
      * @see org.hisp.dhis.common.annotation.Description
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private String description;
 
     /**
-     * XML-Namespace used for this property.
+     * Namespace used for this property.
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private String namespace;
 
     /**
      * Usually only used for XML. Is this property considered an attribute.
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private boolean attribute;
 
     /**
@@ -127,7 +127,7 @@ public class Property
      * of the collection, e.g. List<String> would set simple to be true, but List<DataElement> would set it
      * to false.
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private boolean simple;
 
     /**
@@ -135,7 +135,7 @@ public class Property
      *
      * @see java.util.Collection
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private boolean collection;
 
     /**
@@ -143,7 +143,7 @@ public class Property
      *
      * @see org.hisp.dhis.common.IdentifiableObject
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private boolean identifiableObject;
 
     /**
@@ -151,7 +151,7 @@ public class Property
      *
      * @see org.hisp.dhis.common.NameableObject
      */
-    @NodeSimple
+    @NodeSimple( isPersisted = false )
     private boolean nameableObject;
 
     public Property()
