@@ -4,53 +4,28 @@
 
 function validateAddRepresentative()
 {	
-	$.postUTF8("validateTrackedEntityInstance.action?" + getIdentifierTypeIdParams(),
-		{
-		}, addValidationRepresentativeCompleted, "xml" );
-}
-
-function addValidationRepresentativeCompleted( messageElement )
-{
-	var type = $(messageElement).find('message').attr('type');
-	var message = $(messageElement).find('message').text();
-    
-	 if ( type == 'success' )
-	 {
-		if( message == 0 ){
-			jQuery.ajax({
-				type: "POST"
-				,url: "addRepresentative.action"
-				,data: jQuery("#addRepresentativeForm").serialize()
-				,dataType : "xml"
-				,success: function(xml){ 
-					autoChooseTEI( xml );
-				}
-				,error: function()
-				{
-					alert(i18n_error_connect_to_server);
-				}
-			});
-		}
-		else if( message == 1 ){
-			showErrorMessage( i18n_adding_tracked_entity_instance_failed + ':' + '\n' + i18n_duplicate_identifier );
-		}
-		else if( message == 2 ){
-			showErrorMessage( i18n_adding_tracked_entity_instance_failed + ':' + '\n' + i18n_this_tracked_entity_instance_could_not_be_enrolled_please_check_validation_criteria );
-		}
-	 }
-	 else if ( type == 'error' )
-	 {
-	     showErrorMessage( i18n_adding_tracked_entity_instance_failed + ':' + '\n' + message );
-	 }
-	 else if ( type == 'input' )
-	 {
-	     showWarningMessage( message );
-	 }
-	 else if( type == 'duplicate' )
-	 {
-		 jQuery("#formContainer").hide();
-		 showTEIs("listPersonsDuplicate", messageElement);
-	 }
+	$.postJSON("validateTrackedEntityInstance.action?" + getIdentifierTypeIdParams()
+		,{}
+		, function(json){
+			if( json.message.length == 0 ){
+				jQuery.ajax({
+					type: "POST"
+					,url: "addRepresentative.action"
+					,data: jQuery("#addRepresentativeForm").serialize()
+					,dataType : "xml"
+					,success: function(xml){ 
+						autoChooseTEI( xml );
+					}
+					,error: function()
+					{
+						alert(i18n_error_connect_to_server);
+					}
+				});
+			}
+			else{
+				showErrorMessage( json.message );
+			}
+	});
 }
 
 //get and build a param String of all the identifierType id and its value
@@ -58,7 +33,7 @@ function addValidationRepresentativeCompleted( messageElement )
 function getIdentifierTypeIdParams()
 {
 	var params = "";
-	jQuery("#addRepresentativeForm :input.idfield").each(
+	jQuery("#addRepresentativeForm :input").each(
 		function()
 		{
 			if( jQuery(this).val() && !jQuery(this).is(":disabled") )
@@ -161,7 +136,7 @@ function showTEIs( divContainer, json )
 // Will be call after save new TEI successfully
 function autoChooseTEI( xmlElement )
 {
-	jQuery("#tab-2").html("<center><span class='bold'>" + i18n_add_person_successfully + "</span></center>");
+	jQuery("#tab-2").html("<center><span class='bold'>" + i18n_add_tracked_entity_instance_successfully + "</span></center>");
 	var root = jQuery(xmlElement);
 	jQuery("#entityInstanceForm [id=representativeId]").val( root.find("id").text() );
 	jQuery("#entityInstanceForm [id=relationshipTypeId]").val( root.find("relationshipTypeId").text() );

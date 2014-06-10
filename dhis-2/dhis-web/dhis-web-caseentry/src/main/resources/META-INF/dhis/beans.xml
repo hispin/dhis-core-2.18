@@ -456,9 +456,11 @@
 	<bean id="org.hisp.dhis.caseentry.action.trackedentity.AddRepresentativeAction"
 		class="org.hisp.dhis.caseentry.action.trackedentity.AddRepresentativeAction"
 		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetTrackedEntityInstanceHistoryAction"

@@ -277,6 +277,13 @@ public class ShowAddTrackedEntityInstanceFormAction
         return mandatoryMap;
     }
 
+    private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
+
+    public List<TrackedEntityAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -334,8 +341,6 @@ public class ShowAddTrackedEntityInstanceFormAction
             }
         }
 
-        List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
-
         if ( customRegistrationForm == null )
         {
             attributeGroups = new ArrayList<TrackedEntityAttributeGroup>(
@@ -347,7 +352,7 @@ public class ShowAddTrackedEntityInstanceFormAction
                 attributes = new ArrayList<TrackedEntityAttribute>(
                     attributeService.getTrackedEntityAttributesDisplayInList() );
                 Collections.sort( attributes, new TrackedEntityAttributeSortOrderInListNoProgramComparator() );
-                
+
                 for ( TrackedEntityAttribute attribute : attributes )
                 {
                     mandatoryMap.put( attribute.getId(), false );
