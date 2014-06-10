@@ -32,7 +32,7 @@
 		<li><a href="#tab-2">$i18n.getString("add_new_tracked_entity_instance")</a></li>
 	</ul>
 
-	<!-- Search Person TAB -->
+	<!-- Search TEI TAB -->
 	<div id="tab-1">
 		<form id="searchForm" name="searchForm" method="post" >
 			<table>
@@ -69,13 +69,13 @@
 				</tr>
 			</table>
 
-			<div id="listPersons">
+			<div id="listTEI">
 			</div>
 
 		</form>
 	</div>
 
-	<!-- Add Person form TAB -->
+	<!-- Add TEI form TAB -->
 	<div id="tab-2">
 		<form id="addRepresentativeForm" name="addRepresentativeForm" action="addRepresentative.action" method="post">
 			<table id="formContainer">
@@ -101,9 +101,6 @@
 				</tr>
 			</table>
 		</form>
-
-		<div id="listPersonsDuplicate">
-		</div>
 	</div>
 </div>
 

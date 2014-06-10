@@ -26,7 +26,7 @@ function showAddRelationship( entityInstanceId )
 
 
 //remove value of all the disabled identifier fields
-//an identifier field is disabled when its value is inherited from another person ( underAge is true ) 
+//an identifier field is disabled when its value is inherited from another TEI ( underAge is true ) 
 //we don't save inherited identifiers. Only save the representative id.
 function removeRelationshipDisabledIdentifier()
 {

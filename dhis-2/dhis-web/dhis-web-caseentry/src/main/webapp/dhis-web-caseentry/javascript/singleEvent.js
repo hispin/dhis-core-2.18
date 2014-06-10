@@ -210,7 +210,7 @@ function backEventList()
 }
 
 // --------------------------------------------------------
-// Check an available person allowed to enroll a program
+// Check an available TEI allowed to enroll a program
 // --------------------------------------------------------
 
 function validateAllowEnrollment( entityInstanceId, programId  )
