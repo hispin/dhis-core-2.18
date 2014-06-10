@@ -4635,7 +4635,7 @@ Ext.onReady( function() {
             }
 
 			// pe
-
+            
             if (periodMode.getValue() === 'dates') {
                 view.startDate = startDate.getSubmitValue();
                 view.endDate = endDate.getSubmitValue();
@@ -5431,11 +5431,9 @@ Ext.onReady( function() {
                     xColAxis,
                     xRowAxis,
                     chart,
-                    //getHtml,
                     getXLayout = service.layout.getExtendedLayout,
                     getSXLayout = service.layout.getSyncronizedXLayout,
                     getXResponse = service.response.aggregate.getExtendedResponse;
-                    //getXAxis = service.layout.getExtendedAxis;
 
                 response = response || ns.app.response;
 
@@ -5774,16 +5772,17 @@ Ext.onReady( function() {
 		});
 
 		update = function() {
-			var config = ns.core.web.report.getLayoutConfig();
+			var config = ns.core.web.report.getLayoutConfig(),
+                layout = ns.core.api.layout.Layout(config);
 
-			if (!config) {
+			if (!layout) {
 				return;
 			}
 
 			// state
             ns.app.viewport.getLayoutWindow().saveState();
 
-			ns.core.web.report.getData(config, false);
+			ns.core.web.report.getData(layout, false);
 		};
 
 		westRegion = Ext.create('Ext.panel.Panel', {
