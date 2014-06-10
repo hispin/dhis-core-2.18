@@ -95,7 +95,7 @@ public class AddRepresentativeAction
         // ---------------------------------------------------------------------
 
         HttpServletRequest request = ServletActionContext.getRequest();
-        System.out.println( "\n\n === \n attributeService : " + attributeService );
+
         Collection<TrackedEntityAttribute> attributes = attributeService.getAllTrackedEntityAttributes();
 
         Set<TrackedEntityAttributeValue> entityInstanceAttributeValues = new HashSet<TrackedEntityAttributeValue>();

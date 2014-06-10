@@ -220,20 +220,6 @@ function getSearchParams(page) {
 	return params;
 }
 
-// ----------------------------------------------------------------------------
-// Show death field in person re form
-// ----------------------------------------------------------------------------
-
-function isDeathOnChange() {
-	var isDeath = byId('isDead').checked;
-	setFieldValue('deathDate', '');
-	if (isDeath) {
-		showById('deathDateTR');
-	} else {
-		hideById('deathDateTR');
-	}
-}
-
 // ----------------------------------------------------------------
 // Get Params form Div
 // ----------------------------------------------------------------
@@ -1567,7 +1553,7 @@ function getEventMessages(programInstanceId) {
 function dashboardHistoryToggle(evt) {
 	$('#dashboardHistoryDiv').toggle();
 }
-function viewPersonProgram(displayedDiv, hidedDiv) {
+function viewTEIProgram(displayedDiv, hidedDiv) {
 	showById(displayedDiv);
 	hideById(hidedDiv);
 }
@@ -1904,7 +1890,7 @@ function saveComment(programInstanceId) {
 }
 
 // --------------------------------------------------------------------------
-// Advanced-search person
+// Advanced-search TEI
 // --------------------------------------------------------------------------
 
 function advancedSearchOnclick() {

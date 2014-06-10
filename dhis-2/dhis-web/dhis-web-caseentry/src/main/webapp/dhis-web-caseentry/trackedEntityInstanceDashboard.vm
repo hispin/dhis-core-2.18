@@ -64,7 +64,7 @@
 	<div class="link-area" id="activeDiv" name="activeDiv">
 		<p class='header'>
 			$i18n.getString("active_programs")
-			&#8226; <a href='javascript:viewPersonProgram( "completedDiv","activeDiv" )'>$i18n.getString("completed_programs")</a>
+			&#8226; <a href='javascript:viewTEIProgram( "completedDiv","activeDiv" )'>$i18n.getString("completed_programs")</a>
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "showProgramEnrollmentForm" ) )
 			&#8226; <a href='javascript:showProgramEnrollmentForm( "$entityInstance.id" )'>$i18n.getString("enroll")</a>
@@ -139,7 +139,7 @@
 	
 	<div class="link-area" id="completedDiv" name="completedDiv" style="display:none;">
 		<p class="header">
-			<a href='javascript:viewPersonProgram( "activeDiv","completedDiv" )'>$i18n.getString("active_programs")</a>
+			<a href='javascript:viewTEIProgram( "activeDiv","completedDiv" )'>$i18n.getString("active_programs")</a>
 			&#8226; $i18n.getString("completed_programs")
 			&#8226; <a href='javascript:showProgramEnrollmentForm( "$entityInstance.id" )'>$i18n.getString("enroll")</a>
 			<br>&nbsp;

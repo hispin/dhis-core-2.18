@@ -63,7 +63,7 @@ function searchTEI()
 		data : params,
 		dataType : "json",
 		success : function(json) {
-			showTEIs( "searchForm div[id=listPersons]", json );
+			showTEIs( "searchForm div[id=listTEI]", json );
 		}
 	});
 }
