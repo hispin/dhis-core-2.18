@@ -74,6 +74,7 @@
 		<tr>
 			<td>$i18n.getString( 'program_stage' )</td>
 			<td>
+				#set($noOption=0)
 				<select id='repeatableProgramStage_$!programInstance.id' name='repeatableProgramStageId_$!programInstance.id' onchange="setSuggestedDueDate('$programInstance.id')">
 					#set($allowGenerateNextVisit='false')
 					#set($prevStageId='')
@@ -106,6 +107,7 @@
 								openAfterEnrollment="$!programStage.openAfterEnrollment"
 								reportDateToUse="$!reportDateToUse"
 							>$!programStage.displayName</option>
+							#set($noOption=$noOption + 1)
 						#else
 							#set($hasEvent="false")
 							#foreach( $programStageInstance in $programInstance.programStageInstances )
@@ -113,7 +115,9 @@
 									#set($hasEvent="true")
 								#end
 							#end
-							
+								#if($hasEvent!="true") 
+									#set($noOption=$noOption + 1)
+								#end
 								<option 
 								#if($hasEvent=="true") style="display:none;" #else selected #end 
 								value="$programStage.uid" localid='$programStage.id' 
@@ -174,13 +178,12 @@
 	var i18n_create_new_event = '$encoder.jsEscape( $i18n.getString( "create_new_event" ) , "'" )';
 	var i18n_create_event_success = '$encoder.jsEscape( $i18n.getString( "create_event_success" ) , "'" )';
 	jQuery(document).ready(	function(){
-		var options = jQuery('#repeatableProgramStage_' + $programInstance.id + " option ").length;
-		if( options==0 ){
-			jQuery("[name=newEncounterBtn]").addClass("hidden");
-		}
-		else{
-			jQuery("[name=newEncounterBtn]").addClass("show-new-event");
-		}
+		#if( $noOption == 0 )
+			disable('newEncounterBtn_' + $programInstance.id);
+		#else
+			enable('newEncounterBtn_' + $programInstance.id);
+		#end
+		
 		resize();
 	});
 	
