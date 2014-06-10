@@ -1619,7 +1619,7 @@ Ext.onReady( function() {
 								// number sorting
                                 objects.push({
                                     id: fullId,
-                                    sortingId: parsedId || Number.MAX_VALUE
+                                    sortingId: Ext.isNumber(parsedId) ? parsedId : Number.MAX_VALUE
                                 });
                             }
 
@@ -1652,7 +1652,7 @@ Ext.onReady( function() {
 
 								objects.push({
 									id: fullId,
-									sortingId: name
+									sortingId: header.name === 'pe' ? fullId : name
 								});
                             }
 
