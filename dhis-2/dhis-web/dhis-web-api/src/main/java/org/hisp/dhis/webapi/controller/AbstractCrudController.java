@@ -191,6 +191,15 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return rootNode;
     }
 
+    @RequestMapping( value = "/{uid}/{property}", method = RequestMethod.GET )
+    public @ResponseBody RootNode getObjectProperty( @PathVariable( "uid" ) String uid,
+        @PathVariable( "property" ) String propertyName, @RequestParam Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        return getObjectInternal( uid, parameters, model, request, response,
+            Lists.<String>newArrayList(), Lists.newArrayList( propertyName ) );
+    }
+
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
     public @ResponseBody RootNode getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
@@ -203,6 +212,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             fields.add( ":all" );
         }
 
+        return getObjectInternal( uid, parameters, model, request, response, filters, fields );
+    }
+
+    private RootNode getObjectInternal( String uid, Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response,
+        List<String> filters, List<String> fields ) throws Exception
+    {
         WebOptions options = new WebOptions( parameters );
         List<T> entities = getEntity( uid, options );
 
