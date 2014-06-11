@@ -73,16 +73,16 @@ public class DataElementGroupController
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        DataElementGroup dataElementGroup = getEntity( uid );
+        List<DataElementGroup> dataElementGroups = getEntity( uid );
 
-        if ( dataElementGroup == null )
+        if ( dataElementGroups.isEmpty() )
         {
             ContextUtils.notFoundResponse( response, "DataElementGroup not found for uid: " + uid );
             return null;
         }
 
         WebMetaData metaData = new WebMetaData();
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementGroup.getMembers() );
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementGroups.get( 0 ).getMembers() );
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
 
         if ( options.hasPaging() )
@@ -111,9 +111,9 @@ public class DataElementGroupController
         HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        DataElementGroup dataElementGroup = getEntity( uid );
+        List<DataElementGroup> dataElementGroups = getEntity( uid );
 
-        if ( dataElementGroup == null )
+        if ( dataElementGroups.isEmpty() )
         {
             ContextUtils.notFoundResponse( response, "DataElementGroup not found for uid: " + uid );
             return null;
@@ -121,7 +121,7 @@ public class DataElementGroupController
 
         WebMetaData metaData = new WebMetaData();
         List<DataElement> dataElements = new ArrayList<DataElement>();
-        List<DataElement> members = new ArrayList<DataElement>( dataElementGroup.getMembers() );
+        List<DataElement> members = new ArrayList<DataElement>( dataElementGroups.get( 0 ).getMembers() );
         Collections.sort( members, IdentifiableObjectNameComparator.INSTANCE );
 
         for ( DataElement dataElement : members )
@@ -157,16 +157,16 @@ public class DataElementGroupController
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        DataElementGroup dataElementGroup = getEntity( uid );
+        List<DataElementGroup> dataElementGroups = getEntity( uid );
 
-        if ( dataElementGroup == null )
+        if ( dataElementGroups.isEmpty() )
         {
             ContextUtils.notFoundResponse( response, "DataElementGroup not found for uid: " + uid );
             return null;
         }
 
         WebMetaData metaData = new WebMetaData();
-        List<DataElementOperand> dataElementOperands = Lists.newArrayList( dataElementCategoryService.getOperands( dataElementGroup.getMembers() ) );
+        List<DataElementOperand> dataElementOperands = Lists.newArrayList( dataElementCategoryService.getOperands( dataElementGroups.get( 0 ).getMembers() ) );
 
         Collections.sort( dataElementOperands, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -200,9 +200,9 @@ public class DataElementGroupController
         HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        DataElementGroup dataElementGroup = getEntity( uid );
+        List<DataElementGroup> dataElementGroups = getEntity( uid );
 
-        if ( dataElementGroup == null )
+        if ( dataElementGroups.isEmpty() )
         {
             ContextUtils.notFoundResponse( response, "DataElementGroup not found for uid: " + uid );
             return null;
@@ -211,7 +211,7 @@ public class DataElementGroupController
         WebMetaData metaData = new WebMetaData();
         List<DataElementOperand> dataElementOperands = Lists.newArrayList();
 
-        for ( DataElementOperand dataElementOperand : dataElementCategoryService.getOperands( dataElementGroup.getMembers() ) )
+        for ( DataElementOperand dataElementOperand : dataElementCategoryService.getOperands( dataElementGroups.get( 0 ).getMembers() ) )
         {
             if ( dataElementOperand.getDisplayName().toLowerCase().contains( q.toLowerCase() ) )
             {

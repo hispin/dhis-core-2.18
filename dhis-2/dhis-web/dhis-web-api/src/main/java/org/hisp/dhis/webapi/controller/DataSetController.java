@@ -148,26 +148,26 @@ public class DataSetController
     public void getFormJson( @PathVariable( "uid" ) String uid, @RequestParam( value = "ou", required = false ) String orgUnit,
         @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response ) throws IOException
     {
-        DataSet dataSet = getEntity( uid );
+        List<DataSet> dataSets = getEntity( uid );
 
-        if ( dataSet == null )
+        if ( dataSets.isEmpty() )
         {
             ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
             return;
         }
 
-        i18nService.internationalise( dataSet );
-        i18nService.internationalise( dataSet.getDataElements() );
-        i18nService.internationalise( dataSet.getSections() );
+        i18nService.internationalise( dataSets.get( 0 ) );
+        i18nService.internationalise( dataSets.get( 0 ).getDataElements() );
+        i18nService.internationalise( dataSets.get( 0 ).getSections() );
 
-        Form form = FormUtils.fromDataSet( dataSet );
+        Form form = FormUtils.fromDataSet( dataSets.get( 0 ) );
 
         if ( orgUnit != null && !orgUnit.isEmpty() && period != null && !period.isEmpty() )
         {
             OrganisationUnit ou = manager.get( OrganisationUnit.class, orgUnit );
             Period p = PeriodType.getPeriodFromIsoString( period );
 
-            Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSet.getDataElements() );
+            Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSets.get( 0 ).getDataElements() );
 
             FormUtils.fillWithDataValues( form, dataValues );
         }
@@ -184,35 +184,35 @@ public class DataSetController
         @RequestParam( value = "comment", defaultValue = "true", required = false ) boolean comment,
         HttpServletResponse response ) throws IOException
     {
-        DataSet dataSet = getEntity( uid );
+        List<DataSet> dataSets = getEntity( uid );
 
-        if ( dataSet == null )
+        if ( dataSets.isEmpty() )
         {
             ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
             return null;
         }
 
         Period pe = periodService.getPeriod( period );
-        return dataValueSetService.getDataValueSetTemplate( dataSet, pe, orgUnits, comment, orgUnitIdScheme, dataElementIdScheme );
+        return dataValueSetService.getDataValueSetTemplate( dataSets.get( 0 ), pe, orgUnits, comment, orgUnitIdScheme, dataElementIdScheme );
     }
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = { "application/xml", "text/xml" } )
     public void getFormXml( @PathVariable( "uid" ) String uid, @RequestParam( value = "ou", required = false ) String orgUnit,
         @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response ) throws IOException
     {
-        DataSet dataSet = getEntity( uid );
+        List<DataSet> dataSets = getEntity( uid );
 
-        if ( dataSet == null )
+        if ( dataSets.isEmpty() )
         {
             ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
             return;
         }
 
-        i18nService.internationalise( dataSet );
-        i18nService.internationalise( dataSet.getDataElements() );
-        i18nService.internationalise( dataSet.getSections() );
+        i18nService.internationalise( dataSets.get( 0 ) );
+        i18nService.internationalise( dataSets.get( 0 ).getDataElements() );
+        i18nService.internationalise( dataSets.get( 0 ).getSections() );
 
-        Form form = FormUtils.fromDataSet( dataSet );
+        Form form = FormUtils.fromDataSet( dataSets.get( 0 ) );
 
         if ( orgUnit != null && !orgUnit.isEmpty() && period != null && !period.isEmpty() )
         {
@@ -221,7 +221,7 @@ public class DataSetController
 
             Period p = PeriodType.getPeriodFromIsoString( period );
 
-            Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSet.getDataElements() );
+            Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSets.get( 0 ).getDataElements() );
 
             FormUtils.fillWithDataValues( form, dataValues );
         }

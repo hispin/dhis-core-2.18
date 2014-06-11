@@ -28,6 +28,7 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.acl.Access;
 import org.hisp.dhis.acl.AclService;
@@ -73,6 +74,7 @@ import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -189,7 +191,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return rootNode;
     }
 
-
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
     public @ResponseBody RootNode getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
@@ -202,32 +203,33 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         WebOptions options = new WebOptions( parameters );
-        T entity = getEntity( uid );
+        List<T> entities = getEntity( uid, options );
 
-        if ( entity == null )
+        if ( entities.isEmpty() )
         {
             throw new NotFoundException( uid );
         }
 
         if ( options.hasLinks() )
         {
-            linkService.generateLinks( entity );
+            linkService.generateLinks( entities );
         }
 
         if ( aclService.isSupported( getEntityClass() ) )
         {
-            addAccessProperties( entity );
+            addAccessProperties( entities );
         }
 
-        postProcessEntity( entity );
-        postProcessEntity( entity, options, parameters );
+        for ( T entity : entities )
+        {
+            postProcessEntity( entity );
+            postProcessEntity( entity, options, parameters );
+        }
 
-        List<IdentifiableObject> objects = new ArrayList<>();
-        objects.add( entity );
+        CollectionNode collectionNode = filterService.fieldFilter( getEntityClass(), entities, fields );
 
-        CollectionNode collectionNode = filterService.fieldFilter( getEntityClass(), objects, fields );
-
-        if ( options.booleanTrue( "useWrapper" ) )
+        if ( options.booleanTrue( "useWrapper" ) || entities.size() > 1
+            || options.getOptions().containsKey( "includeChildren" ) || options.getOptions().containsKey( "includeDescendants" ) )
         {
             RootNode rootNode = new RootNode( "metadata" );
             rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
@@ -284,15 +286,15 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
         input ) throws Exception
     {
-        T object = getEntity( uid );
+        List<T> objects = getEntity( uid );
 
-        if ( object == null )
+        if ( objects.isEmpty() )
         {
             ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
             return;
         }
 
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), object ) )
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), objects.get( 0 ) ) )
         {
             throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
         }
@@ -309,15 +311,15 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
         input ) throws Exception
     {
-        T object = getEntity( uid );
+        List<T> objects = getEntity( uid );
 
-        if ( object == null )
+        if ( objects.isEmpty() )
         {
             ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
             return;
         }
 
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), object ) )
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), objects.get( 0 ) ) )
         {
             throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
         }
@@ -338,14 +340,20 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws
         Exception
     {
-        T object = getEntity( uid );
+        List<T> objects = getEntity( uid );
 
-        if ( !aclService.canDelete( currentUserService.getCurrentUser(), object ) )
+        if ( objects.isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
+            return;
+        }
+
+        if ( !aclService.canDelete( currentUserService.getCurrentUser(), objects.get( 0 ) ) )
         {
             throw new DeleteAccessDeniedException( "You don't have the proper permissions to delete this object." );
         }
 
-        manager.delete( object );
+        manager.delete( objects.get( 0 ) );
     }
 
     //--------------------------------------------------------------------------
@@ -417,9 +425,22 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return entityList;
     }
 
-    protected T getEntity( String uid )
+    protected List<T> getEntity( String uid )
     {
-        return manager.getNoAcl( getEntityClass(), uid ); //TODO consider ACL
+        return getEntity( uid, new WebOptions( new HashMap<String, String>() ) );
+    }
+
+    protected List<T> getEntity( String uid, WebOptions options )
+    {
+        ArrayList<T> list = new ArrayList<>();
+        Optional<T> identifiableObject = Optional.of( manager.getNoAcl( getEntityClass(), uid ) );
+
+        if ( identifiableObject.isPresent() )
+        {
+            list.add( identifiableObject.get() );
+        }
+
+        return list; //TODO consider ACL
     }
 
     protected Schema getSchema()
@@ -427,17 +448,20 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return schemaService.getDynamicSchema( getEntityClass() );
     }
 
-    protected void addAccessProperties( T object )
+    protected void addAccessProperties( List<T> objects )
     {
-        Access access = new Access();
-        access.setManage( aclService.canManage( currentUserService.getCurrentUser(), object ) );
-        access.setExternalize( aclService.canExternalize( currentUserService.getCurrentUser(), object.getClass() ) );
-        access.setWrite( aclService.canWrite( currentUserService.getCurrentUser(), object ) );
-        access.setRead( aclService.canRead( currentUserService.getCurrentUser(), object ) );
-        access.setUpdate( aclService.canUpdate( currentUserService.getCurrentUser(), object ) );
-        access.setDelete( aclService.canDelete( currentUserService.getCurrentUser(), object ) );
+        for ( T object : objects )
+        {
+            Access access = new Access();
+            access.setManage( aclService.canManage( currentUserService.getCurrentUser(), object ) );
+            access.setExternalize( aclService.canExternalize( currentUserService.getCurrentUser(), object.getClass() ) );
+            access.setWrite( aclService.canWrite( currentUserService.getCurrentUser(), object ) );
+            access.setRead( aclService.canRead( currentUserService.getCurrentUser(), object ) );
+            access.setUpdate( aclService.canUpdate( currentUserService.getCurrentUser(), object ) );
+            access.setDelete( aclService.canDelete( currentUserService.getCurrentUser(), object ) );
 
-        ((BaseIdentifiableObject) object).setAccess( access );
+            ((BaseIdentifiableObject) object).setAccess( access );
+        }
     }
 
     protected void handleLinksAndAccess( WebOptions options, List<T> entityList )
@@ -449,10 +473,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( entityList != null && aclService.isSupported( getEntityClass() ) )
         {
-            for ( T object : entityList )
-            {
-                addAccessProperties( object );
-            }
+            addAccessProperties( entityList );
         }
     }
 
