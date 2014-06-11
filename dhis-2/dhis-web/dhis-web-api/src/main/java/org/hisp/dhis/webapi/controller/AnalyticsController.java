@@ -28,23 +28,15 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
-import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensionsFromParam;
-
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.system.grid.GridUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +44,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
+import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensionsFromParam;
 
 /**
  * @author Lars Helge Overland
@@ -63,13 +62,13 @@ public class AnalyticsController
 
     @Autowired
     private AnalyticsService analyticsService;
-    
+
     @Autowired
     private ContextUtils contextUtils;
-    
+
     @Autowired
     private I18nManager i18nManager;
-    
+
     // -------------------------------------------------------------------------
     // Resources
     // -------------------------------------------------------------------------
@@ -77,22 +76,22 @@ public class AnalyticsController
     @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
     public String getJson( // JSON, JSONP
         @RequestParam Set<String> dimension,
-        @RequestParam(required = false) Set<String> filter,
-        @RequestParam(required = false) AggregationType aggregationType,
-        @RequestParam(required = false) String measureCriteria,
-        @RequestParam(required = false) boolean skipMeta,
-        @RequestParam(required = false) boolean skipRounding,
-        @RequestParam(required = false) boolean hierarchyMeta,
-        @RequestParam(required = false) boolean ignoreLimit,
-        @RequestParam(required = false) boolean tableLayout,
-        @RequestParam(required = false) boolean hideEmptyRows,
-        @RequestParam(required = false) boolean showHierarchy,
-        @RequestParam(required = false) String columns,
-        @RequestParam(required = false) String rows,
+        @RequestParam( required = false ) Set<String> filter,
+        @RequestParam( required = false ) AggregationType aggregationType,
+        @RequestParam( required = false ) String measureCriteria,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) boolean skipRounding,
+        @RequestParam( required = false ) boolean hierarchyMeta,
+        @RequestParam( required = false ) boolean ignoreLimit,
+        @RequestParam( required = false ) boolean tableLayout,
+        @RequestParam( required = false ) boolean hideEmptyRows,
+        @RequestParam( required = false ) boolean showHierarchy,
+        @RequestParam( required = false ) String columns,
+        @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, 
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
             skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
@@ -103,24 +102,24 @@ public class AnalyticsController
     }
 
     @RequestMapping( value = RESOURCE_PATH + ".xml", method = RequestMethod.GET )
-    public void getXml( 
+    public void getXml(
         @RequestParam Set<String> dimension,
-        @RequestParam(required = false) Set<String> filter,
-        @RequestParam(required = false) AggregationType aggregationType,
-        @RequestParam(required = false) String measureCriteria,
-        @RequestParam(required = false) boolean skipMeta,
-        @RequestParam(required = false) boolean skipRounding,
-        @RequestParam(required = false) boolean hierarchyMeta,
-        @RequestParam(required = false) boolean ignoreLimit,
-        @RequestParam(required = false) boolean tableLayout,
-        @RequestParam(required = false) boolean hideEmptyRows,
-        @RequestParam(required = false) boolean showHierarchy,
-        @RequestParam(required = false) String columns,
-        @RequestParam(required = false) String rows,
+        @RequestParam( required = false ) Set<String> filter,
+        @RequestParam( required = false ) AggregationType aggregationType,
+        @RequestParam( required = false ) String measureCriteria,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) boolean skipRounding,
+        @RequestParam( required = false ) boolean hierarchyMeta,
+        @RequestParam( required = false ) boolean ignoreLimit,
+        @RequestParam( required = false ) boolean tableLayout,
+        @RequestParam( required = false ) boolean hideEmptyRows,
+        @RequestParam( required = false ) boolean showHierarchy,
+        @RequestParam( required = false ) String columns,
+        @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, 
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
             skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING );
@@ -129,24 +128,24 @@ public class AnalyticsController
     }
 
     @RequestMapping( value = RESOURCE_PATH + ".html", method = RequestMethod.GET )
-    public void getHtml( 
+    public void getHtml(
         @RequestParam Set<String> dimension,
-        @RequestParam(required = false) Set<String> filter,
-        @RequestParam(required = false) AggregationType aggregationType,
-        @RequestParam(required = false) String measureCriteria,
-        @RequestParam(required = false) boolean skipMeta,
-        @RequestParam(required = false) boolean skipRounding,
-        @RequestParam(required = false) boolean hierarchyMeta,
-        @RequestParam(required = false) boolean ignoreLimit,
-        @RequestParam(required = false) boolean tableLayout,
-        @RequestParam(required = false) boolean hideEmptyRows,
-        @RequestParam(required = false) boolean showHierarchy,
-        @RequestParam(required = false) String columns,
-        @RequestParam(required = false) String rows,
+        @RequestParam( required = false ) Set<String> filter,
+        @RequestParam( required = false ) AggregationType aggregationType,
+        @RequestParam( required = false ) String measureCriteria,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) boolean skipRounding,
+        @RequestParam( required = false ) boolean hierarchyMeta,
+        @RequestParam( required = false ) boolean ignoreLimit,
+        @RequestParam( required = false ) boolean tableLayout,
+        @RequestParam( required = false ) boolean hideEmptyRows,
+        @RequestParam( required = false ) boolean showHierarchy,
+        @RequestParam( required = false ) String columns,
+        @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, 
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
             skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
@@ -155,50 +154,50 @@ public class AnalyticsController
     }
 
     @RequestMapping( value = RESOURCE_PATH + ".csv", method = RequestMethod.GET )
-    public void getCsv( 
+    public void getCsv(
         @RequestParam Set<String> dimension,
-        @RequestParam(required = false) Set<String> filter,
-        @RequestParam(required = false) AggregationType aggregationType,
-        @RequestParam(required = false) String measureCriteria,
-        @RequestParam(required = false) boolean skipMeta,
-        @RequestParam(required = false) boolean skipRounding,
-        @RequestParam(required = false) boolean hierarchyMeta,
-        @RequestParam(required = false) boolean ignoreLimit,
-        @RequestParam(required = false) boolean tableLayout,
-        @RequestParam(required = false) boolean hideEmptyRows,
-        @RequestParam(required = false) boolean showHierarchy,
-        @RequestParam(required = false) String columns,
-        @RequestParam(required = false) String rows,
+        @RequestParam( required = false ) Set<String> filter,
+        @RequestParam( required = false ) AggregationType aggregationType,
+        @RequestParam( required = false ) String measureCriteria,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) boolean skipRounding,
+        @RequestParam( required = false ) boolean hierarchyMeta,
+        @RequestParam( required = false ) boolean ignoreLimit,
+        @RequestParam( required = false ) boolean tableLayout,
+        @RequestParam( required = false ) boolean hideEmptyRows,
+        @RequestParam( required = false ) boolean showHierarchy,
+        @RequestParam( required = false ) String columns,
+        @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, 
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
             skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "data.csv", true );
         Grid grid = analyticsService.getAggregatedDataValues( params, tableLayout, getDimensionsFromParam( columns ), getDimensionsFromParam( rows ) );
         GridUtils.toCsv( substituteMetaData( grid ), response.getOutputStream() );
     }
-    
+
     @RequestMapping( value = RESOURCE_PATH + ".xls", method = RequestMethod.GET )
-    public void getXls( 
+    public void getXls(
         @RequestParam Set<String> dimension,
-        @RequestParam(required = false) Set<String> filter,
-        @RequestParam(required = false) AggregationType aggregationType,
-        @RequestParam(required = false) String measureCriteria,
-        @RequestParam(required = false) boolean skipMeta,
-        @RequestParam(required = false) boolean skipRounding,
-        @RequestParam(required = false) boolean hierarchyMeta,
-        @RequestParam(required = false) boolean ignoreLimit,
-        @RequestParam(required = false) boolean tableLayout,
-        @RequestParam(required = false) boolean hideEmptyRows,
-        @RequestParam(required = false) boolean showHierarchy,
-        @RequestParam(required = false) String columns,
-        @RequestParam(required = false) String rows,
+        @RequestParam( required = false ) Set<String> filter,
+        @RequestParam( required = false ) AggregationType aggregationType,
+        @RequestParam( required = false ) String measureCriteria,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) boolean skipRounding,
+        @RequestParam( required = false ) boolean hierarchyMeta,
+        @RequestParam( required = false ) boolean ignoreLimit,
+        @RequestParam( required = false ) boolean tableLayout,
+        @RequestParam( required = false ) boolean hideEmptyRows,
+        @RequestParam( required = false ) boolean showHierarchy,
+        @RequestParam( required = false ) String columns,
+        @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, 
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
             skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "data.xls", true );
@@ -207,43 +206,43 @@ public class AnalyticsController
     }
 
     @RequestMapping( value = RESOURCE_PATH + ".jrxml", method = RequestMethod.GET )
-    public void getJrxml( 
+    public void getJrxml(
         @RequestParam Set<String> dimension,
-        @RequestParam(required = false) Set<String> filter,
-        @RequestParam(required = false) AggregationType aggregationType,
-        @RequestParam(required = false) String measureCriteria,
-        @RequestParam(required = false) boolean skipMeta,
-        @RequestParam(required = false) boolean skipRounding,
-        @RequestParam(required = false) boolean hierarchyMeta,
-        @RequestParam(required = false) boolean ignoreLimit,
-        @RequestParam(required = false) boolean tableLayout,
-        @RequestParam(required = false) boolean hideEmptyRows,
-        @RequestParam(required = false) boolean showHierarchy,
-        @RequestParam(required = false) String columns,
-        @RequestParam(required = false) String rows,
+        @RequestParam( required = false ) Set<String> filter,
+        @RequestParam( required = false ) AggregationType aggregationType,
+        @RequestParam( required = false ) String measureCriteria,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) boolean skipRounding,
+        @RequestParam( required = false ) boolean hierarchyMeta,
+        @RequestParam( required = false ) boolean ignoreLimit,
+        @RequestParam( required = false ) boolean tableLayout,
+        @RequestParam( required = false ) boolean hideEmptyRows,
+        @RequestParam( required = false ) boolean showHierarchy,
+        @RequestParam( required = false ) String columns,
+        @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, null, null, 
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, null, null,
             true, false, false, false, false, false, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, "data.jrxml", false );
         Grid grid = analyticsService.getAggregatedDataValues( params );
-        
+
         GridUtils.toJrxml( substituteMetaData( grid ), null, response.getWriter() );
     }
 
     // -------------------------------------------------------------------------
     // Exception handling
     // -------------------------------------------------------------------------
-  
-    @ExceptionHandler(IllegalQueryException.class)
+
+    @ExceptionHandler( IllegalQueryException.class )
     public void handleError( IllegalQueryException ex, HttpServletResponse response )
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler( IllegalArgumentException.class )
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );
@@ -252,15 +251,15 @@ public class AnalyticsController
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-  
-    @SuppressWarnings("unchecked")
+
+    @SuppressWarnings( "unchecked" )
     private Grid substituteMetaData( Grid grid )
     {
         if ( grid.getMetaData() != null && grid.getMetaData().containsKey( NAMES_META_KEY ) )
         {
             grid.substituteMetaData( (Map<Object, Object>) grid.getMetaData().get( NAMES_META_KEY ) );
         }
-        
+
         return grid;
     }
 }
