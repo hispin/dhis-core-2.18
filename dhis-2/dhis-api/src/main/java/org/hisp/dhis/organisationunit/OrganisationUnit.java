@@ -738,7 +738,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( UuidView.class )
-    @JacksonXmlProperty( isAttribute = true, namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( isAttribute = true )
     public String getUuid()
     {
         return uuid;
