@@ -1,4 +1,4 @@
-package org.hisp.dhis.webapi.controller;
+package org.hisp.dhis.webapi.webdomain;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,52 +28,58 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.LinkableObject;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.dxf2.metadata.Options;
+
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class WebMetaData
-    extends MetaData
+public class WebOptions
+    extends Options
 {
-    private Pager pager;
-
-    private LinkableObject linkableObject;
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Pager getPager()
+    public WebOptions( Map<String, String> options )
     {
-        return pager;
+        super( options );
     }
 
-    public void setPager( Pager pager )
+    //--------------------------------------------------------------------------
+    // Getters for standard web options
+    //--------------------------------------------------------------------------
+
+    public boolean hasLinks( boolean defaultValue )
     {
-        this.pager = pager;
+        return stringAsBoolean( options.get( "links" ), defaultValue );
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true, namespace = DxfNamespaces.DXF_2_0 )
-    public String getLink()
+    public boolean hasLinks()
     {
-        if ( linkableObject == null )
-        {
-            return null;
-        }
-
-        return linkableObject.getHref();
+        return stringAsBoolean( options.get( "links" ), true );
     }
 
-    public void setLink( String link )
+    public boolean hasPaging()
     {
-        if ( linkableObject != null )
-        {
-            linkableObject.setHref( link );
-        }
+        return stringAsBoolean( options.get( "paging" ), true );
+    }
+
+    public int getPage()
+    {
+        return stringAsInt( options.get( "page" ), 1 );
+    }
+
+    public String getViewClass()
+    {
+        return stringAsString( options.get( "viewClass" ), null );
+    }
+    
+    public String getViewClass( String defaultValue )
+    {
+        return stringAsString( options.get( "viewClass" ), defaultValue );
+    }
+
+    public int getPageSize()
+    {
+        return stringAsInt( options.get( "pageSize" ), Pager.DEFAULT_PAGE_SIZE );
     }
 }

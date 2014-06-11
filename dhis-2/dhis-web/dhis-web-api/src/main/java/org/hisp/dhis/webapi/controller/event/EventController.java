@@ -39,7 +39,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hisp.dhis.webapi.controller.WebOptions;
+import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
