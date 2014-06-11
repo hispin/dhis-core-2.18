@@ -28,11 +28,13 @@
 								<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 								#set($attribute = '')
 								#foreach($programAttribute in $program.attributes)
-									#set($opt="")
-									#foreach($option in $programAttribute.attribute.optionSet.options)
-										#set($opt=$opt + ';' + $option )
-									#end 
-									<option valuetype='$programAttribute.attribute.valueType' value="$programAttribute.attribute.uid" opt="$opt" #if($validationCriteria.property==$$programAttribute.attribute.uid) #set($attribute = $$programAttribute.attribute) selected #end>$programAttribute.attribute.displayName</option>
+									#if( $programAttribute.attribute.valueType!='trackerAssociate')
+										set($opt="")
+										#foreach($option in $programAttribute.attribute.optionSet.options)
+											#set($opt=$opt + ';' + $option )
+										#end 
+										<option valuetype='$programAttribute.attribute.valueType' value="$programAttribute.attribute.uid" opt="$opt" #if($validationCriteria.property==$$programAttribute.attribute.uid) #set($attribute = $$programAttribute.attribute) selected #end>$programAttribute.attribute.displayName</option>
+									#end
 								#end
 							</select>
 						</td>
