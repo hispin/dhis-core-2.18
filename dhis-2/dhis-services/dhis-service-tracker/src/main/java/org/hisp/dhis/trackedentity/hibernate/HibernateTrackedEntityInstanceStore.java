@@ -477,7 +477,8 @@ public class HibernateTrackedEntityInstanceStore
             criteria.createAlias( "programInstance.program", "program" );
             criteria.add( Restrictions.eq( "program", program ) );
         }
-
+        
+        criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         Number rs = (Number) criteria.setProjection(Projections.rowCount()).uniqueResult();
 
         return ( rs != null && rs.intValue() > 0 ) ? rs.intValue() : 0;
