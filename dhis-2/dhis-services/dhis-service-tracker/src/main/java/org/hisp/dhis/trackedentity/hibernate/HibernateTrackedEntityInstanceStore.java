@@ -52,6 +52,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -457,7 +458,7 @@ public class HibernateTrackedEntityInstanceStore
             criteria.setFirstResult( min );
             criteria.setMaxResults( max );
         }
-
+        criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         criteria.addOrder( Order.asc( "lastUpdated" ));
         
         return criteria.list();
