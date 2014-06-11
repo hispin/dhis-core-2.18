@@ -19,6 +19,7 @@ function organisationUnitSelected(orgUnits, orgUnitNames) {
 	setInnerHTML('entityInstanceDashboard', '');
 	setInnerHTML('editEntityInstanceDiv', '');
 	setFieldValue("orgunitName", orgUnitNames[0]);
+	setFieldValue("orgunitForSearch", orgUnitNames[0]);
 	setFieldValue("orgunitId", orgUnits[0]);
 	clearListById('program');
 	jQuery.get("getAllPrograms.action", {}, function(json) {
