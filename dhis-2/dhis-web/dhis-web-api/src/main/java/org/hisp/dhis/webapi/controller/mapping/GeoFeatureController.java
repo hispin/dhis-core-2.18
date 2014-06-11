@@ -28,8 +28,28 @@ package org.hisp.dhis.webapi.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.util.ContextUtils.clearIfNotModified;
+import org.hisp.dhis.analytics.AggregationType;
+import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.NameableObjectUtils;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.system.filter.OrganisationUnitWithValidCoordinatesFilter;
+import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.webapi.controller.WebOptions;
+import org.hisp.dhis.webapi.webdomain.GeoFeature;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,65 +61,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.analytics.AggregationType;
-import org.hisp.dhis.analytics.AnalyticsService;
-import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.webapi.webdomain.GeoFeature;
-import org.hisp.dhis.common.DimensionalObject;
-import org.hisp.dhis.common.NameableObjectUtils;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.system.filter.OrganisationUnitWithValidCoordinatesFilter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import static org.hisp.dhis.util.ContextUtils.clearIfNotModified;
 
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping(value = GeoFeatureController.RESOURCE_PATH)
+@RequestMapping( value = GeoFeatureController.RESOURCE_PATH )
 public class GeoFeatureController
 {
     public static final String RESOURCE_PATH = "/geoFeatures";
 
-    private static final Map<String, Integer> FEATURE_TYPE_MAP = new HashMap<String, Integer>() { {
-        put( OrganisationUnit.FEATURETYPE_POINT, GeoFeature.TYPE_POINT );
-        put( OrganisationUnit.FEATURETYPE_MULTIPOLYGON, GeoFeature.TYPE_POLYGON );
-        put( OrganisationUnit.FEATURETYPE_POLYGON, GeoFeature.TYPE_POLYGON );
-        put( null, 0 );
-    } };
-    
+    private static final Map<String, Integer> FEATURE_TYPE_MAP = new HashMap<String, Integer>()
+    {
+        {
+            put( OrganisationUnit.FEATURETYPE_POINT, GeoFeature.TYPE_POINT );
+            put( OrganisationUnit.FEATURETYPE_MULTIPOLYGON, GeoFeature.TYPE_POLYGON );
+            put( OrganisationUnit.FEATURETYPE_POLYGON, GeoFeature.TYPE_POLYGON );
+            put( null, 0 );
+        }
+    };
+
     @Autowired
     private AnalyticsService analyticsService;
-    
+
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
-    
+
     @RequestMapping( method = RequestMethod.GET, produces = "application/json" )
     public void getGeoFeatures( @RequestParam String ou, @RequestParam Map<String, String> parameters,
         HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
         boolean includeGroupSets = "detailed".equals( options.getViewClass() );
-        
+
         Set<String> set = new HashSet<String>();
         set.add( ou );
-        
+
         DataQueryParams params = analyticsService.getFromUrl( set, null, AggregationType.SUM, null, false, false, false, false, false, false, null );
-        
+
         DimensionalObject dim = params.getDimension( DimensionalObject.ORGUNIT_DIM_ID );
-        
+
         List<OrganisationUnit> organisationUnits = NameableObjectUtils.asTypedList( dim.getItems() );
 
         FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
@@ -112,9 +114,9 @@ public class GeoFeatureController
         }
 
         Collection<OrganisationUnitGroupSet> groupSets = includeGroupSets ? organisationUnitGroupService.getAllOrganisationUnitGroupSets() : null;
-        
+
         List<GeoFeature> features = new ArrayList<GeoFeature>();
-        
+
         for ( OrganisationUnit unit : organisationUnits )
         {
             GeoFeature feature = new GeoFeature();
@@ -128,37 +130,37 @@ public class GeoFeatureController
             feature.setPn( unit.getParent() != null ? unit.getParent().getDisplayName() : null );
             feature.setTy( FEATURE_TYPE_MAP.get( unit.getFeatureType() ) );
             feature.setCo( unit.getCoordinates() );
-            
+
             if ( includeGroupSets )
             {
                 for ( OrganisationUnitGroupSet groupSet : groupSets )
                 {
                     OrganisationUnitGroup group = unit.getGroupInGroupSet( groupSet );
-                    
+
                     if ( group != null )
                     {
                         feature.getDimensions().put( groupSet.getUid(), group.getUid() );
                     }
                 }
             }
-            
+
             features.add( feature );
         }
-        
+
         Collections.sort( features, GeoFeatureTypeComparator.INSTANCE );
-        
+
         JacksonUtils.toJson( response.getOutputStream(), features );
     }
-    
+
     static class GeoFeatureTypeComparator
         implements Comparator<GeoFeature>
     {
         public static final GeoFeatureTypeComparator INSTANCE = new GeoFeatureTypeComparator();
-        
+
         @Override
         public int compare( GeoFeature o1, GeoFeature o2 )
         {
             return Integer.valueOf( o1.getTy() ).compareTo( Integer.valueOf( o2.getTy() ) );
-        }        
+        }
     }
 }
