@@ -194,6 +194,7 @@ public abstract class AbstractTrackedEntityInstanceService
 
         teiService.addTrackedEntityInstance( entityInstance );
 
+        updateRelationships( trackedEntityInstance, entityInstance );
         updateAttributeValues( trackedEntityInstance, entityInstance );
         teiService.updateTrackedEntityInstance( entityInstance );
 
