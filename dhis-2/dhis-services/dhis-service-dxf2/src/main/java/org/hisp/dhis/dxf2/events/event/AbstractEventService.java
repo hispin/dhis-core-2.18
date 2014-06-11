@@ -541,12 +541,15 @@ public abstract class AbstractEventService
         if ( comment != null )
         {
             Note note = new Note();
+
             note.setValue( comment.getCommentText() );
             note.setStoredBy( comment.getCreator() );
+
             if ( comment.getCreatedDate() != null )
             {
                 note.setStoredDate( comment.getCreatedDate().toString() );
             }
+
             event.getNotes().add( note );
         }
 
