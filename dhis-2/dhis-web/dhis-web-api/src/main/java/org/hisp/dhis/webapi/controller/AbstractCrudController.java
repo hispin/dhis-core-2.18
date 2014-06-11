@@ -505,15 +505,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             return (T) Class.forName( getEntityName() ).newInstance();
         }
-        catch ( InstantiationException ex )
-        {
-            throw new RuntimeException( ex );
-        }
-        catch ( IllegalAccessException ex )
-        {
-            throw new RuntimeException( ex );
-        }
-        catch ( ClassNotFoundException ex )
+        catch ( InstantiationException | IllegalAccessException | ClassNotFoundException ex )
         {
             throw new RuntimeException( ex );
         }
