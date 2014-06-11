@@ -45,12 +45,14 @@ import static org.hisp.dhis.trackedentity.TrackedEntityInstanceService.ERROR_DUP
 import static org.hisp.dhis.trackedentity.TrackedEntityInstanceService.SEPARATOR;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
@@ -431,5 +433,52 @@ public class HibernateTrackedEntityInstanceStore
         }
         
         return null;
+    }
+    
+    
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<TrackedEntityInstance> searchTrackedEntityByAttribute( OrganisationUnit orgunit, String attributeValue, Program program, Integer min , Integer max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "attributeValues", "attributeValue" );
+        criteria.add( Restrictions.ilike( "attributeValue.value", "%" + attributeValue + "%" ) );
+        criteria.add( Restrictions.eq( "organisationUnit", orgunit ) );
+
+        if( program!= null)
+        {
+            criteria.createAlias( "programInstances", "programInstance" );
+            criteria.createAlias( "programInstance.program", "program" );
+            criteria.add( Restrictions.eq( "program", program ) );
+        }
+        
+        if( min!= null && max != null )
+        {
+            criteria.setFirstResult( min );
+            criteria.setMaxResults( max );
+        }
+
+        criteria.addOrder( Order.asc( "lastUpdated" ));
+        
+        return criteria.list();
+    }
+    
+    @Override
+    public int countTrackedEntityByAttribute( OrganisationUnit orgunit, String attributeValue, Program program )
+    {
+        Criteria criteria = getCriteria();
+        criteria.createAlias( "attributeValues", "attributeValue" );
+        criteria.add( Restrictions.eq( "organisationUnit", orgunit ) );
+         
+        if( program!= null)
+        {
+            criteria.createAlias( "programInstances", "programInstance" );
+            criteria.createAlias( "programInstance.program", "program" );
+            criteria.add( Restrictions.eq( "program", program ) );
+        }
+
+        Number rs = (Number) criteria.setProjection(Projections.rowCount()).uniqueResult();
+
+        return ( rs != null && rs.intValue() > 0 ) ? rs.intValue() : 0;
     }
 }

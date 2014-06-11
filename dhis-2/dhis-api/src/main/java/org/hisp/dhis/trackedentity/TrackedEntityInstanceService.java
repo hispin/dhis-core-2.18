@@ -38,6 +38,7 @@ import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
@@ -235,14 +236,40 @@ public interface TrackedEntityInstanceService
     String validateTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program, I18nFormat format );
 
     /**
-     * Validate patient enrollment
+     * Validate tracked entity instance enrollment
      * 
      * @param entityInstance TrackedEntityInstance object
      * @param program Program which person needs to enroll. If this parameter is
-     *        null, the system check identifiers of the patient
+     *        null, the system check identifiers of the tracked entity instance
      * @param format I18nFormat
      * 
      * @return ValidationCriteria object which is violated
      */
     ValidationCriteria validateEnrollment( TrackedEntityInstance entityInstance, Program program, I18nFormat format );
+    
+    /**
+     * Search tracked entity instances by a certain attribute- value
+     * 
+     * @param orgunit OrganisationUnit
+     * @param attributeValue Attribute value
+     * @param program Program
+     * @param min First result
+     * @param max Maximum results
+     * 
+     * @return TrackedEntityInstance list
+     */
+     Collection<TrackedEntityInstance> searchTrackedEntityByAttribute( OrganisationUnit orgunit, String attributeValue, Program program, Integer min , Integer max);
+     
+     /**
+      * Get the number of tracked entity instances who has a certain attribute-value
+      * 
+      * @param orgunit OrganisationUnit
+      * @param attributeValue Attribute value
+      * @param program Program
+      * @param min First result
+      * @param max Maximum results
+      * 
+      * @return The number of TEIs
+      */
+     int countTrackedEntityByAttribute( OrganisationUnit orgunit, String attributeValue, Program program );
 }

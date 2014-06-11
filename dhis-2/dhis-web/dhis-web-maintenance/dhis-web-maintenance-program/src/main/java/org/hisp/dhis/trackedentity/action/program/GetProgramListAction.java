@@ -97,7 +97,7 @@ public class GetProgramListAction
         else
         {
             this.paging = createPaging( programService.getProgramCount() );
-
+            
             programs = new ArrayList<Program>( programService.getProgramsBetween( paging.getStartPos(),
                 paging.getPageSize() ) );
         }

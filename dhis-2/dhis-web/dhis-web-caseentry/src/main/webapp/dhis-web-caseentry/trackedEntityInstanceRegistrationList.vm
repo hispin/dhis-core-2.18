@@ -1,7 +1,7 @@
 <table>
 	<tr>
 		<td class='text-column'>
-			$i18n.getString( "the_following_tracked_entity_instances_found_in" ) $organisationUnit.name <span id='enrollmentInfor'></span> 
+			$i18n.getString( "the_following_tracked_entity_instances_found_in" ) <span id='orgunitInfor'></span> <span id='enrollmentInfor'></span> 
 			<script>
 				setInnerHTML('orgunitForSearch',"$organisationUnit.name");
 				var i18n_for = '$encoder.jsEscape( $i18n.getString( "for_infor" ), "'")';
@@ -45,10 +45,7 @@
 					<col/>
 				#end
 			#end
-		  #if($!mapTrackedEntityInstanceOrgunit 
-			&& $!mapTrackedEntityInstanceOrgunit.size()!=0)
-		  <col/>
-		  #end
+		
 		  <col width="200"/>    
 		  
 		  <thead>
@@ -64,10 +61,6 @@
 					#foreach( $attribute in $attributes)
 						<th id="attributeName">$encoder.htmlEncode($attribute.displayName)</th>
 					#end
-				#end
-				
-				#if($mapEntityInstanceOrgunit.size()!=0)
-					<th>$i18n.getString( "hierachy_orgunit" )</th>
 				#end
 				
 				<th style="text-align:center">$i18n.getString( "operations" )</th>
@@ -118,11 +111,6 @@
 							<a>$!encoder.htmlEncode($value)</a>
 						</td>
 					#end
-				#end
-				
-				#if($!mapTrackedEntityInstanceOrgunit 
-					&& $!mapTrackedEntityInstanceOrgunit.size()!=0)
-					<td>$!mapTrackedEntityInstanceOrgunit.get($entityInstance.id)</td>
 				#end
 				
 				<td>
