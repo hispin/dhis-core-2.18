@@ -196,6 +196,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         List<String> fields = Lists.newArrayList( contextService.getParameterValues( "fields" ) );
+        List<String> filters = Lists.newArrayList( contextService.getParameterValues( "filter" ) );
 
         if ( fields.isEmpty() )
         {
@@ -209,6 +210,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             throw new NotFoundException( uid );
         }
+
+        entities = filterService.objectFilter( entities, filters );
 
         if ( options.hasLinks() )
         {
