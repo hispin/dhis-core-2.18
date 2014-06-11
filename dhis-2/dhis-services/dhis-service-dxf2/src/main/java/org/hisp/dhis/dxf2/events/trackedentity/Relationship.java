@@ -36,7 +36,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement(localName = "relationship", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "relationship", namespace = DxfNamespaces.DXF_2_0 )
 public class Relationship
 {
     private String displayName;
@@ -50,7 +50,7 @@ public class Relationship
     }
 
     @JsonProperty
-    @JacksonXmlProperty(isAttribute = true)
+    @JacksonXmlProperty( isAttribute = true )
     public String getDisplayName()
     {
         return displayName;
@@ -62,7 +62,7 @@ public class Relationship
     }
 
     @JsonProperty
-    @JacksonXmlProperty(isAttribute = true)
+    @JacksonXmlProperty( isAttribute = true )
     public String getTrackedEntityInstance()
     {
         return trackedEntityInstance;
