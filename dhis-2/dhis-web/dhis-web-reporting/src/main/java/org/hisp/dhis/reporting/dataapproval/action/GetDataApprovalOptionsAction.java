@@ -59,13 +59,6 @@ public class GetDataApprovalOptionsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<CategoryOptionGroup> categoryOptionGroups;
-    
-    public List<CategoryOptionGroup> getCategoryOptionGroups()
-    {
-        return categoryOptionGroups;
-    }
-
     private List<DataSet> dataSets;
 
     public List<DataSet> getDataSets()
@@ -88,13 +81,11 @@ public class GetDataApprovalOptionsAction
     public String execute()
         throws Exception
     {
-        categoryOptionGroups = new ArrayList<CategoryOptionGroup>( categoryService.getAllCategoryOptionGroups() );
         dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         periodTypes = getAvailablePeriodTypes();
 
         FilterUtils.filter( dataSets, new DataSetApproveDataFilter() );
         
-        Collections.sort( categoryOptionGroups, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;

@@ -28,86 +28,36 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.paging.ActionPagingSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+
 /**
- * @author Chau Thu Tran
- * 
- * @version GetDataElementCategoryOptionList.java 8:47:42 AM Feb 22, 2013 $
+ * @author Jim Grace
+ * @version $Id$
  */
-public class GetDataElementCategoryOptionAction
-    extends ActionPagingSupport<DataElementCategoryOption>
+public class ShowAddDataElementCategoryOptionAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryService dataElementCategoryService;
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
-    }
-
     @Autowired
     private OrganisationUnitSelectionManager selectionManager;
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private DataElementCategoryOption dataElementCategoryOption;
-
-    public DataElementCategoryOption getDataElementCategoryOption()
-    {
-        return dataElementCategoryOption;
-    }
-
-    private boolean moreOptionsPresent;
-
-    public boolean isMoreOptionsPresent()
-    {
-        return moreOptionsPresent;
-    }
-
-    private List<Concept> concepts;
-
-    public List<Concept> getConcepts()
-    {
-        return concepts;
-    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
+            throws Exception
     {
-        dataElementCategoryOption = dataElementCategoryService.getDataElementCategoryOption( id );
-
-        selectionManager.setSelectedOrganisationUnits( dataElementCategoryOption.getOrganisationUnits() );
-
-        moreOptionsPresent = dataElementCategoryOption.getStartDate() != null
-                || dataElementCategoryOption.getEndDate() != null
-                || !dataElementCategoryOption.getOrganisationUnits().isEmpty();
+        selectionManager.setSelectedOrganisationUnits( new ArrayList<OrganisationUnit>() );
 
         return SUCCESS;
     }

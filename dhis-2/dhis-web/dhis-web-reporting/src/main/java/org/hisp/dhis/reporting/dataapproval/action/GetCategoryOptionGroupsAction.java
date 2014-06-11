@@ -38,10 +38,13 @@ import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +59,10 @@ public class GetCategoryOptionGroupsAction
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
+
+    @Autowired
+    private PeriodService periodService;
+
     @Autowired
     private DataElementCategoryService categoryService;
 
@@ -72,10 +78,17 @@ public class GetCategoryOptionGroupsAction
     // -------------------------------------------------------------------------
 
     private String ou;
-    
+
     public void setOu( String ou )
     {
         this.ou = ou;
+    }
+
+    private String pe;
+
+    public void setPe( String pe )
+    {
+        this.pe = pe;
     }
 
     // -------------------------------------------------------------------------
@@ -102,9 +115,11 @@ public class GetCategoryOptionGroupsAction
     public String execute()
         throws Exception
     {
-        if ( ou != null )
+        if ( ou != null && pe != null )
         {
             OrganisationUnit unit = organisationUnitService.getOrganisationUnit( ou );
+
+            Period period = periodService.getPeriod( pe );
             
             int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() );
             
@@ -117,7 +132,9 @@ public class GetCategoryOptionGroupsAction
             categoryOptionGroups = new ArrayList<CategoryOptionGroup>( categoryService.getAllCategoryOptionGroups() );
             
             FilterUtils.filter( categoryOptionGroups, new CategoryOptionGroupGroupSetFilter( groupSets ) );
-            
+
+            FilterUtils.filter( categoryOptionGroups, new CategoryOptionPeriodOrganisationUnitFilter( period, unit ) );
+
             addNoneGroupIfNoGroupSet( approvalLevels, categoryOptionGroups );
         }
         
@@ -216,6 +233,41 @@ public class GetCategoryOptionGroupsAction
         public boolean retain( CategoryOptionGroup group )
         {
             return groupSets != null && groupSets.contains( group.getGroupSet() );
+        }
+    }
+
+    /**
+     * Filter for group set on period and organisation unit, based on whether
+     * any member option groups match the period and organisation unit.
+     */
+    class CategoryOptionPeriodOrganisationUnitFilter
+        implements Filter<CategoryOptionGroup>
+    {
+        private Period period;
+        private OrganisationUnit organisationUnit;
+
+        public CategoryOptionPeriodOrganisationUnitFilter( Period period, OrganisationUnit organisationUnit )
+        {
+            this.period = period;
+            this.organisationUnit = organisationUnit;
+        }
+
+        @Override
+        public boolean retain( CategoryOptionGroup group )
+        {
+            for ( DataElementCategoryOption option : group.getMembers() )
+            {
+                if ( ( option.getStartDate() == null || option.getStartDate().before( period.getEndDate() ) )
+                        && ( option.getEndDate() == null || option.getEndDate().after( period.getStartDate() ) ) )
+                {
+                    if ( option.getOrganisationUnits().isEmpty() || organisationUnit.isEqualOrChildOf( option.getOrganisationUnits() ) )
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -20,8 +20,11 @@
 				setInnerHTML( 'startDateField', json.dataElementCategoryOption.startDate );
 				setInnerHTML( 'endDateField', json.dataElementCategoryOption.endDate );
 				setInnerHTML( 'conceptField', json.dataElementCategoryOption.concept );
-					  
-				showDetails();
+
+                var organisationUnits = joinNameableObjects(json.dataElementCategoryOption.organisationUnits);
+                setInnerHTML( 'orgUnitField', organisationUnits ? organisationUnits : '[' + i18n_none + ']');
+
+                showDetails();
 		});
 	}
 	
@@ -90,6 +93,7 @@
           <p><label>$i18n.getString( "code" ):</label><br/><span id="codeField"></span></p>
           <p><label>$i18n.getString( "start_date" ):</label><br/><span id="startDateField"></span></p>
           <p><label>$i18n.getString( "end_date" ):</label><br/><span id="endDateField"></span></p>
+          <p><label>$i18n.getString( "organisation_units" ):</label><br/><span id="orgunitField"></span></p>
         <p><label>$i18n.getString( "concept" ):</label><br/><span id="conceptField"></span></p>
       </div>
 

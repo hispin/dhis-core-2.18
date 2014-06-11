@@ -540,10 +540,10 @@
       <param name="anyAuthorities">F_CATEGORY_OPTION_PUBLIC_ADD, F_CATEGORY_OPTION_PRIVATE_ADD</param>
     </action>
 
-    <action name="showAddDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.NoAction">
+    <action name="showAddDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.category.ShowAddDataElementCategoryOptionAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryOptionForm.vm</param>
-      <param name="javascripts">javascript/categoryOption.js</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/categoryOption.js</param>
       <param name="anyAuthorities">F_CATEGORY_OPTION_PUBLIC_ADD, F_CATEGORY_OPTION_PRIVATE_ADD</param>
     </action>
 
@@ -555,7 +555,7 @@
     <action name="showUpdateDataElementCategoryOptionForm" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryOptionAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryOptionForm.vm</param>
-      <param name="javascripts">javascript/category.js</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/categoryOption.js</param>
       <param name="anyAuthorities">F_CATEGORY_OPTION_PUBLIC_ADD, F_CATEGORY_OPTION_PRIVATE_ADD</param>
     </action>
 

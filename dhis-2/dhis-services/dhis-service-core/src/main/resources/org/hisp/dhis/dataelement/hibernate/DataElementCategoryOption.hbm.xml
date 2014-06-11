@@ -21,6 +21,13 @@
 
     <property name="endDate" type="timestamp" />
 
+    <set name="organisationUnits" table="cateogryoption_organisationunits">
+      <cache usage="read-write" />
+      <key column="categoryoptionid" foreign-key="fk_cateogryoption_organisationunits_datasetid" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+        foreign-key="fk_cateogryoption_organisationunits_organisationunit" />
+    </set>
+
     <set name="categoryOptionCombos" table="categoryoptioncombos_categoryoptions" inverse="true">
       <cache usage="read-write" />
       <key column="categoryoptionid" foreign-key="fk_categoryoptioncombos_categoryoptions_categoryoptionid" />
