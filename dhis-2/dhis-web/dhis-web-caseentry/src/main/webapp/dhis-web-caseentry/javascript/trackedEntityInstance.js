@@ -609,3 +609,25 @@ function loadDataEntry(programStageInstanceId) {
 				registrationProgress = false;
 			});
 }
+
+function searchByIdsOnclick()
+{
+	if( getFieldValue('searchPatientByAttributes')==''){
+		return;
+	}
+	
+	jQuery('#listEntityInstanceDiv').load(
+		'searchTrackedEntityInstance.action', {
+			orgunitId: getFieldValue('orgunitId'),
+			attributeValue: getFieldValue('searchPatientByAttributes'),
+			programId: getFieldValue('program')
+		}, function() {
+			setInnerHTML('orgunitInfor', getFieldValue('orgunitName'));
+			if( getFieldValue('program')!= ''){
+				var programName = jQuery('#programIdAddTrackedEntity option:selected').text();
+				setInnerHTML('enrollmentInfor', i18n_enrollments_in + " " + programName + " " + i18n_program);
+			}
+			showById('listEntityInstanceDiv');
+			jQuery('#loaderDiv').hide();
+		});
+}

@@ -672,4 +672,19 @@ public class DefaultTrackedEntityInstanceService
 
         return null;
     }
+
+    @Override
+    public Collection<TrackedEntityInstance> searchTrackedEntityByAttribute( OrganisationUnit orgunit,
+        String attributeValue, Program program, Integer min, Integer max )
+    {
+        return trackedEntityInstanceStore.searchTrackedEntityByAttribute(orgunit, attributeValue, program, min, max);
+    }
+
+    @Override
+    public int countTrackedEntityByAttribute( OrganisationUnit orgunit, String attributeValue, Program program )
+    {
+        return trackedEntityInstanceStore.countTrackedEntityByAttribute( orgunit, attributeValue, program );
+    }
+    
+ 
 }

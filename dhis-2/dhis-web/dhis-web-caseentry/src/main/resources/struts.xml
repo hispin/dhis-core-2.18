@@ -545,6 +545,14 @@
 			</result>
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_CHANGE_LOCATION</param>
 		</action>
+		
+		<action name="searchTrackedEntityInstance"
+			class="org.hisp.dhis.caseentry.action.trackedentity.SearchTrackedEntityInstanceAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/trackedEntityInstanceRegistrationList.vm
+			</result>
+			<param name="requiredAuthorities">F_TRACKED_ENTITY_INSTANCE_SEARCH</param>
+		</action>
 
 		<!-- Program Enrollment -->
 

@@ -35,7 +35,6 @@
 		</td>
 		<td id='listEntityInstanceBtnTD'>
 			<input type="button" id='listEntityInstanceBtn' value="$i18n.getString( 'list_all_tracked_entity_instances' )" onclick="isAdvancedSearch=false;listAllTrackedEntityInstance(1);">
-			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
 		</td>
 	</tr>
 	
@@ -69,7 +68,15 @@
 			<input type='checkbox' id='followup' name='followup' />
 		</td>
 	</tr>
-	
+	<tr id='searchByIdTR' class='hidden'>
+		<td colspan='2'>
+			<input type='text' id='searchPatientByAttributes' name='searchPatientByAttributes' onchange='searchByIdsOnclick();' style='width:350px;' placeholder='$i18n.getString("search_by_identifier")' />
+		</td>
+		<td>
+			<input type='button' value='$i18n.getString("search")' onclick='searchByIdsOnclick();'>
+			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
+		</td>
+	</tr>
 </table>
 
 <div id='showSearchCriteriaDiv' class='hidden green-background'><img src='../images/move_bottom.png' onclick='showSearchCriteria();' >&nbsp;&nbsp; $i18n.getString("there_are_active_search_filter_click_on_arrow_to_show_them")</div>
