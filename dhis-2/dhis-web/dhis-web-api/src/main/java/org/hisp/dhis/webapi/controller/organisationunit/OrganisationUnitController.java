@@ -51,7 +51,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = OrganisationUnitSchemaDescriptor.API_ENDPOINT)
+@RequestMapping( value = OrganisationUnitSchemaDescriptor.API_ENDPOINT )
 public class OrganisationUnitController
     extends AbstractCrudController<OrganisationUnit>
 {
@@ -94,11 +94,11 @@ public class OrganisationUnitController
 
         if ( "true".equals( options.getOptions().get( "userOnly" ) ) )
         {
-            entityList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
+            entityList = new ArrayList<>( currentUserService.getCurrentUser().getOrganisationUnits() );
         }
         else if ( "true".equals( options.getOptions().get( "userDataViewOnly" ) ) )
         {
-            entityList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getDataViewOrganisationUnits() );
+            entityList = new ArrayList<>( currentUserService.getCurrentUser().getDataViewOrganisationUnits() );
         }
         else if ( "true".equals( options.getOptions().get( "userDataViewFallback" ) ) )
         {
@@ -106,16 +106,16 @@ public class OrganisationUnitController
 
             if ( user != null && user.hasDataViewOrganisationUnit() )
             {
-                entityList = new ArrayList<OrganisationUnit>( user.getDataViewOrganisationUnits() );
+                entityList = new ArrayList<>( user.getDataViewOrganisationUnits() );
             }
             else
             {
-                entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
+                entityList = new ArrayList<>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
             }
         }
         else if ( options.getOptions().containsKey( "query" ) )
         {
-            entityList = new ArrayList<OrganisationUnit>( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
+            entityList = new ArrayList<>( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
 
             if ( levelSorted )
             {
@@ -124,7 +124,7 @@ public class OrganisationUnitController
         }
         else if ( maxLevel != null || level != null )
         {
-            entityList = new ArrayList<OrganisationUnit>();
+            entityList = new ArrayList<>();
 
             if ( maxLevel == null )
             {
@@ -142,7 +142,7 @@ public class OrganisationUnitController
         }
         else if ( levelSorted )
         {
-            entityList = new ArrayList<OrganisationUnit>( manager.getAll( getEntityClass() ) );
+            entityList = new ArrayList<>( manager.getAll( getEntityClass() ) );
             Collections.sort( entityList, OrganisationUnitByLevelComparator.INSTANCE );
         }
         else if ( options.hasPaging() )
@@ -152,11 +152,11 @@ public class OrganisationUnitController
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<OrganisationUnit>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+            entityList = new ArrayList<>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            entityList = new ArrayList<OrganisationUnit>( manager.getAllSorted( getEntityClass() ) );
+            entityList = new ArrayList<>( manager.getAllSorted( getEntityClass() ) );
         }
 
         return entityList;
@@ -192,45 +192,4 @@ public class OrganisationUnitController
 
         return organisationUnits;
     }
-
-    /* TODO can this be replaced by inclusion/filter?
-        Integer maxLevel = null;
-
-        if ( options.getOptions().containsKey( "maxLevel" ) )
-        {
-            try
-            {
-                maxLevel = Integer.parseInt( options.getOptions().get( "maxLevel" ) );
-            }
-            catch ( NumberFormatException ignored )
-            {
-            }
-
-            if ( maxLevel != null && (organisationUnitService.getOrganisationUnitLevelByLevel( maxLevel ) == null
-                || maxLevel > organisationUnitService.getNumberOfOrganisationalLevels()) )
-            {
-                maxLevel = organisationUnitService.getNumberOfOrganisationalLevels();
-            }
-        }
-
-        if ( maxLevel != null )
-        {
-            List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>();
-            entities.add( entity );
-
-            int level = entity.getOrganisationUnitLevel();
-
-            while ( maxLevel > level )
-            {
-                entities.addAll( organisationUnitService.getOrganisationUnitsAtLevel( ++level, entity ) );
-            }
-
-            MetaData metaData = new MetaData();
-            metaData.setOrganisationUnits( entities );
-
-            model.addAttribute( "model", metaData );
-
-            return StringUtils.uncapitalize( getEntitySimpleName() );
-        }
-    */
 }
