@@ -40,7 +40,7 @@ import java.util.List;
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping(value = IdentifiableObjectController.RESOURCE_PATH)
+@RequestMapping( value = IdentifiableObjectController.RESOURCE_PATH )
 public class IdentifiableObjectController
     extends AbstractCrudController<IdentifiableObject>
 {
