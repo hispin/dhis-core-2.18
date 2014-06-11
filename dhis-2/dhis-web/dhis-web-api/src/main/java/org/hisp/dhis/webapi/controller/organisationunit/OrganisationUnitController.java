@@ -176,11 +176,13 @@ public class OrganisationUnitController
 
         if ( options.getOptions().containsKey( "includeChildren" ) )
         {
+            options.getOptions().put( "useWrapper", "true" );
             organisationUnits.add( organisationUnit );
             organisationUnits.addAll( organisationUnit.getChildren() );
         }
         else if ( options.getOptions().containsKey( "includeDescendants" ) )
         {
+            options.getOptions().put( "useWrapper", "true" );
             organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( uid ) );
         }
         else

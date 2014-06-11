@@ -228,8 +228,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         CollectionNode collectionNode = filterService.fieldFilter( getEntityClass(), entities, fields );
 
-        if ( options.booleanTrue( "useWrapper" ) || entities.size() > 1
-            || options.getOptions().containsKey( "includeChildren" ) || options.getOptions().containsKey( "includeDescendants" ) )
+        if ( options.booleanTrue( "useWrapper" ) || entities.size() > 1 )
         {
             RootNode rootNode = new RootNode( "metadata" );
             rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
@@ -242,6 +241,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             RootNode rootNode = new RootNode( collectionNode.getChildren().get( 0 ) );
             rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
+            rootNode.setNamespace( DxfNamespaces.DXF_2_0 );
 
             return rootNode;
         }
