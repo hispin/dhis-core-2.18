@@ -29,7 +29,6 @@ package org.hisp.dhis.dxf2.events.trackedentity;
  */
 
 import com.google.common.collect.Lists;
-
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
@@ -126,7 +125,16 @@ public abstract class AbstractTrackedEntityInstanceService
         {
             org.hisp.dhis.dxf2.events.trackedentity.Relationship relationship = new org.hisp.dhis.dxf2.events.trackedentity.Relationship();
             relationship.setDisplayName( entityRelationship.getRelationshipType().getDisplayName() );
-            relationship.setTrackedEntityInstance( entityRelationship.getEntityInstanceA().getUid() );
+
+            if ( entityInstance.getUid().equals( entityRelationship.getEntityInstanceA().getUid() ) )
+            {
+                relationship.setTrackedEntityInstance( entityRelationship.getEntityInstanceB().getUid() );
+            }
+            else
+            {
+                relationship.setTrackedEntityInstance( entityRelationship.getEntityInstanceA().getUid() );
+            }
+
             relationship.setRelationship( entityRelationship.getRelationshipType().getUid() );
 
             trackedEntityInstance.getRelationships().add( relationship );
