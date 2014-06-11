@@ -33,6 +33,7 @@ import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.calendar.DateUnit;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.Action;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,9 @@ public class UpdateDataElementCategoryOptionAction
 
     @Autowired
     private CalendarService calendarService;
+
+    @Autowired
+    private OrganisationUnitSelectionManager selectionManager;
 
     // -------------------------------------------------------------------------
     // Input
@@ -138,6 +142,8 @@ public class UpdateDataElementCategoryOptionAction
         categoryOption.setCode( code );
         categoryOption.setStartDate( sDate );
         categoryOption.setEndDate( eDate );
+        categoryOption.getOrganisationUnits().clear();
+        categoryOption.getOrganisationUnits().addAll ( selectionManager.getSelectedOrganisationUnits() );
 
         dataElementCategoryService.updateDataElementCategoryOption( categoryOption );
 

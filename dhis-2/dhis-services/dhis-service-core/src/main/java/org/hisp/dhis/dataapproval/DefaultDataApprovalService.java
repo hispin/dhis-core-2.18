@@ -321,7 +321,7 @@ public class DefaultDataApprovalService
         for ( Period period : periods )
         {
             DataApprovalStatus status = getDataApprovalStatus( da.getDataSet(), period, da.getOrganisationUnit(),
-                    org.hisp.dhis.system.util.CollectionUtils.asSet( da.getCategoryOptionGroup() ), null );
+                    da.getCategoryOptionGroup() == null ? null : org.hisp.dhis.system.util.CollectionUtils.asSet( da.getCategoryOptionGroup() ), null );
 
             if ( status.getDataApprovalState().isReady() && !status.getDataApprovalState().isApproved() )
             {
@@ -355,7 +355,7 @@ public class DefaultDataApprovalService
         for ( Period period : periods )
         {
             DataApprovalStatus status = getDataApprovalStatus( da.getDataSet(), period, da.getOrganisationUnit(),
-                    org.hisp.dhis.system.util.CollectionUtils.asSet( da.getCategoryOptionGroup() ), null );
+                    da.getCategoryOptionGroup() == null ? null : org.hisp.dhis.system.util.CollectionUtils.asSet( da.getCategoryOptionGroup() ), null );
 
             if ( status.getDataApprovalState().isApproved() )
             {
@@ -384,7 +384,7 @@ public class DefaultDataApprovalService
         for ( Period period : periods )
         {
             DataApprovalStatus status = getDataApprovalStatus( da.getDataSet(), period, da.getOrganisationUnit(),
-                    org.hisp.dhis.system.util.CollectionUtils.asSet( da.getCategoryOptionGroup() ), null );
+                    da.getCategoryOptionGroup() == null ? null : org.hisp.dhis.system.util.CollectionUtils.asSet( da.getCategoryOptionGroup() ), null );
 
             if ( status.getDataApprovalState().isApprovable() && status.getDataApprovalState().isAccepted() != accepted )
             {

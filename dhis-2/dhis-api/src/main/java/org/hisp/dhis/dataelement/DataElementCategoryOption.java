@@ -45,6 +45,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Abyot Asalefew
@@ -63,6 +65,9 @@ public class DataElementCategoryOption
     private Date startDate;
 
     private Date endDate;
+
+    @Scanned
+    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
 
     private Set<DataElementCategory> categories = new HashSet<DataElementCategory>();
 
@@ -178,6 +183,21 @@ public class DataElementCategoryOption
     public void setEndDate( Date endDate )
     {
         this.endDate = endDate;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
+    public Set<OrganisationUnit> getOrganisationUnits()
+    {
+        return organisationUnits;
+    }
+
+    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
+    {
+        this.organisationUnits = organisationUnits;
     }
 
     @JsonProperty

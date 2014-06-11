@@ -56,3 +56,10 @@ function saveCategoryOption( id, name )
 		addOptionById( 'categoryOptions', json.dataElementCategoryOption.id, name );
 	} );
 }
+
+function showMoreOrFewerOptions()
+{
+    $( ".showMoreOptions" ).toggle();
+    $( ".moreOptions" ).toggle();
+}
+

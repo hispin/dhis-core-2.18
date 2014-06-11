@@ -22,23 +22,26 @@ $( function() {
 dhis2.appr.dataSetSelected = function()
 {
     var dataSetPeriodType = $( "#dataSetId :selected" ).data( "pt" );
-    var periodTypeToSelect = $( "#periodType" ).val() || dataSetPeriodType;
-    var foundDataSetPeriodType = false;
-    var html = "<option value=''>[ " + i18n_select_period_type + " ]</option>";
 
-    $.each( dhis2.appr.metaData.periodTypes, function() {
-        if ( foundDataSetPeriodType || this == dataSetPeriodType ) {
-            var selected = ( this == periodTypeToSelect ) ? " selected" : "";
-            html += "<option value='" + this + "'" + selected + ">" + this + "</option>";
-            foundDataSetPeriodType = true;
-        } else if ( this == periodTypeToSelect ) {
-            periodTypeToSelect = dataSetPeriodType;
-        }
-    } );
+    if ( $( "#periodType" ).val() != dataSetPeriodType ) {
+        var periodTypeToSelect = $( "#periodType" ).val() || dataSetPeriodType;
+        var foundDataSetPeriodType = false;
+        var html = "<option value=''>[ " + i18n_select_period_type + " ]</option>";
 
-    $( "#periodType" ).html( html );
-    $( "#periodType" ).removeAttr( "disabled" );
-    dhis2.appr.displayPeriods();
+        $.each( dhis2.appr.metaData.periodTypes, function () {
+            if ( foundDataSetPeriodType || this == dataSetPeriodType ) {
+                var selected = ( this == periodTypeToSelect ) ? " selected" : "";
+                html += "<option value='" + this + "'" + selected + ">" + this + "</option>";
+                foundDataSetPeriodType = true;
+            } else if ( this == periodTypeToSelect ) {
+                periodTypeToSelect = dataSetPeriodType;
+            }
+        } );
+
+        $( "#periodType" ).html( html );
+        $( "#periodType" ).removeAttr( "disabled" );
+        dhis2.appr.displayPeriods();
+    }
 }
 
 dhis2.appr.orgUnitSelected = function( orgUnits, orgUnitNames, children )
@@ -50,6 +53,7 @@ dhis2.appr.displayPeriods = function()
 {
     var periodType = $( "#periodType" ).val();
     dhis2.dsr.displayPeriodsInternal( periodType, dhis2.appr.currentPeriodOffset );
+    dhis2.appr.displayCategoryOptionGroups();
 }
 
 dhis2.appr.displayNextPeriods = function()
@@ -67,18 +71,24 @@ dhis2.appr.displayPreviousPeriods = function()
     dhis2.appr.displayPeriods();
 }
 
+dhis2.appr.periodSelected = function()
+{
+    dhis2.appr.displayCategoryOptionGroups();
+}
+
 dhis2.appr.displayCategoryOptionGroups = function()
 {
 	var ou = selection.getSelected()[0];
+	var pe = $( "#periodId" ).val();
 	
-	if ( !ou ) {
+	if ( !ou || !pe ) {
 		return;
 	}
 	
 	var url = "getCategoryOptionGroups.action";
 	
-	$.getJSON( url, {ou:ou}, function( json ) {
-		if ( json.categoryOptionGroups && json.categoryOptionGroups.length ) {
+	$.getJSON( url, {ou:ou, pe:pe}, function( json ) {
+		if ( json.categoryOptionGroups && json.categoryOptionGroups.length > 1 ) {
 			var html = "";
 			$.each( json.categoryOptionGroups, function( index, group ) {
 				html += "<option value=\"" + group.uid + "\" data-dimension=\"" + group.groupSet + "\">" + group.name + "</option>";
@@ -349,13 +359,13 @@ dhis2.appr.unacceptData = function()
 dhis2.appr.getApprovalUrl = function()
 {
 	var data = dhis2.appr.getDataReport();
-	var url = "../api/dataApprovals?ds=" + data.ds + "&pe=" + data.pe + "&ou=" + data.ou + "&cog=" + data.cog;	
+	var url = "../api/dataApprovals?ds=" + data.ds + "&pe=" + data.pe + "&ou=" + data.ou + "&cog=" + data.cog;
 	return url;
 }
 
 dhis2.appr.getAcceptanceUrl = function()
 {
 	var data = dhis2.appr.getDataReport();
-	var url = "../api/dataApprovals/acceptances?ds=" + data.ds + "&pe=" + data.pe + "&ou=" + data.ou + "&cog=" + data.cog;	
+	var url = "../api/dataApprovals/acceptances?ds=" + data.ds + "&pe=" + data.pe + "&ou=" + data.ou + "&cog=" + data.cog;
 	return url;
 }
