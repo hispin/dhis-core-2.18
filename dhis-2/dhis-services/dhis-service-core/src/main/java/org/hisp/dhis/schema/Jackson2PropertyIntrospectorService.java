@@ -201,7 +201,10 @@ public class Jackson2PropertyIntrospectorService extends AbstractPropertyIntrosp
         {
             if ( method.isAnnotationPresent( JsonProperty.class ) )
             {
-                properties.add( new Property( klass, method, null ) );
+                if ( method.getGenericParameterTypes().length == 0 )
+                {
+                    properties.add( new Property( klass, method, null ) );
+                }
             }
         }
 

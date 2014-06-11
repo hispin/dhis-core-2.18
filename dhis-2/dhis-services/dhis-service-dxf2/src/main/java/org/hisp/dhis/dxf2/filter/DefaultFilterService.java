@@ -164,7 +164,7 @@ public class DefaultFilterService implements FilterService
             }
 
             Map fieldValue = fieldMap.get( fieldKey );
-            updateFields( fieldValue, object );
+            updateFields( fieldValue, returnValue );
 
             if ( fieldValue.isEmpty() )
             {
