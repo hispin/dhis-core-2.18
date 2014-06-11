@@ -28,9 +28,8 @@ package org.hisp.dhis.webapi.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.node.types.RootNode;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
@@ -40,28 +39,19 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.controller.WebMetaData;
 import org.hisp.dhis.webapi.controller.WebOptions;
-import org.hisp.dhis.webapi.controller.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = OrganisationUnitSchemaDescriptor.API_ENDPOINT )
+@RequestMapping(value = OrganisationUnitSchemaDescriptor.API_ENDPOINT)
 public class OrganisationUnitController
     extends AbstractCrudController<OrganisationUnit>
 {
@@ -172,21 +162,36 @@ public class OrganisationUnitController
         return entityList;
     }
 
-
-    /* TODO can this be replaced by inclusion/filter?
     @Override
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public RootNode getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    protected List<OrganisationUnit> getEntity( String uid, WebOptions options )
     {
-        WebOptions options = new WebOptions( parameters );
-        OrganisationUnit entity = getEntity( uid );
+        OrganisationUnit organisationUnit = manager.get( getEntityClass(), uid );
 
-        if ( entity == null )
+        if ( organisationUnit == null )
         {
-            throw new NotFoundException( uid );
+            return Lists.newArrayList();
         }
 
+        List<OrganisationUnit> organisationUnits = Lists.newArrayList();
+
+        if ( options.getOptions().containsKey( "includeChildren" ) )
+        {
+            organisationUnits.add( organisationUnit );
+            organisationUnits.addAll( organisationUnit.getChildren() );
+        }
+        else if ( options.getOptions().containsKey( "includeDescendants" ) )
+        {
+            organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( uid ) );
+        }
+        else
+        {
+            organisationUnits.add( organisationUnit );
+        }
+
+        return organisationUnits;
+    }
+
+    /* TODO can this be replaced by inclusion/filter?
         Integer maxLevel = null;
 
         if ( options.getOptions().containsKey( "maxLevel" ) )
@@ -225,43 +230,5 @@ public class OrganisationUnitController
 
             return StringUtils.uncapitalize( getEntitySimpleName() );
         }
-        else if ( options.getOptions().containsKey( "includeDescendants" ) && Boolean.parseBoolean( options.getOptions().get( "includeDescendants" ) ) )
-        {
-            List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>(
-                organisationUnitService.getOrganisationUnitsWithChildren( uid ) );
-
-            MetaData metaData = new MetaData();
-            metaData.setOrganisationUnits( entities );
-
-            model.addAttribute( "model", metaData );
-        }
-        else if ( options.getOptions().containsKey( "includeChildren" ) && Boolean.parseBoolean( options.getOptions().get( "includeChildren" ) ) )
-        {
-            List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>();
-            entities.add( entity );
-            entities.addAll( entity.getChildren() );
-
-            MetaData metaData = new MetaData();
-            metaData.setOrganisationUnits( entities );
-
-            model.addAttribute( "model", metaData );
-        }
-        else
-        {
-            model.addAttribute( "model", entity );
-        }
-
-        if ( options.hasLinks() )
-        {
-            WebUtils.generateLinks( entity );
-        }
-
-        postProcessEntity( entity );
-        postProcessEntity( entity, options, parameters );
-
-        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
-
-        return StringUtils.uncapitalize( getEntitySimpleName() );
-    }
     */
 }

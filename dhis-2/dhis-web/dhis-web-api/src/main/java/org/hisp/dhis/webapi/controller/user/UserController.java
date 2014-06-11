@@ -28,6 +28,7 @@ package org.hisp.dhis.webapi.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Pager;
@@ -136,9 +137,17 @@ public class UserController
     }
 
     @Override
-    protected User getEntity( String uid )
+    protected List<User> getEntity( String uid )
     {
-        return userService.getUser( uid );
+        List<User> users = Lists.newArrayList();
+        Optional<User> user = Optional.of( userService.getUser( uid ) );
+
+        if ( user.isPresent() )
+        {
+            users.add( user.get() );
+        }
+
+        return users;
     }
 
     //--------------------------------------------------------------------------
@@ -188,15 +197,15 @@ public class UserController
     public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
         input ) throws Exception
     {
-        User object = getEntity( uid );
+        List<User> users = getEntity( uid );
 
-        if ( object == null )
+        if ( users.isEmpty() )
         {
             ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
             return;
         }
 
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), object ) )
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), users.get( 0 ) ) )
         {
             throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
         }
@@ -219,15 +228,15 @@ public class UserController
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
         input ) throws Exception
     {
-        User object = getEntity( uid );
+        List<User> users = getEntity( uid );
 
-        if ( object == null )
+        if ( users.isEmpty() )
         {
             ContextUtils.conflictResponse( response, getEntityName() + " does not exist: " + uid );
             return;
         }
 
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), object ) )
+        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), users.get( 0 ) ) )
         {
             throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this object." );
         }
