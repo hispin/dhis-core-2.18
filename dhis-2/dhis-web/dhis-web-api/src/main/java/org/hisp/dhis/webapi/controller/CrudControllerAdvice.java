@@ -95,17 +95,8 @@ public class CrudControllerAdvice
         return new ResponseEntity<>( ex.getMessage(), headers, HttpStatus.CONFLICT );
     }
 
-    @ExceptionHandler( IllegalQueryException.class )
+    @ExceptionHandler( { IllegalQueryException.class, IllegalArgumentException.class } )
     public ResponseEntity<String> handleError( IllegalQueryException ex )
-    {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
-
-        return new ResponseEntity<>( ex.getMessage(), headers, HttpStatus.CONFLICT );
-    }
-
-    @ExceptionHandler( IllegalArgumentException.class )
-    public ResponseEntity<String> handleError( IllegalArgumentException ex )
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );

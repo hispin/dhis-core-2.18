@@ -468,7 +468,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
 
                 sessionFactory.getCurrentSession().flush();
-                ReflectionUtils.invokeSetterMethod( "programStageDataElements", object, Sets.newHashSet() );
+                ReflectionUtils.invokeSetterMethod( "programStageDataElements", object, Lists.newArrayList() );
                 sessionFactory.getCurrentSession().flush();
             }
 
@@ -589,7 +589,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         reattachFields( object, fields );
 
-        log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
+        log.warn( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
         objectBridge.saveObject( object );
 
         updatePeriodTypes( object );
