@@ -105,7 +105,7 @@ public class ProgramStageSectionSchemaDescriptor implements SchemaDescriptor
     public Schema getSchema()
     {
         Schema schema = new Schema( ProgramStageSection.class, SINGULAR, PLURAL );
-        schema.setOrder( 1470 );
+        schema.setOrder( 1511 );
 
         return schema;
     }

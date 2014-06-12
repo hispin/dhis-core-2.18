@@ -126,7 +126,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -486,6 +486,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 return;
             }
 
+            Collection<ProgramStageDataElement> programStageDataElementCollection =
+                ReflectionUtils.newCollectionInstance( programStageDataElements.getClass() );
+
             for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
             {
                 Map<Field, Object> identifiableObjects = detachFields( programStageDataElement );
@@ -496,10 +499,19 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     programStageDataElement.setProgramStage( (ProgramStage) object );
                 }
 
-                programStageDataElementService.addProgramStageDataElement( programStageDataElement );
+                ProgramStageDataElement persisted = programStageDataElementService.get( programStageDataElement.getProgramStage(), programStageDataElement.getDataElement() );
+
+                if ( persisted == null )
+                {
+                    programStageDataElementService.addProgramStageDataElement( programStageDataElement );
+                }
+                else
+                {
+                    programStageDataElementCollection.add( persisted );
+                }
             }
 
-            ReflectionUtils.invokeSetterMethod( "programStageDataElements", object, programStageDataElements );
+            ReflectionUtils.invokeSetterMethod( "programStageDataElements", object, programStageDataElementCollection );
         }
 
         private void deleteProgramStageDataElements( T object )
@@ -598,7 +610,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         reattachFields( object, fields );
 
-        log.warn( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
+        log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
         objectBridge.saveObject( object );
 
         updatePeriodTypes( object );
