@@ -973,7 +973,7 @@
       <dependency>
         <groupId>com.jayway.jsonpath</groupId>
         <artifactId>json-path</artifactId>
-        <version>0.9.0</version>
+        <version>0.9.1</version>
         <scope>test</scope>
       </dependency>
       <dependency>
