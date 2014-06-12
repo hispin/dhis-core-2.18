@@ -200,15 +200,19 @@ public class DataValue
             return false;
         }
 
-        if ( !(o instanceof DataValue) )
+        if ( !getClass().isAssignableFrom( o.getClass() ) )
         {
             return false;
         }
 
         final DataValue other = (DataValue) o;
 
-        return dataElement.equals( other.getDataElement() ) && categoryOptionCombo.equals( other.getCategoryOptionCombo() )
-            && period.equals( other.getPeriod() ) && source.equals( other.getSource() );
+        return 
+            dataElement.equals( other.getDataElement() ) && 
+            period.equals( other.getPeriod() ) && 
+            source.equals( other.getSource() ) &&
+            categoryOptionCombo.equals( other.getCategoryOptionCombo() ) &&
+            attributeOptionCombo.equals( other.getAttributeOptionCombo() );
     }
 
     @Override
@@ -217,10 +221,11 @@ public class DataValue
         final int prime = 31;
         int result = 1;
 
-        result = result * prime + categoryOptionCombo.hashCode();
-        result = result * prime + period.hashCode();
         result = result * prime + dataElement.hashCode();
+        result = result * prime + period.hashCode();
         result = result * prime + source.hashCode();
+        result = result * prime + categoryOptionCombo.hashCode();
+        result = result * prime + attributeOptionCombo.hashCode();
 
         return result;
     }
