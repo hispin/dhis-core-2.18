@@ -80,6 +80,7 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.translate.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.menu.js?_rev=$!{buildRevision}"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/i18nJavaScript.action?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../main.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../request.js?_rev=$!{buildRevision}"></script>
@@ -107,79 +108,8 @@
       <span id="headerText" onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer" title="$i18n.getString( 'view_home_page' )">
         $encoder.htmlEncode( $applicationTitle )
       </span>
-      
-      <ul id="menuLinkArea">
-        <li id="profileDropDown_button">
-            <a id="profileMenuLink" class="menu-link drop-down-menu-link">
-              <i class="fa fa-user"></i>$i18n.getString( "profile" )
-          </a>
-        </li>
-        <li id="appsDropDown_button">
-          <a id="appsMenuLink" class="menu-link drop-down-menu-link">
-            <i class="fa fa-th"></i>$i18n.getString( "applications" )
-          </a>
-          </li>
-      </ul>
 
-      <div id="appsDropDown" class="menuDropDownArea app-menu-dropdown appsMenuLink_menu ui-front" >
-        <div class="caret-up-border"></div>
-        <div class="caret-up-background"></div>
-        <div class="menu-drop-down-wrap">
-            <div class="menu-drop-down-scroll">
-                <div class="apps-search-wrap">
-                  <input id="apps-search" class="apps-search" type="text" placeholder="$i18n.getString( "app_search_placeholder" )">
-                  <span id="apps-search-clear" class="fa fa-times-circle"></span>
-                </div>
-              <ul class="menuDropDownBox"><li class="menu-placeholder"><img src="../images/ajax-loader-bar.gif"></li></ul>
-            </div>
-        </div>
-        <div class="apps-menu-bottom-button apps-menu-more"><a href="../dhis-web-commons-about/modules.action">$i18n.getString( "more_applications" )</a></div>
-          <div class="apps-menu-bottom-button apps-scroll apps-scroll-up"><a class="fa fa-caret-up" href="#"></a></div>
-          <div class="apps-menu-bottom-button apps-scroll apps-scroll-down"><a class="fa fa-caret-down" href="#"></a></div>
-      </div>
-
-	  <div id="profileDropDown" class="menuDropDownArea app-menu-dropdown ui-helper-clearfix profileMenuLink_menu">
-        <div class="caret-up-border"></div>
-        <div class="caret-up-background"></div>
-        <ul class="menuDropDownBox">
-          <li>
-              <a class="app-menu-item" href="../dhis-web-commons-about/userSettings.action">
-                <img src="../icons/usersettings.png" alt="$i18n.getString( "settings" )">
-                <span>$i18n.getString( "settings" )&nbsp;</span>
-              </a>
-          </li>
-          <li>
-              <a class="app-menu-item" href="../dhis-web-commons-about/showUpdateUserProfileForm.action">
-                  <img src="../icons/function-profile.png" alt="$i18n.getString( "profile" )">
-                  <span>$i18n.getString( "profile" )&nbsp;</span>
-              </a>
-          </li>
-          <li>
-              <a class="app-menu-item" href="../dhis-web-commons-about/showUpdateUserAccountForm.action">
-                <img src="../icons/function-account.png" alt="$i18n.getString( "account" )">
-                <span>$i18n.getString( "account" )&nbsp;</span>
-              </a>
-          </li>
-          <li>
-              <a class="app-menu-item" href="../dhis-web-commons-about/help.action">
-                <img src="../icons/function-help-center.png" alt="$i18n.getString( "help" )">
-                <span>$i18n.getString( "help" )&nbsp;</span>
-              </a>
-          </li>
-          <li>
-              <a class="app-menu-item" href="../dhis-web-commons-security/logout.action">
-                <img src="../icons/function-log-out.png" alt="$i18n.getString( "log_out" )">
-                <span>$i18n.getString( "log_out" )&nbsp;</span>
-              </a>
-          </li>
-          <li>
-              <a class="app-menu-item" href="../dhis-web-commons-about/about.action">
-                <img src="../icons/function-about-dhis2.png" alt="$i18n.getString( "about_dhis2" )">
-                <span>$i18n.getString( "about_dhis2" )&nbsp;</span>
-              </a>
-          </li>
-        </ul>
-	  </div>
+      <div id="dhisDropDownMenu"></div>
 	  
       <span id="showLeftBar">
         <a href="javascript:dhis2.leftBar.showAnimated()" title="$i18n.getString( 'show_menu' )">

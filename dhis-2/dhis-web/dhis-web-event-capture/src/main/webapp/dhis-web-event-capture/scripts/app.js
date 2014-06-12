@@ -11,7 +11,8 @@ var eventCapture = angular.module('eventCapture',
 		  'eventCaptureServices',
 		  'eventCaptureFilters',
 		  'angularLocalStorage', 
-		  'pascalprecht.translate'])
+		  'pascalprecht.translate',
+          'd2Menu'])
               
 .value('DHIS2URL', '..')
 

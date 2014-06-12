@@ -68,14 +68,5 @@
     "no": "NON",
     "yes": "OUI",   
     "offline_notification": "Vous êtes actuellement hors connexion, vos données seront stockées localement",
-    "online_nofification": "Vous êtes connecté",
-    "profile": "Profil",
-    "applications": "Apps",
-    "more_applications": "Plus d'apps",
-    "search_apps": "Recherche d'apps",
-    "settings": "Paramètres",
-    "account": "Compte",
-    "help": "Aide",
-    "log_out": "Déconnexion",
-    "about_dhis2": "À propos de DHIS 2"
+    "online_nofification": "Vous êtes connecté"
 }

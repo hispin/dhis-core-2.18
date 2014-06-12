@@ -1,3 +1,14 @@
+/**
+ * Bootstrap 3.0 box-sizing fix
+ */
+#menuLinkArea * {
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing:  content-box;
+    -o-box-sizing: content-box;
+    -m-box-sizing: content-box;
+}
+
 #menuLinkArea
 {
     list-style-type: none;
@@ -11,13 +22,24 @@
     float: right;
 }
 
-#apps-search {
+#menuLinkArea .app-menu-dropdown li {
+    float: left;
+}
+
+input.apps-search {
     border: 1px solid #ccc;
     border-radius: 3px;
+    box-sizing: content-box;
     outline: none;
+    padding: 4px 1px;
     padding-right: 25px;
     padding-left: 5px;
     width: 328px;
+}
+
+input.apps-search[type="text"] {
+    padding-right: 5px;
+    width: 348px;
 }
 
 .apps-search-wrap {
@@ -26,7 +48,7 @@
     width: 360px;
 }
 
-#apps-search-clear {
+.app-menu-dropdown .apps-search-clear {
     color: #404040;
     cursor: pointer;
     display: none;
@@ -58,6 +80,10 @@
     text-decoration: none;
     background-color: #f5f5f7;
     color: #000;
+}
+
+.menuDropDownBox li.selected a {
+    background-color: #f5f5f7;
 }
 
 .app-menu:after
@@ -238,6 +264,7 @@
 
 a.menu-link:hover
 {
+    color: #fff;
     text-decoration: none;
 }
 
@@ -251,18 +278,29 @@ a.menu-link:hover
     border-radius: 2px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 8px 0px;
     color: #000;
-    display: none;
     font-size: 9pt;
     max-height: 610px;
     overflow-y: inherit;
     padding: 10px;
+    top: 10px;
+    position: relative;
     width: 360px;
     z-index: 10;
+}
+
+.app-menu-dropdown-wrap {
+    position: absolute;
+    left: -9999px;
+}
+
+.app-menu-hide {
+    display: none;
 }
 
 .app-menu-dropdown ul
 {
     margin: 0;
+    overflow: auto;
 }
 
 .app-menu-dropdown li
@@ -317,6 +355,7 @@ a.menu-link:hover
     display: block;
     height: 110px;
     padding: 0;
+    text-decoration: none;
     width: 120px;
 }
 
@@ -350,6 +389,14 @@ a.menu-link:hover
 .apps-scroll {
     width: 60px;
     margin-left: 5px;
+}
+
+.app-menu-dropdown:after {
+    content: " "; /* Older browser do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
 }
 
 .apps-menu-bottom-button a:hover
@@ -404,20 +451,14 @@ hr.app-separator
     width: 384px;
 }
 
-#appsDropDown ul.menuDropDownBox {
+#appsMenuDropDown ul.menuDropDownBox {
     height: 330px;
 }
 
-#appsDropDown .caret-up-background,
-#appsDropDown .caret-up-border
+.caret-up-background,
+.caret-up-border
 {
-    left: 296px;
-}
-
-#profileDropDown .caret-up-background,
-#profileDropDown .caret-up-border
-{
-    left: 292px;
+    left: 298px;
 }
 
 .drop-down-menu-link
