@@ -72,10 +72,10 @@ public class ProgramStage
 
     private Program program;
 
-    private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
+    private Set<ProgramStageDataElement> programStageDataElements = new HashSet<>();
 
     @Scanned
-    private Set<ProgramStageSection> programStageSections = new HashSet<ProgramStageSection>();
+    private Set<ProgramStageSection> programStageSections = new HashSet<>();
 
     private DataEntryForm dataEntryForm;
 
@@ -83,7 +83,7 @@ public class ProgramStage
 
     private String reportDateDescription;
 
-    private Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
+    private Set<TrackedEntityInstanceReminder> reminders = new HashSet<>();
 
     private Boolean autoGenerateEvent = true;
 

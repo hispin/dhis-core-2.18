@@ -73,6 +73,7 @@ import org.hisp.dhis.user.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -160,7 +161,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         private Set<DataElementOperand> compulsoryDataElementOperands = Sets.newHashSet();
         private Set<DataElementOperand> greyedFields = Sets.newHashSet();
 
-        private List<ProgramStageDataElement> programStageDataElements = Lists.newArrayList();
+        private Collection<ProgramStageDataElement> programStageDataElements = Lists.newArrayList();
         private Set<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = Sets.newHashSet();
 
         public void extract( T object )
@@ -451,13 +452,13 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             ReflectionUtils.invokeSetterMethod( "programTrackedEntityAttributes", object, programTrackedEntityAttributes );
         }
 
-        private List<ProgramStageDataElement> extractProgramStageDataElements( T object )
+        private Collection<ProgramStageDataElement> extractProgramStageDataElements( T object )
         {
-            List<ProgramStageDataElement> programStageDataElements = Lists.newArrayList();
+            Method method = ReflectionUtils.findGetterMethod( "programStageDataElements", object );
 
-            if ( ReflectionUtils.findGetterMethod( "programStageDataElements", object ) != null )
+            if ( method != null )
             {
-                programStageDataElements = ReflectionUtils.invokeGetterMethod( "programStageDataElements", object );
+                Collection<ProgramStageDataElement> programStageDataElements = ReflectionUtils.invokeGetterMethod( "programStageDataElements", object );
 
                 for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
                 {
@@ -468,15 +469,23 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
 
                 sessionFactory.getCurrentSession().flush();
-                ReflectionUtils.invokeSetterMethod( "programStageDataElements", object, Lists.newArrayList() );
+                ReflectionUtils.invokeSetterMethod( "programStageDataElements", object,
+                    ReflectionUtils.newCollectionInstance( method.getReturnType() ) );
                 sessionFactory.getCurrentSession().flush();
+
+                return programStageDataElements;
             }
 
-            return programStageDataElements;
+            return null;
         }
 
-        private void saveProgramStageDataElements( T object, List<ProgramStageDataElement> programStageDataElements )
+        private void saveProgramStageDataElements( T object, Collection<ProgramStageDataElement> programStageDataElements )
         {
+            if ( programStageDataElements == null )
+            {
+                return;
+            }
+
             for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
             {
                 Map<Field, Object> identifiableObjects = detachFields( programStageDataElement );
