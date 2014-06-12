@@ -37,6 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -73,6 +74,7 @@ public class ProgramStage
 
     private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
 
+    @Scanned
     private Set<ProgramStageSection> programStageSections = new HashSet<ProgramStageSection>();
 
     private DataEntryForm dataEntryForm;
