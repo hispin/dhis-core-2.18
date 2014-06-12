@@ -247,6 +247,7 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeService"

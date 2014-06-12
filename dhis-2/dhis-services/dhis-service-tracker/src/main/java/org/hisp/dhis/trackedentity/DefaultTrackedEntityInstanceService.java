@@ -68,6 +68,7 @@ import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -139,6 +140,13 @@ public class DefaultTrackedEntityInstanceService
     {
         this.organisationUnitService = organisationUnitService;
     }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -149,6 +157,8 @@ public class DefaultTrackedEntityInstanceService
     @Override
     public Grid getTrackedEntityInstances( TrackedEntityInstanceQueryParams params )
     {
+        decideAccess( params );
+        
         validate( params );
 
         // ---------------------------------------------------------------------
@@ -265,6 +275,15 @@ public class DefaultTrackedEntityInstanceService
         return grid;
     }
 
+    public void decideAccess( TrackedEntityInstanceQueryParams params )
+    {
+        if ( params.isOrganisationUnitMode( OrganisationUnitSelectionMode.ALL ) &&
+            !currentUserService.currenUserIsAuthorized( F_TRACKED_ENTITY_INSTANCE_SEARCH_IN_ALL_ORGUNITS ) )
+        {
+            throw new IllegalQueryException( "Current user is not authorized to query across all organisation units" );
+        }
+    }
+    
     @Override
     public void validate( TrackedEntityInstanceQueryParams params )
         throws IllegalQueryException
@@ -495,8 +514,7 @@ public class DefaultTrackedEntityInstanceService
             }
         }
 
-        updateTrackedEntityInstance( instance ); // Save instance to update
-                                                 // associations
+        updateTrackedEntityInstance( instance ); // Update associations
 
         return id;
     }
@@ -616,18 +634,14 @@ public class DefaultTrackedEntityInstanceService
     public ValidationCriteria validateEnrollment( TrackedEntityInstance instance, Program program, I18nFormat format )
     {
         for ( ValidationCriteria criteria : program.getValidationCriteria() )
-        {
-            String value = "";
-            
+        {            
             for ( TrackedEntityAttributeValue attributeValue : instance.getAttributeValues() )
             {
                 if ( attributeValue.getAttribute().getUid().equals( criteria.getProperty() ) )
                 {
-                    value = attributeValue.getValue();
-
+                    String value = attributeValue.getValue();
                     String type = attributeValue.getAttribute().getValueType();
                     
-                    // For integer type
                     if ( type.equals( TrackedEntityAttribute.TYPE_NUMBER ) )
                     {
                         int value1 = Integer.parseInt( value );
@@ -640,7 +654,6 @@ public class DefaultTrackedEntityInstanceService
                             return criteria;
                         }
                     }
-                    // For Date type
                     else if ( type.equals( TrackedEntityAttribute.TYPE_DATE ) )
                     {
                         Date value1 = format.parseDate( value );
@@ -652,7 +665,6 @@ public class DefaultTrackedEntityInstanceService
                             return criteria;
                         }
                     }
-                    // For other types
                     else
                     {
                         if ( criteria.getOperator() == ValidationCriteria.OPERATOR_EQUAL_TO
