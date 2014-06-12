@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.metadata.importers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.logging.Log;
@@ -124,7 +125,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -154,12 +155,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         private Expression leftSide;
         private Expression rightSide;
 
+        private DataEntryForm dataEntryForm;
+
         private Set<DataElementOperand> compulsoryDataElementOperands = Sets.newHashSet();
         private Set<DataElementOperand> greyedFields = Sets.newHashSet();
 
-        private DataEntryForm dataEntryForm;
-
-        private Set<ProgramStageDataElement> programStageDataElements = Sets.newHashSet();
+        private List<ProgramStageDataElement> programStageDataElements = Lists.newArrayList();
         private Set<ProgramTrackedEntityAttribute> programTrackedEntityAttributes = Sets.newHashSet();
 
         public void extract( T object )
@@ -450,9 +451,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             ReflectionUtils.invokeSetterMethod( "programTrackedEntityAttributes", object, programTrackedEntityAttributes );
         }
 
-        private Set<ProgramStageDataElement> extractProgramStageDataElements( T object )
+        private List<ProgramStageDataElement> extractProgramStageDataElements( T object )
         {
-            Set<ProgramStageDataElement> programStageDataElements = Sets.newHashSet();
+            List<ProgramStageDataElement> programStageDataElements = Lists.newArrayList();
 
             if ( ReflectionUtils.findGetterMethod( "programStageDataElements", object ) != null )
             {
@@ -474,7 +475,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return programStageDataElements;
         }
 
-        private void saveProgramStageDataElements( T object, Set<ProgramStageDataElement> programStageDataElements )
+        private void saveProgramStageDataElements( T object, List<ProgramStageDataElement> programStageDataElements )
         {
             for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
             {
