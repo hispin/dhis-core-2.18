@@ -135,7 +135,7 @@ public class UpdateUserGroupAction
 
             if ( writeGroupRequired && !userGroup.getMembers().contains( user) && !userService.canUpdate( user.getUserCredentials() ) )
             {
-                throw new UpdateAccessDeniedException( "- You don't have permission to add all selected users to this group." );
+                throw new UpdateAccessDeniedException( "You don't have permission to add all selected users to this group" );
             }
         }
 
@@ -158,7 +158,7 @@ public class UpdateUserGroupAction
 
                     if ( !otherGroupFound )
                     {
-                        throw new UpdateAccessDeniedException( "- You can't remove member who belongs to no other user groups that you control." );
+                        throw new UpdateAccessDeniedException( "You can't remove member who belongs to no other user groups that you control" );
                     }
                 }
             }
@@ -169,8 +169,8 @@ public class UpdateUserGroupAction
 
         if ( jsonAttributeValues != null )
         {
-            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues,
-                attributeService );
+            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), 
+                jsonAttributeValues, attributeService );
         }
 
         userGroupService.updateUserGroup( userGroup );
