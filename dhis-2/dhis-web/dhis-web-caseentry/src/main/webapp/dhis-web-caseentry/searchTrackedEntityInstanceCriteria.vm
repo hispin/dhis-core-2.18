@@ -70,7 +70,7 @@
 	</tr>
 	<tr id='searchByIdTR' class='hidden'>
 		<td colspan='2'>
-			<input type='text' id='searchPatientByAttributes' name='searchPatientByAttributes' onchange='searchByIdsOnclick();' style='width:350px;' placeholder='$i18n.getString("search_by_identifier")' />
+			<input type='text' id='searchPatientByAttributes' name='searchPatientByAttributes' onchange='searchByIdsOnclick();' style='width:350px;' placeholder='$i18n.getString("search_by_attribute_value")' />
 		</td>
 		<td>
 			<input type='button' value='$i18n.getString("search")' onclick='searchByIdsOnclick();'>
