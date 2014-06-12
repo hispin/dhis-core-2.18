@@ -91,4 +91,11 @@ public class DefaultCurrentUserService
 
         return userCredentials.isSuper();
     }
+    
+    public boolean currenUserIsAuthorized( String auth )
+    {
+        User user = getCurrentUser();
+        
+        return user != null && user.getUserCredentials().isAuthorized( auth );
+    }
 }
