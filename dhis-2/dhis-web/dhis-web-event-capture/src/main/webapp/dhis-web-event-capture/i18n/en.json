@@ -71,14 +71,5 @@
     "no": "NO",
     "yes": "YES",   
     "offline_notification": "You are offline, data will be stored locally",
-    "online_nofification": "You are online",
-    "profile": "Profile",
-    "applications": "Apps",
-    "more_applications": "More apps",
-    "search_apps": "Search apps",
-    "settings": "Settings",
-    "account": "Account",
-    "help": "Help",
-    "log_out": "Log out",
-    "about_dhis2": "About DHIS 2"
+    "online_nofification": "You are online"
 }

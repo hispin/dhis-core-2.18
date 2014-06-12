@@ -12,3 +12,5 @@
 </div>
 
 <div id="appsMenu"></div>
+
+<script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.menu.manager.js?_rev=$!{buildRevision}"></script>

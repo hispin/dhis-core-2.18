@@ -37,11 +37,47 @@
                 return Object.prototype.toString.call(obj) == '[object Function]';
             }
         },
+        getBaseUrl = (function () {
+            var href = window.location.origin;
+            return function () {
+                var urlParts = href.split("/"),
+                    baseUrl;
+
+                if (dhis2.settings.baseUrl === undefined) {
+                    return "..";
+                }
+
+                if (typeof dhis2.settings.baseUrl !== "string") {
+                    throw new TypeError("Dhis2 settings: baseUrl should be a string");
+                }
+
+                if (urlParts[urlParts.length - 1] !== "") {
+                    baseUrl = href + '/' + dhis2.settings.baseUrl;
+                } else {
+                    urlParts.pop();
+                    urlParts.push(dhis2.settings.baseUrl);
+                    baseUrl = urlParts.join('/');
+                }
+                return baseUrl;
+            }
+        })(),
+        /**
+         * Adjusts the url to include the baseUrl
+         *
+         * @param iconUrl
+         * @returns {String}
+         */
+         fixUrlIfNeeded = function (iconUrl) {
+            if (iconUrl.substring(0, 2) === "..") {
+                return getBaseUrl() + iconUrl.substring(2, iconUrl.length);
+            }
+            return iconUrl;
+        },
         /**
          * Object that represents the list of menu items
          * and managers the order of the items to be saved.
          */
-            menuItemsList = (function () {
+         menuItemsList = function () {
             var menuOrder = [],
                 menuItems = {};
 
@@ -69,14 +105,14 @@
                     return menuOrder;
                 }
             }
-        })();
+        };
 
     dhis2.menu = {};
 
-    dhis2.menu = function () {
+    dhis2.menu = function (nameKey, preLoadedData) {
         var that = {},
             menuReady = false,
-            menuItems = menuItemsList,
+            menuItems = menuItemsList(),
             callBacks = [], //Array of callbacks to call when serviced is updated
             onceCallBacks = [];
 
@@ -85,7 +121,9 @@
          **********************************************************************/
 
         function processTranslations(translations) {
-            var items = dhis2.menu.getApps();
+            var items = that.getApps();
+
+            that.name = translations[nameKey];
 
             items.forEach(function (element, index, items) {
                 if (element.id && translations[element.id]) {
@@ -112,7 +150,7 @@
          * Execute any callbacks that are set onto the callbacks array
          */
         function executeCallBacks() {
-            var onceCallBack, callBackIndex;
+            var onceCallBack;
 
             //If not ready or no menu items
             if ( ! isReady() || menuItems === {})
@@ -121,10 +159,10 @@
             //Execute the single time callbacks
             while (onceCallBacks.length !== 0) {
                 onceCallBack = onceCallBacks.pop();
-                onceCallBack(menuItems);
+                onceCallBack.apply(that, [that]);
             }
             callBacks.forEach(function (callback, index, callBacks) {
-                callback.apply(dhis2.menu, [menuItems]);
+                callback.apply(that, [that]);
             });
         }
 
@@ -170,6 +208,8 @@
          * Public methods
          **********************************************************************/
 
+        that.id = nameKey;
+        that.name = nameKey;
         that.displayOrder = 'custom';
 
         that.getMenuItems = function () {
@@ -234,12 +274,19 @@
         that.addMenuItems = function (items) {
             var keysToTranslate = [];
 
+            //Add the name of the menu to the translationList
+            keysToTranslate.push(nameKey);
+
             items.forEach(function (item, index, items) {
                 item.id = item.name;
                 keysToTranslate.push(item.name);
                 if(item.description === "") {
                     keysToTranslate.push("intro_" + item.name);
                 }
+
+                item.defaultAction = fixUrlIfNeeded(item.defaultAction);
+                item.icon = fixUrlIfNeeded(item.icon);
+
                 menuItems.setItem(item.id, item);
             });
 
@@ -257,11 +304,12 @@
             var once = onlyOnce ? true : false;
 
             if ( ! du.isFunction(callback)) {
+                setTimeout(executeCallBacks, 300);
                 return false;
             }
 
-            if (menuItems !== undefined) {
-                callback(menuItems);
+            if (isReady() && (menuItems !== undefined)) {
+                callback(that);
             }
 
             if (true === once) {
@@ -305,7 +353,7 @@
          * @returns {Array} Array of app objects
          */
         that.getOrderedAppList = function () {
-            var favApps = dhis2.menu.getFavorites(),
+            var favApps = that.getFavorites(),
                 nonFavApps = that.getNonFavoriteApps();
             switch (that.displayOrder) {
                 case 'name-asc':
@@ -319,7 +367,7 @@
         }
 
         that.updateOrder = function (reorderedApps) {
-            switch (dhis2.menu.displayOrder) {
+            switch (that.displayOrder) {
                 case 'name-asc':
                 case 'name-desc':
                     that.updateFavoritesFromList(reorderedApps);
@@ -340,198 +388,10 @@
             return saveMethod(that.getMenuItems().getOrder());
         }
 
-        return that;
-    }();
-})(dhis2 = dhis2 || {});
-
-/**
- * Created by Mark Polak on 28/01/14.
- *
- * @description jQuery part of the menu
- *
- * @see jQuery (http://jquery.com)
- * @see jQuery Template Plugin (http://github.com/jquery/jquery-tmpl)
- */
-
-/* Function used for checking dependencies for the menu
-(function (required_libs, undefined) {
-    var libraries = [
-        { name: "jQuery", variable: "jQuery", url: "http://jquery.com" },
-        { name: "jQuery Template Plugin", variable: "jQuery.template", url: "http://github.com/jquery/jquery-tmpl" }
-    ];
-
-    //In IE 8 we can not use console
-    if (typeof console === "undefined") {
-        return;
-    }
-
-    //Throw error for the required libraries
-    libraries.forEach(function (library, index, libraries) {
-        if (window[library] === undefined) {
-            console.error("Missing required library: " + library.name + ". Please see (" + library.url + ")");
-        }
-    });
-})();
-*/
-
-(function ($, menu, undefined) {
-    var markup = '',
-        selector = 'appsMenu';
-
-    markup += '<li data-id="${id}" data-app-name="${name}" data-app-action="${defaultAction}">';
-    markup += '  <a href="${defaultAction}" class="app-menu-item">';
-    markup += '    <img src="${icon}" onError="javascript: this.onerror=null; this.src = \'../icons/program.png\';">';
-    markup += '    <span>${name}</span>';
-    markup += '    <div class="app-menu-item-description"><span class="bold">${name}</span><i class="fa fa-arrows"></i><p>${description}</p></div>';
-    markup += '  </a>';
-    markup += '</li>';
-
-    $.template('appMenuItemTemplate', markup);
-
-    function renderDropDownFavorites() {
-        var selector = '#appsDropDown .menuDropDownBox',
-            apps = dhis2.menu.getOrderedAppList();
-
-        $('#appsDropDown').addClass('app-menu-dropdown ui-helper-clearfix');
-        $(selector).html('');
-        $.tmpl( "appMenuItemTemplate", apps).appendTo(selector);
-    }
-
-    function renderAppManager(selector) {
-        var apps = dhis2.menu.getOrderedAppList();
-        $('#' + selector).html('');
-        $('#' + selector).append($('<ul></ul><hr class="app-separator">').addClass('ui-helper-clearfix'));
-        $('#' + selector).addClass('app-menu');
-        $.tmpl( "appMenuItemTemplate", apps).appendTo('#' + selector + ' ul');
-
-        //Add favorites icon to all the menu items in the manager
-        $('#' + selector + ' ul li').each(function (index, item) {
-            $(item).children('a').append($('<i class="fa fa-bookmark"></i>'));
-        });
-
-        twoColumnRowFix();
-    }
-
-    /**
-     * Saves the given order to the server using jquery ajax
-     *
-     * @param menuOrder {Array}
-     */
-    function saveOrder(menuOrder) {
-        if (menuOrder.length !== 0) {
-            //Persist the order on the server
-            $.ajax({
-                contentType:"application/json; charset=utf-8",
-                data: JSON.stringify(menuOrder),
-                dataType: "json",
-                type:"POST",
-                url: "../api/menu/"
-            }).success(function () {
-                    //TODO: Give user feedback for successful save
-                }).error(function () {
-                    //TODO: Give user feedback for failure to save
-                });
-        }
-    }
-
-    /**
-     * Resets the app blocks margin in case of a resize or a sort update.
-     * This function adds a margin to the 9th element when the screen is using two columns to have a clear separation
-     * between the favorites and the other apps
-     *
-     * @param event
-     * @param ui
-     */
-    function twoColumnRowFix(event, ui) {
-        var self = $('.app-menu ul'),
-            elements = $(self).find('li:not(.ui-sortable-helper)');
-
-        elements.each(function (index, element) {
-            $(element).css('margin-right', '0px');
-            if ($(element).hasClass('app-menu-placeholder')) {
-                $(element).css('margin-right', '10px');
-            }
-            //Only fix the 9th element when we have a small enough screen
-            if (index === 8 && (self.width() < 808)) {
-                $(element).css('margin-right', '255px');
-            }
-        });
-
-    }
-
-    /**
-     * Render the menumanager and the dropdown menu and attach the update handler
-     */
-        //TODO: Rename this as the name is not very clear to what it does
-    function renderMenu() {
-        var options = {
-            placeholder: 'app-menu-placeholder',
-            connectWith: '.app-menu ul',
-            update: function (event, ui) {
-                var reorderedApps = $("#" + selector + " ul"). sortable('toArray', {attribute: "data-id"});
-
-                dhis2.menu.updateOrder(reorderedApps);
-                dhis2.menu.save(saveOrder);
-
-                //Render the dropdown menu
-                renderDropDownFavorites();
-            },
-            sort: twoColumnRowFix,
-            tolerance: "pointer",
-            cursorAt: { left: 55, top: 30 }
-        };
-
-        renderAppManager(selector);
-        renderDropDownFavorites();
-
-        $('.app-menu ul').sortable(options).disableSelection();
-    }
-
-    menu.subscribe(renderMenu);
-
-    /**
-     * jQuery events that communicate with the web api
-     * TODO: Check the urls (they seem to be specific to the dev location atm)
-     */
-    $(function () {
-        var menuTimeout = 500,
-            closeTimer = null,
-            dropDownId = null,
-            dropDownHooks = (function () {
-                var hook_library = {};
-
-                return {
-                  get: function (id) {
-                      if (hook_library[id] && hook_library[id].length > 0) {
-                        return hook_library[id];
-                      } else {
-                        return [];
-                      }
-                  },
-                  addHook: function (id, hook) {
-                      hook_library[id] = hook_library[id] || [];
-                      hook_library[id].push(hook);
-                  }
-                };
-            })();
-
-        function performSearch() {
-            var menuItems = [],
-                searchFor = $('#apps-search').val().toLowerCase(),
-                searchMatches = [];
-
-            //Re-render all the apps
-            renderDropDownFavorites();
-
-            if (searchFor === '') {
-                $('#apps-search-clear').hide();
-                $('#apps-search').focus();
-                return;
-            }
-            $('#apps-search-clear').show();
-
+        that.search = function (searchFor) {
             //Get all the apps
-            menuItems = menu.getApps();
+            var menuItems = that.getApps(),
+                searchMatches = [];
 
             //Find the matches
             menuItems.forEach(function (menuItem) {
@@ -544,7 +404,7 @@
                 }
             });
 
-            //Order the search matches on occurance
+            //Order the search matches on occurrence
             searchMatches.sort(function (a, b) {
                 if (a.searchScore < b.searchScore)
                     return -1;
@@ -553,221 +413,16 @@
                 return 0;
             });
 
-            //Remove all the apps
-            $(dropDownId).find('ul').find('li').remove();
-
-            //Add the apps that match the search back to the menu
-            $.tmpl( "appMenuItemTemplate", searchMatches).appendTo(dropDownId + ' ul');
+            return searchMatches;
         }
 
-        function goToFirstMenuItem() {
-            var menuItemUrl = $(dropDownId).find('ul li').first().find('a').attr('href');
-            if (menuItemUrl) {
-                window.location = menuItemUrl;
-            }
+        if (typeof preLoadedData === 'object') {
+            that.addMenuItems(preLoadedData);
         }
 
-        dropDownHooks.addHook('appsDropDown', function () {
-            var dropDownId = this;
-            $(dropDownId).find('#apps-search').focus();
+        return that;
+    };
 
-            $('#apps-search').keyup(function (event) {
-                if ( event.which == 13 ) {
-                    event.preventDefault();
-                    goToFirstMenuItem();
-                } else {
-                    performSearch();
-                }
-
-            });
-
-            $('#apps-search-clear').click(function () {
-                $('#apps-search').val("");
-                performSearch();
-            });
-        });
-
-        $.ajax('../dhis-web-commons/menu/getModules.action').success(function (data) {
-            if (typeof data.modules === 'object') {
-                menu.addMenuItems(data.modules);
-            }
-        }).error(function () {
-                //TODO: Give user feedback for failure to load items
-                //TODO: Translate this error message
-                var error_template = '<li class="app-menu-error"><a href="' + window.location.href +'">Unable to load your apps, click to refresh</a></li>';
-                $('#' + selector).addClass('app-menu').html('<ul>' + error_template + '</ul>');
-                $('#appsDropDown .menuDropDownBox').html(error_template);
-            });
-
-        /**
-         * Event handler for the sort order box
-         */
-        $('#menuOrderBy').change(function (event) {
-            var orderBy = $(event.target).val();
-
-            dhis2.menu.displayOrder = orderBy;
-
-            renderMenu();
-        });
-
-        /**
-         * Check if we need to fix columns when the window resizes
-         */
-        $(window).resize(twoColumnRowFix);
-
-        /**
-         * Adds a scrolling mechanism that makes space for the scrollbar and shows/hides the more apps button
-         */
-        $('.menu-drop-down-scroll').scroll(function (event) {
-            var self = $(this);
-
-            if (self.scrollTop() < 10) {
-                self.parent().css('width', '360px');
-                self.parent().parent().css('width', '360px');
-            } else {
-                if (self.innerHeight() === 375 ) {
-                    self.parent().css('width', '384px');
-                    self.parent().parent().css('width', '384px');
-                }
-            }
-
-        });
-
-        function executeDropDownHooks(dropDownId) {
-            var hooks = dropDownHooks.get(dropDownId);
-            hooks.forEach(function (hook) {
-                hook.call('#' + dropDownId);
-            });
-        }
-
-        function showDropDown( id )
-        {
-            var newDropDownId = "#" + id,
-                position = $(newDropDownId + '_button').position();
-
-            cancelHideDropDownTimeout();
-
-            $(newDropDownId).css('position', 'absolute');
-            $(newDropDownId).css('top', '55px');
-            $(newDropDownId).css('left', Math.ceil(position.left - Math.ceil(parseInt($(newDropDownId).innerWidth(), 10) - 108)) + 'px');
-
-            if ( dropDownId != newDropDownId ) {
-                hideDropDown();
-
-                dropDownId = newDropDownId;
-
-                $( dropDownId ).show();
-            }
-
-            executeDropDownHooks(id);
-        }
-
-        function hideDropDown() {
-            if ( dropDownId ) {
-                if ($( dropDownId ).attr( 'data-clicked-open' ) === 'true') {
-                    return;
-                }
-                $( dropDownId ).hide();
-
-                dropDownId = null;
-            }
-        }
-
-        function hideDropDownTimeout() {
-            closeTimer = window.setTimeout( hideDropDown, menuTimeout );
-        }
-
-        function cancelHideDropDownTimeout() {
-            if ( closeTimer ) {
-                window.clearTimeout( closeTimer );
-
-                closeTimer = null;
-            }
-        }
-
-        // Set show and hide drop down events on top menu
-        $( "#appsMenuLink" ).hover(function() {
-            showDropDown( "appsDropDown" );
-        }, function() {
-            hideDropDownTimeout();
-        });
-
-        $( "#profileMenuLink" ).hover(function() {
-            showDropDown( "profileDropDown" );
-        }, function() {
-            hideDropDownTimeout();
-        });
-
-        $( "#appsDropDown, #profileDropDown" ).hover(function() {
-            cancelHideDropDownTimeout();
-        }, function() {
-            hideDropDownTimeout();
-        });
-
-
-        $('.drop-down-menu-link').get().forEach(function (element, index, elements) {
-            var id = $(element).parent().attr('id'),
-                dropdown_menu = $('div#' + id.split('_')[0]);
-
-            function closeAllDropdowns() {
-                $('.app-menu-dropdown').each(function () {
-                    $(this).attr('data-clicked-open', 'false');
-                    $(this).hide();
-                });
-                hideDropDown();
-            }
-
-            $(element).click(function () {
-                return function () {
-                    var thisDropDownStatus = $(dropdown_menu).attr('data-clicked-open');
-                    closeAllDropdowns();
-
-                    if (thisDropDownStatus === 'true') {
-                        $(dropdown_menu).attr('data-clicked-open', 'false');
-                    } else {
-                        $(dropdown_menu).attr('data-clicked-open', 'true');
-                        showDropDown(dropdown_menu.attr('id'));
-                    }
-                }
-            }());
-        });
-
-        $(window).resize(function () {
-            $('.app-menu-dropdown').get().forEach(function (element, index, elements) {
-                var newDropDownId = '#' + $(element).attr('id'),
-                    position = $(newDropDownId + '_button').position();
-
-                $(newDropDownId).css('position', 'absolute');
-                $(newDropDownId).css('top', '55px');
-                $(newDropDownId).css('left', Math.ceil(position.left - Math.ceil(parseInt($(newDropDownId).innerWidth(), 10) - 108)) + 'px');
-            });
-        });
-
-        $('.apps-scroll-up').click(function (event) {
-            var scrollDistance = 330,
-                scrollTop = $('.menu-drop-down-scroll').scrollTop();
-
-            event.preventDefault();
-
-            $('.menu-drop-down-scroll').animate({
-                scrollTop: scrollTop - scrollDistance
-            }, 200);
-        });
-
-        $('.apps-scroll-down').click(function (event) {
-            var scrollDistance = 330,
-                scrollTop = $('.menu-drop-down-scroll').scrollTop();
-
-            event.preventDefault();
-
-            if (scrollTop < 110) {
-                scrollDistance += 40;
-            }
-            $('.menu-drop-down-scroll').animate({
-                scrollTop: scrollTop + scrollDistance
-            }, 200);
-        });
-
-    });
-
-})(jQuery, dhis2.menu);
+    //Expose the fixUrl method so we can use externally
+    dhis2.menu.fixUrlIfNeeded = fixUrlIfNeeded;
+})(dhis2 = dhis2 || {});

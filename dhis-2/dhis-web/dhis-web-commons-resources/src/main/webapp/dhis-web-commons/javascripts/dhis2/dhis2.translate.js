@@ -34,18 +34,39 @@ dhis2.translate = dhis2.translate || {};
 
 /**
  * Created by Mark Polak on 28/01/14.
- *
- * @see jQuery (http://jquery.com)
- * @see Underscore.js (http://underscorejs.org)
  */
-(function ($,  _, translate, undefined) {
+(function (translate, undefined) {
     var translationCache = {
-        get: function (key) {
-            if (this.hasOwnProperty(key))
-                return this[key];
-            return key;
-        }
-    };
+            get: function (key) {
+                if (this.hasOwnProperty(key))
+                    return this[key];
+                return key;
+            }
+        },
+        getBaseUrl = (function () {
+            var href = window.location.origin;
+            return function () {
+                var urlParts = href.split("/"),
+                    baseUrl;
+
+                if (dhis2.settings === undefined || dhis2.settings.baseUrl === undefined) {
+                    return "..";
+                }
+
+                if (typeof dhis2.settings.baseUrl !== "string") {
+                    throw new TypeError("Dhis2 settings: baseUrl should be a string");
+                }
+
+                if (urlParts[urlParts.length - 1] !== "") {
+                    baseUrl = href + '/' + dhis2.settings.baseUrl;
+                } else {
+                    urlParts.pop();
+                    urlParts.push(dhis2.settings.baseUrl);
+                    baseUrl = urlParts.join('/');
+                }
+                return baseUrl;
+            }
+        })();
 
     /**
      * Adds translations to the translation cache (overrides already existing ones)
@@ -53,7 +74,13 @@ dhis2.translate = dhis2.translate || {};
      * @param translations {Object}
      */
     function  addToCache(translations) {
-        translationCache = _.extend(translationCache, translations);
+        var translationIndex;
+
+        for (translationIndex in translations) {
+            if (typeof translationIndex === 'string' && translationIndex !== 'get') {
+                translationCache[translationIndex] = translations[translationIndex];
+            }
+        }
     }
 
     /**
@@ -64,18 +91,23 @@ dhis2.translate = dhis2.translate || {};
      * @param callback {function}
      */
     function getTranslationsFromServer(translateKeys, callback) {
-        $.ajax({
-            url:"../api/i18n",
-            type:"POST",
-            data: JSON.stringify(translateKeys),
-            contentType:"application/json; charset=utf-8",
-            dataType:"json"
-        }).success(function (data) {
-                addToCache(data);
+        var http = new XMLHttpRequest();
+        var url = getBaseUrl() + "/api/i18n";
+        var keysToTranslate = JSON.stringify(translateKeys);
+        http.open("POST", url, true);
+
+        //Send the proper header information along with the request
+        http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+
+        http.onreadystatechange = function() {//Call a function when the state changes.
+            if(http.readyState == 4 && http.status == 200) {
+                addToCache(JSON.parse(http.responseText));
                 if (typeof callback === 'function') {
                     callback(translationCache);
                 }
-            });
+            }
+        }
+        http.send(keysToTranslate);
     }
 
     /**
@@ -86,8 +118,7 @@ dhis2.translate = dhis2.translate || {};
      * @param callback {function}
      */
     translate.get = function (translate, callback) {
-        var translateKeys = [],
-            key;
+        var translateKeys = [];
 
         //Only ask for the translations that we do not already have
         translate.forEach(function (text, index, translate) {
@@ -106,4 +137,4 @@ dhis2.translate = dhis2.translate || {};
 
     };
 
-})(jQuery, _, dhis2.translate);
+})(dhis2.translate);
