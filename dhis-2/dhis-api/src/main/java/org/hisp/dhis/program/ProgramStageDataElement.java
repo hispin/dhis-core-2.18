@@ -81,6 +81,10 @@ public class ProgramStageDataElement
     // Constructors
     // -------------------------------------------------------------------------
 
+    public ProgramStageDataElement()
+    {
+    }
+
     public ProgramStageDataElement( ProgramStage programStage, DataElement dataElement, boolean compulsory )
     {
         this.programStage = programStage;
@@ -97,10 +101,10 @@ public class ProgramStageDataElement
         this.sortOrder = sortOrder;
     }
 
-    public ProgramStageDataElement()
-    {
-    }
-
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ProgramStage getProgramStage()
     {
         return programStage;

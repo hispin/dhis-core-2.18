@@ -28,11 +28,7 @@ package org.hisp.dhis.trackedentity.action.programstage;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.program.ProgramStage;
@@ -41,11 +37,13 @@ import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version AddProgramStageSectionAction.java 11:29:40 AM Aug 22, 2012 $
  */
 public class AddProgramStageSectionAction
@@ -136,10 +134,12 @@ public class AddProgramStageSectionAction
         // ---------------------------------------------------------------------
 
         Set<ProgramStageSection> sections = programStage.getProgramStageSections();
+
         if ( sections == null )
         {
             sections = new HashSet<ProgramStageSection>();
         }
+
         sections.add( section );
 
         programStage.setProgramStageSections( sections );
