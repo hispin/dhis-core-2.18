@@ -33,6 +33,7 @@ function showDataElementGroupSetDetails( context ) {
     function( json ) {
       setInnerHTML('nameField', json.dataElementGroupSet.name);
       setInnerHTML('memberCountField', json.dataElementGroupSet.memberCount);
+      setInnerHTML('idField', json.dataElementGroupSet.uid);
 
       showDetails();
     });

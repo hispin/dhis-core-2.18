@@ -17,7 +17,8 @@
 
         setInnerHTML('nameField', json.dataElementCategory.name);
         setInnerHTML('categoryOptionsCountField', json.dataElementCategory.categoryOptionCount);
-
+		setInnerHTML('idField', json.dataElementCategory.uid);
+        
         showDetails();
       });
   }
@@ -85,6 +86,7 @@
 				</div>
 				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "number_of_category_options" ):</label><br/><span id="categoryOptionsCountField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 			</div>
 
 			<div id="warningArea">

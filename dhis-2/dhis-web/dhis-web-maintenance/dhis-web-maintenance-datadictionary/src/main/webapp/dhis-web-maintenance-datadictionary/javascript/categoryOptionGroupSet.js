@@ -19,6 +19,7 @@ function showCategoryOptionGroupSetDetails( context ) {
       setInnerHTML('nameField', json.categoryOptionGroupSet.name);
       setInnerHTML('descriptionField', json.categoryOptionGroupSet.description);
       setInnerHTML('memberCountField', json.categoryOptionGroupSet.memberCount);
+      setInnerHTML('idField', json.categoryOptionGroupSet.uid);
 
       showDetails();
     });

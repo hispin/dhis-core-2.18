@@ -123,6 +123,8 @@ function showDataElementDetails( context ) {
       var dataSets = joinNameableObjects(json.dataElement.dataSets);
       setInnerHTML('dataSetsField', dataSets ? dataSets : '[' + i18n_none + ']');
 
+	  setInnerHTML('idField', json.dataElement.uid);
+
       showDetails();
     });
 }
