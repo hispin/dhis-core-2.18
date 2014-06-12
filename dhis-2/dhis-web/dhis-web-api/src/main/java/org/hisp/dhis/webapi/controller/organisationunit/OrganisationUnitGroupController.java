@@ -28,36 +28,11 @@ package org.hisp.dhis.webapi.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.common.PagerUtils;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.schema.descriptors.OrganisationUnitGroupSchemaDescriptor;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
-import org.hisp.dhis.webapi.webdomain.WebMetaData;
-import org.hisp.dhis.webapi.webdomain.WebOptions;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,131 +42,4 @@ import java.util.Map;
 public class OrganisationUnitGroupController
     extends AbstractCrudController<OrganisationUnitGroup>
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    @Autowired
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
-
-    // --------------------------------------------------------------------------
-    // Methods
-    // --------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}/members", method = RequestMethod.GET )
-    public String getMembers( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
-    {
-        WebOptions options = new WebOptions( parameters );
-        List<OrganisationUnitGroup> organisationUnitGroups = getEntity( uid );
-
-        if ( organisationUnitGroups.isEmpty() )
-        {
-            ContextUtils.notFoundResponse( response, "OrganisationUnitGroup not found for uid: " + uid );
-            return null;
-        }
-
-        WebMetaData metaData = new WebMetaData();
-        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitGroups.get( 0 ).getMembers() );
-        Collections.sort( organisationUnits, IdentifiableObjectNameComparator.INSTANCE );
-
-        if ( options.hasPaging() )
-        {
-            Pager pager = new Pager( options.getPage(), organisationUnits.size(), options.getPageSize() );
-            metaData.setPager( pager );
-            organisationUnits = PagerUtils.pageCollection( organisationUnits, pager );
-        }
-
-        metaData.setOrganisationUnits( organisationUnits );
-
-        if ( options.hasLinks() )
-        {
-            linkService.generateLinks( metaData );
-        }
-
-        model.addAttribute( "model", metaData );
-        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
-
-        return StringUtils.uncapitalize( getEntitySimpleName() );
-    }
-
-    @RequestMapping( value = "/{uid}/members/query/{q}", method = RequestMethod.GET )
-    public String getMembersByQuery( @PathVariable( "uid" ) String uid, @PathVariable( "q" ) String q,
-        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
-        HttpServletResponse response ) throws Exception
-    {
-        WebOptions options = new WebOptions( parameters );
-        List<OrganisationUnitGroup> organisationUnitGroups = getEntity( uid );
-
-        if ( organisationUnitGroups.isEmpty() )
-        {
-            ContextUtils.notFoundResponse( response, "OrganisationUnitGroup not found for uid: " + uid );
-            return null;
-        }
-
-        WebMetaData metaData = new WebMetaData();
-        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-        List<OrganisationUnit> members = new ArrayList<OrganisationUnit>();
-        Collections.sort( members, IdentifiableObjectNameComparator.INSTANCE );
-
-        for ( OrganisationUnit organisationUnit : members )
-        {
-            if ( organisationUnit.getDisplayName().toLowerCase().contains( q.toLowerCase() ) )
-            {
-                organisationUnits.add( organisationUnit );
-            }
-        }
-
-        if ( options.hasPaging() )
-        {
-            Pager pager = new Pager( options.getPage(), organisationUnits.size(), options.getPageSize() );
-            metaData.setPager( pager );
-            organisationUnits = PagerUtils.pageCollection( organisationUnits, pager );
-        }
-
-        metaData.setOrganisationUnits( organisationUnits );
-
-        if ( options.hasLinks() )
-        {
-            linkService.generateLinks( metaData );
-        }
-
-        model.addAttribute( "model", metaData );
-        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
-
-        return StringUtils.uncapitalize( getEntitySimpleName() );
-    }
-
-    @RequestMapping( value = "/{uid}/members/{orgUnitUid}", method = RequestMethod.POST )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void addMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid,
-        @PathVariable( "orgUnitUid" ) String orgUnitUid ) throws Exception
-    {
-        OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitUid );
-
-        if ( group.addOrganisationUnit( unit ) )
-        {
-            organisationUnitGroupService.updateOrganisationUnitGroup( group );
-        }
-    }
-
-    @RequestMapping( value = "/{uid}/members/{orgUnitUid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void removeMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid,
-        @PathVariable( "orgUnitUid" ) String orgUnitUid ) throws Exception
-    {
-        OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitUid );
-
-        if ( group.removeOrganisationUnit( unit ) )
-        {
-            organisationUnitGroupService.updateOrganisationUnitGroup( group );
-        }
-    }
 }
