@@ -91,4 +91,10 @@ public class MockCurrentUserService
     {
         currentUser = null;
     }
+
+    @Override
+    public boolean currenUserIsAuthorized( String auth )
+    {
+        return true;
+    }
 }
