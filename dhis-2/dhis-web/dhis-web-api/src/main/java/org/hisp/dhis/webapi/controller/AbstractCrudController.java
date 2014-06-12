@@ -68,6 +68,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -192,12 +193,32 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return rootNode;
     }
 
-    @RequestMapping( value = "/{uid}/{property}", method = RequestMethod.GET )
+    @RequestMapping( value = "/{uid}/**", method = RequestMethod.GET )
     public @ResponseBody RootNode getObjectProperty( @PathVariable( "uid" ) String uid,
-        @PathVariable( "property" ) String propertyName, @RequestParam Map<String, String> parameters,
-        HttpServletRequest request, HttpServletResponse response ) throws Exception
+        @RequestParam Map<String, String> parameters, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        return getObjectInternal( uid, parameters, Lists.<String>newArrayList(), Lists.newArrayList( propertyName ) );
+        String requestUrl = (String) request.getAttribute( HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE );
+        String[] fields = requestUrl.split( "/" );
+
+        String field = "";
+        String postfix = "";
+
+        for ( int i = 3; i < fields.length; i++ )
+        {
+            if ( i > 3 )
+            {
+                field += "[" + fields[i];
+                postfix += "]";
+            }
+            else
+            {
+                field = fields[i];
+            }
+        }
+
+        field += postfix;
+
+        return getObjectInternal( uid, parameters, Lists.<String>newArrayList(), Lists.newArrayList( field ) );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
