@@ -28,12 +28,10 @@ package org.hisp.dhis.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 
@@ -61,19 +59,4 @@ public interface TrackedEntityInstanceStore
      * @return
      */
     String validate( TrackedEntityInstance instance, TrackedEntityAttributeValue attributeValue, Program program );
-
-    /**
-     * Search tracked entity instances by a certain attribute- value
-     * 
-     * @param orgunit OrganisationUnit
-     * @param attributeValue Attribute value
-     * @param min First result
-     * @param max Maximum results
-     * 
-     * @return TrackedEntityInstance list
-     */
-    Collection<TrackedEntityInstance> searchTrackedEntityByAttribute( OrganisationUnit orgunit, String attributeValue, Program program,
-        Integer min, Integer max );
-
-    int countTrackedEntityByAttribute( OrganisationUnit orgunit, String attributeValue, Program program );
 }

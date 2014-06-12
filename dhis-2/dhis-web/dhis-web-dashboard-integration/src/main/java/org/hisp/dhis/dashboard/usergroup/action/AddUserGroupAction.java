@@ -28,11 +28,12 @@ package org.hisp.dhis.dashboard.usergroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
+
 import java.util.List;
 
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
-import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.User;
@@ -41,8 +42,6 @@ import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
-
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ONLY_MANAGE_WITHIN_USER_GROUPS;
 
 public class AddUserGroupAction
     implements Action
@@ -77,13 +76,6 @@ public class AddUserGroupAction
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
-    }
-
-    private SecurityService securityService;
-
-    public void setSecurityService( SecurityService securityService )
-    {
-        this.securityService = securityService;
     }
 
     // -------------------------------------------------------------------------

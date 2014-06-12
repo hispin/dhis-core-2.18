@@ -33,7 +33,6 @@ import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
@@ -43,8 +42,6 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.comparator.TrackedEntityAttributeSortOrderInListNoProgramComparator;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
@@ -143,11 +140,13 @@ public class SearchTrackedEntityInstanceAction
             Collections.sort( attributes, new TrackedEntityAttributeSortOrderInListNoProgramComparator() );
         }
 
+        /* TODO use the TEI query interface
         total = entityInstanceService.countTrackedEntityByAttribute( orgunit, attributeValue, program );
         this.paging = createPaging( total );
 
         entityInstances = new ArrayList<TrackedEntityInstance>( entityInstanceService.searchTrackedEntityByAttribute(
             orgunit, attributeValue, program, paging.getStartPos(), paging.getPageSize() ) );
+            */
 
         return SUCCESS;
     }
