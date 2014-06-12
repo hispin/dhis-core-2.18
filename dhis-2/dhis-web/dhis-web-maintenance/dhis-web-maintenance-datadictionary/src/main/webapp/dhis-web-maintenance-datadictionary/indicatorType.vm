@@ -12,6 +12,7 @@
     jQuery.get( 'getIndicatorType.action', { id: context.id }, function( json ) {
       setInnerHTML( 'nameField', json.indicatorType.name );
       setInnerHTML( 'factorField', json.indicatorType.factor );
+	  setInnerHTML( 'idField', json.indicatorType.uid );
 
       showDetails();
 		});
@@ -78,6 +79,7 @@
         </div>
 				<p><label>$i18n.getString( "name"):</label><br/><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "factor" ):</label><br/><span id="factorField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 			</div>
 
 			<div id="warningArea">

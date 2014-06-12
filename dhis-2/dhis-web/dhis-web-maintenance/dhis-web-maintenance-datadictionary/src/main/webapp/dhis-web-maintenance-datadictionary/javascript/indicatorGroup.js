@@ -14,6 +14,7 @@ function showIndicatorGroupDetails( context ) {
     { id: context.id }, function( json ) {
       setInnerHTML('nameField', json.indicatorGroup.name);
       setInnerHTML('memberCountField', json.indicatorGroup.memberCount);
+	  setInnerHTML('idField', json.indicatorGroup.uid);
 
       showDetails();
     });

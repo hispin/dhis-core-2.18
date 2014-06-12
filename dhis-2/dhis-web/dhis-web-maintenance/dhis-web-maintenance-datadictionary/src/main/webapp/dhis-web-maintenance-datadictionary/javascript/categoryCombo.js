@@ -11,6 +11,7 @@ function showDataElementCategoryComboDetails( context ) {
 		function ( json) {
 			setInnerHTML( 'nameField', json.dataElementCategoryCombo.name );
 			setInnerHTML( 'dataElementCategoryCountField', json.dataElementCategoryCombo.dataElementCategoryCount );
+			setInnerHTML( 'idField', json.dataElementCategoryCombo.uid );
 
 			showDetails();
 	});

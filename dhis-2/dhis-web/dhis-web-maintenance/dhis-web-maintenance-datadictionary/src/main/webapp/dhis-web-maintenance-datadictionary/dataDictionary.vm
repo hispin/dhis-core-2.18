@@ -63,6 +63,7 @@
 				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "region" ):</label><br/><span id="regionField"></span></p>				
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>				
 			</div>
 
       <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">

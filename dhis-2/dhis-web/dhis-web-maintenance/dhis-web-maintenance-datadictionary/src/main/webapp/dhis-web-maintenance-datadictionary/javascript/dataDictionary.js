@@ -21,6 +21,8 @@ function showDataDictionaryDetails( context ) {
 			var region = json.dataDictionary.region;
 			setInnerHTML( 'regionField', region ? region : '[' + i18n_none + ']' );
 
+			setInnerHTML( 'idField', json.dataDictionary.uid );
+
 			showDetails();
 	});
 }

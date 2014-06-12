@@ -27,6 +27,7 @@ function showDataElementGroupDetails( context ) {
       setInnerHTML('shortNameField', json.dataElementGroup.shortName);
       setInnerHTML('codeField', json.dataElementGroup.code);
       setInnerHTML('memberCountField', json.dataElementGroup.memberCount);
+      setInnerHTML('idField', json.dataElementGroup.uid);
 
       showDetails();
     });

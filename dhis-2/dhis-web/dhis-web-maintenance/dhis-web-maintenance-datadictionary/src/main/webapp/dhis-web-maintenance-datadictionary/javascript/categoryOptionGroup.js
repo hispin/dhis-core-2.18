@@ -20,6 +20,7 @@ function showCategoryOptionGroupDetails( context ) {
       setInnerHTML('codeField', json.categoryOptionGroup.code);
       setInnerHTML('shortNameField', json.categoryOptionGroup.shortName);
       setInnerHTML('memberCountField', json.categoryOptionGroup.memberCount);
+      setInnerHTML('idField', json.categoryOptionGroup.uid);
 
       showDetails();
     });

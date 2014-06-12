@@ -84,6 +84,8 @@ function showIndicatorDetails( context )
 		var dataSets = joinNameableObjects( json.indicator.dataSets );
 		setInnerHTML( 'dataSetsField', dataSets ? dataSets : '[' + i18n_none + ']' );
 
+		setInnerHTML( 'idField', json.indicator.uid );
+
 		showDetails();
 	});
 }

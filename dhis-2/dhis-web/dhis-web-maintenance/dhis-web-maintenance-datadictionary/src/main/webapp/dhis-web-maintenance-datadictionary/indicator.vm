@@ -83,12 +83,13 @@
 				<p><label>$i18n.getString( "short_name" ):</label><br/><span id="shortNameField"></span></p>
 				<p><label>$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "annualized" ):</label><br/><span id="annualizedField"></span></p>
-        <p><label>$i18n.getString( "indicator_type" ):</label><br/><span id="indicatorTypeNameField"></span></p>
-        <p><label>$i18n.getString( "numerator_description" ):</label><br/><span id="numeratorDescriptionField"></span></p>
+				<p><label>$i18n.getString( "indicator_type" ):</label><br/><span id="indicatorTypeNameField"></span></p>
+				<p><label>$i18n.getString( "numerator_description" ):</label><br/><span id="numeratorDescriptionField"></span></p>
 				<p><label>$i18n.getString( "denominator_description" ):</label><br/><span id="denominatorDescriptionField"></span></p>
-        <p><label>$i18n.getString( "url" ):</label><br/><span id="urlField"></span></p>
-        <p><label>$i18n.getString( "last_updated" ):</label><br/><span id="lastUpdatedField"></span></p>
-        <p><label>$i18n.getString( "data_sets" ):</label><br/><span id="dataSetsField"></span></p>
+				<p><label>$i18n.getString( "url" ):</label><br/><span id="urlField"></span></p>
+				<p><label>$i18n.getString( "last_updated" ):</label><br/><span id="lastUpdatedField"></span></p>
+				<p><label>$i18n.getString( "data_sets" ):</label><br/><span id="dataSetsField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 			</div>
 
 			<div id="warningArea">
