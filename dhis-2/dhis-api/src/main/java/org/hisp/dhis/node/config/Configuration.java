@@ -1,4 +1,4 @@
-package org.hisp.dhis.node.types;
+package org.hisp.dhis.node.config;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,43 +28,39 @@ package org.hisp.dhis.node.types;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.config.Configuration;
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class RootNode extends ComplexNode
+public class Configuration extends ForwardingMap<Feature, Boolean>
 {
-    private String defaultNamespace;
-
-    private Configuration configuration = new Configuration();
-
-    public RootNode( String name )
+    @Override
+    protected Map<Feature, Boolean> delegate()
     {
-        super( name );
+        return Maps.newHashMap();
     }
 
-    public RootNode( Node node )
+    public void enable( Feature feature )
     {
-        super( node.getName() );
-        setNamespace( node.getNamespace() );
-        setComment( node.getComment() );
-        addChildren( node.getChildren() );
+        delegate().put( feature, true );
     }
 
-    public String getDefaultNamespace()
+    public void disable( Feature feature )
     {
-        return defaultNamespace;
+        delegate().put( feature, false );
     }
 
-    public void setDefaultNamespace( String defaultNamespace )
+    public boolean isEnabled( Feature feature )
     {
-        this.defaultNamespace = defaultNamespace;
-    }
+        if ( delegate().containsKey( feature ) )
+        {
+            return delegate().get( feature );
+        }
 
-    public Configuration configuration()
-    {
-        return configuration;
+        return feature.defaultState();
     }
 }
