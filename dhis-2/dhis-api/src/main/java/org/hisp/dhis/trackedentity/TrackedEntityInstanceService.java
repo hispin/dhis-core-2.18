@@ -94,13 +94,13 @@ public interface TrackedEntityInstanceService
 {
     String ID = TrackedEntityInstanceService.class.getName();
 
-    public static final int ERROR_NONE = 0;
-
-    public static final int ERROR_DUPLICATE_IDENTIFIER = 1;
-
-    public static final int ERROR_ENROLLMENT = 2;
-
-    public static final String SEPARATOR = "_";
+    final int ERROR_NONE = 0;
+    final int ERROR_DUPLICATE_IDENTIFIER = 1;
+    final int ERROR_ENROLLMENT = 2;
+    
+    final String SEPARATOR = "_";
+    
+    final String F_TRACKED_ENTITY_INSTANCE_SEARCH_IN_ALL_ORGUNITS = "F_TRACKED_ENTITY_INSTANCE_SEARCH_IN_ALL_ORGUNITS";
 
     /**
      * Returns a grid with tracked entity instance values based on the given
@@ -139,6 +139,14 @@ public interface TrackedEntityInstanceService
         Boolean followUp, Date programStartDate, Date programEndDate, String trackedEntity, EventStatus eventStatus,
         Date eventStartDate, Date eventEndDate, boolean skipMeta, Integer page, Integer pageSize );
 
+    /**
+     * Decides whether current user is authorized to perform the given query.
+     * IllegalQueryException is thrown if not.
+     * 
+     * @param params the TrackedEntityInstanceQueryParams.
+     */
+    void decideAccess( TrackedEntityInstanceQueryParams params );
+    
     /**
      * Validates the given TrackedEntityInstanceQueryParams. The params is
      * considered valid if no exception are thrown and the method returns

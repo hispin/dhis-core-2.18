@@ -64,4 +64,9 @@ public interface CurrentUserService
      * in user is logged out.
      */
     void clearCurrentUser();
+    
+    /**
+     * Indicates whether the current user has been granted the given authority.
+     */
+    boolean currenUserIsAuthorized( String auth );
 }
