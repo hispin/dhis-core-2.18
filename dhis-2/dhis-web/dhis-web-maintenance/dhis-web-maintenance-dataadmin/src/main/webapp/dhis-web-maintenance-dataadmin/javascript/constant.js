@@ -7,6 +7,7 @@ function showConstantDetails( context ) {
     function( json ) {
       setInnerHTML('nameField', json.constant.name);
       setInnerHTML('valueField', json.constant.value);
+      setInnerHTML('idField', json.constant.uid);
       showDetails();
     });
 }

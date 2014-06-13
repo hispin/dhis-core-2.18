@@ -1,6 +1,7 @@
 { "constant":
   {
     "id": "${constant.id}",
+	"uid": "${constant.uid}",
 	"name": "$!encoder.jsonEncode( ${constant.name} )",
 	"value": "$!{constant.value}"
   }

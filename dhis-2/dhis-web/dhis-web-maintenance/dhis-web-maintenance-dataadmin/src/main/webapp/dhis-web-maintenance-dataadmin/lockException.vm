@@ -20,6 +20,7 @@
         setInnerHTML('organisationUnitField', json.lockException.organisationUnit);
         setInnerHTML('dataSetField', json.lockException.dataSet);
         setInnerHTML('periodField', json.lockException.period);
+        setInnerHTML('idField', json.lockException.uid);
         showDetails();
       });
   }

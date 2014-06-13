@@ -11,6 +11,7 @@ function showOptionSetDetails( context ) {
     function( json ) {
       setInnerHTML('nameField', json.optionSet.name);
       setInnerHTML('optionCount', json.optionSet.optionCount);
+      setInnerHTML('idField', json.optionSet.uid);
       showDetails();
     });
 }
