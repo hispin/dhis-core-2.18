@@ -1,6 +1,7 @@
 { "dataSet": 
   {
     "id": $!{dataSet.id},
+    "uid": "$!{dataSet.uid}",
     "name": "$!encoder.jsonEncode( ${dataSet.displayName} )",
     "shortName": "$!encoder.jsonEncode( ${dataSet.displayShortName} )",
     "description": "$!encoder.jsonEncode( ${dataSet.description} )",

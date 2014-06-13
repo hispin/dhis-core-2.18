@@ -1,7 +1,7 @@
 { "dataElementCategory":
   {
-    "id":  "${dataElementCategory.id}",
-    "uid":  "${dataElementCategory.uid}",
+    "id":  "${dataElementCategory.id}" ,
+    "uid":  "${dataElementCategory.uid}" ,
     "name": "$!encoder.jsonEncode( ${dataElementCategory.name} )",
 	"categoryOptionCount": "${dataElementCategory.categoryOptions.size()}"
   }

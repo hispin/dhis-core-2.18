@@ -17,6 +17,7 @@ function showSectionDetails( context )
 		setInnerHTML( 'dataSetField', json.section.dataSet );
 		setInnerHTML( 'categoryComboField', json.section.categoryCombo );
 		setInnerHTML( 'dataElementCountField', json.section.dataElementCount );  
+		setInnerHTML( 'idField', json.section.uid ); 
 		
 		showDetails();
 	} );

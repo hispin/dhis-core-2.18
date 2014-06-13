@@ -14,6 +14,7 @@ function showDataSetDetails( context ) {
     setInnerHTML('frequencyField', json.dataSet.frequency);
     setInnerHTML('dataElementCountField', json.dataSet.dataElementCount);
     setInnerHTML('dataEntryFormField', json.dataSet.dataentryform);
+    setInnerHTML('idField', json.dataSet.uid);
 
     showDetails();
   });
