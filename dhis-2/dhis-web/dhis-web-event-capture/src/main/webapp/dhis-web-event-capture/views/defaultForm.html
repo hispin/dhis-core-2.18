@@ -1,0 +1,115 @@
+<table class="dhis2-list-table-striped">                    
+    <thead>                        
+        <tr>
+            <th>
+                {{'data_element'| translate}}                    
+            </th>
+            <th>
+                {{'value'| translate}}                    
+            </th>         
+        </tr>                        
+    </thead>
+    <tbody id="list">
+        <tr>
+            <td>
+                 {{selectedProgram.dateOfIncidentDescription}}
+            </td>
+            <td>
+                <input type="text"                                                   
+                       placeholder="yyyy-mm-dd" 
+                       ng-date 
+                       ng-model="currentEvent.eventDate"
+                       ng-disabled="editingEventInFull"    
+                       ng-required="true" 
+                       name="eventDate" 
+                       style="width:99%;">
+                <span ng-show="outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{'required'| translate}}</span>
+            </td>
+        </tr>
+        <tr ng-if="selectedProgramStage.captureCoordinates">
+            <td>
+                {{'latitude' | translate}}
+            </td>
+            <td>
+                <input type="number"
+                       ng-model="currentEvent.coordinate.latitude"                                                                
+                       name="latitude" 
+                       ng-required="false"
+                       style="width:99%;"/>
+                <span ng-show="outerForm.submitted && outerForm.latitude.$invalid" class="required">{{'number_required'| translate}}</span>
+            </td>                                            
+        </tr>
+        <tr ng-if="selectedProgramStage.captureCoordinates">
+            <td>
+                {{'longitude' | translate}}
+            </td>
+            <td>
+                <input type="number"
+                       ng-model="currentEvent.coordinate.longitude"                                                                
+                       name="longitude" 
+                       ng-required="false"
+                       style="width:99%;"/>
+                <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'number_required'| translate}}</span>
+            </td>                                            
+        </tr>
+        <tr ng-repeat="eventGridColumn in eventGridColumns">
+            <td >
+                {{eventGridColumn.name}}                                              
+            </td>
+            <td >
+                <ng-form name="innerForm">
+                    <div ng-switch="eventGridColumn.type">
+                        <div ng-switch-when="int">
+                            <input type="number"
+                                   ng-model="currentEvent[eventGridColumn.id]"                                                                
+                                   ng-required={{eventGridColumn.compulsory}}
+                                   name="foo" 
+                                   style="width:99%;"/>
+                            <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
+                        </div>
+                        <div ng-switch-when="string">                                        
+                            <div class="container-fluid">
+                                <input type="text"
+                                       ng-model="currentEvent[eventGridColumn.id]"                                                                    
+                                       typeahead="option for option in programStageDataElements[eventGridColumn.id].dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                       typeahead-open-on-focus
+                                       ng-required={{eventGridColumn.compulsory}}
+                                       name="foo" 
+                                       style="width:99%;"/>
+                            <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
+                            </div>
+                        </div>
+                        <div ng-switch-when="bool">
+                            <select ng-model="currentEvent[eventGridColumn.id]"                                                                
+                                    ng-required={{eventGridColumn.compulsory}}
+                                    name="foo" 
+                                    style="width:99%;"/>
+                                <option value="">{{'please_select'| translate}}</option>                        
+                                <option value="0">{{'no'| translate}}</option>
+                                <option value="1">{{'yes'| translate}}</option>
+                            </select>
+                            <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
+                        </div>
+                        <div ng-switch-when="date">
+                            <input type="text"                                                                
+                                   placeholder="yyyy-mm-dd" 
+                                   ng-date 
+                                   ng-model="currentEvent[eventGridColumn.id]"                                                               
+                                   ng-required={{eventGridColumn.compulsory}}
+                                   name="foo" 
+                                   style="width:99%;"/>
+                            <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
+                        </div>
+                        <div ng-switch-when="trueOnly">
+                            <input type="checkbox"                                                                      
+                                   ng-model="currentEvent[eventGridColumn.id]"                                                               
+                                   ng-required={{eventGridColumn.compulsory}}
+                                   name="foo"/>
+                            <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="required">{{'required'| translate}}</span>
+                        </div>
+                    </div>
+                </ng-form>
+            </td>
+        </tr>
+    </tbody>        
+</table>     

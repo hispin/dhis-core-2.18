@@ -368,6 +368,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 dataValues: dataValues
         };      
         
+        if($scope.selectedProgramStage.captureCoordinates){
+            dhis2Event.coordinate = {latitude: $scope.currentEvent.coordinate.latitude ? $scope.currentEvent.coordinate.latitude : '',
+                                     longitude: $scope.currentEvent.coordinate.longitude ? $scope.currentEvent.coordinate.longitude : ''};             
+        }
         //send the new event to server
         DHIS2EventFactory.create(dhis2Event).then(function(data) {
             if (data.importSummaries[0].status === 'ERROR') {
@@ -429,6 +433,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         updatedEvent.eventDate = moment(updatedEvent.eventDate, 'YYYY-MM-DD')._d;       
         updatedEvent.eventDate = Date.parse(updatedEvent.eventDate);
         updatedEvent.eventDate = $filter('date')(updatedEvent.eventDate, 'yyyy-MM-dd'); 
+        
+        if($scope.selectedProgramStage.captureCoordinates){
+            updatedEvent.coordinate = {latitude: $scope.currentEvent.coordinate.latitude ? $scope.currentEvent.coordinate.latitude : '',
+                                     longitude: $scope.currentEvent.coordinate.longitude ? $scope.currentEvent.coordinate.longitude : ''};             
+        }
         
         DHIS2EventFactory.update(updatedEvent).then(function(data){            
             

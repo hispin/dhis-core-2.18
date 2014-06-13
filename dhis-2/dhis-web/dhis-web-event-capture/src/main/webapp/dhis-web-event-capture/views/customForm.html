@@ -1,0 +1,46 @@
+<table style='width: 50%;'>
+    <tr>
+        <td>
+            {{selectedProgram.dateOfIncidentDescription}}
+        </td>
+        <td>
+            <input type="text"                                                   
+                    placeholder="yyyy-mm-dd" 
+                    ng-date 
+                    ng-model="currentEvent.eventDate"
+                    ng-disabled="editingEventInFull"    
+                    ng-required="true" 
+                    name="eventDate"
+                    style="width:99%;"/>
+            <span ng-show="outerForm.submitted && outerForm.eventDate.$invalid" class="required">{{'required'| translate}}</span>
+        </td>
+    </tr>
+    <tr ng-if="selectedProgramStage.captureCoordinates">
+        <td>
+            {{'latitude' | translate}}
+        </td>
+        <td>
+            <input type="number"
+                   ng-model="currentEvent.coordinate.latitude"                                                                
+                   name="latitude" 
+                   ng-required="false"
+                   style="width:99%;"/>
+            <span ng-show="outerForm.submitted && outerForm.latitude.$invalid" class="required">{{'number_required'| translate}}</span>
+        </td>                                            
+    </tr>
+    <tr ng-if="selectedProgramStage.captureCoordinates">
+        <td>
+            {{'longitude' | translate}}
+        </td>
+        <td>
+            <input type="number"
+                   ng-model="currentEvent.coordinate.longitude"                                                                
+                   name="longitude" 
+                   ng-required="false"
+                   style="width:99%;"/>
+            <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'number_required'| translate}}</span>
+        </td>                                            
+    </tr>
+</table>                            
+<hr>                            
+<dhis-custom-form custom-form-type="PROGRAM_STAGE" custom-form-object="selectedProgramStage"></dhis-custom-form>

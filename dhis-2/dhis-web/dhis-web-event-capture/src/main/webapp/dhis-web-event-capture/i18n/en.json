@@ -25,6 +25,7 @@
     "back": "Back",
     "go_back": "Go back",
     "required": "Required",
+    "number_required": "Number required",
     "ok": "Ok",
     "done": "Done",
     "remove": "Remove",
@@ -71,5 +72,16 @@
     "no": "NO",
     "yes": "YES",   
     "offline_notification": "You are offline, data will be stored locally",
-    "online_nofification": "You are online"
+    "online_nofification": "You are online",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "profile": "Profile",
+    "applications": "Apps",
+    "more_applications": "More apps",
+    "search_apps": "Search apps",
+    "settings": "Settings",
+    "account": "Account",
+    "help": "Help",
+    "log_out": "Log out",
+    "about_dhis2": "About DHIS 2"
 }

@@ -317,7 +317,7 @@ function getProgramStage( id )
 {
     return function() {
         return $.ajax( {
-            url: '../api/programStages.json?filter=id:eq:' + id +'&fields=id,name,dataEntryForm,description,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,optionSet[id]]]',
+            url: '../api/programStages.json?filter=id:eq:' + id +'&fields=id,name,captureCoordinates,dataEntryForm,description,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,optionSet[id]]]',
             type: 'GET'
         }).done( function( response ){            
             _.each( _.values( response.programStages ), function( programStage ) {                
