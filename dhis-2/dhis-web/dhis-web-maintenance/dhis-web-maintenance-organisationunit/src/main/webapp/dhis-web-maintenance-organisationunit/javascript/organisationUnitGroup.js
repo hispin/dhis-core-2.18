@@ -9,6 +9,7 @@ function showOrganisationUnitGroupDetails( context ) {
       setInnerHTML('shortNameField', json.organisationUnitGroup.shortName);
       setInnerHTML('codeField', json.organisationUnitGroup.code);
       setInnerHTML('memberCountField', json.organisationUnitGroup.memberCount);
+      setInnerHTML('idField', json.organisationUnitGroup.uid);
 
       showDetails();
     });

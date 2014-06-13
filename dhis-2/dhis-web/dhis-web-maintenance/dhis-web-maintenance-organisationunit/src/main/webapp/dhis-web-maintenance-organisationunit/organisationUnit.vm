@@ -78,6 +78,7 @@
 				<p><label>$i18n.getString( "comment" ):</label><br/><span id="commentField"></span></p>
                 <p><label>$i18n.getString( "url" ):</label><br/><span id="urlField"></span></p>
                 <p><label>$i18n.getString( "last_updated" ):</label><br/><span id="lastUpdatedField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 			</div>
 
             <div id="warningArea">

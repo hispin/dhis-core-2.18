@@ -12,6 +12,7 @@ function showOrganisationUnitGroupSetDetails( context )
 		function ( json ) {
 			setInnerHTML( 'nameField', json.organisationUnitGroupSet.name );
 			setInnerHTML( 'descriptionField', json.organisationUnitGroupSet.description );
+			setInnerHTML( 'idField', json.organisationUnitGroupSet.uid );
 			
 			var compulsory = json.organisationUnitGroupSet.compulsory;
 			
