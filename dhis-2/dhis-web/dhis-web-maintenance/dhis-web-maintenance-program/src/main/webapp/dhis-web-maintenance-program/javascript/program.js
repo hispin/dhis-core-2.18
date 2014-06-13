@@ -47,6 +47,7 @@ function showProgramDetails( context ) {
   }, function( json ) {
     setInnerHTML('nameField', json.program.name);
     setInnerHTML('descriptionField', json.program.description);
+    setInnerHTML('idField', json.program.uid);
 
     var type = i18n_multiple_events_with_registration;
     if( json.program.type == "2" )

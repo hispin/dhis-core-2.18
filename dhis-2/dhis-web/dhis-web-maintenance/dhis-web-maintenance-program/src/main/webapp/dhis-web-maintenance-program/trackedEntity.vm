@@ -49,9 +49,11 @@
       <div id="detailsArea">
         <div id="hideDetailsArea">
           <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"></a>
-				</div>
-        <p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
-        <p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
+			</div>
+				<p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
+				<p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
+				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
+			</div>
 		</td>
   </tr>
 </table>

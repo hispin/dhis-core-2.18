@@ -1,6 +1,7 @@
 { "caseAggregation":
   {
     "id": "${caseAggregation.id}",
+	"uid": "${caseAggregation.uid}",
 	"name": "$!encoder.jsonEncode( ${caseAggregation.name} )",
 	"operator": "${caseAggregation.operator}",
 	"aggregationDataElement": "$!encoder.jsonEncode( ${caseAggregation.aggregationDataElement.name} )",

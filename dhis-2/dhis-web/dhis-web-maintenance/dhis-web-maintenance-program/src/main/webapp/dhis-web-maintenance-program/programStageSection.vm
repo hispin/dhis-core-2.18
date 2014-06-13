@@ -52,6 +52,7 @@
 				</div>				
 				<p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
 				<p><label class="bold">$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>				
+				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>				
 			</div>
 		</td>
 	</tr>

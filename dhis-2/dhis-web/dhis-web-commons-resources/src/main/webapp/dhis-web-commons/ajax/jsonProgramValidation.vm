@@ -1,6 +1,7 @@
 { "validation":
   {
     "id": "${validation.id}",
+	"uid": "${validation.uid}",
 	"description": "$!encoder.htmlEncode( ${validation.name} )",
 	"operator": "$!encoder.htmlEncode( ${validation.operator} )",
 	"leftSideDescription": "$!encoder.htmlEncode( ${validation.leftSide.description} )",

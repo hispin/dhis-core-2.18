@@ -18,6 +18,7 @@ function showRelationshipTypeDetails( context ) {
     setInnerHTML('aIsToBField', json.relationshipType.aIsToB);
     setInnerHTML('bIsToAField', json.relationshipType.bIsToA);
     setInnerHTML('descriptionField', json.relationshipType.description);
+    setInnerHTML('idField', json.relationshipType.uid);
 
     showDetails();
   });

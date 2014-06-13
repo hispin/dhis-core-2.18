@@ -1,6 +1,7 @@
 { "programStage":
   {
     "id": "${programStage.id}",
+	"uid": "${programStage.uid}",
 	"name": "$!encoder.jsonEncode( ${programStage.name} )",
 	"description": "$!encoder.jsonEncode( ${programStage.description} )",
 	"minDaysFromStart": "${programStage.minDaysFromStart}",

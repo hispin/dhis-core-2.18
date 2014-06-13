@@ -25,6 +25,7 @@ function showProgramIndicatorDetails( context ) {
     setInnerHTML('valueTypeField', json.programIndicator.valueType);
     setInnerHTML('rootDateField', json.programIndicator.rootDate);
     setInnerHTML('expressionField', json.programIndicator.expression);
+    setInnerHTML('idField', json.programIndicator.uid);
 
     showDetails();
   });

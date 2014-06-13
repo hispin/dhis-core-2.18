@@ -1,6 +1,7 @@
 { "programIndicator": 
   {
     "id": $!{programIndicator.id},
+    "uid": "$!{programIndicator.uid}",
     "name": "$!encoder.jsonEncode( ${programIndicator.displayName} )",
     "code": "$!encoder.jsonEncode( ${programIndicator.code} )",
 	"description": "$!encoder.xmlEncode( ${programIndicator.displayDescription} )",

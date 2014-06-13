@@ -18,6 +18,7 @@ function showTrackedEntityDetails( context ) {
     function( json ) {
       setInnerHTML('nameField', json.trackedEntity.name);
       setInnerHTML('descriptionField', json.trackedEntity.description);
+      setInnerHTML('idField', json.trackedEntity.uid);
 
       showDetails();
     });
