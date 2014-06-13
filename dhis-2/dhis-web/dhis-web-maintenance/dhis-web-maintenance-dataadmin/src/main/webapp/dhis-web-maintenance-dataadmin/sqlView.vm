@@ -39,7 +39,6 @@
 			</table>
 			<table class="listTable" id="listTable">
 				<col/>			
-				<col width="150px"/>
 				<thead>		
 					<tr>
 						<th>$i18n.getString( "name" )</th>
@@ -68,6 +67,7 @@
 				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "sql_statement" ):</label><br/><span id="sqlQueryField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 			</div>
 			
 			<div id="warningArea">

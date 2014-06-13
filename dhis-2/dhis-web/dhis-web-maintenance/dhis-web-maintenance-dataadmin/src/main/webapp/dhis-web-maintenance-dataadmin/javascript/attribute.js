@@ -21,6 +21,7 @@ function showAttributeDetails( context ) {
       setInnerHTML('organisationunitField', json.attribute.organisationunit);
       setInnerHTML('userField', json.attribute.user);
       setInnerHTML('valuetypeField', json.attribute.valueType);
+      setInnerHTML('idField', json.attribute.uid);
       showDetails();
     });
 }

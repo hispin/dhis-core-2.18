@@ -38,6 +38,7 @@ function showSqlViewDetails( context ) {
     var description = json.sqlView.description;
     setInnerHTML('descriptionField', description ? description : '[' + i18n_none + ']');
     setInnerHTML('sqlQueryField', json.sqlView.sqlquery);
+    setInnerHTML('idField', json.sqlView.uid);
 
     showDetails();
   });

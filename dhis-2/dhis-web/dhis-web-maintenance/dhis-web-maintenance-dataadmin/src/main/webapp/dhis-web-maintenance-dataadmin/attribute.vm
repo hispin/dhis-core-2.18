@@ -68,6 +68,7 @@
 				<p><label>$i18n.getString( "indicator" ):</label><br/><span id="indicatorField"></span></p>
 				<p><label>$i18n.getString( "organisation_unit" ):</label><br/><span id="organisationunitField"></span></p>
 				<p><label>$i18n.getString( "user" ):</label><br/><span id="userField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 			</div>
 
 			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">

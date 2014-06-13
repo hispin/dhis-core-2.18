@@ -15,6 +15,7 @@ function showLocaleDetails( context ) {
   }, function( json ) {
     setInnerHTML('nameField', json.i18nLocale.name);
     setInnerHTML('localeField', json.i18nLocale.locale);
+    setInnerHTML('idField', json.i18nLocale.uid);
 
     showDetails();
   });
