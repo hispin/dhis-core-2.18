@@ -55,6 +55,7 @@
 		<p><label class="bold">$i18n.getString( "send_message" ):</label><br><span id="whenToSendField"></span></p>
 		<p><label class="bold">$i18n.getString( "message_type" ):</label><br><span id="messageTypeField"></span></p>
 		<p><label class="bold">$i18n.getString( "user_group" ):</label><br><span id="userGroupField"></span></p>
+		<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
 		</div>
 
 		</td>

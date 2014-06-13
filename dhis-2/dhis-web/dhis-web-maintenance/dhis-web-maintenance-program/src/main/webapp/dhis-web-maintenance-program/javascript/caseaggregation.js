@@ -278,6 +278,7 @@ function showCaseAggregationDetails( context ) {
     setInnerHTML('optionComboField', json.caseAggregation.optionCombo);
     setInnerHTML('aggregationExpressionField', json.caseAggregation.aggregationExpression);
     setInnerHTML('deSumField', json.caseAggregation.deSum);
+    setInnerHTML('idField', json.caseAggregation.uid);
     showDetails();
   });
 }

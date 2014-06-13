@@ -116,10 +116,12 @@ public class TrackedEntityInstanceReminder
 
     public TrackedEntityInstanceReminder()
     {
+        setAutoFields();
     }
 
     public TrackedEntityInstanceReminder( String name, Integer daysAllowedSendMessage, String templateMessage )
     {
+        setAutoFields();
         this.name = name;
         this.daysAllowedSendMessage = daysAllowedSendMessage;
         this.templateMessage = templateMessage;
@@ -128,6 +130,7 @@ public class TrackedEntityInstanceReminder
     public TrackedEntityInstanceReminder( String name, Integer daysAllowedSendMessage, String templateMessage, String dateToCompare,
         Integer sendTo, Integer whenToSend, Integer messageType )
     {
+        setAutoFields();
         this.name = name;
         this.daysAllowedSendMessage = daysAllowedSendMessage;
         this.templateMessage = templateMessage;

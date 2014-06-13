@@ -1,6 +1,7 @@
 { "reminder": 
   {
     "id": $!{reminder.id},
+    "uid": "$!{reminder.uid}",
     "name": "$!encoder.jsonEncode( ${reminder.displayName} )",
     "daysAllowedSendMessage": "$!{reminder.daysAllowedSendMessage}",
     "templateMessage": "$!encoder.jsonEncode( ${reminder.templateMessage} )",

@@ -62,6 +62,7 @@
 				<p><label class="bold">$i18n.getString( "left_side_expression" ):</label><br><span id="leftSideExpressionField"></span></p>
 				<p><label class="bold">$i18n.getString( "right_side_description" ):</label><br><span id="rightSideDescriptionField"></span></p>
 				<p><label class="bold">$i18n.getString( "right_side_expression" ):</label><br><span id="rightSideExpressionField"></span></p>
+				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
 			</div>
 		</td>
   </tr>

@@ -45,16 +45,17 @@
       <div id="detailsArea">
         <div id="hideDetailsArea">
           <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"></a>
-				</div>
-        <p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
-        <p><label class="bold">$i18n.getString( "send_message" ):</label><br><span id="daysAllowedSendMessageField"></span></p>
-        <p><label class="bold">$i18n.getString( "message" ):</label><br><span id="templateMessageField"></span></p>
-        <p><label class="bold">$i18n.getString( "date_to_compare" ):</label><br><span id="dateToCompareField"></span></p>
-		<p><label class="bold">$i18n.getString( "recipients" ):</label><br><span id="sendToField"></span></p>
-		<p><label class="bold">$i18n.getString( "send_message" ):</label><br><span id="whenToSendField"></span></p>
-		<p><label class="bold">$i18n.getString( "message_type" ):</label><br><span id="messageTypeField"></span></p>
-		<p><label class="bold">$i18n.getString( "user_group" ):</label><br><span id="userGroupField"></span></p>
-		</div>
+			</div>
+				<p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
+				<p><label class="bold">$i18n.getString( "send_message" ):</label><br><span id="daysAllowedSendMessageField"></span></p>
+				<p><label class="bold">$i18n.getString( "message" ):</label><br><span id="templateMessageField"></span></p>
+				<p><label class="bold">$i18n.getString( "date_to_compare" ):</label><br><span id="dateToCompareField"></span></p>
+				<p><label class="bold">$i18n.getString( "recipients" ):</label><br><span id="sendToField"></span></p>
+				<p><label class="bold">$i18n.getString( "send_message" ):</label><br><span id="whenToSendField"></span></p>
+				<p><label class="bold">$i18n.getString( "message_type" ):</label><br><span id="messageTypeField"></span></p>
+				<p><label class="bold">$i18n.getString( "user_group" ):</label><br><span id="userGroupField"></span></p>
+				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
+			</div>
 
 		</td>
   </tr>

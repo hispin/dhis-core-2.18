@@ -19,6 +19,7 @@ function showAttributeGroupDetails( context ) {
       setInnerHTML('nameField', json.attributeGroup.name);
       setInnerHTML('descriptionField', json.attributeGroup.description);
       setInnerHTML('noAttributeField', json.attributeGroup.noAttribute);
+      setInnerHTML('idField', json.attributeGroup.uid);
 
       showDetails();
     });

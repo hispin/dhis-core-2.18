@@ -23,6 +23,7 @@ function showUpdateSingleProgramValidationForm( context ) {
 function showProgramValidationDetails( context ) {
   jQuery.getJSON('getProgramValidation.action', { validationId: context.id }, function( json ) {
     setInnerHTML('descriptionField', json.validation.description);
+    setInnerHTML('idField', json.validation.uid);
 
     var operator = json.validation.operator;
     setInnerHTML('operatorField', i18nalizeOperator(operator));

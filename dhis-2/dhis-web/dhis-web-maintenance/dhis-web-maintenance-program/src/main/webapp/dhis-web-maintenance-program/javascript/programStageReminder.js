@@ -50,6 +50,7 @@ function showReminderDetails( context ) {
 	programStageId: getFieldValue('programStageId')
   }, function( json ) {
     setInnerHTML('nameField', json.reminder.name);
+    setInnerHTML('idField', json.reminder.uid);
 	
 	var days = json.reminder.daysAllowedSendMessage;
 	if( eval(days)>=0 ){
