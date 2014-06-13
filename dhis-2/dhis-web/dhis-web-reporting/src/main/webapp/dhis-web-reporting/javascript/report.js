@@ -51,6 +51,7 @@ function removeReport( context ) {
 function showReportDetails( context ) {
   jQuery.get('getReport.action', { "id": context.id }, function( json ) {
     setInnerHTML('nameField', json.report.name);
+	setInnerHTML('idField', json.report.uid);
 
     var reportTableName = json.report.reportTableName;
     setInnerHTML('reportTableNameField', reportTableName ? reportTableName : '[' + i18n_none + ']');
