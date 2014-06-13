@@ -58,6 +58,7 @@
           </div>
           <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
           <p><label>$i18n.getString( "no_of_Users" ):</label><br/><span id="noOfGroupField"></span></p>
+          <p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
         </div>
           
         <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
