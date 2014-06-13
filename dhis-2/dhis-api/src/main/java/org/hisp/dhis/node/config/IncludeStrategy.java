@@ -31,23 +31,7 @@ package org.hisp.dhis.node.config;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public enum SerializationFeature implements Feature
+public interface IncludeStrategy
 {
-    /**
-     * Enable pretty printing for serializers that support it.
-     */
-    PRETTY_PRINT( false );
-
-    private boolean state;
-
-    SerializationFeature( boolean state )
-    {
-        this.state = state;
-    }
-
-    @Override
-    public boolean defaultState()
-    {
-        return state;
-    }
+    <T> boolean include( T object );
 }

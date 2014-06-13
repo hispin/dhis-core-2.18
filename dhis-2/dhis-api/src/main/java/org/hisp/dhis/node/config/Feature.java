@@ -33,5 +33,7 @@ package org.hisp.dhis.node.config;
  */
 public interface Feature
 {
-    boolean defaultState();
+    String key();
+
+    boolean defaultEnabled();
 }

@@ -31,9 +31,9 @@ package org.hisp.dhis.node.serializers;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.node.AbstractNodeSerializer;
-import org.hisp.dhis.node.config.SerializationFeature;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
@@ -49,7 +49,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-@Scope(value = "prototype", proxyMode = ScopedProxyMode.INTERFACES)
+@Scope( value = "prototype", proxyMode = ScopedProxyMode.INTERFACES )
 public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
 {
     public static final String CONTENT_TYPE = "application/json";
@@ -59,9 +59,9 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
     static
     {
         objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
-        objectMapper.configure( com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
-        objectMapper.configure( com.fasterxml.jackson.databind.SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
-        objectMapper.configure( com.fasterxml.jackson.databind.SerializationFeature.WRAP_EXCEPTIONS, true );
+        objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+        objectMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
+        objectMapper.configure( SerializationFeature.WRAP_EXCEPTIONS, true );
         objectMapper.getFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
     }
 
@@ -82,14 +82,7 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void startSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
     {
-        ObjectMapper mapper = objectMapper.copy();
-
-        if ( rootNode.configuration().isEnabled( SerializationFeature.PRETTY_PRINT ) )
-        {
-            mapper.enable( com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT );
-        }
-
-        generator = mapper.getFactory().createGenerator( outputStream );
+        generator = objectMapper.getFactory().createGenerator( outputStream );
     }
 
     @Override
@@ -101,6 +94,7 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void startWriteRootNode( RootNode rootNode ) throws Exception
     {
+        //generator.writeRaw( "callback(" );
         generator.writeStartObject();
     }
 
@@ -108,6 +102,7 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
     protected void endWriteRootNode( RootNode rootNode ) throws Exception
     {
         generator.writeEndObject();
+        //generator.writeRaw( ")" );
     }
 
     @Override

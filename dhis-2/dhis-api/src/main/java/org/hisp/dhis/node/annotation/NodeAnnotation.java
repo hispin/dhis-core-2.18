@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Target( { ElementType.TYPE } )
+@Target( { ElementType.ANNOTATION_TYPE } )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface NodeAnnotation
 {
