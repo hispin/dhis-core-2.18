@@ -44,7 +44,15 @@ dhis2.translate = dhis2.translate || {};
             }
         },
         getBaseUrl = (function () {
-            var href = window.location.origin;
+            var href;
+
+            //Add window.location.origin for IE8
+            if (!window.location.origin) {
+                window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+            }
+
+            href = window.location.origin;
+
             return function () {
                 var urlParts = href.split("/"),
                     baseUrl;
