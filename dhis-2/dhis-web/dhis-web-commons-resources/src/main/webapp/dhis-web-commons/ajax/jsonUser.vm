@@ -1,6 +1,7 @@
 { "user":
   {
     "id": ${user.id},
+    "uid": "${user.uid}",
     "surname": "$!encoder.jsonEncode( ${user.surname} )",
     "firstName": "$!encoder.jsonEncode( ${user.firstName} )",
     "username": "$!encoder.jsonEncode( ${user.userCredentials.username} )",

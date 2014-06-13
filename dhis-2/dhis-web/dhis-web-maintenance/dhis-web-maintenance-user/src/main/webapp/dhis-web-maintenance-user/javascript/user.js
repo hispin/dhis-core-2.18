@@ -46,6 +46,7 @@ function showUserProfile( context ) {
 function showUserDetails( context ) {
   jQuery.post('getUser.action', { id: context.id }, function( json ) {
     setInnerHTML('usernameField', json.user.username);
+	setInnerHTML('idField', json.user.uid);
 
     var fullName = json.user.firstName + ", " + json.user.surname;
     setInnerHTML('fullNameField', fullName);
