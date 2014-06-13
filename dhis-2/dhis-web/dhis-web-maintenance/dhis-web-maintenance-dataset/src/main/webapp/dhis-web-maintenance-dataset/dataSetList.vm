@@ -75,6 +75,7 @@
 				<p><label>$i18n.getString( "frequency" ):</label><br/><span id="frequencyField"></span></p>
 				<p><label>$i18n.getString( "number_of_data_elements" ):</label><br/><span id="dataElementCountField"></span></p>
 				<p><label>$i18n.getString( "dataentryform" ):</label><br/><span id="dataEntryFormField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 			</div>
 			
       <div id="warningArea">

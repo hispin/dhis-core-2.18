@@ -84,6 +84,7 @@
 				<p><label>$i18n.getString( "dataset" ):</label><br/><span id="dataSetField"></span></p>
 				<p><label>$i18n.getString( "category_combo" ):</label><br/><span id="categoryComboField"></span></p>				
 				<p><label>$i18n.getString( "number_of_data_elements" ):</label><br/><span id="dataElementCountField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 			</div>
 
 		</td>
