@@ -7,6 +7,7 @@ function showValidationRuleDetails( context )
 {
     jQuery.post( 'getValidationRule.action', { id: context.id }, function ( json ) {
 		setText( 'nameField', json.validationRule.name );
+		setText( 'idField', json.validationRule.uid );
 		
 		var description = json.validationRule.description;
 		setText( 'descriptionField', description ? description : '[' + i18n_none + ']' );

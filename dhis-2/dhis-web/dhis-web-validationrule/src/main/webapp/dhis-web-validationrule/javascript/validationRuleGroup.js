@@ -13,6 +13,7 @@ function showValidationRuleGroupDetails( context ) {
     setInnerHTML('descriptionField', json.validationRuleGroup.description);
     setInnerHTML('memberCountField', json.validationRuleGroup.memberCount);
     setInnerHTML('userGroupsToAlertCountField', json.validationRuleGroup.userGroupsToAlertCount);
+	setInnerHTML('idField', json.validationRuleGroup.uid);
 
     showDetails();
   });
