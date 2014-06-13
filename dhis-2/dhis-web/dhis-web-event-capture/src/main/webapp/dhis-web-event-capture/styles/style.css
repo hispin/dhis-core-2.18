@@ -114,6 +114,7 @@ div.paging a.active
     border-radius: 5px;
     padding: 12px;
     margin-bottom: 20px;
+    overflow: auto;
 }
 
 .nav, .pagination, .carousel, .panel-title a { 
@@ -227,7 +228,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 
 .button-std {
-	width: 130px;
+    width: 130px;
 }
 
 /*----------------------------------------------------------------------------*/
