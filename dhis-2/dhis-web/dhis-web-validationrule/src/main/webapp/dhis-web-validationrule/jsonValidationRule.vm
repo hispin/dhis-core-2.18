@@ -1,6 +1,7 @@
 { "validationRule":
   {
 	"name": "$!encoder.jsonEncode( ${validationRule.name} )",
+	"uid": "$!encoder.jsonEncode( ${validationRule.uid} )",
 	"description": "$!encoder.jsonEncode( ${validationRule.description} )",
 	"type": "$!encoder.jsonEncode( ${validationRule.type} )",
 	"importance": "$!encoder.jsonEncode( ${validationRule.importance} )",

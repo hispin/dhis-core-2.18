@@ -71,7 +71,6 @@
 			<table class="listTable" id="listTable"> 
 				<col/>
 				<col/>
-				<col/>
 				<col width="120px">				
 				<thead>							
 				<tr>
@@ -114,6 +113,7 @@
 				<p><label>$i18n.getString( "left_side_description" ):</label><br><span id="leftSideDescriptionField"></span></p>
 				<p><label>$i18n.getString( "operator" ):</label><br><span id="operatorField"></span></p>
 				<p><label>$i18n.getString( "right_side_description" ):</label><br><span id="rightSideDescriptionField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
 			</div>
 			
 			<div id="warningArea">
