@@ -7,6 +7,7 @@ function showRoleDetails( context ) {
     setInnerHTML('nameField', json.userRole.name);
     setInnerHTML('membersField', json.userRole.members);
     setInnerHTML('dataSetsField', json.userRole.dataSets);
+    setInnerHTML('idField', json.userRole.uid);
 
     showDetails();
   });

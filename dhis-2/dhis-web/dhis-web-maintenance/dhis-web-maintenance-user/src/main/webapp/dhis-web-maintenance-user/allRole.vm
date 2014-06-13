@@ -60,6 +60,7 @@
         <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
         <p><label>$i18n.getString( "members" ):</label><br/><span id="membersField"></span></p>
         <p><label>$i18n.getString( "data_sets" ):</label><br/><span id="dataSetsField"></span></p>
+        <p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
       </div>
 			
 			<div id="warningArea">

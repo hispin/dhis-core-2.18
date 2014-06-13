@@ -93,6 +93,7 @@
                 <p><label>$i18n.getString( "disabled" ):</label><br><span id="disabledField"></span></p>
 				<p><label>$i18n.getString( "organisation_units" ):</label><br/><span id="assignedOrgunitField"></span></p>
 				<p><label>$i18n.getString( "roles" ):</label><br/><span id="roleField"></span></p>
+				<p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
 			</div>
 			
 			<div id="warningArea">
