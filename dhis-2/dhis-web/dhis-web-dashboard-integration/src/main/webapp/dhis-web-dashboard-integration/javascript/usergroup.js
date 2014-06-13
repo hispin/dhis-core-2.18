@@ -18,6 +18,7 @@ function showUserGroupDetails( context ) {
     function( json ) {
       setInnerHTML('nameField', json.userGroup.name);
       setInnerHTML('noOfGroupField', json.userGroup.noOfUsers);
+      setInnerHTML('idField', json.userGroup.uid);
 
       showDetails();
     });
