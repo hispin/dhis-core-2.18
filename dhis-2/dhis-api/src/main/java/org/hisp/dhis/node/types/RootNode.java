@@ -29,7 +29,6 @@ package org.hisp.dhis.node.types;
  */
 
 import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.config.Configuration;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -37,8 +36,6 @@ import org.hisp.dhis.node.config.Configuration;
 public class RootNode extends ComplexNode
 {
     private String defaultNamespace;
-
-    private Configuration configuration = new Configuration();
 
     public RootNode( String name )
     {
@@ -61,10 +58,5 @@ public class RootNode extends ComplexNode
     public void setDefaultNamespace( String defaultNamespace )
     {
         this.defaultNamespace = defaultNamespace;
-    }
-
-    public Configuration configuration()
-    {
-        return configuration;
     }
 }
