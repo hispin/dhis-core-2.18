@@ -337,7 +337,7 @@ public class HibernateTrackedEntityInstanceStore
                     final String col = statementBuilder.columnQuote( item.getItemId() );
 
                     sql += 
-                        "lower(" + col + ".value) " + regexp + " '" + wordStart + 
+                        col + ".value " + regexp + " '" + wordStart + 
                         StringUtils.lowerCase( query ) + wordEnd + "' or ";
                 }
 
