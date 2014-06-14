@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
+import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.event.EventStatus;
@@ -62,7 +63,7 @@ public class TrackedEntityInstanceQueryParams
     /**
      * Query value, will apply to all relevant attributes.
      */
-    private String query;
+    private QueryFilter query;
     
     /**
      * Attributes to be included in the response. Can be used to filter response.
@@ -276,7 +277,7 @@ public class TrackedEntityInstanceQueryParams
      */
     public boolean hasQuery()
     {
-        return query != null && !query.isEmpty();
+        return query != null && query.isFilter();
     }
     
     /**
@@ -486,12 +487,12 @@ public class TrackedEntityInstanceQueryParams
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public String getQuery()
+    public QueryFilter getQuery()
     {
         return query;
     }
 
-    public void setQuery( String query )
+    public void setQuery( QueryFilter query )
     {
         this.query = query;
     }

@@ -56,6 +56,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
+import org.hisp.dhis.common.QueryOperator;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.event.EventStatus;
@@ -215,6 +216,7 @@ public class HibernateTrackedEntityInstanceStore
         final String regexp = statementBuilder.getRegexpMatch();
         final String wordStart = statementBuilder.getRegexpWordStart();
         final String wordEnd = statementBuilder.getRegexpWordEnd();
+        final String anyChar = "\\.*?";
 
         String sql = "from trackedentityinstance tei " + 
             "inner join trackedentity te on tei.trackedentityid = te.trackedentityid " +
@@ -322,9 +324,12 @@ public class HibernateTrackedEntityInstanceStore
 
         if ( params.isOrQuery() && params.hasAttributesOrFilters() )
         {
+            final String start = params.getQuery().isOperator( QueryOperator.LIKE ) ? anyChar : wordStart;
+            final String end = params.getQuery().isOperator( QueryOperator.LIKE ) ? anyChar : wordEnd;
+            
             sql += hlp.whereAnd() + " (";
 
-            List<String> queryTokens = getTokens( params.getQuery() );
+            List<String> queryTokens = getTokens( params.getQuery().getFilter() );
 
             for ( String queryToken : queryTokens )
             {
@@ -337,8 +342,8 @@ public class HibernateTrackedEntityInstanceStore
                     final String col = statementBuilder.columnQuote( item.getItemId() );
 
                     sql += 
-                        col + ".value " + regexp + " '" + wordStart + 
-                        StringUtils.lowerCase( query ) + wordEnd + "' or ";
+                        col + ".value " + regexp + " '" + start + 
+                        StringUtils.lowerCase( query ) + end + "' or ";
                 }
 
                 sql = removeLastOr( sql ) + ") and ";

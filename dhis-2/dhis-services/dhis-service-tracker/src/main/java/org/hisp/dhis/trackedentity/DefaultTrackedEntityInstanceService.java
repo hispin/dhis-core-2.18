@@ -52,6 +52,7 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.OrganisationUnitSelectionMode;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.QueryFilter;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.QueryOperator;
 import org.hisp.dhis.event.EventStatus;
@@ -361,6 +362,8 @@ public class DefaultTrackedEntityInstanceService
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
+        QueryFilter queryFilter = getQueryFilter( query );
+        
         if ( attribute != null )
         {
             for ( String attr : attribute )
@@ -410,7 +413,7 @@ public class DefaultTrackedEntityInstanceService
             throw new IllegalQueryException( "Tracked entity does not exist: " + program );
         }
 
-        params.setQuery( query );
+        params.setQuery( queryFilter );
         params.setProgram( pr );
         params.setProgramStatus( programStatus );
         params.setFollowUp( followUp );
@@ -428,14 +431,17 @@ public class DefaultTrackedEntityInstanceService
         return params;
     }
 
+    /**
+     * Creates a QueryItem from the given item string. Item is on format
+     * {attribute-id}:{operator}:{filter-value}. Only the attribute-id is mandatory.
+     */
     private QueryItem getQueryItem( String item )
     {
         if ( !item.contains( DimensionalObjectUtils.DIMENSION_NAME_SEP ) )
         {
             return getItem( item, null, null );
         }
-        else
-        // Filter
+        else // Filter
         {
             String[] split = item.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
 
@@ -448,6 +454,9 @@ public class DefaultTrackedEntityInstanceService
         }
     }
 
+    /**
+     * Creates a QueryItem from the given item, operator and filter strings.
+     */
     private QueryItem getItem( String item, String operator, String filter )
     {
         TrackedEntityAttribute at = attributeService.getTrackedEntityAttribute( item );
@@ -466,6 +475,37 @@ public class DefaultTrackedEntityInstanceService
         else
         {
             return new QueryItem( at, at.isNumericType() );
+        }
+    }
+    
+    /**
+     * Creates a QueryFilter from the given query string. Query is on format
+     * {operator}:{filter-value}. Only the filter-value is mandatory. The EQ
+     * QueryOperator is used as operator if not specified.
+     */
+    private QueryFilter getQueryFilter( String query )
+    {
+        if ( query == null || query.isEmpty() )
+        {
+            return null;
+        }
+        
+        if ( !query.contains( DimensionalObjectUtils.DIMENSION_NAME_SEP ) )
+        {
+            return new QueryFilter( QueryOperator.EQ, query );
+        }
+        else
+        {
+            String[] split = query.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
+            
+            if ( split == null || split.length != 2 )
+            {
+                throw new IllegalQueryException( "Query has invalid format: " + query );
+            }
+            
+            QueryOperator op = QueryOperator.fromString( split[0] );
+            
+            return new QueryFilter( op, split[1] );
         }
     }
 
@@ -494,6 +534,7 @@ public class DefaultTrackedEntityInstanceService
         if ( representativeId != null )
         {
             TrackedEntityInstance representative = trackedEntityInstanceStore.getByUid( representativeId );
+            
             if ( representative != null )
             {
                 instance.setRepresentative( representative );
@@ -505,6 +546,7 @@ public class DefaultTrackedEntityInstanceService
                 if ( relationshipTypeId != null )
                 {
                     RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+                    
                     if ( relType != null )
                     {
                         rel.setRelationshipType( relType );
