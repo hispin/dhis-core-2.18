@@ -76,6 +76,11 @@ public class QueryFilter
         return operator != null && filter != null && !filter.isEmpty();
     }
     
+    public boolean isOperator( QueryOperator op )
+    {
+        return operator != null && operator.equals( op );
+    }
+    
     public String getSqlOperator()
     {
         if ( operator == null )
