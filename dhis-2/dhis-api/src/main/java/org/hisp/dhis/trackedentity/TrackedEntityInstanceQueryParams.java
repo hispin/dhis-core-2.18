@@ -297,7 +297,6 @@ public class TrackedEntityInstanceQueryParams
     {
         Set<QueryItem> items = new HashSet<QueryItem>();
         List<QueryItem> duplicates = new ArrayList<QueryItem>();
-        
         for ( QueryItem item : getAttributes() )
         {
             if ( !items.add( item ) )
