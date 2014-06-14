@@ -451,8 +451,8 @@ public class DefaultTrackedEntityInstanceService
     private QueryItem getItem( String item, String operator, String filter )
     {
         TrackedEntityAttribute at = attributeService.getTrackedEntityAttribute( item );
-        
-        if (  !item.equals( QueryItem.ALL ) && at == null )
+
+        if ( at == null )
         {
             throw new IllegalQueryException( "Attribute does not exist: " + item );
         }
@@ -461,16 +461,7 @@ public class DefaultTrackedEntityInstanceService
         {
             QueryOperator op = QueryOperator.fromString( operator );
             
-            if( at==null )
-            {
-                at = new TrackedEntityAttribute();
-                at.setUid( item );
-                return new QueryItem( at, op, filter );
-            }
-            else 
-            {
-                return new QueryItem( at, op, filter, at.isNumericType() );
-            }
+            return new QueryItem( at, op, filter, at.isNumericType() );
         }
         else
         {

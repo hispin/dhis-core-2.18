@@ -227,12 +227,8 @@ public class HibernateTrackedEntityInstanceStore
             final String joinClause = item.hasFilter() ? "inner join" : "left join";
 
             sql += joinClause + " " + 
-                "trackedentityattributevalue as " + col + " " + "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid ";
-
-            if( !item.getItemId().equals( QueryItem.ALL ) )
-            {
-                sql += "and " + col + ".trackedentityattributeid = " + item.getItem().getId() + " ";
-            }
+                "trackedentityattributevalue as " + col + " " + "on " + col + ".trackedentityinstanceid = tei.trackedentityinstanceid " + 
+                "and " + col + ".trackedentityattributeid = " + item.getItem().getId() + " ";
 
             if ( !params.isOrQuery() && item.hasFilter() )
             {

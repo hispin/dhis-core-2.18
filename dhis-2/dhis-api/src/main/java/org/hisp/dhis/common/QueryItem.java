@@ -40,8 +40,6 @@ import java.util.List;
  */
 public class QueryItem
 {
-    public static final String ALL = "ALL";
-    
     private IdentifiableObject item;
 
     private List<QueryFilter> filters = new ArrayList<QueryFilter>();
@@ -67,17 +65,6 @@ public class QueryItem
     {
         this.item = item;
         this.numeric = numeric;
-        
-        if ( operator != null && filter != null )
-        {
-            this.filters.add( new QueryFilter( operator, filter ) );
-        }
-    }
-    
-    public QueryItem( IdentifiableObject item, QueryOperator operator, String filter )
-    {
-        this.item = item;
-        this.numeric = false;
         
         if ( operator != null && filter != null )
         {
