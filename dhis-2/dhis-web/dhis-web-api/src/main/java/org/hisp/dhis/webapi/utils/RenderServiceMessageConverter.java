@@ -89,12 +89,23 @@ public class RenderServiceMessageConverter extends AbstractHttpMessageConverter<
     @Override
     protected boolean canRead( MediaType mediaType )
     {
-        return false;
+        return true;
     }
 
     @Override
     protected Object readInternal( Class<?> clazz, HttpInputMessage inputMessage ) throws IOException, HttpMessageNotReadableException
     {
+        MediaType mediaType = inputMessage.getHeaders().getContentType();
+
+        if ( mediaType.getSubtype().equals( "json" ) )
+        {
+            return renderService.fromJson( inputMessage.getBody(), clazz );
+        }
+        else if ( mediaType.getSubtype().equals( "xml" ) )
+        {
+            return renderService.fromXml( inputMessage.getBody(), clazz );
+        }
+
         return null;
     }
 
