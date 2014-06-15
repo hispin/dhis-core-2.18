@@ -3,9 +3,9 @@
         <tr>
             <td>{{'org_unit_mode'| translate}}</td>
             <td>
-                <input type="radio" ng-model="ouMode.name" value="SELECTED">{{'use_selected'| translate}}<br/>
-                <input type="radio" ng-model="ouMode.name" value="CHILDREN">{{'use_immediate_children'| translate}}<br/>
-                <input type="radio" ng-model="ouMode.name" value="DESCENDANTS">{{'use_all_children'| translate}}
+                <input type="radio" ng-model="ouMode.name" id="selected" value="SELECTED"><label for="selected" class="radio-label">{{'use_selected'| translate}}</label><br/>
+                <input type="radio" ng-model="ouMode.name" id="children" value="CHILDREN"><label for="children" class="radio-label">{{'use_immediate_children'| translate}}</label><br/>
+                <input type="radio" ng-model="ouMode.name" id="descendants" value="DESCENDANTS"><label for="descendants" class="radio-label">{{'use_all_children'| translate}}</label>
             </td>
         </tr>
         <tr>
