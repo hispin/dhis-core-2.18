@@ -114,7 +114,7 @@ public class DefaultSchemaService implements SchemaService
 
         String name = getName( klass );
 
-        schema = new Schema( klass, name, name );
+        schema = new Schema( klass, name, name + "s" );
         schema.setPropertyMap( Maps.newHashMap( propertyIntrospectorService.getPropertiesMap( schema.getKlass() ) ) );
 
         updateSelf( schema );
