@@ -139,6 +139,13 @@ public class Property
     private boolean collection;
 
     /**
+     * If this property is a complex object or a collection, is this property considered
+     * the owner of that relationship (important for imports etc).
+     */
+    @NodeSimple( isPersisted = false )
+    private boolean owner;
+
+    /**
      * Is this class a sub-class of IdentifiableObject
      *
      * @see org.hisp.dhis.common.IdentifiableObject
@@ -329,6 +336,18 @@ public class Property
     public void setCollection( boolean collection )
     {
         this.collection = collection;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isOwner()
+    {
+        return owner;
+    }
+
+    public void setOwner( boolean owner )
+    {
+        this.owner = owner;
     }
 
     @JsonProperty

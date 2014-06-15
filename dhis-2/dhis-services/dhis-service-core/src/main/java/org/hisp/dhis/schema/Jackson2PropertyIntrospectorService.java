@@ -29,6 +29,7 @@ package org.hisp.dhis.schema;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -37,6 +38,7 @@ import com.google.common.collect.Maps;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Description;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -107,13 +109,31 @@ public class Jackson2PropertyIntrospectorService extends AbstractPropertyIntrosp
                 name = StringUtils.uncapitalize( name );
             }
 
+            property.setName( name );
+
             if ( method.isAnnotationPresent( Description.class ) )
             {
                 Description description = method.getAnnotation( Description.class );
                 property.setDescription( description.value() );
             }
 
-            property.setName( name );
+            if ( method.isAnnotationPresent( JsonView.class ) )
+            {
+                JsonView jsonView = method.getAnnotation( JsonView.class );
+
+                for ( Class<?> klass : jsonView.value() )
+                {
+                    if ( ExportView.class.isAssignableFrom( klass ) )
+                    {
+                        property.setOwner( true );
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                property.setOwner( true );
+            }
 
             if ( method.isAnnotationPresent( JacksonXmlProperty.class ) )
             {
