@@ -278,7 +278,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         T parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.CREATE );
-        renderService.toJson( response.getOutputStream(), summary );
+        renderService.toXml( response.getOutputStream(), summary );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
@@ -320,7 +320,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         ((BaseIdentifiableObject) parsed).setUid( uid );
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
-        renderService.toJson( response.getOutputStream(), summary );
+        renderService.toXml( response.getOutputStream(), summary );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
