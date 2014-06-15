@@ -494,6 +494,10 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     background-color: #e5e5e5
 }
 
+.radio-label {
+	margin-left: 5px;
+}
+
 /*----------------------------------------------------------------------------*/
 /* Tracked entity
 /*----------------------------------------------------------------------------*/
@@ -708,12 +712,14 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 input[type=number] {
     border: 1px solid #aaa;
     padding: 4px 1px;
+    border-radius: 3px;
 }
 
-input[type=text], input[type=password], textarea {
+input[type=text], input[type=password], textarea, select {
     border: 1px solid #aaa;
     padding: 6px 12px;
     font-size: 14px;
+    border-radius: 3px;
 }
 
 /*----------------------------------------------------------------------------*/
