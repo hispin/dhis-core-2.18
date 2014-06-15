@@ -37,6 +37,7 @@ import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.UserSettingService;
@@ -137,9 +138,11 @@ public class GetDataElementListAction
         }
         else if ( domainType != null )
         {
-            this.paging = createPaging( dataElementService.getDataElementCountByDomainType( domainType ) );
+            DataElementDomain deDomainType = DataElementDomain.fromValue( domainType );
+            
+            this.paging = createPaging( dataElementService.getDataElementCountByDomainType( deDomainType ) );
 
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( domainType, paging.getStartPos(), paging.getPageSize() ) );
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( deDomainType, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {

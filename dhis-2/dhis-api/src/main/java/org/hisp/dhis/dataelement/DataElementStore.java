@@ -90,7 +90,7 @@ public interface DataElementStore
      * @param domainType the domainType.
      * @return all DataElements with the given domainType.
      */
-    Collection<DataElement> getDataElementsByDomainType( String domainType );
+    Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType );
 
     /**
      * Returns all DataElements with the given domain type.
@@ -98,7 +98,7 @@ public interface DataElementStore
      * @param domainType the domainType.
      * @return all DataElements with the given domainType.
      */
-    Collection<DataElement> getDataElementsByDomainType( String domainType, int first, int max );
+    Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType, int first, int max );
 
     /**
      * Returns all DataElements with the given type.
@@ -188,5 +188,5 @@ public interface DataElementStore
     
     Collection<DataElement> get( DataSet dataSet, String key, Integer max );
 
-    int getCountByDomainType( String domainType );
+    int getCountByDomainType( DataElementDomain domainType );
 }

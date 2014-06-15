@@ -30,8 +30,8 @@
 
     <property name="textType" column="textType" length="16" />
 
-    <property name="domainType" not-null="true" column="domaintype" length="16" />
-
+    <property name="domainType" column="domainType" type="org.hisp.dhis.dataelement.DataElementDomainUserType" not-null="true" />
+    
     <property name="aggregationOperator" not-null="true" column="aggregationtype" length="16" />
 
     <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo"

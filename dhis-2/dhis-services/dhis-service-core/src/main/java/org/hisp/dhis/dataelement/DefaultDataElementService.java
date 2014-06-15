@@ -237,12 +237,12 @@ public class DefaultDataElementService
         } );
     }
 
-    public Collection<DataElement> getDataElementsByDomainType( String domainType )
+    public Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByDomainType( domainType ) );
     }
 
-    public Collection<DataElement> getDataElementsByDomainType( String domainType, int first, int max )
+    public Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType, int first, int max )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByDomainType( domainType, first, max ) );
     }
@@ -326,7 +326,7 @@ public class DefaultDataElementService
         return getCountByName( i18nService, dataElementStore, name );
     }
 
-    public int getDataElementCountByDomainType( String domainType )
+    public int getDataElementCountByDomainType( DataElementDomain domainType )
     {
         return dataElementStore.getCountByDomainType( domainType );
     }

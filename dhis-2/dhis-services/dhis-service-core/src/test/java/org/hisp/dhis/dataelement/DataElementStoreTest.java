@@ -330,25 +330,25 @@ public class DataElementStoreTest
     @Test
     public void testGetDataElementsByDomainType()
     {
-        assertEquals( 0, dataElementStore.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_AGGREGATE ).size() );
-        assertEquals( 0, dataElementStore.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ).size() );
+        assertEquals( 0, dataElementStore.getDataElementsByDomainType( DataElementDomain.aggregate ).size() );
+        assertEquals( 0, dataElementStore.getDataElementsByDomainType( DataElementDomain.tracker ).size() );
 
         DataElement dataElementA = createDataElement( 'A' );
-        dataElementA.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElementA.setDomainType( DataElementDomain.aggregate);
         DataElement dataElementB = createDataElement( 'B' );
-        dataElementB.setDomainType( DataElement.DOMAIN_TYPE_PATIENT );
+        dataElementB.setDomainType( DataElementDomain.tracker );
         DataElement dataElementC = createDataElement( 'C' );
-        dataElementC.setDomainType( DataElement.DOMAIN_TYPE_PATIENT );
+        dataElementC.setDomainType( DataElementDomain.tracker );
         DataElement dataElementD = createDataElement( 'D' );
-        dataElementD.setDomainType( DataElement.DOMAIN_TYPE_PATIENT );
+        dataElementD.setDomainType( DataElementDomain.tracker );
 
         dataElementStore.save( dataElementA );
         dataElementStore.save( dataElementB );
         dataElementStore.save( dataElementC );
         dataElementStore.save( dataElementD );
 
-        assertEquals( 1, dataElementStore.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_AGGREGATE ).size() );
-        assertEquals( 3, dataElementStore.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ).size() );
+        assertEquals( 1, dataElementStore.getDataElementsByDomainType( DataElementDomain.aggregate ).size() );
+        assertEquals( 3, dataElementStore.getDataElementsByDomainType( DataElementDomain.tracker ).size() );
     }
 
     @Test

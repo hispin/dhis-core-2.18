@@ -43,6 +43,7 @@ import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.option.OptionSet;
@@ -59,11 +60,11 @@ public class CsvObjectUtils
     public static MetaData fromCsv( InputStream input, Class<?> clazz )
         throws IOException
     {
-        CsvReader reader = new CsvReader( input, Charset.forName( "UTF-8" ) );        
+        CsvReader reader = new CsvReader( input, Charset.forName( "UTF-8" ) );
         reader.readRecord(); // Ignore first row
-        
+
         MetaData metaData = new MetaData();
-        
+
         if ( DataElement.class.equals( clazz ) )
         {
             metaData.setDataElements( dataElementsFromCsv( reader, input ) );
@@ -92,15 +93,15 @@ public class CsvObjectUtils
         {
             metaData.setOptionSets( getOptionSetsFromCsv( reader, input ) );
         }
-        
+
         return metaData;
     }
-    
+
     private static List<DataElementCategoryOption> categoryOptionsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<DataElementCategoryOption> list = new ArrayList<DataElementCategoryOption>();
-        
+
         while ( reader.readRecord() )
         {
             String[] values = reader.getValues();
@@ -112,15 +113,15 @@ public class CsvObjectUtils
                 list.add( object );
             }
         }
-        
+
         return list;
-    }    
+    }
 
     private static List<CategoryOptionGroup> categoryOptionGroupsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<CategoryOptionGroup> list = new ArrayList<CategoryOptionGroup>();
-        
+
         while ( reader.readRecord() )
         {
             String[] values = reader.getValues();
@@ -132,15 +133,15 @@ public class CsvObjectUtils
                 list.add( object );
             }
         }
-        
+
         return list;
     }
-    
+
     private static List<DataElement> dataElementsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<DataElement> list = new ArrayList<DataElement>();
-        
+
         while ( reader.readRecord() )
         {
             String[] values = reader.getValues();
@@ -153,18 +154,21 @@ public class CsvObjectUtils
                 object.setDescription( getSafe( values, 4, null, null ) );
                 object.setFormName( getSafe( values, 5, null, 230 ) );
                 object.setActive( true );
-                object.setDomainType( getSafe( values, 6, DataElement.DOMAIN_TYPE_AGGREGATE, 16 ) );
+
+                String domainType = getSafe( values, 6, DataElementDomain.aggregate.getValue(), 16 );
+                object.setDomainType( DataElementDomain.fromValue( domainType ) );
+
                 object.setType( getSafe( values, 7, DataElement.VALUE_TYPE_INT, 16 ) );
                 object.setNumberType( getSafe( values, 8, DataElement.VALUE_TYPE_NUMBER, 16 ) );
                 object.setTextType( getSafe( values, 9, null, 16 ) );
                 object.setAggregationOperator( getSafe( values, 10, DataElement.AGGREGATION_OPERATOR_SUM, 16 ) );
                 object.setUrl( getSafe( values, 11, null, 255 ) );
                 object.setZeroIsSignificant( Boolean.valueOf( getSafe( values, 12, "false", null ) ) );
-                
+
                 list.add( object );
             }
         }
-        
+
         return list;
     }
 
@@ -184,15 +188,15 @@ public class CsvObjectUtils
                 list.add( object );
             }
         }
-        
+
         return list;
     }
-    
+
     private static List<OrganisationUnit> organisationUnitsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         List<OrganisationUnit> list = new ArrayList<OrganisationUnit>();
-        
+
         while ( reader.readRecord() )
         {
             String[] values = reader.getValues();
@@ -219,7 +223,7 @@ public class CsvObjectUtils
                 list.add( object );
             }
         }
-        
+
         return list;
     }
 
@@ -239,38 +243,38 @@ public class CsvObjectUtils
                 list.add( object );
             }
         }
-        
+
         return list;
     }
-    
+
     private static List<OptionSet> getOptionSetsFromCsv( CsvReader reader, InputStream input )
         throws IOException
     {
         ListMap<OptionSet, String> listMap = new ListMap<OptionSet, String>();
-        
+
         while ( reader.readRecord() )
         {
             String[] values = reader.getValues();
-            
+
             if ( values != null && values.length > 0 )
             {
                 OptionSet object = new OptionSet();
                 setIdentifiableObject( object, values );
                 String option = getSafe( values, 3, null, 2000000 );
-                
+
                 listMap.putValue( object, option );
             }
         }
-        
+
         List<OptionSet> optionSets = new ArrayList<OptionSet>();
-        
+
         for ( OptionSet optionSet : listMap.keySet() )
         {
             List<String> options = new ArrayList<String>( listMap.get( optionSet ) );
             optionSet.setOptions( options );
             optionSets.add( optionSet );
         }
-        
+
         return optionSets;
     }
 
@@ -284,7 +288,7 @@ public class CsvObjectUtils
         object.setUid( getSafe( values, 1, CodeGenerator.generateCode(), 11 ) );
         object.setCode( getSafe( values, 2, null, 50 ) );
     }
-    
+
     /**
      * Returns a string from the given array avoiding exceptions.
      * 
@@ -296,23 +300,23 @@ public class CsvObjectUtils
     private static String getSafe( String[] values, int index, String defaultValue, Integer max )
     {
         String string = null;
-        
+
         if ( values == null || index < 0 || index >= values.length )
         {
             string = defaultValue;
         }
         else
-        {        
+        {
             string = values[index];
         }
-        
+
         string = StringUtils.trimToNull( string );
-        
+
         if ( string != null )
         {
             return max != null ? StringUtils.substring( string, 0, max ) : string;
         }
-        
+
         return null;
     }
 }

@@ -182,18 +182,18 @@ public interface DataElementService
     /**
      * Returns all DataElements with the given domain type.
      *
-     * @param domainType the domainType.
+     * @param domainType the DataElementDomainType.
      * @return all DataElements with the given domainType.
      */
-    Collection<DataElement> getDataElementsByDomainType( String domainType );
+    Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType );
 
     /**
      * Returns all DataElements with the given domain type.
      *
-     * @param domainType the domainType.
+     * @param domainType the DataElementDomainType.
      * @return all DataElements with the given domainType.
      */
-    Collection<DataElement> getDataElementsByDomainType( String domainType, int first, int max );
+    Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType, int first, int max );
 
     /**
      * Returns all DataElements with the given type.
@@ -296,7 +296,7 @@ public interface DataElementService
 
     int getDataElementCountByName( String name );
 
-    int getDataElementCountByDomainType( String domainType );
+    int getDataElementCountByDomainType( DataElementDomain domainType );
 
     /**
      * Returns a mapping of data element uid and associated category option combo

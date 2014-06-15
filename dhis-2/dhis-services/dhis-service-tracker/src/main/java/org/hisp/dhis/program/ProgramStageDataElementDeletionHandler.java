@@ -31,6 +31,7 @@ package org.hisp.dhis.program;
 import java.util.Iterator;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -77,7 +78,7 @@ public class ProgramStageDataElementDeletionHandler
     @Override
     public void deleteDataElement( DataElement dataElement )
     {
-        if ( DataElement.DOMAIN_TYPE_PATIENT.equals( dataElement.getDomainType() ) )
+        if ( DataElementDomain.tracker.equals( dataElement.getDomainType() ) )
         {
             Iterator<ProgramStageDataElement> iterator = programStageDEService.getAllProgramStageDataElements().iterator();
 
