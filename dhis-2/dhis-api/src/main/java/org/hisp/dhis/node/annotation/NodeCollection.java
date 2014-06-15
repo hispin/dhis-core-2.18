@@ -49,7 +49,9 @@ public @interface NodeCollection
 
     String itemNamespace() default "";
 
-    boolean owner() default false;
-
     boolean useWrapping() default true;
+
+    boolean isPersisted() default true;
+
+    boolean owner() default false;
 }
