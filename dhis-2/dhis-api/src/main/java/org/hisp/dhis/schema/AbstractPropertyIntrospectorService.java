@@ -28,8 +28,15 @@ package org.hisp.dhis.schema;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.hisp.dhis.common.BaseDimensionalObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 
 import java.util.List;
 import java.util.Map;
@@ -39,6 +46,13 @@ import java.util.Map;
  */
 public abstract class AbstractPropertyIntrospectorService implements PropertyIntrospectorService
 {
+    // simple alias map for our concrete implementations of the core interfaces.
+    private static final ImmutableMap<Class<?>, Class<?>> BASE_ALIAS_MAP = ImmutableMap.<Class<?>, Class<?>>builder()
+        .put( IdentifiableObject.class, BaseIdentifiableObject.class )
+        .put( NameableObject.class, BaseNameableObject.class )
+        .put( DimensionalObject.class, BaseDimensionalObject.class )
+        .build();
+
     private Map<Class<?>, Map<String, Property>> classMapCache = Maps.newHashMap();
 
     @Override
@@ -50,6 +64,11 @@ public abstract class AbstractPropertyIntrospectorService implements PropertyInt
     @Override
     public Map<String, Property> getPropertiesMap( Class<?> klass )
     {
+        if ( BASE_ALIAS_MAP.containsKey( klass ) )
+        {
+            klass = BASE_ALIAS_MAP.get( klass );
+        }
+
         if ( !classMapCache.containsKey( klass ) )
         {
             classMapCache.put( klass, scanClass( klass ) );
