@@ -34,6 +34,7 @@ import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -195,15 +196,15 @@ public class GetDataElementsAction
         }
         else if ( domain != null )
         {
-            if ( domain.equals( DataElement.DOMAIN_TYPE_AGGREGATE ) )
+            if ( domain.equals( DataElementDomain.aggregate.getValue() ) )
             {
                 dataElements = new ArrayList<DataElement>(
-                    dataElementService.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_AGGREGATE ) );
+                    dataElementService.getDataElementsByDomainType( DataElementDomain.aggregate ) );
             }
             else
             {
                 dataElements = new ArrayList<DataElement>(
-                    dataElementService.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
+                    dataElementService.getDataElementsByDomainType( DataElementDomain.tracker ) );
             }
         }
         else

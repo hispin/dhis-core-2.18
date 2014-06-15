@@ -44,6 +44,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -191,17 +192,17 @@ public class CaseAggregationConditionStoreTest
 
         dataElementA = createDataElement( 'A' );
         dataElementA.setType( DataElement.VALUE_TYPE_STRING );
-        dataElementA.setDomainType( DataElement.DOMAIN_TYPE_PATIENT );
+        dataElementA.setDomainType( DataElementDomain.tracker );
 
         dataElementB = createDataElement( 'B' );
         dataElementB.setType( DataElement.VALUE_TYPE_STRING );
-        dataElementB.setDomainType( DataElement.DOMAIN_TYPE_PATIENT );
+        dataElementB.setDomainType( DataElementDomain.tracker );
 
         dataElementC = createDataElement( 'C' );
-        dataElementC.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElementC.setDomainType( DataElementDomain.aggregate );
 
         dataElementD = createDataElement( 'D' );
-        dataElementD.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElementD.setDomainType( DataElementDomain.aggregate );
 
         int deAId = dataElementService.addDataElement( dataElementA );
         int deBId = dataElementService.addDataElement( dataElementB );

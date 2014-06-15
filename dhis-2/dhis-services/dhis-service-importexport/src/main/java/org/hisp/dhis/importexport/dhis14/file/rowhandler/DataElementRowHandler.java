@@ -31,6 +31,7 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
@@ -78,7 +79,7 @@ public class DataElementRowHandler
         final DataElement dataElement = (DataElement) object;
         
         dataElement.setActive( true );
-        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement.setDomainType( DataElementDomain.aggregate );
         dataElement.setZeroIsSignificant( false );
                     
         if ( dataElement.getCode() != null && dataElement.getCode().trim().length() == 0 )

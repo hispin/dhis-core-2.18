@@ -724,6 +724,8 @@ public class TableAlteror
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
         upgradeTranslations();
+        
+        executeSql( "update dataelement set domaintype='tracker' where domaintype='patient'");
 
         log.info( "Tables updated" );
     }

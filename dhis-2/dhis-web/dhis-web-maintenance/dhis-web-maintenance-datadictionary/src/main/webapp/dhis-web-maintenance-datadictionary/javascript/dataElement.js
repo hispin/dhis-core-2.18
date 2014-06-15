@@ -98,7 +98,7 @@ function showDataElementDetails( context ) {
 
       var domainTypeMap = {
         'aggregate': i18n_aggregate,
-        'patient': i18n_patient
+        'tracker': i18n_tracker
       };
       var domainType = json.dataElement.domainType;
       setInnerHTML('domainTypeField', domainTypeMap[domainType]);

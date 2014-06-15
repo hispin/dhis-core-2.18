@@ -39,6 +39,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -81,28 +82,28 @@ public class MinMaxDataElementStoreTest
         dataElement1.setShortName( "DE1sname" );
         dataElement1.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         dataElement1.setType( DataElement.VALUE_TYPE_INT );
-        dataElement1.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement1.setDomainType( DataElementDomain.aggregate );
         
         DataElement dataElement2 = new DataElement();
         dataElement2.setName( "DE2name" );
         dataElement2.setShortName( "DE2sname" );
         dataElement2.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         dataElement2.setType( DataElement.VALUE_TYPE_INT );
-        dataElement2.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement2.setDomainType( DataElementDomain.aggregate );
 
         DataElement dataElement3 = new DataElement();
         dataElement3.setName( "DE3name" );
         dataElement3.setShortName( "DE3sname" );
         dataElement3.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         dataElement3.setType( DataElement.VALUE_TYPE_INT );
-        dataElement3.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement3.setDomainType( DataElementDomain.aggregate );
         
         DataElement dataElement4 = new DataElement();
         dataElement4.setName( "DE4name" );
         dataElement4.setShortName( "DE4sname" );
         dataElement4.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         dataElement4.setType( DataElement.VALUE_TYPE_INT );
-        dataElement4.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement4.setDomainType( DataElementDomain.aggregate );
         
         dataElementService.addDataElement( dataElement1 );
         dataElementService.addDataElement( dataElement2 );

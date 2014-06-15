@@ -28,9 +28,19 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.dataelement.*;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementDomain;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.mapping.MapLegendSet;
@@ -40,10 +50,7 @@ import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -311,7 +318,7 @@ public class UpdateDataElementAction
         dataElement.setDescription( description );
         dataElement.setFormName( formName );
         dataElement.setActive( active );
-        dataElement.setDomainType( domainType );
+        dataElement.setDomainType( DataElementDomain.fromValue( domainType )  );
         dataElement.setType( valueType );
         
         if ( DataElement.VALUE_TYPE_STRING.equalsIgnoreCase( valueType ) )

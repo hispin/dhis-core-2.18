@@ -46,6 +46,7 @@ import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.util.TextUtils;
@@ -101,13 +102,13 @@ public class HibernateDataElementStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataElement> getDataElementsByDomainType( String domainType )
+    public Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType )
     {
         return getCriteria( Restrictions.eq( "domainType", domainType ) ).list();
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<DataElement> getDataElementsByDomainType( String domainType, int first, int max )
+    public Collection<DataElement> getDataElementsByDomainType( DataElementDomain domainType, int first, int max )
     {
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.eq( "domainType", domainType ) );
@@ -177,7 +178,7 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.dataSets.size = 0 and d.domainType =:domainType";
 
-        return getQuery( hql ).setParameter( "domainType", "aggregate" ).setCacheable( true ).list();
+        return getQuery( hql ).setParameter( "domainType", DataElementDomain.aggregate ).setCacheable( true ).list();
     }
 
     @SuppressWarnings("unchecked")
@@ -259,7 +260,7 @@ public class HibernateDataElementStore
     }
 
     @Override
-    public int getCountByDomainType( String domainType )
+    public int getCountByDomainType( DataElementDomain domainType )
     {
         return getCriteria( Restrictions.eq( "domainType", domainType ) ).list().size(); // TODO improve
     }

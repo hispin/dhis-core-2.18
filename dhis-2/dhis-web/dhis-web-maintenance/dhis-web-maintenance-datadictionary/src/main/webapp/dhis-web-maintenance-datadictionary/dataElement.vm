@@ -24,7 +24,7 @@
 	var i18n_sum = '$encoder.jsEscape( $i18n.getString( "sum" ) , "'")';
 	var i18n_average = '$encoder.jsEscape( $i18n.getString( "average" ) , "'")';
 	var i18n_aggregate = '$encoder.jsEscape( $i18n.getString( "aggregate" ) , "'")';
-	var i18n_patient = '$encoder.jsEscape( $i18n.getString( "patient" ) , "'")';
+	var i18n_tracker = '$encoder.jsEscape( $i18n.getString( "tracker" ) , "'")';
 	var i18n_translation_translate = '$encoder.jsEscape( $i18n.getString( "translation_translate" ) , "'")';
 	var i18n_edit = '$encoder.jsEscape( $i18n.getString( "edit" ) , "'")';
 	var i18n_remove = '$encoder.jsEscape( $i18n.getString( "remove" ) , "'")';
@@ -56,7 +56,7 @@
                <select id="domainTypeList" name="domainTypeList" onchange="criteriaChanged()" style="width:160px">
                  <option value="all">[ $i18n.getString( "select_domain_type" ) ]</option>
                  <option value="aggregate" #if ( $!domainType && $domainType == "aggregate" ) selected="selected" #end>$i18n.getString("aggregate")</option>
-                 <option value="patient" #if ( $!domainType && $domainType == "patient" ) selected="selected" #end>$i18n.getString("patient")</option>
+                 <option value="tracker" #if ( $!domainType && $domainType == "tracker" ) selected="selected" #end>$i18n.getString("tracker")</option>
               </select>
 						</div>
 					</td>

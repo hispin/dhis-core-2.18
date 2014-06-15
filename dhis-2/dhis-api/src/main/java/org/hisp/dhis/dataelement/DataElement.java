@@ -97,9 +97,6 @@ public class DataElement
     public static final String VALUE_TYPE_TEXT = "text";
     public static final String VALUE_TYPE_LONG_TEXT = "longText";
 
-    public static final String DOMAIN_TYPE_AGGREGATE = "aggregate";
-    public static final String DOMAIN_TYPE_PATIENT = "patient";
-
     public static final String AGGREGATION_OPERATOR_SUM = "sum";
     public static final String AGGREGATION_OPERATOR_AVERAGE = "average";
     public static final String AGGREGATION_OPERATOR_COUNT = "count";
@@ -122,10 +119,10 @@ public class DataElement
     private boolean active;
 
     /**
-     * The domain of this DataElement; e.g. DataElement.DOMAIN_TYPE_AGGREGATE or
-     * DataElement.DOMAIN_TYPE_PATIENT.
+     * The domain of this DataElement; e.g. DataElementDomainType.aggregate or
+     * DataElementDomainType.TRACKER.
      */
-    private String domainType;
+    private DataElementDomain domainType;
 
     /**
      * The value type of this DataElement; e.g. DataElement.VALUE_TYPE_INT or
@@ -398,7 +395,7 @@ public class DataElement
      */
     public String getDomainTypeNullSafe()
     {
-        return domainType != null ? domainType : DOMAIN_TYPE_AGGREGATE;
+        return domainType != null ? domainType.getValue() : DataElementDomain.aggregate.getValue();
     }
 
     /**
@@ -486,12 +483,12 @@ public class DataElement
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getDomainType()
+    public DataElementDomain getDomainType()
     {
         return domainType;
     }
 
-    public void setDomainType( String domainType )
+    public void setDomainType( DataElementDomain domainType )
     {
         this.domainType = domainType;
     }

@@ -29,9 +29,11 @@ package org.hisp.dhis.webapi.controller.dataelement;
  */
 
 import com.google.common.collect.Lists;
+
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.schema.descriptors.DataElementSchemaDescriptor;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
@@ -66,23 +68,23 @@ public class DataElementController
         {
             entityList = Lists.newArrayList( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
         }
-        else if ( DataElement.DOMAIN_TYPE_AGGREGATE.equals( options.getOptions().get( KEY_DOMAIN_TYPE ) )
-            || DataElement.DOMAIN_TYPE_PATIENT.equals( options.getOptions().get( KEY_DOMAIN_TYPE ) ) )
+        else if ( DataElementDomain.aggregate.equals( options.getOptions().get( KEY_DOMAIN_TYPE ) )
+            || DataElementDomain.tracker.equals( options.getOptions().get( KEY_DOMAIN_TYPE ) ) )
         {
             String domainType = options.getOptions().get( KEY_DOMAIN_TYPE );
 
             if ( options.hasPaging() )
             {
-                int count = dataElementService.getDataElementCountByDomainType( domainType );
+                int count = dataElementService.getDataElementCountByDomainType( DataElementDomain.fromValue( domainType ) );
 
                 Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
                 metaData.setPager( pager );
 
-                entityList = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( domainType, pager.getOffset(), pager.getPageSize() ) );
+                entityList = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( DataElementDomain.fromValue( domainType ), pager.getOffset(), pager.getPageSize() ) );
             }
             else
             {
-                entityList = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( domainType ) );
+                entityList = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( DataElementDomain.fromValue( domainType ) ) );
                 Collections.sort( entityList, IdentifiableObjectNameComparator.INSTANCE );
             }
         }

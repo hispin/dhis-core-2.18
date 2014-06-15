@@ -69,6 +69,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -421,7 +422,7 @@ public abstract class DhisConvenienceTest
         dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
         dataElement.setActive( true );
         dataElement.setType( DataElement.VALUE_TYPE_INT );
-        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement.setDomainType( DataElementDomain.aggregate );
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
 
         return dataElement;
@@ -436,7 +437,7 @@ public abstract class DhisConvenienceTest
         DataElement dataElement = createDataElement( uniqueCharacter );
 
         dataElement.setCategoryCombo( categoryCombo );
-        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement.setDomainType( DataElementDomain.aggregate );
 
         return dataElement;
     }
@@ -450,7 +451,7 @@ public abstract class DhisConvenienceTest
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         dataElement.setType( type );
-        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement.setDomainType( DataElementDomain.aggregate );
         dataElement.setAggregationOperator( aggregationOperator );
 
         return dataElement;
@@ -467,7 +468,7 @@ public abstract class DhisConvenienceTest
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         dataElement.setType( type );
-        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
+        dataElement.setDomainType( DataElementDomain.aggregate );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setCategoryCombo( categoryCombo );
 

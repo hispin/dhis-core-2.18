@@ -37,6 +37,7 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.mapping.MapLegendSet;
@@ -281,7 +282,7 @@ public class AddDataElementAction
         dataElement.setDescription( description );
         dataElement.setFormName( formName );
         dataElement.setActive( true );
-        dataElement.setDomainType( domainType );
+        dataElement.setDomainType( DataElementDomain.fromValue( domainType )  );
         dataElement.setType( valueType );
         
         if ( DataElement.VALUE_TYPE_STRING.equalsIgnoreCase( valueType ) )

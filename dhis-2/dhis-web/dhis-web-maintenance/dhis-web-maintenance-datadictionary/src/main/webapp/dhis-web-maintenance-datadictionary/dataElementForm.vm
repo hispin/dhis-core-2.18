@@ -91,7 +91,7 @@
 		<td>
 			<select id="domainType" name="domainType" onchange='domainTypeChange(this.value)'>
 				<option value="aggregate" #if( $!dataElement.getDomainTypeNullSafe() == 'aggregate' ) selected="selected" #end>$i18n.getString( "aggregate" )</option>
-				<option value="patient" #if( $!dataElement.getDomainTypeNullSafe() == 'patient' ) selected="selected" #end>$i18n.getString( "patient" )</option>				
+				<option value="tracker" #if( $!dataElement.getDomainTypeNullSafe() == 'tracker' ) selected="selected" #end>$i18n.getString( "tracker" )</option>				
 			</select>
 		</td>
 	</tr>
@@ -171,7 +171,7 @@
 	<tr>	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="selectedCategoryComboId" #if( $!dataElement.getDomainTypeNullSafe()=='patient') disabled #end>>
+			<select id="selectedCategoryComboId" #if( $!dataElement.getDomainTypeNullSafe()=='tracker') disabled #end>>
             #if( $update )
                 #foreach( $dataElementCategoryCombo in $!dataElementCategoryCombos )
                     <option value="$!dataElementCategoryCombo.id" #if( $!dataElementCategoryCombo.id == $!dataElement.categoryCombo.id ) selected="selected" #end>$!encoder.htmlEncode( $!dataElementCategoryCombo.displayName )</option>
