@@ -28,12 +28,13 @@ package org.hisp.dhis.reporting.dataapproval.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.period.PeriodType.getAvailablePeriodTypes;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -43,8 +44,6 @@ import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
-
-import static org.hisp.dhis.period.PeriodType.getAvailablePeriodTypes;
 
 public class GetDataApprovalOptionsAction
     implements Action

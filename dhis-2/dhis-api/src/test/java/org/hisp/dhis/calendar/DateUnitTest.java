@@ -28,14 +28,14 @@ package org.hisp.dhis.calendar;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.joda.time.DateTime;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import static org.junit.Assert.assertEquals;
+import org.joda.time.DateTime;
+import org.junit.Test;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -102,10 +102,6 @@ public class DateUnitTest
     public void toJdkDateTest()
     {
         DateUnit dateUnit = new DateUnit( 2014, 3, 20, true );
-        Date date = dateUnit.toJdkDate();
-
-        // use dateTime for testing
-        DateTime dateTime = new DateTime( date.getTime() );
 
         assertEquals( 2014, dateUnit.getYear() );
         assertEquals( 3, dateUnit.getMonth() );
