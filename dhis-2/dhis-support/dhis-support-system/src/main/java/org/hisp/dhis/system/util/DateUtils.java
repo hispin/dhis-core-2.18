@@ -51,6 +51,16 @@ import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
  */
 public class DateUtils
 {
+    public static final SimpleDateFormat[] SUPPORTED_DATE_FORMATS = new SimpleDateFormat[] {
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH" ),
+        new SimpleDateFormat( "yyyy-MM-dd" ),
+        new SimpleDateFormat( "yyyy-MM" ),
+        new SimpleDateFormat( "yyyy" )
+    };
+    
     public static final double DAYS_IN_YEAR = 365.0;
 
     private static final long MS_PER_DAY = 86400000;
@@ -514,17 +524,7 @@ public class DateUtils
             return null;
         }
 
-        SimpleDateFormat[] supportedDateFormats = new SimpleDateFormat[]{
-            new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ),
-            new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ),
-            new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm" ),
-            new SimpleDateFormat( "yyyy-MM-dd'T'HH" ),
-            new SimpleDateFormat( "yyyy-MM-dd" ),
-            new SimpleDateFormat( "yyyy-MM" ),
-            new SimpleDateFormat( "yyyy" )
-        };
-
-        for ( SimpleDateFormat format : supportedDateFormats )
+        for ( SimpleDateFormat format : SUPPORTED_DATE_FORMATS )
         {
             try
             {
