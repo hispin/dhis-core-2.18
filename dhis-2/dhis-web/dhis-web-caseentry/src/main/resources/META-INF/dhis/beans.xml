@@ -493,10 +493,6 @@
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.trackedentity.SearchTrackedEntityInstanceAction"
-		class="org.hisp.dhis.caseentry.action.trackedentity.SearchTrackedEntityInstanceAction" scope="prototype">
-	</bean>
 	
 	<!-- Program Enrollment -->
 
