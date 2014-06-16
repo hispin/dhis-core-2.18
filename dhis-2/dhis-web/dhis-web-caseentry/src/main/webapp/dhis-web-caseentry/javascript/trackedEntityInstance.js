@@ -613,7 +613,7 @@ function loadDataEntry(programStageInstanceId) {
 
 function searchByIdsOnclick()
 {
-	if( getFieldValue('searchPatientByAttributes')==''){
+	if( getFieldValue('searchTeiByAttributes')==''){
 		return;
 	}
 	var params = "ou=" + getFieldValue("orgunitId");
@@ -625,7 +625,7 @@ function searchByIdsOnclick()
 		}
 	}
 	
-	params += "&query=" + getFieldValue('searchPatientByAttributes');
+	params += "&query=LIKE:" + getFieldValue('searchTeiByAttributes');
 	
 	$('#attributeIds option').each(function(i, item) {
 		params += "&attribute=" + item.value;
