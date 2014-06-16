@@ -252,9 +252,6 @@ public class TableAlteror
         // update periodType field to ValidationRule
         executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly') WHERE periodtypeid is null" );
 
-        // update dataelement.domainTypes of which values is null
-        executeSql( "UPDATE dataelement SET domaintype='aggregate' WHERE domaintype is null" );
-
         // set varchar to text
         executeSql( "ALTER TABLE dataelement ALTER description TYPE text" );
         executeSql( "ALTER TABLE indicator ALTER description TYPE text" );
@@ -657,7 +654,6 @@ public class TableAlteror
         executeSql( "UPDATE chart SET publicaccess='--------' WHERE user IS NULL AND publicaccess IS NULL;" );
         executeSql( "UPDATE map SET publicaccess='-------' WHERE user IS NULL AND publicaccess IS NULL;" );
 
-        executeSql( "ALTER TABLE dataelement ALTER COLUMN domaintype SET NOT NULL" );
         executeSql( "update dataelementcategory set datadimension = false where datadimension is null" );
 
         executeSql( "UPDATE dataset SET dataelementdecoration=false WHERE dataelementdecoration is null" );
@@ -725,8 +721,6 @@ public class TableAlteror
         upgradeMapViewsToAnalyticalObject();
         upgradeTranslations();
         
-        executeSql( "update dataelement set domaintype='tracker' where domaintype='patient'");
-
         log.info( "Tables updated" );
     }
 

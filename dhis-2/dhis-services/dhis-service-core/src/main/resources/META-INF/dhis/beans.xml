@@ -912,10 +912,16 @@
 
   <!-- Startup routine definitions -->
 
+  <bean id="org.hisp.dhis.startup.InitTableAlteror" class="org.hisp.dhis.startup.InitTableAlteror">
+    <property name="name" value="TableAlteror" />
+    <property name="runlevel" value="1" />
+    <property name="skipInTests" value="true" />
+  </bean>
+
   <bean id="org.hisp.dhis.period.PeriodTypePopulator" class="org.hisp.dhis.period.PeriodTypePopulator">
     <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
     <property name="name" value="PeriodTypePopulator" />
-    <property name="runlevel" value="1" />
+    <property name="runlevel" value="2" />
   </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator"
@@ -924,18 +930,18 @@
     <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="name" value="DataElementDefaultDimensionPopulator" />
-    <property name="runlevel" value="1" />
+    <property name="runlevel" value="2" />
   </bean>
 
   <bean id="org.hisp.dhis.startup.TableAlteror" class="org.hisp.dhis.startup.TableAlteror">
     <property name="name" value="TableAlteror" />
-    <property name="runlevel" value="2" />
+    <property name="runlevel" value="3" />
     <property name="skipInTests" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.common.IdentityPopulator" class="org.hisp.dhis.common.IdentityPopulator">
     <property name="name" value="IdentityPopulator" />
-    <property name="runlevel" value="3" />
+    <property name="runlevel" value="4" />
     <property name="skipInTests" value="true" />
     <property name="tables">
       <list>
@@ -975,35 +981,35 @@
 
   <bean id="org.hisp.dhis.startup.TableCreator" class="org.hisp.dhis.startup.TableCreator">
     <property name="name" value="TableCreator" />
-    <property name="runlevel" value="3" />
+    <property name="runlevel" value="5" />
   </bean>
 
   <bean id="org.hisp.dhis.startup.MapViewUpgrader" class="org.hisp.dhis.startup.MapViewUpgrader">
     <property name="statementManager" ref="statementManager" />
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
     <property name="name" value="MapViewUpgrader" />
-    <property name="runlevel" value="4" />
+    <property name="runlevel" value="7" />
     <property name="skipInTests" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" class="org.hisp.dhis.dataentryform.DataEntryFormUpgrader">
     <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
-    <property name="runlevel" value="5" />
+    <property name="runlevel" value="7" />
     <property name="skipInTests" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.startup.ExpressionUpgrader" class="org.hisp.dhis.startup.ExpressionUpgrader">
-    <property name="runlevel" value="6" />
+    <property name="runlevel" value="8" />
     <property name="skipInTests" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.startup.ConfigurationPopulator" class="org.hisp.dhis.startup.ConfigurationPopulator">
-    <property name="runlevel" value="7" />
+    <property name="runlevel" value="9" />
     <property name="skipInTests" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.startup.I18nLocalePopulator" class="org.hisp.dhis.startup.I18nLocalePopulator">
-    <property name="runlevel" value="7" />
+    <property name="runlevel" value="9" />
     <property name="skipInTests" value="true" />
   </bean>
 
@@ -1013,6 +1019,7 @@
     <property name="arguments">
       <list>
         <list>
+          <ref local="org.hisp.dhis.startup.InitTableAlteror" />
           <ref local="org.hisp.dhis.startup.TableAlteror" />
           <ref local="org.hisp.dhis.startup.MapViewUpgrader" />
           <ref local="org.hisp.dhis.common.IdentityPopulator" />
