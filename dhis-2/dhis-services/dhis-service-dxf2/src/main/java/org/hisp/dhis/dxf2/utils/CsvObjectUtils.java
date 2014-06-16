@@ -155,7 +155,7 @@ public class CsvObjectUtils
                 object.setFormName( getSafe( values, 5, null, 230 ) );
                 object.setActive( true );
 
-                String domainType = getSafe( values, 6, DataElementDomain.aggregate.getValue(), 16 );
+                String domainType = getSafe( values, 6, DataElementDomain.AGGREGATE.getValue(), 16 );
                 object.setDomainType( DataElementDomain.fromValue( domainType ) );
 
                 object.setType( getSafe( values, 7, DataElement.VALUE_TYPE_INT, 16 ) );

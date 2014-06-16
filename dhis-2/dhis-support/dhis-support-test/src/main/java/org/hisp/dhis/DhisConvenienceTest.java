@@ -422,7 +422,7 @@ public abstract class DhisConvenienceTest
         dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
         dataElement.setActive( true );
         dataElement.setType( DataElement.VALUE_TYPE_INT );
-        dataElement.setDomainType( DataElementDomain.aggregate );
+        dataElement.setDomainType( DataElementDomain.AGGREGATE );
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
 
         return dataElement;
@@ -437,7 +437,7 @@ public abstract class DhisConvenienceTest
         DataElement dataElement = createDataElement( uniqueCharacter );
 
         dataElement.setCategoryCombo( categoryCombo );
-        dataElement.setDomainType( DataElementDomain.aggregate );
+        dataElement.setDomainType( DataElementDomain.AGGREGATE );
 
         return dataElement;
     }
@@ -451,7 +451,7 @@ public abstract class DhisConvenienceTest
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         dataElement.setType( type );
-        dataElement.setDomainType( DataElementDomain.aggregate );
+        dataElement.setDomainType( DataElementDomain.AGGREGATE );
         dataElement.setAggregationOperator( aggregationOperator );
 
         return dataElement;
@@ -468,7 +468,7 @@ public abstract class DhisConvenienceTest
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         dataElement.setType( type );
-        dataElement.setDomainType( DataElementDomain.aggregate );
+        dataElement.setDomainType( DataElementDomain.AGGREGATE );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setCategoryCombo( categoryCombo );
 

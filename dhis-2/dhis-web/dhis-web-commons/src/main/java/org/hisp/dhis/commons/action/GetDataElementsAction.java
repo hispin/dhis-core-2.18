@@ -196,15 +196,15 @@ public class GetDataElementsAction
         }
         else if ( domain != null )
         {
-            if ( domain.equals( DataElementDomain.aggregate.getValue() ) )
+            if ( domain.equals( DataElementDomain.AGGREGATE.getValue() ) )
             {
                 dataElements = new ArrayList<DataElement>(
-                    dataElementService.getDataElementsByDomainType( DataElementDomain.aggregate ) );
+                    dataElementService.getDataElementsByDomainType( DataElementDomain.AGGREGATE ) );
             }
             else
             {
                 dataElements = new ArrayList<DataElement>(
-                    dataElementService.getDataElementsByDomainType( DataElementDomain.tracker ) );
+                    dataElementService.getDataElementsByDomainType( DataElementDomain.TRACKER ) );
             }
         }
         else

@@ -195,17 +195,17 @@ public class CaseAggregationConditionServiceTest
 
         dataElementA = createDataElement( 'A' );
         dataElementA.setType( DataElement.VALUE_TYPE_STRING );
-        dataElementA.setDomainType( DataElementDomain.tracker );
+        dataElementA.setDomainType( DataElementDomain.TRACKER );
 
         dataElementB = createDataElement( 'B' );
         dataElementB.setType( DataElement.VALUE_TYPE_STRING );
-        dataElementB.setDomainType( DataElementDomain.tracker );
+        dataElementB.setDomainType( DataElementDomain.TRACKER );
 
         dataElementC = createDataElement( 'C' );
-        dataElementC.setDomainType( DataElementDomain.aggregate );
+        dataElementC.setDomainType( DataElementDomain.AGGREGATE );
 
         dataElementD = createDataElement( 'D' );
-        dataElementD.setDomainType( DataElementDomain.aggregate );
+        dataElementD.setDomainType( DataElementDomain.AGGREGATE );
 
         int deAId = dataElementService.addDataElement( dataElementA );
         int deBId = dataElementService.addDataElement( dataElementB );
