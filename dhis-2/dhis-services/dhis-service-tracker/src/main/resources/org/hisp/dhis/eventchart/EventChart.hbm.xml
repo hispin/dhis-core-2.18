@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+  [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+  >
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.eventchart.EventChart" table="eventchart">
+
+    <cache usage="read-write" />
+
+    <id name="id" column="eventchartid">
+      <generator class="native" />
+    </id>
+    &identifiableProperties;
+
+    <property name="name" column="name" not-null="true" unique="false" length="230" />
+
+    <list name="organisationUnits" table="eventchart_organisationunits">
+      <cache usage="read-write" />
+      <key column="eventchartid" foreign-key="fk_eventchart_organisationunits_eventchartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+        foreign-key="fk_eventchart_organisationunits_organisationunitid" />
+    </list>
+
+    <list name="periods" table="eventchart_periods">
+      <cache usage="read-write" />
+      <key column="eventchartid" foreign-key="fk_eventchart_periods_eventchartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="periodid" class="org.hisp.dhis.period.Period"
+        foreign-key="fk_eventchart_periods_periodid" />
+    </list>
+
+    <many-to-one name="relatives" unique="true" class="org.hisp.dhis.period.RelativePeriods" column="relativeperiodsid"
+      cascade="all-delete-orphan" foreign-key="fk_report_relativeperiodsid" />
+
+    <list name="organisationUnitLevels" table="eventchart_orgunitlevels">
+      <cache usage="read-write" />
+      <key column="eventchartid" foreign-key="fk_eventchart_orgunitlevels_eventchartid" />
+      <list-index column="sort_order" base="0" />
+      <element column="orgunitlevel" type="integer" />
+    </list>
+
+    <list name="itemOrganisationUnitGroups" table="eventchart_itemorgunitgroups">
+      <cache usage="read-write" />
+      <key column="eventchartid" foreign-key="fk_eventchart_itemorgunitunitgroups_eventchartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="orgunitgroupid" class="org.hisp.dhis.organisationunit.OrganisationUnitGroup"
+        foreign-key="fk_eventchart_itemorgunitgroups_orgunitgroupid" />
+    </list>
+
+    <list name="attributeDimensions" table="eventchart_attributedimensions" cascade="all, delete-orphan">
+      <key column="eventchartid" foreign-key="fk_eventchart_attributedimensions_eventchartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="trackedentityattributedimensionid" class="org.hisp.dhis.trackedentity.TrackedEntityAttributeDimension"
+        foreign-key="fk_eventchart_attributedimensions_attributedimensionid" />
+    </list>
+
+    <list name="dataElementDimensions" table="eventchart_dataelementdimensions" cascade="all, delete-orphan">
+      <key column="eventchartid" foreign-key="fk_eventchart_dataelementdimensions_eventchartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="trackedentitydataelementdimensionid" class="org.hisp.dhis.trackedentity.TrackedEntityDataElementDimension"
+        foreign-key="fk_eventchart_dataelementdimensions_dataelementdimensionid" />
+    </list>
+
+    <property name="userOrganisationUnit" />
+
+    <property name="userOrganisationUnitChildren" />
+
+    <property name="userOrganisationUnitGrandChildren" />
+
+    <property name="showData" />
+
+    <property name="hideEmptyRows" />
+
+    <property name="rewindRelativePeriods" />
+
+    <property name="rangeAxisMaxValue" />
+
+    <property name="rangeAxisMinValue" />
+
+    <property name="rangeAxisSteps" />
+
+    <property name="rangeAxisDecimals" />
+
+    <many-to-one name="program" class="org.hisp.dhis.program.Program"
+      column="programid" not-null="true" foreign-key="fk_eventchart_programid" />
+
+    <many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
+      column="programstageid" foreign-key="fk_eventchart_programstageid" />
+
+    <property name="startDate" />
+
+    <property name="endDate" />
+
+    <property name="dataType" not-null="true" />
+
+    <list name="columnDimensions" table="eventchart_columns">
+      <cache usage="read-write" />
+      <key column="eventchartid" foreign-key="fk_eventchart_columns_eventchartid" />
+      <list-index column="sort_order" base="0" />
+      <element type="string" column="dimension" />
+    </list>
+
+    <list name="rowDimensions" table="eventchart_rows">
+      <cache usage="read-write" />
+      <key column="eventchartid" foreign-key="fk_eventchart_rows_eventchartid" />
+      <list-index column="sort_order" base="0" />
+      <element type="string" column="dimension" />
+    </list>
+
+    <list name="filterDimensions" table="eventchart_filters">
+      <cache usage="read-write" />
+      <key column="eventchartid" foreign-key="fk_eventchart_filters_eventchartid" />
+      <list-index column="sort_order" base="0" />
+      <element type="string" column="dimension" />
+    </list>
+
+    <property name="hideEmptyRows" />
+
+    <property name="countType" />
+
+    <property name="sortOrder" />
+
+    <property name="topLimit" />
+
+    <!-- Access properties -->
+    <property name="externalAccess" />
+
+    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_eventchart_userid" />
+
+    <property name="publicAccess" length="8" />
+
+    <set name="userGroupAccesses" table="eventchartusergroupaccesses">
+      <cache usage="read-write" />
+      <key column="eventchartid" />
+      <many-to-many class="org.hisp.dhis.user.UserGroupAccess" column="usergroupaccessid" unique="true" />
+    </set>
+
+  </class>
+</hibernate-mapping>
