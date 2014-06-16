@@ -1858,9 +1858,9 @@ Ext.onReady( function() {
                         if (dim.items) {
                             paramString += ':';
 
-                            for (var i = 0; i < dim.items.length; i++) {
-                                paramString += encodeURIComponent(dim.items[i].id);
-                                paramString += i < dim.items.length - 1 ? ';' : '';
+                            for (var j = 0; j < dim.items.length; j++) {
+                                paramString += encodeURIComponent(dim.items[j].id);
+                                paramString += j < dim.items.length - 1 ? ';' : '';
                             }
                         }
                         else {
