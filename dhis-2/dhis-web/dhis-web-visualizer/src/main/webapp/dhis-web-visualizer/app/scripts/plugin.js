@@ -633,7 +633,7 @@ Ext.onReady(function() {
 
                     layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : null;
 
-                    layout.legendPosition = config.legendPosition && Ext.isString(config.legendPosition) ? config.legendPosition : null;
+                    layout.legend = Ext.isObject(config.legend) ? config.legend : null;
 
 					if (!validateSpecialCases()) {
 						return;
@@ -2036,9 +2036,24 @@ Ext.onReady(function() {
                 getDefaultSeriesTitle = function(store) {
                     var a = [];
 
-                    for (var i = 0, id, ids; i < store.rangeFields.length; i++) {
-                        id = store.rangeFields[i];
-                        a.push(xResponse.metaData.names[id]);
+                    if (Ext.isObject(xLayout.legend) && Ext.isArray(xLayout.legend.seriesNames)) {
+                        return xLayout.legend.seriesNames;
+                    }
+                    else {
+                        for (var i = 0, id, name, mxl, ids; i < store.rangeFields.length; i++) {
+                            id = store.rangeFields[i];
+                            name = xResponse.metaData.names[id];
+
+                            if (Ext.isObject(xLayout.legend) && xLayout.legend.maxLength) {
+                                var mxl = parseInt(xLayout.legend.maxLength);
+
+                                if (Ext.isNumber(mxl)) {
+                                    name = name.substr(0, mxl) + '..';
+                                }
+                            }
+                            
+                            a.push(name);
+                        }
                     }
 
                     return a;
@@ -2069,7 +2084,7 @@ Ext.onReady(function() {
                             field: store.rangeFields,
                             font: conf.chart.style.fontFamily,
                             renderer: function(n) {
-                                return n === '0.0' ? '-' : n;                                    
+                                return n === '0.0' ? '' : n;                                    
                             }
                         };
                     }
@@ -2181,6 +2196,7 @@ Ext.onReady(function() {
                         width,
                         isVertical = false,
                         position = 'top',
+                        fontSize = 12,
                         padding = 0,
                         positions = ['top', 'right', 'bottom', 'left'];
 
@@ -2219,15 +2235,20 @@ Ext.onReady(function() {
                         padding = 5;
                     }
 
-                    // position
-                    if (Ext.Array.contains(positions, xLayout.legendPosition)) {
-                        position = xLayout.legendPosition;
+                    // legend
+                    if (xLayout.legend) {
+                        if (Ext.Array.contains(positions, xLayout.legend.position)) {
+                            position = xLayout.legend.position;
+                        }
+
+                        fontSize = parseInt(xLayout.legend.fontSize) || fontSize;
+                        fontSize = fontSize + 'px';
                     }
 
                     return Ext.create('Ext.chart.Legend', {
                         position: position,
                         isVertical: isVertical,
-                        labelFont: '13px ' + conf.chart.style.fontFamily,
+                        labelFont: fontSize + ' ' + conf.chart.style.fontFamily,
                         boxStroke: '#ffffff',
                         boxStrokeWidth: 0,
                         padding: padding
@@ -2882,7 +2903,7 @@ Ext.onReady(function() {
 
 			web.chart = web.chart || {};
 
-            web.chart.loadChart = function(id) {
+            web.chart.loadChart = function(id, config) {
 				if (!Ext.isString(id)) {
 					alert('Invalid chart id');
 					return;
@@ -2894,6 +2915,8 @@ Ext.onReady(function() {
 						window.open(init.contextPath + '/api/charts/' + id + '.json?viewClass=dimensional&links=false', '_blank');
 					},
 					success: function(r) {
+                        Ext.apply(r, config);
+                        
 						var layout = api.layout.Layout(r);
 
 						if (layout) {
@@ -3034,7 +3057,7 @@ Ext.onReady(function() {
 			ns.app.centerRegion = ns.app.viewport.centerRegion;
 
 			if (config.id) {
-				ns.core.web.chart.loadChart(config.id);
+				ns.core.web.chart.loadChart(config.id, config);
 			}
 			else {
 				layout = ns.core.api.layout.Layout(config);
