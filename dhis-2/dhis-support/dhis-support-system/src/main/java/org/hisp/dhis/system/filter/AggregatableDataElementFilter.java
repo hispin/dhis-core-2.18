@@ -53,6 +53,6 @@ public class AggregatableDataElementFilter
 
     public boolean retain( DataElement object )
     {
-        return object != null && types.contains( object.getType() ) && DataElementDomain.aggregate.equals( object.getDomainType() );
+        return object != null && types.contains( object.getType() ) && DataElementDomain.AGGREGATE.equals( object.getDomainType() );
     }
 }

@@ -276,7 +276,7 @@ public class DataElementConverter
         element.setShortName( values.get( FIELD_SHORT_NAME ) );
         element.setDescription( Dhis14ParsingUtils.removeNewLine( values.get( FIELD_DESCRIPTION ) ) );
         element.setActive( true );
-        element.setDomainType( DataElementDomain.aggregate );
+        element.setDomainType( DataElementDomain.AGGREGATE );
         element.setZeroIsSignificant( false );
         element.setType( Dhis14ObjectMappingUtil.getDataElementTypeMap().get(
             Integer.parseInt( values.get( FIELD_DATA_TYPE ) ) ) );

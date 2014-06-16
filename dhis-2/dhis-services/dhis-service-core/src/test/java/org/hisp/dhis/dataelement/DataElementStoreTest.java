@@ -330,25 +330,25 @@ public class DataElementStoreTest
     @Test
     public void testGetDataElementsByDomainType()
     {
-        assertEquals( 0, dataElementStore.getDataElementsByDomainType( DataElementDomain.aggregate ).size() );
-        assertEquals( 0, dataElementStore.getDataElementsByDomainType( DataElementDomain.tracker ).size() );
+        assertEquals( 0, dataElementStore.getDataElementsByDomainType( DataElementDomain.AGGREGATE ).size() );
+        assertEquals( 0, dataElementStore.getDataElementsByDomainType( DataElementDomain.TRACKER ).size() );
 
         DataElement dataElementA = createDataElement( 'A' );
-        dataElementA.setDomainType( DataElementDomain.aggregate);
+        dataElementA.setDomainType( DataElementDomain.AGGREGATE);
         DataElement dataElementB = createDataElement( 'B' );
-        dataElementB.setDomainType( DataElementDomain.tracker );
+        dataElementB.setDomainType( DataElementDomain.TRACKER );
         DataElement dataElementC = createDataElement( 'C' );
-        dataElementC.setDomainType( DataElementDomain.tracker );
+        dataElementC.setDomainType( DataElementDomain.TRACKER );
         DataElement dataElementD = createDataElement( 'D' );
-        dataElementD.setDomainType( DataElementDomain.tracker );
+        dataElementD.setDomainType( DataElementDomain.TRACKER );
 
         dataElementStore.save( dataElementA );
         dataElementStore.save( dataElementB );
         dataElementStore.save( dataElementC );
         dataElementStore.save( dataElementD );
 
-        assertEquals( 1, dataElementStore.getDataElementsByDomainType( DataElementDomain.aggregate ).size() );
-        assertEquals( 3, dataElementStore.getDataElementsByDomainType( DataElementDomain.tracker ).size() );
+        assertEquals( 1, dataElementStore.getDataElementsByDomainType( DataElementDomain.AGGREGATE ).size() );
+        assertEquals( 3, dataElementStore.getDataElementsByDomainType( DataElementDomain.TRACKER ).size() );
     }
 
     @Test

@@ -34,7 +34,7 @@ package org.hisp.dhis.dataelement;
  */
 public enum DataElementDomain
 {
-    aggregate( "aggregate" ), tracker( "tracker" );
+    AGGREGATE( "aggregate" ), TRACKER( "tracker" );
 
     private final String value;
 

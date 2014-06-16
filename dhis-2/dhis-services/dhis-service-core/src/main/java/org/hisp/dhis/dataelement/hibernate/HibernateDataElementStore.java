@@ -178,7 +178,7 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.dataSets.size = 0 and d.domainType =:domainType";
 
-        return getQuery( hql ).setParameter( "domainType", DataElementDomain.aggregate ).setCacheable( true ).list();
+        return getQuery( hql ).setParameter( "domainType", DataElementDomain.AGGREGATE ).setCacheable( true ).list();
     }
 
     @SuppressWarnings("unchecked")

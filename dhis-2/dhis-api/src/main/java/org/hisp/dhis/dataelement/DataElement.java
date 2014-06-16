@@ -395,7 +395,7 @@ public class DataElement
      */
     public String getDomainTypeNullSafe()
     {
-        return domainType != null ? domainType.getValue() : DataElementDomain.aggregate.getValue();
+        return domainType != null ? domainType.getValue() : DataElementDomain.AGGREGATE.getValue();
     }
 
     /**

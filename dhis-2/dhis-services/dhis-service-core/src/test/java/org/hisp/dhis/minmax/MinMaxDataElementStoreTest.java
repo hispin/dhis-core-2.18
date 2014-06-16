@@ -82,28 +82,28 @@ public class MinMaxDataElementStoreTest
         dataElement1.setShortName( "DE1sname" );
         dataElement1.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         dataElement1.setType( DataElement.VALUE_TYPE_INT );
-        dataElement1.setDomainType( DataElementDomain.aggregate );
+        dataElement1.setDomainType( DataElementDomain.AGGREGATE );
         
         DataElement dataElement2 = new DataElement();
         dataElement2.setName( "DE2name" );
         dataElement2.setShortName( "DE2sname" );
         dataElement2.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         dataElement2.setType( DataElement.VALUE_TYPE_INT );
-        dataElement2.setDomainType( DataElementDomain.aggregate );
+        dataElement2.setDomainType( DataElementDomain.AGGREGATE );
 
         DataElement dataElement3 = new DataElement();
         dataElement3.setName( "DE3name" );
         dataElement3.setShortName( "DE3sname" );
         dataElement3.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         dataElement3.setType( DataElement.VALUE_TYPE_INT );
-        dataElement3.setDomainType( DataElementDomain.aggregate );
+        dataElement3.setDomainType( DataElementDomain.AGGREGATE );
         
         DataElement dataElement4 = new DataElement();
         dataElement4.setName( "DE4name" );
         dataElement4.setShortName( "DE4sname" );
         dataElement4.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         dataElement4.setType( DataElement.VALUE_TYPE_INT );
-        dataElement4.setDomainType( DataElementDomain.aggregate );
+        dataElement4.setDomainType( DataElementDomain.AGGREGATE );
         
         dataElementService.addDataElement( dataElement1 );
         dataElementService.addDataElement( dataElement2 );

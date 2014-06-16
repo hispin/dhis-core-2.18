@@ -78,7 +78,7 @@ public class ProgramStageDataElementDeletionHandler
     @Override
     public void deleteDataElement( DataElement dataElement )
     {
-        if ( DataElementDomain.tracker.equals( dataElement.getDomainType() ) )
+        if ( DataElementDomain.TRACKER.equals( dataElement.getDomainType() ) )
         {
             Iterator<ProgramStageDataElement> iterator = programStageDEService.getAllProgramStageDataElements().iterator();
 
