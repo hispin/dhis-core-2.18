@@ -453,7 +453,7 @@ Ext.onReady( function() {
 							params: params,
 							disableCaching: false,
 							success: function(r) {
-								var options = Ext.decode(r.responseText),
+								var options = Ext.decode(r.responseText).options,
 									data = [];
 
 								Ext.each(options, function(option) {
@@ -538,7 +538,7 @@ Ext.onReady( function() {
                                     'max': 14
                                 },
                                 success: function(r) {
-                                    var options = Ext.decode(r.responseText),
+                                    var options = Ext.decode(r.responseText).options,
                                         data = [];
 
                                     Ext.each(options, function(option) {
