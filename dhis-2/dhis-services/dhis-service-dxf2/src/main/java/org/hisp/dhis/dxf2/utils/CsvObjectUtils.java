@@ -205,20 +205,29 @@ public class CsvObjectUtils
             {
                 OrganisationUnit object = new OrganisationUnit();
                 setIdentifiableObject( object, values );
-                object.setShortName( getSafe( values, 3, object.getName(), 50 ) );
-                object.setDescription( getSafe( values, 4, null, null ) );
-                object.setUuid( getSafe( values, 5, null, 36 ) );
-                object.setOpeningDate( getMediumDate( getSafe( values, 6, "1970-01-01", null ) ) );
-                object.setClosedDate( getMediumDate( getSafe( values, 7, "1970-01-01", null ) ) );
+                object.setShortName( getSafe( values, 4, object.getName(), 50 ) );
+                object.setDescription( getSafe( values, 5, null, null ) );
+                object.setUuid( getSafe( values, 6, null, 36 ) );
+                object.setOpeningDate( getMediumDate( getSafe( values, 7, "1970-01-01", null ) ) );
+                object.setClosedDate( getMediumDate( getSafe( values, 8, "1970-01-01", null ) ) );
                 object.setActive( true );
-                object.setComment( getSafe( values, 8, null, null ) );
-                object.setFeatureType( getSafe( values, 9, null, 50 ) );
-                object.setCoordinates( getSafe( values, 10, null, null ) );
-                object.setUrl( getSafe( values, 11, null, 255 ) );
-                object.setContactPerson( getSafe( values, 12, null, 255 ) );
-                object.setAddress( getSafe( values, 13, null, 255 ) );
-                object.setEmail( getSafe( values, 14, null, 150 ) );
-                object.setPhoneNumber( getSafe( values, 15, null, 150 ) );
+                object.setComment( getSafe( values, 9, null, null ) );
+                object.setFeatureType( getSafe( values, 10, null, 50 ) );
+                object.setCoordinates( getSafe( values, 11, null, null ) );
+                object.setUrl( getSafe( values, 12, null, 255 ) );
+                object.setContactPerson( getSafe( values, 13, null, 255 ) );
+                object.setAddress( getSafe( values, 14, null, 255 ) );
+                object.setEmail( getSafe( values, 15, null, 150 ) );
+                object.setPhoneNumber( getSafe( values, 16, null, 150 ) );
+                
+                String parentUid = getSafe( values, 3, null, 11 );
+                
+                if ( parentUid != null )
+                {
+                    OrganisationUnit parent = new OrganisationUnit();
+                    parent.setUid( parentUid );
+                    object.setParent( parent );
+                }
 
                 list.add( object );
             }
