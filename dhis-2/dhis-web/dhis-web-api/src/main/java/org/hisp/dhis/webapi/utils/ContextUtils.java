@@ -217,7 +217,7 @@ public class ContextUtils
         String xForwardedProto = request.getHeader( "X-Forwarded-Proto" );
         String xForwardedPort = request.getHeader( "X-Forwarded-Port" );
 
-        if ( xForwardedProto != null && (xForwardedProto.equalsIgnoreCase( "http" ) || xForwardedProto.equalsIgnoreCase( "https" )) )
+        if ( xForwardedProto != null && ( xForwardedProto.equalsIgnoreCase( "http" ) || xForwardedProto.equalsIgnoreCase( "https" ) ) )
         {
             builder.append( xForwardedProto );
         }

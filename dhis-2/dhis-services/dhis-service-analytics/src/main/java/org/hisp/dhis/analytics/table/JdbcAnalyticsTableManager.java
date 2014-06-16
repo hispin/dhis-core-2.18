@@ -85,6 +85,13 @@ public class JdbcAnalyticsTableManager
             return "No data values exist, not updating aggregate analytics tables";
         }
         
+        int orgUnitLevels = organisationUnitService.getMaxOfOrganisationUnitLevels();
+        
+        if ( orgUnitLevels == 0 )
+        {
+            return "No organisation unit levels exist, not updating aggregate analytics tables";
+        }
+        
         return null;
     }
     
