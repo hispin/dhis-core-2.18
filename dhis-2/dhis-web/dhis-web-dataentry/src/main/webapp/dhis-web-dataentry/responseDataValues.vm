@@ -8,7 +8,7 @@
     #else
     "id":"${value.dataElement.uid}-${value.optionCombo.uid}",
     #end
-    "val":"$!{value.value}",
+    "val":"$!encoder.jsonEncode( ${value.value} )",
     "com":"${value.hasComment()}"
   }#if( $velocityCount < $size1 ),#end
   #end ],
@@ -27,5 +27,5 @@
   "locked":${locked},
   "complete":${complete},
   "date":"$!format.formatDate( $date )",
-  "storedBy":"$!{storedBy}"
+  "storedBy":"$!encoder.jsonEncode( ${storedBy} )"
 }
