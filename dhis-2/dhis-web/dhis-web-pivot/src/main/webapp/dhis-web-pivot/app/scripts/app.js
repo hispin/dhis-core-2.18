@@ -5880,7 +5880,10 @@ Ext.onReady( function() {
 												org = organisationUnits[i];
 
 												ou.push(org.id);
-												ouc = Ext.Array.clean(ouc.concat(Ext.Array.pluck(org.children, 'id') || []));
+
+                                                if (org.children) {
+                                                    ouc = Ext.Array.clean(ouc.concat(Ext.Array.pluck(org.children, 'id') || []));
+                                                }
 											}
 
 											init.user = init.user || {};

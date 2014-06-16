@@ -396,6 +396,8 @@ Ext.onReady(function() {
 
                 // parentGraphMap: object
 
+                // legendPosition: string
+
                 getValidatedDimensionArray = function(dimensionArray) {
 					var dimensionArray = Ext.clone(dimensionArray);
 
@@ -630,6 +632,8 @@ Ext.onReady(function() {
                     layout.title = Ext.isString(config.title) &&  !Ext.isEmpty(config.title) ? config.title : null;
 
                     layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : null;
+
+                    layout.legendPosition = config.legendPosition && Ext.isString(config.legendPosition) ? config.legendPosition : null;
 
 					if (!validateSpecialCases()) {
 						return;
@@ -2177,7 +2181,8 @@ Ext.onReady(function() {
                         width,
                         isVertical = false,
                         position = 'top',
-                        padding = 0;
+                        padding = 0,
+                        positions = ['top', 'right', 'bottom', 'left'];
 
                     if (xLayout.type === conf.finals.chart.pie) {
                         numberOfItems = store.getCount();
@@ -2212,6 +2217,11 @@ Ext.onReady(function() {
 
                     if (position === 'right') {
                         padding = 5;
+                    }
+
+                    // position
+                    if (Ext.Array.contains(positions, xLayout.legendPosition)) {
+                        position = xLayout.legendPosition;
                     }
 
                     return Ext.create('Ext.chart.Legend', {
@@ -2794,7 +2804,10 @@ Ext.onReady(function() {
                         org = organisationUnits[i];
 
                         ou.push(org.id);
-                        ouc = Ext.Array.clean(ouc.concat(Ext.Array.pluck(org.children, 'id') || []));
+
+                        if (org.children) {
+                            ouc = Ext.Array.clean(ouc.concat(Ext.Array.pluck(org.children, 'id') || []));
+                        }
                     }
 
                     init.user = {

@@ -4663,12 +4663,33 @@ Ext.onReady( function() {
 		});
 
 		requests.push({
-			url: url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&links=false',
+			url: url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&paging=false&links=false',
 			success: function(r) {
-				var ou = r.organisationUnits[0];
-				init.user.ou = ou.id;
-				init.user.ouc = Ext.Array.pluck(ou.children, 'id');
-				fn();
+				var organisationUnits = r.organisationUnits || [],
+                    ou = [],
+                    ouc = [];
+
+                if (organisationUnits.length) {
+                    for (var i = 0, org; i < organisationUnits.length; i++) {
+                        org = organisationUnits[i];
+
+                        ou.push(org.id);
+
+                        if (org.children) {
+                            ouc = Ext.Array.clean(ouc.concat(Ext.Array.pluck(org.children, 'id') || []));
+                        }
+                    }
+
+                    init.user = {
+                        ou: ou,
+                        ouc: ouc
+                    }
+                }
+                else {
+                    alert('User is not assigned to any organisation units');
+                }
+
+                fn();
 			}
 		});
 
