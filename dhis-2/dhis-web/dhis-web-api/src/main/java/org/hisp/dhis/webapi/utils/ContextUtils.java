@@ -39,15 +39,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import javassist.util.proxy.ProxyObject;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.hisp.dhis.common.BaseDimensionalObject;
-import org.hisp.dhis.common.DimensionalObject;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
