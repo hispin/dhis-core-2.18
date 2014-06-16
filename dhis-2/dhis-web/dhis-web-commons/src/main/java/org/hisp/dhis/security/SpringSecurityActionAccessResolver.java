@@ -52,7 +52,7 @@ import com.opensymphony.xwork2.config.entities.PackageConfig;
 public class SpringSecurityActionAccessResolver
     implements ActionAccessResolver
 {
-    private static final Log LOG = LogFactory.getLog( SpringSecurityActionAccessResolver.class );
+    private static final Log log = LogFactory.getLog( SpringSecurityActionAccessResolver.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -122,19 +122,19 @@ public class SpringSecurityActionAccessResolver
                     .getAttributes( actionConfig ) );
             }
 
-            LOG.debug( "Access to [" + module + ", " + name + "]: TRUE" );
+            log.debug( "Access to [" + module + ", " + name + "]: TRUE" );
 
             return true;
         }
         catch ( AccessDeniedException e )
         {
-            LOG.debug( "Access to [" + module + ", " + name + "]: FALSE (access denied)" );
+            log.debug( "Access to [" + module + ", " + name + "]: FALSE (access denied)" );
 
             return false;
         }
         catch ( InsufficientAuthenticationException e )
         {
-            LOG.debug( "Access to [" + module + ", " + name + "]: FALSE (insufficient authentication)" );
+            log.debug( "Access to [" + module + ", " + name + "]: FALSE (insufficient authentication)" );
 
             return false;
         }

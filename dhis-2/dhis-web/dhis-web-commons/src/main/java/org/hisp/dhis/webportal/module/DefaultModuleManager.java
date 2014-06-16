@@ -245,16 +245,24 @@ public class DefaultModuleManager
     
     private List<Module> getAccessibleModules( List<Module> modules )
     {
-        List<Module> list = new ArrayList<Module>();
+        List<Module> allowed = new ArrayList<Module>();
         
         for ( Module module : modules )
         {
             if ( module != null && actionAccessResolver.hasAccess( module.getName(), defaultActionName ) )
             {
-                list.add( module );
+                allowed.add( module );
             }
         }
         
-        return list;
+        if ( modules.size() > allowed.size() )
+        {
+            List<Module> denied = new ArrayList<Module>( modules );
+            denied.removeAll( allowed );
+            
+            log.info( "User denied access to modules: " + denied ); //TODO reduce log level
+        }
+        
+        return allowed;
     }
 }
