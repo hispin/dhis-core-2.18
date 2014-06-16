@@ -639,7 +639,7 @@ public class DefaultDataElementCategoryService
 
         for ( DataElement dataElement : dataElements )
         {
-            if ( dataElement.getCategoryCombo() != null )
+            if ( dataElement != null && dataElement.getCategoryCombo() != null )
             {
                 if ( !dataElement.getCategoryCombo().isDefault() && includeTotals )
                 {
@@ -675,7 +675,7 @@ public class DefaultDataElementCategoryService
 
         for ( DataElement dataElement : dataElements )
         {
-            if ( dataElement.getCategoryCombo() != null )
+            if ( dataElement != null && dataElement.getCategoryCombo() != null )
             {
                 for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
                 {
