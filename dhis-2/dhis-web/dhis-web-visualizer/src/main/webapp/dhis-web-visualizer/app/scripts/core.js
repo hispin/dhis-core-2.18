@@ -574,6 +574,8 @@ Ext.onReady( function() {
 
                     layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : null;
 
+                    layout.legend = Ext.isObject(config.legend) ? config.legend : null;
+
 					if (!validateSpecialCases()) {
 						return;
 					}
@@ -2005,13 +2007,28 @@ Ext.onReady( function() {
                 getDefaultSeriesTitle = function(store) {
                     var a = [];
 
-                    for (var i = 0, id, ids; i < store.rangeFields.length; i++) {
-                        id = store.rangeFields[i];
-                        a.push(xResponse.metaData.names[id]);
+                    if (Ext.isObject(xLayout.legend) && Ext.isArray(xLayout.legend.seriesNames)) {
+                        return xLayout.legend.seriesNames;
+                    }
+                    else {
+                        for (var i = 0, id, name, mxl, ids; i < store.rangeFields.length; i++) {
+                            id = store.rangeFields[i];
+                            name = xResponse.metaData.names[id];
+
+                            if (Ext.isObject(xLayout.legend) && xLayout.legend.maxLength) {
+                                var mxl = parseInt(xLayout.legend.maxLength);
+
+                                if (Ext.isNumber(mxl)) {
+                                    name = name.substr(0, mxl) + '..';
+                                }
+                            }
+                            
+                            a.push(name);
+                        }
                     }
 
                     return a;
-                };
+				};
 
                 getDefaultSeries = function(store) {
                     var main = {
@@ -2038,7 +2055,7 @@ Ext.onReady( function() {
                             field: store.rangeFields,
                             font: conf.chart.style.fontFamily,
                             renderer: function(n) {
-                                return n === '0.0' ? '-' : n;                                    
+                                return n === '0.0' ? '' : n;                                    
                             }
                         };
                     }
@@ -2150,7 +2167,9 @@ Ext.onReady( function() {
                         width,
                         isVertical = false,
                         position = 'top',
-                        padding = 0;
+                        fontSize = 12,
+                        padding = 0,
+                        positions = ['top', 'right', 'bottom', 'left'];
 
                     if (xLayout.type === conf.finals.chart.pie) {
                         numberOfItems = store.getCount();
@@ -2187,10 +2206,20 @@ Ext.onReady( function() {
                         padding = 5;
                     }
 
+                    // legend
+                    if (xLayout.legend) {
+                        if (Ext.Array.contains(positions, xLayout.legend.position)) {
+                            position = xLayout.legend.position;
+                        }
+
+                        fontSize = parseInt(xLayout.legend.fontSize) || fontSize;
+                        fontSize = fontSize + 'px';
+                    }
+
                     return Ext.create('Ext.chart.Legend', {
                         position: position,
                         isVertical: isVertical,
-                        labelFont: '13px ' + conf.chart.style.fontFamily,
+                        labelFont: fontSize + ' ' + conf.chart.style.fontFamily,
                         boxStroke: '#ffffff',
                         boxStrokeWidth: 0,
                         padding: padding
