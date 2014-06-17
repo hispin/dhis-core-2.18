@@ -28,6 +28,7 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.acl.Access;
@@ -47,6 +48,7 @@ import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
 import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.node.config.InclusionStrategy;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
@@ -181,6 +183,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
         rootNode.setNamespace( DxfNamespaces.DXF_2_0 );
 
+        rootNode.getConfig().setInclusionStrategy( getInclusionStrategy( parameters.get( "inclusionStrategy" ) ) );
+
         if ( pager != null )
         {
             ComplexNode pagerNode = rootNode.addChild( new ComplexNode( "pager" ) );
@@ -256,6 +260,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             rootNode.setNamespace( DxfNamespaces.DXF_2_0 );
             rootNode.addChild( collectionNode );
 
+            rootNode.getConfig().setInclusionStrategy( getInclusionStrategy( parameters.get( "inclusionStrategy" ) ) );
+
             return rootNode;
         }
         else
@@ -263,6 +269,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             RootNode rootNode = new RootNode( collectionNode.getChildren().get( 0 ) );
             rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
             rootNode.setNamespace( DxfNamespaces.DXF_2_0 );
+
+            rootNode.getConfig().setInclusionStrategy( getInclusionStrategy( parameters.get( "inclusionStrategy" ) ) );
 
             return rootNode;
         }
@@ -551,5 +559,20 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         {
             throw new RuntimeException( ex );
         }
+    }
+
+    private InclusionStrategy.Include getInclusionStrategy( String inclusionStrategy )
+    {
+        if ( inclusionStrategy != null )
+        {
+            Optional<InclusionStrategy.Include> optional = Enums.getIfPresent( InclusionStrategy.Include.class, inclusionStrategy );
+
+            if ( optional.isPresent() )
+            {
+                return optional.get();
+            }
+        }
+
+        return InclusionStrategy.Include.NON_NULL;
     }
 }

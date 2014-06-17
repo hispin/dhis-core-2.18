@@ -50,40 +50,40 @@ public interface InclusionStrategy
          * Inclusion strategy that only includes non null objects.
          */
         NON_NULL
-        {
-            @Override
-            public <T> boolean include( T object )
             {
-                return object != null;
-            }
-        },
+                @Override
+                public <T> boolean include( T object )
+                {
+                    return object != null;
+                }
+            },
 
         /**
          * Inclusion strategy that only includes non empty objects:
          * -
          */
         NON_EMPTY
-        {
-            @Override
-            public <T> boolean include( T object )
             {
-                if ( object == null )
+                @Override
+                public <T> boolean include( T object )
                 {
-                    return false;
-                }
+                    if ( object == null )
+                    {
+                        return false;
+                    }
 
-                if ( Collection.class.isAssignableFrom( object.getClass() ) )
-                {
-                    return !((Collection<?>) object).isEmpty();
-                }
-                else if ( String.class.isAssignableFrom( object.getClass() ) )
-                {
-                    return !StringUtils.isEmpty( object );
-                }
+                    if ( Collection.class.isAssignableFrom( object.getClass() ) )
+                    {
+                        return !((Collection<?>) object).isEmpty();
+                    }
+                    else if ( String.class.isAssignableFrom( object.getClass() ) )
+                    {
+                        return !StringUtils.isEmpty( object );
+                    }
 
-                return true;
-            }
-        };
+                    return true;
+                }
+            };
 
         @Override
         public <T> boolean include( T object )
