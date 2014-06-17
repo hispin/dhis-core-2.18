@@ -169,18 +169,12 @@ public class EventChartController
     {
         dimensionService.mergeAnalyticalObject( eventChart );
 
+        eventChart.getColumnDimensions().clear();
+        eventChart.getRowDimensions().clear();
         eventChart.getFilterDimensions().clear();
-        
-        if ( eventChart.getColumns() != null )
-        {
-            eventChart.setSeries( toDimension( eventChart.getColumns().get( 0 ).getDimension() ) );
-        }
 
-        if ( eventChart.getRows() != null )
-        {
-            eventChart.setCategory( toDimension( eventChart.getRows().get( 0 ).getDimension() ) );
-        }
-        
+        eventChart.getColumnDimensions().addAll( getDimensions( eventChart.getColumns() ) );
+        eventChart.getRowDimensions().addAll( getDimensions( eventChart.getRows() ) );
         eventChart.getFilterDimensions().addAll( getDimensions( eventChart.getFilters() ) );
 
         if ( eventChart.getProgram() != null )

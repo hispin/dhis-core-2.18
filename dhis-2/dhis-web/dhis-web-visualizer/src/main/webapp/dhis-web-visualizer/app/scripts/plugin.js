@@ -1805,8 +1805,9 @@ Ext.onReady(function() {
                             regression = new SimpleRegression();
                             key = conf.finals.data.trendLine + columnIds[i];
 
-                            for (var j = 0; j < data.length; j++) {
-                                regression.addData(j, data[j][columnIds[i]]);
+                            for (var j = 0, value; j < data.length; j++) {
+                                value = data[j][replacedColumnIds[i]];
+                                regression.addData(j, parseFloat(value));
                             }
 
                             for (var j = 0; j < data.length; j++) {
