@@ -211,6 +211,7 @@ public class UserController
 
         User parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
         parsed.setUid( uid );
+
         if ( parsed.getUserCredentials().getPassword() != null )
         {
             String encodePassword = passwordManager.encodePassword( parsed.getUsername(),
@@ -219,7 +220,7 @@ public class UserController
         }
 
         ImportTypeSummary summary = importService.importObject( currentUserService.getCurrentUser().getUid(), parsed, ImportStrategy.UPDATE );
-        renderService.toJson( response.getOutputStream(), summary );
+        renderService.toXml( response.getOutputStream(), summary );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
