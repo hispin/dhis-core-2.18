@@ -334,14 +334,14 @@ dhis2.dsr.hideContent = function()
 dhis2.dsr.showMoreOptions = function()
 {
 	$( "#moreOptionsLink" ).hide();
-	$( "#lessOptionsLink" ).show();
+	$( "#fewerOptionsLink" ).show();
 	$( "#advancedOptions" ).show();
 }
 
-dhis2.dsr.showLessOptions = function()
+dhis2.dsr.showFewerOptions = function()
 {
 	$( "#moreOptionsLink" ).show();
-	$( "#lessOptionsLink" ).hide();
+	$( "#fewerOptionsLink" ).hide();
 	$( "#advancedOptions" ).hide();
 }
 

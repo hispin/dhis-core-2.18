@@ -147,7 +147,7 @@ div.inputSection {
 #end </div>
 
 <div id="moreOptionsLink" style="padding: 8px 0;"><a href="javascript:dhis2.dsr.showMoreOptions()">$i18n.getString( "show_more_options" )</a></div>
-<div id="lessOptionsLink" style="display: none; padding: 8px 0;"><a href="javascript:dhis2.dsr.showLessOptions()">$i18n.getString( "show_less_options" )</a></div>
+<div id="fewerOptionsLink" style="display: none; padding: 8px 0;"><a href="javascript:dhis2.dsr.showFewerOptions()">$i18n.getString( "show_fewer_options" )</a></div>
 
 <div class="inputSection">
 <input type="button" value='$i18n.getString( "get_report" )' style="width:120px" onclick="dhis2.dsr.generateDataSetReport()">
