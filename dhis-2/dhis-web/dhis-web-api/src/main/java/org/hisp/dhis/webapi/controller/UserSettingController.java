@@ -28,11 +28,16 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.user.UserSettingService;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -49,9 +54,9 @@ public class UserSettingController
     @RequestMapping( value = "/{key}", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_TEXT, ContextUtils.CONTENT_TYPE_HTML } )
     public void setUserSetting(
         @PathVariable String key,
-        @RequestParam(value = "user", required = false) String username,
-        @RequestParam(value = "value",required = false) String value,
-        @RequestBody(required=false) String valuePayload, HttpServletResponse response )
+        @RequestParam( value = "user", required = false ) String username,
+        @RequestParam( value = "value", required = false ) String value,
+        @RequestBody( required = false ) String valuePayload, HttpServletResponse response )
     {
         if ( key == null )
         {
@@ -80,9 +85,10 @@ public class UserSettingController
     }
 
     @RequestMapping( value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String getSystemSetting( @PathVariable( "key" ) String key, @RequestParam(value = "user", required = false) String username ) 
+    public @ResponseBody
+    String getSystemSetting( @PathVariable( "key" ) String key, @RequestParam( value = "user", required = false ) String username )
     {
-        return (String) ( username == null ? userSettingService.getUserSetting( key ) : userSettingService.getUserSetting( key, username ) );
+        return (String) (username == null ? userSettingService.getUserSetting( key ) : userSettingService.getUserSetting( key, username ));
     }
 
     @RequestMapping( value = "/{key}", method = RequestMethod.DELETE )
