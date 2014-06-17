@@ -1783,17 +1783,28 @@ Ext.onReady( function() {
 
 			if (ns.app.layout) {
 				favorite = Ext.clone(ns.app.layout);
+                
+				// server sync
+				favorite.showData = favorite.showValues;
+				delete favorite.showValues;
 
-				// sync
-				favorite.totals = favorite.showTotals;
-				delete favorite.showTotals;
+				favorite.regression = favorite.showTrendLine;
+				delete favorite.showTrendLine;
 
-				favorite.subtotals = favorite.showSubTotals;
-				delete favorite.showSubTotals;
+				favorite.targetLineLabel = favorite.targetLineTitle;
+				delete favorite.targetLineTitle;
 
-				delete favorite.type;
+				favorite.baseLineLabel = favorite.baseLineTitle;
+				delete favorite.baseLineTitle;
+
+				favorite.domainAxisLabel = favorite.domainAxisTitle;
+				delete favorite.domainAxisTitle;
+
+				favorite.rangeAxisLabel = favorite.rangeAxisTitle;
+				delete favorite.rangeAxisTitle;
+
+				delete favorite.id;
 				delete favorite.parentGraphMap;
-                delete favorite.id;
                 delete favorite.displayName;
                 delete favorite.access;
                 delete favorite.lastUpdated;
@@ -1848,7 +1859,7 @@ Ext.onReady( function() {
 
 								ns.app.stores.eventChart.loadStore();
 
-								ns.app.shareButton.enable();
+								//ns.app.shareButton.enable();
 
 								window.destroy();
 							}
@@ -1865,7 +1876,7 @@ Ext.onReady( function() {
 
 					if (id && name) {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/eventCharts/' + id + '.json?viewClass=dimensional&links=false',
+							url: ns.core.init.contextPath + '/api/eventCharts/' + id + '.json?fields=' + ns.core.conf.url.analysisFields.join(','),
 							method: 'GET',
 							failure: function(r) {
 								ns.core.web.mask.show();
@@ -1876,7 +1887,7 @@ Ext.onReady( function() {
 								eventChart.name = name;
 
 								Ext.Ajax.request({
-									url: ns.core.init.contextPath + '/api/eventCharts/' + eventReport.id,
+									url: ns.core.init.contextPath + '/api/eventCharts/' + eventChart.id,
 									method: 'PUT',
 									headers: {'Content-Type': 'application/json'},
 									params: Ext.encode(eventChart),
@@ -2092,7 +2103,7 @@ Ext.onReady( function() {
 
 													ns.app.stores.eventChart.loadStore();
 
-													ns.app.shareButton.enable();
+													//ns.app.shareButton.enable();
 												}
 											});
 										}
@@ -2145,7 +2156,7 @@ Ext.onReady( function() {
 											url: ns.core.init.contextPath + '/api/eventCharts/' + record.data.id,
 											method: 'DELETE',
 											success: function() {
-												ns.app.stores.eventReport.loadStore();
+												ns.app.stores.eventChart.loadStore();
 											}
 										});
 									}
@@ -2608,7 +2619,7 @@ Ext.onReady( function() {
 				handler: function() {
 					if (textArea.getValue()) {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/interpretations/eventReports/' + ns.app.layout.id,
+							url: ns.core.init.contextPath + '/api/interpretations/eventCharts/' + ns.app.layout.id,
 							method: 'POST',
 							params: textArea.getValue(),
 							headers: {'Content-Type': 'text/html'},
@@ -4604,7 +4615,7 @@ Ext.onReady( function() {
 			ns.app.downloadButton.enable();
 
 			if (layout.id) {
-				ns.app.shareButton.enable();
+				//ns.app.shareButton.enable();
 			}
 
             //ns.app.statusBar.setStatus(layout, response);
@@ -4643,6 +4654,8 @@ Ext.onReady( function() {
                 if (!(view.startDate && view.endDate)) {
                     return;
                 }
+
+                map['pe'] = [{dimension: 'pe'}];
             }
             else if (periodMode.getValue() === 'periods') {
 				map['pe'] = [periods.getDimension()];
@@ -4664,8 +4677,8 @@ Ext.onReady( function() {
 
             // other
 
-            map['longitude'] = [{dimension: 'longitude'}];
-            map['latitude'] = [{dimension: 'latitude'}];
+            //map['longitude'] = [{dimension: 'longitude'}];
+            //map['latitude'] = [{dimension: 'latitude'}];
 
             // dimensions
 
@@ -5346,48 +5359,22 @@ Ext.onReady( function() {
 				}
 
 				Ext.Ajax.request({
-					url: init.contextPath + '/api/eventCharts/' + id + '.json?viewClass=dimensional&links=false',
+					url: init.contextPath + '/api/eventCharts/' + id + '.json?fields=' + conf.url.analysisFields.join(','),
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
 						alert(r.responseText);
 					},
 					success: function(r) {
-						var config = Ext.decode(r.responseText);
+						var layoutConfig = Ext.decode(r.responseText),
+							layout = api.layout.Layout(layoutConfig);
 
-						// sync
-						config.showTotals = config.totals;
-						delete config.totals;
-
-						config.showSubTotals = config.subtotals;
-						delete config.subtotals;
-
-						if (config.startDate) {
-							config.startDate = config.startDate.substr(0,10);
-						}
-
-						if (config.endDate) {
-							config.endDate = config.endDate.substr(0,10);
-						}
-
-						config.paging = {
-							page: 1,
-							pageSize: 100
-						};
-
-						if (config.topLimit && config.sortOrder) {
-							config.sorting = {
-								id: 1,
-								direction: config.sortOrder == 1 ? 'DESC' : 'ASC'
-							};
-						}
-
-						web.report.getData(config, true);
+						web.report.getData(layout, true);
 					}
 				});
 			};
 
-			web.report.getData = function(view, isUpdateGui) {
-				var paramString = web.analytics.getParamString(view);
+			web.report.getData = function(layout, isUpdateGui) {
+				var paramString = web.analytics.getParamString(layout);
 
 				// show mask
 				web.mask.show(ns.app.centerRegion);
@@ -5417,11 +5404,11 @@ Ext.onReady( function() {
 							return;
 						}
 
-                        web.mask.show(ns.app.centerRegion, 'Creating table..');
+                        web.mask.show(ns.app.centerRegion, 'Error while creating table..');
 
                         ns.app.paramString = paramString;
 
-                        web.report.createReport(view, response, isUpdateGui);
+                        web.report.createReport(layout, response, isUpdateGui);
 					}
 				});
 			};
@@ -5441,6 +5428,8 @@ Ext.onReady( function() {
                 xResponse = service.response.aggregate.getExtendedResponse(xLayout, response);
                 xLayout = getSXLayout(xLayout, xResponse);
 
+                web.mask.show(ns.app.centerRegion, 'Error while rendering chart..');
+                
                 chart = web.report.aggregate.createChart(layout, xLayout, xResponse, ns.app.centerRegion);
 
                 //if (layout.sorting) {
@@ -5448,8 +5437,6 @@ Ext.onReady( function() {
                     //xLayout = getSXLayout(xLayout, xResponse);
                     //table = getHtml(xLayout, xResponse);
                 //}
-
-                web.mask.show(ns.app.centerRegion, 'Rendering chart..');
 
                 // timing
                 ns.app.dateRender = new Date();

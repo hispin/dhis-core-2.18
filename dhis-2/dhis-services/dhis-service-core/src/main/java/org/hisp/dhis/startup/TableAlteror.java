@@ -153,6 +153,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicator DROP COLUMN alternativename" );
         executeSql( "ALTER TABLE orgunitgroup DROP COLUMN image" );
         executeSql( "ALTER TABLE report DROP COLUMN usingorgunitgroupsets" );
+        executeSql( "ALTER TABLE eventchart DROP COLUMN datatype" );
 
         executeSql( "DROP INDEX datamart_crosstab" );
 
@@ -424,6 +425,10 @@ public class TableAlteror
         executeSql( "update organisationunit set haspatients = false where haspatients is null" );
         executeSql( "update dataset set expirydays = 0 where expirydays is null" );
         executeSql( "update expression set nullifblank = true where nullifblank is null" );
+        executeSql( "update eventchart set hidelegend = false where hidelegend is null" );
+        executeSql( "update eventchart set regression = false where regression is null" );
+        executeSql( "update eventchart set hidetitle = false where hidetitle is null" );
+        executeSql( "update eventchart set hidesubtitle = false where hidesubtitle is null" );
 
         // move timelydays from system setting => dataset property
         executeSql( "update dataset set timelydays = 15 where timelydays is null" );

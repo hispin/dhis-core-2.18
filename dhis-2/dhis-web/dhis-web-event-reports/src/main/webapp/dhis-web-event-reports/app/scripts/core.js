@@ -432,6 +432,12 @@ Ext.onReady( function() {
 					layout.rows = config.rows;
 					layout.filters = config.filters;
 
+                    // dates
+                    if (config.startDate && config.endDate) {
+                        layout.startDate = config.startDate;
+                        layout.endDate = config.endDate;
+                    }
+
 					// properties
 					layout.showTotals = Ext.isBoolean(config.totals) ? config.totals : (Ext.isBoolean(config.showTotals) ? config.showTotals : true);
 					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);

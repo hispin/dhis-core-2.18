@@ -34,43 +34,34 @@ import java.util.List;
 
 import org.hisp.dhis.common.BaseAnalyticalObject;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.IdentifiableObjectUtils;
-import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.user.User;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Jan Henrik Overland
  */
-@JacksonXmlRootElement( localName = "eventchart", namespace = DxfNamespaces.DXF_2_0 )
+
 public class EventChart
     extends BaseAnalyticalObject
 {
-    private static final long serialVersionUID = 2570074075484545534L;
 
-    public static final String SIZE_NORMAL = "normal";
+    public static final String COUNT_TYPE_EVENTS = "events";
 
-    public static final String SIZE_WIDE = "wide";
-
-    public static final String SIZE_TALL = "tall";
+    public static final String COUNT_TYPE_TRACKED_ENTITY_INSTANCES = "tracked_entity_instances";
 
     public static final String TYPE_COLUMN = "column";
 
@@ -96,19 +87,21 @@ public class EventChart
 
     private Date endDate;
 
-    private String dataType;
+    private String type;
+
+    private List<String> columnDimensions = new ArrayList<String>();
+
+    private List<String> rowDimensions = new ArrayList<String>();
 
     private List<String> filterDimensions = new ArrayList<String>();
+
+    private boolean hideEmptyRows;
+
+    private String countType;
 
     private String domainAxisLabel;
 
     private String rangeAxisLabel;
-
-    private String series;
-
-    private String category;
-
-    private String countType;
 
     private boolean hideLegend;
 
@@ -130,8 +123,6 @@ public class EventChart
 
     private boolean showData;
 
-    private boolean hideEmptyRows;
-
     private Double rangeAxisMaxValue;
 
     private Double rangeAxisMinValue;
@@ -141,36 +132,20 @@ public class EventChart
     private Integer rangeAxisDecimals;
 
     // -------------------------------------------------------------------------
-    // Transient properties
-    // -------------------------------------------------------------------------
-
-    private transient I18nFormat format;
-
-    private transient List<Period> relativePeriods = new ArrayList<Period>();
-
-    private transient User user;
-
-    private transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
-
-    private transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<OrganisationUnit>();
-
-    // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
     public EventChart()
     {
-        setAutoFields();
     }
 
     public EventChart( String name )
     {
-        this();
         this.name = name;
     }
 
     // -------------------------------------------------------------------------
-    // Init
+    // AnalyticalObject
     // -------------------------------------------------------------------------
 
     @Override
@@ -178,142 +153,25 @@ public class EventChart
         List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups,
         I18nFormat format )
     {
-        this.user = user;
-        this.relativePeriodDate = date;
-        this.relativeOrganisationUnit = organisationUnit;
-        this.organisationUnitsAtLevel = organisationUnitsAtLevel;
-        this.organisationUnitsInGroups = organisationUnitsInGroups;
-        this.format = format;
-    }
-
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    public List<NameableObject> series()
-    {
-        DimensionalObject object = getDimensionalObject( series, relativePeriodDate, user, true,
-            organisationUnitsAtLevel, organisationUnitsInGroups, format );
-
-        return object != null ? object.getItems() : null;
-    }
-
-    public List<NameableObject> category()
-    {
-        DimensionalObject object = getDimensionalObject( category, relativePeriodDate, user, true,
-            organisationUnitsAtLevel, organisationUnitsInGroups, format );
-
-        return object != null ? object.getItems() : null;
-    }
-
-    public List<NameableObject> filters()
-    {
-        List<NameableObject> filterItems = new ArrayList<NameableObject>();
-
-        for ( String filter : filterDimensions )
-        {
-            DimensionalObject object = getDimensionalObject( filter, relativePeriodDate, user, true,
-                organisationUnitsAtLevel, organisationUnitsInGroups, format );
-
-            if ( object != null )
-            {
-                filterItems.addAll( object.getItems() );
-            }
-        }
-
-        return filterItems;
-    }
-
-    public String generateTitle()
-    {
-        return IdentifiableObjectUtils.join( filters() );
     }
 
     @Override
     public void populateAnalyticalProperties()
     {
-        columns.addAll( getDimensionalObjectList( series ) );
-        rows.addAll( getDimensionalObjectList( category ) );
+        for ( String column : columnDimensions )
+        {
+            columns.addAll( getDimensionalObjectList( column ) );
+        }
+
+        for ( String row : rowDimensions )
+        {
+            rows.addAll( getDimensionalObjectList( row ) );
+        }
 
         for ( String filter : filterDimensions )
         {
             filters.addAll( getDimensionalObjectList( filter ) );
         }
-    }
-
-    public List<OrganisationUnit> getAllOrganisationUnits()
-    {
-        if ( transientOrganisationUnits != null && !transientOrganisationUnits.isEmpty() )
-        {
-            return transientOrganisationUnits;
-        }
-        else
-        {
-            return organisationUnits;
-        }
-    }
-
-    public OrganisationUnit getFirstOrganisationUnit()
-    {
-        List<OrganisationUnit> units = getAllOrganisationUnits();
-        return units != null && !units.isEmpty() ? units.iterator().next() : null;
-    }
-
-    public List<Period> getAllPeriods()
-    {
-        List<Period> list = new ArrayList<Period>();
-
-        list.addAll( relativePeriods );
-
-        for ( Period period : periods )
-        {
-            if ( !list.contains( period ) )
-            {
-                list.add( period );
-            }
-        }
-
-        return list;
-    }
-
-    /**
-     * Sets all dimensions for this chart.
-     * 
-     * @param series the series dimension.
-     * @param category the category dimension.
-     * @param filter the filter dimension.
-     */
-    public void setDimensions( String series, String category, String filter )
-    {
-        this.series = series;
-        this.category = category;
-        this.filterDimensions.clear();
-        this.filterDimensions.add( filter );
-    }
-
-    public boolean isDataType( String dataType )
-    {
-        return this.dataType != null && this.dataType.equalsIgnoreCase( dataType );
-    }
-
-    public boolean isTargetLine()
-    {
-        return targetLineValue != null;
-    }
-
-    public boolean isBaseLine()
-    {
-        return baseLineValue != null;
-    }
-
-    public int getWidth()
-    {
-        return 700;
-    }
-
-    public int getHeight()
-    {
-        return 500;
     }
 
     // -------------------------------------------------------------------------
@@ -377,14 +235,82 @@ public class EventChart
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getDataType()
+    public String getType()
     {
-        return dataType;
+        return type;
     }
-    
-    public void setDataType( String dataType )
+
+    public void setType( String type )
     {
-        this.dataType = dataType;
+        this.type = type;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "columnDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "column", namespace = DxfNamespaces.DXF_2_0 )
+    public List<String> getColumnDimensions()
+    {
+        return columnDimensions;
+    }
+
+    public void setColumnDimensions( List<String> columnDimensions )
+    {
+        this.columnDimensions = columnDimensions;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "rowDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "row", namespace = DxfNamespaces.DXF_2_0 )
+    public List<String> getRowDimensions()
+    {
+        return rowDimensions;
+    }
+
+    public void setRowDimensions( List<String> rowDimensions )
+    {
+        this.rowDimensions = rowDimensions;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "filter", namespace = DxfNamespaces.DXF_2_0 )
+    public List<String> getFilterDimensions()
+    {
+        return filterDimensions;
+    }
+
+    public void setFilterDimensions( List<String> filterDimensions )
+    {
+        this.filterDimensions = filterDimensions;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isHideEmptyRows()
+    {
+        return hideEmptyRows;
+    }
+
+    public void setHideEmptyRows( boolean hideEmptyRows )
+    {
+        this.hideEmptyRows = hideEmptyRows;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getCountType()
+    {
+        return countType;
+    }
+
+    public void setCountType( String countType )
+    {
+        this.countType = countType;
     }
 
     @JsonProperty
@@ -414,59 +340,6 @@ public class EventChart
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getSeries()
-    {
-        return series;
-    }
-
-    public void setSeries( String series )
-    {
-        this.series = series;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getCategory()
-    {
-        return category;
-    }
-
-    public void setCategory( String category )
-    {
-        this.category = category;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "filterDimensions", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "filterDimension", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getFilterDimensions()
-    {
-        return filterDimensions;
-    }
-
-    public void setFilterDimensions( List<String> filterDimensions )
-    {
-        this.filterDimensions = filterDimensions;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getCountType()
-    {
-        return countType;
-    }
-
-    public void setCountType( String countType )
-    {
-        this.countType = countType;
-    }
-
-    @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isHideLegend()
@@ -491,6 +364,45 @@ public class EventChart
     {
         this.regression = regression;
     }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isHideTitle()
+    {
+        return hideTitle;
+    }
+
+    public void setHideTitle( boolean hideTitle )
+    {
+        this.hideTitle = hideTitle;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isHideSubtitle()
+    {
+        return hideSubtitle;
+    }
+
+    public void setHideSubtitle( Boolean hideSubtitle )
+    {
+        this.hideSubtitle = hideSubtitle;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getTitle()
+    {
+        return this.title;
+    }
+
+    public void setTitle( String title )
+    {
+        this.title = title;
+    }    
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
@@ -547,45 +459,6 @@ public class EventChart
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isHideTitle()
-    {
-        return hideTitle;
-    }
-
-    public void setHideTitle( boolean hideTitle )
-    {
-        this.hideTitle = hideTitle;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isHideSubtitle()
-    {
-        return hideSubtitle;
-    }
-
-    public void setHideSubtitle( Boolean hideSubtitle )
-    {
-        this.hideSubtitle = hideSubtitle;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getTitle()
-    {
-        return this.title;
-    }
-
-    public void setTitle( String title )
-    {
-        this.title = title;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isShowData()
     {
         return showData;
@@ -594,32 +467,6 @@ public class EventChart
     public void setShowData( boolean showData )
     {
         this.showData = showData;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isHideEmptyRows()
-    {
-        return hideEmptyRows;
-    }
-
-    public void setHideEmptyRows( boolean hideEmptyRows )
-    {
-        this.hideEmptyRows = hideEmptyRows;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isRewindRelativePeriods()
-    {
-        return rewindRelativePeriods;
-    }
-
-    public void setRewindRelativePeriods( boolean rewindRelativePeriods )
-    {
-        this.rewindRelativePeriods = rewindRelativePeriods;
     }
 
     @JsonProperty
@@ -675,34 +522,6 @@ public class EventChart
     }
 
     // -------------------------------------------------------------------------
-    // Getters and setters for transient properties
-    // -------------------------------------------------------------------------
-
-    @JsonIgnore
-    public I18nFormat getFormat()
-    {
-        return format;
-    }
-
-    @JsonIgnore
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
-    @JsonIgnore
-    public List<Period> getRelativePeriods()
-    {
-        return relativePeriods;
-    }
-
-    @JsonIgnore
-    public void setRelativePeriods( List<Period> relativePeriods )
-    {
-        this.relativePeriods = relativePeriods;
-    }
-
-    // -------------------------------------------------------------------------
     // Merge with
     // -------------------------------------------------------------------------
 
@@ -719,31 +538,35 @@ public class EventChart
             programStage = eventChart.getProgramStage();
             startDate = eventChart.getStartDate();
             endDate = eventChart.getEndDate();
-            domainAxisLabel = eventChart.getDomainAxisLabel();
-            rangeAxisLabel = eventChart.getRangeAxisLabel();
+            type = eventChart.getType();
+
+            columnDimensions.clear();
+            columnDimensions.addAll( eventChart.getColumnDimensions() );
+
+            rowDimensions.clear();
+            rowDimensions.addAll( eventChart.getRowDimensions() );
+
+            filterDimensions.clear();
+            filterDimensions.addAll( eventChart.getFilterDimensions() );
+
+            hideEmptyRows = eventChart.isHideEmptyRows();
             countType = eventChart.getCountType();
-            dataType = eventChart.getDataType();
-            series = eventChart.getSeries();
-            category = eventChart.getCategory();
+            domainAxisLabel = eventChart.getDomainAxisLabel();
+            rangeAxisLabel = eventChart.getRangeAxisLabel();            
             hideLegend = eventChart.isHideLegend();
-            regression = eventChart.isRegression();
+            regression = eventChart.isRegression();            
             hideTitle = eventChart.isHideTitle();
             hideSubtitle = eventChart.isHideSubtitle();
-            title = eventChart.getTitle();
+            title = eventChart.getTitle();            
             targetLineValue = eventChart.getTargetLineValue();
             targetLineLabel = eventChart.getTargetLineLabel();
             baseLineValue = eventChart.getBaseLineValue();
-            baseLineLabel = eventChart.getBaseLineLabel();
+            baseLineLabel = eventChart.getBaseLineLabel();            
             showData = eventChart.isShowData();
-            hideEmptyRows = eventChart.isHideEmptyRows();
-            rewindRelativePeriods = eventChart.isRewindRelativePeriods();
             rangeAxisMaxValue = eventChart.getRangeAxisMaxValue();
             rangeAxisMinValue = eventChart.getRangeAxisMinValue();
             rangeAxisSteps = eventChart.getRangeAxisSteps();
             rangeAxisDecimals = eventChart.getRangeAxisDecimals();
-
-            filterDimensions.clear();
-            filterDimensions.addAll( eventChart.getFilterDimensions() );
         }
     }
 }
