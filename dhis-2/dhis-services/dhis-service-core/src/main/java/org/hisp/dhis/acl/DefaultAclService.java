@@ -235,7 +235,7 @@ public class DefaultAclService implements AclService
     public <T extends IdentifiableObject> boolean canExternalize( User user, Class<T> klass )
     {
         Schema schema = schemaService.getSchema( klass );
-        return !(schema == null || !schema.isShareable()) && canAccess( user, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) );
+        return !(schema == null || !schema.isShareable()) && haveAuthority( user, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) );
     }
 
     @Override
@@ -261,11 +261,16 @@ public class DefaultAclService implements AclService
 
     private boolean haveOverrideAuthority( User user )
     {
-        return user == null || containsAny( user.getUserCredentials().getAllAuthorities(), ACL_OVERRIDE_AUTHORITIES );
+        return user == null || haveAuthority( user, ACL_OVERRIDE_AUTHORITIES );
     }
 
     private boolean canAccess( User user, Collection<String> requiredAuthorities )
     {
-        return haveOverrideAuthority( user ) || requiredAuthorities.isEmpty() || containsAny( user.getUserCredentials().getAllAuthorities(), requiredAuthorities );
+        return haveOverrideAuthority( user ) || requiredAuthorities.isEmpty() || haveAuthority( user, requiredAuthorities );
+    }
+
+    private boolean haveAuthority( User user, Collection<String> requiredAuthorities )
+    {
+        return containsAny( user.getUserCredentials().getAllAuthorities(), requiredAuthorities );
     }
 }

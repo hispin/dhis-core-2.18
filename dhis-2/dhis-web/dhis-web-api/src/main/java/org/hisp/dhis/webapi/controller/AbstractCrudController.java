@@ -450,7 +450,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     protected List<T> getEntity( String uid, WebOptions options )
     {
         ArrayList<T> list = new ArrayList<>();
-        Optional<T> identifiableObject = Optional.of( manager.getNoAcl( getEntityClass(), uid ) );
+        Optional<T> identifiableObject = Optional.fromNullable( manager.getNoAcl( getEntityClass(), uid ) );
 
         if ( identifiableObject.isPresent() )
         {
