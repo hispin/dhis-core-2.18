@@ -68,6 +68,9 @@ public abstract class AbstractJdbcTableManager
     public static final String PREFIX_ORGUNITLEVEL = "uidlevel";
     public static final String PREFIX_INDEX = "in_";
     
+    private static Date MIN_EARLIEST_DATE = new Cal().set( 1800, 1, 1 ).time();
+    private static Date MAX_LATEST_DATE = new Cal().set( 2100, 1, 1 ).time();
+    
     @Autowired
     protected OrganisationUnitService organisationUnitService;
     
@@ -124,7 +127,12 @@ public abstract class AbstractJdbcTableManager
             earliest = getEarliestData();
         }
         
-        return getTables( earliest, getLatestData() );
+        Date latest = getLatestData();
+        
+        earliest = earliest.before( MIN_EARLIEST_DATE ) ? MIN_EARLIEST_DATE : earliest;
+        latest = latest.after( MAX_LATEST_DATE ) ? MAX_LATEST_DATE : latest;
+        
+        return getTables( earliest, latest );
     }
 
     @Transactional
