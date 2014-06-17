@@ -193,7 +193,7 @@ public class JdbcAnalyticsTableManager
             "left join categoryoptioncombo co on dv.categoryoptioncomboid=co.categoryoptioncomboid " +
             "left join period pe on dv.periodid=pe.periodid " +
             "where de.valuetype = '" + valueType + "' " +
-            "and de.domaintype = 'aggregate' " +
+            "and de.domaintype = 'AGGREGATE' " +
             "and pe.startdate >= '" + start + "' " +
             "and pe.startdate <= '" + end + "' " +
             "and dv.value is not null " + 
