@@ -96,7 +96,7 @@ trackerCapture.controller('ProfileController',
             
             if(updateResponse.status !== 'SUCCESS'){//update has failed
                 var dialogOptions = {
-                        headerText: 'registration_error',
+                        headerText: 'update_error',
                         bodyText: updateResponse.description
                     };
                 DialogService.showDialog({}, dialogOptions);

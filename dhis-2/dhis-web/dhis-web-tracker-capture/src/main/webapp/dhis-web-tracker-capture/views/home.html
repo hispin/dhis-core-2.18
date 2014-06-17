@@ -29,12 +29,12 @@
     <!--- Advanced search input field begins -->
     <div class="row">        
         <div id="searchDropDownParent" class="input-group col-md-6">
-            <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
+            <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
             <div class="input-group-btn">
                 <button class="btn btn-default trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
                 <div id="searchDropDown" class="dropdown-menu pull-right">
                     <form ng-include="'views/search.html'">                       
-                    </form>
+                    </form>                    
                 </div>
             </div>                
         </div>        

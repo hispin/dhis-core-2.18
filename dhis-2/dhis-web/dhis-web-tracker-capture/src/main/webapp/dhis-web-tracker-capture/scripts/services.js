@@ -15,6 +15,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         currentStore: store
     };
 })
+
 /* factory for loading logged in user profiles from DHIS2 */
 .factory('CurrentUserProfile', function($http) { 
            
@@ -380,6 +381,30 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             var promise = $http.get( '../api/events.json?' + 'trackedEntityInstance=' + entity + '&orgUnit=' + orgUnit + '&program=' + program + '&paging=false').then(function(response){
                 return response.data.events;
             });            
+            return promise;
+        },
+        get: function(eventUid){            
+            var promise = $http.get('../api/events/' + eventUid + '.json').then(function(response){               
+                return response.data;
+            });            
+            return promise;
+        },        
+        create: function(dhis2Event){    
+            var promise = $http.post('../api/events.json', dhis2Event).then(function(response){
+                return response.data;           
+            });
+            return promise;            
+        },
+        update: function(dhis2Event){   
+            var promise = $http.put('../api/events/' + dhis2Event.event, dhis2Event).then(function(response){
+                return response.data;         
+            });
+            return promise;
+        },        
+        updateForSingleValue: function(singleValue){   
+            var promise = $http.put('../api/events/' + singleValue.event + '/' + singleValue.dataValues[0].dataElement, singleValue ).then(function(response){
+                return response.data;
+            });
             return promise;
         }
     };    
