@@ -54,6 +54,5 @@ public interface FilterService
      * @param fieldList Field filter
      * @return List of objects with only wanted properties
      */
-    <T extends IdentifiableObject> CollectionNode fieldFilter( Class<?> klass, List<T> objects,
-        List<String> fieldList );
+    <T extends IdentifiableObject> CollectionNode fieldFilter( Class<?> klass, List<T> objects, List<String> fieldList );
 }
