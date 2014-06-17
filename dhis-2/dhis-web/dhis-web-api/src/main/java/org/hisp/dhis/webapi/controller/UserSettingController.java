@@ -85,8 +85,7 @@ public class UserSettingController
     }
 
     @RequestMapping( value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody
-    String getSystemSetting( @PathVariable( "key" ) String key, @RequestParam( value = "user", required = false ) String username )
+    public @ResponseBody String getSystemSetting( @PathVariable( "key" ) String key, @RequestParam( value = "user", required = false ) String username )
     {
         return (String) (username == null ? userSettingService.getUserSetting( key ) : userSettingService.getUserSetting( key, username ));
     }
