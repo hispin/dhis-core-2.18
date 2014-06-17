@@ -36,9 +36,9 @@ public class Config
     /**
      * Inclusion strategy to use. There are a few already defined inclusions in the Inclusions enum.
      *
-     * @see org.hisp.dhis.node.config.Inclusions
+     * @see org.hisp.dhis.node.config.InclusionStrategy.Include
      */
-    private InclusionStrategy inclusionStrategy = Inclusions.ALWAYS;
+    private InclusionStrategy inclusionStrategy = InclusionStrategy.Include.NON_NULL;
 
     public Config()
     {

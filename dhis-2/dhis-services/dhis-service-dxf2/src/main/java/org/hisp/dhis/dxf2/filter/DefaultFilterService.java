@@ -340,7 +340,7 @@ public class DefaultFilterService implements FilterService
 
         if ( object == null )
         {
-            return complexNode;
+            return null;
         }
 
         for ( String field : fields )
