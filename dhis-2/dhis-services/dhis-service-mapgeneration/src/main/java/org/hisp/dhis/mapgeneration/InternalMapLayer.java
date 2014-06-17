@@ -362,14 +362,17 @@ public class InternalMapLayer
 
         List<Double> values = getSortedMapObjectValues();
         
+        Assert.isTrue( values.size() > 0 );
+        
         int range = values.size() / length;
         
         for ( int i = 0; i < length; i++ )
         {
             int lowIndex = range * i;
-            int highIndex = lowIndex + range - 1;
+            int highIndex = Math.max( lowIndex + range - 1, 0 );
             
             double low = values.get( lowIndex );
+
             double high = values.get( highIndex );
             
             if ( length == i + 1 ) // At last position
