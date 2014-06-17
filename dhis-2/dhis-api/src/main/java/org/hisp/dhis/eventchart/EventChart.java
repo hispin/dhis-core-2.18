@@ -96,17 +96,17 @@ public class EventChart
 
     private Date endDate;
 
+    private String dataType;
+
+    private List<String> filterDimensions = new ArrayList<String>();
+
     private String domainAxisLabel;
 
     private String rangeAxisLabel;
 
-    private String type;
-
     private String series;
 
     private String category;
-
-    private List<String> filterDimensions = new ArrayList<String>();
 
     private String countType;
 
@@ -291,9 +291,9 @@ public class EventChart
         this.filterDimensions.add( filter );
     }
 
-    public boolean isType( String type )
+    public boolean isDataType( String dataType )
     {
-        return this.type != null && this.type.equalsIgnoreCase( type );
+        return this.dataType != null && this.dataType.equalsIgnoreCase( dataType );
     }
 
     public boolean isTargetLine()
@@ -377,6 +377,19 @@ public class EventChart
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getDataType()
+    {
+        return dataType;
+    }
+    
+    public void setDataType( String dataType )
+    {
+        this.dataType = dataType;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDomainAxisLabel()
     {
         return domainAxisLabel;
@@ -398,19 +411,6 @@ public class EventChart
     public void setRangeAxisLabel( String rangeAxisLabel )
     {
         this.rangeAxisLabel = rangeAxisLabel;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getType()
-    {
-        return type;
-    }
-
-    public void setType( String type )
-    {
-        this.type = type;
     }
 
     @JsonProperty
@@ -722,7 +722,7 @@ public class EventChart
             domainAxisLabel = eventChart.getDomainAxisLabel();
             rangeAxisLabel = eventChart.getRangeAxisLabel();
             countType = eventChart.getCountType();
-            type = eventChart.getType();
+            dataType = eventChart.getDataType();
             series = eventChart.getSeries();
             category = eventChart.getCategory();
             hideLegend = eventChart.isHideLegend();
