@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -42,7 +43,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -88,13 +88,6 @@ public class SaveAggregateDataValueAction
         this.dataValueService = dataValueService;
     }
 
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -113,8 +106,6 @@ public class SaveAggregateDataValueAction
     public String execute()
         throws Exception
     {
-        String storedBy = currentUserService.getCurrentUsername() + "_CAE";
-
         for ( String aggregateValue : aggregateValues )
         {
             // -----------------------------------------------------------------
@@ -151,15 +142,15 @@ public class SaveAggregateDataValueAction
             {
                 if ( dataValue == null )
                 {
-                    dataValue = new DataValue( dataElement, period, orgunit, optionCombo, optionCombo, "" + resultValue, "", new Date(), null );
-
+                    dataValue = new DataValue( dataElement, period, orgunit, optionCombo, optionCombo,
+                        "" + resultValue, CaseAggregationCondition.AUTO_STORED_BY, new Date(), null );
                     dataValueService.addDataValue( dataValue );
                 }
                 else
                 {
                     dataValue.setValue( resultValue );
                     dataValue.setTimestamp( new Date() );
-                    dataValue.setStoredBy( storedBy );
+                    dataValue.setStoredBy(  CaseAggregationCondition.AUTO_STORED_BY );
 
                     dataValueService.updateDataValue( dataValue );
                 }
