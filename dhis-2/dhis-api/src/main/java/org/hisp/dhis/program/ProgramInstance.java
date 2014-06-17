@@ -119,7 +119,6 @@ public class ProgramInstance
         entityInstance.getProgramInstances().add( this );
 
         setProgram( program );
-        program.getProgramInstances().add( this );
     }
 
     public ProgramStageInstance getProgramStageInstanceByStage( int stage )
