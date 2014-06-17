@@ -707,18 +707,18 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         objectBridge.updateObject( persistedObject );
 
-        if ( object instanceof User && !options.isDryRun() )
-        {
-            Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
-
-            ((User) persistedObject).getUserCredentials().mergeWith( userCredentials );
-            reattachCollectionFields( ((User) persistedObject).getUserCredentials(), collectionFieldsUserCredentials );
-
-            sessionFactory.getCurrentSession().saveOrUpdate( ((User) persistedObject).getUserCredentials() );
-        }
-
         if ( !options.isDryRun() )
         {
+            if ( object instanceof User )
+            {
+                Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
+
+                ((User) persistedObject).getUserCredentials().mergeWith( userCredentials );
+                reattachCollectionFields( ((User) persistedObject).getUserCredentials(), collectionFieldsUserCredentials );
+
+                sessionFactory.getCurrentSession().saveOrUpdate( ((User) persistedObject).getUserCredentials() );
+            }
+
             nonIdentifiableObjects.save( persistedObject );
         }
 
