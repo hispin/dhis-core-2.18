@@ -28,7 +28,6 @@ package org.hisp.dhis.node.serializers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -49,7 +48,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-@Scope( value = "prototype", proxyMode = ScopedProxyMode.INTERFACES )
+@Scope(value = "prototype", proxyMode = ScopedProxyMode.INTERFACES)
 public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
 {
     public static final String CONTENT_TYPE = "application/json";
@@ -58,14 +57,13 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
 
     static
     {
-        objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
         objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
-        objectMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
+        objectMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true );
         objectMapper.configure( SerializationFeature.WRAP_EXCEPTIONS, true );
         objectMapper.getFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
     }
 
-    private JsonGenerator generator;
+    private JsonGenerator generator = null;
 
     @Override
     public List<String> contentTypes()
@@ -86,12 +84,6 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
     }
 
     @Override
-    protected void endSerialize( RootNode rootNode, OutputStream outputStream ) throws Exception
-    {
-        generator = null;
-    }
-
-    @Override
     protected void startWriteRootNode( RootNode rootNode ) throws Exception
     {
         //generator.writeRaw( "callback(" );
@@ -108,11 +100,6 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void startWriteSimpleNode( SimpleNode simpleNode ) throws Exception
     {
-        if ( simpleNode.getValue() == null ) // add hint for this, exclude if null
-        {
-            return;
-        }
-
         if ( simpleNode.getParent().isCollection() )
         {
             generator.writeObject( simpleNode.getValue() );

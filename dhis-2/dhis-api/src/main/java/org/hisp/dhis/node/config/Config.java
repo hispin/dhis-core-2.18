@@ -1,4 +1,4 @@
-package org.hisp.dhis.node.types;
+package org.hisp.dhis.node.config;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,43 +28,29 @@ package org.hisp.dhis.node.types;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.config.Config;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class RootNode extends ComplexNode
+public class Config
 {
-    private String defaultNamespace;
+    /**
+     * Inclusion strategy to use. There are a few already defined inclusions in the Inclusions enum.
+     *
+     * @see org.hisp.dhis.node.config.Inclusions
+     */
+    private InclusionStrategy inclusionStrategy = Inclusions.ALWAYS;
 
-    private final Config config = new Config();
-
-    public RootNode( String name )
+    public Config()
     {
-        super( name );
     }
 
-    public RootNode( Node node )
+    public InclusionStrategy getInclusionStrategy()
     {
-        super( node.getName() );
-        setNamespace( node.getNamespace() );
-        setComment( node.getComment() );
-        addChildren( node.getChildren() );
+        return inclusionStrategy;
     }
 
-    public String getDefaultNamespace()
+    public void setInclusionStrategy( InclusionStrategy inclusionStrategy )
     {
-        return defaultNamespace;
-    }
-
-    public void setDefaultNamespace( String defaultNamespace )
-    {
-        this.defaultNamespace = defaultNamespace;
-    }
-
-    public Config getConfig()
-    {
-        return config;
+        this.inclusionStrategy = inclusionStrategy;
     }
 }
