@@ -43,7 +43,7 @@
                             <option value="1">{{'yes'| translate}}</option>
                         </select>
                     </div>
-                    <div ng-switch-when="combo">
+                    <div ng-switch-when="optionSet">
                         <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
                             <option ng-repeat="option in attribute.optionSet.options" value="{{option}}">{{option}}</option>
                         </select>

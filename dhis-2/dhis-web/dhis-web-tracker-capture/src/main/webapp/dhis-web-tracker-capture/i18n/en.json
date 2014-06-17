@@ -84,6 +84,7 @@
     "registration_date": "Registration date",
     "register": "Register",
     "registration_error": "Error in registration",
+    "update_error": "Error in update",
     "category": "Category",
     "entity_type": "Entity type",
     "save": "Save",

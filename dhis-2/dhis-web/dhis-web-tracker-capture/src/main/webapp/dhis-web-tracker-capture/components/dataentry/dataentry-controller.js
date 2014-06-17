@@ -36,7 +36,7 @@ trackerCapture.controller('DataEntryController',
             
             DHIS2EventFactory.getByEntity($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id).then(function(data){
                 $scope.dhis2Events = data;
-                
+               
                 /*if(angular.isUndefined($scope.dhis2Events)){
                     
                     $scope.dhis2Events = [];
@@ -94,6 +94,7 @@ trackerCapture.controller('DataEntryController',
                         }                        
                     } 
                     
+                    //get orgunit name for the event
                     if(dhis2Event.orgUnit){
                         OrgUnitService.open().then(function(){
                             OrgUnitService.get(dhis2Event.orgUnit).then(function(ou){
@@ -116,11 +117,11 @@ trackerCapture.controller('DataEntryController',
     };
     
     $scope.showDataEntry = function(event){
+        
         if(event){
             
             $scope.currentEvent = event;
             $scope.currentEvent.providedElsewhere = [];
-            $scope.currentEvent.dataValues = [];
             
             ProgramStageFactory.get($scope.currentEvent.programStage).then(function(stage){
                 $scope.currentStage = stage;
@@ -134,21 +135,77 @@ trackerCapture.controller('DataEntryController',
 
                 angular.forEach($scope.currentEvent.dataValues, function(dataValue){
                     var val = dataValue.value;
-                    var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
-                    if( de && de.type === 'int' && val){
-                        val = parseInt(val);
-                        dataValue.value = val;
-                    }
+                    if(val){
+                        var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
+                        if( de && de.type === 'int' && val){
+                            val = parseInt(val);
+                            dataValue.value = val;
+                        }
+                        $scope.currentEvent[dataValue.dataElement] = val;
+                    }                    
                 });
+                
+                $scope.currentEvent.dataValues = [];
             });                 
         }
     };    
     
-    $scope.savePatientDatavalue = function(currentEvent, dataElement){
+    $scope.saveDatavalue = function(prStDe){
         
         $scope.updateSuccess = false;
         
-        //get the dataelement whose value is being saved/updated
-        $scope.currentDataElement = {id: dataElement};
+        if(!angular.isUndefined($scope.currentEvent[prStDe.dataElement.id])){
+            
+            //currentEvent.providedElsewhere[prStDe.dataElement.id];
+            var value = $scope.currentEvent[prStDe.dataElement.id];
+            var ev = {  event: $scope.currentEvent.event,
+                        orgUnit: $scope.currentEvent.orgUnit,
+                        program: $scope.currentEvent.program,
+                        programStage: $scope.currentEvent.programStage,
+                        status: $scope.currentEvent.status,
+                        trackedEntityInstance: $scope.currentEvent.trackedEntityInstance,
+                        dataValues: [
+                                        {
+                                            dataElement: prStDe.dataElement.id, 
+                                            value: value, 
+                                            providedElseWhere: $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] ? $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] : false
+                                        }
+                                    ]
+                     };
+            DHIS2EventFactory.updateForSingleValue(ev).then(function(response){
+                $scope.updateSuccess = true;
+            });
+            
+        }        
+    };
+    
+    $scope.saveDatavalueLocation = function(prStDe){
+        
+        $scope.updateSuccess = false;
+        
+        if(!angular.isUndefined($scope.currentEvent.providedElsewhere[prStDe.dataElement.id])){
+            
+            console.log('the event is:  ',$scope.currentEvent.providedElsewhere[prStDe.dataElement.id]);
+            //currentEvent.providedElsewhere[prStDe.dataElement.id];
+            var value = $scope.currentEvent[prStDe.dataElement.id];
+            var ev = {  event: $scope.currentEvent.event,
+                        orgUnit: $scope.currentEvent.orgUnit,
+                        program: $scope.currentEvent.program,
+                        programStage: $scope.currentEvent.programStage,
+                        status: $scope.currentEvent.status,
+                        trackedEntityInstance: $scope.currentEvent.trackedEntityInstance,
+                        dataValues: [
+                                        {
+                                            dataElement: prStDe.dataElement.id, 
+                                            value: value, 
+                                            providedElseWhere: $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] ? $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] : false
+                                        }
+                                    ]
+                     };
+            DHIS2EventFactory.updateForSingleValue(ev).then(function(response){
+                $scope.updateSuccess = true;
+            });
+            
+        }        
     };
 });
