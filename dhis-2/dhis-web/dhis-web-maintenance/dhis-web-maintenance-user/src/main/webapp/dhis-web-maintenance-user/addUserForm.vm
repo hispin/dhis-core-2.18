@@ -201,7 +201,7 @@ div#orgUnitTree
     "i18n_selected": "selected_dimension_restrictions_for_data_analytics"
 })
 
-<div id="showLessOptions" style="margin-bottom: 20px;"><a href="javascript:showUserOptions()">$i18n.getString( "show_less_options" )</a></div>
+<div id="showFewerOptions" style="margin-bottom: 20px;"><a href="javascript:showUserOptions()">$i18n.getString( "show_fewer_options" )</a></div>
 
 </div>
 

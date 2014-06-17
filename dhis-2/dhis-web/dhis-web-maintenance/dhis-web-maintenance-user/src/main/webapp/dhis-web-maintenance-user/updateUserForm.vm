@@ -196,7 +196,7 @@ div#orgUnitTree
     "objects": $userCredentials.cogsDimensionConstraints
 })
 
-<div id="showLessOptions" style="margin-bottom: 20px;"><a href="javascript:showUserOptions()">$i18n.getString( "show_less_options" )</a></div>
+<div id="showFewerOptions" style="margin-bottom: 20px;"><a href="javascript:showUserOptions()">$i18n.getString( "show_fewer_options" )</a></div>
 
 </div>
 
