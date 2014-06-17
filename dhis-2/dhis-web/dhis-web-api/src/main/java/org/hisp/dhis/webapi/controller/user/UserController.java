@@ -139,7 +139,7 @@ public class UserController
     protected List<User> getEntity( String uid )
     {
         List<User> users = Lists.newArrayList();
-        Optional<User> user = Optional.of( userService.getUser( uid ) );
+        Optional<User> user = Optional.fromNullable( userService.getUser( uid ) );
 
         if ( user.isPresent() )
         {

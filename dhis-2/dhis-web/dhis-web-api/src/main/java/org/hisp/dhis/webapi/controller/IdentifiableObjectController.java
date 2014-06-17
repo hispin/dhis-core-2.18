@@ -55,7 +55,7 @@ public class IdentifiableObjectController
     public List<IdentifiableObject> getEntity( String uid )
     {
         List<IdentifiableObject> identifiableObjects = Lists.newArrayList();
-        Optional<IdentifiableObject> optional = Optional.of( manager.get( uid ) );
+        Optional<IdentifiableObject> optional = Optional.fromNullable( manager.get( uid ) );
 
         if ( optional.isPresent() )
         {

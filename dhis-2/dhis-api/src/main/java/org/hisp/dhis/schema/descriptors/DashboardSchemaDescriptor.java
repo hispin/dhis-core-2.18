@@ -58,6 +58,7 @@ public class DashboardSchemaDescriptor implements SchemaDescriptor
         schema.setOrder( 1380 );
 
         schema.getAuthorities().add( new Authority( AuthorityType.CREATE_PUBLIC, Lists.newArrayList( "F_DASHBOARD_PUBLIC_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.EXTERNALIZE, Lists.newArrayList( "F_DASHBOARD_PUBLIC_ADD" ) ) );
 
         return schema;
     }
