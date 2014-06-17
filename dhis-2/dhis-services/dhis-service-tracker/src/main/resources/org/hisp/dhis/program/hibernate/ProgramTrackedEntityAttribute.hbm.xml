@@ -20,6 +20,8 @@
 		<property name="displayInList" column="displayinlist" />
 
 		<property name="mandatory" column="mandatory" />
+		
+		<property name="allowDateInFuture" column="allowDateInFuture" />
 
 	</class>
 </hibernate-mapping>

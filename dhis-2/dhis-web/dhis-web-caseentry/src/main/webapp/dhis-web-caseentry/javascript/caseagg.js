@@ -143,6 +143,9 @@ function saveAggregateDataValues( isSaveAll )
 			   }
 			});
 	}
+	else{
+		unLockScreen();
+	}
 }
 
 function toogleAllCheckBoxes( tableDiv, checked )

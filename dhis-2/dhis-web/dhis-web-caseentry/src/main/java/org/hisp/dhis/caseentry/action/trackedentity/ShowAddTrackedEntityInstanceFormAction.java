@@ -277,6 +277,13 @@ public class ShowAddTrackedEntityInstanceFormAction
         return mandatoryMap;
     }
 
+    private Map<Integer, Boolean> allowDateInFutureMap = new HashMap<Integer, Boolean>();
+
+    public Map<Integer, Boolean> getAllowDateInFutureMap()
+    {
+        return allowDateInFutureMap;
+    }
+
     private List<TrackedEntityAttribute> attributes = new ArrayList<TrackedEntityAttribute>();
 
     public List<TrackedEntityAttribute> getAttributes()
@@ -356,6 +363,7 @@ public class ShowAddTrackedEntityInstanceFormAction
                 for ( TrackedEntityAttribute attribute : attributes )
                 {
                     mandatoryMap.put( attribute.getId(), false );
+                    allowDateInFutureMap.put(  attribute.getId(), false );
                 }
             }
             else
@@ -364,6 +372,7 @@ public class ShowAddTrackedEntityInstanceFormAction
                 for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
                 {
                     mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
+                    allowDateInFutureMap.put( programAttribute.getAttribute().getId(), programAttribute.getAllowDateInFuture() );
                 }
             }
 

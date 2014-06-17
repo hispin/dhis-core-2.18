@@ -273,6 +273,9 @@ public class TableAlteror
         executeSql( "UPDATE trackedentityaudit SET accessedmodule='tracked_entity_instance_dashboard' WHERE accessedmodule='instance_dashboard' or accessedmodule='patient_dashboard'" );
         
         updateUidColumn();
+        
+        executeSql( "UPDATE program_attributes SET allowDateInFuture='false' WHERE allowDateInFuture is null" );
+        
     }
 
     // -------------------------------------------------------------------------
