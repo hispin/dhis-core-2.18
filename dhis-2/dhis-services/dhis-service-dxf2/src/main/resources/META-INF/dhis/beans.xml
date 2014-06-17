@@ -5,7 +5,9 @@
 
   <bean id="org.hisp.dhis.dxf2.render.RenderService" class="org.hisp.dhis.dxf2.render.DefaultRenderService" />
 
-  <bean id="org.hisp.dhis.dxf2.filter.FilterService" class="org.hisp.dhis.dxf2.filter.DefaultFilterService" />
+  <bean id="org.hisp.dhis.dxf2.filter.ObjectFilterService" class="org.hisp.dhis.dxf2.filter.DefaultObjectFilterService" />
+
+  <bean id="org.hisp.dhis.dxf2.filter.FieldFilterService" class="org.hisp.dhis.dxf2.filter.DefaultFieldFilterService" />
 
   <bean id="org.hisp.dhis.dxf2.filter.ParserService" class="org.hisp.dhis.dxf2.filter.DefaultParserService" />
 

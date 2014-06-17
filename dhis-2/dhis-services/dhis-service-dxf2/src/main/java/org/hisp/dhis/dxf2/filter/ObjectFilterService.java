@@ -29,30 +29,21 @@ package org.hisp.dhis.dxf2.filter;
  */
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.node.types.CollectionNode;
 
 import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface FilterService
+public interface ObjectFilterService
 {
     /**
      * Filter a list of objects based on un-parsed filter string.
+     * In-memory filter
      *
      * @param objects List to filter
      * @param filters Filter string
      * @return Filtered object list
      */
-    <T extends IdentifiableObject> List<T> objectFilter( List<T> objects, List<String> filters );
-
-    /**
-     * Perform inclusion/exclusion on a list of objects.
-     *
-     * @param objects   List to filter
-     * @param fieldList Field filter
-     * @return List of objects with only wanted properties
-     */
-    <T extends IdentifiableObject> CollectionNode fieldFilter( Class<?> klass, List<T> objects, List<String> fieldList );
+    <T extends IdentifiableObject> List<T> filter( List<T> objects, List<String> filters );
 }
