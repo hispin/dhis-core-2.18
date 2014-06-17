@@ -79,6 +79,9 @@ import static org.hisp.dhis.webapi.utils.ContextUtils.DATE_PATTERN;
 public class MapController
     extends AbstractCrudController<Map>
 {
+    private static final int MAP_MIN_WIDTH = 140;
+    private static final int MAP_MIN_HEIGHT = 25;
+    
     @Autowired
     private MappingService mappingService;
 
@@ -220,9 +223,21 @@ public class MapController
             ContextUtils.notFoundResponse( response, "Map does not exist: " + uid );
             return;
         }
+        
+        if ( width != null && width < MAP_MIN_WIDTH )
+        {
+            ContextUtils.conflictResponse( response, "Min map width is " + MAP_MIN_WIDTH + ": " + width );
+            return;
+        }
+        
+        if ( height != null && height < MAP_MIN_HEIGHT )
+        {
+            ContextUtils.conflictResponse( response, "Min map height is " + MAP_MIN_HEIGHT + ": " + height );
+            return;            
+        }
 
         OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
-
+        
         renderMapViewPng( map, date, unit, width, height, response );
     }
 

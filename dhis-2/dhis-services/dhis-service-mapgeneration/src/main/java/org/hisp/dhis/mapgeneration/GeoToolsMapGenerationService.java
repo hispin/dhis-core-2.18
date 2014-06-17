@@ -161,7 +161,7 @@ public class GeoToolsMapGenerationService
             // Build the legend set, then render it to an image            
             LegendSet legendSet = new LegendSet( dataLayer );
             
-            BufferedImage titleImage = MapUtils.renderTitle( map.getName(), width );
+            BufferedImage titleImage = MapUtils.renderTitle( map.getName(), width, height );
             
             BufferedImage legendImage = legendSet.render( i18nManager.getI18nFormat() );
     
