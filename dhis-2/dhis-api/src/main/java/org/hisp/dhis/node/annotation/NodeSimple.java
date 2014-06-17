@@ -43,9 +43,13 @@ public @interface NodeSimple
 {
     String value() default "";
 
+    String namespace() default "";
+
     boolean isAttribute() default false;
 
     boolean isPersisted() default true;
 
-    String namespace() default "";
+    boolean isWritable() default true;
+
+    boolean isReadable() default true;
 }
