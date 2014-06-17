@@ -28,17 +28,29 @@ package org.hisp.dhis.webapi.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.hisp.dhis.common.Pager;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public interface LinkService
 {
     /**
-     * Generate HREF and set it using reflection, required a setHref(String) method in your class.
+     * Generate next/prev links for Pager class. Needs to know which class we are generating
+     * the pager for, so it can fetch the endpoint.
      *
+     * @param pager Pager instance to update with prev/next links
+     * @param klass Class type which is paged
+     * @see org.hisp.dhis.common.Pager
+     */
+    void generatePagerLinks( Pager pager, Class<?> klass );
+
+    /**
+     * Generate HREF and set it using reflection, required a setHref(String) method in your class.
+     * <p/>
      * Uses hrefBase from ContextService.getServletPath().
      *
-     * @param object   Object (can be collection) to set HREFs on
+     * @param object Object (can be collection) to set HREFs on
      * @see javax.servlet.http.HttpServletRequest
      * @see org.hisp.dhis.webapi.utils.ContextService
      */

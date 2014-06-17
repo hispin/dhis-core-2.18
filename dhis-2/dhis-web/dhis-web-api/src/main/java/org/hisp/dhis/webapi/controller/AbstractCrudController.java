@@ -179,6 +179,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         handleLinksAndAccess( options, entityList );
 
+        linkService.generatePagerLinks( pager, getEntityClass() );
+
         RootNode rootNode = new RootNode( "metadata" );
         rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
         rootNode.setNamespace( DxfNamespaces.DXF_2_0 );

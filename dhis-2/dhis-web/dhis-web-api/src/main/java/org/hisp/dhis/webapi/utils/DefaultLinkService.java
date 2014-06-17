@@ -28,20 +28,20 @@ package org.hisp.dhis.webapi.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-
 import javassist.util.proxy.ProxyFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.collection.spi.PersistentCollection;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -56,6 +56,48 @@ public class DefaultLinkService implements LinkService
 
     @Autowired
     private ContextService contextService;
+
+    @Override
+    public void generatePagerLinks( Pager pager, Class<?> klass )
+    {
+        if ( pager == null )
+        {
+            return;
+        }
+
+        Schema schema = schemaService.getDynamicSchema( klass );
+
+        if ( !schema.haveEndpoint() )
+        {
+            return;
+        }
+
+        String endpoint = contextService.getServletPath() + "/" + schema.getApiEndpoint();
+
+        if ( pager.getPage() < pager.getPageCount() )
+        {
+            String nextPath = endpoint + "?page=" + (pager.getPage() + 1);
+            nextPath += pager.pageSizeIsDefault() ? "" : "&pageSize=" + pager.getPageSize();
+
+            pager.setNextPage( nextPath );
+        }
+
+        if ( pager.getPage() > 1 )
+        {
+            if ( (pager.getPage() - 1) == 1 )
+            {
+                String prevPath = pager.pageSizeIsDefault() ? endpoint : endpoint + "?pageSize=" + pager.getPageSize();
+                pager.setPrevPage( prevPath );
+            }
+            else
+            {
+                String prevPath = endpoint + "?page=" + (pager.getPage() - 1);
+                prevPath += pager.pageSizeIsDefault() ? "" : "&pageSize=" + pager.getPageSize();
+
+                pager.setPrevPage( prevPath );
+            }
+        }
+    }
 
     @Override
     public <T> void generateLinks( T object )
