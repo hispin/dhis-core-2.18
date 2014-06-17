@@ -37,6 +37,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.hisp.dhis.user.User;
@@ -276,10 +277,13 @@ public class DefaultTrackedEntityFormService
         String value, I18n i18n, int index, String hidden, String style )
     {
         boolean mandatory = false;
+        boolean allowDateInFuture = false;
 
         if ( program != null && program.getAttribute( attribute ) != null )
         {
-            mandatory = program.getAttribute( attribute ).isMandatory();
+            ProgramTrackedEntityAttribute programAttribute = program.getAttribute( attribute );
+            mandatory = programAttribute.isMandatory();
+            allowDateInFuture = programAttribute.getAllowDateInFuture();
         }
 
         inputHtml = TAG_OPEN + "input id=\"attr" + attribute.getId() + "\" name=\"attr" + attribute.getId()
@@ -342,8 +346,16 @@ public class DefaultTrackedEntityFormService
         }
         else if ( attribute.getValueType().equals( TrackedEntityAttribute.TYPE_DATE ) )
         {
-            String jQueryCalendar = "<script>datePicker(\"attr" + attribute.getId() + "\", false);</script>";
-            inputHtml += " value=\"" + value + "\"" + TAG_CLOSE;
+            String jQueryCalendar = "<script>";
+            if( allowDateInFuture ){
+                jQueryCalendar += "datePicker";
+            }
+            else{
+                jQueryCalendar += "datePickerValid";
+            }
+            jQueryCalendar += "(\"attr" + attribute.getId() + "\", false, false);</script>";
+            
+           inputHtml += " value=\"" + value + "\"" + TAG_CLOSE;
             inputHtml += jQueryCalendar;
         }
         else

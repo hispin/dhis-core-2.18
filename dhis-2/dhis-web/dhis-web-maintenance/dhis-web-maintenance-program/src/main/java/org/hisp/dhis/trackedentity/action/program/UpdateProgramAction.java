@@ -271,6 +271,13 @@ public class UpdateProgramAction
         this.trackedEntityId = trackedEntityId;
     }
 
+    private List<Boolean> allowDateInFuture = new ArrayList<Boolean>();
+
+    public void setAllowDateInFuture( List<Boolean> allowDateInFuture )
+    {
+        this.allowDateInFuture = allowDateInFuture;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -353,7 +360,7 @@ public class UpdateProgramAction
                 TrackedEntityAttribute attribute = attributeService.getTrackedEntityAttribute( Integer
                     .parseInt( ids[1] ) );
                 ProgramTrackedEntityAttribute programAttribute = new ProgramTrackedEntityAttribute( attribute,
-                    index + 1, personDisplayNames.get( index ), mandatory.get( index ) );
+                    index + 1, personDisplayNames.get( index ), mandatory.get( index ), allowDateInFuture.get( index ) );
                 program.getAttributes().add( programAttribute );
             }
 

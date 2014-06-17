@@ -172,10 +172,18 @@ function selectProperties() {
   var selectedList = jQuery("#selectedList");
   jQuery("#availablePropertyIds").children().each(function( i, item ) {
     if( item.selected ) {
-      html  = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectProperties( this )'><td onmousedown='select(event,this)'>" + item.text + "</td>";
-      html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'";
-      html += "></td>"
-	  html += "<td align='center'><input type='checkbox' name='mandatory'></tr>";
+      html  = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectProperties( this )'>";
+	  html += "<td onmousedown='select(event,this)'>" + item.text + "</td>";
+      html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'></td>"
+	  html += "<td align='center'><input type='checkbox' name='mandatory'></td>";
+	  if( jQuery(item).attr('valuetype') =='date'){
+		html += "<td align='center'><input type='checkbox' name='allowDateInFuture'></td>";
+	  }
+	  else{
+		html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
+	  }
+	  html += "</tr>";
+		
       selectedList.append(html);
       jQuery(item).remove();
     }
@@ -189,10 +197,18 @@ function selectProperties() {
 function selectAllProperties() {
   var selectedList = jQuery("#selectedList");
   jQuery("#availablePropertyIds").children().each(function( i, item ) {
-    html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onmousedown='select(this)'>" + item.text + "</td>";
-    html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'";
-    html += "><td align='center'><input type='checkbox' name='mandatory'></td></tr>";
-    
+    html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'>";
+	html += "<td onmousedown='select(this)'>" + item.text + "</td>";
+    html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'></td>";
+    html += "<td align='center'><input type='checkbox' name='mandatory'></td>";
+    if( jQuery(item).attr('valuetype') =='date'){
+		html += "<td align='center'><input type='checkbox' name='allowDateInFuture'></td>";
+	}
+	else{
+		html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
+	}
+	html += "</tr>";
+	
 	selectedList.append(html);
     jQuery(item).remove();
   });

@@ -13,8 +13,10 @@
 			var compulsaryIdentifier = jQuery( "#compulsaryIdentifier" );
 			compulsaryIdentifier.empty();
 			var mandatorySelector = jQuery( "#mandatory" );
-			mandatorySelector.empty();
-		
+			mandatorySelector.empty();		
+			var allowDateInFutureSelector = jQuery( "#allowDateInFuture" );
+			allowDateInFutureSelector.empty();
+			
 			if( getFieldValue('type') != 3 ){
 				var isDisplayed = false;
 				jQuery("#selectedList").find("tr").each( function( i, item ){
@@ -31,6 +33,10 @@
 					checked = mandatory.attr('checked') ? true : false;
 					mandatorySelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 					
+					// allowDateInFuture
+					var allowDateInFuture = jQuery( item ).find( "input[name='allowDateInFuture']:first");
+					checked = allowDateInFuture.attr('checked') ? true : false;
+					allowDateInFutureSelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 				});
 				if( jQuery("#selectedList").find("tr").length > 0 && isDisplayed ){
 					compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
@@ -242,6 +248,7 @@
 				<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
 				<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
 				<select style='display:none;' multiple id="mandatory" name="mandatory" ></select>
+				<select style='display:none;' multiple id="allowDateInFuture" name="allowDateInFuture" ></select>
 				<select id='compulsaryIdentifier' name="compulsaryIdentifier" multiple="multiple" class="hidden {validate:{required:true}}" title="$i18n.getString('please_select_at_least_attribute_for_displaying_in_list')"></select>
 			</th>
 		  </tr>
@@ -251,7 +258,7 @@
 			<td>
 				<select size="15" style="width:100%;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();" #if( $program.type=='3' ) disabled #end>
 					#foreach( $attribute in $availableAttributes )
-						<option value="attr_$attribute.id">$attribute.displayName</option>
+						<option value="attr_$attribute.id" valuetype='$attribute.valueType'>$attribute.displayName</option>
 					#end
 				</select>
 			</td>
@@ -273,6 +280,7 @@
 								<th style="width:180px;">$i18n.getString( "name" )</th>
 								<th style="width:20px;">$i18n.getString( "displayed_in_list" )</th>
 								<th style="width:20px;">$i18n.getString( "mandatory" )</th>
+								<th style="width:20px;">$i18n.getString( "date_in_future" )</th>
                             </tr>
 						</thead>
 						<tbody id="selectedList" #if($program.type==3) style="display:none;" #end>
@@ -282,6 +290,13 @@
 									<td onmousedown="select(event, this)">$encoder.htmlEncode( $attribute.name )</td>
 									<td align="center"><input type="checkbox" name="displayed" value="attr_$programAttribute.attribute.id" #if($programAttribute.displayInList == true ) checked #end #if($program.type==3) disabled #end  /></td>
 									<td align="center"><input type="checkbox" name="mandatory" #if($programAttribute.mandatory == "true" ) checked #end #if($program.type==3) disabled #end  /></td>
+									<td align="center">
+										#if($attribute.valueType=='date')
+											<input type="checkbox" name="allowDateInFuture" #if($programAttribute.allowDateInFuture == "true" ) checked #end #if($program.type==3) disabled #end />
+										#else
+											<input type="hidden" name="allowDateInFuture" />
+										#end
+									</td>
 								</tr>
 							#end
 						</tbody>

@@ -270,6 +270,13 @@ public class GetTrackedEntityInstanceAction
         return mandatoryMap;
     }
 
+    private Map<Integer, Boolean> allowDateInFutureMap = new HashMap<Integer, Boolean>();
+
+    public Map<Integer, Boolean> getAllowDateInFutureMap()
+    {
+        return allowDateInFutureMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -334,6 +341,7 @@ public class GetTrackedEntityInstanceAction
                 for ( TrackedEntityAttribute attribute : attributes )
                 {
                     mandatoryMap.put( attribute.getId(), false );
+                    allowDateInFutureMap.put(  attribute.getId(), false );
                 }
             }
             else
@@ -342,6 +350,7 @@ public class GetTrackedEntityInstanceAction
                 for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
                 {
                     mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
+                    allowDateInFutureMap.put( programAttribute.getAttribute().getId(), programAttribute.getAllowDateInFuture() );
                 }
             }
 

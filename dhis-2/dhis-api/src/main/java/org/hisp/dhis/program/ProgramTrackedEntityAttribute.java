@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
@@ -61,6 +62,8 @@ public class ProgramTrackedEntityAttribute
 
     private Boolean mandatory;
 
+    private Boolean allowDateInFuture;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -83,6 +86,16 @@ public class ProgramTrackedEntityAttribute
         this.sortOrder = sortOrder;
         this.displayInList = displayInList;
         this.mandatory = mandatory;
+    }
+    
+    public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, Integer sortOrder, boolean displayInList,
+        Boolean mandatory, Boolean allowDateInFuture )
+    {
+        this.attribute = attribute;
+        this.sortOrder = sortOrder;
+        this.displayInList = displayInList;
+        this.mandatory = mandatory;
+        this.allowDateInFuture = allowDateInFuture;
     }
 
     // -------------------------------------------------------------------------
@@ -150,4 +163,17 @@ public class ProgramTrackedEntityAttribute
         this.displayInList = displayInList;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getAllowDateInFuture()
+    {
+        return allowDateInFuture;
+    }
+
+    public void setAllowDateInFuture( Boolean allowDateInFuture )
+    {
+        this.allowDateInFuture = allowDateInFuture;
+    }
 }
