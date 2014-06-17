@@ -199,9 +199,9 @@ public class MapUtils
         return image;
     }
 
-    public static BufferedImage renderTitle( String title, int maxWidth )
-    {
-        int[] widthHeight = getWidthHeight( maxWidth, null, 0, 0, 1 );
+    public static BufferedImage renderTitle( String title, Integer maxWidth, Integer maxHeight )
+    {        
+        int[] widthHeight = getWidthHeight( maxWidth, maxHeight, 0, 0, 1 );
 
         BufferedImage image = new BufferedImage( widthHeight[0], TITLE_HEIGHT, BufferedImage.TYPE_INT_ARGB );
         Graphics2D g = (Graphics2D) image.getGraphics();
@@ -215,7 +215,7 @@ public class MapUtils
     }
 
     /**
-     * Calcuates the width and height of an two-dimensional area. If width is not
+     * Calculates the width and height of an two-dimensional area. If width is not
      * null, the width will be used and the height will be calculated. If the height 
      * is not null, the height will be used and the width will be calculated. If 
      * both width and height are not null, the width or height will be adjusted 
@@ -223,7 +223,7 @@ public class MapUtils
      * height.
      * 
      * @param maxWidth the maximum width.
-     * @param maxHeight the maxium height.
+     * @param maxHeight the maximum height.
      * @param subtractWidth the value to subtract from final width
      * @param subtractHeight the value to subtract from final height 
      * @param widthFactor the width to height factor.
