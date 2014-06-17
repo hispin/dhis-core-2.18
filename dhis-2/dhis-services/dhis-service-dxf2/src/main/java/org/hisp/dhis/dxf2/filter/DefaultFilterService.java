@@ -92,6 +92,11 @@ public class DefaultFilterService implements FilterService
     public <T extends IdentifiableObject> CollectionNode fieldFilter( Class<?> klass, List<T> objects,
         List<String> fieldList )
     {
+        if ( objects == null )
+        {
+            return null;
+        }
+
         String fields = fieldList == null ? "" : Joiner.on( "," ).join( fieldList );
 
         Schema rootSchema = schemaService.getDynamicSchema( klass );
@@ -113,11 +118,6 @@ public class DefaultFilterService implements FilterService
 
         CollectionNode collectionNode = new CollectionNode( rootSchema.getCollectionName() );
         collectionNode.setNamespace( rootSchema.getNamespace() );
-
-        if ( objects.isEmpty() )
-        {
-            return collectionNode;
-        }
 
         for ( Object object : objects )
         {
