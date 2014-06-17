@@ -47,5 +47,9 @@ public @interface NodeComplex
 
     boolean isPersisted() default true;
 
-    boolean owner() default false;
+    boolean isOwner() default false;
+
+    boolean isWritable() default true;
+
+    boolean isReadable() default true;
 }

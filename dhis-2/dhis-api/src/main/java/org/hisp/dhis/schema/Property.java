@@ -37,6 +37,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.node.annotation.NodeRoot;
 import org.hisp.dhis.node.annotation.NodeSimple;
+import org.springframework.core.Ordered;
 
 import java.lang.reflect.Method;
 
@@ -44,19 +45,19 @@ import java.lang.reflect.Method;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @JacksonXmlRootElement( localName = "property", namespace = DxfNamespaces.DXF_2_0 )
-@NodeRoot
-public class Property
+@NodeRoot( isWritable = false, isPersisted = false )
+public class Property implements Ordered
 {
     /**
      * Class for property.
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private Class<?> klass;
 
     /**
      * If this property is a collection, this is the class of the items inside the collection.
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private Class<?> itemKlass;
 
     /**
@@ -73,32 +74,32 @@ public class Property
      * Name for this property, if this class is a collection, it is the name of the items -inside- the collection
      * and not the collection wrapper itself.
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private String name;
 
     /**
      * Name for actual field, used to persistence operations and getting setter/getter.
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private String fieldName;
 
     /**
      * Is this property persisted somewhere. This property will be used to create criteria queries
      * on demand (default: true)
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private boolean persisted = true;
 
     /**
      * Name of collection wrapper.
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private String collectionName;
 
     /**
      * If this Property is a collection, should it be wrapped with collectionName?
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private boolean collectionWrapping;
 
     /**
@@ -106,19 +107,19 @@ public class Property
      *
      * @see org.hisp.dhis.common.annotation.Description
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private String description;
 
     /**
      * Namespace used for this property.
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private String namespace;
 
     /**
      * Usually only used for XML. Is this property considered an attribute.
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private boolean attribute;
 
     /**
@@ -127,7 +128,7 @@ public class Property
      * of the collection, e.g. List<String> would set simple to be true, but List<DataElement> would set it
      * to false.
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private boolean simple;
 
     /**
@@ -135,14 +136,14 @@ public class Property
      *
      * @see java.util.Collection
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private boolean collection;
 
     /**
      * If this property is a complex object or a collection, is this property considered
      * the owner of that relationship (important for imports etc).
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private boolean owner;
 
     /**
@@ -150,7 +151,7 @@ public class Property
      *
      * @see org.hisp.dhis.common.IdentifiableObject
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private boolean identifiableObject;
 
     /**
@@ -158,7 +159,7 @@ public class Property
      *
      * @see org.hisp.dhis.common.NameableObject
      */
-    @NodeSimple( isPersisted = false )
+    @NodeSimple
     private boolean nameableObject;
 
     public Property()
@@ -372,6 +373,12 @@ public class Property
     public void setNameableObject( boolean nameableObject )
     {
         this.nameableObject = nameableObject;
+    }
+
+    @Override
+    public int getOrder()
+    {
+        return HIGHEST_PRECEDENCE;
     }
 
     @Override
