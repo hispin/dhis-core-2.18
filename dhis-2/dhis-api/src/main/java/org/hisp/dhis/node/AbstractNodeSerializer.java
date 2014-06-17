@@ -28,6 +28,7 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.hisp.dhis.node.config.Config;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.RootNode;
@@ -50,12 +51,16 @@ public abstract class AbstractNodeSerializer implements NodeSerializer
 
     protected abstract void flushStream() throws Exception;
 
+    private Config config;
+
     @Override
     public void serialize( RootNode rootNode, OutputStream outputStream ) throws Exception
     {
+        this.config = rootNode.getConfig();
         startSerialize( rootNode, outputStream );
         writeRootNode( rootNode );
         endSerialize( rootNode, outputStream );
+        this.config = null;
     }
 
     protected abstract void startWriteRootNode( RootNode rootNode ) throws Exception;
@@ -80,6 +85,11 @@ public abstract class AbstractNodeSerializer implements NodeSerializer
 
     protected void writeSimpleNode( SimpleNode simpleNode ) throws Exception
     {
+        if ( !config.getInclusionStrategy().include( simpleNode.getValue() ) )
+        {
+            return;
+        }
+
         startWriteSimpleNode( simpleNode );
         endWriteSimpleNode( simpleNode );
     }
@@ -90,6 +100,11 @@ public abstract class AbstractNodeSerializer implements NodeSerializer
 
     protected void writeComplexNode( ComplexNode complexNode ) throws Exception
     {
+        if ( !config.getInclusionStrategy().include( complexNode.getChildren() ) )
+        {
+            return;
+        }
+
         startWriteComplexNode( complexNode );
 
         for ( Node node : complexNode.getChildren() )
@@ -107,6 +122,11 @@ public abstract class AbstractNodeSerializer implements NodeSerializer
 
     protected void writeCollectionNode( CollectionNode collectionNode ) throws Exception
     {
+        if ( !config.getInclusionStrategy().include( collectionNode.getChildren() ) )
+        {
+            return;
+        }
+
         startWriteCollectionNode( collectionNode );
 
         for ( Node node : collectionNode.getChildren() )
