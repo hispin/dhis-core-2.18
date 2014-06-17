@@ -90,9 +90,7 @@ public class Program
 
     @Scanned
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-
-    private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
-
+    
     @Scanned
     private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
 
@@ -267,16 +265,6 @@ public class Program
     public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
     {
         this.organisationUnits = organisationUnits;
-    }
-
-    public Set<ProgramInstance> getProgramInstances()
-    {
-        return programInstances;
-    }
-
-    public void setProgramInstances( Set<ProgramInstance> programInstances )
-    {
-        this.programInstances = programInstances;
     }
 
     @JsonProperty( value = "programStages" )

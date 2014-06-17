@@ -115,7 +115,6 @@ public class NoRegistrationSingleEventServiceTest
         programInstance.setEnrollmentDate( new Date() );
 
         programInstanceService.addProgramInstance( programInstance );
-        programA.getProgramInstances().add( programInstance );
         identifiableObjectManager.update( programA );
 
         createUserAndInjectSecurityContext( true );
