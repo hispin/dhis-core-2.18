@@ -97,28 +97,12 @@
 
     <property name="dataType" not-null="true" />
 
-    <list name="columnDimensions" table="eventchart_columns">
-      <cache usage="read-write" />
-      <key column="eventchartid" foreign-key="fk_eventchart_columns_eventchartid" />
-      <list-index column="sort_order" base="0" />
-      <element type="string" column="dimension" />
-    </list>
-
-    <list name="rowDimensions" table="eventchart_rows">
-      <cache usage="read-write" />
-      <key column="eventchartid" foreign-key="fk_eventchart_rows_eventchartid" />
-      <list-index column="sort_order" base="0" />
-      <element type="string" column="dimension" />
-    </list>
-
     <list name="filterDimensions" table="eventchart_filters">
       <cache usage="read-write" />
       <key column="eventchartid" foreign-key="fk_eventchart_filters_eventchartid" />
       <list-index column="sort_order" base="0" />
       <element type="string" column="dimension" />
     </list>
-
-    <property name="hideEmptyRows" />
 
     <property name="countType" />
 
