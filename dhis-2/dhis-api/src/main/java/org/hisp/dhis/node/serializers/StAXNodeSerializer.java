@@ -50,19 +50,19 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-@Scope( value = "prototype", proxyMode = ScopedProxyMode.INTERFACES )
+@Scope(value = "prototype", proxyMode = ScopedProxyMode.INTERFACES)
 public class StAXNodeSerializer extends AbstractNodeSerializer
 {
     public static final String CONTENT_TYPE = "application/xml";
 
     private static final XMLOutputFactory xmlFactory = XMLOutputFactory.newInstance();
 
-    private XMLStreamWriter writer;
-
     static
     {
         xmlFactory.setProperty( "javax.xml.stream.isRepairingNamespaces", true );
     }
+
+    private XMLStreamWriter writer;
 
     @Override
     public List<String> contentTypes()
@@ -106,11 +106,6 @@ public class StAXNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void startWriteSimpleNode( SimpleNode simpleNode ) throws Exception
     {
-        if ( simpleNode.getValue() == null ) // TODO include null or not?
-        {
-            return;
-        }
-
         String value = String.format( "%s", simpleNode.getValue() );
 
         if ( simpleNode.isAttribute() )
@@ -134,7 +129,7 @@ public class StAXNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void endWriteSimpleNode( SimpleNode simpleNode ) throws Exception
     {
-        if ( !simpleNode.isAttribute() && simpleNode.getValue() != null )
+        if ( !simpleNode.isAttribute() )
         {
             writer.writeEndElement();
         }
