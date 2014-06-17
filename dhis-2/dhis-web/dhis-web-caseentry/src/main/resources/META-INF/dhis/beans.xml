@@ -618,19 +618,6 @@
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.caseentry.action.trackedentity.SearchRelationshipEntityInstanceAction"
-		class="org.hisp.dhis.caseentry.action.trackedentity.SearchRelationshipEntityInstanceAction"
-		scope="prototype">
-		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
-		<property name="attributeValueService"
-			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
-		<property name="relationshipService"
-			ref="org.hisp.dhis.relationship.RelationshipService" />
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.caseentry.action.trackedentity.ShowAddRelationshipFormAction"
 		class="org.hisp.dhis.caseentry.action.trackedentity.ShowAddRelationshipFormAction"
 		scope="prototype">

@@ -669,13 +669,6 @@
 			<param name="requiredAuthorities">F_RELATIONSHIP_ADD, F_TRACKED_ENTITY_INSTANCE_ADD</param>
 		</action>
 		
-		<action name="searchRelationshipTrackedEntityInstance"
-			class="org.hisp.dhis.caseentry.action.trackedentity.SearchRelationshipEntityInstanceAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/relationshipTrackedEntityInstances.vm</param>
-			<param name="requiredAuthorities">F_RELATIONSHIP_ADD</param>
-		</action>
-
 		<action name="saveRelationship"
 			class="org.hisp.dhis.caseentry.action.trackedentity.SaveRelationshipAction">
 			<result name="success" type="velocity-xml">

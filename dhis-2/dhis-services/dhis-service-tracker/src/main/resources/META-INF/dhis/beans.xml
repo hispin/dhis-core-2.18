@@ -135,6 +135,12 @@
         <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="org.hisp.dhis.eventchart.EventChartStore"
+		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+	    <property name="clazz" value="org.hisp.dhis.eventchart.EventChart" />
+        <property name="sessionFactory" ref="sessionFactory" />			
+	</bean>
+	
 	<!-- Service definitions -->
 
 	<bean id="org.hisp.dhis.program.ProgramDataEntryService" class="org.hisp.dhis.program.DefaultProgramDataEntryService">
@@ -345,12 +351,15 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="transientIdentifiableProperties" value="true" />
 	</bean>
-	
-	<!-- EventReport -->
-	
+		
 	<bean id="org.hisp.dhis.eventreport.EventReportService"
 	    class="org.hisp.dhis.eventreport.DefaultEventReportService">
 	    <property name="eventReportStore" ref="org.hisp.dhis.eventreport.EventReportStore" />    
+	</bean>
+	
+	<bean id="org.hisp.dhis.eventchart.EventChartService"
+		class="org.hisp.dhis.eventchart.DefaultEventChartService">
+		<property name="eventChartStore" ref="org.hisp.dhis.eventchart.EventChartStore" />
 	</bean>
 
 	<!-- Startup -->
@@ -444,8 +453,7 @@
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler"
+	<bean id="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler"
 		class="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
