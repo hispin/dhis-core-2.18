@@ -295,8 +295,6 @@
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-
 	</bean>
 
 	<bean
