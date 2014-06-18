@@ -367,6 +367,23 @@ public class DefaultProgramStageInstanceService
         // ---------------------------------------------------------------------
 
         updateProgramStageInstance( programStageInstance );
+        
+        // ---------------------------------------------------------------------
+        // Check Completed status for all of ProgramStageInstance of
+        // ProgramInstance
+        // ---------------------------------------------------------------------
+
+        if ( !programStageInstance.getProgramInstance().getProgram().getType()
+            .equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
+        {
+            boolean canCompleted = programInstanceService.canAutoCompleteProgramInstanceStatus( programStageInstance
+                .getProgramInstance() );
+            if ( canCompleted )
+            {
+                programInstanceService.completeProgramInstanceStatus( programStageInstance.getProgramInstance() );
+            }
+        }
+
     }
 
     @Override
