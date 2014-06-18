@@ -48,10 +48,12 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-@Scope(value = "prototype", proxyMode = ScopedProxyMode.INTERFACES)
+@Scope( value = "prototype", proxyMode = ScopedProxyMode.INTERFACES )
 public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
 {
     public static final String CONTENT_TYPE = "application/json";
+
+    public static final String JSONP_CALLBACK = "org.hisp.dhis.node.serializers.Jackson2JsonNodeSerializer.callback";
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -86,7 +88,11 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
     @Override
     protected void startWriteRootNode( RootNode rootNode ) throws Exception
     {
-        //generator.writeRaw( "callback(" );
+        if ( config.getProperties().containsKey( JSONP_CALLBACK ) )
+        {
+            generator.writeRaw( config.getProperties().get( JSONP_CALLBACK ) + "(" );
+        }
+
         generator.writeStartObject();
     }
 
@@ -94,7 +100,11 @@ public class Jackson2JsonNodeSerializer extends AbstractNodeSerializer
     protected void endWriteRootNode( RootNode rootNode ) throws Exception
     {
         generator.writeEndObject();
-        //generator.writeRaw( ")" );
+
+        if ( config.getProperties().containsKey( JSONP_CALLBACK ) )
+        {
+            generator.writeRaw( ")" );
+        }
     }
 
     @Override

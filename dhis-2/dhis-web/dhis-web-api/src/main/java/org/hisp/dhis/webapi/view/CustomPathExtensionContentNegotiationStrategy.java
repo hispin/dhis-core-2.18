@@ -99,5 +99,4 @@ public class CustomPathExtensionContentNegotiationStrategy extends PathExtension
         }
         return path.substring( extIndex + 1 );
     }
-
 }
