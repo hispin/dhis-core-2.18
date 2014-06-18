@@ -188,6 +188,48 @@ Ext.onReady( function() {
 					'large': '13px'
 				}
 			};
+
+            conf.url = {
+                analysisFields: [
+                    '*',
+                    'program[id,name]',
+                    'programStage[id,name]',
+                    'columns[dimension,filter,items[id,name]]',
+                    'rows[dimension,filter,items[id,name]]',
+                    'filters[dimension,filter,items[id,name]]',
+                    '!lastUpdated',
+                    '!href',
+                    '!created',
+                    '!publicAccess',
+                    '!rewindRelativePeriods',
+                    '!userOrganisationUnit',
+                    '!userOrganisationUnitChildren',
+                    '!userOrganisationUnitGrandChildren',
+                    '!externalAccess',
+                    '!access',
+                    '!relativePeriods',
+                    '!columnDimensions',
+                    '!rowDimensions',
+                    '!filterDimensions',
+                    '!user',
+                    '!organisationUnitGroups',
+                    '!itemOrganisationUnitGroups',
+                    '!userGroupAccesses',
+                    '!indicators',
+                    '!dataElements',
+                    '!dataElementOperands',
+                    '!dataElementGroups',
+                    '!dataSets',
+                    '!periods',
+                    '!organisationUnitLevels',
+                    '!organisationUnits'
+                ],
+                sharingFields: [
+                    'id',
+                    'name',
+                    'access'
+                ]
+            };
 		}());
 
 		// api
@@ -1719,6 +1761,7 @@ Ext.onReady( function() {
 				delete layout.cumulative;
 				delete layout.sortOrder;
 				delete layout.topLimit;
+                delete layout.aggregationType;
 
 				return layout;
 			};
