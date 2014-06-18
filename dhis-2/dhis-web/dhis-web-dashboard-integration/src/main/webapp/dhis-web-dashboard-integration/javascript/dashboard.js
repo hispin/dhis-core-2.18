@@ -614,7 +614,7 @@ dhis2.db.search = function()
 	if ( query.length == 0 )
 	{
 		dhis2.db.hideSearch();
-		return false;
+		return undefined;
 	}
 	
 	var url = "../api/dashboards/q/" + query + dhis2.db.getMaxParams();

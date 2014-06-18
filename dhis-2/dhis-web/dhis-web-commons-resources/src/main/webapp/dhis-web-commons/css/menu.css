@@ -285,7 +285,7 @@ a.menu-link:hover
     top: 10px;
     position: relative;
     width: 360px;
-    z-index: 10;
+    z-index: 100000; /* Quite high for any other elements that might have high z-indexes  */
 }
 
 .app-menu-dropdown-wrap {
@@ -314,17 +314,21 @@ a.menu-link:hover
     padding-right: 36px;
     padding-top: 15px;
     padding-bottom: 5px;
+    max-height: 48px;
+    max-width: 48px;
 }
 
 .app-menu-dropdown span
 {
+    color: #404040;
     display: block;
+    font-family: LiberationSans, arial, sans-serif;
     height: 30px;
+    overflow: hidden;
     padding-left: 10px;
     padding-right: 10px;
     text-align: center;
     width: 100px;
-    color: #404040;
 }
 
 .app-menu-dropdown .caret-up-background,
@@ -465,6 +469,7 @@ hr.app-separator
 {
     cursor: pointer;
     display: block;
+    font-family: LiberationSans, arial, sans-serif;
 }
 
 .show-menu
@@ -551,4 +556,30 @@ hr.app-separator
     {
         top: 288px;
     }
+}
+
+/*----------------------------------------------------------------------------*/
+/* @font-face                                                                 */
+/*----------------------------------------------------------------------------*/
+/* TODO: Fonts are taken from light_blue.css therefore this is repeated  */
+@font-face {
+    font-family: 'LiberationSans';
+    src: url('../fonts/LiberationSans-Regular-webfont.eot');
+    src: url('../fonts/LiberationSans-Regular-webfont.eot?#iefix') format('eot'),
+    url('../fonts/LiberationSans-Regular-webfont.woff') format('woff'),
+    url('../fonts/LiberationSans-Regular-webfont.ttf') format('truetype'),
+    url('../fonts/LiberationSans-Regular-webfont.svg#webfontc8rbNdBe') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'LiberationSans';
+    src: url('../fonts/LiberationSans-Bold-webfont.eot');
+    src: url('../fonts/LiberationSans-Bold-webfont.eot?#iefix') format('eot'),
+    url('../fonts/LiberationSans-Bold-webfont.woff') format('woff'),
+    url('../fonts/LiberationSans-Bold-webfont.ttf') format('truetype'),
+    url('../fonts/LiberationSans-Bold-webfont.svg#webfontHyWb8e07') format('svg');
+    font-weight: bold;
+    font-style: normal;
 }

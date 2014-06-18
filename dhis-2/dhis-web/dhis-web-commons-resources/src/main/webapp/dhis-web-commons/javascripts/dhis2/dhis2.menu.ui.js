@@ -84,10 +84,10 @@
         '</li>';
 
 
-    templates.menuLink = '<li id="{{id}}_button">' +
+    templates.menuLink = '<li id="{{id}}Button">' +
                             '<a id="{{id}}Link" class="{{classes}}"><i class="fa fa-{{iconName}}"></i>{{menuItemName}}</a>' +
                             '<div class="app-menu-dropdown-wrap">' +
-                                '<div class="menuDropDownArea app-menu-dropdown appsMenuLink_menu ui-front">' +
+                                '<div class="app-menu-dropdown">' +
                                     '<div class="caret-up-border"></div><div class="caret-up-background"></div>' +
                                     '<ul class="menuDropDownBox">{{menuItems}}</ul>' +
                                     '<div class="menu-drop-down-buttons"></div>' +
@@ -95,10 +95,10 @@
                             '</div>' +
                          '</li>';
 
-    templates.menuLinkWithScroll = '<li id="{{id}}_button">' +
+    templates.menuLinkWithScroll = '<li id="{{id}}Button">' +
                                         '<a id="{{id}}Link" class="{{classes}}"><i class="fa fa-{{iconName}}"></i>{{menuItemName}}</a>' +
                                         '<div class="app-menu-dropdown-wrap">' +
-                                            '<div class="menuDropDownArea app-menu-dropdown appsMenuLink_menu ui-front">' +
+                                            '<div class="app-menu-dropdown">' +
                                                 '<div class="caret-up-border"></div><div class="caret-up-background"></div>' +
                                                 '<div class="menu-drop-down-wrap">' +
                                                     '<div class="menu-drop-down-scroll">' +
@@ -367,7 +367,7 @@
                 //Add the event handlers only once
                 menuBase.eventsHandlers.forEach(function (eventFunction) {
                     if (isFunction(eventFunction)) {
-                        eventFunction(document.querySelector('#' + menu.name + "_button"));
+                        eventFunction(document.querySelector('#' + menu.name + "Button"));
                     }
                 });
             });
@@ -407,9 +407,11 @@
         defaultMenu.template.add('menuItem', templates.itemItemplate);
 
         defaultMenu.isOpen = function () {
-            var dropdownElement = jqLite(document.querySelector("#" + defaultMenu.name + "_button div.app-menu-dropdown-wrap")),
-            display = jqLite(dropdownElement).css("display");
-            if (display === 'none') {
+            var dropdownElement = jqLite(document.querySelector(defaultMenu.getDropdownSelector())),
+                display = jqLite(dropdownElement).css("display"),
+                outOfView = parseInt(jqLite(dropdownElement).css("left"), 10) < 0; //TODO: This is a kind of funky check
+
+            if (display === 'none' || outOfView) {
                 return false;
             }
             return true;
@@ -420,7 +422,7 @@
         }
 
         defaultMenu.open = function (hover) {
-            var dropdownElement = jqLite(document.querySelector("#" + defaultMenu.name + "_button div.app-menu-dropdown-wrap"));
+            var dropdownElement = jqLite(document.querySelector(defaultMenu.getDropdownSelector()));
 
             //Set the dropdown position
             jqLite(dropdownElement).css('left', defaultMenu.getDropDownPosition() + 'px');
@@ -433,7 +435,7 @@
         }
 
         defaultMenu.close = function (hover) {
-            var dropdownElement = jqLite(document.querySelector("#" + defaultMenu.name + "_button div.app-menu-dropdown-wrap"));
+            var dropdownElement = jqLite(document.querySelector(defaultMenu.getDropdownSelector()));
 
             dropdownElement.css('display', 'none');
             if ( ! hover) {
@@ -485,8 +487,16 @@
             return result;
         }
 
+        defaultMenu.getButtonId = function () {
+            return "#" + defaultMenu.name + "Button";
+        }
+
+        defaultMenu.getDropdownSelector = function () {
+            return defaultMenu.getButtonId() + " div.app-menu-dropdown-wrap";
+        }
+
         defaultMenu.getDropDownPosition = function () {
-            var menuElement = document.querySelector("#" + defaultMenu.name  + "_button"),
+            var menuElement = document.querySelector(defaultMenu.getButtonId()),
                 dropdownElement = jqLite(menuElement.querySelector("div.app-menu-dropdown-wrap")),
                 dropdownPosition;
 
@@ -561,7 +571,7 @@
 
         defaultMenu.menuItems.subscribe(defaultMenu.render, true);
         defaultMenu.menuItems.subscribe(function (menu) {
-            var menuElementList = document.querySelector("#" + defaultMenu.name + "_button ul.menuDropDownBox"),
+            var menuElementList = document.querySelector(defaultMenu.getButtonId() + " ul.menuDropDownBox"),
                 menuItemsHtml;
 
             if (menuElementList === null)
@@ -655,7 +665,7 @@
 
         //Translate the search apps name
         dhis2.translate.get(['app_search_placeholder'], function (translations) {
-            var searchBoxElement = document.querySelector('#' + searchMenu.name + "_button input.apps-search");
+            var searchBoxElement = document.querySelector('#' + searchMenu.name + "Button input.apps-search");
 
             searchAppsText = translations.get('app_search_placeholder');
             if (rendered === true) {
@@ -664,7 +674,7 @@
         });
 
         searchMenu.renderers.push(function () {
-            var dropdownWrap = document.querySelector('#' + searchMenu.name + "_button div.menu-drop-down-scroll");
+            var dropdownWrap = document.querySelector('#' + searchMenu.name + "Button div.menu-drop-down-scroll");
             jqLite(dropdownWrap).prepend(searchMenu.template.parse('search', { search_apps: searchAppsText }));
             rendered = true;
         });
@@ -712,7 +722,7 @@
         });
 
         linkButtonMenu.renderers.push(function () {
-            var buttonContainer = document.querySelector('#' + linkButtonMenu.name + "_button div.menu-drop-down-buttons");
+            var buttonContainer = document.querySelector('#' + linkButtonMenu.name + "Button div.menu-drop-down-buttons");
             menu.extraLink.url = dhis2.menu.fixUrlIfNeeded(menu.extraLink.url);
             jqLite(buttonContainer).prepend(linkButtonMenu.template.parse('extraLink', menu.extraLink));
             rendered = true;
@@ -731,30 +741,19 @@
 
             function changeCurrentSelected(currentElement) {
 
-                function animateScrollTo(scrollable, scrollto) {
-                    var modifier = 2;
-                    scrollto = scrollto - 49;
+                function scrollTo(element, to, duration) {
+                    var difference, perTick;
 
-                    function scrollDown() {
-                        if (scrollable.scrollTop >= scrollto || scrollable.offsetHeight + 49 === scrollable.scrollTop) {
-                            return;
-                        }
-                        scrollable.scrollTop = scrollable.scrollTop + modifier;
-                        setTimeout(scrollDown, 1);
-                    }
+                    if (duration <= 0) return;
 
-                    function scrollUp() {
-                        if (scrollable.scrollTop <= scrollto || 0 === scrollable.scrollTop)
-                            return;
-                        scrollable.scrollTop = scrollable.scrollTop - modifier;
-                        setTimeout(scrollUp, 1);
-                    }
+                    difference = to - element.scrollTop - 49;
+                    perTick = difference / duration * 10;
 
-                    if (scrollable.scrollTop > scrollto) {
-                        scrollUp();
-                    } else {
-                        scrollDown();
-                    }
+                    setTimeout(function () {
+                        element.scrollTop = element.scrollTop + perTick;
+                        if (element.scrollTop === to || perTick === Infinity) return;
+                        scrollTo(element, to, (duration - 10));
+                    }, 10);
                 }
 
                 jqLite(shortCutMenu.selectedElement).toggleClass("selected");
@@ -762,7 +761,7 @@
                 jqLite(shortCutMenu.selectedElement).toggleClass("selected");
 
                 if (menuElement.querySelector("div.menu-drop-down-scroll")) {
-                    animateScrollTo(menuElement.querySelector("div.menu-drop-down-scroll"), shortCutMenu.selectedElement.offsetTop);
+                    scrollTo(menuElement.querySelector("div.menu-drop-down-scroll"), shortCutMenu.selectedElement.offsetTop, 50);
                 }
 
                 shortCutMenu.setCurrentId(currentElement);
@@ -776,7 +775,7 @@
                 /**
                  * Key combination using alt to control opening and closing
                  */
-                if (event.which === shortCutMenu.shortCutKey && event.ctrlKey) {
+                if (event.which === shortCutMenu.shortCutKey && (event.ctrlKey || event.altKey)) {
                     event.preventDefault();
 
                     if (shortCutMenu.isOpen()) {
@@ -801,14 +800,6 @@
 
             jqLite(document).on("keyup", function (event) {
                 var goToElement;
-
-                /**
-                 * Calculate the number of positions we have available if we fill all the rows
-                 * @returns {number}
-                 */
-                function getPositionsNumber() {
-                        return Math.ceil(shortCutElements.length / 3) * 3;
-                }
 
                 //Don't run anything when the menu is not open
                 if (shortCutMenu.isClosed()) {
@@ -837,53 +828,38 @@
                     }
 
                     if (event.which === keys.arrowRight) {
-                        currentElement = currentElement + 1;
-                        if (shortCutElements[currentElement] === undefined) {
-                            currentElement = 0;
+                        if (shortCutElements[currentElement + 1] === undefined) {
+                            return;
                         }
+                        currentElement = currentElement + 1;
                         changeCurrentSelected(currentElement);
                         return;
                     }
 
                     if (event.which === keys.arrowLeft) {
-                        currentElement = currentElement - 1;
-                        if (shortCutElements[currentElement] === undefined) {
-                            currentElement = shortCutElements.length - 1;
+                        if (shortCutElements[currentElement - 1] === undefined) {
+                            return;
                         }
+                        currentElement = currentElement - 1;
                         changeCurrentSelected(currentElement);
                         return;
                     }
 
                     if (event.which === keys.arrowDown) {
-                        currentElement = currentElement + 3;
-                        if (shortCutElements[currentElement] === undefined) {
-                            if (currentElement >= shortCutElements.length) {
-                                currentElement = currentElement % 3;
-                            } else {
-                                currentElement = currentElement - shortCutElements.length;
-                            }
+                        if (shortCutElements[currentElement + 3] === undefined) {
+                            return;
                         }
+                        currentElement = currentElement + 3;
                         changeCurrentSelected(currentElement);
                         return;
                     }
 
                     //TODO: Clean up this code a bit as it's very confusing to what it does now.
                     if (event.which === keys.arrowUp) {
-                        currentElement = currentElement - 3;
-                        if (shortCutElements[currentElement] === undefined) {
-                            //Jump to the last
-                            if (!((shortCutElements.length % 3) === 0)) {
-                                currentElement = getPositionsNumber() - (-currentElement);
-                                if (shortCutElements[currentElement] === undefined) {
-                                    if (currentElement === -1)
-                                        currentElement = 0;
-                                    else
-                                        currentElement = currentElement - 3;
-                                }
-                            } else {
-                                currentElement = shortCutElements.length - (-currentElement);
-                            }
+                        if (shortCutElements[currentElement - 3] === undefined) {
+                            return;
                         }
+                        currentElement = currentElement - 3;
                         changeCurrentSelected(currentElement);
                         return;
                     }
