@@ -218,7 +218,43 @@ Ext.onReady( function() {
                     ok: 'ok.png'
                 }
             };
-
+            
+            conf.url = {
+                analysisFields: [
+                    '*',
+                    'program[id,name]',
+                    'programStage[id,name]',
+                    'columns[dimension,filter,items[id,name]]',
+                    'rows[dimension,filter,items[id,name]]',
+                    'filters[dimension,filter,items[id,name]]',
+                    '!lastUpdated',
+                    '!href',
+                    '!created',
+                    '!publicAccess',
+                    '!rewindRelativePeriods',
+                    '!userOrganisationUnit',
+                    '!userOrganisationUnitChildren',
+                    '!userOrganisationUnitGrandChildren',
+                    '!externalAccess',
+                    '!access',
+                    '!relativePeriods',
+                    '!columnDimensions',
+                    '!rowDimensions',
+                    '!filterDimensions',
+                    '!user',
+                    '!organisationUnitGroups',
+                    '!itemOrganisationUnitGroups',
+                    '!userGroupAccesses',
+                    '!indicators',
+                    '!dataElements',
+                    '!dataElementOperands',
+                    '!dataElementGroups',
+                    '!dataSets',
+                    '!periods',
+                    '!organisationUnitLevels',
+                    '!organisationUnits'
+                ]
+            };
         }());
 
         // api
@@ -1262,6 +1298,10 @@ Ext.onReady( function() {
 					}
 				}
 
+				if (!layout.hideEmptyRows) {
+					delete layout.hideEmptyRows;
+				}
+
 				if (!layout.showTrendLine) {
 					delete layout.showTrendLine;
 				}
@@ -1280,10 +1320,6 @@ Ext.onReady( function() {
 
 				if (!layout.baseLineTitle) {
 					delete layout.baseLineTitle;
-				}
-
-				if (layout.showValues) {
-					delete layout.showValues;
 				}
 
 				if (!layout.hideLegend) {
@@ -1306,8 +1342,34 @@ Ext.onReady( function() {
 					delete layout.rangeAxisTitle;
 				}
 
+				if (!layout.rangeAxisMaxValue) {
+					delete layout.rangeAxisMaxValue;
+				}
+
+				if (!layout.rangeAxisMinValue) {
+					delete layout.rangeAxisMinValue;
+				}
+
+				if (!layout.rangeAxisSteps) {
+					delete layout.rangeAxisSteps;
+				}
+
+				if (!layout.rangeAxisDecimals) {
+					delete layout.rangeAxisDecimals;
+				}
+
 				if (!layout.sorting) {
 					delete layout.sorting;
+				}
+
+				if (!layout.legend) {
+					delete layout.legend;
+				}
+
+                // default true
+
+				if (layout.showValues) {
+					delete layout.showValues;
 				}
 
 				delete layout.parentGraphMap;

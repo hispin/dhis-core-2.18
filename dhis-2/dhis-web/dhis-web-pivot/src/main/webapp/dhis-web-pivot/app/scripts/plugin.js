@@ -2774,14 +2774,6 @@ Ext.onReady( function() {
 			}
 		});
 
-		//requests.push({
-			//url: url + '/api/mapLegendSets.jsonp?viewClass=detailed&links=false&paging=false',
-			//success: function(r) {
-				//init.legendSets = r.mapLegendSets;
-				//fn();
-			//}
-		//});
-
         init.legendSets = [];
 
 		requests.push({

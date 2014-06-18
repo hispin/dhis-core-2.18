@@ -2817,7 +2817,7 @@ Ext.onReady(function() {
 		});
 
 		requests.push({
-			url: url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&paging=false&links=false',
+			url: url + '/api/organisationUnits.jsonp?userOnly=true&fields=id,name,children[id,name]&paging=false',
 			success: function(r) {
 				var organisationUnits = r.organisationUnits || [],
                     ou = [],
@@ -2846,14 +2846,6 @@ Ext.onReady(function() {
                 fn();
 			}
 		});
-
-		//requests.push({
-			//url: url + '/api/mapLegendSets.jsonp?viewClass=detailed&links=false&paging=false',
-			//success: function(r) {
-				//init.legendSets = r.mapLegendSets;
-				//fn();
-			//}
-		//});
 
 		requests.push({
 			url: url + '/api/dimensions.jsonp?links=false&paging=false',
@@ -2913,9 +2905,9 @@ Ext.onReady(function() {
 				}
 
 				Ext.data.JsonP.request({
-					url: init.contextPath + '/api/charts/' + id + '.jsonp?viewClass=dimensional&links=false',
+					url: init.contextPath + '/api/charts/' + id + '.jsonp?fields=' + conf.url.analysisFields.join(','),
 					failure: function(r) {
-						window.open(init.contextPath + '/api/charts/' + id + '.json?viewClass=dimensional&links=false', '_blank');
+						window.open(init.contextPath + '/api/charts/' + id + '.json?fields=' + conf.url.analysisFields.join(',')', '_blank');
 					},
 					success: function(r) {
                         Ext.apply(r, config);
