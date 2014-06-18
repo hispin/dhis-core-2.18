@@ -529,7 +529,8 @@ public class DefaultProgramInstanceService
 
         for ( ProgramStageInstance stageInstance : stageInstances )
         {
-            if ( !stageInstance.isCompleted() || stageInstance.getProgramStage().getIrregular() )
+            if ( (!stageInstance.isCompleted() && stageInstance.getStatus().intValue() != ProgramStageInstance.SKIPPED_STATUS)
+                || stageInstance.getProgramStage().getIrregular() )
             {
                 return false;
             }

@@ -29,7 +29,7 @@ package org.hisp.dhis.caseentry.action.caseentry;
  */
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -51,13 +51,6 @@ public class CompleteDataEntryAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
-    }
-
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
     }
 
     private I18nFormat format;
@@ -112,24 +105,11 @@ public class CompleteDataEntryAction
 
         programStageInstanceService.completeProgramStageInstance( programStageInstance, format );
 
-        // ---------------------------------------------------------------------
-        // Check Completed status for all of ProgramStageInstance of
-        // ProgramInstance
-        // ---------------------------------------------------------------------
-
-        if ( !programStageInstance.getProgramInstance().getProgram().getType()
-            .equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
+        if(programStageInstance.getProgramInstance().getStatus()==ProgramInstance.STATUS_COMPLETED )
         {
-            boolean canCompleted = programInstanceService.canAutoCompleteProgramInstanceStatus( programStageInstance
-                .getProgramInstance() );
-            if ( !canCompleted )
-            {
-                return SUCCESS;
-            }
-
-            programInstanceService.completeProgramInstanceStatus( programStageInstance.getProgramInstance() );
+            return "programCompleted";
         }
 
-        return "programcompleted";
+        return SUCCESS;
     }
 }

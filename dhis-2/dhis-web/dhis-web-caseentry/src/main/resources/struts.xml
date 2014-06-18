@@ -73,9 +73,11 @@
 
 		<action name="completeDataEntry"
 			class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
+			<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm
+			</result>
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<result name="programcompleted" type="velocity-json">/dhis-web-caseentry/jsonResponseProgramCompleted.vm
+			<result name="programCompleted" type="velocity-json">/dhis-web-caseentry/jsonResponseProgramCompleted.vm
 			</result>
 			<param name="requiredAuthorities">F_TRACKED_ENTITY_DATAVALUE_ADD,F_TRACKED_ENTITY_DATAVALUE_DELETE</param>
 		</action>

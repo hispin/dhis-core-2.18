@@ -569,12 +569,13 @@ function runCompleteEvent( isCreateEvent ) {
         return;
     } else {
         if( confirm(i18n_complete_confirm_message) ) {
+			var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
             $.ajax({
                 url: 'completeDataEntry.action',
                 dataType: 'json',
                 cache: false,
                 data: {
-                    programStageInstanceId: getFieldValue( 'programStageInstanceId' )
+                    programStageInstanceId: programStageInstanceId
                 },
                 type: 'POST'
             } ).done(function(json) {
@@ -591,9 +592,8 @@ function runCompleteEvent( isCreateEvent ) {
                     showCreateNewEvent(programInstanceId, programStageUid);
                 }
 
-                if( getProgramType() == '2' || json.response == 'programcompleted' ) {
-                    var completedRow = $('#td_' + programInstanceId).html();
-                    $('#completedList').append('<option value="' + programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId) + '</option>');
+                if( getProgramType() == '2' || json.response == 'programCompleted' ) {
+                   moveToCompleteDiv( programInstanceId, programStageInstanceId );
                 }
 
                 var blocked = $('#entryFormContainer [id=blockEntryForm]').val();
