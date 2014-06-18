@@ -13,16 +13,8 @@
 
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 
-  <bean id="org.hisp.dhis.webapi.utils.RootNodeMessageConverter" class="org.hisp.dhis.webapi.utils.RootNodeMessageConverter">
-    <constructor-arg name="supportedMediaTypes">
-      <list>
-        <value>application/json</value>
-        <value>application/xml</value>
-      </list>
-    </constructor-arg>
-  </bean>
-
-  <bean id="org.hisp.dhis.webapi.utils.RenderServiceMessageConverter" class="org.hisp.dhis.webapi.utils.RenderServiceMessageConverter">
+  <bean id="org.hisp.dhis.webapi.utils.RenderServiceMessageConverter"
+    class="org.hisp.dhis.webapi.messageconverter.RenderServiceMessageConverter">
     <constructor-arg name="supportedMediaTypes">
       <list>
         <value>application/json</value>
@@ -33,7 +25,8 @@
 
   <mvc:annotation-driven>
     <mvc:message-converters register-defaults="true">
-      <ref bean="org.hisp.dhis.webapi.utils.RootNodeMessageConverter" />
+      <ref bean="xmlMessageConverter" />
+      <ref bean="jsonMessageConverter" />
       <ref bean="org.hisp.dhis.webapi.utils.RenderServiceMessageConverter" />
       <bean class="org.hisp.dhis.api.mobile.support.DataStreamSerializableMessageConverter" />
     </mvc:message-converters>
