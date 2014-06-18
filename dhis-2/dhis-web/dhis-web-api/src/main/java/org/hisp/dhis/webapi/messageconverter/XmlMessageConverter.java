@@ -41,7 +41,6 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -49,13 +48,13 @@ import java.nio.charset.Charset;
 @Component
 public class XmlMessageConverter extends AbstractHttpMessageConverter<RootNode>
 {
+    public static final ImmutableList<MediaType> SUPPORTED_MEDIA_TYPES = ImmutableList.<MediaType>builder()
+        .add( new MediaType( "application", "xml" ) )
+        .add( new MediaType( "text", "xml" ) )
+        .build();
+
     @Autowired
     private NodeService nodeService;
-
-    public final ImmutableList<MediaType> SUPPORTED_MEDIA_TYPES = ImmutableList.<MediaType>builder()
-        .add( new MediaType( "application", "xml", Charset.forName( "UTF-8" ) ) )
-        .add( new MediaType( "text", "xml", Charset.forName( "UTF-8" ) ) )
-        .build();
 
     public XmlMessageConverter()
     {

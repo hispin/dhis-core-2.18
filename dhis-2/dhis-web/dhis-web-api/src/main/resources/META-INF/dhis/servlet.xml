@@ -23,10 +23,11 @@
     </constructor-arg>
   </bean>
 
-  <mvc:annotation-driven>
+  <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
     <mvc:message-converters register-defaults="true">
-      <ref bean="xmlMessageConverter" />
       <ref bean="jsonMessageConverter" />
+      <ref bean="jsonPMessageConverter" />
+      <ref bean="xmlMessageConverter" />
       <ref bean="org.hisp.dhis.webapi.utils.RenderServiceMessageConverter" />
       <bean class="org.hisp.dhis.api.mobile.support.DataStreamSerializableMessageConverter" />
     </mvc:message-converters>
@@ -41,7 +42,7 @@
 
   <bean id="headerContentNegotiationStrategy" class="org.springframework.web.accept.HeaderContentNegotiationStrategy" />
 
-  <bean id="pathExtensionContentNegotiationStrategy" class="org.hisp.dhis.webapi.view.CustomPathExtensionContentNegotiationStrategy">
+  <bean id="customPathExtensionContentNegotiationStrategy" class="org.hisp.dhis.webapi.view.CustomPathExtensionContentNegotiationStrategy">
     <constructor-arg name="mediaTypes">
       <map>
         <entry key="json" value="application/json" />
@@ -55,12 +56,28 @@
         <entry key="csv" value="application/csv" />
       </map>
     </constructor-arg>
+    <property name="useJaf" value="false" />
+  </bean>
+
+  <bean id="parameterContentNegotiationStrategy" class="org.springframework.web.accept.ParameterContentNegotiationStrategy">
+    <constructor-arg name="mediaTypes">
+      <map>
+        <entry key="json" value="application/json" />
+        <entry key="jsonp" value="application/javascript" />
+        <entry key="xml" value="application/xml" />
+        <entry key="png" value="image/png" />
+        <entry key="pdf" value="application/pdf" />
+        <entry key="xls" value="application/vnd.ms-excel" />
+        <entry key="csv" value="application/csv" />
+      </map>
+    </constructor-arg>
   </bean>
 
   <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManager">
     <constructor-arg>
       <list>
-        <ref bean="pathExtensionContentNegotiationStrategy" />
+        <ref bean="customPathExtensionContentNegotiationStrategy" />
+        <ref bean="parameterContentNegotiationStrategy" />
         <ref bean="headerContentNegotiationStrategy" />
         <ref bean="fixedContentNegotiationStrategy" />
       </list>

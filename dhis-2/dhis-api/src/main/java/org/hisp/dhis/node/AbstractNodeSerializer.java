@@ -51,7 +51,7 @@ public abstract class AbstractNodeSerializer implements NodeSerializer
 
     protected abstract void flushStream() throws Exception;
 
-    private Config config;
+    protected Config config;
 
     @Override
     public void serialize( RootNode rootNode, OutputStream outputStream ) throws Exception

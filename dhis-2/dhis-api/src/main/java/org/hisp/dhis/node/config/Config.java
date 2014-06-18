@@ -28,6 +28,10 @@ package org.hisp.dhis.node.config;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.collect.Maps;
+
+import java.util.Map;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -39,6 +43,12 @@ public class Config
      * @see org.hisp.dhis.node.config.InclusionStrategy.Include
      */
     private InclusionStrategy inclusionStrategy = InclusionStrategy.Include.NON_NULL;
+
+    /**
+     * Property map that can hold any key=value pair, can be used to set custom
+     * properties that only certain serializers know about.
+     */
+    private final Map<String, Object> properties = Maps.newHashMap();
 
     public Config()
     {
@@ -52,5 +62,10 @@ public class Config
     public void setInclusionStrategy( InclusionStrategy inclusionStrategy )
     {
         this.inclusionStrategy = inclusionStrategy;
+    }
+
+    public Map<String, Object> getProperties()
+    {
+        return properties;
     }
 }
