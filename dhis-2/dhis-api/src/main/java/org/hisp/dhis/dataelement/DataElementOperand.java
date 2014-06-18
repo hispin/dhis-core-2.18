@@ -364,6 +364,8 @@ public class DataElementOperand
      */
     public void updateProperties( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
     {
+        this.dataElement = dataElement;
+        this.categoryOptionCombo = categoryOptionCombo;
         this.dataElementId = dataElement.getUid();
         this.optionComboId = categoryOptionCombo.getUid();
         this.operandId = dataElementId + SEPARATOR + optionComboId;
@@ -384,6 +386,7 @@ public class DataElementOperand
      */
     public void updateProperties( DataElement dataElement )
     {
+        this.dataElement = dataElement;
         this.dataElementId = dataElement.getUid();
         this.operandId = String.valueOf( dataElementId );
         this.operandName = getPrettyName( dataElement, null );
@@ -447,6 +450,8 @@ public class DataElementOperand
         this.categoryOptionCombo = categoryOptionCombo;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public String getDataElementId()
     {
         return dataElementId;
@@ -457,6 +462,8 @@ public class DataElementOperand
         this.dataElementId = dataElementId;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public String getOptionComboId()
     {
         return optionComboId;
@@ -467,6 +474,8 @@ public class DataElementOperand
         this.optionComboId = optionComboId;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public String getOperandId()
     {
         return operandId;
@@ -477,6 +486,8 @@ public class DataElementOperand
         this.operandId = operandId;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public String getOperandName()
     {
         return operandName;
@@ -487,6 +498,8 @@ public class DataElementOperand
         this.operandName = operandName;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public String getValueType()
     {
         return valueType;
@@ -497,6 +510,8 @@ public class DataElementOperand
         this.valueType = valueType;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public String getAggregationOperator()
     {
         return aggregationOperator;
@@ -507,6 +522,8 @@ public class DataElementOperand
         this.aggregationOperator = aggregationOperator;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public List<Integer> getAggregationLevels()
     {
         return aggregationLevels;
@@ -517,6 +534,8 @@ public class DataElementOperand
         this.aggregationLevels = aggregationLevels;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public int getFrequencyOrder()
     {
         return frequencyOrder;
@@ -527,6 +546,8 @@ public class DataElementOperand
         this.frequencyOrder = frequencyOrder;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public String getOperandType()
     {
         return operandType;
@@ -537,6 +558,8 @@ public class DataElementOperand
         this.operandType = operandType;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
     public boolean isHasAggregationLevels()
     {
         return hasAggregationLevels;
