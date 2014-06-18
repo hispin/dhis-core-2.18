@@ -28,11 +28,10 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Matcher;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
@@ -42,22 +41,22 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.expression.ExpressionService;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
 
 /**
  * This object can act both as a hydrated persisted object and as a wrapper
  * object (but not both at the same time).
- * 
+ * <p/>
  * This object implements IdentifiableObject but does not have any UID. Instead
  * the UID is generated based on the data element and category option combo which
  * this object is based on.
  *
  * @author Abyot Asalefew
  */
-@JacksonXmlRootElement( localName = "dataElementOperand", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "dataElementOperand", namespace = DxfNamespaces.DXF_2_0 )
 public class DataElementOperand
     extends BaseNameableObject
 {
@@ -102,7 +101,7 @@ public class DataElementOperand
     private String operandType;
 
     private boolean hasAggregationLevels;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -156,19 +155,19 @@ public class DataElementOperand
         {
             return uid;
         }
-        
+
         String uid = null;
-        
+
         if ( dataElement != null )
         {
             uid = dataElement.getUid();
         }
-        
+
         if ( categoryOptionCombo != null )
         {
             uid += SEPARATOR + categoryOptionCombo.getUid();
         }
-        
+
         return uid;
     }
 
@@ -179,40 +178,40 @@ public class DataElementOperand
         {
             return name;
         }
-        
+
         String name = null;
-        
+
         if ( dataElement != null )
         {
             name = dataElement.getName();
         }
-        
+
         if ( categoryOptionCombo != null )
         {
             name += SPACE + categoryOptionCombo.getName();
         }
-        
+
         return name;
     }
-    
+
     @Override
     public String getShortName()
     {
         String shortName = null;
-        
+
         if ( dataElement != null )
         {
             shortName = dataElement.getShortName();
         }
-        
+
         if ( categoryOptionCombo != null )
         {
             shortName += SPACE + categoryOptionCombo.getName();
         }
-        
+
         return shortName;
     }
-    
+
     /**
      * Tests whether the operand has any aggregation levels.
      */
@@ -220,7 +219,7 @@ public class DataElementOperand
     {
         return aggregationLevels.size() > 0;
     }
-    
+
     /**
      * Tests whether the hierarchy level of the OrganisationUnit associated with
      * the relevant DataValue is equal to or higher than the relevant
@@ -278,29 +277,29 @@ public class DataElementOperand
     {
         return dataElement.getId() + SEPARATOR + categoryOptionCombo.getId();
     }
-    
+
     /**
      * Returns the operand expression which is on the format #{de-uid.coc-uid} .
-     * 
+     *
      * @return the operand expression.
      */
     public String getOperandExpression()
     {
         String expression = null;
-        
+
         if ( dataElementId != null )
         {
             String coc = optionComboId != null ? SEPARATOR + optionComboId : "";
-        
+
             expression = "#{" + dataElementId + coc + "}";
         }
         else if ( dataElement != null )
         {
             String coc = categoryOptionCombo != null ? SEPARATOR + categoryOptionCombo.getUid() : "";
-            
+
             expression = "#{" + dataElement.getUid() + coc + "}";
         }
-        
+
         return expression;
     }
 
@@ -411,8 +410,8 @@ public class DataElementOperand
         matcher.find();
         String dataElement = StringUtils.trimToNull( matcher.group( 1 ) );
         String categoryOptionCombo = StringUtils.trimToNull( matcher.group( 2 ) );
-        String operandType = categoryOptionCombo != null ? TYPE_VALUE : TYPE_TOTAL;        
-        
+        String operandType = categoryOptionCombo != null ? TYPE_VALUE : TYPE_TOTAL;
+
         final DataElementOperand operand = new DataElementOperand( dataElement, categoryOptionCombo );
         operand.setOperandType( operandType );
         return operand;
@@ -424,7 +423,7 @@ public class DataElementOperand
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     public DataElement getDataElement()
     {
         return dataElement;
@@ -437,7 +436,7 @@ public class DataElementOperand
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     public DataElementCategoryOptionCombo getCategoryOptionCombo()
     {
         return categoryOptionCombo;
@@ -577,12 +576,12 @@ public class DataElementOperand
     {
         final int prime = 31;
         int result = 1;
-        
-        result = prime * result + ( ( dataElement == null ) ? 0 : dataElement.hashCode() );
-        result = prime * result + ( ( categoryOptionCombo == null ) ? 0 : categoryOptionCombo.hashCode() );
-        result = prime * result + ( ( dataElementId == null ) ? 0 : dataElementId.hashCode() );
-        result = prime * result + ( ( optionComboId == null ) ? 0 : optionComboId.hashCode() );
-        
+
+        result = prime * result + ((dataElement == null) ? 0 : dataElement.hashCode());
+        result = prime * result + ((categoryOptionCombo == null) ? 0 : categoryOptionCombo.hashCode());
+        result = prime * result + ((dataElementId == null) ? 0 : dataElementId.hashCode());
+        result = prime * result + ((optionComboId == null) ? 0 : optionComboId.hashCode());
+
         return result;
     }
 
@@ -593,17 +592,17 @@ public class DataElementOperand
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( !getClass().isAssignableFrom( object.getClass() ) )
         {
             return false;
         }
-        
+
         DataElementOperand other = (DataElementOperand) object;
 
         if ( dataElement == null )
@@ -617,7 +616,7 @@ public class DataElementOperand
         {
             return false;
         }
-        
+
         if ( categoryOptionCombo == null )
         {
             if ( other.categoryOptionCombo != null )
@@ -629,7 +628,7 @@ public class DataElementOperand
         {
             return false;
         }
-        
+
         if ( dataElementId == null )
         {
             if ( other.dataElementId != null )
@@ -641,7 +640,7 @@ public class DataElementOperand
         {
             return false;
         }
-        
+
         if ( optionComboId == null )
         {
             if ( other.optionComboId != null )
@@ -653,7 +652,7 @@ public class DataElementOperand
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -661,12 +660,12 @@ public class DataElementOperand
     public int compareTo( IdentifiableObject object )
     {
         DataElementOperand other = (DataElementOperand) object;
-        
+
         if ( this.dataElementId.compareTo( other.dataElementId ) != 0 )
         {
             return this.dataElementId.compareTo( other.dataElementId );
         }
-        
+
         return this.optionComboId.compareTo( other.optionComboId );
     }
 }

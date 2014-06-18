@@ -221,21 +221,25 @@ public class DefaultAclService implements AclService
     public <T extends IdentifiableObject> boolean canCreatePublic( User user, Class<T> klass )
     {
         Schema schema = schemaService.getSchema( klass );
-        return !(schema == null || !schema.isShareable()) && canAccess( user, schema.getAuthorityByType( AuthorityType.CREATE_PUBLIC ) );
+        return !(schema == null || !schema.isShareable())
+            && canAccess( user, schema.getAuthorityByType( AuthorityType.CREATE_PUBLIC ) );
     }
 
     @Override
     public <T extends IdentifiableObject> boolean canCreatePrivate( User user, Class<T> klass )
     {
         Schema schema = schemaService.getSchema( klass );
-        return !(schema == null || !schema.isShareable()) && canAccess( user, schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ) );
+        return !(schema == null || !schema.isShareable())
+            && canAccess( user, schema.getAuthorityByType( AuthorityType.CREATE_PRIVATE ) );
     }
 
     @Override
     public <T extends IdentifiableObject> boolean canExternalize( User user, Class<T> klass )
     {
         Schema schema = schemaService.getSchema( klass );
-        return !(schema == null || !schema.isShareable()) && haveAuthority( user, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) );
+        return !(schema == null || !schema.isShareable())
+            && ((!schema.getAuthorityByType( AuthorityType.EXTERNALIZE ).isEmpty() && haveOverrideAuthority( user ))
+                || haveAuthority( user, schema.getAuthorityByType( AuthorityType.EXTERNALIZE ) ));
     }
 
     @Override
