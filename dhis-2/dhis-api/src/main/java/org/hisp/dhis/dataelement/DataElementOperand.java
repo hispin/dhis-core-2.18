@@ -364,8 +364,6 @@ public class DataElementOperand
      */
     public void updateProperties( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
     {
-        this.dataElement = dataElement;
-        this.categoryOptionCombo = categoryOptionCombo;
         this.dataElementId = dataElement.getUid();
         this.optionComboId = categoryOptionCombo.getUid();
         this.operandId = dataElementId + SEPARATOR + optionComboId;
@@ -386,7 +384,6 @@ public class DataElementOperand
      */
     public void updateProperties( DataElement dataElement )
     {
-        this.dataElement = dataElement;
         this.dataElementId = dataElement.getUid();
         this.operandId = String.valueOf( dataElementId );
         this.operandName = getPrettyName( dataElement, null );
