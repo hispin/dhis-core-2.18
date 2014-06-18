@@ -143,7 +143,7 @@ public class DefaultQueryPlanner
             violation = "Category option combos cannot be specified as filter";
         }
         
-        if ( !params.isIgnoreLimit() && params.getNumberOfDimensionOptionPermutations() > getMaxLimit() )
+        if ( !params.isIgnoreLimit() && getMaxLimit() > 0 && params.getNumberOfDimensionOptionPermutations() > getMaxLimit() )
         {
             violation = "Table exceeds max number of cells: " + getMaxLimit() + " (" + params.getNumberOfDimensionOptionPermutations() + ")";
         }
@@ -717,7 +717,7 @@ public class DefaultQueryPlanner
     }
     
     /**
-     * Returns the max records limit.
+     * Returns the max records limit. 0 indicates no limit.
      */
     private int getMaxLimit()
     {
