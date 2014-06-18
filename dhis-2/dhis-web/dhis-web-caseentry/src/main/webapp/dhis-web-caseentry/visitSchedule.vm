@@ -273,7 +273,7 @@
 			<tr>
 				<td></td>
 				<td>
-					<input type='button' value="$i18n.getString('send')" onclick="var id=getFieldValue('programStageInstanceId');if(getFieldValue('sendFromEvent')=='false'){id=$programInstance.id};sendSmsOneEntityInstance(byId('smsField'),id );">
+					<input type='button' value="$i18n.getString('send')" onclick="var id=getFieldValue('programStageInstanceId');if(getFieldValue('sendFromEvent')=='false'){id=$programInstance.id};sendSmsOneTrackedEntityInstance(byId('smsField'),id );">
 					<input type='button' value="$i18n.getString('cancel')" onclick="jQuery('#smsDiv').dialog('close');">
 				</td>
 			</tr>
