@@ -231,7 +231,7 @@ public class SendSmsAction
 
             programInstance.setOutboundSms( outboundSmsList );
             programInstanceService.updateProgramInstance( programInstance );
-            message = i18n.getString( "message_is_sent" + " " + phoneNumbers );
+            message = i18n.getString( "message_is_sent" ) + " " + phoneNumbers;
 
             return SUCCESS;
         }
