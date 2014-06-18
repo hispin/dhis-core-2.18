@@ -2828,7 +2828,7 @@ Ext.onReady( function() {
                     url: ns.core.init.contextPath + '/api' + path,
                     params: {
                         page: store.nextPage,
-                        pageSize: 15
+                        pageSize: 50
                     },
                     failure: function() {
                         store.isPending = false;
