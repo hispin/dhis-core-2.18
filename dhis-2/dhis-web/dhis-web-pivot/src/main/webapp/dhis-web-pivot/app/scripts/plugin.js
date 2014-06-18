@@ -2744,7 +2744,7 @@ Ext.onReady( function() {
 		});
 
 		requests.push({
-			url: url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&links=false',
+			url: url + '/api/organisationUnits.jsonp?userOnly=true&fields=id,name,children[id,name]&paging=false',
 			success: function(r) {
 				var organisationUnits = r.organisationUnits || [],
                     ou = [],
@@ -2885,9 +2885,9 @@ Ext.onReady( function() {
 				}
 
 				Ext.data.JsonP.request({
-					url: init.contextPath + '/api/reportTables/' + id + '.jsonp?viewClass=dimensional&links=false',
+					url: init.contextPath + '/api/reportTables/' + id + '.jsonp?fields=' + conf.url.analysisFields.join(','),
 					failure: function(r) {
-						window.open(init.contextPath + '/api/reportTables/' + id + '.json?viewClass=dimensional&links=false', '_blank');
+						window.open(init.contextPath + '/api/reportTables/' + id + '.json?fields=' + conf.url.analysisFields.join(',')', '_blank');
 					},
 					success: function(r) {
 						var layout = api.layout.Layout(r);

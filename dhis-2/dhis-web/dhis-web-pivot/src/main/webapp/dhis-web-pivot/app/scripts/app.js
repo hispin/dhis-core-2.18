@@ -930,8 +930,6 @@ Ext.onReady( function() {
 
 								ns.app.stores.reportTable.loadStore();
 
-								ns.app.shareButton.enable();
-
 								window.destroy();
 							}
 						});
@@ -947,7 +945,7 @@ Ext.onReady( function() {
 
 					if (id && name) {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/reportTables/' + id + '.json?viewClass=dimensional&links=false',
+							url: ns.core.init.contextPath + '/api/reportTables/' + id + '.json?fields=' + ns.core.conf.url.analysisFields.join(','),
 							method: 'GET',
 							failure: function(r) {
 								ns.core.web.mask.hide(ns.app.centerRegion);
@@ -1049,7 +1047,7 @@ Ext.onReady( function() {
 							this.currentValue = this.getValue();
 
 							var value = this.getValue(),
-								url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+								url = value ? ns.core.init.contextPath + '/api/reportTables.json?fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 								store = ns.app.stores.reportTable;
 
 							store.page = 1;
@@ -1065,7 +1063,7 @@ Ext.onReady( function() {
 			text: NS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+					url = value ? ns.core.init.contextPath + '/api/reportTables.json?fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -1077,7 +1075,7 @@ Ext.onReady( function() {
 			text: NS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+					url = value ? ns.core.init.contextPath + '/api/reportTables.json?fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page + 1;
@@ -1170,8 +1168,6 @@ Ext.onReady( function() {
 													ns.app.xLayout.name = true;
 
 													ns.app.stores.reportTable.loadStore();
-
-													ns.app.shareButton.enable();
 												}
 											});
 										}
@@ -2274,7 +2270,7 @@ Ext.onReady( function() {
 				}
 
 				Ext.Ajax.request({
-					url: init.contextPath + '/api/reportTables/' + id + '.json?viewClass=dimensional&links=false',
+					url: init.contextPath + '/api/reportTables/' + id + '.json?fields=' + conf.url.analysisFields.join(','),
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
 						alert(r.responseText);
@@ -2871,7 +2867,7 @@ Ext.onReady( function() {
 			isLoaded: false,
 			pageSize: 10,
 			page: 1,
-			defaultUrl: ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&fields=id,name,access',
+			defaultUrl: ns.core.init.contextPath + '/api/reportTables.json?fields=id,name,access',
 			loadStore: function(url) {
 				this.proxy.url = url || this.defaultUrl;
 
@@ -5259,6 +5255,7 @@ Ext.onReady( function() {
 
 		shareButton = Ext.create('Ext.button.Button', {
 			text: NS.i18n.share,
+            disabled: true,
 			xableItems: function() {
 				interpretationItem.xable();
 				pluginItem.xable();
@@ -5504,10 +5501,7 @@ Ext.onReady( function() {
 
 			// State
 			downloadButton.enable();
-
-			if (layout.id) {
-				shareButton.enable();
-			}
+            shareButton.enable();
 
 			// Set gui
 			if (!updateGui) {
