@@ -1,4 +1,4 @@
-package org.hisp.dhis.webapi.utils;
+package org.hisp.dhis.webapi.service;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,43 +28,40 @@ package org.hisp.dhis.webapi.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
+import org.hisp.dhis.common.Pager;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface ContextService
+public interface LinkService
 {
     /**
-     * Get full path of servlet.
+     * Generate next/prev links for Pager class. Needs to know which class we are generating
+     * the pager for, so it can fetch the endpoint.
      *
-     * @return Full HREF to servlet
+     * @param pager Pager instance to update with prev/next links
+     * @param klass Class type which is paged
+     * @see org.hisp.dhis.common.Pager
+     */
+    void generatePagerLinks( Pager pager, Class<?> klass );
+
+    /**
+     * Generate HREF and set it using reflection, required a setHref(String) method in your class.
+     * <p/>
+     * Uses hrefBase from ContextService.getServletPath().
+     *
+     * @param object Object (can be collection) to set HREFs on
+     * @see javax.servlet.http.HttpServletRequest
+     * @see ContextService
+     */
+    <T> void generateLinks( T object );
+
+    /**
+     * Generate HREF and set it using reflection, required a setHref(String) method in your class.
+     *
+     * @param object   Object (can be collection) to set HREFs on
+     * @param hrefBase Used as starting point of HREF
      * @see javax.servlet.http.HttpServletRequest
      */
-    String getServletPath();
-
-    /**
-     * Get HREF to context.
-     *
-     * @return Full HREF to context (context root)
-     * @see javax.servlet.http.HttpServletRequest
-     */
-    String getContextPath();
-
-    /**
-     * Get active HttpServletRequest
-     *
-     * @return HttpServletRequest
-     */
-    HttpServletRequest getRequest();
-
-    /**
-     * Returns a list of values from a parameter, if the parameter doesn't exist, it will
-     * return a empty list.
-     *
-     * @param name Parameter to get
-     * @return List of parameter values, or empty if not found
-     */
-    Set<String> getParameterValues( String name );
+    <T> void generateLinks( T object, String hrefBase );
 }

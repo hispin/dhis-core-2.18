@@ -1,4 +1,4 @@
-package org.hisp.dhis.webapi.utils;
+package org.hisp.dhis.webapi.messageconverter;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,6 +28,7 @@ package org.hisp.dhis.webapi.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.collect.ImmutableList;
 import org.hisp.dhis.node.NodeService;
 import org.hisp.dhis.node.types.RootNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +38,27 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class RootNodeMessageConverter extends AbstractHttpMessageConverter<RootNode>
+@Component
+public class JsonMessageConverter extends AbstractHttpMessageConverter<RootNode>
 {
     @Autowired
     private NodeService nodeService;
 
-    public RootNodeMessageConverter( MediaType... supportedMediaTypes )
+    public final ImmutableList<MediaType> SUPPORTED_MEDIA_TYPES = ImmutableList.<MediaType>builder()
+        .add( new MediaType( "application", "json", Charset.forName( "UTF-8" ) ) )
+        .build();
+
+    public JsonMessageConverter()
     {
-        super( supportedMediaTypes );
+        setSupportedMediaTypes( SUPPORTED_MEDIA_TYPES );
     }
 
     @Override
@@ -74,9 +82,6 @@ public class RootNodeMessageConverter extends AbstractHttpMessageConverter<RootN
     @Override
     protected void writeInternal( RootNode rootNode, HttpOutputMessage outputMessage ) throws IOException, HttpMessageNotWritableException
     {
-        MediaType mediaType = outputMessage.getHeaders().getContentType();
-        String contentType = String.format( "%s/%s", mediaType.getType(), mediaType.getSubtype() );
-
-        nodeService.serialize( rootNode, contentType, outputMessage.getBody() );
+        nodeService.serialize( rootNode, "application/json", outputMessage.getBody() );
     }
 }

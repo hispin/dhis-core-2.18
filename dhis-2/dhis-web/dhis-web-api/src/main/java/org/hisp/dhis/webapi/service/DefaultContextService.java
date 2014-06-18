@@ -1,4 +1,4 @@
-package org.hisp.dhis.webapi.utils;
+package org.hisp.dhis.webapi.service;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
