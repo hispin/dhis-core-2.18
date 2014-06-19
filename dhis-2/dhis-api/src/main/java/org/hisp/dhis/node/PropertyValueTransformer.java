@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.node;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,51 +28,33 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.Maps;
-import org.springframework.util.StringUtils;
-
-import java.util.Map;
+import org.hisp.dhis.schema.Property;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FieldMap extends ForwardingMap<String, FieldMap>
+public interface PropertyValueTransformer
 {
-    private final Map<String, FieldMap> delegate = Maps.newHashMap();
+    /**
+     * @return Public/external name of this transformer.
+     */
+    String name();
 
-    private String transform;
+    /**
+     * Transform value. Value can be null.
+     *
+     * @param property Property instance belonging to value
+     * @param value    Actual value to transform
+     * @return Value transformed to a Node
+     */
+    Node transform( Property property, Object value );
 
-    private String preset;
-
-    @Override
-    protected Map<String, FieldMap> delegate()
-    {
-        return delegate;
-    }
-
-    public String getTransform()
-    {
-        return transform;
-    }
-
-    public void setTransform( String transform )
-    {
-        this.transform = transform;
-    }
-
-    public boolean isTransform()
-    {
-        return !StringUtils.isEmpty( transform );
-    }
-
-    @Override
-    public String toString()
-    {
-        return Objects.toStringHelper( this )
-            .add( "map", standardToString() )
-            .add( "transform", transform )
-            .toString();
-    }
+    /**
+     * Is this property/value supported by this transformer. Value can be null.
+     *
+     * @param property Property instance belonging to value
+     * @param value    Actual value to transform
+     * @return true of false depending on support
+     */
+    boolean canTransform( Property property, Object value );
 }

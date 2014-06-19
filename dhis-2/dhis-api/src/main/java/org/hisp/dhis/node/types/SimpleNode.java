@@ -56,6 +56,12 @@ public class SimpleNode extends AbstractNode
         this.attribute = false;
     }
 
+    public SimpleNode( String name, Object value, boolean attribute )
+    {
+        this( name, value );
+        this.attribute = attribute;
+    }
+
     public Object getValue()
     {
         return value;

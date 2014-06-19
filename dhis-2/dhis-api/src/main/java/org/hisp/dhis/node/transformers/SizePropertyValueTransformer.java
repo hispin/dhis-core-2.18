@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.node.transformers;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,51 +28,42 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.Maps;
-import org.springframework.util.StringUtils;
+import org.hisp.dhis.node.Node;
+import org.hisp.dhis.node.PropertyValueTransformer;
+import org.hisp.dhis.node.types.SimpleNode;
+import org.hisp.dhis.schema.Property;
 
-import java.util.Map;
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FieldMap extends ForwardingMap<String, FieldMap>
+public class SizePropertyValueTransformer implements PropertyValueTransformer
 {
-    private final Map<String, FieldMap> delegate = Maps.newHashMap();
-
-    private String transform;
-
-    private String preset;
-
     @Override
-    protected Map<String, FieldMap> delegate()
+    public String name()
     {
-        return delegate;
-    }
-
-    public String getTransform()
-    {
-        return transform;
-    }
-
-    public void setTransform( String transform )
-    {
-        this.transform = transform;
-    }
-
-    public boolean isTransform()
-    {
-        return !StringUtils.isEmpty( transform );
+        return "size";
     }
 
     @Override
-    public String toString()
+    public Node transform( Property property, Object value )
     {
-        return Objects.toStringHelper( this )
-            .add( "map", standardToString() )
-            .add( "transform", transform )
-            .toString();
+        if ( property.isCollection() )
+        {
+            return new SimpleNode( property.getCollectionName(), ((Collection<?>) value).size(), property.isAttribute() );
+        }
+        else if ( String.class.isInstance( value ) )
+        {
+            return new SimpleNode( property.getName(), ((String) value).length(), property.isAttribute() );
+        }
+
+        throw new IllegalStateException( "Should never get here, this property/value is not supported by this transformer." );
+    }
+
+    @Override
+    public boolean canTransform( Property property, Object value )
+    {
+        return property.isCollection() || String.class.isInstance( value );
     }
 }
