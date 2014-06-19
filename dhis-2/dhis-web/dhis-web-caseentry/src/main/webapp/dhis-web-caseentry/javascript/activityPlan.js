@@ -422,13 +422,12 @@ function setDateRange()
 	}
 
 	// check status to get date-range
-    if( status == '1_2_3_4'
-        || status == '3_4'
-        || status == '2_3_4' ) {
+    if( status == ''
+        || status == 'SKIPPED' ) {
         startDate = startDateSince;
         endDate = endDateUpTo;
 
-    } else if( status == '3' ) {
+    } else if( status == 'FUTURE_VISIT_STATUS' ) {
         startDate = startDateUpTo;
         endDate = endDateUpTo;
     }
