@@ -27,33 +27,16 @@ trackerCapture.controller('EnrollmentController',
     $scope.$on('selectedEntity', function(event, args) {   
         $scope.newEnrollment = {};
         var selections = CurrentSelection.get();
-        $scope.selectedEntity = selections.tei;        
+        $scope.selectedEntity = selections.tei; 
+        $scope.selectedProgram = selections.pr;
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
         
-        ProgramFactory.getAll().then(function(programs){  
-            
-            angular.forEach(programs, function(program){
-                if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
-                   program.trackedEntity.id === $scope.selectedEntity.trackedEntity){
-                    $scope.programs.push(program);
-                }
-            });
-
-            EnrollmentService.get($scope.selectedEntity.trackedEntityInstance).then(function(data){
+        if($scope.selectedProgram){ 
+            EnrollmentService.getByEntityAndProgram($scope.selectedEntity.trackedEntityInstance, $scope.selectedProgram.id).then(function(data){
                 $scope.enrollments = data.enrollmentList;  
-                if(selections.pr){   
-                    angular.forEach($scope.programs, function(program){
-                        if(selections.pr.id === program.id){
-                            $scope.selectedProgram = program;
-                            $scope.loadEvents();
-                        }
-                    });
-                }
-
-                CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});
-                $rootScope.$broadcast('dashboard', {});
-            });                           
-        });        
+                $scope.loadEvents();                
+            });
+        }        
     }); 
     
     $scope.loadEvents = function() {

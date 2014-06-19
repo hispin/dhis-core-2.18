@@ -178,12 +178,30 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });
             return promise;
         },
+        getByEntity: function( entity ){
+            var promise = $http.get(  '../api/enrollments?trackedEntityInstance=' + entity ).then(function(response){
+                return response.data;
+            });
+            return promise;
+        },
+        getByEntityAndProgram: function( entity, program ){
+            var promise = $http.get(  '../api/enrollments?trackedEntityInstance=' + entity + '&program=' + program ).then(function(response){
+                return response.data;
+            });
+            return promise;
+        },
         enroll: function( enrollment ){
             var promise = $http.post(  '../api/enrollments', enrollment ).then(function(response){
                 return response.data;
             });
             return promise;
-        }        
+        },
+        update: function( enrollment){
+            var promise = $http.put( '../api/enrollments/' + enrollment.enrollment , enrollment).then(function(response){
+                return response.data;
+            });
+            return promise;
+        }
     };   
 })
 

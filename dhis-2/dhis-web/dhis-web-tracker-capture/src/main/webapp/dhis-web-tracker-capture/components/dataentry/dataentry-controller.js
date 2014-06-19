@@ -13,7 +13,6 @@ trackerCapture.controller('DataEntryController',
      
     //listen for the selected items
     $scope.$on('dashboard', function(event, args) {  
-        
         var today = moment();
         today = Date.parse(today);
         today = $filter('date')(today, 'yyyy-MM-dd');

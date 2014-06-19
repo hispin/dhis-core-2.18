@@ -1,19 +1,25 @@
 <div class="container-1-1">    
-    <div class="col-sm-12 vertical-spacing">        
+    <div class="col-sm-12 vertical-spacing">
+
         <button type="button" class="btn btn-default" ng-click="back()">{{'back'| translate}}</button>
+
+        <select ng-model="selectedProgram"
+                class="form-control-program"
+                ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                ng-change="broadCastProgram()">
+            <option value="">{{'please_select_a_program'| translate}}</option>
+        </select>
+
         <div class="pull-right">
             <div class="btn-group" dropdown is-open="status.isopen">
                 <button type="button" class="btn btn-default dropdown-toggle">
-                    <i class="fa fa-cog" title="{{'settings' | translate}}"></i>
+                    <i class="fa fa-cog" title="{{'settings'| translate}}"></i>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><a href ng-click="showHideWidgets()">{{'show_hide_widgets'| translate}}</a></li>
                 </ul>
             </div>
         </div>
-        <!--<span class="right">
-            <button type="button" class="btn btn-default" ng-click="showHideWidgets()">{{'show_hide_widgets'| translate}}</button>
-        </span> -->       
     </div>
 
     <div class='separator'></div>

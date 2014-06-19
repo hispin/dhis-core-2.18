@@ -19,19 +19,17 @@ trackerCapture.controller('ProfileController',
     }); 
     
     //listen for the selected entity       
-    $scope.$on('dashboard', function(event, args) { 
+    $scope.$on('selectedEntity', function(event, args) { 
         var selections = CurrentSelection.get();
         $scope.selectedEntity = selections.tei; 
         $scope.selectedProgram = selections.pr; 
-        
         if($scope.selectedEntity){
             TEService.get($scope.selectedEntity.trackedEntity).then(function(te){
                 $scope.trackedEntity = te;
             });
             
             $scope.processTeiAttributes();
-        }
-        
+        }        
     });
     
     //display only those attributes that belong the selected program
@@ -42,7 +40,7 @@ trackerCapture.controller('ProfileController',
             if(att.type === 'number' && !isNaN(parseInt(att.value))){
                 att.value = parseInt(att.value);
             }
-        });
+        });        
         
         if($scope.selectedProgram){
             //show only those attributes in selected program            
