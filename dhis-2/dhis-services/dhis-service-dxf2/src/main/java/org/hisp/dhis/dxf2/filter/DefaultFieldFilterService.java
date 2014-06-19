@@ -33,8 +33,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.node.NodeTransformer;
 import org.hisp.dhis.common.PresetProvider;
+import org.hisp.dhis.node.NodeTransformer;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.SimpleNode;
@@ -66,21 +66,21 @@ public class DefaultFieldFilterService implements FieldFilterService
     @Autowired( required = false )
     private Set<NodeTransformer> nodeTransformers = Sets.newHashSet();
 
-    private ImmutableMap<String, PresetProvider> presets;
+    private ImmutableMap<String, PresetProvider> presets = ImmutableMap.of();
 
-    private ImmutableMap<String, NodeTransformer> transformers;
+    private ImmutableMap<String, NodeTransformer> transformers = ImmutableMap.of();
 
     @PostConstruct
     public void init()
     {
-        ImmutableMap.Builder<String, PresetProvider> presetProviderBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<String, PresetProvider> presetBuilder = ImmutableMap.builder();
 
         for ( PresetProvider presetProvider : presetProviders )
         {
-            presetProviderBuilder.put( presetProvider.name(), presetProvider );
+            presetBuilder.put( presetProvider.name(), presetProvider );
         }
 
-        presets = presetProviderBuilder.build();
+        presets = presetBuilder.build();
 
         ImmutableMap.Builder<String, NodeTransformer> transformerBuilder = ImmutableMap.builder();
 
@@ -172,7 +172,7 @@ public class DefaultFieldFilterService implements FieldFilterService
             {
                 NodeTransformer transformer = fieldValue.getNodeTransformer();
 
-                if ( transformer != null && transformer.canTransform( property, returnValue ) )
+                if ( transformer.canTransform( property, returnValue ) )
                 {
                     complexNode.addChild( transformer.transform( property, returnValue ) );
                 }
