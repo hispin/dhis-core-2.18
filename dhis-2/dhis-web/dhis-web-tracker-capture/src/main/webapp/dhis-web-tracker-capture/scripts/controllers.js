@@ -38,7 +38,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.showSearchDiv = false;
     $scope.searchText = null;
     $scope.emptySearchText = false;
-    $scope.searchFilterExists = false;    
+    $scope.searchFilterExists = false;   
     
     $scope.searchMode = { 
                             listAll: 'LIST_ALL', 
@@ -65,8 +65,13 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             $scope.loadPrograms($scope.selectedOrgUnit); 
             
             AttributesFactory.getWithoutProgram().then(function(atts){
-                $scope.attributes = atts;
-                $scope.search($scope.searchMode.listAll);
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        $scope.attributes = atts;   
+                        $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                        $scope.search($scope.searchMode.listAll);
+                    });
+                }, 100);
             });           
         }
     });
@@ -90,10 +95,13 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 
                 if(angular.isObject($scope.programs) && $scope.programs.length === 1){
                     $scope.selectedProgram = $scope.programs[0];
-                    
                     AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
-                        $scope.attributes = atts;
-                        $scope.generateGridColumns($scope.attributes);
+                        setTimeout(function () {
+                            $scope.$apply(function () {
+                                $scope.attributes = atts;    
+                                $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                            });
+                        }, 100);
                     });
                 }                
             });
@@ -106,16 +114,24 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
        
         if($scope.selectedProgram){
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
-                $scope.attributes = atts;
-                $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        $scope.attributes = atts; 
+                        $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                    });
+                }, 100);
             });           
         }
         else{
             AttributesFactory.getWithoutProgram().then(function(atts){
-                $scope.attributes = atts;
-                $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        $scope.attributes = atts;    
+                        $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                    });
+                }, 100);
             });
-        }
+        }        
         
         if(doSearch){
             $scope.search($scope.searchMode);
@@ -208,14 +224,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.showTrackedEntityDiv = false;
         $scope.showSearchDiv = false;
     };  
-    
-    $scope.showSearch = function(){        
-        $scope.showSearchDiv = !$scope.showSearchDiv;
-        $scope.showRegistrationDiv = false;
-        //$scope.showTrackedEntityDiv = false;   
-        $scope.selectedProgram = '';
-        $scope.emptySearchAttribute = false;
-    };
     
     $scope.hideSearch = function(){        
         $scope.showSearchDiv = false;

@@ -337,9 +337,13 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 });
 
                 angular.forEach(program.programTrackedEntityAttributes, function(pAttribute){
-                    programAttributes.push(attributes[pAttribute.trackedEntityAttribute.id]);                
+                    var att = attributes[pAttribute.trackedEntityAttribute.id];
+                    att.mandatory = pAttribute.mandatory;
+                    if(pAttribute.displayInList){
+                        att.displayInListNoProgram = true;
+                    }                    
+                    programAttributes.push(att);                
                 });
-                
                 def.resolve(programAttributes);                                  
             });
             return def.promise;    

@@ -37,13 +37,17 @@ trackerCapture.controller('RegistrationController',
     
     $scope.registerEntity = function(showDashboard){
         
+        //check for form validity
+        $scope.outerForm.submitted = true;        
+        if( $scope.outerForm.$invalid ){
+            return false;
+        }
+        
+        //form is valid, continue the registration
         //get selected entity
-        var selectedTrackedEntity = '';        
+        var selectedTrackedEntity = $scope.trackedEntities.selected.id; 
         if($scope.selectedProgram){
             selectedTrackedEntity = $scope.selectedProgram.trackedEntity.id;
-        }
-        else{
-            selectedTrackedEntity = $scope.trackedEntities.selected.id;
         }
         
         //get tei attributes and their values
@@ -97,18 +101,18 @@ trackerCapture.controller('RegistrationController',
                 return;
             }
             
+            //reset form
+            angular.forEach($scope.attributes, function(attribute){
+                attribute.value = ''; 
+            });
+            $scope.enrollment.enrollmentDate = '';
+            $scope.enrollment.incidentDate =  '';
+            $scope.outerForm.submitted = false; 
+            
             if(showDashboard){
                 $location.path('/dashboard').search({selectedEntityId: teiId,
                                                 selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id : null});
-            }
-            else{            
-                
-                angular.forEach($scope.attributes, function(attribute){
-                    attribute.value = ''; 
-                });
-                $scope.enrollment.enrollmentDate = '';
-                $scope.enrollment.incidentDate =  '';
-            }
+            }            
         });
     };
 });
