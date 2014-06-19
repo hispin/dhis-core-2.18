@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.node;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,49 +28,9 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.Maps;
-import org.hisp.dhis.node.NodeTransformer;
-
-import java.util.Map;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FieldMap extends ForwardingMap<String, FieldMap>
+public interface NodeTransformer extends Transformer<Node>
 {
-    private final Map<String, FieldMap> delegate = Maps.newHashMap();
-
-    private NodeTransformer nodeTransformer;
-
-    @Override
-    protected Map<String, FieldMap> delegate()
-    {
-        return delegate;
-    }
-
-    public NodeTransformer getNodeTransformer()
-    {
-        return nodeTransformer;
-    }
-
-    public void setNodeTransformer( NodeTransformer nodeTransformer )
-    {
-        this.nodeTransformer = nodeTransformer;
-    }
-
-    public boolean haveNodeTransformer()
-    {
-        return nodeTransformer != null;
-    }
-
-    @Override
-    public String toString()
-    {
-        return Objects.toStringHelper( this )
-            .add( "map", standardToString() )
-            .add( "nodeTransformer", nodeTransformer )
-            .toString();
-    }
 }

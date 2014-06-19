@@ -1,4 +1,4 @@
-package org.hisp.dhis.node.transformers;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,42 +28,12 @@ package org.hisp.dhis.node.transformers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.PropertyValueTransformer;
-import org.hisp.dhis.node.types.SimpleNode;
-import org.hisp.dhis.schema.Property;
-
-import java.util.Collection;
+import org.hisp.dhis.node.Provider;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class SizePropertyValueTransformer implements PropertyValueTransformer
+public interface NamedProvider<T> extends Provider<T>
 {
-    @Override
-    public String name()
-    {
-        return "size";
-    }
-
-    @Override
-    public Node transform( Property property, Object value )
-    {
-        if ( property.isCollection() )
-        {
-            return new SimpleNode( property.getCollectionName(), ((Collection<?>) value).size(), property.isAttribute() );
-        }
-        else if ( String.class.isInstance( value ) )
-        {
-            return new SimpleNode( property.getName(), ((String) value).length(), property.isAttribute() );
-        }
-
-        throw new IllegalStateException( "Should never get here, this property/value is not supported by this transformer." );
-    }
-
-    @Override
-    public boolean canTransform( Property property, Object value )
-    {
-        return property.isCollection() || String.class.isInstance( value );
-    }
+    String name();
 }

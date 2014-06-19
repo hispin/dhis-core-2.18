@@ -1,4 +1,4 @@
-package org.hisp.dhis.node;
+package org.hisp.dhis.node.transformers;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,33 +28,44 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.hisp.dhis.node.Node;
+import org.hisp.dhis.node.NodeTransformer;
+import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Property;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface PropertyValueTransformer
+@Component
+public class SizeNodeTransformer implements NodeTransformer
 {
-    /**
-     * @return Public/external name of this transformer.
-     */
-    String name();
+    @Override
+    public String name()
+    {
+        return "size";
+    }
 
-    /**
-     * Transform value. Value can be null.
-     *
-     * @param property Property instance belonging to value
-     * @param value    Actual value to transform
-     * @return Value transformed to a Node
-     */
-    Node transform( Property property, Object value );
+    @Override
+    public Node transform( Property property, Object value )
+    {
+        if ( property.isCollection() )
+        {
+            return new SimpleNode( property.getCollectionName(), ((Collection<?>) value).size(), property.isAttribute() );
+        }
+        else if ( String.class.isInstance( value ) )
+        {
+            return new SimpleNode( property.getName(), ((String) value).length(), property.isAttribute() );
+        }
 
-    /**
-     * Is this property/value supported by this transformer. Value can be null.
-     *
-     * @param property Property instance belonging to value
-     * @param value    Actual value to transform
-     * @return true of false depending on support
-     */
-    boolean canTransform( Property property, Object value );
+        throw new IllegalStateException( "Should never get here, this property/value is not supported by this transformer." );
+    }
+
+    @Override
+    public boolean canTransform( Property property, Object value )
+    {
+        return property.isCollection() || String.class.isInstance( value );
+    }
 }

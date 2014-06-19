@@ -33,7 +33,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.node.transformers.SizePropertyValueTransformer;
+import org.hisp.dhis.node.NodeTransformer;
+import org.hisp.dhis.common.PresetProvider;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.SimpleNode;
@@ -43,25 +44,53 @@ import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class DefaultFieldFilterService implements FieldFilterService
 {
-    static final ImmutableMap<String, List<String>> FIELD_PRESETS = ImmutableMap.<String, List<String>>builder()
-        .put( "all", Lists.newArrayList( "*" ) )
-        .put( "identifiable", Lists.newArrayList( "id", "name", "code", "created", "lastUpdated", "href" ) )
-        .put( "nameable", Lists.newArrayList( "id", "name", "shortName", "description", "code", "created", "lastUpdated", "href" ) )
-        .build();
-
     @Autowired
     private ParserService parserService;
 
     @Autowired
     private SchemaService schemaService;
+
+    @Autowired( required = false )
+    private Set<PresetProvider> presetProviders = Sets.newHashSet();
+
+    @Autowired( required = false )
+    private Set<NodeTransformer> nodeTransformers = Sets.newHashSet();
+
+    private ImmutableMap<String, PresetProvider> presets;
+
+    private ImmutableMap<String, NodeTransformer> transformers;
+
+    @PostConstruct
+    public void init()
+    {
+        ImmutableMap.Builder<String, PresetProvider> presetProviderBuilder = ImmutableMap.builder();
+
+        for ( PresetProvider presetProvider : presetProviders )
+        {
+            presetProviderBuilder.put( presetProvider.name(), presetProvider );
+        }
+
+        presets = presetProviderBuilder.build();
+
+        ImmutableMap.Builder<String, NodeTransformer> transformerBuilder = ImmutableMap.builder();
+
+        for ( NodeTransformer transformer : nodeTransformers )
+        {
+            transformerBuilder.put( transformer.name(), transformer );
+        }
+
+        transformers = transformerBuilder.build();
+    }
 
     @Override
     public <T extends IdentifiableObject> CollectionNode filter( Class<?> klass, List<T> objects, List<String> fieldList )
@@ -139,11 +168,11 @@ public class DefaultFieldFilterService implements FieldFilterService
                 updateFields( fieldValue, property.getKlass() );
             }
 
-            if ( fieldValue.isTransform() )
+            if ( fieldValue.haveNodeTransformer() )
             {
-                SizePropertyValueTransformer transformer = new SizePropertyValueTransformer();
+                NodeTransformer transformer = fieldValue.getNodeTransformer();
 
-                if ( transformer.canTransform( property, returnValue ) )
+                if ( transformer != null && transformer.canTransform( property, returnValue ) )
                 {
                     complexNode.addChild( transformer.transform( property, returnValue ) );
                 }
@@ -151,7 +180,7 @@ public class DefaultFieldFilterService implements FieldFilterService
             }
             else if ( fieldValue.isEmpty() )
             {
-                List<String> fields = FIELD_PRESETS.get( "identifiable" );
+                List<String> fields = presets.get( "identifiable" ).provide();
 
                 if ( property.isCollection() )
                 {
@@ -270,12 +299,14 @@ public class DefaultFieldFilterService implements FieldFilterService
             }
             else if ( fieldKey.startsWith( ":" ) )
             {
-                List<String> fields = FIELD_PRESETS.get( fieldKey.substring( 1 ) );
+                PresetProvider presetProvider = presets.get( fieldKey.substring( 1 ) );
 
-                if ( fields == null )
+                if ( presetProvider == null )
                 {
                     continue;
                 }
+
+                List<String> fields = presetProvider.provide();
 
                 for ( String field : fields )
                 {
@@ -298,8 +329,12 @@ public class DefaultFieldFilterService implements FieldFilterService
                 if ( split.length == 2 )
                 {
                     FieldMap value = new FieldMap();
-                    value.setTransform( split[1] );
-                    fieldMap.put( split[0], value );
+
+                    if ( transformers.containsKey( split[1] ) )
+                    {
+                        value.setNodeTransformer( transformers.get( split[1] ) );
+                        fieldMap.put( split[0], value );
+                    }
                 }
 
                 cleanupFields.add( fieldKey );
