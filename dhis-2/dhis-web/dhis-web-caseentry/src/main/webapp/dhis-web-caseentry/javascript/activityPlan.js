@@ -367,14 +367,12 @@ function statusEventOnChange()
 	{
 		var status = getFieldValue("status");
 
-		if( status == '1_2_3_4'
-			|| status == '3_4'
-			|| status == '2_3_4' ){
+		if( status == '' || status == 'SKIPPED' ){
 			enable('showEventSince');
 			enable('showEventUpTo');
 			setDateRange();
 		}
-		else if( status == '3' ){
+		else if( status == 'FUTURE_VISIT' ){
 			disable('showEventSince');
 			enable('showEventUpTo');
 			setDateRange();
