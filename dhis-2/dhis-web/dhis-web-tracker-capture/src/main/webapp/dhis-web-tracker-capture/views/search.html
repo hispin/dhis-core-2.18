@@ -14,17 +14,6 @@
                 <input type="text" class="form-control-select2" ng-date ng-model="attribute.value" />
             </td>
         </tr>
-        <tr>
-            <td>{{'program'| translate}}</td>
-            <td>
-                <select class="form-control-select2"
-                        ng-model="selectedProgram" 
-                        ng-change="getProgramAttributes(selectedProgram, false)"
-                        ng-options="program as program.name for program in programs | orderBy: 'name'">
-                    <option value="">{{'please_select'| translate}}</option>
-                </select>
-            </td>
-        </tr>
         <tr ng-repeat="attribute in attributes">
             <td>
                 {{attribute.name}} - {{attribute.valueType}}
@@ -76,7 +65,3 @@
     </button>
 
 </div>
-
-
-
-
