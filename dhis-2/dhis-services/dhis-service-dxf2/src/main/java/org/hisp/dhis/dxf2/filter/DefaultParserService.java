@@ -29,11 +29,9 @@ package org.hisp.dhis.dxf2.filter;
  */
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -68,10 +66,10 @@ public class DefaultParserService implements ParserService
     }
 
     @Override
-    public Map<String, Map> parsePropertyFilter( String fields )
+    public FieldMap parseFieldFilter( String fields )
     {
         List<String> prefixList = Lists.newArrayList();
-        Map<String, Map> parsed = Maps.newHashMap();
+        FieldMap fieldMap = new FieldMap();
 
         StringBuilder builder = new StringBuilder();
 
@@ -79,7 +77,7 @@ public class DefaultParserService implements ParserService
         {
             if ( c.equals( "," ) )
             {
-                putInMap( parsed, joinedWithPrefix( builder, prefixList ) );
+                putInMap( fieldMap, joinedWithPrefix( builder, prefixList ) );
                 builder = new StringBuilder();
                 continue;
             }
@@ -95,7 +93,7 @@ public class DefaultParserService implements ParserService
             {
                 if ( !builder.toString().isEmpty() )
                 {
-                    putInMap( parsed, joinedWithPrefix( builder, prefixList ) );
+                    putInMap( fieldMap, joinedWithPrefix( builder, prefixList ) );
                 }
 
                 prefixList.remove( prefixList.size() - 1 );
@@ -111,10 +109,10 @@ public class DefaultParserService implements ParserService
 
         if ( !builder.toString().isEmpty() )
         {
-            putInMap( parsed, joinedWithPrefix( builder, prefixList ) );
+            putInMap( fieldMap, joinedWithPrefix( builder, prefixList ) );
         }
 
-        return parsed;
+        return fieldMap;
     }
 
     private String joinedWithPrefix( StringBuilder builder, List<String> prefixList )
@@ -125,7 +123,7 @@ public class DefaultParserService implements ParserService
     }
 
     @SuppressWarnings( "unchecked" )
-    private void putInMap( Map<String, Map> map, String path )
+    private void putInMap( FieldMap fieldMap, String path )
     {
         if ( StringUtils.isEmpty( path ) )
         {
@@ -134,12 +132,12 @@ public class DefaultParserService implements ParserService
 
         for ( String p : path.split( "\\." ) )
         {
-            if ( map.get( p ) == null )
+            if ( fieldMap.get( p ) == null )
             {
-                map.put( p, Maps.newHashMap() );
+                fieldMap.put( p, new FieldMap() );
             }
 
-            map = map.get( p );
+            fieldMap = fieldMap.get( p );
         }
     }
 }
