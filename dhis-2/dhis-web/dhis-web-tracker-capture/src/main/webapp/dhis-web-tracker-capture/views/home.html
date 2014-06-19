@@ -9,23 +9,39 @@
     <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
 </div>
 <div class="page" id="mainPage" ng-show="selectedOrgUnit">
-    
-    <!-- Search heading begins -->
-    <h1>
-        <span ng-if='showSearchDiv || !showRegistrationDiv'>
-            {{'search'| translate}} {{selectedProgram.trackedEntity.name}}
-        </span>
-        <span ng-if='showRegistrationDiv'>
-            {{'register'| translate}} {{selectedProgram.trackedEntity.name}}
-        </span>          
-        <a href ng-click="getHelpContent()" title="{{'help'| translate}}"><i class="fa fa-question-circle"></i></a>
-    </h1>
-    <!-- Search heading ends -->
-    
+
+    <!-- top bar begins -->
+    <div class="row top-bar">
+        
+        <div class="col-md-12">
+            
+            <span ng-if='showSearchDiv || !showRegistrationDiv'>
+                {{'search'| translate}} {{selectedProgram.trackedEntity.name}}
+            </span>
+            <span ng-if='showRegistrationDiv'>
+                {{'register'| translate}} {{selectedProgram.trackedEntity.name}}
+            </span>        
+
+            <div class="pull-right">
+                <div class="btn-group" dropdown is-open="status.isopen">
+                    <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="trackedEntityList.rows.length <=0 ">
+                        <i class="fa fa-cog"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li ng-show="trackedEntityList.rows.length > 0"><a href ng-click="showHideColumns()">{{'show_hide_columns'| translate}}</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+    <!-- top bar ends -->
+
     <!--- Simple search field begins -->
     <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
     <!--- Simple search input field beings -->
-    
+
     <!--- Advanced search input field begins -->
     <div class="row">        
         <div id="searchDropDownParent" class="input-group col-md-6">
@@ -54,7 +70,7 @@
         </div>        
     </div>
     <!--- Advanced search input field begins -->
-    
+
     <!--- Error display for search begins -->
     <div class="row" ng-if="emptySearchAttribute">
         <div class="col-md-6">
@@ -72,7 +88,7 @@
                     <li>
                         <a href ng-click="getProgramAttributes(null, true)">{{'please_select_a_program'| translate}}</a>
                     </li>
-                    <li ng-repeat="program in programs | orderBy: 'name'">
+                    <li ng-repeat="program in programs| orderBy: 'name'">
                         <a href ng-click="getProgramAttributes(program, true)">{{program.name}}</a>
                     </li>
                 </ul>
@@ -103,8 +119,8 @@
     <!-- registration ends -->
 
     <!-- entity grid begins -->
-    <div ng-if="showTrackedEntityDiv">
-        <div ng-include="'views/tei.html'"></div>  
+    <div class="row" ng-if="showTrackedEntityDiv">
+        <div class="col-md-12" ng-include="'views/tei.html'"></div>  
     </div>
     <!-- entity grid ends -->
 </div>           
