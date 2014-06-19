@@ -33,6 +33,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.node.transformers.SizePropertyValueTransformer;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.SimpleNode;
@@ -138,7 +139,12 @@ public class DefaultFieldFilterService implements FieldFilterService
                 updateFields( fieldValue, property.getKlass() );
             }
 
-            if ( fieldValue.isEmpty() )
+            if ( fieldValue.isTransform() )
+            {
+                SizePropertyValueTransformer size = new SizePropertyValueTransformer();
+                complexNode.addChild( size.transform( property, returnValue ) );
+            }
+            else if ( fieldValue.isEmpty() )
             {
                 List<String> fields = FIELD_PRESETS.get( "identifiable" );
 
@@ -278,6 +284,19 @@ public class DefaultFieldFilterService implements FieldFilterService
             }
             else if ( fieldKey.startsWith( "!" ) && !expandOnly )
             {
+                cleanupFields.add( fieldKey );
+            }
+            else if ( fieldKey.contains( "::" ) )
+            {
+                String[] split = fieldKey.split( "::" );
+
+                if ( split.length == 2 )
+                {
+                    FieldMap value = new FieldMap();
+                    value.setTransform( split[1] );
+                    fieldMap.put( split[0], value );
+                }
+
                 cleanupFields.add( fieldKey );
             }
         }
