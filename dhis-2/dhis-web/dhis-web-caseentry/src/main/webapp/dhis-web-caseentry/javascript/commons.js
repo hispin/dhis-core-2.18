@@ -224,20 +224,25 @@ function getSearchParams(page) {
 // Get Params form Div
 // ----------------------------------------------------------------
 
+var phoneNumberAreaCode = "";
 function getParamsForDiv(entityInstanceDiv) {
 	var params = '';
 	var dateOperator = '';
 	$("#" + entityInstanceDiv + " :input").each(function() {
-		var elementId = $(this).attr('id');
-		if ($(this).attr('type') == 'checkbox') {
-			var checked = jQuery(this).attr('checked') ? true : false;
+		var item = jQuery(this);
+		var elementId = item.attr('id');
+		if (item.attr('type') == 'checkbox') {
+			var checked = item.attr('checked') ? true : false;
 			params += elementId + "=" + checked + "&";
 		} else if (elementId == 'dateOperator') {
-			dateOperator = jQuery(this).val();
+			dateOperator = item.val();
 		} else if ($(this).attr('type') != 'button') {
 			var value = "";
-			if (jQuery(this).val() != null && jQuery(this).val() != '') {
-				value = htmlEncode(jQuery(this).val());
+			if (item.val() != null && item.val() != '') {
+				if( (item.attr('phoneNumber')==undefined) 
+						|| ( item.attr('phoneNumber')!=undefined && item.val()!= phoneNumberAreaCode) ){
+					value = htmlEncode(item.val());
+				}
 			}
 			if (dateOperator != '') {
 				value = dateOperator + "'" + value + "'";
