@@ -22,7 +22,7 @@
             <div class="pull-right">
                 <div class="btn-group" dropdown is-open="status.isopen">
                     <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="trackedEntityList.rows.length <=0 ">
-                        <i class="fa fa-cog"></i>
+                        <i class="fa fa-cog" title="{{'settings' | translate}}"></i>
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu">
                         <li ng-show="trackedEntityList.rows.length > 0"><a href ng-click="showHideColumns()">{{'show_hide_columns'| translate}}</a></li>
