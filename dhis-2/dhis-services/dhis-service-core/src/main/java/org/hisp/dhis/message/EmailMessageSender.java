@@ -86,7 +86,7 @@ public class EmailMessageSender
     @Async
     @Override
     public String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
-    {        
+    {
         String hostName = systemSettingManager.getEmailHostName();
         int port = systemSettingManager.getEmailPort();
         String username = systemSettingManager.getEmailUsername();
@@ -132,7 +132,6 @@ public class EmailMessageSender
             if ( hasRecipients )
             {
                 email.send();
-                
                 log.info( "Email sent using host: " + hostName + " with TLS: " + tls );
             }
         }
@@ -140,7 +139,7 @@ public class EmailMessageSender
         {
             log.warn( "Could not send email: " + ex.getMessage() );
         }
-        
+
         return null;
     }
 
@@ -151,7 +150,7 @@ public class EmailMessageSender
         email.setHostName( hostName );
         email.setFrom( defaultIfEmpty( sender, FROM_ADDRESS ), FROM_NAME );
         email.setSmtpPort( port );
-        email.setTLS( true );
+        email.setTLS( tls );
         
         if ( username != null && password != null )
         {

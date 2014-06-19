@@ -15,8 +15,23 @@
 			});
 		});
 		
-		jQuery( '#smtpHostName' ).blur();
+    jQuery( '#smtpHostName' ).blur();
+
+    jQuery( "#sendTestEmail" ).click( function ( e ) {
+        e.preventDefault();
+        jQuery.ajax({
+        	url: '../api/email/test',
+        	type: 'post',
+        	success: function( data, status, xhr ) {
+          		setHeaderDelayMessage ( xhr.responseText )
+          	},
+          	error: function( xhr, status, error ) {
+          		setHeaderDelayMessage( xhr.responseText );
+          	}
+        });
+    });
 	});
+
 </script>
 
 <h3>$i18n.getString( "smtp_settings" ) #openHelp( "systemEmailSettings" )</h3>
@@ -54,6 +69,11 @@
 
 <div class="setting"><input type="text" id="emailSender" name="emailSender" value="$!emailSender" autocomplete="off" placeholder="noreply&#64;dhis2.org"></div>
 
-<div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"></div>
+<div class="setting">
+  <input type="button" value="$i18n.getString( 'save' )" style="width:10em">
+  <span style="margin-left: 1em;"><a id="sendTestEmail" href="send-test-email" title="Send an automatically generated email using the supplied SMTP settings to your email address">Send me a test email</a></span>
+</div>
 
 </form>
+
+
