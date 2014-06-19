@@ -203,6 +203,18 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 });
             });            
             return def.promise;
+        },
+        get: function(uid){            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.get('trackedEntities', uid).done(function(te){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(te);
+                    });
+                });
+            });                        
+            return def.promise;            
         }
     };
 })

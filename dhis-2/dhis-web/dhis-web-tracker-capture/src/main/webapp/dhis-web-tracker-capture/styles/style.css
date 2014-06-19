@@ -719,25 +719,11 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     padding: 6px 12px;
     font-size: 14px;
 }
-/*input[type=number], input[type=text], input[type=password], textarea {
+input[type=number], input[type=text], input[type=password], textarea {
     border: 1px solid #aaa;
     padding: 6px 12px;
     font-size: 14px;
 }
-
-input[type=number] {
-    border: 1px solid #aaa;
-    padding: 4px 1px;
-    border-radius: 3px;
-}
-
-input[type=text], input[type=password], textarea, select {
-    border: 1px solid #aaa;
-    padding: 6px 12px;
-    font-size: 14px;
-    border-radius: 3px;
-}*/
-
 
 /*----------------------------------------------------------------------------*/
 /* Search filters
