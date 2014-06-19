@@ -311,7 +311,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     //dashboard items   
     $rootScope.dashboardWidgets = {bigger: [], smaller: []};       
-    $rootScope.enrollmentWidget = {title: 'program', view: "components/enrollment/enrollment.html", show: true};
+    $rootScope.enrollmentWidget = {title: 'enrollment', view: "components/enrollment/enrollment.html", show: true};
     $rootScope.dataentryWidget = {title: 'dataentry', view: "components/dataentry/dataentry.html", show: true};
     $rootScope.selectedWidget = {title: 'current_selections', view: "components/selected/selected.html", show: false};
     $rootScope.profileWidget = {title: 'profile', view: "components/profile/profile.html", show: true};
