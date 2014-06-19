@@ -39,16 +39,6 @@
 
     <!--- search and registration menu begins -->
     <div class="row">        
-        <div id="searchDropDownParent" class="input-group col-md-4">
-            <input type="text" placeholder="{{'your_search_input_here'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
-            <div class="input-group-btn">
-                <button class="btn btn-default trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
-                <div id="searchDropDown" class="dropdown-menu pull-right">
-                    <form ng-include="'views/search.html'">                       
-                    </form>                    
-                </div>
-            </div>                
-        </div>
         <div id="selectDropDownParent" class="input-group col-md-4">            
             <button type="button" class="select-drop-down-button form-control" >{{selectedProgram ? selectedProgram.name : 'please_select_a_program'| translate}}</button>
             <div class="input-group-btn">
@@ -63,13 +53,18 @@
                 </ul>
             </div>                
         </div>
+        <div id="searchDropDownParent" class="input-group col-md-4">
+            <input type="text" placeholder="{{'your_search_criteria_here'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
+            <div class="input-group-btn">
+                <button class="btn btn-default trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
+                <button class="btn btn-default trim" type="button" title="{{'search'| translate}}" ng-disabled="showRegistrationDiv" ng-click="search(searchMode.freeText)"><i class="fa fa-search"></i></button>
+                <div id="searchDropDown" class="dropdown-menu pull-right">
+                    <form ng-include="'views/search.html'">                       
+                    </form>                    
+                </div>
+            </div>                
+        </div>        
         <div class="col-md-4 trim">            
-            <button type="button" 
-                    class="btn btn-default"
-                    ng-disabled="showRegistrationDiv"
-                    ng-click="search(searchMode.freeText)">
-                {{'search'| translate}}
-            </button>
             <button type="button" 
                     class="btn btn-default small-horizonal-spacing"
                     ng-disabled="showRegistrationDiv"
@@ -87,7 +82,7 @@
 
     <!--- Error display for search begins -->
     <div class="row" ng-if="emptySearchAttribute || !searchText && emptySearchText">
-        <div class="col-md-4">
+        <div class="col-md-8">
             <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
         </div>
     </div>
@@ -95,7 +90,7 @@
 
     <!--registration form begins -->
     <div class="row" ng-if="showRegistrationDiv">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div ng-include="'components/registration/registration.html'"></div>             
         </div>
     </div>
