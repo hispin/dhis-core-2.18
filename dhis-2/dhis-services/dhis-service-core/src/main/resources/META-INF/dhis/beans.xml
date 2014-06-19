@@ -637,6 +637,12 @@
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
+  <bean id="org.hisp.dhis.email.EmailService" class="org.hisp.dhis.email.DefaultEmailService">
+    <property name="emailMessageSender" ref="emailMessageSender" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+  </bean>
+
   <bean id="org.hisp.dhis.concept.ConceptService" class="org.hisp.dhis.concept.DefaultConceptService">
     <property name="conceptStore" ref="org.hisp.dhis.concept.ConceptStore" />
   </bean>
