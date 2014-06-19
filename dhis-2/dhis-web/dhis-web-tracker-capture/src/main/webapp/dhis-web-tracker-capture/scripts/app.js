@@ -17,8 +17,6 @@ var trackerCapture = angular.module('trackerCapture',
               
 .value('DHIS2URL', '..')
 
-
-
 .config(function($httpProvider, $routeProvider, $translateProvider) {    
             
     $httpProvider.defaults.useXDomain = true;
@@ -28,7 +26,7 @@ var trackerCapture = angular.module('trackerCapture',
         templateUrl:'views/home.html',
         controller: 'SelectionController'
     }).when('/dashboard',{
-        templateUrl:'views/dashboard.html',
+        templateUrl:'components/dashboard/dashboard.html',
         controller: 'DashboardController'
     }).otherwise({
         redirectTo : '/'

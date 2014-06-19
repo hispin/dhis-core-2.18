@@ -25,7 +25,7 @@ trackerCapture.controller('RegistrationController',
         $scope.trackedEntities.selected = $scope.trackedEntities.available[0];
     });
     
-    //watch for selection of org unit from tree
+    //watch for selection of program
     $scope.$watch('selectedProgram', function() {        
         if( angular.isObject($scope.selectedProgram)){
             $scope.trackedEntityList = [];
