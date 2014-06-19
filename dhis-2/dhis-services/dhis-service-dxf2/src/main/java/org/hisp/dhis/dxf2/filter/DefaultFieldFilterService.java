@@ -141,8 +141,13 @@ public class DefaultFieldFilterService implements FieldFilterService
 
             if ( fieldValue.isTransform() )
             {
-                SizePropertyValueTransformer size = new SizePropertyValueTransformer();
-                complexNode.addChild( size.transform( property, returnValue ) );
+                SizePropertyValueTransformer transformer = new SizePropertyValueTransformer();
+
+                if ( transformer.canTransform( property, returnValue ) )
+                {
+                    complexNode.addChild( transformer.transform( property, returnValue ) );
+                }
+
             }
             else if ( fieldValue.isEmpty() )
             {
