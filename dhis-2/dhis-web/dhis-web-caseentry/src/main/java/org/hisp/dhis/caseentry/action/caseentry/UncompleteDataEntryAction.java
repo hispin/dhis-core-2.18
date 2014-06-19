@@ -65,24 +65,7 @@ public class UncompleteDataEntryAction
     // Input / Output
     // -------------------------------------------------------------------------
 
-    private Integer programStageId;
-
-    public Integer getProgramStageId()
-    {
-        return programStageId;
-    }
-
-    public void setProgramStageId( Integer programStageId )
-    {
-        this.programStageId = programStageId;
-    }
-
     public Integer programStageInstanceId;
-
-    public Integer getProgramStageInstanceId()
-    {
-        return programStageInstanceId;
-    }
 
     public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
@@ -98,16 +81,17 @@ public class UncompleteDataEntryAction
     {
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
-
+        
         if ( programStageInstance == null )
         {
             return SUCCESS;
         }
 
         programStageInstance.setCompleted( false );
+        programStageInstance.setStatus( ProgramStageInstance.ACTIVE_STATUS );
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
+        
         // ----------------------------------------------------------------------
         // Check Completed status for all of ProgramStageInstance of
         // ProgramInstance

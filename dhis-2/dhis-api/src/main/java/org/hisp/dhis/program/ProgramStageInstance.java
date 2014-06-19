@@ -268,10 +268,6 @@ public class ProgramStageInstance
         {
             return status;
         }
-        else if ( this.isCompleted() )
-        {
-            return ProgramStageInstance.COMPLETED_STATUS;
-        }
         else if ( this.getExecutionDate() != null )
         {
             return ProgramStageInstance.VISITED_STATUS;
