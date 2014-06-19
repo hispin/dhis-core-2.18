@@ -338,13 +338,11 @@ function loadDataEntryDialog( programStageInstanceId )
 					
 			$('#contentDataRecord' ).load("viewProgramStageRecords.action", {
 					programStageInstanceId: psiid
-				}, function( html ) {
-					setInnerHTML('contentDataRecord',html);
+				}, function( ) {
 					showById('reportDateDiv');
 					showById('entityInstanceInforTB');
 					showById('entryForm');
 					showById('inputCriteriaDiv');
-					entryFormContainerOnReady();
 				}).dialog({
 					title:i18n_program_stage,
 					maximize:true,
