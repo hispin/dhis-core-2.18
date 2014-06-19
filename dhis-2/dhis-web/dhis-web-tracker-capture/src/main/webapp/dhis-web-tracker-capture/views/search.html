@@ -1,11 +1,11 @@
 <div class="search-container">
     <table data-stop-propagation="true" class="table-borderless table-striped">
         <tr>
-            <td>{{'org_unit_mode'| translate}}</td>
+            <td>{{'org_unit'| translate}}</td>
             <td>
-                <input type="radio" ng-model="ouMode.name" id="selected" value="SELECTED"><label for="selected" class="radio-label">{{'use_selected'| translate}}</label><br/>
-                <input type="radio" ng-model="ouMode.name" id="children" value="CHILDREN"><label for="children" class="radio-label">{{'use_immediate_children'| translate}}</label><br/>
-                <input type="radio" ng-model="ouMode.name" id="descendants" value="DESCENDANTS"><label for="descendants" class="radio-label">{{'use_all_children'| translate}}</label>
+                <input type="radio" ng-model="ouMode.name" id="selected" value="SELECTED"> {{'selected'| translate}}<br/>
+                <input type="radio" ng-model="ouMode.name" id="children" value="CHILDREN"> {{'immediate_children'| translate}}<br/>
+                <input type="radio" ng-model="ouMode.name" id="descendants" value="DESCENDANTS"> {{'all_children'| translate}}
             </td>
         </tr>
         <tr>
