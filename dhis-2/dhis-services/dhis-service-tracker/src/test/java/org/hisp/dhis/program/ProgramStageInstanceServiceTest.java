@@ -412,6 +412,7 @@ public class ProgramStageInstanceServiceTest
     public void testStatusProgramStageInstances()
     {
         programStageInstanceA.setCompleted( true );
+        programStageInstanceA.setStatus( ProgramStageInstance.COMPLETED_STATUS );
         programStageInstanceC.setStatus( ProgramStageInstance.SKIPPED_STATUS );
 
         int idA = programStageInstanceService.addProgramStageInstance( programStageInstanceA );
