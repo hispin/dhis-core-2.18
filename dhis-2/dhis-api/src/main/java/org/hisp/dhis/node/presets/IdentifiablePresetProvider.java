@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.node.presets;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,49 +28,27 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.Maps;
-import org.hisp.dhis.node.NodeTransformer;
+import com.google.common.collect.Lists;
+import org.hisp.dhis.common.PresetProvider;
+import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FieldMap extends ForwardingMap<String, FieldMap>
+@Component
+public class IdentifiablePresetProvider implements PresetProvider
 {
-    private final Map<String, FieldMap> delegate = Maps.newHashMap();
-
-    private NodeTransformer nodeTransformer;
-
     @Override
-    protected Map<String, FieldMap> delegate()
+    public String name()
     {
-        return delegate;
-    }
-
-    public NodeTransformer getNodeTransformer()
-    {
-        return nodeTransformer;
-    }
-
-    public void setNodeTransformer( NodeTransformer nodeTransformer )
-    {
-        this.nodeTransformer = nodeTransformer;
-    }
-
-    public boolean haveNodeTransformer()
-    {
-        return nodeTransformer != null;
+        return "identifiable";
     }
 
     @Override
-    public String toString()
+    public List<String> provide()
     {
-        return Objects.toStringHelper( this )
-            .add( "map", standardToString() )
-            .add( "nodeTransformer", nodeTransformer )
-            .toString();
+        return Lists.newArrayList( "id", "name", "code", "created", "lastUpdated", "href" );
     }
 }
