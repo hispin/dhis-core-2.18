@@ -71,7 +71,7 @@
 
 <div class="setting">
   <input type="button" value="$i18n.getString( 'save' )" style="width:10em">
-  <span style="margin-left: 1em;"><a id="sendTestEmail" href="send-test-email" title="Send an automatically generated email using the supplied SMTP settings to your email address">Send me a test email</a></span>
+  <span style="margin-left: 1em;"><a id="sendTestEmail" href="send-test-email" title="$i18n.getString( "info_send_test_email" )">$i18n.getString( "send_test_email" )</a></span>
 </div>
 
 </form>
