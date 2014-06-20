@@ -60,10 +60,10 @@ public class DefaultFieldFilterService implements FieldFilterService
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private Set<PresetProvider> presetProviders = Sets.newHashSet();
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private Set<NodeTransformer> nodeTransformers = Sets.newHashSet();
 
     private ImmutableMap<String, PresetProvider> presets = ImmutableMap.of();
@@ -95,7 +95,7 @@ public class DefaultFieldFilterService implements FieldFilterService
     @Override
     public <T extends IdentifiableObject> CollectionNode filter( Class<?> klass, List<T> objects, List<String> fieldList )
     {
-        if ( objects == null )
+        if ( objects == null || objects.isEmpty() )
         {
             return null;
         }
@@ -130,7 +130,7 @@ public class DefaultFieldFilterService implements FieldFilterService
         return collectionNode;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private ComplexNode buildComplexNode( FieldMap fieldMap, Class<?> klass, Object object )
     {
         Schema schema = schemaService.getDynamicSchema( klass );
