@@ -4,7 +4,7 @@
     "id": "$!programStageInstance.id",
     "dueDate": "$format.formatDate( $!programStageInstance.dueDate )",
     "executionDate": "$!format.formatDate( $programStageInstance.executionDate )",
-    "status": "$!programStageInstance.getEventStatus()",
+    "status": "$!programStageInstance.getEventStatus().getValue()",
     "completed": "$!programStageInstance.completed",
     "comment": "$!encoder.jsonEncode( $!programStageInstance.comment.commentText )",
     #if($programStageInstance.programStage.captureCoordinates)

@@ -10,7 +10,7 @@
 
 #set($programInstance = $programStageInstance.programInstance)
 
-	#set($status = $programStageInstance.getEventStatus())
+	#set($status = $programStageInstance.getEventStatus().getValue())
 	#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
 		<table>
 			#foreach( $programAttribute in $programInstance.program.programAttributes)

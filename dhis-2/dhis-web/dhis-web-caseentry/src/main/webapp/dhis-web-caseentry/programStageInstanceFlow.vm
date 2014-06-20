@@ -34,7 +34,7 @@
 								psid="$programStageInstance.programStage.id"
 								psuid="$programStageInstance.programStage.uid"
 								psname="$programStageInstance.programStage.displayName"
-								status="$programStageInstance.getEventStatus()"
+								status="$programStageInstance.getEventStatus().getValue()"
 								programType='$programInstance.program.type'
 								reportDate="$!format.formatDate( $!programStageInstance.executionDate )"
 								reportDateDes="$programStageInstance.programStage.reportDateDescription"
@@ -45,7 +45,7 @@
 								value="$programStageInstance.programStage.displayName&#13;&#10;&nbsp;$valueDate" 
 								onclick="javascript:loadDataEntry( $programStageInstance.id );">
 							<script>	
-								var status = $programStageInstance.getEventStatus();
+								var status = "$programStageInstance.getEventStatus().getValue()";
 								setEventColorStatus( $programStageInstance.id ,status);
 							</script>
 						</td>
