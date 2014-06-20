@@ -72,24 +72,24 @@
         <div ng-show="currentEvent">
             <hr>
             <table class="table-borderless table-striped">
-                <thead class="align-center">
-                    <tr>
-                        <th class="align-center">
+                <thead>
+                    <tr class="col-md-12">
+                        <th class="col-md-5">
                             {{'data_element'| translate}}
                         </th>
-                        <th class="align-center">
+                        <th class="col-md-5 align-center">
                             {{'value'| translate}}
                         </th>
-                        <th class="align-center">
+                        <th class="col-md-2 align-center" ng-if="allowProvidedElsewhereExists">
                             {{'provided_elsewhere'| translate}}
                         </th>
                     </tr>
                 </thead>
-                <tr ng-repeat="prStDe in currentStage.programStageDataElements">
-                    <td>
+                <tr class="col-md-12" ng-repeat="prStDe in currentStage.programStageDataElements">
+                    <td class="col-md-5">
                         {{prStDe.dataElement.name}}
                     </td>
-                    <td>
+                    <td class="col-md-5">
                         <div ng-switch="prStDe.dataElement.type">
                             <div ng-switch-when="int">
                                 <input type="number"
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>                        
+                    <td class="col-md-2" ng-if="allowProvidedElsewhereExists">                    
                         <div class="align-center" ng-show="prStDe.allowProvidedElsewhere">
                             <input type="checkbox" 
                                    ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]"
