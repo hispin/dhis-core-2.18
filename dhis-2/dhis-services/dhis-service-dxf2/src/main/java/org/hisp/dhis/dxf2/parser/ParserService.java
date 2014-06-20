@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.dxf2.parser;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,22 +28,30 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dxf2.fieldfilter.FieldMap;
+import org.hisp.dhis.dxf2.objectfilter.Filters;
 
 import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface ObjectFilterService
+public interface ParserService
 {
     /**
-     * Filter a list of objects based on un-parsed filter string.
-     * In-memory filter
+     * Parses and generates Ops based on filter string, used for object filtering.
      *
-     * @param objects List to filter
-     * @param filters Filter string
-     * @return Filtered object list
+     * @param filters One or more filter strings to parse
+     * @return Filters object
      */
-    <T extends IdentifiableObject> List<T> filter( List<T> objects, List<String> filters );
+    Filters parseObjectFilter( List<String> filters );
+
+    /**
+     * Parses and writes out fieldMap with included/excluded properties.
+     *
+     * @param filter String to parse, can be used for both inclusion/exclusion
+     * @return FieldMap with property name as key, and another FieldMap as value (recursive)
+     * @see org.hisp.dhis.dxf2.fieldfilter.FieldMap
+     */
+    FieldMap parseFieldFilter( String filter );
 }

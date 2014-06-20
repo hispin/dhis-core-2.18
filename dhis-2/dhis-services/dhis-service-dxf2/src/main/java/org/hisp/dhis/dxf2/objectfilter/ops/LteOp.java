@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter.ops;
+package org.hisp.dhis.dxf2.objectfilter.ops;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -34,7 +34,7 @@ import java.util.Date;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GtOp extends Op
+public class LteOp extends Op
 {
     @Override
     public OpStatus evaluate( Object object )
@@ -49,21 +49,21 @@ public class GtOp extends Op
             Integer s1 = getValue( Integer.class );
             Integer s2 = (Integer) object;
 
-            return (s1 != null && s2 > s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
         else if ( Float.class.isInstance( object ) )
         {
             Float s1 = getValue( Float.class );
             Float s2 = (Float) object;
 
-            return (s1 != null && s2 > s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            return (s1 != null && s2 <= s1) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
         else if ( Collection.class.isInstance( object ) )
         {
             Collection<?> collection = (Collection<?>) object;
             Integer size = getValue( Integer.class );
 
-            if ( size != null && collection.size() > size )
+            if ( size != null && collection.size() <= size )
             {
                 return OpStatus.INCLUDE;
             }
@@ -77,7 +77,7 @@ public class GtOp extends Op
             Date s1 = getValue( Date.class );
             Date s2 = (Date) object;
 
-            return (s1 != null && s2.after( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
+            return (s1 != null && (s2.before( s1 ) || s2.equals( s1 ))) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
 
         return OpStatus.IGNORE;

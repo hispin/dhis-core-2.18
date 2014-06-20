@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.dxf2.fieldfilter;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -32,8 +32,11 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.PresetProvider;
+import org.hisp.dhis.dxf2.parser.ParserService;
 import org.hisp.dhis.node.NodePropertyConverter;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
@@ -54,6 +57,8 @@ import java.util.Set;
  */
 public class DefaultFieldFilterService implements FieldFilterService
 {
+    private static final Log log = LogFactory.getLog( DefaultFieldFilterService.class );
+
     @Autowired
     private ParserService parserService;
 
@@ -63,7 +68,7 @@ public class DefaultFieldFilterService implements FieldFilterService
     @Autowired(required = false)
     private Set<PresetProvider> presetProviders = Sets.newHashSet();
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private Set<NodePropertyConverter> nodePropertyConverters = Sets.newHashSet();
 
     private ImmutableMap<String, PresetProvider> presets = ImmutableMap.of();
@@ -130,7 +135,7 @@ public class DefaultFieldFilterService implements FieldFilterService
         return collectionNode;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private ComplexNode buildComplexNode( FieldMap fieldMap, Class<?> klass, Object object )
     {
         Schema schema = schemaService.getDynamicSchema( klass );

@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.dxf2.fieldfilter;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,49 +28,22 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.Maps;
-import org.hisp.dhis.node.NodePropertyConverter;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.node.types.CollectionNode;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FieldMap extends ForwardingMap<String, FieldMap>
+public interface FieldFilterService
 {
-    private final Map<String, FieldMap> delegate = Maps.newHashMap();
-
-    private NodePropertyConverter nodePropertyConverter;
-
-    @Override
-    protected Map<String, FieldMap> delegate()
-    {
-        return delegate;
-    }
-
-    public NodePropertyConverter getNodePropertyConverter()
-    {
-        return nodePropertyConverter;
-    }
-
-    public void setNodePropertyConverter( NodePropertyConverter nodePropertyConverter )
-    {
-        this.nodePropertyConverter = nodePropertyConverter;
-    }
-
-    public boolean haveNodePropertyConverter()
-    {
-        return nodePropertyConverter != null;
-    }
-
-    @Override
-    public String toString()
-    {
-        return Objects.toStringHelper( this )
-            .add( "map", standardToString() )
-            .add( "nodePropertyConverter", nodePropertyConverter )
-            .toString();
-    }
+    /**
+     * Perform inclusion/exclusion on a list of objects.
+     *
+     * @param objects   List to filter
+     * @param fieldList Field filter
+     * @return List of objects with only wanted properties
+     */
+    <T extends IdentifiableObject> CollectionNode filter( Class<?> klass, List<T> objects, List<String> fieldList );
 }
