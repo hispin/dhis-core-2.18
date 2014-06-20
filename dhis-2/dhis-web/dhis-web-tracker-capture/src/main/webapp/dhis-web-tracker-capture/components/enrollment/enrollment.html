@@ -6,7 +6,7 @@
         </span>
     </div>
     <div class="panel-body dashboard-widget-container">
-        <div ng-if="selectedProgram">
+        <div ng-if="selectedEnrollment">
             <table class="table-borderless">
                 <tr>
                     <td>
@@ -60,80 +60,85 @@
                     {{'cancel'| translate}}
                 </button>
             </div>
+        </div>
 
-            <div class="vertical-spacing horizonal-spacing" ng-if="selectedProgram && !selectedEnrollment">
-                <hr>
-                <table class="table-borderless">
-                    <tr>
-                        <td>
-                            {{selectedProgram.dateOfEnrollmentDescription}}
-                        </td>
-                        <td>
-                            <input type="text" class="form-control" ng-date ng-model="newEnrollment.dateOfEnrollment" />
-                        </td>
-                    </tr>     
-                    <tr ng-if="selectedProgram.displayIncidentDate">
-                        <td>
-                            {{selectedProgram.dateOfIncidentDescription}}
-                        </td>
-                        <td>
-                            <input type="text" class="form-control" ng-date ng-model="newEnrollment.dateOfIncident" />                    
-                        </td>
-                    </tr>
-                </table>
-                <hr>
-                <table class="table-borderless table-striped">
-                    <tr ng-repeat="attribute in attributesForEnrollment">
-                        <td>
-                            {{attribute.name}}
-                        </td>
-                        <td>
-                            <div ng-switch="attribute.valueType">
-                                <div ng-switch-when="date">
-                                    <input type="text" class="form-control" ng-date ng-model="attribute.value" />
-                                </div>
-                                <div ng-switch-when="trueOnly">
-                                    <input type="checkbox" class="form-control" ng-model="attribute.value" />
-                                </div>
-                                <div ng-switch-when="bool">
-                                    <select ng-model="attribute.value" class="form-control">
-                                        <option value="">{{'please_select'| translate}}</option>                        
-                                        <option value="0">{{'no'| translate}}</option>
-                                        <option value="1">{{'yes'| translate}}</option>
-                                    </select>
-                                </div>
-                                <div ng-switch-when="optionSet">
-                                    <input type="text" 
-                                           class="form-control"
-                                           ng-model="attribute.value"                                                 
-                                           typeahead="option for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
-                                           typeahead-open-on-focus 
-                                           />
-                                </div>
-                                <div ng-switch-when="number">
-                                    <input type="number" class="form-control" ng-model="attribute.value"/>
-                                </div>
-                                <div ng-switch-default>
-                                    <input type="text" class="form-control" ng-model="attribute.value" />                                        
-                                </div>
-                            </div>                                                                                                    
-                        </td>
-                    </tr>                        
-                </table>
 
-                <div class="vertical-spacing small-horizonal-spacing">            
-                    <button type="button" 
-                            class="btn btn-default"
-                            ng-click="enroll()">
-                        {{'enroll'| translate}}
-                    </button>  
-                    <button type="button" 
-                            class="btn btn-default"
-                            ng-click="cancelEnrollment()">
-                        {{'cancel'| translate}}
-                    </button>
-                </div>
+        <div ng-if="selectedProgram && !selectedEnrollment">
+            <table class="table-borderless">
+                <tr>
+                    <td>
+                        {{selectedProgram.dateOfEnrollmentDescription}}
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-date ng-model="newEnrollment.dateOfEnrollment" />
+                    </td>
+                </tr>     
+                <tr ng-if="selectedProgram.displayIncidentDate">
+                    <td>
+                        {{selectedProgram.dateOfIncidentDescription}}
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-date ng-model="newEnrollment.dateOfIncident" />                    
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <table class="table-borderless table-striped">
+                <tr ng-repeat="attribute in attributesForEnrollment">
+                    <td>
+                        {{attribute.name}}
+                    </td>
+                    <td>
+                        <div ng-switch="attribute.valueType">
+                            <div ng-switch-when="date">
+                                <input type="text" class="form-control" ng-date ng-model="attribute.value" />
+                            </div>
+                            <div ng-switch-when="trueOnly">
+                                <input type="checkbox" class="form-control" ng-model="attribute.value" />
+                            </div>
+                            <div ng-switch-when="bool">
+                                <select ng-model="attribute.value" class="form-control">
+                                    <option value="">{{'please_select'| translate}}</option>                        
+                                    <option value="0">{{'no'| translate}}</option>
+                                    <option value="1">{{'yes'| translate}}</option>
+                                </select>
+                            </div>
+                            <div ng-switch-when="optionSet">
+                                <input type="text" 
+                                       class="form-control"
+                                       ng-model="attribute.value"                                                 
+                                       typeahead="option for option in attribute.optionSet.options | filter:$viewValue | limitTo:20" 
+                                       typeahead-open-on-focus 
+                                       />
+                            </div>
+                            <div ng-switch-when="number">
+                                <input type="number" class="form-control" ng-model="attribute.value"/>
+                            </div>
+                            <div ng-switch-default>
+                                <input type="text" class="form-control" ng-model="attribute.value" />                                        
+                            </div>
+                        </div>                                                                                                    
+                    </td>
+                </tr>                        
+            </table>
+
+            <div class="vertical-spacing small-horizonal-spacing">            
+                <button type="button" 
+                        class="btn btn-default"
+                        ng-click="enroll()">
+                    {{'enroll'| translate}}
+                </button>  
+                <button type="button" 
+                        class="btn btn-default"
+                        ng-click="cancelEnrollment()">
+                    {{'cancel'| translate}}
+                </button>
             </div>
         </div>
+
+        <div ng-if="!selectedProgram">
+            <div class="alert alert-warning">{{'please_select_a_program'| translate}}</div> 
+        </div>
+
     </div>
 </div>

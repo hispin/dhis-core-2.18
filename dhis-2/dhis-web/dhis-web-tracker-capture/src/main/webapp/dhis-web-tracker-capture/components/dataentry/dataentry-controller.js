@@ -1,6 +1,7 @@
 trackerCapture.controller('DataEntryController',
         function($scope, 
                 $filter,
+                DateUtils,
                 orderByFilter,
                 storage,
                 ProgramStageFactory,
@@ -10,13 +11,13 @@ trackerCapture.controller('DataEntryController',
                 TranslationService) {
 
     TranslationService.translate();
+    
+    var today = moment();
+    today = Date.parse(today);
+    today = $filter('date')(today, 'yyyy-MM-dd');
      
     //listen for the selected items
-    $scope.$on('dashboard', function(event, args) {  
-        var today = moment();
-        today = Date.parse(today);
-        today = $filter('date')(today, 'yyyy-MM-dd');
-
+    $scope.$on('dashboard', function(event, args) { 
         $scope.currentEvent = null;
         $scope.allowEventCreation = false;
         $scope.repeatableStages = [];        
@@ -36,77 +37,65 @@ trackerCapture.controller('DataEntryController',
             DHIS2EventFactory.getByEntity($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id).then(function(data){
                 $scope.dhis2Events = data;
                
-                /*if(angular.isUndefined($scope.dhis2Events)){
+                if(angular.isUndefined($scope.dhis2Events)){
                     
-                    $scope.dhis2Events = [];
+                    //create dummy events
+                    $scope.dummyEvents = [];
                     
                     if($scope.selectedEnrollment.status === 'ACTIVE'){
-                        //create events for the selected enrollment
-                        var program = storage.get($scope.selectedProgramId);
-                        //var programStages = [];
-                        
-                        angular.forEach(program.programStages, function(ps){  
-                            ps = storage.get(ps.id);
-                            //programStages.push(ps);
-                            
-                            var eventDate = moment(moment().add('d', ps.minDaysFromStart), 'YYYY-MM-DD')._d;
-                            eventDate = Date.parse(eventDate);
-                            eventDate = $filter('date')(eventDate, 'yyyy-MM-dd');
-                            var dhis2Event = {programStage: ps.id, 
-                                              orgUnit: $scope.selectedOrgUnitId, 
-                                              eventDate: eventDate,
-                                              name: ps.name,
-                                              status: 'ACTIVE'};
-                            
-                            $scope.dhis2Events.push(dhis2Event);    
-                            
+                        //create dummy events for the selected enrollment                        
+                        angular.forEach($scope.selectedProgram.programStages, function(programStage){                                                        
+                            var dummyEvent = $scope.createDummyEvent(programStage, $scope.selectedOrgUnit, $scope.selectedEnrollment);
+                            $scope.dummyEvents.push(dummyEvent);                            
                         });
+                        
+                        $scope.dummyEvents = orderByFilter($scope.dummyEvents, '-eventDate');
+                        $scope.dummyEvents.reverse();                        
                     }
-                }*/                
-
-                angular.forEach($scope.dhis2Events, function(dhis2Event){
+                }
+                else{
+                    angular.forEach($scope.dhis2Events, function(dhis2Event){
                     
-                    ProgramStageFactory.get(dhis2Event.programStage).then(function(stage){
-                        //check if a stage is repeatable
-                        if(stage.repeatable){
-                            $scope.allowEventCreation = true;
-                            if($scope.repeatableStages.indexOf(stage) === -1){
-                                $scope.repeatableStages.push(stage);
+                        ProgramStageFactory.get(dhis2Event.programStage).then(function(stage){
+                            //check if a stage is repeatable
+                            if(stage.repeatable){
+                                $scope.allowEventCreation = true;
+                                if($scope.repeatableStages.indexOf(stage) === -1){
+                                    $scope.repeatableStages.push(stage);
+                                }
                             }
+
+                            dhis2Event.name = stage.name;
+                        });
+                        
+                        dhis2Event.eventDate = DateUtils.format(dhis2Event.eventDate);
+
+                        if(dhis2Event.status === 'COMPLETED'){
+                            dhis2Event.statusColor = 'stage-completed';
                         }
+                        else{
+                            dhis2Event.statusColor = 'stage-on-time';
 
-                        dhis2Event.name = stage.name;
+                            if(moment(today).isAfter(dhis2Event.eventDate)){
+                                dhis2Event.statusColor = 'stage-overdue';
+                            }                        
+                        } 
+
+                        //get orgunit name for the event
+                        if(dhis2Event.orgUnit){
+                            OrgUnitService.open().then(function(){
+                                OrgUnitService.get(dhis2Event.orgUnit).then(function(ou){
+                                    if(ou){
+                                        dhis2Event.orgUnitName = ou.n;
+                                    }                                                       
+                                });                            
+                            }); 
+                        }                                                             
                     });
-                    
-                    dhis2Event.eventDate = moment(dhis2Event.eventDate, 'YYYY-MM-DD')._d;
-                    dhis2Event.eventDate = Date.parse(dhis2Event.eventDate);
-                    dhis2Event.eventDate = $filter('date')(dhis2Event.eventDate, 'yyyy-MM-dd');
-                    
-                    if(dhis2Event.status === 'COMPLETED'){
-                        dhis2Event.statusColor = 'stage-completed';
-                    }
-                    else{
-                        dhis2Event.statusColor = 'stage-on-time';
 
-                        if(moment(today).isAfter(dhis2Event.eventDate)){
-                            dhis2Event.statusColor = 'stage-overdue';
-                        }                        
-                    } 
-                    
-                    //get orgunit name for the event
-                    if(dhis2Event.orgUnit){
-                        OrgUnitService.open().then(function(){
-                            OrgUnitService.get(dhis2Event.orgUnit).then(function(ou){
-                                if(ou){
-                                    dhis2Event.orgUnitName = ou.n;
-                                }                                                       
-                            });                            
-                        }); 
-                    }                                                             
-                });
-
-                //$scope.dhis2Events = orderByFilter($scope.dhis2Events, '-eventDate');
-                //$scope.dhis2Events.reverse();              
+                    $scope.dhis2Events = orderByFilter($scope.dhis2Events, '-eventDate');
+                    $scope.dhis2Events.reverse();                    
+                }
             });          
         }
     });
@@ -114,6 +103,14 @@ trackerCapture.controller('DataEntryController',
     $scope.createNewEvent = function(){
         console.log('need to create new event:  ', $scope.repeatableStages);        
     };
+    
+    $scope.showEventCreation = function(dummyEvent){
+        
+        if(dummyEvent){            
+            $scope.currentDummyEvent = dummyEvent;
+            console.log('need to provide event creation interface');            
+        }
+    };   
     
     $scope.showDataEntry = function(event){
         
@@ -206,5 +203,23 @@ trackerCapture.controller('DataEntryController',
             });
             
         }        
+    };
+    
+    $scope.createDummyEvent = function(programStage, orgUnit, enrollment){
+        
+        var eventDate = moment(moment(enrollment.dateOfIncident).add('d', programStage.minDaysFromStart), 'YYYY-MM-DD')._d;
+        eventDate = Date.parse(eventDate);
+        eventDate = $filter('date')(eventDate, 'yyyy-MM-dd');
+        var dummyEvent = {programStage: programStage.id, 
+                          orgUnit: orgUnit.id,
+                          orgUnitName: orgUnit.name,
+                          eventDate: eventDate,
+                          name: programStage.name,
+                          status: 'ACTIVE'};
+        dummyEvent.statusColor = 'stage-on-time';
+        if(moment(today).isAfter(dummyEvent.eventDate)){
+            dummyEvent.statusColor = 'stage-overdue';
+        }        
+        return dummyEvent;        
     };
 });
