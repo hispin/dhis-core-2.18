@@ -4197,13 +4197,14 @@ Ext.onReady( function() {
 					format: 'json',
 					noCache: false,
 					extraParams: {
-						links: 'false'
+						fields: 'children[id,name,level]'
 					},
 					url: ns.core.init.contextPath + '/api/organisationUnits',
 					reader: {
 						type: 'json',
 						root: 'children'
-					}
+					},
+					sortParam: false
 				},
 				sorters: [{
 					property: 'name',
@@ -4216,9 +4217,17 @@ Ext.onReady( function() {
 				},
 				listeners: {
 					load: function(store, node, records) {
+                        var numberOfLevels = ns.core.init.organisationUnitLevels.length;
+
 						Ext.Array.each(records, function(record) {
-							record.set('leaf', !record.raw.hasChildren);
-						});
+                            //if (Ext.isBoolean(record.data.hasChildren)) {
+                                //record.set('leaf', !record.data.hasChildren);
+                            //}
+
+                            if (Ext.isNumber(numberOfLevels)) {
+                                record.set('leaf', parseInt(record.raw.level) === numberOfLevels);
+                            }
+                        });
 					}
 				}
 			}),

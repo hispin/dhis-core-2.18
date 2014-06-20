@@ -2521,10 +2521,11 @@ Ext.onReady( function() {
                 }
 
 				if (Ext.isString(uid)) {
-					path = '/dataElementGroups/' + uid + '/operands' + (filter ? '/query/' + filter : '') + '.json';
+					//path = '/dataElementGroups/' + uid + '/operands' + (filter ? '/query/' + filter : '') + '.json';
+					path = '/dataElementOperands.json?fields=id,name&filter=dataElement.dataElementGroups.id:eq:' + uid + (filter ? '&filter=name:like:' + filter : '');
 				}
 				else if (uid === 0) {
-					path = '/generatedDataElementOperands.json?fields=id,name' + (filter ? '&filter=name:like:' + filter : '');
+					path = '/dataElementOperands.json?fields=id,name' + (filter ? '&filter=name:like:' + filter : '');
 				}
 
 				if (!path) {
@@ -2537,8 +2538,6 @@ Ext.onReady( function() {
                 Ext.Ajax.request({
                     url: ns.core.init.contextPath + '/api' + path,
                     params: {
-                        viewClass: 'basic',
-                        links: 'false',
                         page: store.nextPage,
                         pageSize: 50
                     },
@@ -4159,13 +4158,14 @@ Ext.onReady( function() {
 					format: 'json',
 					noCache: false,
 					extraParams: {
-						links: 'false'
+						fields: 'children[id,name,level]'
 					},
 					url: ns.core.init.contextPath + '/api/organisationUnits',
 					reader: {
 						type: 'json',
 						root: 'children'
-					}
+					},
+					sortParam: false
 				},
 				sorters: [{
 					property: 'name',
@@ -4178,9 +4178,17 @@ Ext.onReady( function() {
 				},
 				listeners: {
 					load: function(store, node, records) {
+                        var numberOfLevels = ns.core.init.organisationUnitLevels.length;
+
 						Ext.Array.each(records, function(record) {
-							record.set('leaf', !record.raw.hasChildren);
-						});
+                            //if (Ext.isBoolean(record.data.hasChildren)) {
+                                //record.set('leaf', !record.data.hasChildren);
+                            //}
+
+                            if (Ext.isNumber(numberOfLevels)) {
+                                record.set('leaf', parseInt(record.raw.level) === numberOfLevels);
+                            }
+                        });
 					}
 				}
 			}),
