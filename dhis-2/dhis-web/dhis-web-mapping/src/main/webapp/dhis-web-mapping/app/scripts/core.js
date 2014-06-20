@@ -1050,15 +1050,15 @@ Ext.onReady( function() {
             for (var i = 0, element; i < view.dataElements.length; i++) {
                 element = view.dataElements[i];
 
-                paramString += '&dimension=' + element.id;
+                paramString += '&dimension=' + element.dimension + (element.filter ? ':' + element.filter : '');
 
-                if (element.value) {
-					if (element.operator) {
-						paramString += ':' + element.operator;
-					}
+                //if (element.filter) {
+					//if (element.operator) {
+						//paramString += ':' + element.operator;
+					//}
 
-					paramString += ':' + element.value;
-                }
+					//paramString += ':' + element.value;
+                //}
             }
 
 			Ext.data.JsonP.request({
@@ -2586,6 +2586,21 @@ Ext.onReady( function() {
 					}
 				}
 			};
+
+            util.layout.getDataDimensionsFromLayout = function(layout) {
+                var dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || [])),
+                    ignoreKeys = ['pe', 'ou'],
+                    dataDimensions = [];
+
+                for (var i = 0; i < dimensions.length; i++) {
+                    if (!Ext.Array.contains(ignoreKeys, dimensions[i].dimension)) {
+                        dataDimensions.push(dimensions[i]);
+                    }
+                }
+
+                return dataDimensions;
+            };
+
 		}());
 
 		gis.init = init;
