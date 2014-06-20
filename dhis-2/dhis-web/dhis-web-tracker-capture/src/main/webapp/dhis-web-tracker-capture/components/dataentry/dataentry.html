@@ -106,8 +106,27 @@
 
             </div>
         </div>
+        <div ng-if="!dhis2Events && selectedEnrollment">
+            <div class="alert alert-warning">{{'no_event_is_yet_created'| translate}}</div>
+            <table class="table-borderless">
+                <tbody>
+                    <tr>
+                        <td class="inline-block" ng-repeat="dummyEvent in dummyEvents">
+                            <span class="block align-center">{{dhis2Event.orgUnitName}}</span>                                              
+                            <span class="stage-container"                                                     
+                                  ng-class="{'current-stage': currentDummyEvent && currentDummyEvent.programStage == dummyEvent.programStage, '{{dummyEvent.statusColor}}': true}"                                                      
+                                  ng-click="showEventCreation(dummyEvent)">
+                                {{dummyEvent.name}}<br/>
+                                {{dummyEvent.eventDate}}         
+                            </span>
+                            <i class="fa fa-arrow-right" ng-show="$index < dummyEvents.length - 1"></i>
+                        </td>                        
+                    </tr>
+                </tbody>                
+            </table>
+        </div>
+        <div ng-if="!selectedEnrollment">
+            <div class="alert alert-warning">{{'not_yet_enrolled'| translate}}</div> 
+        </div>
     </div>
-
-
-
 </div>

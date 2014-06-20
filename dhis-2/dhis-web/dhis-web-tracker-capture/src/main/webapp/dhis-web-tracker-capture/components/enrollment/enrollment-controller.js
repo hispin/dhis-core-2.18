@@ -3,7 +3,6 @@ trackerCapture.controller('EnrollmentController',
                 $scope,  
                 $filter,
                 storage,
-                ProgramFactory,
                 ProgramStageFactory,
                 AttributesFactory,
                 CurrentSelection,
@@ -11,21 +10,19 @@ trackerCapture.controller('EnrollmentController',
                 EnrollmentService,
                 TranslationService,
                 DialogService) {
-
-    //programs for enrollment
-    $scope.enrollments = [];
-    $scope.programs = []; 
-    $scope.showEnrollmentDiv = false;
-    $scope.showSchedulingDiv = false;    
-    $scope.selectedProgram = '';
-    $scope.selectedEnrollment = '';
-    
     TranslationService.translate();
-    $scope.selectedOrgUnit = storage.get('SELECTED_OU');
+
     
     //listen for the selected items
     $scope.$on('selectedEntity', function(event, args) {   
+        //programs for enrollment
+        $scope.enrollments = [];
+        $scope.showEnrollmentDiv = false;
+        $scope.showSchedulingDiv = false;    
+        $scope.selectedProgram = '';
+        $scope.selectedEnrollment = '';
         $scope.newEnrollment = {};
+        
         var selections = CurrentSelection.get();
         $scope.selectedEntity = selections.tei; 
         $scope.selectedProgram = selections.pr;
@@ -33,7 +30,7 @@ trackerCapture.controller('EnrollmentController',
         
         if($scope.selectedProgram){ 
             EnrollmentService.getByEntityAndProgram($scope.selectedEntity.trackedEntityInstance, $scope.selectedProgram.id).then(function(data){
-                $scope.enrollments = data.enrollmentList;  
+                $scope.enrollments = data.enrollmentList;
                 $scope.loadEvents();                
             });
         }        
@@ -44,7 +41,7 @@ trackerCapture.controller('EnrollmentController',
         if($scope.selectedProgram){
           
             //check for possible enrollment
-            $scope.selectedEnrollment = '';
+            $scope.selectedEnrollment = null;
             angular.forEach($scope.enrollments, function(enrollment){
                 if(enrollment.program === $scope.selectedProgram.id ){
                     $scope.selectedEnrollment = enrollment;
@@ -108,17 +105,17 @@ trackerCapture.controller('EnrollmentController',
         var tei = angular.copy($scope.selectedEntity);
         tei.attributes = [];
         
-        //get enrollment attributes and their values - new attributes because of enrollment
-        angular.forEach($scope.attributesForEnrollment, function(attribute){
-            if(!angular.isUndefined(attribute.value)){
-                tei.attributes.push({attribute: attribute.id, value: attribute.value});
-            } 
-        });
-        
         //existing attributes
         angular.forEach($scope.selectedEntity.attributes, function(attribute){
             if(!angular.isUndefined(attribute.value)){
                 tei.attributes.push({attribute: attribute.attribute, value: attribute.value});
+            } 
+        });
+        
+        //get enrollment attributes and their values - new attributes because of enrollment
+        angular.forEach($scope.attributesForEnrollment, function(attribute){
+            if(!angular.isUndefined(attribute.value)){
+                tei.attributes.push({attribute: attribute.id, value: attribute.value});
             } 
         });
         
@@ -152,10 +149,9 @@ trackerCapture.controller('EnrollmentController',
                                  attribute.value = parseInt(attribute.value);
                              }
                             $scope.selectedEntity.attributes.push({attribute: attribute.id, value: attribute.value, type: attribute.valueType, displayName: attribute.name});                            
-                        } 
+                        }
                     });
                 });
-               
             }
             else{
                 //update has failed

@@ -338,7 +338,7 @@ function getProgram( id )
         return $.ajax( {
             url: '../api/programs.json',
             type: 'GET',
-            data: 'paging=false&filter=id:eq:' + id +'&fields=id,name,version,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,realionshipText,trackedEntity[id,name,description],userRoles[id,name],organisationUnits[id,name],programStages[id,name,version,description,minDaysFromStart,repeatable],programTrackedEntityAttributes[displayInList,mandatory,attribute[id]]'
+            data: 'paging=false&filter=id:eq:' + id +'&fields=id,name,version,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,realionshipText,trackedEntity[id,name,description],userRoles[id,name],organisationUnits[id,name],programStages[id,name,version,minDaysFromStart,repeatable],programTrackedEntityAttributes[displayInList,mandatory,attribute[id]]'
         }).done( function( response ){
             
             _.each( _.values( response.programs ), function ( program ) { 
