@@ -1029,7 +1029,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name', 'level'],
 			proxy: {
 				type: 'jsonp',
-				url: gis.init.contextPath + gis.conf.finals.url.path_api + 'organisationUnitLevels.jsonp?viewClass=detailed&links=false&paging=false',
+				url: gis.init.contextPath + '/api/organisationUnitLevels.jsonp?fields=id,name,level&paging=false',
 				reader: {
 					type: 'json',
 					root: 'organisationUnitLevels'
@@ -1203,7 +1203,7 @@ Ext.onReady( function() {
 
 		getMap = function() {
 			Ext.data.JsonP.request({
-				url: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps/' + gis.map.id + '.jsonp?viewClass=dimensional&links=false',
+				url: gis.init.contextPath + '/api/maps/' + gis.map.id + '.jsonp?fields=' + gis.conf.url.mapFields.join(','),
 				success: function(r) {
 
 					// Operand
@@ -1396,7 +1396,7 @@ Ext.onReady( function() {
                         map = Ext.clone(r.metaData.names);
 
                     // name-column map, lonIndex, latIndex
-                    for (var i = 0; i < r.headers.length; i++) {
+                    for (var i = 0; i < r.headers.length; i++) {
                         map[r.headers[i].name] = r.headers[i].column;
 
                         if (r.headers[i].name === 'longitude') {
@@ -1428,7 +1428,7 @@ Ext.onReady( function() {
                     // name-column map
                     map = Ext.clone(r.metaData.names);
 
-                    for (var i = 0; i < r.headers.length; i++) {
+                    for (var i = 0; i < r.headers.length; i++) {
                         map[r.headers[i].name] = r.headers[i].column;
                     }
 
@@ -2301,7 +2301,7 @@ Ext.onReady( function() {
 					peIds = metaData[dimConf.period.objectName];
 
 				for (var i = 0, dimension; i < dimensions.length; i++) {
-					dimension = dimensions[i];
+					dimension = dimensions[i];
 
 					for (var j = 0, item; j < dimension.items.length; j++) {
 						item = dimension.items[j];
@@ -2650,7 +2650,65 @@ Ext.onReady( function() {
 					'LAST_5_YEARS': 'LAST_YEAR'
 				}
 			};
-		}());
+
+            conf.url = {};
+
+            conf.url.analysisFields = [
+                '*',
+                'columns[dimension,filter,items[id,name]]',
+                'rows[dimension,filter,items[id,name]]',
+                'filters[dimension,filter,items[id,name]]',
+                '!lastUpdated',
+                '!href',
+                '!created',
+                '!publicAccess',
+                '!rewindRelativePeriods',
+                '!userOrganisationUnit',
+                '!userOrganisationUnitChildren',
+                '!userOrganisationUnitGrandChildren',
+                '!externalAccess',
+                '!access',
+                '!relativePeriods',
+                '!columnDimensions',
+                '!rowDimensions',
+                '!filterDimensions',
+                '!user',
+                '!organisationUnitGroups',
+                '!itemOrganisationUnitGroups',
+                '!userGroupAccesses',
+                '!indicators',
+                '!dataElements',
+                '!dataElementOperands',
+                '!dataElementGroups',
+                '!dataSets',
+                '!periods',
+                '!organisationUnitLevels',
+                '!organisationUnits',
+
+                '!sortOrder',
+                '!topLimit'
+            ];
+
+            conf.url.mapFields = [
+                conf.url.analysisFields.join(','),
+                'mapViews[' + conf.url.analysisFields.join(',') + ']'
+            ];
+
+            conf.url.mapLegendFields = [
+                '*',
+                '!created',
+                '!lastUpdated',
+                '!displayName',
+                '!externalAccess',
+                '!access',
+                '!userGroupAccesses'
+            ];
+
+            conf.url.mapLegendSetFields = [
+                'id,name,mapLegends[' + conf.url.mapLegendFields.join(',') + ']'
+            ];
+
+        }());
 
 		// util
 		(function() {
@@ -2763,7 +2821,7 @@ Ext.onReady( function() {
 				return array;
 			};
 
-			util.object.getLength = function(object) {
+			util.object.getLength = function(object) {
 				var size = 0;
 
 				for (var key in object) {
@@ -2959,7 +3017,7 @@ Ext.onReady( function() {
 
 				return function() {
 					var a = [],
-						objectNames = [],
+						objectNames = [],
 						dimConf = conf.finals.dimension,
 						isOu = false,
 						isOuc = false,
@@ -4663,7 +4721,7 @@ Ext.onReady( function() {
 		});
 
 		requests.push({
-			url: url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&paging=false&links=false',
+			url: url + '/api/organisationUnits.jsonp?userOnly=true&fields=id,name,children[id,name]&paging=false',
 			success: function(r) {
 				var organisationUnits = r.organisationUnits || [],
                     ou = [],
@@ -4680,24 +4738,15 @@ Ext.onReady( function() {
                         }
                     }
 
-                    init.user = {
-                        ou: ou,
-                        ouc: ouc
-                    }
+                    init.user = init.user || {};
+                    init.user.ou = ou;
+                    init.user.ouc = ouc;
                 }
                 else {
                     alert('User is not assigned to any organisation units');
                 }
 
                 fn();
-			}
-		});
-
-		requests.push({
-			url: url + '/api/mapLegendSets.jsonp?viewClass=detailed&links=false&paging=false',
-			success: function(r) {
-				init.legendSets = r.mapLegendSets;
-				fn();
 			}
 		});
 
