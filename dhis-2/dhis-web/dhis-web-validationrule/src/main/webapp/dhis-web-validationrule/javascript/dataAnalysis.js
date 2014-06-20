@@ -104,3 +104,32 @@ function exportAnalysisResult( type )
     var url = 'exportAnalysisResult.action?type=' + type;
     window.location.href = url;
 }
+
+function markFollowUp( valueId )
+{	
+    var dataElementId = $( '#value-' + valueId + '-de' ).val();
+    var categoryOptionComboId = $( '#value-' + valueId + '-coc' ).val();
+    var periodId = $( '#value-' + valueId + '-pe' ).val();
+    var sourceId = $( '#value-' + valueId + '-ou' ).val();
+    
+    $.ajax( {
+    	url: 'markForFollowup.action',
+    	data: { dataElementId:dataElementId, periodId:periodId, sourceId:sourceId, categoryOptionComboId:categoryOptionComboId },
+    	type: 'POST',
+    	dataType: 'json',
+    	success: function( json )
+		{
+            var $image = $( '#value-' + valueId + '-followUp' );
+			
+            if ( json.message == "marked" )
+		    {
+		        $image.attr( "src", "../images/marked.png" );
+		        $image.attr( "title", i18n_unmark_value_for_followup );
+		    }
+		    else if ( json.message == "unmarked" )
+		    {
+		        $image.attr( "src", "../images/unmarked.png" );
+		        $image.attr( "title", i18n_mark_value_for_followup );   
+		    }
+		} } );
+}
