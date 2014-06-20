@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter.ops;
+package org.hisp.dhis.dxf2.fieldfilter;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -25,30 +25,52 @@ package org.hisp.dhis.dxf2.filter.ops;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import com.google.common.base.Objects;
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.Maps;
+import org.hisp.dhis.node.NodePropertyConverter;
+
+import java.util.Map;
+
 /**
-* @author Morten Olav Hansen <mortenoh@gmail.com>
-*/
-public class LikeOp extends Op
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public class FieldMap extends ForwardingMap<String, FieldMap>
 {
+    private final Map<String, FieldMap> delegate = Maps.newHashMap();
+
+    private NodePropertyConverter nodePropertyConverter;
+
     @Override
-    public OpStatus evaluate( Object object )
+    protected Map<String, FieldMap> delegate()
     {
-        if ( getValue() == null || object == null )
-        {
-            return OpStatus.IGNORE;
-        }
+        return delegate;
+    }
 
-        if ( String.class.isInstance( object ) )
-        {
-            String s1 = getValue( String.class );
-            String s2 = (String) object;
+    public NodePropertyConverter getNodePropertyConverter()
+    {
+        return nodePropertyConverter;
+    }
 
-            return (s1 != null && s2.toLowerCase().contains( s1.toLowerCase() )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
-        }
+    public void setNodePropertyConverter( NodePropertyConverter nodePropertyConverter )
+    {
+        this.nodePropertyConverter = nodePropertyConverter;
+    }
 
-        return OpStatus.IGNORE;
+    public boolean haveNodePropertyConverter()
+    {
+        return nodePropertyConverter != null;
+    }
+
+    @Override
+    public String toString()
+    {
+        return Objects.toStringHelper( this )
+            .add( "map", standardToString() )
+            .add( "nodePropertyConverter", nodePropertyConverter )
+            .toString();
     }
 }

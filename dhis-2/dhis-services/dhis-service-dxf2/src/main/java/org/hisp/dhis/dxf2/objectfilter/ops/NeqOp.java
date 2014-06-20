@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.dxf2.objectfilter.ops;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -25,25 +25,32 @@ package org.hisp.dhis.dxf2.filter;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.node.types.CollectionNode;
-
-import java.util.List;
+import org.hisp.dhis.dxf2.objectfilter.OpFactory;
 
 /**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
- */
-public interface FieldFilterService
+* @author Morten Olav Hansen <mortenoh@gmail.com>
+*/
+public class NeqOp extends Op
 {
-    /**
-     * Perform inclusion/exclusion on a list of objects.
-     *
-     * @param objects   List to filter
-     * @param fieldList Field filter
-     * @return List of objects with only wanted properties
-     */
-    <T extends IdentifiableObject> CollectionNode filter( Class<?> klass, List<T> objects, List<String> fieldList );
+    private Op op = OpFactory.create( "eq" );
+
+    @Override
+    public OpStatus evaluate( Object object )
+    {
+        op.setValue( getValue() );
+        OpStatus status = op.evaluate( object );
+
+        switch ( status )
+        {
+            case INCLUDE:
+                return OpStatus.EXCLUDE;
+            case EXCLUDE:
+                return OpStatus.INCLUDE;
+            default:
+                return OpStatus.IGNORE;
+        }
+    }
 }

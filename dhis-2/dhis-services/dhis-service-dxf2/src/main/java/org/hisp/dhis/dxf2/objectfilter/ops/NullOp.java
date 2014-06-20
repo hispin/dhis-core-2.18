@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter.ops;
+package org.hisp.dhis.dxf2.objectfilter.ops;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,29 +28,25 @@ package org.hisp.dhis.dxf2.filter.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.filter.OpFactory;
-
 /**
 * @author Morten Olav Hansen <mortenoh@gmail.com>
 */
-public class NeqOp extends Op
+public class NullOp extends Op
 {
-    private Op op = OpFactory.create( "eq" );
+    @Override
+    public boolean wantValue()
+    {
+        return false;
+    }
 
     @Override
     public OpStatus evaluate( Object object )
     {
-        op.setValue( getValue() );
-        OpStatus status = op.evaluate( object );
-
-        switch ( status )
+        if ( object == null )
         {
-            case INCLUDE:
-                return OpStatus.EXCLUDE;
-            case EXCLUDE:
-                return OpStatus.INCLUDE;
-            default:
-                return OpStatus.IGNORE;
+            return OpStatus.INCLUDE;
         }
+
+        return OpStatus.IGNORE;
     }
 }

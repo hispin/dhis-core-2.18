@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.dxf2.objectfilter;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -30,7 +30,8 @@ package org.hisp.dhis.dxf2.filter;
 
 import com.google.common.collect.Lists;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dxf2.filter.ops.Op;
+import org.hisp.dhis.dxf2.objectfilter.ops.Op;
+import org.hisp.dhis.dxf2.parser.ParserService;
 import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;

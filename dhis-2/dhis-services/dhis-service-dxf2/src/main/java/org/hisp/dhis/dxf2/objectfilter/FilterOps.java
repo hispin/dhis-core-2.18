@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter.ops;
+package org.hisp.dhis.dxf2.objectfilter;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,10 +28,47 @@ package org.hisp.dhis.dxf2.filter.ops;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.hisp.dhis.dxf2.objectfilter.ops.Op;
+
+import java.util.List;
+import java.util.Map;
+
 /**
 * @author Morten Olav Hansen <mortenoh@gmail.com>
 */
-public enum OpStatus
+public class FilterOps
 {
-    INCLUDE, EXCLUDE, IGNORE
+    private Map<String, List<Op>> filters = Maps.newHashMap();
+
+    FilterOps()
+    {
+    }
+
+    public void addFilter( String opStr, Op op )
+    {
+        if ( !filters.containsKey( opStr ) )
+        {
+            filters.put( opStr, Lists.<Op>newArrayList() );
+        }
+
+        filters.get( opStr ).add( op );
+    }
+
+    public Map<String, List<Op>> getFilters()
+    {
+        return filters;
+    }
+
+    public void setFilters( Map<String, List<Op>> filters )
+    {
+        this.filters = filters;
+    }
+
+    @Override
+    public String toString()
+    {
+        return filters.toString();
+    }
 }
