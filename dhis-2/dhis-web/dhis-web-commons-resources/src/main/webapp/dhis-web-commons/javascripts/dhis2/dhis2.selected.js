@@ -69,6 +69,11 @@
 
       if( context.search instanceof $ ) {
         context.search.on('keypress', context.makeSearchHandler(context));
+        var searchButton = $("#" + context.search.attr('id') + "Button");
+
+        searchButton.on('click', function() {
+          context.search.trigger({type: 'keypress', which: 13, keyCode: 13});
+        });
       }
     }
   };
