@@ -65,6 +65,7 @@ public class HibernateBankDetailsStore
         return (BankDetails) criteria.uniqueResult();
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<BankDetails> getAllBankDetails()
     {
@@ -75,6 +76,7 @@ public class HibernateBankDetailsStore
         return criteria.list();
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<BankDetails> getBankDetails( OrganisationUnit organisationUnit )
     {

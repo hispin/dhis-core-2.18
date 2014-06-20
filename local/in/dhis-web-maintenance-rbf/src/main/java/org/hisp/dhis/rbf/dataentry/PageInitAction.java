@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -11,6 +13,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.rbf.api.Lookup;
 import org.hisp.dhis.rbf.api.LookupService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -19,6 +22,8 @@ import com.opensymphony.xwork2.Action;
  */
 public class PageInitAction implements Action
 {
+    private final static String UTILIZATION_RATE_DATAELEMENT_ID = "UTILIZATION_RATE_DATAELEMENT_ID";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -51,6 +56,8 @@ public class PageInitAction implements Action
         this.dataSetService = dataSetService;
     }
     
+    @Autowired
+    private ConstantService constantService;
     
     // -------------------------------------------------------------------------
     // Input/output
@@ -77,9 +84,17 @@ public class PageInitAction implements Action
         return dataSets;
     }
     
+    private String utilizationRateDataElementId;
+    
+    public String getUtilizationRateDataElementId()
+    {
+        return utilizationRateDataElementId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+
 
     public String execute() throws Exception
     {
@@ -128,6 +143,10 @@ public class PageInitAction implements Action
             System.out.println(" dataSet ---" + dataSet.getId() +" -- " + dataSet.getName() );
         }
         */
+        
+        Constant utilizationRateDeId = constantService.getConstantByName( UTILIZATION_RATE_DATAELEMENT_ID );
+            
+        utilizationRateDataElementId = utilizationRateDeId.getValue()+"";
         
         return SUCCESS;
     }

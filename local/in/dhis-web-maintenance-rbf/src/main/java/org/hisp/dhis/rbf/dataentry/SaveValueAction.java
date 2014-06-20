@@ -338,6 +338,11 @@ public class SaveValueAction
             	    pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
             	}
             	
+            	else if( valueType.equals("3") )
+                {
+                    pbfDataValue.setQuantityExternalVerification( Integer.parseInt( value ) );
+                }
+                
             	pbfDataValue.setStoredBy(storedBy);
             	pbfDataValue.setTimestamp(now);
                 pbfDataValueService.addPBFDataValue(pbfDataValue);
@@ -355,7 +360,12 @@ public class SaveValueAction
             {
         	pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
             }
-        	
+            
+            else if( valueType.equals("3") )
+            {
+                pbfDataValue.setQuantityExternalVerification( Integer.parseInt( value ) );
+            }
+            
             pbfDataValue.setStoredBy(storedBy);
         	
             pbfDataValue.setTimestamp(now);

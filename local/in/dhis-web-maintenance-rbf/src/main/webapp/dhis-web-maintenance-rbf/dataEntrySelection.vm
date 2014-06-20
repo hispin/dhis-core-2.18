@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
     
 	jQuery(document).ready( function(){
 	currentDiv = 'pbfDataEntryForm';
@@ -16,6 +16,65 @@
     	});
     }); 
     
+	
+    function saveUtilizationRateDataValue()
+    {
+    	var period = document.getElementById("selectedPeriodId").value;
+		var valueId = "utilizationRate";
+	
+	   var fieldId = "#"+valueId;
+	   var defaultValue = document.getElementById(valueId).defaultValue;
+	   var value = document.getElementById(valueId).value;
+	
+	   if(defaultValue != value)
+	   {
+	       var dataValue = {
+                'dataElementId' : $utilizationRateDataElementId,        
+                'organisationUnitId' : $("#selectedOrgunitID").val(),
+                'periodIso' : period,
+                'value' : value
+            };
+	    
+	       jQuery.ajax( {
+	            url: 'saveDataValue.action',
+	            data: dataValue,
+	            dataType: 'json',
+	            success: handleSuccess,
+	            error: handleError
+	        } );
+	   }
+	
+	   function handleSuccess( json )
+	   {
+	       var code = json.c;
+	       if ( code == '0' || code == 0) // Value successfully saved on server
+	       {
+	    	  markValue( fieldId, COLOR_GREEN );
+	    	  getUtilizationRateTariffValue();
+	       }
+	       else if ( code == 2 )
+	       {
+	           markValue( fieldId, COLOR_RED );
+	           window.alert( i18n_saving_value_failed_dataset_is_locked );
+	       }
+	       else // Server error during save
+	       {
+	           markValue( fieldId, COLOR_RED );
+	           window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+	       }
+	   }
+
+	   function handleError( jqXHR, textStatus, errorThrown )
+	   {       
+	       markValue( fieldId, COLOR_RED );
+	   }
+
+	   function markValue( fieldId, color )
+	   {
+	       document.getElementById(valueId).style.backgroundColor = color;	   
+	   }	
+	}
+		
 </script>
 
 <h3>$i18n.getString( "pbf_dataentry" )</h3>
@@ -27,7 +86,7 @@
 	
 </div>
 
-<div class="inputCriteria" style="width:480px;height:90px;">
+<div class="inputCriteria" style="width:625px;height:90px;">
 <table>
 	<tr>
 		<td><label for="orgUnitName">$i18n.getString( "organisation_unit" )</label></td>
@@ -44,6 +103,7 @@
 				#end
 			</select>
 		</td>
+		
     </tr>	
 
 	<tr>
@@ -56,8 +116,11 @@
 			</select>
 			<input type="button" id="prevButton" disabled="disabled" style="width:75px" value="$i18n.getString( 'prev_year' )" title="$i18n.getString('earlier_periods')" onclick="getAvailablePeriodsTemp( 'selectedPeriodId', 'selectedPeriodId', '-1' )" >
 			<input type="button" id="nextButton" disabled="disabled" style="width:75px" value="$i18n.getString( 'next_year' )" title="$i18n.getString('later_periods')" onclick="getAvailablePeriodsTemp( 'selectedPeriodId', 'selectedPeriodId', '1' )" >
-			
 		</td>
+		
+		<td><label for="utilization_rate ">$i18n.getString( "Utilization Rate " )</label></td>
+		<td><input type="text" id="utilizationRate" name = "utilizationRate" style="text-align:center;width:75px;" onblur="saveUtilizationRateDataValue();" onkeyup="getUtilizationRateTariffValue();" ></td>			
+		
 	</tr>		
 
 </table>
