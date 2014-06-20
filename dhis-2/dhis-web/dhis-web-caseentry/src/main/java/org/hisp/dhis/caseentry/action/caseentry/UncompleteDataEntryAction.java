@@ -28,6 +28,7 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -87,8 +88,7 @@ public class UncompleteDataEntryAction
             return SUCCESS;
         }
 
-        programStageInstance.setCompleted( false );
-        programStageInstance.setStatus( ProgramStageInstance.ACTIVE_STATUS );
+        programStageInstance.setStatus( EventStatus.ACTIVE );
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
         

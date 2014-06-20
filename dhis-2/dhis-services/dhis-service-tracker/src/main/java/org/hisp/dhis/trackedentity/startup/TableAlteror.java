@@ -275,6 +275,9 @@ public class TableAlteror
         updateUidColumn();
         
         executeSql( "UPDATE program_attributes SET allowDateInFuture='false' WHERE allowDateInFuture is null" );
+
+        executeSql( "UPDATE programstageinstance SET status=1 WHERE completed=true" );
+        executeSql( "ALTER TABLE programstageinstance DROP COLUMN completed" );
         
     }
 

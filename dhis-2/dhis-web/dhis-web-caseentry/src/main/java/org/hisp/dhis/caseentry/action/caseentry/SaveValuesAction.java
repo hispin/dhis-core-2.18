@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -177,7 +178,7 @@ public class SaveValuesAction
         programStageInstance.setDueDate( currentDate );
         programStageInstance.setExecutionDate( currentDate );
         programStageInstance.setOrganisationUnit( selectionManager.getSelectedOrganisationUnit() );
-        programStageInstance.setCompleted( true );
+        programStageInstance.setStatus( EventStatus.COMPLETED );
 
         programStageInstanceService.addProgramStageInstance( programStageInstance );
 

@@ -28,17 +28,17 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
-
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Abyot Asalefew
@@ -100,30 +100,20 @@ public interface ProgramStageInstanceService
      * Retrieve an event list on program instance list with a certain status
      *
      * @param programInstances ProgramInstance list
-     * @param completed        Optional flag to only get completed (<code>true</code> )
-     *                         or uncompleted (<code>false</code>) instances.
+     * @param status        EventStatus
      * @return ProgramStageInstance list
      */
     Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances,
-        boolean completed );
-
-    /**
-     * Get statuses of events
-     *
-     * @param programStageInstances ProgramStageInstance list
-     * @return Map< ProgramStageInstance ID, status >
-     */
-    Map<Integer, Integer> statusProgramStageInstances( Collection<ProgramStageInstance> programStageInstances );
+        EventStatus status );
 
     /**
      * Get all events by TrackedEntityInstance, optionally filtering by completed.
      *
      * @param entityInstance TrackedEntityInstance
-     * @param completed      - optional flag to only get completed (
-     *                       <code>true</code> ) or uncompleted (<code>false</code>) instances.
+     * @param status      EventStatus
      * @return ProgramStageInstance list
      */
-    List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, boolean completed );
+    List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, EventStatus status );
 
     /**
      * Retrieve scheduled list of entityInstances registered

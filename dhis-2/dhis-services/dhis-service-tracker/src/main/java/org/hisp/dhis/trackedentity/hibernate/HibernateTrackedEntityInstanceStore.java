@@ -29,7 +29,6 @@ package org.hisp.dhis.trackedentity.hibernate;
  */
 
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdentifiers;
-import static org.hisp.dhis.program.ProgramStageInstance.SKIPPED_STATUS;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.getTokens;
@@ -366,21 +365,21 @@ public class HibernateTrackedEntityInstanceStore
         {
             sql = 
                 "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end + "' " +
-                "and psi.completed = true ";
+                "and psi.status = " + EventStatus.COMPLETED.getValue() ;
         }
         else if ( params.isEventStatus( EventStatus.VISITED ) )
         {
             sql = 
                 "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end + "' " + 
-                "and psi.completed = false ";
+                "and psi.status = " + EventStatus.ACTIVE.getValue() ;
         }
-        else if ( params.isEventStatus( EventStatus.FUTURE_VISIT ) )
+        else if ( params.isEventStatus( EventStatus.SCHEDULE ) )
         {
             sql = 
                 "and psi.executiondate is null and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' " +
                 "and psi.status is not null and date(now()) <= date(psi.duedate) ";
         }
-        else if ( params.isEventStatus( EventStatus.LATE_VISIT ) )
+        else if ( params.isEventStatus( EventStatus.OVERDUE ) )
         {
             sql = 
                 "and psi.executiondate is null and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' " +
@@ -390,7 +389,7 @@ public class HibernateTrackedEntityInstanceStore
         {
             sql = 
                 "and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' " +
-                "and psi.status = " + SKIPPED_STATUS + " ";
+                "and psi.status = " + EventStatus.SKIPPED.getValue() + " ";
         }
 
         return sql;

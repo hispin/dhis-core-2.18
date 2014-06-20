@@ -29,6 +29,7 @@ package org.hisp.dhis.program;
  */
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -45,13 +46,6 @@ import java.util.List;
 public class ProgramStageInstance
     extends BaseIdentifiableObject
 {
-    public static final int ACTIVE_STATUS = 0;
-    private Integer status = ACTIVE_STATUS;
-    public static final int COMPLETED_STATUS = 1;
-    public static final int VISITED_STATUS = 2;
-    public static final int FUTURE_VISIT_STATUS = 3;
-    public static final int LATE_VISIT_STATUS = 4;
-    public static final int SKIPPED_STATUS = 5;
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -61,10 +55,10 @@ public class ProgramStageInstance
     private Date dueDate;
     private Date executionDate;
     private OrganisationUnit organisationUnit;
-    private boolean completed;
     private List<OutboundSms> outboundSms = new ArrayList<OutboundSms>();
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
     private TrackedEntityComment comment;
+    private EventStatus status = EventStatus.ACTIVE;
     private Double longitude;
 
     private Double latitude;
@@ -171,15 +165,7 @@ public class ProgramStageInstance
      */
     public boolean isCompleted()
     {
-        return completed;
-    }
-
-    /**
-     * @param completed the completed to set
-     */
-    public void setCompleted( boolean completed )
-    {
-        this.completed = completed;
+        return ( status == EventStatus.COMPLETED ) ? true : false;
     }
 
     public OrganisationUnit getOrganisationUnit()
@@ -212,12 +198,7 @@ public class ProgramStageInstance
         this.completedDate = completedDate;
     }
 
-    public Integer getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus( Integer status )
+    public void setStatus( EventStatus status )
     {
         this.status = status;
     }
@@ -261,16 +242,16 @@ public class ProgramStageInstance
     {
         this.comment = comment;
     }
-
-    public Integer getEventStatus()
+    
+    public EventStatus getStatus()
     {
-        if ( this.status != 0 )
+        if ( status == EventStatus.COMPLETED )
         {
             return status;
         }
         else if ( this.getExecutionDate() != null )
         {
-            return ProgramStageInstance.VISITED_STATUS;
+            return EventStatus.VISITED;
         }
         else
         {
@@ -286,10 +267,10 @@ public class ProgramStageInstance
 
             if ( dueDateCalendar.getTime().before( new Date() ) )
             {
-                return ProgramStageInstance.LATE_VISIT_STATUS;
+                return EventStatus.OVERDUE;
             }
 
-            return ProgramStageInstance.FUTURE_VISIT_STATUS;
+            return EventStatus.SCHEDULE;
         }
     }
 }

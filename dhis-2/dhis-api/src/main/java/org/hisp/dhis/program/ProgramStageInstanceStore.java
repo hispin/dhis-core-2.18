@@ -30,6 +30,7 @@ package org.hisp.dhis.program;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
@@ -60,21 +61,19 @@ public interface ProgramStageInstanceStore
      * Retrieve an event list on program instance list with a certain status
      *
      * @param programInstances ProgramInstance list
-     * @param completed        Optional flag to only get completed (<code>true</code> )
-     *                         or uncompleted (<code>false</code>) instances.
+     * @param status EventStatus
      * @return ProgramStageInstance list
      */
-    Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, boolean completed );
+    Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, EventStatus status );
 
     /**
      * Get all events by TrackedEntityInstance, optionally filtering by completed.
      *
      * @param entityInstance TrackedEntityInstance
-     * @param completed      - optional flag to only get completed (
-     *                       <code>true</code> ) or uncompleted (<code>false</code>) instances.
+     * @param status EventStatus
      * @return ProgramStageInstance list
      */
-    List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, boolean completed );
+    List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, EventStatus status );
 
     /**
      * Retrieve scheduled list of entityInstances registered

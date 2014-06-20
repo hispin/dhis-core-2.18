@@ -30,7 +30,6 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 

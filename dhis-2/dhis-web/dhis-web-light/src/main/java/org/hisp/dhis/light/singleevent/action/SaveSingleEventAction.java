@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.StrutsStatics;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -457,7 +458,7 @@ public class SaveSingleEventAction
                     }
                 }
             }
-            programStageInstance.setCompleted( true );
+            programStageInstance.setStatus( EventStatus.COMPLETED );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
             programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
@@ -479,7 +480,7 @@ public class SaveSingleEventAction
             programStageInstance.setProgramStage( programStage );
             programStageInstance.setDueDate( new Date() );
             programStageInstance.setExecutionDate( new Date() );
-            programStageInstance.setCompleted( true );
+            programStageInstance.setStatus( EventStatus.COMPLETED );
             programStageInstanceService.addProgramStageInstance( programStageInstance );
 
             for ( ProgramStageDataElement programStageDataElement : programStageDataElements )

@@ -42,7 +42,7 @@ public class InitTableAlteror
     extends AbstractStartupRoutine
 {
     private static final Log log = LogFactory.getLog( InitTableAlteror.class );
-    
+
     @Autowired
     private StatementManager statementManager;
 
@@ -54,10 +54,13 @@ public class InitTableAlteror
     public void execute()
     {
         // domain type
-        
+
         executeSql( "update dataelement set domaintype='AGGREGATE' where domaintype='aggregate' or domaintype is null;" );
         executeSql( "update dataelement set domaintype='TRACKER' where domaintype='patient';" );
         executeSql( "alter table dataelement alter column domaintype set not null;" );
+        executeSql( "alter table programstageinstance alter column  status  type varchar(25);" );
+        executeSql( "UPDATE programstageinstance SET status='ACTIVE' WHERE status='0';" );
+        executeSql( "UPDATE programstageinstance SET status='COMPLETED' WHERE status='1';" );
     }
 
     // -------------------------------------------------------------------------

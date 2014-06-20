@@ -55,8 +55,6 @@
 		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction"

@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.StrutsStatics;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -538,11 +539,11 @@ public class SaveProgramStageFormAction
 
         if ( programStageSectionId != null && programStageSectionId != 0 )
         {
-            programStageInstance.setCompleted( false );
+            programStageInstance.setStatus( EventStatus.ACTIVE );
         }
         else
         {
-            programStageInstance.setCompleted( true );
+            programStageInstance.setStatus( EventStatus.COMPLETED );
             programStageInstance.setOrganisationUnit( organisationUnit );
         }
         programStageInstance.setExecutionDate( new Date() );
