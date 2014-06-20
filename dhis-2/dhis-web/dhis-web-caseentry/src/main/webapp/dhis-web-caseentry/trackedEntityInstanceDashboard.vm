@@ -83,13 +83,13 @@
 					
 					#if($programStageInstance=='')
 							#foreach( $psi in $programInstance.programStageInstances )
-								#if ( $psi.getStatus() != 1 && $psi.getStatus() != 5  )
+								#if ( $psi.getEventStatus() != 1 && $psi.getEventStatus() != 5  )
 									#set($programStageInstance=$psi)
 								#end
 							#end
 					#end
 					#if( $!programStageInstance!='')
-						#set( $status = $programStageInstance.getEventStatus() )
+						#set( $status = $programStageInstance.getEventStatus().getValue() )
 						<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
 						programStageInstanceId='$programStageInstance.id' 
 						relationshipText='$!programInstance.program.relationshipText'
