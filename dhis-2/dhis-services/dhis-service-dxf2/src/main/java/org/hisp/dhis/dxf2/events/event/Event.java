@@ -58,6 +58,8 @@ public class Event extends BaseLinkableObject
     private String trackedEntityInstance;
 
     private String eventDate;
+    
+    private String dueDate;
 
     private String storedBy;
 
@@ -154,6 +156,18 @@ public class Event extends BaseLinkableObject
     {
         this.eventDate = eventDate;
     }
+    
+    @JsonProperty( required = false )
+    @JacksonXmlProperty( isAttribute = true )
+    public String getDueDate()
+    {
+        return dueDate;
+    }
+
+    public void setDueDate( String dueDate )
+    {
+        this.dueDate = dueDate;
+    }
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
@@ -217,6 +231,7 @@ public class Event extends BaseLinkableObject
         if ( dataValues != null ? !dataValues.equals( event1.dataValues ) : event1.dataValues != null ) return false;
         if ( event != null ? !event.equals( event1.event ) : event1.event != null ) return false;
         if ( eventDate != null ? !eventDate.equals( event1.eventDate ) : event1.eventDate != null ) return false;
+        if ( dueDate != null ? !dueDate.equals( event1.dueDate ) : event1.dueDate != null ) return false;
         if ( orgUnit != null ? !orgUnit.equals( event1.orgUnit ) : event1.orgUnit != null ) return false;
         if ( trackedEntityInstance != null ? !trackedEntityInstance.equals( event1.trackedEntityInstance ) : event1.trackedEntityInstance != null )
             return false;
@@ -238,6 +253,7 @@ public class Event extends BaseLinkableObject
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
         result = 31 * result + (trackedEntityInstance != null ? trackedEntityInstance.hashCode() : 0);
         result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
+        result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
         result = 31 * result + (storedBy != null ? storedBy.hashCode() : 0);
         result = 31 * result + (coordinate != null ? coordinate.hashCode() : 0);
         result = 31 * result + (dataValues != null ? dataValues.hashCode() : 0);
@@ -255,6 +271,7 @@ public class Event extends BaseLinkableObject
             ", orgUnit='" + orgUnit + '\'' +
             ", trackedEntityInstance='" + trackedEntityInstance + '\'' +
             ", eventDate='" + eventDate + '\'' +
+            ", dueDate='" + dueDate + '\'' +
             ", storedBy='" + storedBy + '\'' +
             ", coordinate=" + coordinate +
             ", dataValues=" + dataValues +
