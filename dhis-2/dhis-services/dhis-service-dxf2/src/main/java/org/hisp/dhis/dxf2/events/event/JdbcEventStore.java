@@ -119,8 +119,10 @@ public class JdbcEventStore
                 event.setProgramStage( rowSet.getString( "ps_uid" ) );
                 event.setStoredBy( rowSet.getString( "psi_completeduser" ) );
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
+                event.setDueDate( StringUtils.defaultIfEmpty( 
+                    rowSet.getString( "psi_duedate" ), rowSet.getString( "psi_duedate" ) ) );
                 event.setEventDate( StringUtils.defaultIfEmpty( 
-                    rowSet.getString( "psi_executiondate" ), rowSet.getString( "psi_duedate" ) ) );
+                    rowSet.getString( "psi_executiondate" ), rowSet.getString( "psi_executiondate" ) ) );
 
                 if ( rowSet.getBoolean( "ps_capturecoordinates" ) )
                 {
