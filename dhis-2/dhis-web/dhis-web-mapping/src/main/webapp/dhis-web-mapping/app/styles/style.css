@@ -564,20 +564,26 @@ gis-combo .x-form-item-label {
  *--------------------------------------------------------------------------*/
 
 .x-menu-body {
-    border: 1px solid #aaa;
+    border-color: #bbb;
     border-radius: 2px;
-	padding: 0;
-	background-color: #fff !important;
 }
-
 .x-menu-item-active .x-menu-item-link {
 	border-radius: 0;
 	border-color: #e1e1e1;
 	background-color: #e1e1e1;
 	background-image: none;
 }
+.x-menu-body {
+	padding: 0;
+}
+.x-menu-body .x-box-inner {
+	background-color: #fafafa;
+}
 
 	/* Menu item */
+.x-menu-item {
+	background-color: #fafafa;
+}
 
 .x-menu-item-link {
     padding: 4px 5px 4px 26px;
@@ -675,6 +681,12 @@ gis-combo .x-form-item-label {
 	/* Menu align */
 .gis-btn-menu {
 	margin-top: 2px;
+}
+
+	/* Popup menu */
+.gis-popupmenu {
+    border: 1px solid #aaa;
+    border-radius: 2px;
 }
 
 

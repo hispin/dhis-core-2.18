@@ -2761,10 +2761,9 @@ Ext.onReady( function() {
                         }
                     }
 
-                    init.user = {
-                        ou: ou,
-                        ouc: ouc
-                    }
+                    init.user = init.user || {};
+                    init.user.ou = ou;
+                    init.user.ouc = ouc;
                 }
                 else {
                     alert('User is not assigned to any organisation units');
