@@ -50,15 +50,25 @@ public class ProgramStageInstance
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = 6239130884678145713L;
+
     private ProgramInstance programInstance;
+
     private ProgramStage programStage;
+
     private Date dueDate;
+
     private Date executionDate;
+
     private OrganisationUnit organisationUnit;
+
     private List<OutboundSms> outboundSms = new ArrayList<OutboundSms>();
+
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
+
     private TrackedEntityComment comment;
+
     private EventStatus status = EventStatus.ACTIVE;
+
     private Double longitude;
 
     private Double latitude;
@@ -81,7 +91,7 @@ public class ProgramStageInstance
         this.programInstance = programInstance;
         this.programStage = programStage;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -165,7 +175,7 @@ public class ProgramStageInstance
      */
     public boolean isCompleted()
     {
-        return ( status == EventStatus.COMPLETED ) ? true : false;
+        return (status == EventStatus.COMPLETED) ? true : false;
     }
 
     public OrganisationUnit getOrganisationUnit()
@@ -242,8 +252,13 @@ public class ProgramStageInstance
     {
         this.comment = comment;
     }
-    
+
     public EventStatus getStatus()
+    {
+       return status;
+    }
+
+    public EventStatus getEventStatus()
     {
         if ( status == EventStatus.COMPLETED )
         {
