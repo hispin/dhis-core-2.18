@@ -147,7 +147,8 @@ trackerCapture.controller('DataEntryController',
             }
             else {
                 $scope.getEvents();
-                
+                newEvent.event = data.importSummaries[0].reference;
+                $scope.showDataEntry(newEvent);
             }
         });
     };
@@ -190,14 +191,15 @@ trackerCapture.controller('DataEntryController',
             
         ProgramStageFactory.get($scope.currentEvent.programStage).then(function(stage){
             $scope.currentStage = stage;
-
+            
+            $scope.allowProvidedElsewhereExists = false;
             angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
                 $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
                 if(prStDe.allowProvidedElsewhere){
+                    $scope.allowProvidedElsewhereExists = true;
                     $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
                 }                
             });
-
             angular.forEach($scope.currentEvent.dataValues, function(dataValue){
                 var val = dataValue.value;
                 if(val){
