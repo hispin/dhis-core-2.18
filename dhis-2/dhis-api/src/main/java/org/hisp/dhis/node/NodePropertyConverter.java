@@ -28,33 +28,9 @@ package org.hisp.dhis.node;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import org.hisp.dhis.schema.Property;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface Transformer<T>
+public interface NodePropertyConverter extends PropertyConverter<Object, Node>
 {
-    /**
-     * @return Public/external name of this transformer.
-     */
-    String name();
-
-    /**
-     * Transform value. Value can be null.
-     *
-     * @param property Property instance belonging to value
-     * @param value    Actual value to transform
-     * @return Value transformed to a Node
-     */
-    T transform( Property property, Object value );
-
-    /**
-     * Is this property/value supported by this transformer. Value can be null.
-     *
-     * @param property Property instance belonging to value
-     * @param value    Actual value to transform
-     * @return true of false depending on support
-     */
-    boolean canTransform( Property property, Object value );
 }

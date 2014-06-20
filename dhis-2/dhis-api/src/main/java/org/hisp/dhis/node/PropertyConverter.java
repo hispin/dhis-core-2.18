@@ -1,4 +1,4 @@
-package org.hisp.dhis.node.transformers;
+package org.hisp.dhis.node;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,45 +28,43 @@ package org.hisp.dhis.node.transformers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.NodeTransformer;
-import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Property;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
-import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Component
-public class IsNotEmptyNodeTransformer implements NodeTransformer
+public interface PropertyConverter<S, D>
 {
-    @Override
-    public String name()
-    {
-        return "isNotEmpty";
-    }
+    /**
+     * @return Public/external name of this transformer.
+     */
+    String name();
 
-    @Override
-    public Node transform( Property property, Object value )
-    {
-        if ( property.isCollection() )
-        {
-            return new SimpleNode( property.getCollectionName(), !((Collection<?>) value).isEmpty(), property.isAttribute() );
-        }
-        else if ( String.class.isInstance( value ) )
-        {
-            return new SimpleNode( property.getName(), !StringUtils.isEmpty( value ), property.isAttribute() );
-        }
+    /**
+     * @param property Property instance belonging to value
+     * @param value    Actual value to transform
+     * @return true of false depending on support
+     */
+    boolean canConvertTo( Property property, S value );
 
-        throw new IllegalStateException( "Should never get here, this property/value is not supported by this transformer." );
-    }
+    /**
+     * @param property Property instance belonging to value
+     * @param value    Actual value to transform
+     * @return true of false depending on support
+     */
+    boolean canConvertFrom( Property property, D value );
 
-    @Override
-    public boolean canTransform( Property property, Object value )
-    {
-        return property.isCollection() || String.class.isInstance( value );
-    }
+    /**
+     * @param property Property instance belonging to value
+     * @param value    Actual value to transform
+     * @return Value transformed to a Node
+     */
+    D convertTo( Property property, S value );
+
+    /**
+     * @param property Property instance belonging to value
+     * @param value    Actual value to transform
+     * @return Value transformed to a Node
+     */
+    S convertFrom( Property property, D value );
 }

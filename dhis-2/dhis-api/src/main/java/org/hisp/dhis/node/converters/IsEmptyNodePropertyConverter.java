@@ -1,4 +1,4 @@
-package org.hisp.dhis.node.transformers;
+package org.hisp.dhis.node.converters;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,8 +28,8 @@ package org.hisp.dhis.node.transformers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
+import org.hisp.dhis.node.AbstractNodePropertyConverter;
 import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.NodeTransformer;
 import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Property;
 import org.springframework.stereotype.Component;
@@ -41,7 +41,7 @@ import java.util.Collection;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Component
-public class IsEmptyNodeTransformer implements NodeTransformer
+public class IsEmptyNodePropertyConverter extends AbstractNodePropertyConverter
 {
     @Override
     public String name()
@@ -50,7 +50,13 @@ public class IsEmptyNodeTransformer implements NodeTransformer
     }
 
     @Override
-    public Node transform( Property property, Object value )
+    public boolean canConvertTo( Property property, Object value )
+    {
+        return property.isCollection() || String.class.isInstance( value );
+    }
+
+    @Override
+    public Node convertTo( Property property, Object value )
     {
         if ( property.isCollection() )
         {
@@ -62,11 +68,5 @@ public class IsEmptyNodeTransformer implements NodeTransformer
         }
 
         throw new IllegalStateException( "Should never get here, this property/value is not supported by this transformer." );
-    }
-
-    @Override
-    public boolean canTransform( Property property, Object value )
-    {
-        return property.isCollection() || String.class.isInstance( value );
     }
 }

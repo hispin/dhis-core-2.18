@@ -34,7 +34,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.PresetProvider;
-import org.hisp.dhis.node.NodeTransformer;
+import org.hisp.dhis.node.NodePropertyConverter;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.SimpleNode;
@@ -64,11 +64,11 @@ public class DefaultFieldFilterService implements FieldFilterService
     private Set<PresetProvider> presetProviders = Sets.newHashSet();
 
     @Autowired(required = false)
-    private Set<NodeTransformer> nodeTransformers = Sets.newHashSet();
+    private Set<NodePropertyConverter> nodePropertyConverters = Sets.newHashSet();
 
     private ImmutableMap<String, PresetProvider> presets = ImmutableMap.of();
 
-    private ImmutableMap<String, NodeTransformer> transformers = ImmutableMap.of();
+    private ImmutableMap<String, NodePropertyConverter> converters = ImmutableMap.of();
 
     @PostConstruct
     public void init()
@@ -82,14 +82,14 @@ public class DefaultFieldFilterService implements FieldFilterService
 
         presets = presetBuilder.build();
 
-        ImmutableMap.Builder<String, NodeTransformer> transformerBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<String, NodePropertyConverter> converterBuilder = ImmutableMap.builder();
 
-        for ( NodeTransformer transformer : nodeTransformers )
+        for ( NodePropertyConverter converter : nodePropertyConverters )
         {
-            transformerBuilder.put( transformer.name(), transformer );
+            converterBuilder.put( converter.name(), converter );
         }
 
-        transformers = transformerBuilder.build();
+        converters = converterBuilder.build();
     }
 
     @Override
@@ -168,13 +168,13 @@ public class DefaultFieldFilterService implements FieldFilterService
                 updateFields( fieldValue, property.getKlass() );
             }
 
-            if ( fieldValue.haveNodeTransformer() )
+            if ( fieldValue.haveNodePropertyConverter() )
             {
-                NodeTransformer transformer = fieldValue.getNodeTransformer();
+                NodePropertyConverter converter = fieldValue.getNodePropertyConverter();
 
-                if ( transformer.canTransform( property, returnValue ) )
+                if ( converter.canConvertTo( property, returnValue ) )
                 {
-                    complexNode.addChild( transformer.transform( property, returnValue ) );
+                    complexNode.addChild( converter.convertTo( property, returnValue ) );
                 }
 
             }
@@ -330,9 +330,9 @@ public class DefaultFieldFilterService implements FieldFilterService
                 {
                     FieldMap value = new FieldMap();
 
-                    if ( transformers.containsKey( split[1] ) )
+                    if ( converters.containsKey( split[1] ) )
                     {
-                        value.setNodeTransformer( transformers.get( split[1] ) );
+                        value.setNodePropertyConverter( converters.get( split[1] ) );
                         fieldMap.put( split[0], value );
                     }
                 }

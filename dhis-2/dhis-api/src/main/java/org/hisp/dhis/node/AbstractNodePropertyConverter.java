@@ -1,4 +1,4 @@
-package org.hisp.dhis.node.transformers;
+package org.hisp.dhis.node;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,44 +28,34 @@ package org.hisp.dhis.node.transformers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import org.hisp.dhis.node.Node;
-import org.hisp.dhis.node.NodeTransformer;
-import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Property;
-import org.springframework.stereotype.Component;
-
-import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Component
-public class SizeNodeTransformer implements NodeTransformer
+public abstract class AbstractNodePropertyConverter implements NodePropertyConverter
 {
     @Override
-    public String name()
+    public boolean canConvertTo( Property property, Object value )
     {
-        return "size";
+        return false;
     }
 
     @Override
-    public Node transform( Property property, Object value )
+    public boolean canConvertFrom( Property property, Node value )
     {
-        if ( property.isCollection() )
-        {
-            return new SimpleNode( property.getCollectionName(), ((Collection<?>) value).size(), property.isAttribute() );
-        }
-        else if ( String.class.isInstance( value ) )
-        {
-            return new SimpleNode( property.getName(), ((String) value).length(), property.isAttribute() );
-        }
-
-        throw new IllegalStateException( "Should never get here, this property/value is not supported by this transformer." );
+        return false;
     }
 
     @Override
-    public boolean canTransform( Property property, Object value )
+    public Node convertTo( Property property, Object value )
     {
-        return property.isCollection() || String.class.isInstance( value );
+        throw new IllegalAccessError( "Not implemented." );
+    }
+
+    @Override
+    public Object convertFrom( Property property, Node value )
+    {
+        throw new IllegalAccessError( "Not implemented." );
     }
 }
