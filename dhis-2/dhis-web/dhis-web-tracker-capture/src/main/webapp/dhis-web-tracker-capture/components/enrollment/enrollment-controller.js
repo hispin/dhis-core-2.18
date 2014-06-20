@@ -26,6 +26,8 @@ trackerCapture.controller('EnrollmentController',
         var selections = CurrentSelection.get();
         $scope.selectedEntity = selections.tei; 
         $scope.selectedProgram = selections.pr;
+        $scope.programExists = args.programExists;
+        
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');
         
         if($scope.selectedProgram){ 

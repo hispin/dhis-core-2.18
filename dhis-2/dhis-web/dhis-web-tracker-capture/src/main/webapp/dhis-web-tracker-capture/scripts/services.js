@@ -771,6 +771,37 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             dateValue = Date.parse(dateValue);
             dateValue = $filter('date')(dateValue, 'yyyy-MM-dd');
             return dateValue;
+        },
+        getDueDate: function(programStage, enrollment){
+            var dueDate = moment(moment(enrollment.dateOfIncident).add('d', programStage.minDaysFromStart), 'YYYY-MM-DD')._d;
+            dueDate = Date.parse(dueDate);
+            dueDate = $filter('date')(dueDate, 'yyyy-MM-dd');
+            return dueDate;
         }
     };            
+})
+
+.service('EventUtils', function(DateUtils, $filter){
+    return {
+        createDummyEvent: function(programStage, orgUnit, enrollment){
+            
+            var today = moment();
+            today = Date.parse(today);
+            today = $filter('date')(today, 'yyyy-MM-dd');
+    
+            var dueDate = DateUtils.getDueDate(programStage, enrollment);
+            var dummyEvent = {programStage: programStage.id, 
+                              orgUnit: orgUnit.id,
+                              orgUnitName: orgUnit.name,
+                              dueDate: dueDate,
+                              name: programStage.name,
+                              reportDateDescription: programStage.reportDateDescription,
+                              status: 'ACTIVE'};
+            dummyEvent.statusColor = 'stage-on-time';
+            if(moment(today).isAfter(dummyEvent.dueDate)){
+                dummyEvent.statusColor = 'stage-overdue';
+            }
+            return dummyEvent;        
+        }
+    }; 
 });
