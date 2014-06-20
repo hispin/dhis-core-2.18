@@ -38,6 +38,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.StrutsStatics;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.light.utils.ValueUtils;
 import org.hisp.dhis.program.Program;
@@ -378,7 +379,7 @@ public class SaveMobileProgramEnrollmentAction
             for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
             {
                 if ( !programStageInstance.isCompleted()
-                    || programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS )
+                    || programStageInstance.getStatus() != EventStatus.SKIPPED )
                 {
                     Date dueDate = DateUtils.getDateAfterAddition( sdf.parseDateTime( incidentDate ).toDate(),
                         programStageInstance.getProgramStage().getMinDaysFromStart() );

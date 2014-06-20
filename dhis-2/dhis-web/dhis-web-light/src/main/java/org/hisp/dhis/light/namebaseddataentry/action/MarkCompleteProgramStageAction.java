@@ -28,6 +28,7 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
@@ -79,7 +80,7 @@ public class MarkCompleteProgramStageAction implements Action
         throws Exception
     {
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
-        programStageInstance.setCompleted( true );
+        programStageInstance.setStatus( EventStatus.COMPLETED );
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
         return SUCCESS;
     }

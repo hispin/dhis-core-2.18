@@ -33,10 +33,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
@@ -144,7 +146,7 @@ public class ProgramInstance
         {
             if ( programStageInstance.getProgramStage().getOpenAfterEnrollment()
                 && !programStageInstance.isCompleted()
-                && (programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS) )
+                && (programStageInstance.getStatus() != null && programStageInstance.getStatus() != EventStatus.SKIPPED) )
             {
                 return programStageInstance;
             }
@@ -153,7 +155,7 @@ public class ProgramInstance
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
             if ( !programStageInstance.isCompleted()
-                && (programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS) )
+                && (programStageInstance.getStatus() != null && programStageInstance.getStatus() != EventStatus.SKIPPED) )
             {
                 return programStageInstance;
             }

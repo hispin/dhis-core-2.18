@@ -40,6 +40,7 @@ import java.util.Set;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
@@ -529,7 +530,7 @@ public class DefaultProgramInstanceService
 
         for ( ProgramStageInstance stageInstance : stageInstances )
         {
-            if ( (!stageInstance.isCompleted() && stageInstance.getStatus().intValue() != ProgramStageInstance.SKIPPED_STATUS)
+            if ( (!stageInstance.isCompleted() && stageInstance.getStatus()!= EventStatus.SKIPPED )
                 || stageInstance.getProgramStage().getIrregular() )
             {
                 return false;
@@ -607,7 +608,7 @@ public class DefaultProgramInstanceService
                 // ---------------------------------------------------------------------
                 if ( programStageInstance.getDueDate().before( currentDate ) )
                 {
-                    programStageInstance.setStatus( ProgramStageInstance.SKIPPED_STATUS );
+                    programStageInstance.setStatus( EventStatus.SKIPPED );
                     programStageInstanceService.updateProgramStageInstance( programStageInstance );
                 }
 

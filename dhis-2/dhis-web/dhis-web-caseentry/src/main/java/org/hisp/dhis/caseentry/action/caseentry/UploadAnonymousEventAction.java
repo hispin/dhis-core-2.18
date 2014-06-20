@@ -35,6 +35,7 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -125,15 +126,15 @@ public class UploadAnonymousEventAction
 
         Date date = format.parseDate( (String) executionDate.get( "executionDate" ) );
 
-        Boolean completed = null;
+        Integer status = null;
 
         try
         {
-            String completeString = (String) executionDate.get( "completed" );
+            String statusString = (String) executionDate.get( "status" );
 
-            if ( completeString != null )
+            if ( statusString != null )
             {
-                completed = Boolean.parseBoolean( completeString );
+                status = Integer.parseInt( statusString );
             }
         }
         catch ( ClassCastException ignored )
@@ -174,7 +175,7 @@ public class UploadAnonymousEventAction
         if ( programStageInstanceId != null )
         {
             programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
-            updateExecutionDate( programStageInstance, date, completed, longitude, latitude );
+            updateExecutionDate( programStageInstance, date, status, longitude, latitude );
         }
         else
         {
@@ -210,7 +211,7 @@ public class UploadAnonymousEventAction
                 return INPUT;
             }
 
-            programStageInstance = saveExecutionDate( programId, organisationUnitId, date, completed, longitude, latitude );
+            programStageInstance = saveExecutionDate( programId, organisationUnitId, date, status, longitude, latitude );
         }
 
         Map<String, Object> values = (Map<String, Object>) input.get( "values" );
@@ -232,7 +233,7 @@ public class UploadAnonymousEventAction
         return SUCCESS;
     }
 
-    private void updateExecutionDate( ProgramStageInstance programStageInstance, Date date, Boolean completed,
+    private void updateExecutionDate( ProgramStageInstance programStageInstance, Date date, Integer status,
         Double longitude, Double latitude )
     {
         if ( date != null )
@@ -241,9 +242,9 @@ public class UploadAnonymousEventAction
             programStageInstance.setExecutionDate( date );
         }
 
-        if ( completed != null )
+        if ( status != null )
         {
-            programStageInstance.setCompleted( completed );
+            programStageInstance.setStatus( EventStatus.COMPLETED );
             programStageInstance.setCompletedDate( new Date() );
             programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
         }
@@ -263,7 +264,7 @@ public class UploadAnonymousEventAction
     }
 
     private ProgramStageInstance saveExecutionDate( Integer programId, Integer organisationUnitId, Date date,
-        Boolean completed, Double longitude, Double latitude )
+        Integer status, Double longitude, Double latitude )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Program program = programService.getProgram( programId );
@@ -277,11 +278,14 @@ public class UploadAnonymousEventAction
         programStageInstance.setExecutionDate( date );
         programStageInstance.setOrganisationUnit( organisationUnit );
 
-        if ( completed != null )
+        if ( status != null )
         {
-            programStageInstance.setCompleted( completed );
-            programStageInstance.setCompletedDate( new Date() );
-            programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
+            programStageInstance.setStatus( EventStatus.fromInt( status ) );
+            if( programStageInstance.isCompleted() )
+            {
+                programStageInstance.setCompletedDate( new Date() );
+                programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
+            }
         }
 
         if ( programStage.getCaptureCoordinates() )

@@ -26,8 +26,6 @@
 
 		<property name="executionDate" column="executiondate" type="timestamp" />
 
-		<property name="completed" not-null="true" />
-
 		<many-to-one name="organisationUnit"
 			class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
 			foreign-key="fk_programstageinstance_organisationunitid" />
@@ -46,8 +44,8 @@
 				column="messageconversationid" />
 		</list>
 
-		<property name="status" column="status" />
-
+ 		<property name="status" column="status" type="org.hisp.dhis.program.EventStatusUserType" not-null="true" />
+ 
 		<property name="longitude" />
 
 		<property name="latitude" />

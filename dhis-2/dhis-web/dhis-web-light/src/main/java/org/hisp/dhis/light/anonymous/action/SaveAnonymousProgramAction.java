@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.StrutsStatics;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
@@ -327,7 +328,7 @@ public class SaveAnonymousProgramAction
 
         programStageInstance.setExecutionDate( new Date() );
 
-        programStageInstance.setCompleted( true );
+        programStageInstance.setStatus( EventStatus.COMPLETED );
         
         programStageInstance.setOrganisationUnit( orgUnitService.getOrganisationUnit( orgUnitId ) );
         

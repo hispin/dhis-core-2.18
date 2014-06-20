@@ -279,7 +279,7 @@ public class ActivityReportingServiceImpl
             TrackedEntityInstance trackedEntityInstance = entityInstanceService
                 .getTrackedEntityInstance( entityInstance.get( 0 ).toString() );
             for ( ProgramStageInstance programStageInstance : programStageInstanceService.getProgramStageInstances(
-                trackedEntityInstance, false ) )
+                trackedEntityInstance, EventStatus.ACTIVE ) )
             {
                 if ( programStageInstance.getDueDate().getTime() >= lowerBound
                     && programStageInstance.getDueDate().getTime() <= upperBound )
@@ -316,7 +316,7 @@ public class ActivityReportingServiceImpl
             TrackedEntityInstance trackedEntityInstance = entityInstanceService
                 .getTrackedEntityInstance( entityInstance.get( 0 ).toString() );
             for ( ProgramStageInstance programStageInstance : programStageInstanceService.getProgramStageInstances(
-                trackedEntityInstance, false ) )
+                trackedEntityInstance, EventStatus.ACTIVE ) )
             {
 
                 items.add( getActivity( programStageInstance, false ) );
@@ -396,7 +396,7 @@ public class ActivityReportingServiceImpl
         // Set ProgramStageInstance to completed
         if ( programStageSectionId == 0 )
         {
-            programStageInstance.setCompleted( true );
+            programStageInstance.setStatus( EventStatus.COMPLETED );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
         }
 
@@ -442,7 +442,7 @@ public class ActivityReportingServiceImpl
             programStageInstance.setDueDate( new Date() );
             programStageInstance.setExecutionDate( new Date() );
             programStageInstance.setOrganisationUnit( organisationUnit );
-            programStageInstance.setCompleted( true );
+            programStageInstance.setStatus( EventStatus.COMPLETED );
             programStageInstanceService.addProgramStageInstance( programStageInstance );
 
             // ---------------------------------------------------------------------
@@ -534,7 +534,7 @@ public class ActivityReportingServiceImpl
             }
             else
             {
-                programStageInstance.setCompleted( mobileProgramStage.isCompleted() );
+//                programStageInstance.setCompleted( mobileProgramStage.isCompleted() );
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
                 // check if all belonged program stage are completed
@@ -1570,11 +1570,11 @@ public class ActivityReportingServiceImpl
 
         if ( searchEventInfosArray[1].equalsIgnoreCase( "Scheduled in future" ) )
         {
-            eventStatus = EventStatus.FUTURE_VISIT;
+            eventStatus = EventStatus.SCHEDULE;
         }
         else if ( searchEventInfosArray[1].equalsIgnoreCase( "Overdue" ) )
         {
-            eventStatus = EventStatus.LATE_VISIT;
+            eventStatus = EventStatus.OVERDUE;
         }
 
         String eventsInfo = "";
@@ -1647,7 +1647,7 @@ public class ActivityReportingServiceImpl
             ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( lostEvent
                 .getId() );
             programStageInstance.setDueDate( PeriodUtil.stringToDate( lostEvent.getDueDate() ) );
-            programStageInstance.setStatus( lostEvent.getStatus() );
+            programStageInstance.setStatus(EventStatus.fromInt( lostEvent.getStatus() ) );
 
             if ( lostEvent.getComment() != null )
             {
@@ -1777,7 +1777,7 @@ public class ActivityReportingServiceImpl
 
         programStageInstance.setExecutionDate( new Date() );
 
-        programStageInstance.setCompleted( true );
+        programStageInstance.setStatus( EventStatus.COMPLETED );
 
         programStageInstance.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
@@ -1873,11 +1873,11 @@ public class ActivityReportingServiceImpl
 
         if ( status.equals( "Schedule in future" ) )
         {
-            eventStatus = EventStatus.FUTURE_VISIT;
+            eventStatus = EventStatus.SCHEDULE;
         }
         else if ( status.equals( "Overdue" ) )
         {
-            eventStatus = EventStatus.LATE_VISIT;
+            eventStatus = EventStatus.OVERDUE;
         }
         else if ( status.equals( "Incomplete" ) )
         {

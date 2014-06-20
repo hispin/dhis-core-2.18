@@ -41,6 +41,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
@@ -93,22 +94,21 @@ public class HibernateProgramStageInstanceStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, boolean completed )
+    public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, EventStatus status )
     {
         return getCriteria( 
             Restrictions.in( "programInstance", programInstances ), 
-            Restrictions.eq( "completed", completed ) ).list();
+            Restrictions.eq( "status", status ) ).list();
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, boolean completed )
+    public List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, EventStatus status )
     {
         Criteria criteria = getCriteria();
         criteria.createAlias( "programInstance", "programInstance" );
         criteria.add( Restrictions.eq( "programInstance.entityInstance", entityInstance));
-        criteria.add(  Restrictions.eq( "completed", completed ));
-        
+        criteria.add(  Restrictions.eq( "status", status ));      
         return criteria.list();
     }
 
@@ -211,9 +211,9 @@ public class HibernateProgramStageInstanceStore
             + "inner join program pg on pg.programid = ps.programid "
             + "where ou.organisationunitid in ( " + TextUtils.getCommaDelimitedString( orgunitIds ) + " ) "
             + "and pg.programid = " + program.getId()
-            + "group by ou.name, ps.name, psi.completeduser, psi.completeddate, psi.completed "
+            + "group by ou.name, ps.name, psi.completeduser, psi.completeddate, psi.status "
             + "having psi.completeddate >= '" + startDate + "' AND psi.completeddate <= '" + endDate + "' "
-            + "and psi.completed=true "
+            + "and psi.status=" + EventStatus.COMPLETED.getValue()
             + "order by ou.name, ps.name, psi.completeduser";
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
@@ -250,7 +250,7 @@ public class HibernateProgramStageInstanceStore
         criteria.add( Restrictions.eq( "programInstance.status", status ) );
         criteria.add( Restrictions.in( "organisationUnit.id", orgunitIds ) );
         criteria.add( Restrictions.between( "programInstance.endDate", after, before ) );
-        criteria.add( Restrictions.eq( "completed", true ) );
+        criteria.add( Restrictions.eq( "status", EventStatus.COMPLETED ) );
         
         if ( programInstances != null && programInstances.size() > 0 )
         {
@@ -277,16 +277,16 @@ public class HibernateProgramStageInstanceStore
         {
             criteria.createAlias( "programInstance.entityInstance", "entityInstance" );
             criteria.createAlias( "entityInstance.organisationUnit", "regOrgunit" );
-            criteria.add( Restrictions.or( Restrictions.and( Restrictions.eq( "completed", true ),
+            criteria.add( Restrictions.or( Restrictions.and( Restrictions.eq( "status", EventStatus.COMPLETED ),
                 Restrictions.between( "executionDate", startDate, endDate ),
                 Restrictions.in( "organisationUnit.id", orgunitIds ) ), Restrictions.and(
-                Restrictions.eq( "completed", false ), Restrictions.isNotNull( "executionDate" ),
+                Restrictions.eq( "status", EventStatus.ACTIVE ), Restrictions.isNotNull( "executionDate" ),
                 Restrictions.between( "executionDate", startDate, endDate ),
                 Restrictions.in( "organisationUnit.id", orgunitIds ) ),
-                Restrictions.and( Restrictions.eq( "completed", false ), Restrictions.isNull( "executionDate" ),
+                Restrictions.and( Restrictions.eq( "status", EventStatus.ACTIVE ), Restrictions.isNull( "executionDate" ),
                     Restrictions.between( "dueDate", startDate, endDate ),
                     Restrictions.in( "regOrgunit.id", orgunitIds ) ), Restrictions.and(
-                    Restrictions.eq( "status", ProgramStageInstance.SKIPPED_STATUS ),
+                    Restrictions.eq( "status", EventStatus.SKIPPED ),
                     Restrictions.between( "dueDate", startDate, endDate ),
                     Restrictions.in( "regOrgunit.id", orgunitIds ) ) ) );
         }
@@ -294,7 +294,7 @@ public class HibernateProgramStageInstanceStore
         {
             if ( completed )
             {
-                criteria.add( Restrictions.and( Restrictions.eq( "completed", true ),
+                criteria.add( Restrictions.and( Restrictions.eq( "status", EventStatus.COMPLETED ),
                     Restrictions.between( "executionDate", startDate, endDate ),
                     Restrictions.in( "organisationUnit.id", orgunitIds ) ) );
             }
@@ -302,7 +302,7 @@ public class HibernateProgramStageInstanceStore
             {
                 criteria.createAlias( "programInstance.entityInstance", "entityInstance" );
                 criteria.createAlias( "entityInstance.organisationUnit", "regOrgunit" );
-                criteria.add( Restrictions.and( Restrictions.eq( "completed", false ),
+                criteria.add( Restrictions.and( Restrictions.eq( "status", EventStatus.ACTIVE ),
                     Restrictions.isNotNull( "executionDate" ),
                     Restrictions.between( "executionDate", startDate, endDate ),
                     Restrictions.in( "organisationUnit.id", orgunitIds ) ) );

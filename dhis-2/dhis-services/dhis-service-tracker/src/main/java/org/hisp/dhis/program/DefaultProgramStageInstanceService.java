@@ -32,14 +32,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
@@ -152,29 +151,16 @@ public class DefaultProgramStageInstanceService
     }
 
     @Override
-    public Map<Integer, Integer> statusProgramStageInstances( Collection<ProgramStageInstance> programStageInstances )
-    {
-        Map<Integer, Integer> colorMap = new HashMap<Integer, Integer>();
-
-        for ( ProgramStageInstance programStageInstance : programStageInstances )
-        {
-            colorMap.put( programStageInstance.getId(), programStageInstance.getEventStatus() );
-        }
-
-        return colorMap;
-    }
-
-    @Override
     public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances,
-        boolean completed )
+        EventStatus status )
     {
-        return programStageInstanceStore.get( programInstances, completed );
+        return programStageInstanceStore.get( programInstances, status );
     }
 
     @Override
-    public List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, boolean completed )
+    public List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, EventStatus status )
     {
-        return programStageInstanceStore.get( entityInstance, completed );
+        return programStageInstanceStore.get( entityInstance, status );
     }
 
     @Override
@@ -324,13 +310,11 @@ public class DefaultProgramStageInstanceService
     @Override
     public void completeProgramStageInstance( ProgramStageInstance programStageInstance, I18nFormat format )
     {
-        programStageInstance.setCompleted( true );
-
         Calendar today = Calendar.getInstance();
         PeriodType.clearTimeOfDay( today );
         Date date = today.getTime();
 
-        programStageInstance.setStatus( ProgramStageInstance.COMPLETED_STATUS );
+        programStageInstance.setStatus( EventStatus.COMPLETED );
         programStageInstance.setCompletedDate( date );
         programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
 

@@ -28,6 +28,7 @@ package org.hisp.dhis.caseentry.action.reminder;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -71,9 +72,9 @@ public class SetEventStatusAction
         this.programStageInstanceId = programStageInstanceId;
     }
 
-    private Integer status;
+    private int status;
 
-    public void setStatus( Integer status )
+    public void setStatus( int status )
     {
         this.status = status;
     }
@@ -89,32 +90,21 @@ public class SetEventStatusAction
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 
-        switch ( status.intValue() )
+        EventStatus eventStatus = EventStatus.fromInt( status );
+        if ( eventStatus == EventStatus.COMPLETED )
         {
-        case ProgramStageInstance.COMPLETED_STATUS:
             programStageInstanceService.completeProgramStageInstance( programStageInstance, format );
-            break;
-        case ProgramStageInstance.VISITED_STATUS:
-            programStageInstance.setCompleted( false );
-            programStageInstance.setStatus( ProgramStageInstance.ACTIVE_STATUS );
+        }
+        else if ( eventStatus == EventStatus.SKIPPED )
+        {
+            programStageInstance.setStatus( eventStatus );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
-            break;
-        case ProgramStageInstance.LATE_VISIT_STATUS:
-            programStageInstance.setCompleted( false );
-            programStageInstance.setStatus(  ProgramStageInstance.ACTIVE_STATUS );
+
+        }
+        else
+        {
+            programStageInstance.setStatus( EventStatus.ACTIVE );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
-            break;
-        case ProgramStageInstance.FUTURE_VISIT_STATUS:
-            programStageInstance.setCompleted( false );
-            programStageInstance.setStatus(  ProgramStageInstance.ACTIVE_STATUS );
-            programStageInstanceService.updateProgramStageInstance( programStageInstance );
-            break;
-        case ProgramStageInstance.SKIPPED_STATUS:
-            programStageInstance.setStatus( status );
-            programStageInstanceService.updateProgramStageInstance( programStageInstance );
-            break;
-        default:
-            break;
         }
 
         return SUCCESS;

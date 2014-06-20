@@ -204,7 +204,7 @@ public abstract class AbstractEventService
             if ( program.isSingleEvent() )
             {
                 List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>(
-                    programStageInstanceService.getProgramStageInstances( programInstances, false ) );
+                    programStageInstanceService.getProgramStageInstances( programInstances, EventStatus.ACTIVE ) );
 
                 if ( programStageInstances.isEmpty() )
                 {
@@ -368,14 +368,13 @@ public abstract class AbstractEventService
 
         if ( event.getStatus() == EventStatus.ACTIVE )
         {
-            programStageInstance.setCompleted( false );
-            programStageInstance.setStatus( ProgramStageInstance.ACTIVE_STATUS );
+            programStageInstance.setStatus( EventStatus.ACTIVE );
             programStageInstance.setCompletedDate( null );
             programStageInstance.setCompletedUser( null );
         }
         else if ( event.getStatus() == EventStatus.COMPLETED )
         {
-            programStageInstance.setStatus( ProgramStageInstance.COMPLETED_STATUS );
+            programStageInstance.setStatus( EventStatus.COMPLETED );
             programStageInstance.setCompletedDate( date );
             programStageInstance.setCompletedUser( storedBy );
 
@@ -478,7 +477,7 @@ public abstract class AbstractEventService
             event.setTrackedEntityInstance( programStageInstance.getProgramInstance().getEntityInstance().getUid() );
         }
 
-        event.setStatus( EventStatus.fromInt( programStageInstance.getStatus() ) );
+        event.setStatus( programStageInstance.getStatus() );
         event.setEventDate( DateUtils.getLongDateString( programStageInstance.getExecutionDate() ) );
         event.setStoredBy( programStageInstance.getCompletedUser() );
         event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );
@@ -648,18 +647,18 @@ public abstract class AbstractEventService
     }
 
     private ProgramStageInstance createProgramStageInstance( ProgramStage programStage,
-        ProgramInstance programInstance, OrganisationUnit organisationUnit, Date date, Boolean completed,
+        ProgramInstance programInstance, OrganisationUnit organisationUnit, Date date, int status,
         Coordinate coordinate, String storedBy )
     {
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
-        updateProgramStageInstance( programStage, programInstance, organisationUnit, date, completed, coordinate,
+        updateProgramStageInstance( programStage, programInstance, organisationUnit, date, status, coordinate,
             storedBy, programStageInstance );
 
         return programStageInstance;
     }
 
     private void updateProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance,
-        OrganisationUnit organisationUnit, Date date, Boolean completed, Coordinate coordinate, String storedBy,
+        OrganisationUnit organisationUnit, Date date, int status, Coordinate coordinate, String storedBy,
         ProgramStageInstance programStageInstance )
     {
         programStageInstance.setProgramInstance( programInstance );
@@ -677,7 +676,7 @@ public abstract class AbstractEventService
             }
         }
 
-        programStageInstance.setCompleted( completed );
+        programStageInstance.setStatus( EventStatus.fromInt( status ) );
 
         if ( programStageInstance.getId() == 0 )
         {
@@ -686,7 +685,7 @@ public abstract class AbstractEventService
 
         if ( programStageInstance.isCompleted() )
         {
-            programStageInstance.setStatus( ProgramStageInstance.COMPLETED_STATUS );
+            programStageInstance.setStatus( EventStatus.COMPLETED );
             programStageInstance.setCompletedDate( new Date() );
             programStageInstance.setCompletedUser( storedBy );
             programStageInstanceService
@@ -720,12 +719,12 @@ public abstract class AbstractEventService
             if ( programStageInstance == null )
             {
                 programStageInstance = createProgramStageInstance( programStage, programInstance, organisationUnit,
-                    eventDate, EventStatus.COMPLETED == event.getStatus(), event.getCoordinate(), storedBy );
+                    eventDate, event.getStatus().getValue(), event.getCoordinate(), storedBy );
             }
             else
             {
                 updateProgramStageInstance( programStage, programInstance, organisationUnit, eventDate,
-                    EventStatus.COMPLETED == event.getStatus(), event.getCoordinate(), storedBy, programStageInstance );
+                    event.getStatus().getValue(), event.getCoordinate(), storedBy, programStageInstance );
             }
 
             saveTrackedEntityCommentFromEvent( programInstance, event, storedBy );

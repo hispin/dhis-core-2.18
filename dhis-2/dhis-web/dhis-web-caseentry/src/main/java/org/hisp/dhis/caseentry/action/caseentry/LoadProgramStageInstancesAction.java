@@ -75,13 +75,6 @@ public class LoadProgramStageInstancesAction
         this.programInstanceService = programInstanceService;
     }
 
-    private ProgramStageInstanceService programStageInstanceService;
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -135,40 +128,26 @@ public class LoadProgramStageInstancesAction
     public String execute()
         throws Exception
     {
-        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
+//        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
 
         program = programService.getProgram( programId );
-
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
-
-        if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
-        {
-            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
-                program, ProgramInstance.STATUS_ACTIVE ) );
-        }
-        else if ( program.getType() == Program.SINGLE_EVENT_WITH_REGISTRATION )
-        {
-            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
-                program ) );
-        }
-        else
-        {
-            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program ) );
-        }
-
-        if ( !programInstances.isEmpty() )
-        {
-            programInstance = programInstances.iterator().next();
-
-            if ( programInstance.getProgramStageInstances() != null )
-            {
-                if ( program.isRegistration() )
-                {
-                    statusMap = programStageInstanceService.statusProgramStageInstances( programInstance
-                        .getProgramStageInstances() );
-                }
-            }
-        }
+//
+//        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
+//
+//        if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
+//        {
+//            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
+//                program, ProgramInstance.STATUS_ACTIVE ) );
+//        }
+//        else if ( program.getType() == Program.SINGLE_EVENT_WITH_REGISTRATION )
+//        {
+//            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
+//                program ) );
+//        }
+//        else
+//        {
+//            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program ) );
+//        }
 
         return SUCCESS;
     }
