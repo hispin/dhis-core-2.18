@@ -95,14 +95,17 @@ public class DefaultFieldFilterService implements FieldFilterService
     @Override
     public <T extends IdentifiableObject> CollectionNode filter( Class<?> klass, List<T> objects, List<String> fieldList )
     {
-        if ( objects == null || objects.isEmpty() )
-        {
-            return null;
-        }
-
         String fields = fieldList == null ? "" : Joiner.on( "," ).join( fieldList );
 
         Schema rootSchema = schemaService.getDynamicSchema( klass );
+
+        CollectionNode collectionNode = new CollectionNode( rootSchema.getCollectionName() );
+        collectionNode.setNamespace( rootSchema.getNamespace() );
+
+        if ( objects == null || objects.isEmpty() )
+        {
+            return collectionNode;
+        }
 
         FieldMap fieldMap = new FieldMap();
         Schema schema = schemaService.getDynamicSchema( objects.get( 0 ).getClass() );
@@ -118,9 +121,6 @@ public class DefaultFieldFilterService implements FieldFilterService
         {
             fieldMap = parserService.parseFieldFilter( fields );
         }
-
-        CollectionNode collectionNode = new CollectionNode( rootSchema.getCollectionName() );
-        collectionNode.setNamespace( rootSchema.getNamespace() );
 
         for ( Object object : objects )
         {
