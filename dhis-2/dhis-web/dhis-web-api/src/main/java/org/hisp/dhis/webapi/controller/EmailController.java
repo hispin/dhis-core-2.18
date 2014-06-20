@@ -67,7 +67,6 @@ public class EmailController
 
         if ( smtpConfigured && userEmailConfigured )
         {
-            response.setStatus( HttpServletResponse.SC_OK );
             emailService.sendTestEmail( );
 
             ContextUtils.okResponse( response, "A test email was sent to " + userEmail );
