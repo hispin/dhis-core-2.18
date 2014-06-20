@@ -1,6 +1,17 @@
 
 <script type="text/javascript">
 
+		var tempOrgUnitGroupNameMap = new Object();
+		
+		#foreach( $orgUnit in $orgUnitList )
+			
+			var orgUnitUid = ""+"$orgUnit.getUid()";
+			//tempOrgUnitGroupNameMap[orgUnitUid] = "$orgUnitGroupNameMap.get( orgUnitUid )";        
+			tempOrgUnitGroupNameMap["$orgUnit.getUid()"] = '$orgUnitGroupNameMap.get( "$orgUnit.getUid()" )';
+			//tempOrgUnitGroupNameMap["$orgUnit.getUid()"] = "ABCDEF"; 
+        		
+   		#end
+		
 	function formValidations()
 	{
 	    		
@@ -36,6 +47,10 @@
 	
     function redirectTorptDesign()
     {
+		var period = $('#selectedPeriodId').val();
+	    
+		var startPeriod = period.split(":")[0];
+		var endPeriod = period.split(":")[1];
 		
 		var reportList = document.getElementById("selectedReportId");
         var reportIndex = reportList.selectedIndex;
@@ -48,32 +63,125 @@
 		
 		var orgUnitId = selectionTreeSelection.getSelectedUid()[0];
 		
+		//var orgUnitGroupName = tempOrgUnitGroupNameMap.get( orgUnitId );
+		
+		var orgUnitGroupName = tempOrgUnitGroupNameMap[orgUnitId];
+		
+		//alert( orgUnitGroupName );
+		
+		
+		if( rprDesign == "MH_PATIENT_ALLOWANCE_CLAIM")
+		{
+			if( orgUnitGroupName == "Health Center")
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_report3_HC.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+			else if( orgUnitGroupName == "Province Hospitals")
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_report3_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+			else if( orgUnitGroupName == "District hospital type A" || orgUnitGroupName == "District hospital type B" )
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_report3_DH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+		}
+		
+		else if( rprDesign == "HEALTH_PROVIDER_PAYMENT_CLAIM")
+		{
+			if( orgUnitGroupName == "Health Center")
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Healthprovider_HC_report4.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+			else if( orgUnitGroupName == "Province Hospitals")
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/healthprovider_report4_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+			else if( orgUnitGroupName == "District hospital type A" || orgUnitGroupName == "District hospital type B" )
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/healthprovider_DH_report4.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+		}		
+		
+		else if( rprDesign == "MATERNAL_HEALTH")
+		{
+			if( orgUnitGroupName == "Health Center")
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/MATERNAL_HEALTH_HC.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+			else if( orgUnitGroupName == "Province Hospitals")
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_PH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+			else if( orgUnitGroupName == "District hospital type A" || orgUnitGroupName == "District hospital type B" )
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/Mathealth_DH.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+		}
+		
+		else if( rprDesign == "MONTHLY_PPS")
+		{
+			if( orgUnitGroupName == "Health Center")
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+			else if( orgUnitGroupName == "Province Hospitals")
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+			else if( orgUnitGroupName == "District hospital type A" || orgUnitGroupName == "District hospital type B" )
+			{
+				var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/monthly_pps.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
+				window.location.href =  birtReportURL;
+			}
+			
+		}		
+		
 		//alert( orgunit + "--" + orgUnitId )
 		
 		//alert( rprDesign )
 		
-		var period = $('#selectedPeriodId').val();
-	    
-		var startPeriod = period.split(":")[0];
-		var endPeriod = period.split(":")[1];
+		
 		
 		//alert( startPeriod + " : " + endPeriod + " : " + rprDesign + " : " + orgUnitId );
 		
-		var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/"+rprDesign+"&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&District="+orgUnitId;
+		//var birtReportURL = "http://178.79.144.205:8989/birt/run?__report=/home/dqa/tomcat_pbf_laos/webapps/birt/report/"+rprDesign+"&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 
 		//alert( birtReportURL );
-		window.location.href =  birtReportURL;
+		
+		//window.location.href =  birtReportURL;
 		
 		/*
 		
 		alert( startPeriod + " : " + endPeriod );
 		
-		var url = "../birt/run?__report=C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/birt/report/"+rprDesign+"&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&District="+orgUnitId;
+		var url = "../birt/run?__report=C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/birt/report/"+rprDesign+"&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId;
 		
 		alert( url );
 		window.open('url', '_blank');
 		
-		window.location.href = "http://localhost:8090/birt/run?__report=C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/birt/report/"+rprDesign+"&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&District="+orgunit;
+		window.location.href = "http://localhost:8090/birt/run?__report=C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/birt/report/"+rprDesign+"&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgunit;
 		
 		
 	    //window.location.href = "http://localhost:8090/birt/run?__report=C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/birt/report/PBF_Payment_Voucher.rptdesign&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&District="+orgunit;
@@ -97,9 +205,24 @@
 			<td>
 				<select id="selectedReportId" name="selectedReportId" style="width:220px" >
 					<option value="-1">[$i18n.getString( "select" )]</option>
+					<option value="MATERNAL_HEALTH" >Maternal Health</option>
+					<option value="MONTHLY_PPS" >Monthly PPS</option>
+					<option value="MH_PATIENT_ALLOWANCE_CLAIM" >MH Patient Allownce Claim</option>
+					<option value="HEALTH_PROVIDER_PAYMENT_CLAIM" >Health Provider Payment Claim</option>
+					
+					<!--
 					<option value="MATERNAL_HEALTH_HC.rptdesign" >Maternal Health HC</option>
 					<option value="Mathealth_DH.rptdesign" >Maternal Health DH</option>
-					<option value="Mathealth_PH.rptdesign" >Maternal Health PH</option>				
+					<option value="Mathealth_PH.rptdesign" >Maternal Health PH</option>
+					<option value="monthly_pps.rptdesign" >Monthly PPS</option>
+
+					<option value="Mathealth_report3_DH.rptdesign" >MH Patient Allownce Claim DH</option>
+					<option value="Mathealth_report3_HC.rptdesign" >MH Patient Allownce Claim HC</option>
+					<option value="Mathealth_report3_PH.rptdesign" >MH Patient Allownce Claim PH</option>
+					<option value="healthprovider_DH_report4.rptdesign" >Health Provider Payment Claim DH</option>
+					<option value="Healthprovider_HC_report4.rptdesign" >Health Provider Payment Claim HC</option>
+					<option value="healthprovider_report4_PH.rptdesign" >Health Provider Payment Claim PH</option>
+					-->
 				</select>
 			</td>
 		</tr>	
@@ -143,8 +266,9 @@
 	    </tr>
 	    <tr>
             <td>
-                <input type="submit" id="submitButton" value="$i18n.getString( 'generate' )" style="width:10em"  />
-                <input type="text" id="birtpath" name="birtpath" value="$birtPath" />
+                <!--<input type="submit" id="submitButton" value="$i18n.getString( 'generate' )" style="width:10em"  />-->
+				<input type="button" id="submitButton" value="$i18n.getString( 'generate' )" style="width:10em" onclick="formValidations()" />
+                <!--<input type="text" id="birtpath" name="birtpath" value="$birtPath" />-->
             </td>
 	    </tr>
 	  </table>

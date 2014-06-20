@@ -8,22 +8,25 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
-public class PBFDataValue implements Serializable 
+@SuppressWarnings( "serial" )
+public class PBFDataValue implements Serializable
 {
     private OrganisationUnit organisationUnit;
-    
+
     private DataElement dataElement;
-    
+
     private DataSet dataSet;
 
     private Period period;
 
     private Integer quantityReported;
-    
+
     private Integer quantityValidated;
-    
+
+    private Integer quantityExternalVerification;
+
     private Double tariffAmount;
-    
+
     private String storedBy;
 
     private Date timestamp;
@@ -35,10 +38,11 @@ public class PBFDataValue implements Serializable
     // -------------------------------------------------------------------------
     public PBFDataValue()
     {
-        
+
     }
-    
-    public PBFDataValue( OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet, Period period, Integer quantityReported, Integer quantityValidated, Double tariffAmount )
+
+    public PBFDataValue( OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet, Period period,
+        Integer quantityReported, Integer quantityValidated, Integer quantityExternalVerification, Double tariffAmount )
     {
         this.organisationUnit = organisationUnit;
         this.dataElement = dataElement;
@@ -46,6 +50,7 @@ public class PBFDataValue implements Serializable
         this.period = period;
         this.quantityReported = quantityReported;
         this.quantityValidated = quantityValidated;
+        this.quantityExternalVerification = quantityExternalVerification;
         this.tariffAmount = tariffAmount;
     }
 
@@ -73,7 +78,8 @@ public class PBFDataValue implements Serializable
 
         final PBFDataValue other = (PBFDataValue) o;
 
-        return dataElement.equals( other.getDataElement() ) && dataSet.equals( other.getDataSet() ) && organisationUnit.equals( other.getOrganisationUnit() ) && period.equals( other.getPeriod() );
+        return dataElement.equals( other.getDataElement() ) && dataSet.equals( other.getDataSet() )
+            && organisationUnit.equals( other.getOrganisationUnit() ) && period.equals( other.getPeriod() );
     }
 
     @Override
@@ -94,103 +100,113 @@ public class PBFDataValue implements Serializable
     // Getters and setters
     // -------------------------------------------------------------------------
 
-	public OrganisationUnit getOrganisationUnit() 
-	{
-		return organisationUnit;
-	}
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
 
-	public void setOrganisationUnit(OrganisationUnit organisationUnit) 
-	{
-		this.organisationUnit = organisationUnit;
-	}
+    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
+    }
 
-	public DataElement getDataElement() 
-	{
-		return dataElement;
-	}
+    public DataElement getDataElement()
+    {
+        return dataElement;
+    }
 
-	public void setDataElement(DataElement dataElement) 
-	{
-		this.dataElement = dataElement;
-	}
+    public void setDataElement( DataElement dataElement )
+    {
+        this.dataElement = dataElement;
+    }
 
-	public DataSet getDataSet() 
-	{
-		return dataSet;
-	}
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
 
-	public void setDataSet(DataSet dataSet) 
-	{
-		this.dataSet = dataSet;
-	}
+    public void setDataSet( DataSet dataSet )
+    {
+        this.dataSet = dataSet;
+    }
 
-	public Period getPeriod() 
-	{
-		return period;
-	}
+    public Period getPeriod()
+    {
+        return period;
+    }
 
-	public void setPeriod(Period period) 
-	{
-		this.period = period;
-	}
+    public void setPeriod( Period period )
+    {
+        this.period = period;
+    }
 
-	public Integer getQuantityReported() 
-	{
-		return quantityReported;
-	}
+    public Integer getQuantityReported()
+    {
+        return quantityReported;
+    }
 
-	public void setQuantityReported(Integer quantityReported) 
-	{
-		this.quantityReported = quantityReported;
-	}
+    public void setQuantityReported( Integer quantityReported )
+    {
+        this.quantityReported = quantityReported;
+    }
 
-	public Integer getQuantityValidated() 
-	{
-		return quantityValidated;
-	}
+    public Integer getQuantityValidated()
+    {
+        return quantityValidated;
+    }
 
-	public void setQuantityValidated(Integer quantityValidated) 
-	{
-		this.quantityValidated = quantityValidated;
-	}
+    public void setQuantityValidated( Integer quantityValidated )
+    {
+        this.quantityValidated = quantityValidated;
+    }
 
-	public Double getTariffAmount() 
-	{
-		return tariffAmount;
-	}
+    public Integer getQuantityExternalVerification()
+    {
+        return quantityExternalVerification;
+    }
 
-	public void setTariffAmount(Double tariffAmount) 
-	{
-		this.tariffAmount = tariffAmount;
-	}
+    public void setQuantityExternalVerification( Integer quantityExternalVerification )
+    {
+        this.quantityExternalVerification = quantityExternalVerification;
+    }
 
-	public String getStoredBy() 
-	{
-		return storedBy;
-	}
+    public Double getTariffAmount()
+    {
+        return tariffAmount;
+    }
 
-	public void setStoredBy(String storedBy) 
-	{
-		this.storedBy = storedBy;
-	}
+    public void setTariffAmount( Double tariffAmount )
+    {
+        this.tariffAmount = tariffAmount;
+    }
 
-	public Date getTimestamp() 
-	{
-		return timestamp;
-	}
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
 
-	public void setTimestamp(Date timestamp) 
-	{
-		this.timestamp = timestamp;
-	}
+    public void setStoredBy( String storedBy )
+    {
+        this.storedBy = storedBy;
+    }
 
-	public String getComment() 
-	{
-		return comment;
-	}
+    public Date getTimestamp()
+    {
+        return timestamp;
+    }
 
-	public void setComment(String comment) 
-	{
-		this.comment = comment;
-	}
+    public void setTimestamp( Date timestamp )
+    {
+        this.timestamp = timestamp;
+    }
+
+    public String getComment()
+    {
+        return comment;
+    }
+
+    public void setComment( String comment )
+    {
+        this.comment = comment;
+    }
 }

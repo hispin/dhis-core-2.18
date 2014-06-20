@@ -100,6 +100,7 @@ public class HibernatePBFDataValueStore implements PBFDataValueStore
         return ( PBFDataValue ) criteria.uniqueResult();
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<PBFDataValue> getPBFDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period ) 
     {

@@ -9,14 +9,16 @@
 	
 	<li><a href="dataElementTariffManagement.action">$i18n.getString( "dataelement_tariff_target_management" )</a></li>
 	
-	<li><a href="bankDetailsManagement.action">$i18n.getString( "bank_details_management" )</a></li>	
+	<li><a href="bankDetailsManagement.action">$i18n.getString( "bank_details_management" )</a></li>
+	
+	<li><a href="utilizationRuleManagement.action">$i18n.getString( "utilization_rule_management" )</a></li>
+	
 </ul>
 
 <h2>$i18n.getString( "quality_score_payment" )</h2>
 <ul>
     <li><a href="qualityScorePaymentList.action">$i18n.getString( "quality_score_payment" )</a></li>
 </ul>
-
 
 <h2>$i18n.getString( "aggregation_builder" )</h2>
 <ul>
@@ -42,7 +44,9 @@
 </ul>
 #end
 
+<!--
 <h2>$i18n.getString( "reports" )</h2>
 <ul>
     <li><a href="PBFInvoiceReportForm.action">$i18n.getString( "quarterly_invoice_for_PBF_indicators_PMA" )</a></li>
 </ul>
+-->

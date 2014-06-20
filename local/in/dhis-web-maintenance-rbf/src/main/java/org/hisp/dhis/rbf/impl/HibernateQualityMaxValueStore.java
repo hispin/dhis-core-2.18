@@ -138,7 +138,8 @@ public class HibernateQualityMaxValueStore implements QualityMaxValueStore
         return (QualityMaxValue) criteria.uniqueResult();
 	}
 	
-	@Override
+	@SuppressWarnings( "unchecked" )
+    @Override
 	public Collection<QualityMaxValue> getQuanlityMaxValues(
 			OrganisationUnit organisationUnit, DataElement dataElement) {
 		
@@ -151,7 +152,8 @@ public class HibernateQualityMaxValueStore implements QualityMaxValueStore
         return criteria.list();
 	}
 	
-	@Override
+	@SuppressWarnings( "unchecked" )
+    @Override
 	public Collection<QualityMaxValue> getQuanlityMaxValues( OrganisationUnitGroup orgUnitGroup, OrganisationUnit organisationUnit, DataElement dataElement) 
 	{
 		

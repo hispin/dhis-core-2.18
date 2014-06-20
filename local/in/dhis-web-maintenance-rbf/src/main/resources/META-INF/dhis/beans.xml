@@ -59,6 +59,28 @@
         <property name="qualityScorePaymentStore" ref="org.hisp.dhis.rbf.api.QualityScorePaymentStore" />
     </bean>
     
+    
+    <!--  UtilizationRateStore -->
+    <bean id="org.hisp.dhis.rbf.api.UtilizationRateStore" class="org.hisp.dhis.rbf.impl.HibernateUtilizationRateStore">
+        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
+    </bean>
+	
+	<!--  UtilizationRateService -->
+    <bean id="org.hisp.dhis.rbf.api.UtilizationRateService" class="org.hisp.dhis.rbf.impl.DefaultUtilizationRateService">
+        <property name="utilizationRateStore" ref="org.hisp.dhis.rbf.api.UtilizationRateStore" />
+    </bean>    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	<!-- Home page -->
 	<bean id="org.hisp.dhis.rbf.action.NoAction" class="org.hisp.dhis.rbf.action.NoAction" scope="prototype">
     </bean>
@@ -155,7 +177,6 @@
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
 	 </bean>	 
     
-    
 	<!-- Load DataEntry Form -->
 	 <bean id="org.hisp.dhis.rbf.dataentry.LoadDataEntryFormAction" class="org.hisp.dhis.rbf.dataentry.LoadDataEntryFormAction" scope="prototype">   
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -167,6 +188,7 @@
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 		<property name="pbfDataValueService" ref="org.hisp.dhis.rbf.api.PBFDataValueService" />
 		<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+		<property name="utilizationRateService" ref="org.hisp.dhis.rbf.api.UtilizationRateService" />
 	 </bean>    
     
     <!-- Save Value -->
@@ -465,7 +487,66 @@
 	</bean>
 	
 	
+	<!-- PBF Reports -->
+	<bean id="org.hisp.dhis.rbf.report.action.PBFReportFormAction" class="org.hisp.dhis.rbf.report.action.PBFReportFormAction"
+	    scope="prototype">
+	    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+	</bean>	
 	
-	
+
+	<!-- Utilization Rule Management -->
+    
+    <!-- Get DataElement List -->
+	<bean id="org.hisp.dhis.rbf.utilizationRuleManagement.action.GetUtilizationRuleDataElementListAction" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.GetUtilizationRuleDataElementListAction"
+	    scope="prototype">
+	    <property name="dataElementtService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+	</bean>	
+
+    <!-- Add Utilization form -->
+	<bean id="org.hisp.dhis.rbf.utilizationRuleManagement.action.ShowAddUtilizationRateFormAction" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.ShowAddUtilizationRateFormAction"
+	    scope="prototype">
+	    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+   <!-- Utilization Rule List -->
+	<bean id="org.hisp.dhis.rbf.utilizationRuleManagement.action.GetUtilizationRateListAction" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.GetUtilizationRateListAction"
+	    scope="prototype">
+	    <property name="utilizationRateService" ref="org.hisp.dhis.rbf.api.UtilizationRateService" />
+	    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+    
+   <!-- Add Utilization -->
+	<bean id="org.hisp.dhis.rbf.utilizationRuleManagement.action.AddUtilizationRateAction" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.AddUtilizationRateAction"
+	    scope="prototype">
+	    <property name="utilizationRateService" ref="org.hisp.dhis.rbf.api.UtilizationRateService" />
+	    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
+    <!-- Update Utilization form -->
+	<bean id="org.hisp.dhis.rbf.utilizationRuleManagement.action.ShowUpdateUtilizationRateFormAction" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.ShowUpdateUtilizationRateFormAction"
+	    scope="prototype">
+	    <property name="utilizationRateService" ref="org.hisp.dhis.rbf.api.UtilizationRateService" />
+	    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+
+   <!-- Upadte Utilization -->
+	<bean id="org.hisp.dhis.rbf.utilizationRuleManagement.action.UpdateUtilizationRateAction" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.UpdateUtilizationRateAction"
+	    scope="prototype">
+	    <property name="utilizationRateService" ref="org.hisp.dhis.rbf.api.UtilizationRateService" />
+	    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
+   <!-- Remove Utilization -->
+	<bean id="org.hisp.dhis.rbf.utilizationRuleManagement.action.RemoveUtilizationRateAction" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.RemoveUtilizationRateAction"
+	    scope="prototype">
+	    <property name="utilizationRateService" ref="org.hisp.dhis.rbf.api.UtilizationRateService" />
+	    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
 	
 </beans>

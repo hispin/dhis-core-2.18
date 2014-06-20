@@ -10,13 +10,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.velocity.tools.generic.NumberTool;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -29,6 +32,7 @@ import org.hisp.dhis.rbf.api.LookupService;
 import org.hisp.dhis.rbf.api.PBFDataValue;
 import org.hisp.dhis.rbf.api.PBFDataValueService;
 import org.hisp.dhis.rbf.api.TariffDataValueService;
+import org.hisp.dhis.rbf.api.UtilizationRateService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,11 +41,11 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Mithilesh Kumar Thakur
  */
-public class LoadDataEntryFormAction
-    implements Action
+public class LoadDataEntryFormAction implements Action
 {
     private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
-
+    private final static String UTILIZATION_RULE_DATAELEMENT_ATTRIBUTE = "UTILIZATION_RULE_DATAELEMENT_ATTRIBUTE";
+    private final static String UTILIZATION_RATE_DATAELEMENT_ID = "UTILIZATION_RATE_DATAELEMENT_ID";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -108,9 +112,22 @@ public class LoadDataEntryFormAction
     {
         this.constantService = constantService;
     }
-
+   
     @Autowired
     private OrganisationUnitGroupService orgUnitGroupService;
+    
+    private UtilizationRateService utilizationRateService;
+    
+    public void setUtilizationRateService( UtilizationRateService utilizationRateService )
+    {
+        this.utilizationRateService = utilizationRateService;
+    }
+    
+    @Autowired
+    private DataElementService dataElementService;
+    
+    @Autowired
+    private DataElementCategoryService categoryService;
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
@@ -216,9 +233,31 @@ public class LoadDataEntryFormAction
         return nullTool;
     }
     
+    public Map<Integer, String> utilizationRatesMap = new HashMap<Integer, String>();
+    
+    public Map<Integer, String> getUtilizationRatesMap()
+    {
+        return utilizationRatesMap;
+    }
+    
+    private List<DataElement> utilizationRateDataElements = new ArrayList<DataElement>();
+    
+    public List<DataElement> getUtilizationRateDataElements()
+    {
+        return utilizationRateDataElements;
+    }
+    
+    private String utilizationRate = "";
+
+    public String getUtilizationRate()
+    {
+        return utilizationRate;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+
 
     public String execute()
     {
@@ -339,6 +378,7 @@ public class LoadDataEntryFormAction
                 pbfDataValueMap.put( de, pbfDataValue );
             }
         }
+        
 
         /*
          * for( DataElement dataElement : dataElements ) {
@@ -386,7 +426,46 @@ public class LoadDataEntryFormAction
          * System.out.println(" decombo ---" + decombo.getId() +" -- " +
          * decombo.getName() ); }
          */
-
+        
+        
+        Constant utilizationRuleAttribute = constantService.getConstantByName( UTILIZATION_RULE_DATAELEMENT_ATTRIBUTE );
+        
+        utilizationRateDataElements = new ArrayList<DataElement>(); 
+        
+        for ( DataElement de : dataElements )
+        {
+            Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
+            for ( AttributeValue attValue : attrValueSet )
+            {
+                if ( attValue.getAttribute().getId() == utilizationRuleAttribute.getValue() && attValue.getValue().equalsIgnoreCase( "true" ) )
+                {
+                    utilizationRateDataElements.add( de );
+                }
+            }
+        }
+        
+        utilizationRatesMap = new HashMap<Integer, String>( utilizationRateService.getUtilizationRates() );
+        
+        /*
+        for( Integer key : utilizationRatesMap.keySet() )
+        {
+            System.out.println( " Key is  ---" + key + " -- Value " + utilizationRatesMap.get( key ) );
+        }
+        */
+        
+        //-------------------------------------------------------------
+        // Availbale Amount
+        //-------------------------------------------------------------
+        Constant paymentAmount = constantService.getConstantByName( UTILIZATION_RATE_DATAELEMENT_ID );
+        DataElement dataElement = dataElementService.getDataElement( (int) paymentAmount.getValue() );
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, optionCombo );
+        if ( dataValue != null )
+        {
+            utilizationRate = dataValue.getValue();
+        }        
+        
+      
         return SUCCESS;
     }
 

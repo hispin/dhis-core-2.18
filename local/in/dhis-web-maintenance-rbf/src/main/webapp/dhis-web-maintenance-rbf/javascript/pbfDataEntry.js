@@ -163,9 +163,14 @@ function savePBFDataValue( dataElementId, valueType )
 	{
 		valueId = "pbfdv_qty_reported_"+dataElementId;
 	}
-	else
+	else if( valueType == 2 )
 	{
 		valueId = "pbfdv_qty_validated_"+dataElementId;
+	}
+	
+	else
+	{
+		valueId = "pbfdv_qty_external_verification_"+dataElementId;
 	}
 	
 	var tariffValueId = "pbfdv_tariff_amt_"+dataElementId;
@@ -298,16 +303,3 @@ function getAvailablePeriodsTemp( availablePeriodsId, selectedPeriodsId, year )
 			
 		} );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

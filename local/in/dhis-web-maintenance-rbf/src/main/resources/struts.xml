@@ -110,7 +110,12 @@
 	</action>	
 	
 	
-	
+	<!-- for PBF DataEntry Role Quanitity External Verification-->	 
+	<action name="quanitityExternalVerification" class="org.hisp.dhis.rbf.action.NoAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-maintenance-rbf/loadDataEntryForm.vm</param>		
+	 	<param name="requiredAuthorities">F_QUANTITY_EXTERNAL_VERIFICATION</param>		
+	</action>	
 	
 	
 	
@@ -403,8 +408,54 @@
    </action>	
 	
 	
+	<!-- Utilization Rule Management -->
+    
+   <!-- Get DataElement List -->
+   <action name="utilizationRuleManagement" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.GetUtilizationRuleDataElementListAction">
+   		<result name="success" type="velocity">/main.vm</result>
+   		<param name="page">/dhis-web-maintenance-rbf/utilizationRuleDataElements.vm</param>
+   		<param name="javascripts">javascript/utilizationRule.js</param>
+   		<param name="menu">/dhis-web-maintenance-rbf/menu.vm</param>
+   </action>	
 	
-	
+
+   <!-- Utilization Rule List -->
+   <action name="getUtilizationRateList" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.GetUtilizationRateListAction">
+   		<result name="success" type="velocity">/content.vm</result>
+   		<param name="page">/dhis-web-maintenance-rbf/utilizationRateList.vm</param>
+   </action>
+
+
+   <!-- Add Utilization form -->
+   <action name="showAddUtilizationRateForm" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.ShowAddUtilizationRateFormAction">
+   		<result name="success" type="velocity">/content.vm</result>
+   		<param name="page">/dhis-web-maintenance-rbf/addUtilizationRateForm.vm</param>
+   </action>
+
+   <!-- Add Utilization -->
+   <action name="addUtilizationRate" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.AddUtilizationRateAction">
+   		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+   </action>
+
+
+   <!-- Update Utilization form -->
+   <action name="showUpdateUtilizationRateForm" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.ShowUpdateUtilizationRateFormAction">
+   		<result name="success" type="velocity">/content.vm</result>
+   		<param name="page">/dhis-web-maintenance-rbf/updateUtilizationRateForm.vm</param>
+   </action>
+
+
+  <!-- Update Utilization -->
+   <action name="updateUtilizationRate" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.UpdateUtilizationRateAction">
+   		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+   </action>
+
+  <!-- Remove Utilization -->
+   <action name="removeUtilizationRate" class="org.hisp.dhis.rbf.utilizationRuleManagement.action.RemoveUtilizationRateAction">
+   		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+   		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+   </action>
+
 	
 	</package>
 </struts>
