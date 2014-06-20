@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.filter;
+package org.hisp.dhis.node.converters;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,49 +28,44 @@ package org.hisp.dhis.dxf2.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  */
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ForwardingMap;
-import com.google.common.collect.Maps;
-import org.hisp.dhis.node.NodePropertyConverter;
+import org.hisp.dhis.node.AbstractNodePropertyConverter;
+import org.hisp.dhis.node.Node;
+import org.hisp.dhis.node.types.SimpleNode;
+import org.hisp.dhis.schema.Property;
+import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FieldMap extends ForwardingMap<String, FieldMap>
+@Component
+public class SizeNodePropertyConverter extends AbstractNodePropertyConverter
 {
-    private final Map<String, FieldMap> delegate = Maps.newHashMap();
-
-    private NodePropertyConverter nodePropertyConverter;
-
     @Override
-    protected Map<String, FieldMap> delegate()
+    public String name()
     {
-        return delegate;
-    }
-
-    public NodePropertyConverter getNodePropertyConverter()
-    {
-        return nodePropertyConverter;
-    }
-
-    public void setNodePropertyConverter( NodePropertyConverter nodePropertyConverter )
-    {
-        this.nodePropertyConverter = nodePropertyConverter;
-    }
-
-    public boolean haveNodePropertyConverter()
-    {
-        return nodePropertyConverter != null;
+        return "size";
     }
 
     @Override
-    public String toString()
+    public boolean canConvertTo( Property property, Object value )
     {
-        return Objects.toStringHelper( this )
-            .add( "map", standardToString() )
-            .add( "nodePropertyConverter", nodePropertyConverter )
-            .toString();
+        return property.isCollection() || String.class.isInstance( value );
+    }
+
+    @Override
+    public Node convertTo( Property property, Object value )
+    {
+        if ( property.isCollection() )
+        {
+            return new SimpleNode( property.getCollectionName(), ((Collection<?>) value).size(), property.isAttribute() );
+        }
+        else if ( String.class.isInstance( value ) )
+        {
+            return new SimpleNode( property.getName(), ((String) value).length(), property.isAttribute() );
+        }
+
+        throw new IllegalStateException( "Should never get here, this property/value is not supported by this transformer." );
     }
 }
