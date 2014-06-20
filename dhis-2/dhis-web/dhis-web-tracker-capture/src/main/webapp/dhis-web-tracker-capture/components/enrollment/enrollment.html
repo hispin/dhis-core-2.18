@@ -8,11 +8,11 @@
     <div class="panel-body dashboard-widget-container">
         <div ng-if="selectedEnrollment">
             <table class="table-borderless">
-                <tr>
-                    <td>
+                <tr class="col-md-12">
+                    <td class="col-md-6">
                         {{selectedProgram.dateOfIncidentDescription}}
                     </td>
-                    <td>
+                    <td class="col-md-6">
                         <input type="text" class="form-control" ng-date ng-model="selectedEnrollment.dateOfIncident" ng-disabled="true"/>
                     </td>
                 </tr>
@@ -21,20 +21,20 @@
             <hr>
             <table class="table-borderless table-striped">
                 <thead>
-                    <tr>
-                        <th>
+                    <tr class="col-md-12">
+                        <th class="col-md-6">
                             {{'program_stage'| translate}}
                         </th>
-                        <th>
+                        <th class="col-md-6">
                             {{'scheduled_date'| translate}}
                         </th>
                     </tr>                
                 </thead>           
-                <tr ng-repeat="programStage in programStages">
-                    <td>
+                <tr class="col-md-12" ng-repeat="programStage in programStages">
+                    <td class="col-md-6">
                         {{programStage.name}}
                     </td>
-                    <td>
+                    <td class="col-md-6">
                         <input type="text" class="form-control" ng-date ng-model="programStage.dueDate" ng-disabled="!showSchedulingDiv"/>
                     </td>
                 </tr>
@@ -65,30 +65,30 @@
 
         <div ng-if="selectedProgram && !selectedEnrollment">
             <table class="table-borderless">
-                <tr>
-                    <td>
+                <tr class="col-md-12">
+                    <td class="col-md-6">
                         {{selectedProgram.dateOfEnrollmentDescription}}
                     </td>
-                    <td>
+                    <td class="col-md-6">
                         <input type="text" class="form-control" ng-date ng-model="newEnrollment.dateOfEnrollment" />
                     </td>
                 </tr>     
-                <tr ng-if="selectedProgram.displayIncidentDate">
-                    <td>
+                <tr class="col-md-12" ng-if="selectedProgram.displayIncidentDate">
+                    <td class="col-md-6">
                         {{selectedProgram.dateOfIncidentDescription}}
                     </td>
-                    <td>
+                    <td class="col-md-6">
                         <input type="text" class="form-control" ng-date ng-model="newEnrollment.dateOfIncident" />                    
                     </td>
                 </tr>
             </table>
             <hr>
             <table class="table-borderless table-striped">
-                <tr ng-repeat="attribute in attributesForEnrollment">
-                    <td>
+                <tr class="col-md-12" ng-repeat="attribute in attributesForEnrollment">
+                    <td class="col-md-6">
                         {{attribute.name}}
                     </td>
-                    <td>
+                    <td class="col-md-6">
                         <div ng-switch="attribute.valueType">
                             <div ng-switch-when="date">
                                 <input type="text" class="form-control" ng-date ng-model="attribute.value" />
@@ -136,8 +136,11 @@
             </div>
         </div>
 
-        <div ng-if="!selectedProgram">
-            <div class="alert alert-warning">{{'please_select_a_program'| translate}}</div> 
+        <div ng-if="!selectedProgram && programExists">
+            <div class="alert alert-warning">{{'please_select_a_program_for_enrollment'| translate}}</div> 
+        </div>
+        <div ng-if="!programExists">
+            <div class="alert alert-warning">{{'no_program_exists'| translate}}</div> 
         </div>
 
     </div>

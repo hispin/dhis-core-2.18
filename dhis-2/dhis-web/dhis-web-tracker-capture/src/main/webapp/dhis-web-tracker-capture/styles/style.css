@@ -120,11 +120,6 @@ div.actions
     width: 10px;
 }
 
-.stage-container {
-    width:100%;
-    height:100px;
-}
-
 .stage-flow {
     height:100px;
     overflow: scroll;
@@ -163,7 +158,6 @@ div.orgunit-object {
     height: 60px;
     cursor: pointer;
     opacity: 1.0;
-    margin: 5px;
     white-space: normal;
     padding-top: 5px;
     text-align: center;
@@ -411,7 +405,6 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .table-borderless>tbody>tr>td, 
 .table-borderless>tfoot>tr>td {
     border-top: none; 
-    padding: 5px;
 }
 
 .dhis2-table>thead>tr>th, 
@@ -806,9 +799,9 @@ input[type=number], input[type=text], input[type=password], textarea {
     border-color:red;
 }
 
-.alert {
+/*.alert {
     padding: 5px;
-}
+}*/
 
 .input-field {
     border: 1px solid #aaa;

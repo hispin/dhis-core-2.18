@@ -27,105 +27,124 @@
                     </tr>
                 </tbody>                
             </table>
-            <hr>
-            <div ng-show="currentEvent">
-                <table class="table-borderless table-striped">
-                    <thead class="align-center">
+        </div>
+        <div ng-show="!dhis2Events && selectedEnrollment">            
+            <div ng-show="dummyEvents">
+                <div class="alert alert-warning">{{'no_event_is_yet_created'| translate}}</div>
+                <table class="table-borderless">
+                    <tbody>
                         <tr>
-                            <th class="align-center">
-                                {{'data_element'| translate}}
-                            </th>
-                            <th class="align-center">
-                                {{'value'| translate}}
-                            </th>
-                            <th class="align-center">
-                                {{'provided_elsewhere'| translate}}
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tr ng-repeat="prStDe in currentStage.programStageDataElements">
-                        <td>
-                            {{prStDe.dataElement.name}}
-                        </td>
-                        <td>
-                            <div ng-switch="prStDe.dataElement.type">
-                                <div ng-switch-when="int">
-                                    <input type="number"
-                                           class="form-control"
-                                           ng-model="currentEvent[prStDe.dataElement.id]" 
-                                           ng-required={{prStDe.compulsory}}
-                                           ng-blur="saveDatavalue(prStDe)" 
-                                           name="foo"/>
-                                </div>
-                                <div ng-switch-when="string">                                        
-                                    <input type="text"
-                                           class="form-control"
-                                           ng-model="currentEvent[prStDe.dataElement.id]" 
-                                           ng-required={{prStDe.compulsory}} 
-                                           typeahead="option for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
-                                           typeahead-open-on-focus    
-                                           ng-blur="saveDatavalue(prStDe)" 
-                                           name="foo"/>
-                                </div>
-                                <div ng-switch-when="bool">
-                                    <select class="form-control"
-                                            ng-model="currentEvent[prStDe.dataElement.id]" 
-                                            ng-required={{prStDe.compulsory}} 
-                                            ng-change="saveDatavalue(prStDe)" 
-                                            name="foo">
-                                        <option value="">{{'please_select'| translate}}</option>                        
-                                        <option value="0">{{'no'| translate}}</option>
-                                        <option value="1">{{'yes'| translate}}</option>
-                                    </select>
-
-                                </div>
-                                <div ng-switch-when="date">
-                                    <input type="text" 
-                                           placeholder="yyyy-mm-dd" 
-                                           ng-date 
-                                           class="form-control"
-                                           ng-model="saveDatavalue(prStDe)" 
-                                           ng-required={{prStDe.compulsory}}  
-                                           blur-or-change="saveDatavalue(dhis2Event, eventGridColumn.id)"
-                                           name="foo"/>
-                                </div>
-                            </div>
-                        </td>
-                        <td>                        
-                            <div class="align-center" ng-if="prStDe.allowProvidedElsewhere">
-                                <input type="checkbox" 
-                                       ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]"
-                                       ng-change="saveDatavalueLocation(prStDe)"/>
-                            </div>
-                        </td>
-                    </tr>
-                </table>    
-
+                            <td class="inline-block" ng-repeat="dummyEvent in dummyEvents">
+                                <span class="block align-center">{{dhis2Event.orgUnitName}}</span>                                              
+                                <span class="stage-container"                                                     
+                                      ng-class="{'current-stage': currentDummyEvent && currentDummyEvent.programStage == dummyEvent.programStage, '{{dummyEvent.statusColor}}': true}"                                                      
+                                      ng-click="showEventCreation(dummyEvent)">
+                                    {{dummyEvent.name}}<br/>
+                                    {{dummyEvent.dueDate}}         
+                                </span>
+                                <i class="fa fa-arrow-right" ng-show="$index < dummyEvents.length - 1"></i>
+                            </td>                        
+                        </tr>                        
+                    </tbody>                
+                </table>
+                <form name="eventCreationForm" novalidate ng-show="currentDummyEvent">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{currentDummyEvent.reportDateDescription}}
+                            <input type="text" name="eventDate" class="form-control" ng-date ng-model="currentDummyEvent.eventDate" ng-required="true"/>
+                            <span ng-show="eventCreationForm.submitted && eventCreationForm.eventDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                        </div>
+                        <div class="col-md-6">
+                            {{'due_date'| translate}}
+                            <input type="text" name="dueDate" class="form-control" ng-date ng-model="currentDummyEvent.dueDate" />
+                            <span ng-show="eventCreationForm.submitted && eventCreationForm.dueDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                        </div>                        
+                    </div>
+                    <div class="row vertical-spacing">   
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-default" ng-click="createEvent()">{{'create'| translate}}</button>
+                        </div>                        
+                    </div>
+                </form>
                 <hr>
-
             </div>
-        </div>
-        <div ng-if="!dhis2Events && selectedEnrollment">
-            <div class="alert alert-warning">{{'no_event_is_yet_created'| translate}}</div>
-            <table class="table-borderless">
-                <tbody>
+        </div>        
+        <div ng-show="currentEvent">
+            <hr>
+            <table class="table-borderless table-striped">
+                <thead class="align-center">
                     <tr>
-                        <td class="inline-block" ng-repeat="dummyEvent in dummyEvents">
-                            <span class="block align-center">{{dhis2Event.orgUnitName}}</span>                                              
-                            <span class="stage-container"                                                     
-                                  ng-class="{'current-stage': currentDummyEvent && currentDummyEvent.programStage == dummyEvent.programStage, '{{dummyEvent.statusColor}}': true}"                                                      
-                                  ng-click="showEventCreation(dummyEvent)">
-                                {{dummyEvent.name}}<br/>
-                                {{dummyEvent.eventDate}}         
-                            </span>
-                            <i class="fa fa-arrow-right" ng-show="$index < dummyEvents.length - 1"></i>
-                        </td>                        
+                        <th class="align-center">
+                            {{'data_element'| translate}}
+                        </th>
+                        <th class="align-center">
+                            {{'value'| translate}}
+                        </th>
+                        <th class="align-center">
+                            {{'provided_elsewhere'| translate}}
+                        </th>
                     </tr>
-                </tbody>                
+                </thead>
+                <tr ng-repeat="prStDe in currentStage.programStageDataElements">
+                    <td>
+                        {{prStDe.dataElement.name}}
+                    </td>
+                    <td>
+                        <div ng-switch="prStDe.dataElement.type">
+                            <div ng-switch-when="int">
+                                <input type="number"
+                                       class="form-control"
+                                       ng-model="currentEvent[prStDe.dataElement.id]" 
+                                       ng-required={{prStDe.compulsory}}
+                                       ng-blur="saveDatavalue(prStDe)" 
+                                       name="foo"/>
+                            </div>
+                            <div ng-switch-when="string">                                        
+                                <input type="text"
+                                       class="form-control"
+                                       ng-model="currentEvent[prStDe.dataElement.id]" 
+                                       ng-required={{prStDe.compulsory}} 
+                                       typeahead="option for option in prStDe.dataElement.optionSet.options | filter:$viewValue | limitTo:20" 
+                                       typeahead-open-on-focus    
+                                       ng-blur="saveDatavalue(prStDe)" 
+                                       name="foo"/>
+                            </div>
+                            <div ng-switch-when="bool">
+                                <select class="form-control"
+                                        ng-model="currentEvent[prStDe.dataElement.id]" 
+                                        ng-required={{prStDe.compulsory}} 
+                                        ng-change="saveDatavalue(prStDe)" 
+                                        name="foo">
+                                    <option value="">{{'please_select'| translate}}</option>                        
+                                    <option value="0">{{'no'| translate}}</option>
+                                    <option value="1">{{'yes'| translate}}</option>
+                                </select>
+
+                            </div>
+                            <div ng-switch-when="date">
+                                <input type="text" 
+                                       placeholder="yyyy-mm-dd" 
+                                       ng-date 
+                                       class="form-control"
+                                       ng-model="saveDatavalue(prStDe)" 
+                                       ng-required={{prStDe.compulsory}}  
+                                       blur-or-change="saveDatavalue(dhis2Event, eventGridColumn.id)"
+                                       name="foo"/>
+                            </div>
+                        </div>
+                    </td>
+                    <td>                        
+                        <div class="align-center" ng-show="prStDe.allowProvidedElsewhere">
+                            <input type="checkbox" 
+                                   ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]"
+                                   ng-change="saveDatavalueLocation(prStDe)"/>
+                        </div>
+                    </td>
+                </tr>
             </table>
+            <hr>
         </div>
-        <div ng-if="!selectedEnrollment">
+        <div ng-show="!selectedEnrollment">
             <div class="alert alert-warning">{{'not_yet_enrolled'| translate}}</div> 
         </div>
     </div>
