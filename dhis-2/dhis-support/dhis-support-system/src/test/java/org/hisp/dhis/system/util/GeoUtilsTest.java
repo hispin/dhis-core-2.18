@@ -68,8 +68,8 @@ public class GeoUtilsTest
     {
         String text = 
             "<svg xmlns=\"http://www.w3.org/2000/svg\">" +
-            "<text id=\"ext-sprite-1866\" zIndex=\"500\" text=\"Measles Coverage <1y\" hidden=\"false\">" +
-            "<text id=\"ext-sprite-1866\" zIndex=\"500\" text=\"BCG & DPT Coverage\" hidden=\"false\">" +
+            "<text id=\"ext-sprite-1866\" zIndex=\"500\" text=\"Measles Coverage <1y\" font=\"bold 18px Arial,Sans-serif,Lucida Grande\" hidden=\"false\">" +
+            "<text id=\"ext-sprite-1866\" zIndex=\"500\" text=\"BCG & DPT Coverage\" font=\"bold 18px Arial,Sans-serif,Lucida Grande\" hidden=\"false\">" +
             "</svg>";
 
         String expected = 
