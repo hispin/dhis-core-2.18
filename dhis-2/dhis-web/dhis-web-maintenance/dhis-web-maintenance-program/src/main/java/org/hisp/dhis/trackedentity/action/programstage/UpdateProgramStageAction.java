@@ -222,11 +222,11 @@ public class UpdateProgramStageAction
         this.captureCoordinates = captureCoordinates;
     }
 
-    private List<Boolean> allowDateInFutures;
+    private List<Boolean> allowFutureDates;
 
-    public void setAllowDateInFutures( List<Boolean> allowDateInFutures )
+    public void setAllowFutureDates( List<Boolean> allowFutureDates )
     {
-        this.allowDateInFutures = allowDateInFutures;
+        this.allowFutureDates = allowFutureDates;
     }
 
     private List<Integer> whenToSend = new ArrayList<Integer>();
@@ -383,7 +383,7 @@ public class UpdateProgramStageAction
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
             Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
-            Boolean allowDate = allowDateInFutures.get( i ) == null ? false : allowDateInFutures.get( i );
+            Boolean allowDate = allowFutureDates.get( i ) == null ? false : allowFutureDates.get( i );
 
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
@@ -394,7 +394,7 @@ public class UpdateProgramStageAction
                     this.compulsories.get( i ), i );
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElement.setDisplayInReports( displayInReport );
-                programStageDataElement.setAllowDateInFuture( allowDate );
+                programStageDataElement.setAllowFutureDate( allowDate );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
             else
@@ -403,7 +403,7 @@ public class UpdateProgramStageAction
                 programStageDataElement.setSortOrder( i );
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElement.setDisplayInReports( displayInReport );
-                programStageDataElement.setAllowDateInFuture( allowDate );
+                programStageDataElement.setAllowFutureDate( allowDate );
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
 
                 programStageDataElements.remove( programStageDataElement );

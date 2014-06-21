@@ -243,11 +243,11 @@ public class AddProgramStageAction
         this.captureCoordinates = captureCoordinates;
     }
 
-    private List<Boolean> allowDateInFutures;
+    private List<Boolean> allowFutureDates;
 
-    public void setAllowDateInFutures( List<Boolean> allowDateInFutures )
+    public void setAllowFutureDates( List<Boolean> allowFutureDates )
     {
-        this.allowDateInFutures = allowDateInFutures;
+        this.allowFutureDates = allowFutureDates;
     }
 
     private List<Integer> userGroup = new ArrayList<Integer>();
@@ -384,13 +384,13 @@ public class AddProgramStageAction
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
             Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
-            Boolean allowDate = allowDateInFutures.get( i ) == null ? false : allowDateInFutures.get( i );
+            Boolean allowDate = allowFutureDates.get( i ) == null ? false : allowFutureDates.get( i );
 
             ProgramStageDataElement programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
                 this.compulsories.get( i ), new Integer( i ) );
             programStageDataElement.setAllowProvidedElsewhere( allowed );
             programStageDataElement.setDisplayInReports( displayInReport );
-            programStageDataElement.setAllowDateInFuture( allowDate );
+            programStageDataElement.setAllowFutureDate( allowDate );
             programStageDataElementService.addProgramStageDataElement( programStageDataElement );
         }
 

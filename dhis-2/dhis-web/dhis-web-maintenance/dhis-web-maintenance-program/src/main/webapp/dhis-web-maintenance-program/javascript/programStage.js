@@ -140,10 +140,10 @@ function selectDataElements()
 			html += "<td align='center'><input type='checkbox' name='allowProvided'></td>";
 			html += "<td align='center'><input type='checkbox' name='displayInReport'></td>";
 			if( jQuery(item).attr('valuetype') =='date'){
-				html += "<td align='center'><input type='checkbox' name='allowDateInFuture'></td>";
+				html += "<td align='center'><input type='checkbox' name='allowFutureDate'></td>";
 			}
 			else{
-				html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
+				html += "<td align='center'><input type='hidden' name='allowFutureDate'></td>";
 			}
 			
 			html += "</tr>";
@@ -164,10 +164,10 @@ function selectAllDataElements()
 		html += "<td align='center'><input type='checkbox' name='displayInReport'></td>";
 		
 		if( jQuery(item).attr('valuetype') =='date'){
-			html += "<td align='center'><input type='checkbox' name='allowDateInFuture'></td>";
+			html += "<td align='center'><input type='checkbox' name='allowFutureDate'></td>";
 		}
 		else{
-			html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
+			html += "<td align='center'><input type='hidden' name='allowFutureDate'></td>";
 		}
 		
 		html += "</tr>";

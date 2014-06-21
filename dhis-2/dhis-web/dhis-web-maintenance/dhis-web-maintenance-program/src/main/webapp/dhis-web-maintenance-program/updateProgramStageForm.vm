@@ -167,7 +167,7 @@
 					<select id="compulsories" name='compulsories' multiple="multiple" class="hidden"></select>
 					<select id="allowProvidedElsewhere" name='allowProvidedElsewhere' multiple="multiple" class="hidden"></select>
 					<select id="displayInReports" name='displayInReports' multiple="multiple" class="hidden"></select>
-					<select id="allowDateInFutures" name='allowDateInFutures' multiple="multiple" class="hidden"></select>     
+					<select id="allowFutureDates" name='allowFutureDates' multiple="multiple" class="hidden"></select>     
 				</th>
 			</tr>
 		</thead>
@@ -213,9 +213,9 @@
 									<td align="center"><input type="checkbox" name="displayInReport" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.displayInReports == 'true' ) checked #end /></td>
 									<td align="center">
 										#if($programStageDataElement.dataElement.type=='date')
-										<input type="checkbox" name="allowDateInFuture" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.allowDateInFuture == 'true' ) checked #end />
+										<input type="checkbox" name="allowFutureDate" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.allowFutureDate == 'true' ) checked #end />
 										#else
-										<input type="hidden" name="allowDateInFuture" />
+										<input type="hidden" name="allowFutureDate" />
 										#end
 									</td>
 								</tr>
