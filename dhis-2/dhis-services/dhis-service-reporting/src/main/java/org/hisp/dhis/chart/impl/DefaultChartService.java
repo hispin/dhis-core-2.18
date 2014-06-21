@@ -573,6 +573,8 @@ public class DefaultChartService
 
         JFreeChart jFreeChart = new JFreeChart( chart.getName(), titleFont, plot, !chart.isHideLegend() );
 
+        setBasicConfig( jFreeChart, chart );
+        
         if ( chart.isTargetLine() )
         {
             plot.addRangeMarker( getMarker( chart.getTargetLineValue(), chart.getTargetLineLabel() ) );
@@ -589,7 +591,6 @@ public class DefaultChartService
         }
 
         plot.setDatasetRenderingOrder( DatasetRenderingOrder.FORWARD );
-        plot.setBackgroundPaint( COLOR_TRANSPARENT );
         plot.setOutlinePaint( COLOR_TRANSPARENT );
 
         // ---------------------------------------------------------------------
@@ -603,13 +604,6 @@ public class DefaultChartService
         ValueAxis rangeAxis = plot.getRangeAxis();
         rangeAxis.setLabel( chart.getRangeAxisLabel() );
 
-        // ---------------------------------------------------------------------
-        // Color & antialias
-        // ---------------------------------------------------------------------
-
-        jFreeChart.setBackgroundPaint( COLOR_TRANSPARENT );
-        jFreeChart.setAntiAlias( true );
-
         return jFreeChart;
     }
 
@@ -617,6 +611,8 @@ public class DefaultChartService
     {
         JFreeChart areaChart = ChartFactory.createAreaChart( chart.getName(), chart.getDomainAxisLabel(),
             chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
+
+        setBasicConfig( areaChart, chart );
 
         CategoryPlot plot = (CategoryPlot) areaChart.getPlot();
         plot.setOrientation( PlotOrientation.VERTICAL );
@@ -627,11 +623,6 @@ public class DefaultChartService
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
         xAxis.setLabelFont( labelFont );
-
-        areaChart.getTitle().setFont( titleFont );
-        areaChart.addSubtitle( getSubTitle( chart ) );
-        areaChart.setBackgroundPaint( COLOR_TRANSPARENT );
-        areaChart.setAntiAlias( true );
 
         return areaChart;
     }
@@ -644,8 +635,8 @@ public class DefaultChartService
         plot.setLabelFont( labelFont );
 
         JFreeChart radarChart = new JFreeChart( chart.getName(), titleFont, plot, !chart.isHideLegend() );
-        radarChart.setAntiAlias( true );
-        radarChart.setBackgroundPaint( COLOR_TRANSPARENT );
+
+        setBasicConfig( radarChart, chart );
 
         return radarChart;
     }
@@ -655,6 +646,8 @@ public class DefaultChartService
         JFreeChart stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxisLabel(),
             chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
 
+        setBasicConfig( stackedBarChart, chart );
+
         CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
         plot.setBackgroundPaint( COLOR_TRANSPARENT );
         plot.setOutlinePaint( COLOR_TRANSPARENT );
@@ -663,25 +656,18 @@ public class DefaultChartService
 
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
-
-        stackedBarChart.getTitle().setFont( titleFont );
-        stackedBarChart.addSubtitle( getSubTitle( chart ) );
-        stackedBarChart.setBackgroundPaint( COLOR_TRANSPARENT );
-        stackedBarChart.setAntiAlias( true );
-
+        
         return stackedBarChart;
     }
-
+    
     private JFreeChart getMultiplePieChart( Chart chart, CategoryDataset[] dataSets )
     {
         JFreeChart multiplePieChart = ChartFactory.createMultiplePieChart( chart.getName(), dataSets[0], TableOrder.BY_ROW,
             !chart.isHideLegend(), false, false );
 
-        multiplePieChart.getTitle().setFont( titleFont );
-        multiplePieChart.addSubtitle( getSubTitle( chart ) );
+        setBasicConfig( multiplePieChart, chart );
+        
         multiplePieChart.getLegend().setItemFont( subTitleFont );
-        multiplePieChart.setBackgroundPaint( COLOR_TRANSPARENT );
-        multiplePieChart.setAntiAlias( true );
 
         MultiplePiePlot multiplePiePlot = (MultiplePiePlot) multiplePieChart.getPlot();
         multiplePiePlot.setBackgroundPaint( COLOR_TRANSPARENT );
@@ -706,6 +692,18 @@ public class DefaultChartService
         }
 
         return multiplePieChart;
+    }
+
+    /**
+     * Sets basic configuration including title font, subtitle, background paint and
+     * anti-alias on the given JFreeChart.
+     */
+    private void setBasicConfig( JFreeChart jFreeChart, Chart chart)
+    {
+        jFreeChart.getTitle().setFont( titleFont );
+        jFreeChart.addSubtitle( getSubTitle( chart ) );
+        jFreeChart.setBackgroundPaint( COLOR_TRANSPARENT );
+        jFreeChart.setAntiAlias( true );
     }
 
     private CategoryDataset[] getCategoryDataSet( Chart chart )
