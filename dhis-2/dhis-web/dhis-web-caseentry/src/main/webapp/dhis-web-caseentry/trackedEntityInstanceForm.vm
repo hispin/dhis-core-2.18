@@ -46,7 +46,7 @@
 						 #set($value = "")
 						 #set($value = $attributeValueMap.get($attribute.id))
 						 #set($mandatory = $mandatoryMap.get($attribute.id))
-						 #set($allowDateInFuture = $allowDateInFutureMap.get($attribute.id))
+						 #set($allowFutureDate = $allowDateInFutureMap.get($attribute.id))
 						 #if( $mandatory ) #else  #set($mandatory=false) #end
 						 <tr name='attributesFields'>
 							 <td class='text-column'><label>$encoder.htmlEncode($attribute.displayName) #if($mandatory ) <em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
@@ -62,7 +62,7 @@
 							 #elseif( $attribute.valueType == "date" )
 								 <input type="text" id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value='$value' class="{validate:{required:$mandatory }}" />
 								 <script type="text/javascript">
-									#if($allowDateInFuture=='true')
+									#if($allowFutureDate=='true')
 										datePicker( 'attr$attribute.id', false, false );
 									#else
 										 datePickerValid( 'attr$attribute.id', false, false );
@@ -114,7 +114,7 @@
 			#set( $attributeValue = $!attributeValueMap.get( $attribute.id ) )
 			#set($mandatory = $mandatoryMap.get($attribute.id))
 			#if( $mandatory ) #else  #set($mandatory=false) #end
-			#set($allowDateInFuture = $allowDateInFutureMap.get($attribute.id))
+			#set($allowFutureDate = $allowDateInFutureMap.get($attribute.id))
 			<tr name='attributesFields'>
 				<td class='text-column'><label>$encoder.htmlEncode($attribute.displayName) #if($mandatory ) <em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 				<td class="input-column">
@@ -129,7 +129,7 @@
 					#elseif( $attribute.valueType == "date" )
 						<input type="text" id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value="$!attributeValue" class=' #validate( "default"  $mandatory  )'>
 						<script type="text/javascript">
-							#if($allowDateInFuture=='true')
+							#if($allowFutureDate=='true')
 								datePicker( 'attr$attribute.id', false, false );
 							#else
 								datePickerValid( 'attr$attribute.id', false, false );

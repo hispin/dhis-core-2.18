@@ -46,7 +46,7 @@ import java.io.Serializable;
 /**
  * @author Chau Thu Tran
  */
-@JacksonXmlRootElement(localName = "programTrackedEntityAttribute", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "programTrackedEntityAttribute", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramTrackedEntityAttribute
     implements Serializable
 {
@@ -62,8 +62,8 @@ public class ProgramTrackedEntityAttribute
 
     private Boolean mandatory;
 
-    private Boolean allowDateInFuture;
-    
+    private Boolean allowFutureDate;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -87,15 +87,15 @@ public class ProgramTrackedEntityAttribute
         this.displayInList = displayInList;
         this.mandatory = mandatory;
     }
-    
+
     public ProgramTrackedEntityAttribute( TrackedEntityAttribute attribute, Integer sortOrder, boolean displayInList,
-        Boolean mandatory, Boolean allowDateInFuture )
+        Boolean mandatory, Boolean allowFutureDate )
     {
         this.attribute = attribute;
         this.sortOrder = sortOrder;
         this.displayInList = displayInList;
         this.mandatory = mandatory;
-        this.allowDateInFuture = allowDateInFuture;
+        this.allowFutureDate = allowFutureDate;
     }
 
     // -------------------------------------------------------------------------
@@ -113,8 +113,8 @@ public class ProgramTrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean isMandatory()
     {
         return mandatory;
@@ -126,9 +126,9 @@ public class ProgramTrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
-    @JacksonXmlProperty(localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0 )
     public TrackedEntityAttribute getAttribute()
     {
         return attribute;
@@ -150,13 +150,12 @@ public class ProgramTrackedEntityAttribute
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
-    @JacksonXmlProperty(localName = "displayInList", namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( localName = "displayInList", namespace = DxfNamespaces.DXF_2_0 )
     public boolean isDisplayInList()
     {
         return displayInList;
     }
-
 
     public void setDisplayInList( boolean displayInList )
     {
@@ -167,13 +166,14 @@ public class ProgramTrackedEntityAttribute
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getAllowDateInFuture()
+    public Boolean getAllowFutureDate()
     {
-        return allowDateInFuture;
+        return allowFutureDate;
     }
 
-    public void setAllowDateInFuture( Boolean allowDateInFuture )
+    public void setAllowFutureDate( Boolean allowFutureDate )
     {
-        this.allowDateInFuture = allowDateInFuture;
+        this.allowFutureDate = allowFutureDate;
     }
+
 }
