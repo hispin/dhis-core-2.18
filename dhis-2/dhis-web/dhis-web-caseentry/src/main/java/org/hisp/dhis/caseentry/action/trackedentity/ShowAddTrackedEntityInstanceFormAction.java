@@ -372,7 +372,7 @@ public class ShowAddTrackedEntityInstanceFormAction
                 for ( ProgramTrackedEntityAttribute programAttribute : program.getAttributes() )
                 {
                     mandatoryMap.put( programAttribute.getAttribute().getId(), programAttribute.isMandatory() );
-                    allowDateInFutureMap.put( programAttribute.getAttribute().getId(), programAttribute.getAllowDateInFuture() );
+                    allowDateInFutureMap.put( programAttribute.getAttribute().getId(), programAttribute.getAllowFutureDate() );
                 }
             }
 

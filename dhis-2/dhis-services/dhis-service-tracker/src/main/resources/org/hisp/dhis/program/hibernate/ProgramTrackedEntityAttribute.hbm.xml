@@ -21,7 +21,7 @@
 
 		<property name="mandatory" column="mandatory" />
 		
-		<property name="allowDateInFuture" column="allowDateInFuture" />
+		<property name="allowFutureDate" column="allowFutureDate" />
 
 	</class>
 </hibernate-mapping>

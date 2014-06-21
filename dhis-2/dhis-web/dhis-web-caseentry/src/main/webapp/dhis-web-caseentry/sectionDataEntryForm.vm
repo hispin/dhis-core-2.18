@@ -74,7 +74,7 @@
 								#elseif( $programStageDataElement.dataElement.type == "date" )
 									<input name="entryfield" type="text" data="{compulsory: $programStageDataElement.compulsory, deType:'$programStageDataElement.dataElement.getType()'}" id="$id" name="entryfield" value="$!encoder.htmlEncode( $dataValue.value )" onchange="saveVal( '$programStageDataElement.dataElement.uid' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="date-field datefield" >
 									<script type="text/javascript">
-										#if($programStageDataElement.allowDateInFuture=='true')
+										#if($programStageDataElement.allowFutureDate=='true')
 											datePicker( '$programStageDataElement.programStage.uid'+ '-' + '$programStageDataElement.dataElement.uid' + '-val', false, false);
 										#else
 											datePickerValid( '$programStageDataElement.programStage.uid'+ '-' + '$programStageDataElement.dataElement.uid' + '-val', false, false);

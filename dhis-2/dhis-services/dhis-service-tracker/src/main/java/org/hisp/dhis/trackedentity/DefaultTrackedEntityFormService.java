@@ -283,7 +283,7 @@ public class DefaultTrackedEntityFormService
         {
             ProgramTrackedEntityAttribute programAttribute = program.getAttribute( attribute );
             mandatory = programAttribute.isMandatory();
-            allowDateInFuture = programAttribute.getAllowDateInFuture();
+            allowDateInFuture = programAttribute.getAllowFutureDate();
         }
 
         inputHtml = TAG_OPEN + "input id=\"attr" + attribute.getId() + "\" name=\"attr" + attribute.getId()

@@ -177,10 +177,10 @@ function selectProperties() {
       html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'></td>"
 	  html += "<td align='center'><input type='checkbox' name='mandatory'></td>";
 	  if( jQuery(item).attr('valuetype') =='date'){
-		html += "<td align='center'><input type='checkbox' name='allowDateInFuture'></td>";
+		html += "<td align='center'><input type='checkbox' name='allowFutureDate'></td>";
 	  }
 	  else{
-		html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
+		html += "<td align='center'><input type='hidden' name='allowFutureDate'></td>";
 	  }
 	  html += "</tr>";
 		
@@ -202,10 +202,10 @@ function selectAllProperties() {
     html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'></td>";
     html += "<td align='center'><input type='checkbox' name='mandatory'></td>";
     if( jQuery(item).attr('valuetype') =='date'){
-		html += "<td align='center'><input type='checkbox' name='allowDateInFuture'></td>";
+		html += "<td align='center'><input type='checkbox' name='allowFutureDate'></td>";
 	}
 	else{
-		html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
+		html += "<td align='center'><input type='hidden' name='allowFutureDate'></td>";
 	}
 	html += "</tr>";
 	

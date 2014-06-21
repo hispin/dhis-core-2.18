@@ -163,11 +163,11 @@ public class AddProgramAction
         this.personDisplayNames = personDisplayNames;
     }
 
-    private List<Boolean> allowDateInFuture = new ArrayList<Boolean>();
+    private List<Boolean> allowFutureDate = new ArrayList<Boolean>();
 
-    public void setAllowDateInFuture( List<Boolean> allowDateInFuture )
+    public void setAllowFutureDate( List<Boolean> allowFutureDate )
     {
-        this.allowDateInFuture = allowDateInFuture;
+        this.allowFutureDate = allowFutureDate;
     }
 
     private List<Boolean> mandatory = new ArrayList<Boolean>();
@@ -325,7 +325,7 @@ public class AddProgramAction
                     .parseInt( ids[1] ) );
 
                 ProgramTrackedEntityAttribute programAttribute = new ProgramTrackedEntityAttribute( attribute,
-                    index + 1, personDisplayNames.get( index ), mandatory.get( index ), allowDateInFuture.get( index ) );
+                    index + 1, personDisplayNames.get( index ), mandatory.get( index ), allowFutureDate.get( index ) );
 
                 program.getAttributes().add( programAttribute );
             }
