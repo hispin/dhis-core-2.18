@@ -34,6 +34,7 @@ import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.referencing.GeodeticCalculator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -48,6 +49,8 @@ import com.vividsolutions.jts.geom.Polygon;
 public class GeoUtils
 {
     private static final Pattern SVG_TEXT_PATTERN = Pattern.compile( "text=\"(.*?)\"", Pattern.DOTALL );
+    
+    private static final String SVG_FONT_REGEX = "(\\s+)font=\"(.*?)\"";
     
     /**
      * Returns boundaries of a box shape which centre is the point defined by the 
@@ -185,21 +188,34 @@ public class GeoUtils
             return null;
         }
 
+        svg = replaceText( svg );
+        svg = replaceFont( svg );
+        
+        return svg;
+    }
+    
+    private static String replaceText( String svg )
+    {
         StringBuffer sb = new StringBuffer();
         
-        Matcher matcher = SVG_TEXT_PATTERN.matcher( svg );
+        Matcher textMatcher = SVG_TEXT_PATTERN.matcher( svg );
         
-        while ( matcher.find() )
+        while ( textMatcher.find() )
         {
-            String text = matcher.group( 1 );
+            String text = textMatcher.group( 1 );
             
             if ( text != null && !text.isEmpty() )
             {
                 text = "text=\"" + text.replaceAll( "[<>&]", "" ) + "\"";                
-                matcher.appendReplacement( sb, text );
+                textMatcher.appendReplacement( sb, text );
             }
         }
-        
-        return matcher.appendTail( sb ).toString();
+                
+        return textMatcher.appendTail( sb ).toString();        
+    }
+    
+    private static String replaceFont( String svg )
+    {
+        return svg.replaceAll( SVG_FONT_REGEX, StringUtils.EMPTY );
     }
 }
