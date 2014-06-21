@@ -16,8 +16,8 @@ jQuery( document ).ready( function()
 		var daysAllowedSendMessages = jQuery( "#daysAllowedSendMessages" );
 		daysAllowedSendMessages.empty();
 		
-		var allowDateInFutures = jQuery( "#allowDateInFutures" );
-		allowDateInFutures.empty();
+		var allowFutureDates = jQuery( "#allowFutureDates" );
+		allowFutureDates.empty();
 		
 		var templateMessages = jQuery( "#templateMessages" );
 		templateMessages.empty();
@@ -53,9 +53,9 @@ jQuery( document ).ready( function()
 			checked = displayInReport.attr('checked') ? true : false;
 			displayInReports.append( "<option value='" + checked + "' selected='true'><" + checked + "/option>" );
 		
-			var allowDateInFuture = jQuery( item ).find( "input[name='allowDateInFuture']:first");
-			checked = allowDateInFuture.attr('checked') ? true : false;
-			allowDateInFutures.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+			var allowFutureDate = jQuery( item ).find( "input[name='allowFutureDate']:first");
+			checked = allowFutureDate.attr('checked') ? true : false;
+			allowFutureDates.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 		});
 		jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
 			var days = (jQuery(item).attr('realvalue')==undefined) ? 0 : jQuery(item).attr('realvalue');

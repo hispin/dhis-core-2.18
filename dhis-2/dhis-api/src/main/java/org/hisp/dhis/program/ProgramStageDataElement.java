@@ -75,7 +75,7 @@ public class ProgramStageDataElement
 
     private Boolean displayInReports = false;
 
-    private Boolean allowDateInFuture = false;
+    private Boolean allowFutureDate = false;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -184,14 +184,14 @@ public class ProgramStageDataElement
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getAllowDateInFuture()
+    public Boolean getAllowFutureDate()
     {
-        return allowDateInFuture;
+        return allowFutureDate;
     }
 
-    public void setAllowDateInFuture( Boolean allowDateInFuture )
+    public void setAllowFutureDate( Boolean allowFutureDate )
     {
-        this.allowDateInFuture = allowDateInFuture;
+        this.allowFutureDate = allowFutureDate;
     }
 
     // -------------------------------------------------------------------------
@@ -230,7 +230,7 @@ public class ProgramStageDataElement
             ", allowProvidedElsewhere=" + allowProvidedElsewhere +
             ", sortOrder=" + sortOrder +
             ", displayInReports=" + displayInReports +
-            ", allowDateInFuture=" + allowDateInFuture +
+            ", allowFutureDate=" + allowFutureDate +
             '}';
     }
 }

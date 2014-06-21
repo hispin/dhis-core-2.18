@@ -174,7 +174,7 @@ public class DefaultProgramDataEntryService
 
                     compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
                     allowProvidedElsewhere = psde.getAllowProvidedElsewhere();
-                    if ( psde.getAllowDateInFuture() )
+                    if ( psde.getAllowFutureDate() )
                     {
                         dateMethod = "datePicker";
                     }
@@ -391,7 +391,7 @@ public class DefaultProgramDataEntryService
 
                     compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
                     allowProvidedElsewhere = psde.getAllowProvidedElsewhere();
-                    if ( psde.getAllowDateInFuture() )
+                    if ( psde.getAllowFutureDate() )
                     {
                         dateMethod = "datePicker";
                     }

@@ -17,8 +17,8 @@
 		compulsaryIdentifier.empty();
 		var mandatorySelector = jQuery( "#mandatory" );
 		mandatorySelector.empty();
-		var allowDateInFutureSelector = jQuery( "#allowFutureDate" );
-		allowDateInFutureSelector.empty();
+		var allowFutureDateSelector = jQuery( "#allowFutureDate" );
+		allowFutureDateSelector.empty();
 		
         if( getFieldValue('type') != 3 ){
 			
@@ -40,7 +40,7 @@
 				// allowFutureDate
 				var allowFutureDate = jQuery( item ).find( "input[name='allowFutureDate']:first");
 				checked = allowFutureDate.attr('checked') ? true : false;
-				allowDateInFutureSelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+				allowFutureDateSelector.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 			});
 			if( jQuery("#selectedList").find("tr").length > 0 && isDisplayed ){
 				compulsaryIdentifier.append( "<option value='0' selected='true'></option>");

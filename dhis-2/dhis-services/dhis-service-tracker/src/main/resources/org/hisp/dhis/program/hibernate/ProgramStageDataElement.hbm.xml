@@ -21,7 +21,7 @@
 
     <property name="displayInReports" />
 
-    <property name="allowDateInFuture" />
+    <property name="allowFutureDate" />
 
   </class>
 </hibernate-mapping>
