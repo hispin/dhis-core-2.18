@@ -85,8 +85,8 @@ styles/style.css
 ../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js
 ../dhis-web-commons/ouwt/ouwt.js
 ../dhis-web-commons/javascripts/dhis2/dhis2.translate.js
-../dhis-web-commons/javascripts/dhis2/dhis.menu.js
-../dhis-web-commons/javascripts/dhis2/dhis.menu.ui.js
+../dhis-web-commons/javascripts/dhis2/dhis2.menu.js
+../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js
 
 scripts/event-capture.js  
 scripts/app.js

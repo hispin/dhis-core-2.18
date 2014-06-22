@@ -1,7 +1,7 @@
 <table style='width: 50%;'>
     <tr>
         <td>
-            {{selectedProgram.dateOfIncidentDescription}}
+            {{selectedProgramStage.reportDateDescription ? selectedProgramStage.reportDateDescription : 'incident_date' | translate }}
         </td>
         <td>
             <input type="text"                                                   

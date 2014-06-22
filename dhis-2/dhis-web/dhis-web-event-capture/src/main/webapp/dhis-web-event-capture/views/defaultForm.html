@@ -12,7 +12,7 @@
     <tbody id="list">
         <tr>
             <td>
-                 {{selectedProgram.dateOfIncidentDescription}}
+                 {{selectedProgramStage.reportDateDescription ? selectedProgramStage.reportDateDescription : 'incident_date' | translate }}
             </td>
             <td>
                 <input type="text"                                                   
