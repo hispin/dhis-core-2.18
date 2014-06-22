@@ -43,41 +43,35 @@
   
   <table>
     <tr>
-      <th colspan="4">$i18n.getString( "details" )</th>      
+      <th colspan="2">$i18n.getString( "details" )</th>      
     </tr>
     <tr>
-      <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+      <td style="width: 100px"><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
       <td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $dataElementCategoryOption.name )" class="{validate:{required:true,rangelength:[2,150]}}"/></td>
       <td></td>
     </tr>      
 	<tr>
 	  <td><label>$i18n.getString( "code" )</label></td>
-	  <td colspan="3"><input type="text" id="code" name="code" style="width:25em" value="$!encoder.htmlEncode( $dataElementCategoryOption.code )" /></td>
+	  <td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $dataElementCategoryOption.code )" /></td>
     </tr>
-    <tr class="showMoreOptions">
-      <td colspan="4"><a href="javascript:showMoreOrFewerOptions()">$i18n.getString( "show_more_options" )</a></td>
+  </table>  
+  
+  <div id="showMoreOptions" style="margin: 20px 0;"><a href="javascript:showMoreOrFewerOptions()">$i18n.getString( "show_more_options" )</a></div>
+  
+  <div id="moreOptions" style="display:none">
+    
+  <table>
+    <tr>
+      <td style="width: 100px"><label for="startDate">$i18n.getString( 'start_date' )</label></td>
+      <td><input type="text" id="startDate" name="startDate" value="$!format.formatDate( $!dataElementCategoryOption.startDate )"></td>
     </tr>
-    <tr class="moreOptions" style="display:none">
-      <td>
-        <label for="startDate">$i18n.getString( 'start_date' )</label>
-      </td>
-      <td>
-        <input type="text" id="startDate" name="startDate" style="width:20em" value="$!format.formatDate( $!dataElementCategoryOption.startDate )">
-          </td>
-      </tr>
-      <tr class="moreOptions" style="display:none">
-        <td>
-          <label for="endDate">$i18n.getString( 'end_date' )</label>
-        </td>
-      <td>
-          <input type="text" id="endDate" name="endDate" style="width:20em" value="$!format.formatDate( $!dataElementCategoryOption.endDate )">
-      </td>
+    <tr>
+      <td><label for="endDate">$i18n.getString( 'end_date' )</label></td>
+      <td><input type="text" id="endDate" name="endDate" value="$!format.formatDate( $!dataElementCategoryOption.endDate )"></td>
     </tr>
   </table>
 
-  <div class="moreOptions" style="display:none">
-
-  <table style="margin-bottom: 20px;">
+  <table style="margin: 20px 0;">
     <tr>
       <th>$i18n.getString( "organisation_units" )</th>
     </tr>
@@ -88,17 +82,13 @@
     </tr>
   </table>
 
-  <div id="showFewerOptions" style="margin-bottom: 20px;"><a href="javascript:showMoreOrFewerOptions()">$i18n.getString( "show_fewer_options" )</a></div>
+  <div id="showFewerOptions" style="margin: 20px 0;"><a href="javascript:showMoreOrFewerOptions()">$i18n.getString( "show_fewer_options" )</a></div>
 
   </div>
 
-  <table>
-    <tr>
-      <td></td>
-      <td colspan="3">
-        <input type="submit" value="$i18n.getString( 'save' )" style="width:100px"/>
-		<input type="button" onclick="dhis2.commons.redirectCurrentPage( 'categoryOption.action' )" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
-      </td>
-    </tr>
-  </table>
+  <p>
+    <input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
+	<input type="button" onclick="dhis2.commons.redirectCurrentPage( 'categoryOption.action' )" value="$i18n.getString( 'cancel' )" style="width:10em"/></p>
+  </p>
+  
 </form>

@@ -59,7 +59,7 @@ function saveCategoryOption( id, name )
 
 function showMoreOrFewerOptions()
 {
-    $( ".showMoreOptions" ).toggle();
-    $( ".moreOptions" ).toggle();
+    $( "#showMoreOptions" ).toggle();
+    $( "#moreOptions" ).toggle();
 }
 
