@@ -53,6 +53,7 @@ public class UpdateUserAccountAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+    
     private I18n i18n;
 
     private Integer id;
@@ -137,7 +138,6 @@ public class UpdateUserAccountAction
     public String execute()
         throws Exception
     {
-
         // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
@@ -182,7 +182,6 @@ public class UpdateUserAccountAction
             userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getUsername(), rawPassword ) );
 
             userService.updateUserCredentials( userCredentials );
-
         }
 
         userService.updateUser( user );
