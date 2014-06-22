@@ -242,7 +242,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                         }
                         if(programStageDataElements[deId].dataElement.type == "date"){
                             newInputField = '<input type="text" name="'+ deId +'"' + style + ' ng-model="currentEvent.' + deId + '"' +
-                                            'ng-date' +
+                                            'ng-date ' +
                                             'ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "trueOnly"){
