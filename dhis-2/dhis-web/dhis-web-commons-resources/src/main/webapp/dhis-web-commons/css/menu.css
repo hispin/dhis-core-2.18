@@ -26,19 +26,15 @@
     float: left;
 }
 
-input.apps-search {
+input.apps-search[type="text"] {
     border: 1px solid #ccc;
     border-radius: 3px;
     box-sizing: content-box;
+    font-size: inherit;
     outline: none;
     padding: 4px 1px;
-    padding-right: 25px;
-    padding-left: 5px;
-    width: 328px;
-}
-
-input.apps-search[type="text"] {
     padding-right: 5px;
+    padding-left: 5px;
     width: 348px;
 }
 
