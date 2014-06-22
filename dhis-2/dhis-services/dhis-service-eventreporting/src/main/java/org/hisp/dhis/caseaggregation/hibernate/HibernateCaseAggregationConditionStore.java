@@ -166,7 +166,7 @@ public class HibernateCaseAggregationConditionStore
             grid.addHeader( new GridHeader( i18n.getString( "categoryoptioncomboid" ), true, true ) );
             grid.addHeader( new GridHeader( i18n.getString( "periodid" ), true, true ) );
             grid.addHeader( new GridHeader( i18n.getString( "organisationunitid" ), true, true ) );
-            grid.addHeader( new GridHeader( i18n.getString( "comment" ), true, true ) );
+            grid.addHeader( new GridHeader( i18n.getString( "storedby" ), true, true ) );
             grid.addHeader( new GridHeader( i18n.getString( "dataelementname" ), false, true ) );
             grid.addHeader( new GridHeader( i18n.getString( "categoryoptioncomboname" ), false, true ) );
             grid.addHeader( new GridHeader( i18n.getString( "organisationunitname" ), false, true ) );
@@ -266,11 +266,11 @@ public class HibernateCaseAggregationConditionStore
         String sql = "SELECT '" + aggregateDeId + "' as dataelementid, '" + optionComboId
             + "' as categoryoptioncomboid, '" + optionComboId
             + "' as attributeoptioncomboid, ou.organisationunitid as sourceid, '" + period.getId() + "' as periodid,'"
-            + CaseAggregationCondition.AUTO_STORED_BY + "' as comment, ";
+            + CaseAggregationCondition.AUTO_STORED_BY + "' as storedby, ";
 
         if ( isInsert )
         {
-            sql = "INSERT INTO datavalue (dataelementid, categoryoptioncomboid, attributeoptioncomboid, sourceid, periodid, comment, value) "
+            sql = "INSERT INTO datavalue (dataelementid, categoryoptioncomboid, attributeoptioncomboid, sourceid, periodid, storedby, value) "
                 + sql;
         }
         else
