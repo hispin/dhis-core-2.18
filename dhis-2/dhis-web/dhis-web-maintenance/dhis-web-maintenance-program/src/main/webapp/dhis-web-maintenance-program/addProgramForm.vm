@@ -283,8 +283,8 @@
 	</tr>
 </table>
 	
-<p><a href='javascript:showAdvancedOptions()' id='showAdvancedOptionLink'>$i18n.getString('show_advanced_options') <img src='../images/asc.gif'><a></p>
-<p><a href='javascript:hideAdvancedOptions()' id='hideAdvancedOptionLink' style="display:none;">$i18n.getString('hide_advanced_options') <img src='../images/desc.gif'><a></p>
+<p><a href='javascript:showAdvancedOptions()' id='showAdvancedOptionLink'>$i18n.getString('show_advanced_options')</p>
+<p><a href='javascript:hideAdvancedOptions()' id='hideAdvancedOptionLink' style="display:none;">$i18n.getString('hide_advanced_options')</p>
 		
 <table>
 	<tr>
