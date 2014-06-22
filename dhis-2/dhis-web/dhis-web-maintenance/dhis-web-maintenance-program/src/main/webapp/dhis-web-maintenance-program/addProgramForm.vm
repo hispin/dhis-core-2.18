@@ -53,7 +53,7 @@
 	});
 	
 	checkValueIsExist( "name", "validateProgram.action" );
-});
+    });
 </script>
 
 <h3>$i18n.getString( "create_new_program" ) #openHelp( "program_information" )</h3>
@@ -282,9 +282,6 @@
 		</td>  
 	</tr>
 </table>
-	
-<p><a href='javascript:showAdvancedOptions()' id='showAdvancedOptionLink'>$i18n.getString('show_advanced_options')</p>
-<p><a href='javascript:hideAdvancedOptions()' id='hideAdvancedOptionLink' style="display:none;">$i18n.getString('hide_advanced_options')</p>
 		
 <table>
 	<tr>
@@ -295,7 +292,3 @@
 	</tr>
 </table>
 </form>
-
-<script>
-	hideAdvancedOptions();
-</script>

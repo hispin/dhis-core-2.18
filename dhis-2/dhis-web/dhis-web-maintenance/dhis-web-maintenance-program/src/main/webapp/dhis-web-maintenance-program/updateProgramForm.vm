@@ -47,8 +47,12 @@
 			}
 			
 		});
-	checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );	
-});
+	    checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );
+	    
+		var i18n_characters_without_params = '$encoder.jsEscape( $i18n.getString( "characters_without_params" ) , "'")';
+		
+		programOnChange();
+    });
 
 </script>
 
@@ -311,9 +315,6 @@
     </tbody>
   </table>  
  
-	<p><a href='javascript:showAdvancedOptions()' id='showAdvancedOptionLink'>$i18n.getString('show_advanced_options')</p>
-	<p><a href='javascript:hideAdvancedOptions()' id='hideAdvancedOptionLink' style="display:none;">$i18n.getString('hide_advanced_options')</p>
-	
   <table>
 	 <tr>
       	<td colspan='3'>
@@ -324,7 +325,3 @@
   </table>
 </form>
 
-<script>
-	var i18n_characters_without_params = '$encoder.jsEscape( $i18n.getString( "characters_without_params" ) , "'")';
-	programOnChange();
-</script>
