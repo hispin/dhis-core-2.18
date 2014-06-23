@@ -424,7 +424,7 @@ public class DataSet
 
     public boolean hasDataEntryForm()
     {
-        return dataEntryForm != null;
+        return dataEntryForm != null && dataEntryForm.hasForm();
     }
 
     public boolean hasSections()

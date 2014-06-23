@@ -28,19 +28,18 @@ package org.hisp.dhis.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.io.Serializable;
+import java.util.regex.Pattern;
+
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
-import java.io.Serializable;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Bharath Kumar
@@ -121,51 +120,11 @@ public class DataEntryForm
     // -------------------------------------------------------------------------
 
     /**
-     * Map the identifiers inside the HTML code according to the provided data
-     * element identifier and category option combo identifier mappings.
-     *
-     * @param dataElementMap         the mapping between data element identifiers to be
-     *                               converted.
-     * @param categoryOptionComboMap the mapping between category option combo
-     *                               identifiers to be converted.
-     * @return the converted HTML code.
+     * Indicates whether this data entry form has custom form HTML code.
      */
-    public void convertDataEntryForm( Map<Object, Integer> dataElementMap, Map<Object, Integer> categoryOptionComboMap )
+    public boolean hasForm()
     {
-        Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
-        StringBuffer buffer = new StringBuffer();
-
-        while ( inputMatcher.find() )
-        {
-            String input = inputMatcher.group();
-            Matcher operandMatcher = OPERAND_PATTERN.matcher( input );
-
-            operandMatcher.find();
-            String d = operandMatcher.group();
-            throwException( d == null, "Could not find data element identifier in form" );
-            Integer dataElement = dataElementMap.get( Integer.parseInt( d ) );
-            throwException( dataElement == null, "Data element identifier does not exist: " + d );
-
-            operandMatcher.find();
-            String c = operandMatcher.group();
-            throwException( c == null, "Could not find category option combo identifier in form" );
-            Integer categoryOptionCombo = categoryOptionComboMap.get( Integer.parseInt( c ) );
-            throwException( categoryOptionCombo == null, "Category option combo identifier does not exist: " + c );
-
-            inputMatcher.appendReplacement( buffer, "value[" + dataElement + "].value:value[" + categoryOptionCombo + "].value" );
-        }
-
-        inputMatcher.appendTail( buffer );
-
-        this.htmlCode = buffer.toString();
-    }
-
-    private static void throwException( boolean condition, String message )
-    {
-        if ( condition )
-        {
-            throw new IllegalArgumentException( message );
-        }
+        return htmlCode != null && !htmlCode.trim().isEmpty();
     }
 
     // -------------------------------------------------------------------------
