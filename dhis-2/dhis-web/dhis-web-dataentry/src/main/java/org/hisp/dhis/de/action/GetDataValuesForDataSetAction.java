@@ -261,7 +261,7 @@ public class GetDataValuesForDataSetAction
         if ( !multiOrganisationUnit )
         {
             CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet,
-                period, organisationUnit );
+                period, organisationUnit, attributeOptionCombo );
 
             if ( registration != null )
             {
@@ -292,7 +292,7 @@ public class GetDataValuesForDataSetAction
                     }
 
                     CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration(
-                        dataSet, period, ou );
+                        dataSet, period, ou, attributeOptionCombo );
 
                     if ( complete && registration == null )
                     {

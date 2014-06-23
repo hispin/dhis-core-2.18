@@ -162,7 +162,9 @@ public class DefaultDataValueSetService
             throw new IllegalArgumentException( ERROR_INVALID_ORG_UNIT + orgUnit );
         }
 
-        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet_, period_, orgUnit_ );
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo(); //TODO
+        
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet_, period_, orgUnit_, optionCombo );
 
         Date completeDate = registration != null ? registration.getDate() : null;
 
@@ -193,7 +195,9 @@ public class DefaultDataValueSetService
             throw new IllegalArgumentException( ERROR_INVALID_ORG_UNIT + orgUnit );
         }
 
-        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet_, period_, orgUnit_ );
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo(); //TODO
+        
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet_, period_, orgUnit_, optionCombo );
 
         Date completeDate = registration != null ? registration.getDate() : null;
 
@@ -608,7 +612,7 @@ public class DefaultDataValueSetService
 
         period = periodService.reloadPeriod( period );
 
-        CompleteDataSetRegistration completeAlready = registrationService.getCompleteDataSetRegistration( dataSet, period, orgUnit );
+        CompleteDataSetRegistration completeAlready = registrationService.getCompleteDataSetRegistration( dataSet, period, orgUnit, attributeOptionCombo );
 
         String username = currentUserService.getCurrentUsername();
 

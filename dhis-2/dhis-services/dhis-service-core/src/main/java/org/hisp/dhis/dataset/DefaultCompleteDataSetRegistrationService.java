@@ -30,6 +30,7 @@ package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -103,9 +104,10 @@ public class DefaultCompleteDataSetRegistrationService
         completeDataSetRegistrationStore.deleteCompleteDataSetRegistration( registration );
     }
 
-    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source )
+    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, 
+        OrganisationUnit source, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        return completeDataSetRegistrationStore.getCompleteDataSetRegistration( dataSet, period, source );
+        return completeDataSetRegistrationStore.getCompleteDataSetRegistration( dataSet, period, source, attributeOptionCombo );
     }
         
     public Collection<CompleteDataSetRegistration> getAllCompleteDataSetRegistrations()

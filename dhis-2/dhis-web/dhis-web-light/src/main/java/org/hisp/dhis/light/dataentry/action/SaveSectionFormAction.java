@@ -426,8 +426,10 @@ public class SaveSectionFormAction
             }
         }
 
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo(); //TODO
+        
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
-            organisationUnit );
+            organisationUnit, optionCombo );
 
         if ( registration == null && complete )
         {

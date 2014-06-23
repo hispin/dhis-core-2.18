@@ -157,7 +157,7 @@ public class DataValueSetServiceTest
         assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, optionComboA, optionComboA ) ) );
         assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, optionComboA, optionComboA ) ) );
         
-        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dsA, peA, ouA );
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dsA, peA, ouA, optionComboA );
         
         assertNotNull( registration );
         assertEquals( dsA, registration.getDataSet() );

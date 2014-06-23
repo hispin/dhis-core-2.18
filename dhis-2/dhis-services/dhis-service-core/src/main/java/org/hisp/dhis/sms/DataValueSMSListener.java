@@ -595,7 +595,9 @@ public class DataValueSMSListener
     {
         CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
 
-        if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit ) == null )
+        DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo(); //TODO
+        
+        if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit, optionCombo ) == null )
         {
             registration.setDataSet( dataSet );
             registration.setPeriod( period );
@@ -609,8 +611,10 @@ public class DataValueSMSListener
 
     private void deregisterCompleteDataSet( DataSet dataSet, Period period, OrganisationUnit organisationUnit )
     {
+        DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo(); //TODO
+        
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
-            organisationUnit );
+            organisationUnit, optionCombo );
 
         if ( registration != null )
         {
