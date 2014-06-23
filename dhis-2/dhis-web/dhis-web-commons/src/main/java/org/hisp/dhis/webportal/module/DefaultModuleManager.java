@@ -260,7 +260,7 @@ public class DefaultModuleManager
             List<Module> denied = new ArrayList<Module>( modules );
             denied.removeAll( allowed );
             
-            log.info( "User denied access to modules: " + denied ); //TODO reduce log level
+            log.debug( "User denied access to modules: " + denied );
         }
         
         return allowed;
