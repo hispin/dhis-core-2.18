@@ -82,7 +82,7 @@ public class QuarterlyPeriodType
         end = calendar.plusMonths( end, 2 );
         end.setDay( calendar.daysInMonth( end.getYear(), end.getMonth() ) );
 
-        return toIsoPeriod( start, end );
+        return toIsoPeriod( start, end, calendar );
     }
 
     @Override

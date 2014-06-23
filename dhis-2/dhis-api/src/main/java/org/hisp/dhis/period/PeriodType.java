@@ -232,13 +232,20 @@ public abstract class PeriodType
 
     public Period toIsoPeriod( DateUnit start, DateUnit end )
     {
-        return new Period( this, getCalendar().toIso( start ).toJdkDate(), getCalendar().toIso( end ).toJdkDate() );
+        org.hisp.dhis.calendar.Calendar cal = getCalendar();
+        
+        return new Period( this, cal.toIso( start ).toJdkDate(), cal.toIso( end ).toJdkDate() );
     }
 
+    protected Period toIsoPeriod( DateUnit start, DateUnit end, org.hisp.dhis.calendar.Calendar calendar )
+    {
+        return new Period( this, calendar.toIso( start ).toJdkDate(), calendar.toIso( end ).toJdkDate() );        
+    }
+    
     public Period toIsoPeriod( DateUnit dateUnit )
     {
         return toIsoPeriod( dateUnit, dateUnit );
-    }
+    }    
     
     public abstract Period createPeriod( DateUnit dateUnit, org.hisp.dhis.calendar.Calendar calendar );
 
@@ -269,7 +276,9 @@ public abstract class PeriodType
      */
     public static Calendar createCalendarInstance()
     {
-        return getCalendar().toIso( getCalendar().today() ).toJdkCalendar();
+        org.hisp.dhis.calendar.Calendar cal = getCalendar();
+        
+        return cal.toIso( cal.today() ).toJdkCalendar();
     }
 
     /**
@@ -384,8 +393,10 @@ public abstract class PeriodType
             return null;
         }
 
-        final DateUnit from = getCalendar().toIso( dateInterval.getFrom() );
-        final DateUnit to = getCalendar().toIso( dateInterval.getTo() );
+        org.hisp.dhis.calendar.Calendar cal = getCalendar();
+        
+        final DateUnit from = cal.toIso( dateInterval.getFrom() );
+        final DateUnit to = cal.toIso( dateInterval.getTo() );
 
         return new Period( this, from.toJdkDate(), to.toJdkDate() );
     }

@@ -80,7 +80,7 @@ public class MonthlyPeriodType
         DateUnit end = new DateUnit( dateUnit );
         end.setDay( calendar.daysInMonth( end.getYear(), end.getMonth() ) );
 
-        return toIsoPeriod( start, end );
+        return toIsoPeriod( start, end, calendar );
     }
 
     @Override
