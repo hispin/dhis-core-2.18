@@ -241,7 +241,7 @@ public class ValidationUtils
      * given data element. Considers the value to be valid if null or empty.
      * Returns a string if the valid is invalid, possible
      * values are:
-     * <p/>
+     * 
      * <ul>
      * <li>data_element_or_type_null_or_empty</li>
      * <li>value_length_greater_than_max_length</li>
@@ -250,13 +250,12 @@ public class ValidationUtils
      * <li>value_not_integer</li>
      * <li>value_not_positive_integer</li>
      * <li>value_not_negative_integer</li>
-     * <li>value_is_zero_and_not_zero_significant</li>
      * <li>value_not_bool</li>
      * <li>value_not_true_only</li>
      * <li>value_not_valid_date</li>
      * </ul>
      *
-     * @param value       the data value.
+     * @param value the data value.
      * @param dataElement the data element.
      * @return null if the value is valid, a string if not.
      */
@@ -325,15 +324,22 @@ public class ValidationUtils
         if ( VALUE_TYPE_DATE.equals( type ) && !DateUtils.dateIsValid( value ) )
         {
             return "value_not_valid_date";
-        }
-        
-        if ( VALUE_TYPE_INT.equals( dataElement.getType() ) && MathUtils.isZero( value ) &&
-            !dataElement.isZeroIsSignificant() && !AGGREGATION_OPERATOR_AVERAGE.equals( dataElement.getAggregationOperator() ) )
-        {
-            return "value_is_zero_and_not_zero_significant";
-        }
+        }        
 
         return null;
+    }
+    
+    /**
+     * Indicates whether the given value is zero and not zero significant according
+     * to its data element.
+     * 
+     * @param value the data value.
+     * @param dataElement the data element.
+     */
+    public static boolean dataValueIsZeroAndInsignificant( String value, DataElement dataElement )
+    {
+        return VALUE_TYPE_INT.equals( dataElement.getType() ) && MathUtils.isZero( value ) &&
+            !dataElement.isZeroIsSignificant() && !AGGREGATION_OPERATOR_AVERAGE.equals( dataElement.getAggregationOperator() );
     }
     
     /**

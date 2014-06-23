@@ -34,6 +34,7 @@ import static org.hisp.dhis.system.util.ValidationUtils.emailIsValid;
 import static org.hisp.dhis.system.util.ValidationUtils.getLatitude;
 import static org.hisp.dhis.system.util.ValidationUtils.getLongitude;
 import static org.hisp.dhis.system.util.ValidationUtils.passwordIsValid;
+import static org.hisp.dhis.system.util.ValidationUtils.dataValueIsZeroAndInsignificant;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -110,6 +111,20 @@ public class ValidationUtilsTest
     }
     
     @Test
+    public void testDataValueIsZeroAndInsignificant()
+    {
+        DataElement de = new DataElement( "DEA" );
+        de.setType( DataElement.VALUE_TYPE_INT );
+        de.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
+      
+        assertTrue( dataValueIsZeroAndInsignificant( "0", de ) );
+        
+        de.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+
+        assertFalse( dataValueIsZeroAndInsignificant( "0", de ) );
+    }
+    
+    @Test
     public void testDataValueIsValid()
     {
         DataElement de = new DataElement( "DEA" );
@@ -141,15 +156,6 @@ public class ValidationUtilsTest
         assertNull( dataValueIsValid( "-3", de ) );
         assertNotNull( dataValueIsValid( "4", de ) );
 
-        de.setNumberType( DataElement.VALUE_TYPE_INT );        
-        assertNotNull( dataValueIsValid( "0", de ) );
-        
-        de.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
-
-        assertNull( dataValueIsValid( "0", de ) );
-
-        de.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        
         de.setType( DataElement.VALUE_TYPE_TEXT );
 
         assertNull( dataValueIsValid( "0", de ) );
