@@ -44,6 +44,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -423,7 +424,6 @@ public class DefaultResourceTableService
     // PeriodTable
     // -------------------------------------------------------------------------
 
-    @Transactional
     public void generateDatePeriodTable()
     {
         // ---------------------------------------------------------------------
@@ -440,10 +440,12 @@ public class DefaultResourceTableService
         
         List<Object[]> batchArgs = new ArrayList<Object[]>();
         
-        Date startDate = new Cal( 1970, 1, 1 ).time(); //TODO
+        Date startDate = new Cal( 1975, 1, 1 ).time(); //TODO
         Date endDate = new Cal( 2030, 1 , 1 ).time();
-        
+                
         List<Period> days = new DailyPeriodType().generatePeriods( startDate, endDate );
+                
+        Calendar cal = PeriodType.getCalendar();
         
         for ( Period day : days )
         {
@@ -453,7 +455,7 @@ public class DefaultResourceTableService
             
             for ( PeriodType periodType : periodTypes )
             {
-                Period period = periodType.createPeriod( day.getStartDate() );
+                Period period = periodType.createPeriod( day.getStartDate(), cal );
                 
                 Assert.notNull( period );
                 
@@ -462,7 +464,7 @@ public class DefaultResourceTableService
             
             batchArgs.add( values.toArray() );
         }
-        
+                
         resourceTableStore.batchUpdate( PeriodType.PERIOD_TYPES.size() + 1, TABLE_NAME_DATE_PERIOD_STRUCTURE, batchArgs );
         
         log.info( "Period table generated" );

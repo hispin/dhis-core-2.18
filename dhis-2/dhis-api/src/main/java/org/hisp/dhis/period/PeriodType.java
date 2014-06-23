@@ -230,11 +230,28 @@ public abstract class PeriodType
         return createPeriod( calendar.fromIso( DateUnit.fromJdkCalendar( cal ) ), calendar );
     }
 
+    /**
+     * Creates a valid Period based on the given date. E.g. the given date is
+     * February 10. 2007, a monthly PeriodType should return February 2007. This
+     * method is intended for use in situations where a huge number of of periods
+     * will be generated and its desirable to re-use the calendar.
+     *
+     * @param date the date which is contained by the created period.
+     * @param calendar the calendar implementation to use.
+     * @return the valid Period based on the given date
+     */
+    public Period createPeriod( Date date, org.hisp.dhis.calendar.Calendar calendar )
+    {
+        Calendar cal = createCalendarInstance( date );
+        
+        return createPeriod( calendar.fromIso( DateUnit.fromJdkCalendar( cal ) ), calendar );
+    }
+
     public Period toIsoPeriod( DateUnit start, DateUnit end )
     {
         org.hisp.dhis.calendar.Calendar cal = getCalendar();
         
-        return new Period( this, cal.toIso( start ).toJdkDate(), cal.toIso( end ).toJdkDate() );
+        return toIsoPeriod( start, end, cal );
     }
 
     protected Period toIsoPeriod( DateUnit start, DateUnit end, org.hisp.dhis.calendar.Calendar calendar )
