@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.springframework.transaction.annotation.Transactional;
@@ -152,17 +153,35 @@ public class DefaultProgramValidationService
                 programStageInstance, entityInstanceDataValueMap );
             String operator = validate.getOperator().getMathematicalOperator();
 
-            if ( (leftSideValue != null && rightSideValue != null && !((operator.equals( "==" ) && leftSideValue
-                .compareTo( rightSideValue ) == 0)
-                || (operator.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0)
-                || (operator.equals( "<=" ) && (leftSideValue.compareTo( rightSideValue ) <= 0))
-                || (operator.equals( ">" ) && leftSideValue.compareTo( rightSideValue ) > 0)
-                || (operator.equals( ">=" ) && leftSideValue.compareTo( rightSideValue ) >= 0) || (operator
-                .equals( "!=" ) && leftSideValue.compareTo( rightSideValue ) == 0))) )
+            if ( leftSideValue != null && rightSideValue != null )
             {
-                ProgramValidationResult validationResult = new ProgramValidationResult( programStageInstance, validate,
-                    leftSideValue, rightSideValue );
-                result.add( validationResult );
+                String expression = validate.getLeftSide().getExpression() + " " + validate.getRightSide().getExpression();
+                if ( isNumberDataExpression( expression ) )
+                {
+                    int leftSide = Integer.parseInt( leftSideValue );
+                    int rightSide = Integer.parseInt( rightSideValue );
+                    if ( !((operator.equals( "==" ) && leftSide == rightSide)
+                        || (operator.equals( "<" ) && leftSide < rightSide)
+                        || (operator.equals( "<=" ) && leftSide <= rightSide)
+                        || (operator.equals( ">" ) && leftSide > rightSide)
+                        || (operator.equals( ">=" ) && leftSide >= rightSide) || (operator.equals( "!=" ) && leftSide != rightSide)) )
+                    {
+                        ProgramValidationResult validationResult = new ProgramValidationResult( programStageInstance,
+                            validate, leftSideValue, rightSideValue );
+                        result.add( validationResult );
+                    }
+                }
+                else if ( !((operator.equals( "==" ) && leftSideValue.compareTo( rightSideValue ) == 0)
+                    || (operator.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0)
+                    || (operator.equals( "<=" ) && (leftSideValue.compareTo( rightSideValue ) <= 0))
+                    || (operator.equals( ">" ) && leftSideValue.compareTo( rightSideValue ) > 0)
+                    || (operator.equals( ">=" ) && leftSideValue.compareTo( rightSideValue ) >= 0) || (operator
+                    .equals( "!=" ) && leftSideValue.compareTo( rightSideValue ) == 0)) )
+                {
+                    ProgramValidationResult validationResult = new ProgramValidationResult( programStageInstance,
+                        validate, leftSideValue, rightSideValue );
+                    result.add( validationResult );
+                }
             }
         }
 
@@ -215,5 +234,23 @@ public class DefaultProgramValidationService
         }
 
         return programValidation;
+    }  
+    
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private boolean isNumberDataExpression( String programExpression )
+    {
+        Collection<DataElement> dataElements = expressionService.getDataElements( programExpression );
+        
+        for ( DataElement dataElement : dataElements )
+        {
+            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

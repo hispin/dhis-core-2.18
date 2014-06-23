@@ -31,6 +31,7 @@ package org.hisp.dhis.program;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -102,5 +103,13 @@ public interface ProgramExpressionService
      * @return the description of an expression
      */
     String getExpressionDescription( String programExpression );
+    
+    /**
+     * Get the Data Element collection of a program expression
+     *
+     * @param programExpression The expression
+     * @return the DataElement collection
+     */
+    Collection<DataElement> getDataElements( String programExpression );
 
 }

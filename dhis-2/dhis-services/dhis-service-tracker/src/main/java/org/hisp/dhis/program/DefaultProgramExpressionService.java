@@ -32,6 +32,8 @@ import static org.hisp.dhis.program.ProgramExpression.OBJECT_PROGRAM_STAGE_DATAE
 import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_ID;
 import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_OBJECT;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,8 +53,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultProgramExpressionService
     implements ProgramExpressionService
 {
-    private static final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
-        + SEPARATOR_ID + "[a-zA-Z0-9\\- ]+]*)" + "\\]";
+    private static final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT
+        + "([a-zA-Z0-9\\- ]+[" + SEPARATOR_ID + "[a-zA-Z0-9\\- ]+]*)" + "\\]";
 
     private static final String INVALID_CONDITION = "Invalid condition";
 
@@ -183,4 +185,28 @@ public class DefaultProgramExpressionService
 
         return description.toString();
     }
+
+    @Override
+    public Collection<DataElement> getDataElements( String programExpression )
+    {
+        Collection<DataElement> dataElements = new HashSet<DataElement>();
+
+        Pattern pattern = Pattern.compile( regExp );
+        Matcher matcher = pattern.matcher( programExpression );
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+            String[] ids = info[1].split( SEPARATOR_ID );
+
+            int dataElementId = Integer.parseInt( ids[1] );
+            DataElement dataElement = dataElementService.getDataElement( dataElementId );
+            dataElements.add( dataElement );
+        }
+
+        return dataElements;
+    }
+    
 }
