@@ -29,9 +29,7 @@ package org.hisp.dhis.dataset;
  */
 
 import java.util.Collection;
-import java.util.Date;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -120,34 +118,6 @@ public class DefaultCompleteDataSetRegistrationService
     {
         return completeDataSetRegistrationStore.getCompleteDataSetRegistrations( dataSets, sources, periods );
     }    
-
-    @SuppressWarnings( "unchecked" )
-    @Deprecated
-    public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<OrganisationUnit> sources, Period period )
-    {
-        final Collection<OrganisationUnit> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
-        
-        if ( intersectingSources == null || intersectingSources.size() == 0 )
-        {
-            return 0;
-        }        
-        
-        return completeDataSetRegistrationStore.getCompleteDataSetRegistrations( dataSet, intersectingSources, period ).size();
-    }
-    
-    @SuppressWarnings( "unchecked" )
-    @Deprecated
-    public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<OrganisationUnit> sources, Period period, Date deadline )
-    {
-        final Collection<OrganisationUnit> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
-        
-        if ( intersectingSources == null || intersectingSources.size() == 0 )
-        {
-            return 0;
-        }
-        
-        return completeDataSetRegistrationStore.getCompleteDataSetRegistrations( dataSet, intersectingSources, period, deadline ).size();
-    }
     
     public void deleteCompleteDataSetRegistrations( DataSet dataSet )
     {

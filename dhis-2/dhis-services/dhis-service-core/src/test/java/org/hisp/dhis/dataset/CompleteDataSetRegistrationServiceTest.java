@@ -62,10 +62,6 @@ public class CompleteDataSetRegistrationServiceTest
     private CompleteDataSetRegistration registrationF;
     private CompleteDataSetRegistration registrationG;
     private CompleteDataSetRegistration registrationH;
-    private CompleteDataSetRegistration registrationI;
-    private CompleteDataSetRegistration registrationJ;
-    private CompleteDataSetRegistration registrationK;
-    private CompleteDataSetRegistration registrationL;
     
     private DataSet dataSetA;
     private DataSet dataSetB;
@@ -79,11 +75,6 @@ public class CompleteDataSetRegistrationServiceTest
     private OrganisationUnit sourceC;
 
     private Date onTimeA;
-    private Date onTimeB;
-    private Date deadlineA;
-    private Date deadlineB;
-    private Date tooLateA;
-    private Date tooLateB;
     
     private DataElementCategoryOptionCombo optionCombo;
 
@@ -136,11 +127,6 @@ public class CompleteDataSetRegistrationServiceTest
         optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         onTimeA = getDate( 2000, 1, 10 );
-        onTimeB = getDate( 2000, 2, 10 );
-        deadlineA = getDate( 2000, 1, 15 );
-        deadlineB = getDate( 2000, 2, 15 );
-        tooLateA = getDate( 2000, 1, 25 );
-        tooLateB = getDate( 2000, 2, 25 );
     }
 
     // -------------------------------------------------------------------------
@@ -240,94 +226,6 @@ public class CompleteDataSetRegistrationServiceTest
         assertEquals( 2, registrations.size() );
         assertTrue( registrations.contains( registrationB ) );
         assertTrue( registrations.contains( registrationF ) );        
-    }
-
-    @Test
-    public void testGetDataSetSourcesPeriod()
-    {
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, optionCombo, new Date(), "" );
-        registrationB = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, optionCombo, new Date(), "" );
-        registrationC = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, optionCombo, new Date(), "" );
-        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, optionCombo, new Date(), "" );        
-        registrationE = new CompleteDataSetRegistration( dataSetA, periodA, sourceB, optionCombo, new Date(), "" );
-        registrationF = new CompleteDataSetRegistration( dataSetB, periodA, sourceB, optionCombo, new Date(), "" );
-        registrationG = new CompleteDataSetRegistration( dataSetA, periodB, sourceB, optionCombo, new Date(), "" );
-        registrationH = new CompleteDataSetRegistration( dataSetB, periodB, sourceB, optionCombo, new Date(), "" );
-        
-        registrationI = new CompleteDataSetRegistration( dataSetA, periodA, sourceC, optionCombo, new Date(), "" );
-        registrationJ = new CompleteDataSetRegistration( dataSetB, periodA, sourceC, optionCombo, new Date(), "" );
-        registrationK = new CompleteDataSetRegistration( dataSetA, periodB, sourceC, optionCombo, new Date(), "" );
-        registrationL = new CompleteDataSetRegistration( dataSetB, periodB, sourceC, optionCombo, new Date(), "" );
-        
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationA );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationB );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationC );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationD );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationE );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationF );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationG );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationH );        
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationI );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationJ );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationK );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationL );
-        
-        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
-        
-        sources.add( sourceA );
-        sources.add( sourceB );
-        sources.add( sourceC );
-                
-        assertEquals( 2, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetA, sources, periodA ) );
-        assertEquals( 2, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetB, sources, periodA ) );
-        assertEquals( 2, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetA, sources, periodB ) );
-        assertEquals( 2, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetB, sources, periodB ) );
-        assertEquals( 0, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetC, sources, periodA ) );
-        assertEquals( 0, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetC, sources, periodB ) );        
-    }
-
-    @Test
-    public void testGetDataSetSourcesPeriodDate()
-    {
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, optionCombo, onTimeA, "" );
-        registrationB = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, optionCombo, onTimeA, "" );
-        registrationC = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, optionCombo, onTimeB, "" );
-        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, optionCombo, onTimeB, "" );        
-        registrationE = new CompleteDataSetRegistration( dataSetA, periodA, sourceB, optionCombo, tooLateA, "" );
-        registrationF = new CompleteDataSetRegistration( dataSetB, periodA, sourceB, optionCombo, tooLateA, "" );
-        registrationG = new CompleteDataSetRegistration( dataSetA, periodB, sourceB, optionCombo, tooLateB, "" );
-        registrationH = new CompleteDataSetRegistration( dataSetB, periodB, sourceB, optionCombo, tooLateB, "" );
-        
-        registrationI = new CompleteDataSetRegistration( dataSetA, periodA, sourceC, optionCombo, onTimeA, "" );
-        registrationJ = new CompleteDataSetRegistration( dataSetB, periodA, sourceC, optionCombo, onTimeA, "" );
-        registrationK = new CompleteDataSetRegistration( dataSetA, periodB, sourceC, optionCombo, onTimeB, "" );
-        registrationL = new CompleteDataSetRegistration( dataSetB, periodB, sourceC, optionCombo, onTimeB, "" );
-        
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationA );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationB );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationC );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationD );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationE );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationF );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationG );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationH );        
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationI );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationJ );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationK );
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationL );
-        
-        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
-        
-        sources.add( sourceA );
-        sources.add( sourceB );
-        sources.add( sourceC );
-                
-        assertEquals( 1, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetA, sources, periodA, deadlineA ) );
-        assertEquals( 1, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetB, sources, periodA, deadlineA ) );
-        assertEquals( 1, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetA, sources, periodB, deadlineB ) );
-        assertEquals( 1, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetB, sources, periodB, deadlineB ) );
-        assertEquals( 0, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetC, sources, periodA, deadlineA ) );
-        assertEquals( 0, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetC, sources, periodB, deadlineB ) );        
     }
 
     @Test
