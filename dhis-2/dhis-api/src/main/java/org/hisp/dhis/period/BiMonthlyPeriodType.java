@@ -73,7 +73,7 @@ public class BiMonthlyPeriodType
         end = calendar.plusMonths( end, 1 );
         end.setDay( calendar.daysInMonth( end.getYear(), end.getMonth() ) );
 
-        return toIsoPeriod( start, end );
+        return toIsoPeriod( start, end, calendar );
     }
 
     @Override

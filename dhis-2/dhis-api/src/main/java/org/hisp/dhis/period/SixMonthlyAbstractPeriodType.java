@@ -82,7 +82,7 @@ public abstract class SixMonthlyAbstractPeriodType
         end.setDay( calendar.daysInMonth( end.getYear(), end.getMonth() ) );
         end.setDayOfWeek( calendar.weekday( end ) );
 
-        return toIsoPeriod( start, end );
+        return toIsoPeriod( start, end, calendar );
     }
 
     @Override
