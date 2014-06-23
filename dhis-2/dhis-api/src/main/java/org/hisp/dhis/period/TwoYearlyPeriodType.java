@@ -83,7 +83,7 @@ public class TwoYearlyPeriodType
     }
 
     @Override
-    public Period createPeriod( DateUnit dateUnit )
+    public Period createPeriod( DateUnit dateUnit, org.hisp.dhis.calendar.Calendar calendar )
     {
         return null;
     }
