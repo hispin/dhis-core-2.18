@@ -305,7 +305,11 @@ public class DefaultOrganisationUnitService
 
     public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( String uid )
     {
-        return getOrganisationUnitWithChildren( getOrganisationUnit( uid ).getId() );
+        OrganisationUnit unit = getOrganisationUnit( uid );
+        
+        int id = unit != null ? unit.getId() : -1;
+        
+        return getOrganisationUnitWithChildren( id );
     }
 
     public Collection<OrganisationUnit> getOrganisationUnitWithChildren( int id )
