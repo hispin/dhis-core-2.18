@@ -225,7 +225,9 @@ public abstract class PeriodType
 
     public Period createPeriod( Calendar cal )
     {
-        return createPeriod( getCalendar().fromIso( DateUnit.fromJdkCalendar( cal ) ) );
+        org.hisp.dhis.calendar.Calendar calendar = getCalendar();
+        
+        return createPeriod( calendar.fromIso( DateUnit.fromJdkCalendar( cal ) ), calendar );
     }
 
     public Period toIsoPeriod( DateUnit start, DateUnit end )
@@ -237,8 +239,8 @@ public abstract class PeriodType
     {
         return toIsoPeriod( dateUnit, dateUnit );
     }
-
-    public abstract Period createPeriod( DateUnit dateUnit );
+    
+    public abstract Period createPeriod( DateUnit dateUnit, org.hisp.dhis.calendar.Calendar calendar );
 
     /**
      * Returns a comparable value for the frequency length of this PeriodType.

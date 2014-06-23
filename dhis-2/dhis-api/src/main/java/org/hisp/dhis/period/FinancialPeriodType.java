@@ -29,6 +29,8 @@ package org.hisp.dhis.period;
  */
 
 import com.google.common.collect.Lists;
+
+import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.calendar.DateUnit;
 
 import java.util.Date;
@@ -58,7 +60,7 @@ public abstract class FinancialPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public Period createPeriod( DateUnit dateUnit )
+    public Period createPeriod( DateUnit dateUnit, Calendar calendar )
     {
         boolean past = dateUnit.getMonth() >= (getBaseMonth() + 1);
 
@@ -95,7 +97,7 @@ public abstract class FinancialPeriodType
         DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
         dateUnit = getCalendar().plusYears( dateUnit, 1 );
 
-        return createPeriod( dateUnit );
+        return createPeriod( dateUnit, null );
     }
 
     @Override
@@ -104,7 +106,7 @@ public abstract class FinancialPeriodType
         DateUnit dateUnit = createLocalDateUnitInstance( period.getStartDate() );
         dateUnit = getCalendar().minusYears( dateUnit, 1 );
 
-        return createPeriod( dateUnit );
+        return createPeriod( dateUnit, null );
     }
 
     /**
@@ -124,7 +126,7 @@ public abstract class FinancialPeriodType
 
         for ( int i = 0; i < 11; i++ )
         {
-            periods.add( createPeriod( dateUnit ) );
+            periods.add( createPeriod( dateUnit, null ) );
             dateUnit = getCalendar().plusYears( dateUnit, 1 );
         }
 
@@ -161,7 +163,7 @@ public abstract class FinancialPeriodType
 
         for ( int i = 0; i < 5; i++ )
         {
-            periods.add( createPeriod( dateUnit ) );
+            periods.add( createPeriod( dateUnit, null ) );
             dateUnit = getCalendar().plusYears( dateUnit, 1 );
         }
 
