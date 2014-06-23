@@ -29,7 +29,6 @@ package org.hisp.dhis.dataset;
  */
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -100,31 +99,6 @@ public interface CompleteDataSetRegistrationService
      */
     Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         Collection<DataSet> dataSets, Collection<OrganisationUnit> sources, Collection<Period> periods );
-    
-    /**
-     * Retrieves the number of existing CompleteDataSetRegistration for the given 
-     * DataSet, Collection of Sources and Period.
-     * 
-     * @param dataSet the DataSet.
-     * @param sources the Collection of Sources.
-     * @param period the Period.
-     * @return the number of existing CompleteDataSetRegistrations.
-     */
-    int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<OrganisationUnit> sources, Period period );
-
-    /**
-     * Retrieves the number of existing CompleteDataSetRegistration for the given 
-     * DataSet, Collection of Sources, Period and Date. The Date deadline is the
-     * date that the registration must be made before in order to be defined as
-     * "on time".
-     * 
-     * @param dataSet the DataSet.
-     * @param sources the Collection of Sources.
-     * @param period the Period.
-     * @param deadline the dead line.
-     * @return the number of existing CompleteDataSetRegistrations.
-     */
-    int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<OrganisationUnit> sources, Period period, Date deadline );
     
     /**
      * Deletes the CompleteDataSetRegistrations associated with the given DataSet.
