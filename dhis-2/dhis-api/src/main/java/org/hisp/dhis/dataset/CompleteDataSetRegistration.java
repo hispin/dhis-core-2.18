@@ -32,9 +32,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.ImportableObject;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -59,6 +61,8 @@ public class CompleteDataSetRegistration
 
     private OrganisationUnit source;
 
+    private DataElementCategoryOptionCombo attributeOptionCombo;
+
     private Date date;
 
     private String storedBy;
@@ -73,11 +77,13 @@ public class CompleteDataSetRegistration
     {
     }
 
-    public CompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source, Date date, String storedBy )
+    public CompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source, 
+        DataElementCategoryOptionCombo attributeOptionCombo, Date date, String storedBy )
     {
         this.dataSet = dataSet;
         this.period = period;
         this.source = source;
+        this.attributeOptionCombo = attributeOptionCombo;
         this.date = date;
         this.storedBy = storedBy;
     }
@@ -93,9 +99,10 @@ public class CompleteDataSetRegistration
 
         int result = 1;
 
-        result = prime * result + ((dataSet == null) ? 0 : dataSet.hashCode());
-        result = prime * result + ((period == null) ? 0 : period.hashCode());
-        result = prime * result + ((source == null) ? 0 : source.hashCode());
+        result = prime * result + ( ( dataSet == null ) ? 0 : dataSet.hashCode() );
+        result = prime * result + ( ( period == null ) ? 0 : period.hashCode() );
+        result = prime * result + ( ( source == null ) ? 0 : source.hashCode() );
+        result = prime * result + ( ( attributeOptionCombo == null ) ? 0 : attributeOptionCombo.hashCode() );
 
         return result;
     }
@@ -156,13 +163,25 @@ public class CompleteDataSetRegistration
             return false;
         }
 
+        if ( attributeOptionCombo == null )
+        {
+            if ( other.attributeOptionCombo != null )
+            {
+                return false;
+            }
+        }
+        else if ( !attributeOptionCombo.equals( other.attributeOptionCombo ) )
+        {
+            return false;
+        }
+        
         return true;
     }
 
     @Override
     public String toString()
     {
-        String toString = "[" + dataSet + ", " + period + ", " + source + ", " + date + "]";
+        String toString = "[" + dataSet + ", " + period + ", " + source + ", " + attributeOptionCombo + ", " + date + "]";
 
         return toString;
     }
@@ -202,7 +221,7 @@ public class CompleteDataSetRegistration
         this.period = period;
     }
 
-    @JsonProperty( value = "organisationUnit" )
+    @JsonProperty(value = "organisationUnit")
     @JsonSerialize(as = BaseIdentifiableObject.class)
     @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public OrganisationUnit getSource()
@@ -213,6 +232,18 @@ public class CompleteDataSetRegistration
     public void setSource( OrganisationUnit source )
     {
         this.source = source;
+    }
+
+    @JsonSerialize(as = BaseIdentifiableObject.class)
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    public DataElementCategoryOptionCombo getAttributeOptionCombo()
+    {
+        return attributeOptionCombo;
+    }
+
+    public void setAttributeOptionCombo( DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        this.attributeOptionCombo = attributeOptionCombo;
     }
 
     @JsonProperty

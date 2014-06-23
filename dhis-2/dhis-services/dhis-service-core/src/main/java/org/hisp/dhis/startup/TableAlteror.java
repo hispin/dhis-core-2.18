@@ -723,6 +723,7 @@ public class TableAlteror
         executeSql( "UPDATE validationrulegroup SET alertbyorgunits=false WHERE alertbyorgunits IS NULL" );
 
         upgradeDataValuesWithAttributeOptionCombo();
+        upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
         upgradeTranslations();
         
@@ -737,7 +738,7 @@ public class TableAlteror
 
         if ( no >= 5 )
         {
-            return; // attributeoptioncomboid already part of datavalue pkey
+            return; // attributeoptioncomboid already part of pkey
         }
 
         int optionComboId = getDefaultOptionCombo();
@@ -747,8 +748,7 @@ public class TableAlteror
         executeSql( "alter table datavalue drop constraint datavalue_pkey;" );
 
         executeSql( "alter table datavalue add column attributeoptioncomboid integer;" );
-        executeSql( "update datavalue set attributeoptioncomboid = " + optionComboId
-            + " where attributeoptioncomboid is null;" );
+        executeSql( "update datavalue set attributeoptioncomboid = " + optionComboId + " where attributeoptioncomboid is null;" );
         executeSql( "alter table datavalue alter column attributeoptioncomboid set not null;" );
         executeSql( "alter table datavalue add constraint fk_datavalue_attributeoptioncomboid foreign key (attributeoptioncomboid) references categoryoptioncombo (categoryoptioncomboid) match simple;" );
         executeSql( "alter table datavalue add constraint datavalue_pkey primary key(dataelementid, periodid, sourceid, categoryoptioncomboid, attributeoptioncomboid);" );
@@ -759,6 +759,29 @@ public class TableAlteror
         log.info( "Data value table upgraded with attributeoptioncomboid column" );
     }
 
+    private void upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo()
+    {
+        final String sql = statementBuilder.getNumberOfColumnsInPrimaryKey( "completedatasetregistration" );
+
+        Integer no = statementManager.getHolder().queryForInteger( sql );
+
+        if ( no >= 4 )
+        {
+            return; // attributeoptioncomboid already part of pkey
+        }
+
+        int optionComboId = getDefaultOptionCombo();
+        
+        executeSql( "alter table completedatasetregistration drop constraint completedatasetregistration_pkey" );
+        executeSql( "alter table completedatasetregistration add column attributeoptioncomboid integer;" );
+        executeSql( "update completedatasetregistration set attributeoptioncomboid = " + optionComboId + " where attributeoptioncomboid is null;" );
+        executeSql( "alter table completedatasetregistration alter column attributeoptioncomboid set not null;" );
+        executeSql( "alter table completedatasetregistration add constraint fk_completedatasetregistration_attributeoptioncomboid foreign key (attributeoptioncomboid) references categoryoptioncombo (categoryoptioncomboid) match simple;" );
+        executeSql( "alter table completedatasetregistration add constraint completedatasetregistration_pkey primary key(datasetid, periodid, sourceid, attributeoptioncomboid);" );
+        
+        log.info( "Complete data set registration table upgraded with attributeoptioncomboid column" );
+    }
+    
     private void upgradeMapViewsToAnalyticalObject()
     {
         executeSql( "insert into mapview_dataelements ( mapviewid, sort_order, dataelementid ) select mapviewid, 0, dataelementid from mapview where dataelementid is not null" );

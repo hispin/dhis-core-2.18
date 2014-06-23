@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -62,6 +63,13 @@ public class DefaultCompleteDataSetRegistrationService
     {
         this.messageService = messageService;
     }
+    
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
 
     // -------------------------------------------------------------------------
     // CompleteDataSetRegistrationService
@@ -69,6 +77,11 @@ public class DefaultCompleteDataSetRegistrationService
 
     public void saveCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
+        if ( registration.getAttributeOptionCombo() == null )
+        {
+            registration.setAttributeOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
+        }
+
         completeDataSetRegistrationStore.saveCompleteDataSetRegistration( registration );
     }
 

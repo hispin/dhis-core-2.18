@@ -39,6 +39,8 @@ import java.util.Date;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -71,6 +73,8 @@ public class CompleteDataSetRegistrationBatchHandlerTest
     
     private OrganisationUnit unitA;
     
+    private DataElementCategoryOptionCombo optionCombo;
+    
     private Date dateA;
     private Date dateB;
     
@@ -90,6 +94,7 @@ public class CompleteDataSetRegistrationBatchHandlerTest
         periodService = (PeriodService) getBean( PeriodService.ID );
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         completeDataSetRegistrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
         
@@ -109,13 +114,15 @@ public class CompleteDataSetRegistrationBatchHandlerTest
         
         organisationUnitService.addOrganisationUnit( unitA );
         
+        optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
         dateA = getDate( 2000, 1, 15 );
         dateB = getDate( 2000, 2, 15 );
         
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, unitA, dateA, "" );
-        registrationB = new CompleteDataSetRegistration( dataSetA, periodB, unitA, dateB, "" );
-        registrationC = new CompleteDataSetRegistration( dataSetB, periodA, unitA, dateA, "" );
-        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, unitA, dateB, "" );
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, unitA, optionCombo, dateA, "" );
+        registrationB = new CompleteDataSetRegistration( dataSetA, periodB, unitA, optionCombo, dateB, "" );
+        registrationC = new CompleteDataSetRegistration( dataSetB, periodA, unitA, optionCombo, dateA, "" );
+        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, unitA, optionCombo, dateB, "" );
         
         batchHandler.init();
     }

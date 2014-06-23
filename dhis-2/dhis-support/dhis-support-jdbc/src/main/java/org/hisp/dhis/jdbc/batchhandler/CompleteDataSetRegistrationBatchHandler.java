@@ -63,6 +63,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setIdentifierColumn( "datasetid" );
         statementBuilder.setIdentifierColumn( "periodid" );
         statementBuilder.setIdentifierColumn( "sourceid" );
+        statementBuilder.setIdentifierColumn( "attributeoptioncomboid" );
     }
 
     @Override
@@ -71,6 +72,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setIdentifierValue( registration.getDataSet().getId() );
         statementBuilder.setIdentifierValue( registration.getPeriod().getId() );
         statementBuilder.setIdentifierValue( registration.getSource().getId() );
+        statementBuilder.setIdentifierValue( registration.getAttributeOptionCombo().getId() );
     }
 
     protected void setUniqueColumns()
@@ -78,6 +80,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setUniqueColumn( "datasetid" );
         statementBuilder.setUniqueColumn( "periodid" );
         statementBuilder.setUniqueColumn( "sourceid" );
+        statementBuilder.setUniqueColumn( "attributeoptioncomboid" );
     }
 
     protected void setUniqueValues( CompleteDataSetRegistration registration )
@@ -85,6 +88,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setUniqueValue( registration.getDataSet().getId() );
         statementBuilder.setUniqueValue( registration.getPeriod().getId() );
         statementBuilder.setUniqueValue( registration.getSource().getId() );
+        statementBuilder.setUniqueValue( registration.getAttributeOptionCombo().getId() );
     }
     
     protected void setColumns()
@@ -92,6 +96,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setColumn( "datasetid" );
         statementBuilder.setColumn( "periodid" );
         statementBuilder.setColumn( "sourceid" );
+        statementBuilder.setColumn( "attributeoptioncomboid" );
         statementBuilder.setColumn( "date" );
     }
     
@@ -100,6 +105,7 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setValue( registration.getDataSet().getId() );
         statementBuilder.setValue( registration.getPeriod().getId() );
         statementBuilder.setValue( registration.getSource().getId() );
+        statementBuilder.setValue( registration.getAttributeOptionCombo().getId() );
         statementBuilder.setValue( registration.getDate() );
     }
 }
