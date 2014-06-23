@@ -126,6 +126,7 @@ public class DataValueSetController
             log.info( "Get XML bulk data value set for start date: " + startDate + ", end date: " + endDate );
 
             Set<String> ous = getOrganisationUnits( orgUnit, children );
+            
             dataValueSetService.writeDataValueSet( dataSet, startDate, endDate, ous, response.getOutputStream() );
         }
     }
@@ -158,6 +159,7 @@ public class DataValueSetController
             log.info( "Get JSON bulk data value set for start date: " + startDate + ", end date: " + endDate );
 
             Set<String> ous = getOrganisationUnits( orgUnit, children );
+            
             dataValueSetService.writeDataValueSetJson( dataSet, startDate, endDate, ous, response.getOutputStream() );
         }
     }
