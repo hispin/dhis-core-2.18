@@ -41,9 +41,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.InputUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -123,6 +125,9 @@ public class GenerateDataSetReportAction
     @Autowired
     private ContextUtils contextUtils;
 
+    @Autowired
+    private InputUtils inputUtils;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -146,6 +151,20 @@ public class GenerateDataSetReportAction
     public void setOu( String ou )
     {
         this.ou = ou;
+    }
+    
+    private String cc;
+    
+    public void setCc( String cc )
+    {
+        this.cc = cc;
+    }
+    
+    private String cp;
+    
+    public void setCp( String cp )
+    {
+        this.cp = cp;
     }
     
     private Set<String> dimension;
@@ -267,7 +286,9 @@ public class GenerateDataSetReportAction
         
         String dataSetType = selectedDataSet.getDataSetType();
 
-        registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, selectedPeriod, selectedOrgunit );
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+
+        registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, selectedPeriod, selectedOrgunit, attributeOptionCombo );
         
         if ( TYPE_CUSTOM.equals( dataSetType ) )
         {

@@ -172,10 +172,10 @@ public class CompleteDataSetRegistrationBatchHandlerTest
         batchHandler.insertObject( registrationC, false );
         batchHandler.insertObject( registrationD, false );
         
-        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodA, unitA ) );
-        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodB, unitA ) );
-        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodA, unitA ) );
-        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodB, unitA ) );
+        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodA, unitA, optionCombo ) );
+        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodB, unitA, optionCombo ) );
+        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodA, unitA, optionCombo ) );
+        assertNotNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodB, unitA, optionCombo ) );
     }
 
     @Test
@@ -187,7 +187,7 @@ public class CompleteDataSetRegistrationBatchHandlerTest
         
         batchHandler.updateObject( registrationA );
         
-        registrationA = completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodA, unitA );
+        registrationA = completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetA, periodA, unitA, optionCombo );
         
         assertEquals( dateB, registrationA.getDate() );
     }

@@ -31,6 +31,7 @@ package org.hisp.dhis.dataset;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -63,9 +64,11 @@ public interface CompleteDataSetRegistrationStore
      * @param dataSet the DataSet.
      * @param period the Period.
      * @param source the Source.
+     * @param attributeOptionCombo the attribute option combo.
      * @return the CompleteDataSetRegistration.
      */
-    CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source );
+    CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, 
+        OrganisationUnit source, DataElementCategoryOptionCombo attributeOptionCombo );
 
     /**
      * Deletes a CompleteDataSetRegistration.

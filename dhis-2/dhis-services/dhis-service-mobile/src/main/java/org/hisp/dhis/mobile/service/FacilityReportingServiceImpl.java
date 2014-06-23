@@ -378,8 +378,10 @@ public class FacilityReportingServiceImpl
 
         }
 
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
-            unit );
+            unit, optionCombo );
 
         if ( registration != null )
         {

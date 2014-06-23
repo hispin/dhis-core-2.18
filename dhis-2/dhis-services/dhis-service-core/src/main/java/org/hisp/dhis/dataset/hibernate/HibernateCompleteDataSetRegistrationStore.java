@@ -35,6 +35,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationStore;
 import org.hisp.dhis.dataset.DataSet;
@@ -104,7 +105,8 @@ public class HibernateCompleteDataSetRegistrationStore
         sessionFactory.getCurrentSession().update( registration );
     }
 
-    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source )
+    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, 
+        OrganisationUnit source, DataElementCategoryOptionCombo attributeOptionCombo )
     {
         period = reloadPeriod( period );
         
@@ -113,6 +115,7 @@ public class HibernateCompleteDataSetRegistrationStore
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         criteria.add( Restrictions.eq( "period", period ) );
         criteria.add( Restrictions.eq( "source", source ) );
+        criteria.add( Restrictions.eq( "attributeOptionCombo", attributeOptionCombo ) );
         
         return (CompleteDataSetRegistration) criteria.uniqueResult();
     }

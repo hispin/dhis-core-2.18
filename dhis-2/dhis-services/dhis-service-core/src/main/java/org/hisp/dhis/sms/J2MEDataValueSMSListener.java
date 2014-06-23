@@ -345,7 +345,9 @@ public class J2MEDataValueSMSListener
     {
         CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
 
-        if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit ) == null )
+        DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo(); //TODO
+        
+        if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit, optionCombo ) == null )
         {
             registration.setDataSet( dataSet );
             registration.setPeriod( period );
