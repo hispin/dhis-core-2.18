@@ -182,6 +182,43 @@ Ext.onReady( function() {
 					'large': '13px'
 				}
 			};
+
+            conf.url = {
+                analysisFields: [
+                    '*',
+                    'program[id,name]',
+                    'programStage[id,name]',
+                    'columns[dimension,filter,items[id,name]]',
+                    'rows[dimension,filter,items[id,name]]',
+                    'filters[dimension,filter,items[id,name]]',
+                    '!lastUpdated',
+                    '!href',
+                    '!created',
+                    '!publicAccess',
+                    '!rewindRelativePeriods',
+                    '!userOrganisationUnit',
+                    '!userOrganisationUnitChildren',
+                    '!userOrganisationUnitGrandChildren',
+                    '!externalAccess',
+                    '!access',
+                    '!relativePeriods',
+                    '!columnDimensions',
+                    '!rowDimensions',
+                    '!filterDimensions',
+                    '!user',
+                    '!organisationUnitGroups',
+                    '!itemOrganisationUnitGroups',
+                    '!userGroupAccesses',
+                    '!indicators',
+                    '!dataElements',
+                    '!dataElementOperands',
+                    '!dataElementGroups',
+                    '!dataSets',
+                    '!periods',
+                    '!organisationUnitLevels',
+                    '!organisationUnits'
+                ]
+            };
 		}());
 
 		// api
@@ -431,6 +468,10 @@ Ext.onReady( function() {
 					layout.columns = config.columns;
 					layout.rows = config.rows;
 					layout.filters = config.filters;
+
+                    layout.dataType = Ext.isString(config.dataType) ? config.dataType : 'aggregated_values';
+                    layout.program = config.program;
+                    layout.programStage = config.programStage;
 
                     // dates
                     if (config.startDate && config.endDate) {
