@@ -29,6 +29,7 @@ package org.hisp.dhis.datavalue;
  */
 
 import static org.hisp.dhis.system.util.ValidationUtils.dataValueIsValid;
+import static org.hisp.dhis.system.util.ValidationUtils.dataValueIsZeroAndInsignificant;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -82,6 +83,10 @@ public class DefaultDataValueService
 
     public boolean addDataValue( DataValue dataValue )
     {
+        // ---------------------------------------------------------------------
+        // Validation
+        // ---------------------------------------------------------------------
+
         if ( dataValue == null || dataValue.isNullValue() )
         {
             log.info( "Data value is null" );
@@ -96,6 +101,18 @@ public class DefaultDataValueService
             return false;
         }
         
+        boolean zeroInsignificant = dataValueIsZeroAndInsignificant( dataValue.getValue(), dataValue.getDataElement() );
+        
+        if ( zeroInsignificant )
+        {
+            log.info( "Data value is zero and insignificant" );
+            return false;
+        }
+
+        // ---------------------------------------------------------------------
+        // Save
+        // ---------------------------------------------------------------------
+
         if ( dataValue.getCategoryOptionCombo() == null )
         {
             dataValue.setCategoryOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
@@ -105,7 +122,7 @@ public class DefaultDataValueService
         {
             dataValue.setAttributeOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
         }
-        
+
         dataValueStore.addDataValue( dataValue );
         
         return true;
@@ -113,7 +130,7 @@ public class DefaultDataValueService
 
     public void updateDataValue( DataValue dataValue )
     {
-        if ( dataValue.isNullValue() )
+        if ( dataValue.isNullValue() || dataValueIsZeroAndInsignificant( dataValue.getValue(), dataValue.getDataElement() ) )
         {
             deleteDataValue( dataValue );
         }

@@ -58,6 +58,9 @@ dhis2.de.currentCategories = null;
 // Current offset, next or previous corresponding to increasing or decreasing value
 dhis2.de.currentPeriodOffset = 0;
 
+// Current existing data value, prior to entry or modification
+dhis2.de.currentExistingValue = null;
+
 // Associative array with currently-displayed period choices, keyed by iso
 dhis2.de.periodChoices = [];
 
@@ -1510,11 +1513,13 @@ function displayEntryFormCompleted()
 function valueFocus( e )
 {
     var id = e.target.id;
+    var value = e.target.value;
 
     var split = splitFieldId( id );
     var dataElementId = split.dataElementId;
     var optionComboId = split.optionComboId;
     dhis2.de.currentOrganisationUnitId = split.organisationUnitId;
+    dhis2.de.currentExistingValue = value;
 
     var dataElementName = getDataElementName( dataElementId );
     var optionComboName = getOptionComboName( optionComboId );

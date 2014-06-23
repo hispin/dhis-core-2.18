@@ -137,6 +137,8 @@ function saveVal( dataElementId, optionComboId, fieldId )
 	}
 
 	var warning = undefined;
+
+	var existing = !!( dhis2.de.currentExistingValue && dhis2.de.currentExistingValue != '' );
 	
     if ( value != '' )
     {
@@ -170,9 +172,10 @@ function saveVal( dataElementId, optionComboId, fieldId )
             {
                 return alertField( fieldId, i18n_value_must_zero_or_positive_integer + '\n\n' + dataElementName );
             }
-            if ( dhis2.validation.isValidZeroNumber( value ) )
+            if ( !existing && dhis2.validation.isValidZeroNumber( value ) )
             {
                 // If value = 0 and zero not significant for data element, skip
+            	// If existing value, let through and delete on server
 
                 if ( dhis2.de.significantZeros.indexOf( dataElementId ) == -1 )
                 {
