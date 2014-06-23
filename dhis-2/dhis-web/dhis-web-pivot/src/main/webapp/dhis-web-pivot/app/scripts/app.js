@@ -1063,7 +1063,7 @@ Ext.onReady( function() {
 			text: NS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables.json?fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+					url = value ? ns.core.init.contextPath + '/api/reportTables.json?fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null,
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -1075,7 +1075,7 @@ Ext.onReady( function() {
 			text: NS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/reportTables.json?fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null;
+					url = value ? ns.core.init.contextPath + '/api/reportTables.json?fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null,
 					store = ns.app.stores.reportTable;
 
 				store.page = store.page + 1;

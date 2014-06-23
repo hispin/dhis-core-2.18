@@ -491,16 +491,29 @@ Ext.onReady( function() {
 					config.rows = getValidatedDimensionArray(config.rows);
 					config.filters = getValidatedDimensionArray(config.filters);
 
-					// at least one dimension specified as column or row
+					// column
 					if (!config.columns) {
 						alert('No series items selected');
 						return;
 					}
 
+                    if (config.columns.length > 1) {
+                        config.filters = config.filters || [];
+
+                        config.filters = config.filters.concat(config.columns.splice(1));
+                    }
+
+                    // row
 					if (!config.rows && !config.startDate && !config.endDate) {
 						alert('No category items selected');
 						return;
 					}
+
+                    if (config.rows.length > 1) {
+                        config.filters = config.filters || [];
+
+                        config.filters = config.filters.concat(config.rows.splice(1));
+                    }
 
 					// get object names
 					for (var i = 0, dims = Ext.Array.clean([].concat(config.columns || [], config.rows || [], config.filters || [])); i < dims.length; i++) {
@@ -531,7 +544,7 @@ Ext.onReady( function() {
 					layout.rows = config.rows;
 					layout.filters = config.filters;
                     
-                    layout.type = config.type;
+                    layout.type = Ext.isString(config.type) ? config.type : 'column';
                     layout.program = config.program;
                     layout.programStage = config.programStage;
 

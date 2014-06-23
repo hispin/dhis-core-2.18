@@ -2198,8 +2198,6 @@ Ext.onReady( function() {
 
 								ns.app.stores.eventReport.loadStore();
 
-								ns.app.shareButton.enable();
-
 								window.destroy();
 							}
 						});
@@ -2215,7 +2213,7 @@ Ext.onReady( function() {
 
 					if (id && name) {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/eventReports/' + id + '.json?viewClass=dimensional&links=false',
+                            url: init.contextPath + '/api/eventReports/' + id + '.json?fields=' + conf.url.analysisFields.join(','),
 							method: 'GET',
 							failure: function(r) {
 								ns.core.web.mask.show();
@@ -2336,7 +2334,7 @@ Ext.onReady( function() {
 			text: NS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/eventReports.json?fields=id,name,access&filter=name:like:' + value : null;
+					url = value ? ns.core.init.contextPath + '/api/eventReports?fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null,
 					store = ns.app.stores.eventReport;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -2348,7 +2346,7 @@ Ext.onReady( function() {
 			text: NS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? ns.core.init.contextPath + '/api/eventReports/query/' + value + '.json?viewClass=sharing&links=false' : null,
+					url = value ? ns.core.init.contextPath + '/api/eventReports.json?fields=id,name,access' + (value ? '&filter=name:like:' + value : '') : null,
 					store = ns.app.stores.eventReport;
 
 				store.page = store.page + 1;
@@ -2441,8 +2439,6 @@ Ext.onReady( function() {
 													ns.app.xLayout.name = true;
 
 													ns.app.stores.eventReport.loadStore();
-
-													ns.app.shareButton.enable();
 												}
 											});
 										}
@@ -5178,6 +5174,7 @@ Ext.onReady( function() {
 
 			accordionBody: accordionBody,
 			accordionPanels: accordionPanels,
+            treePanel: treePanel,
 
 			reset: reset,
 			setGui: setGui,
@@ -5704,7 +5701,7 @@ Ext.onReady( function() {
 				}
 
 				Ext.Ajax.request({
-					url: init.contextPath + '/api/eventReports/' + id + '.json?viewClass=dimensional&links=false',
+					url: init.contextPath + '/api/eventReports/' + id + '.json?fields=' + conf.url.analysisFields.join(','),
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
 						alert(r.responseText);
@@ -5922,6 +5919,7 @@ Ext.onReady( function() {
             pluginItem,
             shareButton,
             statusBar,
+            defaultButton,
             centerRegion,
             getLayoutWindow,
             viewport;
@@ -6365,7 +6363,7 @@ Ext.onReady( function() {
 			disabled: true,
 			xableItems: function() {
 				interpretationItem.xable();
-				pluginItem.xable();
+				//pluginItem.xable();
 			},
 			//menu: {
 				//cls: 'ns-menu',
@@ -6412,6 +6410,18 @@ Ext.onReady( function() {
             }
         });
 
+		defaultButton = Ext.create('Ext.button.Button', {
+			text: NS.i18n.table,
+			iconCls: 'ns-button-icon-table',
+			toggleGroup: 'module',
+			pressed: true,
+			handler: function() {
+				if (!this.pressed) {
+					this.toggle();
+				}
+			}
+		});
+
 		centerRegion = Ext.create('Ext.panel.Panel', {
 			region: 'center',
 			bodyStyle: 'padding:1px',
@@ -6448,6 +6458,68 @@ Ext.onReady( function() {
 					downloadButton,
 					shareButton,
 					'->',
+					defaultButton,
+					{
+						text: NS.i18n.chart,
+						iconCls: 'ns-button-icon-chart',
+						toggleGroup: 'module',
+						menu: {},
+						handler: function(b) {
+							b.menu = Ext.create('Ext.menu.Menu', {
+								closeAction: 'destroy',
+								shadow: false,
+								showSeparator: false,
+								items: [
+									{
+										text: NS.i18n.go_to_event_charts + '&nbsp;&nbsp;', //i18n
+										cls: 'ns-menu-item-noicon',
+										handler: function() {
+											window.location.href = ns.core.init.contextPath + '/dhis-web-event-visualizer/app/index.html';
+										}
+									},
+									'-',
+									{
+										text: NS.i18n.open_this_table_as_chart + '&nbsp;&nbsp;', //i18n
+										cls: 'ns-menu-item-noicon',
+										disabled: !(NS.isSessionStorage && ns.app.layout),
+										handler: function() {
+											if (NS.isSessionStorage) {
+												ns.app.layout.parentGraphMap = ns.app.widget.treePanel.getParentGraphMap();
+												ns.core.web.storage.session.set(ns.app.layout, 'eventanalytical', ns.core.init.contextPath + '/dhis-web-event-visualizer/app/index.html?s=eventanalytical');
+											}
+										}
+									},
+									{
+										text: NS.i18n.open_last_chart + '&nbsp;&nbsp;', //i18n
+										cls: 'ns-menu-item-noicon',
+										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['eventchart']),
+										handler: function() {
+											window.location.href = ns.core.init.contextPath + '/dhis-web-event-visualizer/app/index.html?s=eventchart';
+										}
+									}
+								],
+								listeners: {
+									show: function() {
+										ns.core.web.window.setAnchorPosition(b.menu, b);
+									},
+									hide: function() {
+										b.menu.destroy();
+										defaultButton.toggle();
+									},
+									destroy: function(m) {
+										b.menu = null;
+									}
+								}
+							});
+
+							b.menu.show();
+						}
+					},
+					{
+						xtype: 'tbseparator',
+						height: 18,
+						style: 'border-color:transparent; border-right-color:#d1d1d1; margin-right:4px',
+					},
 					{
 						xtype: 'button',
 						text: NS.i18n.home,
@@ -6640,7 +6712,7 @@ Ext.onReady( function() {
 
 								// root nodes
 								requests.push({
-									url: init.contextPath + '/api/organisationUnits.json?userDataViewFallback=true&paging=false&fields=id,name,children[id,name]',
+									url: init.contextPath + '/api/organisationUnits.json?userDataViewFallback=true&fields=id,name,children[id,name]&paging=false',
 									success: function(r) {
 										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
 										fn();
@@ -6692,15 +6764,6 @@ Ext.onReady( function() {
 										fn();
 									}
 								});
-
-								// legend sets
-								//requests.push({
-									//url: init.contextPath + '/api/mapLegendSets.json?viewClass=detailed&links=false&paging=false',
-									//success: function(r) {
-										//init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
-										//fn();
-									//}
-								//});
 
 								// dimensions
 								requests.push({

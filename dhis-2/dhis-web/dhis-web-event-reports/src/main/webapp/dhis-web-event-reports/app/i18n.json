@@ -158,5 +158,8 @@
 "limit",
 "events",
 "tracked_entity_instances",
-"count_type"
+"count_type",
+"go_to_event_charts",
+"open_this_table_as_chart",
+"open_last_chart"
 ]
