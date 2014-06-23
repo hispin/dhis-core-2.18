@@ -138,6 +138,11 @@ public class DefaultDataEntryFormService
 
     public String prepareDataEntryFormForSave( String htmlCode )
     {
+        if ( htmlCode == null )
+        {
+            return null;
+        }
+        
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
@@ -175,6 +180,11 @@ public class DefaultDataEntryFormService
     {
         //TODO HTML encode names
 
+        if ( htmlCode == null )
+        {
+            return null;
+        }
+        
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
@@ -249,6 +259,11 @@ public class DefaultDataEntryFormService
     {
         //TODO HTML encode names
 
+        if ( htmlCode == null )
+        {
+            return null;
+        }
+        
         // ---------------------------------------------------------------------
         // Inline javascript/html to add to HTML before output
         // ---------------------------------------------------------------------
