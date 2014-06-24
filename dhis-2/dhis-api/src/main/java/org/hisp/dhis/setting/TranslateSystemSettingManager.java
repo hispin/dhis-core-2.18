@@ -33,10 +33,9 @@ import java.util.Map;
 /**
  * @author James Chang
  */
-
 public interface TranslateSystemSettingManager
 {
-    Map<String, String> getTranslation_SystemAppearanceSetting( String localeStr );
+    Map<String, String> getTranslationSystemAppearanceSettings( String localeStr );
 
-    Map<String, String> getTranslationNoFallback_SystemAppearanceSetting( String localeStr );
+    Map<String, String> getTranslationNoFallbackSystemAppearanceSettings( String localeStr );
 }

@@ -80,7 +80,7 @@ public class GetAppearanceSettingsStringAction
 
     public String execute()
     {
-        translations = translateSystemSettingManager.getTranslationNoFallback_SystemAppearanceSetting( localeCode );
+        translations = translateSystemSettingManager.getTranslationNoFallbackSystemAppearanceSettings( localeCode );
         
         return SUCCESS;
     }
