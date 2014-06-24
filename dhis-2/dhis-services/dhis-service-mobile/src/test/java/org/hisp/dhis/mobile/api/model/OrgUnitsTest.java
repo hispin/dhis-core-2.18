@@ -107,6 +107,7 @@ public class OrgUnitsTest
         orgUnit.setHandleLostToFollowUpUrl( "handleLostToFollowUp" );
         orgUnit.setGenerateRepeatableEventUrl( "generateRepeatableEvent" );
         orgUnit.setUploadSingleEventWithoutRegistration( "uploadSingleEventWithoutRegistration" );
+        orgUnit.setCompleteProgramInstanceUrl( "completeProgramInstance" );
 
         return orgUnit;
     }

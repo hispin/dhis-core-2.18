@@ -80,7 +80,7 @@ public class MobileOrgUnitLinks
     private String updateContactUrl;
 
     private String findPatientUrl;
-    
+
     private String findPatientsUrl;
 
     private String uploadProgramStageUrl;
@@ -108,6 +108,8 @@ public class MobileOrgUnitLinks
     private String generateRepeatableEventUrl;
 
     private String uploadSingleEventWithoutRegistration;
+
+    private String completeProgramInstanceUrl;
 
     @XmlAttribute
     public int getId()
@@ -315,12 +317,12 @@ public class MobileOrgUnitLinks
     {
         return findPatientsUrl;
     }
-    
+
     public void setFindPatientsUrl( String findPatientsUrl )
     {
         this.findPatientsUrl = findPatientsUrl;
     }
-    
+
     public String getUploadProgramStageUrl()
     {
         return uploadProgramStageUrl;
@@ -451,6 +453,16 @@ public class MobileOrgUnitLinks
         this.uploadSingleEventWithoutRegistration = uploadSingleEventWithoutRegistration;
     }
 
+    public String getCompleteProgramInstanceUrl()
+    {
+        return completeProgramInstanceUrl;
+    }
+
+    public void setCompleteProgramInstanceUrl( String completeProgramInstanceUrl )
+    {
+        this.completeProgramInstanceUrl = completeProgramInstanceUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
@@ -487,6 +499,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
         dataOutputStream.writeUTF( generateRepeatableEventUrl );
         dataOutputStream.writeUTF( uploadSingleEventWithoutRegistration );
+        dataOutputStream.writeUTF( completeProgramInstanceUrl );
 
     }
 
@@ -526,6 +539,7 @@ public class MobileOrgUnitLinks
         handleLostToFollowUpUrl = dataInputStream.readUTF();
         generateRepeatableEventUrl = dataInputStream.readUTF();
         uploadSingleEventWithoutRegistration = dataInputStream.readUTF();
+        completeProgramInstanceUrl = dataInputStream.readUTF();
 
     }
 
@@ -606,6 +620,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
         dataOutputStream.writeUTF( generateRepeatableEventUrl );
         dataOutputStream.writeUTF( uploadSingleEventWithoutRegistration );
-
+        dataOutputStream.writeUTF( completeProgramInstanceUrl );
     }
 }

@@ -58,7 +58,7 @@ public interface ActivityReportingService
 
     Patient findPatient( int patientId )
         throws NotAllowedException;
-    
+
     PatientList findPatients( String patientIds )
         throws NotAllowedException;
 
@@ -70,6 +70,9 @@ public interface ActivityReportingService
 
     Patient enrollProgram( String enrollInfo,
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStageList, Date incidentDate )
+        throws NotAllowedException;
+
+    public String completeProgramInstance( int programId )
         throws NotAllowedException;
 
     Collection<org.hisp.dhis.trackedentity.TrackedEntityAttribute> getPatientAtts( String programId );
