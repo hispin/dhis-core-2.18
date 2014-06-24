@@ -143,7 +143,7 @@ dhis2.appr.generateDataReport = function()
     }
 
     hideHeaderMessage();
-	$( "#criteria" ).hide( "fast" );
+    dhis2.appr.hideCriteria();
 	$( "#content" ).hide( "fast" );
     showLoader();
     
@@ -155,6 +155,12 @@ dhis2.appr.generateDataReport = function()
     	setTableStyles();
     	dhis2.appr.setApprovalState();
     } );
+}
+
+dhis2.appr.hideCriteria = function()
+{
+	$( "#criteria" ).hide( "fast" );
+	$( "#dataButton" ).removeAttr( "disabled" );
 }
 
 //------------------------------------------------------------------------------

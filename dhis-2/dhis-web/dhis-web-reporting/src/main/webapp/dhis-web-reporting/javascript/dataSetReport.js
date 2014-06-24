@@ -311,11 +311,13 @@ dhis2.dsr.setUserInfo = function( username )
 dhis2.dsr.showCriteria = function()
 {
 	$( "#criteria" ).show( "fast" );
+	$( "#dataButton" ).attr( "disabled", "disabled" );
 }
 
 dhis2.dsr.hideCriteria = function()
 {
 	$( "#criteria" ).hide( "fast" );
+	$( "#dataButton" ).removeAttr( "disabled" );
 }
 
 dhis2.dsr.showContent = function()
