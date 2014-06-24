@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -55,7 +56,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
-import org.hisp.dhis.webapi.utils.InputUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -105,6 +105,13 @@ public class GenerateDataSetReportAction
     {
         this.periodService = periodService;
     }
+    
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
 
     private I18nFormat format;
 
@@ -122,9 +129,6 @@ public class GenerateDataSetReportAction
     
     @Autowired
     private ContextUtils contextUtils;
-
-    @Autowired
-    private InputUtils inputUtils;
 
     // -------------------------------------------------------------------------
     // Input
@@ -150,21 +154,7 @@ public class GenerateDataSetReportAction
     {
         this.ou = ou;
     }
-    
-    private String cc;
-    
-    public void setCc( String cc )
-    {
-        this.cc = cc;
-    }
-    
-    private String cp;
-    
-    public void setCp( String cp )
-    {
-        this.cp = cp;
-    }
-    
+        
     private Set<String> dimension;
 
     public void setDimension( Set<String> dimension )
@@ -271,7 +261,7 @@ public class GenerateDataSetReportAction
         
         String dataSetType = selectedDataSet.getDataSetType();
 
-        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+        DataElementCategoryOptionCombo attributeOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, selectedPeriod, selectedOrgunit, attributeOptionCombo );
         
