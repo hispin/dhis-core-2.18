@@ -255,10 +255,15 @@ function saveTrueOnly( dataElementId, optionComboId, fieldId )
  */
 function alertField( fieldId, alertMessage )
 {
-    $( fieldId ).css( 'background-color', COLOR_YELLOW );
-    $( fieldId ).select();
-    $( fieldId ).focus();    
+    var $field = $( fieldId );
+    $field.css( 'background-color', COLOR_YELLOW );
+
     window.alert( alertMessage );
+    
+    var val = dhis2.de.currentExistingValue || '';
+    $field.val( val );
+    
+    $field.focus();
 
     return false;
 }
