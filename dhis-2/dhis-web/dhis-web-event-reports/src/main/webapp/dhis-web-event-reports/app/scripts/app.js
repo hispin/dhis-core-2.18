@@ -5846,7 +5846,7 @@ Ext.onReady( function() {
 					if (NS.isSessionStorage) {
 						//web.events.setValueMouseHandlers(layout, response || xResponse, ns.app.uuidDimUuidsMap, ns.app.uuidObjectMap);
 						web.events.setColumnHeaderMouseHandlers(layout, response, xResponse);
-						web.storage.session.set(layout, 'table');
+						web.storage.session.set(layout, 'eventtable');
 					}
 
 					ns.app.widget.setGui(layout, xLayout, response, isUpdateGui, table);
