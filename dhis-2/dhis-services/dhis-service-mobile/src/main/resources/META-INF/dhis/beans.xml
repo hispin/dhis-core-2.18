@@ -46,6 +46,9 @@
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="trackedEntityService" ref="org.hisp.dhis.trackedentity.TrackedEntityService" />
+		<property name="i18nManager" ref="org.hisp.dhis.i18n.I18nManager" />
+		<property name="reminderService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.mobile.api.IProgramService" class="org.hisp.dhis.mobile.service.DefaultProgramService">

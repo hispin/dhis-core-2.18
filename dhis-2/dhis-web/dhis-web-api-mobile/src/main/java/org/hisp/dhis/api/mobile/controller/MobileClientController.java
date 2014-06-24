@@ -170,6 +170,7 @@ public class MobileClientController
         orgUnit.setGenerateRepeatableEventUrl( getUrl( request, unit.getId(), "generateRepeatableEvent" ) );
         orgUnit.setUploadSingleEventWithoutRegistration( getUrl( request, unit.getId(),
             "uploadSingleEventWithoutRegistration" ) );
+        orgUnit.setCompleteProgramInstanceUrl(getUrl( request, unit.getId(), "completeProgramInstance" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );

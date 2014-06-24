@@ -46,6 +46,8 @@ public class ProgramStage
 
     private String reportDate;
 
+    private String dueDate;
+
     private String reportDateDescription;
 
     private boolean isRepeatable;
@@ -53,8 +55,8 @@ public class ProgramStage
     private boolean isCompleted;
 
     private boolean isSingleEvent;
-    
-    private Integer standardInterval; 
+
+    private Integer standardInterval;
 
     private List<Section> sections;
 
@@ -150,6 +152,16 @@ public class ProgramStage
         this.standardInterval = standardInterval;
     }
 
+    public String getDueDate()
+    {
+        return dueDate;
+    }
+
+    public void setDueDate( String dueDate )
+    {
+        this.dueDate = dueDate;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
@@ -159,8 +171,15 @@ public class ProgramStage
         {
             reportDate = "";
         }
+
+        if ( dueDate == null )
+        {
+            dueDate = "";
+        }
+
         dout.writeUTF( reportDate );
         dout.writeUTF( reportDateDescription );
+        dout.writeUTF( dueDate );
         dout.writeBoolean( isRepeatable );
         dout.writeInt( standardInterval );
         dout.writeBoolean( isCompleted() );
@@ -186,6 +205,7 @@ public class ProgramStage
         super.deSerialize( dint );
         setReportDate( dint.readUTF() );
         setReportDateDescription( dint.readUTF() );
+        setDueDate( dint.readUTF() );
         setRepeatable( dint.readBoolean() );
         setStandardInterval( dint.readInt() );
         setCompleted( dint.readBoolean() );

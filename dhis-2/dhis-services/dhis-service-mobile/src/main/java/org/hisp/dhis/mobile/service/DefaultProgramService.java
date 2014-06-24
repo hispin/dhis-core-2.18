@@ -212,6 +212,8 @@ public class DefaultProgramService
             prStg.setReportDate( "" );
 
             prStg.setReportDateDescription( programStage.getReportDateDescription() );
+            
+            prStg.setDueDate( "" );
 
             prStg.setId( programStage.getId() );
 

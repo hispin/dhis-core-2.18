@@ -57,6 +57,7 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientIdentifierAndAttribute;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Program;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramInstance;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship;
 import org.hisp.dhis.i18n.I18nService;
@@ -396,6 +397,16 @@ public class MobileOrganisationUnitController
         throws NotAllowedException
     {
         return activityReportingService.saveProgramStage( programStage, patientId, id );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/completeProgramInstance" )
+    @ResponseBody
+    public String completeProgramInstance( @PathVariable
+    int id, @RequestBody
+    ProgramInstance programInstance )
+        throws NotAllowedException
+    {
+        return activityReportingService.completeProgramInstance( programInstance.getId() );
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/uploadSingleEventWithoutRegistration" )
