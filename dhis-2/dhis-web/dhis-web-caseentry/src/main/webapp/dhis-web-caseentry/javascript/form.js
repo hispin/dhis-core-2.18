@@ -335,40 +335,17 @@ function paging(json, page) {
 
 function loadProgramStages( entityInstanceId, programId )
 {
-	jQuery.getJSON( "loadProgramStageInstances.action",
+	jQuery.getJSON( "loadProgramStageInstance.action",
 		{
 			entityInstanceId:entityInstanceId,
 			programId: programId
 		},  
 		function( json ) 
 		{   
-			if( json.programStageInstances == 0)
-			{
-				createProgramInstance( entityInstanceId, programId );
-			}
-			else
-			{
-				jQuery("#selectForm [id=programStageId]").attr('psid', json.programStageInstances[0].programStageId);	
-				loadDataEntry( json.programStageInstances[0].id );
-			}
+			jQuery("#selectForm [id=programStageId]").attr('psid', json.id);	
+			loadDataEntry( json.id );
 		});
 }
-
-function createProgramInstance( entityInstanceId, programId )
-{
-	jQuery.postJSON( "saveProgramEnrollment.action",
-		{
-			entityInstanceId: entityInstanceId,
-			programId: programId,
-			dateOfIncident: getCurrentDate(),
-			enrollmentDate: getCurrentDate()
-		}, 
-		function( json ) 
-		{
-			jQuery("#selectForm [id=programStageId]").attr('psid', json.programStageId);	
-			loadDataEntry( json.activeProgramStageInstanceId );
-		});
-};		
 
 function removeSingleEvent(uid)
 {

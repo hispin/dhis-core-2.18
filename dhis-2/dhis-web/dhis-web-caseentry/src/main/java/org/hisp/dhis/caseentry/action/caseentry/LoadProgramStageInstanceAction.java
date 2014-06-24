@@ -29,28 +29,37 @@ package org.hisp.dhis.caseentry.action.caseentry;
  */
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  */
-public class LoadProgramStageInstancesAction
+public class LoadProgramStageInstanceAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    @Autowired
+    private SelectionTreeManager selectionTreeManager;
 
     private TrackedEntityInstanceService entityInstanceService;
 
@@ -98,18 +107,11 @@ public class LoadProgramStageInstancesAction
         return statusMap;
     }
 
-    private ProgramInstance programInstance;
+    private ProgramStageInstance programStageInstance;
 
-    public ProgramInstance getProgramInstance()
+    public ProgramStageInstance getProgramStageInstance()
     {
-        return programInstance;
-    }
-
-    private List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
-
-    public List<ProgramStageInstance> getProgramStageInstances()
-    {
-        return programStageInstances;
+        return programStageInstance;
     }
 
     private Program program;
@@ -126,26 +128,28 @@ public class LoadProgramStageInstancesAction
     public String execute()
         throws Exception
     {
-//        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
+        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( entityInstanceId );
 
         program = programService.getProgram( programId );
-//
-//        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
-//
-//        if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
-//        {
-//            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
-//                program, ProgramInstance.STATUS_ACTIVE ) );
-//        }
-//        else if ( program.getType() == Program.SINGLE_EVENT_WITH_REGISTRATION )
-//        {
-//            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
-//                program ) );
-//        }
-//        else
-//        {
-//            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program ) );
-//        }
+
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
+
+        programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( entityInstance,
+            program ) );
+
+        if ( programInstances != null && programInstances.size() > 0 )
+        {
+            Iterator<ProgramInstance> iterProgram =  programInstances.iterator();
+            programStageInstance = iterProgram.next().getProgramStageInstances().iterator().next();
+        }
+        else
+        {
+            OrganisationUnit orgunit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
+            Date today = new Date();
+            ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance,
+                program, today, today, orgunit );
+            programStageInstance = programInstance.getProgramStageInstances().iterator().next();
+        }
 
         return SUCCESS;
     }

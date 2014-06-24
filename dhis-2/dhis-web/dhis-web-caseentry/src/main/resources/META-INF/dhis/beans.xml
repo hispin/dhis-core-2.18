@@ -49,8 +49,8 @@
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstancesAction"
-		class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstancesAction"
+		id="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstanceAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstanceAction"
 		scope="prototype">
 		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
