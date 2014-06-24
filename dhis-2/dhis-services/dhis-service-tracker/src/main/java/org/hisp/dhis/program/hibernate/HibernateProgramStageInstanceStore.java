@@ -213,7 +213,7 @@ public class HibernateProgramStageInstanceStore
             + "and pg.programid = " + program.getId()
             + "group by ou.name, ps.name, psi.completeduser, psi.completeddate, psi.status "
             + "having psi.completeddate >= '" + startDate + "' AND psi.completeddate <= '" + endDate + "' "
-            + "and psi.status=" + EventStatus.COMPLETED.getValue()
+            + "and psi.status='" + EventStatus.COMPLETED.name()  + "' "
             + "order by ou.name, ps.name, psi.completeduser";
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );

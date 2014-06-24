@@ -265,23 +265,23 @@ public class JdbcEventStore
             
             if ( status == EventStatus.VISITED )
             {
-                sql = "and psi.status = " +  + EventStatus.ACTIVE.getValue() + " and psi.executiondate is not null ";
+                sql = "and psi.status = '" + EventStatus.ACTIVE.name() + "' and psi.executiondate is not null ";
             }
             else if ( status == EventStatus.COMPLETED )
             {
-                sql = "and psi.status = " + EventStatus.COMPLETED.getValue();
+                sql = "and psi.status = '" + EventStatus.COMPLETED.name() + "' ";
             }
             else if ( status == EventStatus.SCHEDULE )
             {
-                sql += "and psi.executiondate is null and date(now()) <= date(psi.duedate) and psi.status = 0 ";
+                sql += "and psi.executiondate is null and date(now()) <= date(psi.duedate) and psi.status = '" + EventStatus.ACTIVE.name() + "' ";
             }
             else  if ( status == EventStatus.OVERDUE )
             {
-                sql += "and psi.executiondate is null and date(now()) > date(psi.duedate) and psi.status = 0 ";
+                sql += "and psi.executiondate is null and date(now()) > date(psi.duedate) and psi.status = '" + EventStatus.ACTIVE.name() + "' ";
             }
             else
             {
-                sql += "and psi.status = " + status.getValue() + " ";
+                sql += "and psi.status = '" + status.name() + "' ";
             }
         }
 
