@@ -40,11 +40,9 @@ import java.util.Map;
 /**
  * @author James Chang
  */
-
 public class DefaultTranslateSystemSettingManager
     implements TranslateSystemSettingManager
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -61,11 +59,10 @@ public class DefaultTranslateSystemSettingManager
     // -------------------------------------------------------------------------
 
     @Override
-    public Map<String, String> getTranslation_SystemAppearanceSetting( String localeStr )
+    public Map<String, String> getTranslationSystemAppearanceSettings( String localeStr )
     {
         Map<String, String> translations = new Hashtable<String, String>();
 
-         // Add the key application data (with localeCode name) into translations map object
         translations.put( KEY_APPLICATION_TITLE, getSystemSettingWithFallbacks( KEY_APPLICATION_TITLE, localeStr, DEFAULT_APPLICATION_TITLE ) );        
         translations.put( KEY_APPLICATION_INTRO, getSystemSettingWithFallbacks( KEY_APPLICATION_INTRO, localeStr, "" ) );
         translations.put( KEY_APPLICATION_NOTIFICATION, getSystemSettingWithFallbacks( KEY_APPLICATION_NOTIFICATION, localeStr, "" ) );
@@ -75,11 +72,10 @@ public class DefaultTranslateSystemSettingManager
     }
 
     @Override
-    public Map<String, String> getTranslationNoFallback_SystemAppearanceSetting( String localeStr )
+    public Map<String, String> getTranslationNoFallbackSystemAppearanceSettings( String localeStr )
     {
         Map<String, String> translations = new Hashtable<String, String>();
 
-         // Add the key application data (with localeCode name) into translations map object
         translations.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE + localeStr, DEFAULT_APPLICATION_TITLE ).toString() );        
         translations.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO + localeStr, "" ).toString() );
         translations.put( KEY_APPLICATION_NOTIFICATION, systemSettingManager.getSystemSetting( KEY_APPLICATION_NOTIFICATION + localeStr, "" ).toString() );
@@ -91,15 +87,16 @@ public class DefaultTranslateSystemSettingManager
     // -------------------------------------------------------------------------
     // Support Method implementation
     // -------------------------------------------------------------------------
+    
     private String getSystemSettingWithFallbacks( String keyName, String localeStr, String defaultValue )
     {
         String settingValue = "";
 
-        String keyWithLocale = systemSettingManager.getSystemSetting( keyName + localeStr, "" ).toString();
+        String keyWithLocale = (String) systemSettingManager.getSystemSetting( keyName + localeStr, "" );
 
         if ( keyWithLocale.isEmpty() )
         {
-            settingValue = systemSettingManager.getSystemSetting( keyName, defaultValue ).toString();            
+            settingValue = (String) systemSettingManager.getSystemSetting( keyName, defaultValue );          
         }
         else
         {
@@ -107,6 +104,5 @@ public class DefaultTranslateSystemSettingManager
         }
 
         return settingValue;
-    }
-        
+    }        
 }
