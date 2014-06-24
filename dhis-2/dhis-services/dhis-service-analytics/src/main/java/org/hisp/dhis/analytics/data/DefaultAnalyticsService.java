@@ -34,10 +34,10 @@ import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TARGET_
 import static org.hisp.dhis.analytics.AnalyticsTableManager.ORGUNIT_TARGET_TABLE_NAME;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIONCOMBO;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LATITUDE;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LONGITUDE;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_PERIOD;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LONGITUDE;
-import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LATITUDE;
 import static org.hisp.dhis.analytics.DataQueryParams.FIXED_DIMS;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
@@ -45,10 +45,10 @@ import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
 import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.LATITUDE_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.LONGITUDE_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.LONGITUDE_DIM_ID;
-import static org.hisp.dhis.common.DimensionalObject.LATITUDE_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.common.NameableObjectUtils.asList;
@@ -66,7 +66,6 @@ import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
 import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -372,7 +371,7 @@ public class DefaultAnalyticsService
 
             for ( Map.Entry<String, Double> entry : aggregatedDataMap.entrySet() )
             {
-                List<String> dataRow = new ArrayList<String>( Arrays.asList( entry.getKey().split( DIMENSION_SEP ) ) );
+                List<String> dataRow = ListUtils.getList( entry.getKey().split( DIMENSION_SEP ) );
                 
                 List<String> targetRow = ListUtils.getAtIndexes( dataRow, completenessDimIndexes );
                 String targetKey = StringUtils.join( targetRow, DIMENSION_SEP );
@@ -856,7 +855,7 @@ public class DefaultAnalyticsService
         {
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.CATEGORY_OPTION_COMBO, null, DISPLAY_NAME_CATEGORYOPTIONCOMBO, new ArrayList<NameableObject>() );
             
-            return Arrays.asList( object );
+            return ListUtils.getList( object );
         }
 
         if ( PERIOD_DIM_ID.equals( dimension ) )
@@ -896,7 +895,7 @@ public class DefaultAnalyticsService
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.PERIOD, null, DISPLAY_NAME_PERIOD, asList( periodList ) );
             
-            return Arrays.asList( object );
+            return ListUtils.getList( object );
         }
         
         if ( ORGUNIT_DIM_ID.equals( dimension ) )
@@ -977,21 +976,21 @@ public class DefaultAnalyticsService
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT, null, DISPLAY_NAME_ORGUNIT, orgUnits );
             
-            return Arrays.asList( object );
+            return ListUtils.getList( object );
         }
         
         if ( LONGITUDE_DIM_ID.contains( dimension ) )
         {
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.STATIC, null, DISPLAY_NAME_LONGITUDE, new ArrayList<NameableObject>() );
             
-            return Arrays.asList( object );
+            return ListUtils.getList( object );
         }
 
         if ( LATITUDE_DIM_ID.contains( dimension ) )
         {
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.STATIC, null, DISPLAY_NAME_LATITUDE, new ArrayList<NameableObject>() );
             
-            return Arrays.asList( object );
+            return ListUtils.getList( object );
         }
         
         OrganisationUnitGroupSet ougs = organisationUnitGroupService.getOrganisationUnitGroupSet( dimension );
@@ -1002,7 +1001,7 @@ public class DefaultAnalyticsService
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT_GROUPSET, null, ougs.getDisplayName(), ous );
             
-            return Arrays.asList( object );
+            return ListUtils.getList( object );
         }
         
         DataElementGroupSet degs = dataElementService.getDataElementGroupSet( dimension );
@@ -1013,7 +1012,7 @@ public class DefaultAnalyticsService
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.DATAELEMENT_GROUPSET, null, degs.getDisplayName(), des );
             
-            return Arrays.asList( object );
+            return ListUtils.getList( object );
         }
         
         CategoryOptionGroupSet cogs = categoryService.getCategoryOptionGroupSet( dimension );
@@ -1024,7 +1023,7 @@ public class DefaultAnalyticsService
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.CATEGORYOPTION_GROUPSET, null, cogs.getDisplayName(), cogz );
             
-            return Arrays.asList( object );
+            return ListUtils.getList( object );
         }
         
         DataElementCategory dec = categoryService.getDataElementCategory( dimension );
@@ -1035,7 +1034,7 @@ public class DefaultAnalyticsService
             
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.CATEGORY, null, dec.getDisplayName(), decos );
             
-            return Arrays.asList( object );
+            return ListUtils.getList( object );
         }
         
         throw new IllegalQueryException( "Dimension identifier does not reference any dimension: " + dimension );
