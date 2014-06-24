@@ -158,8 +158,8 @@ public class DefaultProgramValidationService
                 String expression = validate.getLeftSide().getExpression() + " " + validate.getRightSide().getExpression();
                 if ( isNumberDataExpression( expression ) )
                 {
-                    int leftSide = Integer.parseInt( leftSideValue );
-                    int rightSide = Integer.parseInt( rightSideValue );
+                    double leftSide = Double.parseDouble( leftSideValue );
+                    double rightSide = Double.parseDouble( rightSideValue );
                     if ( !((operator.equals( "==" ) && leftSide == rightSide)
                         || (operator.equals( "<" ) && leftSide < rightSide)
                         || (operator.equals( "<=" ) && leftSide <= rightSide)
