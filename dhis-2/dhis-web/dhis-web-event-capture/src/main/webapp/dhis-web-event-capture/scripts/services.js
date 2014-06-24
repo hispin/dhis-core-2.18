@@ -231,7 +231,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                             newInputField = '<input type="text" name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
                                             'ng-required="programStageDataElements.' + deId + '.compulsory"' +
                                             'typeahead="option for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
-                                            'typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory" name="foo" style="width:99%;">';
+                                            'typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory" name="foo">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){
                             newInputField = '<select name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
