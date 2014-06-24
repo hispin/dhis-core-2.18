@@ -37,12 +37,16 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -274,6 +278,36 @@ public class ContextUtils
         String[] values = value.split( QUERY_PARAM_SEP );
         
         return new ArrayList<String>( Arrays.asList( values ) );
+    }
+    
+    /**
+     * Returns a mapping of dimension identifiers and dimension option identifiers
+     * based on the given set of dimension strings. Splits the strings using : as
+     * separator. Returns null of dimensions are null or empty.
+     * 
+     * @param dimensions the set of strings on format dimension:dimension-option.
+     * @return a map of dimensions and dimension options.
+     */
+    public static Map<String, String> getDimensionsAndOptions( Set<String> dimensions )
+    {
+        if ( dimensions == null || dimensions.isEmpty() )
+        {
+            return null;
+        }
+        
+        Map<String, String> map = new HashMap<String, String>();
+        
+        for ( String dim : dimensions )
+        {
+            String[] dims = dim.split( DimensionalObjectUtils.DIMENSION_NAME_SEP );
+            
+            if ( dims.length == 2 && dims[0] != null && dims[1] != null )
+            {
+                map.put( dims[0], dims[1] );
+            }
+        }
+        
+        return map;
     }
 
     /**
