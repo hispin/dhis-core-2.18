@@ -439,9 +439,9 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     display: none;
     float: left;
     min-width: 160px;
-    padding: 5px 0;
+    padding: 4px 1px;
     margin: 2px 0 0;
-    font-size: 14px;
+    font-size: 9pt;
     list-style: none;
     background-color: #fff;
     border: 1px solid #ccc;

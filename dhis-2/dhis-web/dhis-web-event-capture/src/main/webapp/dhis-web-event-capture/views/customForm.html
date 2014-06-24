@@ -22,10 +22,12 @@
         <td>
             <input type="number"
                    ng-model="currentEvent.coordinate.latitude"                                                                
-                   name="latitude" 
+                   name="latitude"
+                   min="-90"
+                   max="90"
                    ng-required="false"
                    style="width:99%;"/>
-            <span ng-show="outerForm.submitted && outerForm.latitude.$invalid" class="required">{{'number_required'| translate}}</span>
+            <span ng-show="outerForm.submitted && outerForm.latitude.$invalid" class="required">{{'number_required'| translate}} [-90 ... 90]</span>
         </td>                                            
     </tr>
     <tr ng-if="selectedProgramStage.captureCoordinates">
@@ -36,9 +38,11 @@
             <input type="number"
                    ng-model="currentEvent.coordinate.longitude"                                                                
                    name="longitude" 
+                   min="-180"
+                   max="180"
                    ng-required="false"
                    style="width:99%;"/>
-            <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'number_required'| translate}}</span>
+            <span ng-show="outerForm.submitted && outerForm.longitude.$invalid" class="required">{{'number_required'| translate}}[-180 ... 180]</span>
         </td>                                            
     </tr>
 </table>                            
