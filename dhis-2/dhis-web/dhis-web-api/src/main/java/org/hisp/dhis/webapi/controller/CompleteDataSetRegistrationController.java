@@ -326,6 +326,7 @@ public class CompleteDataSetRegistrationController
             registration.setDataSet( dataSet );
             registration.setPeriod( period );
             registration.setSource( organisationUnit );
+            registration.setAttributeOptionCombo( attributeOptionCombo );
             registration.setDate( new Date() );
             registration.setStoredBy( storedBy );
 
