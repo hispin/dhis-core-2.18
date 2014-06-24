@@ -370,7 +370,7 @@ function statusEventOnChange()
 			enable('showEventUpTo');
 			setDateRange();
 		}
-		else if( status == 'FUTURE_VISIT' ){
+		else if( status == 'SCHEDULE' ){
 			disable('showEventSince');
 			enable('showEventUpTo');
 			setDateRange();
@@ -427,7 +427,7 @@ function setDateRange()
         startDate = startDateSince;
         endDate = endDateUpTo;
 
-    } else if( status == 'FUTURE_VISIT_STATUS' ) {
+    } else if( status == 'SCHEDULE' ) {
         startDate = startDateUpTo;
         endDate = endDateUpTo;
     }

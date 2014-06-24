@@ -54,10 +54,10 @@
 		<td>
 			<select id="status" name="status">
 				<option value='ACTIVE'>$i18n.getString("all")</option>
-				<option value='LATE_VISIT'>$i18n.getString("overdue")</option>
+				<option value='OVERDUE'>$i18n.getString("overdue")</option>
 				<option value='VISITED'>$i18n.getString("incomplete")</option>
 				<option value='COMPLETED'>$i18n.getString("completed")</option>
-				<option value='FUTURE_VISIT'>$i18n.getString("scheduled_in_future")</option> 
+				<option value='SCHEDULE'>$i18n.getString("scheduled_in_future")</option> 
 				<option value='SKIPPED'>$i18n.getString("skipped")</option> 
 			</select>
 		</td>

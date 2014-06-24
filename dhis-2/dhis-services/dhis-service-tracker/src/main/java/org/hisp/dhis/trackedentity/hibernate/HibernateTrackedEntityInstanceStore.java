@@ -365,13 +365,13 @@ public class HibernateTrackedEntityInstanceStore
         {
             sql = 
                 "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end + "' " +
-                "and psi.status = " + EventStatus.COMPLETED.getValue() ;
+                "and psi.status = '" + EventStatus.COMPLETED.name() + "' ";
         }
         else if ( params.isEventStatus( EventStatus.VISITED ) )
         {
             sql = 
                 "and psi.executiondate >= '" + start + "' and psi.executiondate <= '" + end + "' " + 
-                "and psi.status = " + EventStatus.ACTIVE.getValue() ;
+                "and psi.status = '" + EventStatus.ACTIVE.name() + "' ";
         }
         else if ( params.isEventStatus( EventStatus.SCHEDULE ) )
         {
@@ -389,7 +389,7 @@ public class HibernateTrackedEntityInstanceStore
         {
             sql = 
                 "and psi.duedate >= '" + start + "' and psi.duedate <= '" + end + "' " +
-                "and psi.status = " + EventStatus.SKIPPED.getValue() + " ";
+                "and psi.status = '" + EventStatus.SKIPPED.name() + "' ";
         }
 
         return sql;
