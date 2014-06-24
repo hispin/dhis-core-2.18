@@ -65,7 +65,7 @@ div.inputSection {
 </div>
 
 <div id="control">
-<input type="button" value='$i18n.getString( "data" )' style="width:140px" onclick="dhis2.dsr.showCriteria()">
+<input type="button" id="dataButton" value='$i18n.getString( "data_criteria" )' style="width:140px" onclick="dhis2.dsr.showCriteria()" disabled="disabled">
 <input type="button" id="approveButton" value="$i18n.getString( 'approve' )" onclick="dhis2.appr.approveData()" class="approveButton" style="width:120px">
 <input type="button" id="unapproveButton" value="$i18n.getString( 'unapprove' )" onclick="dhis2.appr.unapproveData()" class="approveButton" style="width:120px">
 <input type="button" id="acceptButton" value="$i18n.getString( 'accept' )" onclick="dhis2.appr.acceptData()" class="approveButton" style="width:120px">
