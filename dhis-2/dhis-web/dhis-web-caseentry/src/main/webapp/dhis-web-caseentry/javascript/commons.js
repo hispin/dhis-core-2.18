@@ -1921,4 +1921,3 @@ function moveToActiveDiv( programInstanceId, programStageInstanceId )
 	$('#completedTB [id=tr1_' + programInstanceId + ']').remove();
 	$('#completedTB [id=tr2_' + programInstanceId + ']').remove();
 }
-
