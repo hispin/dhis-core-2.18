@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Stian Strandli
@@ -162,4 +163,6 @@ public interface SystemSettingManager
     Integer credentialsExpires();
 
     Map<String, Serializable> getSystemSettingsAsMap();
+    
+    Map<String, Serializable> getSystemSettings( Set<String> names );
 }

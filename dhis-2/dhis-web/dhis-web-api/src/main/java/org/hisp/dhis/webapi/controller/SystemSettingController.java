@@ -28,6 +28,12 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +45,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.Serializable;
-import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -57,11 +59,12 @@ public class SystemSettingController
     @RequestMapping( value = "/{key}", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_TEXT, ContextUtils.CONTENT_TYPE_HTML } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_SYSTEM_SETTING')" )
     public void setSystemSetting(
-        @PathVariable String key,
+        @PathVariable( value = "key" ) String key,
+        @RequestParam( required = false, value = "key" ) String keyParam,
         @RequestParam( required = false ) String value,
         @RequestBody( required = false ) String valuePayload, HttpServletResponse response )
     {
-        if ( key == null )
+        if ( key == null && keyParam == null )
         {
             ContextUtils.conflictResponse( response, "Key must be specified" );
             return;
@@ -73,6 +76,8 @@ public class SystemSettingController
         }
 
         value = value != null ? value : valuePayload;
+        
+        key = key != null ? key : keyParam;
 
         systemSettingManager.saveSystemSetting( key, value );
 
@@ -92,17 +97,24 @@ public class SystemSettingController
     }
 
     @RequestMapping( value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String getSystemSetting( @PathVariable( "key" ) String key )
+    public @ResponseBody String getSystemSettingAsText( @PathVariable( "key" ) String key )
     {
         Serializable setting = systemSettingManager.getSystemSetting( key );
 
         return setting != null ? String.valueOf( setting ) : null;
     }
-
+    
     @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
-    public @ResponseBody Map<String, Serializable> getSystemSetting()
+    public @ResponseBody Map<String, Serializable> getSystemSettings( @RequestParam( value = "key", required = false ) Set<String> key )
     {
-        return systemSettingManager.getSystemSettingsAsMap();
+        if ( key != null && !key.isEmpty() )
+        {
+            return systemSettingManager.getSystemSettings( key );
+        }
+        else
+        {
+            return systemSettingManager.getSystemSettingsAsMap();
+        }
     }
 
     @RequestMapping( value = "/{key}", method = RequestMethod.DELETE )
