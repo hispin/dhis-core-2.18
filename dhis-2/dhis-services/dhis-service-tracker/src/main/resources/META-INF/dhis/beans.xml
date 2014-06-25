@@ -379,6 +379,7 @@
 			<list>
 				<value>trackedentityattribute</value>
 				<value>trackedentityattributegroup</value>
+				<value>trackedentityinstancereminder</value>
 				<value>program</value>
 				<value>programstage</value>
 				<value>programinstance</value>
