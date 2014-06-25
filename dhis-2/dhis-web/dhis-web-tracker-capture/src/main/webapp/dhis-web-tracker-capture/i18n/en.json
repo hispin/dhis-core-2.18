@@ -63,6 +63,8 @@
     "data_element": "Data element",
     "value": "Value",
     "provided_elsewhere": "Provided elsewhere",
+    "expand": "Expand",
+    "collapse": "Collapse",
     "show_hide_columns": "Show/hide columns",
     "select_columns_to_show": "Select columns to show",
     "show_hide_widgets": "Show/hide widgets",
