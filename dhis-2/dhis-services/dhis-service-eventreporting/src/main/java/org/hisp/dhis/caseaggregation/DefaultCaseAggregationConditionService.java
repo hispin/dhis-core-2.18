@@ -49,6 +49,7 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -64,6 +65,7 @@ import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,6 +97,9 @@ public class DefaultCaseAggregationConditionService
     private PeriodService periodService;
 
     private I18nService i18nService;
+    
+    @Autowired
+    private DataElementCategoryService categoryService;
 
     // -------------------------------------------------------------------------
     // Getters && Setters
@@ -419,7 +424,9 @@ public class DefaultCaseAggregationConditionService
     {
         periodService.reloadPeriod( period );
 
-        return aggregationConditionStore.getAggregateValue( caseAggregationCondition, orgunitIds, period, format, i18n );
+        int attributeOptioncomboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
+        
+        return aggregationConditionStore.getAggregateValue( caseAggregationCondition, orgunitIds, period, attributeOptioncomboId, format, i18n );
     }
 
     @Override
@@ -439,9 +446,11 @@ public class DefaultCaseAggregationConditionService
         Integer deSumId = (caseAggregationCondition.getDeSum() == null) ? null : caseAggregationCondition.getDeSum()
             .getId();
 
+        int attributeOptioncomboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
+        
         aggregationConditionStore.insertAggregateValue( caseAggregationCondition.getAggregationExpression(),
             caseAggregationCondition.getOperator(), caseAggregationCondition.getAggregationDataElement().getId(),
-            caseAggregationCondition.getOptionCombo().getId(), deSumId, orgunitIds, period );
+            caseAggregationCondition.getOptionCombo().getId(), attributeOptioncomboId, deSumId, orgunitIds, period );
     }
 
     @Override
@@ -459,8 +468,10 @@ public class DefaultCaseAggregationConditionService
     {
         periodService.reloadPeriod( period );
 
+        int attributeOptioncomboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
+        
         return aggregationConditionStore.parseExpressionToSql( isInsert, caseExpression, operator, aggregateDeId,
-            aggregateDeName, optionComboId, optionComboName, deSumId, orgunitIds, period );
+            aggregateDeName, optionComboId, optionComboName, attributeOptioncomboId, deSumId, orgunitIds, period );
     }
 
     @Override
@@ -477,6 +488,8 @@ public class DefaultCaseAggregationConditionService
     private Future<?> aggregateValueManager( ConcurrentLinkedQueue<CaseAggregateSchedule> caseAggregateSchedule,
         String taskStrategy )
     {
+        int attributeOptioncomboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
+        
         taskLoop: while ( true )
         {
             CaseAggregateSchedule dataSet = caseAggregateSchedule.poll();
@@ -487,7 +500,7 @@ public class DefaultCaseAggregationConditionService
 
             Collection<Period> periods = aggregationConditionStore.getPeriods( dataSet.getPeriodTypeName(),
                 taskStrategy );
-            aggregationConditionStore.runAggregate( null, dataSet, periods );
+            aggregationConditionStore.runAggregate( null, dataSet, periods, attributeOptioncomboId );
         }
 
         return null;
