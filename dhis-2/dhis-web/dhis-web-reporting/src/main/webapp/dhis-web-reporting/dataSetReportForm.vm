@@ -16,45 +16,6 @@ jQuery(document).ready(function() {
   #end
 });
 
-dhis2.dsr.metaData = {
-
-"defaultCategoryCombo":"${defaultCategoryCombo.uid}",
-"categoryCombos": {
-#set( $size1 = $categoryCombos.size() )
-#foreach( $categoryCombo in $categoryCombos )
-"${categoryCombo.uid}":{"id":"${categoryCombo.uid}","name":"$encoder.jsonEncode( ${categoryCombo.displayName} )","categories":[
-#set( $size2 = $categoryCombo.categories.size() )
-#foreach( $category in $categoryCombo.categories )
-"${category.uid}"#if( $velocityCount < $size2 ),#end
-#end
-] }#if( $velocityCount < $size1 ),#end
-#end
-},
-"categoryOptionGroupSets": {
-#set( $size1 = $categoryOptionGroupSets.size() )
-#foreach( $groupSet in $categoryOptionGroupSets )
-"${groupSet.uid}":{"id":"${groupSet.uid}","name":"$encoder.jsonEncode( ${groupSet.displayName} )","members":[
-#set( $size2 = $groupSet.members.size() )
-#foreach( $group in $groupSet.members )
-"${group.uid}"#if( $velocityCount < $size2 ),#end
-#end
-] }#if( $velocityCount < $size1 ),#end
-#end
-},
-"dataSets": {
-#set( $size1 = $dataSets.size() )
-#foreach( $dataSet in $dataSets )
-"${dataSet.uid}":{"id":"{dataSet.uid}","name":"$encoder.jsonEncode( ${dataSet.displayName} )",
-"categoryCombo":"$!{dataSet.categoryCombo.uid}","categoryOptionGroupSets":[
-#set( $size2 = $dataSet.categoryOptionGroupSets.size() )
-#foreach( $cogs in $dataSet.categoryOptionGroupSets )
-"${cogs.uid}"#if( $velocityCount < $size2 ),#end
-#end
-] }#if( $velocityCount < $size1 ),#end
-#end
-}
-}
-
 var i18n_select_data_set = '$encoder.jsEscape( $i18n.getString( "select_data_set" ), "'")';
 var i18n_select_period = '$encoder.jsEscape( $i18n.getString( "select_period" ), "'")';
 var i18n_select_organisation_unit = '$encoder.jsEscape( $i18n.getString( "select_organisation_unit" ), "'")';
@@ -100,8 +61,7 @@ div.inputSection {
 </select>
 </div>
 
-<div id="categoryOptionGroupSetDiv" style="display:none"></div>
-<div id="attributeComboDiv" style="display:none"></div>
+<div id="dimensionsDiv" style="display:none"></div>
 
 <!-- Period -->
 
