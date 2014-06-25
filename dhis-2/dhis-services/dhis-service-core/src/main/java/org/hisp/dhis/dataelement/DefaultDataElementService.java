@@ -75,9 +75,9 @@ public class DefaultDataElementService
         this.dataElementGroupStore = dataElementGroupStore;
     }
 
-    private DataElementGroupSetStore dataElementGroupSetStore;
+    private GenericNameableObjectStore<DataElementGroupSet> dataElementGroupSetStore;
 
-    public void setDataElementGroupSetStore( DataElementGroupSetStore dataElementGroupSetStore )
+    public void setDataElementGroupSetStore( GenericNameableObjectStore<DataElementGroupSet> dataElementGroupSetStore )
     {
         this.dataElementGroupSetStore = dataElementGroupSetStore;
     }
