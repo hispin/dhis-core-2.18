@@ -202,52 +202,60 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                     programStageDataElements[prStDe.dataElement.id] = prStDe;
                 });
 
-                var inputRegex = /<input(.*)\/>/g,
+                var inputRegex = /<input.*?\/>/g,
                     styleRegex = /style="[^"]*"/,
                     idRegex = /id="[^"]*"/,
                     match,
-                    inputFields = [];
+                    inputFields = [];                
 
                 while (match = inputRegex.exec(htmlCode)) {                
-                    inputFields.push(match[0]);        
+                    inputFields.push(match[0]);
                 }
 
                 for(var i=0; i<inputFields.length; i++){
                     var inputField = inputFields[i];
-                    var deId = '', style = '', newInputField;
-
-                    if(match = idRegex.exec(inputFields[i])){                    
-                        deId = match[0].substring(4, match[0].length-1).split("-")[1];
-
+                    var deId = '', style = '', newInputField;                    
+                    if(match = idRegex.exec(inputFields[i])){     
+                        
+                        deId = match[0].substring(4, match[0].length-1).split("-")[1];                        
+                        
                         if(match = styleRegex.exec(inputFields[i]) ){
                             style = match[0];                          
                         }
 
                         if(programStageDataElements[deId].dataElement.type == "int"){
-                            newInputField = '<input type="number" name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
-                                            'ng-required="programStageDataElements.' + deId + '.compulsory">';
+                            newInputField = '<input type="number" name="'+ deId +'" ' + 
+                                            style + 
+                                            ' ng-model="currentEvent.' + deId + '"' +
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "string"){
-                            newInputField = '<input type="text" name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
-                                            'ng-required="programStageDataElements.' + deId + '.compulsory"' +
-                                            'typeahead="option for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
-                                            'typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory" name="foo">';
+                            newInputField = '<input type="text" name="'+ deId +'" ' + 
+                                            style + 
+                                            ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
+                                            ' typeahead="option for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
+                                            ' typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){
-                            newInputField = '<select name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
-                                            'ng-required="programStageDataElements.' + deId + '.compulsory">' + 
+                            newInputField = '<select name="'+ deId +'" ' + 
+                                            style + ' ng-model="currentEvent.' + deId + '" ' +
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">' + 
                                             'option value="">{{\'please_select\'| translate}}</option>' +
                                             '<option value="0">{{\'no\'| translate}}</option>' + 
                                             '<option value="1">{{\'yes\'| translate}}</option>';
                         }
                         if(programStageDataElements[deId].dataElement.type == "date"){
-                            newInputField = '<input type="text" name="'+ deId +'"' + style + ' ng-model="currentEvent.' + deId + '"' +
-                                            'ng-date ' +
-                                            'ng-required="programStageDataElements.' + deId + '.compulsory">';
+                            newInputField = '<input type="text" name="'+ deId +'" ' + 
+                                            style + ' ng-model="currentEvent.' + deId + '"' +
+                                            ' ng-date' +
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "trueOnly"){
-                            newInputField = '<input type="checkbox" name="'+ deId +'"' + style + 'ng-model="currentEvent.' + deId + '"' +
-                                            'ng-required="programStageDataElements.' + deId + '.compulsory">';
+                            newInputField = '<input type="checkbox" name="'+ deId +'" ' + 
+                                            style + 
+                                            ' ng-model="currentEvent.' + deId + '"' +
+                                            ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
 
                         newInputField = //'<ng-form name="innerForm">' + 
