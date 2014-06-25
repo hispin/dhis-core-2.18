@@ -1,6 +1,7 @@
 trackerCapture.controller('ProfileController',
         function($rootScope,
-                $scope,                
+                $scope,     
+                orderByFilter,
                 CurrentSelection,
                 TEService,
                 TEIService,
@@ -53,11 +54,12 @@ trackerCapture.controller('ProfileController',
                         if(atts[i].id === $scope.selectedEntity.attributes[j].attribute){
                             processed = true;
                             $scope.selectedEntity.attributes[j].show = true;
+                            $scope.selectedEntity.attributes[j].order = i;
                         }
                     }
 
                     if(!processed){//attribute was empty, so a chance to put some value
-                        $scope.selectedEntity.attributes.push({show: true, attribute: atts[i].id, displayName: atts[i].name, type: atts[i].valueType, value: ''});
+                        $scope.selectedEntity.attributes.push({show: true, order: i, attribute: atts[i].id, displayName: atts[i].name, type: atts[i].valueType, value: ''});
                     }                   
                 }
             }); 
@@ -72,15 +74,19 @@ trackerCapture.controller('ProfileController',
                         if(atts[i].id === $scope.selectedEntity.attributes[j].attribute){
                             processed = true;
                             $scope.selectedEntity.attributes[j].show = true;
+                            $scope.selectedEntity.attributes[j].order = i;
                         }
                     }
 
                     if(!processed){//attribute was empty, so a chance to put some value
-                        $scope.selectedEntity.attributes.push({show: true, attribute: atts[i].id, displayName: atts[i].name, type: atts[i].valueType, value: ''});
+                        $scope.selectedEntity.attributes.push({show: true, order: i, attribute: atts[i].id, displayName: atts[i].name, type: atts[i].valueType, value: ''});
                     }                   
                 }
             });
-        }              
+        }
+        
+        $scope.selectedEntity.attributes = orderByFilter($scope.selectedEntity.attributes, '-order');
+        $scope.selectedEntity.attributes.reverse();
     };
     
     $scope.enableEdit = function(){
