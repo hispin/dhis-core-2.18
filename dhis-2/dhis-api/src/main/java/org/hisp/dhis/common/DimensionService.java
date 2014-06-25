@@ -49,5 +49,7 @@ public interface DimensionService
     
     List<DimensionalObject> getDimensionConstraints();
     
+    DimensionalObject getDimensionalObjectCopy( String uid, boolean filterCanRead );
+    
     void mergeAnalyticalObject( BaseAnalyticalObject object );
 }

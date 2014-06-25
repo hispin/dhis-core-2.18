@@ -30,6 +30,7 @@ package org.hisp.dhis.analytics.dimension;
 
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
@@ -118,6 +119,7 @@ public class DefaultDimensionService
 
         if ( cat != null )
         {
+            cat.setDimensionType( DimensionType.CATEGORY );
             return cat;
         }
 
@@ -125,6 +127,7 @@ public class DefaultDimensionService
 
         if ( degs != null )
         {
+            degs.setDimensionType( DimensionType.DATAELEMENT_GROUPSET );
             return degs;
         }
 
@@ -132,6 +135,7 @@ public class DefaultDimensionService
 
         if ( ougs != null )
         {
+            ougs.setDimensionType( DimensionType.ORGANISATIONUNIT_GROUPSET );
             return ougs;
         }
 
@@ -139,6 +143,7 @@ public class DefaultDimensionService
 
         if ( cogs != null )
         {
+            cogs.setDimensionType( DimensionType.CATEGORYOPTION_GROUPSET );
             return cogs;
         }
         
@@ -146,14 +151,16 @@ public class DefaultDimensionService
         
         if ( tea != null )
         {
+            tea.setDimensionType( DimensionType.TRACKED_ENTITY_ATTRIBUTE );
             return tea;
         }
         
-        DataElement de = identifiableObjectManager.get( DataElement.class, uid );
+        DataElement tde = identifiableObjectManager.get( DataElement.class, uid );
         
-        if ( de != null )
+        if ( tde != null )
         {
-            return de;
+            tde.setDimensionType( DimensionType.TRACKED_ENTITY_DATAELEMENT );
+            return tde;
         }
         
         return null;
@@ -303,6 +310,23 @@ public class DefaultDimensionService
             mergeDimensionalObjects( object, object.getRows() );
             mergeDimensionalObjects( object, object.getFilters() );
         }
+    }
+    
+    public DimensionalObject getDimensionalObjectCopy( String uid, boolean filterCanRead )
+    {
+        DimensionalObject dimension = getDimension( uid );
+        
+        BaseDimensionalObject object = new BaseDimensionalObject();
+        object.mergeWith( dimension );
+        
+        if ( filterCanRead )
+        {
+            User user = currentUserService.getCurrentUser();
+            List<NameableObject> items = filterCanRead( user, object.getItems() );
+            object.setItems( items );
+        }
+        
+        return dimension;
     }
 
     //--------------------------------------------------------------------------
