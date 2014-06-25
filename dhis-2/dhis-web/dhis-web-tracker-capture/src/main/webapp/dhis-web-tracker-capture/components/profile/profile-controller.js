@@ -3,6 +3,7 @@ trackerCapture.controller('ProfileController',
                 CurrentSelection,
                 TEService,
                 TEIService,
+                DateUtils,
                 AttributesFactory,
                 TranslationService) {
 
@@ -39,36 +40,44 @@ trackerCapture.controller('ProfileController',
         angular.forEach($scope.selectedEntity.attributes, function(att){
             if(att.type === 'number' && !isNaN(parseInt(att.value))){
                 att.value = parseInt(att.value);
-            }
+            }            
         });        
         
         if($scope.selectedProgram){
             //show only those attributes in selected program            
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
-                for(var i=0; i<$scope.selectedEntity.attributes.length; i++){
-                    $scope.selectedEntity.attributes[i].show = false;
+                
+                for(var i=0; i<atts.length; i++){
                     var processed = false;
-                    for(var j=0; j<atts.length && !processed; j++){
-                        if($scope.selectedEntity.attributes[i].attribute === atts[j].id){
+                    for(var j=0; j<$scope.selectedEntity.attributes.length && !processed; j++){
+                        if(atts[i].id === $scope.selectedEntity.attributes[j].attribute){
                             processed = true;
-                            $scope.selectedEntity.attributes[i].show = true;
+                            $scope.selectedEntity.attributes[j].show = true;
                         }
-                    }                                   
+                    }
+
+                    if(!processed){//attribute was empty, so a chance to put some value
+                        $scope.selectedEntity.attributes.push({show: true, attribute: atts[i].id, displayName: atts[i].name, type: atts[i].valueType, value: ''});
+                    }                   
                 }
             }); 
         }
         else{
             //show attributes in no program
             AttributesFactory.getWithoutProgram().then(function(atts){
-                for(var i=0; i<$scope.selectedEntity.attributes.length; i++){
-                    $scope.selectedEntity.attributes[i].show = false;
+                
+                for(var i=0; i<atts.length; i++){
                     var processed = false;
-                    for(var j=0; j<atts.length && !processed; j++){
-                        if($scope.selectedEntity.attributes[i].attribute === atts[j].id){
+                    for(var j=0; j<$scope.selectedEntity.attributes.length && !processed; j++){
+                        if(atts[i].id === $scope.selectedEntity.attributes[j].attribute){
                             processed = true;
-                            $scope.selectedEntity.attributes[i].show = true;
+                            $scope.selectedEntity.attributes[j].show = true;
                         }
-                    }                                   
+                    }
+
+                    if(!processed){//attribute was empty, so a chance to put some value
+                        $scope.selectedEntity.attributes.push({show: true, attribute: atts[i].id, displayName: atts[i].name, type: atts[i].valueType, value: ''});
+                    }                   
                 }
             });
         }              
