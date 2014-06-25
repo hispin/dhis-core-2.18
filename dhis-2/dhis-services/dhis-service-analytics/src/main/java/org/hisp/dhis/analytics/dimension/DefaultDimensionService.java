@@ -176,13 +176,20 @@ public class DefaultDimensionService
         {            
             User user = currentUserService.getCurrentUser();
 
-            items.addAll( filterCanRead( user, dimension.getItems() ) );
+            items.addAll( getCanReadObjects( user, dimension.getItems() ) );
         }
 
         return items;
     }
     
-    public <T extends IdentifiableObject> List<T> filterCanRead( User user, List<T> objects )
+    public <T extends IdentifiableObject> List<T> getCanReadObjects( List<T> objects )
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        return getCanReadObjects( user, objects );
+    }
+    
+    public <T extends IdentifiableObject> List<T> getCanReadObjects( User user, List<T> objects )
     {        
         List<T> list = new ArrayList<T>( objects );
         Iterator<T> iterator = list.iterator();
@@ -274,7 +281,7 @@ public class DefaultDimensionService
 
         User user = currentUserService.getCurrentUser();
         
-        return filterCanRead( user, dimensions );
+        return getCanReadObjects( user, dimensions );
     }
     
     public List<DimensionalObject> getDimensionConstraints()
@@ -322,7 +329,7 @@ public class DefaultDimensionService
         if ( filterCanRead )
         {
             User user = currentUserService.getCurrentUser();
-            List<NameableObject> items = filterCanRead( user, object.getItems() );
+            List<NameableObject> items = getCanReadObjects( user, object.getItems() );
             object.setItems( items );
         }
         
