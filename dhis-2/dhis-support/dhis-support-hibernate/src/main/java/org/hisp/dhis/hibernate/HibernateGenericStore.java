@@ -358,6 +358,44 @@ public class HibernateGenericStore<T>
         return query;
     }
 
+    /**
+     * Returns a Query instance. Allows for injecting a criteria part, such as
+     * "code = :code and name = :name". Note that the bound values must be set 
+     * on the query before executing it.
+     * 
+     * @param hqlCriteria the HQL criteria.
+     * @return a Query.
+     */
+    protected Query getQueryWithSelect( String hqlCriteria )
+    {
+        boolean sharingEnabled = sharingEnabled();
+        
+        String hql = "select distinct c from " + clazz.getName() + " c";
+        
+        if ( hqlCriteria != null )
+        {
+            hql += " where " + hqlCriteria;
+        }
+        
+        if ( sharingEnabled )
+        {
+            String criteria = hqlCriteria != null ? "and" : "where";
+            
+            hql += " " + criteria + " ( c.publicAccess like 'r%' or c.user IS NULL or c.user=:user"
+                + " or exists "
+                + "     (from c.userGroupAccesses uga join uga.userGroup ug join ug.members ugm where ugm = :user and uga.access like 'r%') )";
+        }
+        
+        Query query = getQuery( hql );
+        
+        if ( sharingEnabled )
+        {
+            query.setEntity( "user", currentUserService.getCurrentUser() );
+        }
+        
+        return query;
+    }
+
     private Query getQueryAll()
     {
         return getQuery( "from " + clazz.getName() + " c" );
