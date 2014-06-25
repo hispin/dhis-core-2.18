@@ -1,9 +1,9 @@
 trackerCapture.controller('ProfileController',
-        function($scope,                
+        function($rootScope,
+                $scope,                
                 CurrentSelection,
                 TEService,
                 TEIService,
-                DateUtils,
                 AttributesFactory,
                 TranslationService) {
 
@@ -86,6 +86,7 @@ trackerCapture.controller('ProfileController',
     $scope.enableEdit = function(){
         $scope.entityAttributes = angular.copy($scope.selectedEntity.attributes);
         $scope.editProfile = !$scope.editProfile; 
+        $rootScope.profileWidget.expand = true;
     };
     
     $scope.save = function(){

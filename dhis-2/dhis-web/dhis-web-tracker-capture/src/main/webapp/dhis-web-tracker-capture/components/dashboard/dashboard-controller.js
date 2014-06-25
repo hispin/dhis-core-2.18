@@ -16,12 +16,12 @@ trackerCapture.controller('DashboardController',
     
     //dashboard items   
     $rootScope.dashboardWidgets = {bigger: [], smaller: []};       
-    $rootScope.enrollmentWidget = {title: 'enrollment', view: "components/enrollment/enrollment.html", show: true};
-    $rootScope.dataentryWidget = {title: 'dataentry', view: "components/dataentry/dataentry.html", show: true};
-    $rootScope.selectedWidget = {title: 'current_selections', view: "components/selected/selected.html", show: false};
-    $rootScope.profileWidget = {title: 'profile', view: "components/profile/profile.html", show: true};
-    $rootScope.relationshipWidget = {title: 'relationship', view: "components/relationship/relationship.html", show: true};
-    $rootScope.notesWidget = {title: 'notes', view: "components/notes/notes.html", show: true};    
+    $rootScope.enrollmentWidget = {title: 'enrollment', view: "components/enrollment/enrollment.html", show: true, expand: true, expand: true};
+    $rootScope.dataentryWidget = {title: 'dataentry', view: "components/dataentry/dataentry.html", show: true, expand: true};
+    $rootScope.selectedWidget = {title: 'current_selections', view: "components/selected/selected.html", show: false, expand: true};
+    $rootScope.profileWidget = {title: 'profile', view: "components/profile/profile.html", show: true, expand: true};
+    $rootScope.relationshipWidget = {title: 'relationship', view: "components/relationship/relationship.html", show: true, expand: true};
+    $rootScope.notesWidget = {title: 'notes', view: "components/notes/notes.html", show: true, expand: true};    
    
     $rootScope.dashboardWidgets.bigger.push($rootScope.enrollmentWidget);
     $rootScope.dashboardWidgets.bigger.push($rootScope.dataentryWidget);
@@ -85,6 +85,10 @@ trackerCapture.controller('DashboardController',
     
     $scope.removeWidget = function(widget){        
         widget.show = false;
+    };
+    
+    $scope.expandCollapse = function(widget){
+        widget.expand = !widget.expand;
     };
     
     $scope.showHideWidgets = function(){

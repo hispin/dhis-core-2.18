@@ -1,4 +1,3 @@
-
 <div class="panel panel-default" ng-controller="ProfileController">
     <div class="panel-heading">
         {{trackedEntity.name|| 'entity' | translate}} {{profileWidget.title| translate}}
@@ -6,10 +5,14 @@
             | <span><a href ng-click="enableEdit()" title="{{'edit_profile'| translate}}">{{'edit'| translate}}</a></span>            
         </span>
         <span class="pull-right">
-            <a href ng-click="removeWidget(profileWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
+            <a class="small-horizonal-spacing" href ng-click="expandCollapse(profileWidget)">
+                <span ng-show="profileWidget.expand" class='black'><i class="fa fa-chevron-down" title="{{'collapse'| translate}}"></i></span>
+                <span ng-show="!profileWidget.expand" class='black'><i class="fa fa-chevron-right" title="{{'expand'| translate}}"></i></span>
+            </a>
+            <a class="small-horizonal-spacing" href ng-click="removeWidget(profileWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
         </span>        
     </div>
-    <div class="widget-content-container">
+    <div ng-show="profileWidget.expand" class="widget-content-container">
         <table class="table-borderless table-striped">
             <tr ng-repeat="attribute in selectedEntity.attributes" ng-show="attribute.show">
                 <td>
