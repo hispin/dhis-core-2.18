@@ -44,6 +44,8 @@ public class FieldMap extends ForwardingMap<String, FieldMap>
 
     private NodePropertyConverter nodePropertyConverter;
 
+    private String alias;
+
     @Override
     protected Map<String, FieldMap> delegate()
     {
@@ -65,11 +67,22 @@ public class FieldMap extends ForwardingMap<String, FieldMap>
         return nodePropertyConverter != null;
     }
 
+    public String getAlias()
+    {
+        return alias;
+    }
+
+    public void setAlias( String alias )
+    {
+        this.alias = alias;
+    }
+
     @Override
     public String toString()
     {
         return Objects.toStringHelper( this )
             .add( "map", standardToString() )
+            .add( "alias", alias )
             .add( "nodePropertyConverter", nodePropertyConverter )
             .toString();
     }

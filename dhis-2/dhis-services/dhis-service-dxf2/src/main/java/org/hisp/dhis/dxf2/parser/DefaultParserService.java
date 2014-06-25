@@ -84,14 +84,14 @@ public class DefaultParserService implements ParserService
                 continue;
             }
 
-            if ( c.equals( "[" ) || c.equals( "(" ) || c.equals( "{" ) )
+            if ( c.equals( "[" ) )
             {
                 prefixList.add( builder.toString() );
                 builder = new StringBuilder();
                 continue;
             }
 
-            if ( c.equals( "]" ) || c.equals( ")" ) || c.equals( "}" ) )
+            if ( c.equals( "]" ) )
             {
                 if ( !builder.toString().isEmpty() )
                 {
@@ -103,7 +103,8 @@ public class DefaultParserService implements ParserService
                 continue;
             }
 
-            if ( StringUtils.isAlpha( c ) || c.equals( "*" ) || c.equals( ":" ) || c.equals( "!" ) )
+            if ( StringUtils.isAlpha( c ) || c.equals( "*" ) || c.equals( ":" ) || c.equals( "!" )
+                || c.equals( "|" ) || c.equals( "{" ) || c.equals( "}" ) || c.equals( "(" ) || c.equals( ")" ) )
             {
                 builder.append( c );
             }
@@ -124,7 +125,7 @@ public class DefaultParserService implements ParserService
         return prefixes;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private void putInMap( FieldMap fieldMap, String path )
     {
         if ( StringUtils.isEmpty( path ) )
