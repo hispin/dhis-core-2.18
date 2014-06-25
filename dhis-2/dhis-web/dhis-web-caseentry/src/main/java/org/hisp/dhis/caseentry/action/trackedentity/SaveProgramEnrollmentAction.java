@@ -28,10 +28,15 @@ package org.hisp.dhis.caseentry.action.trackedentity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -41,11 +46,7 @@ import org.hisp.dhis.program.comparator.ProgramStageInstanceVisitDateComparator;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -78,12 +79,12 @@ public class SaveProgramEnrollmentAction
     {
         this.programInstanceService = programInstanceService;
     }
+    
+    private SelectionTreeManager selectionTreeManager;
 
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.selectionManager = selectionManager;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     private I18nFormat format;
@@ -160,12 +161,7 @@ public class SaveProgramEnrollmentAction
             return INPUT;
         }
 
-        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
-
-        if ( orgunit == null )
-        {
-            return INPUT;
-        }
+       
 
         Date enrollment = (enrollmentDate == null || enrollmentDate.isEmpty()) ? null : format
             .parseDate( enrollmentDate );
@@ -186,6 +182,8 @@ public class SaveProgramEnrollmentAction
 
         if ( programInstance == null )
         {
+            OrganisationUnit orgunit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
+            
             programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, enrollment, incident, orgunit );
         }
 
