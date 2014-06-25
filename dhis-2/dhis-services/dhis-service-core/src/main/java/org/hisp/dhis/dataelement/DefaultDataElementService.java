@@ -180,11 +180,6 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getAggregateableDataElements() );
     }
 
-    public Collection<DataElement> getAllActiveDataElements()
-    {
-        return i18n( i18nService, dataElementStore.getAllActiveDataElements() );
-    }
-
     public DataElement getDataElementByName( String name )
     {
         List<DataElement> dataElements = new ArrayList<DataElement>( dataElementStore.getAllEqName( name ) );
