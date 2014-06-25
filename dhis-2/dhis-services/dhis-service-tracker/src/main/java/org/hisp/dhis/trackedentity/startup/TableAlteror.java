@@ -276,8 +276,6 @@ public class TableAlteror
         
         executeSql( "UPDATE trackedentityaudit SET accessedmodule='tracked_entity_instance_dashboard' WHERE accessedmodule='instance_dashboard' or accessedmodule='patient_dashboard'" );
         
-        updateUidColumn();
-        
         executeSql( "UPDATE program_attributes SET allowDateInFuture='false' WHERE allowDateInFuture is null" );
 
         executeSql( "UPDATE programstageinstance SET status=1 WHERE completed=true" );
@@ -419,41 +417,6 @@ public class TableAlteror
 
             jdbcTemplate.execute( "UPDATE trackedentityinstance SET trackedentityid="
                 + "  (SELECT trackedentityid FROM trackedentity where name='Person') where trackedentityid is null" );
-        }
-    }
-
-    private void updateUidColumn()
-    {
-        updateUidColumn( "trackedentityinstancereminder" );
-        updateUidColumn( "programvalidation" );
-    }
-
-    private void updateUidColumn( String tableName )
-    {
-        StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement.executeQuery( "SELECT " + tableName + "id FROM " + tableName
-                + " where uid is null" );
-
-            while ( resultSet.next() )
-            {
-                String uid = CodeGenerator.generateCode();
-
-                executeSql( "UPDATE " + tableName + " SET uid='" + uid + "'  WHERE " + tableName + "id="
-                    + resultSet.getInt( 1 ) );
-            }
-        }
-        catch ( Exception ex )
-        {
-            log.debug( ex );
-        }
-        finally
-        {
-            holder.close();
         }
     }
     
