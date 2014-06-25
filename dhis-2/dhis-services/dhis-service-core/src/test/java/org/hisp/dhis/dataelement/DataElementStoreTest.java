@@ -268,38 +268,6 @@ public class DataElementStoreTest
     }
 
     @Test
-    public void testGetAllActiveDataElements()
-    {
-        assertEquals( 0, dataElementStore.getAllActiveDataElements().size() );
-
-        DataElement dataElementA = createDataElement( 'A' );
-        dataElementA.setActive( true );
-        DataElement dataElementB = createDataElement( 'B' );
-        dataElementB.setActive( true );
-        DataElement dataElementC = createDataElement( 'C' );
-        dataElementC.setActive( true );
-        DataElement dataElementD = createDataElement( 'D' );
-        dataElementD.setActive( false );
-
-        dataElementStore.save( dataElementA );
-        dataElementStore.save( dataElementB );
-        dataElementStore.save( dataElementC );
-        dataElementStore.save( dataElementD );
-
-        Collection<DataElement> dataElementsRef = new HashSet<DataElement>();
-        dataElementsRef.add( dataElementA );
-        dataElementsRef.add( dataElementB );
-        dataElementsRef.add( dataElementC );
-
-        assertEquals( dataElementsRef.size() + 1, dataElementStore.getAll().size() );
-
-        Collection<DataElement> dataElements = dataElementStore.getAllActiveDataElements();
-        assertNotNull( dataElements );
-        assertEquals( dataElementsRef.size(), dataElements.size() );
-        assertTrue( dataElements.containsAll( dataElementsRef ) );
-    }
-
-    @Test
     public void testGetDataElementsByAggregationOperator()
     {
         assertEquals( 0, dataElementStore.getDataElementsByAggregationOperator(

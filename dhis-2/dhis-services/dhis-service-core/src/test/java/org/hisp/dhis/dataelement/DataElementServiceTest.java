@@ -304,39 +304,6 @@ public class DataElementServiceTest
     }
 
     @Test
-    public void testGetAllActiveDataElements()
-        throws Exception
-    {
-        assertEquals( 0, dataElementService.getAllActiveDataElements().size() );
-
-        DataElement dataElementA = createDataElement( 'A' );
-        dataElementA.setActive( true );
-        DataElement dataElementB = createDataElement( 'B' );
-        dataElementB.setActive( true );
-        DataElement dataElementC = createDataElement( 'C' );
-        dataElementC.setActive( true );
-        DataElement dataElementD = createDataElement( 'D' );
-        dataElementD.setActive( false );
-
-        dataElementService.addDataElement( dataElementA );
-        dataElementService.addDataElement( dataElementB );
-        dataElementService.addDataElement( dataElementC );
-        dataElementService.addDataElement( dataElementD );
-
-        Collection<DataElement> dataElementsRef = new HashSet<DataElement>();
-        dataElementsRef.add( dataElementA );
-        dataElementsRef.add( dataElementB );
-        dataElementsRef.add( dataElementC );
-
-        assertEquals( dataElementsRef.size() + 1, dataElementService.getAllDataElements().size() );
-
-        Collection<DataElement> dataElements = dataElementService.getAllActiveDataElements();
-        assertNotNull( dataElements );
-        assertEquals( dataElementsRef.size(), dataElements.size() );
-        assertTrue( dataElements.containsAll( dataElementsRef ) );
-    }
-
-    @Test
     public void testGetDataElementsByAggregationOperator()
         throws Exception
     {

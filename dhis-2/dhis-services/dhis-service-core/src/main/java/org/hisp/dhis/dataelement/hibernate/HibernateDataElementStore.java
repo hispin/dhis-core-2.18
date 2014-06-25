@@ -84,12 +84,6 @@ public class HibernateDataElementStore
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<DataElement> getAllActiveDataElements()
-    {
-        return getCriteria( Restrictions.eq( "active", true ) ).list();
-    }
-
-    @SuppressWarnings("unchecked")
     public Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator )
     {
         return getCriteria( Restrictions.eq( "aggregationOperator", aggregationOperator ) ).list();

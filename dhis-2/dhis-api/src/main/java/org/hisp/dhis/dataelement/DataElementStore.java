@@ -66,14 +66,6 @@ public interface DataElementStore
     Collection<DataElement> getAggregateableDataElements();
 
     /**
-     * Returns all active DataElements.
-     * 
-     * @return a collection of all active DataElements, or an empty collection
-     *         if there are no active DataElements.
-     */
-    Collection<DataElement> getAllActiveDataElements();
-
-    /**
      * Returns all DataElements with a given aggregation operator.
      * 
      * @param aggregationOperator the aggregation operator of the DataElements
