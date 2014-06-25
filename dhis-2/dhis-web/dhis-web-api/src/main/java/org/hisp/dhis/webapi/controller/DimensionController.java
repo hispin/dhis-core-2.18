@@ -28,6 +28,14 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -35,7 +43,6 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.webapi.service.LinkService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
@@ -48,14 +55,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping( value = DimensionController.RESOURCE_PATH )
@@ -182,7 +181,7 @@ public class DimensionController
         
         List<DimensionalObject> dimensions = new ArrayList<>();
         dimensions.addAll( dataSet.getCategoryCombo().getCategories() );
-        dimensions.addAll( identifiableObjectManager.getAll( CategoryOptionGroupSet.class ) );
+        dimensions.addAll( dataSet.getCategoryOptionGroupSets() );
         
         dimensions = dimensionService.getCanReadObjects( dimensions );
         

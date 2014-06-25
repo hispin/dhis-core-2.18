@@ -323,17 +323,17 @@ public class DefaultDimensionService
     {
         DimensionalObject dimension = getDimension( uid );
         
-        BaseDimensionalObject object = new BaseDimensionalObject();
-        object.mergeWith( dimension );
+        BaseDimensionalObject copy = new BaseDimensionalObject();
+        copy.mergeWith( dimension );
         
         if ( filterCanRead )
         {
             User user = currentUserService.getCurrentUser();
-            List<NameableObject> items = getCanReadObjects( user, object.getItems() );
-            object.setItems( items );
+            List<NameableObject> items = getCanReadObjects( user, dimension.getItems() );
+            copy.setItems( items );
         }
         
-        return dimension;
+        return copy;
     }
 
     //--------------------------------------------------------------------------
