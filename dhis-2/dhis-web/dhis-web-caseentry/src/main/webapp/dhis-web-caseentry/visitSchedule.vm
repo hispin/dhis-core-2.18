@@ -63,7 +63,7 @@
 		<td></td>
 		<td>
 			#if( $auth.hasAccess( "dhis-web-caseentry", "saveProgramEnrollment" ) )
-				<input type="button" style='width:80px' value="$i18n.getString( 'update' )" onclick='updateEnrollment($programInstance.entityInstance.id, $programInstance.program.id, $programInstance.id, "$programInstance.program.displayName")'/>
+				<input type="button" style='width:80px' value="$i18n.getString( 'update' )" onclick='updateEnrollment($programInstance.entityInstance.id, "$programInstance.program.uid", $programInstance.id, "$programInstance.program.displayName")'/>
 			#end
 			<input type="button" style='width:80px' id='completeProgram' value="$i18n.getString( 'complete' )" onclick='unenrollmentForm($programInstance.id, 1)' />
 			<input type="button" style='width:80px' id='cancelProgram' value="$i18n.getString( 'quit' )" onclick='unenrollmentForm($programInstance.id, 2)' />
