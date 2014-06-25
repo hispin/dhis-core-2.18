@@ -203,57 +203,65 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                 });
 
                 var inputRegex = /<input.*?\/>/g,
-                    styleRegex = /style="[^"]*"/,
-                    idRegex = /id="[^"]*"/,
                     match,
                     inputFields = [];                
 
                 while (match = inputRegex.exec(htmlCode)) {                
                     inputFields.push(match[0]);
                 }
-
-                for(var i=0; i<inputFields.length; i++){
-                    var inputField = inputFields[i];
-                    var deId = '', style = '', newInputField;                    
-                    if(match = idRegex.exec(inputFields[i])){     
+                
+                for(var i=0; i<inputFields.length; i++){                    
+                    var inputField = inputFields[i];                    
+                    var inputElement = $.parseHTML( inputField );
+                    var attributes = {};
+                                       
+                    $(inputElement[0].attributes).each(function() {
+                        attributes[this.nodeName] = this.nodeValue;                       
+                    });
+                    
+                    var deId = '', newInputField;     
+                    if(attributes.hasOwnProperty('id')){
+                        deId = attributes['id'].substring(4, attributes['id'].length-1).split("-")[1]; 
                         
-                        deId = match[0].substring(4, match[0].length-1).split("-")[1];                        
-                        
-                        if(match = styleRegex.exec(inputFields[i]) ){
-                            style = match[0];                          
+                        //name needs to be unique so that it can be used for validation in angularjs
+                        if(attributes.hasOwnProperty('name')){
+                            attributes['name'] = deId;
                         }
-
+                        
+                        //check data element type and generate corresponding angular input field
                         if(programStageDataElements[deId].dataElement.type == "int"){
-                            newInputField = '<input type="number" name="'+ deId +'" ' + 
-                                            style + 
+                            newInputField = '<input type="number" ' +
+                                            this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "string"){
-                            newInputField = '<input type="text" name="'+ deId +'" ' + 
-                                            style + 
+                            newInputField = '<input type="text" ' +
+                                            this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '" ' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory"' +
                                             ' typeahead="option for option in programStageDataElements.'+deId+'.dataElement.optionSet.options | filter:$viewValue | limitTo:20"' +
                                             ' typeahead-open-on-focus ng-required="programStageDataElements.'+deId+'.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "bool"){
-                            newInputField = '<select name="'+ deId +'" ' + 
-                                            style + ' ng-model="currentEvent.' + deId + '" ' +
+                            newInputField = '<select ' +
+                                            this.getAttributesAsString(attributes) +
+                                            ' ng-model="currentEvent.' + deId + '" ' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">' + 
                                             'option value="">{{\'please_select\'| translate}}</option>' +
                                             '<option value="0">{{\'no\'| translate}}</option>' + 
                                             '<option value="1">{{\'yes\'| translate}}</option>';
                         }
                         if(programStageDataElements[deId].dataElement.type == "date"){
-                            newInputField = '<input type="text" name="'+ deId +'" ' + 
-                                            style + ' ng-model="currentEvent.' + deId + '"' +
+                            newInputField = '<input type="text" ' +
+                                            this.getAttributesAsString(attributes) +
+                                            ' ng-model="currentEvent.' + deId + '"' +
                                             ' ng-date' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
                         if(programStageDataElements[deId].dataElement.type == "trueOnly"){
-                            newInputField = '<input type="checkbox" name="'+ deId +'" ' + 
-                                            style + 
+                            newInputField = '<input type="checkbox" ' +
+                                            this.getAttributesAsString(attributes) +
                                             ' ng-model="currentEvent.' + deId + '"' +
                                             ' ng-required="programStageDataElements.' + deId + '.compulsory">';
                         }
@@ -264,7 +272,7 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                                         //'</ng-form>';                                    
 
                         htmlCode = htmlCode.replace(inputField, newInputField);
-                    }                
+                    }
                 }
                 
                 return htmlCode;
@@ -272,9 +280,20 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             }
             
             return null;
+        },
+        getAttributesAsString: function(attributes){
+            if(attributes){
+                var attributesAsString = '';                
+                for(var prop in attributes){
+                    if(prop != 'value'){
+                        attributesAsString += prop + '="' + attributes[prop] + '" ';
+                    }
+                }
+                return attributesAsString;
+            }
+            return null;
         }
-    };
-            
+    };            
 })
 
 /* Modal service for user interaction */
