@@ -63,7 +63,9 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -75,6 +77,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -124,7 +127,7 @@ public class HibernateCaseAggregationConditionStore
     {
         this.dataElementService = dataElementService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Implementation Methods
     // -------------------------------------------------------------------------
@@ -151,7 +154,7 @@ public class HibernateCaseAggregationConditionStore
     }
 
     public Grid getAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
-        Period period, I18nFormat format, I18n i18n )
+        Period period, int attributeOptioncomboId, I18nFormat format, I18n i18n )
     {
         Collection<Integer> _orgunitIds = getServiceOrgunit();
         _orgunitIds.retainAll( orgunitIds );
@@ -177,7 +180,7 @@ public class HibernateCaseAggregationConditionStore
             String sql = parseExpressionToSql( false, caseAggregationCondition.getAggregationExpression(),
                 caseAggregationCondition.getOperator(), caseAggregationCondition.getAggregationDataElement().getId(),
                 caseAggregationCondition.getAggregationDataElement().getDisplayName(), caseAggregationCondition
-                    .getOptionCombo().getId(), caseAggregationCondition.getOptionCombo().getDisplayName(), deSumId,
+                    .getOptionCombo().getId(), caseAggregationCondition.getOptionCombo().getDisplayName(), attributeOptioncomboId, deSumId,
                 _orgunitIds, period );
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
@@ -212,7 +215,7 @@ public class HibernateCaseAggregationConditionStore
         return grid;
     }
 
-    public void insertAggregateValue( String expression, String operator, Integer dataElementId, Integer optionComboId,
+    public void insertAggregateValue( String expression, String operator, Integer dataElementId, Integer optionComboId, int attributeOptioncomboId, 
         Integer deSumId, Collection<Integer> orgunitIds, Period period )
     {
         // Delete all data value from this period which created from DHIS-system
@@ -254,17 +257,17 @@ public class HibernateCaseAggregationConditionStore
         // insert data elements into database directly
 
         String sql = parseExpressionToSql( true, expression, operator, dataElementId, "dataelementname", optionComboId,
-            "optionComboname", deSumId, orgunitIds, period );
+            "optionComboname", attributeOptioncomboId, deSumId, orgunitIds, period );
         jdbcTemplate.execute( sql );
     }
 
     @Override
     public String parseExpressionToSql( boolean isInsert, String caseExpression, String operator,
-        Integer aggregateDeId, String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
+        Integer aggregateDeId, String aggregateDeName, Integer optionComboId, String optionComboName, int attributeOptioncomboId, Integer deSumId,
         Collection<Integer> orgunitIds, Period period )
-    {
+    { 
         String sql = "SELECT '" + aggregateDeId + "' as dataelementid, '" + optionComboId
-            + "' as categoryoptioncomboid, '" + optionComboId
+            + "' as categoryoptioncomboid, '" + attributeOptioncomboId
             + "' as attributeoptioncomboid, ou.organisationunitid as sourceid, '" + period.getId() + "' as periodid,'"
             + CaseAggregationCondition.AUTO_STORED_BY + "' as storedby, ";
 
@@ -360,7 +363,7 @@ public class HibernateCaseAggregationConditionStore
     }
 
     @Override
-    public void runAggregate( Collection<Integer> orgunitIds, CaseAggregateSchedule dataSet, Collection<Period> periods )
+    public void runAggregate( Collection<Integer> orgunitIds, CaseAggregateSchedule dataSet, Collection<Period> periods, int attributeOptioncomboId )
     {
         String sql = "select caseaggregationconditionid, aggregationdataelementid, optioncomboid, "
             + " cagg.aggregationexpression as caseexpression, cagg.operator as caseoperator, cagg.desum as desumid "
@@ -372,7 +375,7 @@ public class HibernateCaseAggregationConditionStore
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
 
-        while ( rs.next() )
+         while ( rs.next() )
         {
             for ( Period period : periods )
             {
@@ -404,7 +407,7 @@ public class HibernateCaseAggregationConditionStore
 
                 if ( !orgunitIds.isEmpty() )
                 {
-                    insertAggregateValue( caseExpression, caseOperator, dataelementId, optionComboId, deSumId,
+                    insertAggregateValue( caseExpression, caseOperator, dataelementId, optionComboId, attributeOptioncomboId, deSumId,
                         orgunitIds, period );
                 }
             }

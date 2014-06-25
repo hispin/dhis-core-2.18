@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.hisp.dhis.system.util.ValidationUtils;
@@ -75,6 +76,9 @@ public class TableAlteror
 
     @Autowired
     private StatementBuilder statementBuilder;
+    
+    @Autowired
+    private DataElementCategoryService categoryService;
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -279,6 +283,10 @@ public class TableAlteror
         executeSql( "UPDATE programstageinstance SET status=1 WHERE completed=true" );
         executeSql( "ALTER TABLE programstageinstance DROP COLUMN completed" );
         
+        executeSql( "update program_attributes set mandatory = false where mandatory is null;" );
+        
+        int attributeoptioncomboid = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
+        executeSql( "update datavalue set attributeoptioncomboid=" + attributeoptioncomboid + " where storedby='aggregated_from_tracker' or comment='aggregated_from_tracker'" );
     }
 
     // -------------------------------------------------------------------------
