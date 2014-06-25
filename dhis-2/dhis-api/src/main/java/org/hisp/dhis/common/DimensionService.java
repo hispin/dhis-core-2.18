@@ -41,7 +41,9 @@ public interface DimensionService
     
     List<NameableObject> getCanReadDimensionItems( String uid );
     
-    <T extends IdentifiableObject> List<T> filterCanRead( User user, List<T> objects );
+    <T extends IdentifiableObject> List<T> getCanReadObjects( List<T> objects );
+    
+    <T extends IdentifiableObject> List<T> getCanReadObjects( User user, List<T> objects );
     
     DimensionType getDimensionType( String uid );
     

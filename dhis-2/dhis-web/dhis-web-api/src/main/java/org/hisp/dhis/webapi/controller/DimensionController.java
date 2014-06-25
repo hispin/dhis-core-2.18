@@ -85,7 +85,7 @@ public class DimensionController
         @RequestParam( value = "links", defaultValue = "true", required = false ) Boolean links,
         Model model )
     {
-        DimensionalObject dimension = dimensionService.getDimension( uid );
+        DimensionalObject dimension = dimensionService.getDimensionalObjectCopy( uid, true );
 
         model.addAttribute( "model", dimension );
         model.addAttribute( "viewClass", "dimensional" );
@@ -183,6 +183,8 @@ public class DimensionController
         List<DimensionalObject> dimensions = new ArrayList<>();
         dimensions.addAll( dataSet.getCategoryCombo().getCategories() );
         dimensions.addAll( identifiableObjectManager.getAll( CategoryOptionGroupSet.class ) );
+        
+        dimensions = dimensionService.getCanReadObjects( dimensions );
         
         for ( DimensionalObject dim : dimensions )
         {
