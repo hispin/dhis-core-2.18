@@ -41,14 +41,26 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class LinearNodePipeline implements NodePipeline
 {
-    private List<NodeTransformer> nodeTransformers = Lists.newArrayList();
+    private class NodeTransformerWithArgs
+    {
+        NodeTransformer transformer;
+        List<String> args;
+
+        private NodeTransformerWithArgs( NodeTransformer transformer, List<String> args )
+        {
+            this.transformer = transformer;
+            this.args = args;
+        }
+    }
+
+    private List<NodeTransformerWithArgs> nodeTransformers = Lists.newArrayList();
 
     @Override
     public Node process( Node node )
     {
-        for ( NodeTransformer transformer : nodeTransformers )
+        for ( NodeTransformerWithArgs nodeTransformerWithArgs : nodeTransformers )
         {
-            node = transformer.transform( node, Lists.<String>newArrayList() );
+            node = nodeTransformerWithArgs.transformer.transform( node, nodeTransformerWithArgs.args );
         }
 
         return node;
@@ -56,6 +68,11 @@ public class LinearNodePipeline implements NodePipeline
 
     public void addTransformer( NodeTransformer nodeTransformer )
     {
-        nodeTransformers.add( checkNotNull( nodeTransformer ) );
+        nodeTransformers.add( new NodeTransformerWithArgs( checkNotNull( nodeTransformer ), Lists.<String>newArrayList() ) );
+    }
+
+    public void addTransformer( NodeTransformer nodeTransformer, List<String> args )
+    {
+        nodeTransformers.add( new NodeTransformerWithArgs( checkNotNull( nodeTransformer ), args ) );
     }
 }

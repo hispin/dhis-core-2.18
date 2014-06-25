@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.fieldfilter;
 import com.google.common.base.Objects;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.Maps;
+import org.hisp.dhis.node.LinearNodePipeline;
 import org.hisp.dhis.node.NodePropertyConverter;
 
 import java.util.Map;
@@ -44,7 +45,7 @@ public class FieldMap extends ForwardingMap<String, FieldMap>
 
     private NodePropertyConverter nodePropertyConverter;
 
-    private String alias;
+    private final LinearNodePipeline pipeline = new LinearNodePipeline();
 
     @Override
     protected Map<String, FieldMap> delegate()
@@ -67,14 +68,9 @@ public class FieldMap extends ForwardingMap<String, FieldMap>
         return nodePropertyConverter != null;
     }
 
-    public String getAlias()
+    public LinearNodePipeline getPipeline()
     {
-        return alias;
-    }
-
-    public void setAlias( String alias )
-    {
-        this.alias = alias;
+        return pipeline;
     }
 
     @Override
@@ -82,7 +78,6 @@ public class FieldMap extends ForwardingMap<String, FieldMap>
     {
         return Objects.toStringHelper( this )
             .add( "map", standardToString() )
-            .add( "alias", alias )
             .add( "nodePropertyConverter", nodePropertyConverter )
             .toString();
     }

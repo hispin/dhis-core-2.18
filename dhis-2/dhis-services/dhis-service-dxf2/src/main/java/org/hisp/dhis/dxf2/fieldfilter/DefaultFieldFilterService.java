@@ -39,6 +39,7 @@ import org.hisp.dhis.common.PresetProvider;
 import org.hisp.dhis.dxf2.parser.ParserService;
 import org.hisp.dhis.node.AbstractNode;
 import org.hisp.dhis.node.NodePropertyConverter;
+import org.hisp.dhis.node.NodeTransformer;
 import org.hisp.dhis.node.types.CollectionNode;
 import org.hisp.dhis.node.types.ComplexNode;
 import org.hisp.dhis.node.types.SimpleNode;
@@ -68,15 +69,20 @@ public class DefaultFieldFilterService implements FieldFilterService
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private Set<PresetProvider> presetProviders = Sets.newHashSet();
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private Set<NodePropertyConverter> nodePropertyConverters = Sets.newHashSet();
+
+    @Autowired( required = false )
+    private Set<NodeTransformer> nodeTransformers = Sets.newHashSet();
 
     private ImmutableMap<String, PresetProvider> presets = ImmutableMap.of();
 
     private ImmutableMap<String, NodePropertyConverter> converters = ImmutableMap.of();
+
+    private ImmutableMap<String, NodeTransformer> transformers = ImmutableMap.of();
 
     @PostConstruct
     public void init()
@@ -98,6 +104,15 @@ public class DefaultFieldFilterService implements FieldFilterService
         }
 
         converters = converterBuilder.build();
+
+        ImmutableMap.Builder<String, NodeTransformer> transformerBuilder = ImmutableMap.builder();
+
+        for ( NodeTransformer transformer : nodeTransformers )
+        {
+            transformerBuilder.put( transformer.name(), transformer );
+        }
+
+        transformers = transformerBuilder.build();
     }
 
     @Override
@@ -138,7 +153,7 @@ public class DefaultFieldFilterService implements FieldFilterService
         return collectionNode;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private ComplexNode buildComplexNode( FieldMap fieldMap, Class<?> klass, Object object )
     {
         Schema schema = schemaService.getDynamicSchema( klass );
@@ -272,12 +287,7 @@ public class DefaultFieldFilterService implements FieldFilterService
 
             if ( child != null )
             {
-                if ( fieldValue.getAlias() != null )
-                {
-                    child.setName( fieldValue.getAlias() );
-                }
-
-                complexNode.addChild( child );
+                complexNode.addChild( fieldValue.getPipeline().process( child ) );
             }
         }
 
@@ -356,7 +366,12 @@ public class DefaultFieldFilterService implements FieldFilterService
                     }
                 }
 
-                value.setAlias( matcher.group( 3 ) );
+                if ( matcher.group( 3 ) != null )
+                {
+                    NodeTransformer transformer = transformers.get( "rename" );
+                    value.getPipeline().addTransformer( transformer, Lists.newArrayList( matcher.group( 3 ) ) );
+                }
+
                 fieldMap.put( matcher.group( 1 ), value );
 
                 cleanupFields.add( fieldKey );
