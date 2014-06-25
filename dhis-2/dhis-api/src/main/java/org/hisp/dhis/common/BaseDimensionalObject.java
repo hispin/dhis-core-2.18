@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.view.DimensionalView;
 
 import java.util.ArrayList;
@@ -209,11 +210,29 @@ public class BaseDimensionalObject
     {
         this.filter = filter;
     }
-
+    
     //--------------------------------------------------------------------------
     // Supportive methods
     //--------------------------------------------------------------------------
 
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            DimensionalObject dimensionalObject = (DimensionalObject) other;
+            
+            dimensionType = dimensionalObject.getDimensionType() == null ? dimensionType : dimensionalObject.getDimensionType();
+            dimensionName = dimensionalObject.getDimensionName() == null ? dimensionName : dimensionalObject.getDimensionName();
+            filter = dimensionalObject.getFilter() == null ? filter : dimensionalObject.getFilter();
+            
+            items.clear();
+            items.addAll( dimensionalObject.getItems() );
+        }
+    }
+    
     @Override
     public String toString()
     {
