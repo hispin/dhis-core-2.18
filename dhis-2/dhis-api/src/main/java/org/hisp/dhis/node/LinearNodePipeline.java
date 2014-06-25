@@ -48,7 +48,7 @@ public class LinearNodePipeline implements NodePipeline
     {
         for ( NodeTransformer transformer : nodeTransformers )
         {
-            node = transformer.transform( node );
+            node = transformer.transform( node, Lists.<String>newArrayList() );
         }
 
         return node;
