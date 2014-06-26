@@ -38,6 +38,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.PresetProvider;
 import org.hisp.dhis.dxf2.parser.ParserService;
 import org.hisp.dhis.node.AbstractNode;
+import org.hisp.dhis.node.Node;
 import org.hisp.dhis.node.NodePropertyConverter;
 import org.hisp.dhis.node.NodeTransformer;
 import org.hisp.dhis.node.types.CollectionNode;
@@ -69,13 +70,13 @@ public class DefaultFieldFilterService implements FieldFilterService
     @Autowired
     private SchemaService schemaService;
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private Set<PresetProvider> presetProviders = Sets.newHashSet();
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private Set<NodePropertyConverter> nodePropertyConverters = Sets.newHashSet();
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private Set<NodeTransformer> nodeTransformers = Sets.newHashSet();
 
     private ImmutableMap<String, PresetProvider> presets = ImmutableMap.of();
@@ -147,14 +148,14 @@ public class DefaultFieldFilterService implements FieldFilterService
 
         for ( Object object : objects )
         {
-            collectionNode.addChild( buildComplexNode( fieldMap, klass, object ) );
+            collectionNode.addChild( buildNode( fieldMap, klass, object ) );
         }
 
         return collectionNode;
     }
 
-    @SuppressWarnings( "unchecked" )
-    private ComplexNode buildComplexNode( FieldMap fieldMap, Class<?> klass, Object object )
+    @SuppressWarnings("unchecked")
+    private AbstractNode buildNode( FieldMap fieldMap, Class<?> klass, Object object )
     {
         Schema schema = schemaService.getDynamicSchema( klass );
 
@@ -163,7 +164,7 @@ public class DefaultFieldFilterService implements FieldFilterService
 
         if ( object == null )
         {
-            return complexNode;
+            return new SimpleNode( schema.getName(), null );
         }
 
         updateFields( fieldMap, schema.getKlass() );
@@ -226,7 +227,7 @@ public class DefaultFieldFilterService implements FieldFilterService
 
                         for ( Object collectionObject : collection )
                         {
-                            ComplexNode node = buildComplexNode( map, property.getItemKlass(), collectionObject );
+                            Node node = buildNode( map, property.getItemKlass(), collectionObject );
 
                             if ( !node.getChildren().isEmpty() )
                             {
@@ -258,7 +259,7 @@ public class DefaultFieldFilterService implements FieldFilterService
                     }
                     else
                     {
-                        child = buildComplexNode( getFullFieldMap( propertySchema ), property.getKlass(), returnValue );
+                        child = buildNode( getFullFieldMap( propertySchema ), property.getKlass(), returnValue );
                     }
                 }
             }
@@ -271,7 +272,7 @@ public class DefaultFieldFilterService implements FieldFilterService
 
                     for ( Object collectionObject : (Collection<?>) returnValue )
                     {
-                        ComplexNode node = buildComplexNode( fieldValue, property.getItemKlass(), collectionObject );
+                        Node node = buildNode( fieldValue, property.getItemKlass(), collectionObject );
 
                         if ( !node.getChildren().isEmpty() )
                         {
@@ -281,7 +282,7 @@ public class DefaultFieldFilterService implements FieldFilterService
                 }
                 else
                 {
-                    child = buildComplexNode( fieldValue, property.getKlass(), returnValue );
+                    child = buildNode( fieldValue, property.getKlass(), returnValue );
                 }
             }
 
