@@ -117,7 +117,7 @@ function getDefaultRequiredFields()
 			}
 		});
 		
-		var html = jQuery("#designTextarea").ckeditorGet().getData();
+		var html = jQuery("#designTextarea").ckeditor().editor.getData();
 		var input = jQuery( html ).find("input");
 		if( input.length > 0 )
 		{
@@ -160,7 +160,7 @@ function validateProgramFields()
 		}
 	});
 	
-	var html = jQuery("#designTextarea").ckeditorGet().getData();
+	var html = jQuery("#designTextarea").ckeditor().editor.getData();
 	var input = jQuery( html ).find("input");
 	if( input.length > 0 )
 	{
@@ -269,7 +269,7 @@ function validateForm( checkViolate )
 function checkExisted( id )
 {	
 	var result = false;
-	var html = jQuery("#designTextarea").ckeditorGet().getData();
+	var html = jQuery("#designTextarea").ckeditor().editor.getData();
 	var input = jQuery( html ).find("input");
 
 	input.each( function(i, item){		
@@ -341,7 +341,7 @@ function insertElement( type )
         setHeaderDelayMessage(i18n_property_is_inserted);
 		return;
 	}else{
-		var oEditor = jQuery("#designTextarea").ckeditorGet();
+		var oEditor = jQuery("#designTextarea").ckeditor().editor;
 		oEditor.insertHtml( htmlCode );
 		setMessage("");
 	}
@@ -360,7 +360,7 @@ function deleteRegistrationForm( id, name )
 function insertImage() {
 	var image = $("#imageDialog :selected").val();
 	var html = "<img src=\"" + image + "\" title=\"" + $("#imageDialog :selected").text() + "\">";
-	var oEditor = $("#designTextarea").ckeditorGet();
+	var oEditor = $("#designTextarea").ckeditor().editor;
 	oEditor.insertHtml( html );
 }
 
@@ -428,7 +428,7 @@ function autoSaveTrackedEntityForm()
 	$.postUTF8( 'autoSaveTrackedEntityForm.action',
 	{
 		name: getFieldValue('name'),
-		designTextarea: jQuery("#designTextarea").ckeditorGet().getData(),
+		designTextarea: jQuery("#designTextarea").ckeditor().editor.getData(),
 		programId: getFieldValue('programId'),
 		id: getFieldValue('id')
 	},
