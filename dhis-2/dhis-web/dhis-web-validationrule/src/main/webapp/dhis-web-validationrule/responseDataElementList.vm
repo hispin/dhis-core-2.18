@@ -8,7 +8,6 @@
 		<alternativeName>$!encoder.xmlEncode( $dataElement.alternativeName )</alternativeName>
 		<code>$!encoder.xmlEncode( $dataElement.code )</code>
 		<description>$!encoder.xmlEncode( $dataElement.description )</description>
-		<active>$dataElement.active</active>
 		<type>$dataElement.type</type>
 	</dataElement>
 #end

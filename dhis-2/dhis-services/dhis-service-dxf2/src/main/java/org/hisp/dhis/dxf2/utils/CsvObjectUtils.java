@@ -153,8 +153,7 @@ public class CsvObjectUtils
                 object.setShortName( getSafe( values, 3, object.getName(), 50 ) );
                 object.setDescription( getSafe( values, 4, null, null ) );
                 object.setFormName( getSafe( values, 5, null, 230 ) );
-                object.setActive( true );
-
+                
                 String domainType = getSafe( values, 6, DataElementDomain.AGGREGATE.getValue(), 16 );
                 object.setDomainType( DataElementDomain.fromValue( domainType ) );
 

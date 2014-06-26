@@ -53,7 +53,6 @@
 	#displayProperty( "short_name" $importObject.object.shortName )
 	#displayProperty( "code" $importObject.object.code )
 	#displayProperty( "description" $importObject.object.description )
-	#displayBoolProperty( "active" $importObject.object.active )
 		
 	<tr>
 		<td>$i18n.getString( "type" )</td>

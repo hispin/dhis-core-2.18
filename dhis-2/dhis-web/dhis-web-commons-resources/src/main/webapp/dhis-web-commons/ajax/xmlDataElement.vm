@@ -6,7 +6,6 @@
 	<alternativeName>$!encoder.xmlEncode( $dataElement.alternativeName )</alternativeName>
 	<code>$!encoder.xmlEncode( $dataElement.code )</code>
 	<description>$!encoder.xmlEncode( $dataElement.displayDescription )</description>
-	<active>$dataElement.active</active>
 	<domainType>$dataElement.getDomainTypeNullSafe()</domainType>
 	<valueType>$dataElement.type</valueType>
 	<aggregationOperator>$dataElement.aggregationOperator</aggregationOperator>

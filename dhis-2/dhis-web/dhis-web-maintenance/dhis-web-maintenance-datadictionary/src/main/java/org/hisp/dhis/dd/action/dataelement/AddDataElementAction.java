@@ -281,7 +281,6 @@ public class AddDataElementAction
         dataElement.setCode( code );
         dataElement.setDescription( description );
         dataElement.setFormName( formName );
-        dataElement.setActive( true );
         dataElement.setDomainType( DataElementDomain.fromValue( domainType )  );
         dataElement.setType( valueType );
         

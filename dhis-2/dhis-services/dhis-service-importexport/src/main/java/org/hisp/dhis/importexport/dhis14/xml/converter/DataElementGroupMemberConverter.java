@@ -38,7 +38,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanToDhis14;
 
 /**
  * @author Lars Helge Overland
@@ -53,8 +52,6 @@ public class DataElementGroupMemberConverter
     private static final String FIELD_GROUP_ID = "DataElementAndIndicatorGroupID";
 
     private static final String FIELD_DATAELEMENT_ID = "DataElementID";
-
-    private static final String FIELD_ACTIVE = "Active";
 
     private DataElementService dataElementService;
 
@@ -94,7 +91,6 @@ public class DataElementGroupMemberConverter
 
                             writer.writeElement( FIELD_GROUP_ID, String.valueOf( group.getId() ) );
                             writer.writeElement( FIELD_DATAELEMENT_ID, String.valueOf( element.getId() ) );
-                            writer.writeElement( FIELD_ACTIVE, convertBooleanToDhis14( element.isActive() ) );
 
                             writer.closeElement();
                         }

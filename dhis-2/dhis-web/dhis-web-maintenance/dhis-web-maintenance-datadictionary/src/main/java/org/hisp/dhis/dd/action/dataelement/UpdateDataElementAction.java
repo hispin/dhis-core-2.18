@@ -157,13 +157,6 @@ public class UpdateDataElementAction
         this.formName = formName;
     }
 
-    private boolean active;
-
-    public void setActive( boolean active )
-    {
-        this.active = active;
-    }
-
     private String domainType;
 
     public void setDomainType( String domainType )
@@ -317,7 +310,6 @@ public class UpdateDataElementAction
         dataElement.setCode( code );
         dataElement.setDescription( description );
         dataElement.setFormName( formName );
-        dataElement.setActive( active );
         dataElement.setDomainType( DataElementDomain.fromValue( domainType )  );
         dataElement.setType( valueType );
         

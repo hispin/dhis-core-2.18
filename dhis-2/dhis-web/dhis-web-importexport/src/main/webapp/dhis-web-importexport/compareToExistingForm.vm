@@ -51,7 +51,6 @@
 	#compareProperty( $importObject.object.shortName $importObject.compareObject.shortName "short_name" )
 	#compareProperty( $importObject.object.code $importObject.compareObject.code "code" )
 	#compareProperty( $importObject.object.description $importObject.compareObject.description "description" )
-	#compareBoolProperty( $importObject.object.active $importObject.compareObject.active "active" )
 	
 	<tr>
 		<td#compare( $importObject.object.type $importObject.compareObject.type )>$i18n.getString( "type" )</td>
@@ -114,7 +113,6 @@
 	
 	#compareProperty( $importObject.object.shortName $importObject.compareObject.shortName "short_name" )
 	#compareProperty( $importObject.object.code $importObject.compareObject.code "code" )
-	#compareBoolProperty( $importObject.object.active $importObject.compareObject.active "active" )
 	#compareProperty( $importObject.object.comment $importObject.compareObject.comment "comment" )
 	#compareProperty( $importObject.object.geoCode $importObject.compareObject.geoCode "geo_code" )
 	
