@@ -8,46 +8,70 @@
                 <input type="radio" ng-model="ouMode.name" id="descendants" value="DESCENDANTS"> {{'all_children'| translate}}
             </td>
         </tr>
-        <tr>
-            <td>{{'registration_date'| translate}}</td>
+        <tr ng-if="selectedProgram">
+            <td>{{'enrollment_date'| translate}}</td>
             <td>
-                <input type="text" class="form-control-select2" ng-date ng-model="attribute.value" />
+                <div class="dataelement-filter">
+                    <div class="container-1-2">
+                        <input type="text" placeholder="{{'from'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programStartDate"/>
+                    </div>
+                    <div class="container-1-2">
+                        <input type="text" placeholder="{{'to'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programEndDate"/>                
+                    </div>
+                </div>                
             </td>
         </tr>
         <tr ng-repeat="attribute in attributes">
             <td>
-                {{attribute.name}} - {{attribute.valueType}}
+                {{attribute.name}}
             </td>
             <td>
                 <div ng-switch="attribute.valueType">
+                    <div ng-switch-when="number">
+                        <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
+                            <div class="filter-operand">
+                                <select ng-model="filter.operand" class="form-control-select2" ng-options="operand | translate for operand in numberOperands">
+                                </select>
+                            </div>
+                            <div class="filter-value">
+                                <input type="number" ng-model="filter.value" class="form-control-select2">
+                            </div>
+                            <div class="filter-add">
+                                <button class="btn-link" ng-click="addFilter(attribute)" title="{{'add_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></button>
+                            </div>
+                            <div class="filter-remove">
+                                <button class="btn-link" ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}" ng-disabled="attribute.filters.length < 2"><span class="black"><i class="fa fa-trash-o"></i></span></button>
+                            </div>
+                        </div>                        
+                    </div>
                     <div ng-switch-when="date">
-                        <input type="text" class="form-control-select2" ng-date ng-model="attribute.value" />
+                        <div class="dataelement-filter">
+                            <div class="container-1-2">
+                                <input type="text" placeholder="{{'from'| translate}}" class="form-control-select2" ng-date ng-model="attribute.startDate"/>
+                            </div>
+                            <div class="container-1-2">
+                                <input type="text" placeholder="{{'to'| translate}}" class="form-control-select2" ng-date ng-model="attribute.endDate"/>                
+                            </div>
+                        </div> 
                     </div>
-                    <div ng-switch-when="trueOnly">
-                        <input type="checkbox" class="form-control-select2" ng-model="attribute.value" />
-                    </div>
-                    <div ng-switch-when="bool">
-                        <select multiple ui-select2 ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
-                            <option value="0">{{'no'| translate}}</option>
-                            <option value="1">{{'yes'| translate}}</option>
-                        </select>
+                    <div ng-switch-when="string">
+                        <input type="text" class="form-control-select2" ng-model="attribute.value" /> 
                     </div>
                     <div ng-switch-when="optionSet">
                         <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
                             <option ng-repeat="option in attribute.optionSet.options" value="{{option}}">{{option}}</option>
                         </select>
                     </div>
-                    <div ng-switch-when="number">
-                        <input type="number" class="form-control-select2" ng-model="attribute.value"/>
-                    </div>
-                    <div ng-switch-default>
-                        <input type="text" class="form-control-select2" ng-model="attribute.value" />                                        
-                    </div>
-                </div>                                                                                                    
+                    <div ng-switch-when="bool">
+                        <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
+                            <option ng-repeat="option in boolOperands" value="{{option}}">{{option}}</option>
+                        </select>
+                    </div>                    
+                </div>
             </td>
         </tr>         
     </table>
-    
+
     <button type="button"
             class="btn btn-default"
             ng-click="search(searchMode.attributeBased)">

@@ -176,12 +176,14 @@ trackerCapture.controller('DataEntryController',
             if($scope.currentEvent && $scope.currentEvent.event === event.event){
                 //clicked on the same stage, do toggling
                 $scope.currentEvent = null;
+                $scope.currentElement = {id: '', saved: false};
                 $scope.showDataEntryDiv = !$scope.showDataEntryDiv;                
             }
             else{
-                $scope.currentEvent = event;
+                $scope.currentElement = {};
+                $scope.currentEvent = event;                
                 $scope.showDataEntryDiv = !$scope.showDataEntryDiv;
-                $scope.getDataEntryForm();
+                $scope.getDataEntryForm();                
             }               
         }
     }; 
@@ -213,35 +215,48 @@ trackerCapture.controller('DataEntryController',
             });
 
             $scope.currentEvent.dataValues = [];
+            $scope.currentEventOriginal = angular.copy($scope.currentEvent);
         }); 
     };
     
     $scope.saveDatavalue = function(prStDe){
         
-        $scope.updateSuccess = false;
-        
+        //check for input validity
+        $scope.dataEntryOuterForm.submitted = true;        
+        if( $scope.dataEntryOuterForm.$invalid ){
+            return false;
+        }
+         
+        //input is valid
+        $scope.updateSuccess = false;      
+   
         if(!angular.isUndefined($scope.currentEvent[prStDe.dataElement.id])){
-            
-            //currentEvent.providedElsewhere[prStDe.dataElement.id];
-            var value = $scope.currentEvent[prStDe.dataElement.id];
-            var ev = {  event: $scope.currentEvent.event,
-                        orgUnit: $scope.currentEvent.orgUnit,
-                        program: $scope.currentEvent.program,
-                        programStage: $scope.currentEvent.programStage,
-                        status: $scope.currentEvent.status,
-                        trackedEntityInstance: $scope.currentEvent.trackedEntityInstance,
-                        dataValues: [
-                                        {
-                                            dataElement: prStDe.dataElement.id, 
-                                            value: value, 
-                                            providedElseWhere: $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] ? $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] : false
-                                        }
-                                    ]
-                     };
-            DHIS2EventFactory.updateForSingleValue(ev).then(function(response){
-                $scope.updateSuccess = true;
-            });
-            
+
+            if($scope.currentEventOriginal[prStDe.dataElement.id] != $scope.currentEvent[prStDe.dataElement.id]){
+                
+                //get current element
+                $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
+
+                //currentEvent.providedElsewhere[prStDe.dataElement.id];
+                var value = $scope.currentEvent[prStDe.dataElement.id];
+                var ev = {  event: $scope.currentEvent.event,
+                            orgUnit: $scope.currentEvent.orgUnit,
+                            program: $scope.currentEvent.program,
+                            programStage: $scope.currentEvent.programStage,
+                            status: $scope.currentEvent.status,
+                            trackedEntityInstance: $scope.currentEvent.trackedEntityInstance,
+                            dataValues: [
+                                            {
+                                                dataElement: prStDe.dataElement.id, 
+                                                value: value, 
+                                                providedElseWhere: $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] ? $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] : false
+                                            }
+                                        ]
+                         };
+                DHIS2EventFactory.updateForSingleValue(ev).then(function(response){
+                    $scope.currentElement.saved = true;
+                });
+            }
         }        
     };
     
@@ -270,8 +285,7 @@ trackerCapture.controller('DataEntryController',
                      };
             DHIS2EventFactory.updateForSingleValue(ev).then(function(response){
                 $scope.updateSuccess = true;
-            });
-            
+            });            
         }        
     };
     
@@ -289,5 +303,17 @@ trackerCapture.controller('DataEntryController',
             dummyEvent.statusColor = 'stage-overdue';
         }
         return dummyEvent;
+    };
+    
+    $scope.getClass = function(id){
+        if($scope.currentElement){
+            if($scope.currentElement.saved && ($scope.currentElement.id === id)){
+                return 'form-control input-success';
+            }            
+            if(!$scope.currentElement.saved && ($scope.currentElement.id === id)){
+                return 'form-control input-error';
+            }            
+        }        
+        return 'form-control';      
     };
 });
