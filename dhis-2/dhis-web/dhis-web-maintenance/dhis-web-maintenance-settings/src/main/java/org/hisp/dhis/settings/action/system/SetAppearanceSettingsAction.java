@@ -33,7 +33,7 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_INTRO;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_NOTIFICATION;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_FOOTER;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_FLAG;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
+import static org.hisp.dhis.setting.SystemSettingManager.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18n;
@@ -141,6 +141,20 @@ public class SetAppearanceSettingsAction
         this.localeSelect = localeSelect;
     }
     
+    private boolean customLoginPageLogo;
+    
+    public void setCustomLoginPageLogo( boolean customLoginPageLogo )
+    {
+        this.customLoginPageLogo = customLoginPageLogo;
+    }
+    
+    private boolean customTopMenuLogo;
+    
+    public void setCustomTopMenuLogo( boolean customTopMenuLogo )
+    {
+        this.customTopMenuLogo = customTopMenuLogo;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -168,6 +182,8 @@ public class SetAppearanceSettingsAction
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_FOOTER + localeSelect, applicationFooter );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
+        systemSettingManager.saveSystemSetting( KEY_CUSTOM_LOGIN_PAGE_LOGO, customLoginPageLogo );
+        systemSettingManager.saveSystemSetting( KEY_CUSTOM_TOP_MENU_LOGO, customTopMenuLogo );
         styleManager.setSystemStyle( currentStyle );
 
         message = i18n.getString( "settings_updated" );

@@ -48,6 +48,8 @@ import static org.hisp.dhis.setting.SystemSettingManager.*;
 public class SystemSettingInterceptor
     implements Interceptor
 {
+    private static final String DATE_FORMAT = "dateFormat";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -88,7 +90,7 @@ public class SystemSettingInterceptor
 
         map.put( KEY_CALENDAR, systemSettingManager.getSystemSetting( KEY_CALENDAR, DEFAULT_CALENDAR ) );
         map.put( KEY_DATE_FORMAT, systemSettingManager.getSystemSetting( KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT ) );
-        map.put( "dateFormat", calendarService.getSystemDateFormat() );
+        map.put( DATE_FORMAT, calendarService.getSystemDateFormat() );
         map.put( KEY_CACHE_STRATEGY, systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY, DEFAULT_CACHE_STRATEGY ) );
         map.put( KEY_ANALYTICS_MAX_LIMIT, systemSettingManager.getSystemSetting( KEY_ANALYTICS_MAX_LIMIT, DEFAULT_ANALYTICS_MAX_LIMIT ) );
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE, DEFAULT_APPLICATION_TITLE ) );
@@ -113,7 +115,8 @@ public class SystemSettingInterceptor
         map.put( KEY_OPENID_PROVIDER_LABEL, systemSettingManager.getSystemSetting( KEY_OPENID_PROVIDER_LABEL ) );
         map.put( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, systemSettingManager.getSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, false ) );
         map.put( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, systemSettingManager.getSystemSetting( KEY_ONLY_MANAGE_WITHIN_USER_GROUPS, false ) );
-
+        map.put( KEY_CUSTOM_LOGIN_PAGE_LOGO, systemSettingManager.getSystemSetting( KEY_CUSTOM_LOGIN_PAGE_LOGO, false ) );
+        map.put( KEY_CUSTOM_TOP_MENU_LOGO, systemSettingManager.getSystemSetting( KEY_CUSTOM_TOP_MENU_LOGO, false ) );
         map.put( SYSPROP_PORTAL, defaultIfEmpty( System.getProperty( SYSPROP_PORTAL ), String.valueOf( false ) ) );
 
         invocation.getStack().push( map );
