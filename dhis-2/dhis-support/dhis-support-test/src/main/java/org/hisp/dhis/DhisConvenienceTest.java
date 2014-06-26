@@ -420,7 +420,6 @@ public abstract class DhisConvenienceTest
         dataElement.setShortName( "DataElementShort" + uniqueCharacter );
         dataElement.setCode( "DataElementCode" + uniqueCharacter );
         dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
-        dataElement.setActive( true );
         dataElement.setType( DataElement.VALUE_TYPE_INT );
         dataElement.setDomainType( DataElementDomain.AGGREGATE );
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );

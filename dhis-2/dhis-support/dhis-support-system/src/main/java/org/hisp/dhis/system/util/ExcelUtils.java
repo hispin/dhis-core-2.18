@@ -92,7 +92,6 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, element.getShortName(), FORMAT_TEXT ) );
         sheet.addCell( new Label( column++, row, element.getCode(), FORMAT_TEXT ) );
         sheet.addCell( new Label( column++, row, element.getDescription(), FORMAT_TEXT ) );
-        sheet.addCell( new Label( column++, row, getBoolean().get( element.isActive() ), FORMAT_TEXT ) );
         sheet.addCell( new Label( column++, row, getType().get( element.getType() ), FORMAT_TEXT ) );
         sheet.addCell( new Label( column++, row, getAggregationOperator().get( element.getAggregationOperator() ),
             FORMAT_TEXT ) );

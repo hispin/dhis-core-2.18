@@ -96,7 +96,6 @@ public class DataElementBatchHandler
         statementBuilder.setColumn( "shortname" );
         statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "description" );
-        statementBuilder.setColumn( "active" );
         statementBuilder.setColumn( "valuetype" );
         statementBuilder.setColumn( "domaintype" );
         statementBuilder.setColumn( "aggregationtype" );
@@ -112,7 +111,6 @@ public class DataElementBatchHandler
         statementBuilder.setValue( dataElement.getShortName() );
         statementBuilder.setValue( dataElement.getCode() );
         statementBuilder.setValue( dataElement.getDescription() );
-        statementBuilder.setValue( dataElement.isActive() );
         statementBuilder.setValue( dataElement.getType() );
         statementBuilder.setValue( dataElement.getDomainType().name() );
         statementBuilder.setValue( dataElement.getAggregationOperator() );

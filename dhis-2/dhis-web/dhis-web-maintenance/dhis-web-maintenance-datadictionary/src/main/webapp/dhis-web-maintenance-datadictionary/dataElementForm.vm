@@ -75,17 +75,6 @@
 		<td><label for="formName">$i18n.getString( "form_name" )</label></td>
 		<td><input type="text" id="formName" name="formName" value="$!encoder.htmlEncode( $!dataElement.formName )"></td>
 	</tr>
-    #if( $update )
-    <tr>
-        <td><label for="active">$i18n.getString( "active" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td>
-            <select id="active" name="active">
-                <option value="true" #if( $!dataElement.active ) selected="selected" #end>$i18n.getString( "yes" )</option>
-                <option value="false" #if( !$!dataElement.active ) selected="selected" #end>$i18n.getString( "no" )</option>
-            </select>
-        </td>
-    </tr>
-    #end
 	<tr>
 		<td><label for="domainType">$i18n.getString( "domain_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>

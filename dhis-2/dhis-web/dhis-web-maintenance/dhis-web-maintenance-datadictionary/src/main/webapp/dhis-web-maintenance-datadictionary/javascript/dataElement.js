@@ -82,9 +82,6 @@ function showDataElementDetails( context ) {
       var description = json.dataElement.description;
       setInnerHTML('descriptionField', description ? description : '[' + i18n_none + ']');
 
-      var active = json.dataElement.active;
-      setInnerHTML('activeField', active == 'true' ? i18n_yes : i18n_no);
-
       var typeMap = {
         'int': i18n_number,
         'bool': i18n_yes_no,

@@ -726,6 +726,8 @@ public class TableAlteror
         upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
         upgradeTranslations();
+
+        executeSql( "ALTER TABLE dataelement DROP COLUMN active" );
         
         log.info( "Tables updated" );
     }

@@ -401,10 +401,7 @@ public class PDFUtils
             table.addCell( getItalicCell( i18n.getString( "description" ) ) );
             table.addCell( getTextCell( element.getDescription() ) );
         }
-
-        table.addCell( getItalicCell( i18n.getString( "active" ) ) );
-        table.addCell( getTextCell( i18n.getString( getBoolean().get( element.isActive() ) ) ) );
-
+        
         if ( nullIfEmpty( element.getType() ) != null )
         {
             table.addCell( getItalicCell( i18n.getString( "value_type" ) ) );

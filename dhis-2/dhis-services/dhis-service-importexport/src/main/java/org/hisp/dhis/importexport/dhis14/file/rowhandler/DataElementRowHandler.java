@@ -78,7 +78,6 @@ public class DataElementRowHandler
     {
         final DataElement dataElement = (DataElement) object;
         
-        dataElement.setActive( true );
         dataElement.setDomainType( DataElementDomain.AGGREGATE );
         dataElement.setZeroIsSignificant( false );
                     
