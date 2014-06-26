@@ -258,6 +258,15 @@ public class CurrentUserController
         userService.updateUser( currentUser );
     }
 
+    @RequestMapping( value = "/authorization", produces = { "application/json", "text/*" } )
+    public void getAuthorization( HttpServletResponse response ) throws IOException
+    {
+        User currentUser = currentUserService.getCurrentUser();
+
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        JacksonUtils.toJson( response.getOutputStream(), currentUser.getUserCredentials().getAllAuthorities() );
+    }
+
     @RequestMapping( value = "/authorization/{auth}", produces = { "application/json", "text/*" } )
     public void hasAuthorization( @PathVariable String auth, HttpServletResponse response ) throws IOException
     {
