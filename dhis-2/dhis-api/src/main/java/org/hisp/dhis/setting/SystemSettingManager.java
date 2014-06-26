@@ -95,6 +95,8 @@ public interface SystemSettingManager
     final String KEY_ONLY_MANAGE_WITHIN_USER_GROUPS = "keyOnlyManageWithinUserGroups";
     final String KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS = "keyHideUnapprovedDataInAnalytics";
     final String KEY_ANALYTICS_MAX_LIMIT = "keyAnalyticsMaxLimit";
+    final String KEY_CUSTOM_LOGIN_PAGE_LOGO = "keyCustomLoginPageLogo";
+    final String KEY_CUSTOM_TOP_MENU_LOGO = "keyCustomTopMenuLogo";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";

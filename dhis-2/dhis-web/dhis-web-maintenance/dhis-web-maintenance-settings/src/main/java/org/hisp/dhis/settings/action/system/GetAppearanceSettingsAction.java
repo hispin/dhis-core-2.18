@@ -122,30 +122,14 @@ public class GetAppearanceSettingsAction
         return availableLocales;
     }
 
-//    private Locale currentLocale;
-//
-//    public Locale getCurrentLocale()
-//    {
-//        return currentLocale;
-//    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        // ---------------------------------------------------------------------
-        // Get available UI locales
-        // ---------------------------------------------------------------------
         availableLocales = localeManager.getAvailableLocales();
 
-        //currentLocale = localeManager.getCurrentLocale();
-        
-        // ---------------------------------------------------------------------
-        // Others
-        // ---------------------------------------------------------------------
-        
         styles = styleManager.getStyles();
         
         currentStyle = styleManager.getSystemStyle();

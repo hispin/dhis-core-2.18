@@ -30,7 +30,13 @@
         </div>
         #end
         <div id="loginField">
-            <div id="bannerArea"><a href="http://www.dhis2.org"><img src="logo_front.png" style="border:none"></a></div>
+            <div id="bannerArea">
+            #if ( $keyCustomLoginPageLogo )
+            <img src="../../external-static/logo_front.png"></a>
+            #else
+            <a href="http://www.dhis2.org"><img src="logo_front.png" style="border:none"></a>
+            #end
+            </div>
             
             <form id="loginForm" action="../../dhis-web-commons-security/login.action" method="post">
                 <div>
