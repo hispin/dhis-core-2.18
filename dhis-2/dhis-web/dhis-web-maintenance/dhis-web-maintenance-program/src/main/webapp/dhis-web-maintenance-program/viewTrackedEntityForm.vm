@@ -16,7 +16,7 @@
 		jQuery('#designTextarea').ckeditor();
 
 		#if($!registrationForm)
-			jQuery("#designTextarea").ckeditorGet().setData('$!encoder.jsEscape( $registrationForm.dataEntryForm.htmlCode , "'" )');
+			jQuery("#designTextarea").ckeditor().editor.setData('$!encoder.jsEscape( $registrationForm.dataEntryForm.htmlCode , "'" )');
 		#end
 	});
 

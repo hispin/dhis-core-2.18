@@ -269,7 +269,7 @@ function filterSelectList( select_id, filter )
 }
 
 function insertDataElement() {
-	var oEditor = $("#designTextarea").ckeditorGet();
+	var oEditor = $("#designTextarea").ckeditor().editor;
 	var $option = $("#dataElementSelector option:selected");
 
 	if( $option.length !== 0 ) {
@@ -310,7 +310,7 @@ function insertDataElement() {
 }
 
 function insertTotal() {
-	var oEditor = $("#designTextarea").ckeditorGet();
+	var oEditor = $("#designTextarea").ckeditor().editor;
 	var $option = $("#totalSelector option:selected");
 	
 	if( $option.length !== 0 )
@@ -331,7 +331,7 @@ function insertTotal() {
 }
 
 function insertIndicator() {
-	var oEditor = $("#designTextarea").ckeditorGet();
+	var oEditor = $("#designTextarea").ckeditor().editor;
 	var $option = $("#indicatorSelector option:selected");
 
 	if( $option.length !== 0 ) {
@@ -352,13 +352,13 @@ function insertIndicator() {
 function insertImage() {
 	var image = $("#imageDialog :selected").val();
 	var html = "<img src=\"" + image + "\" title=\"" + $("#imageDialog :selected").text() + "\">";
-	var oEditor = $("#designTextarea").ckeditorGet();
+	var oEditor = $("#designTextarea").ckeditor().editor;
 	oEditor.insertHtml( html );
 }
 
 function checkExisted(id) {
 	var result = false;
-	var html = $("#designTextarea").ckeditorGet().getData();
+	var html = $("#designTextarea").ckeditor().editor.getData();
 	var input = $(html).find("select, :text");
 	input.each(function(i, item) {
 		if (id == item.id)

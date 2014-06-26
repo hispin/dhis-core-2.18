@@ -48,7 +48,7 @@ function validateDataEntryForm( exit )
 function saveDataEntryForm() 
 {
 	var style = $("#style").val();
-	var field = $("#designTextarea").ckeditorGet();
+	var field = $("#designTextarea").ckeditor().editor();
 	var designTextarea = field.getData();
 	
 	$.postUTF8( 'autoSaveDataEntryForm.action',

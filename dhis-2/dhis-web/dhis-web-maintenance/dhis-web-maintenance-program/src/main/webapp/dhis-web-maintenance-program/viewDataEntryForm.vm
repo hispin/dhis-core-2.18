@@ -4,20 +4,22 @@
 	{
 		validation( 'saveDataEntryForm', function( form )
 		{
-			setInnerHTML( 'designTextarea' , jQuery("#designTextarea").ckeditorGet().getData() );
+			setInnerHTML( 'designTextarea' , jQuery("#designTextarea").ckeditor().editor.getData() );
 			form.submit();
 		} );
 
-		jQuery('#designTextarea').ckeditor();
-		jQuery("#designTextarea").ckeditorGet().setData('$encoder.jsEscape( $dataEntryValue, "'" )');
+		jQuery('#designTextarea').ckeditor()
+		  .editor
+		  .setData('$encoder.jsEscape( $dataEntryValue, "'" )');
+
 		openDataElementSelector();
 		
 		checkValueIsExist( "name", "validateDataEntryForm.action", { dataEntryFormId: '$!programStage.dataEntryForm.id' } );
 	});
 
-    var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
+  var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
 	var i18n_specify_dataelememt = '$encoder.jsEscape( $i18n.getString( "specify_dataelememt" ) , "'" )';
-    var i18n_choose_existing_dataentry ='$encoder.jsEscape( $i18n.getString( "choose_existing_dataentry" ) , "'" )';
+  var i18n_choose_existing_dataentry ='$encoder.jsEscape( $i18n.getString( "choose_existing_dataentry" ) , "'" )';
 	var i18n_dataelement = '$encoder.jsEscape( $i18n.getString( "dataelement" ) , "'" )';
 	var i18n_dataelement_of_orther_program_stage = "$i18n.getString( 'dataelement_of_orther_program_stage' )";
 	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';

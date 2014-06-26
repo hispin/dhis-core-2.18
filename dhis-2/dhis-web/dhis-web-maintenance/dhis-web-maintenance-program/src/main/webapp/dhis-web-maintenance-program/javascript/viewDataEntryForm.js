@@ -72,7 +72,7 @@ function loadExistedForm()
 	jQuery.get("showDataEntryForm.action",{
 		dataEntryFormId: getFieldValue( 'existedDataEntryId' )
 	}, function( html ){
-		jQuery("#designTextarea").ckeditorGet().setData( html );
+		jQuery("#designTextarea").ckeditor().editor.setData( html );
 
 		var dataEntryFormField = byId('existedDataEntryId');
 		var optionField = dataEntryFormField.options[dataEntryFormField.selectedIndex];
@@ -126,7 +126,7 @@ function getSelectedValues( jQueryString )
 function checkExisted( id )
 {	
 	var result = false;
-	var html = jQuery("#designTextarea").ckeditorGet().getData();
+	var html = jQuery("#designTextarea").ckeditor().editor.getData();
 	var input = jQuery( html ).find("select, :text");
 
 	input.each( function(i, item){		
@@ -198,7 +198,7 @@ function insertDataElement( source, programStageUid )
 		jQuery( source + " #message_").html( "<span class='bold'>" + i18n_dataelement_is_inserted + "</span>" );
 		return;
 	}else{
-		var oEditor = jQuery("#designTextarea").ckeditorGet();
+		var oEditor = jQuery("#designTextarea").ckeditor().editor;
 		oEditor.insertHtml( htmlCode );
 		jQuery( source + " #message_").html("");
 	}
@@ -286,7 +286,7 @@ function sortByOnChange( div, sortBy)
 function insertImage() {
 	var image = $("#imageDialog :selected").val();
 	var html = "<img src=\"" + image + "\" title=\"" + $("#imageDialog :selected").text() + "\">";
-	var oEditor = $("#designTextarea").ckeditorGet();
+	var oEditor = $("#designTextarea").ckeditor().editor;
 	oEditor.insertHtml( html );
 }
 
@@ -345,7 +345,7 @@ function autoSaveDataEntryForm()
 	$.postUTF8( 'autoSaveDataEntryForm.action',
 	{
 		name: getFieldValue('name'),
-		designTextarea: jQuery("#designTextarea").ckeditorGet().getData(),
+		designTextarea: jQuery("#designTextarea").ckeditor().editor.getData(),
 		programId: getFieldValue('programId'),
 		programStageId: getFieldValue('programStageId'),
 		dataEntryFormId: getFieldValue('dataEntryFormId')
