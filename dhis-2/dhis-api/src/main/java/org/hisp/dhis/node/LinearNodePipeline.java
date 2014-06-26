@@ -61,6 +61,11 @@ public class LinearNodePipeline implements NodePipeline
         for ( NodeTransformerWithArgs nodeTransformerWithArgs : nodeTransformers )
         {
             node = nodeTransformerWithArgs.transformer.transform( node, nodeTransformerWithArgs.args );
+
+            if ( node == null )
+            {
+                return null;
+            }
         }
 
         return node;
