@@ -121,7 +121,7 @@ public class DefaultModuleManager
     {
         detectModules();
 
-        return menuModules;
+        return new ArrayList<>( menuModules );
     }
 
     public List<Module> getAccessibleMenuModules()
@@ -149,7 +149,7 @@ public class DefaultModuleManager
     {
         detectModules();
 
-        return modulesByName.values();
+        return new ArrayList<>( modulesByName.values() );
     }
     
     public Module getCurrentModule()
