@@ -1,6 +1,7 @@
 Ext.onReady( function() {
 	var NS = DV,
 
+    LayoutWindow,
 	OptionsWindow,
 	FavoriteWindow,
 	SharingWindow,
@@ -34,6 +35,425 @@ Ext.onReady( function() {
 	}());
 
 	// constructors
+	LayoutWindow = function() {
+		var dimension,
+			dimensionStore,
+			row,
+			rowStore,
+			col,
+			colStore,
+			filter,
+			filterStore,
+			value,
+
+			getStore,
+			getStoreKeys,
+            addDimension,
+            removeDimension,
+            hasDimension,
+            saveState,
+            resetData,
+            reset,
+            dimensionStoreMap = {},
+
+			dimensionPanel,
+			selectPanel,
+			window,
+
+			margin = 1,
+			defaultWidth = 160,
+			defaultHeight = 200;
+
+		getStore = function(data) {
+			var config = {};
+
+			config.fields = ['id', 'name'];
+
+			if (data) {
+				config.data = data;
+			}
+
+			config.getDimensionNames = function() {
+				var dimensionNames = [];
+
+				this.each(function(r) {
+					dimensionNames.push(r.data.id);
+				});
+
+				return Ext.clone(dimensionNames);
+			};
+
+			return Ext.create('Ext.data.Store', config);
+		};
+
+		getStoreKeys = function(store) {
+			var keys = [],
+				items = store.data.items;
+
+			if (items) {
+				for (var i = 0; i < items.length; i++) {
+					keys.push(items[i].data.id);
+				}
+			}
+
+			return keys;
+		};
+
+		dimensionStore = getStore();
+        ns.app.stores.dimension = dimensionStore;
+
+		colStore = getStore();
+        ns.app.stores.col = colStore;
+
+		rowStore = getStore();
+        ns.app.stores.row = rowStore;
+
+        filterStore = getStore();
+        ns.app.stores.filter = filterStore;
+
+		dimension = Ext.create('Ext.ux.form.MultiSelect', {
+			cls: 'ns-toolbar-multiselect-leftright',
+			width: defaultWidth,
+			height: (defaultHeight * 2) + margin,
+			style: 'margin-right:' + margin + 'px; margin-bottom:0px',
+			valueField: 'id',
+			displayField: 'name',
+			dragGroup: 'layoutDD',
+			dropGroup: 'layoutDD',
+			ddReorder: false,
+			store: dimensionStore,
+			tbar: {
+				height: 25,
+				items: {
+					xtype: 'label',
+					text: NS.i18n.dimensions,
+					cls: 'ns-toolbar-multiselect-leftright-label'
+				}
+			},
+			listeners: {
+				afterrender: function(ms) {
+					ms.store.on('add', function() {
+						Ext.defer( function() {
+							ms.boundList.getSelectionModel().deselectAll();
+						}, 10);
+					});
+				}
+			}
+		});
+
+		col = Ext.create('Ext.ux.form.MultiSelect', {
+			cls: 'ns-toolbar-multiselect-leftright',
+			width: defaultWidth,
+			height: defaultHeight,
+			style: 'margin-bottom:' + margin + 'px',
+			valueField: 'id',
+			displayField: 'name',
+			dragGroup: 'layoutDD',
+			dropGroup: 'layoutDD',
+			store: colStore,
+			tbar: {
+				height: 25,
+				items: {
+					xtype: 'label',
+					text: NS.i18n.series,
+					cls: 'ns-toolbar-multiselect-leftright-label'
+				}
+			},
+			listeners: {
+				afterrender: function(ms) {
+					ms.boundList.on('itemdblclick', function(view, record) {
+						ms.store.remove(record);
+						dimensionStore.add(record);
+					});
+
+					ms.store.on('add', function(store, addedRecords) {
+                        var range = store.getRange();
+                        
+                        if (range.length > 1) {
+                            var addedIds = Ext.Array.pluck(addedRecords, 'internalId'),
+                                records = Ext.clone(range);
+
+                            store.removeAll();
+
+                            for (var i = 0; i < range.length; i++) {
+                                if (Ext.Array.contains(addedIds, range[i].internalId)) {
+                                    store.add(range[i]);
+                                }
+                                else {
+                                    filterStore.add(range[i]);
+                                }
+                            }
+                        }
+                        
+						Ext.defer( function() {
+							ms.boundList.getSelectionModel().deselectAll();
+						}, 10);                        
+					});
+				}
+			}
+		});
+
+		row = Ext.create('Ext.ux.form.MultiSelect', {
+			cls: 'ns-toolbar-multiselect-leftright',
+			width: defaultWidth,
+			height: defaultHeight,
+			style: 'margin-bottom:0px',
+			valueField: 'id',
+			displayField: 'name',
+			dragGroup: 'layoutDD',
+			dropGroup: 'layoutDD',
+			store: rowStore,
+			tbar: {
+				height: 25,
+				items: {
+					xtype: 'label',
+					text: NS.i18n.category,
+					cls: 'ns-toolbar-multiselect-leftright-label'
+				}
+			},
+			listeners: {
+				afterrender: function(ms) {
+					ms.boundList.on('itemdblclick', function(view, record) {
+						ms.store.remove(record);
+						dimensionStore.add(record);
+					});
+
+					ms.store.on('add', function(store, addedRecords) {
+                        var range = store.getRange();
+                        
+                        if (range.length > 1) {
+                            var addedIds = Ext.Array.pluck(addedRecords, 'internalId'),
+                                records = Ext.clone(range);
+
+                            store.removeAll();
+
+                            for (var i = 0; i < range.length; i++) {
+                                if (Ext.Array.contains(addedIds, range[i].internalId)) {
+                                    store.add(range[i]);
+                                }
+                                else {
+                                    filterStore.add(range[i]);
+                                }
+                            }
+                        }
+                        
+						Ext.defer( function() {
+							ms.boundList.getSelectionModel().deselectAll();
+						}, 10);                        
+					});
+				}
+			}
+		});
+
+		filter = Ext.create('Ext.ux.form.MultiSelect', {
+			cls: 'ns-toolbar-multiselect-leftright',
+			width: defaultWidth,
+			height: defaultHeight,
+			style: 'margin-right:' + margin + 'px; margin-bottom:' + margin + 'px',
+			valueField: 'id',
+			displayField: 'name',
+			dragGroup: 'layoutDD',
+			dropGroup: 'layoutDD',
+			store: filterStore,
+			tbar: {
+				height: 25,
+				items: {
+					xtype: 'label',
+					text: NS.i18n.filter,
+					cls: 'ns-toolbar-multiselect-leftright-label'
+				}
+			},
+			listeners: {
+				afterrender: function(ms) {
+					ms.boundList.on('itemdblclick', function(view, record) {
+						ms.store.remove(record);
+						dimensionStore.add(record);
+					});
+
+					ms.store.on('add', function() {
+						Ext.defer( function() {
+							ms.boundList.getSelectionModel().deselectAll();
+						}, 10);
+					});
+				}
+			}
+		});
+
+		selectPanel = Ext.create('Ext.panel.Panel', {
+			bodyStyle: 'border:0 none',
+			items: [
+				{
+					layout: 'column',
+					bodyStyle: 'border:0 none',
+					items: [
+						filter,
+						col
+					]
+				},
+				{
+					layout: 'column',
+					bodyStyle: 'border:0 none',
+					items: [
+						row
+					]
+				}
+			]
+		});
+
+        addDimension = function(record, store) {
+            var store = dimensionStoreMap[record.id] || store || colStore;
+
+            if (!hasDimension(record.id)) {
+                store.add(record);
+            }
+        };
+
+        removeDimension = function(dataElementId) {
+            var stores = [colStore, rowStore, filterStore];
+
+            for (var i = 0, store, index; i < stores.length; i++) {
+                store = stores[i];
+                index = store.findExact('id', dataElementId);
+
+                if (index != -1) {
+                    store.remove(store.getAt(index));
+                    dimensionStoreMap[dataElementId] = store;
+                }
+            }
+        };
+
+        hasDimension = function(id) {
+            var stores = [colStore, rowStore, filterStore];
+
+            for (var i = 0, store, index; i < stores.length; i++) {
+                store = stores[i];
+                index = store.findExact('id', id);
+
+                if (index != -1) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        saveState = function(map) {
+			map = map || dimensionStoreMap;
+
+            colStore.each(function(record) {
+                map[record.data.id] = colStore;
+            });
+
+            rowStore.each(function(record) {
+                map[record.data.id] = rowStore;
+            });
+
+            filterStore.each(function(record) {
+                map[record.data.id] = filterStore;
+            });
+
+            return map;
+        };
+
+		resetData = function() {
+			var map = saveState({}),
+				keys = ['dx', 'ou', 'pe', 'dates'];
+
+			for (var key in map) {
+				if (map.hasOwnProperty(key) && !Ext.Array.contains(keys, key)) {
+					removeDimension(key);
+				}
+			}
+		};
+
+		reset = function(isAll) {
+			colStore.removeAll();
+			rowStore.removeAll();
+			filterStore.removeAll();
+
+			if (!isAll) {
+				colStore.add({id: dimConf.data.dimensionName, name: dimConf.data.name});
+				rowStore.add({id: dimConf.period.dimensionName, name: dimConf.period.name});
+				filterStore.add({id: dimConf.organisationUnit.dimensionName, name: dimConf.organisationUnit.name});
+			}
+		};
+
+		getSetup = function() {
+			return {
+				col: getStoreKeys(colStore),
+				row: getStoreKeys(rowStore),
+				filter: getStoreKeys(filterStore)
+			};
+		};
+
+		window = Ext.create('Ext.window.Window', {
+			title: NS.i18n.table_layout,
+			bodyStyle: 'background-color:#fff; padding:' + margin + 'px',
+			closeAction: 'hide',
+			autoShow: true,
+			modal: true,
+			resizable: false,
+			getSetup: getSetup,
+			dimensionStore: dimensionStore,
+			rowStore: rowStore,
+			colStore: colStore,
+			filterStore: filterStore,
+            addDimension: addDimension,
+            removeDimension: removeDimension,
+            hasDimension: hasDimension,
+			hideOnBlur: true,
+			items: {
+				layout: 'column',
+				bodyStyle: 'border:0 none',
+				items: [
+					dimension,
+					selectPanel
+				]
+			},
+			bbar: [
+				'->',
+				{
+					text: NS.i18n.hide,
+					listeners: {
+						added: function(b) {
+							b.on('click', function() {
+								window.hide();
+							});
+						}
+					}
+				},
+				{
+					text: '<b>' + NS.i18n.update + '</b>',
+					listeners: {
+						added: function(b) {
+							b.on('click', function() {
+                                ns.app.viewport.update();
+
+								window.hide();
+							});
+						}
+					}
+				}
+			],
+			listeners: {
+				show: function(w) {
+					if (ns.app.layoutButton.rendered) {
+						ns.core.web.window.setAnchorPosition(w, ns.app.layoutButton);
+
+						if (!w.hasHideOnBlurHandler) {
+							ns.core.web.window.addHideOnBlurHandler(w);
+						}
+					}
+				},
+                render: function() {
+					reset();
+                }
+			}
+		});
+
+		return window;
+	};
+
 	OptionsWindow = function() {
 		var showValues,
             hideEmptyRows,
@@ -436,14 +856,7 @@ Ext.onReady( function() {
 				{
 					text: '<b>' + NS.i18n.update + '</b>',
 					handler: function() {
-						var config = ns.core.web.chart.getLayoutConfig(),
-							layout = ns.core.api.layout.Layout(config);
-
-						if (!layout) {
-							return;
-						}
-
-						ns.core.web.chart.getData(layout, false);
+                        ns.app.viewport.update();
 
 						window.hide();
 					}
@@ -1713,9 +2126,9 @@ Ext.onReady( function() {
 
 			web.chart.getLayoutConfig = function() {
 				var panels = ns.app.accordion.panels,
-                    columnDimNames = [ns.app.viewport.series.getValue()],
-                    rowDimNames = [ns.app.viewport.category.getValue()],
-                    filterDimNames = ns.app.viewport.filter.getValue(),
+					columnDimNames = [ns.app.stores.col.getDimensionNames()],
+					rowDimNames = [ns.app.stores.row.getDimensionNames()],
+					filterDimNames = [ns.app.stores.filter.getDimensionNames()],
 					config = ns.app.optionsWindow.getOptions(),
 					dx = dimConf.data.dimensionName,
 					co = dimConf.category.dimensionName,
@@ -1982,6 +2395,7 @@ Ext.onReady( function() {
 			accordionBody,
             accordion,
             westRegion,
+            layoutButton,
             optionsButton,
             favoriteButton,
             getParamString,
@@ -2094,7 +2508,7 @@ Ext.onReady( function() {
 
         chartType = Ext.create('Ext.toolbar.Toolbar', {
             height: 45,
-            style: 'padding-top:0px; border-style:none',
+            style: 'padding-top:1px; border:0 none; border-bottom:1px solid #ddd',
             getChartType: function() {
                 for (var i = 0; i < buttons.length; i++) {
                     if (buttons[i].pressed) {
@@ -2160,167 +2574,6 @@ Ext.onReady( function() {
 				}()
 			});
 		};
-
-        colStore = getDimensionStore();
-		ns.app.stores.col = colStore;
-
-        rowStore = getDimensionStore();
-		ns.app.stores.row = rowStore;
-
-        filterStore = getDimensionStore();
-		ns.app.stores.filter = filterStore;
-
-        series = Ext.create('Ext.form.field.ComboBox', {
-            cls: 'ns-combo',
-            baseBodyCls: 'small',
-            style: 'margin-bottom:0',
-            name: ns.core.conf.finals.chart.series,
-            queryMode: 'local',
-            editable: false,
-            valueField: 'id',
-            displayField: 'name',
-            width: (ns.core.conf.layout.west_fieldset_width / 3),
-            value: ns.core.conf.finals.dimension.data.dimensionName,
-            filterNext: function() {
-                category.filter(this.getValue());
-                filter.filter([this.getValue(), category.getValue()]);
-            },
-            store: colStore,
-            listeners: {
-                added: function(cb) {
-                    cb.filterNext();
-                },
-                select: function(cb) {
-                    cb.filterNext();
-                }
-            }
-        });
-
-        category = Ext.create('Ext.form.field.ComboBox', {
-            cls: 'ns-combo',
-            baseBodyCls: 'small',
-            style: 'margin-bottom:0',
-            name: ns.core.conf.finals.chart.category,
-            queryMode: 'local',
-            editable: false,
-            lastQuery: '',
-            valueField: 'id',
-            displayField: 'name',
-            width: (ns.core.conf.layout.west_fieldset_width / 3),
-            value: ns.core.conf.finals.dimension.period.dimensionName,
-            filter: function(value) {
-                if (Ext.isString(value)) {
-                    if (value === this.getValue()) {
-                        this.clearValue();
-                    }
-
-                    this.store.clearFilter();
-
-                    this.store.filterBy(function(record, id) {
-                        return id !== value;
-                    });
-                }
-            },
-            filterNext: function() {
-                filter.filter([series.getValue(), this.getValue()]);
-            },
-            store: rowStore,
-            listeners: {
-                added: function(cb) {
-                    cb.filterNext();
-                },
-                select: function(cb) {
-                    cb.filterNext();
-                }
-            }
-        });
-
-        filter = Ext.create('Ext.form.field.ComboBox', {
-            cls: 'ns-combo',
-            multiSelect: true,
-            baseBodyCls: 'small',
-            style: 'margin-bottom:0',
-            name: ns.core.conf.finals.chart.filter,
-            queryMode: 'local',
-            editable: false,
-            lastQuery: '',
-            valueField: 'id',
-            displayField: 'name',
-            width: (ns.core.conf.layout.west_fieldset_width / 3) + 1,
-            value: ns.core.conf.finals.dimension.organisationUnit.dimensionName,
-            filter: function(values) {
-                var a = Ext.clone(this.getValue()),
-                    b = [];
-
-                for (var i = 0; i < a.length; i++) {
-                    if (!Ext.Array.contains(values, a[i])) {
-                        b.push(a[i]);
-                    }
-                }
-
-                this.clearValue();
-                this.setValue(b);
-
-                this.store.filterBy(function(record, id) {
-                    return !Ext.Array.contains(values, id);
-                });
-            },
-            store: filterStore,
-            listeners: {
-                beforedeselect: function(cb) {
-                    return cb.getValue().length !== 1;
-                }
-            }
-        });
-
-        layout = Ext.create('Ext.toolbar.Toolbar', {
-            id: 'chartlayout_tb',
-            style: 'padding:2px 0 0 1px; background:#f5f5f5; border:0 none; border-top:1px dashed #ccc; border-bottom:1px solid #ccc',
-            height: 45,
-            items: [
-                {
-                    xtype: 'container',
-                    bodyStyle: 'border-style:none; background-color:transparent; padding:0',
-                    style: 'margin:0',
-                    items: [
-                        {
-                            xtype: 'label',
-                            text: NS.i18n.series,
-                            style: 'font-size:11px; font-weight:bold; padding:0 4px'
-                        },
-                        { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
-                        series
-                    ]
-                },
-                {
-                    xtype: 'container',
-                    bodyStyle: 'border-style:none; background-color:transparent; padding:0',
-                    style: 'margin:0',
-                    items: [
-                        {
-                            xtype: 'label',
-                            text: NS.i18n.category,
-                            style: 'font-size:11px; font-weight:bold; padding:0 4px'
-                        },
-                        { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
-                        category
-                    ]
-                },
-                {
-                    xtype: 'container',
-                    bodyStyle: 'border-style:none; background-color:transparent; padding:0',
-                    items: [
-                        {
-                            xtype: 'label',
-                            text: NS.i18n.filters,
-                            style: 'font-size:11px; font-weight:bold; padding:0 4px'
-                        },
-                        { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
-                        filter
-                    ]
-                }
-            ]
-        });
 
 		indicatorAvailableStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
@@ -4152,13 +4405,13 @@ Ext.onReady( function() {
 				}
 			},
 			store: Ext.create('Ext.data.TreeStore', {
-				fields: ['id', 'name'],
+				fields: ['id', 'name', 'hasChildren'],
 				proxy: {
 					type: 'rest',
 					format: 'json',
 					noCache: false,
 					extraParams: {
-						fields: 'children[id,name,level]'
+						fields: 'children[id,name,children::isNotEmpty|rename(hasChildren)&paging=false'
 					},
 					url: ns.core.init.contextPath + '/api/organisationUnits',
 					reader: {
@@ -4178,15 +4431,9 @@ Ext.onReady( function() {
 				},
 				listeners: {
 					load: function(store, node, records) {
-                        var numberOfLevels = ns.core.init.organisationUnitLevels.length;
-
 						Ext.Array.each(records, function(record) {
-                            //if (Ext.isBoolean(record.data.hasChildren)) {
-                                //record.set('leaf', !record.data.hasChildren);
-                            //}
-
-                            if (Ext.isNumber(numberOfLevels)) {
-                                record.set('leaf', parseInt(record.raw.level) === numberOfLevels);
+                            if (Ext.isBoolean(record.data.hasChildren)) {
+                                record.set('leaf', !record.data.hasChildren);
                             }
                         });
 					}
@@ -4528,7 +4775,8 @@ Ext.onReady( function() {
 		// dimensions
 
 		getDimensionPanel = function(dimension, iconCls) {
-			var	availableStore,
+			var	onSelect,
+                availableStore,
 				selectedStore,
 				available,
 				selected,
@@ -4536,6 +4784,17 @@ Ext.onReady( function() {
 
 				createPanel,
 				getPanels;
+
+            onSelect = function() {
+                var win = ns.app.layoutWindow;
+
+                if (selectedStore.getRange().length) {
+                    win.addDimension({id: dimension.id, name: dimension.name});
+                }
+                else if (!selectedStore.getRange().length && win.hasDimension(dimension.id)) {
+                    win.removeDimension(dimension.id);
+                }
+            };
 
 			availableStore = Ext.create('Ext.data.Store', {
 				fields: ['id', 'name'],
@@ -4603,7 +4862,15 @@ Ext.onReady( function() {
 
 			selectedStore = Ext.create('Ext.data.Store', {
 				fields: ['id', 'name'],
-				data: []
+				data: [],
+                listeners: {
+                    add: function() {
+                        onSelect();
+                    },
+                    remove: function() {
+                        onSelect();
+                    }
+                }
 			});
 
 			available = Ext.create('Ext.ux.form.MultiSelect', {
@@ -4809,7 +5076,7 @@ Ext.onReady( function() {
 			items: accordionBody,
 			panels: accordionPanels,
 			setThisHeight: function(mx) {
-				var settingsHeight = 91,
+				var settingsHeight = 46,
 					panelHeight = settingsHeight + this.panels.length * 28,
 					height;
 
@@ -4862,12 +5129,28 @@ Ext.onReady( function() {
 			}(),
 			items: [
                 chartType,
-                layout,
                 accordion
 			],
 			listeners: {
 				added: function() {
 					ns.app.westRegion = this;
+				}
+			}
+		});
+
+		layoutButton = Ext.create('Ext.button.Button', {
+			text: 'Layout',
+			menu: {},
+			handler: function() {
+				if (!ns.app.layoutWindow) {
+					ns.app.layoutWindow = LayoutWindow();
+				}
+
+				ns.app.layoutWindow.show();
+			},
+			listeners: {
+				added: function() {
+					ns.app.layoutButton = this;
 				}
 			}
 		});
@@ -5159,6 +5442,7 @@ Ext.onReady( function() {
 							update();
 						}
 					},
+					layoutButton,
 					optionsButton,
 					{
 						xtype: 'tbseparator',
@@ -5403,14 +5687,68 @@ Ext.onReady( function() {
 
 			// Layout
 			ns.app.viewport.chartType.setChartType(layout.type);
+            
+			ns.app.stores.dimension.removeAll();
+			ns.app.stores.col.removeAll();
+			ns.app.stores.row.removeAll();
+			ns.app.stores.filter.removeAll();
 
-			ns.app.viewport.series.setValue(xLayout.columnDimensionNames[0]);
-            ns.app.viewport.series.filterNext();
+			if (layout.columns) {
+				dimNames = [];
 
-            ns.app.viewport.category.setValue(xLayout.rowDimensionNames[0]);
-            ns.app.viewport.category.filterNext();
+				for (var i = 0, dim; i < layout.columns.length; i++) {
+					dim = dimConf.objectNameMap[layout.columns[i].dimension];
 
-            ns.app.viewport.filter.setValue(xLayout.filterDimensionNames);
+					if (!Ext.Array.contains(dimNames, dim.dimensionName)) {
+						ns.app.stores.col.add({
+							id: dim.dimensionName,
+							name: dimConf.objectNameMap[dim.dimensionName].name
+						});
+
+						dimNames.push(dim.dimensionName);
+					}
+
+					ns.app.stores.dimension.remove(ns.app.stores.dimension.getById(dim.dimensionName));
+				}
+			}
+
+			if (layout.rows) {
+				dimNames = [];
+
+				for (var i = 0, dim; i < layout.rows.length; i++) {
+					dim = dimConf.objectNameMap[layout.rows[i].dimension];
+
+					if (!Ext.Array.contains(dimNames, dim.dimensionName)) {
+						ns.app.stores.row.add({
+							id: dim.dimensionName,
+							name: dimConf.objectNameMap[dim.dimensionName].name
+						});
+
+						dimNames.push(dim.dimensionName);
+					}
+
+					ns.app.stores.dimension.remove(ns.app.stores.dimension.getById(dim.dimensionName));
+				}
+			}
+
+			if (layout.filters) {
+				dimNames = [];
+
+				for (var i = 0, dim; i < layout.filters.length; i++) {
+					dim = dimConf.objectNameMap[layout.filters[i].dimension];
+
+					if (!Ext.Array.contains(dimNames, dim.dimensionName)) {
+						ns.app.stores.filter.add({
+							id: dim.dimensionName,
+							name: dimConf.objectNameMap[dim.dimensionName].name
+						});
+
+						dimNames.push(dim.dimensionName);
+					}
+
+					ns.app.stores.dimension.remove(ns.app.stores.dimension.getById(dim.dimensionName));
+				}
+			}
 
 			// Options
 			if (ns.app.optionsWindow) {
@@ -5469,12 +5807,10 @@ Ext.onReady( function() {
 		viewport = Ext.create('Ext.container.Viewport', {
 			layout: 'border',
 			chartType: chartType,
-			series: series,
-			category: category,
-			filter: filter,
 			period: period,
 			treePanel: treePanel,
 			setGui: setGui,
+            update: update,
 			items: [
 				westRegion,
 				centerRegion
@@ -5482,6 +5818,9 @@ Ext.onReady( function() {
 			listeners: {
 				render: function() {
 					ns.app.viewport = this;
+
+                    ns.app.layoutWindow = LayoutWindow();
+                    ns.app.layoutWindow.hide();
 
 					ns.app.optionsWindow = OptionsWindow();
 					ns.app.optionsWindow.hide();
@@ -5502,7 +5841,7 @@ Ext.onReady( function() {
 						numberOfTabs = ns.core.init.dimensions.length + 5,
 						tabHeight = 28,
 						minPeriodHeight = 380,
-						settingsHeight = 91;
+						settingsHeight = 46;
 
 					if (viewportHeight > numberOfTabs * tabHeight + minPeriodHeight + settingsHeight) {
 						if (!Ext.isIE) {
