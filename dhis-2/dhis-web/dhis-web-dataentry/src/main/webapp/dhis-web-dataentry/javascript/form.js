@@ -1019,7 +1019,7 @@ function displayPeriods()
 
     if ( allowFuturePeriods == false )
     {
-      periods = dhis2.period.generator.filterFuturePeriods(periods);
+        periods = dhis2.period.generator.filterFuturePeriods( periods );
     }
 
     clearListById( 'selectedPeriodId' );
@@ -1141,14 +1141,15 @@ dhis2.de.updateOptionsStatus = function()
     if ( dhis2.de.currentCategories && dhis2.de.currentCategories.length != 0 )
     {
         var prefix = '(';
-        $.safeEach(dhis2.de.currentCategories, function (idx, category) {
+        $.safeEach( dhis2.de.currentCategories, function ( idx, category ) {
             var option = $('#category-' + category.id).val();
 
-            if (option && option != -1) {
+            if ( option && option != -1) {
                 var options = dhis2.de.categories[ category.id ].options;
                 var matching = $.grep(options, function (e) {
                     return e.id == option;
                 });
+                
                 html += prefix + matching[0].name;
                 prefix = ', ';
             }
@@ -1156,7 +1157,7 @@ dhis2.de.updateOptionsStatus = function()
         html += html.length == 0 ? '' : ')';
     }
 
-    $( '#currentOptionsSelection').html( html );
+    $( '#currentOptionsSelection' ).html( html );
 };
 
 /**
@@ -1203,8 +1204,7 @@ dhis2.de.getAttributesMarkup = function()
 
     var options = dhis2.de.getCurrentCategoryOptions();
 
-	if ( !dhis2.de.currentCategories || dhis2.de.currentCategories.length == 0
-		|| period.iso == "" ) {
+	if ( !dhis2.de.currentCategories || dhis2.de.currentCategories.length == 0 || period.iso == "" ) {
 		return html;
 	}
 	
