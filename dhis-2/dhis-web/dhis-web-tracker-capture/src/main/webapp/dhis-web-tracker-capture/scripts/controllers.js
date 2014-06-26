@@ -39,7 +39,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.searchText = null;
     $scope.emptySearchText = false;
     $scope.searchFilterExists = false;   
-    
+    $scope.numberOperands = ['EQ', 'GT','GE', 'LT', 'LE', 'NE' ];
+    $scope.boolOperands = ['yes', 'no'];
+    $scope.enrollment = {programStartDate: '', programEndDate: ''};
+   
     $scope.searchMode = { 
                             listAll: 'LIST_ALL', 
                             freeText: 'FREE_TEXT', 
@@ -68,6 +71,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 setTimeout(function () {
                     $scope.$apply(function () {
                         $scope.attributes = atts;   
+                        $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
                         $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
                         $scope.search($scope.searchMode.listAll);
                     });
@@ -99,6 +103,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                         setTimeout(function () {
                             $scope.$apply(function () {
                                 $scope.attributes = atts;    
+                                $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
                                 $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
                             });
                         }, 100);
@@ -117,6 +122,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 setTimeout(function () {
                     $scope.$apply(function () {
                         $scope.attributes = atts; 
+                        $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
                         $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
                     });
                 }, 100);
@@ -126,7 +132,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             AttributesFactory.getWithoutProgram().then(function(atts){
                 setTimeout(function () {
                     $scope.$apply(function () {
-                        $scope.attributes = atts;    
+                        $scope.attributes = atts;  
+                        $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
                         $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
                     });
                 }, 100);
@@ -166,7 +173,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }
         else if( mode === $scope.searchMode.attributeBased ){
             $scope.showTrackedEntityDiv = true;                  
-            attributeUrl = EntityQueryFactory.getQueryForAttributes($scope.attributes);
+            attributeUrl = EntityQueryFactory.getQueryForAttributes($scope.attributes, $scope.enrollment);
             
             if(!attributeUrl.hasValue && !$scope.selectedProgram){
                 $scope.emptySearchAttribute = true;
@@ -176,9 +183,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }
         else if( mode === $scope.searchMode.listAll ){   
             $scope.showTrackedEntityDiv = true;    
-        }      
-
-        $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+        } 
+        
+        //$scope.gridColumns = $scope.generateGridColumns($scope.attributes);
 
         //get events for the specified parameters
         TEIService.search($scope.selectedOrgUnit.id, 
@@ -188,6 +195,42 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                             attributeUrl.url).then(function(data){
             $scope.trackedEntityList = data;            
         });
+    };
+    
+    $scope.generateAttributeFilters = function(attributes){
+
+        angular.forEach(attributes, function(attribute){
+            var filter = {operand: '', value: ''};
+
+            if(attribute.valueType === 'number'){
+                filter.operand = $scope.numberOperands[0];
+                attribute.filters = [filter];
+            }
+        });
+                    
+        return attributes;
+    };
+    
+    $scope.addFilter = function(attribute, filter){
+        
+        var filter = { operand: '', value: ''};
+                    
+        if(attribute.valueType === 'number'){
+            filter.operand = $scope.numberOperands[0];
+        }
+        attribute.filters.push(filter);
+    };
+    
+    $scope.removeFilter = function(filter, attribute){
+        
+        var index = attribute.filters.indexOf(filter);        
+        attribute.filters.splice(index, 1);    
+        
+        //this is a bit strange, removing a filter toggles off search drop down.
+        //to avoid this, had to do stop poropagation.
+        if (window.event) {
+            window.event.stopPropagation();
+        }
     };
     
     //generate grid columns from teilist attributes
