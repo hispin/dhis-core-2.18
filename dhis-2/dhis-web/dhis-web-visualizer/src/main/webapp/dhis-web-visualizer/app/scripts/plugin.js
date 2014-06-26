@@ -702,8 +702,8 @@ Ext.onReady(function() {
 					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
                         if (DV.app) {
                             alert('No values found');
-                            return;
                         }
+                        return;
 					}
 
 					if (config.headers.length !== config.rows[0].length) {
@@ -2907,7 +2907,7 @@ Ext.onReady(function() {
 				Ext.data.JsonP.request({
 					url: init.contextPath + '/api/charts/' + id + '.jsonp?fields=' + conf.url.analysisFields.join(','),
 					failure: function(r) {
-						window.open(init.contextPath + '/api/charts/' + id + '.json?fields=' + conf.url.analysisFields.join(',')', '_blank');
+						window.open(init.contextPath + '/api/charts/' + id + '.json?fields=' + conf.url.analysisFields.join(','), '_blank');
 					},
 					success: function(r) {
                         Ext.apply(r, config);

@@ -675,10 +675,12 @@ Ext.onReady( function() {
 						console.log('Response: no valid headers');
 						return;
 					}
-
+                    
 					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
-						alert('No values found');
-						return;
+                        if (DV.app) {
+                            alert('No values found');
+                        }
+                        return;
 					}
 
 					if (config.headers.length !== config.rows[0].length) {

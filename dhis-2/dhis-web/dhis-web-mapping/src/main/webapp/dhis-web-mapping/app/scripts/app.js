@@ -4682,13 +4682,13 @@ Ext.onReady( function() {
 				}
 			},
             store: Ext.create('Ext.data.TreeStore', {
-				fields: ['id', 'name'],
+				fields: ['id', 'name', 'hasChildren'],
 				proxy: {
 					type: 'rest',
 					format: 'json',
 					noCache: false,
 					extraParams: {
-						fields: 'children[id,name,level]'
+						fields: 'children[id,name,children::isNotEmpty|rename(hasChildren)&paging=false'
 					},
 					url: gis.init.contextPath + '/api/organisationUnits',
 					reader: {
@@ -4708,15 +4708,9 @@ Ext.onReady( function() {
 				},
 				listeners: {
 					load: function(store, node, records) {
-                        var numberOfLevels = gis.init.organisationUnitLevels.length;
-
 						Ext.Array.each(records, function(record) {
-                            //if (Ext.isBoolean(record.data.hasChildren)) {
-                                //record.set('leaf', !record.data.hasChildren);
-                            //}
-
-                            if (Ext.isNumber(numberOfLevels)) {
-                                record.set('leaf', parseInt(record.raw.level) === numberOfLevels);
+                            if (Ext.isBoolean(record.data.hasChildren)) {
+                                record.set('leaf', !record.data.hasChildren);
                             }
                         });
 					}
@@ -5387,13 +5381,13 @@ Ext.onReady( function() {
 				}
 			},
             store: Ext.create('Ext.data.TreeStore', {
-				fields: ['id', 'name'],
+				fields: ['id', 'name', 'hasChildren'],
 				proxy: {
 					type: 'rest',
 					format: 'json',
 					noCache: false,
 					extraParams: {
-						fields: 'children[id,name,level]'
+						fields: 'children[id,name,children::isNotEmpty|rename(hasChildren)&paging=false'
 					},
 					url: gis.init.contextPath + '/api/organisationUnits',
 					reader: {
@@ -5413,15 +5407,9 @@ Ext.onReady( function() {
 				},
 				listeners: {
 					load: function(store, node, records) {
-                        var numberOfLevels = gis.init.organisationUnitLevels.length;
-
 						Ext.Array.each(records, function(record) {
-                            //if (Ext.isBoolean(record.data.hasChildren)) {
-                                //record.set('leaf', !record.data.hasChildren);
-                            //}
-
-                            if (Ext.isNumber(numberOfLevels)) {
-                                record.set('leaf', parseInt(record.raw.level) === numberOfLevels);
+                            if (Ext.isBoolean(record.data.hasChildren)) {
+                                record.set('leaf', !record.data.hasChildren);
                             }
                         });
 					}
@@ -6096,13 +6084,13 @@ Ext.onReady( function() {
 				}
 			},
             store: Ext.create('Ext.data.TreeStore', {
-				fields: ['id', 'name'],
+				fields: ['id', 'name', 'hasChildren'],
 				proxy: {
 					type: 'rest',
 					format: 'json',
 					noCache: false,
 					extraParams: {
-						fields: 'children[id,name,level]'
+						fields: 'children[id,name,children::isNotEmpty|rename(hasChildren)&paging=false'
 					},
 					url: gis.init.contextPath + '/api/organisationUnits',
 					reader: {
@@ -6122,15 +6110,9 @@ Ext.onReady( function() {
 				},
 				listeners: {
 					load: function(store, node, records) {
-                        var numberOfLevels = gis.init.organisationUnitLevels.length;
-
 						Ext.Array.each(records, function(record) {
-                            //if (Ext.isBoolean(record.data.hasChildren)) {
-                                //record.set('leaf', !record.data.hasChildren);
-                            //}
-
-                            if (Ext.isNumber(numberOfLevels)) {
-                                record.set('leaf', parseInt(record.raw.level) === numberOfLevels);
+                            if (Ext.isBoolean(record.data.hasChildren)) {
+                                record.set('leaf', !record.data.hasChildren);
                             }
                         });
 					}
@@ -7429,13 +7411,13 @@ Ext.onReady( function() {
 				}
 			},
             store: Ext.create('Ext.data.TreeStore', {
-				fields: ['id', 'name'],
+				fields: ['id', 'name', 'hasChildren'],
 				proxy: {
 					type: 'rest',
 					format: 'json',
 					noCache: false,
 					extraParams: {
-						fields: 'children[id,name,level]'
+						fields: 'children[id,name,children::isNotEmpty|rename(hasChildren)&paging=false'
 					},
 					url: gis.init.contextPath + '/api/organisationUnits',
 					reader: {
@@ -7455,15 +7437,9 @@ Ext.onReady( function() {
 				},
 				listeners: {
 					load: function(store, node, records) {
-                        var numberOfLevels = gis.init.organisationUnitLevels.length;
-
 						Ext.Array.each(records, function(record) {
-                            //if (Ext.isBoolean(record.data.hasChildren)) {
-                                //record.set('leaf', !record.data.hasChildren);
-                            //}
-
-                            if (Ext.isNumber(numberOfLevels)) {
-                                record.set('leaf', parseInt(record.raw.level) === numberOfLevels);
+                            if (Ext.isBoolean(record.data.hasChildren)) {
+                                record.set('leaf', !record.data.hasChildren);
                             }
                         });
 					}

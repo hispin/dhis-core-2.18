@@ -2042,6 +2042,38 @@ Ext.onReady( function() {
 				}
 			};
 
+            // document
+            web.document = web.document || {};
+
+            web.document.printResponseCSV = function(response) {
+                var headers = response.headers,
+                    names = response.metaData.names,
+                    rows = response.rows,
+                    csv = '',
+                    alink;
+
+                // headers
+                for (var i = 0; i < headers.length; i++) {
+                    csv += headers[i].column + (i < headers.length - 1 ? ',' : '\n');
+                }
+
+                // rows
+                for (var i = 0; i < rows.length; i++) {
+                    for (var j = 0, id, isMeta; j < rows[i].length; j++) {
+                        val = rows[i][j];
+                        isMeta = headers[j].meta;
+
+                        csv += isMeta && names[val] ? names[val] : val;
+                        csv += j < rows[i].length - 1 ? ',' : '\n';
+                    }
+                }
+
+                alink = document.createElement('a');
+                alink.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+                alink.setAttribute('download', 'data.csv');
+                alink.click();
+            };
+
 			// mouse events
 			web.events = web.events || {};
 
@@ -4399,13 +4431,13 @@ Ext.onReady( function() {
 				}
 			},
 			store: Ext.create('Ext.data.TreeStore', {
-				fields: ['id', 'name'],
+				fields: ['id', 'name', 'hasChildren'],
 				proxy: {
 					type: 'rest',
 					format: 'json',
 					noCache: false,
 					extraParams: {
-						fields: 'children[id,name,level]'
+						fields: 'children[id,name,children::isNotEmpty|rename(hasChildren)&paging=false'
 					},
 					url: ns.core.init.contextPath + '/api/organisationUnits',
 					reader: {
@@ -4425,15 +4457,9 @@ Ext.onReady( function() {
 				},
 				listeners: {
 					load: function(store, node, records) {
-                        var numberOfLevels = ns.core.init.organisationUnitLevels.length;
-
 						Ext.Array.each(records, function(record) {
-                            //if (Ext.isBoolean(record.data.hasChildren)) {
-                                //record.set('leaf', !record.data.hasChildren);
-                            //}
-
-                            if (Ext.isNumber(numberOfLevels)) {
-                                record.set('leaf', parseInt(record.raw.level) === numberOfLevels);
+                            if (Ext.isBoolean(record.data.hasChildren)) {
+                                record.set('leaf', !record.data.hasChildren);
                             }
                         });
 					}
@@ -4787,7 +4813,7 @@ Ext.onReady( function() {
 
             onSelect = function() {
                 var win = ns.app.layoutWindow;
-console.log(selectedStore.getRange().length, win.hasDimension(dimension.id));
+
                 if (selectedStore.getRange().length) {
                     win.addDimension({id: dimension.id, name: dimension.name});
                 }
@@ -5225,124 +5251,118 @@ console.log(selectedStore.getRange().length, win.hasDimension(dimension.id));
 		downloadButton = Ext.create('Ext.button.Button', {
 			text: 'Download',
 			disabled: true,
-			menu: {
-				cls: 'ns-menu',
-				shadow: false,
-				showSeparator: false,
-				items: [
-					{
-						xtype: 'label',
-						text: NS.i18n.table_layout,
-						style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
-					},
-					{
-						text: 'Microsoft Excel (.xls)',
-						iconCls: 'ns-menu-item-tablelayout',
-						handler: function() {
-							openTableLayoutTab('xls');
-						}
-					},
-					{
-						text: 'CSV (.csv)',
-						iconCls: 'ns-menu-item-tablelayout',
-						handler: function() {
-							openTableLayoutTab('csv');
-						}
-					},
-					{
-						text: 'HTML (.html)',
-						iconCls: 'ns-menu-item-tablelayout',
-						handler: function() {
-							openTableLayoutTab('html', true);
-						}
-					},
-					{
-						xtype: 'label',
-						text: NS.i18n.plain_data_sources,
-						style: 'padding:7px 5px 5px 7px; font-weight:bold'
-					},
-					{
-						text: 'JSON',
-						iconCls: 'ns-menu-item-datasource',
-						handler: function() {
-							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(ns.core.init.contextPath + '/api/analytics.json' + getParamString(), '_blank');
-							}
-						}
-					},
-					{
-						text: 'XML',
-						iconCls: 'ns-menu-item-datasource',
-						handler: function() {
-							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(ns.core.init.contextPath + '/api/analytics.xml' + getParamString(), '_blank');
-							}
-						}
-					},
-					{
-						text: 'Microsoft Excel',
-						iconCls: 'ns-menu-item-datasource',
-						handler: function() {
-							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.location.href = ns.core.init.contextPath + '/api/analytics.xls' + getParamString();
-							}
-						}
-					},
-					{
-						text: 'CSV',
-						iconCls: 'ns-menu-item-datasource',
-						handler: function() {
-							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.location.href = ns.core.init.contextPath + '/api/analytics.csv' + getParamString();
-							}
-						}
-					},
-					{
-						text: 'JRXML',
-						iconCls: 'ns-menu-item-datasource',
-						handler: function() {
-							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(ns.core.init.contextPath + '/api/analytics.jrxml' + getParamString(), '_blank');
-							}
-						}
-					}
-                    //{
-                        //text: 'export',
-                        //handler: function() {
-                            //var myWin = window.open(),
-                                //tableId = 'datatable',
-                                //text = '';
+			menu: {},
+            handler: function(b) {
+                b.menu = Ext.create('Ext.menu.Menu', {
+                    closeAction: 'destroy',
+                    //cls: 'ns-menu',
+                    shadow: false,
+                    showSeparator: false,
+                    items: [
+                        {
+                            xtype: 'label',
+                            text: NS.i18n.table_layout,
+                            style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
+                        },
+                        {
+                            text: 'Microsoft Excel (.xls)',
+                            iconCls: 'ns-menu-item-tablelayout',
+                            handler: function() {
+                                openTableLayoutTab('xls');
+                            }
+                        },
+                        {
+                            text: 'CSV (.csv)',
+                            iconCls: 'ns-menu-item-tablelayout',
+                            handler: function() {
+                                openTableLayoutTab('csv');
+                            }
+                        },
+                        {
+                            text: 'HTML (.html)',
+                            iconCls: 'ns-menu-item-tablelayout',
+                            handler: function() {
+                                openTableLayoutTab('html', true);
+                            }
+                        },
+                        {
+                            xtype: 'label',
+                            text: NS.i18n.plain_data_sources,
+                            style: 'padding:7px 5px 5px 7px; font-weight:bold'
+                        },
+                        {
+                            text: 'JSON',
+                            iconCls: 'ns-menu-item-datasource',
+                            handler: function() {
+                                if (ns.core.init.contextPath && ns.app.paramString) {
+                                    window.open(ns.core.init.contextPath + '/api/analytics.json' + getParamString(), '_blank');
+                                }
+                            }
+                        },
+                        {
+                            text: 'XML',
+                            iconCls: 'ns-menu-item-datasource',
+                            handler: function() {
+                                if (ns.core.init.contextPath && ns.app.paramString) {
+                                    window.open(ns.core.init.contextPath + '/api/analytics.xml' + getParamString(), '_blank');
+                                }
+                            }
+                        },
+                        {
+                            text: 'Microsoft Excel',
+                            iconCls: 'ns-menu-item-datasource',
+                            handler: function() {
+                                if (ns.core.init.contextPath && ns.app.paramString) {
+                                    window.location.href = ns.core.init.contextPath + '/api/analytics.xls' + getParamString();
+                                }
+                            }
+                        },
+                        {
+                            text: 'CSV',
+                            iconCls: 'ns-menu-item-datasource',
+                            handler: function() {
+                                if (ns.core.init.contextPath && ns.app.paramString) {
+                                    window.location.href = ns.core.init.contextPath + '/api/analytics.csv' + getParamString();
+                                }
+                            }
+                        },
+                        {
+                            text: 'CSV w/ hierarchy',
+                            iconCls: 'ns-menu-item-datasource',
+                            hidden: !(ns.app.layout && !!ns.app.layout.showHierarchy && ns.app.xResponse.nameHeaderMap.hasOwnProperty('ou')),
+                            handler: function() {
+                                var response = ns.core.service.response.addOuHierarchyDimensions(Ext.clone(ns.app.response));
 
-                            ////text += '<a id="csvlink" href="" download="datatable.csv" onclick="javascript:this.download()">Download CSV</a><br/><br/>';
-                            //text += '<a href="" download="data.csv">download</a>';
+                                ns.core.web.document.printResponseCSV(response);
+                            }
+                        },
+                        {
+                            text: 'JRXML',
+                            iconCls: 'ns-menu-item-datasource',
+                            handler: function() {
+                                if (ns.core.init.contextPath && ns.app.paramString) {
+                                    window.open(ns.core.init.contextPath + '/api/analytics.jrxml' + getParamString(), '_blank');
+                                }
+                            }
+                        }
+                    ],
+                    listeners: {
+                        added: function() {
+                            ns.app.downloadButton = this;
+                        },
+                        show: function() {
+                            ns.core.web.window.setAnchorPosition(b.menu, b);
+                        },
+                        hide: function() {
+                            b.menu.destroy();
+                        },
+                        destroy: function(m) {
+                            b.menu = null;
+                        }
+                    }
+                });
 
-                            //text += '<table id="datatable">';
-
-                            //text += '<tr><th>indicator</th><th>period</th><th>orgunit</th><th>value</th></tr>';
-
-                            //text += '<tr><td>anc1</td><td>jan</td><td>telemark</td><td>8</td></tr>';
-                            //text += '<tr><td>anc1</td><td>jan</td><td>oslo</td><td>2</td></tr>';
-                            //text += '<tr><td>anc1</td><td>feb</td><td>telemark</td><td>11</td></tr>';
-                            //text += '<tr><td>anc1</td><td>feb</td><td>oslo</td><td>12</td></tr>';
-
-                            //text += '</table>';
-
-                            //myWin.document.write(text);
-
-                            //myWin.document.getElementById('csvlink').download = function() {
-                                //return ExcellentExport.csv(window, 'datatable');
-                            //};
-                        //}
-                    //}
-				],
-				listeners: {
-					added: function() {
-						ns.app.downloadButton = this;
-					},
-					afterrender: function() {
-						this.getEl().addCls('ns-toolbar-btn-menu');
-					}
-				}
+                this.menu.show();
 			}
 		});
 
