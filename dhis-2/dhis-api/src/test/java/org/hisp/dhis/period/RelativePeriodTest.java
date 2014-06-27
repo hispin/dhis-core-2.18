@@ -222,13 +222,13 @@ public class RelativePeriodTest
     @Test
     public void testGetLast52Weeks()
     {
-        List<Period> relatives = new RelativePeriods().setLast52Weeks( true ).getRelativePeriods( getDate( 2001, 1, 1 ), null, false );
+        List<Period> relatives = new RelativePeriods().setLast52Weeks( true ).getRelativePeriods( getDate( 2001, 12, 14 ), null, false );
 
         assertEquals( 52, relatives.size() );
-        assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2000, 1, 10 ), getDate( 2000, 1, 16 ) ) ) );
-        assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2000, 1, 17 ), getDate( 2000, 1, 23 ) ) ) );
-        assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2000, 1, 24 ), getDate( 2000, 1, 30 ) ) ) );
-        assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 1, 7 ) ) ) );
+        assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2001, 12, 10 ), getDate( 2001, 12, 16 ) ) ) );
+        assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2001, 12, 3 ), getDate( 2001, 12, 9 ) ) ) );
+        assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2000, 12, 18 ), getDate( 2000, 12, 24 ) ) ) );
+        assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2000, 12, 25 ), getDate( 2000, 12, 31 ) ) ) );
     }
 
     @Test
@@ -272,7 +272,6 @@ public class RelativePeriodTest
         assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2011, 12, 26 ), getDate( 2012, 1, 1 ) ) ) );
 
         relatives = new RelativePeriods().setLast4Weeks( true ).getRelativePeriods( getDate( 2010, 5, 4 ), null, false );
-        System.err.println( "relatives: " + relatives );
 
         assertEquals( 4, relatives.size() );
         assertTrue( relatives.contains( new Period( new WeeklyPeriodType(), getDate( 2010, 5, 3 ), getDate( 2010, 5, 9 ) ) ) );
