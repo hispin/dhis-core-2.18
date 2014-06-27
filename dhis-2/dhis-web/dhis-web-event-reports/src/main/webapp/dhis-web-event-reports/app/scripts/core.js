@@ -450,10 +450,10 @@ Ext.onReady( function() {
 					}
 
 					// at least one period
-					if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
+					//if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
 						//alert(NS.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
 						//return;
-					}
+					//}
 
 					// favorite
 					if (config.id) {
