@@ -93,7 +93,7 @@ public class SaveProgramInstanceCommentAction
         {
             TrackedEntityComment entityComment = new TrackedEntityComment( comment, currentUserService.getCurrentUsername(),
                 new Date() );
-            programInstance.setComment(entityComment);
+            programInstance.getComments().add(entityComment);
             programInstanceService.updateProgramInstance( programInstance );
         }      
 
