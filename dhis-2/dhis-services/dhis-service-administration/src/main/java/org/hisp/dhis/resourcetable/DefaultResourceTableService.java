@@ -45,6 +45,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.calendar.DateUnit;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
@@ -440,8 +441,8 @@ public class DefaultResourceTableService
         
         List<Object[]> batchArgs = new ArrayList<Object[]>();
         
-        Date startDate = new Cal( 1975, 1, 1 ).time(); //TODO
-        Date endDate = new Cal( 2030, 1 , 1 ).time();
+        Date startDate = new DateUnit( 1975, 1, 1, true ).toJdkDate(); //TODO
+        Date endDate = new DateUnit( 2030, 1 , 1, true ).toJdkDate();
                 
         List<Period> days = new DailyPeriodType().generatePeriods( startDate, endDate );
                 
