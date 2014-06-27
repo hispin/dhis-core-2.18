@@ -234,7 +234,7 @@ public class HibernateTrackedEntityInstanceStore
             if ( !params.isOrQuery() && item.hasFilter() )
             {
                 for ( QueryFilter filter : item.getFilters() )
-                {
+                {                    
                     final String encodedFilter = statementBuilder.encode( filter.getFilter(), false );
 
                     final String queryCol = item.isNumeric() ? (col + ".value") : "lower(" + col + ".value)";
