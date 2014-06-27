@@ -74,7 +74,7 @@ trackerCapture.controller('DashboardController',
     }   
     
     $scope.broadCastProgram = function(){
-        CurrentSelection.set({tei: $scope.selectedEntity, te: $scope.trackedEntity, pr: $scope.selectedProgram});
+        CurrentSelection.set({tei: $scope.selectedEntity, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null});
         $timeout(function() { 
             $rootScope.$broadcast('selectedEntity', {programExists: $scope.programs.length > 0});            
         }, 100); 

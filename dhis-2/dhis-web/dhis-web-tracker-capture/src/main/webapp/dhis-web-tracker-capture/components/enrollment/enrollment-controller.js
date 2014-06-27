@@ -47,7 +47,6 @@ trackerCapture.controller('EnrollmentController',
         if($scope.selectedProgram){
           
             //check for possible enrollment
-            $scope.selectedEnrollment = null;
             angular.forEach($scope.enrollments, function(enrollment){
                 if(enrollment.program === $scope.selectedProgram.id ){
                     $scope.selectedEnrollment = enrollment;
@@ -59,7 +58,6 @@ trackerCapture.controller('EnrollmentController',
             }
             else{//prepare for possible enrollment
                 AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
-                    
                     $scope.attributesForEnrollment = [];
                     for(var i=0; i<atts.length; i++){
                         var exists = false;
@@ -112,6 +110,13 @@ trackerCapture.controller('EnrollmentController',
     
     $scope.enroll = function(){    
         
+        //check for form validity
+        $scope.outerForm.submitted = true;        
+        if( $scope.outerForm.$invalid ){
+            return false;
+        }
+        
+        //form is valid, continue with enrollment
         var tei = angular.copy($scope.selectedEntity);
         tei.attributes = [];
         

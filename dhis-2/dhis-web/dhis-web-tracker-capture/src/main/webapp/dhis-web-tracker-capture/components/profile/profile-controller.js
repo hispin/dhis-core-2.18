@@ -3,7 +3,6 @@ trackerCapture.controller('ProfileController',
                 $scope,     
                 orderByFilter,
                 CurrentSelection,
-                TEService,
                 TEIService,
                 AttributesFactory,
                 TranslationService) {
@@ -25,7 +24,8 @@ trackerCapture.controller('ProfileController',
         var selections = CurrentSelection.get();
         $scope.selectedTei = selections.tei;
         $scope.trackedEntity = selections.te;
-        $scope.selectedProgram = selections.pr;       
+        $scope.selectedProgram = selections.pr;   
+        $scope.selectedEnrollment = selections.enrollment;   
         $scope.processTeiAttributes();
     });
     
@@ -38,8 +38,8 @@ trackerCapture.controller('ProfileController',
                 att.value = parseInt(att.value);
             }            
         });        
-        
-        if($scope.selectedProgram){
+
+        if($scope.selectedProgram && $scope.selectedEnrollment){
             //show only those attributes in selected program            
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
                 
