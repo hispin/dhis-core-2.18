@@ -107,7 +107,6 @@ public class DataValue
      * @param attributeOptionCombo the attribute option combo.
      * @param value the value.
      * @param storedBy the user that stored this data value.
-     //* @param timestamp the time of creation of this data value.
      * @param lastUpdated the time of the last update to this data value.
      * @param comment the comment.
      */
@@ -122,7 +121,6 @@ public class DataValue
         this.value = value;
         this.storedBy = storedBy;
         this.lastUpdated = lastUpdated;
-        //this.timestamp = timestamp;
         this.comment = comment;
     }
 
@@ -305,27 +303,34 @@ public class DataValue
     {
         this.storedBy = storedBy;
     }
-    /*
-    public Date getTimestamp()
+
+    public Date getLastUpdated()
     {
-        return timestamp;
+        return lastUpdated;
     }
 
-    public void setTimestamp( Date timestamp )
+    public void setLastUpdated( Date lastUpdated )
     {
-        this.timestamp = timestamp;
+        this.lastUpdated = lastUpdated;
     }
-    */
+    
+    public String getComment()
+    {
+        return comment;
+    }
 
-    public String getComment() { return comment; }
+    public void setComment( String comment )
+    {
+        this.comment = comment;
+    }
 
-    public void setComment( String comment ) { this.comment = comment; }
+    public Boolean getFollowup()
+    {
+        return followup;
+    }
 
-    public Boolean getFollowup() { return followup; }
-
-    public void setFollowup( Boolean followup ) { this.followup = followup; }
-
-    public Date getLastUpdated() { return lastUpdated; }
-
-    public void setLastUpdated( Date lastUpdated ) { this.lastUpdated = lastUpdated; }
+    public void setFollowup( Boolean followup )
+    {
+        this.followup = followup;
+    }
 }
