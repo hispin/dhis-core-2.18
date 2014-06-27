@@ -1,8 +1,8 @@
-<div class="panel panel-default" ng-controller="ProfileController">
+<div class="panel panel-info" ng-controller="ProfileController">
     <div class="panel-heading">
         {{trackedEntity.name|| 'entity' | translate}} {{profileWidget.title| translate}}
         <span class="nav-pills" ng-show="selectedTei.attributes.length">
-            | <span><a href ng-click="enableEdit()" title="{{'edit_profile'| translate}}">{{'edit'| translate}}</a></span>            
+            | <a href ng-click="enableEdit()" title="{{'edit_profile'| translate}}"><span class="bold">{{'edit'| translate}}</span></a>
         </span>
         <span class="pull-right">
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(profileWidget)">
@@ -55,7 +55,7 @@
         <div ng-if="editProfile">
 
             <button type="button" 
-                    class="btn btn-default small-horizonal-spacing"
+                    class="btn btn-primary small-horizonal-spacing"
                     ng-click="save()">
                 {{'save'| translate}}
             </button>        

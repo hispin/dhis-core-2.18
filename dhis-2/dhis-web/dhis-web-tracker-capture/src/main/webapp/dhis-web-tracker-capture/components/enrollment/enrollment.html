@@ -1,4 +1,4 @@
-<div class="panel panel-default" ng-controller="EnrollmentController">
+<div class="panel panel-info" ng-controller="EnrollmentController">
     <div class="panel-heading">
         {{enrollmentWidget.title| translate}}
         <span class="pull-right">
@@ -45,13 +45,13 @@
 
             <div class="vertical-spacing small-horizonal-spacing">
                 <button type="button" 
-                        class="btn btn-default"
+                        class="btn btn-primary"
                         ng-disabled="showSchedulingDiv"
                         ng-click="showScheduling()">
                     {{'reschedule'| translate}}
                 </button>
                 <button type="button" 
-                        class="btn btn-default"
+                        class="btn btn-primary"
                         ng-show="showSchedulingDiv"
                         ng-click="showScheduling()">
                     {{'save'| translate}}
@@ -127,7 +127,7 @@
 
             <div class="vertical-spacing small-horizonal-spacing">            
                 <button type="button" 
-                        class="btn btn-default"
+                        class="btn btn-primary"
                         ng-click="enroll()">
                     {{'enroll'| translate}}
                 </button>  
