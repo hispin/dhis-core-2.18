@@ -79,6 +79,17 @@ public class Cal
     }
 
     /**
+     * @param year    the year starting at AD 1.
+     * @param month   the month starting at 1.
+     * @param day     the day of the month starting at 1.
+     * @param iso8601 is this period an iso period
+     */
+    public Cal( int year, int month, int day, boolean iso8601 )
+    {
+        dateUnit = new DateUnit( year, month, day, iso8601 );
+    }
+
+    /**
      * @param date the date.
      */
     public Cal( Date date )
@@ -97,6 +108,7 @@ public class Cal
 
     /**
      * Adds the given amount of time to the given calendar field.
+     *
      * @param field  the calendar field.
      * @param amount the amount of time.
      */
@@ -117,6 +129,7 @@ public class Cal
 
     /**
      * Subtracts the given amount of time to the given calendar field.
+     *
      * @param field  the calendar field.
      * @param amount the amount of time.
      */
@@ -137,6 +150,7 @@ public class Cal
 
     /**
      * Returns the value of the given calendar field.
+     *
      * @param field the field.
      */
     public int get( int field )
@@ -146,6 +160,7 @@ public class Cal
 
     /**
      * Returns the current year.
+     *
      * @return current year
      */
     public int getYear()
@@ -155,6 +170,7 @@ public class Cal
 
     /**
      * Sets the current time.
+     *
      * @param year  the year starting at AD 1.
      * @param month the month starting at 1.
      * @param day   the day of the month starting at 1.
@@ -167,6 +183,7 @@ public class Cal
 
     /**
      * Sets the current month and day.
+     *
      * @param month the month starting at 1.
      * @param day   the day of the month starting at 1.
      */
@@ -179,6 +196,7 @@ public class Cal
 
     /**
      * Sets the current time.
+     *
      * @param date the date to base time on.
      */
     public Cal set( Date date )
