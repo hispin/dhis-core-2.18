@@ -38,24 +38,24 @@ public enum DataElementDomain
 
     private final String value;
 
+    private DataElementDomain( String value )
+    {
+        this.value = value;
+    }
+
     public static DataElementDomain fromValue( String value )
     {
         for ( DataElementDomain domainType : DataElementDomain.values() )
         {
-            if ( domainType.getValue().equals( value ) )
+            if ( domainType.getValue().equalsIgnoreCase( value ) )
             {
                 return domainType;
             }
         }
 
-        throw new IllegalArgumentException();
+        return null;
     }
     
-    DataElementDomain( String value )
-    {
-        this.value = value;
-    }
-
     public String getValue()
     {
         return value;
