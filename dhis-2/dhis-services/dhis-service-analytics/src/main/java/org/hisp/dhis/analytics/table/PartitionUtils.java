@@ -143,6 +143,6 @@ public class PartitionUtils
      */
     public static Date maxOfYear( Date date )
     {
-        return new Cal( year( date ), 12, 31 ).time();
+        return new Cal( year( date ), 12, 31, true ).time();
     }
 }
