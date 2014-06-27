@@ -62,14 +62,23 @@ public class ProgramInstance
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = -1235315582356509653L;
+
     public static int STATUS_ACTIVE = 0;
+
     private Integer status = STATUS_ACTIVE;
+
     public static int STATUS_COMPLETED = 1;
+
     public static int STATUS_CANCELLED = 2;
+
     private int id;
-    private Date dateOfIncident; //TODO rename to incidenceDate
+
+    private Date dateOfIncident; // TODO rename to incidenceDate
+
     private Date enrollmentDate;
+
     private Date endDate;
+
     private TrackedEntityInstance entityInstance;
 
     private Program program;
@@ -82,7 +91,7 @@ public class ProgramInstance
 
     private Boolean followup = false;
 
-    private TrackedEntityComment comment;
+    private List<TrackedEntityComment> comments = new ArrayList<TrackedEntityComment>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -108,9 +117,9 @@ public class ProgramInstance
     /**
      * Updated the bi-directional associations between this program instance and
      * the given entity instance and program.
-     *
+     * 
      * @param entityInstance the entity instance to enroll.
-     * @param program        the program to enroll the entity instance to.
+     * @param program the program to enroll the entity instance to.
      */
     public void enrollTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program )
     {
@@ -393,14 +402,17 @@ public class ProgramInstance
         this.messageConversations = messageConversations;
     }
 
-    public TrackedEntityComment getComment()
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public List<TrackedEntityComment> getComments()
     {
-        return comment;
+        return comments;
     }
 
-    public void setComment( TrackedEntityComment comment )
+    public void setComments( List<TrackedEntityComment> comments )
     {
-        this.comment = comment;
+        this.comments = comments;
     }
 
 }

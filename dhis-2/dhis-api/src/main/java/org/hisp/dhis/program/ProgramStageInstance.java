@@ -65,7 +65,7 @@ public class ProgramStageInstance
 
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
 
-    private TrackedEntityComment comment;
+    private List<TrackedEntityComment> comments = new ArrayList<TrackedEntityComment>();
 
     private EventStatus status = EventStatus.ACTIVE;
 
@@ -243,14 +243,14 @@ public class ProgramStageInstance
         this.latitude = latitude;
     }
 
-    public TrackedEntityComment getComment()
+    public List<TrackedEntityComment> getComments()
     {
-        return comment;
+        return comments;
     }
 
-    public void setComment( TrackedEntityComment comment )
+    public void setComments( List<TrackedEntityComment> comments )
     {
-        this.comment = comment;
+        this.comments = comments;
     }
 
     public EventStatus getStatus()
