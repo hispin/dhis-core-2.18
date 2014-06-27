@@ -477,36 +477,31 @@ public class HibernateDataValueStore
         }
 
         String joinCo = coDimensionConstraints == null && cogDimensionConstraints == null ? "" :
-                "join categoryoptioncombos_categoryoptions c_c on dv.attributeoptioncomboid = c_c.categoryoptioncomboid ";
+            "join categoryoptioncombos_categoryoptions c_c on dv.attributeoptioncomboid = c_c.categoryoptioncomboid ";
 
         String joinCog = cogDimensionConstraints == null ? "" :
-                "join categoryoptiongroupmembers cogm on c_c.categoryoptionid = cogm.categoryoptionid ";
+            "join categoryoptiongroupmembers cogm on c_c.categoryoptionid = cogm.categoryoptionid ";
 
         String whereCo = coDimensionConstraints == null ? "" :
-                "and c_c.categoryoptionid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElementCategoryOption.class, coDimensionConstraints ) ) + ") ";
+            "and c_c.categoryoptionid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElementCategoryOption.class, coDimensionConstraints ) ) + ") ";
 
         String whereCog = cogDimensionConstraints == null ? "" :
-                "and cogm.categoryoptiongroupid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( CategoryOptionGroup.class, cogDimensionConstraints ) ) + ") ";
+            "and cogm.categoryoptiongroupid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( CategoryOptionGroup.class, cogDimensionConstraints ) ) + ") ";
 
         String whereCombo = attributeCombo == null ? "" :
-                "and dv.attributeoptioncomboid = " + attributeCombo.getId() + " ";
+            "and dv.attributeoptioncomboid = " + attributeCombo.getId() + " ";
 
-        String sql =
-                "select de.uid, coc.uid, dv.attributeoptioncomboid, dv.value, dv.lastupdated, p.startdate, p.enddate " +
-                        "from datavalue dv " +
-                        "join dataelement de on dv.dataelementid = de.dataelementid " +
-                        "join categoryoptioncombo coc on dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
-                        "join period p on p.periodid = dv.periodid " +
-                        joinCo +
-                        joinCog +
-                        "where dv.dataelementid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) ) + ") " +
-                        "and dv.sourceid = " + source.getId() + " " +
-                        "and p.startdate <= '" + DateUtils.getMediumDateString( date ) + "' " +
-                        "and p.enddate >= '" + DateUtils.getMediumDateString( date ) + "' " +
-                        "and p.periodtypeid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( PeriodType.class, periodTypes ) ) + ") " +
-                        whereCo +
-                        whereCog +
-                        whereCombo;
+        String sql = "select de.uid, coc.uid, dv.attributeoptioncomboid, dv.value, dv.lastupdated, p.startdate, p.enddate " +
+            "from datavalue dv " +
+            "join dataelement de on dv.dataelementid = de.dataelementid " +
+            "join categoryoptioncombo coc on dv.categoryoptioncomboid = coc.categoryoptioncomboid " +
+            "join period p on p.periodid = dv.periodid " + joinCo + joinCog +
+            "where dv.dataelementid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) ) + ") " +
+            "and dv.sourceid = " + source.getId() + " " +
+            "and p.startdate <= '" + DateUtils.getMediumDateString( date ) + "' " +
+            "and p.enddate >= '" + DateUtils.getMediumDateString( date ) + "' " +
+            "and p.periodtypeid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( PeriodType.class, periodTypes ) ) + ") " +
+            whereCo + whereCog + whereCombo;
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
