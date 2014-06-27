@@ -152,7 +152,6 @@ public class WeeklyPeriodType
         Calendar cal = getCalendar();
         
         List<Period> periods = Lists.newArrayList();
-        dateUnit.setMonth( 1 );
         dateUnit = cal.minusDays( dateUnit, cal.weekday( dateUnit ) - 1 );
         dateUnit = cal.minusDays( dateUnit, 357 );
 
