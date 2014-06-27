@@ -438,7 +438,7 @@ public class DefaultEventAnalyticsService
         
         QueryItem queryItem = getQueryItem( program, split[0] );
         
-        if ( split.length > 1 )
+        if ( split.length > 1 ) // Filters specified
         {   
             for ( int i = 1; i < split.length; i += 2 )
             {

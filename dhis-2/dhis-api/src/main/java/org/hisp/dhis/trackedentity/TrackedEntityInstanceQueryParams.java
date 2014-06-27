@@ -190,8 +190,8 @@ public class TrackedEntityInstanceQueryParams
      * <li>
      * If a query item is specified as an attribute item as well as a filter 
      * item, the filter item will be removed. In that case, if the attribute 
-     * item does not have a filter value and the filter item has a filter value, 
-     * it will be applied to the attribute item. 
+     * item does not have any filters and the filter item has one or more filters, 
+     * these will be applied to the attribute item. 
      * </li>
      * </ul> 
      */
@@ -211,7 +211,7 @@ public class TrackedEntityInstanceQueryParams
                 
                 if ( !attribute.hasFilter() && filter.hasFilter() )
                 {
-                    attribute.getFilters().add( filter.getFilters().iterator().next() );
+                    attribute.getFilters().addAll( filter.getFilters() );
                 }
                 
                 filterIter.remove();
@@ -481,6 +481,21 @@ public class TrackedEntityInstanceQueryParams
     public int getOffset()
     {
         return ( getPageWithDefault() - 1 ) * getPageSizeWithDefault();
+    }
+
+    // -------------------------------------------------------------------------
+    // toString
+    // -------------------------------------------------------------------------
+
+    @Override
+    public String toString()
+    {
+        return "[Query: " + query + ", Attributes: " + attributes + ", filters: " + filters + 
+            ", program: " + program + ", program status " + programStatus + ", follow up: " + followUp + 
+            ", program start date: " + programStartDate + ", program end date: " + programEndDate + 
+            ", tracked entity: " + trackedEntity + ", org unit mode: " + organisationUnitMode + 
+            ", event start date: " + eventStartDate + ", event end date: " + eventEndDate + 
+            ", event status: " + eventStatus + "]";
     }
     
     // -------------------------------------------------------------------------
