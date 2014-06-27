@@ -318,7 +318,7 @@ public class CsvObjectUtils
             string = values[index];
         }
 
-        string = StringUtils.trimToNull( string );
+        string = StringUtils.defaultIfBlank( string, defaultValue );
 
         if ( string != null )
         {
