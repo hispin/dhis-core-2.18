@@ -12,6 +12,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 Paginator,
                 TranslationService, 
                 storage,
+                OperatorFactory,
                 ProgramFactory,
                 AttributesFactory,
                 EntityQueryFactory,
@@ -39,9 +40,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.searchText = null;
     $scope.emptySearchText = false;
     $scope.searchFilterExists = false;   
-    $scope.numberOperands = ['EQ', 'GT','GE', 'LT', 'LE', 'NE' ];
-    $scope.boolOperands = ['yes', 'no'];
-    $scope.enrollment = {programStartDate: '', programEndDate: ''};
+    $scope.defaultOperators = OperatorFactory.defaultOperators;
+    $scope.boolOperators = OperatorFactory.boolOperators;
+    $scope.enrollment = {programStartDate: '', programEndDate: '', operator: $scope.defaultOperators[0]};
    
     $scope.searchMode = { 
                             listAll: 'LIST_ALL', 
@@ -184,8 +185,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         else if( mode === $scope.searchMode.listAll ){   
             $scope.showTrackedEntityDiv = true;    
         } 
-        
-        //$scope.gridColumns = $scope.generateGridColumns($scope.attributes);
 
         //get events for the specified parameters
         TEIService.search($scope.selectedOrgUnit.id, 
@@ -200,39 +199,14 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.generateAttributeFilters = function(attributes){
 
         angular.forEach(attributes, function(attribute){
-            var filter = {operand: '', value: ''};
-
-            if(attribute.valueType === 'number'){
-                filter.operand = $scope.numberOperands[0];
-                attribute.filters = [filter];
+            if(attribute.valueType === 'number' || attribute.valueType === 'date'){
+                attribute.operator = $scope.defaultOperators[0];
             }
         });
                     
         return attributes;
     };
-    
-    $scope.addFilter = function(attribute, filter){
-        
-        var filter = { operand: '', value: ''};
-                    
-        if(attribute.valueType === 'number'){
-            filter.operand = $scope.numberOperands[0];
-        }
-        attribute.filters.push(filter);
-    };
-    
-    $scope.removeFilter = function(filter, attribute){
-        
-        var index = attribute.filters.indexOf(filter);        
-        attribute.filters.splice(index, 1);    
-        
-        //this is a bit strange, removing a filter toggles off search drop down.
-        //to avoid this, had to do stop poropagation.
-        if (window.event) {
-            window.event.stopPropagation();
-        }
-    };
-    
+
     //generate grid columns from teilist attributes
     $scope.generateGridColumns = function(attributes){
         var columns = attributes ? angular.copy(attributes) : [];

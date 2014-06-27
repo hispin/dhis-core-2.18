@@ -13,12 +13,21 @@
             <td>{{'enrollment_date'| translate}}</td>
             <td>
                 <div class="dataelement-filter">
-                    <div class="container-1-2">
-                        <input type="text" placeholder="{{'from'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programStartDate"/>
+                    <div class="filter-operator">
+                        <select ng-model="enrollment.operator" class="form-control-select2" ng-options="operator | translate for operator in defaultOperators">
+                        </select>
                     </div>
-                    <div class="container-1-2">
-                        <input type="text" placeholder="{{'to'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programEndDate"/>                
+                    <div class="filter-value" ng-show="enrollment.operator === defaultOperators[0]">
+                        <input type="text" placeholder="{{'exact_date'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programExactDate"/>
                     </div>
+                    <div class="filter-value" ng-show="enrollment.operator === defaultOperators[1]">
+                        <div class="container-1-2">
+                            <input type="text" placeholder="{{'start_date'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programStartDate"/>
+                        </div>
+                        <div class="container-1-2">
+                            <input type="text" placeholder="{{'end_date'| translate}}" class="form-control-select2" ng-date ng-model="enrollment.programEndDate"/>                
+                        </div>
+                    </div>                    
                 </div>                
             </td>
         </tr>
@@ -29,30 +38,41 @@
             <td>
                 <div ng-switch="attribute.valueType">
                     <div ng-switch-when="number">
-                        <div class="dataelement-filter" ng-repeat="filter in attribute.filters">
-                            <div class="filter-operand">
-                                <select ng-model="filter.operand" class="form-control-select2" ng-options="operand | translate for operand in numberOperands">
+                        <div class="dataelement-filter">                                                
+                            <div class="filter-operator">
+                                <select ng-model="attribute.operator" class="form-control-select2" ng-options="operator | translate for operator in defaultOperators">
                                 </select>
                             </div>
-                            <div class="filter-value">
-                                <input type="number" ng-model="filter.value" class="form-control-select2">
+                            <div class="filter-value" ng-show="attribute.operator === defaultOperators[0]">
+                                <input type="number" placeholder="{{'exact_value'| translate}}" class="form-control-select2" ng-model="attribute.exactValue"/>
                             </div>
-                            <div class="filter-add">
-                                <button class="btn-link" ng-click="addFilter(attribute)" title="{{'add_filter'| translate}}"><span class="black"><i class="fa fa-plus"></i></span></button>
-                            </div>
-                            <div class="filter-remove">
-                                <button class="btn-link" ng-click="removeFilter(filter, attribute)" title="{{'remove_filter'| translate}}" ng-disabled="attribute.filters.length < 2"><span class="black"><i class="fa fa-trash-o"></i></span></button>
-                            </div>
+                            <div class="filter-value" ng-show="attribute.operator === defaultOperators[1]">
+                                <div class="container-1-2">
+                                    <input type="number" placeholder="{{'from'| translate}}" class="form-control-select2" ng-model="attribute.startValue"/>
+                                </div>
+                                <div class="container-1-2">
+                                    <input type="number" placeholder="{{'to'| translate}}" class="form-control-select2" ng-model="attribute.endValue"/>                
+                                </div>
+                            </div>                            
                         </div>                        
                     </div>
                     <div ng-switch-when="date">
                         <div class="dataelement-filter">
-                            <div class="container-1-2">
-                                <input type="text" placeholder="{{'from'| translate}}" class="form-control-select2" ng-date ng-model="attribute.startDate"/>
+                            <div class="filter-operator">
+                                <select ng-model="attribute.operator" class="form-control-select2" ng-options="operator | translate for operator in defaultOperators">
+                                </select>
                             </div>
-                            <div class="container-1-2">
-                                <input type="text" placeholder="{{'to'| translate}}" class="form-control-select2" ng-date ng-model="attribute.endDate"/>                
+                            <div class="filter-value" ng-show="attribute.operator === defaultOperators[0]">
+                                <input type="text" placeholder="{{'exact_date'| translate}}" class="form-control-select2" ng-date ng-model="attribute.exactValue"/>
                             </div>
+                            <div class="filter-value" ng-show="attribute.operator === defaultOperators[1]">
+                                <div class="container-1-2">
+                                    <input type="text" placeholder="{{'start_date'| translate}}" class="form-control-select2" ng-date ng-model="attribute.startValue"/>
+                                </div>
+                                <div class="container-1-2">
+                                    <input type="text" placeholder="{{'end_date'| translate}}" class="form-control-select2" ng-date ng-model="attribute.endValue"/>                
+                                </div>
+                            </div>                            
                         </div> 
                     </div>
                     <div ng-switch-when="string">
@@ -65,7 +85,7 @@
                     </div>
                     <div ng-switch-when="bool">
                         <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
-                            <option ng-repeat="option in boolOperands" value="{{option}}">{{option}}</option>
+                            <option ng-repeat="option in boolOperators" value="{{option}}">{{option}}</option>
                         </select>
                     </div>                    
                 </div>
