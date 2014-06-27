@@ -92,7 +92,7 @@ public class ImportDataValue
         this.sourceId = dataValue.getSource().getId();
         this.value = dataValue.getValue();
         this.storedBy = dataValue.getStoredBy();
-        this.timestamp = dataValue.getTimestamp();
+        this.timestamp = dataValue.getLastUpdated();
         this.comment = dataValue.getComment();
         this.status = status.name();
     }
@@ -119,7 +119,7 @@ public class ImportDataValue
         value.getSource().setId( this.sourceId );
         value.setValue( this.value );
         value.setStoredBy( this.storedBy );
-        value.setTimestamp( this.timestamp );
+        value.setLastUpdated( this.timestamp );
         value.setComment( this.comment );
         
         return value;

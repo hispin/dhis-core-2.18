@@ -496,7 +496,7 @@ public class FacilityReportingServiceImpl
         else
         {
             dataValue.setValue( value );
-            dataValue.setTimestamp( new Date() );
+            dataValue.setLastUpdated( new Date() );
             dataValueService.updateDataValue( dataValue );
         }
     }

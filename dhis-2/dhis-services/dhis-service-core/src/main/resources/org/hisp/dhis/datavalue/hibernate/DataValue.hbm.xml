@@ -17,8 +17,10 @@
     <property name="value" length="255" />
 
     <property name="storedBy" column="storedby" length="100" />
-
+<!--
     <property name="timestamp" column="lastupdated" type="timestamp" />
+-->
+    <property name="lastUpdated" column="lastupdated" type="timestamp" />
 
     <property name="comment" length="360" />
 

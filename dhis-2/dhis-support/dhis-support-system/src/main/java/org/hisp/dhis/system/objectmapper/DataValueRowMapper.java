@@ -62,7 +62,7 @@ public class DataValueRowMapper
         dataValue.getCategoryOptionCombo().setId( resultSet.getInt( 4 ) );
         dataValue.setValue( resultSet.getString( 5 ) );
         dataValue.setStoredBy( resultSet.getString( 6 ) );
-        dataValue.setTimestamp( resultSet.getDate( 7 ) );
+        dataValue.setLastUpdated( resultSet.getDate( 7 ) );
         dataValue.setComment( resultSet.getString( 8 ) );
         
         return dataValue;

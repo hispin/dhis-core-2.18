@@ -70,8 +70,8 @@ $( document ).ready( function() {
                 	<td>$!encoder.htmlEncode( $storedBy )</td>
                 </tr>
                 <tr>
-                	<td colspan="2" style="background-color: #e0e0e0; height:26px;">$i18n.getString( "stored_date" )</td>
-                	<td>$!format.formatDate( $dataValue.timestamp )</td>
+                	<td colspan="2" style="background-color: #e0e0e0; height:26px;">$i18n.getString( "last_updated" )</td>
+                	<td>$!format.formatDate( $dataValue.lastUpdated )</td>
                 </tr>
             </table>
         </td>
@@ -95,7 +95,7 @@ $( document ).ready( function() {
 			<<div class="historyHeader">>$encoder.htmlEncode( $i18n.getString( "datavalue_history" ) )</div>
 			#foreach( $eachDataValueAudit in $dataValueAudits )
 				<p>
-					$encoder.htmlEncode( $i18n.getString( "on" ) ) $eachDataValueAudit.timeStamp, 
+					$encoder.htmlEncode( $i18n.getString( "on" ) ) $eachDataValueAudit.timeStamp,
 					$eachDataValueAudit.storedBy 
 					$encoder.htmlEncode( $i18n.getString( "change_from" ) ) $eachDataValueAudit.value
 				</p>

@@ -120,7 +120,7 @@ public class DataValueBatchHandler
         statementBuilder.setValue( value.getAttributeOptionCombo().getId() );
         statementBuilder.setValue( value.getValue() );
         statementBuilder.setValue( value.getStoredBy() );
-        statementBuilder.setValue( getLongDateString( value.getTimestamp() ) );
+        statementBuilder.setValue( getLongDateString( value.getLastUpdated() ) );
         statementBuilder.setValue( value.getComment() );
         statementBuilder.setValue( value.isFollowup() );
     }
