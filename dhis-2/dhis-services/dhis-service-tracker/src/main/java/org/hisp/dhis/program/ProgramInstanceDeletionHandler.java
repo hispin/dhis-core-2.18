@@ -33,6 +33,7 @@ import java.util.Iterator;
 
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
 import org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
@@ -109,7 +110,10 @@ public class ProgramInstanceDeletionHandler
                 programStageInstanceService.deleteProgramStageInstance( programStageInstance );
             }
 
-            commentService.deleteTrackedEntityComment( programInstance.getComment() );
+            for( TrackedEntityComment comment : programInstance.getComments())
+            {
+                commentService.deleteTrackedEntityComment( comment );
+            }
 
             programInstanceService.deleteProgramInstance( programInstance );
         }

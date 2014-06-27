@@ -542,11 +542,9 @@ public abstract class AbstractEventService
             event.getDataValues().add( value );
         }
 
-        ProgramInstance programInstance = programStageInstance.getProgramInstance();
+        List<TrackedEntityComment> comments = programStageInstance.getComments();
 
-        TrackedEntityComment comment = programInstance.getComment();
-
-        if ( comment != null )
+        for ( TrackedEntityComment comment : comments )
         {
             Note note = new Note();
 
@@ -787,7 +785,7 @@ public abstract class AbstractEventService
 
             commentService.addTrackedEntityComment( comment );
 
-            programInstance.setComment( comment );
+            programInstance.getComments().add( comment );
 
             programInstanceService.updateProgramInstance( programInstance );
         }

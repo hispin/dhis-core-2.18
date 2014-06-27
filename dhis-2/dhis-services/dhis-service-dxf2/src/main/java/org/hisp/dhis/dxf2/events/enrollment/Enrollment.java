@@ -32,9 +32,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dxf2.events.event.Note;
 import org.hisp.dhis.dxf2.events.trackedentity.Attribute;
 
 import java.util.ArrayList;
@@ -60,6 +62,8 @@ public class Enrollment
     private Date dateOfIncident;
 
     private List<Attribute> attributes = new ArrayList<Attribute>();
+    
+    private List<Note> notes = new ArrayList<Note>();
 
     public Enrollment()
     {
@@ -149,6 +153,19 @@ public class Enrollment
     {
         this.attributes = attributes;
     }
+    
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public List<Note> getNotes()
+    {
+        return notes;
+    }
+
+    public void setNotes( List<Note> notes )
+    {
+        this.notes = notes;
+    }
 
     @Override
     public boolean equals( Object o )
@@ -166,6 +183,7 @@ public class Enrollment
             return false;
         if ( program != null ? !program.equals( that.program ) : that.program != null ) return false;
         if ( status != that.status ) return false;
+        if ( notes != null ? !notes.equals( that.notes ) : that.notes != null ) return false;
 
         return true;
     }
@@ -180,6 +198,7 @@ public class Enrollment
         result = 31 * result + (dateOfEnrollment != null ? dateOfEnrollment.hashCode() : 0);
         result = 31 * result + (dateOfIncident != null ? dateOfIncident.hashCode() : 0);
         result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+        result = 31 * result + (notes != null ? notes.hashCode() : 0);
         return result;
     }
 
@@ -194,6 +213,7 @@ public class Enrollment
             ", dateOfEnrollment=" + dateOfEnrollment +
             ", dateOfIncident=" + dateOfIncident +
             ", attributes=" + attributes +
+            ", notes=" + notes +
             '}';
     }
 }
