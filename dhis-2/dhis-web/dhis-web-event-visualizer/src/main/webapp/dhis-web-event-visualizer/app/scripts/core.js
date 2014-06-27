@@ -487,6 +487,21 @@ Ext.onReady( function() {
 						return;
 					}
 
+					// get object names
+					for (var i = 0, dims = Ext.Array.clean([].concat(config.columns || [], config.rows || [], config.filters || [])); i < dims.length; i++) {
+
+						// Object names
+						if (api.layout.Dimension(dims[i])) {
+							objectNames.push(dims[i].dimension);
+						}
+					}
+
+                    // period
+                    if (!Ext.Array.contains(objectNames, 'pe') && !(config.startDate && config.endDate)) {
+                        alert('At least one fixed period, one relative period or start/end dates must be specified');
+                        return;
+                    }
+                    
 					config.columns = getValidatedDimensionArray(config.columns);
 					config.rows = getValidatedDimensionArray(config.rows);
 					config.filters = getValidatedDimensionArray(config.filters);
@@ -503,8 +518,8 @@ Ext.onReady( function() {
                         config.filters = config.filters.concat(config.columns.splice(1));
                     }
 
-                    // row
-					if (!config.rows && !config.startDate && !config.endDate) {
+					// row
+					if (!config.rows) {
 						alert('No category items selected');
 						return;
 					}
@@ -514,21 +529,6 @@ Ext.onReady( function() {
 
                         config.filters = config.filters.concat(config.rows.splice(1));
                     }
-
-					// get object names
-					for (var i = 0, dims = Ext.Array.clean([].concat(config.columns || [], config.rows || [], config.filters || [])); i < dims.length; i++) {
-
-						// Object names
-						if (api.layout.Dimension(dims[i])) {
-							objectNames.push(dims[i].dimension);
-						}
-					}
-
-					// at least one period
-					if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
-						//alert(NS.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
-						//return;
-					}
 
 					// favorite
 					if (config.id) {
