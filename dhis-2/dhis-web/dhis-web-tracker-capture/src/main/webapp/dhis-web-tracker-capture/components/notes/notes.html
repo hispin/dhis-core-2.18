@@ -1,9 +1,6 @@
 <div class="panel panel-default" ng-controller="NotesController">
     <div class="panel-heading">
-        {{notesWidget.title| translate}}
-        <span class="nav-pills" ng-show="selectedEnrollment.notes.length > 5">
-            | <a href ng-click="searchNote()" title="{{'search_note'| translate}}">{{'search'| translate}}</a>
-        </span>
+        {{notesWidget.title| translate}}        
         <span class="nav-pills" ng-show="selectedEnrollment">
             | <span><a href ng-click="showAddNote()" title="{{'add_note'| translate}}">{{'add'| translate}}</a></span>            
         </span>
@@ -16,34 +13,22 @@
         </span>        
     </div>
     <div ng-show="notesWidget.expand" class="panel-body dashboard-widget-container">
+            
+        <div class="add-note" ng-show="addNoteField">
+            <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea> 
+            <button type="button" 
+                    class="btn btn-default"
+                    ng-click="addNote()">
+                {{'save'| translate}}
+            </button>        
+            <button type="button" 
+                    class="btn btn-default small-horizonal-spacing" 
+                    ng-click="closeAddNote()">
+                {{'cancel'| translate}}
+            </button>
+        </div>
         
-
-            <div ng-show="searchNoteField">
-                <div class="list-group">
-                    <input class="form-control" ng-model="noteSearchText" ng-blur="searchNote()" placeholder="{{'search'| translate}}">            
-                </div>
-            </div>
-            <div ng-show="addNoteField">
-                <div class="list-group">
-                    <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea>                          
-                </div>
-
-                <div class='vertical-spacing'>
-                    <button type="button" 
-                            class="btn btn-default small-horizonal-spacing"
-                            ng-click="addNote()">
-                        {{'save'| translate}}
-                    </button>        
-                    <button type="button" 
-                            class="btn btn-default small-horizonal-spacing" 
-                            ng-click="closeAddNote()">
-                        {{'cancel'| translate}}
-                    </button>
-                </div>
-            </div>
-
-        
-        <div ng-show='selectedEnrollment' class='vertical-spacing remove-default-padding'>
+        <div ng-show='selectedEnrollment' class='remove-default-padding'>
 
             <table class="table table-with-fixed-layout">
                 <tr ng-repeat="note in selectedEnrollment.notes| filter:noteSearchText">

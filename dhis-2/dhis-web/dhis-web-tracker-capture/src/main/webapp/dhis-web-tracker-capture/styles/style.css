@@ -603,6 +603,11 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     margin: -15px !important;    
 }
 
+.add-note {
+    margin-bottom: 30px;
+    margin-left: -5px;
+}
+
 .over-flow-hidden {
     white-space: nowrap;
     overflow: hidden;
