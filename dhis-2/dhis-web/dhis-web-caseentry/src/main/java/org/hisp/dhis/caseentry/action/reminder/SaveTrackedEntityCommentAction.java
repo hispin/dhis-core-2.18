@@ -98,7 +98,7 @@ public class SaveTrackedEntityCommentAction
             comment.setCreator( currentUserService.getCurrentUsername() );
             comment.setCreatedDate( new Date() );
 
-            programStageInstance.setComment(  comment );
+            programStageInstance.getComments().add(  comment );
 
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
