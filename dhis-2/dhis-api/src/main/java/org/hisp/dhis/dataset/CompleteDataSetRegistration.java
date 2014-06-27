@@ -63,7 +63,7 @@ public class CompleteDataSetRegistration
 
     private DataElementCategoryOptionCombo attributeOptionCombo;
 
-    private Date date;
+    private Date date; // TODO rename to created
 
     private String storedBy;
 
