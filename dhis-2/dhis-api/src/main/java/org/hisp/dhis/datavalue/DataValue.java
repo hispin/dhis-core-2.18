@@ -69,7 +69,7 @@ public class DataValue
 
     private String storedBy;
 
-    private Date timestamp;
+    private Date timestamp; // TODO rename to created
 
     private String comment;
 
