@@ -87,6 +87,8 @@ public class SMSCommand
     private String noUserMessage;
     
     private String moreThanOneOrgUnitMessage;
+    
+    private String successMessage;
 
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
         Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup, String receivedMessage, Set<SMSSpecialCharacter> specialCharacters )
@@ -361,6 +363,14 @@ public class SMSCommand
     {
         this.completenessMethod = completenessMethod;
     }
-    
-    
+
+    public String getSuccessMessage()
+    {
+        return successMessage;
+    }
+
+    public void setSuccessMessage( String successMessage )
+    {
+        this.successMessage = successMessage;
+    }
 }
