@@ -23,22 +23,17 @@ trackerCapture.controller('ProfileController',
     //listen for the selected entity       
     $scope.$on('selectedEntity', function(event, args) { 
         var selections = CurrentSelection.get();
-        $scope.selectedEntity = selections.tei; 
-        $scope.selectedProgram = selections.pr; 
-        if($scope.selectedEntity){
-            TEService.get($scope.selectedEntity.trackedEntity).then(function(te){
-                $scope.trackedEntity = te;
-            });
-            
-            $scope.processTeiAttributes();
-        }        
+        $scope.selectedTei = selections.tei;
+        $scope.trackedEntity = selections.te;
+        $scope.selectedProgram = selections.pr;       
+        $scope.processTeiAttributes();
     });
     
     //display only those attributes that belong the selected program
     //if no program, display attributesInNoProgram
     $scope.processTeiAttributes = function(){        
         
-        angular.forEach($scope.selectedEntity.attributes, function(att){
+        angular.forEach($scope.selectedTei.attributes, function(att){
             if(att.type === 'number' && !isNaN(parseInt(att.value))){
                 att.value = parseInt(att.value);
             }            
@@ -46,61 +41,64 @@ trackerCapture.controller('ProfileController',
         
         if($scope.selectedProgram){
             //show only those attributes in selected program            
-            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
+            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
                 
-                for(var i=0; i<atts.length; i++){
-                    var processed = false;
-                    for(var j=0; j<$scope.selectedEntity.attributes.length && !processed; j++){
-                        if(atts[i].id === $scope.selectedEntity.attributes[j].attribute){
-                            processed = true;
-                            $scope.selectedEntity.attributes[j].show = true;
-                            $scope.selectedEntity.attributes[j].order = i;
-                        }
-                    }
-
-                    if(!processed){//attribute was empty, so a chance to put some value
-                        $scope.selectedEntity.attributes.push({show: true, order: i, attribute: atts[i].id, displayName: atts[i].name, type: atts[i].valueType, value: ''});
-                    }                   
-                }
+                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes);   
+                
             }); 
         }
         else{
             //show attributes in no program
             AttributesFactory.getWithoutProgram().then(function(atts){
                 
-                for(var i=0; i<atts.length; i++){
-                    var processed = false;
-                    for(var j=0; j<$scope.selectedEntity.attributes.length && !processed; j++){
-                        if(atts[i].id === $scope.selectedEntity.attributes[j].attribute){
-                            processed = true;
-                            $scope.selectedEntity.attributes[j].show = true;
-                            $scope.selectedEntity.attributes[j].order = i;
-                        }
-                    }
-
-                    if(!processed){//attribute was empty, so a chance to put some value
-                        $scope.selectedEntity.attributes.push({show: true, order: i, attribute: atts[i].id, displayName: atts[i].name, type: atts[i].valueType, value: ''});
-                    }                   
-                }
+                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes);
+                
             });
         }
         
-        $scope.selectedEntity.attributes = orderByFilter($scope.selectedEntity.attributes, '-order');
-        $scope.selectedEntity.attributes.reverse();
+        $scope.selectedTei.attributes = orderByFilter($scope.selectedTei.attributes, '-order');
+        $scope.selectedTei.attributes.reverse();
+    };
+    
+    $scope.showRequiredAttributes = function(requiredAttributes, availableAttributes){
+        
+        var teiAttributes = availableAttributes;
+        //first reset teiAttributes
+        for(var j=0; j<teiAttributes.length; j++){
+            teiAttributes[j].show = false;
+        }
+        
+        //identify which ones to show
+        for(var i=0; i<requiredAttributes.length; i++){
+            var processed = false;
+            for(var j=0; j<teiAttributes.length && !processed; j++){
+                if(requiredAttributes[i].id === teiAttributes[j].attribute){
+                    processed = true;
+                    teiAttributes[j].show = true;
+                    teiAttributes[j].order = i;
+                }
+            }
+
+            if(!processed){//attribute was empty, so a chance to put some value
+                teiAttributes.push({show: true, order: i, attribute: requiredAttributes[i].id, displayName: requiredAttributes[i].name, type: requiredAttributes[i].valueType, value: ''});
+            }                   
+        }
+        
+        return teiAttributes;
     };
     
     $scope.enableEdit = function(){
-        $scope.entityAttributes = angular.copy($scope.selectedEntity.attributes);
+        $scope.entityAttributes = angular.copy($scope.selectedTei.attributes);
         $scope.editProfile = !$scope.editProfile; 
         $rootScope.profileWidget.expand = true;
     };
     
     $scope.save = function(){
         
-        var tei = angular.copy($scope.selectedEntity);
+        var tei = angular.copy($scope.selectedTei);
         tei.attributes = [];
         //prepare to update the tei on the server side 
-        angular.forEach($scope.selectedEntity.attributes, function(attribute){
+        angular.forEach($scope.selectedTei.attributes, function(attribute){
             if(!angular.isUndefined(attribute.value)){
                 tei.attributes.push({attribute: attribute.attribute, value: attribute.value});
             } 
@@ -121,7 +119,7 @@ trackerCapture.controller('ProfileController',
     };
     
     $scope.cancel = function(){
-        $scope.selectedEntity.attributes = $scope.entityAttributes;  
+        $scope.selectedTei.attributes = $scope.entityAttributes;  
         $scope.editProfile = !$scope.editProfile;
     };
 });

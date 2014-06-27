@@ -172,8 +172,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 .service('EnrollmentService', function($http) {
     
     return {        
-        get: function( entity ){
-            var promise = $http.get(  '../api/enrollments?trackedEntityInstance=' + entity ).then(function(response){
+        get: function( enrollmentUid ){
+            var promise = $http.get(  '../api/enrollments/' + enrollmentUid ).then(function(response){
                 return response.data;
             });
             return promise;

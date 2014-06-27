@@ -2,6 +2,7 @@ trackerCapture.controller('EnrollmentController',
         function($rootScope,
                 $scope,  
                 $filter,
+                $timeout,
                 storage,
                 ProgramStageFactory,
                 AttributesFactory,
@@ -19,8 +20,8 @@ trackerCapture.controller('EnrollmentController',
         $scope.enrollments = [];
         $scope.showEnrollmentDiv = false;
         $scope.showSchedulingDiv = false;    
-        $scope.selectedProgram = '';
-        $scope.selectedEnrollment = '';
+        $scope.selectedProgram = null;
+        $scope.selectedEnrollment = null;
         $scope.newEnrollment = {};
         
         var selections = CurrentSelection.get();
@@ -35,7 +36,10 @@ trackerCapture.controller('EnrollmentController',
                 $scope.enrollments = data.enrollmentList;
                 $scope.loadEvents();                
             });
-        }        
+        }
+        else{
+            $scope.broadCastSelections();
+        }
     }); 
     
     $scope.loadEvents = function() {
@@ -83,19 +87,23 @@ trackerCapture.controller('EnrollmentController',
                 });                
             });
 
-            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});
-            $rootScope.$broadcast('dashboard', {});
+            $scope.broadCastSelections();
         }
         else{
-            $scope.selectedProgram = '';
-            $scope.selectedEnrollment = '';
-            CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});
-            $rootScope.$broadcast('dashboard', {});
+            $scope.broadCastSelections();
         }
     };
         
     $scope.showEnrollment = function(){        
         $scope.showEnrollmentDiv = !$scope.showEnrollmentDiv;
+    };
+    
+    $scope.broadCastSelections = function(){
+        CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});
+        $timeout(function() { 
+            $rootScope.$broadcast('dashboard', {});
+            $rootScope.$broadcast('notesController', {});
+        }, 100);
     };
     
     $scope.showScheduling = function(){        
@@ -153,6 +161,12 @@ trackerCapture.controller('EnrollmentController',
                             $scope.selectedEntity.attributes.push({attribute: attribute.id, value: attribute.value, type: attribute.valueType, displayName: attribute.name});                            
                         }
                     });
+                    
+                    enrollment.enrollment = enrollmentResponse.reference;
+                    CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram, enrollment: enrollment});                    
+                    $timeout(function() { 
+                        $rootScope.$broadcast('dashboard', {});
+                    }, 100); 
                 });
             }
             else{

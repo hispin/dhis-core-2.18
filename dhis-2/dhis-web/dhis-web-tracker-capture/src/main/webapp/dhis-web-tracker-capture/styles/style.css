@@ -393,6 +393,10 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     word-wrap:break-word; 
 }
 
+.table-with-fixed-layout {
+    table-layout: fixed;
+}
+
 .table-borderless {
     width: 100%;
     table-layout: fixed;
@@ -593,6 +597,18 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .trim {
     margin-bottom: 5px; 
     margin-top: 5px;
+}
+
+.remove-default-padding {
+    margin: -15px !important;    
+}
+
+.over-flow-hidden {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
 }
 
 /*----------------------------------------------------------------------------*/
