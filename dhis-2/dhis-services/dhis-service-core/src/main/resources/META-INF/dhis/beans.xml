@@ -26,10 +26,6 @@
   <bean id="smsCommandService" class="org.hisp.dhis.smscommand.DefaultSMSCommandService">
     <property name="smsCommandStore" ref="smsCommandStore" />
   </bean>
-  
-   <bean id="org.hisp.dhis.sms.task.SmsTaskStore" class="org.hisp.dhis.sms.task.hibernate.HibernateSmsTaskStore">
-    <property name="sessionFactory" ref="sessionFactory" />
-  </bean>
 
   <bean id="smsCommandStore" class="org.hisp.dhis.sms.hibernate.HibernateSMSCommandStore">
     <property name="sessionFactory" ref="sessionFactory" />
@@ -822,10 +818,6 @@
   <bean id="org.hisp.dhis.system.SystemService" class="org.hisp.dhis.system.DefaultSystemService" />
 
   <!-- SMS Services -->
-
-  <bean id="org.hisp.dhis.sms.task.SmsTaskService" class="org.hisp.dhis.sms.task.DefaultSmsTaskService">
-    <property name="smsTaskStore" ref="org.hisp.dhis.sms.task.SmsTaskStore" />
-  </bean>
   
   <bean id="org.hisp.dhis.sms.MessageQueue" class="org.hisp.dhis.sms.DatabaseSupportedInternalMemoryMessageQueue">
     <property name="smsStore" ref="org.hisp.dhis.sms.hibernate.IncomingSmsStore" />
