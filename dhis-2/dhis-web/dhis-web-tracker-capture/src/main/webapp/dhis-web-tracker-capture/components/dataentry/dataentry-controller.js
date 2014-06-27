@@ -27,7 +27,7 @@ trackerCapture.controller('DataEntryController',
             
         $scope.allowEventCreation = false;
         $scope.repeatableStages = [];        
-        $scope.dhis2Events = [];
+        $scope.dhis2Events = null;
         
         var selections = CurrentSelection.get();          
         $scope.selectedOrgUnit = storage.get('SELECTED_OU');

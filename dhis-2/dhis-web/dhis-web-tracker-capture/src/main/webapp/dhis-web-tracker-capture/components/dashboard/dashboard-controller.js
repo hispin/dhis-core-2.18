@@ -6,7 +6,8 @@ trackerCapture.controller('DashboardController',
                 $modal,
                 $timeout,
                 storage,
-                TEIService,  
+                TEIService, 
+                TEService,
                 ProgramFactory,
                 CurrentSelection,
                 TranslationService) {
@@ -47,29 +48,35 @@ trackerCapture.controller('DashboardController',
         TEIService.get($scope.selectedEntityId).then(function(data){
             $scope.selectedEntity = data;
             
-            ProgramFactory.getAll().then(function(programs){  
-            
-                angular.forEach(programs, function(program){
-                    if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
-                       program.trackedEntity.id === $scope.selectedEntity.trackedEntity){
-                        $scope.programs.push(program);
-                    }
-                    
-                    if($scope.selectedProgramId && program.id === $scope.selectedProgramId){
-                        $scope.selectedProgram = program;
-                    }
-                });
+            //get the entity type
+            TEService.get($scope.selectedEntity.trackedEntity).then(function(te){
+                $scope.trackedEntity = te;
                 
-                //broadcast selected items for dashboard controllers
-                $scope.broadCastProgram();                                    
-            });
+                ProgramFactory.getAll().then(function(programs){  
+            
+                    //get programs valid for the selected ou and tei
+                    angular.forEach(programs, function(program){
+                        if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
+                           program.trackedEntity.id === $scope.selectedEntity.trackedEntity){
+                            $scope.programs.push(program);
+                        }
+
+                        if($scope.selectedProgramId && program.id === $scope.selectedProgramId){
+                            $scope.selectedProgram = program;
+                        }
+                    });
+
+                    //broadcast selected items for dashboard controllers
+                    $scope.broadCastProgram();                                    
+                });
+            });            
         });       
     }   
     
     $scope.broadCastProgram = function(){
-        CurrentSelection.set({tei: $scope.selectedEntity, pr: $scope.selectedProgram});
+        CurrentSelection.set({tei: $scope.selectedEntity, te: $scope.trackedEntity, pr: $scope.selectedProgram});
         $timeout(function() { 
-            $rootScope.$broadcast('selectedEntity', {programExists: $scope.programs.length > 0});
+            $rootScope.$broadcast('selectedEntity', {programExists: $scope.programs.length > 0});            
         }, 100); 
     };
      
