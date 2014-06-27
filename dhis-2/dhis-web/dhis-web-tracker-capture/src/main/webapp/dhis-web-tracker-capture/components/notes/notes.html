@@ -1,8 +1,8 @@
-<div class="panel panel-default" ng-controller="NotesController">
+<div class="panel panel-info" ng-controller="NotesController">
     <div class="panel-heading">
         {{notesWidget.title| translate}}        
         <span class="nav-pills" ng-show="selectedEnrollment">
-            | <span><a href ng-click="showAddNote()" title="{{'add_note'| translate}}">{{'add'| translate}}</a></span>            
+            | <a href ng-click="showAddNote()" title="{{'add_note'| translate}}"><span class="bold">{{'add'| translate}}</span></a>
         </span>
         <span class="pull-right">
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(notesWidget)">
@@ -17,7 +17,7 @@
         <div class="add-note" ng-show="addNoteField">
             <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea> 
             <button type="button" 
-                    class="btn btn-default"
+                    class="btn btn-primary"
                     ng-click="addNote()">
                 {{'save'| translate}}
             </button>        
@@ -34,7 +34,7 @@
                 <tr ng-repeat="note in selectedEnrollment.notes| filter:noteSearchText">
                     <td class="over-flow-hidden">
                         <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
-                            <div class="pop-over">{{note.value}}</div>
+                            <div>{{note.value}}</div>
                         </d2-pop-over>
                         <script type="text/ng-template" id="note.html">
                             <p>{{content.value}}</p>

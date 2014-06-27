@@ -926,3 +926,7 @@ input[type=number], input[type=text], input[type=password], textarea {
     background-color: transparent;
     border: none;
 }
+
+label{
+    font-weight:normal !important
+}

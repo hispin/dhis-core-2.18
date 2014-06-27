@@ -57,7 +57,7 @@
             <input type="text" placeholder="{{'your_search_criteria_here'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
             <div class="input-group-btn">
                 <button class="btn btn-default trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
-                <button class="btn btn-default trim" type="button" title="{{'search'| translate}}" ng-disabled="showRegistrationDiv" ng-click="search(searchMode.freeText)"><i class="fa fa-search"></i></button>
+                <button class="btn btn-primary trim" type="button" title="{{'search'| translate}}" ng-disabled="showRegistrationDiv" ng-click="search(searchMode.freeText)"><i class="fa fa-search"></i></button>
                 <div id="searchDropDown" class="dropdown-menu pull-right">
                     <form ng-include="'views/search.html'">                       
                     </form>                    
@@ -66,13 +66,13 @@
         </div>        
         <div class="col-md-4 trim">            
             <button type="button" 
-                    class="btn btn-default"
+                    class="btn btn-success"
                     ng-disabled="showRegistrationDiv"
                     ng-click="search(searchMode.listAll)">
                 {{'list_all'| translate}}
             </button>
             <button type="button" 
-                    class="btn btn-default small-horizonal-spacing" 
+                    class="btn btn-primary small-horizonal-spacing" 
                     ng-click="showRegistration()">                    
                 {{'register'| translate}} {{selectedProgram.trackedEntity.name}}
             </button>
