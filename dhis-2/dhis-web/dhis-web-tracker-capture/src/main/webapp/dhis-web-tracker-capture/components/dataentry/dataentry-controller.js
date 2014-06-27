@@ -316,4 +316,9 @@ trackerCapture.controller('DataEntryController',
         }        
         return 'form-control';      
     };
+    
+    $scope.closeEventCreation = function(){
+        $scope.currentDummyEvent = null;
+        $scope.showEventCreationDiv = !$scope.showEventCreationDiv;
+    };
 });
