@@ -186,9 +186,9 @@ public class DataValueConverter
                                     out.write( getCsvValue( 0 ) );
                                     out.write( getCsvValue( csvEncode( value.getComment() ) ) );
                                     out.write( getCsvValue( 1594 ) );
-                                    if ( value.getTimestamp() != null )
+                                    if ( value.getLastUpdated() != null )
                                     {
-                                        out.write( getCsvEndValue( DateUtils.getAccessDateString( value.getTimestamp() ) ) );
+                                        out.write( getCsvEndValue( DateUtils.getAccessDateString( value.getLastUpdated() ) ) );
                                     }
                                     else
                                     {
@@ -275,7 +275,7 @@ public class DataValueConverter
                 }
 
                 value.setComment( values[13] );
-                value.setTimestamp( DateUtils.getDefaultDate( values[15] ) );
+                value.setLastUpdated( DateUtils.getDefaultDate( values[15] ) );
                 value.setCategoryOptionCombo( proxyCategoryOptionCombo );
                 value.setStoredBy( owner );
 

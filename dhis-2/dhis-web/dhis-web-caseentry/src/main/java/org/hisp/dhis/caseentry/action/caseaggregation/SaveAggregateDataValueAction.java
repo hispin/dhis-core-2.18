@@ -151,7 +151,7 @@ public class SaveAggregateDataValueAction
                 else
                 {
                     dataValue.setValue( resultValue );
-                    dataValue.setTimestamp( new Date() );
+                    dataValue.setLastUpdated( new Date() );
                     dataValue.setStoredBy(  CaseAggregationCondition.AUTO_STORED_BY );
 
                     dataValueService.updateDataValue( dataValue );

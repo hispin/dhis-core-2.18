@@ -717,7 +717,7 @@ public class DefaultImportObjectService<T>
         original.setSource( update.getSource() );
         original.setValue( update.getValue() );
         original.setStoredBy( update.getStoredBy() );
-        original.setTimestamp( update.getTimestamp() );
+        original.setLastUpdated( update.getLastUpdated() );
         original.setComment( update.getComment() );
         original.setCategoryOptionCombo( update.getCategoryOptionCombo() );
 

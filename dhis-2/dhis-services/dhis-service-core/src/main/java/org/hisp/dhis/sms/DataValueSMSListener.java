@@ -407,7 +407,7 @@ public class DataValueSMSListener
             }
 
             dv.setValue( value );
-            dv.setTimestamp( new java.util.Date() );
+            dv.setLastUpdated( new java.util.Date() );
             dv.setStoredBy( storedBy );
 
             if ( newDataValue )

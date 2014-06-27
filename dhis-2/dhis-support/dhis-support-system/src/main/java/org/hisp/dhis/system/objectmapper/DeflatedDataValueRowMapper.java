@@ -52,7 +52,7 @@ public class DeflatedDataValueRowMapper
         value.setCategoryOptionComboId( resultSet.getInt( 4 ) );
         value.setValue( resultSet.getString( 5 ) );
         value.setStoredBy( resultSet.getString( 6 ) );
-        value.setTimestamp( resultSet.getTimestamp( 7 ) );
+        value.setLastUpdated( resultSet.getTimestamp( 7 ) );
         value.setComment( resultSet.getString( 8 ) );
         
         return value;

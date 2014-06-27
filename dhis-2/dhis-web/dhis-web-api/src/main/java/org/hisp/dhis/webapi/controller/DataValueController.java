@@ -233,7 +233,7 @@ public class DataValueController
                 dataValue.toggleFollowUp();
             }
 
-            dataValue.setTimestamp( now );
+            dataValue.setLastUpdated( now );
             dataValue.setStoredBy( storedBy );
 
             dataValueService.updateDataValue( dataValue );

@@ -416,7 +416,7 @@ public class SaveSectionFormAction
                             needsValidation = true;
 
                             dataValue.setValue( value );
-                            dataValue.setTimestamp( new Date() );
+                            dataValue.setLastUpdated( new Date() );
                             dataValue.setStoredBy( storedBy );
 
                             dataValueService.updateDataValue( dataValue );

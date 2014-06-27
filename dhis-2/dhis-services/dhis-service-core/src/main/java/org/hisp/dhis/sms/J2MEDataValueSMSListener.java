@@ -235,7 +235,7 @@ public class J2MEDataValueSMSListener
             }
 
             dv.setValue( value );
-            dv.setTimestamp( new java.util.Date() );
+            dv.setLastUpdated( new java.util.Date() );
             dv.setStoredBy( storedBy );
 
             if ( ValidationUtils.dataValueIsValid( value, dv.getDataElement() ) != null )

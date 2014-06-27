@@ -546,7 +546,7 @@ public class DefaultDataValueSetService
                 internalValue.setStoredBy( dataValue.getStoredBy() );
             }
 
-            internalValue.setTimestamp( parseDate( dataValue.getLastUpdated() ) );
+            internalValue.setLastUpdated( parseDate( dataValue.getLastUpdated() ) );
             internalValue.setComment( trimToNull( dataValue.getComment() ) );
             internalValue.setFollowup( dataValue.getFollowup() );
 

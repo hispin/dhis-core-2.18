@@ -74,7 +74,7 @@ public class DataValueImporter
     {
         match.setValue( object.getValue() );
         match.setStoredBy( object.getStoredBy() );
-        match.setTimestamp( object.getTimestamp() );
+        match.setLastUpdated( object.getLastUpdated() );
         match.setComment( object.getComment() );
         
         batchHandler.updateObject( match );
@@ -108,7 +108,7 @@ public class DataValueImporter
         {
             return false;
         }
-        if ( !isSimiliar( object.getTimestamp(), existing.getTimestamp() ) || ( isNotNull( object.getTimestamp(), existing.getTimestamp() ) && !object.getTimestamp().equals( existing.getTimestamp() ) ) )
+        if ( !isSimiliar( object.getLastUpdated(), existing.getLastUpdated() ) || ( isNotNull( object.getLastUpdated(), existing.getLastUpdated() ) && !object.getLastUpdated().equals( existing.getLastUpdated() ) ) )
         {
             return false;
         }

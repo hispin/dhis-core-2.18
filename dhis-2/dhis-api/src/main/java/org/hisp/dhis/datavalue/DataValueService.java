@@ -288,8 +288,7 @@ public interface DataValueService
      * @param periodType the Period Type of period of the DataValue
      * @param organisationUnit the Organisation Unit of the DataValue
      * @return a Latest DataValue 
-     */   
-    
+     */
     DataValue getLatestDataValues( DataElement dataElement, PeriodType periodType, OrganisationUnit organisationUnit );
     
     /**
