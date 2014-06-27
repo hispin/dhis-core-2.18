@@ -67,6 +67,11 @@ public class NepaliCalendar extends AbstractCalendar
     @Override
     public DateUnit toIso( DateUnit dateUnit )
     {
+        if ( dateUnit.isIso8601() )
+        {
+            return dateUnit;
+        }
+
         DateTime dateTime = startIso.toDateTime();
 
         int totalDays = 0;
