@@ -110,6 +110,8 @@ public class EditSMSCommandForm
 
     private String moreThanOneOrgUnitMessage;
 
+    private String successMessage;
+
     private Integer completenessMethod;
 
     private int selectedCommandID = -1;
@@ -184,6 +186,7 @@ public class EditSMSCommandForm
             c.setMoreThanOneOrgUnitMessage( moreThanOneOrgUnitMessage );
             c.setNoUserMessage( noUserMessage );
             c.setWrongFormatMessage( wrongFormatMessage );
+            c.setSuccessMessage( successMessage );
 
             if ( userGroupID != null && userGroupID > -1 )
             {
@@ -362,4 +365,15 @@ public class EditSMSCommandForm
     {
         this.completenessMethod = completenessMethod;
     }
+
+    public String getSuccessMessage()
+    {
+        return successMessage;
+    }
+
+    public void setSuccessMessage( String successMessage )
+    {
+        this.successMessage = successMessage;
+    }
+
 }

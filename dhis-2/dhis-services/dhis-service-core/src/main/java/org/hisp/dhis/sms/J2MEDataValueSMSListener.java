@@ -81,7 +81,7 @@ public class J2MEDataValueSMSListener
     private CompleteDataSetRegistrationService registrationService;
 
     private SmsSender smsSender;
-    
+
     @Transactional
     @Override
     public boolean accept( IncomingSms sms )
@@ -100,7 +100,7 @@ public class J2MEDataValueSMSListener
 
         return smsCommandService.getSMSCommand( commandString, ParserType.J2ME_PARSER ) != null;
     }
-    
+
     @Transactional
     @Override
     public void receive( IncomingSms sms )
@@ -287,7 +287,7 @@ public class J2MEDataValueSMSListener
             }
             throw new SMSParserException( messageListingOrgUnits );
         }
-        
+
         return orgUnit;
     }
 
@@ -345,8 +345,9 @@ public class J2MEDataValueSMSListener
     {
         CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
 
-        DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo(); //TODO
-        
+        DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
+            .getDefaultDataElementCategoryOptionCombo(); // TODO
+
         if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit, optionCombo ) == null )
         {
             registration.setDataSet( dataSet );
@@ -402,6 +403,13 @@ public class J2MEDataValueSMSListener
         if ( missingElements )
         {
             reportBack += notInReport;
+        }
+        
+        System.out.println("Success message :" + command.getSuccessMessage());
+        
+        if ( command.getSuccessMessage() != null && !StringUtils.isEmpty( command.getSuccessMessage() ) )
+        {
+            reportBack = command.getSuccessMessage();
         }
 
         smsSender.sendMessage( reportBack, sender );

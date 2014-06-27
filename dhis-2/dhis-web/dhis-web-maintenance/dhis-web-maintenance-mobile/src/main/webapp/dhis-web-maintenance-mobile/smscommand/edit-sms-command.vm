@@ -171,6 +171,11 @@
             <td style="width:130px">$i18n.getString( "more_than_one_orgunit_message" )</td>
             <td><textarea cols="35" type="text" name="moreThanOneOrgUnitMessage">#if($smsCommand.moreThanOneOrgUnitMessage)$smsCommand.moreThanOneOrgUnitMessage#end</textarea></td>
         </tr>
+        
+        <tr>
+            <td style="width:130px">$i18n.getString( "success_message" )</td>
+            <td><textarea cols="35" type="text" name="successMessage">#if($smsCommand.successMessage)$smsCommand.successMessage#end</textarea></td>
+        </tr>
 		 
 		#elseif( $smsCommand.parserType == 'ALERT_PARSER' || $smsCommand.parserType == 'UNREGISTERED_PARSER' )
 		<tr>
