@@ -97,4 +97,14 @@ public class HibernateInterpretationStore
 
         return ((Long) query.uniqueResult()).intValue();
     }
+
+    @Override
+    public Interpretation getByChartId( int id )
+    {
+        String hql = "from Interpretation i where i.chart.id = " + id;
+        
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+        
+        return (Interpretation) query.uniqueResult();
+    }
 }

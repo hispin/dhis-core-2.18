@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
+import org.hisp.dhis.api.mobile.model.Interpretation;
 import org.hisp.dhis.api.mobile.model.Message;
 import org.hisp.dhis.api.mobile.model.MessageConversation;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
@@ -126,4 +127,12 @@ public interface ActivityReportingService
     String replyMessage( Message message )
         throws NotAllowedException;
 
+    Interpretation getInterpretation( String uId )
+        throws NotAllowedException;
+
+    String postInterpretation( String data )
+        throws NotAllowedException;
+
+    String postInterpretationComment( String data )
+        throws NotAllowedException;
 }

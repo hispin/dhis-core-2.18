@@ -67,4 +67,6 @@ public interface InterpretationService
     int countChartInterpretations( Chart chart );
 
     int countReportTableInterpretations( ReportTable reportTable );
+    
+    Interpretation getInterpretationByChartId(int id);
 }

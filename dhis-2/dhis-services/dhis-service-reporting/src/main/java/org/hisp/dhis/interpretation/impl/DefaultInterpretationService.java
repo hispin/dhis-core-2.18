@@ -213,4 +213,9 @@ public class DefaultInterpretationService
     {
         return interpretationStore.countReportTableInterpretations( reportTable );
     }
+
+    public Interpretation getInterpretationByChartId( int id )
+    {
+        return interpretationStore.getByChartId( id );
+    }
 }
