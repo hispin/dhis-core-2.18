@@ -67,7 +67,7 @@ public class DefaultLinkService implements LinkService
 
         Schema schema = schemaService.getDynamicSchema( klass );
 
-        if ( !schema.haveEndpoint() )
+        if ( !schema.haveApiEndpoint() )
         {
             return;
         }
@@ -199,7 +199,7 @@ public class DefaultLinkService implements LinkService
 
         Schema schema = schemaService.getDynamicSchema( klass );
 
-        if ( !schema.haveEndpoint() )
+        if ( !schema.haveApiEndpoint() )
         {
             return;
         }

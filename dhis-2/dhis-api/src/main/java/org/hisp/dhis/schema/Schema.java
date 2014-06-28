@@ -248,7 +248,7 @@ public class Schema implements Ordered
         this.apiEndpoint = apiEndpoint;
     }
 
-    public boolean haveEndpoint()
+    public boolean haveApiEndpoint()
     {
         return getApiEndpoint() != null;
     }
