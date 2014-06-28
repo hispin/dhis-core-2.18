@@ -28,20 +28,19 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.node.types.CollectionNode;
+import org.hisp.dhis.node.types.ComplexNode;
+import org.hisp.dhis.node.types.RootNode;
+import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.webdomain.Resource;
-import org.hisp.dhis.webapi.webdomain.Resources;
+import org.hisp.dhis.webapi.service.ContextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -52,37 +51,45 @@ public class IndexController
     @Autowired
     private SchemaService schemaService;
 
+    @Autowired
+    private ContextService contextService;
+
     //--------------------------------------------------------------------------
     // GET
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public void getIndex( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public @ResponseBody RootNode getIndex()
     {
-        String location = response.encodeRedirectURL( "/" );
-        response.sendRedirect( ContextUtils.getRootPath( request ) + location );
+        return createRootNode();
     }
 
     @RequestMapping( value = "/", method = RequestMethod.GET )
-    public String getResources( Model model, HttpServletRequest request )
+    public @ResponseBody RootNode getIndexSlash()
     {
-        Resources resources = new Resources();
+        return createRootNode();
+    }
+
+    private RootNode createRootNode()
+    {
+        RootNode rootNode = new RootNode( "metadata" );
+        rootNode.setNamespace( DxfNamespaces.DXF_2_0 );
+        rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
+
+        CollectionNode collectionNode = rootNode.addChild( new CollectionNode( "resources" ) );
 
         for ( Schema schema : schemaService.getSchemas() )
         {
             if ( schema.haveApiEndpoint() )
             {
-                Resource resource = new Resource();
-                resource.setSingular( schema.getSingular() );
-                resource.setPlural( schema.getPlural() );
-                resource.setHref( ContextUtils.getRootPath( request ) + schema.getApiEndpoint() );
+                ComplexNode complexNode = collectionNode.addChild( new ComplexNode( "resource" ) );
 
-                resources.getResources().add( resource );
+                complexNode.addChild( new SimpleNode( "singular", schema.getSingular() ) );
+                complexNode.addChild( new SimpleNode( "plural", schema.getPlural() ) );
+                complexNode.addChild( new SimpleNode( "href", contextService.getContextPath() + "/api" + schema.getApiEndpoint() ) );
             }
         }
 
-        model.addAttribute( "model", resources );
-
-        return "resources";
+        return rootNode;
     }
 }
