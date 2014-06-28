@@ -36,11 +36,16 @@ import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.webapi.service.ContextService;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -59,13 +64,21 @@ public class IndexController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public @ResponseBody RootNode getIndex()
+    public void getIndex( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        return createRootNode();
+        String location = response.encodeRedirectURL( "/resources" );
+        response.sendRedirect( ContextUtils.getRootPath( request ) + location );
     }
 
     @RequestMapping( value = "/", method = RequestMethod.GET )
-    public @ResponseBody RootNode getIndexSlash()
+    public void getIndexWithSlash( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        String location = response.encodeRedirectURL( "/resources" );
+        response.sendRedirect( ContextUtils.getRootPath( request ) + location );
+    }
+
+    @RequestMapping( value = "/resources", method = RequestMethod.GET )
+    public @ResponseBody RootNode getResources()
     {
         return createRootNode();
     }
