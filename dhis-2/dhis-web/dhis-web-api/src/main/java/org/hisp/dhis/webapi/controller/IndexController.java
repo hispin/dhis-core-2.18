@@ -70,7 +70,7 @@ public class IndexController
 
         for ( Schema schema : schemaService.getSchemas() )
         {
-            if ( schema.haveEndpoint() )
+            if ( schema.haveApiEndpoint() )
             {
                 Resource resource = new Resource();
                 resource.setSingular( schema.getSingular() );
