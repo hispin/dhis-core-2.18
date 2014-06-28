@@ -49,6 +49,8 @@ import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.Beneficiary;
 import org.hisp.dhis.api.mobile.model.DataValue;
+import org.hisp.dhis.api.mobile.model.Interpretation;
+import org.hisp.dhis.api.mobile.model.InterpretationComment;
 import org.hisp.dhis.api.mobile.model.OptionSet;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.Task;
@@ -58,11 +60,14 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientList;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.event.EventStatus;
+import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.message.Message;
@@ -126,6 +131,10 @@ public class ActivityReportingServiceImpl
 
     private static final String MESSAGE_SENT = "message_sent";
 
+    private static final String INTERPRETATION_SENT = "interpretation_sent";
+
+    private static final String COMMENT_SENT = "comment_sent";
+
     private ActivityComparator activityComparator = new ActivityComparator();
 
     // -------------------------------------------------------------------------
@@ -169,6 +178,10 @@ public class ActivityReportingServiceImpl
     private TrackedEntityInstanceReminderService reminderService;
 
     private UserService userService;
+
+    private InterpretationService interpretationService;
+
+    private ChartService chartService;
 
     private Integer patientId;
 
@@ -268,6 +281,16 @@ public class ActivityReportingServiceImpl
     // -------------------------------------------------------------------------
     // MobileDataSetService
     // -------------------------------------------------------------------------
+    @Required
+    public void setInterpretationService( InterpretationService interpretationService )
+    {
+        this.interpretationService = interpretationService;
+    }
+
+    public void setChartService( ChartService chartService )
+    {
+        this.chartService = chartService;
+    }
 
     private TrackedEntityAttribute groupByAttribute;
 
@@ -2080,6 +2103,78 @@ public class ActivityReportingServiceImpl
         messageService.sendReply( conversation, message.getText(), metaData );
 
         return MESSAGE_SENT;
+    }
+
+    @Override
+    public Interpretation getInterpretation( String uId )
+        throws NotAllowedException
+    {
+        Chart chart = chartService.getChart( uId );
+        org.hisp.dhis.interpretation.Interpretation interpretationCore = interpretationService
+            .getInterpretationByChartId( chart.getId() );
+
+        Collection<InterpretationComment> interComments = new HashSet<InterpretationComment>();
+
+        for ( org.hisp.dhis.interpretation.InterpretationComment interCommentsCore : interpretationCore.getComments() )
+        {
+
+            InterpretationComment interComment = new InterpretationComment();
+            interComment.setText( interCommentsCore.getText() );
+            interComments.add( interComment );
+        }
+
+        Interpretation interpretation = new Interpretation();
+        interpretation.setId( interpretationCore.getId() );
+        interpretation.setText( interpretationCore.getText() );
+        interpretation.setInComments( interComments );
+
+        return interpretation;
+    }
+
+    private org.hisp.dhis.interpretation.Interpretation interpretation;
+
+    public void setInterpretation( org.hisp.dhis.interpretation.Interpretation interpretation )
+    {
+        this.interpretation = interpretation;
+    }
+
+    public org.hisp.dhis.interpretation.Interpretation getInterpretation()
+    {
+        return interpretation;
+    }
+
+    @Override
+    public String postInterpretation( String data )
+        throws NotAllowedException
+    {
+
+        String uId = data.substring( 0, 11 );
+
+        String interpretation = data.substring( 11, data.length() - 0 );
+
+        Chart c = chartService.getChart( uId );
+
+        org.hisp.dhis.interpretation.Interpretation i = new org.hisp.dhis.interpretation.Interpretation( c, null,
+            interpretation );
+
+        i.setUser( currentUserService.getCurrentUser() );
+
+        interpretationService.saveInterpretation( i );
+
+        return INTERPRETATION_SENT;
+    }
+
+    @Override
+    public String postInterpretationComment( String data )
+        throws NotAllowedException
+    {
+        int interpretationId = Integer.parseInt( data.substring( 0, 7 ) );
+        String comment = data.substring( 7, data.length() - 0 );
+
+        setInterpretation( interpretationService.getInterpretation( interpretationId ) );
+        interpretationService.addInterpretationComment( interpretation.getUid(), comment );
+
+        return COMMENT_SENT;
     }
 
     @Override
