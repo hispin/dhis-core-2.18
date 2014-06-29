@@ -33,6 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.collect.Lists;
+
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.DimensionalObject;
@@ -57,6 +58,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.dxf2.events.event.Event;
+import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.indicator.Indicator;
@@ -205,6 +207,8 @@ public class MetaData
     private List<Event> events = new ArrayList<Event>();
 
     private List<EventReport> eventReports = new ArrayList<EventReport>();
+    
+    private List<EventChart> eventCharts = new ArrayList<EventChart>();
 
     private List<Program> programs = new ArrayList<Program>();
 
@@ -940,6 +944,19 @@ public class MetaData
     public void setEventReports( List<EventReport> eventReports )
     {
         this.eventReports = eventReports;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "eventCharts", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "eventChart", namespace = DxfNamespaces.DXF_2_0 )
+    public List<EventChart> getEventCharts()
+    {
+        return eventCharts;
+    }
+
+    public void setEventCharts( List<EventChart> eventCharts )
+    {
+        this.eventCharts = eventCharts;
     }
 
     @JsonProperty
