@@ -33,6 +33,8 @@ import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
@@ -49,6 +51,8 @@ public class ImportMetaDataCsvTask
 
     private ImportService importService;
 
+    private IdentifiableObjectManager identifiableObjectManager;
+    
     private ImportOptions importOptions;
 
     private InputStream inputStream;
@@ -59,11 +63,14 @@ public class ImportMetaDataCsvTask
     
     private Class<?> clazz;
 
-    public ImportMetaDataCsvTask( String userUid, ImportService importService, ImportOptions importOptions, InputStream inputStream,
+    public ImportMetaDataCsvTask( String userUid, ImportService importService, 
+        IdentifiableObjectManager identifiableObjectManager,
+        ImportOptions importOptions, InputStream inputStream,
         TaskId taskId, Class<?> clazz )
     {
         this.userUid = userUid;
         this.importService = importService;
+        this.identifiableObjectManager = identifiableObjectManager;
         this.importOptions = importOptions;
         this.inputStream = inputStream;
         this.taskId = taskId;
@@ -75,9 +82,12 @@ public class ImportMetaDataCsvTask
     {
         MetaData metaData = null;
         
+        DataElementCategoryCombo categoryCombo = identifiableObjectManager.getByName( 
+            DataElementCategoryCombo.class, DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        
         try
         {
-            metaData = CsvObjectUtils.fromCsv( inputStream, clazz );
+            metaData = CsvObjectUtils.fromCsv( inputStream, clazz, categoryCombo );
         }
         catch ( IOException ex )
         {

@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -79,6 +80,9 @@ public class MetaDataImportAction
 
     @Autowired
     private ImportService importService;
+    
+    @Autowired
+    private IdentifiableObjectManager identifiableObjectManager;
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -159,7 +163,8 @@ public class MetaDataImportAction
         
         if ( "csv".equals( importFormat ) && classKey != null && KEY_CLASS_MAP.get( classKey ) != null )
         {
-            scheduler.executeTask( new ImportMetaDataCsvTask( userId, importService, importOptions, in, taskId, KEY_CLASS_MAP.get( classKey ) ) );
+            scheduler.executeTask( new ImportMetaDataCsvTask( userId, importService, identifiableObjectManager, 
+                importOptions, in, taskId, KEY_CLASS_MAP.get( classKey ) ) );
         }
         else
         {
