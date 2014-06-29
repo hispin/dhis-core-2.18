@@ -42,6 +42,7 @@ import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementDomain;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -57,7 +58,7 @@ import com.csvreader.CsvReader;
  */
 public class CsvObjectUtils
 {
-    public static MetaData fromCsv( InputStream input, Class<?> clazz )
+    public static MetaData fromCsv( InputStream input, Class<?> clazz, DataElementCategoryCombo categoryCombo )
         throws IOException
     {
         CsvReader reader = new CsvReader( input, Charset.forName( "UTF-8" ) );
@@ -67,7 +68,7 @@ public class CsvObjectUtils
 
         if ( DataElement.class.equals( clazz ) )
         {
-            metaData.setDataElements( dataElementsFromCsv( reader, input ) );
+            metaData.setDataElements( dataElementsFromCsv( reader, input, categoryCombo ) );
         }
         else if ( DataElementGroup.class.equals( clazz ) )
         {
@@ -137,7 +138,7 @@ public class CsvObjectUtils
         return list;
     }
 
-    private static List<DataElement> dataElementsFromCsv( CsvReader reader, InputStream input )
+    private static List<DataElement> dataElementsFromCsv( CsvReader reader, InputStream input, DataElementCategoryCombo categoryCombo )
         throws IOException
     {
         List<DataElement> list = new ArrayList<DataElement>();
@@ -160,10 +161,22 @@ public class CsvObjectUtils
                 object.setType( getSafe( values, 7, DataElement.VALUE_TYPE_INT, 16 ) );
                 object.setNumberType( getSafe( values, 8, DataElement.VALUE_TYPE_NUMBER, 16 ) );
                 object.setTextType( getSafe( values, 9, null, 16 ) );
-                object.setAggregationOperator( getSafe( values, 10, DataElement.AGGREGATION_OPERATOR_SUM, 16 ) );
-                object.setUrl( getSafe( values, 11, null, 255 ) );
-                object.setZeroIsSignificant( Boolean.valueOf( getSafe( values, 12, "false", null ) ) );
+                object.setAggregationOperator( getSafe( values, 10, DataElement.AGGREGATION_OPERATOR_SUM, 16 ) );                
+                String categoryComboUid = getSafe( values, 11, null, 11 );
+                object.setUrl( getSafe( values, 12, null, 255 ) );
+                object.setZeroIsSignificant( Boolean.valueOf( getSafe( values, 13, "false", null ) ) );
 
+                if ( categoryComboUid != null )
+                {
+                    DataElementCategoryCombo cc = new DataElementCategoryCombo();
+                    cc.setUid( categoryComboUid );
+                    object.setCategoryCombo( cc );
+                }
+                else
+                {
+                    object.setCategoryCombo( categoryCombo );
+                }
+                
                 list.add( object );
             }
         }
@@ -204,6 +217,7 @@ public class CsvObjectUtils
             {
                 OrganisationUnit object = new OrganisationUnit();
                 setIdentifiableObject( object, values );
+                String parentUid = getSafe( values, 3, null, 11 );
                 object.setShortName( getSafe( values, 4, object.getName(), 50 ) );
                 object.setDescription( getSafe( values, 5, null, null ) );
                 object.setUuid( getSafe( values, 6, null, 36 ) );
@@ -218,9 +232,7 @@ public class CsvObjectUtils
                 object.setAddress( getSafe( values, 14, null, 255 ) );
                 object.setEmail( getSafe( values, 15, null, 150 ) );
                 object.setPhoneNumber( getSafe( values, 16, null, 150 ) );
-                
-                String parentUid = getSafe( values, 3, null, 11 );
-                
+                                
                 if ( parentUid != null )
                 {
                     OrganisationUnit parent = new OrganisationUnit();
@@ -303,9 +315,9 @@ public class CsvObjectUtils
      * @param values the string array.
      * @param index the array index of the string to get.
      * @param defaultValue the default value in case index is out of bounds.
-     * @param max the max number of characters to return for the string.
+     * @param maxChars the max number of characters to return for the string.
      */
-    private static String getSafe( String[] values, int index, String defaultValue, Integer max )
+    private static String getSafe( String[] values, int index, String defaultValue, Integer maxChars )
     {
         String string = null;
 
@@ -322,7 +334,7 @@ public class CsvObjectUtils
 
         if ( string != null )
         {
-            return max != null ? StringUtils.substring( string, 0, max ) : string;
+            return maxChars != null ? StringUtils.substring( string, 0, maxChars ) : string;
         }
 
         return null;
