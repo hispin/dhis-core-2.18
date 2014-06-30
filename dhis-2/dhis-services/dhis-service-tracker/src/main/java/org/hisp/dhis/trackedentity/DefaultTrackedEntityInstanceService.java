@@ -174,6 +174,11 @@ public class DefaultTrackedEntityInstanceService
                     .setLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() ) );
             }
         }
+        
+        if ( !params.isPaging() && !params.isSkipPaging() )
+        {
+            params.setDefaultPaging();
+        }
 
         // ---------------------------------------------------------------------
         // If params of type query and no attributes or filters defined, use
@@ -358,7 +363,7 @@ public class DefaultTrackedEntityInstanceService
     public TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter,
         Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus,
         Boolean followUp, Date programStartDate, Date programEndDate, String trackedEntity, EventStatus eventStatus,
-        Date eventStartDate, Date eventEndDate, boolean skipMeta, Integer page, Integer pageSize )
+        Date eventStartDate, Date eventEndDate, boolean skipMeta, Integer page, Integer pageSize, boolean skipPaging )
     {
         TrackedEntityInstanceQueryParams params = new TrackedEntityInstanceQueryParams();
 
@@ -427,6 +432,7 @@ public class DefaultTrackedEntityInstanceService
         params.setSkipMeta( skipMeta );
         params.setPage( page );
         params.setPageSize( pageSize );
+        params.setSkipPaging( skipPaging );
 
         return params;
     }

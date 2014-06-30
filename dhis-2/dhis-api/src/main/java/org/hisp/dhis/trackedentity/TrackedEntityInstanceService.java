@@ -132,12 +132,13 @@ public interface TrackedEntityInstanceService
      * @param skipMeta indicates whether to include meta data in the response.
      * @param page the page number.
      * @param pageSize the page size.
+     * @param skipPaging whether to skip paging.
      * @return a TrackedEntityInstanceQueryParams.
      */
     TrackedEntityInstanceQueryParams getFromUrl( String query, Set<String> attribute, Set<String> filter,
         Set<String> ou, OrganisationUnitSelectionMode ouMode, String program, ProgramStatus programStatus,
         Boolean followUp, Date programStartDate, Date programEndDate, String trackedEntity, EventStatus eventStatus,
-        Date eventStartDate, Date eventEndDate, boolean skipMeta, Integer page, Integer pageSize );
+        Date eventStartDate, Date eventEndDate, boolean skipMeta, Integer page, Integer pageSize, boolean skipPaging );
 
     /**
      * Decides whether current user is authorized to perform the given query.
