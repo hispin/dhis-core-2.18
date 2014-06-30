@@ -6,7 +6,7 @@
         <select ng-model="selectedProgram"
                 class="form-control-program"
                 ng-options="program as program.name for program in programs | orderBy: 'name'" 
-                ng-change="broadCastProgram()">
+                ng-change="broadCastSelections()">
             <option value="">{{'please_select_a_program'| translate}}</option>
         </select>
 

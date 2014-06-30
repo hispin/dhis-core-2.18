@@ -478,18 +478,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                         query.hasValue = true;    
                         q += 'LT:' + attribute.endValue + ':';
                     }
-                }
-                
-                /*if(attribute.startDate && attribute.startDate !== ''){
-                    query.hasValue = true;    
-                    q += 'GE:' + attribute.startDate + ':';
-                }
-                
-                if(attribute.endDate && attribute.endDate !== ''){
-                    query.hasValue = true;    
-                    q += 'LE:' + attribute.endDate + ':';
-                }*/
-                
+                }                
                 if(query.url){
                     if(q){
                         q = q.substr(0,q.length-1);
@@ -534,32 +523,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                             query.url = 'filter=' + attribute.id + ':LIKE:' + attribute.value;
                         }
                     }
-
                 }
-
-                /*if(attribute.filters){
-                    var q = '';
-                    angular.forEach(attribute.filters, function(filter){
-                        if(filter.value !== ''){
-                            q += filter.operator + ':' + filter.value + ':';
-                        }
-                    });
-                    q = q.substr(0,q.length-1);
-
-                    if(query.url){
-                        if(q){
-                            query.url = query.url + '&filter=' + attribute.id + ':' + q;
-                        }
-                    }
-                    else{
-                        if(q){
-                            query.url = 'filter=' + attribute.id + ':' + q;
-                        }
-                    }
-                }*/
-            }
-            
-            
+            }            
         });
         
         if(enrollment){
@@ -579,17 +544,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     query.hasValue = true;
                     q += '&programEndDate=' + enrollment.programEndDate;
                 }
-            }
-            
-            /*if(enrollment.programStartDate && enrollment.programStartDate !== ''){                
-                query.hasValue = true;
-                q += '&programStartDate=' + enrollment.programStartDate;
-            }
-            if(enrollment.programEndDate && enrollment.programEndDate !== ''){
-                query.hasValue = true;
-                q += '&programEndDate=' + enrollment.programEndDate;
-            }*/
-            
+            }            
             if(q){
                 if(query.url){
                     query.url = query.url + q;

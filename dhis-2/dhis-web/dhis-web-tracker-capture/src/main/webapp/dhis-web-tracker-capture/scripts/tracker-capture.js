@@ -134,6 +134,7 @@ $(document).ready(function()
 
     //drop down menu for program selection
     $("#selectDropDown").width($("#selectDropDownParent").width());
+    $("#selectDropDown").css('margin-right: -15x;');
     $(".select-drop-down-button").on('click', function(e) {
         e.stopPropagation();
         $("#selectDropDown").dropdown('toggle');

@@ -281,8 +281,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };
     
     $scope.showDashboard = function(currentEntity){   
-        $location.path('/dashboard').search({selectedEntityId: currentEntity.id,                                            
-                                            selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id: null});                                    
+        $location.path('/dashboard').search({tei: currentEntity.id,                                            
+                                            program: $scope.selectedProgram ? $scope.selectedProgram.id: null});                                    
     };
        
     $scope.getHelpContent = function(){

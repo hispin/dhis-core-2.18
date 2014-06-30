@@ -7,7 +7,7 @@ trackerCapture.controller('SelectedInfoController',
     TranslationService.translate();
     
     //listen for the selected items
-    $scope.$on('selectedEntity', function(event, args) {
+    $scope.$on('selectedItems', function(event, args) {
         
         var selections = CurrentSelection.get();
         $scope.selectedEntity = selections.tei; 
