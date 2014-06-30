@@ -222,10 +222,17 @@ public class User
      */
     public OrganisationUnit getDataViewOrganisationUnitWithFallback()
     {
-        OrganisationUnit dataViewOrgUnit = getDataViewOrganisationUnit();
-        return dataViewOrgUnit != null ? dataViewOrgUnit : getOrganisationUnit();
+        return hasDataViewOrganisationUnit() ? getDataViewOrganisationUnit() : getOrganisationUnit();
     }
-
+    
+    /**
+     * Returns the data view organisation units or organisation units if not exist.
+     */
+    public Set<OrganisationUnit> getDataViewOrganisationUnitsWithFallback()
+    {
+        return hasDataViewOrganisationUnit() ? dataViewOrganisationUnits : organisationUnits;
+    }
+    
     public String getOrganisationUnitsName()
     {
         return IdentifiableObjectUtils.join( organisationUnits );

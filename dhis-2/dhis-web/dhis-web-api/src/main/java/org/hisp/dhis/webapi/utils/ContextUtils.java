@@ -34,11 +34,10 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -212,7 +211,7 @@ public class ContextUtils
 
     public static HttpServletRequest getRequest()
     {
-        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return ( (ServletRequestAttributes) RequestContextHolder.getRequestAttributes() ).getRequest();
     }
 
     public static String getContextPath( HttpServletRequest request )
@@ -268,7 +267,7 @@ public class ContextUtils
      * @param value the query param value.
      * @return the list of independent values.
      */
-    public static List<String> getQueryParamValues( String value )
+    public static Set<String> getQueryParamValues( String value )
     {
         if ( value == null || value.isEmpty() )
         {
@@ -277,7 +276,7 @@ public class ContextUtils
 
         String[] values = value.split( QUERY_PARAM_SEP );
         
-        return new ArrayList<String>( Arrays.asList( values ) );
+        return new HashSet<String>( Arrays.asList( values ) );
     }
     
     /**
