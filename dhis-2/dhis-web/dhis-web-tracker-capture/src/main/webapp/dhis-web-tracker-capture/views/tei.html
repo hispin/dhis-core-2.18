@@ -24,7 +24,7 @@
                             </tr>                        
                         </thead>
                         <tbody id="list">
-                            <tr ng-repeat="trackedEntity in trackedEntityList.rows| paginate:rowsPerPage" 
+                            <tr ng-repeat="trackedEntity in trackedEntityList.rows" 
                                 ng-click="showDashboard(trackedEntity)">
                                 <td ng-show="gridColumn.show"                                            
                                     ng-repeat="gridColumn in gridColumns">                                                
@@ -35,7 +35,7 @@
                     </table>
                 </div>
                 <!-- entity ends -->  
-                <paginator></paginator>                      
+                <serverside-paginator></serverside-paginator>                    
             </div>
         </div>                        
     </div>

@@ -250,5 +250,25 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
         element.draggable();
       }
     };  
+})
+
+.directive('serversidePaginator', function factory() {
+    return {
+        restrict: 'E',
+        controller: function ($scope, Paginator) {
+            $scope.paginator = Paginator;
+        },
+        templateUrl: 'views/serverside-pagination.html'
+    };
+})
+
+.directive('clientsidePaginator', function factory() {
+    return {
+        restrict: 'E',
+        controller: function ($scope, Paginator) {
+            $scope.paginator = Paginator;
+        },
+        templateUrl: 'views/clientside-pagination.html'
+    };
 });
 
