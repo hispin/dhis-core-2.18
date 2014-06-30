@@ -403,7 +403,7 @@ public class DataElement
 
     public String getDisplayFormName()
     {
-        return (displayFormName != null && !displayFormName.trim().isEmpty()) ? displayFormName : formName;
+        return displayFormName != null && !displayFormName.trim().isEmpty() ? displayFormName : formName;
     }
 
     public void setDisplayFormName( String displayFormName )
