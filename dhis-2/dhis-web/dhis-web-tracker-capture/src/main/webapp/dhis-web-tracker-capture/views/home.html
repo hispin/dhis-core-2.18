@@ -98,6 +98,7 @@
 
     <!-- entity grid begins -->
     <div class="row" ng-if="showTrackedEntityDiv">
+        <img class="col-md-12" src="../images/ajax-loader-bar.gif" ng-if="!teiFetched"/>
         <div class="col-md-12" ng-include="'views/tei.html'"></div>  
     </div>
     <!-- entity grid ends -->

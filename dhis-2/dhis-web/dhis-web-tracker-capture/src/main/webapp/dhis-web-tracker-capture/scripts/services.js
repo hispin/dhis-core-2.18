@@ -238,7 +238,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity instances */
-.factory('TEIService', function($http, $filter, DateUtils, EntityService) {
+.factory('TEIService', function($http, DateUtils) {
     
     var promise;
     return {
@@ -264,7 +264,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             var url = '../api/trackedEntityInstances.json?ou=' + orgUnitUid + '&program=' + programUid;
             
             promise = $http.get( url ).then(function(response){               
-                return EntityService.formatter(response.data);
+                //return EntityService.formatter(response.data);
+                return response.data;
             });            
             return promise;
         },
@@ -273,7 +274,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             var url =  '../api/trackedEntityInstances.json?ou=' + orgUnitUid;
             
             promise = $http.get( url ).then(function(response){                                
-                return EntityService.formatter(response.data);
+                //return EntityService.formatter(response.data);
+                return response.data;
             });            
             return promise;
         },        
@@ -295,7 +297,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             }
             
             promise = $http.get( url + '&pageSize=' + pgSize + '&page=' + pg ).then(function(response){                                
-                return EntityService.formatter(response.data);
+                //return EntityService.formatter(response.data);
+                return response.data;
             });            
             return promise;
         },                
@@ -773,10 +776,10 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
 })
 
-.service('EntityService', function(OrgUnitService, DateUtils, $filter){
+.service('TEIGridService', function(OrgUnitService, DateUtils, $filter){
     
     return {
-        formatter: function(grid){
+        format: function(grid){
             if(!grid || !grid.rows){
                 return;
             }
