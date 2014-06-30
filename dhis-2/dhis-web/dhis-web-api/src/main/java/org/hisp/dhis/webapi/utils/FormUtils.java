@@ -200,11 +200,11 @@ public class FormUtils
 
                     if ( categoryOptionCombo.isDefault() )
                     {
-                        field.setLabel( dataElement.getDisplayName() );
+                        field.setLabel( dataElement.getFormNameFallback() );
                     }
                     else
                     {
-                        field.setLabel( dataElement.getDisplayName() + " " + categoryOptionCombo.getDisplayName() );
+                        field.setLabel( dataElement.getFormNameFallback() + " " + categoryOptionCombo.getDisplayName() );
                     }
 
                     field.setDataElement( dataElement.getUid() );
