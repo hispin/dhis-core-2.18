@@ -69,6 +69,8 @@ public class DataValue
 
     private String storedBy;
 
+    private Date created;
+
     private Date lastUpdated;
 
     private String comment;
@@ -302,6 +304,16 @@ public class DataValue
     public void setStoredBy( String storedBy )
     {
         this.storedBy = storedBy;
+    }
+
+    public Date getCreated()
+    {
+        return created;
+    }
+
+    public void setCreated( Date created )
+    {
+        this.created = created;
     }
 
     public Date getLastUpdated()

@@ -56,6 +56,8 @@ public class DataValue
 
     protected String storedBy;
 
+    protected String created;
+
     protected String lastUpdated;
 
     protected String comment;
@@ -151,6 +153,16 @@ public class DataValue
     public void setStoredBy( String storedBy )
     {
         this.storedBy = storedBy;
+    }
+
+    public String getCreated()
+    {
+        return created;
+    }
+
+    public void setCreated( String created )
+    {
+        this.created = created;
     }
 
     @JsonProperty
