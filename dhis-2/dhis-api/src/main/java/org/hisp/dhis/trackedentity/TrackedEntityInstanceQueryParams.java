@@ -60,6 +60,9 @@ public class TrackedEntityInstanceQueryParams
     public static final String META_DATA_NAMES_KEY = "names";
     public static final String PAGER_META_KEY = "pager";
     
+    public static final int DEFAULT_PAGE = 1;
+    public static final int DEFAULT_PAGE_SIZE = 50;
+    
     /**
      * Query value, will apply to all relevant attributes.
      */
@@ -146,6 +149,11 @@ public class TrackedEntityInstanceQueryParams
      * Page size.
      */
     private Integer pageSize;
+    
+    /**
+     * Indicates whether paging should be skipped.
+     */
+    private boolean skipPaging;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -464,7 +472,7 @@ public class TrackedEntityInstanceQueryParams
      */
     public int getPageWithDefault()
     {
-        return page != null && page > 0 ? page : 1;
+        return page != null && page > 0 ? page : DEFAULT_PAGE;
     }
     
     /**
@@ -472,7 +480,7 @@ public class TrackedEntityInstanceQueryParams
      */
     public int getPageSizeWithDefault()
     {
-        return pageSize != null && pageSize >= 0 ? pageSize : 50;
+        return pageSize != null && pageSize >= 0 ? pageSize : DEFAULT_PAGE_SIZE;
     }
 
     /**
@@ -481,6 +489,16 @@ public class TrackedEntityInstanceQueryParams
     public int getOffset()
     {
         return ( getPageWithDefault() - 1 ) * getPageSizeWithDefault();
+    }
+    
+    /**
+     * Sets paging properties to default values.
+     */
+    public void setDefaultPaging()
+    {
+        this.page = DEFAULT_PAGE;
+        this.pageSize = DEFAULT_PAGE_SIZE;
+        this.skipPaging = false;
     }
 
     // -------------------------------------------------------------------------
@@ -670,5 +688,15 @@ public class TrackedEntityInstanceQueryParams
     public void setPageSize( Integer pageSize )
     {
         this.pageSize = pageSize;
+    }
+
+    public boolean isSkipPaging()
+    {
+        return skipPaging;
+    }
+
+    public void setSkipPaging( boolean skipPaging )
+    {
+        this.skipPaging = skipPaging;
     }
 }

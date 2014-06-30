@@ -112,13 +112,14 @@ public class TrackedEntityInstanceController
         @RequestParam( required = false ) boolean skipMeta,
         @RequestParam( required = false ) Integer page,
         @RequestParam( required = false ) Integer pageSize,
+        @RequestParam( required = false ) boolean skipPaging,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = ContextUtils.getQueryParamValues( ou );
         TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode,
             program, programStatus, followUp, programStartDate, programEndDate, trackedEntity,
-            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
+            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize, skipPaging );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -147,13 +148,14 @@ public class TrackedEntityInstanceController
         @RequestParam( required = false ) boolean skipMeta,
         @RequestParam( required = false ) Integer page,
         @RequestParam( required = false ) Integer pageSize,
+        @RequestParam( required = false ) boolean skipPaging,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = ContextUtils.getQueryParamValues( ou );
         TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode,
             program, programStatus, followUp, programStartDate, programEndDate, trackedEntity,
-            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
+            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize, skipPaging );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -179,13 +181,14 @@ public class TrackedEntityInstanceController
         @RequestParam( required = false ) boolean skipMeta,
         @RequestParam( required = false ) Integer page,
         @RequestParam( required = false ) Integer pageSize,
+        @RequestParam( required = false ) boolean skipPaging,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = ContextUtils.getQueryParamValues( ou );
         TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode,
             program, programStatus, followUp, programStartDate, programEndDate, trackedEntity,
-            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
+            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize, skipPaging );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
@@ -211,13 +214,14 @@ public class TrackedEntityInstanceController
         @RequestParam( required = false ) boolean skipMeta,
         @RequestParam( required = false ) Integer page,
         @RequestParam( required = false ) Integer pageSize,
+        @RequestParam( required = false ) boolean skipPaging,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         Set<String> orgUnits = ContextUtils.getQueryParamValues( ou );
         TrackedEntityInstanceQueryParams params = instanceService.getFromUrl( query, attribute, filter, orgUnits, ouMode,
             program, programStatus, followUp, programStartDate, programEndDate, trackedEntity,
-            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize );
+            eventStatus, eventStartDate, eventEndDate, skipMeta, page, pageSize, skipPaging );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE );
         Grid grid = instanceService.getTrackedEntityInstances( params );
