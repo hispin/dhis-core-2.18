@@ -10,6 +10,7 @@
     "not_yet_enrolled_note": "Not yet enrolled. Note recording not possible.",
     "empty_notes": "Empty notes list.",
     "no_event_is_yet_created": "No event is available for data entry. Please create one from below.",
+    "event_creation": "Please create one from below.",
     "not_selected": "Not selected",
     "view_all": "[View all]",
     "list_all_entities": "List all entities",

@@ -22,6 +22,7 @@ trackerCapture.controller('DataEntryController',
     $scope.$on('dashboard', function(event, args) {  
         $scope.showDataEntryDiv = false;
         $scope.showEventCreationDiv = false;
+        $scope.showDummyEventDiv = false;        
         $scope.currentDummyEvent = null;
         $scope.currentEvent = null;
             
@@ -62,11 +63,15 @@ trackerCapture.controller('DataEntryController',
                     //create dummy events for the selected enrollment                        
                     angular.forEach($scope.selectedProgram.programStages, function(programStage){                                                        
                         var dummyEvent = EventUtils.createDummyEvent(programStage, $scope.selectedOrgUnit, $scope.selectedEnrollment);
-                        $scope.dummyEvents.push(dummyEvent);                            
+                        $scope.dummyEvents.push(dummyEvent);                         
                     });
 
                     $scope.dummyEvents = orderByFilter($scope.dummyEvents, '-eventDate');
-                    $scope.dummyEvents.reverse();                        
+                    //$scope.dummyEvents.reverse();            
+                    
+                    if($scope.dummyEvents){
+                        $scope.showEventCreationDiv = true;
+                    }
                 }
             }
             else{
@@ -110,10 +115,53 @@ trackerCapture.controller('DataEntryController',
                 });
 
                 $scope.dhis2Events = orderByFilter($scope.dhis2Events, '-eventDate');
-                $scope.dhis2Events.reverse();                    
+                $scope.dhis2Events.reverse();   
+                
+                $scope.dummyEvents = $scope.checkForEventCreation($scope.dhis2Events, $scope.selectedProgram);
             }
         });          
     };
+    
+    $scope.checkForEventCreation = function(availableEvents, program){
+        
+        var dummyEvents = [];
+        
+        for(var i=0; i<program.programStages.length; i++){
+            var stageHasEvent = false;
+            for(var j=0; j<availableEvents.length && !program.programStages[i].repeatable && !stageHasEvent; j++){
+                if(program.programStages[i].id === availableEvents[j].stage){
+                    stageHasEvent = true;
+                }
+            }
+            
+            if(!stageHasEvent){
+                $scope.allowEventCreation = true;
+                var dummyEvent = EventUtils.createDummyEvent(program.programStages[i], $scope.selectedOrgUnit, $scope.selectedEnrollment);
+                dummyEvents.push(dummyEvent);
+            }
+        }        
+        return dummyEvents;
+    };
+    
+    $scope.showEventCreation = function(){
+        $scope.showEventCreationDiv = !$scope.showEventCreationDiv;
+    };
+    
+    $scope.showDummyEventCreation = function(dummyEvent){
+        
+        if(dummyEvent){    
+            
+            if($scope.currentDummyEvent == dummyEvent){ 
+                //clicked on the same stage, do toggling
+                $scope.currentDummyEvent = null;
+                $scope.showDummyEventDiv = !$scope.showDummyEventDiv;                
+            }
+            else{
+                $scope.currentDummyEvent = dummyEvent;
+                $scope.showDummyEventDiv = !$scope.showDummyEventDiv;
+            }   
+        }
+    };   
     
     $scope.createEvent = function(){
         //check for form validity
@@ -151,22 +199,6 @@ trackerCapture.controller('DataEntryController',
                 $scope.showDataEntry(newEvent);
             }
         });
-    };
-    
-    $scope.showEventCreation = function(dummyEvent){
-        
-        if(dummyEvent){    
-            
-            if($scope.currentDummyEvent == dummyEvent){ 
-                //clicked on the same stage, do toggling
-                $scope.currentDummyEvent = null;
-                $scope.showEventCreationDiv = !$scope.showEventCreationDiv;
-            }
-            else{
-                $scope.currentDummyEvent = dummyEvent;
-                $scope.showEventCreationDiv = !$scope.showEventCreationDiv;
-            }   
-        }
     };   
     
     $scope.showDataEntry = function(event){
@@ -319,6 +351,6 @@ trackerCapture.controller('DataEntryController',
     
     $scope.closeEventCreation = function(){
         $scope.currentDummyEvent = null;
-        $scope.showEventCreationDiv = !$scope.showEventCreationDiv;
+        $scope.showDummyEventDiv = !$scope.showDummyEventDiv;
     };
 });
