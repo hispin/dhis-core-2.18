@@ -248,10 +248,7 @@ div.dashboard-history {
     top:115px; 
     background-color:#ffffff;
     border:1px solid #d0d0d0;
-    padding-top:1px;
-    padding-right:1px;
-    padding-left:1px;
-    padding-bottom:1px;
+    padding: 1px;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,10 +258,7 @@ div.dashboard-history {
 div.link-area-tracking {
     display:inline-block;
     border:1px solid #d0d0d0;
-    padding-top:1px;
-    padding-right:1px;
-    padding-left:1px;
-    padding-bottom:0px;
+    padding: 1px 1px 0 1px;
     height:200px;
     width:60%;
     overflow:hidden;
@@ -548,7 +542,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 
 .dashboard-widget-container {
-    //max-height: 400px !important;
+    /*max-height: 400px !important;*/
     height: auto;
     overflow-x:auto;
     overflow-y:auto;
@@ -631,7 +625,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     z-index: 1040;
     display: none;
     overflow: auto;
-    overflow-y: scroll
+    overflow-y: scroll;
 }
 .modal.fade .modal-dialog {
     -webkit-transform: translate(0,-25%);
@@ -645,7 +639,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .modal.in .modal-dialog {
     -webkit-transform: translate(0,0);
     -ms-transform: translate(0,0);
-    transform: translate(0,0)
+    transform: translate(0,0);
 }
 .modal-dialog {
     position: relative;
@@ -664,7 +658,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     outline: 0;
     -webkit-box-shadow: 0 3px 9px rgba(0,0,0,0.5);
     box-shadow: 0 3px 9px rgba(0,0,0,0.5);
-    background-clip: padding-box
+    background-clip: padding-box;
 }
 .modal-backdrop {
     position: fixed;
@@ -673,7 +667,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     bottom: 0;
     left: 0;
     z-index: 1030;
-    background-color: #000
+    background-color: #000;
 }
 .modal-backdrop.fade {
     opacity: 0;
@@ -686,10 +680,10 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .modal-header {
     min-height: 16.428571429px;
     padding: 0 15px;
-    border-bottom: 1px solid #e5e5e5
+    border-bottom: 1px solid #e5e5e5;
 }
 .modal-header .close {
-    margin-top: -2px
+    margin-top: -2px;
 }
 .modal-title {
     margin: 0;
@@ -708,7 +702,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     content: " "
 }
 .modal-footer:after {
-    clear: both
+    clear: both;
 }
 .modal-footer:before, .modal-footer:after {
     display: table;
@@ -719,34 +713,34 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 .modal-footer .btn+ .btn {
     margin-bottom: 0;
-    margin-left: 5px
+    margin-left: 5px;
 }
 .modal-footer .btn-group .btn+ .btn {
-    margin-left: -1px
+    margin-left: -1px;
 }
 .modal-footer .btn-block+ .btn-block {
-    margin-left: 0
+    margin-left: 0;
 }
 @media screen and (min-width: 768px) {
     .modal-dialog {
         width: 600px;
         padding-top: 30px;
-        padding-bottom: 30px
+        padding-bottom: 30px;
     }
     .modal-content {
         -webkit-box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5)
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
 }
 
 .expanded{
     border: 1px solid #aaa;
-    padding: 6px 12px;
+    padding: 6px 8px;
     font-size: 14px;
 }
 input[type=number], input[type=text], input[type=password], textarea {
     border: 1px solid #aaa;
-    padding: 6px 12px;
+    padding: 6px 8px;
     font-size: 14px;
 }
 
@@ -827,10 +821,6 @@ input[type=number], input[type=text], input[type=password], textarea {
     border-color:red;
 }
 
-/*.alert {
-    padding: 5px;
-}*/
-
 .input-field {
     border: 1px solid #aaa;
     padding: 4px 1px;
@@ -845,7 +835,7 @@ input[type=number], input[type=text], input[type=password], textarea {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
 .form-control {
@@ -865,7 +855,7 @@ input[type=number], input[type=text], input[type=password], textarea {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
 .form-control-program {    
@@ -885,7 +875,7 @@ input[type=number], input[type=text], input[type=password], textarea {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
 .form-control-select2 {
@@ -905,7 +895,7 @@ input[type=number], input[type=text], input[type=password], textarea {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
     -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
 .underline {
