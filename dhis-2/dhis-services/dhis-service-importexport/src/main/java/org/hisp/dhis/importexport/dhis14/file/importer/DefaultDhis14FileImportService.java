@@ -60,7 +60,6 @@ import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.analysis.DefaultImportAnalyser;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.dhis14.file.query.QueryManager;
-import org.hisp.dhis.importexport.dhis14.file.rowhandler.CaculatedDataElementRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataElementGroupMemberRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataElementGroupRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.DataElementRowHandler;
@@ -84,7 +83,6 @@ import org.hisp.dhis.importexport.dhis14.file.rowhandler.RoutineDataDailyCapture
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.RoutineDataDailyCaptureRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.RoutineDataValueRowHandler;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.SemiPermanentDataValueRowHandler;
-import org.hisp.dhis.importexport.dhis14.file.rowhandler.ValidationRuleRowHandler;
 import org.hisp.dhis.importexport.dhis14.util.Dhis14PeriodUtil;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
@@ -110,7 +108,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ValidationRuleBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -118,8 +115,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.validation.ValidationRule;
-import org.hisp.dhis.validation.ValidationRuleService;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 
@@ -233,13 +228,6 @@ public class DefaultDhis14FileImportService
     public void setImportDataDailyPeriodService( ImportDataDailyPeriodService importDataDailyPeriodService )
     {
         this.importDataDailyPeriodService = importDataDailyPeriodService;
-    }
-
-    private ValidationRuleService validationRuleService;
-
-    public void setValidationRuleService( ValidationRuleService validationRuleService )
-    {
-        this.validationRuleService = validationRuleService;
     }
 
     private HibernateCacheManager cacheManager;
@@ -401,30 +389,6 @@ public class DefaultDhis14FileImportService
         indicatorTypeBatchHandler.flush();
 
         log.info( "Imported Indicators" );
-    }
-
-    private void importCalculatedDataElement( ImportParams params, ProcessState state )
-    {
-        state.setMessage( "importing_calculatedDataElements" );
-
-        BatchHandler<Indicator> indicatorBatchHandler = batchHandlerFactory.createBatchHandler(
-            IndicatorBatchHandler.class ).init();
-        BatchHandler<DataElement> dataElementBatchHandler = batchHandlerFactory.createBatchHandler(
-            DataElementBatchHandler.class ).init();
-        BatchHandler<IndicatorType> indicatorTypeBatchHandler = batchHandlerFactory.createBatchHandler(
-            IndicatorTypeBatchHandler.class ).init();
-
-        RowHandler rowHandler = new CaculatedDataElementRowHandler( indicatorBatchHandler, importObjectService, indicatorService, 
-            objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-            categoryService.getDefaultDataElementCategoryOptionCombo(), params, importAnalyser );
-
-        queryManager.queryWithRowhandler( "getCalculatedDataElements", rowHandler );
-
-        indicatorBatchHandler.flush();
-        dataElementBatchHandler.flush();
-        indicatorTypeBatchHandler.flush();
-
-        log.info( "Imported Calculated Data Elements" );
     }
 
     private void importDataElementGroups( ImportParams params, ProcessState state )
@@ -842,27 +806,6 @@ public class DefaultDhis14FileImportService
         importDataValueBatchHandler.flush();
 
         log.info( "Imported SemiPermanentDataValues" );
-    }
-
-    // -------------------------------------------------------------------------
-    // ValidationRule
-    // -------------------------------------------------------------------------
-
-    private void importValidationRule( ImportParams params, ProcessState state )
-    {
-        state.setMessage( "importing_validation_rule" );
-
-        BatchHandler<ValidationRule> batchHandler = batchHandlerFactory.createBatchHandler(
-            ValidationRuleBatchHandler.class ).init();
-
-        RowHandler rowHandler = new ValidationRuleRowHandler( batchHandler, importObjectService, validationRuleService,
-            params );
-
-        queryManager.queryWithRowhandler( "getValidationRules", rowHandler );
-
-        batchHandler.flush();
-
-        log.info( "Imported ValidationRule" );
     }
 
     // -------------------------------------------------------------------------
