@@ -123,6 +123,8 @@ public class DefaultDataValueService
             dataValue.setAttributeOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
         }
 
+        dataValue.setCreated( new Date() );
+
         dataValueStore.addDataValue( dataValue );
         
         return true;

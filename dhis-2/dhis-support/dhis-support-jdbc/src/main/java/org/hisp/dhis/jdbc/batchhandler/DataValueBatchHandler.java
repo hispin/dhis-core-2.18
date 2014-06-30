@@ -106,6 +106,7 @@ public class DataValueBatchHandler
         statementBuilder.setColumn( "attributeoptioncomboid" );
         statementBuilder.setColumn( "value" );
         statementBuilder.setColumn( "storedby" );
+        statementBuilder.setColumn( "created ");
         statementBuilder.setColumn( "lastupdated" );
         statementBuilder.setColumn( "comment" );
         statementBuilder.setColumn( "followup" );
@@ -120,6 +121,7 @@ public class DataValueBatchHandler
         statementBuilder.setValue( value.getAttributeOptionCombo().getId() );
         statementBuilder.setValue( value.getValue() );
         statementBuilder.setValue( value.getStoredBy() );
+        statementBuilder.setValue( getLongDateString( value.getCreated() ) );
         statementBuilder.setValue( getLongDateString( value.getLastUpdated() ) );
         statementBuilder.setValue( value.getComment() );
         statementBuilder.setValue( value.isFollowup() );
