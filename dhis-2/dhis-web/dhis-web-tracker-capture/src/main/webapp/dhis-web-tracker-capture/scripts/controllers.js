@@ -16,6 +16,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 ProgramFactory,
                 AttributesFactory,
                 EntityQueryFactory,
+                TEIGridService,
                 TEIService) {   
    
     //Selection
@@ -147,6 +148,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.prepareForsearch = function(mode){ 
 
+        $scope.teiFetched = false;
         $scope.selectedSearchMode = mode;
         $scope.emptySearchText = false;
         $scope.emptySearchAttribute = false;
@@ -198,10 +200,13 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                             $scope.programUrl,
                                             $scope.attributeUrl.url,
                                             $scope.pager).then(function(data){
-            $scope.trackedEntityList = data; 
+            //$scope.trackedEntityList = data;            
+            if(data.rows){
+                $scope.teiCount = data.rows.length;
+            }                    
             
-            if( data.pager ){
-                $scope.pager = data.pager;
+            if( data.metaData.pager ){
+                $scope.pager = data.metaData.pager;
                 $scope.pager.toolBarDisplay = 5;
 
                 Paginator.setPage($scope.pager.page);
@@ -210,6 +215,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 Paginator.setItemCount($scope.pager.total);                    
             }
             
+            //process tei grid
+            $scope.trackedEntityList = TEIGridService.format(data);
+            $scope.teiFetched = true;            
         });
     };
     
@@ -356,6 +364,5 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.home = function(){        
         window.location = DHIS2URL;
-    };
-    
+    };    
 });
