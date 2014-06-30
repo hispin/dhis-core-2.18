@@ -155,6 +155,35 @@
                     </tr>
                 </table>
             </form>
+            <hr>
+            <div class="row">
+                <div class="col-md-10">
+                    <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea>
+                </div>
+                <div class="col-md-2 add-default-top-margin">
+                    <button type="button" 
+                            class="btn btn-primary"
+                            ng-click="addNote()">
+                        {{'add'| translate}}
+                    </button>
+                </div>
+                
+                <table class="table table-with-fixed-layout">
+                    <tr ng-repeat="note in currentEvent.notes">
+                        <td class="over-flow-hidden">
+                            <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
+                                <div>{{note.value}}</div>
+                            </d2-pop-over>
+                            <script type="text/ng-template" id="note.html">
+                                <p>{{content.value}}</p>
+                                <hr>
+                                <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
+                                <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
+                            </script>
+                        </td> 
+                    </tr>
+                </table>
+            </div>
         </div>        
     </div>
 </div>

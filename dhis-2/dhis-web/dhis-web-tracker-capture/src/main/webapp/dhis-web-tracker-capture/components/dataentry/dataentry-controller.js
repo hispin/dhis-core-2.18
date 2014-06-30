@@ -201,6 +201,22 @@ trackerCapture.controller('DataEntryController',
         });
     };   
     
+    $scope.createDummyEvent = function(programStage, orgUnit, enrollment){
+        
+        var dueDate = DateUtils.getDueDate(programStage, enrollment);
+        var dummyEvent = {programStage: programStage.id, 
+                          orgUnit: orgUnit.id,
+                          orgUnitName: orgUnit.name,
+                          dueDate: dueDate,
+                          name: programStage.name,
+                          status: 'ACTIVE'};
+        dummyEvent.statusColor = 'stage-on-time';
+        if(moment(today).isAfter(dummyEvent.dueDate)){
+            dummyEvent.statusColor = 'stage-overdue';
+        }
+        return dummyEvent;
+    };
+    
     $scope.showDataEntry = function(event){
         
         if(event){
@@ -220,35 +236,47 @@ trackerCapture.controller('DataEntryController',
         }
     }; 
     
-    $scope.getDataEntryForm = function(){
-        $scope.currentEvent.providedElsewhere = [];
+    $scope.getDataEntryForm = function(){        
+        
+        DHIS2EventFactory.get($scope.currentEvent.event).then(function(data){
+            $scope.currentEvent = data;
+            $scope.currentEvent.providedElsewhere = [];
             
-        ProgramStageFactory.get($scope.currentEvent.programStage).then(function(stage){
-            $scope.currentStage = stage;
+            if(!angular.isUndefined( $scope.currentEvent.notes)){
+                $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');            
+                angular.forEach($scope.currentEvent.notes, function(note){
+                    note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
+                });
+            }
             
-            $scope.allowProvidedElsewhereExists = false;
-            angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
-                $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
-                if(prStDe.allowProvidedElsewhere){
-                    $scope.allowProvidedElsewhereExists = true;
-                    $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
-                }                
-            });
-            angular.forEach($scope.currentEvent.dataValues, function(dataValue){
-                var val = dataValue.value;
-                if(val){
-                    var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
-                    if( de && de.type === 'int' && val){
-                        val = parseInt(val);
-                        dataValue.value = val;
-                    }
-                    $scope.currentEvent[dataValue.dataElement] = val;
-                }                    
-            });
+            ProgramStageFactory.get($scope.currentEvent.programStage).then(function(stage){
+                $scope.currentStage = stage;
 
-            $scope.currentEvent.dataValues = [];
-            $scope.currentEventOriginal = angular.copy($scope.currentEvent);
-        }); 
+                $scope.allowProvidedElsewhereExists = false;
+                angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
+                    $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
+                    if(prStDe.allowProvidedElsewhere){
+                        $scope.allowProvidedElsewhereExists = true;
+                        $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
+                    }                
+                });
+                angular.forEach($scope.currentEvent.dataValues, function(dataValue){
+                    var val = dataValue.value;
+                    if(val){
+                        var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
+                        if( de && de.type === 'int' && val){
+                            val = parseInt(val);
+                            dataValue.value = val;
+                        }
+                        $scope.currentEvent[dataValue.dataElement] = val;
+                    }                    
+                });
+
+                $scope.currentEvent.dataValues = [];
+                $scope.currentEventOriginal = angular.copy($scope.currentEvent);
+            });            
+        });            
+        
     };
     
     $scope.saveDatavalue = function(prStDe){
@@ -264,7 +292,7 @@ trackerCapture.controller('DataEntryController',
    
         if(!angular.isUndefined($scope.currentEvent[prStDe.dataElement.id])){
 
-            if($scope.currentEventOriginal[prStDe.dataElement.id] != $scope.currentEvent[prStDe.dataElement.id]){
+            if($scope.currentEventOriginal[prStDe.dataElement.id] !== $scope.currentEvent[prStDe.dataElement.id]){
                 
                 //get current element
                 $scope.currentElement = {id: prStDe.dataElement.id, saved: false};
@@ -321,21 +349,34 @@ trackerCapture.controller('DataEntryController',
         }        
     };
     
-    $scope.createDummyEvent = function(programStage, orgUnit, enrollment){
+    $scope.addNote = function(){
         
-        var dueDate = DateUtils.getDueDate(programStage, enrollment);
-        var dummyEvent = {programStage: programStage.id, 
-                          orgUnit: orgUnit.id,
-                          orgUnitName: orgUnit.name,
-                          dueDate: dueDate,
-                          name: programStage.name,
-                          status: 'ACTIVE'};
-        dummyEvent.statusColor = 'stage-on-time';
-        if(moment(today).isAfter(dummyEvent.dueDate)){
-            dummyEvent.statusColor = 'stage-overdue';
-        }
-        return dummyEvent;
-    };
+        if(!angular.isUndefined($scope.note) && $scope.note != ""){
+            
+            var newNote = {value: $scope.note};
+
+            if(angular.isUndefined( $scope.currentEvent.notes) ){
+                $scope.currentEvent.notes = [newNote];
+            }
+            else{
+                $scope.currentEvent.notes.splice(0,0,newNote);
+            }
+
+            var e = {event: $scope.currentEvent.event,
+                     program: $scope.currentEvent.program,
+                     programStage: $scope.currentEvent.programStage,
+                     orgUnit: $scope.currentEvent.orgUnit,
+                     trackedEntityInstance: $scope.currentEvent.trackedEntityInstance,
+                     notes: [newNote]
+                    };
+
+            console.log('the notes before update are:  ', $scope.currentEvent);
+            DHIS2EventFactory.updateForNote(e).then(function(data){
+                $scope.note = '';
+                console.log('the notes after update are:  ', $scope.currentEvent);
+            });
+        }        
+    };    
     
     $scope.getClass = function(id){
         if($scope.currentElement){

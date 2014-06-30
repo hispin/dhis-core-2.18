@@ -438,6 +438,12 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 return response.data;
             });
             return promise;
+        },
+        updateForNote: function(dhis2Event){   
+            var promise = $http.put('../api/events/' + dhis2Event.event + '/addNote', dhis2Event).then(function(response){
+                return response.data;         
+            });
+            return promise;
         }
     };    
 })
