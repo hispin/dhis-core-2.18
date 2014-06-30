@@ -60,6 +60,7 @@ var trackerCaptureFilters = angular.module('trackerCaptureFilters', [])
     };    
 })
 
+
 .filter('paginate', function(Paginator) {
     return function(input, rowsPerPage) {
         if (!input) {
@@ -68,7 +69,7 @@ var trackerCaptureFilters = angular.module('trackerCaptureFilters', [])
 
         if (rowsPerPage) {
             Paginator.rowsPerPage = rowsPerPage;
-        }
+        }       
         
         Paginator.itemCount = input.length;
 

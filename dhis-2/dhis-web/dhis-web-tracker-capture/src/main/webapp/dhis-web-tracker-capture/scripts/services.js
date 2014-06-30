@@ -277,8 +277,11 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });            
             return promise;
         },        
-        search: function(ouId, ouMode, queryUrl, programUrl, attributeUrl) {           
+        search: function(ouId, ouMode, queryUrl, programUrl, attributeUrl, pager) {           
             
+            var pgSize = pager ? pager.pageSize : 50;
+            var pg = pager ? pager.page : 1;
+                
             var url =  '../api/trackedEntityInstances.json?ou=' + ouId + '&ouMode='+ ouMode;
             
             if(queryUrl){
@@ -291,7 +294,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 url = url + '&' + attributeUrl;
             }
             
-            promise = $http.get( url ).then(function(response){                                
+            promise = $http.get( url + '&pageSize=' + pgSize + '&page=' + pg ).then(function(response){                                
                 return EntityService.formatter(response.data);
             });            
             return promise;
@@ -694,14 +697,16 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Pagination service */
+/* Pagination service */
 .service('Paginator', function () {
-    this.page = 0;
-    this.rowsPerPage = 50;
+    this.page = 1;
+    this.pageSize = 50;
     this.itemCount = 0;
-    this.limitPerPage = 5;
+    this.pageCount = 0;
+    this.toolBarDisplay = 5;
 
     this.setPage = function (page) {
-        if (page > this.pageCount()) {
+        if (page > this.getPageCount()) {
             return;
         }
 
@@ -712,63 +717,47 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         return this.page;
     };
     
-    this.getRowsPerPage = function(){
-        return this.rowsPerPage;
+    this.setPageSize = function(pageSize){
+      this.pageSize = pageSize;
+    };
+    
+    this.getPageSize = function(){
+        return this.pageSize;
+    };
+    
+    this.setItemCount = function(itemCount){
+      this.itemCount = itemCount;
+    };
+    
+    this.getItemCount = function(){
+        return this.itemCount;
+    };
+    
+    this.setPageCount = function(pageCount){
+        this.pageCount = pageCount;
     };
 
-    this.nextPage = function () {
-        if (this.isLastPage()) {
-            return;
-        }
-
-        this.page++;
-    };
-
-    this.perviousPage = function () {
-        if (this.isFirstPage()) {
-            return;
-        }
-
-        this.page--;
-    };
-
-    this.firstPage = function () {
-        this.page = 0;
-    };
-
-    this.lastPage = function () {
-        this.page = this.pageCount() - 1;
-    };
-
-    this.isFirstPage = function () {
-        return this.page == 0;
-    };
-
-    this.isLastPage = function () {
-        return this.page == this.pageCount() - 1;
-    };
-
-    this.pageCount = function () {
-        var count = Math.ceil(parseInt(this.itemCount, 10) / parseInt(this.rowsPerPage, 10)); 
-        if (count === 1) { this.page = 0; } return count;
+    this.getPageCount = function () {
+        return this.pageCount;
     };
 
     this.lowerLimit = function() { 
-        var pageCountLimitPerPageDiff = this.pageCount() - this.limitPerPage;
+        var pageCountLimitPerPageDiff = this.getPageCount() - this.toolBarDisplay;
 
         if (pageCountLimitPerPageDiff < 0) { 
             return 0; 
         }
 
-        if (this.page > pageCountLimitPerPageDiff + 1) { 
+        if (this.getPage() > pageCountLimitPerPageDiff + 1) { 
             return pageCountLimitPerPageDiff; 
         } 
 
-        var low = this.page - (Math.ceil(this.limitPerPage/2) - 1); 
+        var low = this.getPage() - (Math.ceil(this.toolBarDisplay/2) - 1); 
 
         return Math.max(low, 0);
     };
 })
+
 
 /*this is just a hack - there should be better way */
 .service('ValidDate', function(){    
@@ -832,7 +821,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     }        
                 });                
             });
-            return {headers: attributes, rows: entityList};                                    
+            return {headers: attributes, rows: entityList, pager: grid.metaData.pager};                                    
         }        
     };
 })

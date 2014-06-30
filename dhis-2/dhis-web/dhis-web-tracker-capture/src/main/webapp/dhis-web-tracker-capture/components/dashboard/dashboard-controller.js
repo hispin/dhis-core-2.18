@@ -36,7 +36,7 @@ trackerCapture.controller('DashboardController',
     $scope.selectedProgramId = null;
     
     $scope.selectedTeiId = ($location.search()).tei; 
-    $scope.selectedProgramId = ($location.search()).programId; 
+    $scope.selectedProgramId = ($location.search()).program; 
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
     $scope.selectedProgram;
     $scope.programs = []; 
