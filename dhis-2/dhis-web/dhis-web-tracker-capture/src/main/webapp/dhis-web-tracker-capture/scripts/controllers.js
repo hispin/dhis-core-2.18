@@ -74,7 +74,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                         $scope.attributes = atts;   
                         $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
                         $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
-                        $scope.prepareForsearch($scope.searchMode.listAll);
+                        $scope.search($scope.searchMode.listAll);
                     });
                 }, 100);
             });           
@@ -146,15 +146,17 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }       
     };
     
-    $scope.prepareForsearch = function(mode){ 
+    $scope.search = function(mode){ 
 
         $scope.teiFetched = false;
         $scope.selectedSearchMode = mode;
         $scope.emptySearchText = false;
         $scope.emptySearchAttribute = false;
         $scope.showSearchDiv = false;
-        $scope.showRegistrationDiv = false;                          
+        $scope.showRegistrationDiv = false;  
+        $scope.showTrackedEntityDiv = false;
         $scope.trackedEntityList = null; 
+        $scope.teiCount = null;
         
         $scope.queryUrl = null;
         $scope.programUrl = null;
@@ -166,32 +168,33 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         //check search mode
         if( $scope.selectedSearchMode === $scope.searchMode.freeText ){     
+
             if(!$scope.searchText){                
                 $scope.emptySearchText = true;
+                $scope.teiFetched = false;   
+                $scope.teiCount = null;
                 return;
             }       
-            
-            $scope.showTrackedEntityDiv = true;      
+ 
             $scope.queryUrl = 'query=' + $scope.searchText;                     
         }
-        else if( $scope.selectedSearchMode === $scope.searchMode.attributeBased ){
-            $scope.showTrackedEntityDiv = true;                  
+        
+        if( $scope.selectedSearchMode === $scope.searchMode.attributeBased ){
+            
             $scope.attributeUrl = EntityQueryFactory.getQueryForAttributes($scope.attributes, $scope.enrollment);
             
             if(!$scope.attributeUrl.hasValue && !$scope.selectedProgram){
                 $scope.emptySearchAttribute = true;
-                $scope.showSearchDiv = true;
+                $scope.teiFetched = false;   
+                $scope.teiCount = null;
                 return;
             }
         }
-        else if( $scope.selectedSearchMode === $scope.searchMode.listAll ){   
-            $scope.showTrackedEntityDiv = true;    
-        } 
-
-        $scope.search();
+        
+        $scope.doSearch();
     };
     
-    $scope.search = function(){
+    $scope.doSearch = function(){
         
         //get events for the specified parameters
         TEIService.search($scope.selectedOrgUnit.id, 
@@ -217,7 +220,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             
             //process tei grid
             $scope.trackedEntityList = TEIGridService.format(data);
-            $scope.teiFetched = true;            
+            $scope.showTrackedEntityDiv = true;
+            $scope.teiFetched = true;  
         });
     };
     
@@ -273,6 +277,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     
     $scope.clearEntities = function(){
         $scope.trackedEntityList = null;
+    };
+    
+    $scope.showSearch = function(){
+        $scope.showSearchDiv = !$scope.showSearchDiv;
     };
     
     $scope.showRegistration = function(){

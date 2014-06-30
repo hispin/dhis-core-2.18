@@ -7,7 +7,7 @@
                 <td>
                     <label><input type="radio" ng-model="ouMode.name" name="selected" value="SELECTED"> {{'selected'| translate}}</label><br/>
                     <label><input type="radio" ng-model="ouMode.name" name="children" value="CHILDREN"> {{'immediate_children'| translate}}</label><br/>
-                    <label><input type="radio" ng-model="ouMode.name" name="descendants" value="DESCENDANTS"> {{'all_children'| translate}}</label>
+                    <label><input type="radio" ng-model="ouMode.name" name="descendants" value="DESCENDANTS"> {{'all_accessible'| translate}}</label>
                 </td>
             </tr>
             <tr ng-if="selectedProgram">
@@ -109,5 +109,7 @@
                 ng-click="closeSearch()">
             {{'cancel'| translate}}
         </button>
+    
+    
         
 </div>
