@@ -411,9 +411,9 @@ public abstract class AbstractEventService
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
-        ProgramInstance programInstance = programStageInstance.getProgramInstance();
+        //ProgramInstance programInstance = programStageInstance.getProgramInstance();
 
-        saveTrackedEntityCommentFromEvent( programInstance, event, storedBy );
+        saveTrackedEntityComment( programStageInstance, event, storedBy );
 
         Set<TrackedEntityDataValue> dataValues = new HashSet<TrackedEntityDataValue>(
             dataValueService.getTrackedEntityDataValues( programStageInstance ) );
@@ -448,6 +448,20 @@ public abstract class AbstractEventService
             }
         }
 
+    }
+    
+    public void updateEventForNote( Event event )
+    {
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
+            .getEvent() );
+
+        if ( programStageInstance == null )
+        {
+            return;
+        }
+        
+        saveTrackedEntityComment( programStageInstance, event, getStoredBy( event, null ) );
+        
     }
 
     // -------------------------------------------------------------------------
@@ -739,7 +753,7 @@ public abstract class AbstractEventService
 
             }
 
-            saveTrackedEntityCommentFromEvent( programInstance, event, storedBy );
+            saveTrackedEntityComment( programStageInstance, event, storedBy );
 
             importSummary.setReference( programStageInstance.getUid() );
         }
@@ -774,7 +788,7 @@ public abstract class AbstractEventService
         return importSummary;
     }
 
-    private void saveTrackedEntityCommentFromEvent( ProgramInstance programInstance, Event event, String storedBy )
+    private void saveTrackedEntityComment( ProgramStageInstance programStageInstance, Event event, String storedBy )
     {
         for ( Note note : event.getNotes() )
         {
@@ -785,9 +799,9 @@ public abstract class AbstractEventService
 
             commentService.addTrackedEntityComment( comment );
 
-            programInstance.getComments().add( comment );
+            programStageInstance.getComments().add( comment );
 
-            programInstanceService.updateProgramInstance( programInstance );
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
         }
     }
 
