@@ -59,6 +59,8 @@ public class DeflatedDataValue
     
     private String storedBy;
 
+    private Date created;
+
     private Date lastUpdated;
 
     private String comment;
@@ -97,6 +99,7 @@ public class DeflatedDataValue
         this.categoryOptionComboId = dataValue.getCategoryOptionCombo().getId();
         this.value = dataValue.getValue();
         this.storedBy = dataValue.getStoredBy();
+        this.created = dataValue.getCreated();
         this.lastUpdated = dataValue.getLastUpdated();
         this.comment = dataValue.getComment();
         this.followup = dataValue.isFollowup();
@@ -164,6 +167,16 @@ public class DeflatedDataValue
     public void setStoredBy( String storedBy )
     {
         this.storedBy = storedBy;
+    }
+
+    public Date getCreated()
+    {
+        return created;
+    }
+
+    public void setCreated( Date created )
+    {
+        this.created = created;
     }
 
     public Date getLastUpdated()

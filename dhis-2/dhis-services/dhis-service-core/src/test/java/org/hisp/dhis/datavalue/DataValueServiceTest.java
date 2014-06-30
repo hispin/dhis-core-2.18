@@ -161,6 +161,7 @@ public class DataValueServiceTest
 
         dataValueA = dataValueService.getDataValue( dataElementA, periodA, sourceA, optionCombo );
         assertNotNull( dataValueA );
+        assertNotNull( dataValueA.getCreated() );
         assertEquals( sourceA.getId(), dataValueA.getSource().getId() );
         assertEquals( dataElementA, dataValueA.getDataElement() );
         assertEquals( periodA, dataValueA.getPeriod() );
@@ -168,6 +169,7 @@ public class DataValueServiceTest
 
         dataValueB = dataValueService.getDataValue( dataElementB, periodA, sourceA, optionCombo );
         assertNotNull( dataValueB );
+        assertNotNull( dataValueB.getCreated() );
         assertEquals( sourceA.getId(), dataValueB.getSource().getId() );
         assertEquals( dataElementB, dataValueB.getDataElement() );
         assertEquals( periodA, dataValueB.getPeriod() );
@@ -175,6 +177,7 @@ public class DataValueServiceTest
 
         dataValueC = dataValueService.getDataValue( dataElementC, periodC, sourceA, optionCombo );
         assertNotNull( dataValueC );
+        assertNotNull( dataValueC.getCreated() );
         assertEquals( sourceA.getId(), dataValueC.getSource().getId() );
         assertEquals( dataElementC, dataValueC.getDataElement() );
         assertEquals( periodC, dataValueC.getPeriod() );

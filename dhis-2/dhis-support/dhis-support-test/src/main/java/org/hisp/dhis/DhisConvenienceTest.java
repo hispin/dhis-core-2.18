@@ -903,6 +903,7 @@ public abstract class DhisConvenienceTest
         dataValue.setValue( value );
         dataValue.setComment( "Comment" );
         dataValue.setStoredBy( "StoredBy" );
+        dataValue.setCreated( date );
         dataValue.setLastUpdated( date );
 
         return dataValue;
@@ -929,6 +930,7 @@ public abstract class DhisConvenienceTest
         dataValue.setValue( value );
         dataValue.setComment( "Comment" );
         dataValue.setStoredBy( "StoredBy" );
+        dataValue.setCreated( date );
         dataValue.setLastUpdated( date );
 
         return dataValue;
@@ -956,6 +958,7 @@ public abstract class DhisConvenienceTest
         dataValue.setValue( value );
         dataValue.setComment( "Comment" );
         dataValue.setStoredBy( "StoredBy" );
+        dataValue.setCreated( lastupdated );
         dataValue.setLastUpdated( lastupdated );
 
         return dataValue;
