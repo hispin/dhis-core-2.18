@@ -882,6 +882,8 @@ function loadProgramStageFromServer( programStageInstanceId ) {
 				}
 			}
 
+			disableCompletedButton(eval(data.completed));
+			
 			if(data.executionDate) {
 				$( '#executionDate' ).val(data.executionDate);
 				$( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );

@@ -583,15 +583,12 @@ function loadDataEntry(programStageInstanceId) {
 					if (executionDate == '') {
 						disable('validationBtn');
 					} else if (executionDate != '') {
-						if (completed == 'false') {
-							disableCompletedButton(false);
-						} else if (completed == 'true') {
-							disableCompletedButton(true);
-						}
+						disableCompletedButton(completed);
 					}
 					$(window).scrollTop(200);
 				} else {
 					blockEntryForm();
+					disableCompletedButton(completed);
 					disable('executionDate');
 					hideById('inputCriteriaDiv');
 				}
