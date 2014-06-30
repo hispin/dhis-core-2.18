@@ -45,6 +45,9 @@
         <configuration>
           <archiveClasses>true</archiveClasses>
           <dependentWarExcludes>**/web.xml</dependentWarExcludes>
+          <archive>
+            <compress>${useWarCompression}</compress>
+          </archive>
         </configuration>
       </plugin>
       <plugin>
@@ -88,5 +91,6 @@
   </dependencyManagement>
   <properties>
     <rootDir>../</rootDir>
+    <useWarCompression>true</useWarCompression>
   </properties>
 </project>
