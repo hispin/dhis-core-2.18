@@ -26,8 +26,6 @@ function loadDataEntry( programStageInstanceId )
 	showById('programNameDiv');
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
-	disableCompletedButton(true);
-	disable('uncompleteBtn');
 	jQuery( 'input[id=programStageInstanceId]').val(programStageInstanceId );
 			
 	showLoader();	
@@ -39,7 +37,7 @@ function loadDataEntry( programStageInstanceId )
 			var programName = $('#program option:selected').text();
 			setInnerHTML( 'programNameDiv', '<h3>' + programName + '</h3>');
 			var completed = jQuery('#entryFormContainer input[id=completed]').val();
-			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
+			disableCompletedButton(completed);
 			showById('inputCriteriaDiv');
 			showById('entryForm');
 			hideLoader();
