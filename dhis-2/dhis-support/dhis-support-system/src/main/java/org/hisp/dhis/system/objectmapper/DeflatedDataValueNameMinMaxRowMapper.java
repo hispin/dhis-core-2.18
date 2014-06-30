@@ -89,6 +89,7 @@ public class DeflatedDataValueNameMinMaxRowMapper
         value.setCategoryOptionComboId( resultSet.getInt( "categoryoptioncomboid" ) );
         value.setValue( resultSet.getString( "value" ) );
         value.setStoredBy( resultSet.getString( "storedby" ) );
+        value.setCreated( resultSet.getDate( "created" ) );
         value.setLastUpdated( resultSet.getDate( "lastupdated" ) );
         value.setComment( resultSet.getString( "comment" ) );
         value.setFollowup( resultSet.getBoolean( "followup" ) );

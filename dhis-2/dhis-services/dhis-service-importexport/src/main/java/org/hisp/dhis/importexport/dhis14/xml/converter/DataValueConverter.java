@@ -37,6 +37,7 @@ import static org.hisp.dhis.system.util.CsvUtils.getCsvValue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -273,6 +274,7 @@ public class DataValueConverter
 
                 value.setComment( values[13] );
                 value.setLastUpdated( DateUtils.getDefaultDate( values[15] ) );
+                value.setCreated( value.getLastUpdated() );
                 value.setCategoryOptionCombo( proxyCategoryOptionCombo );
                 value.setStoredBy( owner );
 

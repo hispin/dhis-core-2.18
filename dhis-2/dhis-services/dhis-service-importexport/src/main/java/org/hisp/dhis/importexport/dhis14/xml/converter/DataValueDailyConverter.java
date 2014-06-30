@@ -625,6 +625,7 @@ public class DataValueDailyConverter
 
                 value.setComment( values[13] );
                 value.setLastUpdated( DateUtils.getDefaultDate( values[15] ) );
+                value.setCreated( value.getLastUpdated() );
                 value.setCategoryOptionCombo( proxyCategoryOptionCombo );
                 value.setStoredBy( owner );
 
