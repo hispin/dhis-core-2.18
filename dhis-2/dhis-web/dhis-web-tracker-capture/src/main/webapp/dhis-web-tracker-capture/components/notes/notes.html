@@ -1,4 +1,4 @@
-<div class="panel panel-primary" ng-controller="NotesController">
+<div class="panel panel-default" ng-controller="NotesController">
     <div class="panel-heading">
         {{notesWidget.title| translate}}        
         <span class="nav-pills" ng-show="selectedEnrollment">
@@ -48,10 +48,10 @@
         </div>
 
         <div ng-show="!selectedEnrollment">
-            <div class="alert alert-warning">{{'not_yet_enrolled_note'| translate}}</div> 
+            <div class="alert alert-warning vertical-spacing">{{'not_yet_enrolled_note'| translate}}</div> 
         </div>
         <div ng-show="selectedEnrollment && !selectedEnrollment.notes">
-            <div class="alert alert-info">{{'empty_notes'| translate}}</div> 
+            <div class="alert alert-info vertical-spacing">{{'empty_notes'| translate}}</div> 
         </div>
 
     </div>

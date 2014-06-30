@@ -43,7 +43,7 @@
             <button type="button" class="select-drop-down-button form-control" >{{selectedProgram ? selectedProgram.name : 'please_select_a_program'| translate}}</button>
             <div class="input-group-btn">
                 <button class="btn btn-default trim" type="button" title="{{'list_programs'| translate}}" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
-                <ul id="selectDropDown" class="dropdown-menu pull-right">
+                <ul id="selectDropDown" select-drop-down-width class="dropdown-menu pull-right">
                     <li>
                         <a href ng-click="getProgramAttributes(null, true)">{{'please_select_a_program'| translate}}</a>
                     </li>
@@ -54,11 +54,12 @@
             </div>                
         </div>
         <div id="searchDropDownParent" class="input-group col-md-5">
-            <input type="text" placeholder="{{'type_your_search_criteria_here'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv">
+            <input type="text" placeholder="{{'type_your_search_criteria_here'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="hideSearch()" ng-disabled="showRegistrationDiv || showSearchDiv">
             <div class="input-group-btn">
-                <button class="btn btn-default trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
-                <button class="btn btn-primary trim" type="button" title="{{'search'| translate}}" ng-disabled="showRegistrationDiv" ng-click="search(searchMode.freeText)"><i class="fa fa-search"></i></button>
-                <div id="searchDropDown" class="dropdown-menu pull-right">
+                <button class="btn btn-default without-border-radius trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-click="showSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
+                <button ng-if="!showSearchDiv" class="btn btn-primary trim" type="button" title="{{'search'| translate}}" ng-disabled="showRegistrationDiv" ng-click="search(searchMode.freeText)"><i class="fa fa-search"></i></button>
+                <button ng-if="showSearchDiv" class="btn btn-primary trim" type="button" title="{{'search'| translate}}" ng-disabled="showRegistrationDiv" ng-click="search(searchMode.attributeBased)"><i class="fa fa-search"></i></button>
+                <div id="searchDropDown" search-drop-down-width class="dropdown-menu pull-right">
                     <form ng-include="'views/search.html'">                       
                     </form>                    
                 </div>
@@ -82,7 +83,7 @@
 
     <!--- Error display for search begins -->
     <div class="row" ng-if="emptySearchAttribute || !searchText && emptySearchText">
-        <div class="col-md-8">
+        <div class="col-md-8 vertical-spacing">
             <div class="alert alert-danger">{{'search_input_required'| translate}}</div>         
         </div>
     </div>

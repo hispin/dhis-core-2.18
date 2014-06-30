@@ -74,6 +74,7 @@
     "selected": "Selected",
     "immediate_children": "Immediate children",
     "all_children": "All children",
+    "all_accessible": "All accessible",
     "data_element": "Data element",
     "value": "Value",
     "provided_elsewhere": "Provided elsewhere",

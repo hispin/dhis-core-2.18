@@ -125,25 +125,11 @@ $(document).ready(function()
     });
 
     //dhis2.availability.startAvailabilityCheck();
-
-    //drop down menu for advanced search
-    $("#searchDropDown").width($("#searchDropDownParent").width());
-    $('#searchDropDown').on('click', "[data-stop-propagation]", function(e) {
-        e.stopPropagation();
-    });
-
-    //drop down menu for program selection
-    $("#selectDropDown").width($("#selectDropDownParent").width());
-    $("#selectDropDown").css('margin-right: 15x;');
-    $(".select-drop-down-button").on('click', function(e) {
-        e.stopPropagation();
-        $("#selectDropDown").dropdown('toggle');
-    });
-
 });
 
 $(window).resize(function() {
     $("#selectDropDown").width($("#selectDropDownParent").width());
+     $("#selectDropDown").css('margin-right: 15x;');
     $("#searchDropDown").width($("#searchDropDownParent").width());
 });
 
