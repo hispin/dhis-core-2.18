@@ -920,6 +920,8 @@ input[type=number], input[type=text], input[type=password], textarea {
 
 .dropdown-menu {
     margin-top: -5px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .btn-link {
@@ -929,4 +931,12 @@ input[type=number], input[type=text], input[type=password], textarea {
 
 label{
     font-weight:normal !important
+}
+
+a {
+    color: inherit;
+}
+
+a:hover {
+    color: inherit;
 }

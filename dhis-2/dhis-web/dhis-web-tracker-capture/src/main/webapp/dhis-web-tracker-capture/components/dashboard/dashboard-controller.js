@@ -17,7 +17,7 @@ trackerCapture.controller('DashboardController',
     
     //dashboard items   
     $rootScope.dashboardWidgets = {bigger: [], smaller: []};       
-    $rootScope.enrollmentWidget = {title: 'enrollment', view: "components/enrollment/enrollment.html", show: true, expand: true, expand: true};
+    $rootScope.enrollmentWidget = {title: 'enrollment', view: "components/enrollment/enrollment.html", show: true, expand: true};
     $rootScope.dataentryWidget = {title: 'dataentry', view: "components/dataentry/dataentry.html", show: true, expand: true};
     $rootScope.selectedWidget = {title: 'current_selections', view: "components/selected/selected.html", show: false, expand: true};
     $rootScope.profileWidget = {title: 'profile', view: "components/profile/profile.html", show: true, expand: true};
@@ -32,24 +32,24 @@ trackerCapture.controller('DashboardController',
     $rootScope.dashboardWidgets.smaller.push($rootScope.notesWidget);
     
     //selections
-    $scope.selectedEntityId = null;
+    $scope.selectedTeiId = null;
     $scope.selectedProgramId = null;
     
-    $scope.selectedEntityId = ($location.search()).selectedEntityId; 
-    $scope.selectedProgramId = ($location.search()).selectedProgramId; 
+    $scope.selectedTeiId = ($location.search()).tei; 
+    $scope.selectedProgramId = ($location.search()).programId; 
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
-    $scope.selectedProgram = null;
+    $scope.selectedProgram;
     $scope.programs = []; 
-    $scope.selectedEntity;
+    $scope.selectedTei;
         
-    if( $scope.selectedEntityId ){
+    if( $scope.selectedTeiId ){
         
         //Fetch the selected entity
-        TEIService.get($scope.selectedEntityId).then(function(data){
-            $scope.selectedEntity = data;
+        TEIService.get($scope.selectedTeiId).then(function(data){
+            $scope.selectedTei = data;
             
             //get the entity type
-            TEService.get($scope.selectedEntity.trackedEntity).then(function(te){
+            TEService.get($scope.selectedTei.trackedEntity).then(function(te){
                 $scope.trackedEntity = te;
                 
                 ProgramFactory.getAll().then(function(programs){  
@@ -57,7 +57,7 @@ trackerCapture.controller('DashboardController',
                     //get programs valid for the selected ou and tei
                     angular.forEach(programs, function(program){
                         if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
-                           program.trackedEntity.id === $scope.selectedEntity.trackedEntity){
+                           program.trackedEntity.id === $scope.selectedTei.trackedEntity){
                             $scope.programs.push(program);
                         }
 
@@ -65,18 +65,24 @@ trackerCapture.controller('DashboardController',
                             $scope.selectedProgram = program;
                         }
                     });
-
+                    
                     //broadcast selected items for dashboard controllers
-                    $scope.broadCastProgram();                                    
+                    CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null});
+                    $scope.broadCastSelections();                                    
                 });
             });            
         });       
-    }   
+    }
     
-    $scope.broadCastProgram = function(){
-        CurrentSelection.set({tei: $scope.selectedEntity, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null});
+    $scope.broadCastSelections = function(){
+        
+        var selections = CurrentSelection.get();
+        $scope.selectedTei = selections.tei;
+        $scope.trackedEntity = selections.te;
+        $scope.selectedEnrollment = selections.enrollment;
+        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null});
         $timeout(function() { 
-            $rootScope.$broadcast('selectedEntity', {programExists: $scope.programs.length > 0});            
+            $rootScope.$broadcast('selectedItems', {programExists: $scope.programs.length > 0});            
         }, 100); 
     };
      

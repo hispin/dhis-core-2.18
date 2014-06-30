@@ -4,6 +4,7 @@ trackerCapture.controller('ProfileController',
                 orderByFilter,
                 CurrentSelection,
                 TEIService,
+                DialogService,
                 AttributesFactory,
                 TranslationService) {
 
@@ -20,69 +21,68 @@ trackerCapture.controller('ProfileController',
     }); 
     
     //listen for the selected entity       
-    $scope.$on('selectedEntity', function(event, args) { 
+    $scope.$on('dashboard', function(event, args) { 
         var selections = CurrentSelection.get();
-        $scope.selectedTei = selections.tei;
+        $scope.selectedTei = angular.copy(selections.tei);
         $scope.trackedEntity = selections.te;
         $scope.selectedProgram = selections.pr;   
         $scope.selectedEnrollment = selections.enrollment;   
+        
         $scope.processTeiAttributes();
     });
     
     //display only those attributes that belong the selected program
     //if no program, display attributesInNoProgram
     $scope.processTeiAttributes = function(){        
-        
-        angular.forEach($scope.selectedTei.attributes, function(att){
-            if(att.type === 'number' && !isNaN(parseInt(att.value))){
-                att.value = parseInt(att.value);
-            }            
-        });        
-
+ 
         if($scope.selectedProgram && $scope.selectedEnrollment){
-            //show only those attributes in selected program            
+            //show attribute for selected program and enrollment
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
-                
-                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes);   
-                
+                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, true);
             }); 
         }
-        else{
-            //show attributes in no program
-            AttributesFactory.getWithoutProgram().then(function(atts){
-                
-                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes);
-                
-            });
+        if($scope.selectedProgram && !$scope.selectedEnrollment){
+            //show attributes for selected program            
+            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
+                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, false);
+            }); 
         }
-        
-        $scope.selectedTei.attributes = orderByFilter($scope.selectedTei.attributes, '-order');
-        $scope.selectedTei.attributes.reverse();
+        if(!$scope.selectedProgram && !$scope.selectedEnrollment){
+            //show attributes in no program            
+            AttributesFactory.getWithoutProgram().then(function(atts){                
+                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, false);                
+            });
+        }        
     };
     
-    $scope.showRequiredAttributes = function(requiredAttributes, availableAttributes){
-        
-        var teiAttributes = availableAttributes;
+    $scope.showRequiredAttributes = function(requiredAttributes, teiAttributes, fromEnrollment){        
+       
         //first reset teiAttributes
         for(var j=0; j<teiAttributes.length; j++){
             teiAttributes[j].show = false;
+            if(teiAttributes[j].type === 'number' && !isNaN(parseInt(teiAttributes[j].value))){
+                teiAttributes[j].value = parseInt(teiAttributes[j].value);
+            }
         }
         
         //identify which ones to show
         for(var i=0; i<requiredAttributes.length; i++){
             var processed = false;
             for(var j=0; j<teiAttributes.length && !processed; j++){
-                if(requiredAttributes[i].id === teiAttributes[j].attribute){
+                if(requiredAttributes[i].id === teiAttributes[j].attribute){                    
                     processed = true;
                     teiAttributes[j].show = true;
                     teiAttributes[j].order = i;
                 }
             }
 
-            if(!processed){//attribute was empty, so a chance to put some value
+            if(!processed && fromEnrollment){//attribute was empty, so a chance to put some value
                 teiAttributes.push({show: true, order: i, attribute: requiredAttributes[i].id, displayName: requiredAttributes[i].name, type: requiredAttributes[i].valueType, value: ''});
             }                   
         }
+        
+        teiAttributes = orderByFilter(teiAttributes, '-order');
+        teiAttributes.reverse();
         
         return teiAttributes;
     };
@@ -113,9 +113,11 @@ trackerCapture.controller('ProfileController',
                     };
                 DialogService.showDialog({}, dialogOptions);
                 return;
-            }            
-        });
-        $scope.editProfile = !$scope.editProfile;
+            }
+            
+            $scope.editProfile = !$scope.editProfile;
+            CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: $scope.selectedEnrollment});   
+        });       
     };
     
     $scope.cancel = function(){

@@ -1,4 +1,4 @@
-<div class="panel panel-info" ng-controller="DataEntryController">
+<div class="panel panel-primary" ng-controller="DataEntryController">
     <div class="panel-heading">
         {{dataentryWidget.title| translate}} 
         <span class="nav-pills" ng-show="selectedEnrollment && allowEventCreation">
@@ -6,10 +6,10 @@
         </span>
         <span class="pull-right">
             <a class="small-horizonal-spacing" href ng-click="expandCollapse(dataentryWidget)">
-                <span ng-show="dataentryWidget.expand" class='black'><i class="fa fa-chevron-up" title="{{'collapse'| translate}}"></i></span>
-                <span ng-show="!dataentryWidget.expand" class='black'><i class="fa fa-chevron-down" title="{{'expand'| translate}}"></i></span>
+                <span ng-show="dataentryWidget.expand"><i class="fa fa-chevron-up" title="{{'collapse'| translate}}"></i></span>
+                <span ng-show="!dataentryWidget.expand"><i class="fa fa-chevron-down" title="{{'expand'| translate}}"></i></span>
             </a>
-            <a class="small-horizonal-spacing" href ng-click="removeWidget(dataentryWidget)" title="{{'remove'| translate}}"><span class='black'><i class="fa fa-times-circle"></i></span></a>            
+            <a class="small-horizonal-spacing" href ng-click="removeWidget(dataentryWidget)" title="{{'remove'| translate}}"><i class="fa fa-times-circle"></i></a>            
         </span>        
     </div>
 
@@ -92,7 +92,7 @@
                 </thead>
                 <tr class="col-md-12" ng-repeat="prStDe in currentStage.programStageDataElements">
                     <td class="col-md-5">
-                        {{prStDe.dataElement.name}} - {{prStDe.dataElement.type}}
+                        {{prStDe.dataElement.name}}
                     </td>
                     <td class="col-md-5">
                         <ng-form name="dataEntryInnerForm">
