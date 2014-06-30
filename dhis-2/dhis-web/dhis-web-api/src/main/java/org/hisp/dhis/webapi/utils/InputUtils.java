@@ -29,7 +29,6 @@ package org.hisp.dhis.webapi.utils;
  */
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +61,7 @@ public class InputUtils
      */
     public DataElementCategoryOptionCombo getAttributeOptionCombo( HttpServletResponse response, String cc, String cp )
     {
-        List<String> opts = ContextUtils.getQueryParamValues( cp );
+        Set<String> opts = ContextUtils.getQueryParamValues( cp );
 
         // ---------------------------------------------------------------------
         // Attribute category combo validation
@@ -201,7 +200,7 @@ public class InputUtils
 
         if ( cp != null )
         {
-            List<String> opts = ContextUtils.getQueryParamValues( cp );
+            Set<String> opts = ContextUtils.getQueryParamValues( cp );
 
             options = new HashSet<DataElementCategoryOption>();
 

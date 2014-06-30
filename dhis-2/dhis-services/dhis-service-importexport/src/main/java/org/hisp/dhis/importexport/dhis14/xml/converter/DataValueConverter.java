@@ -93,9 +93,6 @@ public class DataValueConverter
 
     private Map<Object, Integer> sourceMapping;
 
-    // private BigDecimal price = new BigDecimal("0");
-    // private BigDecimal totalEntry;
-
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
