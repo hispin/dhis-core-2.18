@@ -92,6 +92,7 @@ import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.MultiplePiePlot;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.SpiderWebPlot;
 import org.jfree.chart.plot.ValueMarker;
@@ -114,11 +115,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultChartService
     implements ChartService
 {
-    private static final Font titleFont = new Font( Font.SANS_SERIF, Font.BOLD, 12 );
-
-    private static final Font subTitleFont = new Font( Font.SANS_SERIF, Font.PLAIN, 11 );
-
-    private static final Font labelFont = new Font( Font.SANS_SERIF, Font.PLAIN, 10 );
+    private static final Font TITLE_FONT = new Font( Font.SANS_SERIF, Font.BOLD, 12 );
+    private static final Font SUB_TITLE_FONT = new Font( Font.SANS_SERIF, Font.PLAIN, 11 );
+    private static final Font LABEL_FONT = new Font( Font.SANS_SERIF, Font.PLAIN, 10 );
 
     private static final String TREND_PREFIX = "Trend - ";
 
@@ -403,7 +402,7 @@ public class DefaultChartService
      */
     private JFreeChart getBasicJFreeChart( CategoryPlot plot )
     {
-        JFreeChart jFreeChart = new JFreeChart( null, titleFont, plot, false );
+        JFreeChart jFreeChart = new JFreeChart( null, TITLE_FONT, plot, false );
 
         jFreeChart.setBackgroundPaint( Color.WHITE );
         jFreeChart.setAntiAlias( true );
@@ -504,7 +503,7 @@ public class DefaultChartService
         marker.setStroke( new BasicStroke( 1.1f ) );
         marker.setLabel( label );
         marker.setLabelOffset( new RectangleInsets( -10, 50, 0, 0 ) );
-        marker.setLabelFont( subTitleFont );
+        marker.setLabelFont( SUB_TITLE_FONT );
 
         return marker;
     }
@@ -571,7 +570,7 @@ public class DefaultChartService
             plot.setRenderer( 1, lineRenderer );
         }
 
-        JFreeChart jFreeChart = new JFreeChart( chart.getName(), titleFont, plot, !chart.isHideLegend() );
+        JFreeChart jFreeChart = new JFreeChart( chart.getName(), TITLE_FONT, plot, !chart.isHideLegend() );
 
         setBasicConfig( jFreeChart, chart );
         
@@ -591,7 +590,6 @@ public class DefaultChartService
         }
 
         plot.setDatasetRenderingOrder( DatasetRenderingOrder.FORWARD );
-        plot.setOutlinePaint( COLOR_TRANSPARENT );
 
         // ---------------------------------------------------------------------
         // Category label positions
@@ -617,12 +615,10 @@ public class DefaultChartService
         CategoryPlot plot = (CategoryPlot) areaChart.getPlot();
         plot.setOrientation( PlotOrientation.VERTICAL );
         plot.setRenderer( getAreaRenderer() );
-        plot.setBackgroundPaint( COLOR_TRANSPARENT );
-        plot.setOutlinePaint( COLOR_TRANSPARENT );
 
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
-        xAxis.setLabelFont( labelFont );
+        xAxis.setLabelFont( LABEL_FONT );
 
         return areaChart;
     }
@@ -630,11 +626,9 @@ public class DefaultChartService
     private JFreeChart getRadarChart( Chart chart, CategoryDataset dataSet )
     {
         SpiderWebPlot plot = new SpiderWebPlot( dataSet, TableOrder.BY_ROW );
-        plot.setBackgroundPaint( COLOR_TRANSPARENT );
-        plot.setOutlinePaint( COLOR_TRANSPARENT );
-        plot.setLabelFont( labelFont );
+        plot.setLabelFont( LABEL_FONT );
 
-        JFreeChart radarChart = new JFreeChart( chart.getName(), titleFont, plot, !chart.isHideLegend() );
+        JFreeChart radarChart = new JFreeChart( chart.getName(), TITLE_FONT, plot, !chart.isHideLegend() );
 
         setBasicConfig( radarChart, chart );
 
@@ -649,8 +643,6 @@ public class DefaultChartService
         setBasicConfig( stackedBarChart, chart );
 
         CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
-        plot.setBackgroundPaint( COLOR_TRANSPARENT );
-        plot.setOutlinePaint( COLOR_TRANSPARENT );
         plot.setOrientation( horizontal ? PlotOrientation.HORIZONTAL : PlotOrientation.VERTICAL );
         plot.setRenderer( getStackedBarRenderer() );
 
@@ -667,18 +659,17 @@ public class DefaultChartService
 
         setBasicConfig( multiplePieChart, chart );
         
-        multiplePieChart.getLegend().setItemFont( subTitleFont );
+        multiplePieChart.getLegend().setItemFont( SUB_TITLE_FONT );
 
         MultiplePiePlot multiplePiePlot = (MultiplePiePlot) multiplePieChart.getPlot();
-        multiplePiePlot.setBackgroundPaint( COLOR_TRANSPARENT );
         JFreeChart pieChart = multiplePiePlot.getPieChart();
         pieChart.setBackgroundPaint( COLOR_TRANSPARENT );
-        pieChart.getTitle().setFont( subTitleFont );
+        pieChart.getTitle().setFont( SUB_TITLE_FONT );
 
         PiePlot piePlot = (PiePlot) pieChart.getPlot();
         piePlot.setBackgroundPaint( COLOR_TRANSPARENT );
         piePlot.setOutlinePaint( COLOR_TRANSPARENT );
-        piePlot.setLabelFont( labelFont );
+        piePlot.setLabelFont( LABEL_FONT );
         piePlot.setLabelGenerator( new StandardPieSectionLabelGenerator( "{2}" ) );
         piePlot.setSimpleLabels( true );
         piePlot.setIgnoreZeroValues( true );
@@ -700,12 +691,16 @@ public class DefaultChartService
      */
     private void setBasicConfig( JFreeChart jFreeChart, Chart chart)
     {
-        jFreeChart.getTitle().setFont( titleFont );
+        jFreeChart.getTitle().setFont( TITLE_FONT );
         jFreeChart.addSubtitle( getSubTitle( chart ) );
         jFreeChart.setBackgroundPaint( COLOR_TRANSPARENT );
         jFreeChart.setAntiAlias( true );
+        
+        Plot plot = jFreeChart.getPlot();
+        plot.setBackgroundPaint( COLOR_TRANSPARENT );
+        plot.setOutlinePaint( COLOR_TRANSPARENT );
     }
-
+    
     private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
         Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( chart, chart.getFormat() );
@@ -764,7 +759,7 @@ public class DefaultChartService
     {
         TextTitle title = new TextTitle();
 
-        title.setFont( subTitleFont );
+        title.setFont( SUB_TITLE_FONT );
         title.setText( chart.generateTitle() );
 
         return title;
