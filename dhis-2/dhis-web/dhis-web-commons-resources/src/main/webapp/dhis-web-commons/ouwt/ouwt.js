@@ -80,6 +80,7 @@ function Selection()
     var autoSelectRoot = true;
     var realRoot = true;
     var includeChildren = false;
+    var blockedLevels = [];
 
     this.setListenerFunction = function( listenerFunction_, skipInitialCall ) {
         listenerFunction = listenerFunction_;
@@ -89,6 +90,32 @@ function Selection()
                 selection.responseReceived();
             } );
         }
+    };
+
+    this.addBlockedLevel = function(level) {
+        if( $.isArray(level) ) {
+            $.each(level, function(idx, item) {
+                blockedLevels.push(item);
+            });
+        } else {
+            blockedLevels.push(level);
+        }
+
+        this.updateBlockedLevels();
+    };
+
+    this.getBlockedLevels = function() {
+        return blockedLevels;
+    };
+
+    this.updateBlockedLevels = function() {
+        $('#orgUnitTree').find('a').css('color', 'black');
+
+        $.each(blockedLevels, function( idx, item ) {
+            $('#orgUnitTree li[level=' + item + '] > a').css({
+                cursor: 'not-allowed'
+            }).removeAttr('href');
+        })
     };
 
     this.setMultipleSelectionAllowed = function( allowed ) {
@@ -708,6 +735,8 @@ function Subtree() {
         expandTreeAtOrgUnits( selected );
 
         selectOrgUnits( selected );
+
+        selection.updateBlockedLevels();
     };
 
     // force reload
@@ -738,7 +767,7 @@ function Subtree() {
     }
 
     this.ajaxGetChildren = function( parentId ) {
-        return $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action?parentId=' + parentId );
+        return $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action?parentId=' + parentId);
     };
 
     this.getChildren = function( parentId ) {
@@ -788,6 +817,7 @@ function Subtree() {
         if( 'undefined' !== typeof organisationUnits[parent.c[0]] ) {
             createChildren( parentTag, parent );
             def.resolve();
+            selection.updateBlockedLevels();
         }
         else {
             selection.getOrganisationUnit( parent.c[0] ).done(function(item) {
@@ -795,11 +825,14 @@ function Subtree() {
                     $.extend( organisationUnits, item );
                     createChildren( parentTag, parent );
                     def.resolve();
+                    selection.updateBlockedLevels();
                 } else {
                     subtree.getChildren( parent.id ).done( function() {
                         createChildren( parentTag, parent );
                         def.resolve();
-                    } );
+                    }).always(function() {
+                        selection.updateBlockedLevels();
+                    });
                 }
             });
         }
@@ -843,6 +876,7 @@ function Subtree() {
         var $childTag = $( "<li/>" );
 
         $childTag.attr( "id", getTagId( ou.id ) );
+        $childTag.attr( "level", ou.l );
         $childTag.append( " " );
         $childTag.append( $toggleTag );
         $childTag.append( " " );
