@@ -26,7 +26,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 var dhis2 = dhis2 || {};
 dhis2['storage'] = dhis2['storage'] || {};
 

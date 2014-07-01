@@ -29,9 +29,12 @@ package org.hisp.dhis.webapi.webdomain;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Maps;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.webapi.webdomain.form.Form;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,6 +47,8 @@ public class Forms
 
     // maps dataSet.uid => form instance
     private Map<String, Form> forms = new HashMap<String, Form>();
+
+    private Map<String, List<String>> optionSets = Maps.newHashMap();
 
     public Forms()
     {
@@ -69,5 +74,16 @@ public class Forms
     public void setForms( Map<String, Form> forms )
     {
         this.forms = forms;
+    }
+
+    @JsonProperty
+    public Map<String, List<String>> getOptionSets()
+    {
+        return optionSets;
+    }
+
+    public void setOptionSets( Map<String, List<String>> optionSets )
+    {
+        this.optionSets = optionSets;
     }
 }
