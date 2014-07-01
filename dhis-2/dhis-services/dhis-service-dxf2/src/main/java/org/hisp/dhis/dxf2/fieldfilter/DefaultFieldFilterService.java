@@ -211,7 +211,7 @@ public class DefaultFieldFilterService implements FieldFilterService
                 {
                     Collection<?> collection = (Collection<?>) returnValue;
 
-                    child = complexNode.addChild( new CollectionNode( property.getCollectionName() ) );
+                    child = new CollectionNode( property.getCollectionName() );
                     child.setNamespace( property.getNamespace() );
 
                     if ( property.isIdentifiableObject() )
@@ -267,7 +267,7 @@ public class DefaultFieldFilterService implements FieldFilterService
             {
                 if ( property.isCollection() )
                 {
-                    child = complexNode.addChild( new CollectionNode( property.getCollectionName() ) );
+                    child = new CollectionNode( property.getCollectionName() );
                     child.setNamespace( property.getNamespace() );
 
                     for ( Object collectionObject : (Collection<?>) returnValue )
