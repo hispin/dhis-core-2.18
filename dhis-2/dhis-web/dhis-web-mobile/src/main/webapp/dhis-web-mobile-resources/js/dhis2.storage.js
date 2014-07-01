@@ -37,13 +37,14 @@ dhis2.storage.FormManager = function ( args ) {
 
 dhis2.storage.FormManager.prototype.getMetaData = function () {
     return $.ajax({
-        url         : '../api/currentUser/assignedDataSets',
+        url         : '../api/currentUser/assignedDataSets?optionSets=true',
         dataType    : 'json',
         cache       : false
     }).success(function ( data ) {
         // clear out old localStorage, some phones doesn't like it when you overwrite old keys
         localStorage.removeItem('mobileOrganisationUnits');
         localStorage.removeItem('mobileForms');
+        localStorage.removeItem('mobileOptionSets');
 
         if( data.organisationUnits ) {
             localStorage.setItem('mobileOrganisationUnits', JSON.stringify(data.organisationUnits));
@@ -55,6 +56,12 @@ dhis2.storage.FormManager.prototype.getMetaData = function () {
             localStorage.setItem('mobileForms', JSON.stringify(data.forms));
         } else {
             localStorage.setItem('mobileForms', JSON.stringify({}));
+        }
+
+        if( data.optionSets ) {
+            localStorage.setItem('mobileOptionSets', JSON.stringify(data.optionSets));
+        } else {
+            localStorage.setItem('mobileOptionSets', JSON.stringify({}));
         }
     });
 };
@@ -81,6 +88,22 @@ dhis2.storage.FormManager.prototype.organisationUnit = function (id) {
 
 dhis2.storage.FormManager.prototype.dataSets = function (id) {
     return this.organisationUnit(id).dataSets;
+};
+
+dhis2.storage.FormManager.prototype.optionSets = function() {
+    if( this._optionSets === undefined ) {
+        var optionSets = localStorage.getItem('mobileOptionSets');
+
+        if( optionSets != null && optionSets != "null" ) {
+            this._optionSets = JSON.parse(optionSets);
+        }
+    }
+
+    return this._optionSets;
+};
+
+dhis2.storage.FormManager.prototype.optionSet = function( id ) {
+  return this.optionSets()[id];
 };
 
 dhis2.storage.FormManager.prototype.forms = function () {
