@@ -244,8 +244,8 @@ public class DefaultDataEntryFormService
                 continue;
             }
 
-            inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
-            inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : inputHtml + " " + displayTitle;
+            inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml.replace( TAG_CLOSE, ( displayValue + TAG_CLOSE ) );
+            inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : inputHtml.replace( TAG_CLOSE, ( displayTitle + TAG_CLOSE ) );
 
             inputMatcher.appendReplacement( sb, inputHtml );
         }
