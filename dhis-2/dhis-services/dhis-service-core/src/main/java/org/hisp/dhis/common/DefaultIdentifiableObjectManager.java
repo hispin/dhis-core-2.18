@@ -284,6 +284,19 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
+    public <T extends IdentifiableObject> int getCountByName( Class<T> clazz, String name )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store != null )
+        {
+            return store.getCountLikeName( name );
+        }
+
+        return 0;
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> Collection<T> getLikeName( Class<T> clazz, String name )
     {

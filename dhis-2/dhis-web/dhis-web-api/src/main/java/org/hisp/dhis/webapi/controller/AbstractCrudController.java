@@ -79,6 +79,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -125,7 +126,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // GET
     //--------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.GET )
+    @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody RootNode getObjectList(
         @RequestParam Map<String, String> parameters, HttpServletResponse response, HttpServletRequest request )
     {
@@ -142,19 +143,56 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         boolean hasPaging = options.hasPaging();
 
-        // get full list if we are using filters
-        if ( filters != null && !filters.isEmpty() )
-        {
-            options.getOptions().put( "links", "false" );
+        List<T> entityList;
 
-            if ( options.hasPaging() )
+        if ( filters.isEmpty() )
+        {
+            entityList = getEntityList( metaData, options );
+        }
+        else
+        {
+            Iterator<String> iterator = filters.iterator();
+            String name = null;
+
+            while ( iterator.hasNext() )
             {
-                hasPaging = true;
-                options.getOptions().put( "paging", "false" );
+                String filter = iterator.next();
+
+                if ( filter.startsWith( "name:like:" ) )
+                {
+                    name = filter.substring( "name:like:".length() );
+                    iterator.remove();
+                    break;
+                }
+            }
+
+            if ( name != null )
+            {
+                int count = manager.getCountByName( getEntityClass(), name );
+
+                Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+                metaData.setPager( pager );
+
+                entityList = Lists.newArrayList( manager.getBetweenByName( getEntityClass(), name, pager.getOffset(), pager.getPageSize() ) );
+            }
+            else
+            {
+                // get full list if we are using filters
+                if ( !filters.isEmpty() )
+                {
+                    options.getOptions().put( "links", "false" );
+
+                    if ( options.hasPaging() )
+                    {
+                        hasPaging = true;
+                        options.getOptions().put( "paging", "false" );
+                    }
+                }
+
+                entityList = getEntityList( metaData, options );
             }
         }
 
-        List<T> entityList = getEntityList( metaData, options );
         Pager pager = metaData.getPager();
 
         // enable object filter
@@ -282,7 +320,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // POST
     //--------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @RequestMapping(method = RequestMethod.POST, consumes = { "application/xml", "text/xml" })
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
@@ -295,7 +333,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         renderService.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         if ( !aclService.canCreate( currentUserService.getCurrentUser(), getEntityClass() ) )
@@ -312,9 +350,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // PUT
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE } )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
+    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream
         input ) throws Exception
     {
         List<T> objects = getEntity( uid );
@@ -337,9 +375,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         renderService.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream
+    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream
         input ) throws Exception
     {
         List<T> objects = getEntity( uid );
@@ -366,9 +404,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // DELETE
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws
+    @RequestMapping(value = "/{uid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid ) throws
         Exception
     {
         List<T> objects = getEntity( uid );
@@ -518,7 +556,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     private String entitySimpleName;
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected Class<T> getEntityClass()
     {
         if ( entityClass == null )
@@ -550,7 +588,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return entitySimpleName;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected T getEntityInstance()
     {
         try
