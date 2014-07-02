@@ -109,7 +109,8 @@ var trackerCaptureDirectives = angular.module('trackerCaptureDirectives', [])
             element.sortable({
                 connectWith: ".connectedSortable",
                 placeholder: "ui-state-highlight",
-                tolerance: "pointer"
+                tolerance: "pointer",
+                handle: '.handle'
             }).disableSelection();  
             //scope.$apply();
         }  

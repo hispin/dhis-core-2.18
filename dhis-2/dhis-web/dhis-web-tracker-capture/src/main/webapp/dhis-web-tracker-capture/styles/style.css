@@ -553,9 +553,12 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 
 .empty-dashboard-container{
-    min-height: 100px;
+    min-height: 100px;    
 }
 
+.handle {
+    cursor: move;
+}
 .horizonal-spacing{
     margin-left: 10px;    
     margin-right: 10px;    
