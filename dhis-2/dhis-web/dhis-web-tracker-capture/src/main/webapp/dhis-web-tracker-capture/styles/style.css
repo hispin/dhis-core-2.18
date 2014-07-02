@@ -576,7 +576,9 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 
 .search-container{
     margin: 5px;
-    padding: 5px;    
+    padding: 5px; 
+    max-height: 50% !important;
+    overflow-y: scroll;
 }
 
 .registration-container{
@@ -742,7 +744,8 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     padding: 6px 8px;
     font-size: 14px;
 }
-input[type=number], input[type=text], input[type=password], textarea {
+
+input[type=number], input[type=text], input[type=password], textarea, select {
     border: 1px solid #aaa;
     padding: 6px 8px;
     font-size: 14px;
@@ -913,9 +916,7 @@ input[type=number], input[type=text], input[type=password], textarea {
 }
 
 .dropdown-menu {
-    margin-top: -5px;
-    margin-left: 0;
-    margin-right: 0;
+    margin: -5px 0 0 0;
 }
 
 .btn-link {
@@ -957,4 +958,10 @@ a:hover {
     font-weight: bold;
     background-color: #f6f7f8;
     border-color: #d1d1d1;
+}
+
+
+.dropdown-menu-right{
+    right: 0;
+    left: auto;
 }

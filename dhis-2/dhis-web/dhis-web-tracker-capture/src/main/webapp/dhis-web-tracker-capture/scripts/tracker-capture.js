@@ -125,12 +125,27 @@ $(document).ready(function()
     });
 
     //dhis2.availability.startAvailabilityCheck();
+    
+    var selectParentWidth = $("#selectDropDownParent").width();
+    $("#selectDropDown").width(selectParentWidth);
+    $(".select-drop-down-button").on('click', function(e) {
+        e.stopPropagation();
+        $("#selectDropDown").dropdown('toggle');
+    });  
+    
+    var searchParentWidth = $("#searchDropDownParent").width();    
+    $("#searchDropDown").width(searchParentWidth);
+    $('#searchDropDown').on('click', "[data-stop-propagation]", function(e) {
+        e.stopPropagation();
+    });    
+
 });
 
 $(window).resize(function() {
-    $("#selectDropDown").width($("#selectDropDownParent").width());
-     $("#selectDropDown").css('margin-right: 15x;');
-    $("#searchDropDown").width($("#searchDropDownParent").width());
+    var searchWidth = $("#searchDropDownParent").width();
+    var selectWidth = $("#selectDropDownParent").width();
+    $("#selectDropDown").width(selectWidth);
+    $("#searchDropDown").width(searchWidth);
 });
 
 function ajax_login()
