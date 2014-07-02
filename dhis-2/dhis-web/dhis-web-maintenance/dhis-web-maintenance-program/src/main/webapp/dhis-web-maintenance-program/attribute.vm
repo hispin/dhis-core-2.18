@@ -58,6 +58,7 @@
 				<p><label class="bold">$i18n.getString( "unique" ):</label><br><span id="uniqueField"></span></p>
 				<p><label class="bold">$i18n.getString( "scope" ):</label><br><span id="scopeField"></span></p>
 				<p><label class="bold">$i18n.getString( "inherit" ):</label><br><span id="inheritField"></span></p>
+				<p><label class="bold">$i18n.getString( "confidential" ):</label><br><span id="confidentialField"></span></p>
 				<p><label class="bold">$i18n.getString( "value_type" ):</label><br><span id="valueTypeField"></span></p>
 				<p><label class="bold">$i18n.getString( "option_set" ):</label><br><span id="optionSetField"></span></p>
 				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>

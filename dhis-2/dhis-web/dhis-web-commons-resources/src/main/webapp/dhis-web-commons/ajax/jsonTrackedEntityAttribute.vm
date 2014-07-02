@@ -9,6 +9,7 @@
 	"valueType": "$!attribute.valueType",
 	"displayInListNoProgram": "$!attribute.displayInListNoProgram",
 	"inherit": "$!attribute.inherit",
+	"confidential": "$!attribute.confidential",
 	"optionSet": "$!attribute.optionSet.name",
 	"orgunitScope": "$!attribute.orgunitScope",
 	"programScope": "$!attribute.programScope"

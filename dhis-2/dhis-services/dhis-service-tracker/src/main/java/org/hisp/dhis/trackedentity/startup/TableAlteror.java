@@ -285,6 +285,8 @@ public class TableAlteror
         
         int attributeoptioncomboid = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
         executeSql( "update datavalue set attributeoptioncomboid=" + attributeoptioncomboid + " where storedby='aggregated_from_tracker' or comment='aggregated_from_tracker'" );
+
+        executeSql( "update trackedentityattribute set confidential = false where confidential is null;" );
     }
 
     // -------------------------------------------------------------------------
