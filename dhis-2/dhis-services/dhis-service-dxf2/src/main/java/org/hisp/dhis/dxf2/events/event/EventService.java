@@ -100,6 +100,8 @@ public interface EventService
     void updateEvent( Event event, boolean singleValue, ImportOptions importOptions );
     
     void updateEventForNote( Event event );
+    
+    void updateEventForEventDate( Event event );
 
     // -------------------------------------------------------------------------
     // DELETE

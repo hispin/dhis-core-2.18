@@ -463,6 +463,28 @@ public abstract class AbstractEventService
         saveTrackedEntityComment( programStageInstance, event, getStoredBy( event, null ) );
         
     }
+    
+    public void updateEventForEventDate( Event event )
+    {
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
+            .getEvent() );
+
+        if ( programStageInstance == null )
+        {
+            return;
+        }
+        
+        Date executionDate = new Date();
+
+        if ( event.getEventDate() != null )
+        {
+            executionDate = DateUtils.getMediumDate( event.getEventDate() );
+        }
+        
+        programStageInstance.setExecutionDate( executionDate );
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        
+    }
 
     // -------------------------------------------------------------------------
     // DELETE

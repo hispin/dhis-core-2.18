@@ -426,6 +426,25 @@ public class EventController
         eventService.updateEventForNote( updatedEvent );
         ContextUtils.okResponse( response, "Event updated: " + uid );
     }
+    
+    @RequestMapping( value = "/{uid}/updateEventDate", method = RequestMethod.PUT, consumes = "application/json" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_TRACKED_ENTITY_DATAVALUE_ADD')" )
+    public void putJsonEventForEventDate( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, ImportOptions importOptions ) throws IOException
+    {
+        Event event = eventService.getEvent( uid );
+
+        if ( event == null )
+        {
+            ContextUtils.notFoundResponse( response, "Event not found for uid: " + uid );
+            return;
+        }
+
+        Event updatedEvent = JacksonUtils.fromJson( request.getInputStream(), Event.class );
+        updatedEvent.setEvent( uid );
+
+        eventService.updateEventForNote( updatedEvent );
+        ContextUtils.okResponse( response, "Event updated: " + uid );
+    }
 
     // -------------------------------------------------------------------------
     // DELETE
