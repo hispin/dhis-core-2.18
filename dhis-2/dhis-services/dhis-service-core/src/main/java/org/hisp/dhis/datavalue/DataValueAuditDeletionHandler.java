@@ -86,10 +86,4 @@ public class DataValueAuditDeletionHandler
     {
     	dataValueAuditService.deleteByDataElementCategoryOptionCombo( categoryOptionCombo );
     }
-
-    @Override
-    public void deleteDataValue( DataValue dataValue )
-    {
-        dataValueAuditService.deleteDataValueAuditByDataValue( dataValue );
-    }
 }
