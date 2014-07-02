@@ -863,7 +863,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                               name: programStage.name,
                               reportDateDescription: programStage.reportDateDescription,
                               status: 'ACTIVE'};
-            dummyEvent.statusColor = 'alert alert-warning';//'stage-on-time';
+            dummyEvent.statusColor = 'alert alert-info';//'stage-on-time';
             if(moment(today).isAfter(dummyEvent.dueDate)){
                 dummyEvent.statusColor = 'alert alert-danger';//'stage-overdue';
             }
@@ -880,13 +880,13 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             }
     
             if(dhis2Event.status === 'COMPLETED'){
-                return 'alert alert-info';//'stage-completed';
+                return 'alert alert-success';//'stage-completed';
             }
             else{                
                 if(moment(eventDate).isAfter(dhis2Event.dueDate)){
                     return 'alert alert-danger';//'stage-overdue';
                 }                
-                return 'alert alert-warning';//'stage-on-time';
+                return 'alert alert-info';//'stage-on-time';
             }            
         },
         getEventDueDate: function(programStage, enrollment){

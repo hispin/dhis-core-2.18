@@ -204,7 +204,7 @@ trackerCapture.controller('DataEntryController',
                           dueDate: dueDate,
                           name: programStage.name,
                           status: 'ACTIVE',
-                          statusColor: 'alert alert-warning'//'stage-on-time'
+                          statusColor: 'alert alert-info'//'stage-on-time'
                         };        
         
         dummyEvent.statusColor = EventUtils.getEventStatusColor(dummyEvent);
