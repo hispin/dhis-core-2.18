@@ -185,8 +185,10 @@ public interface AnalyticsService
      * @param dimension the dimension identifier.
      * @param items the dimension items.
      * @param relativePeriodDate the date to use for generating relative periods, can be null.
-     * @parma format the I18nFormat, can be null.
+     * @param format the I18nFormat, can be null.
+     * @param allowNull return null if no dimension was found.
+     * @throws IllegalQueryException if no dimensions was found.
      * @return list of DimensionalObjects.
      */
-    List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate, I18nFormat format );
+    List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate, I18nFormat format, boolean allowNull );
 }

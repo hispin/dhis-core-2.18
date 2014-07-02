@@ -90,7 +90,7 @@ public class AnalyticsDataSetReportStore
         {
             for ( String dim : dimensions.keySet() )
             {
-                params.setFilters( analyticsService.getDimension( dim, getList( dimensions.get( dim ) ), null, null ) );
+                params.setFilters( analyticsService.getDimension( dim, getList( dimensions.get( dim ) ), null, null, false ) );
             }
         }
         
@@ -142,7 +142,7 @@ public class AnalyticsDataSetReportStore
                 {
                     for ( String dim : dimensions.keySet() )
                     {
-                        params.setFilters( analyticsService.getDimension( dim, getList( dimensions.get( dim ) ), null, null ) );
+                        params.setFilters( analyticsService.getDimension( dim, getList( dimensions.get( dim ) ), null, null, false ) );
                     }
                 }
                 
@@ -181,7 +181,7 @@ public class AnalyticsDataSetReportStore
         {
             for ( String dim : dimensions.keySet() )
             {
-                params.setFilters( analyticsService.getDimension( dim, getList( dimensions.get( dim ) ), null, null ) );
+                params.setFilters( analyticsService.getDimension( dim, getList( dimensions.get( dim ) ), null, null, false ) );
             }
         }
         
@@ -218,7 +218,7 @@ public class AnalyticsDataSetReportStore
         {
             for ( String dim : dimensions.keySet() )
             {
-                params.setFilters( analyticsService.getDimension( dim, getList( dimensions.get( dim ) ), null, null ) );
+                params.setFilters( analyticsService.getDimension( dim, getList( dimensions.get( dim ) ), null, null, false ) );
             }
         }
         

@@ -352,11 +352,12 @@ public class DefaultEventAnalyticsService
             for ( String dim : dimension )
             {
                 String dimensionId = DimensionalObjectUtils.getDimensionFromParam( dim );
-
-                if ( ORGUNIT_DIM_ID.equals( dimensionId ) || PERIOD_DIM_ID.equals( dimensionId ) )
+                List<String> items = DimensionalObjectUtils.getDimensionItemsFromParam( dim );                
+                List<DimensionalObject> dimObj = analyticsService.getDimension( dimensionId, items, date, format, true );
+                
+                if ( dimObj != null )
                 {
-                    List<String> items = DimensionalObjectUtils.getDimensionItemsFromParam( dim );
-                    params.getDimensions().addAll( analyticsService.getDimension( dimensionId, items, date, format ) );
+                    params.getDimensions().addAll( dimObj );
                 }
                 else
                 {
@@ -370,11 +371,12 @@ public class DefaultEventAnalyticsService
             for ( String dim : filter )
             {
                 String dimensionId = DimensionalObjectUtils.getDimensionFromParam( dim );
-
-                if ( ORGUNIT_DIM_ID.equals( dimensionId ) || PERIOD_DIM_ID.equals( dimensionId ) )
+                List<String> items = DimensionalObjectUtils.getDimensionItemsFromParam( dim );                
+                List<DimensionalObject> dimObj = analyticsService.getDimension( dimensionId, items, date, format, true );
+                
+                if ( dimObj != null )
                 {
-                    List<String> items = DimensionalObjectUtils.getDimensionItemsFromParam( dim );
-                    params.getFilters().addAll( analyticsService.getDimension( dimensionId, items, date, format ) );
+                    params.getFilters().addAll( dimObj );
                 }
                 else
                 {

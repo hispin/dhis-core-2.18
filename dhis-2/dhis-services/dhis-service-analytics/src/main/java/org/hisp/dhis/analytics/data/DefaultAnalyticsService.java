@@ -709,7 +709,7 @@ public class DefaultAnalyticsService
                 
                 if ( dimension != null && options != null )
                 {
-                    params.getDimensions().addAll( getDimension( dimension, options, null, format ) );
+                    params.getDimensions().addAll( getDimension( dimension, options, null, format, false ) );
                 }
             }
         }
@@ -723,7 +723,7 @@ public class DefaultAnalyticsService
                 
                 if ( dimension != null && options != null )
                 {
-                    params.getFilters().addAll( getDimension( dimension, options, null, format ) );
+                    params.getFilters().addAll( getDimension( dimension, options, null, format, false ) );
                 }
             }
         }
@@ -755,17 +755,17 @@ public class DefaultAnalyticsService
             
             for ( DimensionalObject column : object.getColumns() )
             {
-                params.getDimensions().addAll( getDimension( toDimension( column.getDimension() ), getUids( column.getItems() ), date, format ) );
+                params.getDimensions().addAll( getDimension( toDimension( column.getDimension() ), getUids( column.getItems() ), date, format, false ) );
             }
             
             for ( DimensionalObject row : object.getRows() )
             {
-                params.getDimensions().addAll( getDimension( toDimension( row.getDimension() ), getUids( row.getItems() ), date, format ) );
+                params.getDimensions().addAll( getDimension( toDimension( row.getDimension() ), getUids( row.getItems() ), date, format, false ) );
             }
             
             for ( DimensionalObject filter : object.getFilters() )
             {
-                params.getFilters().addAll( getDimension( toDimension( filter.getDimension() ), getUids( filter.getItems() ), date, format ) );
+                params.getFilters().addAll( getDimension( toDimension( filter.getDimension() ), getUids( filter.getItems() ), date, format, false ) );
             }
         }
         
@@ -774,7 +774,7 @@ public class DefaultAnalyticsService
     
     // TODO verify that current user can read each dimension and dimension item
     
-    public List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate, I18nFormat format )
+    public List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate, I18nFormat format, boolean allowNull )
     {        
         if ( DATA_X_DIM_ID.equals( dimension ) )
         {
@@ -1035,6 +1035,11 @@ public class DefaultAnalyticsService
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.CATEGORY, null, dec.getDisplayName(), decos );
             
             return ListUtils.getList( object );
+        }
+        
+        if ( allowNull )
+        {
+            return null;
         }
         
         throw new IllegalQueryException( "Dimension identifier does not reference any dimension: " + dimension );

@@ -255,8 +255,8 @@ public class DataQueryParams
     }
         
     /**
-     * Creates a mapping between dimension identifiers and filter dimensions. Filters 
-     * are guaranteed not to be null.
+     * Creates a mapping between filter dimension identifiers and filter dimensions. 
+     * Filters are guaranteed not to be null.
      */
     public ListMap<String, DimensionalObject> getDimensionFilterMap()
     {
@@ -868,6 +868,38 @@ public class DataQueryParams
         }
         
         return filterItems;
+    }
+    
+    /**
+     * Returns a list of dimensions and filters in the mentioned, preserved order.
+     */
+    public List<DimensionalObject> getDimensionsAndFilters()
+    {
+        List<DimensionalObject> list = new ArrayList<DimensionalObject>();
+        list.addAll( dimensions );
+        list.addAll( filters );
+        return list;
+    }
+    
+    /**
+     * Returns a list of dimensions and filters of the given dimension type.
+     */
+    public List<DimensionalObject> getDimensionsAndFilters( DimensionType dimensionType )
+    {
+        List<DimensionalObject> list = new ArrayList<DimensionalObject>();
+        
+        if ( dimensionType != null )
+        {
+            for ( DimensionalObject dimension : getDimensionsAndFilters() )
+            {
+                if ( dimension.getDimensionType().equals( dimensionType ) )
+                {
+                    list.add( dimension );
+                }
+            }
+        }
+        
+        return list;
     }
     
     /**

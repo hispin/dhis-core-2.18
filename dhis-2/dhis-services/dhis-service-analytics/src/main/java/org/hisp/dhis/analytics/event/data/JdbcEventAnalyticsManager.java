@@ -46,6 +46,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
+import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -304,7 +305,7 @@ public class JdbcEventAnalyticsManager
         
         return count;
     }
-        
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -353,7 +354,11 @@ public class JdbcEventAnalyticsManager
     private String getFromWhereClause( EventQueryParams params, String partition )
     {
         String sql = "from " + partition + " ";
-        
+
+        // ---------------------------------------------------------------------
+        // Periods
+        // ---------------------------------------------------------------------
+
         if ( params.hasStartEndDate() )
         {        
             sql += "where executiondate >= '" + getMediumDateString( params.getStartDate() ) + "' ";
@@ -363,7 +368,11 @@ public class JdbcEventAnalyticsManager
         {
             sql += "where " + params.getPeriodType() + " in (" + getQuotedCommaDelimitedString( getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) ) + ") ";
         }
-        
+
+        // ---------------------------------------------------------------------
+        // Organisation units
+        // ---------------------------------------------------------------------
+
         if ( params.isOrganisationUnitMode( DimensionalObject.OU_MODE_SELECTED ) )
         {
             sql += "and ou in (" + getQuotedCommaDelimitedString( getUids( params.getDimensionOrFilter( ORGUNIT_DIM_ID ) ) ) + ") ";
@@ -384,11 +393,33 @@ public class JdbcEventAnalyticsManager
             
             sql = removeLastOr( sql ) + ") ";
         }
-        
+
+        // ---------------------------------------------------------------------
+        // Organisation unit group sets
+        // ---------------------------------------------------------------------
+
+        for ( DimensionalObject dim : params.getDimensionsAndFilters( DimensionType.ORGANISATIONUNIT_GROUPSET ) )
+        {
+            if ( !dim.isAllItems() )
+            {
+                String col = statementBuilder.columnQuote( dim.getDimensionName() );
+                
+                sql += "and " + col + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Program stage
+        // ---------------------------------------------------------------------
+
         if ( params.getProgramStage() != null )
         {
             sql += "and ps = '" + params.getProgramStage().getUid() + "' ";
         }
+
+        // ---------------------------------------------------------------------
+        // Query items and filters
+        // ---------------------------------------------------------------------
 
         for ( QueryItem item : params.getItems() )
         {
