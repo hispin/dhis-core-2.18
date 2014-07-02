@@ -37,6 +37,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
@@ -47,6 +48,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +68,10 @@ public class FormUtils
 
         if ( dataSet.getSections().size() > 0 )
         {
-            for ( Section section : dataSet.getSections() )
+            List<Section> sections = new ArrayList<Section>( dataSet.getSections() );
+            Collections.sort( sections, SectionOrderComparator.INSTANCE );
+            
+            for ( Section section : sections )
             {
                 List<Field> fields = inputsFromDataElements( new ArrayList<DataElement>( section.getDataElements() ), new ArrayList<DataElementOperand>( section.getGreyedFields() ) );
 
