@@ -112,7 +112,7 @@ trackerCapture.controller('DataEntryController',
         for(var i=0; i<program.programStages.length; i++){
             var stageHasEvent = false;
             for(var j=0; j<availableEvents.length && !program.programStages[i].repeatable && !stageHasEvent; j++){
-                if(program.programStages[i].id === availableEvents[j].stage){
+                if(program.programStages[i].id === availableEvents[j].programStage){
                     stageHasEvent = true;
                 }
             }
