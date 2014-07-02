@@ -19,6 +19,7 @@
     "list": "List",
     "required": "Required",
     "number_required": "Number required",
+    "date_required": "Date required (yyyy-mm-dd)",
     "search": "Search",
     "advanced_search": "Advanced search",
     "search_for": "Search for",
