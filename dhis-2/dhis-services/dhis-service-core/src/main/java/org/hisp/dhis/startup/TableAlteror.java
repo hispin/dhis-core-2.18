@@ -88,7 +88,6 @@ public class TableAlteror
         executeSql( "DROP TABLE orgunitstructure" );
         executeSql( "DROP TABLE orgunithierarchystructure" );
         executeSql( "DROP TABLE orgunithierarchy" );
-        executeSql( "DROP TABLE datavalueaudit" );
         executeSql( "DROP TABLE columnorder" );
         executeSql( "DROP TABLE roworder" );
         executeSql( "DROP TABLE sectionmembers" );
