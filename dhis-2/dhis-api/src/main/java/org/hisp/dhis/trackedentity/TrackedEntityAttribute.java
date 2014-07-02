@@ -93,7 +93,9 @@ public class TrackedEntityAttribute
     private Boolean displayInListNoProgram = false;
 
     private Integer sortOrderInListNoProgram;
-
+    
+    private Boolean confidential = false;
+    
     private Boolean unique = false;
 
     // For Local ID type
@@ -310,6 +312,20 @@ public class TrackedEntityAttribute
         this.optionSet = optionSet;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getConfidential()
+    {
+        return confidential;
+    }
+
+    public void setConfidential( Boolean confidential )
+    {
+        this.confidential = confidential;
+    }
+    
     // -------------------------------------------------------------------------
     // Static methods
     // -------------------------------------------------------------------------

@@ -28,6 +28,9 @@ function showAttributeDetails( context ) {
 			var inherit = ( json.attribute.inherit == 'true') ? i18n_yes : i18n_no;
 			setInnerHTML( 'inheritField', inherit );
 			
+			var confidential = ( json.attribute.confidential == 'true') ? i18n_yes : i18n_no;
+			setInnerHTML( 'confidentialField', confidential );
+			
 			var valueType = json.attribute.valueType;
 			var typeMap = attributeTypeMap();
 			setInnerHTML( 'valueTypeField', typeMap[valueType] );   

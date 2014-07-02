@@ -148,6 +148,13 @@ public class UpdateAttributeAction
         this.scope = scope;
     }
 
+    private Boolean confidential;
+    
+    public void setConfidential( Boolean confidential )
+    {
+        this.confidential = confidential;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -170,6 +177,9 @@ public class UpdateAttributeAction
 
         inherit = (inherit == null) ? false : true;
         attribute.setInherit( inherit );
+
+        confidential = (confidential == null) ? false : true;
+        attribute.setConfidential( confidential );
 
         if ( unique )
         {

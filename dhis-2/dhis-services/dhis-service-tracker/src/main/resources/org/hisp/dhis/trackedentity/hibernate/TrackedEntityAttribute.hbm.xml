@@ -38,6 +38,8 @@
     <property name="displayInListNoProgram" />
     
     <property name="sortOrderInListNoProgram" />
+    
+    <property name="confidential" />
 
     <property name="unique" column="uniquefield" />
 
