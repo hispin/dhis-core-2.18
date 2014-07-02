@@ -60,12 +60,12 @@
                     <div class="col-md-6">
                         {{currentDummyEvent.reportDateDescription}}
                         <input type="text" name="eventDate" class="form-control" ng-date ng-model="currentDummyEvent.eventDate" ng-required="true"/>
-                        <span ng-show="eventCreationForm.submitted && eventCreationForm.eventDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                        <span ng-show="eventCreationForm.submitted && eventCreationForm.eventDate.$invalid" class="error">{{'required'| translate}}</span>
                     </div>
                     <div class="col-md-6">
                         {{'due_date'| translate}}
                         <input type="text" name="dueDate" class="form-control" ng-date ng-model="currentDummyEvent.dueDate" />
-                        <span ng-show="eventCreationForm.submitted && eventCreationForm.dueDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                        <span ng-show="eventCreationForm.submitted && eventCreationForm.dueDate.$invalid" class="error">{{'required'| translate}}</span>
                     </div>                        
                 </div>
                 <div class="row vertical-spacing">   
@@ -78,6 +78,18 @@
         </div>        
         
         <div ng-show="currentEvent && !showEventCreationDiv">
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    {{currentStage.reportDateDescription}}
+                    <input class="form-control" ng-date ng-model="newEventDate" ng-required="true" blur-or-change="saveEventDate()"/>
+                    <span ng-show="invalidDate" class="error">{{'date_required'| translate}}</span>     
+                </div>
+                <div class="col-md-6">
+                    {{'due_date'| translate}}
+                    <input type="text" name="dueDate" class="form-control" ng-date ng-model="currentEvent.dueDate" ng-disabled="true"/>
+                </div>                        
+            </div>
             <hr>
             <form name="dataEntryOuterForm" novalidate>                
                 <table class="table-borderless table-striped" ng-if='currentEvent'>
@@ -108,7 +120,7 @@
                                                ng-required={{prStDe.compulsory}}
                                                ng-blur="saveDatavalue(prStDe)" 
                                                name="foo"/>
-                                        <span ng-show="dataEntryOuterForm.submitted && dataEntryInnerForm.foo.$invalid" style="color:red;font-size:12px">{{'number_required' | translate}}</span>
+                                        <span ng-show="dataEntryOuterForm.submitted && dataEntryInnerForm.foo.$invalid" class="error">{{'number_required' | translate}}</span>
                                     </div>
                                     <div ng-switch-when="string">                                        
                                         <input type="text"

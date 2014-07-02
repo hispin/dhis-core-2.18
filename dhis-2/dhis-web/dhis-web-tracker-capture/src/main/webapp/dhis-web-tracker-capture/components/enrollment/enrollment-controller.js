@@ -4,7 +4,6 @@ trackerCapture.controller('EnrollmentController',
                 $filter,
                 $timeout,
                 storage,
-                ProgramStageFactory,
                 AttributesFactory,
                 CurrentSelection,
                 TEIService,
@@ -20,7 +19,6 @@ trackerCapture.controller('EnrollmentController',
         $scope.enrollments = [];
         $scope.showEnrollmentDiv = false;
         $scope.showSchedulingDiv = false;    
-        $scope.selectedProgram = null;
         $scope.selectedEnrollment = null;
         $scope.newEnrollment = {};
         
@@ -56,6 +54,17 @@ trackerCapture.controller('EnrollmentController',
             
             if($scope.selectedEnrollment){//enrollment exists
                 $scope.selectedEnrollment.dateOfIncident = $filter('date')($scope.selectedEnrollment.dateOfIncident, 'yyyy-MM-dd');
+                
+                $scope.programStages = [];   
+                
+                var incidentDate = $scope.selectedEnrollment ? $scope.selectedEnrollment.dateOfIncident : new Date();
+
+                angular.forEach($scope.selectedProgram.programStages, function(stage){                
+                    stage.dueDate = moment(moment(incidentDate).add('d', stage.minDaysFromStart), 'YYYY-MM-DD')._d;
+                    stage.dueDate = Date.parse(stage.dueDate);
+                    stage.dueDate= $filter('date')(stage.dueDate, 'yyyy-MM-dd');
+                    $scope.programStages.push(stage);               
+                });
             }
             else{//prepare for possible enrollment
                 AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
@@ -72,19 +81,7 @@ trackerCapture.controller('EnrollmentController',
                         }
                     }
                 });                
-            }
-
-            $scope.programStages = [];   
-            var incidentDate = $scope.selectedEnrollment ? $scope.selectedEnrollment.dateOfIncident : new Date();
-            
-            ProgramStageFactory.getByProgram($scope.selectedProgram).then(function(stages){
-                angular.forEach(stages, function(stage){                
-                    stage.dueDate = moment(moment(incidentDate).add('d', stage.minDaysFromStart), 'YYYY-MM-DD')._d;
-                    stage.dueDate = Date.parse(stage.dueDate);
-                    stage.dueDate= $filter('date')(stage.dueDate, 'yyyy-MM-dd');
-                    $scope.programStages.push(stage);               
-                });                
-            });
+            }           
         }
         
         $scope.broadCastSelections();

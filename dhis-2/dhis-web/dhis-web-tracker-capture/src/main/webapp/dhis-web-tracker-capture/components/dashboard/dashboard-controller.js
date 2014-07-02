@@ -16,7 +16,8 @@ trackerCapture.controller('DashboardController',
     TranslationService.translate();    
     
     //dashboard items   
-    $rootScope.dashboardWidgets = {bigger: [], smaller: []};       
+    $rootScope.biggerDashboardWidgets = [];
+    $rootScope.smallerDashboardWidgets = [];//{bigger: [], smaller: []};       
     $rootScope.enrollmentWidget = {title: 'enrollment', view: "components/enrollment/enrollment.html", show: true, expand: true};
     $rootScope.dataentryWidget = {title: 'dataentry', view: "components/dataentry/dataentry.html", show: true, expand: true};
     $rootScope.selectedWidget = {title: 'current_selections', view: "components/selected/selected.html", show: false, expand: true};
@@ -24,12 +25,12 @@ trackerCapture.controller('DashboardController',
     $rootScope.relationshipWidget = {title: 'relationship', view: "components/relationship/relationship.html", show: true, expand: true};
     $rootScope.notesWidget = {title: 'notes', view: "components/notes/notes.html", show: true, expand: true};    
    
-    $rootScope.dashboardWidgets.bigger.push($rootScope.enrollmentWidget);
-    $rootScope.dashboardWidgets.bigger.push($rootScope.dataentryWidget);
-    $rootScope.dashboardWidgets.smaller.push($rootScope.selectedWidget);
-    $rootScope.dashboardWidgets.smaller.push($rootScope.profileWidget);
-    $rootScope.dashboardWidgets.smaller.push($rootScope.relationshipWidget);
-    $rootScope.dashboardWidgets.smaller.push($rootScope.notesWidget);
+    $rootScope.biggerDashboardWidgets.push($rootScope.enrollmentWidget);
+    $rootScope.biggerDashboardWidgets.push($rootScope.dataentryWidget);
+    $rootScope.smallerDashboardWidgets.push($rootScope.selectedWidget);
+    $rootScope.smallerDashboardWidgets.push($rootScope.profileWidget);
+    $rootScope.smallerDashboardWidgets.push($rootScope.relationshipWidget);
+    $rootScope.smallerDashboardWidgets.push($rootScope.notesWidget);
     
     //selections
     $scope.selectedTeiId = null;

@@ -110,8 +110,8 @@ trackerCapture.controller('RegistrationController',
             $scope.outerForm.submitted = false; 
             
             if(showDashboard){
-                $location.path('/dashboard').search({selectedEntityId: teiId,
-                                                selectedProgramId: $scope.selectedProgram ? $scope.selectedProgram.id : null});
+                $location.path('/dashboard').search({tei: teiId,                                            
+                                            program: $scope.selectedProgram ? $scope.selectedProgram.id: null});    
             }            
         });
     };

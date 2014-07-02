@@ -340,6 +340,10 @@ div.paging a.active
     color: white;
 }
 
+.error {
+    color:red;
+    font-size:12px;
+}
 .anchor-color {
     color: #276696;
 }

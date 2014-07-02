@@ -29,11 +29,11 @@
                             <div ng-switch="attribute.valueType">
                                 <div ng-switch-when="date">
                                     <input type="text" name="foo" class="form-control" ng-date ng-model="attribute.value" ng-required="attribute.mandatory" />
-                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
                                 </div>
                                 <div ng-switch-when="trueOnly">
                                     <input type="checkbox" name="foo" class="form-control" ng-model="attribute.value" ng-required="attribute.mandatory" />
-                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
                                 </div>
                                 <div ng-switch-when="bool">
                                     <select name="foo" ng-model="attribute.value" class="form-control" ng-required="attribute.mandatory">
@@ -41,7 +41,7 @@
                                         <option value="0">{{'no'| translate}}</option>
                                         <option value="1">{{'yes'| translate}}</option>
                                     </select>
-                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
                                 </div>
                                 <div ng-switch-when="optionSet">
                                     <input type="text"
@@ -52,15 +52,15 @@
                                            typeahead-open-on-focus
                                            ng-required="attribute.mandatory"
                                            />
-                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
                                 </div>
                                 <div ng-switch-when="number">
                                     <input type="number" name="foo" class="form-control" ng-model="attribute.value" ng-required="attribute.mandatory"/>
-                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
                                 </div>
                                 <div ng-switch-default>
                                     <input type="text" name="foo" class="form-control" ng-model="attribute.value" ng-required="attribute.mandatory"/>
-                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                                    <span ng-show="outerForm.submitted && innerForm.foo.$invalid" class="error">{{'required'| translate}}</span>
                                 </div>
                             </div>
                         </ng-form>
@@ -78,7 +78,7 @@
                         </td>
                         <td>
                             <input type="text" name="dateOfEnrollment" class="form-control" ng-date ng-model="enrollment.incidentDate" ng-required="true"/>
-                            <span ng-show="outerForm.submitted && outerForm.dateOfEnrollment.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
+                            <span ng-show="outerForm.submitted && outerForm.dateOfEnrollment.$invalid" class="error">{{'required'| translate}}</span>
                         </td>
                     </tr>     
                     <tr ng-if="selectedProgram.displayIncidentDate">

@@ -86,7 +86,7 @@
                         </div>
                         <div ng-switch-when="bool">
                             <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
-                                <option ng-repeat="option in boolOperators" value="{{option}}">{{option}}</option>
+                                <option ng-repeat="option in boolOperators" value="{{option}}">{{option | translate}}</option>
                             </select>
                         </div>                    
                     </div>

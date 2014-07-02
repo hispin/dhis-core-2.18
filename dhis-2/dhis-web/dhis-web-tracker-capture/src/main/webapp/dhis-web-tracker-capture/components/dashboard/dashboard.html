@@ -28,14 +28,14 @@
         <div class="row">            
             <div class="col-sm-6 col-md-8">
                 <div sortable class="row connectedSortable empty-dashboard-container">
-                    <div ng-repeat="biggerWidget in dashboardWidgets.bigger">
+                    <div ng-repeat="biggerWidget in biggerDashboardWidgets">
                         <div class="col-sm-12" ng-show="biggerWidget.show" ng-include="biggerWidget.view"></div>
                     </div>                                       
                 </div>                
             </div>            
             <div class="col-sm-6 col-md-4">
-                <div sortable class="row connectedSortable empty-dashboard-container">                    
-                    <div class="col-sm-12" ng-repeat="smallerWidget in dashboardWidgets.smaller">                        
+                <div sortable class="row connectedSortable empty-dashboard-container">                   
+                    <div class="col-sm-12" ng-repeat="smallerWidget in smallerDashboardWidgets">                        
                         <div ng-show="smallerWidget.show" ng-include="smallerWidget.view"></div>
                     </div>                   
                 </div>
