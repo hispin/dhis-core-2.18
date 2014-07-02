@@ -62,6 +62,7 @@ public class FormUtils
     {
         Form form = new Form();
         form.setLabel( dataSet.getDisplayName() );
+        form.setSubtitle( dataSet.getDisplayShortName() );
 
         form.getOptions().put( "periodType", dataSet.getPeriodType().getName() );
         form.getOptions().put( "allowFuturePeriods", dataSet.isAllowFuturePeriods() );
