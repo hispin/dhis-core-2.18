@@ -25,7 +25,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.ouModes = [
                     {name: 'SELECTED', id: 1}, 
                     {name: 'CHILDREN', id: 2}, 
-                    {name: 'DESCENDANTS', id: 3}
+                    {name: 'DESCENDANTS', id: 3},
+                    {name: 'ACCESSIBLE', id: 4}
                   ];                  
     $scope.ouMode = $scope.ouModes[0];
     
@@ -69,14 +70,11 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             $scope.loadPrograms($scope.selectedOrgUnit); 
             
             AttributesFactory.getWithoutProgram().then(function(atts){
-                setTimeout(function () {
-                    $scope.$apply(function () {
-                        $scope.attributes = atts;   
-                        $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
-                        $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
-                        $scope.search($scope.searchMode.listAll);
-                    });
-                }, 100);
+                
+                $scope.attributes = atts;   
+                $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
+                $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                $scope.search($scope.searchMode.listAll);                
             });           
         }
     });
@@ -115,6 +113,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };
     
     $scope.getProgramAttributes = function(program, doSearch){ 
+
         $scope.trackedEntityList = null; 
         $scope.selectedProgram = program;
        
@@ -152,7 +151,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.selectedSearchMode = mode;
         $scope.emptySearchText = false;
         $scope.emptySearchAttribute = false;
-        $scope.showSearchDiv = false;
+        //$scope.showSearchDiv = false;
         $scope.showRegistrationDiv = false;  
         $scope.showTrackedEntityDiv = false;
         $scope.trackedEntityList = null; 
@@ -279,7 +278,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.trackedEntityList = null;
     };
     
-    $scope.showSearch = function(){
+    $scope.showHideSearch = function(){
         $scope.showSearchDiv = !$scope.showSearchDiv;
     };
     
@@ -290,13 +289,11 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     };  
     
     $scope.hideSearch = function(){        
-        $scope.showSearchDiv = false;
-        $rootScope.showAdvancedSearchDiv = false;
+        //$scope.showSearchDiv = false;
+        //$rootScope.showAdvancedSearchDiv = false;
     };
     
-    $scope.closeSearch = function(){
-        $scope.showSearchDiv = !$scope.showSearchDiv;
-    };
+    
     
     $scope.showHideColumns = function(){
         
