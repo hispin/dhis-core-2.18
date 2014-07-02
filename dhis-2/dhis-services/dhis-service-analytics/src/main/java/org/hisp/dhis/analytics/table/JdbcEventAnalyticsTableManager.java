@@ -40,6 +40,7 @@ import java.util.concurrent.Future;
 
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -168,6 +169,7 @@ public class JdbcEventAnalyticsTableManager
             sql = removeLast( sql, 1 ) + " ";
 
             sql += "from programstageinstance psi " +
+                "left join _organisationunitgroupsetstructure ougs on psi.organisationunitid=ougs.organisationunitid " +
                 "left join programinstance pi on psi.programinstanceid=pi.programinstanceid " +
                 "left join programstage ps on psi.programstageid=ps.programstageid " +
                 "left join program pr on pi.programid=pr.programid " +
@@ -199,16 +201,26 @@ public class JdbcEventAnalyticsTableManager
 
         List<String[]> columns = new ArrayList<String[]>();
 
-        Collection<OrganisationUnitLevel> levels = organisationUnitService.getOrganisationUnitLevels();
+        Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
+            organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();
 
+        Collection<OrganisationUnitLevel> levels = 
+            organisationUnitService.getOrganisationUnitLevels();
+
+        List<PeriodType> periodTypes = PeriodType.getAvailablePeriodTypes();
+
+        for ( OrganisationUnitGroupSet groupSet : orgUnitGroupSets )
+        {
+            String[] col = { quote( groupSet.getUid() ), "character(11)", "ougs." + quote( groupSet.getUid() ) };
+            columns.add( col );
+        }
+        
         for ( OrganisationUnitLevel level : levels )
         {
             String column = quote( PREFIX_ORGUNITLEVEL + level.getLevel() );
             String[] col = { column, "character(11)", "ous." + column };
             columns.add( col );
         }
-
-        List<PeriodType> periodTypes = PeriodType.getAvailablePeriodTypes();
 
         for ( PeriodType periodType : periodTypes )
         {
