@@ -44,6 +44,8 @@ public class Form
 {
     private String label;
 
+    private String subtitle;
+        
     private List<Group> groups = new ArrayList<Group>();
 
     private Map<String, Object> options = new HashMap<String, Object>();
@@ -63,6 +65,17 @@ public class Form
         this.label = label;
     }
 
+    @JsonProperty
+    public String getSubtitle()
+    {
+        return subtitle;
+    }
+    
+    public void setSubtitle( String subtitle )
+    {
+        this.subtitle = subtitle;
+    }
+    
     @JsonProperty
     public List<Group> getGroups()
     {
