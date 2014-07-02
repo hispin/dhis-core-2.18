@@ -215,6 +215,7 @@ input[type=text],input[type=password],textarea
   padding-top: 6px;
   border-right: 1px solid #ddd;
   box-shadow: #ddd 0 0 2px 0;
+  z-index: 10;
 }
 
 #leftBarContents
