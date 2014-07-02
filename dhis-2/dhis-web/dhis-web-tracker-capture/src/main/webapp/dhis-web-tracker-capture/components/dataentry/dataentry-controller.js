@@ -290,7 +290,7 @@ trackerCapture.controller('DataEntryController',
          
         //input is valid
         $scope.updateSuccess = false;      
-   
+        
         if(!angular.isUndefined($scope.currentEvent[prStDe.dataElement.id])){
 
             if($scope.currentEventOriginal[prStDe.dataElement.id] !== $scope.currentEvent[prStDe.dataElement.id]){
