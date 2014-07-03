@@ -362,12 +362,6 @@ div.paging a.active
     margin-bottom: 20px;
 }
 
-.bordered-div-compact {
-    border: 1px solid #c2c2c2;
-    border-radius: 5px;
-    padding: 5px;
-}
-
 .nav, .pagination, .carousel, .panel-title a { 
     cursor: pointer; 
     text-decoration: none;
@@ -524,7 +518,9 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .container-1-1 {
     width: 100%;
     float: left;
+    margin-top: 50px;   
     height: 100%; 
+    min-height: 100%; 
 }
 
 .container-1-2 {
@@ -585,6 +581,12 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     margin-top: 5px;    
 }
 
+.search-container-main {
+    width: 100%;
+    float: left;
+    height: 100%; 
+}
+
 .search-container{
     margin: 5px;
     padding: 5px; 
@@ -599,6 +601,15 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 
 .widget-content-container{
     padding: 20px 10px;
+}
+
+.relationship-container {
+    border: 1px solid #c2c2c2;
+    border-radius: 5px;
+    padding: 5px;
+    min-height: 500px;
+    max-height: 500px;
+    overflow-y: scroll;
 }
 
 .trim {
@@ -976,4 +987,3 @@ a:hover {
     right: 0;
     left: auto;
 }
-
