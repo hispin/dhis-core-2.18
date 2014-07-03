@@ -286,9 +286,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( aclService.isSupported( getEntityClass() ) )
         {
-            User user = currentUserService.getCurrentUser();
-            
-            addAccessProperties( entities, user );
+            addAccessProperties( entities );
         }
 
         for ( T entity : entities )
@@ -557,8 +555,10 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return schemaService.getDynamicSchema( getEntityClass() );
     }
 
-    protected void addAccessProperties( List<T> objects, User user )
+    protected void addAccessProperties( List<T> objects )
     {
+        User user = currentUserService.getCurrentUser();
+        
         for ( T object : objects )
         {
             Access access = new Access();
@@ -582,9 +582,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( entityList != null && aclService.isSupported( getEntityClass() ) )
         {
-            User user = currentUserService.getCurrentUser();
-            
-            addAccessProperties( entityList, user );
+            addAccessProperties( entityList );
         }
     }
 
