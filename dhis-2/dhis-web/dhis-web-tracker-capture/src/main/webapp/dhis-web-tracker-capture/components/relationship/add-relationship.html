@@ -14,15 +14,11 @@
 
     <div class="row" ng-show="selectedRelationshipType">
         <hr>
-        <div class="col-md-12">
-            <p>{{'a_is_to_b'| translate}} = {{selectedRelationshipType.aIsToB}}</p>
-            <p>{{'b_is_to_a'| translate}} = {{selectedRelationshipType.bIsToA}}</p>
-        </div>
         <div class="row col-md-12">
             <div class="col-md-5">
-                <h3 class='align-center'>A</h3>
-                <div class='bordered-div-compact'>
-                    <table class="table table-striped table-borderless">
+                <div class='align-center bold'>A ({{selectedRelationshipType.aIsToB}})</div>
+                <div class='relationship-container'>
+                    <table class="table table-striped table-compact table-borderless">
                         <tr ng-repeat="attribute in selectedTei.attributes">
                             <td>
                                 {{attribute.displayName}}
@@ -35,15 +31,15 @@
                 </div>
             </div>
             <div class="col-md-7">
-                <h3 class='align-center'>B</h3>
-                <div class='bordered-div-compact'>      
+                <div class='align-center bold'>B ({{selectedRelationshipType.bIsToA}})</div>
+                <div class='relationship-container'>      
                     <select ng-model="selectedRelationshipSource"
                             class="form-control"
                             ng-options="relationshipSource | translate for relationshipSource in relationshipSources">
                         <option value="">{{'please_select_source'| translate}}</option>
                     </select>
-                    
-                    <div id="searchDropDownParent" class="input-group vertical-spacing" ng-show="selectedRelationshipSource === 'search_from_existing' ">
+
+                    <div id="searchDropDownParent" class="input-group vertical-spacing" ng-show="selectedRelationshipSource === 'search_from_existing'">
                         <input type="text" placeholder="{{'search_from_existing'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="showHideSearch()">
                         <div class="input-group-btn">
                             <button class="btn btn-default without-border-radius trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-click="showHideSearch()"><i class="fa fa-caret-down"></i></button>
@@ -54,14 +50,13 @@
                             </div>
                         </div>                
                     </div>
-                    <div ng-show="selectedRelationshipSource === 'register_new' ">
-                        <div ng-include="'components/registration/registration.html'"></div>
+                    <div ng-show="selectedRelationshipSource === 'register_new'">
+                        <div ng-include="'components/registration/registration-and-relationship.html'"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 <div class="modal-footer">        
     <button class="btn btn-primary trim" data-ng-click="add()" >{{'add'| translate}}</button>
