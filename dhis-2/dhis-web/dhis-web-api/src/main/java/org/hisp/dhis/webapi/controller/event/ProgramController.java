@@ -32,14 +32,18 @@ import com.google.common.collect.Lists;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.schema.descriptors.ProgramSchemaDescriptor;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,6 +55,24 @@ import java.util.List;
 public class ProgramController
     extends AbstractCrudController<Program>
 {
+    @Autowired
+    private ProgramInstanceService programInstanceService;
+
+    @Override
+    protected void postCreateEntity( Program program )
+    {
+        if ( program.isSingleEvent() && !program.isRegistration() )
+        {
+            ProgramInstance programInstance = new ProgramInstance();
+            programInstance.setEnrollmentDate( new Date() );
+            programInstance.setDateOfIncident( new Date() );
+            programInstance.setProgram( program );
+            programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
+
+            programInstanceService.addProgramInstance( programInstance );
+        }
+    }
+
     protected List<Program> getEntityList( WebMetaData metaData, WebOptions options )
     {
         List<Program> entityList;
