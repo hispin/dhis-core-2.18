@@ -102,6 +102,16 @@ public class MapView
     private Integer areaRadius;
     
     private Boolean hidden;
+    
+    private Boolean labels;
+    
+    private String labelFontSize;
+    
+    private String labelFontWeight;
+    
+    private String labelFontStyle;
+    
+    private String labelFontColor;
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -352,9 +362,74 @@ public class MapView
         return hidden;
     }
 
+    public void setLabels( Boolean labels )
+    {
+        this.labels = labels;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public Boolean getLabels()
+    {
+        return labels;
+    }
+
     public void setHidden( Boolean hidden )
     {
         this.hidden = hidden;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getLabelFontSize()
+    {
+        return labelFontSize;
+    }
+
+    public void setLabelFontSize( String labelFontSize )
+    {
+        this.labelFontSize = labelFontSize;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getLabelFontWeight()
+    {
+        return labelFontWeight;
+    }
+
+    public void setLabelFontWeight( String labelFontWeight )
+    {
+        this.labelFontWeight = labelFontWeight;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getLabelFontStyle()
+    {
+        return labelFontStyle;
+    }
+
+    public void setLabelFontStyle( String labelFontStyle )
+    {
+        this.labelFontStyle = labelFontStyle;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getLabelFontColor()
+    {
+        return labelFontColor;
+    }
+
+    public void setLabelFontColor( String labelFontColor )
+    {
+        this.labelFontColor = labelFontColor;
     }
 
     @JsonProperty
@@ -404,6 +479,11 @@ public class MapView
             organisationUnitGroupSet = mapView.getOrganisationUnitGroupSet();
             areaRadius = mapView.getAreaRadius();
             hidden = mapView.getHidden();
+            labels = mapView.getLabels();
+            labelFontSize = mapView.getLabelFontSize();
+            labelFontWeight = mapView.getLabelFontWeight();
+            labelFontStyle = mapView.getLabelFontStyle();
+            labelFontColor = mapView.getLabelFontColor();
         }
     }
 }

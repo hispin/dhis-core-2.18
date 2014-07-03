@@ -46,7 +46,6 @@
 
 html * {
 	font-family: arial, sans-serif, liberation sans, consolas !important;
-	font-size: 11px !important;
 }
 
 	/* Scrollbar Webkit */
@@ -124,6 +123,8 @@ table.padding1 td {
 .gis-panel-html-label .x-panel-body {
 	height: 22px;
 	line-height: 18px;
+    padding-right: 5px;
+    padding-left: 4px;
 }
 
 .x-splitter-collapsed .x-layout-split-bottom { /* Hide expand arrow when east panel is collapsed */
@@ -136,6 +137,11 @@ table.padding1 td {
 	clear: none;
 	display: block;
 	margin-bottom: 2px !important;
+    font-size: 11px;
+}
+
+.x-panel-body, .x-window-body {
+    font-size: 11px;
 }
 
 
@@ -232,6 +238,78 @@ table.padding1 td {
 
 
 /*----------------------------------------------------------------------------
+ * NS Accordion
+ *--------------------------------------------------------------------------*/
+
+	/* accordion title bar, shared */
+.ns-accordion .x-accordion-item .x-accordion-hd {
+	padding: 6px 5px 4px 8px;
+	border: 0 none;
+	cursor: pointer;
+	border-radius: 0;
+    background-image: none;
+    background-color: #e0e0e0;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dedede), color-stop(100%, #e6e6e6)) !important;
+    background-image: -webkit-linear-gradient(top, #dddddd, #e6e6e6) !important;
+    background-image: -moz-linear-gradient(top, #dddddd, #e6e6e6) !important;
+    background-image: -o-linear-gradient(top, #dddddd, #e6e6e6) !important;
+    background-image: -ms-linear-gradient(top, #dddddd, #e6e6e6) !important;
+    background-image: linear-gradient(top, #dddddd, #e6e6e6) !important;
+}
+	/* accordion title dock, default, collapsed */
+.ns-accordion .collapsed .x-accordion-hd {
+	padding-bottom: 5px !important;
+}
+
+	/* accordion title dock outer, shared */
+.ns-accordion .x-accordion-item {
+	border-radius: 1px;
+}
+	/* accordion title dock outer, default */
+.ns-accordion .x-accordion-item {
+	border: 1px solid #c5c5c5;
+	border-bottom: 0 none;
+}
+	/* accordion title dock outer, last */
+.ns-accordion .ns-accordion-last {
+	border: 1px solid #c5c5c5;
+}
+
+	/* accordion title dock text, shared */
+.ns-accordion .x-accordion-hd .x-panel-header-text {
+	font-weight: bold;
+	cursor: pointer;
+}
+
+	/* accordion item body */
+.ns-accordion .x-accordion-body {
+	padding: 1px;
+	border-top: 1px solid #c5c5c5 !important;
+}
+
+.ns-accordion .x-accordion-hd-sibling-expanded {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+}
+
+.ns-accordion .ns-toolbar-multiselect-left, .ns-accordion .ns-toolbar-multiselect-right {
+	margin-bottom: 0;
+}
+
+	/* accordion combo box */
+.ns-accordion .ns-combo .x-form-text, .ns-accordion .ns-combo .x-form-trigger {
+	height: 24px;
+	padding-top: 1px;
+}
+	/* accordion combo box label */
+.ns-accordion .ns-combo .x-form-item-label {
+	padding: 4px 0 0;
+}
+
+
+/*----------------------------------------------------------------------------
  * Combobox
  *--------------------------------------------------------------------------*/
 
@@ -255,6 +333,16 @@ table.padding1 td {
 /*----------------------------------------------------------------------------
  * GIS Combobox
  *--------------------------------------------------------------------------*/
+
+.gis-combo {
+    margin-bottom: 1px;
+}
+
+    /* Form label */
+.gis-combo .x-form-item-label-left {
+    padding-top: 4px;
+    padding-left: 4px;
+}
 
 	/* Combobox text position*/
 .gis-combo .x-form-text {
@@ -871,6 +959,7 @@ gis-combo .x-form-item-label {
 .gis-grid .x-grid-cell-inner {
 	padding-top: 3px;
 	padding-bottom: 3px;
+    font-size: 10px;
 }
 
 .gis-grid .x-column-header-text {
@@ -906,6 +995,10 @@ gis-combo .x-form-item-label {
 /*----------------------------------------------------------------------------
  * GIS Textfield
  *--------------------------------------------------------------------------*/
+
+.gis-textfield {
+    margin-bottom: 1px;
+}
 
 .gis-textfield input.x-form-text {
 	border-radius: 1px;
@@ -954,6 +1047,22 @@ label.x-form-cb-label-alt1 {
     position: relative;
     top: -2px;
     padding-left: 4px;
+    font-size: 11px;
+}
+
+
+/*----------------------------------------------------------------------------
+ * GIS Checkbox
+ *--------------------------------------------------------------------------*/
+
+.gis-checkbox {
+    margin-bottom: 1px;
+}
+
+    /* Form label */
+.gis-checkbox .x-form-item-label-left {
+    padding-top: 4px;
+    padding-left: 4px;
 }
 
 
@@ -961,11 +1070,35 @@ label.x-form-cb-label-alt1 {
  * GIS Numberfield
  *--------------------------------------------------------------------------*/
 
-.gis-numberfield input.x-form-text {
-	border-top-left-radius: 1px;
-	border-bottom-left-radius: 1px;
+.gis-numberfield {
+    margin-bottom: 1px;
 }
 
+    /* Form label */
+.gis-numberfield .x-form-item-label-left {
+    padding-top: 4px;
+    padding-left: 4px;
+}
+
+.gis-numberfield .x-form-field {
+    height: 24px !important;
+}
+
+.gis-numberfield .x-form-spinner-up,
+.gis-numberfield .x-form-spinner-down {
+    height: 12px !important;
+    background-image: url('../images/spinner_24.png');
+}
+
+.gis-numberfield .x-form-spinner-down {
+    background-position: 0 -12px;
+}
+.gis-numberfield .x-form-spinner-down-over {
+    background-position: -17px -12px;
+}
+.gis-numberfield .x-form-spinner-down-click {
+    background-position: -34px -12px;
+}
 
 /*----------------------------------------------------------------------------
  * GIS Label
