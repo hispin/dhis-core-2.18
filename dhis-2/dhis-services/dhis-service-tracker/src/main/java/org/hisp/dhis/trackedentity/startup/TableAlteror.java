@@ -287,6 +287,10 @@ public class TableAlteror
         executeSql( "update datavalue set attributeoptioncomboid=" + attributeoptioncomboid + " where storedby='aggregated_from_tracker' or comment='aggregated_from_tracker'" );
 
         executeSql( "update trackedentityattribute set confidential = false where confidential is null;" );
+        
+        executeSql( "update programstage_dataelements set allowfuturedate = allowdateinfuture where allowfuturedate is null" );
+        executeSql( "update programstage_dataelements set allowfuturedate = false where allowfuturedate is null" );
+        executeSql( "ALTER TABLE programstage_dataelements DROP COLUMN allowdateinfuture" );
     }
 
     // -------------------------------------------------------------------------
