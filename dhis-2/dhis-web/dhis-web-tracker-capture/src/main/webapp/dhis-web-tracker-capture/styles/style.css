@@ -362,6 +362,12 @@ div.paging a.active
     margin-bottom: 20px;
 }
 
+.bordered-div-compact {
+    border: 1px solid #c2c2c2;
+    border-radius: 5px;
+    padding: 5px;
+}
+
 .nav, .pagination, .carousel, .panel-title a { 
     cursor: pointer; 
     text-decoration: none;
@@ -518,9 +524,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .container-1-1 {
     width: 100%;
     float: left;
-    margin-top: 50px;   
     height: 100%; 
-    min-height: 100%; 
 }
 
 .container-1-2 {
@@ -704,6 +708,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 .modal-body {
     position: relative;
+    font-size: 14px;
 }
 .modal-footer {
     padding: 19px 20px 20px;    
@@ -736,7 +741,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 }
 @media screen and (min-width: 768px) {
     .modal-dialog {
-        width: 600px;
+        width: 75%;
         padding-top: 30px;
         padding-bottom: 30px;
     }
@@ -967,8 +972,8 @@ a:hover {
     border-color: #d1d1d1;
 }
 
-
 .dropdown-menu-right{
     right: 0;
     left: auto;
 }
+

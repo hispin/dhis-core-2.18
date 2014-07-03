@@ -292,8 +292,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         //$rootScope.showAdvancedSearchDiv = false;
     };
     
-    
-    
     $scope.showHideColumns = function(){
         
         $scope.hiddenGridColumns = 0;

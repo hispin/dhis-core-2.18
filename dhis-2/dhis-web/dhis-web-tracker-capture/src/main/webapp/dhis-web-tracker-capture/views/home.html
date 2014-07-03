@@ -55,7 +55,7 @@
         </div>
 
         <div id="searchDropDownParent" class="input-group col-md-5">
-            <input type="text" placeholder="{{'type_your_search_criteria_here'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid - input'} [!searchText && emptySearchText]" ng-focus="showHideSearch()" ng-disabled="showRegistrationDiv">
+            <input type="text" placeholder="{{'type_your_search_criteria_here'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid-input'} [!searchText && emptySearchText]" ng-focus="showHideSearch()" ng-disabled="showRegistrationDiv">
             <div class="input-group-btn">
                 <button class="btn btn-default without-border-radius trim" type="button" title="{{'advanced_search'| translate}}" data-toggle="dropdown" ng-click="showHideSearch()" ng-disabled="showRegistrationDiv"><i class="fa fa-caret-down"></i></button>
                 <button class="btn btn-primary trim" type="button" title="{{'search'| translate}}" ng-disabled="showRegistrationDiv" ng-click="search(searchMode.freeText)"><i class="fa fa-search"></i></button>
@@ -92,7 +92,7 @@
     <!--registration form begins -->
     <div class="row" ng-if="showRegistrationDiv">
         <div class="col-md-8">
-            <div ng-include="'components/registration/registration.html'"></div>             
+            <div ng-include="'components/registration/registration-and-enrollment.html'"></div>             
         </div>
     </div>
     <!-- registration form ends -->

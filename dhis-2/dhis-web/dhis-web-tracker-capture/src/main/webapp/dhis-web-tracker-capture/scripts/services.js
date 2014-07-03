@@ -33,8 +33,42 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };  
 })
 
+/* Factory to fetch relationships */
+.factory('RelationshipFactory', function($q, $rootScope, StorageService) { 
+    return {
+        getAll: function(){
+            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.getAll('relationshipTypes').done(function(relationshipTypes){
+                    $rootScope.$apply(function(){
+                        def.resolve(relationshipTypes);
+                    });                    
+                });
+            });            
+            
+            return def.promise;            
+        },
+        get: function(uid){
+            
+            var def = $q.defer();
+            
+            StorageService.currentStore.open().done(function(){
+                StorageService.currentStore.get('relationshipTypes', uid).done(function(relationshipType){                    
+                    $rootScope.$apply(function(){
+                        def.resolve(relationshipType);
+                    });
+                });
+            });                        
+            return def.promise;            
+        }
+    };
+})
+
+
 /* Factory to fetch programs */
-.factory('ProgramFactory', function($q, $rootScope, StorageService, ProgramStageFactory) { 
+.factory('ProgramFactory', function($q, $rootScope, StorageService) { 
     return {
         getAll: function(){
             
