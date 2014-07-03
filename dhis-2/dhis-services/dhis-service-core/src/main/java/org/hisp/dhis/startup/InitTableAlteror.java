@@ -62,7 +62,6 @@ public class InitTableAlteror
         executeSql( "UPDATE programstageinstance SET status='ACTIVE' WHERE status='0';" );
         executeSql( "UPDATE programstageinstance SET status='COMPLETED' WHERE status='1';" );
         executeSql( "UPDATE programstageinstance SET status='SKIPPED' WHERE status='5';" );
-        executeSql( "ALTER TABLE programstage_dataelements RENAME COLUMN allowDateInFuture to allowFutureDate;" );
     }
 
     // -------------------------------------------------------------------------
