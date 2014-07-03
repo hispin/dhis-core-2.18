@@ -28,9 +28,18 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.base.Enums;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
+import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.acl.Access;
 import org.hisp.dhis.acl.AclService;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -57,6 +66,7 @@ import org.hisp.dhis.node.types.SimpleNode;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.webapi.controller.exception.NotFoundException;
 import org.hisp.dhis.webapi.service.ContextService;
 import org.hisp.dhis.webapi.service.LinkService;
@@ -73,16 +83,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.Enums;
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -283,7 +286,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( aclService.isSupported( getEntityClass() ) )
         {
-            addAccessProperties( entities );
+            User user = currentUserService.getCurrentUser();
+            
+            addAccessProperties( entities, user );
         }
 
         for ( T entity : entities )
@@ -552,18 +557,18 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return schemaService.getDynamicSchema( getEntityClass() );
     }
 
-    protected void addAccessProperties( List<T> objects )
+    protected void addAccessProperties( List<T> objects, User user )
     {
         for ( T object : objects )
         {
             Access access = new Access();
-            access.setManage( aclService.canManage( currentUserService.getCurrentUser(), object ) );
-            access.setExternalize( aclService.canExternalize( currentUserService.getCurrentUser(), object.getClass() ) );
-            access.setWrite( aclService.canWrite( currentUserService.getCurrentUser(), object ) );
-            access.setRead( aclService.canRead( currentUserService.getCurrentUser(), object ) );
-            access.setUpdate( aclService.canUpdate( currentUserService.getCurrentUser(), object ) );
-            access.setDelete( aclService.canDelete( currentUserService.getCurrentUser(), object ) );
-
+            access.setManage( aclService.canManage( user, object ) );
+            access.setExternalize( aclService.canExternalize( user, object.getClass() ) );
+            access.setWrite( aclService.canWrite( user, object ) );
+            access.setRead( aclService.canRead( user, object ) );
+            access.setUpdate( aclService.canUpdate( user, object ) );
+            access.setDelete( aclService.canDelete( user, object ) );
+            
             ((BaseIdentifiableObject) object).setAccess( access );
         }
     }
@@ -577,7 +582,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( entityList != null && aclService.isSupported( getEntityClass() ) )
         {
-            addAccessProperties( entityList );
+            User user = currentUserService.getCurrentUser();
+            
+            addAccessProperties( entityList, user );
         }
     }
 
