@@ -152,7 +152,7 @@
         url: context.url,
         data: {
           paging: true,
-          pageSize: 50,
+          pageSize: 100 + context.target.children().length,
           page: context.page
         },
         dataType: 'json'
