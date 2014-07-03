@@ -75,10 +75,7 @@
                                     </div>
                                 </div>                            
                             </div> 
-                        </div>
-                        <div ng-switch-when="string">
-                            <input type="text" class="form-control-select2" ng-model="attribute.value" /> 
-                        </div>
+                        </div>                        
                         <div ng-switch-when="optionSet">
                             <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
                                 <option ng-repeat="option in attribute.optionSet.options" value="{{option}}">{{option}}</option>
@@ -88,7 +85,10 @@
                             <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
                                 <option ng-repeat="option in boolOperators" value="{{option}}">{{option| translate}}</option>
                             </select>
-                        </div>                    
+                        </div> 
+                        <div ng-switch-default>
+                            <input type="text" class="form-control-select2" ng-model="attribute.value" /> 
+                        </div>
                     </div>
                 </td>
             </tr>         
