@@ -1,5 +1,5 @@
-<div class="search-container">
-        
+<div class="container-1-1">
+    <div class="search-container">    
         <table data-stop-propagation="true" class="table-borderless table-striped">
             <tr>
                 <td>{{'org_unit'| translate}}</td>
@@ -86,14 +86,16 @@
                         </div>
                         <div ng-switch-when="bool">
                             <select multiple ui-select2  ng-model="attribute.value" data-placeholder="{{'please_select'| translate}}" style="width:100%;">
-                                <option ng-repeat="option in boolOperators" value="{{option}}">{{option | translate}}</option>
+                                <option ng-repeat="option in boolOperators" value="{{option}}">{{option| translate}}</option>
                             </select>
                         </div>                    
                     </div>
                 </td>
             </tr>         
         </table>
+    </div>
 
+    <div class="horizonal-spacing">
         <button type="button"
                 class="btn btn-primary"
                 ng-click="search(searchMode.attributeBased)">
@@ -109,5 +111,5 @@
                 ng-click="showHideSearch()">
             {{'cancel'| translate}}
         </button>
-        
+    </div>
 </div>
