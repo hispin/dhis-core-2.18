@@ -115,6 +115,16 @@
     <property name="areaRadius" />
 	  
 	<property name="hidden" />
+	  
+	<property name="labels" />
+	  
+	<property name="labelFontSize" />
+	  
+	<property name="labelFontWeight" />
+	  
+	<property name="labelFontStyle" />
+	  
+	<property name="labelFontColor" />
 
   </class>
 </hibernate-mapping>

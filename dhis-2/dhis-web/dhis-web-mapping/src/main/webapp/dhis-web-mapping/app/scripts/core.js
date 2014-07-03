@@ -214,7 +214,7 @@ Ext.onReady( function() {
 				shadow: false,
 				resizable: false,
 				items: {
-					html: feature.attributes.label
+					html: feature.attributes.popupText
 				}
 			});
 
@@ -738,7 +738,7 @@ Ext.onReady( function() {
 		});
 	};
 
-	GIS.core.StyleMap = function(id, labelConfig) {
+	GIS.core.StyleMap = function(config) {
 		var defaults = {
 				fillOpacity: 1,
 				strokeColor: '#fff',
@@ -757,14 +757,15 @@ Ext.onReady( function() {
                 labelYOffset: 13
 			};
 
-		if (labelConfig) {
-            defaults.label = labelConfig.label;
-            defaults.fontFamily = labelConfig.fontFamily;
-			defaults.fontSize = (labelConfig.fontSize || 13) + 'px';
-			defaults.fontWeight = labelConfig.strong ? 'bold' : 'normal';
-			defaults.fontStyle = labelConfig.italic ? 'italic' : 'normal';
-			defaults.fontColor = labelConfig.color ? (labelConfig.color.split('').shift() !== '#' ? '#' + labelConfig.color : labelConfig.color) : '#000000';
-		}
+        defaults.label = '\${label}';
+        defaults.fontFamily = 'arial,sans-serif,roboto,helvetica neue,helvetica,consolas';
+
+        if (config) {
+            defaults.fontSize = config.labelFontSize;
+            defaults.fontWeight = config.labelFontWeight;
+            defaults.fontStyle = config.labelFontStyle;
+            defaults.fontColor = config.labelFontColor;
+        }
 
 		return new OpenLayers.StyleMap({
 			'default': defaults,
@@ -779,7 +780,7 @@ Ext.onReady( function() {
 					force:true
 				})
 			],
-			styleMap: GIS.core.StyleMap(id),
+			styleMap: GIS.core.StyleMap(),
 			visibility: false,
 			displayInLayerSwitcher: false,
 			layerType: gis.conf.finals.layer.type_vector,
@@ -1384,7 +1385,7 @@ Ext.onReady( function() {
 			features = features || layer.core.featureStore.features;
 
 			for (var i = 0; i < features.length; i++) {
-				features[i].attributes.label = features[i].attributes.name;
+				features[i].attributes.popupText = features[i].attributes.name + ' (' + features[i].attributes[view.organisationUnitGroupSet.id] + ')';
 			}
 
 			layer.removeFeatures(layer.features);
@@ -1400,6 +1401,14 @@ Ext.onReady( function() {
                 success;
 
 			view = view || layer.core.view;
+
+            // labels
+            for (var i = 0, attr; i < layer.features.length; i++) {
+                attr = layer.features[i].attributes;
+                attr.label = view.labels ? attr.name : '';
+            }
+
+            layer.styleMap = GIS.core.StyleMap(view);
 
             success = function(r) {
                 var data = r.organisationUnitGroups,
@@ -1560,6 +1569,13 @@ Ext.onReady( function() {
 					}
 					return gis.conf.finals.widget.loadtype_organisationunit;
 				}
+
+                if (doExecute) {
+                    loader.zoomToVisibleExtent = false;
+                    loadLegend(view);
+                }
+
+                return gis.conf.finals.widget.loadtype_legend;
 			}
 			else {
 				if (doExecute) {
@@ -1649,23 +1665,24 @@ Ext.onReady( function() {
 			features = features || layer.core.featureStore.features;
 
 			for (var i = 0; i < features.length; i++) {
-				features[i].attributes.label = features[i].attributes.name;
 				features[i].attributes.value = 0;
+                features[i].attributes.popupText = features[i].attributes.name;
 			}
 
 			layer.removeFeatures(layer.features);
 			layer.addFeatures(features);
-
-            // labels
-            if (layer.hasLabels) {
-                layer.core.setFeatureLabelStyle(true, true);
-            }
 
 			loadLegend(view);
 		};
 
 		loadLegend = function(view) {
 			view = view || layer.core.view;
+
+            // labels
+            for (var i = 0, feature; i < layer.features.length; i++) {
+                attr = layer.features[i].attributes;
+                attr.label = view.labels ? attr.name : '';
+            }
 
 			var options = {
 				indicator: gis.conf.finals.widget.value,
@@ -1679,6 +1696,9 @@ Ext.onReady( function() {
 			layer.core.view = view;
 
 			layer.core.applyClassification(options);
+
+            // labels
+            layer.core.setFeatureLabelStyle(view.labels, false, view);
 
 			afterLoad(view);
 		};
@@ -2034,7 +2054,8 @@ Ext.onReady( function() {
 
 					if (featureMap.hasOwnProperty(id) && valueMap.hasOwnProperty(id)) {
 						feature.attributes.value = valueMap[id];
-						feature.attributes.label = feature.attributes.name + ' (' + feature.attributes.value + ')';
+                        feature.attributes.popupText = feature.attributes.name + ' (' + feature.attributes.value + ')';
+
 						newFeatures.push(feature);
 					}
 				}
@@ -2077,6 +2098,14 @@ Ext.onReady( function() {
 				fn;
 
 			view = view || layer.core.view;
+
+            // labels
+            for (var i = 0, feature; i < layer.features.length; i++) {
+                attr = layer.features[i].attributes;
+                attr.label = view.labels ? attr.name + ' (' + attr.value + ')' : '';
+            }
+
+            layer.styleMap = GIS.core.StyleMap(view);
 
 			addNames = function(response) {
 
@@ -2351,7 +2380,7 @@ Ext.onReady( function() {
 				widget: {
 					item_width: 288,
 					itemlabel_width: 95,
-					window_width: 310
+					window_width: 306
 				},
 				tool: {
 					item_width: 228,
@@ -2948,7 +2977,6 @@ Ext.onReady( function() {
 
                     if (Ext.Array.contains([gis.layer.thematic1.id, gis.layer.thematic2.id, gis.layer.thematic3.id, gis.layer.thematic4.id], config.layer)) {
                         if (!config.columns) {
-                            console.log('Data dimension is invalid', config.columns);
                             return;
                         }
                     }
@@ -2996,6 +3024,22 @@ Ext.onReady( function() {
 					layout.radiusHigh = Ext.isNumber(config.radiusHigh) && !Ext.isEmpty(config.radiusHigh) ? config.radiusHigh : 15;
 					layout.opacity = Ext.isNumber(config.opacity) && !Ext.isEmpty(config.opacity) ? config.opacity : gis.conf.layout.layer.opacity;
 					layout.areaRadius = config.areaRadius;
+
+                    layout.labels = !!config.labels;
+
+                    layout.labelFontSize = config.labelFontSize || '11px';
+                    layout.labelFontSize = parseInt(layout.labelFontSize) + 'px';
+
+                    layout.labelFontWeight = Ext.isString(config.labelFontWeight) || Ext.isNumber(config.labelFontWeight) ? config.labelFontWeight : 'normal';
+                    layout.labelFontWeight = Ext.Array.contains(['normal', 'bold', 'bolder', 'lighter'], layout.labelFontWeight) ? layout.labelFontWeight : 'normal';
+                    layout.labelFontWeight = Ext.isNumber(parseInt(layout.labelFontWeight)) && parseInt(layout.labelFontWeight) <= 1000 ? layout.labelFontWeight.toString() : layout.labelFontWeight;
+
+                    layout.labelFontStyle = Ext.Array.contains(['normal', 'italic', 'oblique'], config.labelFontStyle) ? config.labelFontStyle : 'normal';
+
+                    layout.labelFontColor = Ext.isString(config.labelFontColor) || Ext.isNumber(config.labelFontColor) ? config.labelFontColor : 'normal';
+                    layout.labelFontColor = Ext.isNumber(config.labelFontColor) ? config.labelFontColor.toString() : config.labelFontColor;
+                    layout.labelFontColor = layout.labelFontColor.charAt(0) !== '#' ? '#' + layout.labelFontColor : layout.labelFontColor;
+
                     layout.hidden = !!config.hidden;
 
 					layout.userOrganisationUnit = isOu;

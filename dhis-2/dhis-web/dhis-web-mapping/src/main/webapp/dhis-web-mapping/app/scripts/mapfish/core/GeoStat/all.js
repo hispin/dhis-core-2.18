@@ -424,7 +424,7 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
         this.layer.redraw();
     },
 
-    setFeatureLabelStyle: function(isLabel, skipDraw) {
+    setFeatureLabelStyle: function(isLabel, skipDraw, view) {
         for (var i = 0, feature, style, label; i < this.layer.features.length; i++) {
             feature = this.layer.features[i];
             style = feature.style;
@@ -435,6 +435,13 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
                 style.fontWeight = style.strokeWidth > 1 ? 'bold' : 'normal';
                 style.labelAlign = 'cr';
                 style.labelYOffset = 13;
+
+                if (view.labelFontSize) {
+                    style.fontSize = view.labelFontSize;
+                }
+                if (view.labelFontStyle) {
+                    style.fontStyle = view.labelFontStyle;
+                }
             }
             else {
                 style.label = null;
