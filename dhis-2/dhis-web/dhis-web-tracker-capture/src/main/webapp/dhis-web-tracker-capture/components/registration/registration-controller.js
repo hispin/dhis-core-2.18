@@ -1,18 +1,21 @@
 trackerCapture.controller('RegistrationController', 
-        function($scope,
+        function($rootScope,
+                $scope,
                 $location,
+                $timeout,
                 AttributesFactory,
                 TEService,
                 TEIService,
                 EnrollmentService,
                 DialogService,
+                CurrentSelection,
+                DateUtils,
                 storage,
                 TranslationService) {
 
     //do translation of the registration page
     TranslationService.translate();   
-    
-    $scope.valueExists = false;
+
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
     $scope.enrollment = {enrollmentDate: '', incidentDate: ''};   
     
@@ -36,7 +39,7 @@ trackerCapture.controller('RegistrationController',
         }
     });    
     
-    $scope.registerEntity = function(showDashboard){
+    $scope.registerEntity = function(destination){
         
         //check for form validity
         $scope.outerForm.submitted = true;        
@@ -89,7 +92,7 @@ trackerCapture.controller('RegistrationController',
                                 dateOfIncident: $scope.enrollment.incidentDate
                             };
                     EnrollmentService.enroll(enrollment).then(function(data){
-                        if(data.status != 'SUCCESS'){
+                        if(data.status !== 'SUCCESS'){
                             //enrollment has failed
                             var dialogOptions = {
                                     headerText: 'enrollment_error',
@@ -111,18 +114,44 @@ trackerCapture.controller('RegistrationController',
                 return;
             }
             
-            //reset form
-            angular.forEach($scope.attributes, function(attribute){
-                attribute.value = ''; 
-            });
-            $scope.enrollment.enrollmentDate = '';
-            $scope.enrollment.incidentDate =  '';
-            $scope.outerForm.submitted = false; 
+            $timeout(function() { 
+                //reset form
+                angular.forEach($scope.attributes, function(attribute){
+                    delete attribute.value;                
+                });            
+
+                $scope.enrollment.enrollmentDate = '';
+                $scope.enrollment.incidentDate =  '';
+                $scope.outerForm.submitted = false; 
+
+
+                if(destination === 'DASHBOARD') {
+                    $location.path('/dashboard').search({tei: teiId,                                            
+                                            program: $scope.selectedProgram ? $scope.selectedProgram.id: null});
+                }            
+                else if(destination === 'RELATIONSHIP' ){
+                    $scope.tei.trackedEntityInstance = teiId;
+                    $scope.broadCastSelections();
+                }
+            }, 100);        
             
-            if(showDashboard){
-                $location.path('/dashboard').search({tei: teiId,                                            
-                                            program: $scope.selectedProgram ? $scope.selectedProgram.id: null});    
-            }            
         });
+    };
+    
+    $scope.resetRelationshipSource = function(){
+        $scope.selectedRelationshipSource = '';        
+    };
+    
+    $scope.broadCastSelections = function(){
+        angular.forEach($scope.tei.attributes, function(att){
+            $scope.tei[att.attribute] = att.value;
+        });
+        
+        $scope.tei.orgUnitName = $scope.selectedOrgUnit.name;
+        $scope.tei.created = DateUtils.format(new Date());
+        CurrentSelection.setRelationshipInfo({tei: $scope.tei, src: $scope.selectedRelationshipSource});
+        $timeout(function() { 
+            $rootScope.$broadcast('relationship', {});
+        }, 100);
     };
 });

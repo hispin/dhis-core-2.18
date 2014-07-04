@@ -10,7 +10,20 @@
                     <label><input type="radio" ng-model="selectedOuMode.name" name="accessible" value="ACCESSIBLE"> {{'ACCESSIBLE'| translate}}</label>
                 </td>
             </tr>
-            <tr ng-if="selectedProgram">
+            <tr>
+                <td>
+                    {{'program' | translate}}
+                </td>
+                <td>
+                    <select ng-model="selectedProgramForRelative"
+                            class="form-control"
+                            ng-change='setAttributesForSearch(selectedProgramForRelative)'
+                            ng-options="program as program.name for program in programs | orderBy: 'name'">
+                        <option value="">{{'please_select_a_program'| translate}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr ng-if="selectedProgramForRelative">
                 <td>{{'enrollment_date'| translate}}</td>
                 <td>
                     <div class="dataelement-filter">

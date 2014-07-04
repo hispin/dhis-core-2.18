@@ -506,7 +506,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 
 .service('EntityQueryFactory', function(OperatorFactory){  
     
-    this.getQueryForAttributes = function(attributes, enrollment){
+    this.getAttributesQuery = function(attributes, enrollment){
 
         var query = {url: null, hasValue: false};
         
@@ -716,6 +716,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 /* current selections */
 .service('CurrentSelection', function(){
     this.currentSelection = '';
+    this.relationshipInfo = '';
     
     this.set = function(currentSelection){  
         this.currentSelection = currentSelection;        
@@ -723,6 +724,14 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     
     this.get = function(){
         return this.currentSelection;
+    };
+    
+    this.setRelationshipInfo = function(relationshipInfo){  
+        this.relationshipInfo = relationshipInfo;        
+    };
+    
+    this.getRelationshipInfo = function(){
+        return this.relationshipInfo;
     };
 })
 
