@@ -6,3 +6,4 @@ man: manual.xml
 
 clean:
 	rm -f  *.gz
+	rm -f ../pkg/usr/share/man/man1/*
