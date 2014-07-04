@@ -118,6 +118,12 @@
 	</action>	
 	
 	
+	<!-- for PBF Admin DataEntry Role Quanitity External Verification-->	 
+	<action name="pbfAdminDataEntry" class="org.hisp.dhis.rbf.action.NoAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-maintenance-rbf/loadDataEntryForm.vm</param>		
+	 	<param name="requiredAuthorities">F_PBF_ADMIN_DATAENTRY</param>		
+	</action>	
 	
 	
 	<!-- Save Value -->

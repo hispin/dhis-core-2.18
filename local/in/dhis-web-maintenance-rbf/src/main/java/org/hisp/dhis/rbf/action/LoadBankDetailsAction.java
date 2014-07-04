@@ -15,19 +15,20 @@ import org.hisp.dhis.rbf.api.LookupService;
 
 import com.opensymphony.xwork2.Action;
 
-public class LoadBankDetailsAction implements Action
+public class LoadBankDetailsAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-   
+
     private BankDetailsService bankDetailsService;
 
     public void setBankDetailsService( BankDetailsService bankDetailsService )
     {
         this.bankDetailsService = bankDetailsService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -36,14 +37,14 @@ public class LoadBankDetailsAction implements Action
     }
 
     private LookupService lookupService;
-    
+
     public void setLookupService( LookupService lookupService )
     {
         this.lookupService = lookupService;
     }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -59,23 +60,23 @@ public class LoadBankDetailsAction implements Action
     {
         this.orgUnitUid = orgUnitUid;
     }
-    
+
     private List<DataSet> dataSets = new ArrayList<DataSet>();
-    
+
     public List<DataSet> getDataSets()
     {
         return dataSets;
-    }    
+    }
 
-	private List<String> banks = new ArrayList<String>();
+    private List<String> banks = new ArrayList<String>();
 
     public List<String> getBanks()
     {
         return banks;
     }
-    
+
     private List<BankDetails> bankDetailsList = new ArrayList<BankDetails>();
-    
+
     public List<BankDetails> getBankDetailsList()
     {
         return bankDetailsList;
@@ -87,37 +88,46 @@ public class LoadBankDetailsAction implements Action
     public String execute()
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
-        
+
         bankDetailsList.addAll( bankDetailsService.getBankDetails( organisationUnit ) );
+
         dataSets.clear();
+
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
         List<DataSet> bankDetailDataSets = new ArrayList<DataSet>();
-        for( Lookup lookup : lookups )
+        for ( Lookup lookup : lookups )
         {
             Integer dataSetId = Integer.parseInt( lookup.getValue() );
-            
+
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
-            dataSets.add(dataSet);
+            
+            if( dataSet != null )
+            {
+                dataSets.add( dataSet );
+            }
+            
         }
-        for(BankDetails bd : bankDetailsList)
+        for ( BankDetails bd : bankDetailsList )
         {
-        	bankDetailDataSets.add( bd.getDataSet() );
+            bankDetailDataSets.add( bd.getDataSet() );
         }
-        //dataSets.removeAll(bankDetailDataSets);
-        
+        // dataSets.removeAll(bankDetailDataSets);
+
         lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.BANK ) );
-        for( Lookup lookup : lookups )
+        for ( Lookup lookup : lookups )
         {
             banks.add( lookup.getValue() );
         }
-        
-        Collections.sort(dataSets);
-        /*for(DataSet ds : dataSets)
+
+        System.out.println( "Data Set Size :--" + dataSets.size() );
+
+        for ( DataSet ds : dataSets )
         {
-        	System.out.println(ds.getName());
+            System.out.println( ds.getName() );
         }
-        System.out.println(dataSets.size());
-        */
+
+        Collections.sort( dataSets );
+
         return SUCCESS;
     }
 }
