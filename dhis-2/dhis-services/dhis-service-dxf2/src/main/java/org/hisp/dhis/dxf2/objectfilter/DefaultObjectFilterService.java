@@ -76,9 +76,14 @@ public class DefaultObjectFilterService implements ObjectFilterService
         return list;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private <T> boolean evaluateWithFilters( T object, Filters filters )
     {
+        if ( object == null )
+        {
+            return false;
+        }
+
         Schema schema = schemaService.getDynamicSchema( object.getClass() );
 
         for ( String field : filters.getFilters().keySet() )
