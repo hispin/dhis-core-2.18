@@ -340,6 +340,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
             var url = '../api/trackedEntityInstances';
             
+            console.log('the tei is:  ', tei);
+            
             var promise = $http.put( url + '/' + tei.trackedEntityInstance , tei).then(function(response){
                 return response.data;
             });

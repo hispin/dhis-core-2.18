@@ -14,7 +14,7 @@ trackerCapture.controller('DashboardController',
 
     //do translation of the dashboard page
     TranslationService.translate();    
-    
+ 
     //dashboard items   
     $rootScope.biggerDashboardWidgets = [];
     $rootScope.smallerDashboardWidgets = [];//{bigger: [], smaller: []};       
@@ -32,19 +32,50 @@ trackerCapture.controller('DashboardController',
     $rootScope.smallerDashboardWidgets.push($rootScope.relationshipWidget);
     $rootScope.smallerDashboardWidgets.push($rootScope.notesWidget);
     
-    //selections
-    $scope.selectedTeiId = null;
-    $scope.selectedProgramId = null;
-    
+    //selections  
     $scope.selectedTeiId = ($location.search()).tei; 
     $scope.selectedProgramId = ($location.search()).program; 
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
-    $scope.selectedProgram;
-    $scope.programs = []; 
-    $scope.selectedTei;
+    $scope.selectedProgram;    
+    $scope.selectedTei;    
+    
+    $scope.$on('fromRelationship', function(event, args) { 
+        $scope.selectedTeiId = args.teiId;        
         
-    if( $scope.selectedTeiId ){
-        
+        if( $scope.selectedTeiId ){        
+            
+            //Fetch the selected entity
+            TEIService.get($scope.selectedTeiId).then(function(data){
+                $scope.selectedTei = data;
+
+                //get the entity type
+                TEService.get($scope.selectedTei.trackedEntity).then(function(te){
+                    $scope.trackedEntity = te;
+
+                    ProgramFactory.getAll().then(function(programs){  
+                        $scope.programs = []; 
+                        //get programs valid for the selected ou and tei
+                        angular.forEach(programs, function(program){
+                            if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
+                               program.trackedEntity.id === $scope.selectedTei.trackedEntity){
+                                $scope.programs.push(program);
+                            }
+
+                            if($scope.selectedProgramId && program.id === $scope.selectedProgramId){
+                                $scope.selectedProgram = program;
+                            }
+                        });
+
+                        //broadcast selected items for dashboard controllers
+                        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null});
+                        $scope.broadCastSelections();                                    
+                    });
+                });            
+            });      
+        }
+    });
+    
+    if($scope.selectedTeiId){
         //Fetch the selected entity
         TEIService.get($scope.selectedTeiId).then(function(data){
             $scope.selectedTei = data;
@@ -54,7 +85,8 @@ trackerCapture.controller('DashboardController',
                 $scope.trackedEntity = te;
                 
                 ProgramFactory.getAll().then(function(programs){  
-            
+                    
+                    $scope.programs = []; 
                     //get programs valid for the selected ou and tei
                     angular.forEach(programs, function(program){
                         if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
@@ -72,7 +104,7 @@ trackerCapture.controller('DashboardController',
                     $scope.broadCastSelections();                                    
                 });
             });            
-        });       
+        });      
     }
     
     $scope.broadCastSelections = function(){
@@ -85,8 +117,7 @@ trackerCapture.controller('DashboardController',
         $timeout(function() { 
             $rootScope.$broadcast('selectedItems', {programExists: $scope.programs.length > 0});            
         }, 100); 
-    };
-     
+    };     
     
     $scope.back = function(){
         $location.path('/');
@@ -113,5 +144,9 @@ trackerCapture.controller('DashboardController',
 
         modalInstance.result.then(function () {
         });
+    };
+    
+    $scope.test = function(){
+        console.log('test');
     };
 });
