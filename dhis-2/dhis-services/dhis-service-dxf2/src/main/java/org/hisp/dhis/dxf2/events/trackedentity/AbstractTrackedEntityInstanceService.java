@@ -125,15 +125,17 @@ public abstract class AbstractTrackedEntityInstanceService
         {
             org.hisp.dhis.dxf2.events.trackedentity.Relationship relationship = new org.hisp.dhis.dxf2.events.trackedentity.Relationship();
             relationship.setDisplayName( entityRelationship.getRelationshipType().getDisplayName() );
+            relationship.setTrackedEntityInstanceA( entityRelationship.getEntityInstanceA().getUid() );
+            relationship.setTrackedEntityInstanceB( entityRelationship.getEntityInstanceB().getUid() );
 
-            if ( entityInstance.getUid().equals( entityRelationship.getEntityInstanceA().getUid() ) )
+            /*if ( entityInstance.getUid().equals( entityRelationship.getEntityInstanceA().getUid() ) )
             {
                 relationship.setTrackedEntityInstance( entityRelationship.getEntityInstanceB().getUid() );
             }
             else
             {
                 relationship.setTrackedEntityInstance( entityRelationship.getEntityInstanceA().getUid() );
-            }
+            }*/
 
             relationship.setRelationship( entityRelationship.getRelationshipType().getUid() );
 
@@ -387,12 +389,20 @@ public abstract class AbstractTrackedEntityInstanceService
                     + relationship.getRelationship() ) );
             }
 
-            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstance = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstance() );
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceA = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstanceA() );
 
-            if ( entityInstance == null )
+            if ( entityInstanceA == null )
             {
                 importConflicts.add( new ImportConflict( "Relationship.trackedEntityInstance", "Invalid trackedEntityInstance "
-                    + relationship.getTrackedEntityInstance() ) );
+                    + relationship.getTrackedEntityInstanceA() ) );
+            }
+            
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceB = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstanceB() );
+
+            if ( entityInstanceB == null )
+            {
+                importConflicts.add( new ImportConflict( "Relationship.trackedEntityInstance", "Invalid trackedEntityInstance "
+                    + relationship.getTrackedEntityInstanceB() ) );
             }
         }
 
@@ -422,11 +432,13 @@ public abstract class AbstractTrackedEntityInstanceService
     {
         for ( org.hisp.dhis.dxf2.events.trackedentity.Relationship relationship : trackedEntityInstance.getRelationships() )
         {
-            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceB = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstance() );
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceA = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstanceA() );
+            org.hisp.dhis.trackedentity.TrackedEntityInstance entityInstanceB = manager.get( org.hisp.dhis.trackedentity.TrackedEntityInstance.class, relationship.getTrackedEntityInstanceB() );
+            
             RelationshipType relationshipType = manager.get( RelationshipType.class, relationship.getRelationship() );
 
             Relationship entityRelationship = new Relationship();
-            entityRelationship.setEntityInstanceA( entityInstance );
+            entityRelationship.setEntityInstanceA( entityInstanceA );
             entityRelationship.setEntityInstanceB( entityInstanceB );
             entityRelationship.setRelationshipType( relationshipType );
 

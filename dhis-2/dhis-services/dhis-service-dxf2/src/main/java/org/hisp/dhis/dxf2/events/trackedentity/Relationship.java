@@ -41,7 +41,9 @@ public class Relationship
 {
     private String displayName;
 
-    private String trackedEntityInstance;
+    private String trackedEntityInstanceA;
+    
+    private String trackedEntityInstanceB;
 
     private String relationship;
 
@@ -63,14 +65,26 @@ public class Relationship
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public String getTrackedEntityInstance()
+    public String getTrackedEntityInstanceA()
     {
-        return trackedEntityInstance;
+        return trackedEntityInstanceA;
     }
 
-    public void setTrackedEntityInstance( String trackedEntityInstance )
+    public void setTrackedEntityInstanceA( String trackedEntityInstanceA )
     {
-        this.trackedEntityInstance = trackedEntityInstance;
+        this.trackedEntityInstanceA = trackedEntityInstanceA;
+    }
+    
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getTrackedEntityInstanceB()
+    {
+        return trackedEntityInstanceB;
+    }
+
+    public void setTrackedEntityInstanceB( String trackedEntityInstanceB )
+    {
+        this.trackedEntityInstanceB = trackedEntityInstanceB;
     }
 
     @JsonProperty
@@ -94,7 +108,9 @@ public class Relationship
         Relationship that = (Relationship) o;
 
         if ( displayName != null ? !displayName.equals( that.displayName ) : that.displayName != null ) return false;
-        if ( trackedEntityInstance != null ? !trackedEntityInstance.equals( that.trackedEntityInstance ) : that.trackedEntityInstance != null )
+        if ( trackedEntityInstanceA != null ? !trackedEntityInstanceA.equals( that.trackedEntityInstanceA ) : that.trackedEntityInstanceA != null )
+            return false;
+        if ( trackedEntityInstanceB != null ? !trackedEntityInstanceB.equals( that.trackedEntityInstanceB ) : that.trackedEntityInstanceB != null )
             return false;
         if ( relationship != null ? !relationship.equals( that.relationship ) : that.relationship != null ) return false;
 
@@ -105,7 +121,8 @@ public class Relationship
     public int hashCode()
     {
         int result = displayName != null ? displayName.hashCode() : 0;
-        result = 31 * result + (trackedEntityInstance != null ? trackedEntityInstance.hashCode() : 0);
+        result = 31 * result + (trackedEntityInstanceA != null ? trackedEntityInstanceA.hashCode() : 0);
+        result = 31 * result + (trackedEntityInstanceB != null ? trackedEntityInstanceB.hashCode() : 0);
         result = 31 * result + (relationship != null ? relationship.hashCode() : 0);
         return result;
     }
@@ -115,7 +132,8 @@ public class Relationship
     {
         return "Relationship{" +
             "displayName='" + displayName + '\'' +
-            ", trackedEntityInstance='" + trackedEntityInstance + '\'' +
+            ", trackedEntityInstanceA='" + trackedEntityInstanceA + '\'' +
+            ", trackedEntityInstanceB='" + trackedEntityInstanceB + '\'' +
             ", relationship='" + relationship + '\'' +
             '}';
     }

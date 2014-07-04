@@ -1,6 +1,8 @@
 trackerCapture.controller('RelationshipController',
         function($scope,
-                $modal,
+                $modal,                
+                $rootScope,
+                $timeout,
                 CurrentSelection,
                 RelationshipFactory,
                 TranslationService) {
@@ -8,9 +10,12 @@ trackerCapture.controller('RelationshipController',
     TranslationService.translate();        
 
     $scope.relationshipTypes = []; 
-    
+    $scope.relationships = [];
     RelationshipFactory.getAll().then(function(rels){
         $scope.relationshipTypes = rels;    
+        angular.forEach(rels, function(rel){
+            $scope.relationships[rel.id] = rel;
+        });
     });    
     
     //listen for the selected entity       
@@ -42,6 +47,12 @@ trackerCapture.controller('RelationshipController',
             $scope.selectedTei.relationships = relationships;
         });
     };    
+    
+    $scope.showDashboard = function(teiId){
+        $timeout(function() { 
+            $rootScope.$broadcast('fromRelationship', {teiId: teiId});
+        }, 100);
+    };
 })
 
 //Controller for adding new relationship
@@ -54,6 +65,7 @@ trackerCapture.controller('RelationshipController',
             ProgramFactory,
             TEIService,
             TEIGridService,
+            DialogService,
             Paginator,
             storage,
             $modalInstance, 
@@ -65,6 +77,7 @@ trackerCapture.controller('RelationshipController',
     $scope.selectedTei = selectedTei;
     $scope.relationshipSources = ['search_from_existing','register_new'];
     $scope.selectedRelationshipSource = {};   
+    $scope.relationship = {};
     
     //Selection
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
@@ -114,11 +127,7 @@ trackerCapture.controller('RelationshipController',
         }
     };
     
-    $scope.ouModes = [{name: 'SELECTED'}, 
-                    {name: 'CHILDREN'}, 
-                    {name: 'DESCENDANTS'},
-                    {name: 'ACCESSIBLE'}
-                  ];         
+    $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         
     $scope.selectedOuMode = $scope.ouModes[0];
     
     //Paging
@@ -295,8 +304,34 @@ trackerCapture.controller('RelationshipController',
         $scope.teiForRelationship = selectedTei;
     };
     
-    $scope.add = function(){       
-        console.log('I will add new relationship');     
+    $scope.addRelationship = function(){
+        if($scope.selectedTei && $scope.teiForRelationship && $scope.relationship.selected){
+
+            var relationship = {relationship: $scope.relationship.selected.id, 
+                                displayName: $scope.relationship.selected.name, 
+                                trackedEntityInstanceA: $scope.selectedTei.trackedEntityInstance, 
+                                trackedEntityInstanceB: $scope.teiForRelationship.id};
+            
+            if($scope.selectedTei.relationships){
+                $scope.selectedTei.relationships.push(relationship);
+            }
+            else{
+                $scope.selectedTei.relationships = [relationship];
+            }
+            
+            TEIService.update($scope.selectedTei).then(function(response){
+                if(response.status !== 'SUCCESS'){//update has failed
+                    var dialogOptions = {
+                            headerText: 'update_error',
+                            bodyText: response.description
+                        };
+                    DialogService.showDialog({}, dialogOptions);
+                    return;
+                }
+                
+                $modalInstance.close($scope.selectedTei.relationships);                
+            });
+        }        
     };
 })
 
@@ -442,7 +477,7 @@ trackerCapture.controller('RelationshipController',
                 $scope.enrollment.incidentDate =  '';
                 $scope.outerForm.submitted = false; 
                 
-                $scope.tei.trackedEntityInstance = teiId;
+                $scope.tei.id = teiId;
                 $scope.broadCastSelections();
                 
             }, 100);        

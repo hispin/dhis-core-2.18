@@ -15,12 +15,16 @@
     <div ng-show="relationshipWidget.expand" class="panel-body dashboard-element-container">
         <div ng-show="selectedTei && !selectedTei.relationships" class="alert alert-info">{{'no_relationship'| translate}}</div> 
         <div ng-show="!selectedTei" class="alert alert-info">{{'relationship_not_possible'| translate}}</div> 
-        <div ng-show="showAddRelationshipDiv">
-            <select ng-model="selectedRelationshipType"
-                    class="form-control"
-                    ng-options="relationshipType as relationshipType.name for relationshipType in relationshipTypes | orderBy: 'name'">
-                <option value="">{{'please_select_a_relationship'| translate}}</option>
-            </select>
+        
+        <div ng-show="selectedTei" class="remove-default-padding">
+            <table class="table table-striped dhis2-table-hover">
+                <tr ng-repeat="rel in selectedTei.relationships">
+                    <td>
+                        <span ng-click="showDashboard(rel.trackedEntityInstanceB)" ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA">{{relationships[rel.relationship].bIsToA}}</span>
+                        <span ng-click="showDashboard(rel.trackedEntityInstanceA)" ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceB">{{relationships[rel.relationship].aIsToB}}</span>
+                    </td> 
+                </tr>
+            </table>
         </div>
     </div>
 </div>
