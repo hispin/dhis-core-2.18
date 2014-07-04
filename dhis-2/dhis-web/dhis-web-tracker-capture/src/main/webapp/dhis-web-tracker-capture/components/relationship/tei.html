@@ -23,7 +23,7 @@
                 </thead>
                 <tbody id="list">
                     <tr ng-repeat="trackedEntity in trackedEntityList.rows" 
-                        ng-click="showDashboard(trackedEntity)">
+                        ng-click="assignRelationship(trackedEntity)">
                         <td ng-show="gridColumn.show"                                            
                             ng-repeat="gridColumn in gridColumns">                                                
                             {{trackedEntity[gridColumn.id]}}                                                

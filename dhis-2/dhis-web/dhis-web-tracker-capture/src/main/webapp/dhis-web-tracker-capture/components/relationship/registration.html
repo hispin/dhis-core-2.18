@@ -1,5 +1,5 @@
-<div class="bordered-div col-md-12" ng-controller="RegistrationController">    
-    <div class="registration-container">
+<div ng-controller="RegistrationController">    
+
         <form name="outerForm" novalidate>
             
             <div ng-if='!selectedProgram'>
@@ -95,8 +95,8 @@
             <div class="vertical-spacing">                
                 <button type="button" class="btn btn-primary" ng-click="registerEntity(true)">{{'save_and_continue'| translate}}</button>
                 <button type="button" class="btn btn-success small-horizonal-spacing" ng-click="registerEntity(false)">{{'save_and_add_new'| translate}}</button>
-                <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="showRegistration()">{{'cancel'| translate}}</button>
+                <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="closeRegistration()">{{'cancel'| translate}}</button>
             </div>
         </form>
-    </div>
+
 </div>

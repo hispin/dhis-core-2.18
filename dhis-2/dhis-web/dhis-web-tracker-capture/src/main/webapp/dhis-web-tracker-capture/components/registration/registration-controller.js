@@ -12,6 +12,7 @@ trackerCapture.controller('RegistrationController',
     //do translation of the registration page
     TranslationService.translate();   
     
+    $scope.valueExists = false;
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
     $scope.enrollment = {enrollmentDate: '', incidentDate: ''};   
     
@@ -51,13 +52,22 @@ trackerCapture.controller('RegistrationController',
         }
         
         //get tei attributes and their values
+        //but there could be a case where attributes are non-mandatory and
+        //registration form comes empty, in this case enforce at least one value
+        $scope.valueExists = false;
         var registrationAttributes = [];    
         angular.forEach($scope.attributes, function(attribute){
             if(!angular.isUndefined(attribute.value)){
                 var att = {attribute: attribute.id, value: attribute.value};
                 registrationAttributes.push(att);
+                $scope.valueExists = true;
             } 
         });       
+        
+        if(!$scope.valueExists){
+            //registration form is empty
+            return false;
+        }
         
         //prepare tei model and do registration
         $scope.tei = {trackedEntity: selectedTrackedEntity, orgUnit: $scope.selectedOrgUnit.id, attributes: registrationAttributes };   

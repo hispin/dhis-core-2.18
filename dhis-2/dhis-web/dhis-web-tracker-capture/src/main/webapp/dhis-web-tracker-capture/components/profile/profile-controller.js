@@ -35,24 +35,26 @@ trackerCapture.controller('ProfileController',
     //if no program, display attributesInNoProgram
     $scope.processTeiAttributes = function(){        
  
-        if($scope.selectedProgram && $scope.selectedEnrollment){
-            //show attribute for selected program and enrollment
-            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
-                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, true);
-            }); 
-        }
-        if($scope.selectedProgram && !$scope.selectedEnrollment){
-            //show attributes for selected program            
-            AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
-                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, false);
-            }); 
-        }
-        if(!$scope.selectedProgram && !$scope.selectedEnrollment){
-            //show attributes in no program            
-            AttributesFactory.getWithoutProgram().then(function(atts){                
-                $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, false);                
-            });
-        }        
+        if($scope.selectedTei.attributes){
+            if($scope.selectedProgram && $scope.selectedEnrollment){
+                //show attribute for selected program and enrollment
+                AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
+                    $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, true);
+                }); 
+            }
+            if($scope.selectedProgram && !$scope.selectedEnrollment){
+                //show attributes for selected program            
+                AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){    
+                    $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, false);
+                }); 
+            }
+            if(!$scope.selectedProgram && !$scope.selectedEnrollment){
+                //show attributes in no program            
+                AttributesFactory.getWithoutProgram().then(function(atts){                
+                    $scope.selectedTei.attributes = $scope.showRequiredAttributes(atts,$scope.selectedTei.attributes, false);                
+                });
+            }
+        }              
     };
     
     $scope.showRequiredAttributes = function(requiredAttributes, teiAttributes, fromEnrollment){        

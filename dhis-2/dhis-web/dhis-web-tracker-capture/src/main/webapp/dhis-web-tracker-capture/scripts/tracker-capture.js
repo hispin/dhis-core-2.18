@@ -138,7 +138,7 @@ $(document).ready(function()
     $("#searchDropDown").width(searchParentWidth);
     $('#searchDropDown').on('click', "[data-stop-propagation]", function(e) {
         e.stopPropagation();
-    });    
+    });   
 
 });
 

@@ -92,6 +92,11 @@
                 </table>
             </div>
             
+            
+            <div ng-if="!valueExists  && outerForm.submitted">
+                <div class="alert alert-warning">{{'form_is_empty_fill_at_least_one'| translate}}</div> 
+            </div>
+            
             <div class="vertical-spacing">                
                 <button type="button" class="btn btn-primary" ng-click="registerEntity(true)">{{'save_and_continue'| translate}}</button>
                 <button type="button" class="btn btn-success small-horizonal-spacing" ng-click="registerEntity(false)">{{'save_and_add_new'| translate}}</button>
