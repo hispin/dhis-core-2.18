@@ -228,7 +228,7 @@ function validateAddBank()
 			<th >Branch Name</th>
 			<th >Account Name</th>
 			<th >Account Number</th>
-			#if( $auth.hasAccess("dhis-web-maintenance-pbf","deleteBankData"))
+			#if( $auth.hasAccess("dhis-web-maintenance-rbf","deleteBankData"))
 				<th >Operations</th>
 			#end
         </tr>
@@ -247,7 +247,7 @@ function validateAddBank()
 				<td >$!bankDetails.branchName</td>
 				<td >$!bankDetails.accountName</td>
 				<td >$!bankDetails.accountNumber</td>
-			#if( $auth.hasAccess("dhis-web-maintenance-pbf","deleteBankData"))
+			#if( $auth.hasAccess("dhis-web-maintenance-rbf","deleteBankData"))
 	            <td>
 					<a href="javascript:deleteBankData('$bankDetails.organisationUnit.id','$bankDetails.dataSet.id')">
 						<img src="images/delete.png" width="17px"/>
