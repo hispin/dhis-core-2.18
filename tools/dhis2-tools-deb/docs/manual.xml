@@ -11,14 +11,86 @@
   <chapter>
     <title>Overview</title>
     <para>The dhis2-tools package is a collection of tools and utilities for installing and managing
-      DHIS2 applications on an ubuntu server.  The tools provide the ability to go from a "blank"
+      DHIS2 applications on an ubuntu server. The tools provide the ability to go from a "blank"
       server with only ssh running, to a fully functioning dhis2 installation in a matter of
-      minutes.  Used together they can also be combined into automated scripts to facilitate rapid
+      minutes. Used together they can also be combined into automated scripts to facilitate rapid
       reconstruction of a given configuration.</para>
+    <para>The tools have been collected and developed over a number of years.  This documentation
+      differs in some respects from the installation guidelines in the dhis2 user manual in that it describes
+      the implementation of a specific approach rather than the more general tutorial nature of the
+      user manual. It is recommended that implementers do also study the material in the user manual as it provides additional
+      information, eg. how to tune the postgresql server.  The rationale of the tools described in 
+      this manual includes:
+    <orderedlist>
+      <listitem>
+        <para>to ease the process of installation so that it can be easily explained, documented
+      and executed;</para>
+      </listitem>
+      <listitem>
+        <para>to assist system administrators (particularly, but not exclusively, lesser experienced
+          ones) to implement reasonable security measures by default and thus minimize vulnerabilities
+          brought about through human error and negligence;
+        </para>
+      </listitem>
+      <listitem>
+        <para>to provide a set of scripts to assist the administrator with tasks related to managing their
+        dhis2 system, beyond the one-off process of installation.</para>
+      </listitem>
+    </orderedlist>
+    The package remains a work in progress and there are a number of areas where it could and should
+    (and hopefully will be improved).  For example,
+      <orderedlist>
+        <listitem><para>currently the tuning of the postgresql database is not covered.  There are ways in which 
+          this could be at least semi-automated;</para></listitem>
+        <listitem><para>nginx configuration is assisted by means of providing a sample configuration file.
+        This configuration could be made more dynamic;</para></listitem>
+        <listitem><para>the format of what is currently packaged is an Ubuntu linux deb package. There is 
+          also considerable interest in the Redhat/CentOS flavour of linux for running dhis2.  It should be
+          possible to offer a yum format package to facilitate use on these systems. 
+        </para></listitem>
+      </orderedlist>
+    </para>
+    
+    <para>
+      <figure>
+        <title>Single machine all-in-one installation</title>
+        <graphic fileref="architecture.svg" align="center" width="80%"/>
+      </figure>
+    </para>
   </chapter>
-  
   <chapter>
-    <title>DHIS2 tools</title>
+    <title>Installation</title>
+    <para> This manual assumes that you have installed a minimal distribution of ubuntu server 12.04 LTS.
+      By minimal we mean that only the base operating system is installed together with an openssh server.  
+      During the installation you shouls avoid to install ANY other packages (like java, postgres, nginx etc).  
+      The dhis2-tools package and install.sh script will ensure that these required packages are installed
+      as dependencies.</para>
+    <para>
+      It is recommended as a general guideline that before proceeding any further you should strengthen the
+      security of the system at this point by securing your ssh service properly and installing a host based
+      firewall like ufw.  This process is described eleswhere(?).
+    </para>
+    <para> Once your base system is properly installed and secured you can proceed to install the
+      dhis2-tools package. To do so you need to copy the two file dhis2-tools-xxx.deb and install.sh
+      to the server. Place them together in a directory under your user's home directory. To do this
+      you will need to use a tool like scp (on linux) or winscp on windows. 
+    </para>
+    <para>
+      Once the files are in place you can install the tools by typing the following:
+      </para>
+    <para><code>sudo ./install.sh</code></para>
+    <para>there must be at least
+      one user who has full sudo rights (usermod -G sudo bobj). That user can run the
+      dhis-create-admin command and create new dhis administrators. These dhis admins do not need to
+      have root access at all, but they have full rights to the database and all (other) dhis
+      commands. The idea being that as you work with fledgling dhis admin users you can give them
+      rights without making them all root. Maybe it is too fanciful .. all the magic is happening in
+      /etc/sudoers.d/dhis2 (though looking at that again I suspect I actually have something wrong
+      there) </para>
+  </chapter>
+
+  <chapter>
+    <title>DHIS2 tools reference</title>
 
     <!-- ============================================================================== -->
     <refentry>
@@ -49,22 +121,24 @@
           will have a home directory created in /var/lib/dhis2/&lt;username>. This directory acts as
           both the <emphasis role="bold">DHIS2_HOME</emphasis> directory and also the <emphasis
             role="bold">CATALINA_BASE</emphasis> directory for the tomcat servlet container.</para>
-        <para>By default the instance is allocated 2G of heap space RAM.  This can be adjusted by
-          editing the parameters in <emphasis role="bold">/var/lib/dhis2/&lt;name>/bin/setenv.sh</emphasis>.</para>
+        <para>By default the instance is allocated 2G of heap space RAM. This can be adjusted by
+          editing the parameters in <emphasis role="bold"
+            >/var/lib/dhis2/&lt;name>/bin/setenv.sh</emphasis>.</para>
         <para>The servlet container is configured to run with an http connector pool of a maximum of
-          100 threads.  This parameter can be adjusted by editing <emphasis role="bold">/var/lib/dhis2/&lt;name>/conf/server.conf</emphasis>.</para>
-        <para>The servlet container configuration has been specially tweaked for running DHIS2.  For
+          100 threads. This parameter can be adjusted by editing <emphasis role="bold"
+            >/var/lib/dhis2/&lt;name>/conf/server.conf</emphasis>.</para>
+        <para>The servlet container configuration has been specially tweaked for running DHIS2. For
           example tomcat filters are used to ensure that all static content from the web application
-          are cacheable by web proxy servers such as nginx or apache.  The lib directory of the
+          are cacheable by web proxy servers such as nginx or apache. The lib directory of the
           webapp has been explicitly placed in the application classpath so that additional jars
           such as java compiled apache camel routes can be made available to the DHIS2
           application.</para>
-        <para>Note that a dhis2 war file is not deployed by default.  See the manual page for
+        <para>Note that a dhis2 war file is not deployed by default. See the manual page for
             <emphasis role="bold">dhis2-deploy-war</emphasis> for instructions to deploy a dhis2 war
           file over the internet from the latest stable global build, latest trunk build or from a
           user specified war file on the filesystem. </para>
         <para>You need to be a member of the <emphasis role="bold">dhis2-admin</emphasis> group to
-          use these and other tools for managing the instance.  See the manual page for <emphasis
+          use these and other tools for managing the instance. See the manual page for <emphasis
             role="bold">dhis2-create-admin</emphasis>.</para>
       </refsect1>
       <refsect1>
@@ -72,7 +146,9 @@
         <variablelist>
           <varlistentry>
             <term>-p</term>
-            <listitem><para>http port</para></listitem>
+            <listitem>
+              <para>http port</para>
+            </listitem>
           </varlistentry>
         </variablelist>
       </refsect1>
@@ -157,42 +233,55 @@
 
       <refsynopsisdiv>
         <cmdsynopsis>
-          <command>/usr/bin/dhis2-deploy-stable</command>
+          <command>/usr/bin/dhis2-deploy-war</command>
           <arg choice="opt">
             <option>OPTIONS</option>
           </arg>
           <arg choice="plain">instance name</arg>
         </cmdsynopsis>
       </refsynopsisdiv>
-      
+
       <refsect1>
         <title>OPTIONS</title>
         <variablelist>
           <varlistentry>
             <term>-t</term>
-            <listitem><para>Deploy war from latest trunk build.  NOT RECOMMENDED for production systems</para></listitem>
+            <listitem>
+              <para>Deploy war from latest trunk build. NOT RECOMMENDED for production
+                systems</para>
+            </listitem>
           </varlistentry>
           <varlistentry>
             <term>-l</term>
-            <listitem><para>Deploy war located at a custom url</para></listitem>
+            <listitem>
+              <para>Deploy war located at a custom url</para>
+            </listitem>
           </varlistentry>
           <varlistentry>
             <term>-f</term>
-            <listitem><para>Deploy war from a file on the filesystem</para></listitem>
+            <listitem>
+              <para>Deploy war from a file on the filesystem</para>
+            </listitem>
           </varlistentry>
         </variablelist>
       </refsect1>
-      
+
       <refsect1>
         <title>Description</title>
-        <para>Deploys a dhis2 war file to the instance.  The default behaviour when no options are given is to download and deploy the latest stable release from http://stable.dhis2.org.</para>
+        <para>Deploys a dhis2 war file to the instance. The default behaviour when no options are
+          given is to download and deploy the latest stable release from
+          http://stable.dhis2.org.</para>
       </refsect1>
       <refsect1>
         <title>Examples</title>
-        <para><command>dhis2-deploy-war myInstance</command> deploys the latest stable release from dhis2.org into myInstance.</para>
-        <para><command>dhis2-deploy-war -f wars/dhis.war myInstance</command> deploys the war file at wars/dhis.war into myInstance.</para>
-        <para><command>dhis2-deploy-war -t myInstance</command>  deploys the latest trunk build from the dhis2 team integration server into myInstance.  Don't use this in production.</para>
-        <para><command>dhis2-deploy-war -l http://mywars.org/dhis.war myInstance</command> deploys the war file from a user provided url into myInstance.</para>
+        <para><command>dhis2-deploy-war myInstance</command> deploys the latest stable release from
+          dhis2.org into myInstance.</para>
+        <para><command>dhis2-deploy-war -f wars/dhis.war myInstance</command> deploys the war file
+          at wars/dhis.war into myInstance.</para>
+        <para><command>dhis2-deploy-war -t myInstance</command> deploys the latest trunk build from
+          the dhis2 team integration server into myInstance. Don't use this in production.</para>
+        <para><command>dhis2-deploy-war -l http://mywars.org/dhis.war myInstance</command> deploys
+          the war file from a user provided url into myInstance.</para>
       </refsect1>
     </refentry>
 

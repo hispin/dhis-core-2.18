@@ -1,6 +1,6 @@
 Package: dhis2-tools
 Source: dhis2-tools
-Version: 1.0
+Version: 1.1
 Architecture: all
 Maintainer: DHIS2 developers <dhis2-devs@lists.launchpad.net>
 Installed-Size: 236
