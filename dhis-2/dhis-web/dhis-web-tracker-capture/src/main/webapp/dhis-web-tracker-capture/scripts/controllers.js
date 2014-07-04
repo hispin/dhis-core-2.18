@@ -21,13 +21,12 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //Selection
     $scope.selectedOrgUnit = '';
     $scope.selectedProgram = '';
-    $scope.ouModes = [
-                    {name: 'SELECTED', id: 1}, 
-                    {name: 'CHILDREN', id: 2}, 
-                    {name: 'DESCENDANTS', id: 3},
-                    {name: 'ACCESSIBLE', id: 4}
-                  ];                  
-    $scope.ouMode = $scope.ouModes[0];
+    $scope.ouModes = [{name: 'SELECTED'}, 
+                    {name: 'CHILDREN'}, 
+                    {name: 'DESCENDANTS'},
+                    {name: 'ACCESSIBLE'}
+                  ];         
+    $scope.selectedOuMode = $scope.ouModes[0];
     
     //Paging
     $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};   
@@ -179,7 +178,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         if( $scope.selectedSearchMode === $scope.searchMode.attributeBased ){
             
-            $scope.attributeUrl = EntityQueryFactory.getQueryForAttributes($scope.attributes, $scope.enrollment);
+            $scope.attributeUrl = EntityQueryFactory.getAttributesQuery($scope.attributes, $scope.enrollment);
             
             if(!$scope.attributeUrl.hasValue && !$scope.selectedProgram){
                 $scope.emptySearchAttribute = true;
@@ -196,7 +195,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         //get events for the specified parameters
         TEIService.search($scope.selectedOrgUnit.id, 
-                                            $scope.ouMode.name,
+                                            $scope.selectedOuMode.name,
                                             $scope.queryUrl,
                                             $scope.programUrl,
                                             $scope.attributeUrl.url,
@@ -258,7 +257,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         
         //generate grid column for the selected program/attributes
         angular.forEach(columns, function(column){
-            if(column.id === 'orgUnitName' && $scope.ouMode.name !== 'SELECTED'){
+            if(column.id === 'orgUnitName' && $scope.selectedOuMode.name !== 'SELECTED'){
                 column.show = true;    
             }
             
