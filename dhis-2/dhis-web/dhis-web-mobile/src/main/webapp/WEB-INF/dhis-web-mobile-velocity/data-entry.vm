@@ -376,16 +376,14 @@ $(document).bind('pagechange', function( event, data ) {
                 <li>
                     <label for='<%= fieldId %>'><%= field.label %></label>
 
-                    <% if( field.type == 'TEXT' ) { %>
-                        <% if( field.optionSet ) { %>
-                            <select type="" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255">
-                            <% for( var i=0,len=optionSets[field.optionSet].length; i<len; i++) { %>
-                                <option value="<%= optionSets[field.optionSet][i] %>" <% if( value == optionSets[field.optionSet][i] ) { %> selected="selected" <% } %>> <%= optionSets[field.optionSet][i] %></option>
-                            <% } %>
-                            </select>
-                        <% } else { %>
-                            <input type="text" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
+                    <% if( field.optionSet ) { %>
+                        <select type="" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255">
+                        <% for( var i=0,len=optionSets[field.optionSet].length; i<len; i++) { %>
+                            <option value="<%= optionSets[field.optionSet][i] %>" <% if( value == optionSets[field.optionSet][i] ) { %> selected="selected" <% } %>> <%= optionSets[field.optionSet][i] %></option>
                         <% } %>
+                        </select>
+                    <% } else if( field.type == 'TEXT' ) { %>
+                        <input type="text" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'LONG_TEXT' ) { %>
                         <input type="text" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'DATE' ) { %>
