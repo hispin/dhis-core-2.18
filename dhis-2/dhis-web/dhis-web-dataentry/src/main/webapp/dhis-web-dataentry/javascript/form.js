@@ -111,8 +111,8 @@ function getCurrentOrganisationUnit()
 
 DAO.store = new dhis2.storage.Store( {
     name: 'dhis2',
-    adapters: [ dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ],
-    objectStores: [ 'optionSets' ]
+    adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ],
+    objectStores: [ 'optionSets', 'forms' ]
 } );
 
 ( function( $ ) {
@@ -2730,6 +2730,12 @@ dhis2.de.autocompleteOptionSetField = function( idField, optionSetUid )
             input.val( ui.item.value );
             input.autocomplete( 'close' );
             input.change();
+        },
+        change: function( event, ui ) {
+            if( ui.item == null ) {
+                $( this ).val("");
+                $( this ).focus();
+            }
         }
     } ).addClass( 'ui-widget' );
 
