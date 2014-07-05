@@ -223,7 +223,30 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
         element.draggable();
       }
     };  
-}) 
+})
+
+.directive('d2PopOver', function($compile, $templateCache){
+    return {        
+        restrict: 'EA',
+        link: function(scope, element, attrs){
+            var content = $templateCache.get("note.html");
+            content = $compile(content)(scope);
+            var options = {
+                    content: content,
+                    placement: 'bottom',
+                    trigger: 'hover',
+                    html: true,
+                    title: scope.title               
+                };            
+            $(element).popover(options);
+        },
+        scope: {
+            content: '=',
+            title: '@details',
+            template: "@template"
+        }
+    };
+})
 
 .directive('serversidePaginator', function factory() {
     return {

@@ -114,6 +114,24 @@
                     </div>
                 </ng-form>
             </td>
-        </tr>
+        </tr>        
     </tbody>        
-</table>     
+</table>
+
+<textarea rows="3" ng-model="note.value" placeholder="{{'add_your_comment_here'| translate}}" style="width:99%;"></textarea>
+
+<table class="dhis2-list-table-striped">     
+    <tr ng-repeat="note in currentEvent.notes">
+        <td colspan="2" class="over-flow-hidden" style="width:99.5%;">
+            <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
+                <div>{{note.value}}</div>
+            </d2-pop-over>
+            <script type="text/ng-template" id="note.html">
+                <p>{{content.value}}</p>
+                <hr>
+                <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
+                <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
+            </script>
+        </td>
+    </tr>
+</table>

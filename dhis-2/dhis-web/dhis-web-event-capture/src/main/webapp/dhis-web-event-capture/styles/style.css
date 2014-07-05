@@ -505,3 +505,7 @@ input[type=number] {
 select {
     padding: 3px;
 }
+
+.clear {
+    clear: both
+}
