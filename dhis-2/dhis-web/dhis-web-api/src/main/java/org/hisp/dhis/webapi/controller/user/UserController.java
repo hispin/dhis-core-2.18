@@ -30,7 +30,6 @@ package org.hisp.dhis.webapi.controller.user;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.metadata.ImportTypeSummary;
 import org.hisp.dhis.hibernate.exception.CreateAccessDeniedException;
@@ -176,7 +175,7 @@ public class UserController
     {
         User user = renderService.fromXml( request.getInputStream(), getEntityClass() );
 
-        inviteUser( user, response );
+        inviteUser( user, request, response );
     }
 
     @RequestMapping( value = INVITE_PATH, method = RequestMethod.POST, consumes = "application/json" )
@@ -184,7 +183,7 @@ public class UserController
     {
         User user = renderService.fromJson( request.getInputStream(), getEntityClass() );
 
-        inviteUser( user, response );
+        inviteUser( user, request, response );
     }
 
     //--------------------------------------------------------------------------
@@ -266,7 +265,7 @@ public class UserController
      * @param response response for created user invitation
      * @throws Exception
      */
-    private void inviteUser( User user, HttpServletResponse response ) throws Exception
+    private void inviteUser( User user, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         RestoreOptions restoreOptions = user.getUsername() == null || user.getUsername().isEmpty() ?
             RestoreOptions.INVITE_WITH_USERNAME_CHOICE : RestoreOptions.INVITE_WITH_DEFINED_USERNAME;
@@ -276,7 +275,7 @@ public class UserController
         createUser( user, response );
 
         securityService.sendRestoreMessage( user.getUserCredentials(),
-            ContextUtils.getContextPath( ServletActionContext.getRequest() ), restoreOptions );
+            ContextUtils.getContextPath( request ), restoreOptions );
     }
 
     /**
