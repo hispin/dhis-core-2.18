@@ -1,4 +1,4 @@
-package org.hisp.dhis.mapgenerator;
+package org.hisp.dhis.mapgeneration;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
