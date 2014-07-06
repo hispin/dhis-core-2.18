@@ -39,11 +39,11 @@ public interface I18nManager
 {
     String ID = I18nManager.class.getName();
 
-    I18n getI18n( Class<?> clazz ) throws I18nManagerException;
+    I18n getI18n( Class<?> clazz );
 
-    I18n getI18n( Class<?> clazz, Locale locale ) throws I18nManagerException;
+    I18n getI18n( Class<?> clazz, Locale locale );
 
-    I18n getI18n( String clazzName ) throws I18nManagerException;
+    I18n getI18n( String clazzName );
 
-    I18nFormat getI18nFormat() throws I18nManagerException;
+    I18nFormat getI18nFormat();
 }

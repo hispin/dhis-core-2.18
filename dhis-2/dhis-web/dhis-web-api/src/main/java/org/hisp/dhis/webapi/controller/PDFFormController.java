@@ -51,7 +51,6 @@ import org.hisp.dhis.dxf2.pdfform.PdfDataEntryFormService;
 import org.hisp.dhis.dxf2.pdfform.PdfDataEntryFormUtil;
 import org.hisp.dhis.dxf2.pdfform.PdfFormFontSettings;
 import org.hisp.dhis.i18n.I18nManager;
-import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.ProgramStageService;
@@ -194,7 +193,7 @@ public class PDFFormController
     @RequestMapping(value = "/programStage/{programStageUid}", method = RequestMethod.GET)
     public void getFormPDF_ProgramStage( HttpServletRequest request, HttpServletResponse response,
         @PathVariable String programStageUid )
-        throws IOException, DocumentException, I18nManagerException
+        throws IOException, DocumentException
     {
         // 1. - Create Document and PdfWriter
         
@@ -249,7 +248,7 @@ public class PDFFormController
     // Helpers
     //--------------------------------------------------------------------------
 
-    private void writeToOutputStream( ByteArrayOutputStream baos, HttpServletResponse response )
+    private void writeToOutputStream( ByteArrayOutputStream baos, HttpServletResponse response ) //TODO unnecessary?
         throws IOException
     {
         OutputStream os = null;

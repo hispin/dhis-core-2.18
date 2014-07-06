@@ -38,7 +38,6 @@ import java.util.ResourceBundle;
 /**
  * @author Pham Thi Thuy
  * @author Nguyen Dang Quang
- * @version $Id: DefaultI18nManager.java 6335 2008-11-20 11:11:26Z larshelg $
  */
 public class DefaultI18nManager
     implements I18nManager
@@ -67,27 +66,24 @@ public class DefaultI18nManager
 
     @Override
     public I18n getI18n( Class<?> clazz )
-        throws I18nManagerException
     {
         return new I18n( getGlobalResourceBundle(), getSpecificResourceBundle( clazz.getName() ) );
     }
 
     @Override
     public I18n getI18n( Class<?> clazz, Locale locale )
-        throws I18nManagerException
     {
         return new I18n( getGlobalResourceBundle( locale ), getSpecificResourceBundle( clazz.getName(), locale ) );
     }
 
     @Override
-    public I18n getI18n( String clazzName ) throws I18nManagerException
+    public I18n getI18n( String clazzName )
     {
         return new I18n( getGlobalResourceBundle(), getSpecificResourceBundle( clazzName ) );
     }
     
     @Override
     public I18nFormat getI18nFormat()
-        throws I18nManagerException
     {
         I18nFormat formatter = new I18nFormat( getGlobalResourceBundle() );
 
@@ -101,13 +97,11 @@ public class DefaultI18nManager
     // -------------------------------------------------------------------------
 
     private ResourceBundle getGlobalResourceBundle()
-        throws I18nManagerException
     {
         return getGlobalResourceBundle( getCurrentLocale() );
     }
     
     private ResourceBundle getGlobalResourceBundle( Locale locale )
-        throws I18nManagerException
     {
         try
         {
@@ -115,7 +109,7 @@ public class DefaultI18nManager
         }
         catch ( ResourceBundleManagerException e )
         {
-            throw new I18nManagerException( "Failed to get global resource bundle", e );
+            throw new RuntimeException( "Failed to get global resource bundle", e );
         }
     }
 

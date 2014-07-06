@@ -35,7 +35,6 @@ import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nManager;
-import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -99,7 +98,7 @@ public class AggregatedValueController
         @RequestParam( required = false ) boolean lastYear,
         @RequestParam( required = false ) boolean lastFiveYears,
         HttpServletResponse response
-    ) throws IOException, I18nManagerException
+    ) throws IOException
     {
         RelativePeriods rp = new RelativePeriods();
         rp.setReportingMonth( lastMonth );
