@@ -168,7 +168,7 @@ public class SaveDocumentAction
 
         else if ( external )
         {
-            if ( !(url.startsWith( HTTP_PREFIX ) || url.startsWith( HTTPS_PREFIX )) )
+            if ( !( url.startsWith( HTTP_PREFIX ) || url.startsWith( HTTPS_PREFIX ) ) )
             {
                 url = HTTP_PREFIX + url;
             }
