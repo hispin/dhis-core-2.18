@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n.resourcebundle;
+package org.hisp.dhis.i18n.ui.resourcebundle;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
