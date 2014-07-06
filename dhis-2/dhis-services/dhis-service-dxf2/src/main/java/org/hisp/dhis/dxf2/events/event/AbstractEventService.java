@@ -411,8 +411,6 @@ public abstract class AbstractEventService
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
-        //ProgramInstance programInstance = programStageInstance.getProgramInstance();
-
         saveTrackedEntityComment( programStageInstance, event, storedBy );
 
         Set<TrackedEntityDataValue> dataValues = new HashSet<TrackedEntityDataValue>(
@@ -814,6 +812,7 @@ public abstract class AbstractEventService
     {
         for ( Note note : event.getNotes() )
         {
+            System.out.println("The note I am about to save is:  " + note.getValue());
             TrackedEntityComment comment = new TrackedEntityComment();
             comment.setCreator( storedBy );
             comment.setCreatedDate( new Date() );
