@@ -812,7 +812,6 @@ public abstract class AbstractEventService
     {
         for ( Note note : event.getNotes() )
         {
-            System.out.println("The note I am about to save is:  " + note.getValue());
             TrackedEntityComment comment = new TrackedEntityComment();
             comment.setCreator( storedBy );
             comment.setCreatedDate( new Date() );
