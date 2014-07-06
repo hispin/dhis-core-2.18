@@ -35,7 +35,9 @@ import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -100,6 +102,8 @@ public class JdbcEventStore
 
         Event event = new Event();
         event.setEvent( "not_valid" );
+        
+        Set<String> notes = new HashSet<String>();
 
         while ( rowSet.next() )
         {
@@ -169,6 +173,24 @@ public class JdbcEventStore
             dataValue.setStoredBy( rowSet.getString( "pdv_storedby" ) );
 
             event.getDataValues().add( dataValue );
+            
+            if ( rowSet.getString( "psinote_value" ) == null )
+            {
+                continue;
+            }
+
+            if( !notes.contains( rowSet.getString( "psinote_id" ) ) )
+            {
+                Note note = new Note();
+                note.setValue( rowSet.getString( "psinote_value" ) );
+                note.setStoredDate( StringUtils.defaultIfEmpty( 
+                    rowSet.getString( "psinote_soreddate" ), rowSet.getString( "psinote_soreddate" ) ) );           
+                note.setStoredBy( rowSet.getString( "psinote_storedby" ) );
+                
+                event.getNotes().add( note );
+                notes.add( rowSet.getString( "psinote_id" ) );
+            }
+            
         }
 
         return events;
@@ -182,11 +204,14 @@ public class JdbcEventStore
         String sql = 
             "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, " + 
             "psi.executiondate as psi_executiondate, psi.duedate as psi_duedate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude, " +
+            "psinote.trackedentitycommentid as psinote_id, psinote.commenttext as psinote_value, psinote.createddate as psinote_soreddate, psinote.creator as psinote_storedby, " +
             "pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid " +
             "from program p " +
             "left join programstage ps on ps.programid=p.programid " +
             "left join programstageinstance psi on ps.programstageid=psi.programstageid " +
-            "left join programinstance pi on pi.programinstanceid=psi.programinstanceid ";
+            "left join programinstance pi on pi.programinstanceid=psi.programinstanceid " +
+            "left join programstageinstancecomments psic on psi.programstageinstanceid=psic.programstageinstanceid " +
+            "left join trackedentitycomment psinote on psic.trackedentitycommentid=psinote.trackedentitycommentid ";
 
         if ( status == null || EventStatus.isExistingEvent( status ) )
         {
