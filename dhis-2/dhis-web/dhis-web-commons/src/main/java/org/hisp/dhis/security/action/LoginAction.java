@@ -28,16 +28,17 @@ package org.hisp.dhis.security.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
+import org.hisp.dhis.i18n.ui.resourcebundle.ResourceBundleManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DeviceResolver;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author mortenoh

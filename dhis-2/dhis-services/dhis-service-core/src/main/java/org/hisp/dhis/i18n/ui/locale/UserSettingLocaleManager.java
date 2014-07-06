@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n.locale;
+package org.hisp.dhis.i18n.ui.locale;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -32,8 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManagerException;
+import org.hisp.dhis.i18n.locale.LocaleManager;
+import org.hisp.dhis.i18n.ui.resourcebundle.ResourceBundleManager;
+import org.hisp.dhis.i18n.ui.resourcebundle.ResourceBundleManagerException;
 import org.hisp.dhis.user.UserSettingService;
 
 /**

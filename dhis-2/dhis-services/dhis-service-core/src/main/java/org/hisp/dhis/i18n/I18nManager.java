@@ -2,6 +2,9 @@ package org.hisp.dhis.i18n;
 
 import java.util.Locale;
 
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
+
 /*
  * Copyright (c) 2004-2014, University of Oslo
  * All rights reserved.

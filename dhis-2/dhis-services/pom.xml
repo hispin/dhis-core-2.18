@@ -23,7 +23,6 @@
     <!-- Level 1 -->
     <module>dhis-service-core</module>
     <!-- Level 2 -->
-    <module>dhis-service-i18n</module>
     <module>dhis-service-datamart-default</module>
     <module>dhis-service-administration</module>
     <!-- Level 3 -->

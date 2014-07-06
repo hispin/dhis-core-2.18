@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n;
+package org.hisp.dhis.i18n.ui;
 
 /*
  * Copyright (c) 2004-2014, University of Oslo
@@ -28,12 +28,15 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManagerException;
-
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.i18n.I18nManager;
+import org.hisp.dhis.i18n.locale.LocaleManager;
+import org.hisp.dhis.i18n.ui.resourcebundle.ResourceBundleManager;
+import org.hisp.dhis.i18n.ui.resourcebundle.ResourceBundleManagerException;
 
 /**
  * @author Pham Thi Thuy

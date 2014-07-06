@@ -21,10 +21,6 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-i18n</artifactId>
-    </dependency>
 	
   </dependencies>
   <properties>
