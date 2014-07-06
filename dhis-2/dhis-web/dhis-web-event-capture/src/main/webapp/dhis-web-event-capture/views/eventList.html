@@ -85,7 +85,10 @@
                                 </span>
                                 <!-- filter input field ends -->
 
-                            </th>                                            
+                            </th> 
+                            <th ng-if='noteExists'>
+                                {{'comment' | translate}}
+                            </th>
                         </tr>                        
                     </thead>
                     <tbody id="list">
@@ -178,7 +181,10 @@
                                         </div>
                                     </div>
                                 </ng-form>                                                
-                            </td>                                                                       
+                            </td>
+                            <td ng-if='noteExists'>                                
+                                <a href ng-click="showNotes(dhis2Event)" title="{{'show_comments'| translate}}"><i class="fa fa-info-circle"></i></a>
+                            </td>
                         </tr>
                     </tbody>        
                 </table>

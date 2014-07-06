@@ -59,7 +59,8 @@ $(document).ready(function()
         var promise = def.promise();
         
         promise = promise.then( dhis2.ec.store.open );
-        promise = promise.then( getUserProfile );     
+        promise = promise.then( getUserProfile );
+        promise = promise.then( getLoginDetails );
         promise = promise.then( getMetaPrograms );     
         promise = promise.then( getPrograms );     
         promise = promise.then( getProgramStages );    
@@ -159,6 +160,21 @@ function getUserProfile()
         type: 'GET'
     }).done( function(response) {            
         localStorage['USER_PROFILE'] = JSON.stringify(response);           
+        def.resolve();
+    });
+    
+    return def.promise(); 
+}
+
+function getLoginDetails()
+{
+    var def = $.Deferred();
+
+    $.ajax({
+        url: '../api/me',
+        type: 'GET'
+    }).done( function(response) {            
+        localStorage['LOGIN_DETAILS'] = JSON.stringify(response);           
         def.resolve();
     });
     

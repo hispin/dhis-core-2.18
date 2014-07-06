@@ -233,7 +233,7 @@ var eventCaptureDirectives = angular.module('eventCaptureDirectives', [])
             content = $compile(content)(scope);
             var options = {
                     content: content,
-                    placement: 'bottom',
+                    placement: 'right',
                     trigger: 'hover',
                     html: true,
                     title: scope.title               
