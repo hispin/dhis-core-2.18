@@ -137,6 +137,7 @@
     "registration_error": "Error in registration",
     "update_error": "Error in update",
     "event_creation_error": "Error in event creation",
+    "relationship_error": "Error in relationship assignment",
     "category": "Category",
     "entity_type": "Entity type",
     "save": "Save",

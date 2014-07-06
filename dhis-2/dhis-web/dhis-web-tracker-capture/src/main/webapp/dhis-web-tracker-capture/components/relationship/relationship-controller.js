@@ -322,7 +322,7 @@ trackerCapture.controller('RelationshipController',
             TEIService.update($scope.selectedTei).then(function(response){
                 if(response.status !== 'SUCCESS'){//update has failed
                     var dialogOptions = {
-                            headerText: 'update_error',
+                            headerText: 'relationship_error',
                             bodyText: response.description
                         };
                     DialogService.showDialog({}, dialogOptions);
