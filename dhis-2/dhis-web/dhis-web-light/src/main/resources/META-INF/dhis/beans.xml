@@ -496,12 +496,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Settings -->
 
 	<bean id="org.hisp.dhis.light.settings.action.GetSettingsAction"
-		class="org.hisp.dhis.light.settings.action.GetSettingsAction" scope="prototype">
-		<property name="resourceBundleManager"
-			ref="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" />
-		<property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	</bean>
+		class="org.hisp.dhis.light.settings.action.GetSettingsAction" scope="prototype"/>
 
 	<bean id="org.hisp.dhis.light.settings.action.SaveSettingsFormAction"
 		class="org.hisp.dhis.light.settings.action.SaveSettingsFormAction"

@@ -36,9 +36,10 @@ import java.util.Locale;
 
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
+import org.hisp.dhis.i18n.ui.resourcebundle.ResourceBundleManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,26 +53,14 @@ public class GetSettingsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private ResourceBundleManager resourceBundleManager;
 
-    public void setResourceBundleManager( ResourceBundleManager resourceBundleManager )
-    {
-        this.resourceBundleManager = resourceBundleManager;
-    }
-
+    @Autowired
     private LocaleManager localeManager;
 
-    public void setLocaleManager( LocaleManager localeManager )
-    {
-        this.localeManager = localeManager;
-    }
-
+    @Autowired
     private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
 
     // -------------------------------------------------------------------------
     // Input & Output
