@@ -65,137 +65,119 @@ public class ShowDataElementFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
     private DataElementService dataElementService;
+    private DataElementCategoryService dataElementCategoryService;
+    private OrganisationUnitService organisationUnitService;
+    private AttributeService attributeService;
+    private OptionService optionService;
+    private MappingService mappingService;
+    private Integer id;
+    private DataElement dataElement;
+    private Collection<DataElementGroup> dataElementGroups;
+    private List<DataElementCategoryCombo> dataElementCategoryCombos;
+    private List<OrganisationUnitLevel> organisationUnitLevels;
+
+    // -------------------------------------------------------------------------
+    // Input/output
+    // -------------------------------------------------------------------------
+    private List<OrganisationUnitLevel> aggregationLevels = new ArrayList<OrganisationUnitLevel>();
+    private DataElementCategoryCombo defaultCategoryCombo;
+    private List<DataElementGroupSet> groupSets;
+    private List<Attribute> attributes;
+    private List<OptionSet> optionSets;
+    private List<MapLegendSet> legendSets;
+    private boolean update;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryService dataElementCategoryService;
-
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
-
-    private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
 
-    private AttributeService attributeService;
-
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
     }
-
-    private OptionService optionService;
 
     public void setOptionService( OptionService optionService )
     {
         this.optionService = optionService;
     }
 
-    private MappingService mappingService;
-
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
     }
-
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-
-    private Integer id;
 
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    private DataElement dataElement;
-
     public DataElement getDataElement()
     {
         return dataElement;
     }
-
-    private Collection<DataElementGroup> dataElementGroups;
 
     public Collection<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
     }
 
-    private List<DataElementCategoryCombo> dataElementCategoryCombos;
-
     public List<DataElementCategoryCombo> getDataElementCategoryCombos()
     {
         return dataElementCategoryCombos;
     }
-
-    private List<OrganisationUnitLevel> organisationUnitLevels;
 
     public List<OrganisationUnitLevel> getOrganisationUnitLevels()
     {
         return organisationUnitLevels;
     }
 
-    private List<OrganisationUnitLevel> aggregationLevels = new ArrayList<OrganisationUnitLevel>();
-
     public List<OrganisationUnitLevel> getAggregationLevels()
     {
         return aggregationLevels;
     }
-
-    private DataElementCategoryCombo defaultCategoryCombo;
 
     public DataElementCategoryCombo getDefaultCategoryCombo()
     {
         return defaultCategoryCombo;
     }
 
-    private List<DataElementGroupSet> groupSets;
-
     public List<DataElementGroupSet> getGroupSets()
     {
         return groupSets;
     }
-
-    private List<Attribute> attributes;
 
     public List<Attribute> getAttributes()
     {
         return attributes;
     }
 
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
-
     public Map<Integer, String> getAttributeValues()
     {
         return attributeValues;
     }
-
-    private List<OptionSet> optionSets;
 
     public List<OptionSet> getOptionSets()
     {
         return optionSets;
     }
 
-    private List<MapLegendSet> legendSets;
-
     public List<MapLegendSet> getLegendSets()
     {
         return legendSets;
     }
-
-    private boolean update;
 
     public boolean isUpdate()
     {
@@ -234,6 +216,11 @@ public class ShowDataElementFormAction
             }
 
             attributeValues = AttributeUtils.getAttributeValueMap( dataElement.getAttributeValues() );
+        }
+        else
+        {
+            dataElement = new DataElement();
+            dataElement.setCategoryCombo( defaultCategoryCombo );
         }
 
         organisationUnitLevels = new ArrayList<OrganisationUnitLevel>( levelMap.values() );
