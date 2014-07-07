@@ -4,7 +4,7 @@
 
 <div class="modal-body">   
     <table class="listTable dhis2-table-striped-border">
-        <tr ng-repeat="biggerWidget in dashboardWidgets.bigger">
+        <tr ng-repeat="biggerWidget in biggerDashboardWidgets">
             <td>
                 {{biggerWidget.title | translate}}
             </td>
@@ -12,7 +12,7 @@
                 <input type="checkbox" ng-model="biggerWidget.show">
             </td>
         </tr>
-        <tr ng-repeat="smallerWidget in dashboardWidgets.smaller">
+        <tr ng-repeat="smallerWidget in smallerDashboardWidgets">
             <td>
                 {{smallerWidget.title | translate}}
             </td>

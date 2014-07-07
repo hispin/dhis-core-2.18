@@ -447,8 +447,14 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     
     return {
         
-        getEvents: function(entity, orgUnit, program, programStatus){   
+        getEventsByStatus: function(entity, orgUnit, program, programStatus){   
             var promise = $http.get( '../api/events.json?' + 'trackedEntityInstance=' + entity + '&orgUnit=' + orgUnit + '&program=' + program + '&programStatus=' + programStatus + '&paging=false').then(function(response){
+                return response.data.events;
+            });            
+            return promise;
+        },
+        getEventsByProgram: function(entity, orgUnit, program){   
+            var promise = $http.get( '../api/events.json?' + 'trackedEntityInstance=' + entity + '&orgUnit=' + orgUnit + '&program=' + program + '&paging=false').then(function(response){
                 return response.data.events;
             });            
             return promise;

@@ -52,6 +52,9 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     //Registration
     $scope.showRegistrationDiv = false;
     
+    //Reporting
+    $scope.showReportDiv = false;
+    
     //watch for selection of org unit from tree
     $scope.$watch('selectedOrgUnit', function() {           
         
@@ -110,7 +113,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }        
     };
     
-    $scope.getProgramAttributes = function(program, doSearch){ 
+    $scope.getProgramAttributes = function(program){ 
 
         $scope.trackedEntityList = null; 
         $scope.selectedProgram = program;
@@ -136,9 +139,13 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     });
                 }, 100);
             });
-        }        
+        }    
         
-        if(doSearch){
+        if($scope.showRegistrationDiv || $scope.showReportDiv){
+            $scope.doSearch = false;
+        }
+        
+        if($scope.doSearch){
             $scope.search($scope.searchMode);
         }       
     };
@@ -151,6 +158,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.emptySearchAttribute = false;
         //$scope.showSearchDiv = false;
         $scope.showRegistrationDiv = false;  
+        $scope.showReportDiv = false;
         $scope.showTrackedEntityDiv = false;
         $scope.trackedEntityList = null; 
         $scope.teiCount = null;
@@ -188,10 +196,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             }
         }
         
-        $scope.doSearch();
+        $scope.fetchTeis();
     };
     
-    $scope.doSearch = function(){
+    $scope.fetchTeis = function(){
         
         //get events for the specified parameters
         TEIService.search($scope.selectedOrgUnit.id, 
@@ -219,6 +227,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             $scope.trackedEntityList = TEIGridService.format(data);
             $scope.showTrackedEntityDiv = true;
             $scope.teiFetched = true;  
+            $scope.doSearch = true;
         });
     };
     
@@ -284,11 +293,22 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.showRegistrationDiv = !$scope.showRegistrationDiv;
         $scope.showTrackedEntityDiv = false;
         $scope.showSearchDiv = false;
+        
+        if(!$scope.showRegistrationDiv){
+            $scope.doSearch = true;
+            $scope.getProgramAttributes($scope.selectedProgram);
+        }
     };  
     
-    $scope.hideSearch = function(){        
-        //$scope.showSearchDiv = false;
-        //$rootScope.showAdvancedSearchDiv = false;
+    $scope.showReport = function(){
+        $scope.showReportDiv = !$scope.showReportDiv;
+        $scope.showTrackedEntityDiv = false;
+        $scope.showSearchDiv = false;
+        
+        if(!$scope.showReportDiv){
+            $scope.doSearch = true;
+            $scope.getProgramAttributes($scope.selectedProgram);
+        }
     };
     
     $scope.showHideColumns = function(){

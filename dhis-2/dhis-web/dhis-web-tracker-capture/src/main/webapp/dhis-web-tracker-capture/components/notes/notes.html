@@ -13,7 +13,7 @@
         </span>        
     </div>
     <div ng-show="notesWidget.expand" class="panel-body dashboard-widget-container">
-            
+
         <div class="add-note" ng-show="addNoteField">
             <textarea class="form-control" rows="3" ng-model="note" placeholder="{{'add_your_note_here'| translate}}"></textarea> 
             <button type="button" 
@@ -27,32 +27,27 @@
                 {{'cancel'| translate}}
             </button>
         </div>
-        
+
         <div ng-show='selectedEnrollment' class='remove-default-padding'>
 
             <table class="table table-with-fixed-layout">
                 <tr ng-repeat="note in selectedEnrollment.notes| filter:noteSearchText">
                     <td class="over-flow-hidden">
-                        <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
-                            <div>{{note.value}}</div>
-                        </d2-pop-over>
-                        <script type="text/ng-template" id="note.html">
-                            <p>{{content.value}}</p>
-                            <hr>
-                            <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
-                            <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
-                        </script>
-                    </td> 
+                <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
+                    <div>{{note.value}}</div>
+                </d2-pop-over>
+                <script type="text/ng-template" id="note.html">
+                    <p>{{content.value}}</p>
+                    <hr>
+                    <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
+                    <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
+                </script>
+                </td> 
                 </tr>
             </table>
         </div>
 
-        <div ng-show="!selectedEnrollment">
-            <div class="alert alert-warning vertical-spacing">{{'not_yet_enrolled_note'| translate}}</div> 
-        </div>
-        <div ng-show="selectedEnrollment && !selectedEnrollment.notes">
-            <div class="alert alert-info">{{'empty_notes'| translate}}</div> 
-        </div>
-
+        <div ng-show="!selectedEnrollment" class="alert alert-warning">{{'not_yet_enrolled_note'| translate}}</div>
+        <div ng-show="selectedEnrollment && !selectedEnrollment.notes" class="alert alert-info">{{'empty_notes'| translate}}</div> 
     </div>
 </div>

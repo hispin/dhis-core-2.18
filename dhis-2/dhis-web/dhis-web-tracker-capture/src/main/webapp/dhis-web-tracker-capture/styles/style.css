@@ -594,7 +594,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     overflow-y: scroll;
 }
 
-.registration-container{
+.registration-container, report-container {
     margin-top: 20px;
     margin-bottom: 10px;
 }

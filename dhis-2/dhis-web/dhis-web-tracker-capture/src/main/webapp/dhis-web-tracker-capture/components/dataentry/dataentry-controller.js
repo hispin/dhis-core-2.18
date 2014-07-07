@@ -53,7 +53,7 @@ trackerCapture.controller('DataEntryController',
     $scope.getEvents = function(){
         
         $scope.dhis2Events = '';
-        DHIS2EventFactory.getEvents($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id, 'ACTIVE').then(function(data){
+        DHIS2EventFactory.getEventsByStatus($scope.selectedEntity.trackedEntityInstance, $scope.selectedOrgUnit.id, $scope.selectedProgram.id, 'ACTIVE').then(function(data){
             $scope.dhis2Events = data;
             
             if(angular.isObject($scope.dhis2Events)){
