@@ -216,6 +216,7 @@ public class FormUtils
                     field.setDataElement( dataElement.getUid() );
                     field.setCategoryOptionCombo( categoryOptionCombo.getUid() );
                     field.setType( inputTypeFromDataElement( dataElement ) );
+                    field.setSortOrder( dataElement.getSortOrder() );
 
                     if ( dataElement.getOptionSet() != null )
                     {

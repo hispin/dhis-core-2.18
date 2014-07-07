@@ -47,6 +47,8 @@ public class Field
 
     private String optionSet;
 
+    private Integer sortOrder;
+
     public Field()
     {
     }
@@ -115,5 +117,16 @@ public class Field
     public void setOptionSet( String optionSet )
     {
         this.optionSet = optionSet;
+    }
+
+    @JsonProperty
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
     }
 }
