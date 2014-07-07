@@ -547,22 +547,26 @@ function loadForm()
 	
 	dhis2.de.currentOrganisationUnitId = selection.getSelected()[0];
 
-    if ( !dhis2.de.multiOrganisationUnit && dhis2.de.storageManager.formExists( dataSetId ) )
+    if ( !dhis2.de.multiOrganisationUnit  )
     {
-        console.log( 'Loading form locally: ' + dataSetId );
+        dhis2.de.storageManager.formExists( dataSetId ).done(function( value ) {
+           if( value ) {
+               console.log( 'Loading form locally: ' + dataSetId );
 
-        var html = dhis2.de.storageManager.getForm( dataSetId );
+               dhis2.de.storageManager.getForm( dataSetId ).done(function( html ) {
+                   $( '#contentDiv' ).html( html );
 
-        $( '#contentDiv' ).html( html );
+                   if ( dhis2.de.dataSets[dataSetId].renderAsTabs ) {
+                       $( "#tabs" ).tabs();
+                   }
 
-        if ( dhis2.de.dataSets[dataSetId].renderAsTabs ) {
-            $( "#tabs" ).tabs();
-        }
+                   enableSectionFilter();
 
-        enableSectionFilter();
-
-        loadDataValues();
-        dhis2.de.insertOptionSets();
+                   loadDataValues();
+                   dhis2.de.insertOptionSets();
+               });
+           }
+        });
     }
     else
     {
@@ -1934,63 +1938,78 @@ function closeCurrentSelection()
 
 function updateForms()
 {
-    purgeLocalForms();
-    updateExistingLocalForms();
-    downloadRemoteForms();
-
     DAO.store.open().done( function() {
+        purgeLocalForms().done(function() {
+            updateExistingLocalForms().done(function() {
+                downloadRemoteForms();
+            });
+        });
+
         dhis2.de.loadOptionSets();
     });
 }
 
 function purgeLocalForms()
 {
-    var formIds = dhis2.de.storageManager.getAllForms();
+    var def = $.Deferred();
 
-    $.safeEach( formIds, function( idx, item ) 
-    {
-        if ( dhis2.de.dataSets[item] == null )
+    dhis2.de.storageManager.getAllForms().done(function( formIds ) {
+        var keys = [];
+
+        $.safeEach( formIds, function( idx, item )
         {
-        	dhis2.de.storageManager.deleteForm( item );
-        	dhis2.de.storageManager.deleteFormVersion( item );
-          console.log( 'Deleted locally stored form: ' + item );
-        }
-    } );
+            if ( dhis2.de.dataSets[item] == null )
+            {
+                keys.push(item);
+            	dhis2.de.storageManager.deleteFormVersion( item );
+                console.log( 'Deleted locally stored form: ' + item );
+            }
+        } );
 
-    console.log( 'Purged local forms' );
+        DAO.store.removeAll( "forms", keys ).done(function() {
+            def.resolve();
+        });
+
+        console.log( 'Purged local forms' );
+    });
+
+    return def.promise();
 }
 
 function updateExistingLocalForms()
 {
-    var formIds = dhis2.de.storageManager.getAllForms();
-    var formVersions = dhis2.de.storageManager.getAllFormVersions();
+    return dhis2.de.storageManager.getAllForms().done(function( formIds ) {
+        var formVersions = dhis2.de.storageManager.getAllFormVersions();
 
-    $.safeEach( formIds, function( idx, item ) 
-    {
-        var remoteVersion = dhis2.de.dataSets[item].version;
-        var localVersion = formVersions[item];
-
-        if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
+        $.safeEach( formIds, function( idx, item )
         {
-        	dhis2.de.storageManager.downloadForm( item, remoteVersion );
-        }
-    } );
+            var remoteVersion = dhis2.de.dataSets[item].version;
+            var localVersion = formVersions[item];
+
+            if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
+            {
+            	dhis2.de.storageManager.downloadForm( item, remoteVersion );
+            }
+        } );
+    });
 }
 
 function downloadRemoteForms()
 {
-    $.safeEach( dhis2.de.dataSets, function( idx, item ) 
+    $.safeEach( dhis2.de.dataSets, function( idx, item )
     {
         var remoteVersion = item.version;
 
-        if ( !dhis2.de.storageManager.formExists( idx ) && !item.skipOffline )
+        if ( !item.skipOffline )
         {
-        	dhis2.de.storageManager.downloadForm( idx, remoteVersion );
+            dhis2.de.storageManager.formExists( idx ).done(function( value ) {
+                if( !value ) {
+                    dhis2.de.storageManager.downloadForm( idx, remoteVersion );
+                }
+            });
         }
     } );
 }
-
-// TODO break if local storage is full
 
 // -----------------------------------------------------------------------------
 // StorageManager
@@ -2002,104 +2021,9 @@ function downloadRemoteForms()
  */
 function StorageManager()
 {
-    var MAX_SIZE = new Number( 2600000 );
-    var MAX_SIZE_FORMS = new Number( 1600000 );
-
-    var KEY_FORM_PREFIX = 'form-';
     var KEY_FORM_VERSIONS = 'formversions';
     var KEY_DATAVALUES = 'datavalues';
     var KEY_COMPLETEDATASETS = 'completedatasets';
-
-    /**
-     * Returns the total number of characters currently in the local storage.
-     *
-     * @return number of characters.
-     */
-    this.totalSize = function()
-    {
-        var totalSize = new Number();
-
-        for ( var i = 0; i < localStorage.length; i++ )
-        {
-            var value = localStorage.key( i );
-
-            if ( value )
-            {
-                totalSize += value.length;
-            }
-        }
-
-        return totalSize;
-    };
-
-    /**
-     * Returns the total numbers of characters in stored forms currently in the
-     * local storage.
-     *
-     * @return number of characters.
-     */
-    this.totalFormSize = function()
-    {
-        var totalSize = new Number();
-
-        for ( var i = 0; i < localStorage.length; i++ )
-        {
-            if ( localStorage.key( i ).substring( 0, KEY_FORM_PREFIX.length ) == KEY_FORM_PREFIX )
-            {
-                var value = localStorage.key( i );
-
-                if ( value )
-                {
-                    totalSize += value.length;
-                }
-            }
-        }
-
-        return totalSize;
-    };
-
-    /**
-     * Return the remaining capacity of the local storage in characters, ie. the
-     * maximum size minus the current size.
-     */
-    this.remainingStorage = function()
-    {
-        return MAX_SIZE - this.totalSize();
-    };
-
-    /**
-     * Saves the content of a data entry form.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     * @param html the form HTML content.
-     * @return true if the form saved successfully, false otherwise.
-     */
-    this.saveForm = function( dataSetId, html )
-    {
-        var id = KEY_FORM_PREFIX + dataSetId;
-
-        try
-        {
-            localStorage[id] = html;
-
-          console.log( 'Successfully stored form: ' + dataSetId );
-        } 
-        catch ( e )
-        {
-          console.log( 'Max local storage quota reached, ignored form: ' + dataSetId );
-            return false;
-        }
-
-        if ( MAX_SIZE_FORMS < this.totalFormSize() )
-        {
-            this.deleteForm( dataSetId );
-
-          console.log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
-            return false;
-        }
-
-        return true;
-    };
 
     /**
      * Gets the content of a data entry form.
@@ -2109,21 +2033,17 @@ function StorageManager()
      */
     this.getForm = function( dataSetId )
     {
-        var id = KEY_FORM_PREFIX + dataSetId;
+        var def = $.Deferred();
 
-        return localStorage[id];
-    };
+        DAO.store.get( "forms", dataSetId ).done( function( form ) {
+            if( typeof form !== 'undefined' ) {
+                def.resolve( form.data );
+            } else {
+                def.resolve( "A form with that ID is not available. Please clear browser cache and try again." );
+            }
+        });
 
-    /**
-     * Removes a form.
-     *
-     * @param dataSetId the identifier of the data set of the form.
-     */
-    this.deleteForm = function( dataSetId )
-    {
-    	var id = KEY_FORM_PREFIX + dataSetId;
-
-        localStorage.removeItem( id );
+        return def.promise();
     };
 
     /**
@@ -2133,23 +2053,13 @@ function StorageManager()
      */
     this.getAllForms = function()
     {
-        var formIds = [];
+        var def = $.Deferred();
 
-        var formIndex = 0;
+        DAO.store.getKeys( "forms" ).done( function( keys ) {
+            def.resolve( keys );
+        });
 
-        for ( var i = 0; i < localStorage.length; i++ )
-        {
-            var key = localStorage.key( i );
-
-            if ( key.substring( 0, KEY_FORM_PREFIX.length ) == KEY_FORM_PREFIX )
-            {
-                var id = key.split( '-' )[1];
-
-                formIds[formIndex++] = id;
-            }
-        }
-
-        return formIds;
+        return def.promise();
     };
 
     /**
@@ -2160,9 +2070,13 @@ function StorageManager()
      */
     this.formExists = function( dataSetId )
     {
-        var id = KEY_FORM_PREFIX + dataSetId;
+        var def = $.Deferred();
 
-        return localStorage[id] != null;
+        DAO.store.contains( "forms", dataSetId ).done( function( found ) {
+            def.resolve( found );
+        });
+
+        return def.promise();
     };
 
     /**
@@ -2175,6 +2089,8 @@ function StorageManager()
      */
     this.downloadForm = function( dataSetId, formVersion )
     {
+        var def = $.Deferred();
+
         $.ajax( {
             url: 'loadForm.action',
             data:
@@ -2184,12 +2100,24 @@ function StorageManager()
             dataSetId: dataSetId,
             formVersion: formVersion,
             dataType: 'text',
-            success: function( data, textStatus, jqXHR )
+            success: function( data )
             {
-            	dhis2.de.storageManager.saveForm( this.dataSetId, data ); //TODO
+                var dataSet = {
+                    id: dataSetId,
+                    version: formVersion,
+                    data: data
+                };
+
+                DAO.store.set( "forms", dataSet ).done(function() {
+                    console.log( 'Successfully stored form: ' + dataSetId );
+                    def.resolve();
+                });
+
             	dhis2.de.storageManager.saveFormVersion( this.dataSetId, this.formVersion );
             }
         } );
+
+        return def.promise();
     };
 
     /**
