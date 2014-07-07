@@ -85,7 +85,7 @@ public class Events
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "events", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlElementWrapper( localName = "events", useWrapping = false, namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
     public List<Event> getEvents()
     {
