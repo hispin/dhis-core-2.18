@@ -144,7 +144,7 @@ public class ExportDataValueAction
             
             dataValueSetService.writeDataValueSet( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, getZipOut( response, getFileName( EXTENSION_XML ) ) );
         }
-                
+        
         return SUCCESS;
     }
 

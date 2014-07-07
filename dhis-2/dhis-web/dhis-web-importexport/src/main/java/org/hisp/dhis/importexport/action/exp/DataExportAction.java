@@ -81,7 +81,6 @@ public class DataExportAction
     {
         this.dataElementService = dataElementService;
     }
-
     
     private OrganisationUnitService organisationUnitService;
 
@@ -138,7 +137,6 @@ public class DataExportAction
         this.exportFormat = exportFormat;
     }
     
-    //Data
     private boolean dataValue;
 
     public void setDataValue( boolean dataValue )
