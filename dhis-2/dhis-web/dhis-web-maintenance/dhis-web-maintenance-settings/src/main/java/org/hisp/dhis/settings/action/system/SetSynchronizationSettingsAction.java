@@ -29,10 +29,7 @@ package org.hisp.dhis.settings.action.system;
 
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
-import org.hisp.dhis.dataapproval.DataApprovalLevelService;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -40,9 +37,9 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $ SetConfigurationAction.java Jul 7, 2014 10:04:29 PM $
+ * @version $ SetSynchronizationSettingsAction.java Jul 7, 2014 10:04:29 PM $
  */
-public class SetConfigurationAction
+public class SetSynchronizationSettingsAction
     implements Action
 {
     // -------------------------------------------------------------------------

@@ -29,7 +29,7 @@ jQuery( document ).ready( function() {
 
 <div class="settingLabel">$i18n.getString( "remote_server_password" )</div>
 <div class="setting">
-	<input type="password" id="remoteServerPassword" name="remoteServerPassword" value='$remoteServerPass'>
+	<input type="password" id="remoteServerPassword" name="remoteServerPassword">
 </div>
 
 <div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
