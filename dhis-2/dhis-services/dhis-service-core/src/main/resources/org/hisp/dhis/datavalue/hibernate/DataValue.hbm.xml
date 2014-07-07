@@ -20,7 +20,7 @@
 
     <property name="created" column="created" type="timestamp" />
 
-    <property name="lastUpdated" column="lastupdated" type="timestamp" />
+    <property name="lastUpdated" column="lastupdated" type="timestamp" index="in_datavalue_lastupdated" />
 
     <property name="comment" length="360" />
 
