@@ -5,6 +5,5 @@
 	
   <bean id="contextUtils" class="org.hisp.dhis.webapi.utils.ContextUtils"/>
   <bean id="inputUtils" class="org.hisp.dhis.webapi.utils.InputUtils" />
-  <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 
 </beans>
