@@ -83,6 +83,7 @@ public class DataValue
 
     public DataValue()
     {
+        this.created = new Date();
     }
 
     /**
@@ -99,6 +100,7 @@ public class DataValue
         this.source = source;
         this.categoryOptionCombo = categoryOptionCombo;
         this.attributeOptionCombo = attributeOptionCombo;
+        this.created = new Date();
     }
 
     /**
@@ -122,6 +124,7 @@ public class DataValue
         this.attributeOptionCombo = attributeOptionCombo;
         this.value = value;
         this.storedBy = storedBy;
+        this.created = new Date();
         this.lastUpdated = lastUpdated;
         this.comment = comment;
     }
