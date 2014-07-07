@@ -114,5 +114,17 @@
     scope="prototype">
     <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
   </bean>
-
+  
+  <!-- Configuration -->
+  
+  <bean id="org.hisp.dhis.settings.action.system.GetConfigurationAction"
+    class="org.hisp.dhis.settings.action.system.GetConfigurationAction"
+    scope="prototype">
+  </bean>
+  
+ <bean id="org.hisp.dhis.settings.action.system.SetConfigurationAction"
+    class="org.hisp.dhis.settings.action.system.SetConfigurationAction"
+    scope="prototype">
+  </bean>
+  
 </beans>
