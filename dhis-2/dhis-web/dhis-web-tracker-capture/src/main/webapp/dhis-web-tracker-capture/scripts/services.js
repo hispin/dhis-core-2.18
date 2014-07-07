@@ -331,7 +331,6 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             }
             
             promise = $http.get( url + '&pageSize=' + pgSize + '&page=' + pg ).then(function(response){                                
-                //return EntityService.formatter(response.data);
                 return response.data;
             });            
             return promise;
@@ -339,9 +338,6 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         update: function(tei){
             
             var url = '../api/trackedEntityInstances';
-            
-            console.log('the tei is:  ', tei);
-            
             var promise = $http.put( url + '/' + tei.trackedEntityInstance , tei).then(function(response){
                 return response.data;
             });
@@ -468,6 +464,12 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 return response.data;           
             });
             return promise;            
+        },
+        delete: function(dhis2Event){
+            var promise = $http.delete('../api/events/' + dhis2Event.event).then(function(response){
+                return response.data;               
+            });
+            return promise;           
         },
         update: function(dhis2Event){   
             var promise = $http.put('../api/events/' + dhis2Event.event, dhis2Event).then(function(response){
@@ -951,6 +953,29 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     });                            
                 }); 
             }
+        },
+        reconstruct: function(dhis2Event, programStage){
+            
+            var e = {dataValues: [], 
+                    event: dhis2Event.event, 
+                    program: dhis2Event.program, 
+                    programStage: dhis2Event.programStage, 
+                    orgUnit: dhis2Event.orgUnit, 
+                    trackedEntityInstance: dhis2Event.trackedEntityInstance,
+                    status: dhis2Event.status
+                };
+                
+            angular.forEach(programStage.programStageDataElements, function(prStDe){
+                if(dhis2Event[prStDe.dataElement.id]){
+                    var val = {value: dhis2Event[prStDe.dataElement.id], dataElement: prStDe.dataElement.id};
+                    if(dhis2Event.providedElsewhere[prStDe.dataElement.id]){
+                        val.providedElsewhere = dhis2Event.providedElsewhere[prStDe.dataElement.id];
+                    }
+                    e.dataValues.push(val);
+                }                                
+            });
+                     
+            return e;
         }
     }; 
 });

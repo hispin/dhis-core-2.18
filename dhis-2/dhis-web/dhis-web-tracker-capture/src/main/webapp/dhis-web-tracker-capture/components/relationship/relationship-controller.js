@@ -1,8 +1,8 @@
 trackerCapture.controller('RelationshipController',
         function($scope,
                 $modal,                
-                $rootScope,
-                $timeout,
+                $location,
+                $route,
                 CurrentSelection,
                 RelationshipFactory,
                 TranslationService) {
@@ -30,6 +30,7 @@ trackerCapture.controller('RelationshipController',
         var modalInstance = $modal.open({
             templateUrl: 'components/relationship/add-relationship.html',
             controller: 'AddRelationshipController',
+            windowClass: 'relationship-modal-window',
             resolve: {
                 relationshipTypes: function () {
                     return $scope.relationshipTypes;
@@ -44,14 +45,21 @@ trackerCapture.controller('RelationshipController',
         });
 
         modalInstance.result.then(function (relationships) {
-            $scope.selectedTei.relationships = relationships;
+            $scope.selectedTei.relationships = relationships;           
         });
     };    
     
-    $scope.showDashboard = function(teiId){
-        $timeout(function() { 
-            $rootScope.$broadcast('fromRelationship', {teiId: teiId});
-        }, 100);
+    $scope.showDashboard = function(rel){
+        var relativeTeiId = '';
+        if($scope.selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA){
+            relativeTeiId = rel.trackedEntityInstanceB;
+        }
+        else{
+            relativeTeiId = rel.trackedEntityInstanceA;
+        }          
+                
+        $location.path('/dashboard').search({tei: relativeTeiId, program: null}); 
+        $route.reload();                                 
     };
 })
 
@@ -297,11 +305,11 @@ trackerCapture.controller('RelationshipController',
     };    
     
     $scope.close = function () {
-      $modalInstance.close('');
+      $modalInstance.close($scope.selectedTei.relationships ? $scope.selectedTei.relationships : []);
     };
     
-    $scope.assignRelationship = function(selectedTei){
-        $scope.teiForRelationship = selectedTei;
+    $scope.assignRelationship = function(relativeTei){
+        $scope.teiForRelationship = relativeTei;
     };
     
     $scope.addRelationship = function(){

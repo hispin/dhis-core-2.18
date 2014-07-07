@@ -18,10 +18,10 @@
         
         <div ng-show="selectedTei" class="remove-default-padding">
             <table class="table table-striped dhis2-table-hover">
-                <tr ng-repeat="rel in selectedTei.relationships">
+                <tr ng-click="showDashboard(rel)" ng-repeat="rel in selectedTei.relationships">
                     <td>
-                        <span ng-click="showDashboard(rel.trackedEntityInstanceB)" ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA">{{relationships[rel.relationship].bIsToA}}</span>
-                        <span ng-click="showDashboard(rel.trackedEntityInstanceA)" ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceB">{{relationships[rel.relationship].aIsToB}}</span>
+                        <span ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceA">{{relationships[rel.relationship].bIsToA}}</span>
+                        <span ng-if="selectedTei.trackedEntityInstance === rel.trackedEntityInstanceB">{{relationships[rel.relationship].aIsToB}}</span>                        
                     </td> 
                 </tr>
             </table>

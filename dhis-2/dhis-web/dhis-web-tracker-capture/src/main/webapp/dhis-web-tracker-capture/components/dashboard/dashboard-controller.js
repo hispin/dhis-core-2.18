@@ -39,42 +39,6 @@ trackerCapture.controller('DashboardController',
     $scope.selectedProgram;    
     $scope.selectedTei;    
     
-    $scope.$on('fromRelationship', function(event, args) { 
-        $scope.selectedTeiId = args.teiId;        
-        
-        if( $scope.selectedTeiId ){        
-            
-            //Fetch the selected entity
-            TEIService.get($scope.selectedTeiId).then(function(data){
-                $scope.selectedTei = data;
-
-                //get the entity type
-                TEService.get($scope.selectedTei.trackedEntity).then(function(te){
-                    $scope.trackedEntity = te;
-
-                    ProgramFactory.getAll().then(function(programs){  
-                        $scope.programs = []; 
-                        //get programs valid for the selected ou and tei
-                        angular.forEach(programs, function(program){
-                            if(program.organisationUnits.hasOwnProperty($scope.selectedOrgUnit.id) &&
-                               program.trackedEntity.id === $scope.selectedTei.trackedEntity){
-                                $scope.programs.push(program);
-                            }
-
-                            if($scope.selectedProgramId && program.id === $scope.selectedProgramId){
-                                $scope.selectedProgram = program;
-                            }
-                        });
-
-                        //broadcast selected items for dashboard controllers
-                        CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, pr: $scope.selectedProgram, enrollment: null});
-                        $scope.broadCastSelections();                                    
-                    });
-                });            
-            });      
-        }
-    });
-    
     if($scope.selectedTeiId){
         //Fetch the selected entity
         TEIService.get($scope.selectedTeiId).then(function(data){
@@ -144,9 +108,6 @@ trackerCapture.controller('DashboardController',
 
         modalInstance.result.then(function () {
         });
-    };
-    
-    $scope.test = function(){
-        console.log('test');
-    };
+    };   
+
 });
