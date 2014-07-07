@@ -111,7 +111,7 @@
   </bean>
   
   <bean id="fixedSaltGenerator" class="org.jasypt.salt.StringFixedSaltGenerator">
-    <constructor-arg><value>H7g0oLkEw3wf52fs52g3hbG</value></constructor-arg>
+    <constructor-arg type="java.lang.String" value="H7g0oLkEw3wf52fs52g3hbG" />
   </bean>
   
 </beans>

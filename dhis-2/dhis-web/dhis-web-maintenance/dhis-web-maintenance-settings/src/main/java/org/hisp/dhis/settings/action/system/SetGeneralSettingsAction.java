@@ -246,7 +246,6 @@ public class SetGeneralSettingsAction
                 .getPeriodTypeByName( infrastructuralPeriodType ).getClass() ) );
         }
         
-        configuration.setRemoteServerPassword( "abc" );
         configurationService.setConfiguration( configuration );
 
         message = i18n.getString( "settings_updated" );
