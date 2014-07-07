@@ -6,4 +6,5 @@
     <li><a href="systemAccessSettings.action">$i18n.getString( "access" )&nbsp;</a></li>
     <li><a href="systemApprovalSettings.action">$i18n.getString( "approval" )&nbsp;</a></li>
     <li><a href="systemCalendarSettings.action">$i18n.getString( "calendar" )&nbsp;</a></li>
+    <li><a href="synchronization.action">$i18n.getString( "synchronization" )&nbsp;</a></li>
 </ul>

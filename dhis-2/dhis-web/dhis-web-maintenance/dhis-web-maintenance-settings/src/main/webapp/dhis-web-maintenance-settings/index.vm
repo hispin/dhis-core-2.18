@@ -7,4 +7,5 @@
     #introListImgItem( "systemAccessSettings.action" "system_access_settings" "systemsettings" )
     #introListImgItem( "systemApprovalSettings.action" "system_approval_settings" "systemsettings" )
     #introListImgItem( "systemCalendarSettings.action" "system_calendar_settings" "systemsettings" )
+    #introListImgItem( "synchronization.action" "system_calendar_settings" "systemsettings" )
 </ul>

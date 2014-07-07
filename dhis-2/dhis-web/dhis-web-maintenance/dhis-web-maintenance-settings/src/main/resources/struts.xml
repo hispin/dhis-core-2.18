@@ -153,6 +153,21 @@
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+    
+    <!-- Synchronization -->
 
+	<action name="synchronization" class="org.hisp.dhis.settings.action.system.GetConfigurationAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-settings/synchronization.vm</param>
+      <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+    </action> 
+    
+    <action name="setConfiguration" class="org.hisp.dhis.settings.action.system.SetConfigurationAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
   </package>
 </struts>
