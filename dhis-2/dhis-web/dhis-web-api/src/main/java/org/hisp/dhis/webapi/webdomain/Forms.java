@@ -28,14 +28,14 @@ package org.hisp.dhis.webapi.webdomain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Maps;
-import org.hisp.dhis.option.OptionSet;
-import org.hisp.dhis.webapi.webdomain.form.Form;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hisp.dhis.webapi.webdomain.form.Form;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Maps;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
