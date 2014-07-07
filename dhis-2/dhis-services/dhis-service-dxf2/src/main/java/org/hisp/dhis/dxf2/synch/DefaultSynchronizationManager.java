@@ -170,20 +170,29 @@ public class DefaultSynchronizationManager
     
     public boolean executeDataSynch()
     {
-        Date now = new Date();
+        AvailabilityStatus availability = isRemoteServerAvailable();
         
+        if ( !availability.isAvailable() )
+        {
+            log.info( "Aborting synch, server not available" );
+            return false;
+        }
+
         Date date = getLastSynchSuccess();
         
         int lastUpdatedCount = dataValueService.getDataValueCountLastUpdatedAfter( date );
         
-        if ( lastUpdatedCount > 0 )
+        if ( lastUpdatedCount == 0 )
         {
-            setLastSynchSuccess( now );
-            
-            return true;
+            log.info( "Aborting synch, no new or updated data values" );
+            return false;
         }
         
-        return false;
+        // Synch
+        
+        setLastSynchSuccess();
+        
+        return true;
     }
     
     // -------------------------------------------------------------------------
@@ -204,9 +213,9 @@ public class DefaultSynchronizationManager
     /**
      * Sets the time of the last successful synchronization operation.
      */
-    private void setLastSynchSuccess( Date date )
+    private void setLastSynchSuccess()
     {
-        systemSettingManager.saveSystemSetting( KEY_LAST_SUCCESSFUL_SYNC, date );
+        systemSettingManager.saveSystemSetting( KEY_LAST_SUCCESSFUL_SYNC, new Date() );
     }
 
     /**
