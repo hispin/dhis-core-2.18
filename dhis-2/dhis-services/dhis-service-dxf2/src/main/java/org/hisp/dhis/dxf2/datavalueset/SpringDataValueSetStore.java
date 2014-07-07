@@ -69,6 +69,7 @@ public class SpringDataValueSetStore
     // DataValueSetStore implementation
     //--------------------------------------------------------------------------
 
+    @Override
     public void writeDataValueSetXml( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit,
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out )
     {
@@ -80,7 +81,8 @@ public class SpringDataValueSetStore
     }
 
     @Override
-    public void writeDataValueSetJson( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream outputStream )
+    public void writeDataValueSetJson( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, 
+        Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream outputStream )
     {
         DataValueSet dataValueSet = new StreamingJsonDataValueSet( outputStream );
 
@@ -89,12 +91,17 @@ public class SpringDataValueSetStore
         StreamUtils.closeOutputStream( outputStream );
     }
 
+    @Override
     public void writeDataValueSetCsv( Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer )
     {
         DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CsvWriter( writer, CSV_DELIM ) );
 
         writeDataValueSet( null, null, null, null, dataElements, periods, orgUnits, dataValueSet );
     }
+
+    //--------------------------------------------------------------------------
+    // Supportive methods
+    //--------------------------------------------------------------------------
 
     private void writeDataValueSet( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit,
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, DataValueSet dataValueSet )

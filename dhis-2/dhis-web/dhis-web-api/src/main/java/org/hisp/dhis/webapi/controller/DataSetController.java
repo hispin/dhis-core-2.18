@@ -250,15 +250,16 @@ public class DataSetController
         {
             form = new DataEntryForm( dataSet.getName(), DataEntryForm.STYLE_REGULAR, formContent );
             dataEntryFormService.addDataEntryForm( form );
-
             dataSet.setDataEntryForm( form );
-            dataSetService.updateDataSet( dataSet );
         }
         else
         {
             form.setHtmlCode( formContent );
             dataEntryFormService.updateDataEntryForm( form );
         }
+
+        dataSet.increaseVersion(); 
+        dataSetService.updateDataSet( dataSet );        
     }
 
     /**

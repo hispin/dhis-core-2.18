@@ -99,24 +99,24 @@ public class SaveDataEntryFormAction
     public String execute()
         throws Exception
     {
-        DataSet dataset = dataSetService.getDataSet( dataSetIdField );
+        DataSet dataSet = dataSetService.getDataSet( dataSetIdField );
 
         designTextarea = dataEntryFormService.prepareDataEntryFormForSave( designTextarea );
         
-        DataEntryForm form = dataset.getDataEntryForm();
+        DataEntryForm form = dataSet.getDataEntryForm();
 
         if ( form == null || form.getHtmlCode() == null ||
             ( form.getStyle() != null && !form.getStyle().equals( style ) ) ||
             ( form.getHtmlCode() != null && !form.getHtmlCode().equals( designTextarea ) ) )
         {
-            dataset.increaseVersion(); // Check if version must be updated
+            dataSet.increaseVersion(); // Check if version must be updated
         }
         
         if ( form == null )
         {
             form = new DataEntryForm( nameField, style, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
             dataEntryFormService.addDataEntryForm( form );
-            dataset.setDataEntryForm( form );
+            dataSet.setDataEntryForm( form );
         }
         else
         {
@@ -126,7 +126,7 @@ public class SaveDataEntryFormAction
             dataEntryFormService.updateDataEntryForm( form );
         }
         
-        dataSetService.updateDataSet( dataset );
+        dataSetService.updateDataSet( dataSet );
 
         return SUCCESS;
     }
