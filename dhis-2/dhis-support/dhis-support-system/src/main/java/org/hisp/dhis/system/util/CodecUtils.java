@@ -38,7 +38,6 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class CodecUtils
 {
@@ -163,5 +162,12 @@ public class CodecUtils
         
         return string;
     }
+    
+    public static String getBasicAuthString( String username, String password )
+    {        
+        String string = username + ":" + password;
+        
+        return "Basic " + Base64.encodeBase64String( string.getBytes() );
+    }    
 }
 

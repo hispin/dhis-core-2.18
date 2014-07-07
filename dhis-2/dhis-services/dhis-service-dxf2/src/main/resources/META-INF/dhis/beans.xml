@@ -37,6 +37,8 @@
   <bean id="org.hisp.dhis.dxf2.metadata.MetaDataDependencyService" class="org.hisp.dhis.dxf2.metadata.DefaultMetaDataDependencyService"
     scope="prototype" />
 
+  <bean id="org.hisp.dhis.dxf2.synch.SynchronizationManager" class="org.hisp.dhis.dxf2.synch.DefaultSynchronizationManager" />
+
   <!-- register idObject handlers -->
 
   <bean id="organisationUnitObjectHandler"
