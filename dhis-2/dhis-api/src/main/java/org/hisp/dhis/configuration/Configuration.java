@@ -52,7 +52,11 @@ public class Configuration
     private static final PeriodType DEFAULT_INFRASTRUCTURAL_PERIODTYPE = new YearlyPeriodType();
     
     private int id;
-    
+
+    // -------------------------------------------------------------------------
+    // Various
+    // -------------------------------------------------------------------------
+
     private String systemId;
     
     private UserGroup feedbackRecipients;
@@ -66,7 +70,21 @@ public class Configuration
     private UserAuthorityGroup selfRegistrationRole;
     
     private OrganisationUnit selfRegistrationOrgUnit;
+
+    // -------------------------------------------------------------------------
+    // Remote synch
+    // -------------------------------------------------------------------------
+
+    private String remoteServerUrl;
     
+    private String remoteServerUsername;
+    
+    private String remoteServerPassword;
+
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
+
     public Configuration()
     {
     }
@@ -167,5 +185,38 @@ public class Configuration
     public void setSelfRegistrationOrgUnit( OrganisationUnit selfRegistrationOrgUnit )
     {
         this.selfRegistrationOrgUnit = selfRegistrationOrgUnit;
+    }
+
+    public String getRemoteServerUrl()
+    {
+        return remoteServerUrl;
+    }
+
+    public void setRemoteServerUrl( String remoteServerUrl )
+    {
+        this.remoteServerUrl = remoteServerUrl;
+    }
+
+    public String getRemoteServerUsername()
+    {
+        return remoteServerUsername;
+    }
+
+    public void setRemoteServerUsername( String remoteServerUsername )
+    {
+        this.remoteServerUsername = remoteServerUsername;
+    }
+
+    /**
+     * Do not serialize.
+     */
+    public String getRemoteServerPassword()
+    {
+        return remoteServerPassword;
+    }
+
+    public void setRemoteServerPassword( String remoteServerPassword )
+    {
+        this.remoteServerPassword = remoteServerPassword;
     }
 }

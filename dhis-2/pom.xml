@@ -484,12 +484,27 @@
         <artifactId>spring-security-openid</artifactId>
         <version>${spring.security.version}</version>
       </dependency>
-
       <!-- Spring Mobile -->
       <dependency>
         <groupId>org.springframework.mobile</groupId>
         <artifactId>spring-mobile-device</artifactId>
         <version>1.0.2.RELEASE</version>
+      </dependency>
+      <!-- Jasypt -->
+      <dependency>
+	    <groupId>org.jasypt</groupId>
+	    <artifactId>jasypt</artifactId>
+	    <version>1.9.2</version>
+      </dependency>
+      <dependency>
+	    <groupId>org.jasypt</groupId>
+	    <artifactId>jasypt-hibernate4</artifactId>
+	    <version>1.9.2</version>
+      </dependency>
+      <dependency>
+	    <groupId>org.jasypt</groupId>
+	    <artifactId>jasypt-spring31</artifactId>
+	    <version>1.9.2</version>
       </dependency>
 
       <!-- Other -->

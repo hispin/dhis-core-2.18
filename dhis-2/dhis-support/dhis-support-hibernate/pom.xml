@@ -56,7 +56,22 @@
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
     </dependency>
+    
+    <!-- Jasypt -->
 
+    <dependency>
+	  <groupId>org.jasypt</groupId>
+	  <artifactId>jasypt</artifactId>
+    </dependency>
+    <dependency>
+	  <groupId>org.jasypt</groupId>
+	  <artifactId>jasypt-hibernate4</artifactId>
+    </dependency>
+    <dependency>
+	  <groupId>org.jasypt</groupId>
+	  <artifactId>jasypt-spring31</artifactId>
+    </dependency>
+    
     <!-- Database connectors -->
 
     <dependency>
