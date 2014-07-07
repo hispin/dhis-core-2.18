@@ -36,8 +36,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
-import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +70,9 @@ public class DefaultSynchronizationManager
     
     @Autowired
     private DataValueSetService dataValueSetService;
+    
+    @Autowired
+    private DataValueService dataValueService;
     
     @Autowired
     private ConfigurationService configurationService;
@@ -160,7 +163,7 @@ public class DefaultSynchronizationManager
     {        
     }
     
-    public boolean isDataSyncEnabled()
+    public boolean isDataSynchEnabled()
     {
         return false;
     }
@@ -171,9 +174,16 @@ public class DefaultSynchronizationManager
         
         Date date = getLastSynchSuccess();
         
-        setLastSynchSuccess( now );
+        int lastUpdatedCount = dataValueService.getDataValueCountLastUpdatedAfter( date );
         
-        return true;
+        if ( lastUpdatedCount > 0 )
+        {
+            setLastSynchSuccess( now );
+            
+            return true;
+        }
+        
+        return false;
     }
     
     // -------------------------------------------------------------------------
@@ -181,13 +191,14 @@ public class DefaultSynchronizationManager
     // -------------------------------------------------------------------------
 
     /**
-     * Gets the time of the last successful synchronization operation.
+     * Gets the time of the last successful synchronization operation. If not set,
+     * the current time is returned.
      */
     private Date getLastSynchSuccess()
     {
         Date date = (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_SYNC );
         
-        return date != null ? date : new Cal().set( 0, 1, 1 ).time();
+        return date != null ? date : new Date();
     }
 
     /**

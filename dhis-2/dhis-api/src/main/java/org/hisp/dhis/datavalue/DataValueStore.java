@@ -270,12 +270,13 @@ public interface DataValueStore
     DataValue getLatestDataValues( DataElement dataElement, PeriodType periodType, OrganisationUnit organisationUnit );
     
     /**
-     * Gets the number of DataValues persisted since the given data.
+     * Gets the number of DataValues which have been updated after the given 
+     * date time.
      * 
-     * @param date the date.
+     * @param date the date time.
      * @return the number of DataValues.
      */
-    int getDataValueCount( Date date );
+    int getDataValueCountLastUpdatedAfter( Date date );
 
     /**
      * Returns a map of values for each attribute option combo found.

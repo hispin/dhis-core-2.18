@@ -450,11 +450,11 @@ public class HibernateDataValueStore
         return (DataValue) query.uniqueResult();
     }
         
-    public int getDataValueCount( Date date )
+    public int getDataValueCountLastUpdatedAfter( Date date )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( DataValue.class );
         
-        criteria.add( Restrictions.ge( "timestamp", date ) );
+        criteria.add( Restrictions.ge( "lastUpdated", date ) );
         criteria.setProjection( Projections.rowCount() );
 
         Number rs = (Number) criteria.uniqueResult();

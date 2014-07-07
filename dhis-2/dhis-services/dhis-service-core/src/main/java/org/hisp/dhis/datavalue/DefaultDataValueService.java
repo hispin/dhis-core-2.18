@@ -260,7 +260,12 @@ public class DefaultDataValueService
         Calendar cal = PeriodType.createCalendarInstance();
         cal.add( Calendar.DAY_OF_YEAR, (days * -1) );
 
-        return dataValueStore.getDataValueCount( cal.getTime() );
+        return dataValueStore.getDataValueCountLastUpdatedAfter( cal.getTime() );
+    }
+    
+    public int getDataValueCountLastUpdatedAfter( Date date )
+    {
+        return dataValueStore.getDataValueCountLastUpdatedAfter( date );
     }
     
     public MapMap<Integer, DataElementOperand, Double> getDataValueMapByAttributeCombo( Collection<DataElement> dataElements, Date date,

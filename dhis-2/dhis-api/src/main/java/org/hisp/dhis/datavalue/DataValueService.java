@@ -300,6 +300,15 @@ public interface DataValueService
     int getDataValueCount( int days );
 
     /**
+     * Gets the number of DataValues which have been updated after the given 
+     * date time.
+     * 
+     * @param date the date time.
+     * @return the number of DataValues.
+     */
+    int getDataValueCountLastUpdatedAfter( Date date );
+
+    /**
      * Returns a map of values for each attribute option combo found.
      * <p>
      * In the (unlikely) event that the same dataElement/optionCombo is found in
