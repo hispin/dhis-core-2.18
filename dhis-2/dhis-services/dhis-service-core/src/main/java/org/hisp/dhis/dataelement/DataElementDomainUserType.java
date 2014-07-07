@@ -1,3 +1,5 @@
+package org.hisp.dhis.dataelement;
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -25,20 +27,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataelement;
-
 import org.hisp.dhis.hibernate.EnumUserType;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ DataElementDomainUserType.java Jun 15, 2014 2:18:38 PM $
  */
 public class DataElementDomainUserType
     extends EnumUserType<DataElementDomain>
 {
-    public  DataElementDomainUserType()
+    public DataElementDomainUserType()
     {
-        super(  DataElementDomain.class );
+        super( DataElementDomain.class );
     }
 }

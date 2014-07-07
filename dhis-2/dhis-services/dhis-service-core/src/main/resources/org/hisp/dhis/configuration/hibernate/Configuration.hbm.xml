@@ -32,5 +32,11 @@
     <many-to-one name="selfRegistrationOrgUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit"
         column="selfRegistrationOrgUnit" foreign-key="fk_configuration_selfregistrationorgunit" />
 
+	<property name="remoteServerUrl" column="remoteserverurl" />
+	
+	<property name="remoteServerUsername" column="remoteserverusername" />
+	
+	<property name="remoteServerPassword" column="remoteServerPassword" type="encryptedString" />
+	
   </class>
 </hibernate-mapping>
