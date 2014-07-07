@@ -1966,9 +1966,14 @@ function purgeLocalForms()
             }
         } );
 
+        console.log( 'should delete: ', keys );
+        def.resolve();
+
+        /*
         DAO.store.removeAll( "forms", keys ).done(function() {
             def.resolve();
         });
+        */
 
         console.log( 'Purged local forms' );
     });
