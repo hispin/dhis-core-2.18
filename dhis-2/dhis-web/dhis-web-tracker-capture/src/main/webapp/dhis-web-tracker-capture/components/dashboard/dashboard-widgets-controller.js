@@ -7,6 +7,6 @@ trackerCapture.controller('DashboardWidgetsController',
     TranslationService.translate();
     
     $scope.close = function () {
-        $modalInstance.close($scope.eventGridColumns);
+        $modalInstance.close();
     };       
 });

@@ -37,7 +37,7 @@
     <input type="text" selected-org-unit ng-model="selectedOrgUnit.name" ng-hide=true>
     <!--- selected org unit ends  -->
 
-    <!--- search and registration menu begins -->
+    <!--- search, registration and reporting menu begins -->
     <div class="row"> 
         <div id="selectDropDownParent" class="input-group col-md-3">            
             <button type="button" class="select-drop-down-button form-control" >{{selectedProgram ? selectedProgram.name : 'please_select_a_program'| translate}}</button>
@@ -45,15 +45,14 @@
                 <button class="btn btn-default trim" type="button" title="{{'list_programs'| translate}}" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
                 <ul id="selectDropDown" class="dropdown-menu dropdown-menu-right">
                     <li>
-                        <a href ng-click="getProgramAttributes(null, true)">{{'please_select_a_program'| translate}}</a>
+                        <a href ng-click="getProgramAttributes(null)">{{'please_select_a_program'| translate}}</a>
                     </li>
                     <li ng-repeat="program in programs| orderBy: 'name'">
-                        <a href ng-click="getProgramAttributes(program, true)">{{program.name}}</a>
+                        <a href ng-click="getProgramAttributes(program)">{{program.name}}</a>
                     </li>
                 </ul>
             </div>                
         </div>
-
         <div id="searchDropDownParent" class="input-group col-md-5">
             <input type="text" placeholder="{{'type_here_for_simple_search'| translate}}" ng-model="searchText" class="form-control expanded" ng-class="{true: 'invalid-input'} [!searchText && emptySearchText]" ng-focus="showHideSearch()" ng-disabled="showRegistrationDiv">
             <div class="input-group-btn">
@@ -68,18 +67,25 @@
         <div class="col-md-4 trim">            
             <button type="button" 
                     class="btn btn-success"
-                    ng-disabled="showRegistrationDiv"
+                    ng-disabled="showRegistrationDiv || showReportDiv"
                     ng-click="search(searchMode.listAll)">
                 {{'list_all'| translate}}
             </button>
             <button type="button" 
-                    class="btn btn-primary small-horizonal-spacing" 
+                    class="btn btn-primary"
+                    ng-disabled="showReportDiv"
                     ng-click="showRegistration()">                    
                 {{'register'| translate}} {{selectedProgram.trackedEntity.name}}
             </button>
+            <button type="button" 
+                    class="btn btn-primary" 
+                    ng-disabled="showRegistrationDiv"
+                    ng-click="showReport()">                    
+                {{'report'| translate}} 
+            </button>
         </div>
     </div>
-    <!--- search and registration menu ends -->
+    <!--- search, registration and reporting menu ends -->
 
     <!--- Error display for search begins -->
     <div class="row" ng-if="emptySearchAttribute || !searchText && emptySearchText">
@@ -96,6 +102,14 @@
         </div>
     </div>
     <!-- registration form ends -->
+    
+    <!--report div begins -->
+    <div class="row" ng-if="showReportDiv">
+        <div class="col-md-8">
+            <div ng-include="'components/report/report.html'"></div>             
+        </div>
+    </div>
+    <!-- report div ends -->
 
     <!-- entity grid begins -->
     <div class="row" ng-if="showTrackedEntityDiv">
