@@ -9,7 +9,6 @@
 
   <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 
-  <!-- Enables the Spring MVC @Controller programming model -->
   <mvc:annotation-driven>
     <mvc:message-converters>
       <bean class="org.hisp.dhis.api.mobile.support.DataStreamSerializableMessageConverter" />
