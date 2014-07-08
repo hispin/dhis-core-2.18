@@ -199,11 +199,9 @@ public class MapUtils
         return image;
     }
 
-    public static BufferedImage renderTitle( String title, Integer maxWidth, Integer maxHeight )
+    public static BufferedImage renderTitle( String title, Integer width )
     {        
-        int[] widthHeight = getWidthHeight( maxWidth, maxHeight, 0, 0, 1 );
-
-        BufferedImage image = new BufferedImage( widthHeight[0], TITLE_HEIGHT, BufferedImage.TYPE_INT_ARGB );
+        BufferedImage image = new BufferedImage( width, TITLE_HEIGHT, BufferedImage.TYPE_INT_ARGB );
         Graphics2D g = (Graphics2D) image.getGraphics();
         
         g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
