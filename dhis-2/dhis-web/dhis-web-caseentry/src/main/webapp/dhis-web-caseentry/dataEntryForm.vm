@@ -70,6 +70,7 @@
 </div>
 
 <table id='entryPostComment' class='listTable hidden' style="width:100%;">
+<tr><td></td><td><table id='commentTB'></table></td><td></td></tr>
 <tr>
 	<th width="10%"><label for="postComment">$i18n.getString('post_comment'):</label></th>
 	<th width="85%">

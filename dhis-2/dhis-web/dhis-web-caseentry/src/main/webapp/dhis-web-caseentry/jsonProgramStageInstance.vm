@@ -6,7 +6,16 @@
     "executionDate": "$!format.formatDate( $programStageInstance.executionDate )",
     "status": "$!programStageInstance.getEventStatus().getValue()",
     "completed": "$!programStageInstance.completed",
-    "comment": "$!encoder.jsonEncode( $!programStageInstance.comment.commentText )",
+	"comments":[
+		#set($size = $programStageInstance.comments.size())
+		#foreach($comment in $programStageInstance.comments)
+			{
+				"text": "$!encoder.jsonEncode( $comment.commentText )",
+				"date": "$comment.createdDate",
+				"creator": "$!encoder.jsonEncode( $comment.creator )"
+			}#if( $velocityCount < $size ),#end
+		#end
+	],
     #if($programStageInstance.programStage.captureCoordinates)
     "latitude": "$!latitude",
     "longitude": "$!longitude",

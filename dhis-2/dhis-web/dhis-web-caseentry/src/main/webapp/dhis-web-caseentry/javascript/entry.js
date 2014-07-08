@@ -868,9 +868,13 @@ function loadProgramStageFromServer( programStageInstanceId ) {
 
 			$( "input[id='dueDate']" ).val( data.dueDate );
 			$( "input[id='executionDate']" ).val( data.executionDate );
-			$( "#commentInput" ).val( data.comment );
-			$( "#commentInput" ).height(data.comment.split('\n').length * 15  + 12);
-
+			
+			for( var i in data.comments ){
+				var date = data.comments[i].date.substring(0,16);
+				var tr = "<tr><td>" + date + "</td><td>" + data.comments[i].creator + "</td><td>"+ i18n_comment + "</td><td>" + data.comments[i].text + "</td></tr>";
+				$( "#commentTB" ).append(tr);
+			}
+			
 			if ( data.program.type != '1' ) {
 				hideById( 'newEncounterBtn' );
 			}

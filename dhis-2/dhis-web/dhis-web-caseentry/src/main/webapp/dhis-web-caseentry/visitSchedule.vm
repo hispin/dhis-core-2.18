@@ -25,8 +25,6 @@
 		<td style="height:24px" valign="bottom" >
             <div class="commentHeader">$i18n.getString( "comment" )</div>
 		</td>
-		<td colspan='2' style="background-color: #e0e0e0; height:26px;">$i18n.getString( "updated_by" ): $!encoder.htmlEncode( $programInstance.comment.creator )</td>
-		<td colspan='2' style="background-color: #e0e0e0; height:26px;">$i18n.getString( "updated_date" ): $!format.formatDate( $programInstance.comment.createdDate )</td>
     </tr>
    
    <tr>
@@ -72,7 +70,7 @@
 			#foreach( $programStageInstance in $programStageInstances )
 				#if( $!programStageInstance.executionDate 
 					|| $!programStageInstance.outboundSms.size() > 0 
-					|| $!programStageInstance.comment )
+					|| $!programStageInstance.comments )
 					
 					#set($allowRemove = 'false')
 				#end
@@ -88,7 +86,7 @@
 		</td>
 		
 		<td valign="top" colspan='4'>
-			<input type="button" id='updateCommentBtn' name='updateCommentBtn' #if($!programStageInstance.comment) value="$i18n.getString( 'update_comment' )" #else value="$i18n.getString( 'save_comment' )" #end style="width:130px" onclick="saveComment($programInstance.id);">
+			<input type="button" id='updateCommentBtn' name='updateCommentBtn' value="$i18n.getString( 'save_comment' )" style="width:130px" onclick="saveComment($programInstance.id);">
 			<input type="button" id='sendProgramSMSBtn' name='sendProgramSMSBtn' value="$i18n.getString( 'send_message' )" style="width:130px" onclick="setFieldValue('sendFromEvent','false');sendSmsOneTrackedEntityInstanceForm();">
 		</td>
 	</tr>
@@ -176,7 +174,7 @@
 				</script>
 			</td>
 			<td>
-				<input type='text' value='$!programStageInstance.comment.commentText' id='message_$programStageInstance.id' name='message_$programStageInstance.id' class="{validate:{required:true,maxlength:160}}" style="width:100%" onchange="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" >
+				<input type='text' id='message_$programStageInstance.id' name='message_$programStageInstance.id' class="{validate:{required:true,maxlength:160}}" style="width:100%" onchange="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" >
 			</td>
 			<td>
 				<input type='button' class='normal-button' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" value="$i18n.getString('save')" >
