@@ -29,7 +29,6 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -40,9 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.webapi.utils.ContextUtils;
-import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
-import org.hisp.dhis.webapi.utils.PdfDataEntryFormImportUtil;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
@@ -59,6 +55,9 @@ import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.webapi.utils.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.webapi.utils.PdfDataEntryFormImportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -67,7 +66,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfWriter;
 
 /**
@@ -78,8 +76,6 @@ import com.lowagie.text.pdf.PdfWriter;
 public class PDFFormController
 {
     private static final Log log = LogFactory.getLog( PDFFormController.class );
-
-    //private static final String DATEFORMAT_DEFAULT = "MMMM dd, yyyy";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -114,9 +110,8 @@ public class PDFFormController
     //--------------------------------------------------------------------------
 
     @RequestMapping(value = "/dataSet/{dataSetUid}", method = RequestMethod.GET)
-    public void getFormPDF_DataSet( HttpServletRequest request, HttpServletResponse response,
-        @PathVariable String dataSetUid )
-        throws Exception
+    public void getFormPdfDataSet( @PathVariable String dataSetUid, HttpServletRequest request, 
+        HttpServletResponse response, OutputStream out ) throws Exception
     {
         // 1. - Create Document and PdfWriter
         
@@ -147,12 +142,12 @@ public class PDFFormController
         
         // 4. - Output the data into Stream and close the stream.
         
-        writeToOutputStream( baos, response );
+        baos.writeTo( out );
     }
 
     @RequestMapping(value = "/dataSet", method = RequestMethod.POST)
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
-    public void sendFormPDF_DataSet( HttpServletRequest request, HttpServletResponse response )
+    public void sendFormPdfDataSet( HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
         // 1. Set up Import Option
@@ -191,9 +186,8 @@ public class PDFFormController
     //--------------------------------------------------------------------------
 
     @RequestMapping(value = "/programStage/{programStageUid}", method = RequestMethod.GET)
-    public void getFormPDF_ProgramStage( HttpServletRequest request, HttpServletResponse response,
-        @PathVariable String programStageUid )
-        throws IOException, DocumentException
+    public void getFormPdfProgramStage( @PathVariable String programStageUid, HttpServletRequest request, 
+        HttpServletResponse response, OutputStream out  ) throws Exception
     {
         // 1. - Create Document and PdfWriter
         
@@ -222,8 +216,8 @@ public class PDFFormController
         response.setContentLength( baos.size() );
 
         // 4. - write ByteArrayOutputStream to the ServletOutputStream
-        
-        writeToOutputStream( baos, response );
+
+        baos.writeTo( out );
     }
 
     @RequestMapping( value = "/programStage", method = RequestMethod.POST )
@@ -242,29 +236,5 @@ public class PDFFormController
         // Step 5. Set the response - just simple OK response.
         
         ContextUtils.okResponse( response, "" );
-    }
-
-    //--------------------------------------------------------------------------
-    // Helpers
-    //--------------------------------------------------------------------------
-
-    private void writeToOutputStream( ByteArrayOutputStream baos, HttpServletResponse response ) //TODO unnecessary?
-        throws IOException
-    {
-        OutputStream os = null;
-
-        try
-        {
-            os = response.getOutputStream();
-            baos.writeTo( os );
-        }
-        finally
-        {
-            if ( os != null )
-            {
-                os.flush();
-                os.close();
-            }
-        }
     }
 }
