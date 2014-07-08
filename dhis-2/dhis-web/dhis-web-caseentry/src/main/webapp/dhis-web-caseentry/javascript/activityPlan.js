@@ -279,7 +279,12 @@ function showEvents( teiUid){
 			for ( var i in json.events) {
 				var row = json.events[i];
 				var uid = row.event;
+				
 				var eventDate = row.eventDate;
+				if(eventDate===undefined){
+					eventDate = row.dueDate;
+				}
+				eventDate = eventDate.substring(0,10);
 				table += "<tr><td><a href='javascript:loadDataEntryDialog( \"" + uid + "\") ' >" + eventDate + "</a></td></tr>";
 			}
 			table += "</table>";
