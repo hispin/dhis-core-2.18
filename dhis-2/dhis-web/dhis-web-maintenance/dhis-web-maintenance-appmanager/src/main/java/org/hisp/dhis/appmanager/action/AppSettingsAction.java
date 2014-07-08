@@ -29,14 +29,16 @@ package org.hisp.dhis.appmanager.action;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.util.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.File;
 import java.util.List;
 

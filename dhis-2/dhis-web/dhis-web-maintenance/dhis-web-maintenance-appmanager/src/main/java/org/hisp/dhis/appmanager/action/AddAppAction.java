@@ -42,7 +42,7 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.system.util.StreamUtils;
-import org.hisp.dhis.util.ContextUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonParseException;
