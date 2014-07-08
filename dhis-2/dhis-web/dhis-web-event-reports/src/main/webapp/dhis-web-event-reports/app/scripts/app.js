@@ -3094,15 +3094,13 @@ Ext.onReady( function() {
 
             accordionBody,
 			accordionPanels = [],
+            accordion,
 
-		// functions
 			reset,
 			setGui,
 			getView,
 			validateView,
-			panel,
 
-        // constants
             baseWidth = 446,
             toolWidth = 36,
 
@@ -3785,12 +3783,6 @@ Ext.onReady( function() {
 					ns.core.conf.layout.west_scrollbarheight_accordion_indicator : ns.core.conf.layout.west_maxheight_accordion_indicator;
 
 				accordion.setThisHeight(h);
-
-				//ns.core.web.multiSelect.setHeight(
-					//[dataElementAvailable, dataElementSelected],
-					//this,
-					//ns.core.conf.layout.west_fill_accordion_indicator
-				//);
 
                 var msHeight = this.getHeight() - 28 - programStagePanel.getHeight() - 6;
 
@@ -6262,11 +6254,14 @@ Ext.onReady( function() {
 
 	// viewport
 	createViewport = function() {
-        var caseButton,
+        var eventReportStore,
+
+            caseButton,
 			aggregateButton,
 			paramButtonMap = {},
 			typeToolbar,
             onTypeClick,
+
 			widget,
 			accordion,
 			westRegion,

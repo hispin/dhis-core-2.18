@@ -2706,7 +2706,7 @@ Ext.onReady( function() {
             dataElementSelected,
             addUxFromDataElement,
             selectDataElements,
-            dataElement,
+            data,
 
             periodMode,
             onPeriodModeSelect,
@@ -2751,18 +2751,21 @@ Ext.onReady( function() {
 			tool,
 			toolPanel,
             organisationUnit,
+			dimensionIdAvailableStoreMap = {},
+			dimensionIdSelectedStoreMap = {},
+
+			getDimensionPanel,
+			getDimensionPanels,
 
             accordionBody,
 			accordionPanels = [],
+            accordion,
 
-		// functions
 			reset,
 			setGui,
 			getView,
 			validateView,
-			panel,
 
-        // constants
             baseWidth = 446,
             toolWidth = 36,
 
@@ -3007,6 +3010,7 @@ Ext.onReady( function() {
                 stagesByProgramStore.loadData(stages);
 
                 ns.app.aggregateLayoutWindow.resetData();
+				ns.app.queryLayoutWindow.resetData();
 
                 stageId = (layout ? layout.programStage.id : null) || (stages.length === 1 ? stages[0].id : null);
 
@@ -3033,7 +3037,7 @@ Ext.onReady( function() {
                         }
 
                         stages = program.programStages;
-                        attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'attribute');
+                        attributes = Ext.Array.pluck(program.programTrackedEntityAttributes, 'trackedEntityAttribute');
 
                         // attributes cache
                         if (Ext.isArray(attributes) && attributes.length) {
@@ -3100,7 +3104,7 @@ Ext.onReady( function() {
                 var attributes = attributeStorage[programId],
                     data = Ext.Array.clean([].concat(attributes || [], dataElements || []));
 
-				dataElementsByStageStore.loadData(dataElements);
+				dataElementsByStageStore.loadData(data);
 
                 if (layout) {
                     var dataDimensions = ns.core.service.layout.getDataDimensionsFromLayout(layout),
@@ -3410,27 +3414,44 @@ Ext.onReady( function() {
 			}
         };
 
-        dataElement = Ext.create('Ext.panel.Panel', {
+        programStagePanel = Ext.create('Ext.panel.Panel', {
+            layout: 'column',
+            bodyStyle: 'border:0 none',
+            style: 'margin-top:2px',
+            items: [
+                program,
+                stage
+            ]
+        });
+
+        data = Ext.create('Ext.panel.Panel', {
             title: '<div class="ns-panel-title-data">Data</div>',
             bodyStyle: 'padding:1px',
             hideCollapseTool: true,
             items: [
-                {
-					layout: 'column',
-                    bodyStyle: 'border:0 none',
-					style: 'margin-top:2px',
-					items: [
-						program,
-						stage
-					]
-				},
+                programStagePanel,
                 dataElementAvailable,
                 dataElementSelected
             ],
+            onExpand: function() {
+				var h = ns.app.westRegion.hasScrollbar ?
+					ns.core.conf.layout.west_scrollbarheight_accordion_indicator : ns.core.conf.layout.west_maxheight_accordion_indicator;
+
+				accordion.setThisHeight(h);
+
+                var msHeight = this.getHeight() - 28 - programStagePanel.getHeight() - 6;
+
+                dataElementAvailable.setHeight(msHeight * 0.4);
+                dataElementSelected.setHeight(msHeight * 0.6);
+
+            },
             listeners: {
 				added: function(cmp) {
 					accordionPanels.push(cmp);
-				}
+				},
+                expand: function(cmp) {
+                    cmp.onExpand();
+                }
 			}
         });
 
@@ -4014,6 +4035,16 @@ Ext.onReady( function() {
             bodyStyle: 'padding:1px',
             hideCollapseTool: true,
             width: accBaseWidth,
+			onExpand: function() {
+				var h = ns.app.westRegion.hasScrollbar ?
+					ns.core.conf.layout.west_scrollbarheight_accordion_period : ns.core.conf.layout.west_maxheight_accordion_period;
+				accordion.setThisHeight(h);
+				ns.core.web.multiSelect.setHeight(
+					[fixedPeriodAvailable, fixedPeriodSelected],
+					this,
+					ns.core.conf.layout.west_fill_accordion_period
+				);
+			},
             reset: function() {
 				this.resetRelativePeriods();
 				this.resetFixedPeriods();
@@ -4086,7 +4117,10 @@ Ext.onReady( function() {
 			listeners: {
 				added: function() {
 					accordionPanels.push(this);
-				}
+				},
+                expand: function(cmp) {
+                    cmp.onExpand();
+                }
 			}
 		});
 
@@ -4533,7 +4567,6 @@ Ext.onReady( function() {
 
         organisationUnit = Ext.create('Ext.panel.Panel', {
             title: '<div class="ns-panel-title-organisationunit">' + NS.i18n.organisation_units + '</div>',
-            cls: 'ns-accordion-last',
             bodyStyle: 'padding:1px',
             hideCollapseTool: true,
             items: [
@@ -4548,12 +4581,287 @@ Ext.onReady( function() {
                 },
                 treePanel
             ],
+            onExpand: function() {
+                var h = ns.app.westRegion.hasScrollbar ?
+                    ns.core.conf.layout.west_scrollbarheight_accordion_organisationunit : ns.core.conf.layout.west_maxheight_accordion_organisationunit;
+                accordion.setThisHeight(h);
+                treePanel.setHeight(this.getHeight() - ns.core.conf.layout.west_fill_accordion_organisationunit);
+            },
             listeners: {
 				added: function(cmp) {
 					accordionPanels.push(cmp);
-				}
+				},
+                expand: function(cmp) {
+                    cmp.onExpand();
+                }
 			}
         });
+
+		// dimensions
+
+		getDimensionPanel = function(dimension, iconCls) {
+			var	onSelect,
+                availableStore,
+				selectedStore,
+				available,
+				selected,
+				panel,
+
+				createPanel,
+				getPanels;
+
+            onSelect = function() {
+                var win = ns.app.viewport.getLayoutWindow();
+
+                if (selectedStore.getRange().length) {
+                    win.addDimension({id: dimension.id, name: dimension.name});
+                }
+                else if (!selectedStore.getRange().length && win.hasDimension(dimension.id)) {
+                    win.removeDimension(dimension.id);
+                }
+            };
+
+			availableStore = Ext.create('Ext.data.Store', {
+				fields: ['id', 'name'],
+				lastPage: null,
+				nextPage: 1,
+				isPending: false,
+				isLoaded: false,
+				reset: function() {
+					this.removeAll();
+					this.lastPage = null;
+					this.nextPage = 1;
+					this.isPending = false;
+					//indicatorSearch.hideFilter();
+				},
+				loadPage: function(filter, append) {
+					var store = this,
+						path;
+
+					filter = filter || null;
+
+					if (!append) {
+						this.lastPage = null;
+						this.nextPage = 1;
+					}
+
+					if (store.nextPage === store.lastPage) {
+						return;
+					}
+
+					path = '/organisationUnitGroups.json?fields=id,name&filter=organisationUnitGroupSet.id:eq:' + dimension.id + (filter ? '&filter=name:like:' + filter : '');
+
+					store.isPending = true;
+
+					Ext.Ajax.request({
+						url: ns.core.init.contextPath + '/api' + path,
+						params: {
+							page: store.nextPage,
+							pageSize: 50
+						},
+						failure: function() {
+							store.isPending = false;
+						},
+						success: function(r) {
+							var response = Ext.decode(r.responseText),
+								data = response.organisationUnitGroups || [],
+								pager = response.pager;
+
+							store.loadStore(data, pager, append);
+						}
+					});
+				},
+				loadStore: function(data, pager, append) {
+					this.loadData(data, append);
+					this.lastPage = this.nextPage;
+
+					if (pager.pageCount > this.nextPage) {
+						this.nextPage++;
+					}
+
+					this.isPending = false;
+					ns.core.web.multiSelect.filterAvailable({store: availableStore}, {store: selectedStore});
+				},
+				sortStore: function() {
+					this.sort('name', 'ASC');
+				}
+			});
+
+			selectedStore = Ext.create('Ext.data.Store', {
+				fields: ['id', 'name'],
+				data: [],
+                listeners: {
+                    add: function() {
+                        onSelect();
+                    },
+                    remove: function() {
+                        onSelect();
+                    },
+                    clear: function() {
+                        onSelect();
+                    }
+                }
+			});
+
+			available = Ext.create('Ext.ux.form.MultiSelect', {
+				cls: 'ns-toolbar-multiselect-left',
+                width: accBaseWidth / 2,
+				valueField: 'id',
+				displayField: 'name',
+				store: availableStore,
+				tbar: [
+					{
+						xtype: 'label',
+						text: NS.i18n.available,
+						cls: 'ns-toolbar-multiselect-left-label'
+					},
+					'->',
+					{
+						xtype: 'button',
+						icon: 'images/arrowright.png',
+						width: 22,
+						handler: function() {
+							ns.core.web.multiSelect.select(available, selected);
+						}
+					},
+					{
+						xtype: 'button',
+						icon: 'images/arrowrightdouble.png',
+						width: 22,
+						handler: function() {
+							ns.core.web.multiSelect.selectAll(available, selected);
+						}
+					}
+				],
+				listeners: {
+					render: function(ms) {
+						var el = Ext.get(ms.boundList.getEl().id + '-listEl').dom;
+
+						el.addEventListener('scroll', function(e) {
+							if (isScrolled(e) && !availableStore.isPending) {
+								availableStore.loadPage(null, true);
+							}
+						});
+
+						ms.boundList.on('itemdblclick', function() {
+							ns.core.web.multiSelect.select(available, selected);
+						}, ms);
+					}
+				}
+			});
+
+			selected = Ext.create('Ext.ux.form.MultiSelect', {
+				cls: 'ns-toolbar-multiselect-right',
+                width: accBaseWidth / 2,
+				valueField: 'id',
+				displayField: 'name',
+				ddReorder: true,
+				store: selectedStore,
+				tbar: [
+					{
+						xtype: 'button',
+						icon: 'images/arrowleftdouble.png',
+						width: 22,
+						handler: function() {
+							ns.core.web.multiSelect.unselectAll(available, selected);
+						}
+					},
+					{
+						xtype: 'button',
+						icon: 'images/arrowleft.png',
+						width: 22,
+						handler: function() {
+							ns.core.web.multiSelect.unselect(available, selected);
+						}
+					},
+					'->',
+					{
+						xtype: 'label',
+						text: NS.i18n.selected,
+						cls: 'ns-toolbar-multiselect-right-label'
+					}
+				],
+				listeners: {
+					afterrender: function() {
+						this.boundList.on('itemdblclick', function() {
+							ns.core.web.multiSelect.unselect(available, selected);
+						}, this);
+					}
+				}
+			});
+
+			dimensionIdAvailableStoreMap[dimension.id] = availableStore;
+			dimensionIdSelectedStoreMap[dimension.id] = selectedStore;
+
+			//availableStore.on('load', function() {
+				//ns.core.web.multiSelect.filterAvailable(available, selected);
+			//});
+
+			panel = {
+				xtype: 'panel',
+				title: '<div class="' + iconCls + '">' + dimension.name + '</div>',
+				hideCollapseTool: true,
+				availableStore: availableStore,
+				selectedStore: selectedStore,
+				getDimension: function() {
+					var config = {
+						dimension: dimension.id,
+						items: []
+					};
+
+					selectedStore.each( function(r) {
+						config.items.push({id: r.data.id});
+					});
+
+					return config.items.length ? config : null;
+				},
+				onExpand: function() {
+					if (!availableStore.isLoaded) {
+						availableStore.loadPage();
+					}
+
+					var h = ns.app.westRegion.hasScrollbar ?
+						ns.core.conf.layout.west_scrollbarheight_accordion_dataset : ns.core.conf.layout.west_maxheight_accordion_dataset;
+					accordion.setThisHeight(h);
+					ns.core.web.multiSelect.setHeight(
+						[available, selected],
+						this,
+						ns.core.conf.layout.west_fill_accordion_dataset
+					);
+				},
+				items: [
+					{
+						xtype: 'panel',
+						layout: 'column',
+						bodyStyle: 'border-style:none',
+						items: [
+							available,
+							selected
+						]
+					}
+				],
+				listeners: {
+					added: function() {
+						accordionPanels.push(this);
+					},
+					expand: function(p) {
+						p.onExpand();
+					}
+				}
+			};
+
+			return panel;
+		};
+
+		getDimensionPanels = function(dimensions, iconCls) {
+			var panels = [];
+
+			for (var i = 0, panel; i < dimensions.length; i++) {
+				panels.push(getDimensionPanel(dimensions[i], iconCls));
+			}
+
+			return panels;
+		};
 
             // accordion
         accordionBody = Ext.create('Ext.panel.Panel', {
@@ -4561,17 +4869,27 @@ Ext.onReady( function() {
 			activeOnTop: true,
 			cls: 'ns-accordion',
 			bodyStyle: 'border:0 none',
-			height: 550,
-			items: [
-                dataElement,
-                period,
-                organisationUnit
-            ],
+			height: 700,
+			items: function() {
+                var panels = [
+                    data,
+                    period,
+                    organisationUnit
+                ],
+				dims = Ext.clone(ns.core.init.dimensions);
+
+				panels = panels.concat(getDimensionPanels(dims, 'ns-panel-title-dimension'));
+
+				last = panels[panels.length - 1];
+				last.cls = 'ns-accordion-last';
+
+				return panels;
+            }(),
             listeners: {
                 afterrender: function() { // nasty workaround, should be fixed
-                    organisationUnit.expand();
-                    period.expand();
-                    dataElement.expand();
+                    //organisationUnit.expand();
+                    //period.expand();
+                    //data.expand();
                 }
             }
 		});
@@ -4814,35 +5132,68 @@ Ext.onReady( function() {
 			return view;
 		};
 
-		panel = Ext.create('Ext.panel.Panel', {
+		accordion = Ext.create('Ext.panel.Panel', {
+			bodyStyle: 'border-style:none; padding:1px; padding-bottom:0; overflow-y:scroll;',
+            accordionBody: accordionBody,
+			items: accordionBody,
+			panels: accordionPanels,
+            expandInitPanels: function() {
+                organisationUnit.expand();
+                //period.expand();
+                data.expand();
+            },
 			map: layer ? layer.map : null,
 			layer: layer ? layer : null,
 			menu: layer ? layer.menu : null,
 
+			setThisHeight: function(mx) {
+				var settingsHeight = 41,
+					containerHeight = settingsHeight + (this.panels.length * 28) + mx,
+					accordionHeight = ns.app.westRegion.getHeight() - settingsHeight - ns.core.conf.layout.west_fill,
+                    accordionBodyHeight;
+
+				if (ns.app.westRegion.hasScrollbar) {
+                    accordionBodyHeight = containerHeight - settingsHeight - ns.core.conf.layout.west_fill;
+				}
+				else {
+                    accordionBodyHeight = (accordionHeight > containerHeight ? containerHeight : accordionHeight) - ns.core.conf.layout.west_fill;
+				}
+
+                this.setHeight(accordionHeight);
+                accordionBody.setHeight(accordionBodyHeight);
+			},
+			getExpandedPanel: function() {
+				for (var i = 0, panel; i < this.panels.length; i++) {
+					if (!this.panels[i].collapsed) {
+						return this.panels[i];
+					}
+				}
+
+				return null;
+			},
+			getFirstPanel: function() {
+				return this.panels[0];
+			},
+			getParentGraphMap: function() {
+				return treePanel.getParentGraphMap();
+			},
+
 			accordionBody: accordionBody,
-			accordionPanels: accordionPanels,
+			panels: accordionPanels,
             treePanel: treePanel,
 
 			reset: reset,
 			setGui: setGui,
 			getView: getView,
-			getParentGraphMap: function() {
-				return treePanel.getParentGraphMap();
-			},
 
-			cls: 'ns-form-widget',
-			border: false,
-			items: [
-                accordionBody
-			],
             listeners: {
                 added: function() {
-					ns.app.widget = this;
+					ns.app.accordion = this;
 				}
             }
 		});
 
-		return panel;
+		return accordion;
 	};
 
 	// core
@@ -5334,7 +5685,7 @@ Ext.onReady( function() {
 			web.report = web.report || {};
 
 			web.report.getLayoutConfig = function() {
-                var view = ns.app.widget.getView(),
+                var view = ns.app.accordion.getView(),
                     options = {};
 
                 if (!view) {
@@ -5462,7 +5813,7 @@ Ext.onReady( function() {
                     web.storage.session.set(layout, 'eventchart');
                 }
 
-                ns.app.widget.setGui(layout, xLayout, response, isUpdateGui); //table);
+                ns.app.accordion.setGui(layout, xLayout, response, isUpdateGui); //table);
 
                 web.mask.hide(ns.app.centerRegion);
                 
@@ -5508,7 +5859,6 @@ Ext.onReady( function() {
             filter,
             layout,
             
-			widget,
 			accordion,
 			westRegion,
             layoutButton,
@@ -5520,7 +5870,6 @@ Ext.onReady( function() {
             interpretationItem,
             pluginItem,
             shareButton,
-            statusBar,
             centerRegion,
             getLayoutWindow,
             viewport;
@@ -5718,49 +6067,8 @@ Ext.onReady( function() {
                 radar
             ]
         });
-        
-		widget = LayerWidgetEvent();
 
-		accordion = Ext.create('Ext.panel.Panel', {
-			bodyStyle: 'border-style:none; padding:1px; padding-bottom:0; overflow-y:scroll;',
-			panels: widget.accordionPanels,
-			setThisHeight: function(mx) {
-				var panelHeight = this.panels.length * 28,
-					height;
-
-				if (westRegion.hasScrollbar) {
-					height = panelHeight + mx;
-					this.setHeight(viewport.getHeight() - 2);
-					widget.setHeight(height - 2);
-				}
-				else {
-					height = westRegion.getHeight() - ns.core.conf.layout.west_fill;
-					mx += panelHeight;
-					accordion.setHeight((height > mx ? mx : height) - 2);
-					widget.setHeight((height > mx ? mx : height) - 2);
-				}
-			},
-			getExpandedPanel: function() {
-				for (var i = 0, panel; i < this.panels.length; i++) {
-					if (!this.panels[i].collapsed) {
-						return this.panels[i];
-					}
-				}
-
-				return null;
-			},
-			getFirstPanel: function() {
-				return this.panels[0];
-			},
-			items: [
-				widget
-			],
-			listeners: {
-				added: function() {
-					ns.app.accordion = this;
-				}
-			}
-		});
+		accordion = LayerWidgetEvent();
 
 		update = function() {
 			var config = ns.core.web.report.getLayoutConfig(),
@@ -6100,17 +6408,6 @@ Ext.onReady( function() {
 			}
 		});
 
-        //statusBar = Ext.create('Ext.ux.toolbar.StatusBar', {
-            //height: 27,
-            //listeners: {
-                //render: function() {
-                    //ns.app.statusBar = this;
-
-                    //this.reset();
-                //}
-            //}
-        //});
-
 		defaultButton = Ext.create('Ext.button.Button', {
 			text: NS.i18n.chart,
 			iconCls: 'ns-button-icon-chart',
@@ -6184,7 +6481,7 @@ Ext.onReady( function() {
 										disabled: !(NS.isSessionStorage && ns.app.layout),
 										handler: function() {
 											if (NS.isSessionStorage) {
-												ns.app.layout.parentGraphMap = ns.app.widget.treePanel.getParentGraphMap();
+												ns.app.layout.parentGraphMap = ns.app.accordion.treePanel.getParentGraphMap();
 												ns.core.web.storage.session.set(ns.app.layout, 'eventanalytical', ns.core.init.contextPath + '/dhis-web-event-reports/app/index.html?s=eventanalytical');
 											}
 										}
@@ -6272,20 +6569,20 @@ Ext.onReady( function() {
 				afterrender: function() {
 
 					// resize event handler
-					//westRegion.on('resize', function() {
-						//var panel = accordion.getExpandedPanel();
+					westRegion.on('resize', function() {
+						var panel = accordion.getExpandedPanel();
 
-						//if (panel) {
-							//panel.onExpand(); //todo
-						//}
-					//});
+						if (panel) {
+							panel.onExpand();
+						}
+					});
 
 					// left gui
 					var viewportHeight = westRegion.getHeight(),
-						numberOfTabs = 3,
+						numberOfTabs = ns.core.init.dimensions.length + 3,
 						tabHeight = 28,
 						minPeriodHeight = 380,
-						settingsHeight = 91;
+						settingsHeight = 41;
 
 					if (viewportHeight > numberOfTabs * tabHeight + minPeriodHeight + settingsHeight) {
 						if (!Ext.isIE) {
@@ -6298,8 +6595,8 @@ Ext.onReady( function() {
 						westRegion.hasScrollbar = true;
 					}
 
-					// expand first panel
-					//accordion.getFirstPanel().expand(); //todo
+					// expand init panels
+					accordion.expandInitPanels();
 
 					// look for url params
 					var id = ns.core.web.url.getParam('id'),
@@ -6431,20 +6728,11 @@ Ext.onReady( function() {
 									}
 								});
 
-								// legend sets
-								//requests.push({
-									//url: init.contextPath + '/api/mapLegendSets.json?viewClass=detailed&links=false&paging=false',
-									//success: function(r) {
-										//init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
-										//fn();
-									//}
-								//});
-
 								// dimensions
 								requests.push({
-									url: init.contextPath + '/api/dimensions.json?links=false&paging=false',
+									url: init.contextPath + '/api/organisationUnitGroupSets.json?fields=id,name&paging=false',
 									success: function(r) {
-										init.dimensions = Ext.decode(r.responseText).dimensions || [];
+										init.dimensions = Ext.decode(r.responseText).organisationUnitGroupSets || [];
 										fn();
 									}
 								});
