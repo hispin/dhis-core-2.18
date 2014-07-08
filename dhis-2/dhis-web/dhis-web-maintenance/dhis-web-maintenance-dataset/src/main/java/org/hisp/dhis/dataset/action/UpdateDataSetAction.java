@@ -345,11 +345,11 @@ public class UpdateDataSetAction
         dataSet.setTimelyDays( timelyDays );
         dataSet.setSkipAggregation( skipAggregation );
 
-        if ( !(equalsNullSafe( name, dataSet.getName() ) &&
+        if ( !( equalsNullSafe( name, dataSet.getName() ) &&
             periodType.equals( dataSet.getPeriodType() ) &&
             dataElements.equals( dataSet.getDataElements() ) &&
             indicators.equals( dataSet.getIndicators() ) &&
-            renderAsTabs == dataSet.isRenderAsTabs()) )
+            renderAsTabs == dataSet.isRenderAsTabs() ) )
         {
             dataSet.increaseVersion(); // Check if version must be updated
         }
