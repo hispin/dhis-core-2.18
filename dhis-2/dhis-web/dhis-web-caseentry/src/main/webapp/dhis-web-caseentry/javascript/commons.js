@@ -1647,9 +1647,9 @@ function removeComment(programStageInstanceId, commentId) {
 }
 function commentKeyup() {
 	var commentInput = byId('commentInput');
-	while ($(commentInput).outerHeight() < commentInput.scrollHeight
+	if ($(commentInput).outerHeight() < commentInput.scrollHeight
 			+ parseFloat($(commentInput).css("borderTopWidth"))
-			+ parseFloat($(commentInput).css("borderBottomWidth"))) {
+			+ parseFloat($(commentInput).css("borderBottomWidth")) - 1 ) {
 		$(commentInput).height($(commentInput).height() + 10);
 	}
 }
