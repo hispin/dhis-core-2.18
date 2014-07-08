@@ -1,7 +1,6 @@
 trackerCapture.controller('ReportController',
         function($scope,
-                CurrentSelection,
-                storage,
+                $modal,
                 DateUtils,
                 EventUtils,
                 TEIService,
@@ -73,9 +72,83 @@ trackerCapture.controller('ReportController',
         });
     };
     
-    $scope.showEventDetails = function(dhis2Event){
-        console.log('I will show details of...:  ', dhis2Event);
+    $scope.showEventDetails = function(dhis2Event, selectedTei){
+        
+        var modalInstance = $modal.open({
+            templateUrl: 'components/report/eventDetails.html',
+            controller: 'EventDetailsController',
+            resolve: {
+                dhis2Event: function () {
+                    return dhis2Event;
+                },
+                gridColumns: function(){
+                    return $scope.gridColumns;
+                },
+                selectedTei: function(){
+                    return selectedTei;
+                },
+                entityName: function(){
+                    return $scope.selectedProgram.trackedEntity.name;
+                }
+            }
+        });
+
+        modalInstance.result.then({
+        });
     };    
+})
+
+//Controller for event details
+.controller('EventDetailsController', 
+    function($scope, 
+            $modalInstance,
+            orderByFilter,
+            ProgramStageFactory,
+            dhis2Event,
+            selectedTei,
+            gridColumns,
+            entityName){
+    
+    $scope.selectedTei = selectedTei;
+    $scope.gridColumns = gridColumns;
+    $scope.entityName = entityName;
+    $scope.currentEvent = dhis2Event;
+    $scope.currentEvent.providedElsewhere = [];
+    
+    if(!angular.isUndefined( $scope.currentEvent.notes)){
+        $scope.currentEvent.notes = orderByFilter($scope.currentEvent.notes, '-storedDate');            
+        angular.forEach($scope.currentEvent.notes, function(note){
+            note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
+        });
+    }
+    
+    ProgramStageFactory.get($scope.currentEvent.programStage).then(function(stage){
+        $scope.currentStage = stage;
+
+        $scope.allowProvidedElsewhereExists = false;
+        angular.forEach($scope.currentStage.programStageDataElements, function(prStDe){
+            $scope.currentStage.programStageDataElements[prStDe.dataElement.id] = prStDe.dataElement;
+            if(prStDe.allowProvidedElsewhere){
+                $scope.allowProvidedElsewhereExists = true;
+                $scope.currentEvent.providedElsewhere[prStDe.dataElement.id] = '';   
+            }                
+        });
+        angular.forEach($scope.currentEvent.dataValues, function(dataValue){
+            var val = dataValue.value;
+            if(val){
+                var de = $scope.currentStage.programStageDataElements[dataValue.dataElement];
+                if( de && de.type === 'int' && val){
+                    val = parseInt(val);
+                    dataValue.value = val;
+                }
+                $scope.currentEvent[dataValue.dataElement] = val;
+            }                    
+        });
+    });
+    
+    $scope.close = function () {
+      $modalInstance.close();
+    };
 })
 
 //conroller for tei report
