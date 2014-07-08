@@ -16,6 +16,7 @@ CACHE:
 css/widgets.css?_rev=$!{buildRevision}
 css/print.css?_rev=$!{buildRevision}
 ../dhis-web-dataentry/style/dhis-web-dataentry.css?_rev=$!{buildRevision}
+../api/files/style?_rev=$!{buildRevision}
 ../favicon.ico
 javascripts/es5-shim.min.js?_rev=$!{buildRevision}
 javascripts/es5-sham.min.js?_rev=$!{buildRevision}
@@ -46,6 +47,7 @@ javascripts/dhis2/dhis2.storage.js?_rev=$!{buildRevision}
 javascripts/dhis2/dhis2.appcache.js?_rev=$!{buildRevision}
 javascripts/jQuery/jquery.cookie.js?_rev=$!{buildRevision}
 ../main.js?_rev=$!{buildRevision}
+../api/files/script?_rev=$!{buildRevision}
 ouwt/ouwt.js?_rev=$!{buildRevision}
 fonts/LiberationSans-Regular-webfont.eot
 fonts/LiberationSans-Regular-webfont.woff
