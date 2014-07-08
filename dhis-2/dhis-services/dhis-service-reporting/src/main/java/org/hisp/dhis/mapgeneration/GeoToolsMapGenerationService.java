@@ -149,7 +149,6 @@ public class GeoToolsMapGenerationService
         
         InternalMapLayer dataLayer = internalMap.getFirstDataLayer();
         
-        // Build representation of a map using GeoTools, then render as image
         BufferedImage mapImage = MapUtils.render( internalMap, width, height );
 
         if ( dataLayer == null )
@@ -157,15 +156,13 @@ public class GeoToolsMapGenerationService
             return mapImage;
         }
         else
-        {
-            // Build the legend set, then render it to an image            
+        {         
             LegendSet legendSet = new LegendSet( dataLayer );
-            
-            BufferedImage titleImage = MapUtils.renderTitle( map.getName(), width, height );
-            
+
             BufferedImage legendImage = legendSet.render( i18nManager.getI18nFormat() );
-    
-            // Combine the legend image and the map image into one image
+
+            BufferedImage titleImage = MapUtils.renderTitle( map.getName(), getImageWidth( legendImage, mapImage ) );
+            
             return combineLegendAndMapImages( titleImage, legendImage, mapImage );
         }
     }
@@ -368,7 +365,7 @@ public class GeoToolsMapGenerationService
 
         // Create image, note that image height cannot be less than legend
         
-        int width = legendImage.getWidth() + mapImage.getWidth();
+        int width = getImageWidth( legendImage, mapImage );
         int height = Math.max( titleImage.getHeight() + mapImage.getHeight(), ( legendImage.getHeight() + 1 ) );
         
         BufferedImage finalImage = new BufferedImage( width, height, mapImage.getType() );
@@ -381,5 +378,10 @@ public class GeoToolsMapGenerationService
         g.drawImage( mapImage, legendImage.getWidth(), MapUtils.TITLE_HEIGHT, null );
 
         return finalImage;
+    }
+    
+    private int getImageWidth( BufferedImage legendImage, BufferedImage mapImage )
+    {
+        return ( legendImage != null ? legendImage.getWidth() : 0 ) + ( mapImage != null ? mapImage.getWidth() : 0 );
     }
 }
