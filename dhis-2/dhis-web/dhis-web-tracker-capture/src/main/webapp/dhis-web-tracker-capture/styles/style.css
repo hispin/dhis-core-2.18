@@ -99,6 +99,10 @@ textarea {
     display: inline-block;
 }
 
+.vertical-center {
+    vertical-align: middle;
+}
+
 .stage-container {
     display: inline-block;
     width: 135px;

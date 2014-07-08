@@ -17,19 +17,21 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <table class="table-borderless">
+                <table class="table-borderless table-with-fixed-layout">
                     <tr>
                         <td>
-                            <input type="text" name="startDate" placeholder="{{'start_date'| translate}}" class="form-control" ng-date ng-model="startDate" ng-required="true"/> 
+                            <input type="text" name="reportStartDate" placeholder="{{'start_date'| translate}}" class="form-control" ng-date ng-model="report.startDate" ng-required="true"/> 
+                            <span ng-show="outerForm.submitted && outerForm.reportStartDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
                         </td>
                         <td>
-                            <input type="text" name="endDate" placeholder="{{'end_date'| translate}}" class="form-control" ng-date ng-model="endDate" ng-required="true"/>
+                            <input type="text" name="reportEndDate" placeholder="{{'end_date'| translate}}" class="form-control" ng-date ng-model="report.endDate" ng-required="true"/>
+                            <span ng-show="outerForm.submitted && outerForm.reportEndDate.$invalid" style="color:red;font-size:12px">{{'required'| translate}}</span>
                         </td>
                     </tr>
                 </table>                
             </div>
             <div class="col-md-6 trim">                  
-                <button type="button" class="btn btn-primary" ng-click="generateReport()">{{'go'| translate}}</button>
+                <button type="button" class="btn btn-primary" ng-click="generateReport()" ng-disabled="!selectedProgram">{{'go'| translate}}</button>
                 <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="showReport()">{{'cancel'| translate}}</button>
             </div>
         </div>
@@ -38,5 +40,55 @@
         <div class="col-md-12 vertical-spacing">
             <div class="alert alert-warning">{{'please_select_program_report'| translate}}</div> 
         </div>
+    </div>
+    <div ng-if="dataReady">
+        <div ng-switch="teiCount">                    
+            <div ng-switch-when="undefined">
+                <div class="alert alert-warning vertical-spacing">
+                    {{'no'| translate}} {{selectedProgram.trackedEntity.name|| 'records' | translate}} {{'found'| translate}}                        
+                </div>
+            </div>
+            <div ng-switch-when="0">  
+                <div class="alert alert-warning vertical-spacing">
+                    {{'no'| translate}} {{selectedProgram.trackedEntity.name|| 'records' | translate}} {{'found'| translate}}                        
+                </div>
+            </div>    
+            <div ng-switch-default> 
+
+                <!-- report begins -->
+                <div class="vertical-spacing">                    
+                    <table class="table table-compact table-striped">
+                        <thead>
+                            <tr>
+                                <th>{{selectedProgram.trackedEntity.name}}</th>
+                                <th>{{'registered_data' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="tei in teiList.rows">
+                            <td>
+                                <span ng-repeat="gridColumn in gridColumns">
+                                    <span class="bold">{{gridColumn.name}}:</span> {{tei[gridColumn.id]}}<br>
+                                </span>
+                            </td>
+                            <td>    
+                                <div class='bold vertical-center' ng-if='!dhis2Events[tei.id]'>{{'no_visit_made' | translate}}</div>
+                                <div class="inline-block vertical-center" ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'eventDate'">                                    
+                                    <div class="block align-center">{{ev.orgUnitName}}</div>                   
+                                    <div class="stage-container" 
+                                         title="{{ev.dataValues ? 'details' : 'no_data_registerd' | translate}}"
+                                         ng-class="{'{{ev.statusColor}}': true}"
+                                         ng-click="showEventDetails(ev)">
+                                        {{ev.name}}<br/>
+                                        {{ev.eventDate}}         
+                                    </div>
+                                    <i class="fa fa-arrow-right" ng-show="$index < dhis2Events[tei.id].length - 1"></i>
+                                </div>                                         
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- report ends -->
+            </div>
+        </div> 
     </div>
 </div>
