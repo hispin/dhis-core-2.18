@@ -434,7 +434,7 @@ function getProgramStage( id )
         return $.ajax( {
             url: '../api/programStages.json',
             type: 'GET',
-            data: 'filter=id:eq:' + id +'&fields=id,name,dataEntryForm,reportDateDescription,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,type,optionSet[id]]]'
+            data: 'filter=id:eq:' + id +'&fields=id,name,dataEntryForm,reportDateDescription,minDaysFromStart,repeatable,programStageDataElements[displayInReports,allowProvidedElsewhere,allowDateInFuture,compulsory,dataElement[id,name,formName,type,optionSet[id]]]'
         }).done( function( response ){            
             _.each( _.values( response.programStages ), function( programStage ) {                
                 dhis2.tc.store.set( 'programStages', programStage );
