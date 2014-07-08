@@ -19,16 +19,16 @@
 	</thead>
 	<tbody id='commentReportTB' name="messageTB">
 		#set( $mark = false )
-		#if($programInstance.comment)
+		#foreach($comment in $programInstance.comments)
 			<tr id="comment_$comment.id" #alternate( $mark )>
-				<td>$format.formatDateTime($programInstance.comment.createdDate)</td>
+				<td>$format.formatDateTime($comment.createdDate)</td>
 				<td>$i18n.getString('all')</td>
-				<td>$programInstance.comment.creator</td>
+				<td>$comment.creator</td>
 				<td>$i18n.getString('comment')</td>
 				<td></td>
-				<td>$programInstance.comment.commentText</td>
+				<td>$comment.commentText</td>
 				<td>
-					<a href="javascript:removeComment( '$programInstance.id', '$programInstance.comment.id' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+					<a href="javascript:removeComment( '$programInstance.id', '$comment.id' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				</td>
 			</tr>
 		#end
@@ -62,14 +62,14 @@
 		#end
 		
 		#foreach($programStageInstance in $programStageInstances)
-			#if( $programStageInstance.comment )
+			#foreach( $comment in $programStageInstance.comments )
 				<tr id="comment_$comment.id" #alternate( $mark )>
-					<td>$format.formatDateTime($programStageInstance.comment.createdDate)</td>
+					<td>$format.formatDateTime($comment.createdDate)</td>
 					<td>$programStageInstance.programStage.displayName</td>
-					<td>$programStageInstance.comment.creator</td>
+					<td>$comment.creator</td>
 					<td>$i18n.getString('comment')</td>
 					<td></td>
-					<td>$programStageInstance.comment.commentText</td>
+					<td>$comment.commentText</td>
 					<td>
 						<a href="javascript:removeComment( '$programStageInstance.id', '$comment.id' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 					</td>
