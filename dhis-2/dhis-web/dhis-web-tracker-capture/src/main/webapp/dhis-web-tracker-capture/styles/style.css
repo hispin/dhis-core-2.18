@@ -430,12 +430,13 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .search-container-main {
     width: 100%;
     float: left;
-    height: 100%; 
+    height: 100%;
+    padding-bottom: 5px;
 }
 
 .search-container{
     margin: 5px;
-    padding: 5px; 
+    padding: 5px 9px 5px 5px;
     max-height: 570px;
     overflow-y: scroll;
 }
