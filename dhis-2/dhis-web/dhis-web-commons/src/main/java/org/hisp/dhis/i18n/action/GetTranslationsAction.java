@@ -45,7 +45,7 @@ public class GetTranslationsAction
 {
     private String className;
 
-    private String uid;
+    private String objectUid;
 
     private String loc;
 
@@ -71,9 +71,9 @@ public class GetTranslationsAction
         this.className = className;
     }
 
-    public void setUid( String uid )
+    public void setObjectUid( String objectUid )
     {
-        this.uid = uid;
+        this.objectUid = objectUid;
     }
 
     public void setLoc( String locale )
@@ -95,7 +95,7 @@ public class GetTranslationsAction
     {
         Locale locale = LocaleUtils.getLocale( loc );
 
-        translations = i18nService.getTranslationsNoFallback( className, uid, locale );
+        translations = i18nService.getTranslationsNoFallback( className, objectUid, locale );
         
         return SUCCESS;
     }

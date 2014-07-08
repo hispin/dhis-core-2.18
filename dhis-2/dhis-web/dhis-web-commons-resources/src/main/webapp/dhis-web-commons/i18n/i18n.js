@@ -7,7 +7,7 @@ function getTranslation()
 	if ( loc != 'NONE' )
 	{
 		jQuery.postJSON( 'getTranslations.action', {
-			id: getFieldValue( 'objectId' ),
+			objectUid: getFieldValue( 'uid' ),
 			className: getFieldValue( 'className' ),
 			loc: loc
 		}, 
