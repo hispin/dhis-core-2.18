@@ -75,7 +75,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 
                 $scope.attributes = atts;   
                 $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
-                $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);      
                 $scope.search($scope.searchMode.listAll);                
             });           
         }
@@ -105,7 +105,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                             $scope.$apply(function () {
                                 $scope.attributes = atts;    
                                 $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
-                                $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                                $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);      
                             });
                         }, 100);
                     });
@@ -125,7 +125,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     $scope.$apply(function () {
                         $scope.attributes = atts; 
                         $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
-                        $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                        $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);      
                     });
                 }, 100);
             });           
@@ -136,7 +136,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     $scope.$apply(function () {
                         $scope.attributes = atts;  
                         $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
-                        $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
+                        $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);      
                     });
                 }, 100);
             });
@@ -256,31 +256,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         });
                     
         return attributes;
-    };
-
-    //generate grid columns from teilist attributes
-    $scope.generateGridColumns = function(attributes){
-        var columns = attributes ? angular.copy(attributes) : [];
-       
-        //also add extra columns which are not part of attributes (orgunit for example)
-        columns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string', displayInListNoProgram: false});
-        columns.push({id: 'created', name: 'Registration date', type: 'string', displayInListNoProgram: false});
-        
-        //generate grid column for the selected program/attributes
-        angular.forEach(columns, function(column){
-            if(column.id === 'orgUnitName' && $scope.selectedOuMode.name !== 'SELECTED'){
-                column.show = true;    
-            }
-            
-            if(column.displayInListNoProgram){
-                column.show = true;
-            }           
-           
-            if(column.type === 'date'){
-                 $scope.filterText[column.id]= {start: '', end: ''};
-            }
-        });        
-        return columns;        
     };
     
     $scope.clearEntities = function(){

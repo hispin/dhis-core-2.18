@@ -1,0 +1,83 @@
+<div class="modal-header">
+    <h2>{{'details'| translate}}</h2>
+</div>
+<div class="modal-body">
+    <div class='row'>
+        <table class="table-borderless table-striped">
+            <tr>
+                <th colspan="2">
+                    {{entityName}}
+                </th>
+            </tr>
+            <tr class="col-md-12" ng-repeat="gridColumn in gridColumns">
+                <td class="col-md-6">
+                    {{gridColumn.name}}
+                </td>
+                <td class="col-md-6">
+                    <input type="text" ng-model="selectedTei[gridColumn.id]" ng-disabled='true'/>                       
+                </td>                
+            </tr>
+        </table>
+    </div>
+    <div class='row' ng-if='currentEvent'>      
+        <hr>
+        <span class="bold">
+            {{currentEvent.name}}  |  {{currentEvent.orgUnitName}}  |  {{currentEvent.eventDate}}
+        </span>
+        <table class="table-borderless table-striped">
+            <thead>
+                <tr class="col-md-12">
+                    <th class="col-md-5">
+                        {{'data_element'| translate}}
+                    </th>
+                    <th class="col-md-5">
+                        {{'value'| translate}}
+                    </th>
+                    <th class="col-md-2" ng-if="allowProvidedElsewhereExists">
+                        {{'provided_elsewhere'| translate}}
+                    </th>
+                </tr>
+            </thead>
+            <tr class="col-md-12" ng-repeat="prStDe in currentStage.programStageDataElements">
+                <td class="col-md-5">
+                    {{prStDe.dataElement.formName ? prStDe.dataElement.formName : prStDe.dataElement.name}}
+                </td>
+                <td class="col-md-5">
+                    <input type="text" ng-model="currentEvent[prStDe.dataElement.id]" ng-disabled='true'/>                       
+                </td>
+                <td class="col-md-2" ng-if="allowProvidedElsewhereExists">                    
+                    <div class="align-center" ng-show="prStDe.allowProvidedElsewhere">
+                        <input type="checkbox" ng-model="currentEvent.providedElsewhere[prStDe.dataElement.id]" ng-disabled='true'/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="row" ng-if='currentEvent.notes'>
+            <hr>
+            <table class="table-borderless table-striped dhis2-table-hover">  
+                <tr>
+                    <th>
+                        {{'notes' | translate}}
+                    </th>
+                </tr>
+                <tr class="col-md-12" ng-repeat="note in currentEvent.notes">
+                    <td class="over-flow-hidden">
+                        <d2-pop-over content="note" template="note.html" details="{{'details'| translate}}">
+                            <div class='col-md-12'>{{note.value}}</div>
+                        </d2-pop-over>
+                        <script type="text/ng-template" id="note.html">
+                            <p>{{content.value}}</p>
+                            <hr>
+                            <p><strong>{{'created_by' | translate}}: </strong>{{content.storedBy}}</p>
+                            <p><strong>{{'date' | translate}}: </strong>{{content.storedDate}}</p>                           
+                        </script>
+                    </td> 
+                </tr>
+            </table>
+        <!--</div>  -->      
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" data-ng-click="close()">{{'close'| translate}}</button>
+</div>
