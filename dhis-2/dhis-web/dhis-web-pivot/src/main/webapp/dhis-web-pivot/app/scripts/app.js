@@ -4898,6 +4898,9 @@ Ext.onReady( function() {
                     },
                     remove: function() {
                         onSelect();
+                    },
+                    clear: function() {
+                        onSelect();
                     }
                 }
 			});
