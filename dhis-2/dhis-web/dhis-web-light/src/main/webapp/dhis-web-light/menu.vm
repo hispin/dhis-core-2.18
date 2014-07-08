@@ -24,10 +24,6 @@
 		<li><a href="selectOrganisationUnit.action">$i18n.getString( "agregate_reporting" )</a></li>
 	#end
 	
-    #if( $auth.hasAccess( "dhis-web-light", "registerPatientLocation" ) )
-		<li><a href="trackingMenu.action">$i18n.getString( "tracking" )</a></li>
-	#end
-	
     <li><a href="messages.action">$i18n.getString( "messages" ) #if($unreadMessageConversationCount > 0)($unreadMessageConversationCount)#end</a></li>
     <li><a href="getInterpretations.action">$i18n.getString( "interpretations" )</a></li>
     <li><a href="reports.action">$i18n.getString( "reports" )</a></li>
