@@ -1966,7 +1966,6 @@ function purgeLocalForms()
             }
         } );
 
-        console.log( 'Removing forms: ', keys );
         def.resolve();
 
         console.log( 'Purged local forms' );

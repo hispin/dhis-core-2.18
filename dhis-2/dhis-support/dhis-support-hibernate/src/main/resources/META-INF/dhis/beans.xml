@@ -90,9 +90,9 @@
     <property name="defaultValue" value="40" />
   </bean>
   
-  <bean id="encryptionKey" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+  <bean id="encryptionPassword" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
     <property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider" />
-    <property name="hibernateProperty" value="encryption.key" />
+    <property name="hibernateProperty" value="encryption.password" />
     <property name="defaultValue" value="J7GhAs287hsSQlKd9g5" />    
   </bean>
   
@@ -105,7 +105,7 @@
   
   <bean id="stringEncryptor" class="org.jasypt.encryption.pbe.PooledPBEStringEncryptor">
     <property name="algorithm" value="PBEWithSHA1AndDESede" />
-    <property name="password" ref="encryptionKey" />
+    <property name="password" ref="encryptionPassword" />
     <property name="saltGenerator" ref="fixedSaltGenerator" />
     <property name="poolSize" value="4" />
   </bean>
