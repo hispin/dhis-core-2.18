@@ -1,57 +1,42 @@
-<div class="bordered-div"  ng-controller="ReportController">    
-
-    <div class="report-container">
-        <form name="outerForm" novalidate>
-            <h3>{{selectedProgram.name}} {{'report'| translate}}</h3>
-            <hr>
-            <table class="table-borderless">
-                <tr>
-                    <td>{{'org_unit'| translate}}</td>
-                    <td>                    
-                        <label><input type="radio" ng-model="selectedOuMode.name" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
-                        <label><input type="radio" ng-model="selectedOuMode.name" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
-                        <label><input type="radio" ng-model="selectedOuMode.name" name="descendants" value="DESCENDANTS"> {{'DESCENDANTS'| translate}}</label><br/>
-                        <label><input type="radio" ng-model="selectedOuMode.name" name="accessible" value="ACCESSIBLE"> {{'ACCESSIBLE'| translate}}</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" name="startDate" placeholder="{{'start_date'| translate}}" class="form-control" ng-date ng-model="startDate" ng-required="true"/> 
-                    </td>
-                    <td>
-                        <input type="text" name="endDate" placeholder="{{'end_date'| translate}}" class="form-control" ng-date ng-model="endDate" ng-required="true"/>
-                    </td>
-                </tr>
-            </table>
-            <div class="row col-md-12 vertical-spacing">                  
-                <button type="button" class="btn btn-primary" ng-click="generateReport()">{{'generate'| translate}}</button>
-                <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="showReport()">{{'close'| translate}}</button>
+<div class="bordered-div"  ng-controller="ReportController">
+    <form name="outerForm" novalidate>               
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table-borderless">
+                    <tr>
+                        <td>{{'org_unit'| translate}}</td>
+                        <td>                    
+                            <label><input type="radio" ng-model="selectedOuMode.name" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
+                            <label><input type="radio" ng-model="selectedOuMode.name" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
+                            <label><input type="radio" ng-model="selectedOuMode.name" name="descendants" value="DESCENDANTS"> {{'DESCENDANTS'| translate}}</label><br/>
+                            <label><input type="radio" ng-model="selectedOuMode.name" name="accessible" value="ACCESSIBLE"> {{'ACCESSIBLE'| translate}}</label>
+                        </td>
+                    </tr>
+                </table>
             </div>
-        </form>
-        <!--<h3>{{selectedProgram.name}} {{'report'| translate}}</h3>
-            <hr>
-            <table class="table-borderless">
-                <tr>
-                    <td>{{'org_unit'| translate}}</td>
-                    <td>                    
-                        <label><input type="radio" ng-model="selectedOuMode.name" name="selected" value="SELECTED"> {{'SELECTED'| translate}}</label><br/>
-                        <label><input type="radio" ng-model="selectedOuMode.name" name="children" value="CHILDREN"> {{'CHILDREN'| translate}}</label><br/>
-                        <label><input type="radio" ng-model="selectedOuMode.name" name="descendants" value="DESCENDANTS"> {{'DESCENDANTS'| translate}}</label><br/>
-                        <label><input type="radio" ng-model="selectedOuMode.name" name="accessible" value="ACCESSIBLE"> {{'ACCESSIBLE'| translate}}</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" name="startDate" placeholder="{{'start_date'| translate}}" class="form-control" ng-date ng-model="startDate" ng-required="true"/> 
-                    </td>
-                    <td>
-                        <input type="text" name="endDate" placeholder="{{'end_date'| translate}}" class="form-control" ng-date ng-model="endDate" ng-required="true"/>
-                    </td>
-                </tr>
-            </table>
-            <div class="row col-md-12 vertical-spacing">                  
-                <button type="button" class="btn btn-primary" ng-click="generateReport()">{{'generate'| translate}}</button>
-                <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="showReport()">{{'close'| translate}}</button>
-            </div>-->
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table-borderless">
+                    <tr>
+                        <td>
+                            <input type="text" name="startDate" placeholder="{{'start_date'| translate}}" class="form-control" ng-date ng-model="startDate" ng-required="true"/> 
+                        </td>
+                        <td>
+                            <input type="text" name="endDate" placeholder="{{'end_date'| translate}}" class="form-control" ng-date ng-model="endDate" ng-required="true"/>
+                        </td>
+                    </tr>
+                </table>                
+            </div>
+            <div class="col-md-6 trim">                  
+                <button type="button" class="btn btn-primary" ng-click="generateReport()">{{'go'| translate}}</button>
+                <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="showReport()">{{'cancel'| translate}}</button>
+            </div>
+        </div>
+    </form>
+    <div class="row" ng-if="!selectedProgram">
+        <div class="col-md-12 vertical-spacing">
+            <div class="alert alert-warning">{{'please_select_program_report'| translate}}</div> 
+        </div>
     </div>
 </div>

@@ -68,44 +68,6 @@ textarea {
     width: 264px;
 }
 
-/*----------------------------------------------------------------------------*/
-/* Table
-/*----------------------------------------------------------------------------*/
-
-table {
-    font-size: 13px;
-    line-height: 18px;
-    margin-bottom: 10px;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Button list
-/*----------------------------------------------------------------------------*/
-
-.buttons
-{
-    text-align:right;
-    padding-bottom:10px;
-    width:100%;
-}
-
-div.actions
-{
-    float: right;
-    width: 140px;
-    text-align: right;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Data entry form
-/*----------------------------------------------------------------------------*/
-
-.entryScreen {
-    margin-bottom: 20px;
-    width: 100%;
-    font-size: 13px; 
-    line-height: 18px;
-}
 
 /*----------------------------------------------------------------------------*/
 /* Program-stage-instances
@@ -115,25 +77,10 @@ div.actions
     overflow: scroll;
 }
 
-.arrow-container {
-    font-size: 25px;
-    width: 10px;
-}
-
-.stage-flow {
-    height:100px;
-    overflow: scroll;
-}
-
 .table-flow {
     height:100px;
     overflow-x:hidden;
     overflow-y:hidden;
-}
-
-div.orgunit-object {
-    margin-left: 5px;
-    width: 120px;
 }
 
 .align-center {
@@ -193,107 +140,6 @@ div.orgunit-object {
 
 .stages-color {
     display: block;
-}
-
-input.stage-object[type="button"] {
-    width: 135px;
-    height: 60px;
-    cursor: pointer;
-    opacity: 1.0;
-    border: 2px solid;
-    margin: 5px;
-    white-space: normal;
-}
-
-input.stage-object[type="button"]:hover {
-    border: 5px solid;
-}
-
-input.stage-object-selected[type="button"] {
-    border: 5px solid;
-}
-
-input.stage-scheduled[type="button"] {
-    border: 5px solid;
-}
-
-input.entity-instance-object[type="button"] {
-    width: 130px;
-    height: 60px;
-    border-color: #bbbbbb;
-    background-color: #ddd;
-    cursor: pointer;
-    border: 1px solid #aaa;
-    margin: 5px;
-    border-radius: 2px;
-}
-
-input.patient-object[type="button"] {
-    width: 130px;
-    height: 60px;
-    border-color: #bbbbbb;
-    background-color: #ddd;
-    cursor: pointer;
-    border: 1px solid #aaa;
-    margin: 5px;
-    border-radius: 2px;
-}
-
-div.dashboard-history {
-    z-index:100; 
-    width:300px; 
-    height:200px; 
-    position:absolute; 
-    left:650px; 
-    top:115px; 
-    background-color:#ffffff;
-    border:1px solid #d0d0d0;
-    padding: 1px;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Program tracking
-/*----------------------------------------------------------------------------*/
-
-div.link-area-tracking {
-    display:inline-block;
-    border:1px solid #d0d0d0;
-    padding: 1px 1px 0 1px;
-    height:200px;
-    width:60%;
-    overflow:hidden;
-}
-
-.gridTable th, .gridTable td {
-    line-height: 200%;
-}
-
-/* Treepanel contextmenu */
-#treepanel-contextmenu {
-    border-radius: 2px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #aaa;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Capture Coordinates
-/*----------------------------------------------------------------------------*/
-
-.coordinates1 {
-    width: 110px;
-    white-space: normal;
-}
-
-.coordinates2 {
-    width: 150px;
-}
-
-
-.commentHeader {
-    color: #606060;
-    font-size: 17px;
-    padding: 5px 0;
 }
 
 
@@ -594,11 +440,6 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
     overflow-y: scroll;
 }
 
-.registration-container, report-container {
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
 .widget-content-container{
     padding: 20px 10px;
 }
@@ -650,7 +491,7 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 
 input[type=number], input[type=text], input[type=password], textarea, select {
     border: 1px solid #aaa;
-    padding: 6px 8px;
+    padding: 2px 4px;
     font-size: 14px;
 }
 
@@ -752,7 +593,7 @@ input[type=number], input[type=text], input[type=password], textarea, select {
     display: block;
     width: 100%;
     height: 34px;
-    padding: 6px 6px;
+    padding: 2px 4px;
     font-size: 14px;
     line-height: 1.0;
     color: #555;
@@ -771,7 +612,7 @@ input[type=number], input[type=text], input[type=password], textarea, select {
 .form-control-program {    
     width: 40%;
     height: 34px;
-    padding: 6px 6px;
+    padding: 2px 4px;
     font-size: 14px;
     line-height: 1.0;
     color: #555;
@@ -792,7 +633,7 @@ input[type=number], input[type=text], input[type=password], textarea, select {
     display: block;
     width: 100%;
     height: 30px;
-    padding: 6px 6px;
+    padding: 2px 4px;
     font-size: 14px;
     line-height: 1.0;
     color: #555;
@@ -814,7 +655,7 @@ input[type=number], input[type=text], input[type=password], textarea, select {
 
 .select-drop-down-button{
     text-align: left;
-    padding: 6px 12px;
+    padding: 2px 4px;
     color: #999;
 }
 

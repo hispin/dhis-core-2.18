@@ -42,6 +42,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
     $scope.defaultOperators = OperatorFactory.defaultOperators;
     $scope.boolOperators = OperatorFactory.boolOperators;
     $scope.enrollment = {programStartDate: '', programEndDate: '', operator: $scope.defaultOperators[0]};
+    $scope.searchState = true;
    
     $scope.searchMode = { 
                             listAll: 'LIST_ALL', 
@@ -293,8 +294,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.showRegistrationDiv = !$scope.showRegistrationDiv;
         $scope.showTrackedEntityDiv = false;
         $scope.showSearchDiv = false;
+        $scope.searchState = false;
         
         if(!$scope.showRegistrationDiv){
+            $scope.searchState = true;
             $scope.doSearch = true;
             $scope.getProgramAttributes($scope.selectedProgram);
         }
@@ -304,8 +307,10 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.showReportDiv = !$scope.showReportDiv;
         $scope.showTrackedEntityDiv = false;
         $scope.showSearchDiv = false;
+        $scope.searchState = false;
         
         if(!$scope.showReportDiv){
+            $scope.searchState = true;
             $scope.doSearch = true;
             $scope.getProgramAttributes($scope.selectedProgram);
         }

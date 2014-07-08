@@ -9,28 +9,12 @@ trackerCapture.controller('ReportController',
 
     TranslationService.translate();
     
-    $scope.ouModes = [{name: 'SELECTED'}, 
-                    {name: 'CHILDREN'}, 
-                    {name: 'DESCENDANTS'},
-                    {name: 'ACCESSIBLE'}
-                  ];         
+    $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         
     $scope.selectedOuMode = $scope.ouModes[0];
     
-    $scope.$on('dashboard', function(event, args) {
-        var selections = CurrentSelection.get();
-        $scope.selectedOrgUnit = storage.get('SELECTED_OU');
-        $scope.selectedEntity = selections.tei;      
-        $scope.selectedProgram = selections.pr;        
-        $scope.selectedEnrollment = selections.enrollment; 
-        
-        if($scope.selectedOrgUnit && 
-                $scope.selectedProgram && 
-                $scope.selectedEntity && 
-                $scope.selectedEnrollment){
-            
-            $scope.getEvents();
-        }       
-    });
+    
+    
+
     
     $scope.getEvents = function(){
         
