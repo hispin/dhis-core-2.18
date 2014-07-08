@@ -157,24 +157,19 @@ Ext.onReady( function() {
 			conf.layout = {
 				west_width: 452,
 				west_fill: 2,
-				west_fill_accordion_indicator: 59,
-				west_fill_accordion_dataelement: 59,
-				west_fill_accordion_dataset: 33,
-				west_fill_accordion_period: 296,
-				west_fill_accordion_organisationunit: 62,
-				west_maxheight_accordion_indicator: 400,
-				west_maxheight_accordion_dataelement: 400,
-				west_maxheight_accordion_dataset: 400,
-				west_maxheight_accordion_period: 513,
-				west_maxheight_accordion_organisationunit: 900,
-				west_maxheight_accordion_group: 340,
-				west_maxheight_accordion_options: 449,
-				west_scrollbarheight_accordion_indicator: 300,
-				west_scrollbarheight_accordion_dataelement: 300,
-				west_scrollbarheight_accordion_dataset: 300,
-				west_scrollbarheight_accordion_period: 450,
-				west_scrollbarheight_accordion_organisationunit: 450,
-				west_scrollbarheight_accordion_group: 300,
+                west_fill_accordion_indicator: 56,
+                west_fill_accordion_dataelement: 59,
+                west_fill_accordion_dataset: 31,
+                west_fill_accordion_period: 307,
+                west_fill_accordion_organisationunit: 58,
+                west_maxheight_accordion_indicator: 450,
+                west_maxheight_accordion_dataset: 350,
+                west_maxheight_accordion_period: 405,
+                west_maxheight_accordion_organisationunit: 500,
+                west_scrollbarheight_accordion_indicator: 300,
+                west_scrollbarheight_accordion_dataset: 250,
+                west_scrollbarheight_accordion_period: 405,
+                west_scrollbarheight_accordion_organisationunit: 350,
 				east_tbar_height: 31,
 				east_gridcolumn_height: 30,
 				form_label_width: 55,
@@ -483,7 +478,7 @@ Ext.onReady( function() {
 
 					// config must be an object
 					if (!(config && Ext.isObject(config))) {
-						alert('Layout: config is not an object (' + init.el + ')');
+						console.log('Layout: config is not an object (' + init.el + ')');
 						return;
 					}
 

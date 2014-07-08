@@ -1732,10 +1732,12 @@ Ext.onReady( function() {
             items.push(item);
         }
 
-		items.push({
-			xtype: 'menuseparator',
-			alwaysEnabled: true
-		});
+        if (items[items.length - 1].xtype !== 'menuseparator') {
+            items.push({
+                xtype: 'menuseparator',
+                alwaysEnabled: true
+            });
+        }
 
 		item = {
 			text: GIS.i18n.clear,

@@ -1093,7 +1093,7 @@ table.small td {
 
 	/* accordion item body */
 .ns-accordion .x-accordion-body {
-	padding: 2px 2px 0px;
+	padding: 1px;
 	border-top: 1px solid #c5c5c5 !important;
 }
 
