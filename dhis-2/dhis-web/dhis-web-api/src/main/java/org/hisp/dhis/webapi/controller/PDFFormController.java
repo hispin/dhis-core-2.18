@@ -73,9 +73,9 @@ import com.lowagie.text.pdf.PdfWriter;
  */
 @Controller
 @RequestMapping(value = "/pdfForm")
-public class PDFFormController
+public class PdfFormController
 {
-    private static final Log log = LogFactory.getLog( PDFFormController.class );
+    private static final Log log = LogFactory.getLog( PdfFormController.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -222,7 +222,7 @@ public class PDFFormController
 
     @RequestMapping( value = "/programStage", method = RequestMethod.POST )
     @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
-    public void sendFormPDF_ProgramStage( HttpServletRequest request, HttpServletResponse response )
+    public void sendFormPdfProgramStage( HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
         InputStream in = request.getInputStream();
