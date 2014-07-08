@@ -725,7 +725,7 @@ function getDataElementName( dataElementId )
 		return span.text();
 	}
 
-  console.log( 'Data element not present in form, falling back to default name: ' + dataElementId );
+    console.log( 'Data element not present in form, falling back to default name: ' + dataElementId );
 	return DEFAULT_NAME;
 }
 
@@ -738,7 +738,7 @@ function getOptionComboName( optionComboId )
 		return span.text();
 	}
 
-  console.log( 'Category option combo not present in form, falling back to default name: ' + optionComboId );
+    console.log( 'Category option combo not present in form, falling back to default name: ' + optionComboId );
 	return DEFAULT_NAME;
 }
 
@@ -1966,14 +1966,8 @@ function purgeLocalForms()
             }
         } );
 
-        console.log( 'should delete: ', keys );
+        console.log( 'Removing forms: ', keys );
         def.resolve();
-
-        /*
-        DAO.store.removeAll( "forms", keys ).done(function() {
-            def.resolve();
-        });
-        */
 
         console.log( 'Purged local forms' );
     });
