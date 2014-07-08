@@ -3801,7 +3801,10 @@ Ext.onReady( function() {
             listeners: {
 				added: function(cmp) {
 					accordionPanels.push(cmp);
-				}
+				},
+                expand: function(cmp) {
+                    cmp.onExpand();
+                }
 			}
         });
 
@@ -4467,7 +4470,10 @@ Ext.onReady( function() {
 			listeners: {
 				added: function() {
 					accordionPanels.push(this);
-				}
+				},
+                expand: function(cmp) {
+                    cmp.onExpand();
+                }
 			}
 		});
 
@@ -4937,7 +4943,10 @@ Ext.onReady( function() {
             listeners: {
 				added: function(cmp) {
 					accordionPanels.push(cmp);
-				}
+				},
+                expand: function(cmp) {
+                    cmp.onExpand();
+                }
 			}
         });
 
@@ -5165,7 +5174,7 @@ Ext.onReady( function() {
 					}
 
 					var h = ns.app.westRegion.hasScrollbar ?
-						ns.core.conf.layout.west_scrollbarheight_accordion_group : ns.core.conf.layout.west_maxheight_accordion_group;
+						ns.core.conf.layout.west_scrollbarheight_accordion_dataset : ns.core.conf.layout.west_maxheight_accordion_dataset;
 					accordion.setThisHeight(h);
 					ns.core.web.multiSelect.setHeight(
 						[available, selected],
@@ -5231,9 +5240,9 @@ Ext.onReady( function() {
             }(),
             listeners: {
                 afterrender: function() { // nasty workaround, should be fixed
-                    organisationUnit.expand();
-                    period.expand();
-                    data.expand();
+                    //organisationUnit.expand();
+                    //period.expand();
+                    //data.expand();
                 }
             }
 		});
@@ -5491,27 +5500,30 @@ Ext.onReady( function() {
             accordionBody: accordionBody,
 			items: accordionBody,
 			panels: accordionPanels,
-
+            expandInitPanels: function() {
+                organisationUnit.expand();
+                //period.expand();
+                data.expand();
+            },
 			map: layer ? layer.map : null,
 			layer: layer ? layer : null,
 			menu: layer ? layer.menu : null,
 
 			setThisHeight: function(mx) {
 				var settingsHeight = 41,
-					panelHeight = settingsHeight + this.panels.length * 28,
-					height;
+					containerHeight = settingsHeight + (this.panels.length * 28) + mx,
+					accordionHeight = ns.app.westRegion.getHeight() - settingsHeight - ns.core.conf.layout.west_fill,
+                    accordionBodyHeight;
 
 				if (ns.app.westRegion.hasScrollbar) {
-					height = panelHeight + mx;
-					this.setHeight(viewport.getHeight() - settingsHeight - 2);
-					accordionBody.setHeight(height - settingsHeight - 2);
+                    accordionBodyHeight = containerHeight - settingsHeight - ns.core.conf.layout.west_fill;
 				}
 				else {
-					height = ns.app.westRegion.getHeight() - ns.core.conf.layout.west_fill - settingsHeight;
-					mx += panelHeight;
-					this.setHeight((height > mx ? mx : height) - 2);
-					accordionBody.setHeight((height > mx ? mx : height) - 2);
+                    accordionBodyHeight = (accordionHeight > containerHeight ? containerHeight : accordionHeight) - ns.core.conf.layout.west_fill;
 				}
+
+                this.setHeight(accordionHeight);
+                accordionBody.setHeight(accordionBodyHeight);
 			},
 			getExpandedPanel: function() {
 				for (var i = 0, panel; i < this.panels.length; i++) {
@@ -5642,16 +5654,21 @@ Ext.onReady( function() {
 				}
 			};
 
-			web.multiSelect.setHeight = function(multiSelects, panel, fill) {
-                fill = fill || 0;
+			web.multiSelect.setHeight = function(ms, panel, fill) {
+                //fill = fill || 0;
 
+				//for (var i = 0, height, ms, hasToolbar; i < multiSelects.length; i++) {
+                    //ms = multiSelects[i];
+                    //hasToolbar = Ext.isArray(ms.tbar) && ms.tbar.length;
 
-				for (var i = 0, height, ms, hasToolbar; i < multiSelects.length; i++) {
-                    ms = multiSelects[i];
-                    hasToolbar = Ext.isArray(ms.tbar) && ms.tbar.length;
+					//height = panel.getHeight() - 4 - fill - (hasToolbar ? 27 : 0);
+					//ms.setHeight(height);
+				//}
 
-					height = panel.getHeight() - 4 - fill - (hasToolbar ? 27 : 0);
-					ms.setHeight(height);
+				for (var i = 0, height; i < ms.length; i++) {
+					height = panel.getHeight() - fill - (ms[i].hasToolbar ? 25 : 0);
+console.log("panel.getHeight()", panel.getHeight(), "fill", fill, "pluss", ms[i].hasToolbar ? 25 : 0, "MS HEIGHT", height);
+					ms[i].setHeight(height);
 				}
 			};
 
@@ -6354,7 +6371,7 @@ Ext.onReady( function() {
         paramButtonMap[caseButton.param] = caseButton;
 
 		typeToolbar = Ext.create('Ext.toolbar.Toolbar', {
-			style: 'padding:1px; background:#fff; border:0 none',
+			style: 'padding:1px; background:#fbfbfb; border:0 none',
             height: 41,
             getType: function() {
 				return aggregateButton.pressed ? aggregateButton.param : caseButton.param;
@@ -6945,8 +6962,8 @@ Ext.onReady( function() {
 						westRegion.hasScrollbar = true;
 					}
 
-					// expand first panel
-					accordion.getFirstPanel().expand();
+					// expand init panels
+					accordion.expandInitPanels();
 
 					// look for url params
 					var id = ns.core.web.url.getParam('id'),

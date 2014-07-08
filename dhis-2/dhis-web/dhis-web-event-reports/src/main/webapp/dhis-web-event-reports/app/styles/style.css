@@ -82,12 +82,12 @@ body.x-windows {
 
 ::-webkit-scrollbar-track:vertical {
     background-color: #e1e1e1;
-    margin: 2px 0;
-    border-right: 2px solid white;
+    margin: 1px 0;
+    border-right: 1px solid white;
 }
 ::-webkit-scrollbar-thumb:vertical {
 	background-color: #bbb;
-    border-right: 2px solid white;
+    border-right: 1px solid white;
 }
 
 	/* User select */
