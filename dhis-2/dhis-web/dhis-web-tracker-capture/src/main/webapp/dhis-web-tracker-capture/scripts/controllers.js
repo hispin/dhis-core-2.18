@@ -208,7 +208,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                                             $scope.queryUrl,
                                             $scope.programUrl,
                                             $scope.attributeUrl.url,
-                                            $scope.pager).then(function(data){
+                                            $scope.pager,
+                                            true).then(function(data){
             //$scope.trackedEntityList = data;            
             if(data.rows){
                 $scope.teiCount = data.rows.length;

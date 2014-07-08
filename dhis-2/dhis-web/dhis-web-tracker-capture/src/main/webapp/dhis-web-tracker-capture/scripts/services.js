@@ -313,10 +313,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             });            
             return promise;
         },        
-        search: function(ouId, ouMode, queryUrl, programUrl, attributeUrl, pager) {           
-            
-            var pgSize = pager ? pager.pageSize : 50;
-            var pg = pager ? pager.page : 1;
+        search: function(ouId, ouMode, queryUrl, programUrl, attributeUrl, pager, paging) {
                 
             var url =  '../api/trackedEntityInstances.json?ou=' + ouId + '&ouMode='+ ouMode;
             
@@ -330,7 +327,16 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 url = url + '&' + attributeUrl;
             }
             
-            promise = $http.get( url + '&pageSize=' + pgSize + '&page=' + pg ).then(function(response){                                
+            if(paging){
+                var pgSize = pager ? pager.pageSize : 50;
+                var pg = pager ? pager.page : 1;
+                url = url + '&pageSize=' + pgSize + '&page=' + pg;
+            }
+            else{
+                url = url + '&paging=false';
+            }
+            
+            promise = $http.get( url ).then(function(response){                                
                 return response.data;
             });            
             return promise;
@@ -455,6 +461,12 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         },
         getEventsByProgram: function(entity, orgUnit, program){   
             var promise = $http.get( '../api/events.json?' + 'trackedEntityInstance=' + entity + '&orgUnit=' + orgUnit + '&program=' + program + '&paging=false').then(function(response){
+                return response.data.events;
+            });            
+            return promise;
+        },
+        getByOrgUnitAndProgram: function(orgUnit, ouMode, program){   
+            var promise = $http.get( '../api/events.json?' + '&orgUnit=' + orgUnit + '&ouMode='+ ouMode + '&program=' + program + '&paging=false').then(function(response){
                 return response.data.events;
             });            
             return promise;
@@ -835,7 +847,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             
 })
 
-.service('TEIGridService', function(OrgUnitService, DateUtils, $filter){
+.service('TEIGridService', function(OrgUnitService, DateUtils){
     
     return {
         format: function(grid){
@@ -884,7 +896,76 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 });                
             });
             return {headers: attributes, rows: entityList, pager: grid.metaData.pager};                                    
-        }        
+        },   
+        formatForReport: function(grid){
+            if(!grid || !grid.rows){
+                return;
+            }
+            
+            //grid.headers[0-4] = Instance, Created, Last updated, Org unit, Tracked entity
+            //grid.headers[5..] = Attribute, Attribute,.... 
+            var attributes = [];
+            var entityList = [];
+            for(var i=5; i<grid.headers.length; i++){
+                attributes.push({id: grid.headers[i].name, name: grid.headers[i].column, type: grid.headers[i].type});
+            }
+
+            OrgUnitService.open().then(function(){
+
+                angular.forEach(grid.rows, function(row){
+                    var entity = {};
+                    var isEmpty = true;                   
+
+                    entity.id = row[0];
+                    var rDate = row[1];
+                    rDate = DateUtils.format(rDate);
+                    entity.created = rDate;
+                    entity.orgUnit = row[3];                              
+                    entity.type = row[4];  
+
+                    OrgUnitService.get(row[3]).then(function(ou){
+                        if(ou){
+                            entity.orgUnitName = ou.n;
+                        }                                                       
+                    });
+
+                    for(var i=5; i<row.length; i++){
+                        if(row[i] && row[i] !== ''){
+                            isEmpty = false;
+                            entity[grid.headers[i].name] = row[i];
+                        }
+                    }
+                    
+                    if(!isEmpty){                        
+                        entityList[entity.id] = entity;
+                    }        
+                });
+                var returnVal = {headers: attributes, rows: entityList};
+                console.log('the return is:  ', returnVal);
+                return returnVal;
+            });            
+        },
+        generateGridColumns: function(attributes, ouMode){
+            
+            var columns = attributes ? angular.copy(attributes) : [];
+       
+            //also add extra columns which are not part of attributes (orgunit for example)
+            columns.push({id: 'orgUnitName', name: 'Organisation unit', type: 'string', displayInListNoProgram: false});
+            columns.push({id: 'created', name: 'Registration date', type: 'string', displayInListNoProgram: false});
+
+            //generate grid column for the selected program/attributes
+            angular.forEach(columns, function(column){
+                if(column.id === 'orgUnitName' && ouMode !== 'SELECTED'){
+                    column.show = true;    
+                }
+
+                if(column.displayInListNoProgram){
+                    column.show = true;
+                }           
+            });     
+            
+            return columns;  
+        }
     };
 })
 
@@ -947,6 +1028,17 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             dueDate = Date.parse(dueDate);
             dueDate = $filter('date')(dueDate, 'yyyy-MM-dd');
             return dueDate;
+        },
+        getEventOrgUnitName: function(orgUnitId){            
+            if(orgUnitId){
+                OrgUnitService.open().then(function(){
+                    OrgUnitService.get(orgUnitId).then(function(ou){
+                        if(ou){
+                            return ou.n;             
+                        }                                                       
+                    });                            
+                }); 
+            }
         },
         setEventOrgUnitName: function(dhis2Event){            
             if(dhis2Event.orgUnit){
