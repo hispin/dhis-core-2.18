@@ -15,9 +15,9 @@ jQuery( document ).ready( function() {
 </script>
 
 <h3>$i18n.getString( "data_synchronization" )</h3>
+	
 
-
-<div class="settingLabel">$i18n.getString( "remote_server_url" )</div>
+<div class="settingLabel">$i18n.getString( "remote_server_url" ) <span class="tipText">(https:// $i18n.getString( "recommended" ))</span></div>
 <div class="setting">
 	<input type="text" id="remoteServerUrl" name="remoteServerUrl" value='$!remoteServerUrl'>
 </div>
