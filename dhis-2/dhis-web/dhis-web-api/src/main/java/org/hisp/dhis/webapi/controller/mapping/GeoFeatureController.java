@@ -40,6 +40,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.system.filter.OrganisationUnitWithValidCoordinatesFilter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.hisp.dhis.webapi.webdomain.GeoFeature;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,8 +62,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static org.hisp.dhis.util.ContextUtils.clearIfNotModified;
 
 /**
  * @author Lars Helge Overland
@@ -106,7 +106,7 @@ public class GeoFeatureController
 
         FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
 
-        boolean modified = !clearIfNotModified( request, response, organisationUnits );
+        boolean modified = !ContextUtils.clearIfNotModified( request, response, organisationUnits );
 
         if ( !modified )
         {

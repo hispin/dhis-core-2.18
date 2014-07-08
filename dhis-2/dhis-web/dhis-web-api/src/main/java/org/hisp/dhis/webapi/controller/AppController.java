@@ -205,7 +205,7 @@ public class AppController
 
     private String getBaseUrl( HttpServletRequest request )
     {
-        String baseUrl = org.hisp.dhis.util.ContextUtils.getBaseUrl( request );
+        String baseUrl = ContextUtils.getBaseUrl( request );
         return baseUrl.substring( 0, baseUrl.length() - 1 );
     }
 }
