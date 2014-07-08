@@ -67,9 +67,6 @@ public class ContextUtils
     public static final String HEADER_IF_NONE_MATCH = "If-None-Match";
     public static final String HEADER_ETAG = "ETag";
 
-    private static final String SEPARATOR = "/";
-    private static final String PORT_SEPARATOR = ":";
-    private static final String PROTOCOL = "http://";
     private static final String QUOTE = "\"";
     
     private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() 
@@ -106,17 +103,6 @@ public class ContextUtils
         }
 
         return params;
-    }
-
-    public static String getBaseUrl( HttpServletRequest request )
-    {
-        String server = request.getServerName();
-
-        int port = request.getServerPort();
-
-        String baseUrl = PROTOCOL + server + PORT_SEPARATOR + port + SEPARATOR;
-
-        return baseUrl;
     }
 
     public static void configureResponse( HttpServletResponse response, String contentType, boolean disallowCache,

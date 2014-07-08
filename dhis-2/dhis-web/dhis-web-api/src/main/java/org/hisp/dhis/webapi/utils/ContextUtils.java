@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -46,11 +47,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.common.DimensionalObjectUtils;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -80,9 +83,11 @@ public class ContextUtils
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
     public static final String HEADER_LOCATION = "Location";
     
-    public static final String DATE_PATTERN = "yyyy-MM-dd";
-    
+    public static final String DATE_PATTERN = "yyyy-MM-dd";    
     public static final String QUERY_PARAM_SEP = ";";
+    public static final String HEADER_IF_NONE_MATCH = "If-None-Match";
+    public static final String HEADER_ETAG = "ETag";
+    private static final String QUOTE = "\"";
 
     @Autowired
     private SystemSettingManager systemSettingManager;
@@ -310,6 +315,23 @@ public class ContextUtils
     }
 
     /**
+     * Returns the base URL for the given request.
+     * 
+     * @param request the HTTP servlet request.
+     * @return the base URL.
+     */
+    public static String getBaseUrl( HttpServletRequest request )
+    {
+        String server = request.getServerName();
+        
+        String scheme = request.getScheme();
+        int port = request.getServerPort();
+        String baseUrl = scheme + "://" + server + ":" + port + "/";
+
+        return baseUrl;
+    }
+
+    /**
      * Adds basic authentication by adding an Authorization header to the
      * given HttpHeaders object.
      *
@@ -319,8 +341,39 @@ public class ContextUtils
      */
     public static void setBasicAuth( HttpHeaders headers, String username, String password )
     {
-        String authorisation = username + ":" + password;
-        byte[] encodedAuthorisation = Base64.encode( authorisation.getBytes() );
-        headers.add( "Authorization", "Basic " + new String( encodedAuthorisation ) );
+        headers.add( "Authorization", CodecUtils.getBasicAuthString( username, password ) );
+    }
+
+    /**
+     * Clears the given collection if it is not modified according to the HTTP
+     * cache validation. This method looks up the ETag sent in the request from 
+     * the "If-None-Match" header value, generates an ETag based on the given 
+     * collection of IdentifiableObjects and compares them for equality. If this
+     * evaluates to true, it will set status code 304 Not Modified on the response
+     * and remove all elements from the given list. It will also set the ETag header
+     * on the response in any case.
+     * 
+     * @param request the HttpServletRequest.
+     * @param response the HttpServletResponse.
+     * @return true if the eTag values are equals, false otherwise.
+     */
+    public static boolean clearIfNotModified( HttpServletRequest request, HttpServletResponse response, Collection<? extends IdentifiableObject> objects )
+    {
+        String tag = QUOTE + IdentifiableObjectUtils.getLastUpdatedTag( objects ) + QUOTE;
+        
+        response.setHeader( HEADER_ETAG, tag );
+        
+        String inputTag = request.getHeader( HEADER_IF_NONE_MATCH );
+
+        if ( objects != null && inputTag != null && inputTag.equals( tag ) )
+        {
+            response.setStatus( HttpServletResponse.SC_NOT_MODIFIED );
+            
+            objects.clear();
+            
+            return true;
+        }
+        
+        return false;
     }
 }
