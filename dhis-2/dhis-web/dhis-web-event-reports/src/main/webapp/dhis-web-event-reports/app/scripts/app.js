@@ -5655,19 +5655,8 @@ Ext.onReady( function() {
 			};
 
 			web.multiSelect.setHeight = function(ms, panel, fill) {
-                //fill = fill || 0;
-
-				//for (var i = 0, height, ms, hasToolbar; i < multiSelects.length; i++) {
-                    //ms = multiSelects[i];
-                    //hasToolbar = Ext.isArray(ms.tbar) && ms.tbar.length;
-
-					//height = panel.getHeight() - 4 - fill - (hasToolbar ? 27 : 0);
-					//ms.setHeight(height);
-				//}
-
 				for (var i = 0, height; i < ms.length; i++) {
 					height = panel.getHeight() - fill - (ms[i].hasToolbar ? 25 : 0);
-console.log("panel.getHeight()", panel.getHeight(), "fill", fill, "pluss", ms[i].hasToolbar ? 25 : 0, "MS HEIGHT", height);
 					ms[i].setHeight(height);
 				}
 			};
