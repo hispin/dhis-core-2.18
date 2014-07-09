@@ -1395,8 +1395,7 @@ function hideProgramInstanceDiv(programInstanceId) {
 	$('#pi_' + programInstanceId).removeClass("link-area-active");
 	$("#img_" + programInstanceId).attr('src', '');
 }
-function loadActiveProgramStageRecords(programInstanceId,
-		activeProgramStageInstanceId) {
+function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInstanceId) {
 	hideById('programEnrollmentDiv');
 	if (programInstanceId == "")
 		return;
