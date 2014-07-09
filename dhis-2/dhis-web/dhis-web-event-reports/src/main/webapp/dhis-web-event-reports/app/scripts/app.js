@@ -3297,6 +3297,24 @@ Ext.onReady( function() {
 				treePanel.reset();
 			}
 
+            // dimensions
+			for (var key in dimensionIdSelectedStoreMap) {
+				if (dimensionIdSelectedStoreMap.hasOwnProperty(key)) {
+					var a = dimensionIdAvailableStoreMap[key],
+						s = dimensionIdSelectedStoreMap[key];
+
+					if (s.getCount() > 0) {
+						a.reset();
+						s.removeAll();
+					}
+
+					if (recMap[key]) {
+						s.add(recMap[key]);
+						ns.core.web.multiSelect.filterAvailable({store: a}, {store: s});
+					}
+				}
+			}
+
 			// options
 			if (optionsWindow) {
 				optionsWindow.setOptions(layout);
@@ -3654,6 +3672,7 @@ Ext.onReady( function() {
         selectDataElements = function(items, layout) {
             var dataElements = [],
 				allElements = [],
+                fixedFilterElementIds = [],
                 aggWindow = ns.app.aggregateLayoutWindow,
                 queryWindow = ns.app.queryLayoutWindow,
                 includeKeys = ['int', 'number', 'boolean', 'bool'],
@@ -3661,9 +3680,13 @@ Ext.onReady( function() {
                 recordMap = {
 					'pe': {id: 'pe', name: 'Periods'},
 					'ou': {id: 'ou', name: 'Organisation units'}
-				};
+				},
+                extendDim = function(dim) {
+                    dim.id = dim.id || dim.dimension;
+                    dim.name = dim.name || ns.app.response.metaData.names[dim.dimension] || "Nissa";
 
-                fixedFilterElementIds = [];
+                    return dim;
+                };
 
 			// data element objects
             for (var i = 0, item; i < items.length; i++) {
@@ -3737,23 +3760,30 @@ Ext.onReady( function() {
 				}
 
 				if (layout.columns) {
-					for (var i = 0; i < layout.columns.length; i++) {
-						aggWindow.colStore.add(recordMap[layout.columns[i].dimension]);
+					for (var i = 0, record, dim; i < layout.columns.length; i++) {
+                        dim = layout.columns[i];
+                        record = recordMap[dim.dimension];
+
+						aggWindow.colStore.add(record || extendDim(Ext.clone(dim)));
 					}
 				}
 
 				if (layout.rows) {
-					for (var i = 0; i < layout.rows.length; i++) {
-						aggWindow.rowStore.add(recordMap[layout.rows[i].dimension]);
+					for (var i = 0, record, dim; i < layout.rows.length; i++) {
+                        dim = layout.rows[i];
+                        record = recordMap[dim.dimension];
+
+						aggWindow.rowStore.add(record || extendDim(Ext.clone(dim)));
 					}
 				}
 
 				if (layout.filters) {
-					for (var i = 0, store, record; i < layout.filters.length; i++) {
-						record = recordMap[layout.filters[i].dimension];
+					for (var i = 0, store, record, dim; i < layout.filters.length; i++) {
+                        dim = layout.filters[i];
+						record = recordMap[dim.dimension];
 						store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.filterStore : aggWindow.fixedFilterStore;
 
-						store.add(record);
+						store.add(record || extendDim(Ext.clone(dim)));
 					}
 				}
 			}
@@ -4959,7 +4989,7 @@ Ext.onReady( function() {
                 var win = ns.app.viewport.getLayoutWindow();
 
                 if (selectedStore.getRange().length) {
-                    win.addDimension({id: dimension.id, name: dimension.name});
+                    win.addDimension({id: dimension.id, name: dimension.name}, win.rowStore);
                 }
                 else if (!selectedStore.getRange().length && win.hasDimension(dimension.id)) {
                     win.removeDimension(dimension.id);
