@@ -9,6 +9,7 @@
         <script type="text/javascript" src="login.js"></script>
         <link type="text/css" rel="stylesheet" href="../css/widgets.css">
         <link type="text/css" rel="stylesheet" href="../css/login.css">
+        <link type="text/css" rel="stylesheet" href="../../api/files/style" />
     </head>
     <body>
     	<h1 style="display:none">$!encoder.htmlEncode( ${applicationTitle} )</h1>
