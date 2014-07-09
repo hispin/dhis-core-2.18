@@ -344,7 +344,7 @@ public class DefaultDataEntryFormService
                 }
                 else
                 {
-                    appendCode += " name=\"entryfield\" class=\"entryfield\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
+                    appendCode += " type=\"text\" name=\"entryfield\" class=\"entryfield\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
                 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
@@ -354,11 +354,11 @@ public class DefaultDataEntryFormService
             }
             else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
             {
-                inputHtml = inputHtml.replace( TAG_CLOSE, " class=\"dataelementtotal\"" + TAG_CLOSE );
+                inputHtml = inputHtml.replace( TAG_CLOSE, " type=\"text\" class=\"dataelementtotal\"" + TAG_CLOSE );
             }
             else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
             {
-                inputHtml = inputHtml.replace( TAG_CLOSE, " class=\"indicator\"" + TAG_CLOSE );
+                inputHtml = inputHtml.replace( TAG_CLOSE, " type=\"text\" class=\"indicator\"" + TAG_CLOSE );
             }
 
             inputMatcher.appendReplacement( sb, inputHtml );            
