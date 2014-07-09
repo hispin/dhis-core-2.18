@@ -102,7 +102,7 @@ dhis2.de.getFieldValue = function( de, coc )
         value = $( fieldId ).val() ? $( fieldId ).val() : '0';
     }
     
-    return vale;
+    return value;
 }
 
 /**
