@@ -29,8 +29,11 @@ package org.hisp.dhis.webapi.webdomain.form;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +42,7 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement(name = "form")
+@JacksonXmlRootElement( localName = "form", namespace = DxfNamespaces.DXF_2_0 )
 public class Form
 {
     private String label;
@@ -55,6 +58,7 @@ public class Form
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getLabel()
     {
         return label;
@@ -66,6 +70,7 @@ public class Form
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getSubtitle()
     {
         return subtitle;
@@ -76,7 +81,9 @@ public class Form
         this.subtitle = subtitle;
     }
     
-    @JsonProperty
+    @JsonProperty( value = "groups" )
+    @JacksonXmlElementWrapper( localName = "groups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "group", namespace = DxfNamespaces.DXF_2_0 )
     public List<Group> getGroups()
     {
         return groups;
@@ -88,6 +95,7 @@ public class Form
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Map<String, Object> getOptions()
     {
         return options;

@@ -29,6 +29,10 @@ package org.hisp.dhis.webapi.webdomain.form;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@JacksonXmlRootElement( localName = "group", namespace = DxfNamespaces.DXF_2_0 )
 public class Group
 {
     private String label;
@@ -47,6 +52,7 @@ public class Group
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getLabel()
     {
         return label;
@@ -57,7 +63,9 @@ public class Group
         this.label = label;
     }
 
-    @JsonProperty
+    @JsonProperty( value = "fields" )
+    @JacksonXmlElementWrapper( localName = "fields", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "field", namespace = DxfNamespaces.DXF_2_0 )
     public List<Field> getFields()
     {
         return fields;
