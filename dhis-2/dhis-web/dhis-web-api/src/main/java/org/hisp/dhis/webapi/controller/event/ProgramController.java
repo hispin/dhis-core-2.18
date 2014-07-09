@@ -52,7 +52,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = ProgramSchemaDescriptor.API_ENDPOINT)
+@RequestMapping( value = ProgramSchemaDescriptor.API_ENDPOINT )
 public class ProgramController
     extends AbstractCrudController<Program>
 {
@@ -79,7 +79,16 @@ public class ProgramController
 
     protected List<Program> getEntityList( WebMetaData metaData, WebOptions options )
     {
+        String type = options.getOptions().get( "type" );
+        String orgUnit = options.getOptions().get( "orgUnit" );
+        Boolean userFilter = Boolean.parseBoolean( options.getOptions().get( "userFilter" ) );
+
         List<Program> entityList;
+
+        if ( type != null || orgUnit != null || userFilter )
+        {
+            options.getOptions().put( "paging", "false" );
+        }
 
         if ( options.getOptions().containsKey( "query" ) )
         {
@@ -92,16 +101,12 @@ public class ProgramController
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<Program>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+            entityList = new ArrayList<>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            entityList = new ArrayList<Program>( manager.getAllSorted( getEntityClass() ) );
+            entityList = new ArrayList<>( manager.getAllSorted( getEntityClass() ) );
         }
-
-        String type = options.getOptions().get( "type" );
-        String orgUnit = options.getOptions().get( "orgUnit" );
-        Boolean userFilter = Boolean.parseBoolean( options.getOptions().get( "userFilter" ) );
 
         if ( userFilter )
         {
