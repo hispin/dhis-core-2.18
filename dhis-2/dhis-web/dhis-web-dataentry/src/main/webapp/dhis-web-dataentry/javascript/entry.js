@@ -93,7 +93,7 @@ dhis2.de.getDataElementTotalValue = function( de )
  */
 dhis2.de.getFieldValue = function( de, coc )
 {
-	var fieldId = '#' + dataElementId + '-' + categoryOptionComboId + '-val';
+    var fieldId = '#' + de + '-' + coc + '-val';
 	
     var value = '0';
     
