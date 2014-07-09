@@ -164,6 +164,7 @@
 
       context.searchButton.find('i').removeClass('fa-search');
       context.searchButton.find('i').addClass('fa-spinner fa-spin');
+      context.searchButton.attr('disabled', true);
 
       return $.ajax(request).done(function( data ) {
         if( data.pager ) {
@@ -196,6 +197,7 @@
       }).always(function() {
          context.searchButton.find('i').removeClass('fa-spinner fa-spin');
          context.searchButton.find('i').addClass('fa-search');
+         context.searchButton.removeAttr('disabled');
       });
     }
   };
