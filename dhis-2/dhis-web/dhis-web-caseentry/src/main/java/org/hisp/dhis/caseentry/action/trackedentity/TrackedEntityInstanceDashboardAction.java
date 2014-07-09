@@ -94,6 +94,8 @@ public class TrackedEntityInstanceDashboardAction
     private TrackedEntityInstance entityInstance;
 
     private List<TrackedEntityAttribute> attributes;
+    
+    private List<TrackedEntityAttribute> displayedAttributes;
 
     private Collection<ProgramInstance> activeProgramInstances;
 
@@ -120,6 +122,11 @@ public class TrackedEntityInstanceDashboardAction
     {
         return attributeValueMap;
     }  
+
+    public List<TrackedEntityAttribute> getDisplayedAttributes()
+    {
+        return displayedAttributes;
+    }
 
     public void setAuditService( TrackedEntityAuditService auditService )
     {
@@ -213,6 +220,8 @@ public class TrackedEntityInstanceDashboardAction
         // ---------------------------------------------------------------------
 
         attributes = new ArrayList<TrackedEntityAttribute>( attributeService.getAllTrackedEntityAttributes() );
+        
+        displayedAttributes = new ArrayList<TrackedEntityAttribute>( attributeService.getTrackedEntityAttributesDisplayInList() );
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         for ( TrackedEntityAttributeValue attributeValue : entityInstance.getAttributeValues() )
