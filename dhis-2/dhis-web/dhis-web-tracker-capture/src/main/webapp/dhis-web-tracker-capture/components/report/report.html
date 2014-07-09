@@ -32,7 +32,7 @@
             </div>
             <div class="col-md-6 trim">                  
                 <button type="button" class="btn btn-primary" ng-click="generateReport()" ng-disabled="!selectedProgram">{{'go'| translate}}</button>
-                <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="showReport()">{{'cancel'| translate}}</button>
+                <button type="button" class="btn btn-default small-horizonal-spacing" ng-click="showReport()">{{'close'| translate}}</button>
             </div>
         </div>
     </form>
@@ -71,7 +71,7 @@
                                 </span>
                             </td>
                             <td>    
-                                <div class='bold vertical-center' ng-if='!dhis2Events[tei.id]'>{{'no_visit_made' | translate}}</div>
+                                <div class='bold inline-block vertical-center' ng-if='!dhis2Events[tei.id]'>{{'no_visit_made' | translate}}</div>
                                 <div class="inline-block vertical-center" ng-repeat="ev in dhis2Events[tei.id] | orderBy: 'eventDate'">                                    
                                     <div class="block align-center">{{ev.orgUnitName}}</div>                   
                                     <div class="empty-stage-container" 

@@ -17,7 +17,7 @@ trackerCapture.controller('NotesController',
                 if(!angular.isUndefined( $scope.selectedEnrollment.notes)){
                     $scope.selectedEnrollment.notes = orderByFilter($scope.selectedEnrollment.notes, '-storedDate');            
                     angular.forEach($scope.selectedEnrollment.notes, function(note){
-                        note.storedDate = moment(note.storedDate).format('DD.MM.YYYY @ hh:mm A');
+                        note.storedDate = moment(note.storedDate).format('YYYY-MM-DD @ hh:mm A');
                     });
                 }
             });
@@ -50,8 +50,7 @@ trackerCapture.controller('NotesController',
             EnrollmentService.update(e).then(function(data){
                 $scope.note = '';
                 $scope.addNoteField = false; //note is added, hence no need to show note field.
-                CurrentSelection.set({enrollment: $scope.selectedEnrollment});
-                //$rootScope.$broadcast('notesController', {selectedEnrollment: $scope.selectedEnrollment.enrollment});
+                CurrentSelection.set({enrollment: $scope.selectedEnrollment});                
                 $rootScope.$broadcast('notesController', {});
             });
         }        
