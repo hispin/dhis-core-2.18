@@ -11,10 +11,10 @@
         <link type="text/css" rel="stylesheet" href="../css/login.css">
         <link type="text/css" rel="stylesheet" href="../../api/files/style/external" />
     </head>
-    <body>
+    <body class="loginPage">
     	<h1 style="display:none">$!encoder.htmlEncode( ${applicationTitle} )</h1>
     	<div style="display:none">DHIS 2</div>
-        <div>       
+        <div>
         #if ( $keyFlag )
             <img id="flagArea" src="../flags/$!{keyFlagImage}">
         #end
@@ -91,20 +91,5 @@
 	        </select>
 
         </div>
-
-        #* Seems we can't access macros.vm from login.vm/login_mobile.vm so we include the full script here *#
-        #if( $googleAnalyticsUA && $googleAnalyticsUA != '' )
-        <script type="text/javascript">
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', '$encoder.jsEncode($googleAnalyticsUA)']);
-          _gaq.push(['_trackPageview']);
-
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-        </script>
-        #end
     </body>
 </html>
