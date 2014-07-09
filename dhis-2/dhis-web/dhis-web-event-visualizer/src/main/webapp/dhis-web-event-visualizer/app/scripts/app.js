@@ -3010,7 +3010,7 @@ Ext.onReady( function() {
                 stagesByProgramStore.loadData(stages);
 
                 ns.app.aggregateLayoutWindow.resetData();
-				ns.app.queryLayoutWindow.resetData();
+				//ns.app.queryLayoutWindow.resetData();
 
                 stageId = (layout ? layout.programStage.id : null) || (stages.length === 1 ? stages[0].id : null);
 
@@ -3311,13 +3311,20 @@ Ext.onReady( function() {
         selectDataElements = function(items, layout) {
             var dataElements = [],
 				allElements = [],
+                fixedFilterElementIds = [],
                 aggWindow = ns.app.aggregateLayoutWindow,
                 includeKeys = ['int', 'number', 'boolean', 'bool'],
                 ignoreKeys = ['pe', 'ou'],
                 recordMap = {
 					'pe': {id: 'pe', name: 'Periods'},
 					'ou': {id: 'ou', name: 'Organisation units'}
-				};
+				},
+                extendDim = function(dim) {
+                    dim.id = dim.id || dim.dimension;
+                    dim.name = dim.name || ns.app.response.metaData.names[dim.dimension] || "Nissa";
+
+                    return dim;
+                };
 
                 fixedFilterElementIds = [];
 
@@ -3392,25 +3399,32 @@ Ext.onReady( function() {
                 }
 
                 if (layout.columns) {
-                    for (var i = 0; i < layout.columns.length; i++) {
-                        aggWindow.colStore.add(recordMap[layout.columns[i].dimension]);
-                    }
-                }
+					for (var i = 0, record, dim; i < layout.columns.length; i++) {
+                        dim = layout.columns[i];
+                        record = recordMap[dim.dimension];
+
+						aggWindow.colStore.add(record || extendDim(Ext.clone(dim)));
+					}
+				}
 
                 if (layout.rows) {
-                    for (var i = 0; i < layout.rows.length; i++) {
-                        aggWindow.rowStore.add(recordMap[layout.rows[i].dimension]);
-                    }
-                }
+					for (var i = 0, record, dim; i < layout.rows.length; i++) {
+                        dim = layout.rows[i];
+                        record = recordMap[dim.dimension];
+
+						aggWindow.rowStore.add(record || extendDim(Ext.clone(dim)));
+					}
+				}
 
                 if (layout.filters) {
-                    for (var i = 0, store, record; i < layout.filters.length; i++) {
-                        record = recordMap[layout.filters[i].dimension];
-                        store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.filterStore : aggWindow.fixedFilterStore;
+					for (var i = 0, store, record, dim; i < layout.filters.length; i++) {
+                        dim = layout.filters[i];
+						record = recordMap[dim.dimension];
+						store = Ext.Array.contains(includeKeys, element.type) || element.optionSet ? aggWindow.filterStore : aggWindow.fixedFilterStore;
 
-                        store.add(record);
-                    }
-                }
+						store.add(record || extendDim(Ext.clone(dim)));
+					}
+				}
 			}
         };
 
@@ -4950,7 +4964,8 @@ Ext.onReady( function() {
 		};
 
 		getView = function(config) {
-			var view = {},
+			var panels = ns.app.accordion.panels,
+                view = {},
 				layoutWindow = ns.app.viewport.getLayoutWindow(),
 				map = {},
 				columns = [],
@@ -4966,8 +4981,7 @@ Ext.onReady( function() {
                 return;
             }
 
-			// pe
-            
+			// pe            
             if (periodMode.getValue() === 'dates') {
                 view.startDate = startDate.getSubmitValue();
                 view.endDate = endDate.getSubmitValue();
@@ -4983,11 +4997,9 @@ Ext.onReady( function() {
 			}
 
 			// ou
-
 			map['ou'] = [treePanel.getDimension()];
 
             // data items
-
             for (var i = 0, record; i < dataElementSelected.items.items.length; i++) {
                 record = dataElementSelected.items.items[i].getRecord();
 
@@ -4996,13 +5008,25 @@ Ext.onReady( function() {
                 map[record.dimension].push(record);
             }
 
+            // dynamic dimensions data
+            for (var i = 0, panel, dim, dimName; i < panels.length; i++) {
+                panel = panels[i];
+
+                if (panel.getDimension) {
+                    dim = panel.getDimension();
+
+                    if (dim && !map.hasOwnProperty(dim.dimension)) {
+                        map[dim.dimension] = [dim];
+                    }
+                }
+            }
+
             // other
 
             //map['longitude'] = [{dimension: 'longitude'}];
             //map['latitude'] = [{dimension: 'latitude'}];
 
             // dimensions
-
             if (layoutWindow.colStore) {
 				layoutWindow.colStore.each(function(item) {
 					a = map[item.data.id] || [];
