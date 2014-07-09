@@ -77,8 +77,8 @@ public class FileController
         writer.write( content );
     }
 
-    @PreAuthorize( "hasRole('ALL')" )
     @RequestMapping( value = "/script", method = RequestMethod.POST, consumes = "application/javascript" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INSERT_CUSTOM_JS_CSS')" )
     public void postCustomScript( @RequestBody String content, HttpServletResponse response )
     {
         if ( content != null )
@@ -88,8 +88,8 @@ public class FileController
         }
     }
 
-    @PreAuthorize( "hasRole('ALL')" )
     @RequestMapping( value = "/script", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INSERT_CUSTOM_JS_CSS')" )
     public void removeCustomScript( HttpServletResponse response )
     {
         systemSettingManager.deleteSystemSetting( KEY_CUSTOM_JS );
@@ -110,8 +110,8 @@ public class FileController
         writer.write( content );
     }
 
-    @PreAuthorize( "hasRole('ALL')" )
     @RequestMapping( value = "/style", method = RequestMethod.POST, consumes = "text/css" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INSERT_CUSTOM_JS_CSS')" )
     public void postCustomStyle( @RequestBody String content, HttpServletResponse response )
     {
         if ( content != null )
@@ -121,8 +121,8 @@ public class FileController
         }
     }
 
-    @PreAuthorize( "hasRole('ALL')" )
     @RequestMapping( value = "/style", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INSERT_CUSTOM_JS_CSS')" )
     public void removeCustomStyle( HttpServletResponse response )
     {
         systemSettingManager.deleteSystemSetting( KEY_CUSTOM_CSS );
