@@ -36,7 +36,6 @@
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jzlib</artifactId>
-      <version>1.0.7</version>
     </dependency>
   </dependencies>
 
