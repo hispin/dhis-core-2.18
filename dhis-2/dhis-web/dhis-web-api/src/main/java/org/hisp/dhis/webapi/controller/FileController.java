@@ -99,7 +99,10 @@ public class FileController
     // Custom style
     // -------------------------------------------------------------------------
 
-    @RequestMapping( value = "/style", method = RequestMethod.GET )
+    /**
+     * The style/external mapping enables style to be reached from login page / before authentication.
+     */
+    @RequestMapping( value = { "/style", "/style/external" }, method = RequestMethod.GET )
     public void getCustomStyle( HttpServletResponse response, Writer writer )
         throws IOException
     {
