@@ -34,6 +34,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.schema.descriptors.ProgramSchemaDescriptor;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
@@ -51,12 +52,15 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = ProgramSchemaDescriptor.API_ENDPOINT )
+@RequestMapping(value = ProgramSchemaDescriptor.API_ENDPOINT)
 public class ProgramController
     extends AbstractCrudController<Program>
 {
     @Autowired
     private ProgramInstanceService programInstanceService;
+
+    @Autowired
+    private ProgramService programService;
 
     @Override
     protected void postCreateEntity( Program program )
@@ -97,6 +101,13 @@ public class ProgramController
 
         String type = options.getOptions().get( "type" );
         String orgUnit = options.getOptions().get( "orgUnit" );
+        Boolean userFilter = Boolean.parseBoolean( options.getOptions().get( "userFilter" ) );
+
+        if ( userFilter )
+        {
+            List<Program> programs = Lists.newArrayList( programService.getProgramsByCurrentUser() );
+            entityList.retainAll( programs );
+        }
 
         if ( type != null )
         {
