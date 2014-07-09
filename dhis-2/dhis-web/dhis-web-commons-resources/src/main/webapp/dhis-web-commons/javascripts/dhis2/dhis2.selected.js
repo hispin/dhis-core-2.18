@@ -130,12 +130,6 @@
     },
     makeSearchHandler: function( context ) {
       return function( e ) {
-        if( $(this).val().length > 0 ) {
-            context.searchButton.removeAttr( 'disabled' );
-        } else {
-            context.searchButton.attr( 'disabled', true );
-        }
-
         if( e.keyCode == 13 ) {
           context.page = 1;
           context.like = $(this).val();
