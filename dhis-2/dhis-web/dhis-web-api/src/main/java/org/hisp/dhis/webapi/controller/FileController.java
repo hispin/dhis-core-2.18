@@ -111,7 +111,7 @@ public class FileController
     }
 
     @PreAuthorize( "hasRole('ALL')" )
-    @RequestMapping( value = "/style", method = RequestMethod.POST, consumes = { "text/html", "text/plain", "text/css" } )
+    @RequestMapping( value = "/style", method = RequestMethod.POST, consumes = "text/css" )
     public void postCustomStyle( @RequestBody String content, HttpServletResponse response )
     {
         if ( content != null )
