@@ -25,22 +25,11 @@ function updateDataElementTotals()
 	
 	$( 'input[name="total"]' ).each( function( index )
 	{
-		var targetId = $( this ).attr( 'dataelementid' );
+		var de = $( this ).attr( 'dataelementid' );
 		
-		var totalValue = new Number();
+		var total = dhis2.de.getDataElementTotalValue( de );
 		
-		$( 'input[name="entryfield"]' ).each( function( index )
-		{	
-			var key = $( this ).attr( 'id' );
-			var entryFieldId = key.substring( 0, key.indexOf( '-' ) );
-			
-			if ( targetId && $( this ).attr( 'value' ) && targetId == entryFieldId )
-			{
-				totalValue += new Number( $( this ).attr( 'value' ) );
-			}
-		} );
-		
-		$( this ).attr( 'value', totalValue );
+		$( this ).attr( 'value', total );
 	} );
 }
 
@@ -77,6 +66,46 @@ function updateIndicators()
 }
 
 /**
+ * Returns the total sum of values in the current form for the given data element
+ * identifier.
+ */
+dhis2.de.getDataElementTotalValue = function( de )
+{
+	var sum = new Number();
+	
+	$( 'input[name="entryfield"]' ).each( function( index )
+	{	
+		var key = $( this ).attr( 'id' );
+		var entryFieldId = key.substring( 0, key.indexOf( '-' ) );
+		
+		if ( de && $( this ).attr( 'value' ) && de == entryFieldId )
+		{
+			sum += new Number( $( this ).attr( 'value' ) );
+		}
+	} );
+	
+	return sum;
+}
+
+/**
+ * Returns the value in the current form for the given data element and category
+ * option combo identifiers. Returns 0 if the field does not exist in the form.
+ */
+dhis2.de.getFieldValue = function( de, coc )
+{
+	var fieldId = '#' + dataElementId + '-' + categoryOptionComboId + '-val';
+	
+    var value = '0';
+    
+    if ( $( fieldId ).length )
+    {
+        value = $( fieldId ).val() ? $( fieldId ).val() : '0';
+    }
+    
+    return vale;
+}
+
+/**
  * Parses the expression and substitues the operand identifiers with the value
  * of the corresponding input entry field.
  */
@@ -92,16 +121,19 @@ function generateExpression( expression )
 
         var operand = match.replace( /[#\{\}]/g, '' );
 
-        var dataElementId = operand.substring( 0, operand.indexOf( SEPARATOR ) );
-        var categoryOptionComboId = operand.substring( operand.indexOf( SEPARATOR ) + 1, operand.length );
-
-        var fieldId = '#' + dataElementId + '-' + categoryOptionComboId + '-val';
-
+        var isTotal = !!( operand.indexOf( SEPARATOR ) == -1 );
+        
         var value = '0';
         
-        if ( $( fieldId ).length )
+        if ( isTotal )
         {
-            value = $( fieldId ).val() ? $( fieldId ).val() : '0';
+        	value = dhis2.de.getDataElementTotalValue( operand );
+        }
+        else
+        {
+	        var de = operand.substring( 0, operand.indexOf( SEPARATOR ) );
+	        var coc = operand.substring( operand.indexOf( SEPARATOR ) + 1, operand.length );	
+	        value = dhis2.de.getFieldValue( de, coc );
         }
 
         expression = expression.replace( match, value );
