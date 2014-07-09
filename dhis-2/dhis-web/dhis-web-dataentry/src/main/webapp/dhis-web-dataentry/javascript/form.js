@@ -1938,15 +1938,11 @@ function closeCurrentSelection()
 
 function updateForms()
 {
-    DAO.store.open().done( function() {
-        purgeLocalForms().done(function() {
-            updateExistingLocalForms().done(function() {
-                downloadRemoteForms();
-            });
-        });
-
-        dhis2.de.loadOptionSets();
-    });
+    DAO.store.open()
+        .then(purgeLocalForms)
+        .then(updateExistingLocalForms)
+        .then(downloadRemoteForms)
+        .then(dhis2.de.loadOptionSets);
 }
 
 function purgeLocalForms()
@@ -1976,7 +1972,9 @@ function purgeLocalForms()
 
 function updateExistingLocalForms()
 {
-    return dhis2.de.storageManager.getAllForms().done(function( formIds ) {
+    var def = $.Deferred();
+
+    dhis2.de.storageManager.getAllForms().done(function( formIds ) {
         var formVersions = dhis2.de.storageManager.getAllFormVersions();
 
         $.safeEach( formIds, function( idx, item )
@@ -1986,14 +1984,21 @@ function updateExistingLocalForms()
 
             if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
             {
-            	dhis2.de.storageManager.downloadForm( item, remoteVersion );
+                dhis2.de.storageManager.downloadForm( item, remoteVersion )
             }
         } );
+
+        def.resolve();
     });
+
+    return def.promise();
 }
 
 function downloadRemoteForms()
 {
+    var def = $.Deferred();
+    var chain = [];
+
     $.safeEach( dhis2.de.dataSets, function( idx, item )
     {
         var remoteVersion = item.version;
@@ -2002,11 +2007,17 @@ function downloadRemoteForms()
         {
             dhis2.de.storageManager.formExists( idx ).done(function( value ) {
                 if( !value ) {
-                    dhis2.de.storageManager.downloadForm( idx, remoteVersion );
+                    chain.push(dhis2.de.storageManager.downloadForm( idx, remoteVersion ));
                 }
             });
         }
     } );
+
+    $.when.apply($, chain).then(function() {
+        def.resolve();
+    });
+
+    return def.promise();
 }
 
 // -----------------------------------------------------------------------------
