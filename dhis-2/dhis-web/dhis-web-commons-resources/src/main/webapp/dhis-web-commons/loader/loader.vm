@@ -6,6 +6,7 @@ div#loaderDiv
   color: #1c425c;
   font-size: 14px;
   border: 1px solid #9aaab5;
+  margin-bottom: 15px;
   width: 500px;
   height: 230px;
   text-align: center;
