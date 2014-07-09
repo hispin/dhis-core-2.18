@@ -2566,7 +2566,7 @@ dhis2.de.searchOptionSet = function( uid, query, success )
  */
 dhis2.de.getOptions = function( uid, query, success ) 
 {
-    $.ajax( {
+    return $.ajax( {
         url: '../api/optionSets/' + uid + '.json?links=false&q=' + query,
         dataType: "json",
         cache: false,
@@ -2587,7 +2587,10 @@ dhis2.de.getOptions = function( uid, query, success )
  */
 dhis2.de.loadOptionSets = function() 
 {
-    var options = _.values( dhis2.de.optionSets ); // Array of objects with uid and v
+    var options = _.uniq( _.values( dhis2.de.optionSets ), function( item ) {
+        return item.uid;
+    }); // Array of objects with uid and v
+
     var uids = [];
 
     var deferred = $.Deferred();
