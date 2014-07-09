@@ -68,12 +68,14 @@
       context.source.on('scroll', context.makeScrollHandler(context));
 
       if( context.search instanceof $ ) {
-        context.search.on('keypress', context.makeSearchHandler(context));
-        var searchButton = $("#" + context.search.attr('id') + "Button");
+        context.search.on('keyup', context.makeSearchHandler(context));
+        context.searchButton = $("#" + context.search.attr('id') + "Button");
 
-        searchButton.on('click', function() {
-          context.search.trigger({type: 'keypress', which: 13, keyCode: 13});
+        context.searchButton.on('click', function() {
+          context.search.trigger({type: 'keyup', which: 13, keyCode: 13});
         });
+
+        context.searchButton.attr('disabled', true);
       }
     }
   };
@@ -128,6 +130,12 @@
     },
     makeSearchHandler: function( context ) {
       return function( e ) {
+        if( $(this).val().length > 0 ) {
+            context.searchButton.removeAttr( 'disabled' );
+        } else {
+            context.searchButton.attr( 'disabled', true );
+        }
+
         if( e.keyCode == 13 ) {
           context.page = 1;
           context.like = $(this).val();
